@@ -71,7 +71,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return Tx_Extbase_Configuration_Manager An instance of the Configuration Manager
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
-	public static function getConfigurationManager() {
+	static public function getConfigurationManager() {
 		t3lib_div::logDeprecatedFunction();
 		return self::$configurationManager;
 	}
@@ -82,7 +82,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return Tx_Extbase_Persistence_Manager An instance of the Persistence Manager
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
-	public static function getPersistenceManager() {
+	static public function getPersistenceManager() {
 		t3lib_div::logDeprecatedFunction();
 		return self::$persistenceManager;
 	}
@@ -93,7 +93,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return array The configuration for the Extbase framework
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
-	public static function getExtbaseFrameworkConfiguration() {
+	static public function getExtbaseFrameworkConfiguration() {
 		t3lib_div::logDeprecatedFunction();
 		return self::$configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 	}

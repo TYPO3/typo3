@@ -51,7 +51,7 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
 	 * @return void
 	 */
-	public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array()) {
+	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array()) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -133,7 +133,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
 	 * @return void
 	 */
-	public static function registerPlugin($extensionName, $pluginName, $pluginTitle) {
+	static public function registerPlugin($extensionName, $pluginName, $pluginTitle) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -241,7 +241,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param array $config The configuration options of the module (icon, locallang.xml file)
 	 * @return void
 	 */
-	public static function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
+	static public function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
 		if (empty($extensionName)) {
 			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
@@ -284,24 +284,43 @@ tt_content.list.20.' . $pluginSignature . ' {
 		t3lib_extMgm::addModule($main, $sub, $position);
 	}
 
-	// TODO PHPdoc
-	public static function convertCamelCaseToLowerCaseUnderscored($string) {
-		// FIXME The cache doesn't work IMO as it is static (did I really implemented this? ;-))
-		static $conversionMap = array();
-		if (!isset($conversionMap[$string])) {
-			$conversionMap[$string] = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
-		}
-		return $conversionMap[$string];
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores.
+	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
+	 *
+	 * @param string $string
+	 * @return mixed
+	 * @see t3lib_div::underscoredToLowerCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertCamelCaseToLowerCaseUnderscored($string) {
+		return t3lib_div::camelCaseToLowerCaseUnderscored($string);
 	}
 
-	public static function convertUnderscoredToLowerCamelCase($string) {
-		$string = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
-		$string[0] = strtolower($string[0]);
-		return $string;
+	/**
+	 * Returns a given string with underscores as lowerCamelCase.
+	 * Example: Converts minimal_value to minimalValue
+	 *
+	 * @param string $string
+	 * @return mixed
+	 * @see t3lib_div::underscoredToLowerCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertUnderscoredToLowerCamelCase($string) {
+		return t3lib_div::underscoredToLowerCamelCase($string);
 	}
 
-	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {
-		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
+	/**
+	 * Returns a given string with underscores as UpperCamelCase.
+	 * Example: Converts blog_example to BlogExample
+	 *
+	 * @param string $string
+	 * @return string
+	 * @see t3lib_div::underscoredToUpperCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertLowerUnderscoreToUpperCamelCase($string) {
+		return t3lib_div::underscoredToUpperCamelCase($string);
 	}
 
 	/**
@@ -312,7 +331,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
 	 * @return	string	HTML string which should be outputted
 	 */
-	public static function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
+	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
 		$classNameToFileMapping = array();
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionKey)));
 		$errors = self::buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
@@ -369,7 +388,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$valueWrap	Wrap for the file name
 	 * @return void
 	 */
-	protected static function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
+	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 //		if (file_exists($path . 'Classes/')) {
 //			return "<b>This appears to be a new-style extension which has its PHP classes inside the Classes/ subdirectory. It is not needed to generate the autoload registry for these extensions.</b>";
 //		}
@@ -390,7 +409,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$filePath	File path (absolute)
 	 * @return	array	Class names
 	 */
-	protected static function extractClassNames($filePath) {
+	static protected function extractClassNames($filePath) {
 		$fileContent = php_strip_whitespace($filePath);
 		$classNames = array();
 		if (FALSE) {
@@ -437,7 +456,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
 	 * @return	mixed
 	 */
-	protected static function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
+	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
 
 		$returnValue = false;
@@ -471,7 +490,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param string $pluginName name of the plugin to retrieve the namespace for
 	 * @return string plugin namespace
 	 */
-	public static function getPluginNamespace($extensionName, $pluginName) {
+	static public function getPluginNamespace($extensionName, $pluginName) {
 		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
@@ -497,7 +516,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param string $actionName name of the target action (lowerCamelCase)
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
 	 */
-	public static function getPluginNameByAction($extensionName, $controllerName, $actionName) {
+	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
 		if (!isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
 			return NULL;
 		}
@@ -536,7 +555,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param string $pluginName name of the plugin to retrieve the target PID for
 	 * @return integer uid of the target page or NULL if target page could not be determined
 	 */
-	public static function getTargetPidByPlugin($extensionName, $pluginName) {
+	static public function getTargetPidByPlugin($extensionName, $pluginName) {
 		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');

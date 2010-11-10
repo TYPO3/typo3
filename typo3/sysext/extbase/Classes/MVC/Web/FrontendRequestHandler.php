@@ -52,7 +52,7 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 				if ($this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 					$this->cObj->convertToUserIntObject();
 					// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
-					return; //FIXME
+					return;
 				}
 				$request->setIsCached(FALSE);
 			}

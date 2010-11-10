@@ -215,7 +215,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getControllerExtensionKey() {
-		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+		return t3lib_div::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
 	}
 
 	/**

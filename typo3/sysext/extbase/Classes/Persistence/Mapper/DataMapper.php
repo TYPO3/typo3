@@ -69,7 +69,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @var Tx_Extbase_Persistence_Mapper_DataMapFactory
 	 */
 	protected $dataMapFactory;
-	
+
 	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
 	 */
@@ -116,7 +116,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
-	
+
 	/**
 	 * Injects the DataMap Factory
 	 *
@@ -135,7 +135,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
-	
+
 	/**
 	 * Sets the query object model factory
 	 *
@@ -168,7 +168,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		return $objects;
 	}
-	
+
 	/**
 	 * Returns the target type for the given row.
 	 *
@@ -190,7 +190,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		return $targetType;
 	}
-	
+
 	/**
 	 * Maps a single row on an object of the given class
 	 *
@@ -248,7 +248,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			if (!$dataMap->isPersistableProperty($propertyName)) continue;
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
-			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);			
+			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$propertyValue = NULL;
 			if ($row[$columnName] !== NULL) {
 				switch ($propertyData['type']) {
@@ -287,7 +287,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a DateTime from an unix timestamp. If the input is empty
 	 * NULL is returned.
@@ -331,7 +331,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Fetches the related objects from the storage backend.
 	 *
@@ -346,13 +346,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute();
 	}
-	
+
 	/**
 	 * Builds and returns the prepared query, ready to be executed.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
-	 * @param string $propertyName 
-	 * @param string $fieldValue 
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
+	 * @param string $propertyName
+	 * @param string $fieldValue
 	 * @return void
 	 */
 	protected function getPreparedQuery(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
@@ -374,15 +374,15 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
 		return $query;
 	}
-	
+
 	/**
 	 * Builds and returns the constraint for multi value properties.
 	 *
 	 * @param Tx_Extbase_Persistence_QueryInterface $query
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
-	 * @param string $propertyName 
-	 * @param string $fieldValue 
-	 * @param array $relationTableMatchFields 
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
+	 * @param string $propertyName
+	 * @param string $fieldValue
+	 * @param array $relationTableMatchFields
 	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint
 	 */
 	protected function getConstraint(Tx_Extbase_Persistence_QueryInterface $query, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = array()) {
@@ -409,8 +409,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Builds and returns the source to build a join for a m:n relation.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
-	 * @param string $propertyName 
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
+	 * @param string $propertyName
 	 * @return Tx_Extbase_Persistence_QOM_SourceInterface $source
 	 */
 	protected function getSource(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
@@ -427,13 +427,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			);
 		return $source;
 	}
-	
+
 	/**
 	 * Returns the given result as property value of the specified property type.
 	 *
-	 * @param mixed $result The result could be an object or an ObjectStorage 
+	 * @param mixed $result The result could be an object or an ObjectStorage
 	 * @param array $propertyMetaData The property meta data
-	 * @param array $result The result 
+	 * @param array $result The result
 	 * @return void
 	 */
 	public function mapResultToPropertyValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $result) {
@@ -462,7 +462,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
 				if (is_array($result)) {
-					
+
 					if (current($result) !== FALSE) {
 						$propertyValue = current($result);
 					} else {
@@ -475,7 +475,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		return $propertyValue;
 	}
-	
+
 	/**
 	 * Counts the number of related objects assigned to a property of a parent object
 	 *
@@ -487,7 +487,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->count();
 	}
-	
+
 	/**
 	 * Delegates the call to the Data Map.
 	 * Returns TRUE if the property is persistable (configured in $TCA)
@@ -503,7 +503,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 
 	/**
 	 * Returns a data map for a given class name
-	 * 
+	 *
 	 * @param string $className The class name you want to fetch the Data Map for
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
@@ -547,9 +547,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 			}
 		}
-		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($propertyName);
+		return t3lib_div::camelCaseToLowerCaseUnderscored($propertyName);
 	}
-	
+
 	/**
 	 * Returns the type of a child object.
 	 *

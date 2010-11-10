@@ -134,7 +134,7 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected static function initializeLocalization($extensionName) {
+	static protected function initializeLocalization($extensionName) {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
