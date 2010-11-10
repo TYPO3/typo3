@@ -1,6 +1,7 @@
 2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8349: htmlArea RTE: Clean paste feature with three options
+	* Fixed bug #16327: JS error after feature #16257: Rewrite stylesheets parsing functions (Thanks to Andreas Kiessling ).
 
 2010-11-08  Stanislas Rolland  <typo3@sjbr.ca>
 

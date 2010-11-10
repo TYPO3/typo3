@@ -4676,7 +4676,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean		true on success
 	 */
 	postData: function (url, data, callback) {
-	 	this.appendToLog('postData', 'Posting to ' + url + '. Data: ' + params);
+	 	this.appendToLog('postData', 'Posting to ' + url + '.');
 	 	return this.editor.ajax.postData(url, data, callback, this);
 	},
 	/**
