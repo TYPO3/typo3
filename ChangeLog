@@ -1,3 +1,7 @@
+2010-11-10  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16335: Workspace Draft Records are shown in Live Workspace in some cases (Thanks to Joerg Kinast)
+
 2010-11-09  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15184: Generation transparent images with GMENU fails (Thanks to Mathias Schreiber)
