@@ -114,6 +114,9 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	 */
 	public function __call($methodName, $arguments) {
 		$realInstance = $this->_loadRealInstance();
+		if (!is_object($realInstance)) {
+			return NULL;
+		}
 		return call_user_func_array(array($realInstance, $methodName), $arguments);
 	}
 
