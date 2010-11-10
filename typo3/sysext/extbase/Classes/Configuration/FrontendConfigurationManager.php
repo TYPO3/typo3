@@ -191,7 +191,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		if (isset($flexformConfiguration['switchableControllerActions']) && !is_array($flexformConfiguration['switchableControllerActions'])) {
 
 			// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
-			$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']));
+			$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']), TRUE);
 
 			$newSwitchableControllerActionsFromFlexform = array();
 			foreach ($switchableControllerActionPartsFromFlexform as $switchableControllerActionPartFromFlexform) {
