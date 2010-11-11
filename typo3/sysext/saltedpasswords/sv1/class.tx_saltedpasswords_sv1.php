@@ -170,7 +170,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 				if (!strcmp(substr($user['password'], 0, 1), 'M')) {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
 				} else {
-					$validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
+					$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));
 				}
 
 					// skip further authentication methods

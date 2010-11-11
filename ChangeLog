@@ -1,3 +1,7 @@
+2010-11-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16352: [saltedpasswords] Login with bulk updated passwords from t3sec_saltedpw not working (Thanks to Marcus Krause)
+
 2010-11-10  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #16032: Overwork tree frame design (Thanks to Lars Zimmermann)
