@@ -1,3 +1,7 @@
+2010-11-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16352: [saltedpasswords] Login with bulk updated passwords from t3sec_saltedpw not working (Thanks to Marcus Krause)
+
 2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16346: htmlArea RTE: fontstyle/fontsize may raise js error on toolbar update
