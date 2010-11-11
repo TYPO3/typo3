@@ -34,7 +34,6 @@
  * @api
  */
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
-
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */

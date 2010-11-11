@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<pages>
+		<uid>1</uid>
+		<pid>0</pid>
+		<title>Root</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>2</uid>
+		<pid>1</pid>
+		<title>Dummy 1-2</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>3</uid>
+		<pid>2</pid>
+		<title>Dummy 1-2-3</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>4</uid>
+		<pid>3</pid>
+		<title>Dummy 1-2-3-4</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>5</uid>
+		<pid>1</pid>
+		<title>Dummy 1-5</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>6</uid>
+		<pid>5</pid>
+		<title>Dummy 1-5-6</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+
+	<pages>
+		<uid>102</uid>
+		<pid>-1</pid>
+		<title>Dummy WS 91</title>
+		<t3ver_oid>2</t3ver_oid>
+		<t3ver_stage>1</t3ver_stage>
+		<t3ver_wsid>91</t3ver_wsid>
+		<t3ver_count>0</t3ver_count>
+		<deleted>0</deleted>
+	</pages>
+	<pages>
+		<uid>202</uid>
+		<pid>-1</pid>
+		<title>Dummy WS 92</title>
+		<t3ver_oid>2</t3ver_oid>
+		<t3ver_stage>1</t3ver_stage>
+		<t3ver_wsid>92</t3ver_wsid>
+		<t3ver_count>0</t3ver_count>
+		<deleted>0</deleted>
+	</pages>
+	<pages>
+		<uid>104</uid>
+		<pid>-1</pid>
+		<title>Dummy WS 91</title>
+		<t3ver_oid>4</t3ver_oid>
+		<t3ver_stage>2</t3ver_stage>
+		<t3ver_wsid>91</t3ver_wsid>
+		<t3ver_count>0</t3ver_count>
+		<deleted>0</deleted>
+	</pages>
+	<pages>
+		<uid>105</uid>
+		<pid>-1</pid>
+		<title>Dummy WS 91</title>
+		<t3ver_oid>6</t3ver_oid>
+		<t3ver_stage>1</t3ver_stage>
+		<t3ver_wsid>91</t3ver_wsid>
+		<t3ver_count>1</t3ver_count>
+		<deleted>0</deleted>
+	</pages>
+	<pages>
+		<uid>106</uid>
+		<pid>-1</pid>
+		<title>Dummy WS 91</title>
+		<t3ver_oid>6</t3ver_oid>
+		<t3ver_stage>2</t3ver_stage>
+		<t3ver_wsid>91</t3ver_wsid>
+		<t3ver_count>1</t3ver_count>
+		<deleted>0</deleted>
+	</pages>
+</dataset>
