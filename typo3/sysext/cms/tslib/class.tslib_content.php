@@ -5694,7 +5694,7 @@ class tslib_cObj {
 				}
 
 				$onClick = "vHWin=window.open('" . $GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']) .
-					"','FEopenLink','" . $JSwindowParams . "');vHWin.focus();return FALSE;";
+					"','FEopenLink','" . $JSwindowParams . "');vHWin.focus();return false;";
 				$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' .
 					$target . ' onclick="' . htmlspecialchars($onClick) . '"' .
 					($title ? ' title="' . $title . '"' : '') .
