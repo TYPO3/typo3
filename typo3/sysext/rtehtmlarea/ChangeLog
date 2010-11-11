@@ -1,3 +1,7 @@
+2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16314: Incorrect use of is_dir in class.tx_rtehtmlarea_clearrtecache.php (Thanks to Juergen Deisenroth)
+
 2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16346: htmlArea RTE: fontstyle/fontsize may raise js error on toolbar update
