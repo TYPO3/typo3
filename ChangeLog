@@ -8,6 +8,7 @@
 	* Added feature #8349: htmlArea RTE: Clean paste feature with three options
 	* Fixed bug #16327: JS error after feature #16257: Rewrite stylesheets parsing functions (Thanks to Andreas Kiessling)
 	* Added feature #16344: htmlArea RTE: New options to configure RTE size/resize
+	* Fixed bug #16346: htmlArea RTE: fontstyle/fontsize may raise js error on toolbar update
 
 2010-11-09  Jeff Segars <jeff@webempoweredchurch.org>
 
