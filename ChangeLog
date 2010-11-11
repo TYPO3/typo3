@@ -1,3 +1,7 @@
+2010-11-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16352: [saltedpasswords] Login with bulk updated passwords from t3sec_saltedpw not working (Thanks to Marcus Krause)
+
 2010-11-06  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16214: Bug: Change value of Media(Flash) parameter (Thanks to Janos Thiele)
