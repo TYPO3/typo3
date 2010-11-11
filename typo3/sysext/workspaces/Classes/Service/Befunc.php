@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Tolleiv Nietsch (info@tolleiv.de)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,12 +26,11 @@
  ***************************************************************/
 
 /**
- *
- * @author Tolleiv Nietsch (info@tolleiv.de)
- *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
  */
 class tx_Workspaces_Service_Befunc {
-
 	/**
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
 	 * only if we're in a workspace and if the frontend-preview is disabled.

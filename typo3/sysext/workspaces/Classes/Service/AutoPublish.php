@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 François Suter <francois@typo3.org>
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,8 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * Automatic publishing of workspaces.
+ *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
+ */
 class tx_Workspaces_Service_AutoPublish {
-
 	/**
 	 * This method is called by the Scheduler task that triggers
 	 * the autopublication process
@@ -73,6 +79,7 @@ class tx_Workspaces_Service_AutoPublish {
 		$GLOBALS['BE_USER']->user['admin'] = $currentAdminStatus;
 	}
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublish.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublish.php']);

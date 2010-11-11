@@ -11,11 +11,11 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Workspaces',
-	'description' => '',
-	'category' => 'module',
+	'title' => 'Workspaces Management',
+	'description' => 'Adds workspaces functiinality with custom stages to TYPO3.',
+	'category' => 'be',
 	'author' => 'Workspaces Team',
-	'author_email' => 'workspaces@typo3.org',
+	'author_email' => '',
 	'shy' => '',
 	'dependencies' => 'version,extbase,fluid',
 	'conflicts' => '',
@@ -32,6 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '0.9.0',
 	'constraints' => array(
 		'depends' => array(
+			'typo3' => '4.5.0-',
 			'version' => '',
 			'extbase' => '',
 			'fluid' => '',

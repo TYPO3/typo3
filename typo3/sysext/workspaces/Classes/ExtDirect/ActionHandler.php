@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Steffen Ritter (steffen@typo3.org)
+*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,19 +25,29 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+/**
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage ExtDirect
+ */
 class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
 	 * @var Tx_Workspaces_Service_Stages
 	 */
 	protected $stageService;
 
+	/**
+	 * Creates this object.
+	 */
 	public function __construct() {
 		$this->stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 	}
 
 	/**
-	 * @param integer $uid
-	 * @return array
+	 * Generates a workspace preview link.
+	 *
+	 * @param integer $uid The ID of the record to be linked
+	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
 		$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
@@ -50,6 +60,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Swaps a sisngle record.
+	 *
 	 * @param string $table
 	 * @param integer $t3ver_oid
 	 * @param integer $orig_uid
@@ -70,9 +82,10 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Deletes a single record.
+	 *
 	 * @param string $table
-	 * @param integer $t3ver_oid
-	 * @param integer $orig_uid
+	 * @param integer $uid
 	 * @return void
 	 *
 	 * @todo What about reporting errors back to the ExtJS interface? /olly/
@@ -88,6 +101,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Generates a view link for a page.
+	 *
 	 * @param string $pid
 	 * @return void
 	 */
@@ -97,12 +112,14 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 
 	/**
+	 * Saves the selected columns to be shown to the preferences of the current backend user.
+	 *
 	 * @param object $model
 	 * @return void
 	 */
 	public function saveColumnModel($model) {
 		$data = array();
-		foreach ($model AS $column) {
+		foreach ($model as $column) {
 			$data[$column->column] = array(
 				'position'  => $column->position,
 				'hidden'   => $column->hidden
@@ -121,6 +138,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Gets the dialog window to be displayed before a record can be sent to the next stage.
+	 *
 	 * @param string $table
 	 * @param integer $uid
 	 * @param integer $t3ver_oid
@@ -154,9 +173,10 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $t3ver_oid
-	 * @param integer $t3ver_oid
+	 * Gets the dialog window to be displayed before a record can be sent to the previous stage.
+	 *
+	 * @param string $table
+	 * @param integer $uid
 	 * @return array
 	 */
 	public function sendToPrevStageWindow($table, $uid) {
@@ -183,7 +203,6 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 					'success' => FALSE,
 				);
 			}
-
 		} else {
 			$result = array(
 				'error' => array(
@@ -198,7 +217,9 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
-	 * @param int $nextStage
+	 * Gets the dialog window to be displayed before a record can be sent to a specific stage.
+	 *
+	 * @param integer $nextStageId
 	 * @return array
 	 */
 	public function sendToSpecificStageWindow($nextStageId) {
@@ -211,12 +232,13 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Gets a merged variant of recipient defined by uid and custom ones.
 	 *
 	 * @param array list of recipients
 	 * @param string given user string of additional recipients
 	 * @return array
 	 */
-	public function getRecipientList($uidOfRecipients, $additionalRecipients) {
+	public function getRecipientList(array $uidOfRecipients, $additionalRecipients) {
 		$finalRecipients = array();
 
 		$recipients = array();
@@ -228,13 +250,14 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		}
 
 		if ($additionalRecipients != '') {
-			$additionalRecipients = explode("\n",$additionalRecipients);
+			$additionalRecipients = t3lib_div::trimExplode("\n", $additionalRecipients, TRUE);
 		} else {
 			$additionalRecipients = array();
 		}
 
-		$finalRecipients = array_merge($recipients,$additionalRecipients);
-		$finalRecipients = array_unique($finalRecipients);
+		$finalRecipients = array_unique(
+			array_merge($recipients, $additionalRecipients)
+		);
 
 		return $finalRecipients;
 	}
@@ -383,6 +406,12 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		return $result;
 	}
 
+	/**
+	 * Gets the dialog window to be displayed before a record can be sent to a stage.
+	 *
+	 * @param  $nextStageId
+	 * @return array
+	 */
 	protected function getSentToStageWindow($nextStageId) {
 		$stageTitle = $this->getStageService()->getStageTitle($nextStageId);
 		$result = array(
@@ -422,6 +451,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Gets all assigned recipients of a particular stage.
+	 * 
 	 * @param integer $stage
 	 * @return array
 	 */
@@ -442,12 +473,12 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	}
 
 	/**
+	 * Gets the default comment of a particular stage.
+	 *
 	 * @param integer $stage
 	 * @return string
 	 */
 	protected function getDefaultCommentOfStage($stage) {
-		$result = '';
-
 		$result = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
 
 		return $result;
@@ -470,3 +501,4 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php']);
 }
+?>

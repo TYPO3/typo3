@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2007-2010 Ingo Renner <ingo@typo3.org>
-*  (c) 2010 Steffen Ritter
+*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-	// TODO remove the include once the autoloader is in place
 if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
     require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 }
@@ -35,8 +34,8 @@ if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * class to render the workspace selector
  *
  * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
+ * @package Workspaces
+ * @subpackage BackendUserInterface
  */
 class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 
@@ -61,7 +60,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		$this->backendReference       = $backendReference;
 		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
-		
+
 		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
 		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace) . "'};\n");
 	}
@@ -205,14 +204,13 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	}
 }
 
-if(!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector','WorkspaceSelectorToolbarItem');
-}
 
+if(!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
+	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'WorkspaceSelectorToolbarItem');
+}
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php']);
 }
-
 ?>

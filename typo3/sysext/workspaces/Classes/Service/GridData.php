@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Marco Bresch (marco.bresch@starfinanz.de)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,8 +25,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
+ */
 class tx_Workspaces_Service_GridData {
-
 	private $dataArray = array();
 	private $sort = '';
 	private $sortDir = '';
@@ -355,6 +359,7 @@ class tx_Workspaces_Service_GridData {
 		return $state;
 	}
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']);

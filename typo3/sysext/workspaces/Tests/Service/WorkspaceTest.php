@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Tolleiv Nietsch (nietsch@aoemedia.de)
+*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,11 @@
 ***************************************************************/
 
 /**
- *
- * @author Tolleiv Nietsch <nietsch@aoemedia.de>
- *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
  */
-class tx_Workspaces_Service_Workspaces_testcase extends tx_phpunit_database_testcase {
+class tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase {
 
 	/**
 	 * @test

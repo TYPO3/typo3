@@ -3,6 +3,7 @@
  *  Copyright notice
  *
  *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,14 +27,14 @@
  ***************************************************************/
 
 /**
- * Class encapsulates all actions which are triggered for all elements within the current workspace
+ * Class encapsulates all actions which are triggered for all elements within the current workspace.
  *
  * @author Kasper Skårhøj (kasperYYYY@typo3.com)
- * @coauthor Tolleiv Nietsch (info@tolleiv.de)
- *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage ExtDirect
  */
 class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_AbstractHandler {
-
 	const MAX_RECORDS_TO_PROCESS = 30;
 
 	/**
@@ -72,6 +73,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	}
 
 	/**
+	 * Publishes the current workspace.
 	 *
 	 * @param stdclass $parameters
 	 * @return array
@@ -89,7 +91,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 				$cnt = $this->initPublishData($this->getCurrentWorkspace(), $parameters->swap);
 				$result['total'] = $cnt;
 			} else {
-				$result['processed'] = $this->processData();
+				$result['processed'] = $this->processData($this->getCurrentWorkspace());
 				$result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
 			}
 		} catch (Exception $e) {
@@ -99,6 +101,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	}
 
 	/**
+	 * Flushes the current workspace.
 	 *
 	 * @param stdclass $parameters
 	 * @return array
@@ -116,7 +119,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 				$cnt = $this->initFlushData($this->getCurrentWorkspace());
 				$result['total'] = $cnt;
 			} else {
-				$result['processed'] = $this->processData();
+				$result['processed'] = $this->processData($this->getCurrentWorkspace());
 				$result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
 			}
 		} catch (Exception $e) {
@@ -126,9 +129,10 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	}
 
 	/**
+	 * Initializes the command map to be used for publishing.
 	 *
-	 * @param $workspace
-	 * @param $swap
+	 * @param integer $workspace
+	 * @param boolean $swap
 	 * @return integer
 	 */
 	protected function initPublishData($workspace, $swap) {
@@ -148,9 +152,9 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	}
 
 	/**
+	 * Initializes the command map to be used for flushing.
 	 *
-	 * @param $workspace
-	 * @param $swap
+	 * @param integer $workspace
 	 * @return integer
 	 */
 	protected function initFlushData($workspace) {
@@ -170,6 +174,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	}
 
 	/**
+	 * Processes the data.
 	 *
 	 * @param integer $workspace
 	 * @return integer
@@ -228,3 +233,4 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/MassActionHandler.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/MassActionHandler.php']);
 }
+?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Steffen Kamper (steffen@typo3.org)
+*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,8 +25,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+/**
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage ExtDirect
+ */
 class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHandler {
-
 	/**
 	 * Get List of workspace changes
 	 *
@@ -34,7 +38,6 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 	 * @return array $data
 	 */
 	public function getWorkspaceInfos($parameter) {
-
 			// To avoid too much work we use -1 to indicate that every page is relevant
 		$pageId = $parameter->id > 0 ? $parameter->id : -1;
 
@@ -72,9 +75,6 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 	 *
 	 * @param object $parameter
 	 * @return array $data
-	 *
-	 * @author Michael Klapper <michael.klapper@aoemedia.de>
-	 * @author Sonja Scholz <ss@cabag.ch>
 	 */
 	public function getRowDetails($parameter) {
 		global $TCA,$BE_USER;
@@ -166,8 +166,6 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 	 *
 	 * @param integer $uid uid of changed element to search for in log
 	 * @return string $table table name
-	 *
-	 * @author Sonja Scholz <ss@cabag.ch>
 	 */
 	public function getCommentsForRecord($uid, $table) {
 		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
@@ -202,7 +200,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 }
 
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/Server.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/Server.php']);
 }
+?>

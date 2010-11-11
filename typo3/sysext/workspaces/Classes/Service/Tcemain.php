@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Tolleiv Nietsch (nietsch@aoemedia.de)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,9 +27,9 @@
  ***************************************************************/
 
 /**
- *
- * @author Tolleiv Nietsch (nietsch@aoemedia.de)
- *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
  */
 class tx_Workspaces_Service_Tcemain {
 
@@ -70,6 +70,7 @@ class tx_Workspaces_Service_Tcemain {
 	}
 
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Tcemain.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Tcemain.php']);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Tolleiv Nietsch <info@tolleiv.de>
+*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,18 +25,25 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+/**
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage ExtDirect
+ */
 abstract class tx_Workspaces_ExtDirect_AbstractHandler {
-
 	/**
-	 * @return int	workspaceId
+	 * Gets the current workspace ID.
+	 *
+	 * @return integer The current workspace ID
 	 */
 	protected function getCurrentWorkspace() {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$wsId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
+			$workspaceId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
 		} else {
-			$wsId = $GLOBALS['BE_USER']->workspace;
+			$workspaceId = $GLOBALS['BE_USER']->workspace;
 		}
-		return $wsId;
+
+		return $workspaceId;
 	}
 }
 
@@ -44,3 +51,4 @@ abstract class tx_Workspaces_ExtDirect_AbstractHandler {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/AbstractHandler.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/AbstractHandler.php']);
 }
+?>

@@ -4,7 +4,6 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 if (TYPO3_MODE == 'BE') {
-
 	/**
 	* Registers a Backend Module
 	*/

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Tolleiv Nietsch (nietsch@aoemedia.de)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,12 +26,11 @@
  ***************************************************************/
 
 /**
- *
- * @author Tolleiv Nietsch <info@tolleiv.de>
- *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
  */
 class tx_Workspaces_Service_Workspaces {
-
 	const SELECT_ALL_WORKSPACES = -98;
 	const LIVE_WORKSPACE_ID = 0;
 	const DRAFT_WORKSPACE_ID = -1;
@@ -103,7 +102,7 @@ class tx_Workspaces_Service_Workspaces {
 	 *
 	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
 	 * @param	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
-	 * @param	[type]		$pageId: ...
+	 * @param	integer		$pageId: ...
 	 * @return	array		Command array for tcemain
 	 */
 	public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0) {

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Tolleiv Nietsch (nietsch@aoemedia.de)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,66 +25,35 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * Implements the preview controller of the workspace module.
+ *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Controller
+ */
 class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controller_AbstractController {
-
 	/**
+	 * Creates this object.
 	 *
-	 * @param bool $skipObjectInit
+	 * @param boolean $skipObjectInit
 	 * @return void
 	 */
-	public function __construct($skipObjectInit = false) {
-
+	public function __construct($initializeObjects = TRUE) {
 			// removed this because the injection breaks for some reason when viewOnClick hook inits this object
-		if (!$skipObjectInit) {
+		if ($initializeObjects) {
 			$this->initializeObjects();
 		}
-		list(, $this->extensionName) = explode('_', get_class($this));
 	}
 
 	/**
-	 * Basically makes sure that the workspace preview is rendered.
-	 * The preview itself consists of three frames, so there are
-	 * only the frames-urls we've to generate here
+	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
 	 */
-	public function indexAction() {
-		$pageId = intval(t3lib_div::_GP('id'));
-		$language = intval(t3lib_div::_GP('L'));
-
-		$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', true);
-		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-
-		$wsSettingsPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
-		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), $ctrl, 'workspaces', 'web_workspacesworkspaces');
-		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
-		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
-
-		$wsHelpUri = $uriBuilder->uriFor('help', array(), $this, 'workspaces', 'web_workspacesworkspaces');
-		$wsHelpParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
-		$wsHelpUrl = $wsSettingsPath . $wsHelpUri . $wsHelpParams;
-
-		$wsBaseUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?id=' . $pageId . '&L=' . $language;
-
-			// @todo - handle new pages here
-			// branchpoints are not handled anymore because this feature is not supposed anymore
-		$this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
-		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
-		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
-		$this->view->assign('wsHelpUrl', $wsHelpUrl);
-	}
-
-	public function helpAction() {
-
-	}
-
-	/**
-	 * Triggered before real action takes place
-	 *
-	 * @return void
-	 */
-	public function initializeAction() {
+	protected function initializeAction() {
 		parent::initializeAction();
+
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->enableExtJsDebug();
@@ -107,6 +76,45 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
 	}
 
+	/**
+	 * Basically makes sure that the workspace preview is rendered.
+	 * The preview itself consists of three frames, so there are
+	 * only the frames-urls we've to generate here
+	 *
+	 * @return void
+	 */
+	public function indexAction() {
+		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
+		$language = intval(t3lib_div::_GP('L'));
+
+		$controller = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', TRUE);
+		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+
+		$wsSettingsPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), $controller, 'workspaces', 'web_workspacesworkspaces');
+		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
+		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
+
+		$wsHelpUri = $uriBuilder->uriFor('help', array(), $this, 'workspaces', 'web_workspacesworkspaces');
+		$wsHelpParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
+		$wsHelpUrl = $wsSettingsPath . $wsHelpUri . $wsHelpParams;
+
+		$wsBaseUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?id=' . $this->pageId . '&L=' . $language;
+
+		// @todo - handle new pages here
+		// branchpoints are not handled anymore because this feature is not supposed anymore
+		$this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
+		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
+		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
+		$this->view->assign('wsHelpUrl', $wsHelpUrl);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function helpAction() {
+		// @todo Implement this action
+	}
 
 	/**
 	 * Generates the JavaScript code for the backend,
@@ -116,7 +124,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * @return	void
 	 */
 	protected function generateJavascript() {
-
 		$pathTYPO3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/';
 
 			// If another page module was specified, replace the default Page module with the new one
@@ -225,12 +232,10 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		';
 		return $js;
 	}
-
 }
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/PreviewController.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/PreviewController.php']);
 }
-
 ?>

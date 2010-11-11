@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 François Suter <francois@typo3.org>
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,9 @@
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task
  *
- * @author		François Suter <francois@typo3.org>
- * @package		TYPO3
- * @subpackage	tx_version
- *
- * $Id: class.tx_scheduler_sleeptask.php 7905 2010-06-13 14:42:33Z ohader $
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Service
  */
 class tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
 

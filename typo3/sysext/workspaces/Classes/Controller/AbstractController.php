@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Steffen Ritter (steffen@typo3.org)
+ *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,17 +27,40 @@
 
 require_once($GLOBALS['BACK_PATH'] . 'template.php');
 
+/**
+ * Abstract action controller.
+ *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Controller
+ */
 class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Controller_ActionController {
+	/**
+	 * @var string Key of the extension this controller belongs to
+	 */
+	protected $extensionName = 'Workspaces';
 
 	/**
 	 * @var t3lib_PageRenderer
 	 */
-	var $pageRenderer;
+	protected $pageRenderer;
 
-	public function initializeAction() {
-		$id = t3lib_div::_GP('id');
-		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $id);
-		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', $id == 0 ? 999 : 1);
+	/**
+	 * @var integer
+	 */
+	protected $pageId;
+
+	/**
+	 * Initializes the controller before invoking an action method.
+	 *
+	 * @return void
+	 */
+	protected function initializeAction() {
+		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
+		$this->pageId = intval(t3lib_div::_GP('id'));
+
+		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', ($this->pageId === 0 ? 999 : 1));
 
 		$this->pageRenderer->disableCompressJavascript();
 		$this->pageRenderer->disableConcatenateFiles();
@@ -58,7 +81,6 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 		));
 
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xml');
-
 	}
 
 	/**
@@ -66,9 +88,8 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 	 *
 	 * @param Tx_Extbase_MVC_Request $request The request object
 	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
-	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
-	 * @api
+	 * @return void
 	 */
 	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
 		$this->template = t3lib_div::makeInstance('template');
@@ -79,12 +100,13 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 
 		parent::processRequest($request, $response);
 
-		$pageHeader = $this->template->startpage($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:module.title'));
+		$pageHeader = $this->template->startpage(
+			$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:module.title')
+		);
 		$pageEnd = $this->template->endPage();
 
 		$response->setContent($pageHeader . $response->getContent() . $pageEnd);
 	}
-
 }
 
 

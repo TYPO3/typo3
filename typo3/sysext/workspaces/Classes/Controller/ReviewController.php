@@ -106,13 +106,13 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 
 	/**
-	 * Preparation before the actual actions are fired, loads resources
-	 * and initialized global objects like the pageRenderer
+	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
 	 */
-	public function initializeAction() {
+	protected function initializeAction() {
 		parent::initializeAction();
+
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->enableExtJsDebug();
