@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;web_txworkspacesM1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="legend.label">Legend:</label>
+			<label index="legend.edited">Record editet</label>
+			<label index="legend.moved">Record moved</label>
+			<label index="legend.deleted">Record deleted</label>
+			<label index="legend.new">Record created</label>
+			<label index="legend.hidden">Record hidden</label>
+			<label index="title">Workspaces</label>
+			<label index="ok">ok</label>
+			<label index="cancel">cancel</label>
+			<label index="chooseMassAction">choose Mass Action</label>
+			<label index="chooseAction">choose Action</label>
+			<label index="item">item</label>
+			<label index="items">items</label>
+			<label index="recordsToDisplay">Records to display</label>
+			<label index="reviewandpublish">review and publish</label>
+			<label index="workspacelist">Workspace List</label>
+			<label index="editorInLive">You are in LIVE workspace. You have to select a draft workspace before you can review and publish changes.</label>
+			<label index="actionSendToStage">Send to stage </label>
+			<label index="publish_execute_action_option">Publish  to LIVE</label>
+			<label index="close">Close</label>
+			<label index="runMassAction.doneProcessing">Done processing</label>
+			<label index="runMassAction.elements"> elements</label>
+			<label index="runMassAction.init">init</label>
+			<label index="tooltip.publishAll">Really publish entire workspace?</label>
+			<label index="tooltip.swapAll">Really swap entire workspace?</label>
+			<label index="tooltip.releaseAll">Really release entire workspace?</label>
+			<label index="previewLink">Preview Link</label>
+			<label index="error.noResponse">The server did not send any response whether the action was successful.</label>
+			<label index="rowDetails">Row details...</label>
+			<label index="column.difference">Difference</label>
+			<label index="column.changeDate">Modification</label>
+			<label index="column.stage">Current Stage</label>
+			<label index="column.actions">Actions</label>
+			<label index="column.wsPath">Path</label>
+			<label index="column.wsTitle">Changed</label>
+			<label index="column.uid">WS-Id</label>
+			<label index="column.oid">Live-Id</label>
+			<label index="column.workspaceName">Workspace</label>
+			<label index="column.wsTitle">Changed</label>
+			<label index="column.wsTitle">Changed</label>
+			<label index="column.wsTitle">Changed</label>
+			<label index="column.wsTitle">Changed</label>
+			<label index="column.livePath">Live-Path</label>
+			<label index="column.liveTitle">Live-Title</label>
+			<label index="tooltip.viewElementAction">Preview Element</label>
+			<label index="tooltip.editElementAction">edit element</label>
+			<label index="tooltip.openPage">Open version of page</label>
+			<label index="tooltip.sendToPrevStage">Send record to previous Stage</label>
+			<label index="tooltip.sendToNextStage">Send record to next Stage</label>
+			<label index="tooltip.removeVersion">Remove version document</label>
+			<label index="tooltip.swap">Swap live and workspace versions of record</label>
+			<label index="window.remove.title">Remove version from workspace</label>
+			<label index="window.remove.message">Do you really want to remove this version from workspace?</label>
+			<label index="window.swap.title">Swap version</label>
+			<label index="window.swap.message">Do you really want to swap this version??</label>
+			<label index="window.massAction.title">Prepare to start mass action</label>
+			<label index="error.stageId.integer">StageId is supposed to be an integer</label>
+			<label index="error.sendToNextStage.noRecordFound">The record element could not be found.</label>
+			<label index="error.sendToPrevStage.noPreviousStage">The record element is already in editing stage, there is no previous stage.</label>
+			<label index="window.sendToNextStageWindow.itemsWillBeSentTo">The selected element(s) will be sent to </label>
+			<label index="window.sendToNextStageWindow.sendMailTo">Send mail to</label>
+			<label index="window.sendToNextStageWindow.additionalRecipients">Additional recipients</label>
+			<label index="window.sendToNextStageWindow.comments">Comments</label>
+			<label index="error.getStageTitle.stageNotFound">Stage not found</label>
+		</languageKey>
+	</data>
+</T3locallang>
