@@ -24,6 +24,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
 
 		// Add contextual help files
+	t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_General', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 	foreach ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] as $pluginName => $config) {
 		if ($config['contextHelpFile']) {
 			t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $pluginName, $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'][$pluginName]['contextHelpFile']);
@@ -35,6 +36,26 @@ if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS[
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge(
 		$GLOBALS['TYPO3_USER_SETTINGS']['columns'],
 		array(
+			'rteWidth' => array(
+				'type' => 'text',
+				'label' => 'LLL:EXT:rtehtmlarea/locallang.xml:rteWidth',
+				'csh' => 'xEXT_rtehtmlarea_General:rteWidth',
+			),
+			'rteHeight' => array(
+				'type' => 'text',
+				'label' => 'LLL:EXT:rtehtmlarea/locallang.xml:rteHeight',
+				'csh' => 'xEXT_rtehtmlarea_General:rteHeight',
+			),
+			'rteResize' => array(
+				'type' => 'check',
+				'label' => 'LLL:EXT:rtehtmlarea/locallang.xml:rteResize',
+				'csh' => 'xEXT_rtehtmlarea_General:rteResize',
+			),
+			'rteMaxHeight' => array(
+				'type' => 'text',
+				'label' => 'LLL:EXT:rtehtmlarea/locallang.xml:rteMaxHeight',
+				'csh' => 'xEXT_rtehtmlarea_General:rteMaxHeight',
+			),
 			'rteCleanPasteBehaviour' => array(
 				'type' => 'select',
 				'label' => 'LLL:EXT:rtehtmlarea/htmlarea/plugins/PlainText/locallang.xml:rteCleanPasteBehaviour',
@@ -47,6 +68,6 @@ if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS[
 			),
 		)
 	);
-	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xml:rteSettings,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
+	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xml:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
 }
 ?>

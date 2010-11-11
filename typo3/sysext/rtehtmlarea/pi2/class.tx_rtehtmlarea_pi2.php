@@ -224,11 +224,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->wrapCDATA($this->loadJScode($this->TCEform->RTEcounter));
 		}
 		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
-		$resizableSettings = array(
-			'textareaResize' => true,
-			'textareaMaxHeight' => '600'
-		);
-		$pageRenderer->addInlineSettingArray('', $resizableSettings);
 		if ($GLOBALS['TSFE']->isINTincScript()) {
 			$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea'] = $pageRenderer->render();
 		}

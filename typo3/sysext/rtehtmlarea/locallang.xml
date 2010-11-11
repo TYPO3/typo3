@@ -19,6 +19,8 @@
 			<label index="No font">No font</label>
 			<label index="No size">No font size</label>
 			<label index="rteSettings">Rich Text Editor</label>
+			<label index="rteWidth">Width of the RTE in pixels or percentage</label>
+			<label index="rteHeight">Height of the RTE in pixels</label>
 			<label index="rteResize">Make RTE resizable</label>
 			<label index="rteMaxHeight">Maximal height of resizable RTE in pixels</label>
 		</languageKey>

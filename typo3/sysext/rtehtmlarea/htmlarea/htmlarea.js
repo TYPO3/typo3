@@ -139,8 +139,6 @@ HTMLArea.Config = function (editorId) {
 	this.documentType = '<!DOCTYPE html\r'
 			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'
 			+ '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r';
-	this.resizable = TYPO3.settings.textareaResize;
-	this.maxHeight = TYPO3.settings.textareaMaxHeight;
 		// Hold the configuration of buttons and hot keys registered by plugins
 	this.buttonsConfig = {};
 	this.hotKeyList = {};
