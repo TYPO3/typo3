@@ -9,14 +9,6 @@ if (!defined ('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = t3lib_extMgm::extPath('version', 'class.tx_version_tcemain.php:&tx_version_tcemain');
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][] = t3lib_extMgm::extPath('version', 'class.tx_version_tcemain.php:&tx_version_tcemain');
 
-	// Register the autopublishing task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_version_tasks_AutoPublish'] = array(
-	'extension'        => $_EXTKEY,
-	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.name',
-	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.description'
-);
-
-
 if (TYPO3_MODE == 'BE') {
 
 	// add default notification options to every page

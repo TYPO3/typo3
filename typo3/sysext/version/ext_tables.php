@@ -8,7 +8,6 @@ if (TYPO3_MODE=='BE')	{
 	);
 
 	t3lib_extMgm::addModule('web', 'txversionM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'cm1/');
-	t3lib_extMgm::addModule('user', 'ws', '', t3lib_extMgm::extPath($_EXTKEY) . 'ws/');
 }
 
 
