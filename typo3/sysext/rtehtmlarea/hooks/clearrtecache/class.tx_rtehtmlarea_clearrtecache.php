@@ -31,18 +31,22 @@
  * @package TYPO3
  */
 class tx_rtehtmlarea_clearrtecache {
-	function clearTempDir() {
+	public static function clearTempDir() {
 		$tempPath = t3lib_div::resolveBackPath(PATH_typo3.'../typo3temp/rtehtmlarea/');
-		$handle=opendir($tempPath);
-		while ($data=readdir($handle)) {
-			if (!is_dir($data) && $data!="." && $data!="..") {
-				unlink($tempPath.$data);
+		$handle = @opendir($tempPath);
+		if ($handle !== FALSE) {
+			while (($file = readdir($handle)) !== FALSE) {
+				if ($file != '.' && $file != '..') {
+					$tempFile = $tempPath . $file;
+					if (is_file($tempFile)) {
+						unlink($tempFile);
+					}
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
 }
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/clearrtecache/class.tx_rtehtmlarea_clearrtecache.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/clearrtecache/class.tx_rtehtmlarea_clearrtecache.php']);
 }
