@@ -1,3 +1,7 @@
+2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16314: Incorrect use of is_dir in class.tx_rtehtmlarea_clearrtecache.php (Thanks to Juergen Deisenroth)
+
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16050: htmlArea RTE: Backspacing in empty editing area may raise js error
