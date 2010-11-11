@@ -924,12 +924,18 @@ class SC_mod_user_setup_index {
 	 * @return	string		HTML output.
 	 */
 	protected function getCSH($str, $label) {
-		if (!t3lib_div::inList('language,simuser', $str)) {
-			$str = 'option_' . $str;
-		}
-		return t3lib_BEfunc::wrapInHelp('_MOD_user_setup', $str, $label);
+		$context = '_MOD_user_setup';
+		$field = $str;
+		$strParts = explode(':', $str);
+		if (count($strParts) > 1) {
+				// Setting comes from another extension
+			$context = $strParts[0];
+			$field = $strParts[1];
+		} else if (!t3lib_div::inList('language,simuser', $str)) {
+			$field = 'option_' . $str;
+ 		}
+		return t3lib_BEfunc::wrapInHelp($context, $field, $label);
 	}
-
 	/**
 	 * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
 	 *

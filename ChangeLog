@@ -1,6 +1,7 @@
 2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16314: Incorrect use of is_dir in class.tx_rtehtmlarea_clearrtecache.php (Thanks to Juergen Deisenroth)
+	* Added feature #16345: User Tools>User settings: get csh from any specified csh file
 
 2010-11-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
