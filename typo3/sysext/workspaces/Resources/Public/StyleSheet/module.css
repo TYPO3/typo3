@@ -1,0 +1,78 @@
+
+ul.x-tab-strip.x-tab-strip-top {
+	width:100%;
+}
+
+ul.x-tab-strip.x-tab-strip-top li.last {
+	float:right;
+}
+
+span.item-state-modified {
+	color:#f78f25;
+}
+
+span.item-state-moved {
+	color:#457fb8;
+}
+
+span.item-state-new {
+	color:#3c9934;
+}
+
+span.item-state-hidden {
+	color:#abaaaa;
+}
+span.item-state-deleted {
+	color:#000;
+	text-decoration:line-through;
+}
+.legend {
+	margin:5px;
+	height:18px;
+	color:#888;
+}
+.legend dd, .legend dt{
+	display:inline;
+	font-size:11px;
+	line-height:13px;
+	overflow:hidden;
+}
+.legend dt {
+
+}
+.legend dd span {
+	display:inline-block;
+	padding:4px;
+}
+div.typo3-dyntabmenu-divs {
+	border-top:0px none;
+	padding:5px;
+	padding-bottom:10px;
+	overflow:hidden;
+}
+
+.x-toolbar {
+	background:none !important;
+}
+
+.x-grid3 {
+	background: none !important;
+}
+
+a#goPreviewLinkButton {
+	line-height:18px;
+	color:#fff;
+}
+
+#typo3-mod-php div.typo3-noDoc {
+	margin:0;
+}
+#typo3-mod-php div.typo3-noDoc #typo3-docbody {
+	padding:0;
+	top:0;
+}
+
+.icon-hidden {
+	display:none;
+	visibility:hidden;
+}
