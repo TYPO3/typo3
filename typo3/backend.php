@@ -34,7 +34,6 @@ require('classes/class.modulemenu.php');
 require_once('classes/class.donatewindow.php');
 
 	// core toolbar items
-require('classes/class.workspaceselector.php');
 require('classes/class.clearcachemenu.php');
 require('classes/class.shortcutmenu.php');
 require('classes/class.backendsearchmenu.php');
@@ -169,7 +168,6 @@ class TYPO3backend {
 	protected function initializeCoreToolbarItems() {
 
 		$coreToolbarItems = array(
-			'workspaceSelector' => 'WorkspaceSelector',
 			'shortcuts'         => 'ShortcutMenu',
 			'clearCacheActions' => 'ClearCacheMenu',
 			'backendSearch'     => 'BackendSearchMenu'

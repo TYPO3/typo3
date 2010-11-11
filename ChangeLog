@@ -1,3 +1,7 @@
+2010-11-11  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16311: move workspace-selector to sysext workspaces (Thanks to Tolleiv Nietsch)
+
 2010-11-11  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #16247: Integrate new workspace module based on ExtJS (thanks to Workspaces Team)

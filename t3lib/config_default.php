@@ -295,8 +295,6 @@ $TYPO3_CONF_VARS = array(
 			'BackendLogin::getChallenge'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->getChallenge',
 			'DonateWindow::disable'				=> 'typo3/classes/class.donatewindow.php:DonateWindow->disable',
 			'DonateWindow::postpone'			=> 'typo3/classes/class.donatewindow.php:DonateWindow->postpone',
-			'WorkspaceMenu::toggleWorkspacePreview' => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->toggleWorkspacePreview',
-			'WorkspaceMenu::setWorkspace'           => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->setWorkspace',
 			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_extjs_ExtDirectApi->getAPI',
 			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_extjs_ExtDirectRouter->route',
 		),
