@@ -74,7 +74,7 @@
 		<t3ver_stage>0</t3ver_stage>
 		<t3ver_move_id>3</t3ver_move_id>
 	</pages>
-	
+
 	<tt_content>
 		<uid>5</uid>
 		<pid>7</pid>
@@ -83,7 +83,7 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 	</tt_content>
-	
+
 	<tt_content>
 		<uid>105</uid>
 		<pid>-1</pid>
@@ -95,7 +95,7 @@
 		<t3ver_stage>1</t3ver_stage>
 		<t3ver_move_id>0</t3ver_move_id>
 	</tt_content>
-	
+
 	<tt_content>
 		<uid>205</uid>
 		<pid>1</pid>
@@ -107,7 +107,7 @@
 		<t3ver_stage>0</t3ver_stage>
 		<t3ver_move_id>5</t3ver_move_id>
 	</tt_content>
-	
+
 	<tt_content>
 		<uid>6</uid>
 		<pid>2</pid>
@@ -116,7 +116,7 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 	</tt_content>
-	
+
 	<tt_content>
 		<uid>106</uid>
 		<pid>-1</pid>
@@ -128,7 +128,7 @@
 		<t3ver_stage>1</t3ver_stage>
 		<t3ver_move_id>0</t3ver_move_id>
 	</tt_content>
-	
+
 	<tt_content>
 		<uid>206</uid>
 		<pid>7</pid>

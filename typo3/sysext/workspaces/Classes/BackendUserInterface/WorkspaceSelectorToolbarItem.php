@@ -27,7 +27,7 @@
 ***************************************************************/
 
 if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-    require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
+	require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 }
 
 /**

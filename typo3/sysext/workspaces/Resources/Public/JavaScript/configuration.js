@@ -232,7 +232,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 		return returnCode;
 	},
 	processEvent : function(name, e, grid, rowIndex, colIndex){
-        var m = e.getTarget().className.match(/x-action-col-(\d+)/);
+		var m = e.getTarget().className.match(/x-action-col-(\d+)/);
 		if(m && m[1] == 0) {
 			TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].handler(grid, rowIndex, colIndex);
 			return false;
@@ -240,8 +240,8 @@ TYPO3.Workspaces.Configuration.Stage = {
 			TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].handler(grid, rowIndex, colIndex);
 			return false;
 		}
-        return Ext.grid.ActionColumn.superclass.processEvent.apply(this, arguments);
-    }
+		return Ext.grid.ActionColumn.superclass.processEvent.apply(this, arguments);
+	}
 }
 
 TYPO3.Workspaces.Configuration.RowButtons = {
