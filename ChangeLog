@@ -1,3 +1,7 @@
+2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16346: htmlArea RTE: fontstyle/fontsize may raise js error on toolbar update
+
 2010-11-10  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16335: Workspace Draft Records are shown in Live Workspace in some cases (Thanks to Joerg Kinast)

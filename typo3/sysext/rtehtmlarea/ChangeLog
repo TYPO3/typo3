@@ -1,3 +1,7 @@
+2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16346: htmlArea RTE: fontstyle/fontsize may raise js error on toolbar update
+
 2010-11-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16245: htmlArea RTE: When inserting link with IE8, trailing line break is also linked
