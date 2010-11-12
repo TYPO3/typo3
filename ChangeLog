@@ -1,3 +1,7 @@
+2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
+
 2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16314: Incorrect use of is_dir in class.tx_rtehtmlarea_clearrtecache.php (Thanks to Juergen Deisenroth)
