@@ -1,3 +1,7 @@
+2010-11-12  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #16357: visualize beeing in an workspace by coloring the topbar
+
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16370, Follow-up to #15094: SVG TypoScript object unuseable after tslib_content splitup
