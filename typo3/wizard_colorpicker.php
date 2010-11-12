@@ -212,6 +212,7 @@ class SC_wizard_colorpicker {
 						<!-- Hidden fields with values that has to be kept constant -->
 					<input type="hidden" name="showPicker" value="1" />
 					<input type="hidden" name="fieldChangeFunc" value="'.htmlspecialchars($this->fieldChangeFunc).'" />
+					<input type="hidden" name="fieldChangeFuncHash" value="'.htmlspecialchars($this->fieldChangeFuncHash).'" />
 					<input type="hidden" name="fieldName" value="'.htmlspecialchars($this->fieldName).'" />
 					<input type="hidden" name="formName" value="'.htmlspecialchars($this->formName).'" />
 					<input type="hidden" name="md5ID" value="'.htmlspecialchars($this->md5ID).'" />
