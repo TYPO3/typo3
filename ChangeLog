@@ -1,6 +1,7 @@
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
+	* Fixed bug #6001: Install Tool image tests fail when there are spaces in the path name of im_path, and auto-detection of IM under Windows improved
 
 2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 

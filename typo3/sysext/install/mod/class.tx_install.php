@@ -1251,9 +1251,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		if (TYPO3_OS=='WIN') {
 			$paths=array($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'], $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'], 'c:\\php\\imagemagick\\', 'c:\\php\\GraphicsMagick\\', 'c:\\apache\\ImageMagick\\', 'c:\\apache\\GraphicsMagick\\');
+			if (!isset($_SERVER['PATH'])) {
+				$serverPath = array_change_key_case($_SERVER, CASE_UPPER);
+				$paths = array_merge($paths, explode(';', $serverPath['PATH']));
+			} else {
+				$paths = array_merge($paths, explode(';', $_SERVER['PATH']));
+			}
 		} else {
 			$paths=array($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'], $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'], '/usr/local/bin/','/usr/bin/','/usr/X11R6/bin/');
+			$paths = array_merge($paths, explode(':', $_SERVER['PATH']));
 		}
+		$paths = array_unique($paths);
 
 		asort($paths);
 		if (ini_get('safe_mode')) {
@@ -3778,43 +3786,30 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							break;
 							case 'im_path':
 								list($value,$version) = explode('|',$value);
-								if (!preg_match('/[[:space:]]/',$value,$reg) && strlen($value)<100) {
-									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
-										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
-									}
-									if(doubleval($version)>0 && doubleval($version)<4) {	// Assume GraphicsMagick
-										$value_ext = 'gm';
-									} elseif(doubleval($version)<5) {	// Assume ImageMagick 4.x
-										$value_ext = '';
-									} elseif(doubleval($version) >= 6) {	// Assume ImageMagick 6.x
-										$value_ext = 'im6';
-									} else	{	// Assume ImageMagick 5.x
-										$value_ext = 'im5';
-									}
-									if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value_ext)) {
-										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\']', $value_ext);
-									}
-	// 								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']),$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS['GFX']['im_version_5']', $value);
-								} else {
-									$this->errorMessages[] = '
-										Path \'' . $value . '\' contains spaces
-										or is longer than 100 chars (...not
-										saved)
-									';
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
+								}
+								if (doubleval($version) > 0 && doubleval($version) < 4) {
+										// Assume GraphicsMagick
+									$value_ext = 'gm';
+								} elseif (doubleval($version) < 5) {
+										// Assume ImageMagick 4.x
+									$value_ext = '';
+								} elseif (doubleval($version) >= 6) {
+										// Assume ImageMagick 6.x
+									$value_ext = 'im6';
+								} else	{
+										// Assume ImageMagick 5.x
+									$value_ext = 'im5';
+								}
+								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']), $value_ext)) {
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\']', $value_ext);
 								}
 							break;
 							case 'im_path_lzw':
 								list($value) = explode('|',$value);
-								if (!preg_match('/[[:space:]]/',$value) && strlen($value)<100) {
-									if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
-										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
-									}
-								} else {
-									$this->errorMessages[] = '
-										Path \'' . $value . '\' contains spaces
-										or is longer than 100 chars (...not
-										saved)
-									';
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
 								}
 							break;
 							case 'TTFdpi':
