@@ -28,12 +28,6 @@ $Id$
 	background-repeat: repeat-x;
 }
 
-body.typo3-in-workspace #typo3-topbar {
-	background-image: -moz-linear-gradient(center top , #494949 0%, #373737 91%, #343434 92%, #2a2a2a 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #494949), color-stop(0.91, #373737), color-stop(0.92, #343434), color-stop(1, #2a2a2a));
-	background-image: linear-gradient(center top , #494949 0%, #373737 91%, #343434 92%, #2a2a2a 100%);
-}
-
 body.typo3-in-workspace #typo3-top-container {
 	background: #ff9933 url("../../images/backgrounds/topbar-in-workspace-mask.png");
 	-moz-box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.7) inset,
