@@ -5,6 +5,7 @@
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16370, Follow-up to #15094: SVG TypoScript object unuseable after tslib_content splitup
+	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
 
 2010-11-12  Stanislas Rolland  <typo3@sjbr.ca>
 
