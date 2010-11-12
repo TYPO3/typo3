@@ -68,7 +68,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$this->initialize();
 		$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
         $this->modTS = $this->modTS['properties'];
-        if(!$this->modTS['noUpdateButton']){
+        if($this->modTS['showUpdateButton'] == 'true' || $this->modTS['showUpdateButton'] == 1){
 	        $this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . 
 				$GLOBALS['LANG']->getLL('label_update') . '"/>';
         }

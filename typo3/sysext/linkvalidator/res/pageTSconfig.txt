@@ -6,7 +6,7 @@ mod.linkvalidator {
 	}	
 	linktypes = db,file,external	
 	checkhidden = 0
-	noUpdateButton = 0
+	showUpdateButton = true
 	mail{
 		encoding = utf-8
 		fromname = 

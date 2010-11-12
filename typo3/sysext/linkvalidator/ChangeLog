@@ -1,3 +1,7 @@
+2010-11-12 Tolleiv Nietsch <info@tolleiv.de>
+
+	* Fixed issue: #10598 - "Check links" button must be hideable with TS - renamed noUpdateButton to showUpdateButton, manual updated
+
 2010-11-11 Michael Miousse	 <michael.miousse@infoglobe.ca>
 
 	* Fixed issue #10740: news field added in the table tx_linkvalidator_links, 2 new index in locallang.xml for the header of the new column and the format of the string in the column, news column added in tx_linkvalidator_modfunc1 and time() saved in the new field added to the table tx_linkvalidator_links
