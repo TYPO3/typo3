@@ -24,12 +24,15 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
 
 		// Add contextual help files
-	t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_General', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
-	foreach ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] as $pluginName => $config) {
-		if ($config['contextHelpFile']) {
-			t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $pluginName, $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'][$pluginName]['contextHelpFile']);
-		}
+	$htmlAreaRteContextHelpFiles = array(
+		'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xml',
+		'RemoveFormat' => 'EXT:' . $_EXTKEY . '/extensions/RemoveFormat/locallang_csh.xml',
+		'PlainText' => 'EXT:' . $_EXTKEY . '/extensions/PlainText/locallang_csh.xml',
+	);
+	foreach ($htmlAreaRteContextHelpFiles as $key => $file) {
+		t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $key, $file);
 	}
+	unset($htmlAreaRteContextHelpFiles);
 
 		// Extend TYPO3 User Settings Configuration
 if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
