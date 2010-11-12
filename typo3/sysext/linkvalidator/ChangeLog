@@ -1,3 +1,11 @@
+2010-11-11 Michael Miousse	 <michael.miousse@infoglobe.ca>
+
+	* Fixed issue #10740: news field added in the table tx_linkvalidator_links, 2 new index in locallang.xml for the header of the new column and the format of the string in the column, news column added in tx_linkvalidator_modfunc1 and time() saved in the new field added to the table tx_linkvalidator_links
+	* Fixed issue #10737:  news mod tsconfig added to remove the check link button. mod.linkvalidator.noUpdateButton = 0
+	* Fixed issue #10739 : Button added in tx_linkvalidator_modfunc1, news index in the locallang file, new marquer in the template mod_template.html and new css
+	* Fixed issue #10736: automatic refresh on changing selection of depth level has been removed
+	* Fixed bug #10643: modification of the line 166, add of is_array check before doing a array_search
+
 2010-11-03 Tolleiv Nietsch <info@tolleiv.de>
 
 	* Fixed issue: #10598 - extend tx_linkvalidator_checkbase API a bit
