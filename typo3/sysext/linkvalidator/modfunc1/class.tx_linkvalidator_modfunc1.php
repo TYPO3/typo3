@@ -66,10 +66,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 
 		$this->initialize();
-
-        $this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . 
-			$GLOBALS['LANG']->getLL('label_update') . '"/>';
-
+		$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
+        $this->modTS = $this->modTS['properties'];
+        if(!$this->modTS['noUpdateButton']){
+	        $this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . 
+				$GLOBALS['LANG']->getLL('label_update') . '"/>';
+        }
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . 
             $GLOBALS['LANG']->getLL('label_refresh') . '"/>';  	
         $processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
@@ -150,15 +152,10 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	void
 	 */
 	public function updateBrokenLinks($processing){
-
-		// get page TS conf for actual page
-		$modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
-		$modTS = $modTS['properties'];
-
         $searchFields = array();
 
 		// get the searchFields from TypoScript
-		foreach ($modTS['searchFields.'] as $table => $fieldList) {
+		foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
 			$fields = t3lib_div::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
 				if(!$searchFields || !is_array($searchFields[$table]) || array_search($field, $searchFields[$table]) == FALSE) {
@@ -181,7 +178,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$update = t3lib_div::_GP('updateLinkList');
 
 		if(!empty($update)){
-			$processing->getLinkStatistics($this->checkOpt, $modTS['checkhidden']);
+			$processing->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 		}
 
 	} // end function updateBrokenLinks()
@@ -407,9 +404,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
         $markerArray['total_count_label'] = $LANG->getLL('overviews.nbtotal');
         $markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
         
-		$modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
-		$modTS = $modTS['properties'];
-		$linktypes = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
+		$linktypes = t3lib_div::trimExplode(',', $this->modTS['linktypes'], 1);
 		$hookSectionContent = '';
 		
 		if(is_array($linktypes)) {
