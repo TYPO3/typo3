@@ -1,6 +1,7 @@
 2010-11-12  Oliver Hader  <oliver@tpyo3.org>
 
 	* Fixed bug: Typing error and superfluous labels in locallang file
+	* Fixed bug: Missing fields in SQL definition reviewers, stagechg_notification
 
 2010-11-11  Oliver Hader  <oliver@tpyo3.org>
 
