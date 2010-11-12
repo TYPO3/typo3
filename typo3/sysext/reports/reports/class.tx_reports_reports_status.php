@@ -166,13 +166,12 @@ class tx_reports_reports_Status implements tx_reports_Report {
 
 			$id = str_replace(' ', '-', $provider);
 			if (isset($GLOBALS['BE_USER']->uc['reports']['states'][$id]) && $GLOBALS['BE_USER']->uc['reports']['states'][$id]) {
-				$collapsedStyle = 'style="display:none"';
+				$collapsedStyle = 'style="display: none"';
 				$collapsedClass = 'collapsed';
 			} else {
 				$collapsedStyle = '';
 				$collapsedClass = 'expanded';
 			}
-
 
 			$classes = array(
 				tx_reports_reports_status_Status::NOTICE  => 'notice',
@@ -183,9 +182,9 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			);
 
 			$icon[tx_reports_reports_status_Status::WARNING] = t3lib_iconWorks::getSpriteIcon('status-dialog-warning');
-			$icon[tx_reports_reports_status_Status::ERROR] = t3lib_iconWorks::getSpriteIcon('status-dialog-error');
-			$messages = '';
-			$headerIcon = '';
+			$icon[tx_reports_reports_status_Status::ERROR]   = t3lib_iconWorks::getSpriteIcon('status-dialog-error');
+			$messages        = '';
+			$headerIcon      = '';
 			$sectionSeverity = 0;
 
 			foreach ($providerState as $status) {
@@ -229,11 +228,14 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			$statusCollection['security'],
 			$statusCollection['configuration']
 		);
+
 			// Assemble list of secondary status collections with left-over collections
 			// Change their keys using localized labels if available
+			// TODO extract into getLabel() method
 		$secondaryStatuses = array();
 		foreach ($statusCollection as $statusProviderId => $collection) {
 			$label = '';
+
 			if (strpos($statusProviderId, 'LLL:') === 0) {
 					// Label provided by extension
 				$label = $GLOBALS['LANG']->sL($statusProviderId);
@@ -241,6 +243,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 					// Generic label
 				$label = $GLOBALS['LANG']->getLL('status_' . $statusProviderId);
 			}
+
 			$providerLabel = (empty($label)) ? $statusProviderId : $label;
 			$secondaryStatuses[$providerLabel] = $collection;
 		}
