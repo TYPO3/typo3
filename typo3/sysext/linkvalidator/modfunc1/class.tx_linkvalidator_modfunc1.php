@@ -41,7 +41,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	protected $relativePath;
 	protected $pageRecord = array();
 	protected $isAccessibleForCurrentUser = FALSE;
-
+    
 
 	/**
 	 * Main method of modfunc1
@@ -51,7 +51,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	function main(){
 		global $LANG;
 		$LANG->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
-
+        
+		$this->search_level = t3lib_div::_GP('search_levels');
+		
 		if(!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 			&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 
@@ -89,13 +91,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		global $LANG;
 
 		$modMenu = array (
-			'depth' => array(
-				0 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
-				1 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
-				2 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_2'),
-				3 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_infi'),
-			),
 			'checkAllLink'=>0,
 		);
 
@@ -168,10 +163,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				}
 			}
 		}
-
 		// get children pages
 		$pageList = t3lib_tsfeBeUserAuth::extGetTreeList($this->pObj->id,
-				$this->pObj->MOD_SETTINGS['depth'],
+				$this->search_level,
 				0,
 				$GLOBALS['BE_USER']->getPagePermsClause(1)
 			);
@@ -224,6 +218,24 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 	} // end function flush()
 
+	protected function getLevelSelector(){
+		
+            // Make level selector:
+        $opt=array();
+        //$parts = explode('|',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
+        $parts = array(
+                0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
+                1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
+                2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_2'),
+                3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_3'),
+                999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_infi'),
+        );
+        foreach ($parts as $kv => $label) {
+            $opt[] = '<option value="'.$kv.'"'.($kv==intval($this->search_level)?' selected="selected"':'').'>'.htmlspecialchars($label).'</option>';
+        }
+        $lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
+        return $lMenu;
+	}
 
 	/**
 	 * Display the table of broken links
@@ -249,13 +261,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		
 		$pageList = t3lib_tsfeBeUserAuth::extGetTreeList(
 			$this->pObj->id,
-			$this->pObj->MOD_SETTINGS['depth'],
+			$this->search_level,
 			0,
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
-		
 		$pageList .= $this->pObj->id;
-		
 		if(($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
@@ -481,13 +491,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
-			'FUNC_MENU'				=> 	t3lib_BEfunc::getFuncMenu(
-											$this->pObj->id,
-											'SET[depth]',
-											$this->pObj->MOD_SETTINGS['depth'],
-											$this->pObj->MOD_MENU['depth'],
-											'index.php'
-										),
+			'FUNC_MENU'				=> $this->getLevelSelector(),
 			'CONTENT'				=> $this->content,
 			'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
 			'CHECKALLLINK'			=> $this->checkAllHtml,

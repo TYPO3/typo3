@@ -162,7 +162,7 @@ class tx_linkvalidator_processing {
 		} // end foreach $table
 
 		foreach($this->hookObjectsArr as $key => $hookObj) {
-			if(empty($checkOptions) || ($results[$key] && $checkOptions[$key])) {
+			if((is_array($results[$key])) && empty($checkOptions) || (is_array($results[$key]) && $checkOptions[$key])) {
 				//  check'em!
 				foreach($results[$key] as $entryKey => $entryValue) {
 					$table = $entryValue['table'];
