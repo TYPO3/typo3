@@ -1,3 +1,7 @@
+2010-11-12  Oliver Hader  <oliver@tpyo3.org>
+
+	* Fixed bug: Typing error and superfluous labels in locallang file
+
 2010-11-11  Oliver Hader  <oliver@tpyo3.org>
 
 	* Cleanup: Added PHPdoc comments and some formatting changes
