@@ -32,6 +32,7 @@
  */
 class tx_rtehtmlarea_clearrtecache {
 	public static function clearTempDir() {
+			// Delete all files in typo3temp/rtehtmlarea
 		$tempPath = t3lib_div::resolveBackPath(PATH_typo3.'../typo3temp/rtehtmlarea/');
 		$handle = @opendir($tempPath);
 		if ($handle !== FALSE) {
@@ -45,6 +46,22 @@ class tx_rtehtmlarea_clearrtecache {
 			}
 			closedir($handle);
 		}
+			// Delete all files in typo3temp/compressor with names that start with "htmlarea"
+		$tempPath = t3lib_div::resolveBackPath(PATH_typo3.'../typo3temp/compressor/');
+		$handle = @opendir($tempPath);
+		if ($handle !== FALSE) {
+			while (($file = readdir($handle)) !== FALSE) {
+				if (substr($file, 0, 8) === 'htmlarea') {
+					$tempFile = $tempPath . $file;
+					if (is_file($tempFile)) {
+						unlink($tempFile);
+					}
+				}
+			}
+			closedir($handle);
+		}
+			// Log the action
+		$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, 'htmlArea RTE: User %s has cleared the RTE cache', array($GLOBALS['BE_USER']->user['username']));
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/clearrtecache/class.tx_rtehtmlarea_clearrtecache.php']) {
