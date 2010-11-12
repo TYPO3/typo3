@@ -15,5 +15,6 @@ return array(
 	'tx_reports_reports_status_securitystatus' => $extensionPath . 'reports/status/class.tx_reports_reports_status_securitystatus.php',
 	'tx_reports_reports_status_configurationstatus' => $extensionPath . 'reports/status/class.tx_reports_reports_status_configurationstatus.php',
 	'tx_reports_reports_status_status' => $extensionPath . 'reports/status/class.tx_reports_reports_status_status.php',
+	'tx_reports_tasks_systemstatusupdatetask' => $extensionPath . 'tasks/class.tx_reports_tasks_systemstatusupdatetask.php',
 );
 ?>

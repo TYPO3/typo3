@@ -1,6 +1,7 @@
 2010-11-12  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #16337: System health status self monitoring
+	* Added feature #16338: Scheduler task to regularly execute the status report checks
 
 2009-09-18  Ingo Renner  <ingo@typo3.org>
 
