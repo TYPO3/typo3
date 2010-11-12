@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage em
  */
-interface em_index_checkDatabaseUpdatesHook {
+interface tx_em_Index_CheckDatabaseUpdatesHook {
 
 	/**
 	 * Hook that allows pre-processing of database structure modifications.

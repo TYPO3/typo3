@@ -23,17 +23,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Module: Extension manager - connection exception
+ * Module: Extension manager - XML exception
  *
- * $Id: class.em_connection_exception.php 1876 2010-02-18 23:23:13Z mkrause $
+ * $Id: class.tx_em_xml_exception.php 1870 2010-02-18 12:55:17Z mkrause $
  */
 
 /**
- * Exception for internet connection handling.
- *
- * This exception is supposed to be thrown when
- * there are problems with the internet connections
- * initialized by the web server.
+ * Exception for XML handling.
  *
  * @author      Marcus Krause <marcus#exp2010@t3sec.info>
  * @author      Steffen Kamper <info@sk-typo3.de>
@@ -42,7 +38,7 @@
  * @package     TYPO3
  * @subpackage  EM
  */
-class em_connection_Exception extends Exception {
+class tx_em_XmlException extends Exception {
 
 }
 ?>
