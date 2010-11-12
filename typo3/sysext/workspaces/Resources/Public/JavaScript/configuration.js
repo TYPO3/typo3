@@ -114,7 +114,7 @@ TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 	id: 'label_Workspace',
 	dataIndex : 'label_Workspace',
 	width: 120,
-	hideable: false,
+	hideable: true,
 	sortable: true,
 	header : TYPO3.lang["column.wsTitle"],
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
@@ -178,9 +178,9 @@ TYPO3.Workspaces.Configuration.SendToPrevStageButton = {
 	width: 18,
 	items:[
 		{
-			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtoprevstage'
-			,tooltip: TYPO3.lang["tooltip.sendToPrevStage"]
-			,handler: function(grid, rowIndex, colIndex) {
+			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtoprevstage',
+			tooltip: TYPO3.lang["tooltip.sendToPrevStage"],
+			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				TYPO3.Workspaces.Actions.sendToPrevStageWindow(record.json.table, record.json.uid);
 			}

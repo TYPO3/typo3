@@ -234,7 +234,6 @@ TYPO3.Workspaces.MainStore = new Ext.data.GroupingStore({
 		totalProperty : 'total'
 	}, TYPO3.Workspaces.Configuration.StoreFieldArray),
 	groupField: 'path_Workspace',
-	remoteGroup: false,
 	paramsAsHash : true,
 	sortInfo : {
 		field : 'label_Live',

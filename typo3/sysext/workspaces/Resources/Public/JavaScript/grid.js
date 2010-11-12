@@ -104,14 +104,16 @@ TYPO3.Workspaces.WorkspaceGrid = new Ext.grid.GridPanel({
 	height: 630,
 	stripeRows: true,
 	plugins : [
-		TYPO3.Workspaces.RowExpander
-		,TYPO3.Workspaces.Configuration.GridFilters
-		,new Ext.ux.plugins.FitToParent()],
+		TYPO3.Workspaces.RowExpander,
+		TYPO3.Workspaces.Configuration.GridFilters,
+		new Ext.ux.plugins.FitToParent()
+	],
 	view : new Ext.grid.GroupingView({
 		forceFit: true,
 		groupTextTpl : '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "' + TYPO3.lang["items"] + '" : "' + TYPO3.lang["item"] + '"]})',
 		enableGroupingMenu: false,
-  		enableNoGroups: false
+  		enableNoGroups: false,
+		hideGroupedColumn: true
 	}),
 	bbar : TYPO3.Workspaces.Toolbar.FullBottomBar,
 	tbar : TYPO3.Workspaces.Toolbar.FullTopToolbar

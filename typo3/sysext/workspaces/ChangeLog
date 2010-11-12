@@ -2,7 +2,8 @@
 
 	* Fixed bug: Typing error and superfluous labels in locallang file
 	* Fixed bug: Missing fields in SQL definition reviewers, stagechg_notification
-	* Cleanup: Defined svn:eol-style property 
+	* Cleanup: Defined svn:eol-style property
+	* Cleanup: Fixed formatting and configuration in the ExtJS part (thanks to Steffen Kamper)
 
 2010-11-11  Oliver Hader  <oliver@tpyo3.org>
 
