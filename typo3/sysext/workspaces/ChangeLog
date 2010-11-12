@@ -1,0 +1,10 @@
+2010-11-11  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Added PHPdoc comments and some formatting changes
+	* Cleanup: Fixed formatting issues
+	* Cleanup: Fixed copyright notices
+	* Cleanup: Fixed ext_emconf.php
+
+2010-11-11  Workspaces Team  http://forge.typo3.org/projects/show/typo3v4-workspaces
+
+	* Imported workspaces system extension from GitHub repository after commit f1cd6371d96faa8a8d35
