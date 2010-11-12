@@ -30,24 +30,24 @@
 class tx_linkvalidator_checklinkhandlerlinks extends tx_linkvalidator_checkbase {
 	public $tsconfig;
 
-     /**
-     * Get TsConfig on loading of the class
-     */
+	/**
+	 * Get TsConfig on loading of the class
+	 */
 	function __construct() {
 		$this->tsconfig = t3lib_BEfunc::getModTSconfig(1, 'mod.tx_linkhandler');
 	}
 
-     /**
-     * Checks a given URL + /path/filename.ext for validity
-     *
-     * @param   string      $url: url to check
-     * @param	 array       $softRefEntry: the softref entry which builds the context of that url
-     * @param   object      $reference:  parent instance of tx_linkvalidator_processing
-     * @return  string      validation error message or succes code
-     */
+	/**
+	 * Checks a given URL + /path/filename.ext for validity
+	 *
+	 * @param   string	  $url: url to check
+	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @return  string	  validation error message or succes code
+	 */
 	function checkLink($url, $softRefEntry, $reference) {
 		$parts = explode(":", $url);
-		if(count($parts) == 3) {
+		if (count($parts) == 3) {
 			$tablename = htmlspecialchars($parts[1]);
 			$rowid = intval($parts[2]);
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -56,11 +56,11 @@ class tx_linkvalidator_checklinkhandlerlinks extends tx_linkvalidator_checkbase 
 				'uid = ' . intval($rowid)
 			);
 			$title = 'Link';
-			if($this->tsconfig['properties'][$tablename.'.']) {
-				$title = $this->tsconfig['properties'][$tablename.'.']['label'];
+			if ($this->tsconfig['properties'][$tablename . '.']) {
+				$title = $this->tsconfig['properties'][$tablename . '.']['label'];
 			}
-			if($rows[0]) {
-				if($rows[0]['deleted'] == '1') {
+			if ($rows[0]) {
+				if ($rows[0]['deleted'] == '1') {
 					$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
 					$response = str_replace('###title###', $title, $response);
 					return $response;
@@ -75,15 +75,15 @@ class tx_linkvalidator_checklinkhandlerlinks extends tx_linkvalidator_checkbase 
 		return 1;
 	}
 
-    /**
-     * type fetching method, based on the type that softRefParserObj returns.
-     *
-     * @param   array      $value: reference properties
-     * @param   string     $type: current type
-     * @return  string     fetched type
-     */
+	/**
+	 * type fetching method, based on the type that softRefParserObj returns.
+	 *
+	 * @param   array	  $value: reference properties
+	 * @param   string	 $type: current type
+	 * @return  string	 fetched type
+	 */
 	function fetchType($value, $type) {
-		if($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
+		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
 			$type = 'linkhandler';
 		}
 		return $type;
@@ -91,7 +91,7 @@ class tx_linkvalidator_checklinkhandlerlinks extends tx_linkvalidator_checkbase 
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checklinkhandlerlinks.php'])  {
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checklinkhandlerlinks.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checklinkhandlerlinks.php']);
 }
 

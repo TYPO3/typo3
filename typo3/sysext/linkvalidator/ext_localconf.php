@@ -8,8 +8,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_linkvalidato
     'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:link.name',
     'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:link.description',
     'additionalFields' => 'tx_linkvalidator_scheduler_linkAdditionalFieldProvider'
-);	
-	
+);
+
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['db'] = 'EXT:linkvalidator/lib/class.tx_linkvalidator_checkinternallinks.php:tx_linkvalidator_checkinternallinks';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['file'] = 'EXT:linkvalidator/lib/class.tx_linkvalidator_checkfilelinks.php:tx_linkvalidator_checkfilelinks';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['external'] = 'EXT:linkvalidator/lib/class.tx_linkvalidator_checkexternallinks.php:tx_linkvalidator_checkexternallinks';

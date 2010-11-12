@@ -35,12 +35,12 @@ class tx_linkvalidator_checkexternallinks extends tx_linkvalidator_checkbase {
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param	string		$url: url to check
-	 * @param	 array       $softRefEntry: the softref entry which builds the context of that url
+	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
 	 * @return	string		validation error message or succes code
 	 */
 	function checkLink($url, $softRefEntry, $reference) {
-		if($this->url_reports[$url]) {
+		if ($this->url_reports[$url]) {
 			return $this->url_reports[$url];
 		}
 		// remove possible anchor from the url
@@ -66,14 +66,14 @@ class tx_linkvalidator_checkexternallinks extends tx_linkvalidator_checkbase {
 	/**
 	 * get the external type from the softRefParserObj result.
 	 *
-     * @param   array      $value: reference properties
-     * @param   string     $type: current type
+	 * @param   array	  $value: reference properties
+	 * @param   string	 $type: current type
 	 * @return	string		fetched type
 	 */
 	function fetchType($value, $type) {
 		preg_match_all('/((?:http|https|ftp|ftps))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
-		if(!empty($urls[0][0])) {
+		if (!empty($urls[0][0])) {
 			$type = "external";
 		}
 

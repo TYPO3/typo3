@@ -30,13 +30,13 @@
 class tx_linkvalidator_checkinternallinks extends tx_linkvalidator_checkbase {
 
 	/**
-     * Checks a given URL + /path/filename.ext for validity
-     *
-     * @param   string      $url: url to check
-     * @param	 array       $softRefEntry: the softref entry which builds the context of that url
-     * @param   object      $reference:  parent instance of tx_linkvalidator_processing
-     * @return  string      validation error message or succes code
-     */
+	 * Checks a given URL + /path/filename.ext for validity
+	 *
+	 * @param   string	  $url: url to check
+	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @return  string	  validation error message or succes code
+	 */
 	function checkLink($url, $softRefEntry, $reference) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, deleted, title',
@@ -44,8 +44,8 @@ class tx_linkvalidator_checkinternallinks extends tx_linkvalidator_checkbase {
 			'uid = ' . intval($url)
 		);
 
-		if($rows[0]) {
-			if($rows[0]['deleted'] == '1') {
+		if ($rows[0]) {
+			if ($rows[0]['deleted'] == '1') {
 				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
 				$response = str_replace('###title###', $rows[0]['title'], $response);
 				return $response;
@@ -57,12 +57,12 @@ class tx_linkvalidator_checkinternallinks extends tx_linkvalidator_checkbase {
 		return 1;
 	}
 
-    /**
-     * Url parsing
-     *
-     * @param   array       $row: broken link record
-     * @return  string      parsed broken url
-     */
+	/**
+	 * Url parsing
+	 *
+	 * @param   array	   $row: broken link record
+	 * @return  string	  parsed broken url
+	 */
 	function getBrokenUrl($row) {
 		$domaine = t3lib_BEfunc::getViewDomain($row['pid']);
 		return $domaine . 'index.php?id=' . $row['url'];

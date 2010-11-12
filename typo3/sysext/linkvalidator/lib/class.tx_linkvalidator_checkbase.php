@@ -30,17 +30,17 @@
 abstract class tx_linkvalidator_checkbase {
 
 	abstract function checkLink($url, $softRefEntry, $reference);
-	
-    /**
-     * Base type fetching method, based on the type that softRefParserObj returns.
-     *
-     * @param   array      $value: reference properties
-     * @param   string     $type: current type
-     * @param   string     $key: validator hook name
-     * @return  string     fetched type
-     */
+
+	/**
+	 * Base type fetching method, based on the type that softRefParserObj returns.
+	 *
+	 * @param   array	  $value: reference properties
+	 * @param   string	 $type: current type
+	 * @param   string	 $key: validator hook name
+	 * @return  string	 fetched type
+	 */
 	function fetchType($value, $type, $key) {
-		if($value['type'] == $key) {
+		if ($value['type'] == $key) {
 			$type = $value['type'];
 		}
 		return $type;
