@@ -192,10 +192,10 @@ class tx_reports_Module extends t3lib_SCbase {
 			$title   = $GLOBALS['LANG']->getLL('reports_overview');
 		} else {
 			$content = '';
-			list($extKey, $reportName) = explode('.', $action, 2);
+			list($extensionKey, $reportName) = explode('.', $action, 2);
 
-			$reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extKey][$reportName]['report'];
-			$title       = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extKey][$reportName]['title']);
+			$reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extensionKey][$reportName]['report'];
+			$title       = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extensionKey][$reportName]['title']);
 
 			$reportInstance = t3lib_div::makeInstance($reportClass, $this);
 
