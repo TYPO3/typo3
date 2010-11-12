@@ -67,8 +67,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$this->initialize();
 
-		$this->refreshListHtml = '<input type="submit" name="refreshList" value="' . 
-			$GLOBALS['LANG']->getLL('label_send') . '"/>';		
+        $this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . 
+			$GLOBALS['LANG']->getLL('label_update') . '"/>';
+
+		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . 
+            $GLOBALS['LANG']->getLL('label_refresh') . '"/>';  	
         $processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
 		$this->updateBrokenLinks(&$processing);
 
@@ -175,9 +178,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$processing->init($searchFields, $pageList);
 
 		// check if button press
-		$refresh = t3lib_div::_GP('refreshList');
+		$update = t3lib_div::_GP('updateLinkList');
 
-		if(!empty($refresh)){
+		if(!empty($update)){
 			$processing->getLinkStatistics($this->checkOpt, $modTS['checkhidden']);
 		}
 
@@ -497,7 +500,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			'CHECKALLLINK'			=> $this->checkAllHtml,
 			'CHECKOPTIONS'			=> $this->checkOptHtml,
 			'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
-			'REFRESH'				=> $this->refreshListHtml
+			'REFRESH'				=> $this->refreshListHtml,
+		    'UPDATE'                =>$this->updateListHtml
 		);
 
 		return $markers;

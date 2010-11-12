@@ -7,6 +7,11 @@
 .linkvalidator_funcmenu{
 	margin-bottom:10px;
 }
+
+.linkvalidator_funcmenu input{
+    margin-left: 5px;
+}
+
  .linkvalidator_checkoptions {
 	margin-bottom: 10px;
 }
@@ -15,6 +20,7 @@
 	margin-top: 5px;
 }
 
+    padding-left: 5px;
  .linkvalidator_singleOption {
 	padding: 2px 0;
 }

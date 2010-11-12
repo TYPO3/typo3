@@ -36,7 +36,8 @@
             <label index="list.report.rownotexisting">###title### row doesn't exist</label>
             <label index="list.report.noresponse">External Link not reachable</label>
             <label index="list.report.filenotexisting">File doesn't exist</label>
-            <label index="label_send">Check Links</label>
+            <label index="label_update">Check links</label>
+            <label index="label_refresh">Refresh display</label>
             <label index="hooks.db">Internal Links</label>
             <label index="hooks.file">File Links</label>
             <label index="hooks.external">External Links</label>
