@@ -7,6 +7,7 @@
 	* Cleanup: Added language label for swap workspace column (thanks to Steffen Kamper)
 	* Cleanup: Defined fixed width of ExtJS components (thanks to Steffen Kamper)
 	* Cleanup: Remover superfluous quotes (thanks to Steffen Kamper)
+	* Cleanup: Fixed undefined variables and added PHPdoc comments
 
 2010-11-11  Oliver Hader  <oliver@tpyo3.org>
 
