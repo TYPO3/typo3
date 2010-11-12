@@ -5947,7 +5947,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Command to be run: identify, convert or combine/composite
 	 * @param	string		The parameters string
-	 * @param	string		Override the default path
+	 * @param	string		Override the default path (e.g. used by the install tool)
 	 * @return	string		Compiled command that deals with IM6 & GraphicsMagick
 	 */
 	public static function imageMagickCommand($command, $parameters, $path='')	{
@@ -5956,6 +5956,7 @@ final class t3lib_div {
 		$switchCompositeParameters=false;
 
 		if(!$path)	{ $path = $gfxConf['im_path']; }
+		$path = self::fixWindowsFilePath($path);
 
 		$im_version = strtolower($gfxConf['im_version_5']);
 		$combineScript = $gfxConf['im_combine_filename'] ? trim($gfxConf['im_combine_filename']) : 'combine';
@@ -5967,10 +5968,10 @@ final class t3lib_div {
 			// Compile the path & command
 		if($im_version==='gm')	{
 			$switchCompositeParameters=true;
-			$path .= 'gm'.$isExt.' '.$command;
+			$path = escapeshellarg($path . 'gm' . $isExt) . ' ' . $command;
 		} else	{
 			if($im_version==='im6')	{ $switchCompositeParameters=true; }
-			$path .= (($command=='composite') ? $combineScript : $command).$isExt;
+			$path = escapeshellarg($path . (($command == 'composite') ? $combineScript : $command) . $isExt);
 		}
 
 			// strip profile information for thumbnails and reduce their size
