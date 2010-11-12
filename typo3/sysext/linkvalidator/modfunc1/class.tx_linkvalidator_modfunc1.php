@@ -331,6 +331,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead['tablehead_headlink'] = $LANG->getLL('list.tableHead.headlink');
 		$makerTableHead['tablehead_linktarget'] = $LANG->getLL('list.tableHead.linktarget');
 		$makerTableHead['tablehead_linkmessage'] = $LANG->getLL('list.tableHead.linkmessage');
+		$makerTableHead['tablehead_lastcheck'] = $LANG->getLL('list.tableHead.lastCheck');
 
 		return $makerTableHead;
 
@@ -379,6 +380,10 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$markerArray['headlink'] = $row['linktitle'];
 		$markerArray['linktarget'] = $brokenUrl;
 		$markerArray['linkmessage'] = $row['urlresponse'];
+		$lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['lastcheck']);
+        $lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['lastcheck']);
+        $message = sprintf($GLOBALS['LANG']->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);
+		$markerArray['lastcheck'] = $message;
 		
 		// Return the table html code as string
 		return t3lib_parsehtml::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);

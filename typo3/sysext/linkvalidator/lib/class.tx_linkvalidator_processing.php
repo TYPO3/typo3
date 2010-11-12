@@ -173,6 +173,7 @@ class tx_linkvalidator_processing {
 					$record['tablename'] = $table;
 					$record['linktitle'] = $entryValue['linktitle'];
 					$record['field'] = $entryValue['field'];
+					$record['lastcheck'] = time();
 					$url = $entryValue['substr']['tokenValue'];
 					$this->linkCounts[$table]++;
 					$checkURL = $hookObj->checkLink($url,  $entryValue, $this);
