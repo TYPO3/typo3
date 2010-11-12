@@ -1,3 +1,7 @@
+2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16370, Follow-up to #15094: SVG TypoScript object unuseable after tslib_content splitup
+
 2010-11-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16365: htmlArea RTE: Delete compressed files when clearing RTE cache

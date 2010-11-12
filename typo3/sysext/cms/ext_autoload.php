@@ -69,7 +69,7 @@ return array(
 	'tslib_content_quicktimeobject' => PATH_tslib . 'content/class.tslib_content_quicktimeobject.php',
 	'tslib_content_records' => PATH_tslib . 'content/class.tslib_content_records.php',
 	'tslib_content_restoreregister' => PATH_tslib . 'content/class.tslib_content_restoreregister.php',
-	'tslib_content_scalablevetcorgraphics' => PATH_tslib . 'content/class.tslib_content_scalablevetcorgraphics.php',
+	'tslib_content_scalablevectorgraphics' => PATH_tslib . 'content/class.tslib_content_scalablevectorgraphics.php',
 	'tslib_content_searchresult' => PATH_tslib . 'content/class.tslib_content_searchresult.php',
 	'tslib_content_shockwaveflashobject' => PATH_tslib . 'content/class.tslib_content_shockwaveflashobject.php',
 	'tslib_content_template' => PATH_tslib . 'content/class.tslib_content_template.php',
