@@ -51,7 +51,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @return	string	The status report as HTML
 	 */
 	public function getReport() {
-		$status  = array();
 		$content = '';
 
 		foreach ($this->statusProviders as $statusProviderId => $statusProvidersList) {
@@ -61,6 +60,13 @@ class tx_reports_reports_Status implements tx_reports_Report {
 				$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
 			}
 		}
+
+		$status = $this->getSystemStatus();
+		$highestSeverity = $this->getHighestSeverity($status);
+
+			// updating the registry
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
 
 		$content .= '<p class="help">'
 			. $GLOBALS['LANG']->getLL('status_report_explanation')
@@ -77,13 +83,60 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	protected function getStatusProviders() {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
 			$this->statusProviders[$key] = array();
+
 			foreach ($statusProvidersList as $statusProvider) {
 				$statusProviderInstance = t3lib_div::makeInstance($statusProvider);
+
 				if ($statusProviderInstance instanceof tx_reports_StatusProvider) {
 					$this->statusProviders[$key][] = $statusProviderInstance;
 				}
 			}
 		}
+	}
+
+	/**
+	 * Runs through all status providers and returns all statuses collected.
+	 *
+	 * @return	array	An array of tx_reports_reports_status_Status objects
+	 */
+	public function getSystemStatus() {
+		$status = array();
+
+		foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
+			$status[$statusProviderId] = array();
+
+			foreach ($statusProviderList as $statusProvider) {
+				$statuses = $statusProvider->getStatus();
+				$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
+			}
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Determines the highest severity from the given statuses.
+	 *
+	 * @param	array	An array of tx_reports_reports_status_Status objects.
+	 * @return	integer	The highest severity found from the statuses.
+	 */
+	public function getHighestSeverity(array $statusCollection) {
+		$highestSeverity = tx_reports_reports_status_Status::NOTICE;
+
+		foreach ($statusCollection as $statusProvider => $providerStatuses) {
+			foreach ($providerStatuses as $status) {
+				if ($status->getSeverity() > $highestSeverity) {
+					$highestSeverity = $status->getSeverity();
+				}
+
+					// reached the highest severity level, no need to go on
+				if ($highestSeverity == tx_reports_reports_status_Status::ERROR) {
+					break;
+				}
+			}
+		}
+
+		return $highestSeverity;
 	}
 
 	/**
@@ -93,6 +146,9 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @return	string	The system status as an HTML table
 	 */
 	protected function renderStatus(array $statusCollection) {
+
+		// TODO refactor into separate methods, status list and single status
+
 		$content = '';
 		$template = '
 		<div class="typo3-message message-###CLASS###">

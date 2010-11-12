@@ -19,6 +19,7 @@
 			<label index="status_connectionFailed">Connection Failed</label>
 			<label index="status_updateComplete">Update Complete</label>
 			<label index="status_updateIncomplete">Update Incomplete</label>
+			<label index="status_problemNotification">One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</label>
 			<label index="status_typo3">TYPO3 System</label>
 			<label index="status_system">System</label>
 			<label index="status_security">Security</label>

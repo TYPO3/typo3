@@ -1,3 +1,7 @@
+2010-11-12  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #16337: System health status self monitoring
+
 2010-11-12  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #16357: visualize beeing in an workspace by coloring the topbar (Thanks to Lars Zimmermann)
