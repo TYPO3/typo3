@@ -46,6 +46,7 @@
 			<label index="column.workspaceName">Workspace</label>
 			<label index="column.livePath">Live-Path</label>
 			<label index="column.liveTitle">Live-Title</label>
+			<label index="column.wsSwapColumn">Swap workspace</label>
 			<label index="tooltip.viewElementAction">Preview element</label>
 			<label index="tooltip.editElementAction">Edit element</label>
 			<label index="tooltip.openPage">Open version of page</label>

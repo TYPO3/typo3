@@ -39,7 +39,7 @@ Ext.override(Ext.grid.GridView, {
 			if (colModel.config[i].hideable !== false) {
 				text = colModel.getColumnHeader(i);
 				if (colModel.getColumnId(i) === 'wsSwapColumn') {
-					text = 'Swap workspaces';  //use language label
+					text = TYPO3.lang["column.wsSwapColumn"];
 				}
 				colMenu.add(new Ext.menu.CheckItem({
 					text: text,
