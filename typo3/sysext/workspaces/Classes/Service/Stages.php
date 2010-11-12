@@ -147,7 +147,7 @@ class Tx_Workspaces_Service_Stages {
 						// yes, so add to return array
 					$stagesForWSUserData[] = array(
 						'uid' => $this->encodeStageUid($workspaceStageRec['uid']),
-						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $workspaceStageRec['title'] . '"');
+						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' ' . $workspaceStageRec['title']);
 				} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID) {
 						if ($GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 							$stagesForWSUserData[] = $workspaceStageRec;
