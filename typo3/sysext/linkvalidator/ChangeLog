@@ -1,6 +1,7 @@
 2010-11-12 Tolleiv Nietsch <info@tolleiv.de>
 
-	* Fixed issue: #10598 - "Check links" button must be hideable with TS - renamed noUpdateButton to showUpdateButton, manual updated
+	* Fixed issue: #10763: The mailtemplate setting should have a default setting
+	* Fixed issue: #10598: "Check links" button must be hideable with TS - renamed noUpdateButton to showUpdateButton, manual updated
 
 2010-11-11 Michael Miousse	 <michael.miousse@infoglobe.ca>
 

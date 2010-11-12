@@ -91,7 +91,7 @@ class tx_linkvalidator_scheduler_linkAdditionalFieldProvider implements tx_sched
 		}
 		if (empty($taskInfo['emailfile'])) {
 			if ($schedulerModule->CMD == 'add') {
-				$taskInfo['emailfile'] = '';
+				$taskInfo['emailfile'] = 'EXT:linkvalidator/res/mailTemplate.html';
 			} elseif ($schedulerModule->CMD == 'edit') {
 				$taskInfo['emailfile'] = $task->emailfile;
 			} else {
