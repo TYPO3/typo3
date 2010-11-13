@@ -329,10 +329,11 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 
 		if ($renderFlashMessage) {
 			/* @var $flashMessage t3lib_FlashMessage */
-			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', '');
-			$flashMessage->setTitle($GLOBALS['LANG']->getLL('ext_import_list_unchanged'));
-			$flashMessage->setMessage($GLOBALS['LANG']->getLL('ext_import_list_unchanged_header'));
-			$flashMessage->setSeverity(t3lib_FlashMessage::INFO);
+			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('ext_import_list_unchanged_header'),
+				$GLOBALS['LANG']->getLL('ext_import_list_unchanged'),
+				t3lib_FlashMessage::INFO
+			);
 		}
 		$sumRecords = 0;
 
