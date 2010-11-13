@@ -39,7 +39,6 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 	 * control over the system warning messages.
 	 *
 	 * @param	array	An array of messages related to already found issues.
-	 * @return	void
 	 */
 	public function displayWarningMessages_postProcess(array &$warningMessages) {
 
@@ -48,7 +47,7 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 		$highestSeverity = $registry->get(
 			'tx_reports',
 			'status.highestSeverity',
-			null
+			NULL
 		);
 
 		if (!is_null($highestSeverity)) {
