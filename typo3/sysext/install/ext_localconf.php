@@ -42,4 +42,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForCompressionLeve
 	// Version 4.5: migrate workspaces to use custom stages and install the required extensions
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['migrateWorkspaces'] = 'tx_coreupdates_migrateworkspaces';
 
+	// Version 4.5: Removes the ".gif" suffix from entries in sys_language
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['flagsFromSprites'] = 'tx_coreupdates_flagsfromsprite';
+
 ?>

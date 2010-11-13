@@ -804,11 +804,8 @@ $TCA['sys_language'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', 0, ''),
 				),
-				'fileFolder' => 'typo3/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
-				'fileFolder_extList' => 'png,jpg,jpeg,gif',
-				'fileFolder_recursions' => 0,
 				'selicon_cols' => 8,
 				'size' => 1,
 				'minitems' => 0,

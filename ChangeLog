@@ -1,3 +1,7 @@
+2010-11-13  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #15666: sys_language table icon should be the flag you selected, using the new flag sprite (Thanks to Steffen Ritter)
+
 2010-11-13  Benjamin Mack  <benni@typo3.org>
 
 	* Added feature: New option "noScale" for getImgResource() to display the original image instead of a scaled one (Thanks to Stefan Geith)
