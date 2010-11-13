@@ -1420,7 +1420,7 @@ class t3lib_TCEforms_inline {
 
 				// save states back to database
 			if (is_array($inlineViewCurrent[$current['table']])) {
-				$inlineViewCurrent = array_unique($inlineViewCurrent);
+				$inlineViewCurrent[$current['table']] = array_unique($inlineViewCurrent[$current['table']]);
 				$GLOBALS['BE_USER']->uc['inlineView'] = serialize($inlineView);
 				$GLOBALS['BE_USER']->writeUC();
 			}

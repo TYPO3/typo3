@@ -1,5 +1,6 @@
 2010-11-13  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #7855: IRRE doesn't save collapse/expand state of nested IRRE records
 	* Fixed bug #9508: Workspace preview link should work in multidomain-environments (Thanks to Michael Klapper)
 	* Added feature #13170: Workspace Owners should be manageable with groups as well (Thanks to Tolleiv Nietsch)
 
