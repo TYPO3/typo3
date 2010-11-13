@@ -140,8 +140,9 @@ class Tx_Extbase_Core_Bootstrap {
 	 * @see initialize()
 	 */
 	public function initializeConfiguration($configuration) {
-		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
-		$this->configurationManager->setContentObject($this->cObj);
+		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$contentObject = isset($this->cObj) ? $this->cObj : t3lib_div::makeInstance('tslib_cObj');
+		$this->configurationManager->setContentObject($contentObject);
 		$this->configurationManager->setConfiguration($configuration);
 	}
 
@@ -216,9 +217,7 @@ class Tx_Extbase_Core_Bootstrap {
 		//)));
 		//die("autoload registry");
 
-		if ($this->isInitialized !== TRUE) {
-			$this->initialize($configuration);
-		}
+		$this->initialize($configuration);
 
 		$requestHandlerResolver = $this->objectManager->get('Tx_Extbase_MVC_RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
@@ -227,13 +226,19 @@ class Tx_Extbase_Core_Bootstrap {
 		$response = $requestHandler->handleRequest();
 
 		$this->persistenceManager->persistAll();
-		$this->reflectionService->shutdown();
 		// $this->objectManager->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[] = implode('', $response->getAdditionalHeaderData());
 		}
 		$response->sendHeaders();
-		return $response->getContent();
+		$content = $response->getContent();
+		$this->resetSingletons();
+		return $content;
+	}
+
+	protected function resetSingletons() {
+		$this->reflectionService->shutdown();
+		$this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages')->reset();
 	}
 
 	 /**

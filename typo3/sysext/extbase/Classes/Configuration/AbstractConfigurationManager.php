@@ -60,6 +60,18 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected $objectManager;
 
 	/**
+	 * name of the extension this Configuration Manager instance belongs to
+	 * @var string
+	 */
+	protected $extensionName;
+
+	/**
+	 * name of the plugin this Configuration Manager instance belongs to
+	 * @var string
+	 */
+	protected $pluginName;
+
+	/**
 	 * 1st level configuration cache
 	 *
 	 * @var array
@@ -84,6 +96,13 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	}
 
 	/**
+	 * @return tslib_cObj
+	 */
+	public function getContentObject() {
+		return $this->contentObject;
+	}
+
+	/**
 	 * Sets the specified raw configuration coming from the outside.
 	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
 	 *
@@ -93,6 +112,9 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	public function setConfiguration(array $configuration = array()) {
 		// reset 1st level cache
 		$this->configurationCache = array();
+
+		$this->extensionName = $configuration['extensionName'];
+		$this->pluginName = $configuration['pluginName'];
 		$this->configuration = $configuration;
 	}
 
@@ -114,7 +136,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 				$configurationCacheKey .= '_' . strtolower($pluginName);
 			}
 		} else {
-			$configurationCacheKey = '_global';
+			$configurationCacheKey = strtolower($this->extensionName . '_' . $this->pluginName);
 		}
 		if (isset($this->configurationCache[$configurationCacheKey])) {
 			return $this->configurationCache[$configurationCacheKey];
@@ -156,7 +178,10 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 		}
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
-		$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
+		// only load context specific configuration when retrieving configuration of the current plugin
+		if ($extensionName === NULL || ($extensionName === $this->extensionName && $pluginName === $this->pluginName)) {
+			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
+		}
 
 		// 1st level cache
 		$this->configurationCache[$configurationCacheKey] = $frameworkConfiguration;

@@ -766,7 +766,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$this->addSysLanguageStatement($tableName, $sql);
 			}
 			if ($querySettings->getRespectStoragePage()) {
-				$this->addPageIdStatement($tableName, $sql);
+				$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
 			}
 		}
 	}
@@ -813,15 +813,15 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param string $tableName The database table name
 	 * @param array &$sql The query parts
+	 * @param array $storagePageIds list of storage page ids
 	 * @return void
 	 */
-	protected function addPageIdStatement($tableName, array &$sql) {
+	protected function addPageIdStatement($tableName, array &$sql, array $storagePageIds) {
 		if (empty($this->tableInformationCache[$tableName]['columnNames'])) {
 			$this->tableInformationCache[$tableName]['columnNames'] = $this->databaseHandle->admin_get_fields($tableName);
 		}
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $this->tableInformationCache[$tableName]['columnNames'])) {
-			$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid'])) . ')';
+			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
 		}
 	}
 

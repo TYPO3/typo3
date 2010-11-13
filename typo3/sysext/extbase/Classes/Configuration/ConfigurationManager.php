@@ -73,6 +73,13 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 	}
 
 	/**
+	 * @return tslib_cObj
+	 */
+	public function getContentObject() {
+		return $this->concreteConfigurationManager->getContentObject();
+	}
+
+	/**
 	 * Sets the specified raw configuration coming from the outside.
 	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
 	 *
@@ -90,7 +97,8 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
 	 *
 	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
-	 * @param string $pluginSignature if specified, the configuration for the given plugin will be returned. Format: strtolower($extensionName . '_' . $pluginName)
+	 * @param string $extensionName if specified, the configuration for the given extension will be returned.
+	 * @param string $pluginName if specified, the configuration for the given plugin will be returned.
 	 * @return array The configuration
 	 */
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {

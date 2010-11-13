@@ -42,6 +42,11 @@ interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_S
 	public function setContentObject(tslib_cObj $contentObject = NULL);
 
 	/**
+	 * @return tslib_cObj
+	 */
+	public function getContentObject();
+
+	/**
 	 * Returns the specified configuration.
 	 * The actual configuration will be merged from different sources in a defined order.
 	 *

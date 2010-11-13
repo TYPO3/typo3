@@ -37,8 +37,8 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface {
 	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
-	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setRespectStoragePage($respectStoragePage);
@@ -51,10 +51,26 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface {
 	public function getRespectStoragePage();
 
 	/**
+	 * Sets the pid(s) of the storage page(s) that should be respected for the query.
+	 *
+	 * @param array $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setStoragePageIds(array $storagePageIds);
+
+	/**
+	 * Returns the pid(s) of the storage page(s) that should be respected for the query.
+	 *
+	 * @return array list of integers that each represent a storage page id
+	 */
+	public function getStoragePageIds();
+
+	/**
 	 * Sets the flag if a  and language overlay should be performed.
 	 *
-	 * @param $respectEnableFields TRUE if a  and language overlay should be performed.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setRespectSysLanguage($respectSysLanguage);
@@ -69,8 +85,8 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface {
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
-	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setRespectEnableFields($respectEnableFields);

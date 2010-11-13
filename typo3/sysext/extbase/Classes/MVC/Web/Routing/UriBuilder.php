@@ -23,6 +23,11 @@
 class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
 	 * An instance of tslib_cObj
 	 *
 	 * @var tslib_cObj
@@ -101,11 +106,12 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $argumentPrefix = NULL;
 
 	/**
-	 * Constructs this URI Helper
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
 	 */
-	public function __construct() {
-		// TODO shouldn't we retrieve the current cObject from the request?
-		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->contentObject = $this->configurationManager->getContentObject();
 	}
 
 	/**

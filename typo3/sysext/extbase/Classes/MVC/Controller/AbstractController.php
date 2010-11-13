@@ -33,7 +33,7 @@
  * @version $ID:$
  * @api
  */
-abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface, t3lib_Singleton {
+abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
