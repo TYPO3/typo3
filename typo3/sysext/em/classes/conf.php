@@ -1,5 +1,5 @@
 <?php
-define('TYPO3_MOD_PATH', 'typo3/sysext/em/');
+define('TYPO3_MOD_PATH', 'typo3/sysext/em/classes/');
 $BACK_PATH='';
 
 $MLANG['default']['tabs_images']['tab'] = 'em.gif';
