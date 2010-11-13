@@ -26,8 +26,8 @@
 /**
  * The status report
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
+ * @author	Ingo Renner <ingo@typo3.org>
+ * @package	TYPO3
  * @subpackage	reports
  *
  * $Id$
@@ -37,7 +37,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	protected $statusProviders = array();
 
 	/**
-	 * constructor for class tx_reports_report_Status
+	 * Constructor for class tx_reports_report_Status
 	 */
 	public function __construct() {
 		$this->getStatusProviders();
@@ -78,7 +78,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Gets all registered status providers and creates instances of them.
 	 *
-	 * @return	void
 	 */
 	protected function getStatusProviders() {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
@@ -209,8 +208,8 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Sorts the status providers (alphabetically and puts primary status providers at the beginning)
 	 *
-	 * @param   array   A collection of statuses (with providers)
-	 * @return  array   The collection of statuses sorted by provider (beginning with provider "_install")
+	 * @param	array	A collection of statuses (with providers)
+	 * @return	array	The collection of statuses sorted by provider (beginning with provider "_install")
 	 */
 	protected function sortStatusProviders(array $statusCollection) {
 			// Extract the primary status collections, i.e. the status groups
@@ -257,8 +256,8 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Sorts the statuses by severity
 	 *
-	 * @param   array   A collection of statuses per provider
-	 * @return  array   The collection of statuses sorted by severity
+	 * @param	array	A collection of statuses per provider
+	 * @return	array	The collection of statuses sorted by severity
 	 */
 	protected function sortStatuses(array $statusCollection) {
 		$statuses  = array();
@@ -283,11 +282,10 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	}
 
 	/**
-	 * saves the section toggle state in the backend user's uc
+	 * Saves the section toggle state in the backend user's uc.
 	 *
-	 * @param	array		array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX	object of type TYPO3AJAX
-	 * @return	void
+	 * @param	array	Array of parameters from the AJAX interface, currently unused
+	 * @param	TYPO3AJAX	Object of type TYPO3AJAX
 	 */
 
 	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
