@@ -1,3 +1,7 @@
+2010-11-13  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9508: Workspace preview link should work in multidomain-environments (Thanks to Michael Klapper)
+
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
