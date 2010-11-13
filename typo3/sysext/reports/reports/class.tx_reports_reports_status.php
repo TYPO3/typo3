@@ -287,7 +287,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @param	array	Array of parameters from the AJAX interface, currently unused
 	 * @param	TYPO3AJAX	Object of type TYPO3AJAX
 	 */
-
 	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
 		$item = t3lib_div::_POST('item');
 		$state = (bool)t3lib_div::_POST('state');
