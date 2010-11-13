@@ -3391,10 +3391,10 @@ class t3lib_TCEmain	{
 
 		if ($TCA[$table])	{
 
-				// In case the record to be moved turns out to be an offline version, 
+				// In case the record to be moved turns out to be an offline version,
 				// we have to find the live version and work on that one (this case
 				// happens for pages with "branch" versioning type)
-				// note: as "branch" versioning is deprecated since TYPO3 4.2, this 
+				// note: as "branch" versioning is deprecated since TYPO3 4.2, this
 				// functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
 			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
 				$uid = $lookForLiveVersion['uid'];
@@ -6852,13 +6852,12 @@ class t3lib_TCEmain	{
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
-			$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$msg,
-						'',
-						t3lib_FlashMessage::ERROR,
-						TRUE
-				);
+			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage',
+				$msg,
+				'',
+				t3lib_FlashMessage::ERROR,
+				TRUE
+			);
 			t3lib_FlashMessageQueue::addMessage($flashMessage);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
