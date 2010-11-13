@@ -51,7 +51,7 @@ class t3lib_FlashMessageQueue {
 	 * @return 	void
 	 */
 	public static function addMessage(t3lib_FlashMessage $message) {
-		if ($message->isSessionMessage() === TRUE) {
+		if ($message->isSessionMessage()) {
 			$queuedFlashMessages = self::getFlashMessagesFromSession();
 			$queuedFlashMessages[] = $message;
 
