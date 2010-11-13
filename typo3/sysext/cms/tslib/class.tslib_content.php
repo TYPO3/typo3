@@ -4752,6 +4752,7 @@ class tslib_cObj {
 						$fileArray['maxH'] = intval($this->stdWrap($fileArray['maxH'], $fileArray['maxH.']));
 						$fileArray['minW'] = intval($this->stdWrap($fileArray['minW'], $fileArray['minW.']));
 						$fileArray['minH'] = intval($this->stdWrap($fileArray['minH'], $fileArray['minH.']));
+						$fileArray['noScale'] = $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']);
 						$maskArray = $fileArray['m.'];
 						$maskImages = array();
 						if (is_array($fileArray['m.'])) { // Must render mask images and include in hash-calculating - else we cannot be sure the filename is unique for the setup!
@@ -4799,6 +4800,9 @@ class tslib_cObj {
 							}
 							if ($fileArray['minH']) {
 								$options['minH'] = $fileArray['minH'];
+							}
+							if ($fileArray['noScale']) {
+								$options['noScale'] = $fileArray['noScale'];
 							}
 
 								// checks to see if m (the mask array) is defined

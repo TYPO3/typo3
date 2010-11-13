@@ -2332,10 +2332,20 @@ class t3lib_stdGraphic	{
 				$w=$data['origW'];
 				$h=$data['origH'];
 
-					// if no convertion should be performed
-				$wh_noscale = (!$w && !$h) || ($data[0]==$info[0] && $data[1]==$info[1]);		// this flag is true if the width / height does NOT dictate the image to be scaled!! (that is if no w/h is given or if the destination w/h matches the original image-dimensions....
+					// if no conversion should be performed
+					// this flag is true if the width / height does NOT dictate 
+					// the image to be scaled!! (that is if no width / height is
+					// given or if the destination w/h matches the original image
+					// dimensions or if the option to not scale the image is set)
+				$noScale = (!$w && !$h) || ($data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
 
-				if ($wh_noscale && !$data['crs'] && !$params && !$frame && $newExt==$info[2] && !$mustCreate) {
+				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
+						// set the new width and height before returning, 
+						// if the noScale option is set
+					if ($options['noScale']) {
+						$info[0] = $data[0];
+						$info[1] = $data[1];
+					}
 					$info[3] = $imagefile;
 					return $info;
 				}
