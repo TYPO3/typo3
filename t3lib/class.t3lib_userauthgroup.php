@@ -1622,8 +1622,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					break;
 					default:
 							// Checking if the guy is admin:
-						if (t3lib_div::inList($wsRec['adminusers'],$this->user['uid']))	{
+						if (t3lib_div::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
 							return array_merge($wsRec, array('_ACCESS' => 'owner'));
+						}
+							// Checking if he is owner through a user group of his:
+						foreach ($this->userGroupsUID as $groupUid) {
+							if (t3lib_div::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
+								return array_merge($wsRec, array('_ACCESS' => 'owner'));
+							}
 						}
 							// Checking if he is reviewer user:
 						if (t3lib_div::inList($wsRec['reviewers'],'be_users_'.$this->user['uid']))	{

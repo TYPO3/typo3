@@ -52,12 +52,20 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Migrates the old hardcoded draft workspace to be a real workspace element';
+		$description = 'Migrates the old hardcoded draft workspace to be a real workspace element and update workspace owner fields  to support either users or groups.';
 
 			// TYPO3 version 4.5 and above
 		if ($this->versionNumber >= 4005000) {
-			$this->includeTCA();
-			$result = $this->isDraftWorkspaceUsed();
+			$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
+				// sys_workspace table might not exists if version extension was never installed
+			if (in_array('sys_workspace', $tables)) {
+				$result = $this->isOldStyleAdminFieldUsed();
+			}
+
+			if (!$result) {
+				$this->includeTCA();
+				$result = $this->isDraftWorkspaceUsed();
+			}
 		}
 
 		return $result;
@@ -96,6 +104,11 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 
 			// install version extension (especially when updating from very old TYPO3 versions
 		$this->installExtensions(array('version'));
+
+			// migrate all workspaces to support groups and be_users
+		if ($this->isOldStyleAdminFieldUsed()) {
+			$this->migrateAdminFieldToNewStyle();
+		}
 
 			// create a new dedicated "Draft" workspace and move all records to that new workspace
 		if ($this->isDraftWorkspaceUsed()) {
@@ -155,6 +168,17 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	}
 
 	/**
+	 * Check if there's any workspace which doesn't support the new admin-field format yet
+	 * @return bool
+	 */
+	protected function isOldStyleAdminFieldUsed() {
+		$where = 'adminusers != "" AND adminusers NOT LIKE "%be_users%" AND adminusers NOT LIKE "%be_groups%" AND deleted=0';
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', $where);
+		$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		return $count > 0;
+	}
+
+	/**
 	 * Create a real workspace named "Draft"
 	 *
 	 * @return integer
@@ -188,6 +212,30 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $values);
 				$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 			}
+		}
+	}
+
+	/**
+	 * Migrate all workspace adminusers fields to support groups aswell,
+	 * this means that the old comma separated list of uids (referring to be_users)
+	 * is updated to be a list of uids with the tablename as prefix
+	 *
+	 * @return void
+	 */
+	protected function migrateAdminFieldToNewStyle() {
+		$where = 'adminusers != "" AND adminusers NOT LIKE "%be_users%" AND adminusers NOT LIKE "%be_groups%" AND deleted=0';
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, adminusers', 'sys_workspace', $where);
+		$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		foreach ($workspaces as $workspace) {
+			$updateArray = array(
+				'adminusers' => 'be_users_' . implode(',be_users_', t3lib_div::trimExplode(',', $workspace['adminusers'], TRUE)),
+			);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				'sys_workspace',
+				'uid = "' . $workspace['uid'] . '"',
+				$updateArray
+			);
+			$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 		}
 	}
 

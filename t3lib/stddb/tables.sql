@@ -309,7 +309,7 @@ CREATE TABLE sys_workspace (
   deleted tinyint(1) DEFAULT '0' NOT NULL,
   title varchar(30) DEFAULT '' NOT NULL,
   description varchar(255) DEFAULT '' NOT NULL,
-  adminusers varchar(255) DEFAULT '' NOT NULL,
+  adminusers text,
   members text,
   reviewers text,
   db_mountpoints varchar(255) DEFAULT '' NOT NULL,
