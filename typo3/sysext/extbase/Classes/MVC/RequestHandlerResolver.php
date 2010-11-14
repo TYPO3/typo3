@@ -99,6 +99,11 @@ class Tx_Extbase_MVC_RequestHandlerResolver {
 		return array_pop($suitableRequestHandlers);
 	}
 
+	/**
+	 * Returns a list of all registered request handlers.
+	 *
+	 * @return array
+	 */
 	public function getRegisteredRequestHandlerClassNames() {
 		$settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : array();

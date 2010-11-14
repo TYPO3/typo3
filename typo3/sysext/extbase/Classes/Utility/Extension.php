@@ -495,9 +495,6 @@ tt_content.list.20.' . $pluginSignature . ' {
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
-			return $defaultPluginNamespace;
-		}
 		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
 			return $defaultPluginNamespace;
@@ -556,16 +553,13 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @return integer uid of the target page or NULL if target page could not be determined
 	 */
 	static public function getTargetPidByPlugin($extensionName, $pluginName) {
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
-			return NULL;
-		}
 		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
 			return NULL;
 		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
 			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'pid',

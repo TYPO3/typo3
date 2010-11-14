@@ -236,6 +236,11 @@ class Tx_Extbase_Core_Bootstrap {
 		return $content;
 	}
 
+	/**
+	 * Resets global singletons for the next plugin
+	 *
+	 * @return void
+	 */
 	protected function resetSingletons() {
 		$this->reflectionService->shutdown();
 		$this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages')->reset();
