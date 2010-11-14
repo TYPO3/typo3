@@ -216,7 +216,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	 */
 	protected function indexAction() {
 		$defaultIcon = t3lib_extMgm::extRelPath('reports') . 'mod/moduleicon.gif';
-		$content = '<dl class="report-list">';
+		$content = '<dl class="t3-overview-list">';
 		$reports = array();
 
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $extensionReports) {

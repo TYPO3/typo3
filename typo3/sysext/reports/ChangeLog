@@ -1,3 +1,7 @@
+2010-11-14  Ingo Renner  <ingo@typo3.org>
+
+	* Changed the overview menu to use the core t3-overview-list CSS class for styling
+
 2010-11-13  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed some minor style issues caused by Ext Js' style reset definitions

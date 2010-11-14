@@ -10,25 +10,6 @@ body#ext-reports-mod-index-php {
 
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
-/* overview */
-
-.report-list dt {
-	font-weight: bold;
-	font-size: 11px;
-	padding: 0px 0px 2px 20px;
-}
-
-.report-list dt img {
-	vertical-align: middle;
-	margin-right: 5px;
-}
-
-.report-list dd {
-	margin: 2px 0 15px 20px;
-	padding-left: 22px;
-}
-
-/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* status report */
 
 #ext-reports-mod-index-php h2.section-header {
