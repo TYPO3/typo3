@@ -1,3 +1,7 @@
+2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15755: Allow DBAL to interact with EM to configure remapping
+
 2010-10-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16179: 1-2-3 install tool wizard does not let DBAL load early enough
