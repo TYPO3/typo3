@@ -1,5 +1,9 @@
 2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 1.2.0beta1
+
+2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
+
 	* Added feature #15755: Allow DBAL to interact with EM to configure remapping
 
 2010-10-30  Xavier Perseguers  <typo3@perseguers.ch>
