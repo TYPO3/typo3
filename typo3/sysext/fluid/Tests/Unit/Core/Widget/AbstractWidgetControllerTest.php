@@ -51,7 +51,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 
 		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('initializeUriBuilder', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'resolveView', 'callActionMethod'), array(), '', FALSE);
 
-		$objectManager = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
+		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$abstractWidgetController->_set('objectManager', $objectManager);
 
 		$abstractWidgetController->processRequest($request, $response);

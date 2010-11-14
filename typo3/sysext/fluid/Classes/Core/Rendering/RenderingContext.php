@@ -39,7 +39,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	 * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
 	 * the whole syntax tree should be cacheable
 	 *
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -58,12 +58,10 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	protected $viewHelperVariableContainer;
 
 	/**
-	 * Inject the object manager
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->templateVariableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$this->viewHelperVariableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
@@ -72,7 +70,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	/**
 	 * Returns the object manager. Only the ViewHelperNode should do this.
 	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getObjectManager() {

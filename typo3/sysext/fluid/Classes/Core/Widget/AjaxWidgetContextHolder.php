@@ -48,7 +48,33 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 */
 	protected $widgetContexts = array();
 
-    /**
+	/**
+	 * @var string
+	 */
+	protected $widgetContextsStorageKey = 'Tx_Fluid_Core_Widget_AjaxWidgetContextHolder_widgetContexts';
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->loadWidgetContexts();
+	}
+
+	/**
+	 * Loads the windget contexts from the TYPO3 user session
+	 *
+	 * @return void
+	 */
+	protected function loadWidgetContexts() {
+		if (TYPO3_MODE === 'FE') {
+			$this->widgetContexts = unserialize($GLOBALS['TSFE']->fe_user->getKey('ses', $this->widgetContextsStorageKey));
+		} else {
+			$this->widgetContexts = unserialize($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]);
+			$GLOBALS['BE_USER']->writeUC();
+		}
+	}
+
+	/**
 	 * Get the widget context for the given $ajaxWidgetId.
 	 *
 	 * @param integer $ajaxWidgetId
@@ -72,9 +98,29 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function store(Tx_Fluid_Core_Widget_WidgetContext $widgetContext) {
-		$ajaxWidgetId = $this->nextFreeAjaxWidgetId++;
+		// TODO persist nextFreeAjaxWidgetId in session
+		$ajaxWidgetId = $this->nextFreeAjaxWidgetId ++;
 		$widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);
 		$this->widgetContexts[$ajaxWidgetId] = $widgetContext;
+		$this->storeWidgetContexts();
+	}
+
+	/**
+	 * Persists the widget contexts in the TYPO3 user session
+	 * @return void
+	 */
+	protected function storeWidgetContexts() {
+		if (TYPO3_MODE === 'FE') {
+			$GLOBALS['TSFE']->fe_user->setKey(
+				'ses',
+				$this->widgetContextsStorageKey,
+				serialize($this->widgetContexts)
+			);
+			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		} else {
+			$GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] = serialize($this->widgetContexts);
+			$GLOBALS['BE_USER']->writeUc();
+		}
 	}
 }
 

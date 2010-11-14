@@ -52,7 +52,7 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	private $ajaxWidgetContextHolder;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	private $objectManager;
 
@@ -71,11 +71,11 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	}
 
 	/**
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->widgetContext = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetContext');
 	}
@@ -102,21 +102,23 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	private function initializeWidgetContext() {
-		if ($this->ajaxWidget === TRUE) {
-			$this->ajaxWidgetContextHolder->store($this->widgetContext);
-		}
-
 		$this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
 		$this->initializeWidgetIdentifier();
 
 		$controllerObjectName = ($this->controller instanceof Tx_Fluid_AOP_ProxyInterface) ? $this->controller->FLOW3_AOP_Proxy_getProxyTargetClassName() : get_class($this->controller);
 		$this->widgetContext->setControllerObjectName($controllerObjectName);
 
-		$pluginSignature = strtolower($this->controllerContext->getRequest()->getControllerExtensionName() . '_' . $this->controllerContext->getRequest()->getPluginName());
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
+		$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+		$pluginName = $this->controllerContext->getRequest()->getPluginName();
+		$this->widgetContext->setParentExtensionName($extensionName);
+		$this->widgetContext->setParentPluginName($pluginName);
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
 		$this->widgetContext->setParentPluginNamespace($pluginNamespace);
 
 		$this->widgetContext->setWidgetViewHelperClassName(get_class($this));
+		if ($this->ajaxWidget === TRUE) {
+			$this->ajaxWidgetContextHolder->store($this->widgetContext);
+		}
 	}
 
 	/**
@@ -156,7 +158,10 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 */
 	protected function initiateSubRequest() {
 		if (!($this->controller instanceof Tx_Fluid_Core_Widget_AbstractWidgetController)) {
-			throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add the @inject annotation in your widget class.', 1284401632);
+			if (isset($this->controller)) {
+				throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException('initiateSubRequest() can not be called if there is no valid controller extending Tx_Fluid_Core_Widget_AbstractWidgetController. Got "' . get_class($this->controller) . '" in class "' . get_class($this) . '".', 1289422564);
+			}
+			throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this) . '".', 1284401632);
 		}
 
 		$subRequest = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetRequest');

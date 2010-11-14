@@ -86,7 +86,9 @@ class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelpe
 			$action = $this->controllerContext->getRequest()->getControllerActionName();
 		}
 		$arguments['action'] = $action;
-		$arguments['f3-fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
+		$arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
+		// TODO page type should be configurable
+		$arguments['type'] = 7076857368;
 		return '?' . http_build_query($arguments, NULL, '&');
 	}
 
@@ -100,6 +102,7 @@ class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected function getWidgetUri() {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
+		// TODO adjust arguments that should be excluded
 		$argumentsToBeExcludedFromQueryString = array(
 			'@extension',
 			'@subpackage',
@@ -111,6 +114,7 @@ class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelpe
 			->setArgumentPrefix($this->controllerContext->getRequest()->getArgumentPrefix())
 			->setSection($this->arguments['section'])
 			->setCreateAbsoluteUri(TRUE)
+			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
 			->setFormat($this->arguments['format'])
 			->uriFor($this->arguments['action'], $this->arguments['arguments'], '', '', '');

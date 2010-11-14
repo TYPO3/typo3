@@ -28,7 +28,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-abstract class Tx_Fluid_Core_Widget_AbstractWidgetController extends Tx_Extbase_MVC_Controller_ActionController {
+abstract class Tx_Fluid_Core_Widget_AbstractWidgetController extends Tx_Extbase_MVC_Controller_ActionController implements t3lib_Singleton {
 
 	/**
 	 * @var array

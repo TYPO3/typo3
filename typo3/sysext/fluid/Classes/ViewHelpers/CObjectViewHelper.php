@@ -35,25 +35,18 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	protected $tsfeBackup;
 
 	/**
-	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
-	 *
-	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
-	 * @param array $typoScriptSetup global TypoScript setup (optional)
-	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
-	public function __construct($contentObject = NULL, array $typoScriptSetup = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
-		if ($typoScriptSetup !== NULL) {
-			$this->typoScriptSetup = $typoScriptSetup;
-		} else {
-			$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
-			if ($configurationManager === NULL) {
-				$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager');
-				$configurationManager->setContentObject($this->contentObject);
-			}
-			$this->typoScriptSetup = $configurationManager->loadTypoScriptSetup();
-		}
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->contentObject = $this->configurationManager->getContentObject();
+		$this->typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
 	/**

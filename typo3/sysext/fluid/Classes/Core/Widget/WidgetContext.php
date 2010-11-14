@@ -91,6 +91,16 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * @var string
 	 */
+	protected $parentExtensionName;
+
+	/**
+	 * @var string
+	 */
+	protected $parentPluginName;
+
+	/**
+	 * @var string
+	 */
 	protected $widgetViewHelperClassName;
 
 	/**
@@ -144,6 +154,44 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	 */
 	public function getParentPluginNamespace() {
 		return $this->parentPluginNamespace;
+	}
+
+	/**
+	 * Sets the Extension name of the plugin that contains the widget
+	 *
+	 * @param string $parentExtensionName
+	 * @return void
+	 */
+	public function setParentExtensionName($parentExtensionName) {
+		$this->parentExtensionName = $parentExtensionName;
+	}
+
+	/**
+	 * Returns the Extension name of the plugin that contains the widget
+	 *
+	 * @return string
+	 */
+	public function getParentExtensionName() {
+		return $this->parentExtensionName;
+	}
+
+	/**
+	 * Sets the name of the plugin that contains the widget
+	 *
+	 * @param string $parentPluginName
+	 * @return void
+	 */
+	public function setParentPluginName($parentPluginName) {
+		$this->parentPluginName = $parentPluginName;
+	}
+
+	/**
+	 * Returns the name of the plugin that contains the widget
+	 *
+	 * @return string
+	 */
+	public function getParentPluginName() {
+		return $this->parentPluginName;
 	}
 
 	/**
@@ -224,6 +272,13 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	 */
 	public function getViewHelperChildNodeRenderingContext() {
 		return $this->viewHelperChildNodeRenderingContext;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function __sleep() {
+		return array('widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName');
 	}
 }
 ?>

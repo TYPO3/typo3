@@ -50,17 +50,22 @@ class Tx_Fluid_Core_Widget_WidgetRequestBuilder extends Tx_Extbase_MVC_Web_Reque
 	 */
 	public function build() {
 		$request = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetRequest');
-		$request->injectEnvironment($this->environment);
-		$request->setMethod($this->environment->getRequestMethod());
-		$this->setArgumentsFromRawRequestData($request);
+		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
+			$request->setArguments(t3lib_div::_POST());
+		} else {
+			$request->setArguments(t3lib_div::_GET());
+		}
 
-		$rawGetArguments = $this->environment->getRawGetArguments();
+		$rawGetArguments = t3lib_div::_GET();
 			// TODO: rename to @action, to be consistent with normal naming?
 		if (isset($rawGetArguments['action'])) {
 			$request->setControllerActionName($rawGetArguments['action']);
 		}
 
-		$widgetContext = $this->ajaxWidgetContextHolder->get($rawGetArguments['f3-fluid-widget-id']);
+		$widgetContext = $this->ajaxWidgetContextHolder->get($rawGetArguments['fluid-widget-id']);
 		$request->setWidgetContext($widgetContext);
 		return $request;
 	}

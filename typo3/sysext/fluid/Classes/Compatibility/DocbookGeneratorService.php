@@ -72,7 +72,7 @@ class Tx_Fluid_Compatibility_DocbookGeneratorService extends Tx_Fluid_Service_Do
 	}
 
 	protected function instanciateViewHelper($className) {
-		$objectFactory = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory');
+		$objectFactory = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		return $objectFactory->create($className);
 	}
 }

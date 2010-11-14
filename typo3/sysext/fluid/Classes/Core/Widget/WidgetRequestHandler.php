@@ -29,15 +29,68 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_Core_Widget_WidgetRequestHandler extends Tx_Extbase_MVC_Web_RequestHandler {
+class Tx_Fluid_Core_Widget_WidgetRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
+
+	/**
+	 * @var Tx_Fluid_Core_Widget_AjaxWidgetContextHolder
+	 */
+	protected $ajaxWidgetContextHolder;
+
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function injectAjaxWidgetContextHolder(Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder) {
+		$this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
+	}
+
+	/**
+	 * Injects the request handler
+	 *
+	 * @param Tx_Fluid_Core_Widget_WidgetRequestBuilder $requestBuilder
+	 * @return void
+	 */
+	public function injectRequestBuilder(Tx_Fluid_Core_Widget_WidgetRequestBuilder $requestBuilder) {
+		$this->requestBuilder = $requestBuilder;
+	}
+
+	/**
+	 * Handles the web request. The response will automatically be sent to the client.
+	 *
+	 * @return Tx_Extbase_MVC_Web_Response
+	 */
+	public function handleRequest() {
+		$request = $this->requestBuilder->build();
+		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
+			$request->setContentObjectData($this->cObj->data);
+		}
+		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
+
+		$this->dispatcher->dispatch($request, $response);
+		return $response;
+	}
 
 	/**
 	 * @return boolean TRUE if it is an AJAX widget request
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function canHandleRequest() {
-		$rawGetArguments = $this->environment->getRawGetArguments();
-		return isset($rawGetArguments['f3-fluid-widget-id']);
+		$rawGetArguments = t3lib_div::_GET();
+		return isset($rawGetArguments['fluid-widget-id']);
 	}
 
 	/**

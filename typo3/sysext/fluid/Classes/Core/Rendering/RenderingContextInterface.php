@@ -30,7 +30,7 @@ interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 	/**
 	 * Returns the object manager. Only the ViewHelperNode should do this.
 	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 */
 	public function getObjectManager();
 

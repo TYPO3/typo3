@@ -42,7 +42,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	protected $controllerContext;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -68,13 +68,11 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	protected $renderingStack = array();
 
 	/**
-	 * Injects the Object Manager
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -296,7 +294,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
 		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('Tx_Fluid_Core_Parser_Interceptor_Escape'));
-			
+
 		}
 		return $parserConfiguration;
 	}

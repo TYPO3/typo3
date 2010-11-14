@@ -60,9 +60,9 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 		if (!t3lib_extMgm::isLoaded('extbase')) {
 			return 'In the current version you still need to have Extbase installed in order to use the Fluid Standalone view!';
 		}
-	    $this->initializeAutoloader();
+		$this->initializeAutoloader();
 		$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
-		$this->injectObjectManager(t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager'));
+		$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
 		$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContext'));
 
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');

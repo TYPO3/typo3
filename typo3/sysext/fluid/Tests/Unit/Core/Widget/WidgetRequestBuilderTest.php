@@ -33,7 +33,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	protected $widgetRequestBuilder;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
@@ -65,7 +65,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 		$this->mockWidgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 
-		$this->mockObjectManager = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
+		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_Widget_WidgetRequest')->will($this->returnValue($this->mockWidgetRequest));
 
 		$this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);

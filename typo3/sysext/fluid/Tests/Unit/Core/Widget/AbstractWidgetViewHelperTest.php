@@ -43,7 +43,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	protected $widgetContext;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -69,8 +69,8 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$this->widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$this->viewHelper->injectWidgetContext($this->widgetContext);
 
-		new Tx_Fluid_Compatibility_ObjectManager() = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
-		$this->viewHelper->injectObjectManager(new Tx_Fluid_Compatibility_ObjectManager());
+		$this->objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->viewHelper->injectObjectManager($this->objectManager);
 
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->viewHelper->_set('controllerContext', $this->controllerContext);
@@ -136,7 +136,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$rootNode->expects($this->at(1))->method('addChildNode')->with($node2);
 		$rootNode->expects($this->at(2))->method('addChildNode')->with($node3);
 
-		new Tx_Fluid_Compatibility_ObjectManager()->expects($this->once())->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($rootNode));
+		$this->objectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($rootNode));
 
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 		$this->viewHelper->expects($this->once())->method('getRenderingContext')->will($this->returnValue($renderingContext));
@@ -168,8 +168,8 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		// Initial Setup
 		$widgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 		$response = $this->getMock('Tx_Fluid_MVC_Web_Response');
-		new Tx_Fluid_Compatibility_ObjectManager()->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Widget_WidgetRequest')->will($this->returnValue($widgetRequest));
-		new Tx_Fluid_Compatibility_ObjectManager()->expects($this->at(1))->method('create')->with('Tx_Fluid_MVC_Web_Response')->will($this->returnValue($response));
+		$this->objectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Widget_WidgetRequest')->will($this->returnValue($widgetRequest));
+		$this->objectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_MVC_Web_Response')->will($this->returnValue($response));
 
 		// Widget Context is set
 		$widgetRequest->expects($this->once())->method('setWidgetContext')->with($this->widgetContext);

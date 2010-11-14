@@ -38,7 +38,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * Object factory mock
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
@@ -66,7 +66,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 	public function setUp() {
 		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
 
-		$this->mockObjectManager = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
+		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->renderingContext->injectObjectManager($this->mockObjectManager);
 
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
