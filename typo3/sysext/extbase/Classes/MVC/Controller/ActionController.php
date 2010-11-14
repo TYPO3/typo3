@@ -266,12 +266,14 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$viewObjectName = $this->resolveViewObjectName();
 		if ($viewObjectName !== FALSE) {
 			$view = $this->objectManager->create($viewObjectName);
+			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
 				unset($view);
 			}
 		}
 		if (!isset($view) && $this->defaultViewObjectName != '') {
 			$view = $this->objectManager->create($this->defaultViewObjectName);
+			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
 				unset($view);
 			}
@@ -281,8 +283,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
-
-		$this->setViewConfiguration($view);
 
 		if (method_exists($view, 'injectSettings')) {
 			$view->injectSettings($this->settings);
