@@ -62,12 +62,12 @@ class Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper extends Tx_Fluid_Core_Widge
 
 	/**
 	 *
-	 * @param Tx_Extbase_Persistence_QueryResult $objects
+	 * @param Tx_Extbase_Persistence_QueryResultInterface $objects
 	 * @param string $as
 	 * @param array $configuration
 	 * @return string
 	 */
-	public function render(Tx_Extbase_Persistence_QueryResult $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE)) {
+	public function render(Tx_Extbase_Persistence_QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE)) {
 		return $this->initiateSubRequest();
 	}
 }

@@ -97,27 +97,26 @@ class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 *
 	 * @return string the Widget URI
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo argumentsToBeExcludedFromQueryString does not work yet, needs to be fixed.
 	 */
 	protected function getWidgetUri() {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
-		// TODO adjust arguments that should be excluded
-		$argumentsToBeExcludedFromQueryString = array(
-			'@extension',
-			'@subpackage',
-			'@controller'
-		);
-
+		$argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
+		$arguments = $this->arguments->hasArgument('arguments') ? $this->arguments['arguments'] : array();
+		if ($this->arguments->hasArgument('action')) {
+			$arguments['action'] = $this->arguments['action'];
+		}
+		if ($this->arguments->hasArgument('format') && $this->arguments['format'] !== '') {
+			$arguments['format'] = $this->arguments['format'];
+		}
 		return $uriBuilder
 			->reset()
-			->setArgumentPrefix($this->controllerContext->getRequest()->getArgumentPrefix())
+			->setArguments(array($argumentPrefix => $arguments))
 			->setSection($this->arguments['section'])
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
 			->setFormat($this->arguments['format'])
-			->uriFor($this->arguments['action'], $this->arguments['arguments'], '', '', '');
+			->build();
 	}
 }
 

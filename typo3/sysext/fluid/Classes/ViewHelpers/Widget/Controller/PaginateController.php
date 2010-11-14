@@ -31,6 +31,11 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 	protected $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE);
 
 	/**
+	 * @var Tx_Extbase_Persistence_QueryResultInterface
+	 */
+	protected $objects;
+
+	/**
 	 * @var integer
 	 */
 	protected $currentPage = 1;
@@ -41,62 +46,65 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 	protected $numberOfPages = 1;
 
 	/**
+	 * @return void
+	 */
+	public function initializeAction() {
+		$this->objects = $this->widgetConfiguration['objects'];
+		$this->configuration = t3lib_div::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
+		$this->numberOfPages = ceil(count($this->objects) / (integer)$this->configuration['itemsPerPage']);
+	}
+
+	/**
 	 * @param integer $currentPage
 	 * @return void
 	 */
 	public function indexAction($currentPage = 1) {
-		$objects = $this->widgetConfiguration['objects'];
-		$as = $this->widgetConfiguration['as'];
-		$this->configuration = t3lib_div::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
-		$itemsPerPage = (integer)$this->configuration['itemsPerPage'];
-
-			// calculate number of pages and set current page
-		$this->numberOfPages = ceil(count($objects) / $itemsPerPage);
-		if ($currentPage < 1) {
+			// set current page
+		$this->currentPage = (integer)$currentPage;
+		if ($this->currentPage < 1) {
 			$this->currentPage = 1;
-		} elseif ($currentPage > $this->numberOfPages) {
+		} elseif ($this->currentPage > $this->numberOfPages) {
 			$this->currentPage = $this->numberOfPages;
-		} else {
-			$this->currentPage = $currentPage;
 		}
 
 			// modify query
-		$query = $objects->getQuery();
+		$itemsPerPage = (integer)$this->configuration['itemsPerPage'];
+		$query = $this->objects->getQuery();
 		$query->setLimit($itemsPerPage);
-		if ($currentPage > 1) {
-			$query->setOffset($itemsPerPage * ($currentPage - 1));
+		if ($this->currentPage > 1) {
+			$query->setOffset($itemsPerPage * ($this->currentPage - 1));
 		}
 		$modifiedObjects = $query->execute();
 
 		$this->view->assign('contentArguments', array(
-			$as => $modifiedObjects
+			$this->widgetConfiguration['as'] => $modifiedObjects
 		));
 		$this->view->assign('configuration', $this->configuration);
-
-		$page = array(
-			'list' => $this->buildPages(),
-			'current' => $this->currentPage
-		);
-
-		if ($this->currentPage < $this->numberOfPages) {
-			$page['next'] = $this->currentPage + 1;
-		}
-		if ($this->currentPage > 1) {
-			$page['previous'] = $this->currentPage - 1;
-		}
-
-		$this->view->assign('page', $page);
+		$this->view->assign('pagination', $this->buildPagination());
 	}
 
 	/**
+	 * Returns an array with the keys "pages", "current", "numberOfPages", "nextPage" & "previousPage"
+	 *
 	 * @return array
 	 */
-	protected function buildPages() {
+	protected function buildPagination() {
 		$pages = array();
 		for ($i = 1; $i <= $this->numberOfPages; $i++) {
 			$pages[] = array('number' => $i, 'isCurrent' => ($i === $this->currentPage));
 		}
-		return $pages;
+		$pagination = array(
+			'pages' => $pages,
+			'current' => $this->currentPage,
+			'numberOfPages' => $this->numberOfPages,
+		);
+		if ($this->currentPage < $this->numberOfPages) {
+			$pagination['nextPage'] = $this->currentPage + 1;
+		}
+		if ($this->currentPage > 1) {
+			$pagination['previousPage'] = $this->currentPage - 1;
+		}
+		return $pagination;
 	}
 }
 
