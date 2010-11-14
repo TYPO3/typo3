@@ -28,7 +28,7 @@
 /**
  * Include file extending localRecordList for DBAL compatibility
  *
- * $Id: class.ux_db_list_extra.php 30032 2010-02-14 23:14:56Z xperseguers $
+ * $Id: class.ux_db_list_extra.php 39335 2010-10-19 13:31:10Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>

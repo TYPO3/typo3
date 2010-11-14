@@ -1,5 +1,6 @@
 2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Raised DBAL to version 1.2.0beta1
 	* Added feature #16215: Allow array as localconf.php configuration values
 
 2010-11-13  Ernesto Baschny  <ernst@cron-it.de>

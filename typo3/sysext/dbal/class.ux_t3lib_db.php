@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 38418 2010-09-21 16:46:57Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 39696 2010-10-30 09:28:12Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -325,7 +325,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			t3lib_div::writeFile(PATH_typo3conf . 'temp_fieldInfo.php', $cachedFieldInfo);
 
 			if (strcmp(t3lib_div::getUrl(PATH_typo3conf . 'temp_fieldInfo.php'), $cachedFieldInfo)) {
-				die('typo3temp/temp_incfields.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+				die('typo3conf/temp_fieldInfo.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
 			}
 		}
 	}
@@ -920,7 +920,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			case 'UPDATE':
 				$table = $queryParts['TABLE'];
 				$fields = array();
-				foreach ($components['FIELDS'] as $fN => $fV) {
+				foreach ($queryParts['FIELDS'] as $fN => $fV) {
 					$fields[$fN] = $fV[0];
 				}
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
@@ -1630,9 +1630,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		List of fields to be selected from DB
 	 * @return	string		Quoted list of fields to be selected from DB
-	 * @deprecated since TYPO3 4.0
+	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
 	 */
 	public function quoteSelectFields($select_fields) {
+		t3lib_div::logDeprecatedFunction();
+
 		$this->quoteFieldNames($select_fields);
 	}
 
@@ -2454,9 +2456,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Database name
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer
-	 * @deprecated since TYPO3 4.1
+	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6
 	 */
 	public function sql($db,$query) {
+		t3lib_div::logDeprecatedFunction();
+
 		return $this->sql_query($query);
 	}
 

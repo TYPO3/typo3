@@ -11,4 +11,7 @@ $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'] = t3lib_
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['stepOutput'][] = 'EXT:dbal/class.tx_dbal_installtool.php:tx_dbal_installtool';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['writeLocalconf'][] = 'EXT:dbal/class.tx_dbal_installtool.php:tx_dbal_installtool';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'][] = 'EXT:dbal/class.tx_dbal_installtool.php:tx_dbal_installtool';
+
+// Register a hook for the extension manager
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'][] = 'EXT:dbal/class.tx_dbal_em.php:tx_dbal_em'; 
 ?>

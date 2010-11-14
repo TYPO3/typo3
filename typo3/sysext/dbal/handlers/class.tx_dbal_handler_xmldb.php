@@ -27,7 +27,7 @@
 /**
  * Contains an example DBAL handler class
  *
- * $Id: class.tx_dbal_handler_xmldb.php 35523 2010-07-11 14:04:44Z xperseguers $
+ * $Id: class.tx_dbal_handler_xmldb.php 39335 2010-10-19 13:31:10Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  */
