@@ -1,3 +1,7 @@
+2010-11-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed some minor style issues caused by Ext Js' style reset definitions
+
 2010-11-12  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #16337: System health status self monitoring

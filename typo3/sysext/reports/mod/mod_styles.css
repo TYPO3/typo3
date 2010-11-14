@@ -59,6 +59,16 @@ body#ext-reports-mod-index-php {
 	padding: 5px 0;
 }
 
+#ext-reports-mod-index-php .message-body ul {
+	padding-top: 5px;
+	list-style: disc;
+}
+
+#ext-reports-mod-index-php .message-body ol {
+	padding-top: 5px;
+	list-style: decimal;
+}
+
 #ext-reports-mod-index-php .message-left {
 	float: left;
 	width: 400px;

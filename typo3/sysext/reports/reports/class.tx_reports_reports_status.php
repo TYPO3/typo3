@@ -202,6 +202,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $headerIcon . $provider . '</h2>
 				<div ' . $collapsedStyle . '>' . $messages . '</div>';
 		}
+
 		return $content;
 	}
 
