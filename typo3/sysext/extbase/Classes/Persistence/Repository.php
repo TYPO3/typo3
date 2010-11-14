@@ -247,7 +247,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function countAll() {
-		return $this->createQuery()->count();
+		return $this->createQuery()->execute()->count();
 	}
 
 	/**
@@ -278,10 +278,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$result = $query->matching($query->equals('uid', $uid))->execute();
-			$object = NULL;
-			if (count($result) > 0) {
-				$object = current($result);
+			$object = $query->matching($query->equals('uid', $uid))
+					->execute()
+					->getFirst();
+			if ($object !== FALSE) {
 				$this->identityMap->registerObject($object, $uid);
 			}
 		}
@@ -317,18 +317,16 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
 			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+			$object = $query->matching($query->equals($propertyName, $arguments[0]))
 				->setLimit(1)
-				->execute();
-			$object = NULL;
-			if (count($result) > 0) {
-				$object = current($result);
-			}
+				->execute()
+				->getFirst();
 			return $object;
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
 			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
 			$query = $this->createQuery();
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->execute()
 				->count();
 			return $result;
 		}
