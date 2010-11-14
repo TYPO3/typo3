@@ -1,3 +1,7 @@
+2010-11-14  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #16315: Wrong reference to unzip class
+
 2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL to version 1.2.0beta1
