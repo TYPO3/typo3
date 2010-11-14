@@ -204,6 +204,97 @@ class t3lib_install {
 	}
 
 	/**
+	 * Takes an array with lines from localconf.php, finds a variable and inserts the new array value.
+	 *
+	 * @param array $lines the localconf.php file exploded into an array by line breaks. {@see writeToLocalconf_control()}
+	 * @param string $variable the variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
+	 * @param array $value value to be assigned to the variable
+	 * @return void
+	 * @see writeToLocalconf_control()
+	 */
+	public function setArrayValueInLocalconfFile(array &$lines, $variable, array $value) {
+		$commentKey = '## ';
+		$inArray = in_array($commentKey . $this->localconf_editPointToken, $lines);
+		$tokenSet = $this->localconf_editPointToken && !$inArray;	// Flag is set if the token should be set but is not yet
+		$stopAtToken = $this->localconf_editPointToken && $inArray;
+		$comment = 'Modified or inserted by ' . $this->updateIdentity . '.';
+		$format = "%s = %s;\t// " . $comment;
+
+		$insertPos = count($lines);
+		$startPos = 0;
+		if (!($this->localconf_addLinesOnly || $tokenSet)) {
+			for ($i = count($lines) - 1; $i > 0; $i--) {
+				$line = trim($lines[$i]);
+				if ($stopAtToken && t3lib_div::isFirstPartOfStr($line, $this->localconf_editPointToken)) {
+					break;
+				}
+				if (t3lib_div::isFirstPartOfStr($line, '?>')) {
+					$insertPos = $i;
+				}
+				if (t3lib_div::isFirstPartOfStr($line, $variable)) {
+					$startPos = $i;
+					break;
+				}
+			}
+		}
+		if ($startPos) {
+			$this->touchedLine = $startPos;
+			$endPos = $startPos;
+			for ($i = $startPos; $i < count($lines); $i++) {
+				$line = trim($lines[$i]);
+				if (t3lib_div::isFirstPartOfStr($line, ');')) {
+					$endPos = $i;
+					break;
+				}
+			}
+
+			$startLines = array_slice($lines, 0, $startPos);
+			$endLines = array_slice($lines, $endPos + 1);
+
+			$lines = $startLines;
+			$definition = $this->array_export($value);
+			$lines[] = sprintf($format, $variable, $definition);
+			foreach ($endLines as $line) {
+				$lines[] = $line;
+			}
+		} else {
+			$lines[$insertPos] = sprintf($format, $variable, $this->array_export($value));
+			$lines[] = '?>';
+			$this->touchedLine = -1;
+		}
+	}
+
+	/**
+	 * Returns a parsable string representation of an array variable. This methods enhances
+	 * standard method var_export from PHP to take TYPO3's CGL into account.
+	 *
+	 * @param array $variable
+	 * @return string
+	 */
+	protected function array_export(array $variable) {
+		$lines = explode("\n", var_export($variable, TRUE));
+		$out = 'array(';
+
+		for ($i = 1; $i < count($lines); $i++) {
+			$out .= "\n";
+				// Make the space-indented declaration tab-indented instead
+			while (substr($lines[$i], 0, 2) === '  ') {
+				$out .= "\t";
+				$lines[$i] = substr($lines[$i], 2);
+			}
+			$out .= $lines[$i];
+				// Array declaration should be next to the assignment and no space between
+				// "array" and its opening parenthesis should exist
+			if (preg_match('/\s=>\s$/', $lines[$i])) {
+				$out .= preg_replace('/^\s*array \(/', 'array(', $lines[$i + 1]);
+				$i++;
+			}
+		}
+
+		return $out;
+	}
+
+	/**
 	 * Writes or returns lines from localconf.php
 	 *
 	 * @param	array		Array of lines to write back to localconf.php. Possibly
@@ -250,28 +341,11 @@ class t3lib_install {
 			array_push($inlines,$writeToLocalconf_dat['endLine']);
 
 			if ($this->setLocalconf)	{
-				$success = FALSE;
-				if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'],implode(LF,$inlines)))	{
-					$msg = 'typo3conf/localconf.php'.$tmpExt.' could not be written - maybe a write access problem?';
-				}
-				elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF,$inlines)))	{
-					@unlink($writeToLocalconf_dat['tmpfile']);
-					$msg = 'typo3conf/localconf.php'.$tmpExt.' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
-				}
-				elseif (!@copy($writeToLocalconf_dat['tmpfile'],$writeToLocalconf_dat['file']))	{
-					$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php'.$tmpExt.' - maybe a write access problem?';
-				}
-				else {
-					@unlink($writeToLocalconf_dat['tmpfile']);
-					$success = TRUE;
-					$msg = 'Configuration written to typo3conf/localconf.php';
-				}
-				$this->messages[] = $msg;
+				$success = $this->writeToLocalconf($inlines, $absFullPath);
 
 				if ($success)	{
 					return 'continue';
 				} else {
-					t3lib_div::sysLog($msg, 'Core', 3);
 					return 'nochange';
 				}
 			} else {
@@ -280,6 +354,75 @@ class t3lib_install {
 		} else {	// Return lines found in localconf.php
 			return $lines;
 		}
+	}
+
+	/**
+	 * Writes lines to localconf.php.
+	 *
+	 * @param array Array of lines to write back to localconf.php
+	 * @param string Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
+	 * @return boolean TRUE if method succeeded, otherwise FALSE
+	 */
+	public function writeToLocalconf(array $lines, $absFullPath = '') {
+		$tmpExt = '.TMP.php';
+		$writeToLocalconf_dat = array();
+		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf . 'localconf.php';
+		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'] . $tmpExt;
+
+			// Checking write state of localconf.php:
+		if (!$this->allowUpdateLocalConf) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.',
+				1270853915
+			);
+		}
+		if (!@is_writable($writeToLocalconf_dat['file'])) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!',
+				1270853916
+			);
+		}
+
+		$writeToLocalconf_dat['endLine'] = array_pop($lines);	// Getting "? >" ending.
+		if (!strstr('?' . '>', $writeToLocalconf_dat['endLine'])) {
+			$lines[] = $writeToLocalconf_dat['endLine'];
+			$writeToLocalconf_dat['endLine'] = '?' . '>';
+		}
+			// Checking if "updated" line was set by this tool - if so remove old line.
+		$updatedLine = array_pop($lines);
+		$writeToLocalconf_dat['updatedText'] = '// Updated by '. $this->updateIdentity . ' ';
+
+		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText'])) {
+			$lines[] = $updatedLine;
+		}
+
+		$updatedLine = $writeToLocalconf_dat['updatedText'] . date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s');
+		$lines[] = $updatedLine;
+		$lines[] = $writeToLocalconf_dat['endLine'];
+
+		$success = FALSE;
+		if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
+			$msg = 'typo3conf/localconf.php' . $tmpExt . ' could not be written - maybe a write access problem?';
+		}
+		elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
+			@unlink($writeToLocalconf_dat['tmpfile']);
+			$msg = 'typo3conf/localconf.php' . $tmpExt . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+		}
+		elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
+			$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt . ' - maybe a write access problem?';
+		}
+		else {
+			@unlink($writeToLocalconf_dat['tmpfile']);
+			$success = TRUE;
+			$msg = 'Configuration written to typo3conf/localconf.php';
+		}
+		$this->messages[] = $msg;
+
+		if (!$success) {
+			t3lib_div::sysLog($msg, 'Core', 3);
+		}
+
+		return $success;
 	}
 
 	/**
