@@ -1,6 +1,7 @@
 2010-11-13  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #15666: sys_language table icon should be the flag you selected, using the new flag sprite (Thanks to Steffen Ritter)
+	* Follow-up to #16302: Fixes missing tplRow leading to a broken "Edit TypoScript file content in t3editor" (Thanks to Fabrizio Branca)
 
 2010-11-13  Benjamin Mack  <benni@typo3.org>
 
