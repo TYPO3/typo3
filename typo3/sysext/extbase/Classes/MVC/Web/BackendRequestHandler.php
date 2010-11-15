@@ -42,8 +42,6 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 
 		$this->dispatcher->dispatch($request, $response);
 
-		$this->flashMessages->persist();
-
 		return $response;
 	}
 
