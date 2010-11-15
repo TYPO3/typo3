@@ -92,10 +92,11 @@ class Tx_Extbase_Core_Bootstrap {
 		$this->initializeClassLoader();
 		$this->initializeObjectManager();
 		$this->initializeConfiguration($configuration);
+		$this->configureObjectManager();
 		// $this->initializeExtensions();
 		$this->initializeCache();
 		$this->initializeReflection();
-		// $this->initializeObjectContainer();
+
 		$this->initializePersistence();
 		$this->initializeBackwardsCompatibility();
 		// $this->initializeSession();
@@ -144,6 +145,27 @@ class Tx_Extbase_Core_Bootstrap {
 		$contentObject = isset($this->cObj) ? $this->cObj : t3lib_div::makeInstance('tslib_cObj');
 		$this->configurationManager->setContentObject($contentObject);
 		$this->configurationManager->setConfiguration($configuration);
+	}
+
+	/**
+	 * Configures the object manager object configuration from
+	 * config.tx_extbase.objects
+	 *
+	 * @return void
+	 * @see initialize()
+	 */
+	public function configureObjectManager() {
+		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.']) && is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+			$objectConfiguration = $typoScriptSetup['config.']['tx_extbase.']['objects.'];
+
+			foreach ($objectConfiguration as $classNameWithDot => $classConfiguration) {
+				if (isset($classConfiguration['className'])) {
+					$originalClassName = substr($classNameWithDot, 0, -1);
+					Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
+				}
+			}
+		}
 	}
 
 	/**

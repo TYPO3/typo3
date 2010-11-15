@@ -86,17 +86,6 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 
 		return $instance;
 	}
-
-	/**
-	 * Registers a classname that should be used to resolve a given interface.
-	 *
-	 * Per default the interface's name stripped of "Interface" will be used.
-	 * @param string $className
-	 * @param string $alternativeClassName
-	 */
-	static public function registerImplementation($className, $alternativeClassName) {
-		return Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($className, $alternativeClassName);
-	}
 }
 
 ?>
