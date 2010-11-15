@@ -541,7 +541,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'pid',
 				'tt_content',
-				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
 				'',
 				'',
 				2
