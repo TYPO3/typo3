@@ -46,7 +46,7 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * Per-User unique identifier of the widget, if it is an AJAX widget.
 	 *
-	 * @var integer
+	 * @var string
 	 */
 	protected $ajaxWidgetIdentifier;
 
@@ -121,7 +121,7 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	}
 
 	/**
-	 * @return integer
+	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getAjaxWidgetIdentifier() {
@@ -129,7 +129,7 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	}
 
 	/**
-	 * @param integer $ajaxWidgetIdentifier
+	 * @param string $ajaxWidgetIdentifier
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

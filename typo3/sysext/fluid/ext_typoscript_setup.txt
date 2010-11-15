@@ -1,6 +1,7 @@
 fluidAjaxWidgetResponse = PAGE
 fluidAjaxWidgetResponse {
-	typeNum = 7076857368 # todo: make page type configurable
+	 # todo: make page type configurable
+	typeNum = 7076
 	headerData >
 	config {
 		no_cache=1

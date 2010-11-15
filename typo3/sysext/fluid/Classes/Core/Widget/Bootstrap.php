@@ -49,6 +49,7 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 		$this->initializeClassLoader();
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$this->initializeConfiguration($configuration);
+		$this->configureObjectManager();
 		$ajaxWidgetContextHolder = $this->objectManager->get('Tx_Fluid_Core_Widget_AjaxWidgetContextHolder');
 
 		$widgetIdentifier = t3lib_div::_GET('fluid-widget-id');
@@ -87,6 +88,28 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 		$contentObject = isset($this->cObj) ? $this->cObj : t3lib_div::makeInstance('tslib_cObj');
 		$this->configurationManager->setContentObject($contentObject);
 		$this->configurationManager->setConfiguration($configuration);
+	}
+
+	/**
+	 * Configures the object manager object configuration from
+	 * config.tx_extbase.objects
+	 *
+	 * @return void
+	 * @see initialize()
+	 * @todo this is duplicated code (see Tx_Extbase_Core_Bootstrap::configureObjectManager())
+	 */
+	public function configureObjectManager() {
+		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.']) && is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+			$objectConfiguration = $typoScriptSetup['config.']['tx_extbase.']['objects.'];
+
+			foreach ($objectConfiguration as $classNameWithDot => $classConfiguration) {
+				if (isset($classConfiguration['className'])) {
+					$originalClassName = substr($classNameWithDot, 0, -1);
+					Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
+				}
+			}
+		}
 	}
 }
 

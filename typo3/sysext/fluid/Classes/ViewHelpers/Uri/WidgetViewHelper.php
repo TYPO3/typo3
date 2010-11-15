@@ -63,11 +63,12 @@ class Tx_Fluid_ViewHelpers_Uri_WidgetViewHelper extends Tx_Fluid_Core_ViewHelper
 		if ($action === NULL) {
 			$action = $this->controllerContext->getRequest()->getControllerActionName();
 		}
-		$arguments['action'] = $action;
-		$arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
 		$arguments['id'] = $GLOBALS['TSFE']->id;
 		// TODO page type should be configurable
-		$arguments['type'] = 7076857368;
+		$arguments['type'] = 7076;
+		$arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
+		$arguments['action'] = $action;
+
 		return '?' . http_build_query($arguments, NULL, '&');
 	}
 

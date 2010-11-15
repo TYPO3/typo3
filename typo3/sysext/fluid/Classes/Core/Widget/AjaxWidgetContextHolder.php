@@ -33,14 +33,6 @@
 class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 
 	/**
-	 * Counter which points to the next free Ajax Widget ID which
-	 * can be used.
-	 *
-	 * @var integer
-	 */
-	protected $nextFreeAjaxWidgetId = 0;
-
-	/**
 	 * An array $ajaxWidgetIdentifier => $widgetContext
 	 * which stores the widget context.
 	 *
@@ -77,12 +69,11 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	/**
 	 * Get the widget context for the given $ajaxWidgetId.
 	 *
-	 * @param integer $ajaxWidgetId
+	 * @param string $ajaxWidgetId
 	 * @return Tx_Fluid_Core_Widget_WidgetContext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function get($ajaxWidgetId) {
-		$ajaxWidgetId = (int) $ajaxWidgetId;
 		if (!isset($this->widgetContexts[$ajaxWidgetId])) {
 			throw new Tx_Fluid_Core_Widget_Exception_WidgetContextNotFoundException('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
 		}
@@ -98,8 +89,7 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function store(Tx_Fluid_Core_Widget_WidgetContext $widgetContext) {
-		// TODO persist nextFreeAjaxWidgetId in session
-		$ajaxWidgetId = $this->nextFreeAjaxWidgetId ++;
+		$ajaxWidgetId = md5(uniqid(mt_rand(), TRUE));
 		$widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);
 		$this->widgetContexts[$ajaxWidgetId] = $widgetContext;
 		$this->storeWidgetContexts();

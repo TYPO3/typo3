@@ -63,7 +63,6 @@ class Tx_Fluid_ViewHelpers_Widget_AutocompleteViewHelper extends Tx_Fluid_Core_W
 	 * @return string
 	 */
 	public function render(Tx_Extbase_Persistence_QueryResult $objects, $for, $searchProperty) {
-		$GLOBALS['TSFE']->additionalHeaderData['Tx_Fluid_ViewHelpers_Widget_AutocompleteViewHelper'] ='<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>';
 		return $this->initiateSubRequest();
 	}
 }
