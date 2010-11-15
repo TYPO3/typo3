@@ -5285,8 +5285,10 @@ class tslib_cObj {
 			if ($forceTitle == '-') {
 				$forceTitle = '';	// The '-' character means 'no title'. Necessary in order to specify further parameters without setting the title!
 			}
-			$forceParams = trim($link_paramA[4]);	// params value
-			$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
+			if (isset($link_paramA[4]) && strlen(trim($link_paramA[4])) > 0) {
+				$forceParams = trim($link_paramA[4]);	// params value
+				$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
+			}
 
 				// Check, if the target is coded as a JS open window link:
 			$JSwindowParts = array();
