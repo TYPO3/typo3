@@ -450,6 +450,8 @@ class SC_mod_user_setup_index {
 			t3lib_FlashMessage::INFO
 		);
 		$this->content .= $flashMessage->render();
+			// end of wrapper div
+		$this->content .= '</div>';
 
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -457,12 +459,12 @@ class SC_mod_user_setup_index {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('UserSettings'));
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			// end of wrapper div
-		$this->content .= '</div>';
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			$LANG->getLL('UserSettings'),
+			$this->content
+		);
 
 	}
 

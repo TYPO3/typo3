@@ -162,10 +162,12 @@ class tx_reports_Module extends t3lib_SCbase {
 		$markers['CONTENT'] = $this->content;
 
 				// Build the <body> for the module
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			$GLOBALS['LANG']->getLL('title'),
+			$this->content
+		);
 	}
 
 	/**

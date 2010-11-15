@@ -262,10 +262,12 @@ class TYPO3backend {
 			: 'TYPO3 '.TYPO3_version
 		);
 
-			// start page header:
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
-		$this->content .= $backendScaffolding;
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content = $backendScaffolding;
+			// Renders the module page
+		$this->content = $GLOBALS['TBE_TEMPLATE']->render(
+			$title,
+			$this->content
+		);
 
 		$hookConfiguration = array('content' => &$this->content);
 		$this->executeHook('renderPostProcess', $hookConfiguration);

@@ -209,21 +209,21 @@ class SC_db_list {
 			// Apply predefined values for hidden checkboxes
 			// Set predefined value for DisplayBigControlPanel:
 		if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'activated') {
-			$this->MOD_SETTINGS['bigControlPanel'] = TRUE;	 
+			$this->MOD_SETTINGS['bigControlPanel'] = TRUE;
 		} elseif ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'deactivated') {
 			$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
 		}
 
 			// Set predefined value for Clipboard:
 		if ($this->modTSconfig['properties']['enableClipBoard'] === 'activated') {
-			$this->MOD_SETTINGS['clipBoard'] = TRUE;	 
+			$this->MOD_SETTINGS['clipBoard'] = TRUE;
 		} elseif ($this->modTSconfig['properties']['enableClipBoard'] === 'deactivated') {
 			$this->MOD_SETTINGS['clipBoard'] = FALSE;
 		}
 
 			// Set predefined value for LocalizationView:
 		if ($this->modTSconfig['properties']['enableLocalizationView'] === 'activated') {
-			$this->MOD_SETTINGS['localization'] = TRUE;	 
+			$this->MOD_SETTINGS['localization'] = TRUE;
 		} elseif ($this->modTSconfig['properties']['enableLocalizationView'] === 'deactivated') {
 			$this->MOD_SETTINGS['localization'] = FALSE;
 		}
@@ -481,10 +481,12 @@ class SC_db_list {
 		);
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage('DB list');
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			'DB list',
+			$this->content
+		);
 	}
 
 	/**

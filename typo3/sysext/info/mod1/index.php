@@ -145,22 +145,21 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			);
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->getLL('title'));
-			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 				// If no access or if ID == zero
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
 
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->header($LANG->getLL('title'));
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->spacer(10);
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$this->content = $this->doc->header($LANG->getLL('title'));
+			$this->content .= $this->doc->spacer(5);
+			$this->content .= $this->doc->spacer(10);
 		}
+		// Renders the module page
+		$this->content = $this->doc->render(
+			$LANG->getLL('title'),
+			$this->content
+		);
 	}
 
 	/**

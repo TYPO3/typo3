@@ -575,10 +575,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 		// Build the <body> for the module
-		$this->content = $this->doc->startPage('Extension Manager');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content .= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			'Extension Manager',
+			$this->content
+		);
 	}
 
 	/**

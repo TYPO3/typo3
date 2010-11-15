@@ -106,9 +106,8 @@ class SC_alt_intro {
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
 		$TBE_TEMPLATE->divClass = $TBE_TEMPLATE->bodyTagId;
-		$this->content.= $TBE_TEMPLATE->startPage('About modules');
 
-		$this->content .= '
+		$this->content = '
 			<div id="typo3-alt-intro-php-sub">
 			<h1>TYPO3 '.TYPO3_version.'<br />'.$LANG->getLL('introtext').'</h1>
 
@@ -129,8 +128,11 @@ class SC_alt_intro {
 		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
 		$this->content .= '<br /></div>';
 
-			// End page
-		$this->content.= $TBE_TEMPLATE->endPage();
+			// Renders the module page
+		$this->content = $TBE_TEMPLATE->render(
+			'About modules',
+			$this->content
+		);
 	}
 
 	/**

@@ -1184,10 +1184,12 @@ class SC_mod_tools_be_user_index {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage('Backend User Administration');
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content.= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			'Backend User Administration',
+			$this->content
+		);
 	}
 
 	/**

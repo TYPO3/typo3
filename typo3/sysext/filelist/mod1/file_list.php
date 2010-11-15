@@ -241,21 +241,21 @@ class SC_file_list {
 				// Apply predefined values for hidden checkboxes
 				// Set predefined value for DisplayBigControlPanel:
 			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
-				$this->MOD_SETTINGS['bigControlPanel'] = TRUE;	 
+				$this->MOD_SETTINGS['bigControlPanel'] = TRUE;
 			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
 				$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
 			}
 
 				// Set predefined value for DisplayThumbnails:
 			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
-				$this->MOD_SETTINGS['displayThumbs'] = TRUE;	 
+				$this->MOD_SETTINGS['displayThumbs'] = TRUE;
 			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
 				$this->MOD_SETTINGS['displayThumbs'] = FALSE;
 			}
 
 				// Set predefined value for Clipboard:
 			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
-				$this->MOD_SETTINGS['clipBoard'] = TRUE;	 
+				$this->MOD_SETTINGS['clipBoard'] = TRUE;
 			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
 				$this->MOD_SETTINGS['clipBoard'] = FALSE;
 			}
@@ -339,7 +339,6 @@ class SC_file_list {
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->getLL('files'));
 
 				// Create output
 			$pageContent='';
@@ -412,16 +411,19 @@ class SC_file_list {
 				'CONTENT' => $pageContent
 			);
 
-			$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$this->content = $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
+				// Renders the module page
+			$this->content = $this->doc->render(
+				$LANG->getLL('files'),
+				$this->content
+			);
 
 		} else {
 				// Create output - no access (no warning though)
-			$this->content = '';
-			$this->content .= $this->doc->startPage($LANG->getLL('files'));
-			$this->content .= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+			$this->content = $this->doc->render(
+				$LANG->getLL('files'),
+				''
+			);
 		}
 
 

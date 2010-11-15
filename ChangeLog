@@ -1,3 +1,7 @@
+2010-11-15  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16383: BE Module are complicate to render
+
 2010-11-15  Oliver Hader  <oliver@typo3.org>
 
 	* Add feature #16374: Implement Inline Relational Record Editing (IRRE) in Workspaces

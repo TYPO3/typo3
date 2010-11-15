@@ -157,16 +157,18 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		}
 
 			// Place content inside template
-		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$content .= $this->doc->moduleBody(
+
+		$content = $this->doc->moduleBody(
 			array(),
 			$this->getDocHeaderButtons(),
 			$this->getTemplateMarkers()
 		);
-		$content .= $this->doc->endPage();
 
-			// Replace content with templated content
-		$this->content = $content;
+			// Renders the module page
+		$this->content = $this->doc->render(
+			$GLOBALS['LANG']->getLL('title'),
+			$content
+		);
 	}
 
 	/**

@@ -311,14 +311,16 @@ class SC_mod_web_perm_index {
 			$markers['CONTENT'] = $this->content;
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->getLL('permissions'));
-			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 				// If no access or if ID == zero
-			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
-			$this->content.=$this->doc->header($LANG->getLL('permissions'));
+			$this->content =$this->doc->header($LANG->getLL('permissions'));
 		}
-		$this->content.= $this->doc->endPage();
+			// Renders the module page
+		$this->content = $this->doc->render(
+			$LANG->getLL('permissions'),
+			$this->content
+		);
 	}
 
 	/**

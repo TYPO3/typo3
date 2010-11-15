@@ -112,13 +112,16 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function flush() {
-		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$content.= $this->doc->moduleBody(
+		$content = $this->doc->moduleBody(
 			$this->pageRecord,
 			$this->getDocHeaderButtons(),
 			$this->getTemplateMarkers()
 		);
-		$content.= $this->doc->endPage();
+			// Renders the module page
+		$content = $this->doc->render(
+			$GLOBALS['LANG']->getLL('title'),
+			$content
+		);
 
 		$this->content = null;
 		$this->doc = null;

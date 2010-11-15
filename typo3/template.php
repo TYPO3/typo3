@@ -903,6 +903,21 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
+	 * Shortcut for render the complete page of a module
+	 *
+	 * @param  $title  page title
+	 * @param  $content  page content
+	 * @param bool $includeCsh  flag for including csh code
+	 * @return string complete page
+	 */
+	public function render($title, $content, $includeCsh = TRUE)  {
+		$pageContent = $this->startPage($title, $includeCsh);
+		$pageContent .= $content;
+		$pageContent .= $this->endPage();
+		return $this->insertStylesAndJS($pageContent);
+	}
+
+	/**
 	 * Returns the header-bar in the top of most backend modules
 	 * Closes section if open.
 	 *

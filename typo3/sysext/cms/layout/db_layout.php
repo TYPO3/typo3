@@ -571,10 +571,12 @@ class SC_db_layout {
 			);
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->getLL('title'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content.= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+				// Renders the module page
+			$this->content = $this->doc->render(
+				$LANG->getLL('title'),
+				$this->content
+			);
 
 		} else {
 
@@ -623,10 +625,12 @@ class SC_db_layout {
 				'CONTENT' => $body
 			);
 
-			$this->content=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content.=$this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
+				// Renders the module page
+			$this->content = $this->doc->render(
+				$LANG->getLL('title'),
+				$this->content
+			);
 		}
 	}
 

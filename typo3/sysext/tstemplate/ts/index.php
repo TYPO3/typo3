@@ -218,10 +218,12 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		}
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage('Template Tools');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content .= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Renders the module page
+		$this->content = $this->doc->render(
+			'Template Tools',
+			$this->content
+		);
 	}
 
 	function printContent() {
