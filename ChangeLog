@@ -18,6 +18,7 @@
 2010-11-15  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16170: Increase DB-fields spaceBefore and spaceAfter (tt_content) (Thanks to Henrik Ziegenhain)
+	* Added feature #16111: Change the layout of thumbnails and allowed file types so that they don't waste so much space anymore (Thanks to Jo Hasenau)
 
 2010-11-14  Steffen Kamper  <steffen@typo3.org>
 

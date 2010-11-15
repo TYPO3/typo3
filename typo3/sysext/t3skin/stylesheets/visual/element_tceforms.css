@@ -294,6 +294,14 @@ table.typo3-TCEforms table.wrapperAttention .wrapperTable5 {
 	border:none;
 }
 
+table.typo3-TCEforms div.imagethumbs .nobr {
+	background-color: #CCC;
+}
+
+table.typo3-TCEforms span.filetypes {
+	font-size: 0.8em;
+}
+
 input.typo3-TCEforms-suggest-search {
 	background-image: url('../../icons/gfx/zoom.gif');
 	background-position: 2px center;

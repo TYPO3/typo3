@@ -2254,7 +2254,7 @@ class t3lib_TCEforms	{
 				if(!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
-						$item .= '<input type="file" name="' . $PA['itemFormElName_file'] . '"' . $this->formWidth() . ' size="60" onchange="' . implode('', $PA['fieldChangeFunc']) . '" />';
+						$item .= '<input type="file" name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" />';
 					}
 				}
 			break;
@@ -3739,6 +3739,27 @@ class t3lib_TCEforms	{
 			  t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => htmlspecialchars($this->getLL('l_remove_selected')))) .
 			'</a>';
 		}
+		$imagesOnly = FALSE;
+		if ($params['thumbnails']) {
+				// In case we have thumbnails, check if only images are allowed.
+				// In this case, render them below the field, instead of to the right
+			$allowedExtensionList = t3lib_div::trimExplode(' ', strtolower($params['info']), TRUE);
+			$imageExtensionList = t3lib_div::trimExplode(',', strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), TRUE);
+			$imagesOnly = TRUE;
+			foreach ($allowedExtensionList as $allowedExtension) {
+				if (!t3lib_div::inArray($imageExtensionList, $allowedExtension)) {
+					$imagesOnly = FALSE;
+					break;
+				}
+			}
+		}
+		if ($imagesOnly) {
+			$rightbox = '';
+			$thumbnails = '<div class="imagethumbs">'. $this->wrapLabels($params['thumbnails']) .'</div>';
+		} else {
+			$rightbox = $this->wrapLabels($params['thumbnails']);
+			$thumbnails = '';
+		}
 
 		$str='<table border="0" cellpadding="0" cellspacing="0" width="1">
 			'.($params['headers']?'
@@ -3752,14 +3773,15 @@ class t3lib_TCEforms	{
 			<tr>
 				<td valign="top">'.
 					$selector.
-					($params['noList'] ? '' : '<br />'.$this->wrapLabels($params['info'])) .
-				'</td>
+					$thumbnails.
+					($params['noList'] ? '' : '<span class="filetypes">'. $this->wrapLabels($params['info'])) .
+				'</span></td>
 				<td valign="top" class="icons">'.
 					implode('<br />',$icons['L']).'</td>
 				<td valign="top" class="icons">'.
 					implode('<br />',$icons['R']).'</td>
 				<td valign="top" class="thumbnails">'.
-					$this->wrapLabels($params['thumbnails']).
+					$rightbox.
 				'</td>
 			</tr>
 		</table>';

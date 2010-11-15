@@ -185,12 +185,63 @@ table.typo3-TCEforms td.thumbnails {
 	padding-top: 6px;
 }
 
+table.typo3-TCEforms div.imagethumbs {
+	padding-top: 6px;
+	white-space: normal;
+	width: 253px;
+}
+
+table.typo3-TCEforms div.imagethumbs br {
+	display: none;
+}
+
+table.typo3-TCEforms div.imagethumbs .nobr {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	margin-right: 3px;
+	margin-bottom: 1px;
+	text-align: center;
+}
+
+table.typo3-TCEforms div.imagethumbs .nobr a {
+	display: block;
+	width: 60px;
+	height: 60px;
+	line-height: 58px;
+	text-align: center;
+}
+
+table.typo3-TCEforms div.imagethumbs .nobr a img {
+	display: inline;
+	margin-right: auto;
+	vertical-align: middle;
+	margin-left: auto;
+}
+
+table.typo3-TCEforms div.imagethumbs .nobr span {
+	display: none;
+}
+
+table.typo3-TCEforms span.filetypes {
+	display: block;
+	margin-top: 6px;
+	white-space: normal;
+	width: 250px;
+}
+
+.typo3-TCEforms select.tceforms-multiselect {
+	min-height: 85px;
+}
+
 .typo3-TCEforms-palette .typo3-csh-link img {
 	padding-top: 3px;
 	vertical-align: top;
 }
 
-.typo3-TCEforms-palette selct.select {
+.typo3-TCEforms-palette select.select,
+.t3-form-palette-field-container select.select {
 	margin-top: 2px;
 }
 
