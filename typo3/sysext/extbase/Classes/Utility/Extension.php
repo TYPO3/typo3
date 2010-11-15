@@ -32,6 +32,9 @@
  */
 class Tx_Extbase_Utility_Extension {
 
+	const TYPE_PLUGIN = 'list_type';
+	const TYPE_CONTENT_ELEMENT = 'CType';
+
 	/**
 	 * Add auto-generated TypoScript to configure the Extbase Dispatcher.
 	 *
@@ -49,9 +52,10 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
 	 * @param string $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
 	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
+	 * @param string $pluginType either Tx_Extbase_Utility_Extension::TYPE_PLUGIN (default) or Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
 	 * @return void
 	 */
-	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array()) {
+	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::TYPE_PLUGIN) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -91,13 +95,33 @@ class Tx_Extbase_Utility_Extension {
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
 
-		$pluginContent = trim('
+		switch ($pluginType) {
+			case self::TYPE_PLUGIN:
+				$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = tx_extbase_core_bootstrap->run
 	extensionName = ' . $extensionName . '
 	pluginName = ' . $pluginName . '
 }');
+			break;
+			case self::TYPE_CONTENT_ELEMENT:
+				$pluginContent = trim('
+tt_content.' . $pluginSignature . ' = COA
+tt_content.' . $pluginSignature . ' {
+	10 = < lib.stdheader
+	20 = USER
+	20 {
+		userFunc = tx_extbase_core_bootstrap->run
+		extensionName = ' . $extensionName . '
+		pluginName = ' . $pluginName . '
+	}
+}');
+			break;
+			default:
+				throw new InvalidArgumentException('The pluginType "' . $pluginType .'" is not suported', 1289858856);
+		}
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType'] = $pluginType;
 
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
@@ -123,7 +147,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
+		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType']);
 	}
 
 	/**
