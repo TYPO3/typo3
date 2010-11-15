@@ -48,14 +48,16 @@ class tx_version_tcemain {
 	 ****************************/
 
 	/**
-	 * hook that is called before any cmd of the commandmap is 
-	 * executed
-	 * @param	$tcemainObj	reference to the main tcemain object
-	 * @return	void
+	 * hook that is called before any cmd of the commandmap is executed
+	 *
+	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @return void
 	 */
-	public function processCmdmap_beforeStart(&$tcemainObj) {
+	public function processCmdmap_beforeStart(t3lib_TCEmain $tcemainObj) {
 			// Reset notification array
 		$this->notificationEmailInfo = array();
+			// Resolve dependencies of version/workspaces actions:
+		$tcemainObj->cmdmap = $this->getCommandMap($tcemainObj, $tcemainObj->cmdmap)->process()->get();
 	}
 
 
@@ -94,23 +96,7 @@ class tx_version_tcemain {
 				break;
 
 				case 'swap':
-					$swapMode = $tcemainObj->BE_USER->getTSConfigVal('options.workspaces.swapMode');
-					$elementList = array();
-					if ($swapMode == 'any' || ($swapMode == 'page' && $table == 'pages')) {
-							// check if we are allowed to do synchronios publish. 
-							// We must have a single element in the cmdmap to be allowed
-						if (count($tcemainObj->cmdmap) == 1 && count($tcemainObj->cmdmap[$table]) == 1) {
-							$elementList = $this->findPageElementsForVersionSwap($table, $id, $value['swapWith']);
-						}
-					}
-					if (count($elementList) == 0) {
-						$elementList[$table][] = array($id, $value['swapWith']);
-					}
-					foreach ($elementList as $tbl => $idList) {
-						foreach ($idList as $idKey => $idSet) {
-							$this->version_swap($tbl, $idSet[0], $idSet[1], $value['swapIntoWS'], $tcemainObj);
-						}
-					}
+					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'], $tcemainObj);
 				break;
 
 				case 'clearWSID':
@@ -122,35 +108,13 @@ class tx_version_tcemain {
 				break;
 
 				case 'setStage':
-					$elementList = array();
-					$idList = $elementList[$table] = t3lib_div::trimExplode(',', $id, 1);
-					$setStageMode = $tcemainObj->BE_USER->getTSConfigVal('options.workspaces.changeStageMode');
-					if ($setStageMode == 'any' || $setStageMode == 'page') {
-						if (count($idList) == 1) {
-							$rec = t3lib_BEfunc::getRecord($table, $idList[0], 't3ver_wsid');
-							$workspaceId = $rec['t3ver_wsid'];
-						} else {
-							$workspaceId = $tcemainObj->BE_USER->workspace;
-						}
-						if ($table !== 'pages') {
-							if ($setStageMode == 'any') {
-									// (1) Find page to change stage and (2) 
-									// find other elements from the same ws to change stage
-								$pageIdList = array();
-								$this->findPageIdsForVersionStateChange($table, $idList, $workspaceId, $pageIdList, $elementList);
-								$this->findPageElementsForVersionStageChange($pageIdList, $workspaceId, $elementList);
-							}
-						} else {
-							// Find all elements from the same ws to change stage
-							$this->findRealPageIds($idList);
-							$this->findPageElementsForVersionStageChange($idList, $workspaceId, $elementList);
-						}
-					}
-
-					foreach ($elementList as $tbl => $elementIdList) {
-						foreach ($elementIdList as $elementId) {
-							$this->version_setStage($tbl, $elementId, $value['stageId'], ($value['comment'] ? $value['comment'] : $this->generalComment), TRUE, $tcemainObj);
-						}
+					$elementIds = t3lib_div::trimExplode(',', $id, TRUE);
+					foreach ($elementIds as $elementId) {
+						$this->version_setStage($table, $elementId, $value['stageId'],
+							(isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment),
+							TRUE,
+							$tcemainObj
+						);
 					}
 				break;
 			}
@@ -463,7 +427,7 @@ class tx_version_tcemain {
 				if ($emailMessage && $emailSubject) {
 					t3lib_div::deprecationLog('This TYPO3 installation uses Workspaces staging notification by setting the TSconfig options "TCEMAIN.notificationEmail_subject" / "TCEMAIN.notificationEmail_body". Please use the more flexible marker-based options tx_version.workspaces.stageNotificationEmail.message / tx_version.workspaces.stageNotificationEmail.subject');
 
-					$emailSubject = sprintf($subject, $elementName);
+					$emailSubject = sprintf($emailSubject, $elementName);
 					$emailMessage = sprintf($emailMessage,
 						$markers['###SITE_NAME###'],
 						$markers['###SITE_URL###'],
@@ -521,6 +485,7 @@ class tx_version_tcemain {
 							if (!isset($languageObjects[$recipientLanguage])) {
 									// a LANG object in this language hasn't been 
 									// instantiated yet, so this is done here
+								/** @var $languageObject language */
 								$languageObject = t3lib_div::makeInstance('language');
 								$languageObject->init($recipientLanguage);
 								$languageObjects[$recipientLanguage] = $languageObject;
@@ -661,6 +626,9 @@ class tx_version_tcemain {
 					$verTablesArray[] = $tableName;
 				}
 			}
+
+				// Remove the possible inline child tables from the tables to be versioniozed automatically:
+			$verTablesArray = array_diff($verTablesArray, $this->getPossibleInlineChildTablesOfParentTable('pages'));
 
 				// Begin to copy pages if we're allowed to:
 			if ($tcemainObj->BE_USER->workspaceVersioningTypeAccess($versionizeTree)) {
@@ -866,7 +834,7 @@ class tx_version_tcemain {
 												} else {
 													// Otherwise update the movePlaceholder:
 													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($movePlhID), $movePlh);
-													$tcemainObj->updateRefIndex($table, $movePlhID);
+													$tcemainObj->addRemapStackRefIndex($table, $movePlhID);
 												}
 											}
 
@@ -880,7 +848,7 @@ class tx_version_tcemain {
 											$tcemainObj->newlog2(($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, $table, $id, $swapVersion['pid']);
 
 												// Update reference index of the live record:
-											$tcemainObj->updateRefIndex($table, $id);
+											$tcemainObj->addRemapStackRefIndex($table, $id);
 
 												// Set log entry for live record:
 											$propArr = $tcemainObj->getRecordPropertiesFromRow($table, $swapVersion);
@@ -893,7 +861,7 @@ class tx_version_tcemain {
 											$tcemainObj->setHistory($table, $id, $theLogId);
 
 												// Update reference index of the offline record:
-											$tcemainObj->updateRefIndex($table, $swapWith);
+											$tcemainObj->addRemapStackRefIndex($table, $swapWith);
 												// Set log entry for offline record:
 											$propArr = $tcemainObj->getRecordPropertiesFromRow($table, $curVersion);
 											if ($propArr['_ORIG_pid'] == -1) {
@@ -970,15 +938,24 @@ class tx_version_tcemain {
 
 			// Process pointer fields on normalized database:
 		if ($inlineType == 'field') {
-				// Read relations that point to the current record (e.g. live record):
+			// Read relations that point to the current record (e.g. live record):
+			/** @var $dbAnalysisCur t3lib_loadDBGroup */
 			$dbAnalysisCur = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			$dbAnalysisCur->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisCur->start('', $conf['foreign_table'], '', $curVersion['uid'], $table, $conf);
-				// Read relations that point to the record to be swapped with e.g. draft record):
+			// Read relations that point to the record to be swapped with e.g. draft record):
+			/** @var $dbAnalysisSwap t3lib_loadDBGroup */
 			$dbAnalysisSwap = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			$dbAnalysisSwap->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisSwap->start('', $conf['foreign_table'], '', $swapVersion['uid'], $table, $conf);
 				// Update relations for both (workspace/versioning) sites:
 			$dbAnalysisCur->writeForeignField($conf, $curVersion['uid'], $swapVersion['uid']);
 			$dbAnalysisSwap->writeForeignField($conf, $swapVersion['uid'], $curVersion['uid']);
+
+			$items = array_merge($dbAnalysisCur->itemArray, $dbAnalysisSwap->itemArray);
+			foreach ($items as $item) {
+				$tcemainObj->addRemapStackRefIndex($item['table'], $item['id']);
+			}
 
 			// Swap field values (CSV):
 			// BUT: These values will be swapped back in the next steps, when the *CHILD RECORD ITSELF* is swapped!
@@ -1066,7 +1043,7 @@ class tx_version_tcemain {
 					);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 							// Check, if this record has already been copied by a parent record as relation:
-						if (!$this->copyMappingArray[$table][$row['uid']]) {
+						if (!$tcemainObj->copyMappingArray[$table][$row['uid']]) {
 								// Copying each of the underlying records (method RAW)
 							$tcemainObj->copyRecord_raw($table, $row['uid'], $newPageId);
 						}
@@ -1303,6 +1280,43 @@ class tx_version_tcemain {
 		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid);
 	}
 
+	/**
+	 * Gets all possible child tables that are used on each parent table as field.
+	 *
+	 * @param string $parentTable
+	 * @param array $possibleInlineChildren
+	 * @return array
+	 */
+	protected function getPossibleInlineChildTablesOfParentTable($parentTable, array $possibleInlineChildren = array()) {
+		t3lib_div::loadTCA($parentTable);
+
+		foreach ($GLOBALS['TCA'][$parentTable]['columns'] as $parentField => $parentFieldDefinition) {
+			if (isset($parentFieldDefinition['config']['type'])) {
+				$parentFieldConfiguration = $parentFieldDefinition['config'];
+				if ($parentFieldConfiguration['type'] == 'inline' && isset($parentFieldConfiguration['foreign_table'])) {
+					if (!in_array($parentFieldConfiguration['foreign_table'], $possibleInlineChildren)) {
+						$possibleInlineChildren = $this->getPossibleInlineChildTablesOfParentTable(
+							$parentFieldConfiguration['foreign_table'],
+							array_merge($possibleInlineChildren, $parentFieldConfiguration['foreign_table'])
+						);
+					}
+				}
+			}
+		}
+
+		return $possibleInlineChildren;
+	}
+
+	/**
+	 * Gets an instance of the command map helper.
+	 *
+	 * @param t3lib_TCEmain $tceMain
+	 * @param  $commandMap
+	 * @return tx_version_tcemain_CommandMap
+	 */
+	public function getCommandMap(t3lib_TCEmain $tceMain, array $commandMap) {
+		return t3lib_div::makeInstance('tx_version_tcemain_CommandMap', $this, $tceMain, $commandMap);
+	}
 }
 
 ?>

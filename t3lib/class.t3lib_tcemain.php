@@ -337,6 +337,9 @@ class t3lib_TCEmain	{
 	var $copyMappingArray = Array();			// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
 	var $remapStack = array();					// array used for remapping uids and values at the end of process_datamap
 	var $remapStackRecords = array();			// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
+	protected $remapStackChildIds = array();	// array used for checking whether new children need to be remapped
+	protected $remapStackActions = array();		// array used for executing addition actions after remapping happened (sett processRemapStack())
+	protected $remapStackRefIndex = array();	// array used for executing post-processing on the reference index
 	var $updateRefIndexStack = array();			// array used for additional calls to $this->updateRefIndex
 	var $callFromImpExp = false;				// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
 	var $newIndexMap = array();					// Array for new flexform index mapping
@@ -911,7 +914,13 @@ class t3lib_TCEmain	{
 											}
 											$phShadowId = $this->insertDB($table,$id,$fieldArray,TRUE,0,TRUE);	// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
 											if ($phShadowId)	{
-												$this->placeholderShadowing($table,$phShadowId);
+													// Processes fields of the placeholder record:
+												$this->triggerRemapAction(
+													$table,
+													$id,
+													array($this, 'placeholderShadowing'),
+													array($table, $phShadowId)
+												);
 													// Hold auto-versionized ids of placeholders:
 												$this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
 											}
@@ -1533,6 +1542,7 @@ class t3lib_TCEmain	{
 				// check, if there is a NEW... id in the value, that should be substituded later
 			if (strpos($value, 'NEW') !== false) {
 				$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
+				$this->addNewValuesToRemapStackChildIds($valueArray);
 				$this->remapStack[] = array(
 					'func' => 'checkValue_group_select_processDBdata',
 					'args' => array($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field),
@@ -1957,6 +1967,7 @@ class t3lib_TCEmain	{
 			// We need to decide whether we use the stack or can save the relation directly.
 		if(strpos($value, 'NEW') !== false || !t3lib_div::testInt($id)) {
 			$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
+			$this->addNewValuesToRemapStackChildIds($valueArray);
 			$this->remapStack[] = array(
 				'func' => 'checkValue_inline_processDBdata',
 				'args' => array($valueArray, $tcaFieldConf, $id, $status, $table, $field),
@@ -2664,6 +2675,7 @@ class t3lib_TCEmain	{
 			// Finally, before exit, check if there are ID references to remap.
 			// This might be the case if versioning or copying has taken place!
 		$this->remapListedDBRecords();
+		$this->processRemapStack();
 
 		foreach ($hookObjectsArr as $hookObj) {
 			if (method_exists($hookObj, 'processCmdmap_afterFinish')) {
@@ -2809,6 +2821,10 @@ class t3lib_TCEmain	{
 						if ($theNewSQLID) {
 							$this->copyRecord_fixRTEmagicImages($table, t3lib_BEfunc::wsMapId($table, $theNewSQLID));
 							$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
+								// Keep automatically versionized record information:
+							if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
+								$this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
+							}
 						}
 
 							// Copy back the cached TSconfig
@@ -3115,8 +3131,17 @@ class t3lib_TCEmain	{
 					} else {
 						if (!t3lib_div::testInt($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						} elseif ($realDestPid == -1) {
-							$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #'.$this->BE_USER->workspace);
+						} elseif ($realDestPid == -1 && t3lib_BEfunc::isTableWorkspaceEnabled($v['table'])) {
+							$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord(
+								$this->BE_USER->workspace, $v['table'], $v['id'], 'uid'
+							);
+								// If workspace version does not exist, create a new one:
+							if ($workspaceVersion === FALSE) {
+								$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #' . $this->BE_USER->workspace);
+								// If workspace version already exists, use it:
+							} else {
+								$newId = $workspaceVersion['uid'];
+							}
 						} else {
 							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid);
 						}
@@ -3761,6 +3786,16 @@ class t3lib_TCEmain	{
 
 												// Execute the copy:
 											$newId = $this->copyRecord($table, $uid, -$uid, 1, $overrideValues, implode(',', $excludeFields), $language);
+											$autoVersionNewId = $this->getAutoVersionId($table, $newId);
+											if (is_null($autoVersionNewId) === FALSE) {
+												$this->triggerRemapAction(
+													$table,
+													$newId,
+													array($this, 'placeholderShadowing'),
+													array($table, $autoVersionNewId),
+													TRUE
+												);
+											}
 										} else {
 
 												// Create new record:
@@ -3855,10 +3890,12 @@ class t3lib_TCEmain	{
 						if (t3lib_div::testInt($type) && isset($elementsOriginal[$type])) {
 							$item = $elementsOriginal[$type];
 							$item['id'] = $this->localize($item['table'], $item['id'], $language);
+							$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
 							$dbAnalysisCurrent->itemArray[] = $item;
 						} elseif (t3lib_div::inList('localize,synchronize', $type)) {
 							foreach ($elementsOriginal as $originalId => $item) {
 								$item['id'] = $this->localize($item['table'], $item['id'], $language);
+								$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
 								$dbAnalysisCurrent->itemArray[] = $item;
 							}
 						}
@@ -4794,8 +4831,14 @@ class t3lib_TCEmain	{
 				$this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
 
 			} elseif ($inlineType !== false) {
+				/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				$dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+
+					// Update child records if using pointer fields ('foreign_field'):
+				if ($inlineType == 'field') {
+					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
+				}
 
 					// If the current field is set on a page record, update the pid of related child records:
 				if ($table == 'pages') {
@@ -4806,16 +4849,11 @@ class t3lib_TCEmain	{
 					$thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
 				}
 
-					// Update child records if using pointer fields ('foreign_field'):
-				if ($inlineType == 'field') {
-					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
-				}
-
-					// Update child records if change to pid is required:
+					// // Update child records if change to pid is required (only if the current record is not on a workspace):
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
 					foreach ($dbAnalysis->itemArray as $v) {
-						if ($v['id'] && $v['table']) {
+						if ($v['id'] && $v['table'] && is_null(t3lib_BEfunc::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($v['table'], 'uid='.intval($v['id']), $updateValues);
 						}
 					}
@@ -4831,6 +4869,7 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function processRemapStack() {
+			// Processes the remap stack:
 		if(is_array($this->remapStack)) {
 			foreach($this->remapStack as $remapAction) {
 					// If no position index for the arguments was set, skip this remap action:
@@ -4900,9 +4939,72 @@ class t3lib_TCEmain	{
 				}
 			}
 		}
+			// Processes the remap stack actions:
+		if ($this->remapStackActions) {
+			foreach ($this->remapStackActions as $action) {
+				if (isset($action['callback']) && isset($action['arguments'])) {
+					call_user_func_array(
+						$action['callback'],
+						$action['arguments']
+					);
+				}
+			}
+		}
+			// Processes the reference index updates of the remap stack:
+		foreach ($this->remapStackRefIndex as $table => $idArray) {
+			foreach ($idArray as $id) {
+				$this->updateRefIndex($table, $id);
+				unset($this->remapStackRefIndex[$table][$id]);
+			}
+		}
 			// Reset:
 		$this->remapStack = array();
 		$this->remapStackRecords = array();
+		$this->remapStackActions = array();
+		$this->remapStackRefIndex = array();
+	}
+
+ 	/**
+	 * Triggers a remap action for a specific record.
+	 *
+	 * Some records are post-processed by the processRemapStack() method (e.g. IRRE children).
+	 * This method determines wether an action/modification is executed directly to a record
+	 * or is postponed to happen after remapping data.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $id Id of the record (can also be a "NEW..." string)
+ 	 * @param array $callback The method to be called
+	 * @param array $arguments The arguments to be submitted to the callback method
+	 * @param boolean $forceRemapStackActions Whether to force to use the stack
+	 * @return void
+	 *
+	 * @see processRemapStack
+	 */
+	protected function triggerRemapAction($table, $id, array $callback, array $arguments, $forceRemapStackActions = FALSE) {
+			// Check whether the affected record is marked to be remapped:
+		if (!$forceRemapStackActions && !isset($this->remapStackRecords[$table][$id]) && !isset($this->remapStackChildIds[$id])) {
+			call_user_func_array($callback, $arguments);
+		} else {
+			$this->remapStackActions[] = array(
+				'affects' => array(
+					'table' => $table,
+					'id' => $id,
+				),
+				'callback' => $callback,
+				'arguments' => $arguments,
+			);
+		}
+	}
+
+	/**
+	 * Adds a table-id-pair to the reference index remapping stack.
+	 *
+	 * @param string $table
+	 * @param integer $id
+	 * @return void
+	 */
+	public function addRemapStackRefIndex($table, $id) {
+		$this->remapStackRefIndex[$table][$id] = $id;
 	}
 
 	/**
@@ -6919,6 +7021,54 @@ class t3lib_TCEmain	{
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Gets the automatically versionized id of a record.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @return integer
+	 */
+	protected function getAutoVersionId($table, $id) {
+		$result = NULL;
+
+		if (isset($this->autoVersionIdMap[$table][$id])) {
+			$result = $this->autoVersionIdMap[$table][$id];
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Overlays the automatically versionized id of a record.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @return integer
+	 */
+	protected function overlayAutoVersionId($table, $id) {
+		$autoVersionId = $this->getAutoVersionId($table, $id);
+
+		if (is_null($autoVersionId) === FALSE) {
+			$id = $autoVersionId;
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Adds new values to the remapStackChildIds array.
+	 *
+	 * @param array $idValues uid values
+	 * @return void
+	 */
+	protected function addNewValuesToRemapStackChildIds(array $idValues) {
+		foreach ($idValues as $idValue) {
+			if (strpos($idValue, 'NEW') === 0) {
+				$this->remapStackChildIds[$idValue] = TRUE;
+			}
+		}
 	}
 }
 

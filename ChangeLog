@@ -1,3 +1,7 @@
+2010-11-15  Oliver Hader  <oliver@typo3.org>
+
+	* Add feature #16374: Implement Inline Relational Record Editing (IRRE) in Workspaces
+
 2010-11-15  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16170: Increase DB-fields spaceBefore and spaceAfter (tt_content) (Thanks to Henrik Ziegenhain)

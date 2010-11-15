@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006-2010 Oliver Hader <oh@inpublica.de>
+*  (c) 2006-2010 Oliver Hader <oliver@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * $Id$
  *
- * @author	Oliver Hader <oh@inpublica.de>
+ * @author	Oliver Hader <oliver@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -205,7 +205,8 @@ class t3lib_TCEforms_inline {
 			}
 				// If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
 			if ($table == 'pages') {
-				$this->inlineFirstPid = $row['uid'];
+				$liveVersionId = t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $row['uid']);
+				$this->inlineFirstPid = (is_null($liveVersionId) ? $row['uid'] : $liveVersionId);
 				// If pid is negative, fetch the previous record and take its pid:
 			} elseif ($row['pid'] < 0) {
 				$prevRec = t3lib_BEfunc::getRecord($table, abs($row['pid']));
@@ -1701,6 +1702,14 @@ class t3lib_TCEforms_inline {
 	 * @return	array		A record row from the database post-processed by t3lib_transferData
 	 */
 	function getRecord($pid, $table, $uid, $cmd='') {
+			// Fetch workspace version of a record (if any):
+		if ($cmd !== 'new' && $GLOBALS['BE_USER']->workspace !== 0) {
+			$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid');
+			if ($workspaceVersion !== FALSE) {
+				$uid = $workspaceVersion['uid'];
+			}
+		}
+
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 		$trData->lockRecords=1;
