@@ -1,3 +1,7 @@
+2010-11-15  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #16170: Increase DB-fields spaceBefore and spaceAfter (tt_content) (Thanks to Henrik Ziegenhain)
+
 2010-11-14  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #16315: Wrong reference to unzip class
