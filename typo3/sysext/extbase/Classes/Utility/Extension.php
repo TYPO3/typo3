@@ -60,28 +60,16 @@ class Tx_Extbase_Utility_Extension {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-
-		$controllers = '';
-		foreach ($controllerActions as $controller => $actionsList) {
-			$controllers .= '
-		' . $controller . '.actions = ' . $actionsList;
-			if (!empty($nonCacheableControllerActions[$controller])) {
-				$controllers .= '
-		' . $controller . '.nonCacheableActions = ' . $nonCacheableControllerActions[$controller];
-			}
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName] = array();
 		}
 
-		$switchableControllerActions = '
-	switchableControllerActions {' . $controllers . '
-	}';
-
-		reset($controllerActions);
-		$defaultController = key($controllerActions);
-		$controller = '
-	controller = ' . $defaultController;
-		$defaultAction = array_shift(t3lib_div::trimExplode(',', current($controllerActions)));
-		$action = '
-	action = ' . $defaultAction;
+		foreach ($controllerActions as $controllerName => $actionsList) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
+			if (!empty($nonCacheableControllerActions[$controllerName])) {
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
+			}
+		}
 
 		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
 	settings {
@@ -107,16 +95,8 @@ class Tx_Extbase_Utility_Extension {
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = tx_extbase_core_bootstrap->run
-	pluginName = ' . $pluginName . '
 	extensionName = ' . $extensionName . '
-	' . $controller .
-	$action .
-	$switchableControllerActions . '
-
-	settings =< plugin.tx_' . strtolower($extensionName) . '.settings
-	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
-	view =< plugin.tx_' . strtolower($extensionName) . '.view
-	_LOCAL_LANG =< plugin.tx_' . strtolower($extensionName) . '._LOCAL_LANG
+	pluginName = ' . $pluginName . '
 }');
 
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
@@ -514,24 +494,21 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
-		if (!isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
+		// TODO use ConfigurationManager to retrieve controllerConfiguration
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName])) {
 			return NULL;
 		}
 		$pluginNames = array();
-		foreach($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] as $pluginConfiguration) {
-			if (!is_array($pluginConfiguration) || !isset($pluginConfiguration['switchableControllerActions.']) || !isset($pluginConfiguration['extensionName'])) {
+		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName] as $pluginName => $pluginConfiguration) {
+			if (!is_array($pluginConfiguration['controllers'])) {
 				continue;
 			}
-			if (strtolower($extensionName) !== strtolower($pluginConfiguration['extensionName'])) {
-				continue;
-			}
-			foreach($pluginConfiguration['switchableControllerActions.'] as $controller => $switchableControllerActions) {
-				if (strtolower(rtrim($controller, '.')) !== strtolower($controllerName)) {
+			foreach($pluginConfiguration['controllers'] as $pluginControllerName => $pluginControllerActions) {
+				if (strtolower($pluginControllerName) !== strtolower($controllerName)) {
 					continue;
 				}
-				$actions = t3lib_div::trimExplode(',', $switchableControllerActions['actions']);
-				if (in_array($actionName, $actions)) {
-					$pluginNames[] = $pluginConfiguration['pluginName'];
+				if (in_array($actionName, $pluginControllerActions['actions'])) {
+					$pluginNames[] = $pluginName;
 				}
 			}
 		}

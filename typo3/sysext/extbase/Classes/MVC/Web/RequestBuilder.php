@@ -35,6 +35,7 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
+
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -52,28 +53,28 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 *
 	 * @var string
 	 */
-	protected $extensionName = 'Extbase';
+	protected $extensionName;
 
 	/**
 	 * The default controller name
 	 *
 	 * @var string
 	 */
-	protected $defaultControllerName = 'Standard';
+	protected $defaultControllerName;
 
 	/**
 	 * The default action of the default controller
 	 *
 	 * @var string
 	 */
-	protected $defaultActionName = 'index';
+	protected $defaultActionName;
 
 	/**
 	 * The allowed actions of the controller. This actions can be called via $_GET and $_POST.
 	 *
 	 * @var array
 	 */
-	protected $allowedControllerActions;
+	protected $allowedControllerActions = array();
 
 	/**
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
@@ -102,32 +103,23 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 */
 	protected function loadDefaultValues() {
 		$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (!empty($configuration['pluginName'])) {
-			$this->pluginName = $configuration['pluginName'];
+		if (empty($configuration['extensionName'])) {
+			throw new Tx_Extbase_MVC_Exception('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
 		}
-		if (!empty($configuration['extensionName'])) {
-			$this->extensionName = $configuration['extensionName'];
+		if (empty($configuration['pluginName'])) {
+			throw new Tx_Extbase_MVC_Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
-		if (!empty($configuration['controller'])) {
-			$this->defaultControllerName = $configuration['controller'];
-		} elseif (is_array($configuration['switchableControllerActions'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions']);
-			$this->defaultControllerName = $firstControllerActions['controller'];
-		}
-		if (!empty($configuration['action'])) {
-			$this->defaultActionName = $configuration['action'];
-		} elseif (is_array($configuration['switchableControllerActions'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions']);
-			$this->defaultActionName = array_shift(t3lib_div::trimExplode(',', $firstControllerActions['actions'], TRUE));
-		}
+		$this->extensionName = $configuration['extensionName'];
+		$this->pluginName = $configuration['pluginName'];
+
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$controllerConfiguration = $frameworkConfiguration['controllerConfiguration'];
+		$this->defaultControllerName = current(array_keys($controllerConfiguration));
+		$this->defaultActionName = current($controllerConfiguration[$this->defaultControllerName]['actions']);
+
 		$allowedControllerActions = array();
-		if (is_array($configuration['switchableControllerActions'])) {
-			foreach ($configuration['switchableControllerActions'] as $controller => $controllerConfiguration) {
-				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions'], TRUE);
-				foreach ($controllerActions as $actionName) {
-					$allowedControllerActions[$controller][] = $actionName;
-				}
-			}
+		foreach ($controllerConfiguration as $controllerName => $controllerActions) {
+			$allowedControllerActions[$controllerName] = $controllerActions['actions'];
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
 	}

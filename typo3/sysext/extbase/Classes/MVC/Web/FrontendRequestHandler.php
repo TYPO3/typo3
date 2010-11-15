@@ -92,8 +92,8 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	 */
 	protected function isCacheable($controllerName, $actionName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions'])
-			&& in_array($actionName, t3lib_div::trimExplode(',', $frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions']))) {
+		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
+			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
 				return FALSE;
 			}
 		return TRUE;
