@@ -914,6 +914,7 @@ $str.=$this->docBodyTagBegin().
 		$pageContent = $this->startPage($title, $includeCsh);
 		$pageContent .= $content;
 		$pageContent .= $this->endPage();
+
 		return $this->insertStylesAndJS($pageContent);
 	}
 
