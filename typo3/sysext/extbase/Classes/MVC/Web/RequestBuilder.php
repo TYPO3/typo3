@@ -144,14 +144,13 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
-			$allowedActions = $this->allowedControllerActions[$controllerName];
-			if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
-				$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-			} else {
-				$actionName = $this->defaultActionName;
-			}
 		} else {
 			$controllerName = $this->defaultControllerName;
+		}
+		$allowedActions = $this->allowedControllerActions[$controllerName];
+		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
+			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
+		} else {
 			$actionName = $this->defaultActionName;
 		}
 

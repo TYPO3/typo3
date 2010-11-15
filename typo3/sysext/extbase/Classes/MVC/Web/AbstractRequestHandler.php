@@ -37,14 +37,6 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	protected $objectManager;
 
 	/**
-	 * Back reference to the parent content object
-	 * This has to be public as it is set directly from TYPO3
-	 *
-	 * @var tslib_cObj
-	 */
-	protected $cObj;
-
-	/**
 	 * @var Tx_Extbase_MVC_Dispatcher
 	 */
 	protected $dispatcher;
@@ -89,16 +81,6 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	 */
 	public function injectRequestBuilder(Tx_Extbase_MVC_Web_RequestBuilder $requestBuilder) {
 		$this->requestBuilder = $requestBuilder;
-	}
-
-	/**
-	 * Sets the content object
-	 *
-	 * @param tslib_cObj $cObj
-	 * @return void
-	 */
-	public function setContentObject(tslib_cObj $cObj = NULL) {
-		$this->cObj = $cObj;
 	}
 
 	/**

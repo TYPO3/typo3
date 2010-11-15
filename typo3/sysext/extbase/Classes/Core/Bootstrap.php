@@ -234,11 +234,18 @@ class Tx_Extbase_Core_Bootstrap {
 
 		$requestHandlerResolver = $this->objectManager->get('Tx_Extbase_MVC_RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
-		$requestHandler->setContentObject($this->cObj);
 
 		$response = $requestHandler->handleRequest();
+
+		// If response is NULL after handling the request we need to stop
+		// This happens for instance, when a USER object was converted to a USER_INT
+		// @see Tx_Extbase_MVC_Web_FrontendRequestHandler::handleRequest()
+		if ($response === NULL) {
+			$this->reflectionService->shutdown();
+			return;
+		}
 		if (count($response->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[] = implode('', $response->getAdditionalHeaderData());
+			$GLOBALS['TSFE']->additionalHeaderData[] = implode(chr(10), $response->getAdditionalHeaderData());
 		}
 		$response->sendHeaders();
 		$content = $response->getContent();

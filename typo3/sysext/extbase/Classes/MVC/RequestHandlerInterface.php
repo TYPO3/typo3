@@ -33,9 +33,9 @@
 interface Tx_Extbase_MVC_RequestHandlerInterface {
 
 	/**
-	 * Handles a raw request and sends the respsonse.
+	 * Handles a raw request and returns the respsonse.
 	 *
-	 * @return void
+	 * @return Tx_Extbase_MVC_ResponseInterface
 	 * @api
 	 */
 	public function handleRequest();

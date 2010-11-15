@@ -32,6 +32,19 @@
 class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
 	 * Handles the web request. The response will automatically be sent to the client.
 	 *
 	 * @return Tx_Extbase_MVC_Web_Response
@@ -43,19 +56,16 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
 		$requestHashService->verifyRequest($request);
 
-		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
-			// we need to check the above conditions as cObj is not available in Backend.
-			$request->setContentObjectData($this->cObj->data);
-			if ($this->isCacheable($request->getControllerName(), $request->getControllerActionName())) {
-				$request->setIsCached(TRUE);
-			} else {
-				if ($this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
-					$this->cObj->convertToUserIntObject();
-					// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
-					return;
-				}
-				$request->setIsCached(FALSE);
+		if ($this->isCacheable($request->getControllerName(), $request->getControllerActionName())) {
+			$request->setIsCached(TRUE);
+		} else {
+			$contentObject = $this->configurationManager->getContentObject();
+			if ($contentObject->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
+				$contentObject->convertToUserIntObject();
+				// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
+				return;
 			}
+			$request->setIsCached(FALSE);
 		}
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
 
@@ -81,8 +91,9 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	 * @return boolean TRUE if the given action should be cached, otherwise FALSE
 	 */
 	protected function isCacheable($controllerName, $actionName) {
-		if (isset($this->frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions'])
-			&& in_array($actionName, t3lib_div::trimExplode(',', $this->frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions']))) {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (isset($frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions'])
+			&& in_array($actionName, t3lib_div::trimExplode(',', $frameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions']))) {
 				return FALSE;
 			}
 		return TRUE;
