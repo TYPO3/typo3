@@ -119,6 +119,7 @@ class TYPO3backend {
 			// add default BE javascript
 		$this->js      = '';
 		$this->jsFiles = array(
+			'modernizr'             => 'contrib/modernizr/modernizr.min.js',
 			'swfupload'             => 'contrib/swfupload/swfupload.js',
 			'swfupload.swfobject'   => 'contrib/swfupload/plugins/swfupload.swfobject.js',
 			'swfupload.cookies'     => 'contrib/swfupload/plugins/swfupload.cookies.js',

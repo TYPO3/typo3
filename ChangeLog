@@ -1,3 +1,7 @@
+2010-11-15  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #16403: Integrate modernizr into the TYPO3 Backend
+
 2010-11-15  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #14658: Feature: internal links with parameters outside the RTE (headlines, images ...)

@@ -216,6 +216,14 @@ class template {
 		'visual' => 'stylesheets/visual/',
 	);
 
+	/**
+	 * JavaScript files loaded for every page in the Backend
+	 * @var array
+	 */
+	protected $jsFiles = array(
+		'modernizr' => 'contrib/modernizr/modernizr.min.js',
+	);
+
 		// DEV:
 	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to false when releasing TYPO3. Only for dev.
 
@@ -315,6 +323,11 @@ class template {
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
 			$this->pageRenderer->enableCompressJavascript();
+
+				// add all JavaScript files defined in $this->jsFiles to the PageRenderer
+			foreach ($this->jsFiles as $file) {
+				$this->pageRenderer->addJsFile($file);
+			}
 		}
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1) {
 			$this->pageRenderer->enableDebugMode();
