@@ -95,6 +95,7 @@ $t3libClasses = array(
 	't3lib_cache_backend_memcachedbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_memcachedbackend.php',
 	't3lib_cache_backend_nullbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php',
 	't3lib_cache_backend_pdobackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_pdobackend.php',
+	't3lib_cache_backend_redisbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_redisbackend.php',
 	't3lib_cache_backend_transientmemorybackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_transientmemorybackend.php',
 	't3lib_cache_backend_backend' => PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php',
 	't3lib_cache_backend_phpcapablebackend' => PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php',
