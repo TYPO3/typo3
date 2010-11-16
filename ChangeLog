@@ -1,6 +1,7 @@
 2010-11-16  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #16403: Fixed inclusion of JS files in template.php (Thanks to Steffen Ritter)
+	* Fixed bug #16336: tcaTree does only support IRRE foreign_field relation on "parentField" (Thanks to Steffen Ritter)
 
 2010-11-16  Ernesto Baschny  <ernst@cron-it.de>
 
