@@ -1,6 +1,94 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0 Beta 1
+========================
+included in TYPO3 4.5.0 Beta 1.
+
+This Fluid Release contains the following main features, along with the usual bunch of bugfixes:
+
+* Fluid Widgets (see below)
+* Fluid Standalone View (in Fluid 1.3.0 Alpha 3, but has not been inside a TYPO3 Release yet)
+	In order to be able to use Fluid templates beyond the Extbase plugin context
+	(e.g. to render E-Mail templates or to use the new FLUIDTEMPLATE content object)
+	we created a new template view, that encapsulates inner workings and provides
+	an easy-to-use API:
+
+	$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+	$view->setTemplatePathAndFilename('foo/Bar.html');
+	print $view->render();
+
+Fluid Widgets
+-------------
+
+Widgets are special ViewHelpers which encapsulate complex functionality. It can be best understood
+what widgets are by giving some examples:
+* <f:widget.paginate> renders a Paginator, i.e. can be used to display large amounts of objects. This
+  is best known from search engines.
+* <f:widget.autocomplete> adds autocompletion functionality to a text field.
+* More widgets could include a Google Maps widget, a sortable grid, ...
+
+Internally, widgets consist of an own Controller and View part.
+
+Using widgets inside your templates is really simple: Just use them like standard ViewHelpers,
+and consult their documentation for usage examples. An example for the <f:widget.paginate> follows below:
+
+<f:widget.paginate itemsPerPage="10" objects="{blogs}" as="paginatedBlogs">
+	// use {paginatedBlogs} as you used {blogs} before, most certainly inside
+	// a <f:for> loop.
+</f:widget.paginate>
+
+In the above example, it looks like {blogs} contains all Blog objects, thus you might wonder if all
+objects were fetched from the database. However, the blogs are NOT fetched from the database until
+you actually use them, so the paginate ViewHelper will adjust the query sent to the database and
+receive only the small subset of objects. So, there is no negative performance overhead in using
+the Paginate Widget.
+
+For more details on how to write widgets, consult the Fluid manual, section "Fluid Widgets".
+
+Full Changes for 1.3.0 Beta 1:
+------------------------------
+[+FEATURE] Fluid (ViewHelpers/Widget): Slightly improved paginate widget: The link to the first page now skips the currentPage argument resulting in nicer URLs and less cHashes
+[+FEATURE] Fluid (ViewHelpers): excluding obsolete widget arguments & cHash from widget links if they're not explicitly set
+[+BUGFIX] Fluid (Core/Widget): AjaxWidgetContextHolder now uses a unique id for the Ajax WidgetContext. This makes sure, that the ajax response gets the right context, even if you open multiple browser windows in the same session
+[+BUGFIX] Fluid (Core): The Fluid Widget Bootstrap now initializes the object manager in order to respect "config.tx_extbase.object" configuration.. TODO: this should be somehow refactored to avoid code duplication
+[+BUGFIX] Fluid: Reduced the typeNum for the fluidAjaxWidgetResponse page. Apparently 7076857368 was too large ;) TODO: the typeNum should be somehow configurable
+[~TASK] Fluid (ViewHelpers/Widget): removed $GLOBALS['TSFE']->additionalHeaderData call from AutocompleteViewHelper as this is not configurable like this. Moved the jQuery includes to Configuration/TypoScript/setup.txt which can be included in your main TS template
+[+BUGFIX] Fluid (ViewHelpers): Fixed Widget URI generation in widget.link/widget.uri ViewHelpers/Link/WidgetViewHelpers
+[~TASK] Fluid (ViewHelpers/Widget): Tweaked PaginateViewHelper: Minor refactoring of controller & template
+[-TASK] Fluid (Compatibility): Forgot to remove obsolete Tx_Fluid_Compatibility_ObjectManager in previous commit
+[+FEATURE] Fluid (Core/Widget): Added Tx_Fluid_Core_Widget_Bootstrap that is used to dispatch Ajax requests (see ext_typoscript_setup.txt).
+[~TASK] Fluid (Compatibility): Removed Tx_Fluid_Compatibility_ObjectManager and replaced instances by Tx_Extbase_Object_ObjectManagerInterface instances
+[~TASK] Fluid (Core/Widget): AbstractWidgetController has to be a singleton so it can be injected in the WidgetViewHelper.. To be discussed!
+[+TASK] Fluid (Core/Widget): AjaxWidgetContextHolder is now correctly stored in the BE/FE Users session if the ajaxWidget of the corresponding Widget is TRUE.
+[+TASK] Fluid (Core/Widget): The WidgetContext now contains a reference to the parent extension & plugin name. That's needed for the widgetAjaxResponse.
+[+BUGFIX] Fluid (Core/Widget): WidgetRequestBuilder now correctly interprets GET parameters and dispatches Ajax requests
+[+BUGFIX] Fluid (ViewHelpers): Modified ViewHelpers cObject, format.crop, format.html, image, uri.image so that they use dependency injection in order to retrieve the current cObject instance from the configurationManager
+[+BUGFIX] Fluid (ViewHelpers): Fixed form ViewHelper to respect configured pluginNamespace in field name prefixes
+[+BUGFIX] Fluid (ViewHelpers): link.widget/uri.widget ViewHelpers now create correct URIs
+[+BUGFIX] Fluid (ViewHelpers): replaced @inject annotation by injectController method in AutocompleteViewHelper.
+[+FEATURE] First step of "Fluid widget" backport
+	This is the first step of the Widget backport (#8773). This contains all the core classes that are required for the widget implementation and two exemplary Widget ViewHelpers "widget.paginate" and "widget.autocomplete".
+	Note: Ajax widgets are not yet working!!
+	Relates to: #8773
+	Relates to: #10568
+[!!!][+BUGFIX] Fluid (View): Adjust fluid to recent resolveView() backport
+	Tx_Fluid_View_AbstractTemplateView now implements the Tx_Extbase_MVC_View_ViewInterface that was changed in r2675.
+	NOTE: This is a breaking change because the API method Tx_Fluid_View_TemplateView::hasTemplate was renamed to canRender(). Besides I deleted the TemplateViewInterface that is no longer needed. Implement Tx_Extbase_MVC_View_ViewInterface or simply extend Tx_Fluid_View_AbstractTemplateView if you want to write your own view implementation
+	Relates to: #8990
+[+BUGFIX] Fluid: Adjust Fluid to Dependency Injection changes. Relates to: #9062
+
+Full Changes for Alpha 3:
+-------------------------
+
+[+BUGFIX] Fluid (ViewHelpers): ImageViewHelper supports additionalAttributes argument
+	The image view helper did not call the parent constructor, which registeres the "additionalAttributes" argument. Thanks to Michael Knoll.
+[+FEATURE] Fluid (View): Fluid Standalone view (#10473)
+[+TASK] Fluid (ViewHelpers): Minor tweak in CObject ViewHelper
+	Make sure, that the configurationManager is initialized.
+	This is just a preliminary solution that will be replaced as soon
+	as the Extbase dispatcher refactoring (#7153) is done.
+
 Changes for 1.3.0 Alpha 2
 =========================
 included in TYPO3 4.5.0 Alpha 2.
