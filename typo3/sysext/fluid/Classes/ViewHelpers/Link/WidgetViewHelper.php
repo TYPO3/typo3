@@ -117,6 +117,7 @@ class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelpe
 			->setSection($this->arguments['section'])
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
+			->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))
 			->setFormat($this->arguments['format'])
 			->build();
 	}

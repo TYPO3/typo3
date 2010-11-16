@@ -12,7 +12,14 @@
 	<ul class="f3-widget-paginator">
 		<f:if condition="{pagination.previousPage}">
 			<li class="previous">
-				<f:link.widget arguments="{currentPage: pagination.previousPage}">previous</f:link.widget>
+				<f:if condition="{pagination.previousPage} > 1">
+					<f:then>
+						<f:link.widget arguments="{currentPage: pagination.previousPage}">previous</f:link.widget>
+					</f:then>
+					<f:else>
+						<f:link.widget>previous</f:link.widget>
+					</f:else>
+				</f:if>
 			</li>
 		</f:if>
 		<f:for each="{pagination.pages}" as="page">
@@ -24,7 +31,14 @@
 				</f:then>
 				<f:else>
 					<li>
-						<f:link.widget arguments="{currentPage: page.number}">{page.number}</f:link.widget>
+						<f:if condition="{page.number} > 1">
+							<f:then>
+								<f:link.widget arguments="{currentPage: page.number}">{page.number}</f:link.widget>
+							</f:then>
+							<f:else>
+								<f:link.widget>{page.number}</f:link.widget>
+							</f:else>
+						</f:if>
 					</li>
 				</f:else>
 			</f:if>
