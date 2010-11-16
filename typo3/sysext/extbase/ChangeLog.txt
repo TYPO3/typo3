@@ -1,6 +1,369 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0 Beta 1
+========================
+
+Extbase 1.3.0 Beta 1 has a lot new and greatly improved features, and also many bugfixes.
+The highlights are outlined below, and explained in-depth a little further down:
+
+* Dependency Injection
+* Dispatcher Refactoring & Completely re-done Configuration Manager
+	This means that Tx_Extbase_Dispatcher is now DEPRECATED!
+	Additionally, if you defined the TypoScript setup for a plugin by hand (which you should not),
+	the syntax has changed a bit there. See below for details.
+* QueryResult refactoring (needed for Fluid Widgets)
+	THIS COULD BE A BREAKING CHANGE FOR YOU! See below for details.
+
+Additionally, the following smaller features were implemented:
+
+* Configurable plugin namespaces (#8365)
+* Automatic target page determination (#9121)
+* Improved resolveView() mechanism
+* Allowing plugins to be registered as new content element (#10666)
+	This is done using an additional parameter to Tx_Extbase_Utility_Extension::configurePlugin
+	that allows you to specify the plugin type. Example:
+	Tx_Extbase_Utility_Extension::configurePlugin(
+		$_EXTKEY,
+		'BlogList',
+		array('Blog' => 'index'),
+		array(),
+		Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
+	);
+* Query Ordering .....
+
+
+Breaking Changes:
+
+* The UriBuilder now uses the current cObject instead of creating a new instance in the constructor. This is a breaking change if you instantiated the UriBuilder in your code. Please use the Extbase ObjectManager or inject the ConfigurationManager manually.
+* fixed typo in getter and setter of Tx_Extbase_Domain_Model_FrontendUser::lastlogin
+* Flashmessages now share a scope throughout the extension. Before, every plugin had it's own scope leading to the messages only being output when entering the same plugin again (e.g. redirecting from one plugin to another would never display the messages)
+
+Known issues:
+
+* The Unit Tests do not fully work again, we will fix that in the next days.
+* Backend support!
+
+Dependency Injection
+--------------------
+
+Instead of creating objects through t3lib_div::makeInstance, and connecting them together manually,
+you yan now use Dependency Injection (DI) for that. Let's give an example: If my class "Tx_Foo_Controller_MyController"
+needs another class "Tx_Foo_Service_LoggingService", it can get an instance of the logging service
+by Dependency Injection, by specifying the following code:
+
+class Tx_Foo_Controller_MyController {
+	protected $loggingService;
+
+	/**
+	 * @param Tx_Foo_Service_LoggingService $loggingService
+	 */
+	public function injectLoggingService(Tx_Foo_Service_LoggingService $loggingService) {
+		$this->loggingService = $loggingService;
+	}
+}
+
+The DI container finds that the class "MyController" has an method whose name starts with "inject",
+and thus passes the logging service to MyController.
+It is important that you can *only retrieve Singletons* through the inject annotations. If you need
+to instanciate a prototype object, it is important to *not* use t3lib_div::makeInstance() anymore
+(as it bypasses the DI container), but instead you need to inject the ObjectManager, and ask it
+to create your prototype object using the create() method. Example:
+
+class Tx_Foo_Controller_MyController {
+	protected $logFile;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->logFile = $objectManager->create('Tx_Foo_Domain_Model_LogFile');
+	}
+}
+
+In the above example, you have seen that we reference not the concrete implementation *ObjectManager*,
+but instead the *ObjectManagerInterface*. If a name ends with "...Interface", Extbase DI automatically
+strips away the "Interface" from the name, and expects to find a concrete implementation of that interface.
+This is generally a very good practice: For your core classes, you should always reference an *interface*,
+and let the DI container instanciate the concrete class.
+
+Additionally, Extbase DI allows to *replace* certain implementation classes by other classes through
+configuration in TypoScript. Let's give an example, and then you can see the concept:
+
+config.tx_extbase.objects {
+	Tx_Extbase_Persistence_Storage_BackendInterface {
+		className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+	}
+}
+
+This essentially means to the DI container: "At all places where you encounter a "BackendInterface", you should instanciate
+the "Typo3DbBackend" class."
+
+However, note that this setting can only be configured *globally* right now, it is not possible
+to override that on a per-extension basis.
+
+Generally, the Extbase DI container provides a subset of the functionality of FLOW3's dependency injection.
+
+Dispatcher Refactoring & Completely re-done Configuration Manager
+-----------------------------------------------------------------
+
+In the last versions of Extbase, the Dispatcher (Tx_Extbase_Dispatcher) was the main entry point to Extbase.
+However, as we did not have Dependency Injection at that point, it became really complex and did lots of things
+which it should not do in the first place. That's why we greatly improved that part. Now, any Extbase extension
+is invoked using the Tx_Extbase_Core_Bootstrap. Additionally, the TypoScript used for the registration of any
+Extbase extension has been cleaned up and adjusted:
+
+lib.foo = USER
+lib.foo {
+	userFunc = tx_extbase_core_bootstrap->run
+	extensionName = YourExtension
+	pluginName = YourPlugin
+}
+
+Additionally, you can also override the list of Switchable Controller Actions through TypoScript:
+
+lib.foo = USER
+lib.foo {
+	userFunc = tx_extbase_core_bootstrap->run
+	extensionName = YourExtension
+	pluginName = YourPlugin
+	switchableControllerActions {
+		Standard {
+			1 = action2
+			2 = action3
+		}
+	}
+}
+
+Of course, you cannot call actions which were not defined previously in the plugin; so the Switchable
+Controller Actions in TypoScript can be only used to shrink the number of actions available.
+
+NOTE: If you manually defined the above snippet, notice that there is a NON-BACKWARDS-COMPATIBLE change
+in there. But you did that at your own risk, as that was never public API ;)
+
+If you used Tx_Extbase_Dispatcher before in your own code, it should still work, but it is deprecated.
+Instead, instead
+
+OLD: Tx_Extbase_Dispatcher::getConfigurationManager()
+NEW: inject Tx_Extbase_Configuration_ConfigurationManagerInterface into your class
+
+OLD: Tx_Extbase_Dispatcher::getPersistenceManager()
+NEW: inject Tx_Extbase_Persistence_ManagerInterface into your class
+
+OLD: Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration()
+NEW: inject Tx_Extbase_Configuration_ConfigurationManagerInterface into your class,
+     and call $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+     on the ConfigurationManager.
+
+Please note that the Configuration Manager is STILL NO PUBLIC API, and its method signature has also changed.
+
+QueryResult refactoring (needed for Fluid Widgets)
+--------------------------------------------------
+
+Before this change, a call of $query->execute() inside a repository immediately executed the query and
+returned the result as array.
+Now, queries are executed lazily at the first moment where you really need them. This means that $query->execute()
+returns an object of type Tx_Extbase_Persistence_QueryResultInterface, which behaves like an array, meaning you
+can use foreach() to loop over the query result.
+However, due to an inconsistency of PHP, the array_* methods, and the iteration methods like current(),
+next(), ... do NOT work on objects which implement ArrayAccess -- that's the reason why the QueryResult
+refactoring is a breaking change.
+
+Now, however, the following is possible:
+* Return the first query result: $query->execute()->getFirst()
+* Get the underlying query: $query->execute()->getQuery()
+* Convert the result to array: $query->execute()->toArray()
+
+This change is a prerequisite for Fluid Widgets to work. See the Fluid ChangeLog for details.
+
+Full Changes:
+-------------
+
+[+FEATURE] Extbase (Utility): Allow plugins to be registered as new content element
+	Added a fifth parameter to Tx_Extbase_Utility_Extension::configurePlugin that allows
+	you to specify the plugin type (currently "list_type" and "CType" are supported).
+	Thanks to Marc Bastian Heinrichs, Rens Admiraal & Franz Koch for your help!
+	Resolves: #10666
+[+BUGFIX] Extbase (Utility): Added condition to Tx_Extbase_Utility_Extension::getTargetPidByPlugin() in order to only select tt_content entries that are of CType "list". Thanks to Marc Bastian Heinrichs
+[!!!][~TASK] Extbase (Configuration): Major rework of the ConfigurationManager
+	Configuration of controllers and actions is now stored in a global registry
+	($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']). But you
+	should never access this directly. Instead always retrieve the frameworkConfiguration
+	from the ConfigurationManager.
+	Inserting an Extbase plugin is now as simple as:
+	lib.foo = USER
+	lib.foo {
+	  userFunc = tx_extbase_core_bootstrap->run
+	  extensionName = YourExtension
+	  pluginName = YourPlugin
+	}
+	This is not really a breaking change as it does not change the public API. But it's not unlikely that it changes the behavior of your Extension in case you modified the TypoScript, that is generated by Tx_Extbase_Utility_Extension::configurePlugin().
+	NOTE: Unit tests of Extbase and Fluid v4 are broken currently. We'll be fixing those asap
+[~TAKS] Extbase (MVC): FrontendRequestHandler now retrieves the current cObject through the ConfigurationManager
+[+BUGFIX] Extbase (MVC): FrontendRequestHandler was refering to $this->frameworkConfiguration which wasn't available
+[-API] Extbase (MVC): marked Tx_Extbase_MVC_Web_Request::getContentObjectData() deprecated as should retrieve the current cObject through the ConfigurationManager
+[+TASK] Extbase (MVC): modified the Tx_Extbase_MVC_Web_RequestBuilder so that it's possible to change the action only by specifying the action parameter. Before you had to specify the controller as well, even if it was the default controller
+[+BUGFIX] Extbase (MVC): Flashmessages now share a scope throughout the extension. Before, every plugin had it's own scope leading to the messages only being output when entering the same plugin again (e.g. redirecting from one plugin to another would never display the messages)
+[~TASK] Extbase (Core): The Flashmessages now get persisted in the Bootstrap in resetSingletons()
+[-TASK] Extbase (Core): Removed some commented lines from Bootstrap
+[FEATURE] Extbase (Object): Make DI Class Mapping configurable through TS
+	It is now possible to configure the Dependency Injection class mapping by specifying:
+	config.tx_extbase.objects.[FullyQualifiedObjectName].className = [NewClassName]
+	This has the effect of effectively replacing [FullyQualifiedObjectName] with
+	[NewClassName].
+	Resolves: #10559
+[-TASK] Extbase (Utility): Removed two obsolete checks for $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] in Tx_Extbase_Utility_Extension
+[~TASK] Extbase: added two doc comments that were missing
+[+BUGFIX] Extbase (Persistence): Extbase still used PHPs current() on some QueryResults in Persistence/Repository. Replaced these by calls to the getFirst() method of the QueryResult
+[+TASK] Extbase (Persistence): added a private field to the QueryResult to make the above case easier to debug: When calling current() on an Iterator, PHP returns the first field of that object instead of calling the current() method of the Iterator interface.. With our somewhat pragmatic approach you'll see the warning if you debug the results of current($query->execute())
+[+BUGFIX] Extbase (Persistence): Replaced two occurrences of Query->count() by Query->execute()->count() to avoid deprecated warnings in the Core
+[+BUGFIX] Extbase (MVC): view configuration (templateRootPath, ...) has to be set before View::canRender() is called
+[!!!][+TASK] Extbase (MVC): The UriBuilder now uses the current cObject instead of creating a new instance in the constructor. This is a breaking change if you instantiated the UriBuilder in your code. Please use the Extbase ObjectManager or inject the ConfigurationManager manually.
+[+BUGFIX] Extbase (Reflection): ReflectionService now uses a cacheIdentifier per Extension. Besides the Bootstrap now resets the ReflectionService after dispatching a request. This resolves #10146
+[+TASK] Extbase (Configuration): The ConfigurationManager now holds the current cObject. You can retrieve it via ConfigurationManagerInterface::getContentObject()
+[+BUGFIX] Extbase (Configuration): When loading configuration of other plugins, the context specific configuration (e.g. flexform settings) are no longer merged with the frameworkConfiguration
+[+BUGFIX] Extbase (MVC): Controllers are no Singletons by default. If a controller contains stateful fields (e.g. $this->settings) this breaks multiple plugins on one page
+[+TASK] Extbase (Persistence): QuerySettings now also store the storage page id(s). This is required for the upcoming Ajax Widgets
+[+BUGFIX] Extbase: fixed php warning in Tx_Extbase_Persistence_LazyLoadingProxy when loading the real instance would return NULL. Resolves #10683
+[+BUGFIX] Extbase: use 3rd parameter = TRUE of t3lib_div::trimExplode to split switchableControllerActionParts from flexform. Thanks to Georg Ringer. Resolves #10688
+[+TASK] Extbase: Replaced "public static" by "static public" in various places to be CGL conform
+[+TASK] Extbase: Marked Utitlity_Extension camelCase/underscore helper functions deprecated
+[+TASK] Extbase: Removed obsolete FIXME comments, whitespace fixes
+[!!!] Extbase: Reintegrating branch "dispatcher" to trunk. Resolves: #10605
+	Branch history:
+[+FEATURE] Extbase (Configuration): Extend ConfigurationManager so that it can load configuration of different plugins
+[+FEATURE] Extbase (Configuration): 1st level cache for ConfigurationManager. Resolves: #10717. Resolves: #10716
+[+TASK] Extbase: cleaned up Configuration* implementation, replaced t3lib_div::makeInstance() calls
+	Streamlined ConfigurationManager API and enforced its usage throughout the Extbase classes.
+	Replaced all t3lib_div::makeInstance() calls by $objectManager->create()/$objectManager->get() throughout the Extbase classes.
+	Some smaller tweaks and fixes. Resolves: #10655. Resolves: #10712
+[TASK] Extbase (Object): Make tests work again. Resolves: #10709
+[TASK] Extbase (Object): Updated autoload.php and emconf. Relates to: #10561
+[TASK] Extbase (Object): Use typed exceptions. Relates to: #10561
+[TASK] Extbase (Object): CGL cleanup
+	Additionally, removed support for @inject annotations at methods. Relates to: #10561
+[TASK] Extbase (Object): Remove getParents. Relates to: #10561
+[TASK] Extbase (Object): Remove isSingleton. Relates to: #10561
+[TASK] Extbase (Object): Remove injectExtensionSettings feature. Relates to: #10561
+[TASK] Extbase (Object): Change namespaces to Tx_Extbase_Object_Container. Relates to: #10561
+[TASK] Extbase (Object): Add Container to Extbase. Relates to: #10561
+[+TASK] Extbase (Core): moved Tx_Extbase_Bootstrap to Tx_Extbase_Core_Bootstrap
+	Moving Bootstrap to be compliant with FLOW3
+	Removed obsolete Classes. Resolves: #10704
+[+TASK] Extbase: Merged current trunk (r2689) with local modifications into dispatcher branch
+	Note: This still needs a cleanup and some fixes (see FIXME comments) before it can be merged back to the trunk. Relates to: #10605. Relates to: #10655
+[+TASK] Extbase (Configuration): Moved CONFIGURATION_TYPE_* constraints to ConfigurationManagerInterface. Resolves #10604.
+[~TASK] Extbase (Configuration): The concrete configuration management strategy gets instanciate only once now.
+[+FEATURE] Extbase (MVC): Decoupled framework settings from Dispatcher.
+	With the new dependency injection feature you can get the Configuration Manager injected by adding the lines
+	protected $configurationManager;
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+	You can get various types of configuration invoking
+	$this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManager::CONFIGURATION_TYPE_EXTBASE)
+	where the class constant must be either CONFIGURATION_TYPE_EXTBASE (for Extbase settings), or CONFIGURATION_TYPE_SETTINGS (for the current module/plugin settings), or CONFIGURATION_TYPE_TYPOSCRIPT (for a raw TS array). Resolves #4741.
+[~TAKS] Extbase: Removed obsolete code.
+[~TASK] Extbase: Added core patch for mod.php (see previous commit).
+[+TASK] Extbase: Changed the way a module gets called.
+	- You can now specify a function name to be invoked by mod.php:
+$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Bootstrap->callModule';
+	- This requires a core patch.
+[~TASK] Extbase: Changed configuration of the RequestHandler class names to TypoScript.
+	- The request handlers can now be registered in TypoScript with the setting:
+	   config.tx_extbase.mvc.requestHandlers.[RequestHandlerClassName] = [RequestHandlerClassName].
+	- There are now two RequestHandlers in Extbase: FrontendRequestHandler and BackendRequestHandler. Common functionality is in the AbstractRequestHandler.
+[+API][+FEATURE] Extbase (Utility): Implemented mechanism to register RequestHandlers.
+[+TASK] Extbase: Backported Request Handler Resolver.
+[~TASK] Extbase: Added "deprecated" annotation to Dispatcher.
+[~TASK] Extbase: Added missing comment.
+[+BUGFIX] Extbase (Reflection): The ReflectionService now gets injected to the dispatcher. Related to #10146.
+[+BUGFIX] Extbase (Reflection): Changed the way the Reflection Service and it's cache gets initialized.
+	* Removed check for pre-initialized Reflection Service in the Bootstrap.
+	* Now using a fixed cache key ('ReflectionData').
+	Related to #10146.
+[~TASK] Extbase: First step of the Dispatcher refactoring.
+	* Added and adapted some Unit Tests.
+	* Moved the Dispatcher to MVC.
+	* Added a backwards compatibility Dispatcher on root level.
+	* Added a Bootstrap class.
+	* Removed all backend module support for now.
+	Related to #7153.
+[+TASK] Extbase: Added branch for the dispatcher refactoring.
+[!!!][+BUGFIX] Extbase: fixed typo in getter and setter of Tx_Extbase_Domain_Model_FrontendUser::lastlogin . Thanks to Christian Schwan. Resolves #9345
+[+FEATURE] Extbase (MVC): Backport possibility to change the view object class name more easily
+	Backported FLOW3s improved resolveView() mechanism. Tx_Fluid_View_TemplateView is still the default implementation, but can be easily changed by setting $defaultViewObjectName in your controller. Besides it's possible to specifying different views depending on the current request format by setting $viewFormatToObjectNameMap.
+	NOTE: If the view can't be rendered, the new template based "NotFoundView" will be created. So instead of the invisible HTML comments of the EmptyView, you'll get a more meaningful error message if the template file could not be found
+	Resolves: #8990
+[!!!][+FEATURE] Extbase (Persistence): Backport QueryResult from FLOW3
+	Now Query::execute() returns an instance of QueryResultInterface that allows it to modify the query before actually accessing the records that it retrieves. This is required for the upcoming "Fluid widgets" backport (#10568).
+	NOTE: This change is not backwards compatible, if you work with PHPs array_* functions on the query result. To work around this issue, you'll have to convert the query result to an array before by calling the QueryResult::toArray() method. We're planning to add a compatibility mode, but that's not yet implemented.
+	Resolves: #10566
+[+BUGFIX] Extbase (Object): Minor fix in ObjectManager to make it compatible with PHP 5.2.x
+	Relates to: #9062
+[+BUGFIX] Extbase (Object): Refactor Object Manager
+	The Object Manager is now at the same location and
+	has the same API as in FLOW3.
+[+BUGFIX] Extbase: Major cleanups to Dependency Injection and Persistence
+	Now, DI finally works with Persistence, cleaning
+	this greatly up. Additionally, all internal
+	t3lib_div::makeInstance calls have been replaced.
+	Now, dependency injection is actually usable.
+	Additionally, we completely thought over which
+	persistence classes need to be singleton and which
+	should be prototype, leading finally to a
+	coherent design in the persistence layer.
+[+BUGFIX] Extbase: remove non-used interfaces
+	Removed classes which were not used.
+	Relates to: #9062
+	Resolves: #10585
+	Resolves: #10564
+	* Cleaned up Persistence Backend
+	* Cleaned up QOM Factory
+[+BUGFIX] Extbase (MVC): Fix arguments object
+	The arguments object is now correctly inheriting from ArrayObject
+	Resolves: #10562
+[+BUGFIX] Extbase (MVC): Make database connection work again
+	Resolves: #10585
+[+FEATURE] Extbase (DI): merging DI into trunk. (resolves #10558)
+[+TASK] Extbase: Undefined identifier in Tx_Extbase_Persistence_Storage_Typo3DbBackend::removeRow
+	Method clearPageCache was given an undefined variable $uid as second parameter.
+	Resolves: #10570
+[+TASK] Extbase: $query->contains generate incomplete SQL
+	Use FIND_IN_SET instead of a self-constructed query of LIKE statements
+	Resolves: #8959
+[+BUGFIX] Extbase (Persistence): Removed method createQuery from the QOMFactory. It is neither part of the API nor is it used by Extbase. Resolves #10215
+[+BUGFIX] Extbase (Property): Minor fix in PHP doc comment
+	Fix the order of @param annotation in Tx_Extbase_Property_Mapper::mapAndValidate()
+	Resolves: #5887
+[~CONFIGURATION] Extbase (MVC): Changed default value for automatic target page determination
+	The page id gets automatically detected if plugin.tx_extensionname_pluginname.view.defaultPid
+	is an empty string (was "auto" before). This ensures backwards compatibility.
+	Resolves #9121
+[TASK] Extbase: moved Release Notes to ChangeLog.txt.
+[+FEATURE] Extbase (MVC): Automatic target page determination
+	you can use the "pageUid" argument of the link.* and uri.* view helpers
+	to link to a different page. That is deprecated though as we won't have
+	the notion of "page uids" in v5. Instead the target page is now determined
+	automatically.
+	If the target page can't be determined because more than one active
+	plugin is capable of handling the action an exception will be thrown.
+	In that case you'll have to define the target page either by using the
+	pageUid argument or - preferably - by setting
+	plugin.tx_extensionname_pluginname.view.defaultPid to a fixed page uid.
+	Note: This feature still has to be documented!
+	Resolves: #9121
+[+FEATURE] Extbase (MVC): Configurable plugin namespace
+	until now the namespace (aka prefix) of Extbase plugins was
+	fixed (tx_extensionname_pluginname). This is now configurable
+	via TypoScript. Just write:
+	plugin.tx_extensionname_pluginname.view.pluginNamespace = my_custom_namespace
+	to change the prefix for a specific plugin or
+	plugin.tx_extensionname.view.pluginNamespace = my_custom_namespace
+	to change if for the whole extension.
+	Note: This feature still has to be documented!
+	Resolves: #8365
+
 Changes for 1.3.0 Alpha 2
 =========================
 included in TYPO3 4.5.0 Alpha 2.
