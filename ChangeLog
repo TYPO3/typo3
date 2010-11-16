@@ -17,6 +17,7 @@
 
 2010-11-16  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16405: pageRenderer call addJsFile with leaving out 2nd parameter
 	* Follow-up to #16408: Support for Custom Navigation Components: removed warning
 	* Follow-up to #16315: New extension manager part 1: splitting classes: fixed many small issues
 	* Added feature #16408: Support for Custom Navigation Components (Thanks to Stefan Galinski)

@@ -786,6 +786,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '') {
+		if (!$type) {
+			$type = 'text/javascript';
+		}
 		if (!in_array(strtolower($name), $this->jsLibs)) {
 			$this->jsLibs[strtolower($name)] = array (
 				'file'        => $file,
@@ -811,6 +814,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '') {
+		if (!$type) {
+			$type = 'text/javascript';
+		}
 		if (!in_array(strtolower($name), $this->jsLibs)) {
 			$this->jsLibs[strtolower($name)] = array (
 				'file'        => $file,
@@ -835,6 +841,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
+		if (!$type) {
+			$type = 'text/javascript';
+		}
 		if (!isset($this->jsFiles[$file])) {
 			$this->jsFiles[$file] = array (
 				'type'        => $type,
@@ -856,6 +865,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
+		if (!$type) {
+			$type = 'text/javascript';
+		}
 		if (!isset($this->jsFiles[$file])) {
 			$this->jsFiles[$file] = array (
 				'type'        => $type,
