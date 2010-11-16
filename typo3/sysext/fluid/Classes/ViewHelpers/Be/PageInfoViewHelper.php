@@ -55,7 +55,7 @@ class Tx_Fluid_ViewHelpers_Be_PageInfoViewHelper extends Tx_Fluid_ViewHelpers_Be
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');
+			$iconImg = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
 				// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 		} else {	// On root-level of page tree
