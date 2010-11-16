@@ -311,7 +311,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param mixed $fieldValue The raw field value.
 	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
 	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
-	 * @return mixed The result
+	 * @return Tx_Extbase_Persistence_LazyObjectStorage|Tx_Extbase_Persistence_QueryResultInterface The result
 	 */
 	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
@@ -433,7 +433,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 *
 	 * @param mixed $result The result could be an object or an ObjectStorage
 	 * @param array $propertyMetaData The property meta data
-	 * @param array $result The result
+	 * @param Tx_Extbase_Persistence_QueryResultInterface|Tx_Extbase_Persistence_LoadingStrategyInterface $result The result
 	 * @return void
 	 */
 	public function mapResultToPropertyValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $result) {
@@ -461,11 +461,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					$propertyValue = $objects;
 				}
 			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
-				if (is_array($result)) {
-
-					if (current($result) !== FALSE) {
-						$propertyValue = current($result);
-					} else {
+				if (is_object($result) && $result instanceof Tx_Extbase_Persistence_QueryInterface) {
+					$propertyValue = $result->getFirst();
+					if ($propertyValue === FALSE) {
 						$propertyValue = NULL;
 					}
 				} else {
