@@ -138,6 +138,7 @@ class tx_cms_layout extends recordList {
 		'showInfo' => 1,					// Boolean: Display info-marks or not
 		'showCommands' => 1,				// Boolean: Display up/down arrows and edit icons for tt_content records
 		'single' => 1, 						// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
+		'showAsGrid' => 0,					// Boolean: If set, the content of columns is shown in grid
 		'showSingleCol' => 0,				// The column(s) to show if single mode (under each other)
 		'languageCols' => 0,
 		'languageMode' => 0,
@@ -392,6 +393,29 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
+	 * Returns the backend layout which should be used for this page.
+	 *
+	 * @param integer $id: Uid of the current
+	 * @return integer The Uid of the backend layout record
+	 */
+	function getSelectedBackendLayoutUid($id) {
+		$rootline = t3lib_BEfunc::BEgetRootLine($id);
+		$backendLayoutUid = null;
+		for ($i = count($rootline); $i > 0; $i--) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,be_layout,be_layout_next_level','pages','uid='.intval($rootline[$i]['uid']));
+			$page = $res[0];
+			if (intval($page['be_layout_next_level']) > 0 && $page['uid'] != $id ) {
+				$backendLayoutUid = intval($page['be_layout_next_level']);
+				break;
+			} else if (intval($page['be_layout']) > 0) {
+				$backendLayoutUid = intval($page['be_layout']);
+				break;
+			}
+		}
+		return $backendLayoutUid;
+	}
+
+	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
 	 * @param	integer		Page id
@@ -493,40 +517,108 @@ class tx_cms_layout extends recordList {
 
 						// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id,$key,$lP);
-					$head[$key].= $this->tt_content_drawColHeader(t3lib_BEfunc::getProcessedValue('tt_content','colPos',$key), ($this->doEdit&&count($rowArr)?'&edit[tt_content]['.$editUidList.']=edit'.$pageTitleParamForAltDoc:''), $newP);
+					$colTitle = t3lib_BEfunc::getProcessedValue('tt_content','colPos',$key);
+					/**
+					 * @mficzel
+					 * @todo get complete title from tca inclusive ts config manipulations by user func and tsConfig
+					 */
+					$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getColPosListItemsParsed' , $id, $this );
+					foreach( $tcaItems as $item) {
+						if ( $item[1] == $key) {
+							$colTitle =  $GLOBALS['LANG']->sL( $item[0] );
+						}
+					}
+					$head[$key].= $this->tt_content_drawColHeader($colTitle , ($this->doEdit&&count($rowArr)?'&edit[tt_content]['.$editUidList.']=edit'.$pageTitleParamForAltDoc:''), $newP);
 					$editUidList = '';
 				}
 
 					// For EACH column, fit the rendered content into a table cell:
 				$out='';
-				foreach($cList as $k => $key)	{
-					if (!$k)	{
-						$out.= '
-							<td><img src="clear.gif" width="'.$lMarg.'" height="1" alt="" /></td>';
-					} else {
-						$out.= '
-							<td><img src="clear.gif" width="4" height="1" alt="" /></td>
-							<td bgcolor="#cfcfcf"><img src="clear.gif" width="1" height="1" alt="" /></td>
-							<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
-					}
-					$out.= '
-							<td class="t3-page-column t3-page-column-' . $key . '">' . $head[$key] . $content[$key] . '</td>';
 
-						// Storing content for use if languageMode is set:
-					if ($this->tt_contentConfig['languageMode'])	{
-						$languageColumn[$key][$lP] = $head[$key].$content[$key];
-						if (!$this->defLangBinding)	{
-							$languageColumn[$key][$lP].='<br /><br />'.$this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key],$id,$lP),$lP);
-						}
+				if ($this->tt_contentConfig['showAsGrid']) {
+					$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
+					$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
+					if (empty($backendLayoutRecord['config'])) {
+						// TODO: show a message that no layout was found
+						$this->tt_contentConfig['showAsGrid'] = 0;
 					}
 				}
 
-					// Wrap the cells into a table row:
-				$out = '
+				if (!$this->tt_contentConfig['showAsGrid']) {
+					foreach($cList as $k => $key)	{
+
+						if (!$k)	{
+							$out.= '
+								<td><img src="clear.gif" width="'.$lMarg.'" height="1" alt="" /></td>';
+						} else {
+							$out.= '
+								<td><img src="clear.gif" width="4" height="1" alt="" /></td>
+								<td bgcolor="#cfcfcf"><img src="clear.gif" width="1" height="1" alt="" /></td>
+								<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
+						}
+						$out.= '
+								<td class="t3-page-column t3-page-column-' . $key . '">' . $head[$key] . $content[$key] . '</td>';
+
+							// Storing content for use if languageMode is set:
+						if ($this->tt_contentConfig['languageMode'])	{
+							$languageColumn[$key][$lP] = $head[$key].$content[$key];
+							if (!$this->defLangBinding)	{
+								$languageColumn[$key][$lP].='<br /><br />'.$this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key],$id,$lP),$lP);
+							}
+						}
+					}
+
+						// Wrap the cells into a table row:
+					$out = '
 					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns">
 						<tr>'.$out.'
 						</tr>
 					</table>';
+
+				} else {
+						// GRID VIEW:
+
+						// initialize TS parser to parse config to array
+					$parser = t3lib_div::makeInstance('t3lib_TSparser');
+					$parser->parse($backendLayoutRecord['config']);
+
+					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="80%" height="100%" class="t3-page-columns t3-gridTable">';
+
+						// add colgroups
+					$colCount = intval($parser->setup['be_layout.']['colCount']);
+					$grid .= '<colgroup>';
+					for ($i = 0; $i < $colCount; $i++) {
+						$grid .= '<col style="width:'.(100/$colCount).'%"></col>';
+					}
+					$grid .= '</colgroup>';
+
+						// cycle through rows
+					if(count($parser->setup['be_layout.']['rows.'])) {
+						foreach ($parser->setup['be_layout.']['rows.'] as $rowConfig) {
+							$grid .= '<tr>';
+
+								// and colummns
+							if(count($rowConfig['columns.'])) {
+								foreach ($rowConfig['columns.'] as $columnConfig) {
+
+										// which tt_content colPos should be displayed inside this cell
+									$columnKey = intval($columnConfig['colPos']);
+
+										// render the grid cell
+									$grid .= '<td valign="top"'.
+										(isset($columnConfig['colspan']) ? ' colspan="'.$columnConfig['colspan'].'"' : '').
+										(isset($columnConfig['rowspan']) ? ' rowspan="'.$columnConfig['rowspan'].'"' : '').
+										' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+										(isset($columnConfig['colspan']) ? ' t3-gridCell-width'.$columnConfig['colspan'] : '') .
+										(isset($columnConfig['rowspan']) ? ' t3-gridCell-height'.$columnConfig['rowspan'] : '').'">';
+									$grid .= $head[$columnKey] . $content[$columnKey] . '</td>';
+								}
+							}
+							$grid .= '</tr>';
+						}
+					}
+					$out .= $grid.'</table></div>';
+				}
 
 					// CSH:
 				$out.= t3lib_BEfunc::cshItem($this->descrTable,'columns_multi',$GLOBALS['BACK_PATH']);
@@ -2480,7 +2572,7 @@ class tx_cms_layout extends recordList {
 
 				$lines[]='';
 				$lines[]=array($LANG->getLL('pI_hitsPeriod').':',t3lib_BEfunc::date($rrow2[0]).' - '.t3lib_BEfunc::date($rrow2[1]).' ('.t3lib_BEfunc::calcAge($rrow2[1]-$rrow2[0],$this->agePrefixes).')');
-				$lines[]=array($LANG->getLL('pI_hitsTotal').':',$rrow[0]);
+				$lines[]=array($LANG->getLL('pI_hitsTotal').':',$rrow2[0]);
 
 
 					// Last 10 days

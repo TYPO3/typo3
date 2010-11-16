@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 $TCA['pages'] = array(
 	'ctrl' => $TCA['pages']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout',
+		'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,be_layout,be_layout_next_level',
 		'maxDBListItems' => 30,
 		'maxSingleDBListItems' => 50,
 	),
@@ -732,6 +732,40 @@ $TCA['pages'] = array(
 				),
 			),
 		),
+		'be_layout' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.be_layout',
+			'config' => array (
+				'type' => 'select',
+				'foreign_table' => 'be_layouts',
+				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( be_layouts.pid = ###PAGE_TSCONFIG_ID### OR be_layouts.pid = ###STORAGE_PID### ) ) AND be_layouts.hidden = 0',
+				'items' => array (
+					array ('', 0),
+					array ('none', -1)
+				),
+				'selicon_cols' => 5,
+				'size' => 1,
+				'maxitems' => 1,
+				'default' => ''
+			)
+		),
+		'be_layout_next_level' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.be_layout_next_level',
+			'config' => array (
+				'type' => 'select',
+				'foreign_table' => 'be_layouts',
+				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( be_layouts.pid = ###PAGE_TSCONFIG_ID### OR be_layouts.pid = ###STORAGE_PID### ) ) AND be_layouts.hidden = 0',
+				'items' => array (
+					array ('', 0),
+					array ('none', -1)
+				),
+				'selicon_cols' => 5,
+				'size' => 1,
+				'maxitems' => 1,
+				'default' => ''
+			)
+		)
 	),
 	'types' => array(
 			// normal
@@ -915,6 +949,9 @@ $TCA['pages'] = array(
 		'7' => array(
 			'showitem' => 'is_siteroot',
 		),
+		'8' => array(
+			'showitem' => 'be_layout_next_level'
+		),
 		'standard' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel',
 			'canNotCollapse' => 1,
@@ -972,7 +1009,7 @@ $TCA['pages'] = array(
 			'canNotCollapse' => 1,
 		),
 		'layout' => array(
-			'showitem' => 'layout;LLL:EXT:cms/locallang_tca.xml:pages.layout_formlabel, newUntil;LLL:EXT:cms/locallang_tca.xml:pages.newUntil_formlabel',
+			'showitem' => 'layout;LLL:EXT:cms/locallang_tca.xml:pages.layout_formlabel, newUntil;LLL:EXT:cms/locallang_tca.xml:pages.newUntil_formlabel, --linebreak--, be_layout;LLL:EXT:cms/locallang_tca.xml:pages.be_layout_formlabel, be_layout_next_level;LLL:EXT:cms/locallang_tca.xml:pages.be_layout_next_level_formlabel',
 			'canNotCollapse' => 1,
 		),
 		'module' => array(
@@ -1014,8 +1051,8 @@ $TCA['pages'] = array(
 		'config' => array(
 			'showitem' => 'TSconfig;LLL:EXT:cms/locallang_tca.xml:pages.TSconfig_formlabel',
 			'canNotCollapse' => 1,
-		),
-	),
+		)
+	)
 );
 
 
@@ -1048,7 +1085,7 @@ if (!t3lib_div::compat_version('4.2')) {
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg,
+				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg, be_layout;;8,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 	');
 		// adding doktype 2 ("Advanced")
@@ -1062,7 +1099,7 @@ if (!t3lib_div::compat_version('4.2')) {
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid,
+				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid, be_layout;;8,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 	');
 }

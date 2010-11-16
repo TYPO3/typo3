@@ -1,0 +1,268 @@
+* {
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+
+body, html {
+	height: 100%;
+	width: 100%;
+}
+
+div.typo3-noDoc {
+	width: 98%;
+	height: 90%;
+	margin: 0;
+	padding: 5px;
+}
+
+table#outer_container td, table#editor td {
+	vertical-align: middle;
+}
+
+table#outer_container td.editor_cell {
+	height: 100%;
+}
+
+table.editor {
+	border-right: 1px gray dashed;
+	border-bottom: 1px gray dashed;
+}
+
+table.editor td {
+	border-top: 1px gray dashed;
+	border-left: 1px gray dashed;
+	text-align: center;
+	z-index: 2000;
+	background-color: white;
+	min-height: 100px;
+}
+
+div#editor {
+	height: 100%;
+}
+
+div.cell_container {
+	width: 60px;
+	height: 60px;
+	position: relative;
+	left: 50%;
+	margin-left: -30px;
+	opacity: 0.3;
+}
+
+div.cell_container:hover {
+	opacity: 1;
+}
+
+.link_expand_right, .link_shrink_left, .link_expand_down, .link_shrink_up, .link_editor {
+	display: block;
+	position: absolute;
+	width: 14px;
+	height: 32px;
+	z-index: 1100;
+}
+
+.link_expand_down, .link_shrink_up {
+	width: 32px;
+	height: 14px;
+}
+
+.link_expand_right {
+	background-image: url(t3grid-editor-right-inactive.png);
+	left: 46px;
+	top: 14px;
+}
+
+.link_expand_right:hover {
+	background-image: url(t3grid-editor-right.png);
+}
+
+
+.link_shrink_left {
+	background-image: url(t3grid-editor-left-inactive.png);
+	left: 0px;
+	top: 14px;
+}
+
+.link_shrink_left:hover {
+	background-image: url(t3grid-editor-left.png);
+}
+
+.link_expand_down {
+	background-image: url(t3grid-editor-down-inactive.png);
+	left: 14px;
+	top: 46px;
+}
+
+.link_expand_down:hover {
+	background-image: url(t3grid-editor-down.png);
+}
+
+.link_shrink_up {
+	background-image: url(t3grid-editor-up-inactive.png);
+	left: 14px;
+	top: 0px;
+}
+
+.link_shrink_up:hover {
+	background-image: url(t3grid-editor-up.png);
+}
+
+.link_editor {
+	background-image: url(t3grid-edit-inactive.png);
+	width: 32px;
+	height: 32px;
+	left: 14px;
+	top: 14px;
+}
+
+.link_editor:hover {
+	background-image: url(t3grid-edit.png);
+}
+
+.question {
+	background-image: url(t3grid-layer-icon-help.png) !important;
+}
+
+.save {
+	background-image: url(t3grid-layer-icon-save.png) !important;
+}
+
+.cancel {
+	background-image: url(t3grid-layer-icon-close.png) !important;
+}
+* {
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+
+body, html {
+	height: 100%;
+	width: 100%;
+}
+
+div.typo3-noDoc {
+	width: 98%;
+	height: 90%;
+	margin: 0;
+	padding: 5px;
+}
+
+table#outer_container td, table#editor td {
+	vertical-align: middle;
+}
+
+table#outer_container td.editor_cell {
+	height: 100%;
+}
+
+table.editor {
+	border-right: 1px gray dashed;
+	border-bottom: 1px gray dashed;
+}
+
+table.editor td {
+	border-top: 1px gray dashed;
+	border-left: 1px gray dashed;
+	text-align: center;
+	z-index: 2000;
+	background-color: white;
+	min-height: 100px;
+}
+
+div#editor {
+	height: 100%;
+}
+
+div.cell_container {
+	width: 60px;
+	height: 60px;
+	position: relative;
+	left: 50%;
+	margin-left: -30px;
+	opacity: 0.3;
+}
+
+div.cell_container:hover {
+	opacity: 1;
+}
+
+.link_expand_right, .link_shrink_left, .link_expand_down, .link_shrink_up, .link_editor {
+	display: block;
+	position: absolute;
+	width: 14px;
+	height: 32px;
+	z-index: 1100;
+}
+
+.link_expand_down, .link_shrink_up {
+	width: 32px;
+	height: 14px;
+}
+
+.link_expand_right {
+	background-image: url(t3grid-editor-right-inactive.png);
+	left: 46px;
+	top: 14px;
+}
+
+.link_expand_right:hover {
+	background-image: url(t3grid-editor-right.png);
+}
+
+
+.link_shrink_left {
+	background-image: url(t3grid-editor-left-inactive.png);
+	left: 0px;
+	top: 14px;
+}
+
+.link_shrink_left:hover {
+	background-image: url(t3grid-editor-left.png);
+}
+
+.link_expand_down {
+	background-image: url(t3grid-editor-down-inactive.png);
+	left: 14px;
+	top: 46px;
+}
+
+.link_expand_down:hover {
+	background-image: url(t3grid-editor-down.png);
+}
+
+.link_shrink_up {
+	background-image: url(t3grid-editor-up-inactive.png);
+	left: 14px;
+	top: 0px;
+}
+
+.link_shrink_up:hover {
+	background-image: url(t3grid-editor-up.png);
+}
+
+.link_editor {
+	background-image: url(t3grid-edit-inactive.png);
+	width: 32px;
+	height: 32px;
+	left: 14px;
+	top: 14px;
+}
+
+.link_editor:hover {
+	background-image: url(t3grid-edit.png);
+}
+
+.question {
+	background-image: url(t3grid-layer-icon-help.png) !important;
+}
+
+.save {
+	background-image: url(t3grid-layer-icon-save.png) !important;
+}
+
+.cancel {
+	background-image: url(t3grid-layer-icon-close.png) !important;
+}

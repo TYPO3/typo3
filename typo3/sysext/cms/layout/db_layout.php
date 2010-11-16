@@ -322,7 +322,8 @@ class SC_db_layout {
 				0 => $LANG->getLL('m_function_0'),
 				1 => $LANG->getLL('m_function_1'),
 				2 => $LANG->getLL('m_function_2'),
-				3 => $LANG->getLL('pageInformation')
+				3 => $LANG->getLL('pageInformation'),
+				4 => $LANG->getLL('gridView')
 			),
 			'language' => array(
 				0 => $LANG->getLL('m_default')
@@ -535,9 +536,16 @@ class SC_db_layout {
 				// Find columns
 			$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');		// SHARED page-TSconfig settings.
 			$this->colPosList = strcmp(trim($this->modTSconfig['properties']['tt_content.']['colPos_list']),'') ? trim($this->modTSconfig['properties']['tt_content.']['colPos_list']) : $modTSconfig_SHARED['properties']['colPos_list'];
-			$this->colPosList = strcmp($this->colPosList,'')?$this->colPosList:'1,0,2,3';
-			$this->colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$this->colPosList)));		// Removing duplicates, if any
-
+			if( !strcmp($this->colPosList,'') ) {
+				$beLayout = t3lib_div::callUserFunction( 'EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getSelectedBackendLayout' , $this->id, $this );
+				if(count($beLayout['__colPosList'])) {
+					$this->colPosList = implode(',', $beLayout['__colPosList']);
+				}
+			}
+			if( !strcmp($this->colPosList, '') ){
+				$this->colPosList = '1,0,2,3';
+			}
+			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',',$this->colPosList)));		// Removing duplicates, if any
 
 				// Render the primary module content:
 			if ($this->MOD_SETTINGS['function']==0)	{
@@ -1026,10 +1034,16 @@ class SC_db_layout {
 						$dblist->tt_contentConfig['showInfo'] = 1;		// Boolean: Display info-marks or not
 						$dblist->tt_contentConfig['single'] = 0; 		// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
 
+						if ($this->MOD_SETTINGS['function'] == 4) {
+								// grid view
+							$dblist->tt_contentConfig['showAsGrid'] = 1;
+						}
+
 							// Setting up the tt_content columns to show:
 						if (is_array($TCA['tt_content']['columns']['colPos']['config']['items']))	{
 							$colList = array();
-							foreach($TCA['tt_content']['columns']['colPos']['config']['items'] as $temp)	{
+							$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getColPosListItemsParsed' , $this->id, $this );
+							foreach($tcaItems as $temp)	{
 								$colList[] = $temp[1];
 							}
 						} else {	// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:

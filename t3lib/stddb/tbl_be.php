@@ -702,7 +702,6 @@ $TCA['be_groups'] = array(
 );
 
 
-
 /**
  * System filemounts - Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
  */

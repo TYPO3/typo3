@@ -151,6 +151,8 @@
 			<label index="pages.fe_login_mode.enableAgain">Enable logins again</label>
 			<label index="pages.storage_pid_formlabel">On selected page</label>
 			<label index="pages.TSconfig_formlabel">TSconfig</label>
+			<label index="pages.be_layout_formlabel">Backend Layout</label>
+ 			<label index="pages.be_layout_next_level_formlabel">Backend Layout (on next level)</label>
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website user</label>
 			<label index="fe_users.username">Username:</label>
@@ -201,6 +203,12 @@
 			<label index="sys_template.tabs.options">Options</label>
 			<label index="sys_template.tabs.access">Access</label>
 			<label index="pages_language_overlay">Alternative Page Language</label>
+			<label index="be_layouts">Backend Layouts</label>
+			<label index="be_layouts.title">Title</label>
+			<label index="be_layouts.description">Description</label>
+			<label index="be_layouts.config">Config</label>
+			<label index="be_layouts.wizard">Wizard</label>
+			<label index="be_layouts.icon">Icon</label>
 		</languageKey>
 	</data>
 </T3locallang>

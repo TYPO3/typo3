@@ -75,6 +75,10 @@
 			<label index="colorpicker_fromList">Select HTML color name:</label>
 			<label index="colorpicker_black">BLACK</label>
 			<label index="colorpicker_white">WHITE</label>
+			<label index="grid_windowTitle">Set cell name and column number</label>
+			<label index="grid_labelName">Name</label>
+			<label index="grid_labelColumn">Column Number</label>
+			<label index="grid_labelSave">Save to cell</label>
 		</languageKey>
 	</data>
 </T3locallang>

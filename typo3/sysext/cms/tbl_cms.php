@@ -996,5 +996,81 @@ $TCA['sys_template'] = array(
 	)
 );
 
+// ******************************************************************
+// be_layouts
+// ******************************************************************
+/**
+ * @todo add lll
+ */
+$TCA['be_layouts'] = array(
+	'ctrl' => $TCA['be_layouts']['ctrl'],
+	'interface' => array(
+		'showRecordFieldList' => 'title,config,description,hidden,icon'
+	),
+	'columns' => array(
+		'title' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.title',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'max' => '256',
+				'eval' => 'required'
+			)
+		),
+		'description' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.description',
+			'config' => array(
+				'type' => 'text',
+				'rows' => '5',
+				'cols' => '25',
+			)
+		),
+		'config' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.config',
+			'config' => array(
+				'type' => 'text',
+				'rows' => '5',
+				'cols' => '25',
+				'wizards' => Array(
+					'_PADDING' => 4,
+					0 => Array(
+						'title' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.wizard',
+						'type' => 'popup',
+						'icon' => t3lib_extMgm::extRelPath('cms').'layout/wizard_be_layout.png',
+						'script' => t3lib_extMgm::extRelPath('cms').'layout/wizard_be_layout.php',
+						'JSopenParams' => 'height=800,width=800,status=0,menubar=0,scrollbars=0',
+					),
+				),
+			)
+		),
+		'hidden' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'exclude' => 1,
+			'config' => array(
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'icon' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.icon',
+			'exclude' => 1,
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg,gif,png',
+				'uploadfolder' => 'uploads/media',
+				'show_thumbs' => 1,
+				'size' => 1,
+				'maxitems' => 1
+			)
+		),
+	),
+	'types' => array(
+		'1' => array('showitem' => '
+			hidden,title;;1;;2-2-2, icon, description, config'
+		)
+	)
+);
+
 
 ?>

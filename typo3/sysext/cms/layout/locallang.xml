@@ -57,6 +57,7 @@
 			<label index="m_function_0">QuickEdit</label>
 			<label index="m_function_1">Columns</label>
 			<label index="m_function_2">Languages</label>
+			<label index="gridView">Grid-View</label>
 			<label index="m_tt_board_0">List topics only</label>
 			<label index="m_tt_board_expand">Expand Threads</label>
 			<label index="m_tt_address_0">Short List</label>
