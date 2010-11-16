@@ -1,0 +1,105 @@
+
+#typo3-pagetree-treeContainer {
+	margin-bottom: 60px;
+	padding-bottom: 10px;
+	height: 100%;
+}
+
+#typo3-pagetree .topPanel-button {
+	margin: 0 5px 0 0;
+	display: inline-block;
+	height: 16px;
+	overflow: hidden;
+	position: relative;
+	width: 16px;
+}
+
+#typo3-pagetree #topPanel .x-btn,
+#typo3-pagetree #topPanel .x-btn-over {
+	background: none;
+	border: none;
+}
+
+#typo3-pagetree .x-tree .x-panel-body {
+	background: none;
+}
+
+/*#typo3-navigationContainer .x-panel-body {
+	-moz-box-shadow: inset -2px 0 1px #C4C4C4;
+	-ms-box-shadow: inset -2px 0 1px #C4C4C4;
+	-webkit-box-shadow: inset -2px 0 1px #C4C4C4;
+	box-shadow: inset -2px 0 1px #C4C4C4;
+}
+
+#typo3-pagetree #topPanel {
+	-moz-box-shadow: inset -2px 0 0 #414141;
+	-ms-box-shadow: inset -2px 0 0 #414141;
+	-webkit-box-shadow: inset -2px 0 0 #414141;
+	box-shadow: inset -2px 0 0 #414141;
+}*/
+
+#typo3-pagetree .x-tree-node .x-tree-node-el {
+	border-bottom: 1px solid transparent;
+	border-left: 1px solid transparent;
+	border-top: 1px solid transparent;
+	margin-right: 0;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-over {
+	background-color: #F8F8F8;
+	margin-right: 4px;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-over,
+#typo3-pagetree .x-tree-node .x-tree-selected {
+	background-color: #F8F8F8;
+	border-bottom: 1px solid #D7D7D7;
+	border-left: 1px solid #D7D7D7;
+	border-top: 1px solid #D7D7D7;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-above {
+	border-top-color: #686868;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-below {
+	border-bottom-color: #686868;
+}
+
+#typo3-pagetree .x-panel-tbar {
+	padding: 0;
+	margin: 0;
+	background-color: #585858;
+	border: none;
+}
+
+#typo3-pagetree .x-toolbar {
+	background: none;
+	border: none;
+}
+
+#typo3-pagetree .typo3-pagetree-topbar-item,
+#typo3-pagetree .typo3-pagetree-topbar-item div {
+	background-color: #DADADA;
+}
+
+#typo3-pagetree .typo3-pagetree-topbar-item {
+	padding: 5px 3px 0 3px;
+	height: 22px;
+}
+
+#typo3-pagetree-topPanel-filter {
+	height: 14px;
+}
+
+#typo3-pagetree-deletionDropZone {
+	padding: 5px;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+
+#typo3-pagetree-deletionDropZone,
+#typo3-pagetree-deletionDropZone .x-panel-body {
+	background-color: #DADADA;
+}

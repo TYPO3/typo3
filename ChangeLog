@@ -31,6 +31,7 @@
 
 2010-11-16  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #16426: ExtJS based Pagetree (Thanks to Stefan Galinski and Peter Foerger)
 	* Fixed bug #16310: Migrate regular workspaces to custom-stage workspaces (Thanks to Tolleiv Nietsch)
 	* Fixed bug #16421: missing CSS style for pressed buttons in ExtJS / enable qtips / remove toolbar margin (Thanks to Fabien Udriot)
 	* Fixed bug #16405: pageRenderer call addJsFile with leaving out 2nd parameter

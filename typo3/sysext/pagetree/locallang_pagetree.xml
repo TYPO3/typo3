@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>TYPO3 core labels the page tree</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="page.doktype.1">Default</label>
+			<label index="page.doktype.3">External Link</label>
+			<label index="page.doktype.4">Shortcut</label>
+			<label index="page.doktype.5">Not in Menu</label>
+			<label index="page.doktype.6">BE user Section</label>
+			<label index="page.doktype.7">Mountpoint</label>
+			<label index="page.doktype.199">Spacer</label>
+			<label index="page.doktype.254">Sysfolder</label>
+		</languageKey>
+	</data>
+</T3locallang>

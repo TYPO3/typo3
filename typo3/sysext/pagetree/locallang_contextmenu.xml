@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>TYPO3 core labels for the clickmenus</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="cm.copyPage">Copy page</label>
+			<label index="cm.cutPage">Cut page</label>
+			<label index="cm.viewPage">View live page</label>
+			<label index="cm.editPageProperties">Edit page properties</label>
+			<label index="cm.newPage">Add page</label>
+			<label index="cm.pasteIntoPage">Paste into</label>
+			<label index="cm.pasteAfterPage">Paste after</label>
+			<label index="cm.deletePage">Delete page</label>
+			<label index="cm.disablePage">Disable page</label>
+			<label index="cm.enablePage">Enable page</label>
+			<label index="cm.info">Page infos</label>
+			<label index="cm.history">Page history</label>
+			<label index="cm.tempMountPoint">Mount as treeroot</label>
+			<label index="cm.branchActions">Branch Actions</label>
+			<label index="cm.copyPasteActions">Page Actions</label>
+			
+			<label index="cm.renameFolder">Rename</label>
+			<label index="cm.uploadFilesToFolder">Upload Files</label>
+			<label index="cm.createFolder">Create New Folder</label>
+			<label index="cm.folderInfo">Folder Info</label>
+			<label index="cm.copyFolder">Copy</label>
+			<label index="cm.cutFolder">Cut</label>
+			<label index="cm.pasteIntoFolder">Paste</label>
+			<label index="cm.deleteFolder">Delete</label>
+		</languageKey>
+	</data>
+</T3locallang>
