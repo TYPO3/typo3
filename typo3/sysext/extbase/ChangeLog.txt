@@ -18,9 +18,64 @@ The highlights are outlined below, and explained in-depth a little further down:
 
 Additionally, the following smaller features were implemented:
 
-* Configurable plugin namespaces (#8365)
-* Automatic target page determination (#9121)
-* Improved resolveView() mechanism
+* Configurable plugin namespaces (#8365):
+	By default each Extbase plugin has a unique URI prefix to avoid collisions with other plugins on your website.
+	This so called plugin namespace usually has th e format tx_yourextension_yourplugin.
+	With Extbase 1.3 it is possible to override this namespace. This comes in handy if want to interact with 3rd party
+	extensions:
+	plugin.tx_yourextension.view.pluginNamespace = tx_ttnews
+
+	This sets the plugin namespace of all your plugins to "tx_ttnews" making it possible to directly access tt_news
+	parameters in your controller:
+
+	/**
+	 * @param integer $tt_news tt_news Article uid
+	 * @return void
+	 */
+	public function yourAction($tt_news) {
+		// interact with $tt_news uid
+	}
+
+	This works with automatic mapping to Domain models too of course:
+
+	/**
+	 * @param Tx_YourExtension_Domain_Model_NewsArticle $tt_news tt_news Article
+	 * @return void
+	 */
+	public function yourAction(Tx_YourExtension_Domain_Model_NewsArticle $tt_news) {
+		// interact with $tt_news object
+	}
+
+
+	You can also override the plugin namespace for a single instance by adding the section <view.pluginNamespace> to your
+	plugin FlexForm.
+
+* Automatic target page determination (#9121):
+	In TYPO3 v5 we won't have the notion of page uids. To accustom developers to this change, we're trying to free you from
+	the need to specify target pages from within your Extension.
+	Of course you can put all your functionality into one fully fledged plugin, then you won't have to deal with target
+	pages as the current page is used by default.
+	But sometimes you want to be able to change the surrounding contents of a special view of your extension (e.g. the
+	subcontent column of a details page).
+	As before you can still specify the target page explicitly like
+	<f:link.action action="foo" pageUid="123" />
+	But with Extbase 1.3 you can also use a new feature called "automatic target page determination". You can enable this
+	like:
+	plugin.tx_yourextension.view.defaultPid = auto
+	Then Extbase will search the page tree for a plugin that is configured to handle the specified action and you can omit
+	the "pageUid" parameter in your links.
+	This does not work, if you use the same plugin multiple times of course. In this case you can override the default page
+	id for the respective plugins:
+	plugin.tx_yourextension_yourplugin.view.defaultPid = 123
+
+	Note: By default this feature is not activated, because that would be a breaking change in some cases
+
+* Improved resolveView() mechanism:
+	Another feature we backported from FLOW3 is the improved view resolving.
+	You can now change the default view implementation per format by inserting following line in your Controller:
+	protected $viewFormatToObjectNameMap = array('json' => 'Tx_YourExtension_View_JsonView', 'html' =>
+	'Tx_YourExtension_View_HtmlView');
+
 * Allowing plugins to be registered as new content element (#10666)
 	This is done using an additional parameter to Tx_Extbase_Utility_Extension::configurePlugin
 	that allows you to specify the plugin type. Example:
@@ -31,7 +86,27 @@ Additionally, the following smaller features were implemented:
 		array(),
 		Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
 	);
-* Query Ordering .....
+
+* Default Orderings & QuerySettings (#10319)
+
+	It is now possible to change the default orderings of a repository without you having to modify the query by setting
+	the $defaultOrderings property of your Repository to a non-empty array:
+	protected $defaultOrderings = array(
+	  'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	  'date' => 'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	);
+	This will change the default ordering for all queries created by this repository. Of course you can override the
+	ordering by calling $query->setOrderings() in your custom finder method.
+
+	Besides it's now possible to change the default query settings of a repository. This way you could for instance disable
+	"respect storage pid" for all queries. We added a life-cycle method "initializeObject" to the repository which will be
+	executed as soon as the repository is created. Just override it like:
+	public function initializeObject() {
+	  $querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+	  $querySettings->setRespectStoragePage(FALSE);
+	  $this->setDefaultQuerySettings($querySettings);
+	}
+	Of course, QuerySettings can be overridden too in your custom finder method by calling $query->setQuerySettings();
 
 
 Breaking Changes:
