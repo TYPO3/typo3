@@ -17,6 +17,7 @@
 
 2010-11-16  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16408: Support for Custom Navigation Components: removed warning
 	* Follow-up to #16315: New extension manager part 1: splitting classes: fixed many small issues
 	* Added feature #16408: Support for Custom Navigation Components (Thanks to Stefan Galinski)
 	* Added feature #16396: Implement a Grid View + wizard to enable the backend layout to be adapted to the frontend look and feel (Thanks to Joey Hasenau, Martin Ficzel and Thomas Hempel)

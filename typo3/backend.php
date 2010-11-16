@@ -279,10 +279,14 @@ class TYPO3backend {
 
 	/**
 	 * Loads the css and javascript files of all registered navigation widgets
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function loadResourcesForRegisteredNavigationComponents() {
+		if (!is_array($GLOBALS['TBE_MODULES']['_navigationComponents'])) {
+			return;
+		}
+
 		$loadedComponents = array();
 		foreach ($GLOBALS['TBE_MODULES']['_navigationComponents'] as $module => $info) {
 			if (in_array($info['componentId'], $loadedComponents)) {
