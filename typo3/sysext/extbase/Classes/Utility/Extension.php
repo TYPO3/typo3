@@ -55,7 +55,7 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $pluginType either Tx_Extbase_Utility_Extension::TYPE_PLUGIN (default) or Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
 	 * @return void
 	 */
-	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::TYPE_PLUGIN) {
+	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::PLUGIN_TYPE_PLUGIN) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
