@@ -25,7 +25,7 @@
  * @api
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Link_WidgetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Widget_LinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string

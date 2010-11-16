@@ -27,7 +27,7 @@
  * @api
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Uri_WidgetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Widget_UriViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Render the Uri.

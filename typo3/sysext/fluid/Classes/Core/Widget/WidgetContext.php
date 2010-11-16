@@ -26,7 +26,7 @@
  *
  * The WidgetContext can be fetched from the current WidgetRequest, and is thus
  * available throughout the whole sub-request of the widget. It is used internally
- * by various ViewHelpers (like <f:link.widget>, <f:uri.widget>, <f:widget.renderChildren>),
+ * by various ViewHelpers (like <f:widget.link>, <f:widget.uri>, <f:widget.renderChildren>),
  * to get knowledge over the current widget's configuration.
  *
  * It is a purely internal class which should not be used outside of Fluid.
