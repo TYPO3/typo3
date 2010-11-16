@@ -269,7 +269,7 @@ tt_content.' . $pluginSignature . ' {
 		}
 
 		if ((strlen($sub) > 0)) {
-			//$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
+			$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
 			$key = $main . '_' . $sub;
 		} else {
 			$key = $main;
