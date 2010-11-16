@@ -60,6 +60,46 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	}
 
 	/**
+	 * Returns the TypoScript configuration found in module.tx_yourextension_yourmodule
+	 * merged with the global configuration of your extension from module.tx_yourextension
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
+	 * @return array
+	 */
+	protected function getPluginConfiguration($extensionName, $pluginName) {
+		$setup = $this->getTypoScriptSetup();
+		$pluginConfiguration = array();
+		if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'])) {
+			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
+		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
+			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']));
+		}
+		return $pluginConfiguration;
+	}
+
+	/**
+	 * Returns the configured controller/action pairs of the specified module in the format
+	 * array(
+	 *  'Controller1' => array('action1', 'action2'),
+	 *  'Controller2' => array('action3', 'action4')
+	 * )
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
+	 * @return array
+	 */
+	protected function getSwitchableControllerActions($extensionName, $pluginName) {
+		$switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'];
+		if (!is_array($switchableControllerActions)) {
+			$switchableControllerActions = array();
+		}
+		return $switchableControllerActions;
+	}
+
+	/**
 	 * Returns the page uid of the current page.
 	 * If no page is selected, we'll return the uid of the first root page.
 	 *

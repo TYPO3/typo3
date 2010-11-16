@@ -64,14 +64,14 @@ class Tx_Extbase_Utility_Extension {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName])) {
-			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName] = array();
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = array();
 		}
 
 		foreach ($controllerActions as $controllerName => $actionsList) {
-			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
 			if (!empty($nonCacheableControllerActions[$controllerName])) {
-				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
 			}
 		}
 
@@ -121,7 +121,7 @@ tt_content.' . $pluginSignature . ' {
 			default:
 				throw new InvalidArgumentException('The pluginType "' . $pluginType .'" is not suported', 1289858856);
 		}
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType'] = $pluginType;
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
 
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
@@ -147,90 +147,40 @@ tt_content.' . $pluginSignature . ' {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType']);
+		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
 	}
 
 	/**
 	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
 	 *
-	 * @param string $key The module name
-	 * @param string $fullpath	Absolute path to module
-	 * @param array $MCONF Reference to the array holding the configuration of the module
-	 * @param array $MLANG Reference to the array holding the localized module labels
+	 * @param string $moduleSignature The module name
+	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
 	 * @return array Configuration of the module
 	 */
-	public function configureModule($key, $fullpath, array $MCONF = array(), array $MLANG = array()) {
-		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
-		$config = $GLOBALS['TBE_MODULES']['_configuration'][$key]['config'];
-		define('TYPO3_MOD_PATH', $config['extRelPath']);
-
-			// Fill $MCONF
-		$MCONF['name'] = $key;
-		$MCONF['access'] = $config['access'];
-		$MCONF['script'] = '_DISPATCH';
-
-		if (substr($config['icon'], 0, 4) === 'EXT:') {
-			list($extKey, $local) = explode('/', substr($config['icon'], 4), 2);
-			$config['icon'] = t3lib_extMgm::extRelPath($extKey) . $local;
+	public function configureModule($moduleSignature, $modulePath) {
+		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
+		$iconPathAndFilename = $moduleConfiguration['icon'];
+		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
+			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
+			$iconPathAndFilename = t3lib_extMgm::extPath($extensionKey) . $relativePath;
 		}
+		// TODO: skin support
 
-			// Initialize search for alternative icon:
-		$altIconKey = 'MOD:' . $key . '/' . $config['icon'];		// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
-		$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
+		$moduleLabels = array(
+			'tabs_images' => array(
+				'tab' => $iconPathAndFilename,
+			),
+			'labels' => array(
+				'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
+				'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr'),
+			),
+			'tabs' => array(
+				'tab' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_tabs_tab')
+			)
+		);
+		$GLOBALS['LANG']->addModuleLabels($moduleLabels, $moduleSignature . '_');
 
-			// Set icon, either default or alternative:
-		if ($altIconAbsPath && @is_file($altIconAbsPath)) {
-			$tabImage = $altIconAbsPath;
-		} else {
-				// Setting default icon:
-			$tabImage = $config['icon'];
-		}
-
-			// Fill $MLANG
-		$MLANG['default']['ll_ref'] = $config['labels'];
-
-			// Finally, set the icon with correct path:
-		if (substr($tabImage, 0 ,3) === '../') {
-			$MLANG['default']['tabs_images']['tab'] = PATH_site . substr($tabImage, 3);
-		} else {
-			$MLANG['default']['tabs_images']['tab'] = PATH_typo3 . $tabImage;
-		}
-
-			// If LOCAL_LANG references are used for labels of the module:
-		if ($MLANG['default']['ll_ref']) {
-				// Now the 'default' key is loaded with the CURRENT language - not the english translation...
-			$MLANG['default']['labels']['tablabel'] = $GLOBALS['LANG']->sL($MLANG['default']['ll_ref'] . ':mlang_labels_tablabel');
-			$MLANG['default']['labels']['tabdescr'] = $GLOBALS['LANG']->sL($MLANG['default']['ll_ref'] . ':mlang_labels_tabdescr');
-			$MLANG['default']['tabs']['tab'] = $GLOBALS['LANG']->sL($MLANG['default']['ll_ref'] . ':mlang_tabs_tab');
-			$GLOBALS['LANG']->addModuleLabels($MLANG['default'], $key . '_');
-		} else {	// ... otherwise use the old way:
-			$GLOBALS['LANG']->addModuleLabels($MLANG['default'], $key . '_');
-			$GLOBALS['LANG']->addModuleLabels($MLANG[$GLOBALS['LANG']->lang], $key . '_');
-		}
-
-			// Fill $modconf
-		$modconf['script'] = 'mod.php?M=' . rawurlencode($key);
-		$modconf['name'] = $key;
-
-				// Default tab setting
-		if ($MCONF['defaultMod']) {
-			$modconf['defaultMod'] = $MCONF['defaultMod'];
-		}
-			// Navigation Frame Script (GET params could be added)
-		if ($MCONF['navFrameScript']) {
-			$navFrameScript = explode('?', $MCONF['navFrameScript']);
-			$navFrameScript = $navFrameScript[0];
-			if (file_exists($path . '/' . $navFrameScript)) {
-				$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MCONF['navFrameScript']);
-			}
-		}
-
-			// Additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
-		if ($MCONF['navFrameScriptParam']) {
-			$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
-		}
-
-		return $modconf;
+		return $moduleConfiguration;
 	}
 
 	/**
@@ -238,54 +188,57 @@ tt_content.' . $pluginSignature . ' {
 	 * FOR USE IN ext_tables.php FILES
 	 *
 	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-	 * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there. If $main is not set a blank $extensionName module is created
-	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created
+	 * @param string $mainModuleName The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there. If $main is not set a blank $extensionName module is created
+	 * @param string $subModuleName The submodule key. If $sub is not set a blank $main module is created
 	 * @param string $position This can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
 	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-	 * @param array $config The configuration options of the module (icon, locallang.xml file)
+	 * @param array $moduleConfiguration The configuration options of the module (icon, locallang.xml file)
 	 * @return void
 	 */
-	static public function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
+	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions, array $moduleConfiguration = array()) {
 		if (empty($extensionName)) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+			throw new InvalidArgumentException('The extension name must not be empty', 1239891989);
 		}
-		$extensionKey = $extensionName; // FIXME This will break if the $extensionName is given as BlogExample
+		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
-		$path = t3lib_extMgm::extPath($extensionKey, 'Classes/');
-		$relPath = t3lib_extMgm::extRelPath($extensionKey) . 'Classes/';
-
-		if (!is_array($config) || count($config) == 0) {
-			$config['access'] = 'admin';
-			$config['icon'] = '';
-			$config['labels'] = '';
-			$config['extRelPath'] = $relPath;
-		}
-
-		if ((strlen($main) > 0) && !array_key_exists($main, $GLOBALS['TBE_MODULES'])) {
-			$main = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($main);
-		} else {
-			$main = (strlen($main) > 0) ? $main : 'web'; // TODO By now, $main must default to 'web'
-		}
-
-		if ((strlen($sub) > 0)) {
-			$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
-			$key = $main . '_' . $sub;
-		} else {
-			$key = $main;
-		}
-
-		$moduleConfig = array(
-			'name' => $key,
-			'extensionKey' => $extensionKey,
-			'extensionName' => $extensionName,
-			'controllerActions' => $controllerActions,
-			'config' => $config,
+		$defaultModuleConfiguration = array(
+			'access' => 'admin',
+			'icon' => 'EXT:extbase/ext_icon.gif',
+			'labels' => '',
+			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
 		);
-		$GLOBALS['TBE_MODULES']['_configuration'][$key] = $moduleConfig;
-		$GLOBALS['TBE_MODULES']['_configuration'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
 
-		t3lib_extMgm::addModule($main, $sub, $position);
+		if ((strlen($mainModuleName) > 0) && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
+			$mainModuleName = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($mainModuleName);
+		} else {
+			$mainModuleName = (strlen($mainModuleName) > 0) ? $mainModuleName : 'web';
+		}
+		$moduleSignature = $mainModuleName;
+
+		if ((strlen($subModuleName) > 0)) {
+			$subModuleName = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($subModuleName);
+			$moduleSignature .= '_' . $subModuleName;
+		}
+
+		$moduleConfiguration['name'] = $moduleSignature;
+		$moduleConfiguration['script'] = 'mod.php?M=' . rawurlencode($moduleSignature);
+		$moduleConfiguration['extensionName'] = $extensionName;
+		$moduleConfiguration['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+
+		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
+
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();
+		}
+		foreach($controllerActions as $controllerName => $actions) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerName] = array(
+				'actions' => t3lib_div::trimExplode(',' , $actions)
+			);
+		}
+
+		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
 	}
 
 	/**
@@ -519,11 +472,11 @@ tt_content.' . $pluginSignature . ' {
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
 		// TODO use ConfigurationManager to retrieve controllerConfiguration
-		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName])) {
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'])) {
 			return NULL;
 		}
 		$pluginNames = array();
-		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName] as $pluginName => $pluginConfiguration) {
+		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] as $pluginName => $pluginConfiguration) {
 			if (!is_array($pluginConfiguration['controllers'])) {
 				continue;
 			}
