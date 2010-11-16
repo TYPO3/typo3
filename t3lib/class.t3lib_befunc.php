@@ -858,24 +858,25 @@ final class t3lib_BEfunc {
 	/**
 	 * Returns an array with system languages:
 	 *
-	 * @return	array		Array with languages
+	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
+	 * but as a string <flags-xx>. The calling party should call
+	 * t3lib_iconWorks::getSpriteIcon(<flags-xx>) to get an HTML which will represent
+	 * the flag of this language.
+	 *
+	 * @return	array		Array with languages (title, uid, flagIcon)
 	 */
 	public static function getSystemLanguages()	{
-
-			// Initialize, add default language:
+		$languages = t3lib_div::makeInstance('t3lib_transl8tools')->getSystemLanguages();
 		$sysLanguages = array();
-		$sysLanguages[] = array('Default language', 0);
-
-			// Traverse languages
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,flag', 'sys_language', 'pid=0' . self::deleteClause('sys_language'));
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$sysLanguages[] = array(
-				htmlspecialchars($row['title']) . ' [' . $row['uid'] . ']',
-				$row['uid'],
-				($row['flag'] ? 'flags/' . $row['flag'] : '')
-			);
+		foreach ($languages as $language) {
+			if($language['uid'] !== -1) {
+				$sysLanguages[] = array(
+					0 => htmlspecialchars($language['title']) . ' [' . $language['uid'] . ']',
+					1 => $language['uid'],
+					2 => $language['flagIcon']
+				);
+			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $sysLanguages;
 	}

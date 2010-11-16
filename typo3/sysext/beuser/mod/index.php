@@ -774,7 +774,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						foreach ($items as $iCfg)	{
 							if (isset($nef[$iCfg[1]]))	{
 								unset($nef[$iCfg[1]]);
-								if (strlen($iCfg[2]))	{
+								if (strpos($iCfg[2], '.gif') === FALSE) {
+									$icon = t3lib_iconWorks::getSpriteIcon($iCfg[2]) . '&nbsp;';
+								} elseif (strlen($iCfg[2]))	{
 									$icon = '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$iCfg[2]).' class="absmiddle" style="margin-right: 5px;" alt="" />';
 								} else {
 									$icon = '';

@@ -374,8 +374,13 @@ class t3lib_recordList {
 	 * @return	string		Language icon
 	 */
 	function languageFlag($sys_language_uid)	{
-		return ($this->languageIconTitles[$sys_language_uid]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />&nbsp;' : '').
-				htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
+		$out = '';
+		if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
+			$out .= t3lib_iconWorks::getSpriteIcon($this->languageIconTitles[$sys_language_uid]['flagIcon']);
+			$out .= '&nbsp;';
+		}
+		$out .= htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
+		return $out;
 	}
 
 	/**

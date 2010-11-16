@@ -68,27 +68,32 @@ class t3lib_transl8tools	{
 
 	/**
 	 * Returns array of system languages
+	 *
+	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
+	 * but as a string <flags-xx>. The calling party should call
+	 * t3lib_iconWorks::getSpriteIcon(<flags-xx>) to get an HTML which will represent
+	 * the flag of this language.
+	 *
 	 * @param	integer		page id (only used to get TSconfig configuration setting flag and label for default language)
 	 * @param	string		Backpath for flags
-	 * @return	array
+	 * @return	array		Array with languages (title, uid, flagIcon)
 	 */
 	function getSystemLanguages($page_id=0,$backPath='')	{
 		global $TCA,$LANG;
 
-			// Icons and language titles:
-		t3lib_div::loadTCA('sys_language');
-		$flagAbsPath = t3lib_div::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
-		$flagIconPath = $backPath.'../'.substr($flagAbsPath, strlen(PATH_site));
-
 		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($page_id, 'mod.SHARED');
 		$languageIconTitles = array();
 
-			// Set default:
+			// fallback "old iconstyles"
+		if (preg_match('/\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
+			$modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace('.gif', '', $modSharedTSconfig['properties']['defaultLanguageFlag']);
+		}
+
 		$languageIconTitles[0] = array(
 			'uid' => 0,
-			'title' => strlen ($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL('defaultLanguage').')' : $LANG->getLL('defaultLanguage'),
+			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage').')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
 			'ISOcode' => 'DEF',
-			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'] : 'empty-empty',
 		);
 
 			// Set "All" language:
@@ -96,7 +101,7 @@ class t3lib_transl8tools	{
 			'uid' => -1,
 			'title' => $LANG->getLL('multipleLanguages'),
 			'ISOcode' => 'DEF',
-			'flagIcon' => $flagIconPath.'multi-language.gif',
+			'flagIcon' => 'flags-multiple',
 		);
 
 			// Find all system languages:
@@ -115,7 +120,7 @@ class t3lib_transl8tools	{
 				}
 			}
 			if (strlen ($row['flag'])) {
-				$languageIconTitles[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
+				$languageIconTitles[$row['uid']]['flagIcon'] = t3lib_iconWorks::mapRecordTypeToSpriteIconName('sys_language', $row);
 			}
 		}
 
