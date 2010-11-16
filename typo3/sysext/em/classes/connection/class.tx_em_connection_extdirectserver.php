@@ -356,9 +356,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string $content
 	 */
 	public function getRemoteExtensionList($parameters) {
-		/* @var $repoUtility em_repository_utility */
-		$repoUtility = t3lib_div::makeInstance('tx_em_Repository_Utility');
-		$repoUtility->setRepository($this->getSettingsObject()->getSelectedRepository());
+		$repositoryId = $this->getSettingsObject()->getSelectedRepository();
 
 		$search = $parameters->query;
 		$limit = $parameters->start . ', ' . $parameters->limit;
@@ -376,7 +374,7 @@ class tx_em_Connection_ExtDirectServer {
 		}
 
 		$list = tx_em_Database::getExtensionListFromRepository(
-			$repoUtility->getRepositoryUID(),
+			$repositoryId,
 			$where,
 			$orderBy,
 			$orderDir,

@@ -78,6 +78,7 @@ abstract class tx_em_Parser_XmlAbstractParser {
 				$isAvailable = FALSE;
 			}
 		}
+
 		return $isAvailable;
 	}
 
@@ -87,7 +88,7 @@ abstract class tx_em_Parser_XmlAbstractParser {
 	 * @access  public
 	 * @param   string  $file: GZIP stream resource
 	 * @return  void
-	 * @throws  em_xml_Exception  in case of XML parser errors
+	 * @throws  tx_em_XmlException  in case of XML parser errors
 	 */
 	abstract public function parseXML($file);
 

@@ -426,14 +426,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			// MENU-ITEMS:
 		$this->MOD_MENU = $this->settings->MOD_MENU;
 
-		// temporary unset new modules
+			// temporary unset new modules
 		unset ($this->MOD_MENU['function']['extensionmanager'], $this->MOD_MENU['function']['develop']);
 
 
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
-
-			// temporary set main repository
-		//$changed = array_merge((array) t3lib_div::_GP('SET'), array('selectedRepository' => '1'));
 
 
 			// page/be_user TSconfig settings and blinding of menu-items
@@ -681,7 +678,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], TRUE, FALSE, $offset, $this->listingLimit);
 			}
 			if (count($this->xmlhandler->extensionsXML)) {
-				list($list, $cat) = $this->extensionList->prepareImportExtList(true);
+				list($list, $cat) = $this->extensionList->prepareImportExtList(TRUE);
 
 				// Available extensions
 				if (is_array($cat[$this->MOD_SETTINGS['listOrder']])) {
@@ -828,7 +825,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 				$content .= '<br /><br /><strong>' . $GLOBALS['LANG']->getLL('privacy_notice_header') .
 						'</strong><br /> ' . $this->privacyNotice;
-				$this->content .= $this->doc->section($headline, $content, FALSE, TRUE);
+				$this->content .= $this->doc->section($headline, $content, FALSE, TRUE, 0, TRUE);
 			}
 		} else {
 			// section headline and CSH

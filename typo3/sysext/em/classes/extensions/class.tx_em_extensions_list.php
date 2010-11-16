@@ -688,7 +688,11 @@ EXTENSION KEYS:
 				}
 				//TODO: $extInfo is unknown in this context
 				$content .= '<tr class="bgColor4"><td valign="top">' . $icon . '</td>' .
-						'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:write_protected') . '</span>' : '<a href="?CMD[importExtInfo]=' . $name . '">' . $data[EM_CONF][title] . '</a>') . '</td>' .
+						'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates'
+							? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:write_protected') . '</span>'
+							: '<a href="' . t3lib_div::linkThisScript(array(
+								'CMD[importExtInfo]' => $name
+								)) . '">' . $data[EM_CONF][title] . '</a>') . '</td>' .
 						'<td valign="top">' . $name . '</td>' .
 						'<td valign="top" align="right">' . $data[EM_CONF][version] . '</td>' .
 						'<td valign="top" align="right">' . $lastversion . '</td>' .

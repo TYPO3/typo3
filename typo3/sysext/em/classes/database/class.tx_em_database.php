@@ -92,7 +92,6 @@ final class tx_em_Database {
 	public function getExtensionListFromRepository($repository, $andWhere = '', $orderBy = '', $orderDir = 'ASC', $limit = '') {
 		$order = $orderBy ? $orderBy . ' ' . $orderDir : '';
 		$ret = array();
-
 		$temp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'count(*) count',
 			'cache_extensions',
@@ -174,6 +173,40 @@ final class tx_em_Database {
 	public function insertVersion(array $arrFields) {
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery(self::TABLE_EXTENSION, $arrFields);
 	}
+
+	/**
+	 * Update the lastversion field after update
+	 *
+	 * @param int $repositoryUid
+	 * @return void
+	 */
+	public function insertLastVersion($repositoryUid = 1) {
+		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'extkey, version, max(intversion)',
+			'cache_extensions',
+			'repository=' . intval($repositoryUid),
+			'extkey'
+		);
+
+		if (count($groupedRows)) {
+			// set all to 0
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				'cache_extensions',
+				'lastversion=1 AND repository=' . intval($repositoryUid),
+				array('lastversion' => 0)
+			);
+
+				// Find latest version of extensions and set lastversion to 1 for these
+			foreach ($groupedRows as $row) {
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					'cache_extensions',
+					'extkey="' . $row['extkey'] . '" AND version="' . $row['version'] . '" AND repository=' . intval($repositoryUid),
+					array('lastversion' => 1)
+				);
+			}
+		}
+	}
+
 
 	/**
 	 * Method finds and returns repository fields identified by its UID.

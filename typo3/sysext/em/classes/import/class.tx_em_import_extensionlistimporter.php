@@ -48,7 +48,7 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 	/**
 	 * Keeps instance of a XML parser.
 	 *
-	 * @var em_xml_abstract_parser
+	 * @var tx_em_Parser_ExtensionXmlAbstractParser
 	 */
 	protected $parser;
 
@@ -71,7 +71,29 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 	 *
 	 * @var  array
 	 */
-	static protected $fieldNames = array('extkey', 'version', 'intversion', 'alldownloadcounter', 'downloadcounter', 'title', 'ownerusername', 'authorname', 'authoremail', 'authorcompany', 'lastuploaddate', 't3xfilemd5', 'repository', 'state', 'reviewstate', 'category', 'description', 'dependencies', 'uploadcomment' /*, 'lastversion', 'lastreviewedversion'*/);
+	static protected $fieldNames = array(
+		'extkey',
+		'version',
+		'intversion',
+		'alldownloadcounter',
+		'downloadcounter',
+		'title',
+		'ownerusername',
+		'authorname',
+		'authoremail',
+		'authorcompany',
+		'lastuploaddate',
+		't3xfilemd5',
+		'repository',
+		'state',
+		'reviewstate',
+		'category',
+		'description',
+		'dependencies',
+		'uploadcomment',
+		//'lastversion',
+		//'lastreviewedversion'
+	);
 
 	/**
 	 * Keeps indexes of fields that should not be quoted.
@@ -101,22 +123,13 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 	 * @throws  tx_em_XmlException in case no valid parser instance is available
 	 */
 	function __construct() {
-		// TODO catch parser exception
-		$this->parser = em_xml_parser_factory::getParserInstance('extension');
-		if (!is_object(tx_em_Parser_XmlParserFactory::getParserInstance('extension'))) {
+			// TODO catch parser exception
+		$this->parser = tx_em_Parser_XmlParserFactory::getParserInstance('extension');
+		if (is_object($this->parser)) {
+			$this->parser->attach($this);
+		} else {
 			throw new tx_em_XmlException(get_class($this) . ': ' . 'No XML parser available.');
 		}
-	}
-
-	/**
-	 * Gets parser object
-	 *
-	 * @return tx_em_XmlParserFactory
-	 */
-	protected function getParser() {
-		$parser = tx_em_Parser_XmlParserFactory::getParserInstance('extension');
-		$parser->attach($this);
-		return $parser;
 	}
 
 	/**
@@ -134,9 +147,9 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 		$zlibStream = 'compress.zlib://';
 		$this->sumRecords = 0;
 
-		$this->getParser()->parseXML($zlibStream . $localExtListFile);
+		$this->parser->parseXML($zlibStream . $localExtListFile);
 
-		// flush last rows to database if existing
+			// flush last rows to database if existing
 		if (count($this->arrRows)) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows(
 				'cache_extensions',
@@ -145,6 +158,7 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 				self::$fieldIndicesNoQuote
 			);
 		}
+		tx_em_Database::insertLastVersion($this->repositoryUID);
 		return $this->sumRecords;
 	}
 
@@ -199,7 +213,7 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 	 * @return  void
 	 */
 	public function update(SplSubject $subject) {
-		if (is_subclass_of($subject, 'tx_em_ExtensionXmlAbstractParser')) {
+		if (is_subclass_of($subject, 'tx_em_Parser_ExtensionXmlAbstractParser')) {
 			$this->loadIntoDB($subject);
 		}
 	}

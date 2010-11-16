@@ -36,7 +36,7 @@ class tx_em_Tasks_UpdateExtensionList extends tx_scheduler_Task {
 	 * @return boolean True on success
 	 */
 	public function execute() {
-		// Throws exceptions if something goes wrong
+			// Throws exceptions if something goes wrong
 		$this->updateExtensionlist();
 
 		return (TRUE);
@@ -58,7 +58,9 @@ class tx_em_Tasks_UpdateExtensionList extends tx_scheduler_Task {
 
 			// update all repositories
 		foreach ($repositories as $repository) {
+			/* @var $objRepository tx_em_Repository */
 			$objRepository = t3lib_div::makeInstance('tx_em_Repository', $repository['uid']);
+			/* @var $objRepositoryUtility tx_em_Repository_Utility */
 			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 			$count = $objRepositoryUtility->updateExtList(FALSE);
 			unset($objRepository, $objRepositoryUtility);

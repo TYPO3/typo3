@@ -90,7 +90,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * @return  void
 	 */
 	function __construct(&$repository = NULL) {
-		if ($repository != NULL && is_object($repository)
+		if ($repository !== NULL && is_object($repository)
 				&& $repository instanceof tx_em_Repository) {
 			$this->setRepository($repository);
 		}
@@ -306,13 +306,14 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * @return  integer
 	 */
 	public function getRepositoryUID($insertIfMissing = FALSE) {
-		$uid = NULL;
-		$repository = tx_em_Database::getRepositoryByUID($this->repository->getId());
+		$uid = $this->repository->getId();
+		$repository = tx_em_Database::getRepositoryByUID($uid);
 		if (empty($repository) && $insertIfMissing) {
 			$uid = tx_em_Database::insertRepository($this->repository);
 		} else {
-			$uid = intval($repository[0]['uid']);
+			$uid = intval($repository['uid']);
 		}
+
 		return $uid;
 	}
 
@@ -339,7 +340,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 
 		$updateNecessity = $this->isExtListUpdateNecessary();
 
-		if ($updateNecessity != 0) {
+		if ($updateNecessity !== 0) {
 			// retrieval of file necessary
 			$tmpBitmask = (self::PROBLEM_EXTENSION_FILE_NOT_EXISTING | self::PROBLEM_EXTENSION_HASH_CHANGED);
 			if (($tmpBitmask & $updateNecessity) > 0) {
@@ -347,17 +348,20 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 				$updateNecessity &= ~$tmpBitmask;
 			}
 
-			// database table cleanup
+				// database table cleanup
 			if (($updateNecessity & self::PROBLEM_NO_VERSIONS_IN_DATABASE)) {
 				$updateNecessity &= ~self::PROBLEM_NO_VERSIONS_IN_DATABASE;
 			} else {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_extensions', 'repository=' . $this->getRepositoryUID());
 			}
-			// no further problems - start of import process
+
+				// no further problems - start of import process
 			if ($updateNecessity === 0) {
+				$uid = $this->getRepositoryUID(TRUE);
+				/* @var $objExtListImporter tx_em_Import_ExtensionListImporter */
 				$objExtListImporter = t3lib_div::makeInstance('tx_em_Import_ExtensionListImporter');
-				$objExtListImporter->import($this->getLocalExtListFile(), $this->getRepositoryUID(TRUE));
-				$sumRecords = tx_em_Database::getExtensionCountFromRepository($this->getRepositoryUID());
+				$objExtListImporter->import($this->getLocalExtListFile(), $uid);
+				$sumRecords = tx_em_Database::getExtensionCountFromRepository($uid);
 				if ($renderFlashMessage) {
 					$flashMessage->setTitle($GLOBALS['LANG']->getLL('ext_import_extlist_updated_header'));
 					$flashMessage->setMessage(sprintf($GLOBALS['LANG']->getLL('ext_import_extlist_updated'), tx_em_Database::getExtensionCountFromRepository()));

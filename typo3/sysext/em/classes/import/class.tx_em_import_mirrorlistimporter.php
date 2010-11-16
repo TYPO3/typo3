@@ -49,7 +49,7 @@ class tx_em_Import_MirrorListImporter implements SplObserver {
 	/**
 	 * Keeps instance of a XML parser.
 	 *
-	 * @var  tx_em_XmlAbstractParser
+	 * @var  tx_em_Parser_MirrorXmlAbstractParser
 	 */
 	protected $parser;
 
@@ -68,10 +68,10 @@ class tx_em_Import_MirrorListImporter implements SplObserver {
 	 *
 	 * @access  public
 	 * @return  void
-	 * @throws  em_xml_Exception in case no valid parser instance is available
+	 * @throws  tx_em_XmlException in case no valid parser instance is available
 	 */
 	function __construct() {
-		// TODO catch parser exception
+			// TODO catch parser exception
 		$this->parser = tx_em_Parser_XmlParserFactory::getParserInstance('mirror');
 		if (is_object($this->parser)) {
 			$this->parser->attach($this);
