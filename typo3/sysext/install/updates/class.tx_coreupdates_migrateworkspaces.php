@@ -52,14 +52,17 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Migrates the old hardcoded draft workspace to be a real workspace element and update workspace owner fields  to support either users or groups.';
+		$description = 'Migrates the old hardcoded draft workspace to be a real workspace element,
+		updates workspace owner fields  to support either users or groups and
+		migrates the old-style workspaces with fixed workflow to a custom-stage workflow';
 
 			// TYPO3 version 4.5 and above
 		if ($this->versionNumber >= 4005000) {
 			$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
 				// sys_workspace table might not exists if version extension was never installed
 			if (in_array('sys_workspace', $tables)) {
-				$result = $this->isOldStyleAdminFieldUsed();
+				$wsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', '');
+				$result = $wsCount > 0;
 			}
 
 			if (!$result) {
@@ -102,8 +105,8 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 			// There's no TCA available yet
 		$this->includeTCA();
 
-			// install version extension (especially when updating from very old TYPO3 versions
-		$this->installExtensions(array('version'));
+			// install version and workspace extension (especially when updating from very old TYPO3 versions
+		$this->installExtensions(array('version', 'workspaces'));
 
 			// migrate all workspaces to support groups and be_users
 		if ($this->isOldStyleAdminFieldUsed()) {
@@ -115,6 +118,26 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 			$draftWorkspaceId = $this->createWorkspace();
 			if (is_integer($draftWorkspaceId)) {
 				$this->migrateDraftWorkspaceRecordsToWorkspace($draftWorkspaceId);
+			}
+		}
+
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, reviewers', 'sys_workspace', '', '', '', '1');
+		$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		$label = 'Review';
+		foreach($workspaces as $workspace) {
+			$where = 'parentid=' . $workspace['uid'] . ' AND parenttable="sys_workspace" AND deleted=0';
+			$stageCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace_stage', $where);
+			$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+			if ($stageCount == 0) {
+					// Find all workspaces and add "review" stage record
+					// Add review users and groups to the new IRRE record
+				$reviewStageId = $this->createReviewStageForWorkspace($workspace['uid'], $label, $workspace['reviewers']);
+					// Update all "review" state records in the database to point to the new state
+				$this->migrateOldRecordsToStage($workspace['uid'], 1, $reviewStageId);
+					// Update all "ready to publish" records in the database to point to the new ready to publish state
+				$this->migrateOldRecordsToStage($workspace['uid'], 10, -99);
+			} else {
+				// this workspace has stages already at this point we might break something if we continue
 			}
 		}
 
@@ -166,6 +189,51 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 
 		return $foundDraftRecords;
 	}
+
+	/**
+	 * Create a new stage for the given workspace
+	 *
+	 * @param		integer	Workspace ID
+	 * @param		string		The label of the new stage
+	 * @param		string		The users or groups which are authorized for that stage
+	 * @return	integer	The id of the new stage
+	 */
+	protected function createReviewStageForWorkspace($workspaceId, $stageLabel, $stageMembers) {
+		$data = array(
+			'parentid' => $workspaceId,
+			'parenttable' => 'sys_workspace',
+			'title' => $stageLabel,
+			'responsible_persons' => $stageMembers
+		);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_workspace_stage', $data);
+		$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+	}
+
+	/**
+	 * Updates the stages of placeholder records within the given workspace from $oldId to $newId
+	 *
+	 * @param		integer	Workspace ID
+	 * @param		integer	Old stage od
+	 * @param		integer	New stage od
+	 * @return	void
+	 */
+	protected function migrateOldRecordsToStage($workspaceId, $oldStageId, $newStageId) {
+		$tables = array_keys($GLOBALS['TCA']);
+
+		$where = 't3ver_wsid = ' . intval($workspaceId) . ' AND t3ver_stage = ' . intval($oldStageId) . ' AND pid = -1';
+		$values = array(
+			't3ver_stage' => intval($newStageId)
+		);
+		foreach($tables as $table) {
+			$versioningVer = t3lib_div::intInRange($GLOBALS['TCA'][$table]['ctrl']['versioningWS'], 0, 2, 0);
+			if ($versioningVer > 0) {
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $values);
+				$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+			}
+		}
+	}
+
 
 	/**
 	 * Check if there's any workspace which doesn't support the new admin-field format yet
