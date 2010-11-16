@@ -84,8 +84,9 @@ Additionally, the following smaller features were implemented:
 		'BlogList',
 		array('Blog' => 'index'),
 		array(),
-		Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
+		Tx_Extbase_Utility_Extension::PLUGIN_TYPE_CONTENT_ELEMENT
 	);
+	(The default value for the pluginType parameter is Tx_Extbase_Utility_Extension::PLUGIN_TYPE_PLUGIN)
 
 * Default Orderings & QuerySettings (#10319)
 

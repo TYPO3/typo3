@@ -32,8 +32,8 @@
  */
 class Tx_Extbase_Utility_Extension {
 
-	const TYPE_PLUGIN = 'list_type';
-	const TYPE_CONTENT_ELEMENT = 'CType';
+	const PLUGIN_TYPE_PLUGIN = 'list_type';
+	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 
 	/**
 	 * Add auto-generated TypoScript to configure the Extbase Dispatcher.
@@ -96,7 +96,7 @@ class Tx_Extbase_Utility_Extension {
 ' . $pluginTemplate);
 
 		switch ($pluginType) {
-			case self::TYPE_PLUGIN:
+			case self::PLUGIN_TYPE_PLUGIN:
 				$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
@@ -105,7 +105,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	pluginName = ' . $pluginName . '
 }');
 			break;
-			case self::TYPE_CONTENT_ELEMENT:
+			case self::PLUGIN_TYPE_CONTENT_ELEMENT:
 				$pluginContent = trim('
 tt_content.' . $pluginSignature . ' = COA
 tt_content.' . $pluginSignature . ' {
