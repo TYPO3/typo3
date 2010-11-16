@@ -151,8 +151,6 @@ class t3lib_Compressor {
 	public function compressCssFiles(array $cssFiles) {
 		$filesAfterCompression = array();
 		foreach ($cssFiles as $filename => $fileOptions) {
-				// we remove BACK_PATH from $filename, so make it relative to TYPO3_mainDir
-			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
 				// if compression is enabled
 			if ($fileOptions['compress']) {
 				$filesAfterCompression[$this->compressCssFile($filename)] = $fileOptions;
