@@ -81,7 +81,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		/*
 		 * Regular expression to check if an element is an inline elment
 		 */
-		this.REInlineTags = /^(abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
+		this.REInlineTags = /^(a|abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|img|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
 		
 			// Allowed attributes on inline elements
 		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
@@ -92,7 +92,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -193,19 +193,25 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				}
 			}
 		} else {
-				// Add or remove class
-			if (parent && !HTMLArea.isBlockElement(parent)) {
-				if (className === "none" && parent.className && /\S/.test(parent.className)) {
-					classNames = parent.className.trim().split(" ");
-					HTMLArea.DOM.removeClass(parent, classNames[classNames.length-1]);
-				}
-				if (className !== "none") {
-					HTMLArea.DOM.addClass(parent, className);
-				}
-					// Remove the span tag if it has no more attribute
-				if ((parent.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(parent, this.allowedAttributes)) {
-					editor.removeMarkup(parent);
-				}
+			this.applyClassChange(parent, className);
+		}
+	},
+	/*
+	 * This function applies the class change to the node
+	 */
+	applyClassChange: function (node, className) {
+			// Add or remove class
+		if (node && !HTMLArea.isBlockElement(node)) {
+			if (className === 'none' && node.className && /\S/.test(node.className)) {
+				classNames = node.className.trim().split(' ');
+				HTMLArea.DOM.removeClass(node, classNames[classNames.length-1]);
+			}
+			if (className !== 'none') {
+				HTMLArea.DOM.addClass(node, className);
+			}
+				// Remove the span tag if it has no more attribute
+			if (/^span$/i.test(node.nodeName) && !HTMLArea.hasAllowedAttributes(node, this.allowedAttributes)) {
+				this.editor.removeMarkup(node);
 			}
 		}
 	},
@@ -323,34 +329,62 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		dropDown.setValue('none');
 	},
 	/*
+	 * This function builds the options to be displayed in the dropDown box
+	 */
+	buildDropDownOptions: function (dropDown, nodeName) {
+		var store = dropDown.getStore();
+		this.initializeDropDown(dropDown);
+		if (this.textStyles.isReady) {
+			var allowedClasses = {};
+			if (this.REInlineTags.test(nodeName)) {
+				if (Ext.isDefined(this.cssArray[nodeName])) {
+					allowedClasses = this.cssArray[nodeName];
+				} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
+					allowedClasses = this.cssArray['all'];
+				}
+			}
+			Ext.iterate(allowedClasses, function (cssClass, value) {
+				store.add(new store.recordType({
+					text: value,
+					value: cssClass,
+					style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+				}));
+			}, this);
+		}
+	},
+	/*
 	 * This function sets the selected option of the dropDown box
 	 */
 	setSelectedOption: function (dropDown, classNames, noUnknown, defaultClass) {
 		var store = dropDown.getStore();
-		var index = store.findExact('value', classNames[classNames.length-1]);
-		if (index != -1) {
-			dropDown.setValue(classNames[classNames.length-1]);
-			if (!defaultClass) {
-				store.getAt(0).set('text', this.localize('Remove style'));
+		dropDown.setValue('none');
+		if (classNames.length) {
+			var index = store.findExact('value', classNames[classNames.length-1]);
+			if (index != -1) {
+				dropDown.setValue(classNames[classNames.length-1]);
+				if (!defaultClass) {
+					store.getAt(0).set('text', this.localize('Remove style'));
+				}
 			}
+			if (index == -1 && !noUnknown) {
+				store.add(new store.recordType({
+					text: this.localize('Unknown style'),
+					value: classNames[classNames.length-1]
+				}));
+				index = store.getCount()-1;
+				dropDown.setValue(classNames[classNames.length-1]);
+				if (!defaultClass) {
+					store.getAt(0).set('text', this.localize('Remove style'));
+				}
+			}
+			store.each(function (option) {
+				if (("," + classNames.join(",") + ",").indexOf("," + option.get('value') + ",") != -1 && store.indexOf(option) != index) {
+					store.removeAt(store.indexOf(option));
+				}
+				return true;
+			});
 		}
-		if (index == -1 && !noUnknown) {
-			store.add(new store.recordType({
-				text: this.localize('Unknown style'),
-				value: classNames[classNames.length-1]
-			}));
-			index = store.getCount()-1;
-			dropDown.setValue(classNames[classNames.length-1]);
-			if (!defaultClass) {
-				store.getAt(0).set('text', this.localize('Remove style'));
-			}
-		}
-		store.each(function (option) {
-			if (("," + classNames.join(",") + ",").indexOf("," + option.get('value') + ",") != -1 && store.indexOf(option) != index) {
-				store.removeAt(store.indexOf(option));
-			}
-			return true;
-		});
+		dropDown.setDisabled(!(store.getCount()>1));
 	},
 	/*
 	 * This function updates the current value of the dropdown list
@@ -359,25 +393,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		var editor = this.editor;
 		var dropDown = this.getButton(dropDownId);
 		if (dropDown) {
-			var store = dropDown.getStore();
-			this.initializeDropDown(dropDown);
-			if (this.textStyles.isReady) {
-				var allowedClasses = {};
-				if (this.REInlineTags.test(nodeName)) {
-					if (Ext.isDefined(this.cssArray[nodeName])) {
-						allowedClasses = this.cssArray[nodeName];
-					} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
-						allowedClasses = this.cssArray['all'];
-					}
-				}
-				Ext.iterate(allowedClasses, function (cssClass, value) {
-					store.add(new store.recordType({
-						text: value,
-						value: cssClass,
-						style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
-					}));
-				}, this);
-			}
+			this.buildDropDownOptions(dropDown, nodeName);
 			if (classNames.length && (selectionEmpty || fullNodeSelected)) {
 				this.setSelectedOption(dropDown, classNames);
 			}

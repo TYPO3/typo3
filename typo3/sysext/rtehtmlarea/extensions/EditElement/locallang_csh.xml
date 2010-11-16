@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Edit Element Extension of htmlArea RTE</description>
+		<type>CSH</type>
+		<csh_table>xEXT_rtehtmlarea_EditElement</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">htmlArea RTE &gt; Edit Element</label>
+			<label index=".description">The "Edit element" dialogue allows to edit the general attributes of an element in the RTE editing area.</label>
+			<label index=".details">Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
+The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.</label>
+			<label index=".image">EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</label>
+			<label index=".image_descr">"Edit element" icon in the editor tool bar.</label>
+			<label index=".seeAlso">xEXT_rtehtmlarea_EditElement:id,
+xEXT_rtehtmlarea_EditElement:title,
+xEXT_rtehtmlarea_EditElement:className,
+xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_EditElement:events
+</label>
+			<label index="id.alttitle">Id attribute</label>
+			<label index="id.description">Enter or edit the value of the id attribute of the element.</label>
+			<label index="title.alttitle">Title attribute</label>
+			<label index="title.description">Enter or edit the value of the title attribute of the element.</label>
+			<label index="className.alttitle">Class attribute</label>
+			<label index="className.description">Choose a CSS class selector to be assigned to the element.</label>
+			<label index="events.alttitle">Event handlers</label>
+			<label index="events.description">Using this fieldset, edit handlers for keyboard and mouse events.</label>
+			<label index="onkeydown.alttitle">Onkeydown event handler</label>
+			<label index="onkeydown.description">Enter or edit the script to be run when a key is pressed.</label>
+			<label index="onkeypress.alttitle">Onkeypress event handler</label>
+			<label index="onkeypress.description">Enter or edit the script to be run when a key is pressed and released.</label>
+			<label index="onkeyup.alttitle">Onkeyup event handler</label>
+			<label index="onkeyup.description">Enter or edit the script to be run when a key is pressed and released.</label>
+			<label index="onclick.alttitle">Onclick event handler</label>
+			<label index="onclick.description">Enter or edit the script to be run on a mouse click.</label>
+			<label index="ondblclick.alttitle">Ondblclick event handler</label>
+			<label index="ondblclick.description">Enter or edit the script to be run on a mouse double-click.</label>
+			<label index="onmousedown.alttitle">Onmousedown event handler</label>
+			<label index="onmousedown.description">Enter or edit the script to be run when a mouse button is pressed.</label>
+			<label index="onmousemove.alttitle">Onmousemove event handler</label>
+			<label index="onmousemove.description">Enter or edit the script to be run when the mouse pointer moves.</label>
+			<label index="onmouseout.alttitle">Onmouseout event handler</label>
+			<label index="onmouseout.description">Enter or edit the script to be run when mouse pointer moves out of the element.</label>
+			<label index="onmouseover.alttitle">Onmouseover event handler</label>
+			<label index="onmouseover.description">Enter or edit the script to be run when mouse pointer moves over the element.</label>
+			<label index="onmouseup.alttitle">Onmouseup event handler</label>
+			<label index="onmouseup.description">Enter or edit the script to be run when a mouse button is released.</label>
+		</languageKey>
+	</data>
+</T3locallang>

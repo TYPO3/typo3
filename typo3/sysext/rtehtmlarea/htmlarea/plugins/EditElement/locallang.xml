@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- TYPO3 SVN ID: $Id: locallang.xml 6940 2010-02-21 15:56:10Z stan $ -->
+<T3locallang>
+	<meta type="array">
+		<description>Labels for Edit Element plugin of htmlArea RTE</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="editElement">Edit element</label>
+			<label index="general">General</label>
+			<label index="identification">Identification</label>
+			<label index="id">Id</label>
+			<label index="title">Title</label>
+			<label index="className">Class</label>
+			<label index="events">Events</label>
+			<label index="onkeydown">Onkeydown</label>
+			<label index="onkeypress">Onkeypress</label>
+			<label index="onkeyup">Onkeyup</label>
+			<label index="onclick">Onclick</label>
+			<label index="ondblclick">Ondblclick</label>
+			<label index="onmousedown">Onmousedown</label>
+			<label index="onmousemove">Onmousemove</label>
+			<label index="onmouseout">Onmouseout</label>
+			<label index="onmouseover">Onmouseover</label>
+			<label index="onmouseup">Onmouseup</label>
+		</languageKey>
+	</data>
+</T3locallang>

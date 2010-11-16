@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for dialogs of htmlArea RTE</description>
+		<description>Labels for dialogues of htmlArea RTE</description>
 		<type>module</type>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="OK">OK</label>
 			<label index="Cancel">Cancel</label>
+			<label index="Delete">Delete</label>
 			<label index="Close">Close</label>
 			<label index="Not set">Not set</label>
 			<label index="General">General</label>

@@ -10,7 +10,12 @@
 			<label index=".alttitle">htmlArea RTE</label>
 			<label index=".description">htmlArea RTE is a free, open-source, ExtJS-based editor for &lt;textarea&gt; fields featuring tight integration with TYPO3.</label>
 			<label index=".details">htmlArea RTE supports the following browsers: Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and Internet Explorer 6.0+ on Windows.</label>
-			<label index=".seeAlso">xEXT_rtehtmlarea_General:beUserSettings,xEXT_rtehtmlarea_PlainText,xEXT_rtehtmlarea_RemoveFormat</label>
+			<label index=".seeAlso">xEXT_rtehtmlarea_General:beUserSettings,
+xEXT_rtehtmlarea_EditElement,
+xEXT_rtehtmlarea_Language,
+xEXT_rtehtmlarea_PlainText,
+xEXT_rtehtmlarea_RemoveFormat
+</label>
 			<label index="beUserSettings.alttitle">BE User settings</label>
 			<label index="beUserSettings.description">BE User settings let you specify some options of the RTE.</label>
 			<label index="beUserSettings.seeAlso">xEXT_rtehtmlarea_General:rteWidth,xEXT_rtehtmlarea_General:rteHeight,xEXT_rtehtmlarea_General:rteResize,xEXT_rtehtmlarea_General:rteMaxHeight,xEXT_rtehtmlarea_PlainText:behaviour,_MOD_user_setup</label>
