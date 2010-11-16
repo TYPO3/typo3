@@ -92,6 +92,8 @@ TYPO3.ModuleMenu.Template = new Ext.XTemplate(
 
 TYPO3.ModuleMenu.App = {
 	loadedModule: null,
+	loadedNavigationComponentId: '',
+	availableNavigationComponents: {},
 
 	init: function() {
 		TYPO3.ModuleMenu.Store.load({
@@ -204,8 +206,13 @@ TYPO3.ModuleMenu.App = {
 				params = 'id=' + top.fsMod.recentIds[section] + params;
 			}
 
-			if (record.navframe) {
+			if (record.navigationComponentId) {
+				this.loadNavigationComponent(record.navigationComponentId);
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
+			} else if (record.navframe) {
+				this.loadNavigationComponent('typo3-navigationIframe');
 				this.openInNavFrame(record.navframe);
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
 			} else {
 				TYPO3.Backend.NavigationContainer.hide();
 			}
@@ -223,12 +230,44 @@ TYPO3.ModuleMenu.App = {
 		}
 	},
 
+	loadNavigationComponent: function(navigationComponentId) {
+		if (navigationComponentId === this.loadedNavigationComponentId) {
+			if (TYPO3.Backend.NavigationContainer.hidden) {
+				TYPO3.Backend.NavigationContainer.show();
+			}
+
+			return;
+		}
+
+		if (this.loadedNavigationComponentId !== '') {
+			Ext.getCmp(this.loadedNavigationComponentId).hide();
+		}
+		
+		var component = Ext.getCmp(navigationComponentId);
+		if (typeof component !== 'object') {
+			if (typeof this.availableNavigationComponents[navigationComponentId] !== 'function') {
+				throw 'The navigation component "' + navigationComponentId + '" is not available ' +
+					'or has no valid callback function';
+			}
+
+			component = this.availableNavigationComponents[navigationComponentId]();
+			TYPO3.Backend.NavigationContainer.add(component);
+		}
+
+		component.show()
+		TYPO3.Backend.NavigationContainer.show();
+		this.loadedNavigationComponentId = navigationComponentId;
+	},
+
+	registerNavigationComponent: function(componentId, initCallback) {
+		this.availableNavigationComponents[componentId] = initCallback;
+	},
+
 	openInNavFrame: function(url, params) {
 		var navUrl = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
-		var currentUrl = this.relativeUrl(TYPO3.Backend.NavigationContainer.getUrl());
-		TYPO3.Backend.NavigationContainer.show();
+		var currentUrl = this.relativeUrl(TYPO3.Backend.NavigationIframe.getUrl());
 		if (currentUrl !== navUrl) {
-			TYPO3.Backend.NavigationContainer.setUrl(navUrl);
+			TYPO3.Backend.NavigationIframe.setUrl(navUrl);
 		}
 	},
 
@@ -262,7 +301,7 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	reloadFrames: function() {
-		TYPO3.Backend.NavigationContainer.refresh();
+		TYPO3.Backend.NavigationIframe.refresh();
 		TYPO3.Backend.ContentContainer.refresh();
 	}
 
@@ -275,13 +314,13 @@ Ext.onReady(function() {
 
 		// keep backward compatibility
 	top.list = TYPO3.Backend.ContentContainer;
-	top.nav = TYPO3.Backend.NavigationContainer;
+	top.nav = TYPO3.Backend.NavigationIframe;
 	top.list_frame = top.list.getIframe();
-	top.nav_frame = top.nav.getIframe();
+	top.nav_frame = TYPO3.Backend.NavigationIframe.getIframe();
 
 	top.TYPO3ModuleMenu = TYPO3.ModuleMenu.App;
 	top.content = {
-		nav_frame: TYPO3.Backend.NavigationContainer.getIframe(),
+		nav_frame: TYPO3.Backend.NavigationIframe.getIframe(),
 		list_frame: TYPO3.Backend.ContentContainer.getIframe(),
 		location: TYPO3.Backend.ContentContainer.getIframe().location,
 		document: TYPO3.Backend.ContentContainer.getIframe()

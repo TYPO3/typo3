@@ -91,6 +91,12 @@ class t3lib_loadModules {
 	var $BE_USER;
 	var $observeWorkspaces = FALSE;		// If set true, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 
+	/**
+	 * Contains the registered navigation components
+	 *
+	 * @var array
+	 */
+	protected $navigationComponents = array();
 
 	/**
 	 * Init.
@@ -137,6 +143,9 @@ class t3lib_loadModules {
 		unset($modulesArray['_dispatcher']);
 			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php
 		unset($modulesArray['_configuration']);
+
+		$this->navigationComponents = $modulesArray['_navigationComponents'];
+		unset($modulesArray['_navigationComponents']);
 
 		$theMods = $this->parseModulesArray($modulesArray);
 
@@ -326,6 +335,10 @@ class t3lib_loadModules {
 					// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
 				if ($MCONF['navFrameScriptParam']) {
 					$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
+				}
+
+				if (is_array($this->navigationComponents[$name])) {
+					$modconf['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
 				}
 			} else return false;
 		} else $modconf = 'notFound';

@@ -70,11 +70,16 @@ TYPO3.Viewport.configuration = {
 			collapsible: true,
 			collapseMode: 'mini',
 			hideCollapseTool: true,
-			autoScroll: true,
 			hidden: true,
 			border: false,
-			xtype: 'iframePanel',
-			name: 'navigation'
+			name: 'navigation',
+			autoScroll: true,
+			items: [{
+				id: 'typo3-navigationIframe',
+				border: false,
+				hidden: true,
+				xtype: 'iframePanel'
+			}]
 		}, {
 			region: 'center',
 			layout: 'fit',

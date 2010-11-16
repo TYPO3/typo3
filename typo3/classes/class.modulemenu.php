@@ -136,6 +136,7 @@ class ModuleMenu {
 							'index' => $index++,
 							'navigationFrameScript' => $subData['navFrameScript'],
 							'navigationFrameScriptParam' => $subData['navFrameScriptParam'],
+							'navigationComponentId' => $subData['navigationComponentId'],
 						);
 					}
 				}
@@ -219,6 +220,7 @@ class ModuleMenu {
 					'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label'],
 					'navigationFrameScript' => NULL,
 					'navigationFrameScriptParam' => NULL,
+					'navigationComponentId' => NULL,
 				);
 			} else {
 				foreach($moduleData['sub'] as $submoduleName => $submoduleData) {
@@ -239,7 +241,8 @@ class ModuleMenu {
 						'originalLink' => $originalLink,
 						'description'  => $submoduleDescription,
 						'navigationFrameScript' => $submoduleData['navFrameScript'],
-						'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam']
+						'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
+						'navigationComponentId' => $submoduleData['navigationComponentId'],
 					);
 
 					if($moduleData['navFrameScript']) {

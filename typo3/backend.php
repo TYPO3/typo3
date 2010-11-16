@@ -256,6 +256,7 @@ class TYPO3backend {
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
 
+		$this->loadResourcesForRegisteredNavigationComponents();
 
 			// set document title:
 		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
@@ -274,6 +275,46 @@ class TYPO3backend {
 		$this->executeHook('renderPostProcess', $hookConfiguration);
 
 		echo $this->content;
+	}
+
+	/**
+	 * Loads the css and javascript files of all registered navigation widgets
+	 * 
+	 * @return void
+	 */
+	protected function loadResourcesForRegisteredNavigationComponents() {
+		$loadedComponents = array();
+		foreach ($GLOBALS['TBE_MODULES']['_navigationComponents'] as $module => $info) {
+			if (in_array($info['componentId'], $loadedComponents)) {
+				continue;
+			}
+			$loadedComponents[] = $info['componentId'];
+
+			$component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
+			$componentDirectory = 'components/' . $component . '/';
+			$absoluteComponentPath = t3lib_extMgm::extPath($info['extKey']) . $componentDirectory;
+			$relativeComponentPath = t3lib_extMgm::extRelPath($info['extKey']) . $componentDirectory;
+
+			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/');
+			foreach ($cssFiles as $cssFile) {
+				$this->pageRenderer->addCssFile($relativeComponentPath . 'css/' . $cssFile);
+			}
+
+			$jsFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'javascript/');
+			foreach ($jsFiles as $jsFile) {
+				$this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
+			}
+
+			if (is_array($info['extDirectNamespaces']) && count($info['extDirectNamespaces'])) {
+				foreach ($info['extDirectNamespaces'] as $namespace) {
+					$this->pageRenderer->addJsFile(
+						'ajax.php?ajaxID=ExtDirect::getAPI&namespace=' . $namespace,
+						NULL,
+						FALSE
+					);
+				}
+			}
+		}
 	}
 
 	/**
