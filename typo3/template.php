@@ -326,7 +326,7 @@ class template {
 
 				// add all JavaScript files defined in $this->jsFiles to the PageRenderer
 			foreach ($this->jsFiles as $file) {
-				$this->pageRenderer->addJsFile($file);
+				$this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
 			}
 		}
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1) {

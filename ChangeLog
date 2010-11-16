@@ -1,3 +1,7 @@
+2010-11-16  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Follow-up to #16403: Fixed inclusion of JS files in template.php (Thanks to Steffen Ritter)
+
 2010-11-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #15668: TYPO3 Backend should display flags for translations as sprite icons (Thanks to Steffen Ritter)
