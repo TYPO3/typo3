@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 François Suter <francois@typo3.org>
+*  (c) 2009-2010 Francois Suter <francois@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,27 +27,28 @@
  * This class provides a report displaying a list of all installed services
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  *
- * @author		François Suter <francois@typo3.org>
- * @package		TYPO3
- * @subpackage	sv
+ * @author	Francois Suter <francois@typo3.org>
+ * @package TYPO3
+ * @subpackage sv
  *
  * $Id$
  */
 class tx_sv_reports_ServicesList implements tx_reports_Report {
+
 	/**
 	 * Back-reference to the calling reports module
 	 *
-	 * @var	tx_reports_Module	$reportObject
+	 * @var	tx_reports_Module	$reportsModule
 	 */
-	protected $reportObject;
+	protected $reportsModule;
 
 	/**
 	 * Constructor for class tx_sv_reports_ServicesList
 	 *
 	 * @param	tx_reports_Module	Back-reference to the calling reports module
 	 */
-	public function __construct(tx_reports_Module $reportObject) {
-		$this->reportObject = $reportObject;
+	public function __construct(tx_reports_Module $reportsModule) {
+		$this->reportsModule = $reportsModule;
 		$GLOBALS['LANG']->includeLLFile('EXT:sv/reports/locallang.xml');
 	}
 
@@ -60,22 +61,33 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 		$content = '';
 
 			// Add custom stylesheet
-		$this->reportObject->doc->getPageRenderer()->addCssFile(t3lib_extMgm::extRelPath('sv') . 'reports/tx_sv_report.css');
-			// Start assembling content
-		$content .= '<p class="help">'
+		$this->reportsModule->doc->getPageRenderer()->addCssFile(
+			t3lib_extMgm::extRelPath('sv') . 'reports/tx_sv_report.css'
+		);
+
+		$content .= $this->renderHelp();
+		$content .= $this->reportsModule->doc->spacer(10);
+		$content .= $this->renderServicesList();
+		$content .= $this->reportsModule->doc->spacer(10);
+		$content .= $this->renderExecutablesSearchPathList();
+
+		return $content;
+	}
+
+	/**
+	 * Renders the help comments at the top of the module.
+	 *
+	 * @return	string	The help content for this module.
+	 */
+	protected function renderHelp() {
+		$help .= '<p class="help">'
 			. $GLOBALS['LANG']->getLL('report_explanation')
 			. '</p>';
-		$content .= '<p class="help">'
+		$help .= '<p class="help">'
 			. $GLOBALS['LANG']->getLL('externals_explanation')
 			. '</p>';
 
-			// Get list of installed services
-		$content .= $this->displayServiceList();
-			// Get list of binaries search paths
-		$content .= $this->reportObject->doc->spacer(10);
-		$content .= $this->displaySearchPaths();
-
-		return $content;
+		return $help;
 	}
 
 	/**
@@ -83,89 +95,150 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	 *
 	 * @return	string	HTML to display
 	 */
-	protected function displayServiceList() {
-		$content = '';
+	protected function renderServicesList() {
+		$servicesList = '';
 		$services = $this->getInstalledServices();
-		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist">';
+
 		foreach ($services as $serviceType => $installedServices) {
-			$content .= '<tr><td colspan="7">';
-			$content .= '<h4>' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h4>';
-			$content .= '</td></tr>';
-			$content .= '<tr class="bgColor2">';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('service') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('priority') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('quality') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('subtypes') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('os') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('externals') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('available') . '</td>';
-			$content .= '</tr>';
-			foreach ($installedServices as $serviceKey => $serviceInfo) {
-				$content .= '<tr class="bgColor3-20">';
-				$cellContent = '<p class="service-header"><span class="service-title">' . $serviceInfo['title'] . '</span> (' . $serviceInfo['extKey'] . ': ' . $serviceKey . ')</p>';
-				if (!empty($serviceInfo['description'])) {
-					$cellContent .= '<p class="service-description">' . $serviceInfo['description']. '</p>';
-				}
-				$content .= '<td class="cell">' . $cellContent . '</td>';
-				$content .= '<td class="cell">' . $serviceInfo['priority'] . '</td>';
-				$content .= '<td class="cell">' . $serviceInfo['quality'] . '</td>';
-				$content .= '<td class="cell">' . ((empty($serviceInfo['serviceSubTypes'])) ? '-' : implode(', ', $serviceInfo['serviceSubTypes'])) . '</td>';
-				$content .= '<td class="cell">' . ((empty($serviceInfo['os'])) ? $GLOBALS['LANG']->getLL('any') : $serviceInfo['os']) . '</td>';
-				$content .= '<td class="cell">' . ((empty($serviceInfo['exec'])) ? '-' : $serviceInfo['exec']) . '</td>';
-				$class = 'typo3-message message-error';
-				$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
-				if (t3lib_extmgm::findService($serviceKey, '*')) {
-					$class = 'typo3-message message-ok';
-					$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
-				}
-				$content .= '<td class="cell ' . $class . '">' . $message . '</td>';
-				$content .= '</tr>';
-			}
+			$servicesList .= $this->renderServiceTypeList($serviceType, $installedServices);
 		}
-		$content .= '</table>';
-		return $content;
+
+		return $servicesList;
 	}
 
 	/**
-	 * This method assembles a list of all defined search paths
+	 * Renders the services list for a single service type.
+	 *
+	 * @param	string	$serviceType the service type to render the installed services list for.
+	 * @return	string	Service list as HTML for one service type.
+	 */
+	protected function renderServiceTypeList($serviceType, $services) {
+		$header = '<h4>' . sprintf(
+			$GLOBALS['LANG']->getLL('service_type'),
+			$serviceType
+		) . '</h4>';
+
+		$serviceList .= '
+		<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist services">
+			<tr class="t3-row-header">
+				<td style="width: 35%">' . $GLOBALS['LANG']->getLL('service') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('priority') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('quality') . '</td>
+				<td style="width: 35%">' . $GLOBALS['LANG']->getLL('subtypes') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('os') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('externals') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('available') . '</td>
+			</tr>';
+
+		foreach ($services as $serviceKey => $serviceInformation) {
+			$serviceList .= $this->renderServiceRow($serviceKey, $serviceInformation);
+		}
+
+		$serviceList .= '
+		</table>
+		';
+
+		return $header . $serviceList . $this->reportsModule->doc->spacer(10);
+	}
+
+	/**
+	 * Renders a single service's row.
+	 *
+	 * @param	string	$sericeKey The service key to access the service.
+	 * @param	array	$serviceInformation registration information of the service.
+	 * @return	string	HTML row for the service.
+	 */
+	protected function renderServiceRow($serviceKey, $serviceInformation) {
+		$serviceDescription = '
+			<p class="service-header">
+				<span class="service-title">' . $serviceInformation['title'] . '</span> (' . $serviceInformation['extKey'] . ': ' . $serviceKey . ')
+			</p>';
+		if (!empty($serviceInformation['description'])) {
+			$serviceDescription .= '<p class="service-description">' . $serviceInformation['description']. '</p>';
+		}
+
+		$sericeSubtypes = empty($serviceInformation['serviceSubTypes']) ?
+			'-' :
+			implode(', ', $serviceInformation['serviceSubTypes']);
+
+		$serviceOperatingSystem = empty($serviceInformation['os']) ?
+			$GLOBALS['LANG']->getLL('any') :
+			$serviceInformation['os'];
+
+		$serviceRequiredExecutables = empty($serviceInformation['exec']) ?
+			'-' :
+			$serviceInformation['exec'];
+
+		$serviceAvailabilityClass = 'typo3-message message-error';
+		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
+		if (t3lib_extmgm::findService($serviceKey, '*')) {
+			$serviceAvailabilityClass = 'typo3-message message-ok';
+			$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
+		}
+
+		$serviceRow = '
+		<tr class="service">
+			<td class="first-cell ' . $serviceAvailabilityClass . '">' . $serviceDescription . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['priority'] . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['quality'] . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $sericeSubtypes . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceOperatingSystem . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceRequiredExecutables . '</td>
+			<td class="last-cell ' . $serviceAvailabilityClass . '">' . $serviceAvailable . '</td>
+		</tr>';
+
+		return $serviceRow;
+	}
+
+	/**
+	 * This method assembles a list of all defined executables search paths
 	 *
 	 * @return	string	HTML to display
 	 */
-	protected function displaySearchPaths() {
-		$content = '<h3 class="uppercase">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
-		$searchPaths = t3lib_exec::getPaths(true);
+	protected function renderExecutablesSearchPathList() {
+		$searchPaths = t3lib_exec::getPaths(TRUE);
+
+		$content = '<h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
+
 		if (count($searchPaths) == 0) {
 			$content .= '<p>' . $GLOBALS['LANG']->getLL('no_search_paths') . '</p>';
 		} else {
-			$content .= '<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist">';
-			$content .= '<thead>';
-			$content .= '<tr class="bgColor2">';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('path') . '</td>';
-			$content .= '<td class="cell">' . $GLOBALS['LANG']->getLL('valid') . '</td>';
-			$content .= '</tr>';
-			$content .= '</thead>';
-			$content .= '<tbody>';
+			$content .= '
+			<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist paths">
+				<thead>
+					<tr class="t3-row-header">
+						<td>' . $GLOBALS['LANG']->getLL('path') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('valid') . '</td>
+					</tr>
+				</thead>
+				<tbody>';
+
 			foreach ($searchPaths as $path => $isValid) {
-				$content .= '<tr class="bgColor3-20">';
-				$content .= '<td class="cell">' . t3lib_div::fixWindowsFilePath($path) . '</td>';
-				$class = 'typo3-message message-error';
-				$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
+				$pathAccessibleClass = 'typo3-message message-error';
+				$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 				if ($isValid) {
-					$class = 'typo3-message message-ok';
-					$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
+					$pathAccessibleClass = 'typo3-message message-ok';
+					$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 				}
-				$content .= '<td class="cell ' . $class . '">' . $message . '</td>';
-				$content .= '</tr>';
+
+				$content .= '
+					<tr>
+						<td class="first-cell ' . $pathAccessibleClass . '">' . t3lib_div::fixWindowsFilePath($path) . '</td>
+						<td class="last-cell ' . $pathAccessibleClass . '">' . $pathAccessible . '</td>
+					</tr>';
 			}
-			$content .= '</tbody>';
-			$content .= '</table>';
+
+			$content .= '
+				</tbody>
+			</table>';
 		}
+
 		return $content;
 	}
 
 	/**
 	 * This method filters the $T3_SERVICES global array to return a relevant,
-	 * ordered list of installed services
+	 * ordered list of installed services.
 	 *
 	 * Every installed service appears twice in $T3_SERVICES: once as a service key
 	 * for a given service type, and once a service type all by itself
@@ -179,28 +252,30 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	protected function getInstalledServices() {
 		$filteredServices = array();
 
-			// Loop on all installed services
 		foreach ($GLOBALS['T3_SERVICES'] as $serviceType => $serviceList) {
 				// If the (first) key of the service list is not the same as the service type,
 				// it's a "true" service type. Keep it and sort it.
 			if (key($serviceList) !== $serviceType) {
-				uasort($serviceList, array('tx_sv_reports_ServicesList', 'sortServices'));
+				uasort($serviceList, array($this, 'sortServices'));
 				$filteredServices[$serviceType] = $serviceList;
 			}
 		}
+
 		return $filteredServices;
 	}
 
 	/**
-	 * Utility method used to sort services according to their priority and quality
+	 * Utility method used to sort services according to their priority and
+	 * quality.
 	 *
 	 * @param	array		First service to compare
 	 * @param	array		Second service to compare
 	 *
 	 * @return	integer		1, 0 or -1 if a is smaller, equal or greater than b, respectively
 	 */
-	public function sortServices(array $a, array $b) {
+	protected function sortServices(array $a, array $b) {
 		$result = 0;
+
 			// If priorities are the same, test quality
 		if ($a['priority'] == $b['priority']) {
 			if ($a['quality'] != $b['quality']) {
@@ -213,6 +288,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 				// thus it must be marked as smaller
 			$result = ($a['priority'] > $b['priority']) ? -1 : 1;
 		}
+
 		return $result;
 	}
 }

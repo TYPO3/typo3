@@ -5,10 +5,25 @@
 	vertical-align: middle;
 }
 
-.tx_sv_reportlist .bgColor2 td {
-	text-align: left;
-	font-weight: bold;
-	color: #fff;
+.tx_sv_reportlist td.typo3-message {
+	vertical-align: top;
+}
+
+.tx_sv_reportlist td.cell {
+	background-image: none;
+	padding: 3px;
+	border-left: none;
+	border-right: none;
+}
+
+.tx_sv_reportlist td.first-cell {
+	background-image: none;
+	padding: 3px;
+	border-right: none;
+}
+
+.tx_sv_reportlist td.last-cell {
+	border-left: none;
 }
 
 .service-header {
