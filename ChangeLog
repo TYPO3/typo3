@@ -18,6 +18,7 @@
 
 	* Added feature #15668: TYPO3 Backend should display flags for translations as sprite icons (Thanks to Steffen Ritter)
 	* Follow-up to #16111: Fixed display of group/db selector getting displayed below since this feature (e.g. sys_template.baseOn)
+	* Added feature #16283: Optimize stdWrap usage for TypoScript content element IMG_RESOURCE (Thanks to Joey Hasenau)
 
 2010-11-16  Sebastian Kurfuerst  <sebastian@typo3.org>
 
