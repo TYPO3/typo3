@@ -57,7 +57,7 @@ class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
 		if (TYPO3_MODE === 'BE') {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('uri.image ViewHelper does not (yet) work in backend mode' , 1277367648);
+			$this->simulateFrontendEnvironment();
 		}
 		$setup = array(
 			'width' => $width,
@@ -67,6 +67,9 @@ class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_
 			'maxW' => $maxWidth,
 			'maxH' => $maxHeight
 		);
+		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
+			$src = substr($src, 3);
+		}
 		$imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 		if (!is_array($imageInfo)) {
@@ -76,7 +79,48 @@ class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 
 		$imageSource = $GLOBALS['TSFE']->absRefPrefix . t3lib_div::rawUrlEncodeFP($imageInfo[3]);
+		if (TYPO3_MODE === 'BE') {
+			$imageSource = '../' . $imageSource;
+			$this->resetFrontendEnvironment();
+		}
 
 		return $imageSource;
 	}
+
+	/**
+	 * Prepares $GLOBALS['TSFE'] for Backend mode
+	 * This somewhat hacky work around is currently needed because the getImgResource() function of tslib_cObj relies on those variables to be set
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function simulateFrontendEnvironment() {
+		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+			// set the working directory to the site root
+		$this->workingDirectoryBackup = getcwd();
+		chdir(PATH_site);
+
+		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$GLOBALS['TSFE'] = new stdClass();
+		$template = t3lib_div::makeInstance('t3lib_TStemplate');
+		$template->tt_track = 0;
+		$template->init();
+		$template->getFileName_backPath = PATH_site;
+		$GLOBALS['TSFE']->tmpl = $template;
+		$GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
+		$GLOBALS['TSFE']->config = $typoScriptSetup;
+	}
+
+	/**
+	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see simulateFrontendEnvironment()
+	 */
+	protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		chdir($this->workingDirectoryBackup);
+	}
+
 }

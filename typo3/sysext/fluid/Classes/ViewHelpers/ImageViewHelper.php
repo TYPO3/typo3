@@ -140,8 +140,7 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$this->workingDirectoryBackup = getcwd();
 		chdir(PATH_site);
 
-		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
-		$typoScriptSetup = $configurationManager->loadTypoScriptSetup();
+		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new stdClass();
 		$template = t3lib_div::makeInstance('t3lib_TStemplate');
 		$template->tt_track = 0;
