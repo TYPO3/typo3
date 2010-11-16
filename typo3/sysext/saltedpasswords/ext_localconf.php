@@ -39,4 +39,13 @@ t3lib_extMgm::addService(
 
 // Use popup window to refresh login instead of the AJAX relogin:
 $TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
+
+	// Register bulk update task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_saltedpasswords_Tasks_BulkUpdate'] = array(
+	'extension' => $_EXTKEY,
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.description',
+	'additionalFields' => '',
+);
+
 ?>

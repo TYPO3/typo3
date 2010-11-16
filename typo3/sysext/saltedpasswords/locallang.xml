@@ -9,6 +9,8 @@
 			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass">Portable PHP password hashing (phpass)</label>
 			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5">MD5 salted hashing (secure)</label>
 			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish">Blowfish salted hashing (advanced)</label>
+			<label index="ext.saltedpasswords.tasks.bulkupdate.name">Convert user passwords to salted hashes</label>
+			<label index="ext.saltedpasswords.tasks.bulkupdate.description">Update all frontend and backend user passwords to salted hashes. This task deactivates itself when completed.</label>
 		</languageKey>
 	</data>
 </T3locallang>

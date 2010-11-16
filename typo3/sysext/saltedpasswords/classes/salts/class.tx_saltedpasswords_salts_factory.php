@@ -95,7 +95,7 @@ class tx_saltedpasswords_salts_factory {
 	 * @param	string		$saltedHash
 	 * @return	boolean		TRUE, if salting hashing method has been found, otherwise FALSE
 	 */
-	static protected function determineSaltingHashingMethod($saltedHash) {
+	static public function determineSaltingHashingMethod($saltedHash) {
 		$methodFound = FALSE;
 		$defaultMethods = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
 		foreach($defaultMethods as $method) {

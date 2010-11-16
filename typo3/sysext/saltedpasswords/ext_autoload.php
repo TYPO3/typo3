@@ -15,6 +15,7 @@ return array(
 	'tx_saltedpasswords_eval' => $extensionPath . 'classes/eval/class.tx_saltedpasswords_eval.php',
 	'tx_saltedpasswords_eval_be' => $extensionPath . 'classes/eval/class.tx_saltedpasswords_eval_be.php',
 	'tx_saltedpasswords_eval_fe' => $extensionPath . 'classes/eval/class.tx_saltedpasswords_eval_fe.php',
+	'tx_saltedpasswords_tasks_bulkupdate' => $extensionPath . 'classes/tasks/class.tx_saltedpasswords_tasks_bulkupdate.php',
 	'tx_saltedpasswords_sv1' => $extensionPath . 'sv1/class.tx_saltedpasswords_sv1.php',
 	'tx_saltedpasswords_div_testcase' => $extensionPath . 'tests/tx_saltedpasswords_div_testcase.php',
 	'tx_saltedpasswords_salts_blowfish_testcase' => $extensionPath . 'tests/tx_saltedpasswords_salts_blowfish_testcase.php',
