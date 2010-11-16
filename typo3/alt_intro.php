@@ -108,6 +108,9 @@ class SC_alt_intro {
 		$TBE_TEMPLATE->divClass = $TBE_TEMPLATE->bodyTagId;
 
 		$this->content = '
+			<div id="typo3-docheader">
+				<div id="typo3-docheader-row1">&nbsp;</div>
+			</div>
 			<div id="typo3-alt-intro-php-sub">
 			<h1>TYPO3 '.TYPO3_version.'<br />'.$LANG->getLL('introtext').'</h1>
 

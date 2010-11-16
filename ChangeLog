@@ -12,6 +12,7 @@
 	* Fixed bug #16336: tcaTree does only support IRRE foreign_field relation on "parentField" (Thanks to Steffen Ritter)
 	* Fixed bug #16424: Unused variable in t3lib_Compressor (Thanks to Bjoern Pedersen)
 	* Fixed bug #16409: Implement fallback solution for box-shadow of module menu and tree frame
+	* Fixed bug #16425: Add docheader to "About modules" screen
 
 2010-11-16  Ernesto Baschny  <ernst@cron-it.de>
 
