@@ -3,6 +3,7 @@ ChangeLog for Extbase
 
 Changes for 1.3.0 Beta 1
 ========================
+included in TYPO3 4.5.0 Beta 1.
 
 Extbase 1.3.0 Beta 1 has a lot new and greatly improved features, and also many bugfixes.
 The highlights are outlined below, and explained in-depth a little further down:
