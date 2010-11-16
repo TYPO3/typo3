@@ -27,30 +27,30 @@
 
 /**
  * Simple Cache for classInfos
- * 
+ *
  * @author Daniel Pötzinger
  */
 class Tx_Extbase_Object_Container_ClassInfoCache {
-	
+
 	/**
-	 * 
+	 *
 	 * @var array
 	 */
 	private $level1Cache=array();
-	
+
 	/**
-	 * 
+	 *
 	 * @var t3lib_cache_frontend_VariableFrontend
 	 */
 	private $level2Cache;
-	
+
 	/**
 	 * constructor
 	 */
 	public function __construct() {
 		$this->initializeLevel2Cache();
 	}
-	
+
 	/**
 	 * checks if cacheentry exists for id
 	 * @param string $id
@@ -58,7 +58,7 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 	public function has($id) {
 		return isset($this->level1Cache[$id]) || $this->level2Cache->has($id);
 	}
-	
+
 	/**
 	 * Gets the cache for the id
 	 * @param string $id
@@ -69,10 +69,10 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 		}
 		return $this->level1Cache[$id];
 	}
-	
+
 	/**
 	 * sets the cache for the id
-	 * 
+	 *
 	 * @param $id
 	 * @param $value
 	 */
@@ -80,24 +80,22 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 		$this->level1Cache[$id]=$value;
 		$this->level2Cache->set($id,$value);
 	}
-	
-	
+
+
 	/**
 	 * Initialize the TYPO3 second level cache
 	 */
 	private function initializeLevel2Cache() {
 		t3lib_cache::initializeCachingFramework();
-		$backend = 't3lib_cache_backend_FileBackend';
-		$frontend = 't3lib_cache_frontend_VariableFrontend';
-		$config = array('defaultLifetime' => 3600);
-		if ($GLOBALS['typo3CacheManager']->hasCache('Tx_Extbase_Object_Container_ClassInfoCache')) {
-			$this->level2Cache = $GLOBALS['typo3CacheManager']->getCache('Tx_Extbase_Object_Container_ClassInfoCache') ;
-		} else {
-			try {
-				$this->level2Cache = $GLOBALS['typo3CacheFactory']->create('Tx_Extbase_Object_Container_ClassInfoCache', $frontend, $backend, $config);
-			} catch (Exception $e) {
-				throw new Tx_Extbase_Object_Container_Exception_CannotInitializeCacheException('cache init [Tx_Extbase_Object_Container_ClassInfoCache/' . $frontend . '/' . $backend . '] failed:' . get_class($e) . ' - ' . $e->getMessage(), 1289386629);
-			}
+		try {
+			$this->level2Cache = $GLOBALS['typo3CacheManager']->getCache('cache_extbase_object');
+		} catch (t3lib_cache_exception_NoSuchCache $exception) {
+			$this->level2Cache = $GLOBALS['typo3CacheFactory']->create(
+				'cache_extbase_object',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_object']['frontend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_object']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_object']['options']
+			);
 		}
 	}
 }
