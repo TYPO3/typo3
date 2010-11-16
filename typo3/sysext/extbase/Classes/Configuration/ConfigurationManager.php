@@ -104,10 +104,10 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
 		switch ($configurationType) {
 			case self::CONFIGURATION_TYPE_SETTINGS :
-				$configuration = $this->concreteConfigurationManager->getConfiguration($configurationType, $extensionName, $pluginName);
+				$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
 				return $configuration['settings'];
 			case self::CONFIGURATION_TYPE_FRAMEWORK :
-				return $this->concreteConfigurationManager->getConfiguration($configurationType, $extensionName, $pluginName);
+				return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
 			case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT :
 				return $this->concreteConfigurationManager->getTypoScriptSetup();
 			default :

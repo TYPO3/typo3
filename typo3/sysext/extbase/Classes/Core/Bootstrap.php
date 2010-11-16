@@ -273,14 +273,12 @@ class Tx_Extbase_Core_Bootstrap {
 	  * @see run()
 	  **/
 	public function callModule($moduleName) {
-		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) return FALSE;
-		$configuration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
 
 		// Check permissions and exit if the user has no permission for entry
-		$GLOBALS['BE_USER']->modAccess($configuration, TRUE);
+		$GLOBALS['BE_USER']->modAccess($config, TRUE);
 		if (t3lib_div::_GP('id')) {
 			// Check page access
-			$id = t3lib_div::_GP('id');
+			$id = intval(t3lib_div::_GP('id'));
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
 			$access = is_array(t3lib_BEfunc::readPageAccess($id, $permClause));
 			if (!$access) {
@@ -288,13 +286,10 @@ class Tx_Extbase_Core_Bootstrap {
 			}
 		}
 
-		// BACK_PATH is the path from the typo3/ directory from within the
-		// directory containing the controller file. We are using mod.php dispatcher
-		// and thus we are already within typo3/ because we call typo3/mod.php
-		$GLOBALS['BACK_PATH'] = '';
 
+		$configuration = array();
+		$configuration['module.']['tx_extbase.']['moduleName'] = $moduleName;
 		$this->run('', $configuration);
-
 		return TRUE;
 	}
 }

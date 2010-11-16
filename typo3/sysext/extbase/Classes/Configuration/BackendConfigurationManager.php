@@ -37,182 +37,6 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	protected $typoScriptSetupCache = NULL;
 
 	/**
-	 * Transfers the request to an Extbase backend module, calling
-	 * a given controller/action.
-	 *
-	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
-	 * @param string $extensionName if specified, the configuration for the given extension will be returned (plugin.tx_extensionname)
-	 * @param string $pluginName if specified, the configuration for the given plugin will be returned (plugin.tx_extensionname_pluginname)
-	 * @return string The module rendered view
-	 */
-	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
-		$frameworkConfiguration = array();
-		$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
-		$controllerAction = $this->resolveControllerAction($this->configuration['name']);
-		$setup = $this->getTypoScriptSetup();
-		$frameworkConfiguration = array(
-			'pluginName' => $this->configuration['name'],
-			'extensionName' => $this->configuration['extensionName'],
-			'controller' => $controllerAction['controllerName'],
-			'action' => $controllerAction['actionName'],
-			'switchableControllerActions' => array(),
-			'settings' => $this->resolveTyposcriptReference($setup, 'settings'),
-			'persistence' => $this->resolveTyposcriptReference($setup, 'persistence'),
-			'view' => $this->resolveTyposcriptReference($setup, 'view'),
-			'_LOCAL_LANG' => $this->resolveTyposcriptReference($setup, '_LOCAL_LANG'),
-		);
-
-		foreach ($this->configuration['controllerActions'] as $controller => $actions) {
-			// Add an "extObj" action for the default controller to handle external
-			// SCbase modules which add function menu entries
-			$actions .= ',extObj';
-			$frameworkConfiguration['switchableControllerActions'][$i++] = array(
-				'controller' => $controller,
-				'actions' => $actions,
-			);
-		}
-
-		$extbaseConfiguration = $setup['config.']['tx_extbase.'];
-		if (is_array($extbaseConfiguration)) {
-			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
-			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
-		}
-
-		return $frameworkConfiguration;
-	}
-
-	/**
-	 * Resolves the controller and action to use for current call.
-	 * This takes into account any function menu that has being called.
-	 *
-	 * @param string $module The name of the module
-	 * @return array The controller/action pair to use for current call
-	 */
-	protected function resolveControllerAction($module) {
-		$configuration = $GLOBALS['TBE_MODULES']['_configuration'][$module];
-		$fallbackControllerAction = $this->getFallbackControllerAction($configuration);
-
-			// Extract dispatcher settings from request
-		$argumentPrefix = strtolower('tx_' . $configuration['extensionName'] . '_' . $configuration['name']);
-		$dispatcherParameters = t3lib_div::_GPmerged($argumentPrefix);
-		$dispatcherControllerAction = $this->getDispatcherControllerAction($configuration, $dispatcherParameters);
-
-			// Extract module function settings from request
-		$moduleFunctionControllerAction = $this->getModuleFunctionControllerAction($module, $fallbackControllerAction['controllerName']);
-
-			// Dispatcher controller/action has precedence over default controller/action
-		$controllerAction = t3lib_div::array_merge_recursive_overrule($fallbackControllerAction, $dispatcherControllerAction, FALSE, FALSE);
-			// Module function controller/action has precedence
-		$controllerAction = t3lib_div::array_merge_recursive_overrule($controllerAction, $moduleFunctionControllerAction, FALSE, FALSE);
-
-		return $controllerAction;
-	}
-
-	/**
-	 * Returns the fallback controller/action pair to be used when request does not contain
-	 * any controller/action to be used or the provided parameters are not valid.
-	 *
-	 * @param array $configuration The module configuration
-	 * @return array The controller/action pair
-	 */
-	protected function getFallbackControllerAction($configuration) {
-			// Extract module settings from its registration in ext_tables.php
-		$controllers = array_keys($configuration['controllerActions']);
-		$defaultController = array_shift($controllers);
-		$actions = t3lib_div::trimExplode(',', $configuration['controllerActions'][$defaultController], TRUE);
-		$defaultAction = $actions[0];
-
-		return array(
-			'controllerName' => $defaultController,
-			'actionName' => $defaultAction,
-		);
-	}
-
-	/**
-	 * Returns the controller/action pair that was specified by the request if it is valid,
-	 * otherwise, will just return a blank controller/action pair meaning the default
-	 * controller/action should be used instead.
-	 *
-	 * @param array $configuration The module configuration
-	 * @param array $dispatcherParameters The dispatcher parameters
-	 * @return array The controller/action pair
-	 */
-	protected function getDispatcherControllerAction($configuration, $dispatcherParameters) {
-		$controllerAction = array(
-			'controllerName' => '',
-			'actionName' => '',
-		);
-
-		if (!isset($dispatcherParameters['controllerName'])) {
-				// Early return: should use fallback controller/action
-			return $controllerAction;
-		}
-
-			// Extract configured controllers from module's registration in ext_tables.php
-		$controllers = array_keys($configuration['controllerActions']);
-
-		$controller = $dispatcherParameters['controllerName'];
-		if (in_array($controller, $controllers)) {
-				// Update return value as selected controller is valid
-			$controllerAction['controllerName'] = $controller;
-			$actions = t3lib_div::trimExplode(',', $configuration['controllerActions'][$controller], TRUE);
-			if (isset($dispatcherParameters['actionName'])) {
-					// Extract configured actions for selected controllers
-				$action = $dispatcherParameters['actionName'];
-				if (in_array($action, $actions)) {
-						// Requested action is valid for selected controller
-					$controllerAction['actionName'] = $action;
-				} else {
-						// Use first action of selected controller as fallback action
-					$controllerAction['actionName'] = $actions[0];
-				}
-			} else {
-					// Use first action of selected controller as fallback action
-				$controllerAction['actionName'] = $actions[0];
-			}
-		}
-
-		return $controllerAction;
-	}
-
-	/**
-	 * Returns the controller/action pair to use if a module function parameter is found
-	 * in the request, otherwise, will just return a blank controller/action pair.
-	 *
-	 * @param string $module The name of the module
-	 * @param string $defaultController The module's default controller
-	 * @return array The controller/action pair
-	 */
-	protected function getModuleFunctionControllerAction($module, $defaultController) {
-		$controllerAction = array(
-			'controllerName' => '',
-			'actionName' => '',
-		);
-
-		$set = t3lib_div::_GP('SET');
-		if (!$set) {
-				// Early return
-			return $controllerAction;
-		}
-
-		$moduleFunction = $set['function'];
-		$matches = array();
-		if (preg_match('/^(.*)->(.*)$/', $moduleFunction, $matches)) {
-			$controllerAction['controllerName'] = $matches[1];
-			$controllerAction['actionName'] = $matches[2];
-		} else {
-				// Support for external SCbase module function rendering
-			$functions = $GLOBALS['TBE_MODULES_EXT']['_configuration'][$module]['MOD_MENU']['function'];
-			if (isset($functions[$moduleFunction])) {
-				$controllerAction['controllerName'] = $defaultController;
-				$controllerAction['actionName'] = 'extObj';
-			}
-		}
-
-		return $controllerAction;
-	}
-
-	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
 	 * @return array the raw TypoScript setup
@@ -263,5 +87,12 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
 
+	/**
+	 * We do not want to override anything in the backend.
+	 * @return array
+	 */
+	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {
+		return $frameworkConfiguration;
+	}
 }
 ?>
