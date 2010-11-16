@@ -52,11 +52,36 @@ div#typo3-docheader-row2 div {
 	box-shadow: inset -2px 0 1px #414141;
 }
 
-#typo3-module-menu #typo3-docheader-row2,
 #typo3-pagetree #typo3-docheader-row2,
 #typo3-alt-file-navframe-php #typo3-docheader-row2 {
 	-moz-box-shadow: inset -2px 0 1px #b7b7b7;
 	-ms-box-shadow: inset -2px 0 1px #b7b7b7;
 	-webkit-box-shadow: inset -2px 0 1px #b7b7b7;
 	box-shadow: inset -2px 0 1px #b7b7b7;
+}
+
+/**
+ * Shadows of the docheader in module menu and tree frames,
+ * fallback for missing box-shadow support.
+ *
+ * @see modernizr.js
+ */
+.no-boxshadow #typo3-module-menu #typo3-docheader-row1,
+.no-boxshadow #typo3-pagetree #typo3-docheader-row1,
+.no-boxshadow #typo3-alt-file-navframe-php #typo3-docheader-row1 {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAMAAAAsPuSGAAAACVBMVEVGRkZAQEBRUVH4z1uMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxJREFUCNdjYGJgBAAACwAEhbbR0wAAAABJRU5ErkJggg==");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/backgrounds/module-menu-right-top.png");
+	background-position: right;
+	background-repeat: repeat-y;
+
+}
+
+.no-boxshadow #typo3-pagetree #typo3-docheader-row2,
+.no-boxshadow #typo3-alt-file-navframe-php #typo3-docheader-row2 {
+	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/backgrounds/module-menu-right.png");
+	background-position: right;
+	background-repeat: repeat-y;
 }

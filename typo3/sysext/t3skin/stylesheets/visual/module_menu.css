@@ -9,10 +9,30 @@ $Id$
 	background-image: -moz-linear-gradient(top, #bdbdbd, 100px #dddddd);
 	background-image: -webkit-gradient(linear, 0 0, 0 25%, color-stop(0, #bdbdbd), color-stop(1, #dddddd));
 	background-image: linear-gradient(top, #bdbdbd, 100px #dddddd);
+}
+
+/**
+ * Shadow on the right side of the module menu.
+ */
+#typo3-module-menu {
 	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
 	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
 	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
 	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * Shadow on the right side of the module menu,
+ * fallback for missing box-shadow support.
+ *
+ * @see modernizr.js
+ */
+.no-boxshadow #typo3-module-menu {
+	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/backgrounds/module-menu-right.png");
+	background-position: right;
+	background-repeat: repeat-y;
 }
 
 #typo3-module-menu .x-panel-body {
