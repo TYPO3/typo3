@@ -3740,7 +3740,7 @@ class t3lib_TCEforms	{
 			'</a>';
 		}
 		$imagesOnly = FALSE;
-		if ($params['thumbnails']) {
+		if ($params['thumbnails'] && $params['info']) {
 				// In case we have thumbnails, check if only images are allowed.
 				// In this case, render them below the field, instead of to the right
 			$allowedExtensionList = t3lib_div::trimExplode(' ', strtolower($params['info']), TRUE);
