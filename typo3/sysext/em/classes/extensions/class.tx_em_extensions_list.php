@@ -818,7 +818,7 @@ EXTENSION KEYS:
 			$msg = sprintf($GLOBALS['LANG']->getLL('removeExtFromList_dependency'),
 				implode(', ', $depList)
 			);
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'), $msg, 0, 1, 2);
+			$this->parentObject->content .= $this->parentObject->doc->section($GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'), $msg, 0, 1, 2);
 			return -1;
 		} else {
 			$listArr = $this->removeRequiredExtFromListArr($listArr);

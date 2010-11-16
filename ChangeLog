@@ -4,6 +4,7 @@
 
 2010-11-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #16315: Fatal error when deinstalling extension which is dependency of some other installed extension
 	* Added feature #16360: [saltedpasswords] Provide a task for bulk update of passwords for use with saltedpasswords (Thanks to Marcus Krause)
 
 2010-11-16  Steffen Gebert  <steffen@steffen-gebert.de>
