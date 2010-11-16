@@ -11,6 +11,10 @@
 	* Added feature #16408: Support for Custom Navigation Components (Thanks to Stefan Galinski)
 	* Added feature #16396: Implement a Grid View + wizard to enable the backend layout to be adapted to the frontend look and feel (Thanks to Joey Hasenau, Martin Ficzel and Thomas Hempel)
 
+2010-11-15  Ingo Renner  <ingo@typo3.org>
+
+	* Resolved issue #16388: Clean up installed services report
+
 2010-11-15  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #14658: Feature: internal links with parameters outside the RTE (headlines, images ...)
@@ -20,9 +24,18 @@
 
 	* Add feature #16374: Implement Inline Relational Record Editing (IRRE) in Workspaces
 
+2010-11-15  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Added feature #16410: [Caching framework] Implement redis as cache backend
+
+2010-11-15  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #16403: Integrate modernizr into the TYPO3 Backend
+
 2010-11-15  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16170: Increase DB-fields spaceBefore and spaceAfter (tt_content) (Thanks to Henrik Ziegenhain)
+	* Added feature #16111: Change the layout of thumbnails and allowed file types so that they don't waste so much space anymore (Thanks to Jo Hasenau)
 
 2010-11-14  Steffen Kamper  <steffen@typo3.org>
 
