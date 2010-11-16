@@ -325,6 +325,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				if ($conf['labelStdWrap.']) {
 					$conf['linkProc.']['labelStdWrap.'] = $conf['labelStdWrap.'];
 				}
+				if ($conf['useSpacesInLinkText'] || $conf['stripFileExtensionFromLinkText']) {
+					$conf['linkProc.']['removePrependedNumbers'] = 0;
+				}
 
 					// Traverse the files found:
 				$filesData = array();
@@ -347,7 +350,18 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$GLOBALS['TSFE']->register['fileSize'] = $filesData[$key]['filesize'];
 						$GLOBALS['TSFE']->register['fileExtension'] = $filesData[$key]['fileextension'];
 						$GLOBALS['TSFE']->register['description'] = $filesData[$key]['description'];
-						$filesData[$key]['linkedFilenameParts'] = explode('//**//',$this->cObj->filelink($fileName, $conf['linkProc.']));
+						$filesData[$key]['linkedFilenameParts']
+							= $this->beautifyFileLink(
+								explode(
+									'//**//',
+									$this->cObj->filelink(
+										$fileName, $conf['linkProc.']
+									)
+								),
+								$fileName,
+								$conf['useSpacesInLinkText'],
+								$conf['stripFileExtensionFromLinkText']
+							);
 					}
 				}
 
@@ -872,6 +886,40 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * Helper functions
 	 *
 	 ************************************/
+
+	/**
+	 * Returns a link text string which replaces underscores in filename with
+	 * blanks.
+	 *
+	 * Has the possibility to cut off FileType.
+
+	 * @param array $links
+	 *        array with [0] linked file icon, [1] text link
+	 * @param string $fileName
+	 *        the name of the file to be linked (without path)
+	 * @param boolean $useSpaces
+	 *        whether underscores in the file name should be replaced with spaces
+	 * @param boolean $cutFileExtension
+	 *        whether the file extension should be removed
+	 *
+	 * @return array modified array with new link text
+	 */
+	protected function beautifyFileLink(
+		array $links, $fileName, $useSpaces = FALSE, $cutFileExtension = FALSE
+	) {
+		$linkText = $fileName;
+		if ($useSpaces) {
+			$linkText = str_replace('_', ' ', $linkText);
+		}
+		if ($cutFileExtension) {
+			$pos = strrpos($linkText, '.');
+			$linkText = substr($linkText, 0, $pos);
+		}
+		$links[1] = str_replace(
+			'>' . $fileName . '<', '>' . $linkText . '<', $links[1]
+		);
+		return $links;
+	}
 
 	/**
 	 * Returns table attributes for uploads / tables.

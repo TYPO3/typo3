@@ -879,6 +879,8 @@ tt_content.uploads {
 			30.bytes = 1
 			30.bytes.labels = {$styles.content.uploads.filesizeBytesLabels}
 		}
+		useSpacesInLinkText = 0
+		stripFileExtensionFromLinkText = 0
 	}
 
 	20.color {
