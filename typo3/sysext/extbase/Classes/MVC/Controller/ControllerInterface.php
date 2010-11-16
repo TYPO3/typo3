@@ -29,41 +29,30 @@
  * Interface for controllers
  *
  * @package Extbase
- * @subpackage MVC\Controller
  * @version $ID:$
  * @api
  */
 interface Tx_Extbase_MVC_Controller_ControllerInterface {
 
 	/**
-	 * Sets / injects the settings of the package this controller belongs to.
-	 *
-	 * Needed to emulate settings injection.
-	 *
-	 * @param array $settings Settings container of the current package
-	 * @return void
-	 */
-	public function injectSettings(array $settings);
-
-	/**
 	 * Checks if the current request type is supported by the controller.
 	 *
-	 * @param Tx_Extbase_MVC_Request $request The current request
+	 * @param Tx_Extbase_MVC_RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_Request $request);
+	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request);
 
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
 	 * @param Tx_Extbase_MVC_Request $request The request object
-	 * @param Tx_Extbase_MVC_Response $response The response, modified by the controller
+	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by the controller
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response);
+	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response);
 
 }
 ?>

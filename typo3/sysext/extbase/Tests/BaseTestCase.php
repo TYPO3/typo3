@@ -33,7 +33,7 @@ require_once(t3lib_extMgm::extPath('phpunit') . 'class.tx_phpunit_testcase.php')
 abstract class Tx_Extbase_BaseTestCase extends tx_phpunit_testcase {
 
 	/**
-	 * @var Tx_Extbase_Object_ManagerInterface The object manager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface The object manager
 	 */
 	protected $objectManager;
 
@@ -59,7 +59,7 @@ abstract class Tx_Extbase_BaseTestCase extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function runBare() {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$this->objectManager =  clone $objectManager;
 		parent::runBare();
 	}

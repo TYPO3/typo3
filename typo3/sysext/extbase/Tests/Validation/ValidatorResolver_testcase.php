@@ -38,7 +38,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @test
 	 */
 	public function resolveValidatorObjectNameReturnsFalseIfValidatorCantBeResolved() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$validatorResolver->_set('objectManager', $objectManager);
 		$this->assertSame(FALSE, $validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
@@ -58,7 +58,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @test
 	 */
 	public function resolveValidatorObjectNameCanResolveShortNamesOfBuiltInValidators() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		eval('class Tx_Extbase_Validation_Validator_FooValidator {}');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$validatorResolver->_set('objectManager', $mockObjectManager);
@@ -73,8 +73,8 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ObjectValidatorInterface', array(), array(), $className);
 		$mockValidator->expects($this->once())->method('setOptions')->with(array('foo' => 'bar'));
 
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
-		$mockObjectManager->expects($this->any())->method('getObject')->with($className)->will($this->returnValue($mockValidator));
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager->expects($this->any())->method('get')->with($className)->will($this->returnValue($mockValidator));
 
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'),array('resolveValidatorObjectName'));
 		$validatorResolver->_set('objectManager', $mockObjectManager);
@@ -274,8 +274,8 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockConjunctionValidator = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
 		$mockConjunctionValidator->expects($this->once())->method('addValidator')->with($mockObjectValidator);
 
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
-		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Extbase_Validation_Validator_ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Extbase_Validation_Validator_ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
 
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('resolveValidatorObjectName', 'createValidator'));
 		$validatorResolver->injectReflectionService($mockReflectionService);

@@ -66,7 +66,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $queryFactory;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
+	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
 	protected $qomFactory;
 
@@ -88,23 +88,37 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $referenceIndex;
 
 	/**
-	 * @var array
-	 **/
-	protected $extbaseSettings;
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
 
 	/**
 	 * Constructs the backend
 	 *
-	 * @param Tx_Extbase_Persistence_Session $session The persistence session used to persist data
+	 * @return void
 	 */
-	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
-		$this->session = $session;
-		$this->storageBackend = $storageBackend;
-		$this->extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+	public function __construct(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		}
-		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Session $session
+	 * @return void
+	 */
+	public function injectSession(Tx_Extbase_Persistence_Session $session) {
+		$this->session = $session;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend
+	 * @return void
+	 */
+	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
+		$this->storageBackend = $storageBackend;
 	}
 
 	/**
@@ -150,21 +164,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Injects the QueryObjectModelFactory
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $qomFactory
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory
 	 * @return void
 	 */
-	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $qomFactory) {
+	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
 		$this->qomFactory = $qomFactory;
-	}
-
-	/**
-	 * Injects the ValueFactory
-	 *
-	 * @param Tx_Extbase_Persistence_ValueFactoryInterface $valueFactory
-	 * @return void
-	 */
-	public function injectValueFactory(Tx_Extbase_Persistence_ValueFactoryInterface $valueFactory) {
-		$this->valueFactory = $valueFactory;
 	}
 
 	/**
@@ -188,7 +192,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the current QOM factory
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
+	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
 	public function getQomFactory() {
 		return $this->qomFactory;
@@ -262,12 +266,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			return $this->identityMap->getObjectByIdentifier($identifier, $className);
 		} else {
 			$query = $this->queryFactory->create($className);
-			$result = $query->matching($query->withUid($identifier))->execute();
-			$object = NULL;
-			if (count($result) > 0) {
-				$object = current($result);
-			}
-			return $object;
+			return $query->matching(
+				$query->withUid($identifier))
+				->execute()
+				->getFirst();
 		}
 	}
 
@@ -561,8 +563,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$query = $this->queryFactory->create($className);
 		$query->getQuerySettings()->setReturnRawQueryResult(TRUE);
-		$rows = $query->matching($query->withUid($object->getUid()))->execute();
-		$currentRow = current($rows);
+		$currentRow = $query->matching(
+			$query->withUid($object->getUid()))
+			->execute()
+			->getFirst();
 		$fieldValue = $currentRow[$columnMap->getColumnName()];
 		return $fieldValue;
 	}
@@ -672,7 +676,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$row
 			);
 		$object->_setProperty('uid', (int)$uid);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
 		$this->identityMap->registerObject($object, $uid);
@@ -790,7 +795,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$dataMap->getTableName(),
 			$row
 			);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
 		}
 		return $res;
@@ -861,7 +867,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				);
 		}
 		$this->removeRelatedObjects($object);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
 		}
 	}
@@ -904,14 +911,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return int the storage Page ID where the object should be stored
 	 */
 	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
-		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($object !== NULL) {
 			$className = get_class($object);
-			if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'])) {
-				return (int)$extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'];
+			if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
+				return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
 			}
 		}
-		$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
+		$storagePidList = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
 		return (int) $storagePidList[0];
 	}
 

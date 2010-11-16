@@ -54,14 +54,12 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	protected $tagName = 'div';
 
 	/**
-	 * Inject a TagBuilder
-	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder Tag builder
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function injectTagBuilder(Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder) {
-		$this->tag = $tagBuilder;
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+		$this->tag = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TagBuilder');
 	}
 
 	/**
@@ -103,7 +101,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	 * Register a new tag attribute. Tag attributes are all arguments which will be directly appended to a tag if you call $this->initializeTag()
 	 *
 	 * @param string $name Name of tag attribute
-	 * @param strgin $type Type of the tag attribute
+	 * @param string $type Type of the tag attribute
 	 * @param string $description Description of tag attribute
 	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
 	 * @return void

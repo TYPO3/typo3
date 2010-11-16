@@ -1,6 +1,6 @@
 <?php
 
-/*                                                                        *
+/*
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
@@ -21,20 +21,10 @@
  *                                                                        */
 
 /**
- * Interface of Fluids Template view
+ * An exception if no widget context could be found inside the AjaxWidgetContextHolder.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
-interface Tx_Fluid_View_TemplateViewInterface extends Tx_Extbase_MVC_View_ViewInterface {
-
-	/**
-	 * Checks whether a template can be resolved for the current request context.
-	 *
-	 * @return boolean
-	 * @api
-	 */
-	public function hasTemplate();
-
+class Tx_Fluid_Core_Widget_Exception_RenderingContextNotFoundException extends Tx_Fluid_Core_Widget_Exception {
 }
 ?>

@@ -34,16 +34,10 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
-
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
-	protected $persistenceManager;
-
-	/**
-	 * @var Tx_Extbase_Persistence_QueryFactory
-	 */
-	protected $queryFactory;
+	protected $objectManager;
 
 	/**
 	 * @var array Names of the arguments contained by this object
@@ -51,23 +45,20 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	protected $argumentNames = array();
 
 	/**
-	 * Injects the persistence manager
-	 *
-	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
-	 * @return void
+	 * Constructor. If this one is removed, reflection breaks.
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
+	public function __construct() {
+		parent::__construct();
 	}
 
 	/**
-	 * Injects a QueryFactory instance
+	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
-		$this->queryFactory = $queryFactory;
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
 	}
 
 	/**
@@ -151,25 +142,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return Tx_Extbase_MVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
-		$argument = $this->createArgument($name, $dataType);
+		$argument = $this->objectManager->create('Tx_Extbase_MVC_Controller_Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
 		$this->addArgument($argument);
-		return $argument;
-	}
-
-	/**
-	 * Creates a new argument. This is a replacement for $this->objectFactory->create() of FLOW3.
-	 *
-	 * @param string $name Name of the argument
-	 * @param string $dataType Name of one of the built-in data types
-	 * @return Tx_Extbase_MVC_Controller_Argument The created argument
-	 */
-	protected function createArgument($name, $dataType) {
-		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
-		$argument->injectPersistenceManager($this->persistenceManager);
-		$argument->injectQueryFactory($this->queryFactory);
-		$argument->initializeObject();
 		return $argument;
 	}
 

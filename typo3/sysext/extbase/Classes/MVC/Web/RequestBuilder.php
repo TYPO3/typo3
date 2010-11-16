@@ -34,7 +34,12 @@
  *
  * @scope prototype
  */
-class Tx_Extbase_MVC_Web_RequestBuilder {
+class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
+
+	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
 
 	/**
 	 * This is a unique key for a plugin (not the extension key!)
@@ -48,56 +53,73 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 *
 	 * @var string
 	 */
-	protected $extensionName = 'Extbase';
+	protected $extensionName;
 
 	/**
 	 * The default controller name
 	 *
 	 * @var string
 	 */
-	protected $defaultControllerName = 'Standard';
+	protected $defaultControllerName;
 
 	/**
 	 * The default action of the default controller
 	 *
 	 * @var string
 	 */
-	protected $defaultActionName = 'index';
+	protected $defaultActionName;
 
 	/**
 	 * The allowed actions of the controller. This actions can be called via $_GET and $_POST.
 	 *
 	 * @var array
 	 */
-	protected $allowedControllerActions;
+	protected $allowedControllerActions = array();
 
-	public function initialize($configuration) {
-		if (!empty($configuration['pluginName'])) {
-			$this->pluginName = $configuration['pluginName'];
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function loadDefaultValues() {
+		$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (empty($configuration['extensionName'])) {
+			throw new Tx_Extbase_MVC_Exception('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
 		}
-		if (!empty($configuration['extensionName'])) {
-			$this->extensionName = $configuration['extensionName'];
+		if (empty($configuration['pluginName'])) {
+			throw new Tx_Extbase_MVC_Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
-		if (!empty($configuration['controller'])) {
-			$this->defaultControllerName = $configuration['controller'];
-		} elseif (is_array($configuration['switchableControllerActions'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions']);
-			$this->defaultControllerName = $firstControllerActions['controller'];
-		}
-		if (!empty($configuration['action'])) {
-			$this->defaultActionName = $configuration['action'];
-		} elseif (is_array($configuration['switchableControllerActions'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions']);
-			$this->defaultActionName = array_shift(t3lib_div::trimExplode(',', $firstControllerActions['actions'], TRUE));
-		}
+		$this->extensionName = $configuration['extensionName'];
+		$this->pluginName = $configuration['pluginName'];
+
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$controllerConfiguration = $frameworkConfiguration['controllerConfiguration'];
+		$this->defaultControllerName = current(array_keys($controllerConfiguration));
+		$this->defaultActionName = current($controllerConfiguration[$this->defaultControllerName]['actions']);
+
 		$allowedControllerActions = array();
-		if (is_array($configuration['switchableControllerActions'])) {
-			foreach ($configuration['switchableControllerActions'] as $controller => $controllerConfiguration) {
-				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions'], TRUE);
-				foreach ($controllerActions as $actionName) {
-					$allowedControllerActions[$controller][] = $actionName;
-				}
-			}
+		foreach ($controllerConfiguration as $controllerName => $controllerActions) {
+			$allowedControllerActions[$controllerName] = $controllerActions['actions'];
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
 	}
@@ -108,22 +130,23 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
-		$parameters = t3lib_div::_GPmerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
+		$this->loadDefaultValues();
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($this->extensionName, $this->pluginName);
+		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
-			$allowedActions = $this->allowedControllerActions[$controllerName];
-			if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
-				$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-			} else {
-				$actionName = $this->defaultActionName;
-			}
 		} else {
 			$controllerName = $this->defaultControllerName;
+		}
+		$allowedActions = $this->allowedControllerActions[$controllerName];
+		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
+			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
+		} else {
 			$actionName = $this->defaultActionName;
-		}				
-		
-		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
+		}
+
+		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
@@ -135,7 +158,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		if (is_string($parameters['format']) && (strlen($parameters['format']))) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		}
-		
+
 		foreach ($parameters as $argumentName => $argumentValue) {
 			$request->setArgument($argumentName, $argumentValue);
 		}

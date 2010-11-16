@@ -46,7 +46,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	protected $session;
 
 	/**
-	 * @var Tx_Extbase_Object_ManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -81,10 +81,10 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -114,15 +114,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 */
 	public function registerRepositoryClassName($className) {
 		$this->repositoryClassNames[] = $className;
-	}
-
-	/**
-	 * Returns all repository class names
-	 *
-	 * @return array An array holding the registered repository class names
-	 */
-	public function getRepositoryClassNames() {
-		return $this->repositoryClassNames;
 	}
 
 	/**
@@ -159,9 +150,8 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 		$removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 
 			// fetch and inspect objects from all known repositories
-		$repositoryClassNames = $this->getRepositoryClassNames();
-		foreach ($repositoryClassNames as $repositoryClassName) {
-			$repository = $this->objectManager->getObject($repositoryClassName);
+		foreach ($this->repositoryClassNames as $repositoryClassName) {
+			$repository = $this->objectManager->get($repositoryClassName);
 			$aggregateRootObjects->addAll($repository->getAddedObjects());
 			$removedObjects->addAll($repository->getRemovedObjects());
 		}

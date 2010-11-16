@@ -31,8 +31,8 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 	 * @test
 	 */
 	public function argumentsObjectIsOfScopePrototype() {
-		$arguments1 = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Arguments');
-		$arguments2 = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Arguments');
+		$arguments1 = $this->objectManager->get('Tx_Extbase_MVC_Controller_Arguments');
+		$arguments2 = $this->objectManager->get('Tx_Extbase_MVC_Controller_Arguments');
 		$this->assertNotSame($arguments1, $arguments2, 'The arguments object is not of scope prototype!');
 	}
 
@@ -40,8 +40,8 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 	 * @test
 	 */
 	public function addingAnArgumentManuallyWorks() {
-		$arguments = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Arguments');
-		$newArgument = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Argument', 'argumentName1234', 'dummyValue');
+		$arguments = $this->objectManager->get('Tx_Extbase_MVC_Controller_Arguments');
+		$newArgument = $this->objectManager->get('Tx_Extbase_MVC_Controller_Argument', 'argumentName1234', 'dummyValue');
 
 		$arguments->addArgument($newArgument);
 		$this->assertSame($newArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
@@ -105,7 +105,7 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 	 * @test
 	 */
 	public function getArgumentWithNonExistingArgumentNameThrowsException() {
-		$arguments = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Arguments');
+		$arguments = $this->objectManager->get('Tx_Extbase_MVC_Controller_Arguments');
 		try {
 			$arguments->getArgument('someArgument');
 			$this->fail('getArgument() did not throw an exception although the specified argument does not exist.');
@@ -227,7 +227,7 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function callingInvalidMethodThrowsException() {
-		$arguments = $this->objectManager->getObject('Tx_Extbase_MVC_Controller_Arguments');
+		$arguments = $this->objectManager->get('Tx_Extbase_MVC_Controller_Arguments');
 		$arguments->nonExistingMethod();
 	}
 

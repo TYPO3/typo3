@@ -42,7 +42,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * @return void
 	 * @api
 	 */
-	public static function convertTypoScriptArrayToPlainArray(array $settings) {
+	static public function convertTypoScriptArrayToPlainArray(array $settings) {
 		foreach ($settings as $key => &$value) {
 			if(substr($key, -1) === '.') {
 				$keyWithoutDot = substr($key, 0, -1);
@@ -74,7 +74,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * @return array array with Typoscript as usual (with dot)
 	 * @api
 	 */
-	public static function convertPlainArrayToTypoScriptArray($plainArray) {
+	static public function convertPlainArrayToTypoScriptArray($plainArray) {
 		$typoScriptArray = array();
 		if (is_array($plainArray)) {
 			foreach ($plainArray as $key => $value) {

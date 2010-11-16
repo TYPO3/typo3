@@ -29,7 +29,7 @@
  * @subpackage Configuration
  * @version $ID:$
  */
-abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
+abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements t3lib_Singleton {
 
 	/**
 	 * Default backend storage PID
@@ -37,25 +37,77 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 	const DEFAULT_BACKEND_STORAGE_PID = 0;
 
 	/**
-	 * The TypoScript parser
-	 *
-	 * @var t3lib_TSparser
+	 * Storage of the raw TypoScript configuration
+	 * @var array
 	 */
-	protected $typoScriptParser;
+	protected $configuration = array();
 
 	/**
-	 * Storage for the settings, loaded by loadSettings()
+	 * @var tslib_cObj
+	 */
+	protected $contentObject;
+
+	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * name of the extension this Configuration Manager instance belongs to
+	 * @var string
+	 */
+	protected $extensionName;
+
+	/**
+	 * name of the plugin this Configuration Manager instance belongs to
+	 * @var string
+	 */
+	protected $pluginName;
+
+	/**
+	 * 1st level configuration cache
 	 *
 	 * @var array
 	 */
-	protected $settings;
+	protected $configurationCache = array();
 
 	/**
-	 * Constructs the configuration manager
-	 *
+	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @return void
 	 */
-	public function __construct() {
-		$this->typoScriptParser = t3lib_div::makeInstance('t3lib_TSparser');
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param tslib_cObj $contentObject
+	 * @return void
+	 */
+	public function setContentObject(tslib_cObj $contentObject = NULL) {
+		$this->contentObject = $contentObject;
+	}
+
+	/**
+	 * @return tslib_cObj
+	 */
+	public function getContentObject() {
+		return $this->contentObject;
+	}
+
+	/**
+	 * Sets the specified raw configuration coming from the outside.
+	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
+	 *
+	 * @param array $configuration The new configuration
+	 * @return void
+	 */
+	public function setConfiguration(array $configuration = array()) {
+		// reset 1st level cache
+		$this->configurationCache = array();
+
+		$this->extensionName = $configuration['extensionName'];
+		$this->pluginName = $configuration['pluginName'];
+		$this->configuration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($configuration);
 	}
 
 	/**
@@ -64,37 +116,103 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 	 * The Extbase framework configuration HAS TO be retrieved using this method, as they are come from different places than the normal settings.
 	 * Framework configuration is, in contrast to normal settings, needed for the Extbase framework to operate correctly.
 	 *
-	 * @param array $pluginConfiguration The current incoming extbase configuration
+	 * @param string $extensionName if specified, the configuration for the given extension will be returned (plugin.tx_extensionname)
+	 * @param string $pluginName if specified, the configuration for the given plugin will be returned (plugin.tx_extensionname_pluginname)
 	 * @return array the Extbase framework configuration
 	 */
-	public function getFrameworkConfiguration($pluginConfiguration) {
-		$frameworkConfiguration = array();
-		$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
-
-		$setup = $this->loadTypoScriptSetup();
-		$extbaseConfiguration = $setup['config.']['tx_extbase.'];
-		if (is_array($extbaseConfiguration)) {
-			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
-			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
+	public function getConfiguration($extensionName = NULL, $pluginName = NULL) {
+		// 1st level cache
+		if ($extensionName !== NULL) {
+			if ($pluginName === NULL) {
+				throw new Tx_Extbase_Configuration_Exception('You\'ll have to specify either both, extensionName and pluginName, or neither.', 1289852422);
+			}
+			$configurationCacheKey = strtolower($extensionName . '_' . $pluginName);
+		} else {
+			$configurationCacheKey = strtolower($this->extensionName . '_' . $this->pluginName);
+		}
+		if (isset($this->configurationCache[$configurationCacheKey])) {
+			return $this->configurationCache[$configurationCacheKey];
 		}
 
-		if (isset($pluginConfiguration['settings'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'settings');
+		$frameworkConfiguration = $this->getExtbaseConfiguration();
+		if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
+			$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
 		}
-		if (!is_array($pluginConfiguration['settings.'])) $pluginConfiguration['settings.'] = array(); // We expect that the settings are arrays on various places
-		if (isset($pluginConfiguration['persistence'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
-		}
-		if (isset($pluginConfiguration['view'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'view');
-		}
-		if (isset($pluginConfiguration['_LOCAL_LANG'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, '_LOCAL_LANG');
-		}
-		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
-		$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
+		if ($extensionName !== NULL) {
+			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
+			$pluginConfiguration['controllerConfiguration'] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'];
+		} else {
+			$pluginConfiguration = $this->getPluginConfiguration($this->extensionName, $this->pluginName);
+			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
+			$pluginConfiguration['controllerConfiguration'] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->extensionName][$this->pluginName]['controllers'];
+			if (isset($this->configuration['switchableControllerActions'])) {
+				$this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
+			}
+		}
+		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $pluginConfiguration);
+
+		// only load context specific configuration when retrieving configuration of the current plugin
+		if ($extensionName === NULL || ($extensionName === $this->extensionName && $pluginName === $this->pluginName)) {
+			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
+		}
+
+		// 1st level cache
+		$this->configurationCache[$configurationCacheKey] = $frameworkConfiguration;
 		return $frameworkConfiguration;
+	}
+
+	/**
+	 * Returns the TypoScript configuration found in config.tx_extbase
+	 *
+	 * @return array
+	 */
+	protected function getExtbaseConfiguration() {
+		$setup = $this->getTypoScriptSetup();
+		$extbaseConfiguration = array();
+		if (isset($setup['config.']['tx_extbase.'])) {
+			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
+		}
+		return $extbaseConfiguration;
+	}
+
+	/**
+	 * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin
+	 * merged with the global configuration of your extension from plugin.tx_yourextension
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName
+	 * @return array
+	 */
+	protected function getPluginConfiguration($extensionName, $pluginName) {
+		$setup = $this->getTypoScriptSetup();
+		$pluginConfiguration = array();
+		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
+			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
+		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
+			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+		}
+		return $pluginConfiguration;
+	}
+
+	/**
+	 * @param array $frameworkConfiguration
+	 * @param array $overriddenSwitchableControllerActions in the format array('Controller1' => array('action1', 'action2'), 'Controller2' => ...)
+	 * @return void
+	 */
+	protected function overrideSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions) {
+		$overriddenSwitchableControllerActions = array();
+		foreach ($switchableControllerActions as $controllerName => $actions) {
+			$overriddenSwitchableControllerActions[$controllerName] = array('actions' => $actions);
+			$nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
+			$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
+			if (!empty($overriddenNonCacheableActions)) {
+				$overriddenSwitchableControllerActions[$controllerName]['nonCacheableActions'] = $overriddenNonCacheableActions;
+			}
+		}
+		$frameworkConfiguration['controllerConfiguration'] = $overriddenSwitchableControllerActions;
 	}
 
 	/**
@@ -108,34 +226,13 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 	 * @param array $frameworkConfiguration The framework configuration until now
 	 * @return array context specific configuration which will override the configuration obtained by TypoScript
 	 */
-	abstract protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration);
+	abstract protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration);
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
 	 * @return array the TypoScript setup
 	 */
-	abstract public function loadTypoScriptSetup();
-
-	/**
-	 * Resolves the TypoScript reference for $pluginConfiguration[$setting].
-	 * In case the setting is a string and starts with "<", we know that this is a TypoScript reference which
-	 * needs to be resolved separately.
-	 *
-	 * @param array $pluginConfiguration The whole plugin configuration
-	 * @param string $setting The key inside the $pluginConfiguration to check
-	 * @return array The modified plugin configuration
-	 */
-	protected function resolveTyposcriptReference($pluginConfiguration, $setting) {
-		if (is_string($pluginConfiguration[$setting]) && substr($pluginConfiguration[$setting], 0, 1) === '<') {
-			$key = trim(substr($pluginConfiguration[$setting], 1));
-			$setup = $this->loadTypoScriptSetup();
-			list(, $newValue) = $this->typoScriptParser->getVal($key, $setup);
-
-			unset($pluginConfiguration[$setting]);
-			$pluginConfiguration[$setting . '.'] = $newValue;
-		}
-		return $pluginConfiguration;
-	}
+	abstract protected function getTypoScriptSetup();
 }
 ?>

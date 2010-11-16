@@ -43,7 +43,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 *
 	 * @var string
 	 */
-	protected $controllerObjectNamePattern = 'Tx_@extension_Controller_@controllerController';
+	protected $controllerObjectNamePattern = 'Tx_@extension_@subpackage_Controller_@controllerController';
 
 	/**
 	 * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
@@ -54,6 +54,13 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
 	protected $controllerExtensionName = NULL;
+
+	/**
+	 * Subpackage key of the controller which is supposed to handle this request.
+	 *
+	 * @var string
+	 */
+	protected $controllerSubpackageKey = NULL;
 
 	/**
 	 * @var string Object name of the controller which is supposed to handle this request.
@@ -120,12 +127,40 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function getControllerObjectName() {
 		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->controllerObjectNamePattern);
+		$lowercaseObjectName = str_replace('@subpackage', $this->controllerSubpackageKey, $lowercaseObjectName);
 		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
+		$lowercaseObjectName = str_replace('__', '_', $lowercaseObjectName);
 		// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
 		if ($objectName === FALSE) throw new Tx_Extbase_MVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
 
 		return $objectName;
+	}
+
+	/**
+	 * Explicitly sets the object name of the controller
+	 *
+	 * @param string $controllerObjectName The fully qualified controller object name
+	 * @return void
+	 */
+	public function setControllerObjectName($controllerObjectName) {
+		$matches = array();
+		preg_match('/
+			^Tx
+			_(?P<extensionName>[^_]+)
+			_
+			(
+				Controller
+			|
+				(?P<subpackageKey>.+)_Controller
+			)
+			_(?P<controllerName>[a-z_]+)Controller
+			$/ix', $controllerObjectName, $matches
+		);
+
+		$this->controllerExtensionName = $matches['extensionName'];
+		$this->controllerSubpackageKey = (isset($matches['subpackageKey'])) ? $matches['subpackageKey'] : NULL;
+		$this->controllerName = $matches['controllerName'];
 	}
 
 	/**
@@ -180,7 +215,27 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getControllerExtensionKey() {
-		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+		return t3lib_div::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+	}
+
+	/**
+	 * Sets the subpackage key of the controller.
+	 *
+	 * @param string $subpackageKey The subpackage key.
+	 * @return void
+	 */
+	public function setControllerSubpackageKey($subpackageKey) {
+		$this->controllerSubpackageKey = $subpackageKey;
+	}
+
+	/**
+	 * Returns the subpackage key of the specified controller.
+	 * If there is no subpackage key set, the method returns NULL
+	 *
+	 * @return string The subpackage key
+	 */
+	public function getControllerSubpackageKey() {
+		return $this->controllerSubpackageKey;
 	}
 
 	/**

@@ -43,7 +43,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	/**
 	 * @var t3lib_cache_frontend_VariableFrontend
 	 */
-	protected $cache;
+	protected $dataCache;
 
 	/**
 	 * Whether class alterations should be detected on each initialization.
@@ -121,7 +121,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @var boolean
 	 */
-	protected $cacheNeedsUpdate = FALSE;
+	protected $dataCacheNeedsUpdate = FALSE;
 
 	/**
 	 * Local cache for Class schemata
@@ -130,25 +130,46 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $classSchemata = array();
 
 	/**
-	 * Sets the cache.
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @var string
+	 */
+	protected $cacheIdentifier;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * Sets the data cache.
 	 *
 	 * The cache must be set before initializing the Reflection Service.
 	 *
-	 * @param t3lib_cache_frontend_VariableFrontend $cache Cache for the Reflection service
+	 * @param t3lib_cache_frontend_VariableFrontend $dataCache Cache for the Reflection service
 	 * @return void
 	 */
-	public function setCache(t3lib_cache_frontend_VariableFrontend $cache) {
-		$this->cache = $cache;
+	public function setDataCache(t3lib_cache_frontend_VariableFrontend $dataCache) {
+		$this->dataCache = $dataCache;
 	}
 
 	/**
 	 * Initializes this service
 	 *
-	 * @param array $classNamesToReflect Names of available classes to consider in this reflection service
 	 * @return void
 	 */
 	public function initialize() {
-		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
+		if ($this->initialized) {
+			throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
+		}
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$this->cacheIdentifier = 'ReflectionData_' . $frameworkConfiguration['extensionName'];
 
 		$this->loadFromCache();
 
@@ -170,9 +191,10 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function shutdown() {
-		if ($this->cacheNeedsUpdate) {
+		if ($this->dataCacheNeedsUpdate) {
 			$this->saveToCache();
 		}
+		$this->initialized = FALSE;
 	}
 
 	/**
@@ -360,7 +382,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		}
 		ksort($this->reflectedClassNames);
 
-		$this->cacheNeedsUpdate = TRUE;
+		$this->dataCacheNeedsUpdate = TRUE;
 	}
 
 	/**
@@ -399,7 +421,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			}
 		}
 		$this->classSchemata[$className] = $classSchema;
-		$this->cacheNeedsUpdate = TRUE;
+		$this->dataCacheNeedsUpdate = TRUE;
 		return $classSchema;
 	}
 
@@ -450,7 +472,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
 			$this->methodReflections[$className][$methodName] = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
-			$this->cacheNeedsUpdate = TRUE;
+			$this->dataCacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
 	}
@@ -461,9 +483,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function loadFromCache() {
-		$cacheKey = $this->getCacheKey();
-		if ($this->cache->has($cacheKey)) {
-			$data = $this->cache->get($cacheKey);
+		if ($this->dataCache->has($this->cacheIdentifier)) {
+			$data = $this->dataCache->get($this->cacheIdentifier);
 			foreach ($data as $propertyName => $propertyValue) {
 				$this->$propertyName = $propertyValue;
 			}
@@ -476,7 +497,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function saveToCache() {
-		if (!is_object($this->cache)) {
+		if (!is_object($this->dataCache)) {
 			throw new Tx_Extbase_Reflection_Exception(
 				'A cache must be injected before initializing the Reflection Service.',
 				1232044697
@@ -497,19 +518,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		foreach ($propertyNames as $propertyName) {
 			$data[$propertyName] = $this->$propertyName;
 		}
-		$this->cache->set($this->getCacheKey(), $data);
+		$this->dataCache->set($this->cacheIdentifier, $data);
 	}
 
-	/**
-	 * Get the name of the cache row identifier. Incorporates the extension name
-	 * and the plugin name so that all information which is needed for a single
-	 * plugin can be found in one cache row.
-	 *
-	 * @return string
-	 */
-	protected function getCacheKey() {
-		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		return $frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName'];
-	}
 }
 ?>

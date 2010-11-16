@@ -113,7 +113,7 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	/**
 	 * Executes the query against the backend and returns the result
 	 *
-	 * @return array<object> The query result as an array of objects
+	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 * @api
 	 */
 	public function execute();
@@ -288,5 +288,30 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 */
 	public function greaterThanOrEqual($propertyName, $operand);
 
+	/**
+	 * Returns the type this query cares for.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getType();
+
+	/**
+	 * Sets the Query Settings. These Query settings must match the settings expected by
+	 * the specific Storage Backend.
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @return void
+	 * @api This method is not part of FLOW3 API
+	 */
+	public function setQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings);
+
+	/**
+	 * Returns the Query Settings.
+	 *
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @api This method is not part of FLOW3 API
+	 */
+	public function getQuerySettings();
 }
 ?>

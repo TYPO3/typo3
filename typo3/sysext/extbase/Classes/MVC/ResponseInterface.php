@@ -29,9 +29,6 @@
  * A generic and very basic response implementation
  *
  * @version $Id: ResponseInterface.php 1729 2009-11-25 21:37:20Z stucki $
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @author Robert Lemke <robert@typo3.org>
- * @scope prototype
  * @api
  */
 interface Tx_Extbase_MVC_ResponseInterface {
@@ -62,12 +59,5 @@ interface Tx_Extbase_MVC_ResponseInterface {
 	 */
 	public function getContent();
 
-	/**
-	 * Sends the response
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function send();
 }
 ?>

@@ -34,24 +34,11 @@
 class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
-	 * @var tslib_cObj
-	 */
-	protected $contentObject;
-
-	/**
-	 * @param tslib_cObj $contentObject
-	 * @return void
-	 */
-	public function setContentObject(tslib_cObj $contentObject) {
-		$this->contentObject = $contentObject;
-	}
-
-	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
-	 * @return array the TypoScript setup
+	 * @return array the raw TypoScript setup
 	 */
-	public function loadTypoScriptSetup() {
+	public function getTypoScriptSetup() {
 		return $GLOBALS['TSFE']->tmpl->setup;
 	}
 
@@ -63,7 +50,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @param array $frameworkConfiguration The framework configuration to modify
 	 * @return array the modified framework configuration
 	 */
-	protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration) {
+	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {
 		$frameworkConfiguration = $this->overrideStoragePidIfStartingPointIsSet($frameworkConfiguration);
 		$frameworkConfiguration = $this->overrideConfigurationFromPlugin($frameworkConfiguration);
 		$frameworkConfiguration = $this->overrideConfigurationFromFlexform($frameworkConfiguration);
@@ -78,7 +65,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @param array $frameworkConfiguration the framework configurations
 	 * @return array the framework configuration with overriden storagePid
 	 */
-	protected function overrideStoragePidIfStartingPointIsSet($frameworkConfiguration) {
+	protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration) {
 		$pages = $this->contentObject->data['pages'];
 		if (is_string($pages) && strlen($pages) > 0) {
 			$list = array();
@@ -107,8 +94,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overridden data from typoscript
 	 */
 	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
-		$setup = $this->loadTypoScriptSetup();
-		$pluginConfiguration =  $setup['plugin.']['tx_' . strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']) . '.'];
+		$setup = $this->getTypoScriptSetup();
+		$pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
+		$pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'];
 		if (is_array($pluginConfiguration)) {
 			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration);
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');
@@ -183,7 +171,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @param string $configurationPartName The name of the configuration part which should be merged.
 	 * @return array the processed framework configuration
 	 */
-	protected function mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $configuration, $configurationPartName) {
+	protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, $configurationPartName) {
 		if (is_array($frameworkConfiguration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
 			$frameworkConfiguration[$configurationPartName] = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
 		}
@@ -194,46 +182,30 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	/**
 	 * Overrides the switchable controller actions from the flexform.
 	 *
-	 * @param $frameworkConfiguration The original framework configuration
-	 * @param $flexformConfiguration The full flexform configuration
+	 * @param array $frameworkConfiguration The original framework configuration
+	 * @param array $flexformConfiguration The full flexform configuration
 	 * @return array the modified framework configuration, if needed
 	 * @todo: Check that the controller has been before inside the switchableControllerActions.
 	 */
-	protected function overrideSwitchableControllerActionsFromFlexform($frameworkConfiguration, $flexformConfiguration) {
-		if (isset($flexformConfiguration['switchableControllerActions']) && !is_array($flexformConfiguration['switchableControllerActions'])) {
+	protected function overrideSwitchableControllerActionsFromFlexform(array $frameworkConfiguration, array $flexformConfiguration) {
+		if (!isset($flexformConfiguration['switchableControllerActions']) || is_array($flexformConfiguration['switchableControllerActions'])) {
+			return $frameworkConfiguration;
+		}
 
-			// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
-			$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']));
+		// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+		$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']), TRUE);
 
-			$newSwitchableControllerActionsFromFlexform = array();
-			foreach ($switchableControllerActionPartsFromFlexform as $switchableControllerActionPartFromFlexform) {
-				list($controller, $action) = explode('->', $switchableControllerActionPartFromFlexform);
-				if (empty($controller) || empty($action)) {
-					throw new Tx_Extbase_Configuration_Exception_ParseError('Controller or action were empty when overriding switchableControllerActions from flexform.', 1257146403);
-				}
-
-				$newSwitchableControllerActionsFromFlexform[$controller][] = $action;
+		$newSwitchableControllerActionsFromFlexform = array();
+		foreach ($switchableControllerActionPartsFromFlexform as $switchableControllerActionPartFromFlexform) {
+			list($controller, $action) = explode('->', $switchableControllerActionPartFromFlexform);
+			if (empty($controller) || empty($action)) {
+				throw new Tx_Extbase_Configuration_Exception_ParseError('Controller or action were empty when overriding switchableControllerActions from flexform.', 1257146403);
 			}
+			$newSwitchableControllerActionsFromFlexform[$controller][] = $action;
+		}
 
-			if (count($newSwitchableControllerActionsFromFlexform)) {
-				$overriddenSwitchableControllerActions = array();
-				foreach ($newSwitchableControllerActionsFromFlexform as $controller => $actions) {
-					$overriddenSwitchableControllerActions[$controller] = array(
-						'controller' => $controller,
-						'actions' => implode(',', $actions)
-					);
-					$nonCacheableActions = t3lib_div::trimExplode(',', $frameworkConfiguration['switchableControllerActions'][$controller]['nonCacheableActions']);
-					$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
-					if (!empty($overriddenNonCacheableActions)) {
-						$overriddenSwitchableControllerActions[$controller]['nonCacheableActions'] = implode(',', $overriddenNonCacheableActions);
-					}
-				}
-				$frameworkConfiguration['switchableControllerActions'] = $overriddenSwitchableControllerActions;
-
-				// We want the first controller/action be the default.
-				unset($frameworkConfiguration['controller']);
-				unset($frameworkConfiguration['action']);
-			}
+		if (count($newSwitchableControllerActionsFromFlexform)) {
+			$this->overrideSwitchableControllerActions($frameworkConfiguration, $newSwitchableControllerActionsFromFlexform);
 		}
 		return $frameworkConfiguration;
 	}

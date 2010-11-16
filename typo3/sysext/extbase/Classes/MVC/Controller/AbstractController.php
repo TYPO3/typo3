@@ -34,9 +34,8 @@
  * @api
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
-
 	/**
-	 * @var Tx_Extbase_Object_ManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -105,6 +104,12 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @api
+	 */
+	protected $controllerContext;
+
+	/**
 	 * The flash messages. DEPRECATED. Use $this->flashMessageContainer instead.
 	 *
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
@@ -121,23 +126,24 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $flashMessageContainer;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
 	 * Constructs the controller.
 	 */
 	public function __construct() {
-		$this->initializeObjects();
 		list(, $this->extensionName) = explode('_', get_class($this));
 	}
 
 	/**
-	 * Initializes objects this class depends on
-	 *
+	 * @param Tx_Extbase_Configuration_ConfigurationManager $configurationManager
 	 * @return void
 	 */
-	protected function initializeObjects() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
-		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
-		$this->arguments->injectPersistenceManager(Tx_Extbase_Dispatcher::getPersistenceManager());
-		$this->arguments->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	/**
@@ -151,23 +157,14 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	}
 
 	/**
-	 * Injects the settings of the extension.
-	 *
-	 * @param array $settings Settings container of the current extension
-	 * @return void
-	 */
-	public function injectSettings(array $settings) {
-		$this->settings = $settings;
-	}
-
-	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+		$this->arguments = $this->objectManager->create('Tx_Extbase_MVC_Controller_Arguments');
 	}
 
 	/**
@@ -202,7 +199,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
+	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
 		foreach ($this->supportedRequestTypes as $supportedRequestType) {
 			if ($request instanceof $supportedRequestType) return TRUE;
 		}
@@ -218,18 +215,19 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
 
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$this->uriBuilder->setRequest($request);
 
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
+		$this->controllerContext = $this->buildControllerContext();
 	}
 
 	/**
@@ -239,7 +237,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @api
 	 */
 	protected function buildControllerContext() {
-		$controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
+		$controllerContext = $this->objectManager->create('Tx_Extbase_MVC_Controller_ControllerContext');
 		$controllerContext->setRequest($this->request);
 		$controllerContext->setResponse($this->response);
 		if ($this->arguments !== NULL) {
@@ -388,7 +386,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			if ($this->arguments[$propertyName]->isRequired() === FALSE) $optionalPropertyNames[] = $propertyName;
 		}
 
-		$validator = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ArgumentsValidator');
+		$validator = $this->objectManager->create('Tx_Extbase_MVC_Controller_ArgumentsValidator');
 		$this->propertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
 
 		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();

@@ -29,7 +29,7 @@
  * @subpackage Configuration
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager implements t3lib_Singleton {
+class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
 	 * @var array
@@ -39,9 +39,9 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
-	 * @return array the TypoScript setup
+	 * @return array the raw TypoScript setup
 	 */
-	public function loadTypoScriptSetup() {
+	public function getTypoScriptSetup() {
 		if ($this->typoScriptSetupCache === NULL) {
 			$template = t3lib_div::makeInstance('t3lib_TStemplate');
 				// do not log time-performance information
@@ -91,7 +91,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 * We do not want to override anything in the backend.
 	 * @return array
 	 */
-	protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration) {
+	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {
 		return $frameworkConfiguration;
 	}
 }

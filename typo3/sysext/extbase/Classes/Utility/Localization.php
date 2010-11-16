@@ -78,7 +78,7 @@ class Tx_Extbase_Utility_Localization {
 	 * @api
 	 * @todo: If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
-	public function translate($key, $extensionName, $arguments = NULL) {
+	static public function translate($key, $extensionName, $arguments = NULL) {
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
 			$value = self::translateFileReference($key);
 		} else {
@@ -134,7 +134,7 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected static function initializeLocalization($extensionName) {
+	static protected function initializeLocalization($extensionName) {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
@@ -184,11 +184,13 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function loadTypoScriptLabels($extensionName) {
-		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		if (!is_array($extbaseFrameworkConfiguration['_LOCAL_LANG'])) {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
 			return;
 		}
-		foreach ($extbaseFrameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
+		foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
 			if (!is_array($labels)) {
 				continue;
 			}

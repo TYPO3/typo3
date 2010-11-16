@@ -34,7 +34,7 @@
  * @scope prototype
  * @api
  */
-class Tx_Extbase_MVC_Response {
+class Tx_Extbase_MVC_Response implements Tx_Extbase_MVC_ResponseInterface {
 
 	/**
 	 * @var string The response content
@@ -71,6 +71,16 @@ class Tx_Extbase_MVC_Response {
 	 */
 	public function getContent() {
 		return $this->content;
+	}
+
+	/**
+	 * Returns the content of the response.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function __toString() {
+		return $this->getContent();
 	}
 
 }

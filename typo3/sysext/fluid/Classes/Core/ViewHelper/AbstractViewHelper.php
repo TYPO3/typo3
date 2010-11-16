@@ -27,7 +27,7 @@
  * @api
  * @scope prototype
  */
-abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_ViewHelperInterface {
+abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * TRUE if arguments have already been initialized
@@ -217,6 +217,35 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 */
 	public function setViewHelperNode(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node) {
 		$this->viewHelperNode = $node;
+	}
+
+	/**
+	 * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
+	 *
+	 * @param array $renderMethodParameters the parameters of the render() method.
+	 * @return string the rendered ViewHelper.
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function initializeArgumentsAndRender(array $renderMethodParameters) {
+		$this->validateArguments();
+		$this->initialize();
+		return $this->callRenderMethod($renderMethodParameters);
+	}
+
+	/**
+	 * Call the render() method and handle errors.
+	 *
+	 * @param array $renderMethodParameters the parameters of the render() method.
+	 * @return string the rendered ViewHelper
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function callRenderMethod(array $renderMethodParameters) {
+		try {
+			return call_user_func_array(array($this, 'render'), $renderMethodParameters);
+		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
+				// @todo [BW] rethrow exception, log, ignore.. depending on the current context
+			return $exception->getMessage();
+		}
 	}
 
 	/**

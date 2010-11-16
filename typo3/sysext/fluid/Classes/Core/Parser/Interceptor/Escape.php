@@ -42,13 +42,16 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	protected $viewHelperNodesWhichDisableTheInterceptor = array();
 
 	/**
-	 * Inject object factory
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 

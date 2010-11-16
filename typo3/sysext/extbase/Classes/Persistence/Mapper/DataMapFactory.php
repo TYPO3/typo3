@@ -29,12 +29,17 @@
  * @subpackage Persistence\Mapper
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Mapper_DataMapFactory {
+class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
 	protected $reflectionService;
+
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
 
 	/**
 	 * Injects the reflection service
@@ -44,6 +49,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
 	}
 
 	/**
@@ -64,8 +77,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$tableName = strtolower($className);
 		$columnMapping = array();
 
-		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		$classSettings = $extbaseFrameworkConfiguration['persistence']['classes'][$className];
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$classSettings = $frameworkConfiguration['persistence']['classes'][$className];
 		if ($classSettings !== NULL) {
 			if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
 				$subclasses = $classSettings['subclasses'];
@@ -81,8 +94,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 				if (in_array($currentClassName, array('Tx_Extbase_DomainObject_AbstractEntity', 'Tx_Extbase_DomainObject_AbstractValueObject'))) {
 					break;
 				}
-				$currentTableName = strtolower($currentClassName);
-				$currentClassSettings = $extbaseFrameworkConfiguration['persistence']['classes'][$currentClassName];
+				$currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];
 				if ($currentClassSettings !== NULL) {
 					if (isset($currentClassSettings['mapping']['columns']) && is_array($currentClassSettings['mapping']['columns'])) {
 						$columnMapping = t3lib_div::array_merge_recursive_overrule($columnMapping, $currentClassSettings['mapping']['columns'], 0, FALSE); // FALSE means: do not include empty values form 2nd array
@@ -91,7 +103,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			}
 		}
 
-		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
@@ -101,7 +113,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			if (isset($columnDefinition['mapOnProperty'])) {
 				$propertyName = $columnDefinition['mapOnProperty'];
 			} else {
-				$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
+				$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
 			}
 			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);

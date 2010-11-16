@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3.
+*  This class is a backport of the corresponding class of FLOW3. 
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,27 +26,13 @@
 ***************************************************************/
 
 /**
- * Interface for the TYPO3 Object Manager
+ * "Unknown Object" Exception
  *
  * @package Extbase
- * @subpackage Object
- * @version $Id: ManagerInterface.php 1729 2009-11-25 21:37:20Z stucki $
+ * @subpackage Object\Exception
+ * @version $Id: UnknownObjectException.php 2703 2010-11-10 11:28:01Z sebastian $
  */
-interface Tx_Extbase_Object_ManagerInterface {
-
-	/**
-	 * Returns a fresh or existing instance of the object specified by $objectName.
-	 *
-	 * Important:
-	 *
-	 * If possible, instances of Prototype objects should always be created with the
-	 * Object Factory's create() method and Singleton objects should rather be
-	 * injected by some type of Dependency Injection.
-	 *
-	 * @param string $objectName The name of the object to return an instance of
-	 * @return object The object instance
-	 */
-	public function getObject($objectName);
+class Tx_Extbase_Object_Container_Exception_UnknownObjectException extends Tx_Extbase_Object_Exception {
 
 }
 

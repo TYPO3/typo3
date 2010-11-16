@@ -70,7 +70,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_E
 	 * @return void
 	 */
 	protected function addError($message, $code) {
-		$this->errors[] = t3lib_div::makeInstance('Tx_Extbase_Validation_Error', $message, $code);
+		$this->errors[] = new Tx_Extbase_Validation_Error($message, $code);
 	}
 }
 

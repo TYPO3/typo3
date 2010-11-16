@@ -1,4 +1,15 @@
 config.tx_extbase {
+	objects {
+		Tx_Extbase_Persistence_Storage_BackendInterface {
+			className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+		}
+	}
+	mvc {
+		requestHandlers {
+			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
+			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
+		}
+	}
 	persistence{
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0

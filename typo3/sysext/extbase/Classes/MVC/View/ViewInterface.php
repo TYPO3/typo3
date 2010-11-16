@@ -64,6 +64,15 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	public function assignMultiple(array $values);
 
 	/**
+	 * Tells if the view implementation can render the view for the given context.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
+	 * @api
+	 */
+	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
+
+	/**
 	 * Renders the view
 	 *
 	 * @return string The rendered view

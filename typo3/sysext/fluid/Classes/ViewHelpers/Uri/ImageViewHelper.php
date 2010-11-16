@@ -17,7 +17,7 @@
  * renders a image according to the given dimensions
  *
  * @return relative path to the image (typo3temp/...)
- * 
+ *
  */
 class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
@@ -26,18 +26,18 @@ class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	protected $contentObject;
 
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
 
 	/**
-	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
-	 *
-	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function __construct($contentObject = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
-		if (TYPO3_MODE === 'BE') {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('uri.image ViewHelper does not (yet) work in backend mode' , 1277367648);
-		}
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->contentObject = $this->configurationManager->getContentObject();
 	}
 
 	/**
@@ -56,6 +56,9 @@ class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @author Christian Baer <chr.baer@googlemail.com>
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
+		if (TYPO3_MODE === 'BE') {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('uri.image ViewHelper does not (yet) work in backend mode' , 1277367648);
+		}
 		$setup = array(
 			'width' => $width,
 			'height' => $height,

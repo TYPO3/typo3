@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @see \F3\TYPO3CR\FLOW3\Persistence\DataMapper, \F3\TYPO3CR\FLOW3\Persistence\Backend
  */
-class Tx_Extbase_Persistence_IdentityMap {
+class Tx_Extbase_Persistence_IdentityMap implements t3lib_Singleton {
 
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage

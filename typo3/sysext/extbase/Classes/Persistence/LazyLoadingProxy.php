@@ -36,6 +36,11 @@
 class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
+	 * @var Tx_Extbase_Persistence_DataMapper
+	 */
+	protected $dataMapper;
+
+	/**
 	 * The object this property is contained in.
 	 *
 	 * @var object
@@ -70,6 +75,16 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	}
 
 	/**
+	 * Injects the DataMapper to map nodes to objects
+	 *
+	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
+	 * @return void
+	 */
+	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
 	 * Populate this proxy by asking the $population closure.
 	 *
 	 * @return object The instance (hopefully) returned
@@ -79,9 +94,9 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		// usually that does not happen, but if the proxy is held from outside
 		// it's parent... the result would be weird.
 		if ($this->parentObject->_getProperty($this->propertyName) instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE, FALSE);
-			$propertyValue = $dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
+			
+			$objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE, FALSE);
+			$propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
 			$this->parentObject->_setProperty($this->propertyName, $propertyValue);
 			$this->parentObject->_memorizeCleanState($this->propertyName);
 			return $propertyValue;
@@ -99,6 +114,9 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	 */
 	public function __call($methodName, $arguments) {
 		$realInstance = $this->_loadRealInstance();
+		if (!is_object($realInstance)) {
+			return NULL;
+		}
 		return call_user_func_array(array($realInstance, $methodName), $arguments);
 	}
 

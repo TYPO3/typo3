@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+*  (c) 2010 Bastian Waidelich <bastian@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,7 +25,74 @@
 
 class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 
+	/**
+	 * @var Tx_Extbase_Persistence_Query
+	 */
+	protected $query;
+
+	/**
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 */
+	protected $querySettings;
+
+	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * @var Tx_Extbase_Persistence_BackendInterface
+	 */
+	protected $backend;
+
+	/**
+	 * @var Tx_Extbase_Persistence_DataMapper
+	 */
+	protected $dataMapper;
+
+	/**
+	 * Sets up this test case
+	 * @return void
+	 */
 	public function setUp() {
+		$this->objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->query = new Tx_Extbase_Persistence_Query('someType');
+		$this->query->injectObjectManager($this->objectManager);
+		$this->querySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
+		$this->query->setQuerySettings($this->querySettings);
+		$this->persistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$this->backend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
+		$this->backend->expects($this->any())->method('getQomFactory')->will($this->returnValue(NULL));
+		$this->persistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($this->backend));
+		$this->query->injectPersistenceManager($this->persistenceManager);
+		$this->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper');
+		$this->query->injectDataMapper($this->dataMapper);
+	}
+
+	/**
+	 * @test
+	 */
+	public function executeReturnsQueryResultInstanceAndInjectsItself() {
+		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array(), array(), '', FALSE);
+		$this->objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
+		$actualResult = $this->query->execute();
+		$this->assertSame($queryResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function executeReturnsRawObjectDataIfRawQueryResultSettingIsTrue() {
+		$this->querySettings->expects($this->once())->method('getReturnRawQueryResult')->will($this->returnValue(TRUE));
+		$this->persistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->query)->will($this->returnValue('rawQueryResult'));
+		$expectedResult = 'rawQueryResult';
+		$actualResult = $this->query->execute();
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 	/**
@@ -32,8 +100,7 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setLimitAcceptsOnlyIntegers() {
-		$query = new Tx_Extbase_Persistence_Query('Foo_Class_Name');
-		$query->setLimit(1.5);
+		$this->query->setLimit(1.5);
 	}
 
 	/**
@@ -41,8 +108,7 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setLimitRejectsIntegersLessThanOne() {
-		$query = new Tx_Extbase_Persistence_Query('Foo_Class_Name');
-		$query->setLimit(0);
+		$this->query->setLimit(0);
 	}
 
 	/**
@@ -50,8 +116,7 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setOffsetAcceptsOnlyIntegers() {
-		$query = new Tx_Extbase_Persistence_Query('Foo_Class_Name');
-		$query->setOffset(1.5);
+		$this->query->setOffset(1.5);
 	}
 
 	/**
@@ -59,8 +124,7 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setOffsetRejectsIntegersLessThanZero() {
-		$query = new Tx_Extbase_Persistence_Query('Foo_Class_Name');
-		$query->setOffset(-1);
+		$this->query->setOffset(-1);
 	}
 
 }

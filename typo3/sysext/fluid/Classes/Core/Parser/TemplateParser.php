@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_TemplateParser {
+class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 
 	public static $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\s*([a-zA-Z]+[a-zA-Z0-9]*)\s*=\s*((?:F3|Tx)(?:FLUID_NAMESPACE_SEPARATOR\w+)+)\s*}/m';
 
@@ -268,7 +268,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	);
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -288,13 +288,11 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	}
 
 	/**
-	 * Inject object factory
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -403,6 +401,8 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$rootNode = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
+
+		$state->setVariableContainer($this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'));
 
 		foreach ($splitTemplate as $templateElement) {
 			$matchedVariables = array();
@@ -612,7 +612,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 			// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
-			
+
 			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
 			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR);
 
@@ -840,7 +840,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	protected function textHandler(Tx_Fluid_Core_Parser_ParsingState $state, $text) {
 		$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
 		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT);
-		
+
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 

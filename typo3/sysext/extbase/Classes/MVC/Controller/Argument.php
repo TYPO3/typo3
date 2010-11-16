@@ -37,6 +37,11 @@
 class Tx_Extbase_MVC_Controller_Argument {
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
 	protected $queryFactory;
@@ -134,14 +139,29 @@ class Tx_Extbase_MVC_Controller_Argument {
 	}
 
 	/**
-	 * Initializes this object
+	 * Injects the object manager
 	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function initializeObject() {
-		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
-		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
-		$this->propertyMapper->injectReflectionService($this->reflectionService);
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Property_Mapper $propertyMapper
+	 * @return void
+	 */
+	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
+		$this->propertyMapper = $propertyMapper;
+	}
+
+	/**
+	 * @param Tx_Extbase_Reflection_Service $reflectionService 
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
 		$this->dataTypeClassSchema = (strstr($this->dataType, '_') !== FALSE) ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
 	}
 
@@ -286,11 +306,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
-			$this->validator = t3lib_div::makeInstance('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+			$this->validator = $this->objectManager->create('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 		}
 		foreach ($objectNames as $objectName) {
 			if (!class_exists($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
-			$this->validator->addValidator(t3lib_div::makeInstance($objectName));
+			$this->validator->addValidator($this->objectManager->get($objectName));
 		}
 		return $this;
 	}
@@ -379,12 +399,10 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$result = $query->matching($query->equals('uid', $uid))->execute();
-		$object = NULL;
-		if (count($result) > 0) {
-			$object = current($result);
-		}
-		return $object;
+		return $query->matching(
+			$query->equals('uid', $uid))
+			->execute()
+			->getFirst();
 	}
 
 	/**

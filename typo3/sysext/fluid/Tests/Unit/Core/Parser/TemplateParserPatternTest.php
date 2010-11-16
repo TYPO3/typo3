@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
@@ -45,7 +45,7 @@ class Tx_Fluid_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_BaseTest
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_DYNAMICTAGS() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('f3', 't3'));
+		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('f3', 't3', 'f'));
 
 		$source = '<html><head> <f3:a.testing /> <f3:blablubb> {testing}</f4:blz> </t3:hi.jo>';
 		$expected = array('<html><head> ','<f3:a.testing />', ' ', '<f3:blablubb>', ' {testing}</f4:blz> ', '</t3:hi.jo>');
@@ -70,6 +70,11 @@ class Tx_Fluid_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_BaseTest
 		$source = 'Hallo <f3:testing><![CDATA[<f3:notparsed>]]></f3:testing>';
 		$expected = array('Hallo ', '<f3:testing>', '<![CDATA[<f3:notparsed>]]>', '</f3:testing>');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if there is a CDATA section the parser should ignore.');
+
+		$veryLongViewHelper ='<f:form enctype="multipart/form-data" onsubmit="void(0)" onreset="void(0)" action="someAction" arguments="{arg1: \'val1\', arg2: \'val2\'}" controller="someController" package="somePackage" subpackage="someSubpackage" section="someSection" format="txt" additionalParams="{param1: \'val1\', param2: \'val2\'}" absolute="true" addQueryString="true" argumentsToBeExcludedFromQueryString="{0: \'foo\'}" />';
+		$source = $veryLongViewHelper . 'Begin' . $veryLongViewHelper . 'End';
+		$expected = array($veryLongViewHelper, 'Begin', $veryLongViewHelper, 'End');
+		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly if the VH has lots of arguments.');
 
 	}
 

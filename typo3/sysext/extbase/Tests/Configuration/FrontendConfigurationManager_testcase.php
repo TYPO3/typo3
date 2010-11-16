@@ -54,9 +54,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager_testcase extends Tx_
 	/**
 	 * @test
 	 */
-	public function loadTypoScriptSetupReturnsSetupFromTSFE() {
+	public function getTypoScriptSetupReturnsSetupFromTSFE() {
 		$GLOBALS['TSFE']->tmpl->setup = array('foo' => 'bar');
-		$this->assertEquals(array('foo' => 'bar'), $this->frontendConfigurationManager->loadTypoScriptSetup());
+		$this->assertEquals(array('foo' => 'bar'), $this->frontendConfigurationManager->_callRef('getTypoScriptSetup'));
 	}
 
 	/**

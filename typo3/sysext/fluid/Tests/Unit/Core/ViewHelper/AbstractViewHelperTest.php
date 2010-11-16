@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTestCase {
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -268,5 +268,19 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTes
 		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
 	}
 
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function initializeArgumentsAndRenderCallsTheCorrectSequenceOfMethods() {
+		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('validateArguments', 'initialize', 'callRenderMethod'));
+		$viewHelper->expects($this->at(0))->method('validateArguments');
+		$viewHelper->expects($this->at(1))->method('initialize');
+		$viewHelper->expects($this->at(2))->method('callRenderMethod')->with(array('argument1' => 'value1'))->will($this->returnValue('Output'));
+
+		$expectedOutput = 'Output';
+		$actualOutput = $viewHelper->initializeArgumentsAndRender(array('argument1' => 'value1'));
+		$this->assertEquals($expectedOutput, $actualOutput);
+	}
 }
 ?>

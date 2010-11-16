@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_ViewHelpers_RenderViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_RenderViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
 	 * var Tx_Fluid_ViewHelpers_RenderViewHelper

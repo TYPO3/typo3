@@ -65,22 +65,79 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $persistenceManager;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var string
 	 */
 	protected $objectType;
 
 	/**
+	 * @var array
+	 */
+	protected $defaultOrderings = array();
+
+	/**
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 */
+	protected $defaultQuerySettings = NULL;
+
+	/**
 	 * Constructs a new Repository
 	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 */
-	public function __construct() {
-		$this->identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
+	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL) {
 		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
-		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
+
+		if ($objectManager === NULL) {
+			// Legacy creation, in case the object manager is NOT injected
+			// If ObjectManager IS there, then all properties are automatically injected
+			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->injectIdentityMap($this->objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
+			$this->injectQueryFactory($this->objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
+			$this->injectPersistenceManager($this->objectManager->get('Tx_Extbase_Persistence_Manager'));
+		} else {
+			$this->objectManager = $objectManager;
+		}
+		$this->initializeObject();
+	}
+
+	/**
+	 * Life cycle method. You can override this in your own repository
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
+	 * @return void
+	 */
+	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
+		$this->identityMap = $identityMap;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_QueryFactory $queryFactory
+	 * @return void
+	 */
+	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactory $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
 
 	/**
@@ -123,7 +180,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
-	 * return void
+	 * @return void
 	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
@@ -216,7 +273,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function countAll() {
-		return $this->createQuery()->count();
+		return $this->createQuery()->execute()->count();
 	}
 
 	/**
@@ -247,14 +304,41 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$result = $query->matching($query->equals('uid', $uid))->execute();
-			$object = NULL;
-			if (count($result) > 0) {
-				$object = current($result);
+			$object = $query->matching($query->equals('uid', $uid))
+					->execute()
+					->getFirst();
+			if ($object !== FALSE) {
 				$this->identityMap->registerObject($object, $uid);
 			}
 		}
 		return $object;
+	}
+
+	/**
+	 * Sets the property names to order the result by per default.
+	 * Expected like this:
+	 * array(
+	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * )
+	 *
+	 * @param array $defaultOrderings The property names to order by
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultOrderings(array $defaultOrderings) {
+		$this->defaultOrderings = $defaultOrderings;
+	}
+
+	/**
+	 * Sets the default query settings to be used in this repository
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings) {
+		$this->defaultQuerySettings = $defaultQuerySettings;
 	}
 
 	/**
@@ -264,7 +348,14 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function createQuery() {
-		return $this->queryFactory->create($this->objectType);
+		$query = $this->queryFactory->create($this->objectType);
+		if ($this->defaultOrderings !== array()) {
+			$query->setOrderings($this->defaultOrderings);
+		}
+		if ($this->defaultQuerySettings !== NULL) {
+			$query->setQuerySettings($this->defaultQuerySettings);
+		}
+		return $query;
 	}
 
 	/**
@@ -286,18 +377,16 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
 			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+			$object = $query->matching($query->equals($propertyName, $arguments[0]))
 				->setLimit(1)
-				->execute();
-			$object = NULL;
-			if (count($result) > 0) {
-				$object = current($result);
-			}
+				->execute()
+				->getFirst();
 			return $object;
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
 			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
 			$query = $this->createQuery();
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->execute()
 				->count();
 			return $result;
 		}

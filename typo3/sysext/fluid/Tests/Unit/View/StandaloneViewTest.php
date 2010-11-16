@@ -53,7 +53,7 @@ class Tx_Fluid_View_StandaloneViewTest extends Tx_Extbase_BaseTestCase {
 	protected $mockTemplateParser;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
@@ -78,7 +78,7 @@ class Tx_Fluid_View_StandaloneViewTest extends Tx_Extbase_BaseTestCase {
 		$this->mockParsedTemplate = $this->getMock('Tx_Fluid_Core_Parser_ParsedTemplateInterface');
 		$this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
 		$this->view->injectTemplateParser($this->mockTemplateParser);
-		$this->mockObjectManager = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
+		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->view->injectObjectManager($this->mockObjectManager);
 		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 		$this->mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');

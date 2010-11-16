@@ -23,7 +23,7 @@
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  */
-class Tx_Fluid_ViewHelpers_BaseViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_BaseViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

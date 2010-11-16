@@ -43,6 +43,12 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	protected $respectStoragePage = TRUE;
 
 	/**
+	 * the pid(s) of the storage page(s) that should be respected for the query.
+	 * @var array
+	 */
+	protected $storagePageIds = array();
+
+	/**
 	 * Flag if the visibility settings for the frontend should be respected.
 	 * @var boolean
 	 */
@@ -79,6 +85,26 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function getRespectStoragePage() {
 		return $this->respectStoragePage;
+	}
+
+	/**
+	 * Sets the pid(s) of the storage page(s) that should be respected for the query.
+	 *
+	 * @param array $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setStoragePageIds(array $storagePageIds) {
+		$this->storagePageIds = $storagePageIds;
+	}
+
+	/**
+	 * Returns the pid(s) of the storage page(s) that should be respected for the query.
+	 *
+	 * @return array list of integers that each represent a storage page id
+	 */
+	public function getStoragePageIds() {
+		return $this->storagePageIds;
 	}
 
 	/**

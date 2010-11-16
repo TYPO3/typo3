@@ -58,6 +58,19 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	protected $flashMessageStorageKey = NULL;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
 	 * Add another flash message.
 	 *
 	 * @param string $message
@@ -65,7 +78,9 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @api
 	 */
 	public function add($message) {
-		if (!is_string($message)) throw new InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
+		if (!is_string($message)) {
+			throw new InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
+		}
 		$this->initialize();
 		$this->flashMessages[] = $message;
 	}
@@ -111,8 +126,8 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	protected function initialize() {
 		if ($this->initialized) return;
 
-		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		$this->flashMessageStorageKey = 'Tx_Extbase_MVC_Controller_FlashMessages_messages_' . $frameworkConfiguration['extensionName'] . $frameworkConfiguration['pluginName'];
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$this->flashMessageStorageKey = 'Tx_Extbase_MVC_Controller_FlashMessages_messages_' . $frameworkConfiguration['extensionName'];
 
 		$flashMessages = $this->loadFlashMessagesFromSession();
 		if (is_array($flashMessages)) {
@@ -126,7 +141,6 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * Loads the flash messages from the current user session.
 	 */
 	protected function loadFlashMessagesFromSession() {
-		$flashMessages = NULL;
 		if (TYPO3_MODE === 'FE') {
 			$flashMessages = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->flashMessageStorageKey);
 		} else {

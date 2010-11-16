@@ -57,5 +57,31 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * @api
 	 */
 	public function persistAll();
+
+	/**
+	 * Returns the number of records matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return integer
+	 * @api
+	 */
+	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+
+	/**
+	 * Returns the object data matching the $query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return array
+	 * @api
+	 */
+	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+
+	/**
+	 * Registers a repository
+	 *
+	 * @param string $className The class name of the repository to be reigistered
+	 * @return void
+	 */
+	public function registerRepositoryClassName($className);
 }
 ?>

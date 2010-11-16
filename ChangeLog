@@ -1,3 +1,7 @@
+2010-11-16  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Updated Extbase and Fluid to 1.3.0beta1. See their ChangeLog for details.
+
 2010-11-16  Steffen Kamper  <steffen@typo3.org>
 
 	* Added feature #16396: Implement a Grid View + wizard to enable the backend layout to be adapted to the frontend look and feel (Thanks to Joey Hasenau, Martin Ficzel and Thomas Hempel)

@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_View_AbstractTemplateViewTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_View_AbstractTemplateView
@@ -57,7 +57,7 @@ class Tx_Fluid_View_AbstractTemplateViewTest extends Tx_Extbase_BaseTestCase {
 		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext', array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
 		$this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
 		$this->renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($this->templateVariableContainer));
-		$this->view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'hasTemplate'));
+		$this->view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender'));
 		$this->view->setRenderingContext($this->renderingContext);
 	}
 

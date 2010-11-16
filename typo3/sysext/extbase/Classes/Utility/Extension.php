@@ -32,6 +32,9 @@
  */
 class Tx_Extbase_Utility_Extension {
 
+	const PLUGIN_TYPE_PLUGIN = 'list_type';
+	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
+
 	/**
 	 * Add auto-generated TypoScript to configure the Extbase Dispatcher.
 	 *
@@ -49,9 +52,10 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
 	 * @param string $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
 	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
+	 * @param string $pluginType either Tx_Extbase_Utility_Extension::TYPE_PLUGIN (default) or Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
 	 * @return void
 	 */
-	public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array()) {
+	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::PLUGIN_TYPE_PLUGIN) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -60,28 +64,16 @@ class Tx_Extbase_Utility_Extension {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-
-		$controllers = '';
-		foreach ($controllerActions as $controller => $actionsList) {
-			$controllers .= '
-		' . $controller . '.actions = ' . $actionsList;
-			if (!empty($nonCacheableControllerActions[$controller])) {
-				$controllers .= '
-		' . $controller . '.nonCacheableActions = ' . $nonCacheableControllerActions[$controller];
-			}
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName] = array();
 		}
 
-		$switchableControllerActions = '
-	switchableControllerActions {' . $controllers . '
-	}';
-
-		reset($controllerActions);
-		$defaultController = key($controllerActions);
-		$controller = '
-	controller = ' . $defaultController;
-		$defaultAction = array_shift(t3lib_div::trimExplode(',', current($controllerActions)));
-		$action = '
-	action = ' . $defaultAction;
+		foreach ($controllerActions as $controllerName => $actionsList) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
+			if (!empty($nonCacheableControllerActions[$controllerName])) {
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
+			}
+		}
 
 		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
 	settings {
@@ -95,27 +87,41 @@ class Tx_Extbase_Utility_Extension {
 		templateRootPath =
 		layoutRootPath =
 		partialRootPath =
+		 # with defaultPid you can specify the default page uid of this plugin. If you set this to the string "auto" the target page will be determined automatically. Defaults to an empty string that expects the target page to be the current page.
+		defaultPid =
 	}
 }';
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
 
-		$pluginContent = trim('
+		switch ($pluginType) {
+			case self::PLUGIN_TYPE_PLUGIN:
+				$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
-	userFunc = tx_extbase_dispatcher->dispatch
-	pluginName = ' . $pluginName . '
+	userFunc = tx_extbase_core_bootstrap->run
 	extensionName = ' . $extensionName . '
-	' . $controller .
-	$action .
-	$switchableControllerActions . '
-
-	settings =< plugin.tx_' . strtolower($extensionName) . '.settings
-	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
-	view =< plugin.tx_' . strtolower($extensionName) . '.view
-	_LOCAL_LANG =< plugin.tx_' . strtolower($extensionName) . '._LOCAL_LANG
+	pluginName = ' . $pluginName . '
 }');
+			break;
+			case self::PLUGIN_TYPE_CONTENT_ELEMENT:
+				$pluginContent = trim('
+tt_content.' . $pluginSignature . ' = COA
+tt_content.' . $pluginSignature . ' {
+	10 = < lib.stdheader
+	20 = USER
+	20 {
+		userFunc = tx_extbase_core_bootstrap->run
+		extensionName = ' . $extensionName . '
+		pluginName = ' . $pluginName . '
+	}
+}');
+			break;
+			default:
+				throw new InvalidArgumentException('The pluginType "' . $pluginType .'" is not suported', 1289858856);
+		}
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType'] = $pluginType;
 
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
@@ -131,7 +137,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
 	 * @return void
 	 */
-	public static function registerPlugin($extensionName, $pluginName, $pluginTitle) {
+	static public function registerPlugin($extensionName, $pluginName, $pluginTitle) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -141,7 +147,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
+		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['pluginType']);
 	}
 
 	/**
@@ -239,7 +245,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param array $config The configuration options of the module (icon, locallang.xml file)
 	 * @return void
 	 */
-	public static function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
+	static public function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
 		if (empty($extensionName)) {
 			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
@@ -282,24 +288,43 @@ tt_content.list.20.' . $pluginSignature . ' {
 		t3lib_extMgm::addModule($main, $sub, $position);
 	}
 
-	// TODO PHPdoc
-	public static function convertCamelCaseToLowerCaseUnderscored($string) {
-		// FIXME The cache doesn't work IMO as it is static (did I really implemented this? ;-))
-		static $conversionMap = array();
-		if (!isset($conversionMap[$string])) {
-			$conversionMap[$string] = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
-		}
-		return $conversionMap[$string];
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores.
+	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
+	 *
+	 * @param string $string
+	 * @return mixed
+	 * @see t3lib_div::underscoredToLowerCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertCamelCaseToLowerCaseUnderscored($string) {
+		return t3lib_div::camelCaseToLowerCaseUnderscored($string);
 	}
 
-	public static function convertUnderscoredToLowerCamelCase($string) {
-		$string = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
-		$string[0] = strtolower($string[0]);
-		return $string;
+	/**
+	 * Returns a given string with underscores as lowerCamelCase.
+	 * Example: Converts minimal_value to minimalValue
+	 *
+	 * @param string $string
+	 * @return mixed
+	 * @see t3lib_div::underscoredToLowerCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertUnderscoredToLowerCamelCase($string) {
+		return t3lib_div::underscoredToLowerCamelCase($string);
 	}
 
-	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {
-		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
+	/**
+	 * Returns a given string with underscores as UpperCamelCase.
+	 * Example: Converts blog_example to BlogExample
+	 *
+	 * @param string $string
+	 * @return string
+	 * @see t3lib_div::underscoredToUpperCamelCase()
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
+	 */
+	static public function convertLowerUnderscoreToUpperCamelCase($string) {
+		return t3lib_div::underscoredToUpperCamelCase($string);
 	}
 
 	/**
@@ -307,12 +332,13 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 *
 	 * @param	string	$extensionKey	Key of the extension
 	 * @param	string	$extensionPath	full path of the extension
+	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
 	 * @return	string	HTML string which should be outputted
 	 */
-	public function createAutoloadRegistryForExtension($extensionKey, $extensionPath) {
+	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
 		$classNameToFileMapping = array();
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionKey)));
-		$errors = $this->buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
+		$errors = self::buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
 		if ($errors) {
 			return $errors;
 		}
@@ -325,7 +351,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 				unset($classNameToFileMapping[$className]);
 			}
 		}
-		$autoloadFileString = $this->generateAutoloadPHPFileData($classNameToFileMapping, $globalPrefix);
+		$classNameToFileMapping = array_merge($classNameToFileMapping, $additionalAutoloadClasses);
+		$autoloadFileString = self::generateAutoloadPHPFileData($classNameToFileMapping, $globalPrefix);
 		if (!@file_put_contents($extensionPath . 'ext_autoload.php', $autoloadFileString)) {
 			$errors[] = '<b>' . $extensionPath . 'ext_autoload.php could not be written!</b>';
 		}
@@ -365,14 +392,14 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$valueWrap	Wrap for the file name
 	 * @return void
 	 */
-	protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
+	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 //		if (file_exists($path . 'Classes/')) {
 //			return "<b>This appears to be a new-style extension which has its PHP classes inside the Classes/ subdirectory. It is not needed to generate the autoload registry for these extensions.</b>";
 //		}
 		$extensionFileNames = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
 
 		foreach ($extensionFileNames as $extensionFileName) {
-			$classNamesInFile = $this->extractClassNames($path . $extensionFileName);
+			$classNamesInFile = self::extractClassNames($path . $extensionFileName);
 			if (!count($classNamesInFile)) continue;
 			foreach ($classNamesInFile as $className) {
 				$classNameToFileMapping[strtolower($className)] = str_replace('|', $extensionFileName, $valueWrap);
@@ -386,24 +413,24 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$filePath	File path (absolute)
 	 * @return	array	Class names
 	 */
-	protected function extractClassNames($filePath) {
+	static protected function extractClassNames($filePath) {
 		$fileContent = php_strip_whitespace($filePath);
 		$classNames = array();
-		if (function_exists('token_get_all')) {
+		if (FALSE) {
 			$tokens = token_get_all($fileContent);
 			while(1) {
 				// look for "class" or "interface"
-				$token = $this->findToken($tokens, array(T_ABSTRACT, T_CLASS, T_INTERFACE));
+				$token = self::findToken($tokens, array(T_ABSTRACT, T_CLASS, T_INTERFACE));
 				// fetch "class" token if "abstract" was found
 				if ($token === 'abstract') {
-					$token = $this->findToken($tokens, array(T_CLASS));
+					$token = self::findToken($tokens, array(T_CLASS));
 				}
 				if ($token === false) {
 					// end of file
 					break;
 				}
 				// look for the name (a string) skipping only whitespace and comments
-				$token = $this->findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
+				$token = self::findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
 				if ($token === false) {
 					// unexpected end of file or token: remove found names because of parse error
 					t3lib_div::sysLog('Parse error in "' . $filePath. '".', 'Core', 2);
@@ -433,7 +460,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
 	 * @return	mixed
 	 */
-	protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
+	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
 
 		$returnValue = false;
@@ -458,5 +485,98 @@ tt_content.list.20.' . $pluginSignature . ' {
 		return $returnValue;
 	}
 
+	/**
+	 * Determines the plugin namespace of the specified plugin (defaults to "tx_[extensionname]_[pluginname]")
+	 * If plugin.tx_$pluginSignature.view.pluginNamespace is set, this value is returned
+	 * If pluginNamespace is not specified "tx_[extensionname]_[pluginname]" is returned.
+	 *
+	 * @param string $extensionName name of the extension to retrieve the namespace for
+	 * @param string $pluginName name of the plugin to retrieve the namespace for
+	 * @return string plugin namespace
+	 */
+	static public function getPluginNamespace($extensionName, $pluginName) {
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		$defaultPluginNamespace = 'tx_' . $pluginSignature;
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
+			return $defaultPluginNamespace;
+		}
+		return $frameworkConfiguration['view']['pluginNamespace'];
+	}
+
+	/**
+	 * Iterates through the global TypoScript configuration and returns the name of the plugin
+	 * that matches specified extensionName, controllerName and actionName.
+	 * If no matching plugin was found, NULL is returned.
+	 * If more than one plugin matches, an Exception will be thrown
+	 *
+	 * @param string $extensionName name of the target extension (UpperCamelCase)
+	 * @param string $controllerName name of the target controller (UpperCamelCase)
+	 * @param string $actionName name of the target action (lowerCamelCase)
+	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
+	 */
+	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
+		// TODO use ConfigurationManager to retrieve controllerConfiguration
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName])) {
+			return NULL;
+		}
+		$pluginNames = array();
+		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName] as $pluginName => $pluginConfiguration) {
+			if (!is_array($pluginConfiguration['controllers'])) {
+				continue;
+			}
+			foreach($pluginConfiguration['controllers'] as $pluginControllerName => $pluginControllerActions) {
+				if (strtolower($pluginControllerName) !== strtolower($controllerName)) {
+					continue;
+				}
+				if (in_array($actionName, $pluginControllerActions['actions'])) {
+					$pluginNames[] = $pluginName;
+				}
+			}
+		}
+		if (count($pluginNames) > 1) {
+			throw new Tx_Extbase_Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument' , 1280825466);
+		}
+		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
+	}
+
+	/**
+	 * Determines the target page of the specified plugin.
+	 * If plugin.tx_$pluginSignature.view.defaultPid is set, this value is used as target page id
+	 * If defaultPid is set to "auto", a the target pid is determined by loading the tt_content record that contains this plugin
+	 * If the page could not be determined, NULL is returned
+	 * If defaultPid is "auto" and more than one page contains the specified plugin, an Exception is thrown
+	 *
+	 * @param string $extensionName name of the extension to retrieve the target PID for
+	 * @param string $pluginName name of the plugin to retrieve the target PID for
+	 * @return integer uid of the target page or NULL if target page could not be determined
+	 */
+	static public function getTargetPidByPlugin($extensionName, $pluginName) {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
+			return NULL;
+		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'pid',
+				'tt_content',
+				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+				'',
+				'',
+				2
+			);
+			if (count($pages) > 1) {
+				throw new Tx_Extbase_Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id' , 1280773643);
+			}
+			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
+		}
+		return (integer)$frameworkConfiguration['view']['defaultPid'];
+	}
 }
+
 ?>

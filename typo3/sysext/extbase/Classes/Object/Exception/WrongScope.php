@@ -32,7 +32,7 @@
  * @subpackage Object\Exception
  * @version $Id: WrongScope.php 1729 2009-11-25 21:37:20Z stucki $
  */
-class Tx_Extbase_Object_WrongScope extends Tx_Extbase_Object_Exception {
+class Tx_Extbase_Object_Exception_WrongScope extends Tx_Extbase_Object_Exception {
 
 }
 

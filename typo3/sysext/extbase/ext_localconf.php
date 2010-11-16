@@ -4,13 +4,23 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Dispatcher.php');
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php');
 
-// use own cache table
+// use own cache tables
+// Reflection cache:
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection'] = array(
 	'frontend' => 't3lib_cache_frontend_VariableFrontend',
 	'backend' => 't3lib_cache_backend_DbBackend',
 	'options' => array(
 		'cacheTable' => 'tx_extbase_cache_reflection',
 		'tagsTable' => 'tx_extbase_cache_reflection_tags',
+	),
+);
+// Object container cache:
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_object'] = array(
+	'frontend' => 't3lib_cache_frontend_VariableFrontend',
+	'backend' => 't3lib_cache_backend_DbBackend',
+	'options' => array(
+		'cacheTable' => 'tx_extbase_cache_object',
+		'tagsTable' => 'tx_extbase_cache_object_tags',
 	),
 );
 

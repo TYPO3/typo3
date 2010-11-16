@@ -52,10 +52,11 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	protected $hashService;
 
 	/**
-	 * Constructor
+	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService 
+	 * @return void
 	 */
-	public function __construct() {
-		$this->hashService = t3lib_div::makeInstance('Tx_Extbase_Security_Cryptography_HashService'); // Singleton
+	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+		$this->hashService = $hashService;
 	}
 
 	/**

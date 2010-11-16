@@ -32,7 +32,7 @@
  * @subpackage Validation
  * @version $Id: ValidatorResolver.php 1790 2010-01-18 22:27:37Z jocrau $
  */
-class Tx_Extbase_Validation_ValidatorResolver {
+class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 
 	/**
 	 * Match validator names and options
@@ -67,7 +67,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 		/ixS';
 
 	/**
-	 * @var Tx_Extbase_Object_ManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -84,10 +84,10 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ManagerInterface $objectManager A reference to the object manager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -113,7 +113,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
 		if ($validatorClassName === FALSE) return NULL;
-		$validator = $this->objectManager->getObject($validatorClassName);
+		$validator = $this->objectManager->get($validatorClassName);
 		if (!($validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface)) {
 			return NULL;
 		}
@@ -196,7 +196,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {
-		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
 		// Model based validator
 		if (strstr($dataType, '_') !== FALSE && class_exists($dataType)) {

@@ -27,7 +27,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_TemplateViewInterface {
+abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
 	 * Constants defining possible rendering types
@@ -42,7 +42,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	protected $controllerContext;
 
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -68,13 +68,11 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	protected $renderingStack = array();
 
 	/**
-	 * Injects the Object Manager
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -189,7 +187,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	 * Renders a given section.
 	 *
 	 * @param string $sectionName Name of section to render
-	 * @param array the variables to use.
+	 * @param array $variables the variables to use.
 	 * @return string rendered template for the section
 	 * @throws Tx_Fluid_View_Exception_InvalidSectionException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -211,7 +209,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		} else {
 			$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 			$renderingContext = clone $renderingContext;
-			$renderingContext->injectTemplateVariableContainer($variableContainer);
+			$renderingContext->setTemplateVariableContainer($variableContainer);
 			$renderingTypeOnNextLevel = $this->getCurrentRenderingType();
 		}
 
@@ -240,7 +238,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		$partial = $this->templateParser->parse($this->getPartialSource($partialName));
 		$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 		$renderingContext = clone $this->getCurrentRenderingContext();
-		$renderingContext->injectTemplateVariableContainer($variableContainer);
+		$renderingContext->setTemplateVariableContainer($variableContainer);
 
 		$this->startRendering(self::RENDERING_PARTIAL, $partial, $renderingContext);
 		if ($sectionName !== NULL) {
@@ -296,7 +294,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
 		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('Tx_Fluid_Core_Parser_Interceptor_Escape'));
-			
+
 		}
 		return $parserConfiguration;
 	}
@@ -383,6 +381,21 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		$currentRendering = end($this->renderingStack);
 		return $currentRendering['renderingContext'];
 	}
+
+	/**
+	 * Tells if the view implementation can render the view for the given context.
+	 *
+	 * By default we assume that the view implementation can handle all kinds of
+	 * contexts. Override this method if that is not the case.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
+	 * @api
+	 */
+	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+		return TRUE;
+	}
+
 }
 
 ?>

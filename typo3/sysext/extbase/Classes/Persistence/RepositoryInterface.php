@@ -54,6 +54,24 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	public function remove($object);
 
 	/**
+	 * Replaces an object by another.
+	 *
+	 * @param object $existingObject The existing object
+	 * @param object $newObject The new object
+	 * @return void
+	 * @api
+	 */
+	public function replace($existingObject, $newObject);
+
+	/**
+	 * Replaces an existing object with the same identifier by the given object
+	 *
+	 * @param object $modifiedObject The modified object
+	 * @api
+	 */
+	public function update($modifiedObject);
+
+	/**
 	 * Returns all objects of this repository add()ed but not yet persisted to
 	 * the storage layer.
 	 *
@@ -78,6 +96,23 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	public function findAll();
 
 	/**
+	 * Returns the total number objects of this repository.
+	 *
+	 * @return integer The object count
+	 * @api
+	 */
+	public function countAll();
+
+	/**
+	 * Removes all objects of this repository as if remove() was called for
+	 * all of them.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function removeAll();
+
+	/**
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
@@ -85,6 +120,37 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 * @api
 	 */
 	public function findByUid($uid);
+
+	/**
+	 * Sets the property names to order the result by per default.
+	 * Expected like this:
+	 * array(
+	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * )
+	 *
+	 * @param array $defaultOrderings The property names to order by
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultOrderings(array $defaultOrderings);
+
+	/**
+	 * Sets the default query settings to be used in this repository
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings);
+
+	/**
+	 * Returns a query for objects of this repository
+	 *
+	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
+	 */
+	public function createQuery();
 
 }
 ?>

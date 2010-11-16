@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: Query.php 2208 2010-04-14 13:41:14Z jocrau $
+ * @version $Id$
  * @scope prototype
  * @api
  */
@@ -42,17 +42,22 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $type;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var Tx_Extbase_Persistence_DataMapper
 	 */
 	protected $dataMapper;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Manager
+	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
+	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
 	protected $qomFactory;
 
@@ -103,6 +108,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * Injects the persistence manager, used to fetch the CR session
 	 *
 	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
@@ -110,7 +123,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
-		$this->qomFactory = $this->persistenceManager->getBackend()->getQomFactory();
 	}
 
 	/**
@@ -121,6 +133,16 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * Injects the Query Object Model Factory
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory
+	 * @return void
+	 */
+	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
+		$this->qomFactory = $qomFactory;
 	}
 
 	/**
@@ -193,15 +215,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	/**
 	 * Executes the query against the database and returns the result
 	 *
-	 * @return array<object> The query result as an array of objects
+	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 * @api
 	 */
 	public function execute() {
-		$rows = $this->persistenceManager->getObjectDataByQuery($this);
 		if ($this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
-			return $rows;
+			return $this->persistenceManager->getObjectDataByQuery($this);
 		} else {
-			return $this->dataMapper->map($this->getType(), $rows);
+			return $this->objectManager->create('Tx_Extbase_Persistence_QueryResultInterface', $this);
 		}
 	}
 
@@ -209,9 +230,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * Executes the number of matching objects for the query
 	 *
 	 * @return integer The number of matching objects
+	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use Query::execute()::count() instead
 	 * @api
 	 */
 	public function count() {
+		t3lib_div::logDeprecatedFunction();
 		return $this->persistenceManager->getObjectCountByQuery($this);
 	}
 
@@ -566,6 +589,23 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO,
 			$operand
 			);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function __wakeup() {
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_ManagerInterface');
+		$this->dataMapper = $this->objectManager->get('Tx_Extbase_Persistence_Mapper_DataMapper');
+		$this->qomFactory = $this->objectManager->get('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function __sleep() {
+		return array('type', 'source', 'constraint', 'statement', 'orderings', 'limit', 'offset', 'querySettings');
 	}
 
 }
