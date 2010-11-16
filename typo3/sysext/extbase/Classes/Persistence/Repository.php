@@ -65,9 +65,24 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $persistenceManager;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * @var string
 	 */
 	protected $objectType;
+
+	/**
+	 * @var array
+	 */
+	protected $defaultOrderings = array();
+
+	/**
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 */
+	protected $defaultQuerySettings = NULL;
 
 	/**
 	 * Constructs a new Repository
@@ -82,11 +97,22 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
 			// If ObjectManager IS there, then all properties are automatically injected
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			$this->injectIdentityMap($objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
-			$this->injectQueryFactory($objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
-			$this->injectPersistenceManager($objectManager->get('Tx_Extbase_Persistence_Manager'));
+			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->injectIdentityMap($this->objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
+			$this->injectQueryFactory($this->objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
+			$this->injectPersistenceManager($this->objectManager->get('Tx_Extbase_Persistence_Manager'));
+		} else {
+			$this->objectManager = $objectManager;
 		}
+		$this->initializeObject();
+	}
+
+	/**
+	 * Life cycle method. You can override this in your own repository
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
 	}
 
 	/**
@@ -154,7 +180,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
-	 * return void
+	 * @return void
 	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
@@ -289,13 +315,47 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 
 	/**
+	 * Sets the property names to order the result by per default.
+	 * Expected like this:
+	 * array(
+	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * )
+	 *
+	 * @param array $defaultOrderings The property names to order by
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultOrderings(array $defaultOrderings) {
+		$this->defaultOrderings = $defaultOrderings;
+	}
+
+	/**
+	 * Sets the default query settings to be used in this repository
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @return void
+	 * @api
+	 */
+	public function setDefaultQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings) {
+		$this->defaultQuerySettings = $defaultQuerySettings;
+	}
+
+	/**
 	 * Returns a query for objects of this repository
 	 *
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 * @api
 	 */
 	public function createQuery() {
-		return $this->queryFactory->create($this->objectType);
+		$query = $this->queryFactory->create($this->objectType);
+		if ($this->defaultOrderings !== array()) {
+			$query->setOrderings($this->defaultOrderings);
+		}
+		if ($this->defaultQuerySettings !== NULL) {
+			$query->setQuerySettings($this->defaultQuerySettings);
+		}
+		return $query;
 	}
 
 	/**
