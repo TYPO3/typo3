@@ -8,107 +8,23 @@ included in TYPO3 4.5.0 Beta 1.
 Extbase 1.3.0 Beta 1 has a lot new and greatly improved features, and also many bugfixes.
 The highlights are outlined below, and explained in-depth a little further down:
 
+*** EVERY FEATURE IS DESCRIBED IN DEPTH BELOW ***
+
 * Dependency Injection
 * Dispatcher Refactoring & Completely re-done Configuration Manager
 	This means that Tx_Extbase_Dispatcher is now DEPRECATED!
 	Additionally, if you defined the TypoScript setup for a plugin by hand (which you should not),
-	the syntax has changed a bit there. See below for details.
+	the syntax has changed a bit there.
 * QueryResult refactoring (needed for Fluid Widgets)
-	THIS COULD BE A BREAKING CHANGE FOR YOU! See below for details.
+	THIS COULD BE A BREAKING CHANGE FOR YOU!
 
 Additionally, the following smaller features were implemented:
 
-* Configurable plugin namespaces (#8365):
-	By default each Extbase plugin has a unique URI prefix to avoid collisions with other plugins on your website.
-	This so called plugin namespace usually has th e format tx_yourextension_yourplugin.
-	With Extbase 1.3 it is possible to override this namespace. This comes in handy if want to interact with 3rd party
-	extensions:
-	plugin.tx_yourextension.view.pluginNamespace = tx_ttnews
-
-	This sets the plugin namespace of all your plugins to "tx_ttnews" making it possible to directly access tt_news
-	parameters in your controller:
-
-	/**
-	 * @param integer $tt_news tt_news Article uid
-	 * @return void
-	 */
-	public function yourAction($tt_news) {
-		// interact with $tt_news uid
-	}
-
-	This works with automatic mapping to Domain models too of course:
-
-	/**
-	 * @param Tx_YourExtension_Domain_Model_NewsArticle $tt_news tt_news Article
-	 * @return void
-	 */
-	public function yourAction(Tx_YourExtension_Domain_Model_NewsArticle $tt_news) {
-		// interact with $tt_news object
-	}
-
-
-	You can also override the plugin namespace for a single instance by adding the section <view.pluginNamespace> to your
-	plugin FlexForm.
-
-* Automatic target page determination (#9121):
-	In TYPO3 v5 we won't have the notion of page uids. To accustom developers to this change, we're trying to free you from
-	the need to specify target pages from within your Extension.
-	Of course you can put all your functionality into one fully fledged plugin, then you won't have to deal with target
-	pages as the current page is used by default.
-	But sometimes you want to be able to change the surrounding contents of a special view of your extension (e.g. the
-	subcontent column of a details page).
-	As before you can still specify the target page explicitly like
-	<f:link.action action="foo" pageUid="123" />
-	But with Extbase 1.3 you can also use a new feature called "automatic target page determination". You can enable this
-	like:
-	plugin.tx_yourextension.view.defaultPid = auto
-	Then Extbase will search the page tree for a plugin that is configured to handle the specified action and you can omit
-	the "pageUid" parameter in your links.
-	This does not work, if you use the same plugin multiple times of course. In this case you can override the default page
-	id for the respective plugins:
-	plugin.tx_yourextension_yourplugin.view.defaultPid = 123
-
-	Note: By default this feature is not activated, because that would be a breaking change in some cases
-
-* Improved resolveView() mechanism:
-	Another feature we backported from FLOW3 is the improved view resolving.
-	You can now change the default view implementation per format by inserting following line in your Controller:
-	protected $viewFormatToObjectNameMap = array('json' => 'Tx_YourExtension_View_JsonView', 'html' =>
-	'Tx_YourExtension_View_HtmlView');
-
+* Configurable plugin namespaces (#8365)
+* Automatic target page determination (#9121)
+* Improved resolveView() mechanism
 * Allowing plugins to be registered as new content element (#10666)
-	This is done using an additional parameter to Tx_Extbase_Utility_Extension::configurePlugin
-	that allows you to specify the plugin type. Example:
-	Tx_Extbase_Utility_Extension::configurePlugin(
-		$_EXTKEY,
-		'BlogList',
-		array('Blog' => 'index'),
-		array(),
-		Tx_Extbase_Utility_Extension::PLUGIN_TYPE_CONTENT_ELEMENT
-	);
-	(The default value for the pluginType parameter is Tx_Extbase_Utility_Extension::PLUGIN_TYPE_PLUGIN)
-
 * Default Orderings & QuerySettings (#10319)
-
-	It is now possible to change the default orderings of a repository without you having to modify the query by setting
-	the $defaultOrderings property of your Repository to a non-empty array:
-	protected $defaultOrderings = array(
-	  'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	  'date' => 'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
-	);
-	This will change the default ordering for all queries created by this repository. Of course you can override the
-	ordering by calling $query->setOrderings() in your custom finder method.
-
-	Besides it's now possible to change the default query settings of a repository. This way you could for instance disable
-	"respect storage pid" for all queries. We added a life-cycle method "initializeObject" to the repository which will be
-	executed as soon as the repository is created. Just override it like:
-	public function initializeObject() {
-	  $querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-	  $querySettings->setRespectStoragePage(FALSE);
-	  $this->setDefaultQuerySettings($querySettings);
-	}
-	Of course, QuerySettings can be overridden too in your custom finder method by calling $query->setQuerySettings();
-
 
 Breaking Changes:
 
@@ -119,7 +35,7 @@ Breaking Changes:
 Known issues:
 
 * The Unit Tests do not fully work again, we will fix that in the next days.
-* Backend support!
+* There might be still issues with the support of backend modules, we are working on that!
 
 Dependency Injection
 --------------------
@@ -173,8 +89,8 @@ config.tx_extbase.objects {
 	}
 }
 
-This essentially means to the DI container: "At all places where you encounter a "BackendInterface", you should instanciate
-the "Typo3DbBackend" class."
+This essentially means to the DI container: "At all places where you encounter a "BackendInterface",
+you should instanciate the "Typo3DbBackend" class."
 
 However, note that this setting can only be configured *globally* right now, it is not possible
 to override that on a per-extension basis.
@@ -252,6 +168,122 @@ Now, however, the following is possible:
 * Convert the result to array: $query->execute()->toArray()
 
 This change is a prerequisite for Fluid Widgets to work. See the Fluid ChangeLog for details.
+
+
+Configurable Plugin Namespaces
+------------------------------
+
+By default each Extbase plugin has a unique URI prefix to avoid collisions with other plugins on your website.
+This so called plugin namespace usually has the format tx_yourextension_yourplugin.
+With Extbase 1.3 it is possible to override this namespace. This comes in handy if want to interact with 3rd party
+extensions, for example with tt_news:
+
+plugin.tx_yourextension.view.pluginNamespace = tx_ttnews
+
+This sets the plugin namespace of all your plugins inside the extension to "tx_ttnews", making it possibl
+to directly access tt_news parameters in your controller:
+
+/**
+ * @param integer $tt_news tt_news Article uid
+ * @return void
+ */
+public function yourAction($tt_news) {
+	// interact with $tt_news uid
+}
+
+This works with automatic mapping to Domain models too of course:
+
+/**
+ * @param Tx_YourExtension_Domain_Model_NewsArticle $tt_news tt_news Article
+ * @return void
+ */
+public function yourAction(Tx_YourExtension_Domain_Model_NewsArticle $tt_news) {
+	// interact with $tt_news object
+}
+
+You can also override the plugin namespace for a single instance by adding the section <view.pluginNamespace> to your
+plugin FlexForm.
+
+
+Automatic target page determination
+-----------------------------------
+
+In TYPO3 v5 we won't have the notion of page uids. To accustom developers to this change, we're trying to free you from
+the need to specify target pages from within your Extension. Of course you can put all your functionality into one fully
+fledged plugin, then you won't have to deal with target pages as the current page is used by default.
+
+But sometimes you want to be able to change the surrounding contents of a special view of your extension (e.g. the
+subcontent column of a details page). As before you can still specify the target page explicitly like:
+
+<f:link.action action="foo" pageUid="123" />
+
+With Extbase 1.3 you can also use a new feature called "automatic target page determination". It is disabled by default,
+but you can enable it with the following TypoScript:
+
+plugin.tx_yourextension.view.defaultPid = auto
+
+Then Extbase will search the page tree for a plugin that is configured to handle the specified action and you can omit
+the "pageUid" parameter in your links. Of course, this does not work if you use the same plugin multiple times in your
+page tree. In this case you can override the default page ID for the respective plugins:
+
+plugin.tx_yourextension_yourplugin.view.defaultPid = 123
+
+Note: By default this feature is not activated, because that would be a breaking change in some cases
+
+
+Improved resolveView() mechanism
+--------------------------------
+
+Another feature we backported from FLOW3 is the improved view resolving.
+You can now change the default view implementation *per format* by inserting the following line in your Controller:
+
+protected $viewFormatToObjectNameMap = array(
+	'json' => 'Tx_YourExtension_View_JsonView',
+	'html' => 'Tx_YourExtension_View_HtmlView'
+);
+
+
+Allowing plugins to be registered as new content element
+--------------------------------------------------------
+
+This is done using an additional parameter to Tx_Extbase_Utility_Extension::configurePlugin
+that allows you to specify the plugin type. Example:
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'BlogList',
+	array('Blog' => 'index'),
+	array(),
+	Tx_Extbase_Utility_Extension::PLUGIN_TYPE_CONTENT_ELEMENT
+);
+(The default value for the pluginType parameter is Tx_Extbase_Utility_Extension::PLUGIN_TYPE_PLUGIN)
+
+Default Orderings & QuerySettings
+---------------------------------
+
+It is now possible to change the default orderings of a repository without you having to modify the query by setting
+the $defaultOrderings property of your Repository to a non-empty array:
+
+protected $defaultOrderings = array(
+	'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	'date' => 'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+);
+
+This will change the default ordering for all queries created by this repository. Of course you can override the
+ordering by calling $query->setOrderings() in your custom finder method.
+
+Besides it's now possible to change the default query settings of a repository. This way you could for instance disable
+"respect storage pid" for all queries. We added a life-cycle method "initializeObject" to the repository which will be
+executed as soon as the repository is created. Just override it like the following:
+
+public function initializeObject() {
+	$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+	$querySettings->setRespectStoragePage(FALSE);
+	$this->setDefaultQuerySettings($querySettings);
+}
+
+Of course, QuerySettings can be overridden too in your custom finder method by calling $query->setQuerySettings();
+
 
 Full Changes:
 -------------
