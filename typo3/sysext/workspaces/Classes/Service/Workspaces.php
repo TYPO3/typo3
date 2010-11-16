@@ -400,6 +400,28 @@ class tx_Workspaces_Service_Workspaces {
 		}
 		return $permittedElements;
 	}
+
+
+	/**
+	 * Trivial check to see if the user already migrated his workspaces
+	 * to the new style (either manually or with the migrator scripts)
+	 *
+	 * @return bool
+	 */
+	public static function isOldStyleWorkspaceUsed() {
+		$oldStyleWorkspaceIsUsed = FALSE;
+		$cacheKey = 'workspace-oldstyleworkspace-notused';
+		$cacheResult = $GLOBALS['BE_USER']->getSessionData($cacheKey);
+		if (!$cacheResult) {
+			$where = 'adminusers != "" AND adminusers NOT LIKE "%be_users%" AND adminusers NOT LIKE "%be_groups%" AND deleted=0';
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', $where);
+			$oldStyleWorkspaceIsUsed = $count > 0;
+			$GLOBALS['BE_USER']->setAndSaveSessionData($cacheKey, !$oldStyleWorkspaceIsUsed);
+		} else {
+			$oldStyleWorkspaceIsUsed = !$cacheResult;
+		}
+		return $oldStyleWorkspaceIsUsed;
+	}
 }
 
 

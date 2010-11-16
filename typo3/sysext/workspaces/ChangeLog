@@ -2,6 +2,7 @@
 
 	* Fixed bug: #10778 Consider http://bugs.typo3.org/view.php?id=9508 when implementing preview link in new module
 	* Fixed bug: #10819 viewOnClick causes error if frontendpreview is disabled
+	* Fixed issue: #10817 DAU WS-Module warning
 
 2010-11-12  Oliver Hader  <oliver@tpyo3.org>
 
