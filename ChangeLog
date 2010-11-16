@@ -24,6 +24,7 @@
 
 2010-11-16  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16421: missing CSS style for pressed buttons in ExtJS / enable qtips / remove toolbar margin (Thanks to Fabien Udriot)
 	* Fixed bug #16405: pageRenderer call addJsFile with leaving out 2nd parameter
 	* Follow-up to #16408: Support for Custom Navigation Components: removed warning
 	* Follow-up to #16315: New extension manager part 1: splitting classes: fixed many small issues

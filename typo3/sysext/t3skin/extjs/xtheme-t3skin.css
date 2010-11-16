@@ -27,7 +27,6 @@
 
 .x-panel-tbar {
 	border-bottom: 1px solid #cdcdcd;
-	margin-bottom: 10px;
 	padding-bottom: 10px;
 }
 
@@ -794,6 +793,7 @@ ul.x-tab-strip-bottom{
 	background: transparent;
 }
 
+.x-btn-pressed,
 .x-btn-over,
 .x-btn-icon.x-btn-over {
 	background-color: #bdbcbc;
