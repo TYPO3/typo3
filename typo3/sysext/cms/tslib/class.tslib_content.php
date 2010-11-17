@@ -5382,10 +5382,12 @@ class tslib_cObj {
 					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
 						if ($linktxt == '')
 							$linktxt = rawurldecode($link_param);
-						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
+						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
+							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($link_param)));
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix .
 								$GLOBALS['TSFE']->config['mainScript'] . $initP .
 								'&jumpurl=' . rawurlencode($link_param) .
+								($conf['jumpurl.']['secure'] ? $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) : '') .
 								$GLOBALS['TSFE']->getMethodUrlIdToken;
 						} else {
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $link_param;

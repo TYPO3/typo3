@@ -1,3 +1,7 @@
+2010-11-17  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #16027: Let typolink honour secure filelink configuration
+
 2010-11-17  Benjamin Mack  <benni@typo3.org>
 
 	* Added feature #4203: Workspace DB / filemounts should narrow down the users' mounts (Thanks to Sonja Scholz)
