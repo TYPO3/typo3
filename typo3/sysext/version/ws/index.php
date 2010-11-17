@@ -735,46 +735,52 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated HTML
 	 */
 	function workspaceList_getWebMountPoints(&$wksp)	{
-		if ($wksp['uid'] <= 0) {
-			// system workspaces
-			return $GLOBALS['LANG']->getLL($wksp['uid'] == 0 ? 'workspace_list_db_mount_point_live' : 'workspace_list_db_mount_point_draft');
+		if ($wksp['uid'] == -1) {
+				// draft workspace
+			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_draft');
+		} else if ($wksp['uid'] == 0) {
+				// live workspace
+			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_live');
+		}
+		// -- here only if obtaining mount points for custom workspaces
+
+			// We need to fetch user's mount point list (including MPS mounted from groups).
+			// This list must not be affects by current user's workspace. It means we cannot use
+			// $BE_USER->isInWebMount() to check mount points.
+		$mountpointList = $GLOBALS['BE_USER']->groupData['webmounts'];
+			// If there are DB mountpoints in the workspace record,
+			// then only show the ones that are allowed there (and that are in the users' webmounts) 
+		if (trim($wksp['db_mountpoints'])) {
+			$userMountpoints = explode(',', $mountpointList);
+				// now filter the users' to only keep the mountpoints 
+				// that are also in the workspaces' db_mountpoints
+			$workspaceMountpoints = explode(',', $wksp['db_mountpoints']);
+			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
+			$mountpointList = implode(',', $filteredMountpoints);
 		}
 
-		// here only if obtaining mount points for custom workspaces
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',	// All fields needed for t3lib_iconWorks::getSpriteIconForRecord()
+			'pages',
+			'deleted = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList) . ')',
+			'',
+			'title'
+		);
 
-		// Warning: all fields needed for t3lib_iconWorks::getIconImage()!
-		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages', 'deleted=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($wksp['db_mountpoints']) . ')', '', 'title');
-		$content_array = array();
-		if (count($MPs) > 0)	{
-			$isAdmin = $GLOBALS['BE_USER']->isAdmin();
-			if (!$isAdmin) {
-				// We need to fetch user's mount point list (including MPS mounted from groups).
-				// This list must not be affects by current user's workspace. It means we cannot use
-				// $BE_USER->isInWebMount() to check mount points.
-				$userMPs = explode(',', $GLOBALS['BE_USER']->dataLists['webmount_list']); // includes group data if necessary!
-			}
-			foreach ($MPs as $mp)	{
-				if (!$isAdmin && !in_array($mp['uid'], $userMPs)) {
-					// Show warning icon
-					$title = $GLOBALS['LANG']->getLL('workspace_list_mount_point_inaccessible');
-					$str = t3lib_iconWorks::getSpriteIcon('status-warning');
-					$classAttr = 'class="ver-wl-mp-inacessible" ';
-				}
-				else {
-					// normal icon
-					$str = t3lib_iconWorks::getIconImage('pages', $mp, $GLOBALS['BACK_PATH'], ' align="absmiddle"');
-					$classAttr = '';
-				}
-				// Will show UID on hover. Just convinient to user.
-				$content_array[] = $str . '<span ' . $classAttr . 'title="UID: ' . $mp['uid'] . '">' . $mp['title'] . '</span>';
-			}
+		$content = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				// will show UID on hover. Just convinient to user.
+			$content[] = t3lib_iconWorks::getSpriteIconForRecord('pages', $row) . '<span title="UID: ' . $row['uid'] . '">' . $row['title'] . '</span>';
 		}
-		if (count($content_array) > 0) {
-			return implode('<br />', $content_array);
+
+		if (count($content)) {
+			return implode('<br />', $content);
+		} else {
+				// no mount points
+			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_custom');
 		}
-		// no mount points
-		return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_custom');
 	}
+
 
 	/**
 	 * Retrieves and formats file mount points lists.
@@ -784,48 +790,49 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 */
 	function workspaceList_getFileMountPoints(&$wksp)	{
 		if ($wksp['uid'] == -1) {
-			// draft workspace - none!
+				// draft workspace - none!
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_draft');
-		}
-		else if ($wksp['uid'] == 0) {
-			// live workspace
+		} else if ($wksp['uid'] == 0) {
+				// live workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_live');
 		}
+		// -- here only if displaying information for custom workspace
 
-		// Here if displaying information for custom workspace
+			// We need to fetch user's mount point list (including MPS mounted from groups).
+			// This list must not be affects by current user's workspace. It means we cannot use
+			// $BE_USER->isInWebMount() to check mount points.
+		$mountpointList = implode(',', $GLOBALS['BE_USER']->groupData['filemounts']);
+			// If there are file mountpoints in the workspace record,
+			// then only show the ones that are allowed there (and that are in the users' file mounts) 
+		if (trim($wksp['file_mountpoints'])) {
+			$userMountpoints = explode(',', $mountpointList);
+				// now filter the users' to only keep the mountpoints 
+				// that are also in the workspaces' file_mountpoints
+			$workspaceMountpoints = explode(',', $wksp['file_mountpoints']);
+			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
+			$mountpointList = implode(',', $filteredMountpoints);
+		}
 
-		// Warning: all fields needed for t3lib_iconWorks::getIconImage()!
-		$MPs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($wksp['file_mountpoints']) . ')', '', 'title');
-		if (count($MPs) != 0)	{
-			// Has mount points
-			$isAdmin = $GLOBALS['BE_USER']->isAdmin();
-			if (!$isAdmin) {
-				// We need to fetch user's mount point list (including MPS mounted from groups).
-				// This list must not be affects by current user's workspace. It means we cannot use
-				// $BE_USER->isInWebMount() to check mount points.
-				$userMPs = explode(',', $GLOBALS['BE_USER']->dataLists['filemount_list']); // includes group data if necessary!
-			}
-			foreach ($MPs as $mp)	{
-				if (!$isAdmin && !in_array($mp['uid'], $userMPs)) {
-					// Show warning icon
-					$title = $GLOBALS['LANG']->getLL('workspace_list_mount_point_inaccessible');
-					$str = t3lib_iconWorks::getSpriteIcon('status-warning');
-					$classAttr = 'class="ver-wl-mp-inacessible" ';
-				}
-				else {
-					// normal icon
-					$str = t3lib_iconWorks::getIconImage('sys_filemounts', $mp, $GLOBALS['BACK_PATH'], ' align="absmiddle"');
-					$classAttr = '';
-				}
-				// Will show UID on hover. Just convinient to user.
-				$content_array[] = $str . '<span ' . $classAttr . 'title="UID: ' . $mp['uid'] . '">' . $mp['title'] . '</span>';
-			}
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',	// All fields needed for t3lib_iconWorks::getSpriteIconForRecord()
+			'sys_filemounts',
+			'deleted = 0 AND hidden=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList) . ')',
+			'',
+			'title'
+		);
+
+		$content = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				// will show UID on hover. Just convinient to user.
+			$content[] = t3lib_iconWorks::getSpriteIconForRecord('sys_filemounts', $row) . '<span title="UID: ' . $row['uid'] . '">' . $row['title'] . '</span>';
 		}
-		if (count($content_array) > 0) {
-			return implode('<br />', $content_array);
+
+		if (count($content)) {
+			return implode('<br />', $content);
+		} else {
+				// no mount points
+			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_custom');
 		}
-		// No file mount points
-		return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_custom');
 	}
 
 	/**

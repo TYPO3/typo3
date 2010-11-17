@@ -1525,33 +1525,59 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
 		$this->setWorkspace($this->user['workspace_id']);
 
-			// Setting up the db mount points of the (custom) workspace, if any:
-		if ($this->workspace>0 && trim($this->workspaceRec['db_mountpoints'])!=='')	{
-
-				// Initialize:
-			$newMounts = array();
+			// Limiting the DB mountpoints if there any selected in the workspace record
+		$dbMountpoints = trim($this->workspaceRec['db_mountpoints']);
+		if ($this->workspace > 0 && $dbMountpoints != '') {
+			$filteredDbMountpoints = array();
 			$readPerms = '1=1'; // Notice: We cannot call $this->getPagePermsClause(1); as usual because the group-list is not available at this point. But bypassing is fine because all we want here is check if the workspace mounts are inside the current webmounts rootline. The actual permission checking on page level is done elsewhere as usual anyway before the page tree is rendered.
 
 				// Traverse mount points of the
-			$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints']);
-			foreach($mountPoints as $mpId)	{
-				if ($this->isInWebMount($mpId,$readPerms))	{
-					$newMounts[] = $mpId;
+			$dbMountpoints = t3lib_div::intExplode(',', $dbMountpoints);
+			foreach ($dbMountpoints as $mpId) {
+				if ($this->isInWebMount($mpId, $readPerms)) {
+					$filteredDbMountpoints[] = $mpId;
 				}
 			}
 
 				// Re-insert webmounts:
-			$this->groupData['webmounts'] = implode(',',array_unique($newMounts));
+			$filteredDbMountpoints = array_unique($filteredDbMountpoints);
+			$this->groupData['webmounts'] = implode(',', $filteredDbMountpoints);
 		}
 
-			// Setting up the file mount points of the (custom) workspace, if any:
-		if ($this->workspace!==0)	$this->groupData['filemounts'] = array();
-		if ($this->workspace>0 && trim($this->workspaceRec['file_mountpoints'])!=='')	{
+			// Filtering the file mountpoints
+			// if there some selected in the workspace record
+		if ($this->workspace !== 0) {
+			$usersFileMounts = $this->groupData['filemounts'];
+			$this->groupData['filemounts'] = array();
+		}
+		$fileMountpoints = trim($this->workspaceRec['file_mountpoints']);
+		if ($this->workspace > 0) {
 
-				// Processing filemounts
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->workspaceRec['file_mountpoints']).')');
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$this->addFileMount($row['title'], $row['path'], $row['path'], $row['base']?1:0, '');
+				// no custom filemounts that should serve as filter
+				// so all user mountpoints are re-applied
+			if ($fileMountpoints === '') {
+				$this->groupData['filemounts'] = $usersFileMounts;
+			} else {
+					// Fetching all filemounts from the workspace
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					'sys_filemounts',
+					'deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($fileMountpoints) . ')'
+				);
+
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						// add every filemount of this workspace record
+					$this->addFileMount($row['title'], $row['path'], $row['path'], ($row['base'] ? 1 : 0), '');
+
+						// get the added entry, and check if it was in the users' original filemounts
+						// if not, remove it from the new filemount list again
+						// see self::addFileMount
+					end($this->groupData['filemounts']);
+					$md5hash = key($this->groupData['filemounts']);
+					if (!array_key_exists($md5hash, $usersFileMounts)) {
+						unset($this->groupData['filemounts'][$md5hash]);
+					}
+				}
 			}
 		}
 

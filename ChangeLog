@@ -1,3 +1,7 @@
+2010-11-17  Benjamin Mack  <benni@typo3.org>
+
+	* Added feature #4203: Workspace DB / filemounts should narrow down the users' mounts (Thanks to Sonja Scholz)
+
 2010-11-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Added feature #16284: Optimize stdWrap usage for TypoScript content element LOAD_REGISTER (Thanks to Jo Hasenau)
