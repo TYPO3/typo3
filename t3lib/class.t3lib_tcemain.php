@@ -4849,7 +4849,7 @@ class t3lib_TCEmain	{
 					$thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
 				}
 
-					// // Update child records if change to pid is required (only if the current record is not on a workspace):
+					// Update child records if change to pid is required (only if the current record is not on a workspace):
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
 					foreach ($dbAnalysis->itemArray as $v) {
