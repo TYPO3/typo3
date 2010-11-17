@@ -1113,7 +1113,7 @@ class tx_em_Install {
 
 		// Initialize:
 		$absPath = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
-		$relPath = $this->typeRelPaths[$extInfo['type']] . $extKey . '/';
+		$relPath = $this->parentObject->typeRelPaths[$extInfo['type']] . $extKey . '/';
 
 		// Look for template file for form:
 		if (t3lib_extMgm::isLoaded($extKey) && @is_file($absPath . 'ext_conf_template.txt')) {
@@ -1158,15 +1158,15 @@ class tx_em_Install {
 			$MOD_MENU = array();
 			$MOD_MENU['constant_editor_cat'] = $tsStyleConfig->ext_getCategoriesForModMenu();
 			$MOD_SETTINGS = t3lib_BEfunc::getModuleData($MOD_MENU, t3lib_div::_GP('SET'), 'xMod_test');
-			/*
-				   // Resetting the menu (stop)
-			   if (count($MOD_MENU['constant_editor_cat']) > 1) {
-				   $menu = $GLOBALS['LANG']->getLL('extInfoArray_category') . ' ' .
-					   t3lib_BEfunc::getFuncMenu(0, 'SET[constant_editor_cat]', $MOD_SETTINGS['constant_editor_cat'], $MOD_MENU['constant_editor_cat'], '', '&CMD[showExt]=' . $extKey);
-				   $this->content.=$this->doc->section('','<span class="nobr">'.$menu.'</span>');
-				   $this->content.=$this->doc->spacer(10);
-			   }
-   */
+
+			// Resetting the menu (stop)
+			if (count($MOD_MENU['constant_editor_cat']) > 1) {
+				$menu = $GLOBALS['LANG']->getLL('extInfoArray_category') . ' ' .
+						t3lib_BEfunc::getFuncMenu(0, 'SET[constant_editor_cat]', $MOD_SETTINGS['constant_editor_cat'], $MOD_MENU['constant_editor_cat'], '', '&CMD[showExt]=' . $extKey);
+				$this->parentObject->content .= $this->parentObject->doc->section('', '<span class="nobr">' . $menu . '</span>');
+				$this->parentObject->content .= $this->parentObject->doc->spacer(10);
+			}
+
 			// Category and constant editor config:
 			$form = '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
