@@ -1,3 +1,7 @@
+2010-11-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16447: htmlArea RTE: Missing tooltip label for horizontal rule
+
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to feature #16420: [linkvalidator] Fix fatal error in class.tx_linkvalidator_modfunc1.php
