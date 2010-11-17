@@ -5,6 +5,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #16382: Optimize stdWrap usage for TypoScript content element MULTIMEDIA (Thanks to Jo Hasenau)
 	* Added feature #16381: Optimize stdWrap usage for TypoScript content element MEDIA (Thanks to Jo Hasenau)
 	* Fixed bug #16435: Headers in GridView are rendered wrong
 	* Follow-up to #16315: fixed an issue in ext_conf_template with mod menu
