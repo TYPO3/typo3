@@ -5,6 +5,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16435: Headers in GridView are rendered wrong
 	* Follow-up to #16315: fixed an issue in ext_conf_template with mod menu
 	* Fixed bug #16434: GridView does not show cells if they are not mapped to any column
 	* Added feature #16334: Make FlexForms editable via TSConfig and group access lists (Thanks to Kai Vogel)

@@ -91,20 +91,16 @@ class tx_cms_be_layout {
 				// create items and colPosList
 				if ($backendLayout['__config']['be_layout.'] && $backendLayout['__config']['be_layout.']['rows.']) {
 					foreach ($backendLayout['__config']['be_layout.']['rows.'] as $row) {
-						if (true && count($row['columns.'])) {
 							foreach ($row['columns.'] as $column) {
-								if (true) {
 									$backendLayout['__items'][] = array(
 										$column['name'],
 										$column['colPos'],
-										null
+								NULL
 									);
 									$backendLayout['__colPosList'][] = $column['colPos'];
 								}
 							}
 						}
-					}
-				}
 
 			}
 		}

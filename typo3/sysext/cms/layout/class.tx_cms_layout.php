@@ -445,7 +445,6 @@ class tx_cms_layout extends recordList {
 			$this->itemLabels[$name] = $GLOBALS['LANG']->sL($val['label']);
 		}
 
-
 		// Select display mode:
 		if (!$this->tt_contentConfig['single']) { // MULTIPLE column display mode, side by side:
 
@@ -622,11 +621,19 @@ class tx_cms_layout extends recordList {
 									(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
 									(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
 									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
-									(isset($columnKey) ? ' t3-gridCell-disabled' : '') .
+									(!isset($columnConfig['colPos']) ? ' t3-gridCell-disabled' : '') .
 									(isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') .
 									(isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
-							$grid .= $head[$columnKey] . $content[$columnKey] . '</td>';
 
+							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
+							// If not, a new header without any buttons will be generated.
+							if (isset($columnConfig['colPos'])) {
+								$grid .= $head[$columnKey] . $content[$columnKey];
+							} else {
+								$grid .= $this->tt_content_drawColHeader($columnConfig['name'], '', '');
+						}
+
+							$grid .= '</td>';
 						}
 						$grid .= '</tr>';
 					}
