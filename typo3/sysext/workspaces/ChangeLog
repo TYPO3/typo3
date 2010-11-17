@@ -1,6 +1,7 @@
 2010-11-17  Oliver Hader  <oliver@tpyo3.org>
 
-	* Cleanup: Fixed ext_emconf.php 
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta1
 
 2010-11-16  Tolleiv Nietsch <info@tolleiv.de>
 
