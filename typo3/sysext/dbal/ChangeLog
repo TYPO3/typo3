@@ -1,3 +1,7 @@
+2010-11-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16444: DBAL installs itself automatically whenever the install tool is called
+
 2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0beta1
