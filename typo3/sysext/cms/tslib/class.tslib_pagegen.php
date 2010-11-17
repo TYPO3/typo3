@@ -448,8 +448,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 		if ($GLOBALS['TSFE']->xhtmlVersion || $doctype === 'html_5') {
 			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml'; // We add this to HTML5 to achieve a slightly better backwards compatibility
-			foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
-				$htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri; // $uri gets htmlspecialchared later
+			if (is_array($GLOBALS['TSFE']->config['config']['namespaces.'])) {
+				foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
+					$htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri; // $uri gets htmlspecialchared later
+				}
 			}
 		}
 
