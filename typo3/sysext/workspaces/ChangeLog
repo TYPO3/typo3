@@ -1,6 +1,7 @@
 2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
 
 	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
+	* Fixed bug: #10895 php-warnings after merge into Core - array_merge on non-array
 
 2010-11-17  Oliver Hader  <oliver@tpyo3.org>
 
