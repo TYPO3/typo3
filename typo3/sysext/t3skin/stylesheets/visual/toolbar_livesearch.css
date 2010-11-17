@@ -1,0 +1,69 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Backend  Live Search
+- - - - - - - - - - - - - - - - - - - - - */
+
+.live-search-results .t3-icon-toolbar-menu-search {
+	position: absolute;
+	z-index: 3000;
+	top: 0;
+	margin: 3px;
+}
+
+.t3-icon-input-clear {
+	position: absolute;
+	top: 0px;
+	right: 20px;
+}
+
+#live-search-box {
+	padding-left: 20px;
+	width: 180px;
+	border: none;
+}
+
+.live-search-list {
+	background-color: white;
+	border: none;
+}
+
+.live-search-list .x-combo-list {
+	background-color: white;
+}
+
+.live-search-list .x-combo-list-inner {
+	padding-bottom: 5px;
+}
+
+.live-search-list .x-combo-list-hd {
+	background: none;
+	border: none;
+	margin-left: 110px;
+	color: #ddd;
+}
+
+.search-list-help-content {
+	margin: 5px;
+	height: 100%;
+	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+
+	background-color: #ddeef9;
+	border-color: #8aafc4;
+}
+
+.live-search-list .search-item-type {
+	border-right: 1px solid #ddd;
+	padding: 2px 5px 2px 0;
+}
+
+.live-search-list .search-item-content {
+	padding: 0 8px;
+}
+
+.live-search-list .search-item-content .search-item-title {
+	padding: 2px;
+	border: none !important;
+}

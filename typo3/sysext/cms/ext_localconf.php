@@ -200,4 +200,8 @@ if (TYPO3_MODE === 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = PATH_tslib . 'extdirecteid.php';
 }
 
+	// register search keys
+$GLOBALS ['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
+$GLOBALS ['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
+
 ?>

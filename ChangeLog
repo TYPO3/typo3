@@ -23,6 +23,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #16432: Add live search to the backend toolbar (Special thanks to Jeff Segars)
 	* Follow-up to #16315: added missing mirror push parser (Thanks to Marcus Krause)
 	* Fixed bug #16364: EDITPANEL cObject is missing
 	* Updated Workspaces to version 4.5.0beta1b. See their ChangeLog for details.

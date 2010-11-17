@@ -36,7 +36,7 @@ require_once('classes/class.donatewindow.php');
 	// core toolbar items
 require('classes/class.clearcachemenu.php');
 require('classes/class.shortcutmenu.php');
-require('classes/class.backendsearchmenu.php');
+require('classes/class.livesearch.php');
 
 require_once('class.alt_menu_functions.inc');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
@@ -172,7 +172,7 @@ class TYPO3backend {
 		$coreToolbarItems = array(
 			'shortcuts'         => 'ShortcutMenu',
 			'clearCacheActions' => 'ClearCacheMenu',
-			'backendSearch'     => 'BackendSearchMenu'
+			'liveSearch'        => 'LiveSearch'
 		);
 
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
@@ -330,9 +330,9 @@ class TYPO3backend {
 	protected function renderToolbar() {
 
 			// move search to last position
-		$search = $this->toolbarItems['backendSearch'];
-		unset($this->toolbarItems['backendSearch']);
-		$this->toolbarItems['backendSearch'] = $search;
+		$search = $this->toolbarItems['liveSearch'];
+		unset($this->toolbarItems['liveSearch']);
+		$this->toolbarItems['liveSearch'] = $search;
 
 		$toolbar = '<ul id="typo3-toolbar">';
 		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
@@ -496,19 +496,31 @@ class TYPO3backend {
 			'allError401' => $GLOBALS['LANG']->getLL('fileUpload_allError401'),
 			'allError2038' => $GLOBALS['LANG']->getLL('fileUpload_allError2038'),
 		);
-
+		$t3LLLliveSearch = array(
+			'title' => $GLOBALS['LANG']->getLL('liveSearch_title'),
+			'helpTitle' => $GLOBALS['LANG']->getLL('liveSearch_helpTitle'),
+			'emptyText' => $GLOBALS['LANG']->getLL('liveSearch_emptyText'),
+			'loadingText' => $GLOBALS['LANG']->getLL('liveSearch_loadingText'),
+			'listEmptyText' => $GLOBALS['LANG']->getLL('liveSearch_listEmptyText'),
+			'showAllResults' => $GLOBALS['LANG']->getLL('liveSearch_showAllResults'),
+			'helpDescription' => $GLOBALS['LANG']->getLL('liveSearch_helpDescription'),
+			'helpDescriptionPages' => $GLOBALS['LANG']->getLL('liveSearch_helpDescriptionPages'),
+			'helpDescriptionContent' => $GLOBALS['LANG']->getLL('liveSearch_helpDescriptionContent')
+		);
 			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
 		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
 			$t3Configuration['username'] = $GLOBALS['LANG']->csConvObj->conv($t3Configuration['username'], $GLOBALS['LANG']->charSet, 'utf-8');
 			$GLOBALS['LANG']->csConvObj->convArray($t3LLLcore, $GLOBALS['LANG']->charSet, 'utf-8');
 			$GLOBALS['LANG']->csConvObj->convArray($t3LLLfileUpload, $GLOBALS['LANG']->charSet, 'utf-8');
+			$GLOBALS['LANG']->csConvObj->convArray($t3LLLliveSearch, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 
 		$this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 	TYPO3.LLL = {
 		core : ' . json_encode($t3LLLcore) . ',
-		fileUpload: ' . json_encode($t3LLLfileUpload) . '
+		fileUpload: ' . json_encode($t3LLLfileUpload) . ',
+		liveSearch: ' . json_encode($t3LLLliveSearch) . '
 	};
 
 	/**

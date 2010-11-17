@@ -393,7 +393,8 @@ $TYPO3_CONF_VARS = array(
 			)
 		),
 		'ExtDirect' => array(	// array of key value pairs (provider -> location:className) that holds the classes for the ExtDirect functionality
-			'TYPO3.CSH.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:extDirect_DataProvider_ContextHelp'
+			'TYPO3.CSH.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:extDirect_DataProvider_ContextHelp',
+			'TYPO3.LiveSearchActions.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch'
 		),
 	),
 	'EXTCONF' => array(		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';

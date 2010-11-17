@@ -132,6 +132,14 @@
 			<label index="fileUpload_allErrorMessageText"><![CDATA[All of your uploads failed.<br /><br />If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.<br /><br />Detailed problem description:<br />]]></label>
 			<label index="fileUpload_allError401">The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</label>
 			<label index="fileUpload_allError2038">An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</label>
+			<label index="liveSearch_title">Short result list</label>
+			<label index="liveSearch_emptyText">Enter search term</label>
+			<label index="liveSearch_loadingText">Searching...</label>
+			<label index="liveSearch_listEmptyText">No results found.</label>
+			<label index="liveSearch_showAllResults">Show All</label>
+			<label index="liveSearch_helpTitle">How to use advanced search tags</label>
+			<label index="liveSearch_helpDescription">Search in certain tables:</label>
+			<label index="liveSearch_helpDescriptionPages">#page:Home will search for all pages with the title "Home"</label>
 		</languageKey>
 	</data>
 </T3locallang>
