@@ -271,7 +271,8 @@ class tx_Workspaces_Service_Workspaces {
 		 * This joins the online version with the offline version as tables A and B
 		 * Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
 		 */
-		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
+		return is_array($res) ? $res : array();
 	}
 
 	/**
@@ -325,7 +326,7 @@ class tx_Workspaces_Service_Workspaces {
 		$where .= t3lib_BEfunc::deleteClause($table, 'C');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
 
-		return $res;
+		return is_array($res) ? $res : array();
 	}
 
 

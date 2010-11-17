@@ -1,3 +1,7 @@
+2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
+
+	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
+
 2010-11-17  Oliver Hader  <oliver@tpyo3.org>
 
 	* Cleanup: Fixed ext_emconf.php
