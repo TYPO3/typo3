@@ -200,7 +200,7 @@ final class tx_em_Database {
 	 */
 	public function insertLastVersion($repositoryUid = 1) {
 		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'extkey, version, max(intversion)',
+			'extkey, version, max(intversion) maxintversion',
 			'cache_extensions',
 			'repository=' . intval($repositoryUid),
 			'extkey'
@@ -219,7 +219,7 @@ final class tx_em_Database {
 			foreach ($groupedRows as $row) {
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 					'cache_extensions',
-					'extkey="' . $row['extkey'] . '" AND version="' . $row['version'] . '" AND repository=' . intval($repositoryUid),
+					'extkey="' . $row['extkey'] . '" AND intversion="' . $row['maxintversion'] . '" AND repository=' . intval($repositoryUid),
 					array('lastversion' => 1)
 				);
 			}
