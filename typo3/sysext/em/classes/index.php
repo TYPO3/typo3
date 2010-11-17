@@ -1863,7 +1863,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						if ($em['action'] == 'doUpload') {
 							$em['extKey'] = $extKey;
 							$em['extInfo'] = $list[$extKey];
-							$content = $this->uploadExtensionToTER($em);
+							$content = $this->extensionDetails->uploadExtensionToTER($em);
 							$content .= $this->doc->spacer(10);
 							// Must reload this, because EM_CONF information has been updated!
 							list($list,) = $this->extensionList->getInstalledExtensions();
@@ -2668,6 +2668,20 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$content .= '</div>';
 		return $content;
+	}
+
+
+	// Function wrappers for compatibility
+
+	/**
+	 * Reports back if installation in a certain scope is possible.
+	 *
+	 * @param	string		Scope: G, L, S
+	 * @param	string		Extension lock-type (eg. "L" or "G")
+	 * @return	boolean		True if installation is allowed.
+	 */
+	public static function importAsType($type, $lockType = '') {
+		return tx_em_Tools::importAsType($type, $lockType);
 	}
 
 }

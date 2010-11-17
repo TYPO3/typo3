@@ -227,7 +227,7 @@ class tx_em_Connection_Ter {
 	 * @return
 	 */
 	function uploadToTER($em) {
-		$uArr = $this->emObj->makeUploadarray($em['extKey'], $em['extInfo']);
+		$uArr = $this->emObj->extensionDetails->makeUploadarray($em['extKey'], $em['extInfo']);
 		if (!is_array($uArr)) {
 			return $uArr;
 		}

@@ -193,7 +193,7 @@ class tx_em_Extensions_Details {
 	 */
 	function uploadExtensionToTER($em) {
 		$msg = '';
-		$response = $this->terConnection->uploadToTER($em);
+		$response = $this->parentObject->terConnection->uploadToTER($em);
 
 		if (!is_array($response)) {
 			return $response;

@@ -1,3 +1,7 @@
+2010-11-17  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16436: Call to undefined method SC_mod_tools_em_index::uploadExtensionToTER()
+
 2010-11-17  Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Added feature #16395: Add basic support for RDFa in core (semantic web)

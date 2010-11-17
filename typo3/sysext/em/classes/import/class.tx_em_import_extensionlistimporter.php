@@ -158,7 +158,9 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 				self::$fieldIndicesNoQuote
 			);
 		}
-		tx_em_Database::insertLastVersion($this->repositoryUID);
+		$extensions = tx_em_Database::insertLastVersion($this->repositoryUID);
+		tx_em_Database::updateRepositoryCount($extensions, $this->repositoryUID);
+
 		return $this->sumRecords;
 	}
 
