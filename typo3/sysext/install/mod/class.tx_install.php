@@ -278,12 +278,6 @@ class tx_install extends t3lib_install {
 			header('Pragma: no-cache');
 		}
 
-			// Let DBAL decide whether to load itself
-		$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
-		if (@is_file($dbalLoaderFile)) {
-			include($dbalLoaderFile);
-		}
-
 			// ****************************
 			// Initializing incoming vars.
 			// ****************************
@@ -322,6 +316,12 @@ class tx_install extends t3lib_install {
 
 		if ($this->step == 4) {
 			$this->INSTALL['type'] = 'database';
+		}
+
+			// Let DBAL decide whether to load itself
+		$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
+		if (@is_file($dbalLoaderFile)) {
+			include($dbalLoaderFile);
 		}
 
 			// Hook to raise the counter for the total steps in the 1-2-3 installer

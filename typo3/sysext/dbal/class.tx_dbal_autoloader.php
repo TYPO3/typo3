@@ -45,28 +45,30 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	public function execute(tx_install $instObj) {
-		switch ($instObj->step) {
-			case 0:
-				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
-					$this->activateDbal();
+		if ($instObj->mode == '123') {
+			switch ($instObj->step) {
+				case 0:
+					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+						$this->activateDbal();
 
-						// Reload page to have Install Tool actually load DBAL
-					$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-					t3lib_utility_Http::redirect($redirectUrl);
-				}
-				break;
-			case 1:
-			case 2:
-				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
-					$this->activateDbal();
-				}
-				break;
-			case 3:
-				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
-				if ($driver === 'mysql') {
-					$this->deactivateDbal();
-				}
-				break;
+							// Reload page to have Install Tool actually load DBAL
+						$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+						t3lib_utility_Http::redirect($redirectUrl);
+					}
+					break;
+				case 1:
+				case 2:
+					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+						$this->activateDbal();
+					}
+					break;
+				case 3:
+					$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+					if ($driver === 'mysql') {
+						$this->deactivateDbal();
+					}
+					break;
+			}
 		}
 	}
 
