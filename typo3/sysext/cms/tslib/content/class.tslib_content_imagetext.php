@@ -43,32 +43,45 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 	 */
 	public function render($conf = array()) {
 		$content = '';
-		if (is_array($conf['text.'])) {
-			$content .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['text.'], 'text.'), $conf['text.']); // this gets the surrounding content
+
+		if (isset($conf['text.'])) {
+			$text = $this->cObj->cObjGet($conf['text.'], 'text.');
+			$content .= $this->cObj->stdWrap($text, $conf['text.']); // this gets the surrounding content
 		}
-		$imgList = trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.'])); // gets images
+		$imgList = isset($conf['imgList.'])
+			? trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.'])) // gets images
+			: trim($conf['imgList']);
 		if ($imgList) {
 			$imgs = t3lib_div::trimExplode(',', $imgList);
-			$imgStart = intval($this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']));
+			$imgStart = isset($conf['imgStart.'])
+				? intval($this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']))
+				: intval($conf['imgStart']);
 
 			$imgCount = count($imgs) - $imgStart;
 
-			$imgMax = intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']));
+			$imgMax = isset($conf['imgMax.'])
+				? intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']))
+				: intval($conf['imgMax']);
 			if ($imgMax) {
 				$imgCount = t3lib_div::intInRange($imgCount, 0, $imgMax); // reduces the number of images.
 			}
 
-			$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);
+			$imgPath = isset($conf['imgPath.'])
+				? $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.'])
+				: $conf['imgPath'];
 
 				// initialisation
 			$caption = '';
 			$captionArray = array();
-			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.'])) {
-				$caption = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']); // global caption, no splitting
+			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && isset($conf['caption.'])) {
+				$caption = $this->cObj->cObjGet($conf['caption.'], 'caption.');
+				$caption = $this->cObj->stdWrap($caption, $conf['caption.']); // global caption, no splitting
 			}
 			if ($conf['captionSplit'] && $conf['captionSplit.']['cObject']) {
 				$legacyCaptionSplit = 1;
-				$capSplit = $this->cObj->stdWrap($conf['captionSplit.']['token'], $conf['captionSplit.']['token.']);
+				$capSplit = isset($conf['captionSplit.']['token.'])
+					? $this->cObj->stdWrap($conf['captionSplit.']['token'], $conf['captionSplit.']['token.'])
+					: $conf['captionSplit.']['token'];
 				if (!$capSplit) {
 					$capSplit = LF;
 				}
@@ -78,58 +91,105 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 						'captionSplit.cObject')
 					);
 				foreach ($captionArray as $ca_key => $ca_val) {
-					$captionArray[$ca_key] = $this->cObj->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
+					$captionArray[$ca_key] = isset($conf['captionSplit.']['stdWrap.'])
+						? $this->cObj->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.'])
+						: trim($captionArray[$ca_key]);
 				}
 			}
 
 			$tablecode = '';
-			$position = $this->cObj->stdWrap($conf['textPos'], $conf['textPos.']);
+			$position = isset($conf['textPos.'])
+				? $this->cObj->stdWrap($conf['textPos'], $conf['textPos.'])
+				: $conf['textPos'];
 
 			$tmppos = $position & 7;
 			$contentPosition = $position & 24;
 			$align = $this->cObj->align[$tmppos];
-			$cap = ($caption) ? 1 : 0;
-			$txtMarg = intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']));
+			$cap = ($caption)
+				? 1
+				: 0;
+			$txtMarg = isset($conf['textMargin.'])
+				? intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']))
+				: intval($conf['textMargin']);
 			if (!$conf['textMargin_outOfText'] && $contentPosition < 16) {
 				$txtMarg = 0;
 			}
 
-			$cols = intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']));
-			$rows = intval($this->cObj->stdWrap($conf['rows'], $conf['rows.']));
-			$colspacing = intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']));
-			$rowspacing = intval($this->cObj->stdWrap($conf['rowSpace'], $conf['rowSpace.']));
+			$cols = isset($conf['cols.'])
+				? intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']))
+				: intval($conf['cols']);
+			$rows = isset($conf['rows.'])
+				? intval($this->cObj->stdWrap($conf['rows'], $conf['rows.']))
+				: intval($conf['rows']);
+			$colspacing = isset($conf['colSpace.'])
+				? intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']))
+				: intval($conf['colSpace']);
+			$rowspacing = isset($conf['rowSpace.'])
+				? intval($this->cObj->stdWrap($conf['rowSpace'], $conf['rowSpace.']))
+				: intval($conf['rowSpace']);
 
-			$border = intval($this->cObj->stdWrap($conf['border'], $conf['border.'])) ? 1 : 0;
-			$borderColor = $this->cObj->stdWrap($conf['borderCol'], $conf['borderCol.']);
-			$borderThickness = intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']));
+			$border = isset($conf['border.'])
+				? intval($this->cObj->stdWrap($conf['border'], $conf['border.']))
+				: intval($conf['border']);
 
-			$borderColor = $borderColor ? $borderColor : 'black';
-			$borderThickness = $borderThickness ? $borderThickness : 1;
+			$border = $border
+				? 1
+				: 0;
 
-			$caption_align = $this->cObj->stdWrap($conf['captionAlign'], $conf['captionAlign.']);
+			if($border) {
+				$borderColor = isset($conf['borderCol.'])
+					? $this->cObj->stdWrap($conf['borderCol'], $conf['borderCol.'])
+					: $conf['borderCol'];
+				if(!$borderColor) {
+					$borderColor = 'black';
+				}
+
+				$borderThickness = isset($conf['borderThick.'])
+					? intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']))
+					: intval($conf['borderThick']);
+				if(!$borderThickness) {
+					$borderThickness = 'black';
+				}
+			}
+
+			$caption_align = isset($conf['captionAlign.'])
+				? $this->cObj->stdWrap($conf['captionAlign'], $conf['captionAlign.'])
+				: $conf['captionAlign'];
 			if (!$caption_align) {
 				$caption_align = $align;
 			}
 				// generate cols
-			$colCount = ($cols > 1) ? $cols : 1;
+			$colCount = ($cols > 1)
+				? $cols
+				: 1;
 			if ($colCount > $imgCount) {
 				$colCount = $imgCount;
 			}
-			$rowCount = ($colCount > 1) ? ceil($imgCount / $colCount) : $imgCount;
+			$rowCount = ($colCount > 1)
+				? ceil($imgCount / $colCount)
+				: $imgCount;
 				// generate rows
 			if ($rows > 1) {
 				$rowCount = $rows;
 				if ($rowCount > $imgCount) {
 					$rowCount = $imgCount;
 				}
-				$colCount = ($rowCount > 1) ? ceil($imgCount / $rowCount) : $imgCount;
+				$colCount = ($rowCount > 1)
+					? ceil($imgCount / $rowCount)
+					: $imgCount;
 			}
 
 				// max Width
-			$colRelations = trim($this->cObj->stdWrap($conf['colRelations'], $conf['colRelations.']));
-			$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
+			$colRelations = isset($conf['colRelations.'])
+				? trim($this->cObj->stdWrap($conf['colRelations'], $conf['colRelations.']))
+				: trim($conf['colRelations']);
+			$maxW = isset($conf['maxW.'])
+				? intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']))
+				: intval($conf['maxW']);
 
-			$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']));
+			$maxWInText = isset($conf['maxWInText.'])
+				? intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']))
+				: intval($conf['maxWInText']);
 			if (!$maxWInText) { // If maxWInText is not set, it's calculated to the 50 % of the max...
 				$maxWInText = round($maxW / 2);
 			}
@@ -159,9 +219,15 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 					}
 				}
 			}
-			$image_compression = intval($this->cObj->stdWrap($conf['image_compression'], $conf['image_compression.']));
-			$image_effects = intval($this->cObj->stdWrap($conf['image_effects'], $conf['image_effects.']));
-			$image_frames = intval($this->cObj->stdWrap($conf['image_frames.']['key'], $conf['image_frames.']['key.']));
+			$image_compression = isset($conf['image_compression.'])
+				? intval($this->cObj->stdWrap($conf['image_compression'], $conf['image_compression.']))
+				: intval($conf['image_compression']);
+			$image_effects = isset($conf['image_effects.'])
+				? intval($this->cObj->stdWrap($conf['image_effects'], $conf['image_effects.']))
+				: intval($conf['image_effects']);
+			$image_frames = isset($conf['image_frames.']['key.'])
+				? intval($this->cObj->stdWrap($conf['image_frames.']['key'], $conf['image_frames.']['key.']))
+				: intval($conf['image_frames.']['key']);
 
 				// fetches pictures
 			$splitArr = array();
@@ -169,7 +235,9 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 			$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $imgCount);
 
 				// EqualHeight
-			$equalHeight = intval($this->cObj->stdWrap($conf['equalH'], $conf['equalH.']));
+			$equalHeight = isset($conf['equalH.'])
+				? intval($this->cObj->stdWrap($conf['equalH'], $conf['equalH.']))
+				: intval($conf['equalH']);
 			if ($equalHeight) { // Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
 				$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 				$gifCreator->init();
@@ -297,8 +365,12 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 				// make table for pictures
 			$index = $imgIndex = $imgStart;
 
-			$noRows = $this->cObj->stdWrap($conf['noRows'], $conf['noRows.']);
-			$noCols = $this->cObj->stdWrap($conf['noCols'], $conf['noCols.']);
+			$noRows = isset($conf['noRows.'])
+				? $this->cObj->stdWrap($conf['noRows'], $conf['noRows.'])
+				: $conf['noRows'];
+			$noCols = isset($conf['noCols.'])
+				? $this->cObj->stdWrap($conf['noCols'], $conf['noCols.'])
+				: $conf['noCols'];
 			if ($noRows) {
 				$noCols = 0;
 			} // noRows overrides noCols. They cannot exist at the same time.
@@ -317,9 +389,13 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 				$colCount = 1;
 			}
 				// col- and rowspans calculated
-			$colspan = (($colspacing) ? $colCount * 2 - 1 : $colCount);
-			$rowspan = (($rowspacing) ? $rowCount * 2 - 1 : $rowCount) + $cap;
-
+			$colspan = $colspacing
+				? $colCount * 2 - 1
+				: $colCount;
+			$rowspan = ($rowspacing
+				? $rowCount * 2 - 1
+				: $rowCount)
+				+ $cap;
 
 				// Edit icons:
 			$editIconsHTML = $conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin
@@ -329,7 +405,10 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 				// strech out table:
 			$tablecode = '';
 			$flag = 0;
-			if ($conf['noStretchAndMarginCells'] != 1) {
+			$noStretchAndMarginCells = isset($conf['noStretchAndMarginCells.'])
+				? $this->cObj->stdWrap($conf['noStretchAndMarginCells'], $conf['noStretchAndMarginCells.'])
+				: $conf['noStretchAndMarginCells'];
+			if ($noStretchAndMarginCells != 1) {
 				$tablecode .= '<tr>';
 				if ($txtMarg && $align == 'right') { // If right aligned, the textborder is added on the right side
 					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><img src="' .
@@ -391,8 +470,9 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 							}
 							if ($legacyCaptionSplit) {
 								$thisCaption = $captionArray[$imgIndex];
-							} else if ($conf['captionSplit'] || $conf['imageTextSplit']) {
-								$thisCaption = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
+							} else if (($conf['captionSplit'] || $conf['imageTextSplit']) && isset($conf['caption.'])) {
+								$thisCaption = $this->cObj->cObjGet($conf['caption.'], 'caption.');
+								$thisCaption = $this->cObj->stdWrap($thisCaption, $conf['caption.']);
 							}
 							$imageHTML = $imgsTag[$imgIndex] . '<br />';
 							$Talign = (!trim($thisCaption) && !$noRows) ? ' align="left"' : ''; // this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
@@ -452,12 +532,14 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 					$tablecode .= '<tr><td colspan="' . $colspan . '" align="' . $caption_align . '">' . $caption . '</td></tr>';
 				}
 				$tablecode .= '</table>';
-				if ($conf['tableStdWrap.']) {
+				if (isset($conf['tableStdWrap.'])) {
 					$tablecode = $this->cObj->stdWrap($tablecode, $conf['tableStdWrap.']);
 				}
 			}
 
-			$spaceBelowAbove = intval($this->cObj->stdWrap($conf['spaceBelowAbove'], $conf['spaceBelowAbove.']));
+			$spaceBelowAbove = isset($conf['spaceBelowAbove.'])
+				? intval($this->cObj->stdWrap($conf['spaceBelowAbove'], $conf['spaceBelowAbove.']))
+				: intval($conf['spaceBelowAbove']);
 			switch ($contentPosition) {
 				case '0' : // above
 					$output = '<div style="text-align:' . $align . ';">' . $tablecode . '</div>' .
@@ -486,7 +568,7 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 			$output = $content;
 		}
 
-		if ($conf['stdWrap.']) {
+		if (isset($conf['stdWrap.'])) {
 			$output = $this->cObj->stdWrap($output, $conf['stdWrap.']);
 		}
 
