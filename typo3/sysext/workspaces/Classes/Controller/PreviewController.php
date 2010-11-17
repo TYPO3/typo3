@@ -33,18 +33,6 @@
  * @subpackage Controller
  */
 class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controller_AbstractController {
-	/**
-	 * Creates this object.
-	 *
-	 * @param boolean $skipObjectInit
-	 * @return void
-	 */
-	public function __construct($initializeObjects = TRUE) {
-			// removed this because the injection breaks for some reason when viewOnClick hook inits this object
-		if ($initializeObjects) {
-			$this->initializeObjects();
-		}
-	}
 
 	/**
 	 * Initializes the controller before invoking an action method.
