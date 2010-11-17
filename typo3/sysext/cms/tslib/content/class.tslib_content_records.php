@@ -49,9 +49,14 @@ class tslib_content_Records extends tslib_content_Abstract {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
-		$conf['source'] = $this->cObj->stdWrap($conf['source'], $conf['source.']);
-		if ($conf['tables'] && $conf['source']) {
-			$allowedTables = $conf['tables'];
+		$tables = isset($conf['tables.'])
+			? $this->cObj->stdWrap($conf['tables'], $conf['tables.'])
+			: $conf['tables'];
+		$source = isset($conf['source.'])
+			? $this->cObj->stdWrap($conf['source'], $conf['source.'])
+			: $conf['source'];
+		if ($tables && $source) {
+			$allowedTables = $tables;
 			if (is_array($conf['conf.'])) {
 				foreach ($conf['conf.'] as $k => $v) {
 					if (substr($k, -1) != '.')
@@ -60,7 +65,7 @@ class tslib_content_Records extends tslib_content_Abstract {
 			}
 
 			$loadDB = t3lib_div::makeInstance('FE_loadDBGroup');
-			$loadDB->start($conf['source'], $allowedTables);
+			$loadDB->start($source, $allowedTables);
 			foreach ($loadDB->tableArray as $table => $v) {
 				if (is_array($GLOBALS['TCA'][$table])) {
 					$loadDB->additionalWhere[$table] = $this->cObj->enableFields($table);
@@ -92,12 +97,21 @@ class tslib_content_Records extends tslib_content_Abstract {
 				}
 
 				if (is_array($row)) { // Might be unset in the content overlay things...
-					if (!$conf['dontCheckPid']) {
-						$row = $this->cObj->checkPid($row['pid']) ? $row : '';
+					$dontCheckPid = isset($conf['dontCheckPid.'])
+						? $this->cObj->stdWrap($conf['dontCheckPid'], $conf['dontCheckPid.'])
+						: $conf['dontCheckPid'];
+					if (!$dontCheckPid) {
+						$row = $this->cObj->checkPid($row['pid'])
+							? $row
+							: '';
 					}
 					if ($row && !$GLOBALS['TSFE']->recordRegister[$val['table'] . ':' . $val['id']]) {
-						$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<' . $val['table'];
-						$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.' . $val['table'] : '';
+						$renderObjName = $conf['conf.'][$val['table']]
+							? $conf['conf.'][$val['table']]
+							: '<' . $val['table'];
+						$renderObjKey = $conf['conf.'][$val['table']]
+							? 'conf.' . $val['table']
+							: '';
 						$renderObjConf = $conf['conf.'][$val['table'] . '.'];
 						$this->cObj->currentRecordNumber++;
 						$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
@@ -110,12 +124,20 @@ class tslib_content_Records extends tslib_content_Abstract {
 				}
 			}
 		}
-		if ($conf['wrap'])
-			$theValue = $this->cObj->wrap($theValue, $conf['wrap']);
-		if ($conf['stdWrap.'])
+
+		$wrap = isset($conf['wrap.'])
+			? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
+			: $conf['wrap'];
+		if ($wrap) {
+			$theValue = $this->cObj->wrap($theValue, $wrap);
+		}
+
+		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
 
 		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
+
 		return $theValue;
 	}
 

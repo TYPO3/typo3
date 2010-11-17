@@ -1,6 +1,7 @@
 2010-11-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Added feature #16284: Optimize stdWrap usage for TypoScript content element LOAD_REGISTER (Thanks to Jo Hasenau)
+	* Added feature #16285: Optimize stdWrap usage for TypoScript content element RECORDS (Thanks to Jo Hasenau)
 
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 
