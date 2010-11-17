@@ -129,11 +129,10 @@ class SC_mod_user_setup_index {
 
 	/**
 	 * If settings are submitted to _POST[DATA], store them
-	 * NOTICE: This method is called before the template.php is included. See buttom of document
-	 *
-	 * @return	void
+	 * NOTICE: This method is called before the template.php is included. See
+	 * bottom of document.
 	 */
-	function storeIncomingData()	{
+	public function storeIncomingData() {
 		/* @var $BE_USER t3lib_beUserAuth */
 		global $BE_USER;
 
@@ -144,8 +143,14 @@ class SC_mod_user_setup_index {
 		$storeRec = array();
 		$fieldList = $this->getFieldsFromShowItem();
 
-		if (is_array($d))	{
-
+		$formProtection = t3lib_formProtection_Factory::get(
+			't3lib_formprotection_BackendFormProtection'
+		);
+		if (is_array($d) && $formProtection->validateToken(
+				(string) t3lib_div::_POST('formToken'),
+				'BE user setup', 'edit'
+			)
+		) {
 				// UC hashed before applying changes
 			$save_before = md5(serialize($BE_USER->uc));
 
@@ -428,18 +433,21 @@ class SC_mod_user_setup_index {
 
 		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 0, 1, FALSE, 1, $this->dividers2tabs);
 
+		$formProtection = t3lib_formProtection_Factory::get(
+			't3lib_formprotection_BackendFormProtection'
+		);
+		$formToken = $formProtection->generateToken('BE user setup', 'edit');
 
 			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->section('',
 			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
+			<input type="hidden" name="formToken" value="' . $formToken . '" />
 			<input type="submit" name="data[save]" value="'.$LANG->getLL('save').'" />
 			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('resetConfiguration').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />
 			<input type="submit" name="data[clearSessionVars]" value="' . $LANG->getLL('clearSessionVars') . '"  onclick="return confirm(\'' . $LANG->getLL('clearSessionVarsQuestion') . '\');" />'
 		);
-
-
 
 			// Notice
 		$this->content .= $this->doc->spacer(30);
@@ -977,4 +985,6 @@ $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
 
+t3lib_formProtection_Factory::get('t3lib_formprotection_BackendFormProtection')
+	->persistTokens();
 ?>

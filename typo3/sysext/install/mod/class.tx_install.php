@@ -161,6 +161,8 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_fl
 /**
  * Install Tool module
  *
+ * $Id$
+ *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmar@typo3.org>
  * @package TYPO3
@@ -219,6 +221,13 @@ class tx_install extends t3lib_install {
 	 * @var tx_install_session
 	 */
 	protected $session = NULL;
+
+	/**
+	 * the form protection instance used for creating and verifying form tokens
+	 *
+	 * @var t3lib_formprotection_InstallToolFormProtection
+	 */
+	protected $formProtection = NULL;
 
 	var $menuitems = array(
 		'config' => 'Basic Configuration',
@@ -373,6 +382,11 @@ class tx_install extends t3lib_install {
 			if($this->redirect_url) {
 				t3lib_utility_Http::redirect($this->redirect_url);
 			}
+
+			$this->formProtection = t3lib_formProtection_Factory::get(
+				't3lib_formprotection_InstallToolFormProtection'
+			);
+			$this->formProtection->injectInstallTool($this);
 		} else {
 			$this->loginForm();
 		}
@@ -527,6 +541,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			TRUE,
 			TRUE
 		);
+
 			// Send content to the page wrapper function
 		$this->output($this->outputWrapper($content));
 	}
@@ -753,6 +768,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					if (is_file($enableInstallToolFile) && trim(file_get_contents($enableInstallToolFile)) !== 'KEEP_FILE') {
 						unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 					}
+					$this->formProtection->clean();
 					$this->session->destroySession();
 					t3lib_utility_Http::redirect($this->scriptSelf);
 				break;
@@ -906,6 +922,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 			}
 		}
+
+		$this->formProtection->persistTokens();
 	}
 
 	/**
@@ -2104,13 +2122,24 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									$doit=1;
 									if ($k=='BE' && $vk=='installToolPassword') {
 										if ($value) {
-											if (isset($_POST['installToolPassword_check']) && (!t3lib_div::_GP('installToolPassword_check') || strcmp(t3lib_div::_GP('installToolPassword_check'),$value))) {
-												$doit=0;
-												$this->errorMessages[] = '
-													The two passwords did not
-													match! The password was not
-													changed.
-												';
+											if (isset($_POST['installToolPassword_check'])) {
+												if (!$this->formProtection->validateToken(
+													(string) $_POST['formToken'],
+													'installToolPassword',
+													'change'
+												)) {
+													$doit = FALSE;
+													break;
+												}
+
+												if (!t3lib_div::_GP('installToolPassword_check')
+													|| strcmp(t3lib_div::_GP('installToolPassword_check'), $value)
+												) {
+													$doit = FALSE;
+													$this->errorMessages[]
+														= 'The two passwords did not ' .
+															'match! The password was not changed.';
+												}
 											}
 											if (t3lib_div::_GP('installToolPassword_md5'))	$value =md5($value);
 										} else $doit=0;
@@ -7964,7 +7993,10 @@ $out="
 			'action' => $this->scriptSelf.'?TYPO3_INSTALL[type]=extConfig',
 			'enterPassword' => 'Enter new password:',
 			'enterAgain' => 'Enter again:',
-			'submit' => 'Set new password'
+			'submit' => 'Set new password',
+			'formToken' => $this->formProtection->generateToken(
+				'installToolPassword', 'change'
+			),
 		);
 			// Fill the markers
 		$content = t3lib_parsehtml::substituteMarkerArray(
@@ -8318,6 +8350,20 @@ $out="
 	public function createEncryptionKey($keyLength = 96) {
 		$bytes = t3lib_div::generateRandomBytes($keyLength);
 		return substr(bin2hex($bytes), -96);
+	}
+
+	/**
+	 * Adds an error message that should be displayed.
+	 *
+	 * @param string $messageText
+	 *        the text of the message to display, must not be empty
+	 */
+	public function addErrorMessage($messageText) {
+		if ($messageText == '') {
+			throw new InvalidArgumentException('$messageText must not be empty.');
+		}
+
+		$this->errorMessages[] = $messageText;
 	}
 }
 
