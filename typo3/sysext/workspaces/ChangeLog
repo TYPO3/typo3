@@ -1,3 +1,7 @@
+2010-11-17  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Fixed ext_emconf.php 
+
 2010-11-16  Tolleiv Nietsch <info@tolleiv.de>
 
 	* Fixed bug: #10778 Consider http://bugs.typo3.org/view.php?id=9508 when implementing preview link in new module
