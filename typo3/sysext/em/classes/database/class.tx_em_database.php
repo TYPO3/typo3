@@ -131,7 +131,9 @@ final class tx_em_Database {
 	 * @return  void
 	 */
 	public function updateRepository(tx_em_Repository $repository) {
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(self::TABLE_REPOSITORY, $repository->getId(),
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			self::TABLE_REPOSITORY,
+			'uid=' . $repository->getId(),
 			array(
 				'title' => $repository->getTitle(),
 				'description' => $repository->getDescription(),
@@ -165,6 +167,22 @@ final class tx_em_Database {
 	}
 
 	/**
+	 * Updates ExtCount and lastUpdated  in Repository eg after import
+	 * @param  int $extCount
+	 * @param int $uid
+	 * @return void
+	 */
+	public function updateRepositoryCount($extCount, $uid = 1) {
+	 	$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			 self::TABLE_REPOSITORY,
+			 'uid=' . intval($uid),
+			 array (
+			  	'lastUpdated' => time(),
+				'extCount' => intval($extCount)
+			 ));
+	}
+
+	/**
 	 * Insert version
 	 *
 	 * @param  $arrFields
@@ -187,8 +205,9 @@ final class tx_em_Database {
 			'repository=' . intval($repositoryUid),
 			'extkey'
 		);
+		$extensions = count($groupedRows);
 
-		if (count($groupedRows)) {
+		if ($extensions > 0) {
 			// set all to 0
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				'cache_extensions',
@@ -205,6 +224,8 @@ final class tx_em_Database {
 				);
 			}
 		}
+
+		return $extensions;
 	}
 
 
