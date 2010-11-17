@@ -199,6 +199,14 @@ Workspaces
 	  task runs. Note that automatic "un-publication" still does not
 	  work. Replaces non-working CLI script
 	  "typo3/mod/user/ws/cli/ws_cli.phpsh".
+	* The workspaces module was completely rewritten and is now based on
+	  ExtJS. The usability is enhanced by displaying the information in a
+	  nice grid view. Besides that each workspace can now have a customized
+	  set of stages which are child records of a workspace record.
+	  Make sure to run the upgrade wizard which migrates the hardcoded draft
+	  workspace to a real workspace and sets up the new stages.
+	* Inline Relational Record Editing (IRRE) can now also be used for 1:n
+	  relations in workspaces.
 
 
 Backend skin

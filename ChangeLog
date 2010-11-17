@@ -21,6 +21,7 @@
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 
 	* Updated Workspaces to version 4.5.0beta1. See their ChangeLog for details.
+	* Cleanup: Updated NEWS.txt
 
 2010-11-16  Stanislas Rolland  <typo3@sjbr.ca>
 
