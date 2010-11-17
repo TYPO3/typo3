@@ -1,3 +1,7 @@
+2010-11-17  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Added feature #16284: Optimize stdWrap usage for TypoScript content element LOAD_REGISTER (Thanks to Jo Hasenau)
+
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 
 	* Updated Workspaces to version 4.5.0beta1. See their ChangeLog for details.
