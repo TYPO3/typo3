@@ -64,6 +64,7 @@
 	* Added feature #16282: Optimize stdWrap usage for TypoScript content element IMAGE (Thanks to Jo Hasenau)
 	* Added feature #16430: Optimize stdWrap usage for TypoScript content element GIFBUILDER (Thanks to Jo Hasenau)
 	* Added feature #16393: Date ranges for ExtJS date pickers (Thanks to Stefano Cecere)
+	* Added feature #16446: Optimize stdWrap usage for tslib_menu (Thanks to Jo Hasenau)
 
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 

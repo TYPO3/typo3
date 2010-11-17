@@ -237,10 +237,7 @@ class tslib_menu {
 				// alwaysActivePIDlist initialized:
 			if (trim($this->conf['alwaysActivePIDlist']) || isset($this->conf['alwaysActivePIDlist.'])) {
 				if (isset($this->conf['alwaysActivePIDlist.'])) {
-					$this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrap(
-						$this->conf['alwaysActivePIDlist'],
-						$this->conf['alwaysActivePIDlist.']
-					);
+					$this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrap($this->conf['alwaysActivePIDlist'], $this->conf['alwaysActivePIDlist.']);
 				}
 				$this->alwaysActivePIDlist = t3lib_div::intExplode(',', $this->conf['alwaysActivePIDlist']);
 			}
@@ -257,7 +254,9 @@ class tslib_menu {
 			}
 				// EntryLevel
 			$this->entryLevel = tslib_cObj::getKey (
-				$this->parent_cObj->stdWrap($conf['entryLevel'], $conf['entryLevel.']),
+				isset($conf['entryLevel.'])
+				? $this->parent_cObj->stdWrap($conf['entryLevel'], $conf['entryLevel.'])
+				: $conf['entryLevel'],
 				$this->tmpl->rootLine
 			);
 				// Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
@@ -320,7 +319,9 @@ class tslib_menu {
 			// an invalid value if .special=directory was set
 			$directoryLevel = 0;
 			if ($this->conf['special'] == 'directory')	{
-				$value = $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']);
+				$value = isset($this->conf['special.']['value.'])
+					? $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
+					: $this->conf['special.']['value'];
 				if ($value=='') {
 					$value=$GLOBALS['TSFE']->page['uid'];
 				}
@@ -386,7 +387,9 @@ class tslib_menu {
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
 			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
 			if ($this->menuNumber==1 && $this->conf['special'])	{		// ... only for the FIRST level of a HMENU
-				$value = $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']);
+				$value = isset($this->conf['special.']['value.'])
+					? $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
+					: $this->conf['special.']['value'];
 
 				switch($this->conf['special'])	{
 					case 'userdefined':
@@ -593,7 +596,9 @@ class tslib_menu {
 							$value=$GLOBALS['TSFE']->page['uid'];
 						}
 						if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
-							$kw = $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.']);
+							$kw = isset($this->conf['special.']['setKeywords.'])
+								? $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.'])
+								: $this->conf['special.']['setKeywords'];
 	 					} else {
 		 					$value_rec=$this->sys_page->getPage($value);	// The page record of the 'value'.
 
@@ -634,7 +639,9 @@ class tslib_menu {
 						}
 							// start point
 						$eLevel = tslib_cObj::getKey(
-							$this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']),
+							isset($this->conf['special.']['entryLevel.'])
+								? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.'])
+								: $this->conf['special.']['entryLevel'],
 							$this->tmpl->rootLine
 						);
 						$startUid = intval($this->tmpl->rootLine[$eLevel]['uid']);
@@ -667,7 +674,10 @@ class tslib_menu {
 						}
 					break;
 					case 'rootline':
-						$begin_end = explode('|', $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.']));
+						$range = isset($this->conf['special.']['range.'])
+							? $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.'])
+							: $this->conf['special.']['range'];
+						$begin_end = explode('|', $range);
 						$begin_end[0] = intval($begin_end[0]);
 						if (!t3lib_div::testInt($begin_end[1])) {
 							$begin_end[1] = -1;
@@ -1729,7 +1739,9 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['key'] = $key;
 				$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_'.$this->INPfixMD5).'_'.$key;
 				$this->I['val'] = $val;
-				$this->I['title'] = $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']),$this->I['val']['stdWrap.']);
+				$this->I['title'] = isset($this->I['val']['stdWrap.'])
+					? $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']), $this->I['val']['stdWrap.'])
+					: $this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']);
 				$this->I['uid'] = $this->menuArr[$key]['uid'];
 				$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
 				$this->I['pid'] = $this->menuArr[$key]['pid'];
@@ -1744,11 +1756,15 @@ class tslib_tmenu extends tslib_menu {
 
 					// Make link tag
 				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-				$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'],$this->I['val']['additionalParams.']);
+				if(isset($this->I['val']['additionalParams.'])) {
+					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
+				}
 				$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 					// Title attribute of links:
-				$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
+				$titleAttrValue = isset($this->I['val']['ATagTitle.'])
+					? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt']
+					: $this->I['val']['ATagTitle'].$this->I['accessKey']['alt'];
 				if (strlen($titleAttrValue))	{
 					$this->I['linkHREF']['title'] = $titleAttrValue;
 				}
@@ -1813,7 +1829,10 @@ class tslib_tmenu extends tslib_menu {
 					$wrapPartsAfter = explode('|',$this->I['val']['linkWrap']);
 				}
 				if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.']))	{
-					$wrapPartsStdWrap = explode($this->I['val']['stdWrap2']?$this->I['val']['stdWrap2']:'|',$this->WMcObj->stdWrap('|',$this->I['val']['stdWrap2.']));
+					$stdWrap2 = isset($this->I['val']['stdWrap2.'])
+						? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.'])
+						: '|';
+					$wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ? $this->I['val']['stdWrap2'] : '|', $stdWrap2);
 				} else {$wrapPartsStdWrap = array('','');}
 
 					// Make before, middle and after parts
@@ -1848,14 +1867,16 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['theItem']= $this->extProc_beforeAllWrap($this->I['theItem'],$key);
 
 					// allWrap:
-				$allWrap = $this->WMcObj->stdWrap($this->I['val']['allWrap'],$this->I['val']['allWrap.']);
+				$allWrap = isset($this->I['val']['allWrap.'])
+					? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.'])
+					: $this->I['val']['allWrap'];
 				$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'],$allWrap);
 
 				if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
 
 					// allStdWrap:
 				if (is_array($this->I['val']['allStdWrap.']))	{
-					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'],$this->I['val']['allStdWrap.']);
+					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
 				}
 
 					// Calling extra processing function
@@ -1902,7 +1923,10 @@ class tslib_tmenu extends tslib_menu {
 				$res=$this->I['A1'].$res.$this->I['A2'];
 			}
 		}
-		return $this->tmpl->wrap($res.$this->WMcObj->stdWrap($this->I['val'][$pref],$this->I['val'][$pref.'.']), $this->I['val'][$pref.'Wrap']);
+		$pref = isset($this->I['val'][$pref.'.'])
+			? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref.'.'])
+			: $this->I['val'][$pref];
+		return $this->tmpl->wrap($res.$pref, $this->I['val'][$pref.'Wrap']);
 	}
 
 	/**
@@ -1973,7 +1997,9 @@ class tslib_tmenu extends tslib_menu {
 		if (!$this->I['spacer'])	{
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
-		$part = $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'],$this->I['val']['wrapItemAndSub.']);
+		$part = isset($this->I['val']['wrapItemAndSub.'])
+			? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.'])
+			: $this->I['val']['wrapItemAndSub'];
 		$this->WMresult.= $part ? $this->tmpl->wrap($this->I['theItem'],$part) : $this->I['theItem'];
 	}
 
@@ -2000,7 +2026,7 @@ class tslib_tmenu extends tslib_menu {
 	function extProc_finish()	{
 			// stdWrap:
 		if (is_array($this->mconf['stdWrap.'])) {
-			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult,$this->mconf['stdWrap.']);
+			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
 		}
 		return $this->tmpl->wrap($this->WMresult,$this->mconf['wrap']).$this->WMextraScript;
 	}
@@ -2384,11 +2410,15 @@ class tslib_gmenu extends tslib_menu {
 
 						// Make link tag
 					$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'],$this->I['val']['additionalParams.']);
+					if (isset($this->I['val']['additionalParams.'])) {
+						$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
+					}
 					$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
 						// Title attribute of links:
-					$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']).$this->I['accessKey']['alt'];
+					$titleAttrValue = isset($this->I['val']['ATagTitle.'])
+						? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt']
+						: $this->I['val']['ATagTitle'].$this->I['accessKey']['alt'];
 					if (strlen($titleAttrValue))	{
 						$this->I['linkHREF']['title'] = $titleAttrValue;
 					}
@@ -2445,14 +2475,16 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['theItem']= $this->tmpl->wrap($this->I['theItem'],$this->I['val']['wrap']);
 
 						// allWrap:
-					$allWrap = $this->WMcObj->stdWrap($this->I['val']['allWrap'],$this->I['val']['allWrap.']);
+					$allWrap = isset($this->I['val']['allWrap.'])
+						? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.'])
+						: $this->I['val']['allWrap'];
 					$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'],$allWrap);
 
 					if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
 
 						// allStdWrap:
 					if (is_array($this->I['val']['allStdWrap.']))	{
-						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'],$this->I['val']['allStdWrap.']);
+						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
 					}
 
 					$GLOBALS['TSFE']->imagesOnPage[]=$this->I['val']['output_file'];
@@ -2512,7 +2544,9 @@ class tslib_gmenu extends tslib_menu {
 		if (!$this->I['spacer'])	{
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
-		$part = $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'],$this->I['val']['wrapItemAndSub.']);
+		$part = isset($this->I['val']['wrapItemAndSub.'])
+			? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.'])
+			: $this->I['val']['wrapItemAndSub'];
 		$this->WMresult.= $part ? $this->tmpl->wrap($this->I['theItem'],$part) : $this->I['theItem'];
 	}
 
@@ -2540,7 +2574,7 @@ class tslib_gmenu extends tslib_menu {
 	function extProc_finish()	{
 			// stdWrap:
 		if (is_array($this->mconf['stdWrap.'])) {
-			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult,$this->mconf['stdWrap.']);
+			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
 		}
 		return $this->tmpl->wrap($this->WMresult,$this->mconf['wrap']).$this->WMextraScript;
 	}
@@ -2669,13 +2703,17 @@ class tslib_imgmenu extends tslib_menu {
 									if (is_array($theValArr['imgMap.']['altText.']))	{
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData,'pages');
-										$theValArr['imgMap.']['altText'] = $cObj->stdWrap($theValArr['imgMap.']['altText'], $theValArr['imgMap.']['altText.']);
+										if(isset($theValArr['imgMap.']['altText.'])) {
+											$theValArr['imgMap.']['altText'] = $cObj->stdWrap($theValArr['imgMap.']['altText'], $theValArr['imgMap.']['altText.']);
+										}
 										unset($theValArr['imgMap.']['altText.']);
 								}
 									if (is_array($theValArr['imgMap.']['titleText.']))	{
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData,'pages');
-										$theValArr['imgMap.']['titleText'] = $cObj->stdWrap($theValArr['imgMap.']['titleText'], $theValArr['imgMap.']['titleText.']);
+										if(isset($theValArr['imgMap.']['titleText.'])) {
+											$theValArr['imgMap.']['titleText'] = $cObj->stdWrap($theValArr['imgMap.']['titleText'], $theValArr['imgMap.']['titleText.']);
+										}
 										unset($theValArr['imgMap.']['titleText.']);
 									}
 								}
