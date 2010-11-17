@@ -1,5 +1,6 @@
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #10820: Error and warning in scheduler task
 	* Fixed bug #10890: Add ext:info as dependency in ext_emconf
 
 2010-11-12  Tolleiv Nietsch  <info@tolleiv.de>

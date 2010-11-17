@@ -102,8 +102,10 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 				foreach ($modTS['searchFields.'] as $table => $fieldList) {
 					$fields = t3lib_div::trimExplode(',', $fieldList);
 					foreach ($fields as $field) {
-						if (array_search($field, $searchFields[$table]) === FALSE) {
-							$searchFields[$table][] = $field;
+						if (is_array($searchFields[$table])) {
+							if (array_search($field, $searchFields[$table]) === FALSE) {
+								$searchFields[$table][] = $field;
+							}
 						}
 					}
 				}
