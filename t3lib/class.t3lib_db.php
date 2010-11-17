@@ -365,6 +365,36 @@ class t3lib_DB {
 	}
 
 	/**
+	 * Creates and executes a SELECT SQL-statement AND gets a result set and returns an array with a single record in.
+	 * LIMIT is automatically set to 1 and can not be overridden.
+	 *
+	 * @param string $select_fields: List of fields to select from the table.
+	 * @param string $from_table: Table(s) from which to select.
+	 * @param string $where_clause: Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @param string $groupBy: Optional GROUP BY field(s), if none, supply blank string.
+	 * @param string $orderBy: Optional ORDER BY field(s), if none, supply blank string.
+	 * @param boolean $numIndex: If set, the result will be fetched with sql_fetch_row, otherwise sql_fetch_assoc will be used.
+	 * @return array Single row or NULL if it fails.
+	 */
+	public function exec_SELECTgetSingleRow($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $numIndex = FALSE) {
+		$res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, '1');
+		if ($this->debugOutput) {
+			$this->debug('exec_SELECTquery');
+		}
+
+		$output = NULL;
+		if ($res) {
+			if ($numIndex) {
+				$output = $this->sql_fetch_row($res);
+			} else {
+				$output = $this->sql_fetch_assoc($res);
+			}
+			$this->sql_free_result($res);
+		}
+		return $output;
+	}
+
+	/**
 	 * Counts the number of rows in a table.
 	 *
 	 * @param	string		$field: Name of the field to use in the COUNT() expression (e.g. '*')

@@ -26,6 +26,7 @@
 	* Added feature #16437: Introduce a form protection API (Thanks to the Security Team: Oliver Klee, Helmut Hummel)
 	* Added feature #16439: Use the form protection API to implement the CSRF protection in user setup and install tool (Thanks to the Security Team: Oliver Klee, Helmut Hummel)
 	* Added feature #11103: Improve advanced_htaccess and make it more compatible (Thanks to Christopher Stelmaszyk)
+	* Added feature #11916: New TYPO3_DB method for queries that expect just a single result row: exec_SELECTgetSingleRow (Thanks to Jo Hasenau)
 
 2010-11-17  Benjamin Mack  <benni@typo3.org>
 
