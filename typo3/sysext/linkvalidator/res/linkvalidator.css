@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+#typo3-mod-php .docheader-row2-right a {
+	display: inline;
+}
+.linkvalidator_funcmenu{
+	margin-bottom:10px;
+}
+
+.linkvalidator_funcmenu input{
+    margin-left: 5px;
+}
+
+.linkvalidator_checkoptions {
+	margin-bottom: 10px;
+}
+
+.linkvalidator_checkoptions_send {
+	margin-top: 5px;
+}
+
+.linkvalidator_singleOption {
+	padding: 2px 0;
+}
+
+.linkvalidator_singleOption label {
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+.linkvalidator_singleOption input {
+	vertical-align: middle;
+}
+
+.linkvalidator_singleOption-showalllinks {
+	padding-bottom: 10px;
+}
+
+.linkvalidator_table td {
+    padding: 0 10px 0 0;
+}
+
+.linkvalidator_table td, .linkvalidator_table span{
+    vertical-align: middle;
+}

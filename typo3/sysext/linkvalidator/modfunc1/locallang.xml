@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Labels for linkvalidator mod1</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <labelContext type="array">
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="title">Check Links</label>
+            <label index="menu.introduction">Introduction</label>
+            <label index="menu.checkLinks">Check Links for validity</label>
+            <label index="menu.overview">Overview of links on website</label>
+            <label index="overview.header">Overview - choose options to check the links</label>
+            <label index="overview.all.header">Total amounts in tt_content</label>
+            <label index="overview.all.records">Records with ext. links: </label>
+            <label index="overview.all.links">External links: </label>
+            <label index="overview.branch.header">Amounts from actual branch in tt_content</label>
+            <label index="overview.branch.records">Records with ext. links: </label>
+            <label index="overview.branch.links">External links: </label>
+            <label index="overview.attention.header">Attention: </label>
+            <label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
+            <label index="list.tableHead.lastCheck">Last check (DD-MM-YYYY HH:MM)</label>
+            <label index="list.header">Listing of certainly broken links</label>
+            <label index="list.tableHead.path">Path</label>
+            <label index="list.tableHead.type">Type</label>
+            <label index="list.tableHead.headline">Title</label>
+            <label index="list.tableHead.headlink">Link</label>
+            <label index="list.tableHead.field">field</label>
+            <label index="list.tableHead.linktarget">URL / Link Target</label>
+            <label index="list.tableHead.linkmessage">Error message</label>
+            <label index="list.report.pagedeleted">Page deleted</label>
+            <label index="list.report.pagenotexisting">Page '###title###' doesn't exist</label>
+            <label index="list.report.rowdeleted">###title### row deleted</label>
+            <label index="list.report.rownotexisting">###title### row doesn't exist</label>
+            <label index="list.report.noresponse">External Link not reachable</label>
+            <label index="list.report.filenotexisting">File doesn't exist</label>
+            <label index="label_update">Check links</label>
+            <label index="label_refresh">Refresh display</label>
+            <label index="list.msg.lastRun">on %1$s at %2$s</label>          
+            <label index="hooks.db">Internal Links</label>
+            <label index="hooks.file">File Links</label>
+            <label index="hooks.external">External Links</label>
+            <label index="hooks.linkhandler">Linkhandler Links</label>
+            <label index="overviews.nbtotal">Broken link total</label>
+        </languageKey>
+    </data>
+</T3locallang>
