@@ -85,7 +85,7 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 
 	/**
 	 * The debug console
-	 * 
+	 *
 	 * @var Ext.TabPanel
 	 */
 	DebugConsole: null,
@@ -98,7 +98,7 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	initComponent: function() {
 		// adjust the module menu and the height of the topbar
 		this.initialConfig.items[0].height = TYPO3.configuration.topBarHeight;
-		
+
 		var moduleMenu = this.initialConfig.items[1];
 		moduleMenu.width = TYPO3.configuration.moduleMenuWidth;
 
@@ -132,7 +132,7 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 				});
 			}
 		);
-	},
+	}
 });
 
 Ext.reg('typo3Viewport', TYPO3.Viewport);
