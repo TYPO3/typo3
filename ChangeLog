@@ -1,5 +1,6 @@
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to feature #16420: [linkvalidator] Fix fatal error in class.tx_linkvalidator_modfunc1.php
 	* Added feature #16420: Add link validator extension (Thanks to Patrick Gaumond)
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>

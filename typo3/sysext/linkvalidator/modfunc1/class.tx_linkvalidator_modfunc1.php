@@ -46,7 +46,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	html	Module content
 	 */
 	public function main() {
-		$LANG->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
 
 		$this->search_level = t3lib_div::_GP('search_levels');
 
