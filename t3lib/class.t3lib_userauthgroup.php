@@ -878,11 +878,35 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 		if ($this->workspace>0)	{
 			$stat = $this->checkWorkspaceCurrent();
-			$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
-			if (($stage<=$memberStageLimit && $stat['_ACCESS']==='member') ||
-				($stage<=1 && $stat['_ACCESS']==='reviewer') ||
-				($stat['_ACCESS']==='owner')) {
-					return TRUE;	// OK for these criteria
+
+				// Check if custom staging is activated
+			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
+			if ($workspaceRec['custom_stages'] > 0  && $stage !== '0' && $stage !== '-10') {
+
+					// Get custom stage record
+				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
+					// Check if the user is responsible for the current stage
+				if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid'])
+						&& $stat['_ACCESS'] === 'member')
+					|| $stat['_ACCESS'] === 'owner') {
+					return TRUE; // OK for these criteria
+				}
+
+					// Check if the user is in a group which is responsible for the current stage
+				foreach ($this->userGroupsUID as $groupUid) {
+					if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid)
+							&& $stat['_ACCESS'] === 'member')
+						|| $stat['_ACCESS'] === 'owner') {
+						return TRUE; // OK for these criteria
+					}
+				}
+			} else {
+				$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
+				if (($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member')
+						|| ($stage <= 1 && $stat['_ACCESS'] === 'reviewer')
+						|| $stat['_ACCESS'] === 'owner') {
+						return TRUE;	// OK for these criteria
+				}
 			}
 		} else return TRUE;	// Always OK for live and draft workspaces.
 	}
