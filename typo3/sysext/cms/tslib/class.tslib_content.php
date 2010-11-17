@@ -830,6 +830,7 @@ class tslib_cObj {
 			'SWFOBJECT' => 'ShockwaveFlashObject',
 			'QTOBJECT' => 'QuicktimeObject',
 			'SVG' => 'ScalableVectorGraphics',
+			'EDITPANEL' => 'EditPanel',
 		);
 		$name = $classMapping[$name];
 
@@ -1956,7 +1957,7 @@ class tslib_cObj {
 			// execute each funtion in the predefined order
 			foreach ($sortedConf as $stdWrapName => $functionType) {
 				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-				if (!$isExecuted[$stdWrapName] && 
+				if (!$isExecuted[$stdWrapName] &&
 						!$this->stopRendering[$this->stdWrapRecursionLevel]) {
 					$functionName = rtrim($stdWrapName, '.');
 					$functionProperties = $functionName . '.';

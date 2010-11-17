@@ -76,5 +76,6 @@ return array(
 	'tslib_content_text' => PATH_tslib . 'content/class.tslib_content_text.php',
 	'tslib_content_user_internal' => PATH_tslib . 'content/class.tslib_content_user_internal.php',
 	'tslib_content_user' => PATH_tslib . 'content/class.tslib_content_user.php',
+	'tslib_content_editpanel' => PATH_tslib . 'content/class.tslib_content_editpanel.php',
 );
 ?>
