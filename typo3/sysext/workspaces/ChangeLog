@@ -3,6 +3,10 @@
 	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
 	* Fixed bug: #10895 php-warnings after merge into Core - array_merge on non-array
 
+2010-11-17  Steffen Ritter  <info@rs-websystems.de>
+
+	* Fixed bug #10894: Workspaces Extbase Controller has to be adapted according to breaking changes in Extbase 1.3.beta1
+
 2010-11-17  Oliver Hader  <oliver@tpyo3.org>
 
 	* Cleanup: Fixed ext_emconf.php
