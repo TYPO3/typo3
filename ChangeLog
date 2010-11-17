@@ -56,6 +56,7 @@
 	* Fixed bug #16107: listNum = 0 not working anymore due to stdWrap changes (Thanks to Jo Hasenau)
 	* Added feature #16282: Optimize stdWrap usage for TypoScript content element IMAGE (Thanks to Jo Hasenau)
 	* Added feature #16430: Optimize stdWrap usage for TypoScript content element GIFBUILDER (Thanks to Jo Hasenau)
+	* Added feature #16393: Date ranges for ExtJS date pickers (Thanks to Stefano Cecere)
 
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 

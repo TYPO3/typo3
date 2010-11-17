@@ -1094,10 +1094,21 @@ class t3lib_TCEforms	{
 		$cssClasses    = array($classAndStyleAttributes['class']);
 		$cssStyle      = $classAndStyleAttributes['style'];
 
-			// css class and id will show the kind of field
-		if (in_array('date', $evalList)) {
-			$inputId = uniqid('tceforms-datefield-');
-			$cssClasses[] = 'tceforms-textfield tceforms-datefield';
+		if(in_array('date', $evalList) || in_array('datetime', $evalList)) {
+			if(in_array('datetime', $evalList)) {
+				$class = 'datetime';
+			} else {
+				$class = 'date';
+			}
+			$dateRange = '';
+			if (isset($config['range']['lower'])) {
+				$dateRange .= ' lower-' . intval($config['range']['lower']);
+			}
+			if (isset($config['range']['upper'])) {
+				$dateRange .= ' upper-' . intval($config['range']['upper']);
+			}
+			$inputId = uniqid('tceforms-' . $class . 'field-');
+			$cssClasses[] = 'tceforms-textfield tceforms-' . $class . 'field' . $dateRange;
 			$fieldAppendix = t3lib_iconWorks::getSpriteIcon(
 				'actions-edit-pick-date',
 				array(
@@ -1105,18 +1116,6 @@ class t3lib_TCEforms	{
 					'id' => 'picker-' . $inputId
 				)
 			);
-
-		} elseif (in_array('datetime', $evalList)) {
-			$inputId = uniqid('tceforms-datetimefield-');
-			$cssClasses[] = 'tceforms-textfield tceforms-datetimefield';
-			$fieldAppendix = t3lib_iconWorks::getSpriteIcon(
-				'actions-edit-pick-date',
-				array(
-					'style' => 'cursor:pointer;',
-					'id' => 'picker-' . $inputId
-				)
-			);
-
 		} elseif (in_array('timesec', $evalList)) {
 			$inputId = uniqid('tceforms-timesecfield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
