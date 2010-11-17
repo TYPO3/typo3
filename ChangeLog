@@ -18,6 +18,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #13610: t3lib_BEfunc::viewOnClick - Hook request (Thanks to Mick Klapper)
 	* Fixed bug em task or for update fixed
 	* Added feature #16295: Optimize stdWrap usage for TypoScript content element FORM (Thanks to Jo Hasenau)
 	* Added feature #16287: Optimize stdWrap usage for TypoScript content element IMGTEXT (Thanks to Jo Hasenau)

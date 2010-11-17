@@ -119,7 +119,7 @@
  * 2187:     function helpText($table,$field,$BACK_PATH,$styleAttrib='')
  * 2239:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
  * 2277:     function editOnClick($params,$backPath='',$requestUri='')
- * 2296:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='',$switchFocus=TRUE)
+ * 2296:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$additionalGetVars='',$switchFocus=TRUE)
  * 2328:     function getModTSconfig($id,$TSref)
  * 2349:     function getFuncMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
  * 2392:     function getFuncCheck($mainParams,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
@@ -1260,7 +1260,7 @@ final class t3lib_BEfunc {
 			return array();
 		}
 
-		
+
 		$flexForms    = array();
 
 		foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
@@ -2797,25 +2797,29 @@ final class t3lib_BEfunc {
 	 * It will detect the correct domain name if needed and provide the link with the right back path. Also it will re-use any window already open.
 	 * Usage: 8
 	 *
-	 * @param	integer		$id is page id
-	 * @param	string		$backpath must point back to TYPO3_mainDir (where the site is assumed to be one level above)
-	 * @param	array		If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
-	 * @param	string		$anchor is optional anchor to the URL
-	 * @param	string		$altUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
-	 * @param	string		Additional GET variables.
+	 * @param	integer		$pageUid is page id
+	 * @param	string		$backPath must point back to TYPO3_mainDir (where the site is assumed to be one level above)
+	 * @param	array		$rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
+	 * @param	string		$anchorSection is optional anchor to the URL
+	 * @param	string		$alternativeUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
+	 * @param	string		$additionalGetVars Additional GET variables.
 	 * @param	boolean		If true, then the preview window will gain the focus.
 	 * @return	string
 	 */
-	public static function viewOnClick($id, $backPath = '', $rootLine = '', $anchor = '', $altUrl = '', $addGetVars = '', $switchFocus = TRUE) {
+	public static function viewOnClick($pageUid, $backPath = '', $rootLine = '', $anchorSection = '', $alternativeUrl = '', $additionalGetVars = '', $switchFocus = TRUE) {
+		$viewScript = '/index.php?id=';
+		if ($alternativeUrl) {
+			$viewScript = $alternativeUrl;
+		}
 
-		$viewScriptPreviewDisabled = t3lib_extMgm::isLoaded('version') ?
-			'/' . TYPO3_mainDir . t3lib_extMgm::extRelPath('version') . 'ws/wsol_preview.php?id='
-			:
-			'/index.php?id='
-		;
-		$viewScriptPreviewEnabled = '/index.php?id=';
-		if ($altUrl) {
-			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $funcRef) {
+				$hookObj = t3lib_div::getUserObj($funcRef);
+				if (method_exists($hookObj, 'preProcess')) {
+					$hookObj->preProcess($pageUid, $backPath, $rootLine, $anchorSection, $viewScript, $additionalGetVars, $switchFocus);
+				}
+			}
 		}
 
 			// Look if a fixed preview language should be added:
@@ -2826,42 +2830,41 @@ final class t3lib_BEfunc {
 				// Find allowed languages (if none, all are allowed!)
 			if (!$GLOBALS['BE_USER']->user['admin'] &&
 				strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
-				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
+				$allowedLanguages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 			}
 
 				// Traverse the view order, match first occurence:
-			$lOrder = t3lib_div::intExplode(',', $viewLanguageOrder);
-			foreach($lOrder as $langUid) {
-				if (is_array($allowed_languages) && count($allowed_languages)) {
-					if (isset($allowed_languages[$langUid])) {	// Choose if set.
+			$languageOrder = t3lib_div::intExplode(',', $viewLanguageOrder);
+			foreach ($languageOrder as $langUid) {
+				if (is_array($allowedLanguages) && count($allowedLanguages)) {
+						// Choose if set.
+					if (isset($allowedLanguages[$langUid])) {
 						$suffix = '&L=' . $langUid;
 						break;
 					}
-				} else {	// All allowed since no lang. are listed.
+				} else {
+						// All allowed since no lang. are listed.
 					$suffix = '&L=' . $langUid;
 					break;
 				}
 			}
 				// Add it:
-			$addGetVars .= $suffix;
+			$additionalGetVars .= $suffix;
 		}
 
-			// check if we need to preview a mount point
+			// check a mount point needs to be previewed
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$sys_page->init(FALSE);
-		$mountPointInfo = $sys_page->getMountPointInfo($id);
+		$mountPointInfo = $sys_page->getMountPointInfo($pageUid);
 		if ($mountPointInfo && $mountPointInfo['overlay']) {
-			$id = $mountPointInfo['mount_pid'];
-			$addGetVars .= '&MP=' . $mountPointInfo['MPvar'];
+			$pageUid = $mountPointInfo['mount_pid'];
+			$additionalGetVars .= '&MP=' . $mountPointInfo['MPvar'];
 		}
 
-		$viewDomain = self::getViewDomain($id, $rootLine);
-		$urlPreviewEnabled  = $viewDomain . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
-		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
-
-		return "var previewWin=window.open((top.TYPO3.configuration.inWorkspace === 0 || (top.TYPO3.configuration.inWorkspace !== 0 && top.TYPO3.configuration.workspaceFrontendPreviewEnabled)) ?'" .
-			$urlPreviewEnabled . "':'" . $urlPreviewDisabled .
-			"','newTYPO3frontendWindow');" . ( $switchFocus ? 'previewWin.focus();' : '');
+		$viewDomain = self::getViewDomain($pageUid, $rootLine);
+		$previewUrl = $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
+		$onclickCode = "var previewWin = window.open('" . $previewUrl . "','newTYPO3frontendWindow');" . ($switchFocus ? 'previewWin.focus();' : '');
+		return $onclickCode;
 	}
 
 	/**
