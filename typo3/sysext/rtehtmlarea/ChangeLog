@@ -1,6 +1,7 @@
 2010-11-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
+	* Fixed bug #16433: htmlArea RTE: Default action not prevented on click in status bar
 
 2010-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 

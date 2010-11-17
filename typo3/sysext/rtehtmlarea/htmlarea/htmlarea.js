@@ -1989,11 +1989,8 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				}, true);
 					// Ext.DomHelper does not honour the custom attribute
 				element.dom.ancestor = ancestor;
-				if (Ext.isIE) {
-					element.on('click', this.onClick, this);
-				} else {
-					element.on('mousedown', this.onMouseDown, this);
-				}
+				element.on('click', this.onClick, this);
+				element.on('mousedown', this.onClick, this);
 				if (!Ext.isOpera) {
 					element.on('contextmenu', this.onContextMenu, this);
 				}
@@ -2075,18 +2072,6 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		this.selectElement(element);
 		event.stopEvent();
 		return false;
-	},
-	/*
-	 * MouseDown handler
-	 */
-	onMouseDown: function (event, element) {
-		this.selectElement(element);
-		if (Ext.isIE) {
-			return true;
-		} else {
-			event.stopEvent();
-			return false;
-		}
 	},
 	/*
 	 * ContextMenu handler
