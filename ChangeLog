@@ -4,7 +4,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
-	* Follow-up to #16315: fixed an issue in ext_conf_template wtih mod menu
+	* Follow-up to #16315: fixed an issue in ext_conf_template with mod menu
 	* Fixed bug #16434: GridView does not show cells if they are not mapped to any column
 	* Added feature #16334: Make FlexForms editable via TSConfig and group access lists (Thanks to Kai Vogel)
 	* Fixed bug #16320: Prepare userauthgroup to support custom staging (Thanks to Tolleiv Nietsch)
