@@ -23,6 +23,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16315: added missing mirror push parser (Thanks to Marcus Krause)
 	* Fixed bug #16364: EDITPANEL cObject is missing
 	* Updated Workspaces to version 4.5.0beta1b. See their ChangeLog for details.
 	* Fixed bug #13610: t3lib_BEfunc::viewOnClick - Hook request (Thanks to Mick Klapper)

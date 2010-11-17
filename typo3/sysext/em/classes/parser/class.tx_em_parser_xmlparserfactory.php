@@ -70,7 +70,7 @@ class tx_em_Parser_XmlParserFactory {
 		),
 		'mirror' => array(
 			'tx_em_parser_mirrorxmlpullparser' => 'class.tx_em_parser_mirrorxmlpullparser.php',
-			//'tx_em_parser_mirrorxmlpushparser' => 'class.tx_em_parser_mirrorxmlpushparser.php',
+			'tx_em_parser_mirrorxmlpushparser' => 'class.tx_em_parser_mirrorxmlpushparser.php',
 		),
 	);
 

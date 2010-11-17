@@ -12,7 +12,7 @@ return array(
 
 	'tx_em_database' => $emClassesPath . 'database/class.tx_em_database.php',
 
-	'tx_em_xml_exception' => $emClassesPath . 'exception/class.tx_em_xml_exception.php',
+	'tx_em_xmlexception' => $emClassesPath . 'exception/class.tx_em_xml_exception.php',
 	'tx_em_connection_exception' => $emClassesPath . 'exception/class.tx_em_connection_exception.php',
 	'tx_em_extensionxml_exception' => $emClassesPath . 'exception/class.tx_em_extensionxml_exception.php',
 	'tx_em_extensionimport_exception' => $emClassesPath . 'exception/class.tx_em_extensionimport_exception.php',
@@ -31,6 +31,7 @@ return array(
 	'tx_em_parser_mirrorxmlabstractparser' => $emClassesPath . 'parser/class.tx_em_parser_mirrorxmlabstractparser.php',
 	'tx_em_parser_xmlparserfactory' => $emClassesPath . 'parser/class.tx_em_parser_xmlparserfactory.php',
 	'tx_em_parser_mirrorxmlpullparser' => $emClassesPath . 'parser/class.tx_em_parser_mirrorxmlpullparser.php',
+	'tx_em_parser_mirrorxmlpushparser' => $emClassesPath . 'parser/class.tx_em_parser_mirrorxmlpushparser.php',
 	'tx_em_parser_extensionxmlpullparser' => $emClassesPath . 'parser/class.tx_em_parser_extensionxmlpullparser.php',
 	'tx_em_parser_extensionxmlpushparser' => $emClassesPath . 'parser/class.tx_em_parser_extensionxmlpushparser.php',
 
