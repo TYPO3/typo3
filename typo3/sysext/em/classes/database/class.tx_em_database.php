@@ -67,12 +67,12 @@ final class tx_em_Database {
 	public function getExtensionCountFromRepository($repository = NULL) {
 		if (is_null($repository)) {
 			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-				'DISTINCT(extkey)',
+				'DISTINCT extkey',
 				self::TABLE_EXTENSION
 			);
 		} else {
 			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-				'DISTINCT(extkey)',
+				'DISTINCT extkey',
 				self::TABLE_EXTENSION,
 				'repository=' . intval($repository)
 			);

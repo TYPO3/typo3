@@ -1,3 +1,7 @@
+2010-11-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16455: DISTINCT as a function is not compatible with DBAL
+
 2010-11-17  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #16147: getRecordOverlay fetches "Versioning Preview Overlay" but does not return the fields _ORIG_uid and _ORIG_pid (Thanks to Andreas Kiessling)
