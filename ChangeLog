@@ -1,3 +1,7 @@
+2010-11-17  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #16147: getRecordOverlay fetches "Versioning Preview Overlay" but does not return the fields _ORIG_uid and _ORIG_pid (Thanks to Andreas Kiessling)
+
 2010-11-17  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16453: User Admin>List Users Online uses old styling (Thanks to Felix Kopp)
