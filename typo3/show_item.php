@@ -486,7 +486,7 @@ class SC_show_item {
 			// Compile information for title tag:
 		$infoData = array();
 		if (count($rows))	{
-			$infoData[] = '<tr class="bgColor5 tableheader">' .
+			$infoData[] = '<tr class="t3-row-header">' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table').'</td>' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.uid').'</td>' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
@@ -506,7 +506,7 @@ class SC_show_item {
 					'</tr>';
 		}
 
-		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
+		return count($infoData) ? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>' : '';
 	}
 
 	/**
@@ -529,7 +529,7 @@ class SC_show_item {
 			// Compile information for title tag:
 		$infoData = array();
 		if (count($rows))	{
-			$infoData[] = '<tr class="bgColor5 tableheader">' .
+			$infoData[] = '<tr class="t3-row-header">' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer').'</td>'.
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey').'</td>'.
@@ -551,7 +551,7 @@ class SC_show_item {
 					'</tr>';
 		}
 
-		return count($infoData) ? '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$infoData).'</table>' : '';
+		return count($infoData) ? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>' : '';
 	}
 }
 

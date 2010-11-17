@@ -1,6 +1,7 @@
 2010-11-17  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #16453: User Admin>List Users Online uses old styling (thanks to Felix Kopp)
+	* Fixed bug #16453: User Admin>List Users Online uses old styling (Thanks to Felix Kopp)
+	* Fixed bug #16452: References table in Info popup uses old styling (Thanks to Felix Kopp)
 
 2010-11-17  Stanislas Rolland  <typo3@sjbr.ca>
 
