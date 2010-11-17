@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Jochen Rieger / Dimitri König / Michael Miousse',
 	'author_email' => 'j.rieger@connecta.ag, mmiousse@infoglobe.ca',
 	'shy' => '',
-	'dependencies' => '',
+	'dependencies' => 'info',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
@@ -34,6 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'typo3' => '4.1.0-0.0.0',
 			'php' => '5.0.0-0.0.0',
+			'info' => '1.0.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
