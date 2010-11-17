@@ -10,6 +10,7 @@
 
 	* Added feature #16284: Optimize stdWrap usage for TypoScript content element LOAD_REGISTER (Thanks to Jo Hasenau)
 	* Added feature #16285: Optimize stdWrap usage for TypoScript content element RECORDS (Thanks to Jo Hasenau)
+	* Added feature #15916: Display a link to list module on sysfolders when in page module (Thanks to Georg Ringer)
 
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 

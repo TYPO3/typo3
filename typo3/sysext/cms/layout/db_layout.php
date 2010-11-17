@@ -554,6 +554,32 @@ class SC_db_layout {
 				$body = $this->renderListContent();	// All other listings
 			}
 
+			// If page is a sysfolder
+			if ($this->pageinfo['doktype'] == 254) {
+
+					// access to list module
+				$moduleLoader = t3lib_div::makeInstance('t3lib_loadModules');
+				$moduleLoader->load($GLOBALS['TBE_MODULES']);
+				$modules = $moduleLoader->modules;
+
+				if (is_array($modules['web']['sub']['list'])) {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						'<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
+						 <br />
+						 <p>' .
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
+							'<a href="javascript:top.goToModule( \'web_list\',1);">' .
+								$GLOBALS['LANG']->getLL('goToListModule') . '
+							</a>
+						 </p>',
+						'',
+						t3lib_FlashMessage::INFO
+					);
+					$body = $flashMessage->render() . $body;
+				}
+			}
+
 
 			if ($this->pageinfo['content_from_pid']) {
 				$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
