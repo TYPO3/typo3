@@ -1,3 +1,7 @@
+2010-11-17  Oliver Hader  <oliver@tpyo3.org>
+
+	* Raised version to 4.5.0beta1a
+
 2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
 
 	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
