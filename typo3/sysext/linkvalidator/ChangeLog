@@ -1,5 +1,6 @@
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #10900: Regression: Fatal error in class.tx_linkvalidator_modfunc1.php
 	* Tagging version 1.0.0
 	* Fixed bug #10892: Basic cleanup throughout the extension
 	* Fixed bug #10891: Fix deprecation warning "call by reference" in modfunc1
