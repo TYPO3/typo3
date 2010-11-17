@@ -44,14 +44,20 @@ class tslib_content_LoadRegister extends tslib_content_Abstract {
 	 */
 	public function render($conf = array()) {
 		array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
+
 		if (is_array($conf)) {
+			$isExecuted = array();
 			foreach ($conf as $theKey => $theValue) {
-				if (!strstr($theKey, '.') || !isset($conf[substr($theKey, 0, -1)])) {
-						// Only if 1) the property is set but not the value itself, 2) the value and/or any property
-					if (strstr($theKey, '.')) {
-						$theKey = substr($theKey, 0, -1);
+				$register = rtrim($theKey, '.');
+				if(!$isExecuted[$register]) {
+					$registerProperties = $register . '.';
+					if(isset($conf[$register]) && isset($conf[$registerProperties])) {
+						$theValue = $this->cObj->stdWrap($theValue, $conf[$registerProperties]);
+					} else if(isset($conf[$registerProperties])) {
+						$theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
 					}
-					$GLOBALS['TSFE']->register[$theKey] = $this->cObj->stdWrap($conf[$theKey], $conf[$theKey . '.']);
+					$GLOBALS['TSFE']->register[$register] = $theValue;
+					$isExecuted[$register] = true;
 				}
 			}
 		}
