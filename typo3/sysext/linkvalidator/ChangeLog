@@ -1,5 +1,6 @@
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Tagging version 1.0.0
 	* Fixed bug #10892: Basic cleanup throughout the extension
 	* Fixed bug #10891: Fix deprecation warning "call by reference" in modfunc1
 	* Fixed bug #10820: Error and warning in scheduler task
