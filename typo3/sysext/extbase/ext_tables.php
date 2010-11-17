@@ -24,7 +24,7 @@ if (TYPO3_MODE == 'BE') {
 
 	}
 
-	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Core_Bootstrap->callModule';
+	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Core_Bootstrap';
 
 }
 

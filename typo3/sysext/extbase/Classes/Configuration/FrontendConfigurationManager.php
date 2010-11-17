@@ -43,6 +43,46 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	}
 
 	/**
+	 * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin
+	 * merged with the global configuration of your extension from plugin.tx_yourextension
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName
+	 * @return array
+	 */
+	protected function getPluginConfiguration($extensionName, $pluginName) {
+		$setup = $this->getTypoScriptSetup();
+		$pluginConfiguration = array();
+		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
+			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
+		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
+			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+		}
+		return $pluginConfiguration;
+	}
+
+	/**
+	 * Returns the configured controller/action pairs of the specified plugin in the format
+	 * array(
+	 *  'Controller1' => array('action1', 'action2'),
+	 *  'Controller2' => array('action3', 'action4')
+	 * )
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName
+	 * @return array
+	 */
+	protected function getSwitchableControllerActions($extensionName, $pluginName) {
+		$switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
+		if (!is_array($switchableControllerActions)) {
+			$switchableControllerActions = array();
+		}
+		return $switchableControllerActions;
+	}
+
+	/**
 	 * Get context specific framework configuration.
 	 * - Overrides storage PID with setting "Startingpoint"
 	 * - merge flexform configuration, if needed

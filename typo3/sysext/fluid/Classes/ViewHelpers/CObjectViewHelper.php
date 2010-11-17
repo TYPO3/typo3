@@ -14,7 +14,30 @@
  *                                                                        */
 
 /**
- * This class is a TypoScript view helper for the Fluid templating engine.
+ * This ViewHelper renders CObjects from the global TypoScript configuration.
+ *
+ * = Examples =
+ *
+ * <code title="Render lib object">
+ * <f:cObject typoscriptObjectPath="lib.someLibObject" />
+ * </code>
+ * <output>
+ * // rendered lib.someLibObject
+ * </output>
+ *
+ * <code title="Specify cObject data & current value">
+ * <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" current="{article.title}" />
+ * </code>
+ * <output>
+ * // rendered lib.customHeader. data and current value will be available in TypoScript
+ * </output>
+ *
+ * <code title="inline notation">
+ * {article -> f:cObject(typoscriptObjectPath: 'lib.customHeader')}
+ * </code>
+ * <output>
+ * // rendered lib.customHeader. data will be available in TypoScript
+ * </output>
  *
  */
 class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {

@@ -1,8 +1,8 @@
 ChangeLog for Fluid
 ===================
 
-Changes for 1.3.0 Beta 1
-========================
+Changes for 1.3.0 Beta 1a:
+==========================
 included in TYPO3 4.5.0 Beta 1.
 
 This Fluid Release contains the following main features, along with the usual bunch of bugfixes:
@@ -46,8 +46,9 @@ the Paginate Widget.
 
 For more details on how to write widgets, consult the Fluid manual, section "Fluid Widgets".
 
-Full Changes for 1.3.0 Beta 1:
-------------------------------
+Full Changes for 1.3.0 Beta 1a:
+===============================
+[+FEATURE] Fluid (ViewHelpers): the subject argument of the count ViewHelper is now optional so you can use it like {objects -> f:count()}
 [+FEATURE] Fluid (ViewHelpers/Widget): Slightly improved paginate widget: The link to the first page now skips the currentPage argument resulting in nicer URLs and less cHashes
 [+FEATURE] Fluid (ViewHelpers): excluding obsolete widget arguments & cHash from widget links if they're not explicitly set
 [+BUGFIX] Fluid (Core/Widget): AjaxWidgetContextHolder now uses a unique id for the Ajax WidgetContext. This makes sure, that the ajax response gets the right context, even if you open multiple browser windows in the same session
@@ -78,9 +79,8 @@ Full Changes for 1.3.0 Beta 1:
 	Relates to: #8990
 [+BUGFIX] Fluid: Adjust Fluid to Dependency Injection changes. Relates to: #9062
 
-Full Changes for Alpha 3:
--------------------------
-
+Changes for 1.3.0 Alpha 3:
+==========================
 [+BUGFIX] Fluid (ViewHelpers): ImageViewHelper supports additionalAttributes argument
 	The image view helper did not call the parent constructor, which registeres the "additionalAttributes" argument. Thanks to Michael Knoll.
 [+FEATURE] Fluid (View): Fluid Standalone view (#10473)
@@ -89,8 +89,8 @@ Full Changes for Alpha 3:
 	This is just a preliminary solution that will be replaced as soon
 	as the Extbase dispatcher refactoring (#7153) is done.
 
-Changes for 1.3.0 Alpha 2
-=========================
+Changes for 1.3.0 Alpha 2:
+==========================
 included in TYPO3 4.5.0 Alpha 2.
 
 In this release, mostly small bugfixes have been made in Fluid. Highlights are:

@@ -269,27 +269,39 @@ class Tx_Extbase_Core_Bootstrap {
 	  * This method forwards the call to run(). This method is invoked by the mod.php
 	  * function of TYPO3.
 	  *
-	  * @return TRUE
+	  * @param string $moduleSignature
+	  * @return boolean TRUE, if the request request could be dispatched
 	  * @see run()
 	  **/
-	public function callModule($moduleName) {
+	public function callModule($moduleSignature) {
+		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature])) {
+			return FALSE;
+		}
+		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
 
 		// Check permissions and exit if the user has no permission for entry
-		$GLOBALS['BE_USER']->modAccess($config, TRUE);
+		$GLOBALS['BE_USER']->modAccess($moduleConfiguration, TRUE);
 		if (t3lib_div::_GP('id')) {
 			// Check page access
-			$id = intval(t3lib_div::_GP('id'));
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
-			$access = is_array(t3lib_BEfunc::readPageAccess($id, $permClause));
+			$access = is_array(t3lib_BEfunc::readPageAccess((integer)t3lib_div::_GP('id'), $permClause));
 			if (!$access) {
-				t3lib_BEfunc::typo3PrintError('No Access', 'You don\'t have access to this page', 0);
+				throw new RuntimeException('You don\'t have access to this page', 1289917924);
 			}
 		}
 
+		// BACK_PATH is the path from the typo3/ directory from within the
+		// directory containing the controller file. We are using mod.php dispatcher
+		// and thus we are already within typo3/ because we call typo3/mod.php
+		$GLOBALS['BACK_PATH'] = '';
 
-		$configuration = array();
-		$configuration['module.']['tx_extbase.']['moduleName'] = $moduleName;
-		$this->run('', $configuration);
+		$configuration = array(
+			'extensionName' => $moduleConfiguration['extensionName'],
+			'pluginName' => $moduleSignature
+		);
+		$content = $this->run('', $configuration);
+
+		print $content;
 		return TRUE;
 	}
 }

@@ -141,11 +141,11 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 
 		if ($extensionName !== NULL) {
 			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
-			$pluginConfiguration['controllerConfiguration'] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName][$pluginName]['controllers'];
+			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($extensionName, $pluginName);
 		} else {
 			$pluginConfiguration = $this->getPluginConfiguration($this->extensionName, $this->pluginName);
 			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
-			$pluginConfiguration['controllerConfiguration'] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$this->extensionName][$this->pluginName]['controllers'];
+			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($this->extensionName, $this->pluginName);
 			if (isset($this->configuration['switchableControllerActions'])) {
 				$this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
 			}
@@ -174,27 +174,6 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
 		}
 		return $extbaseConfiguration;
-	}
-
-	/**
-	 * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin
-	 * merged with the global configuration of your extension from plugin.tx_yourextension
-	 *
-	 * @param string $extensionName
-	 * @param string $pluginName
-	 * @return array
-	 */
-	protected function getPluginConfiguration($extensionName, $pluginName) {
-		$setup = $this->getTypoScriptSetup();
-		$pluginConfiguration = array();
-		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
-			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
-		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
-		if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
-			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
-		}
-		return $pluginConfiguration;
 	}
 
 	/**
@@ -234,5 +213,28 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	 * @return array the TypoScript setup
 	 */
 	abstract protected function getTypoScriptSetup();
+
+	/**
+	 * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin / module.tx_yourextension_yourmodule
+	 * merged with the global configuration of your extension from plugin.tx_yourextension / module.tx_yourextension
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName in FE mode this is the specified plugin name, in BE mode this is the full module signature
+	 * @return array
+	 */
+	abstract protected function getPluginConfiguration($extensionName, $pluginName);
+
+	/**
+	 * Returns the configured controller/action pairs of the specified plugin/module in the format
+	 * array(
+	 *  'Controller1' => array('action1', 'action2'),
+	 *  'Controller2' => array('action3', 'action4')
+	 * )
+	 *
+	 * @param string $extensionName
+	 * @param string $pluginName in FE mode this is the specified plugin name, in BE mode this is the full module signature
+	 * @return array
+	 */
+	abstract protected function getSwitchableControllerActions($extensionName, $pluginName);
 }
 ?>
