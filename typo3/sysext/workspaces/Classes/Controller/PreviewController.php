@@ -99,7 +99,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$wsHelpParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
 		$wsHelpUrl = $wsSettingsPath . $wsHelpUri . $wsHelpParams;
 
-		$wsBaseUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?id=' . $this->pageId . '&L=' . $language;
+		$viewDomain = t3lib_BEfunc::getViewDomain($this->pageId);
+		$wsBaseUrl =  $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
 
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore

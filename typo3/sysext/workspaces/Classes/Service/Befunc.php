@@ -46,7 +46,7 @@ class tx_Workspaces_Service_Befunc {
 	 */
 	public function preProcess($pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
 		if ($GLOBALS['BE_USER']->workspace !== 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) {
-			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', true);
+			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
 			$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 			/**
 			 *  @todo BACK_PATH is not available be still needed when used during AJAX request

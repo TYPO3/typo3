@@ -1,3 +1,4 @@
+{namespace this=Tx_Workspaces_ViewHelpers}
 <!-- ###FULLDOC### begin -->
 <div class="typo3-fullDoc">
 <!-- Page header with buttons, path details and csh -->
@@ -18,6 +19,9 @@
 <!-- Content of module, for instance listing, info or editing -->
 <div id="typo3-docbody">
 <div id="typo3-inner-docbody">
+
+	<this:TempFlashMessageQueue />
+
 	<f:render partial="navigation" arguments="{workspaceList: workspaceList, activeWorkspaceUid: activeWorkspaceUid, showAllWorkspaceTab:showAllWorkspaceTab}" />
 	<div class="typo3-dyntabmenu-divs"><f:render section="main" /></div>
 	<f:if condition="{showLegend}"><f:render partial="legend" /></f:if>

@@ -39,16 +39,39 @@ class Tx_Workspaces_Service_Stages {
 	const STAGE_PUBLISH_ID = -10;
 	const STAGE_EDIT_ID = 0;
 
-	/** Current workspace id */
+	/**
+	 * Current workspace ID
+	 * @var integer
+	 */
 	private $workspaceId = NULL;
 
-	/** path to locallang file */
+	/**
+	 * Path to the locallang file
+	 * @var string
+	 */
 	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xml';
 
-		// local caches to avoid that workspace stages, groups etc need to be read from the DB every time
+	/**
+	 * Local cache to reduce number of database queries for stages, groups, etc.
+	 * @var array
+	 */
 	protected $workspaceStageCache = array();
+
+	/**
+	 * @var array
+	 */
 	protected $workspaceStageAllowedCache = array();
+
+	/**
+	 * @var array
+	 */
 	protected $fetchGroupsCache = array();
+
+	/**
+	 * @var array
+	 */
+	protected $userGroups = array();
+
 	/**
 	 * Getter for current workspace id
 	 *
@@ -85,7 +108,6 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array id and title of the stages
 	 */
 	public function getStagesForWS() {
-
 		$stages = array();
 
 		if (isset($this->workspaceStageCache[$this->getWorkspaceId()])) {
@@ -147,7 +169,7 @@ class Tx_Workspaces_Service_Stages {
 						// yes, so add to return array
 					$stagesForWSUserData[] = array(
 						'uid' => $this->encodeStageUid($workspaceStageRec['uid']),
-						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $workspaceStageRec['title'] . '"');
+						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' ' . $workspaceStageRec['title']);
 				} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID) {
 						if ($GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 							$stagesForWSUserData[] = $workspaceStageRec;
@@ -189,6 +211,12 @@ class Tx_Workspaces_Service_Stages {
 		//return $stage_uid + $this->raiseStageIdAmount;
 	}
 
+	/**
+	 * Gets the title of a stage.
+	 *
+	 * @param integer $ver_stage
+	 * @return string
+	 */
 	public function getStageTitle($ver_stage) {
 		global $LANG;
 		$stageTitle = '';
@@ -216,7 +244,9 @@ class Tx_Workspaces_Service_Stages {
 	}
 
 	/**
-	 * @param  $stageid
+	 * Gets a particular stage record.
+	 *
+	 * @param integer $stageid
 	 * @return array
 	 */
 	public function getStageRecord($stageid) {
@@ -471,16 +501,18 @@ class Tx_Workspaces_Service_Stages {
 	}
 
 	/**
+	 * Fetches particular groups recursively.
+	 *
 	 * @param  $grList
 	 * @param string $idList
 	 * @return array
 	 */
 	private function fetchGroupsRecursive($grList, $idList = '') {
-
 		$requiredGroups = t3lib_div::intExplode(',', $grList, TRUE);
 		$existingGroups = array_keys($this->userGroups);
-		$missingGroups = array_diff($include_staticArr, $existingGroups);
-		if (count($groups) > 0) {
+		$missingGroups = array_diff($requiredGroups, $existingGroups);
+
+		if (count($missingGroups) > 0) {
 			$this->fetchGroupsFromDB($missingGroups);
 		}
 
@@ -504,6 +536,7 @@ class Tx_Workspaces_Service_Stages {
 				}
 			}
 		}
+
 		return $this->userGroups;
 	}
 
@@ -624,6 +657,7 @@ class Tx_Workspaces_Service_Stages {
 		return $isAllowed;
 	}
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Stages.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Stages.php']);

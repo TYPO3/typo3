@@ -58,6 +58,7 @@ TYPO3.Workspaces.Toolbar.selectActionStore = new Ext.data.DirectStore({
 
 TYPO3.Workspaces.Toolbar.selectStateActionCombo = new Ext.form.ComboBox({
 	width: 150,
+	listWidth: 350,
 	lazyRender: true,
 	valueField: 'uid',
 	displayField: 'title',

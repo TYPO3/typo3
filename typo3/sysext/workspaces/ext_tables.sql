@@ -10,6 +10,7 @@ CREATE TABLE sys_workspace (
   description varchar(255) DEFAULT '' NOT NULL,
   adminusers text,
   members text,
+  reviewers text,
   db_mountpoints varchar(255) DEFAULT '' NOT NULL,
   file_mountpoints varchar(255) DEFAULT '' NOT NULL,
   publish_time int(11) DEFAULT '0' NOT NULL,
@@ -22,6 +23,7 @@ CREATE TABLE sys_workspace (
   swap_modes tinyint(3) DEFAULT '0' NOT NULL,
   publish_access tinyint(3) DEFAULT '0' NOT NULL,
   custom_stages int(11) DEFAULT '0' NOT NULL,
+  stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)

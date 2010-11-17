@@ -113,6 +113,17 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 	protected function initializeAction() {
 		parent::initializeAction();
 
+		if (tx_Workspaces_Service_Workspaces::isOldStyleWorkspaceUsed()) {
+			$message = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:warning.oldStyleWorkspaceInUser'),
+				'',
+				t3lib_FlashMessage::WARNING
+			);
+
+			t3lib_FlashMessageQueue::addMessage($message);
+		}
+
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->enableExtJsDebug();

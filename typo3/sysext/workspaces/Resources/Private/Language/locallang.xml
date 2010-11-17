@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="legend.label">Legend:</label>
-			<label index="legend.edited">Record editet</label>
+			<label index="legend.edited">Record edited</label>
 			<label index="legend.moved">Record moved</label>
 			<label index="legend.deleted">Record deleted</label>
 			<label index="legend.new">Record created</label>
@@ -44,14 +44,11 @@
 			<label index="column.uid">WS-Id</label>
 			<label index="column.oid">Live-Id</label>
 			<label index="column.workspaceName">Workspace</label>
-			<label index="column.wsTitle">Changed</label>
-			<label index="column.wsTitle">Changed</label>
-			<label index="column.wsTitle">Changed</label>
-			<label index="column.wsTitle">Changed</label>
 			<label index="column.livePath">Live-Path</label>
 			<label index="column.liveTitle">Live-Title</label>
-			<label index="tooltip.viewElementAction">Preview Element</label>
-			<label index="tooltip.editElementAction">edit element</label>
+			<label index="column.wsSwapColumn">Swap workspace</label>
+			<label index="tooltip.viewElementAction">Preview element</label>
+			<label index="tooltip.editElementAction">Edit element</label>
 			<label index="tooltip.openPage">Open version of page</label>
 			<label index="tooltip.sendToPrevStage">Send record to previous Stage</label>
 			<label index="tooltip.sendToNextStage">Send record to next Stage</label>
@@ -70,6 +67,7 @@
 			<label index="window.sendToNextStageWindow.additionalRecipients">Additional recipients</label>
 			<label index="window.sendToNextStageWindow.comments">Comments</label>
 			<label index="error.getStageTitle.stageNotFound">Stage not found</label>
+			<label index="warning.oldStyleWorkspaceInUser">It seems that you're stil using old-style workspace. If you continue using this module without migrating your workspace you might loose data.</label>
 		</languageKey>
 	</data>
 </T3locallang>
