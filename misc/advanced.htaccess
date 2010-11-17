@@ -2,18 +2,23 @@
 # 
 # Example .htaccess file
 # 
-# This file contains a collection of almost everything you will need
-# for optimising TYPO3:
+# This file includes settings for the following configuration options:
 # 
-# - mod_rewrite (used for SimulateStaticDocuments, RealUrl, etc.)
+# - Compression via TYPO3
+# - Settings for mod_rewrite (URL-Rewriting)
 # - PHP optimisation
+# - Compression using Apache
+# - Miscellaneous
 # 
-# If you want to use it, you'll need to rename this file to '.htaccess'.
-# (To make this work you will need to adjust the 'AllowOverride'
+# If you want to use it, you have to copy it to the root folder of your
+# TYPO3 installation and rename it to '.htaccess'.
+# (To make .htaccess files work you might need to adjust the 'AllowOverride'
 # directive in your Apache configuration file.)
 # 
 # IMPORTANT: You may need to change this file depending on your TYPO3
 # installation!
+# Lines starting with a # are treated as comment and ignored by the web
+# server.
 # 
 # You should change every occurance of TYPO3root/ to the location where you
 # have your website in. For example:
@@ -22,25 +27,27 @@
 # If you have your website located at http://mysite.com/some/path/
 # then your TYPO3root/ is some/path/ (search and replace)
 # 
-# If you have problems with this file, try using the minimal
-# mod_rewrite.htaccess which is located in the typo3_src/misc/
-# directory of this installation.
-# 
-# You can also use this configuration in your httpd.conf, but you'll have
+# You can also use this configuration in your httpd.conf, but then you have
 # to modify some lines, see the comments (search for 'httpd.conf')
 # 
-# Using rewriting in your httpd.conf is much faster, btw.
+# Using rewriting in your httpd.conf is much faster.
 # 
 # Questions about this file go to the matching Install mailing list,
 # see http://typo3.org/documentation/mailing-lists/
 # 
 ####
 
-##
-# Compressed .js and .css files
-##
-# uncomment the following lines if you use compression
-#
+
+### Begin: Compression via TYPO3 ###
+
+# Allow compressed .js and .css files
+# Uncomment the following lines, if you have
+# ['BE']['compressionLevel'] set.
+
+# If the Apache modules mod_gzip or mod_deflate are activated, you should
+# use their compression functions instead.
+# You find an example configuration below.
+
 #<FilesMatch "\.js\.gzip$">
 #  AddType "text/javascript" .gzip
 #</FilesMatch>
@@ -49,22 +56,20 @@
 #</FilesMatch>
 #AddEncoding gzip .gzip
 
+### End: Compression via TYPO3 ###
 
-### Begin: Rewrite stuff ###
+
+### Begin: Settings for mod_rewrite ###
 
 <IfModule mod_rewrite.c>
 
 # Enable URL rewriting
 RewriteEngine On
 
-# To assist in debugging rewriting, you could use these lines
-# DON'T enable it for production!
-# This will only work in httpd.conf, not in .htaccess files
-#RewriteLog /var/log/apache/rewrite.log
-#RewriteLogLevel 9
-
-# If you use the RealUrl extension, then you'll have to enable the next line.
-# You will have to change this path if your TYPO3 installation is located
+# If you use an URL-Rewriting extension (RealURL, CoolUri, SimulateStatic),
+# then you have to enable the next line.
+#
+# You have to change this path, if your TYPO3 installation is located
 # in a subdirectory of the website root.
 # 
 # If you place this in httpd.conf, you cannot use this directive in any case!
@@ -77,20 +82,20 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
 
-# Stop rewrite processing if we are in the typo3/ directory
+# Stop rewrite processing, if we are in the typo3/ directory.
 # For httpd.conf, use this line instead of the next one:
 # RewriteRule ^/TYPO3root/(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
 RewriteRule ^(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
 
 # Redirect http://mysite/typo3 to http://mysite/typo3/index_re.php
-# and stop the rewrite processing
+# and stop the rewrite processing.
 # For httpd.conf, use this line instead of the next one:
 # RewriteRule ^/TYPO3root/typo3$ /TYPO3root/typo3/index.php [L]
 RewriteRule ^typo3$ typo3/index_re.php [L]
 
-# If the file/symlink/directory does not exist => Redirect to index.php
+# If the file/symlink/directory does not exist => Redirect to index.php.
 # Important note: If you copy/paste this into httpd.conf instead
-# of .htaccess you will need to add '%{DOCUMENT_ROOT}' left to each
+# of .htaccess, you need to add '%{DOCUMENT_ROOT}' left to each
 # '%{REQUEST_FILENAME}' part.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -98,10 +103,11 @@ RewriteCond %{REQUEST_FILENAME} !-l
 
 # Main URL rewriting.
 
-# If you use Windows and SimulateStaticDocuments do not work, try adding a
-# slash (/) right before 'index.php' below.
+# If you use Windows and SimulateStaticDocuments does not work, try adding
+# a slash (/) right before 'index.php' below.
 
-# The example shows how to rewrite only *.html and *.pdf files to index.php
+# The example shows how to rewrite only *.html and *.pdf files to
+# index.php.
 # This may be helpful when using an extension that can generate PDF files
 # on the fly.
 # Example: RewriteRule .*\.(html|pdf)$ index.php [L]
@@ -109,8 +115,8 @@ RewriteCond %{REQUEST_FILENAME} !-l
 # For httpd.conf, use this line instead of the next one that has no '#':
 # RewriteRule .* /TYPO3root/index.php [L]
 
-# For use with the RealUrl extension, you might need to remove the
-# RewriteBase directive somewhere above and use this line instead of the
+# For use with the RealURL extension, you might need to remove the
+# RewriteBase directive some lines above and use this line instead of the
 # next one:
 # RewriteRule .* /index.php [L]
 
@@ -118,51 +124,68 @@ RewriteRule .* index.php [L]
 
 </IfModule>
 
-### End: Rewrite stuff ###
+### End: Settings for mod_rewrite ###
+
 
 ### Begin: PHP optimisation ###
 
-# All features below are left to the default if you don't change this.
-# Simply remove the comment marks if you want to use some/all of these
-# settings
-
-# The PHP developers recommend disabling this feature. Do that.
-# It's deprecated and is likely to be unsupported in future versions of PHP.
-#php_flag allow_call_time_pass_reference off
+# If you do not change the following settings, the default values will
+# be used.
 
 # TYPO3 works fine with register_globals turned off.
-# This is highly recommended!
+# This is highly recommended, if your web server has it turned on.
 #php_flag register_globals off
-
-# PHP may not declare the argv & argc variables (that would contain the GET
-# information).
-# TYPO3 doesn't need this, so just turn it off.
-#php_flag register_argc_argv off
-
-# Magic quotes for runtime-generated data (data from SQL, exec(), etc.)
-#php_flag magic_quotes_gpc off
-
-# Order in which PHP registers GET, POST, Cookie and Built-in variables
-#php_value variables_order GPCS
 
 ### End: PHP optimisation ###
 
-### Begin: Miscellaneous ###
 
-# Make sure that directory listings are disabled
-#Options -Indexes
+### Begin: Compression using Apache ###
 
+# With the following settings you can make Apache compress text files,
+# which will save bandwidth and so improve loading speed especially for
+# users with slower internet connections.
+
+# Compressing files for Apache 1.3
+#<IfModule mod_gzip.c>
+#mod_gzip_on Yes
 # There is a problem with Internet Explorer and mod_gzip on Apache servers.
-# For more information, see
-# http://typo3.org/documentation/document-library/rtehtmlarea/Tutorial-79/
 #mod_gzip_item_exclude file \.css$
+#mod_gzip_item_exclude file \.js$
+# The size of images generally won't be reduced enough that it's worth
+# compressing them.
 #mod_gzip_item_exclude file \.png$
 #mod_gzip_item_exclude file \.gif$
 #mod_gzip_item_exclude file \.jpg$
 #mod_gzip_item_exclude file \.jpeg$
-#mod_gzip_item_exclude file \.js$
+#</IfModule>
+
+# Compressing files for Apache 2.x
+#<IfModule mod_deflate.c>
+# Compress HTML, Text, CSS, JavaScript and XML files.
+#AddOutputFilterByType DEFLATE text/plain text/html text/xml
+#AddOutputFilterByType DEFLATE text/css text/javascript
+#AddOutputFilterByType DEFLATE application/xml application/xhtml+xml
+#AddOutputFilterByType DEFLATE application/rss+xml
+#AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+# Needed for compatibility with Netscape 4.x, which only supports compression
+# for HTML files, and for Netscape 4.06-4.08, which support no compression.
+#BrowserMatch ^Mozilla/4 gzip-only-text/html
+#BrowserMatch ^Mozilla/4.0[678] no-gzip
+# Activate compression again for MSIE, which masquerades as Netscape.
+# There compression works correctly.
+#BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+#</IfModule>
+
+### End: Compression using Apache ###
+
+
+### Begin: Miscellaneous ###
+
+# Make sure that directory listings are disabled.
+#Options -Indexes
 
 ### End: Miscellaneous ###
 
-# Add your own rules here
+
+# Add your own rules here.
 # ...

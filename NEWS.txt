@@ -22,7 +22,10 @@ General
 	  it in the media element as URL. Currently supported platforms:
 	  youtube, dailymotion, sevenload, vimeo, clipfish, google,
 	  metacafe, myvideo, liveleak and veoh.
-
+	* A improved version of misc/advanced.htaccess provides more accurate
+	  and up-to-date information and is a real working sample on how to setup
+	  your Apache to server TYPO3 pages. This setup is now also used in the 
+	  introduction package as-is.
 
 
 Backend
