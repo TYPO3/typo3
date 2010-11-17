@@ -266,6 +266,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="warning.memcache_not_usable">Memcache is configured, but connection to memcached failed with these configuration(s):</label>
 			<label index="warning.file_missing">File is missing!</label>
 			<label index="warning.file_missing_text">This content element references a file which seems to not exist:</label>
+			<label index="error.formProtection.tokenInvalid">Validating the security token of this form has failed. Please reload the form and submit it again.</label>
 			<label index="toolbarItems.shortcuts">Shortcuts</label>
 			<label index="toolbarItems.shortcut">Shortcut</label>
 			<label index="toolbarItems.shortcutsGroup">Shortcut Group</label>

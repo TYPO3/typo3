@@ -9,6 +9,7 @@
 2010-11-17  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16027: Let typolink honour secure filelink configuration
+	* Added feature #16437: Introduce a form protection API (Thanks to the Security Team: Oliver Klee, Helmut Hummel)
 
 2010-11-17  Benjamin Mack  <benni@typo3.org>
 
