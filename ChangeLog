@@ -10,6 +10,7 @@
 
 	* Fixed bug #16453: User Admin>List Users Online uses old styling (Thanks to Felix Kopp)
 	* Fixed bug #16452: References table in Info popup uses old styling (Thanks to Felix Kopp)
+	* Fixed bug #15189: Frontend Editing edit panels are shown for content element types that cannot be edited
 
 2010-11-17  Stanislas Rolland  <typo3@sjbr.ca>
 
