@@ -1,3 +1,7 @@
+2010-11-17  Jochen Rau <jochen.rau@typoplanet.de>
+
+	* Added feature #16395: Add basic support for RDFa in core (semantic web)
+
 2010-11-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #14449: Deprecate usage of ImageMagick version 4 and 5
