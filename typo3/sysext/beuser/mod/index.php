@@ -1607,12 +1607,12 @@ class SC_mod_tools_be_user_index {
 		}
 			// Wrap <table> tag around the rows:
 		$outTable = '
-		<table border="0" cellpadding="2" cellspacing="2">
-			<tr class="bgColor5">
-				<td valign="top"><strong>' . $GLOBALS['LANG']->getLL('timestamp', true) . '</strong></td>
-				<td valign="top"><strong>' . $GLOBALS['LANG']->getLL('host', true) . '</strong></td>
-				<td valign="top" colspan="5"><strong>' . $GLOBALS['LANG']->getLL('username', true) . '</strong></td>
-			</tr>'.$outTable.'
+		<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+			<tr class="t3-row-header">
+				<td>' . $GLOBALS['LANG']->getLL('timestamp', true) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('host', true) . '</td>
+				<td colspan="5">' . $GLOBALS['LANG']->getLL('username', true) . '</td>
+			</tr>' . $outTable . '
 		</table>';
 
 		$content.= $this->doc->section($GLOBALS['LANG']->getLL('whoIsOnline', true),$outTable,0,1);
