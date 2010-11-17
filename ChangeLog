@@ -8,6 +8,7 @@
 
 2010-11-17  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #16039: Move TCEforms HTML templates to template file (Thanks to Steffen Kamper)
 	* Added feature #4203: Workspace DB / filemounts should narrow down the users' mounts (Thanks to Sonja Scholz)
 
 2010-11-17  Susanne Moog  <typo3@susanne-moog.de>

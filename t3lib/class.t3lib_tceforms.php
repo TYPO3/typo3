@@ -310,7 +310,7 @@ class t3lib_TCEforms	{
 	var $hookObjectsSingleField = array();			// Array containing hook class instances called for each field
 	var $extraFormHeaders = array();			// Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)
 
-
+	public $templateFile = '';						// Form templates, relative to typo3 directory
 
 
 
@@ -379,6 +379,8 @@ class t3lib_TCEforms	{
 				$this->hookObjectsSingleField[] = t3lib_div::getUserObj($classRef);
 			}
 		}
+
+		$this->templateFile = 'templates/tceforms.html';
 
 	}
 
@@ -4849,46 +4851,18 @@ class t3lib_TCEforms	{
 	 * @return	void
 	 */
 	function setNewBEDesign()	{
+		$template = t3lib_div::getURL(PATH_typo3 . $this->templateFile);
 
 			// Wrapping all table rows for a particular record being edited:
-		$this->totalWrap='
-		<h2>###PAGE_TITLE###</h2>
-
-		<table class="typo3-TCEforms">'.
-			'|'.
-			'
-			<tr class="typo3-TCEforms-recHeaderRow">
-				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###</td>
-			</tr>
-		</table>';
+		$this->totalWrap = t3lib_parsehtml::getSubpart($template, '###TOTALWRAP###');
 
 			// Wrapping a single field:
-		$this->fieldTemplate='
-			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td class="t3-form-col1"><div>&nbsp;</div></td>
-				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span></td>
-			</tr>
-			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /></td>
-				<td valign="top">###FIELD_ITEM######FIELD_PAL_LINK_ICON###</td>
-			</tr>';
+		$this->fieldTemplate = t3lib_parsehtml::getSubpart($template, '###FIELDTEMPLATE###');
 
-		$this->palFieldTemplate='
-			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td></td>
-				<td nowrap="nowrap" valign="top">###FIELD_PALETTE###</td>
-			</tr>';
-		$this->palFieldTemplateHeader='
-			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td class="t3-form-col1"><div>&nbsp;</div></td>
-				<td nowrap="nowrap" valign="top"><strong>###FIELD_HEADER###</strong></td>
-			</tr>';
+		$this->palFieldTemplate = t3lib_parsehtml::getSubpart($template, '###PALETTE_FIELDTEMPLATE###');
+		$this->palFieldTemplateHeader = t3lib_parsehtml::getSubpart($template, '###PALETTE_FIELDTEMPLATE_HEADER###');
 
-		$this->sectionWrap='
-			<tr>
-				<td colspan="2"><table ###TABLE_ATTRIBS###>###CONTENT###</table></td>
-			</tr>
-			';
+		$this->sectionWrap = t3lib_parsehtml::getSubpart($template, '###SECTION_WRAP###');
 	}
 
 	/**
