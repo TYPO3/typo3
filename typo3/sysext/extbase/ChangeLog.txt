@@ -1,8 +1,8 @@
 ChangeLog for Extbase
 =====================
 
-Changes for 1.3.0 Beta 1
-========================
+Changes for 1.3.0 Beta 1a:
+==========================
 included in TYPO3 4.5.0 Beta 1.
 
 Extbase 1.3.0 Beta 1 has a lot new and greatly improved features, and also many bugfixes.
@@ -288,9 +288,9 @@ public function initializeObject() {
 Of course, QuerySettings can be overridden too in your custom finder method by calling $query->setQuerySettings();
 
 
-Full Changes:
--------------
-
+Full Changes for 1.3.0 Beta 1a:
+===============================
+[+TASK] Extbase: Re-implement support for BE modules
 [+FEATURE] Extbase (Utility): Allow plugins to be registered as new content element
 	Added a fifth parameter to Tx_Extbase_Utility_Extension::configurePlugin that allows
 	you to specify the plugin type (currently "list_type" and "CType" are supported).
@@ -476,8 +476,8 @@ $TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Bootstrap->callModule';
 	Note: This feature still has to be documented!
 	Resolves: #8365
 
-Changes for 1.3.0 Alpha 2
-=========================
+Changes for 1.3.0 Alpha 2:
+==========================
 included in TYPO3 4.5.0 Alpha 2.
 
 Since the last version, one (possible BREAKING) change happened:
@@ -499,8 +499,8 @@ Full Changes:
 [-TASK] Extbase (MVC): removed fallback to current page in AbstractController::redirect() as that's already done within the UriBuilder if $targetPageUid is NULL
 
 
-Changes for 1.3.0 Alpha 1
-=========================
+Changes for 1.3.0 Alpha 1:
+==========================
 included in TYPO3 4.5.0 Alpha 1.
 
 Since the last version, the following notable things happened:
