@@ -21,17 +21,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module 'Link Validator' for the 'linkvalidator' extension.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Jochen Rieger <j.rieger@connecta.ag>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
-
-
-require_once(PATH_t3lib . 'class.t3lib_extobjbase.php');
-
-
 class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 	/**
@@ -42,32 +40,29 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	protected $pageRecord = array();
 	protected $isAccessibleForCurrentUser = FALSE;
 
-
 	/**
 	 * Main method of modfunc1
 	 *
 	 * @return	html	Module content
 	 */
 	public function main() {
-		global $LANG;
 		$LANG->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
 
 		$this->search_level = t3lib_div::_GP('search_levels');
 
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
-				if ($this->pObj->MOD_SETTINGS[$key]) {
-					$this->checkOpt[$key] = 1;
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $value) {
+				if ($this->pObj->MOD_SETTINGS[$linkType]) {
+					$this->checkOpt[$linkType] = 1;
 				}
 			}
-
 		}
 
 		$this->initialize();
+
 		$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 		$this->modTS = $this->modTS['properties'];
-		if ($this->modTS['showUpdateButton'] == 'true' || $this->modTS['showUpdateButton'] == 1) {
+		if ($this->modTS['showUpdateButton'] === 'true' || $this->modTS['showUpdateButton'] === 1) {
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
@@ -78,10 +73,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
 
 		$this->render();
-		$content = $this->flush();
 
-		return $content;
-
+		return $this->flush();
 	} // end function main()
 
 	/**
@@ -90,21 +83,17 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	Module		menu
 	 */
 	public function modMenu() {
-
 		$modMenu = array (
 			'checkAllLink' => 0,
 		);
 
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-			&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
-				$modMenu[$key] = 1;
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $value) {
+				$modMenu[$linkType] = 1;
 			}
 		}
 
 		return $modMenu;
-
 	} // end function modMenu()
 
 
@@ -115,21 +104,22 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	public function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
-				$this->hookObjectsArr[$key] = &t3lib_div::getUserObj($classRef);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $classRef) {
+				$this->hookObjectsArr[$linkType] = &t3lib_div::getUserObj($classRef);
 			}
 		}
+
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfunc1/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+
 		$this->relativePath = t3lib_extMgm::extRelPath('linkvalidator');
 		$this->pageRecord = t3lib_BEfunc::readPageAccess($this->pObj->id, $this->perms_clause);
-		$this->isAccessibleForCurrentUser = (
-			$this->pObj->id && 
-			is_array($this->pageRecord) || 
-			!$this->pObj->id &&
-			$this->isCurrentUserAdmin()
-		);
+
+		$this->isAccessibleForCurrentUser = FALSE;
+		if ($this->pObj->id && is_array($this->pageRecord) || !$this->pObj->id && $this->isCurrentUserAdmin()) {
+			$this->isAccessibleForCurrentUser = TRUE;
+		}
 
 		$this->loadHeaderData();
 
@@ -137,7 +127,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$this->isAccessibleForCurrentUser = FALSE;
 		}
-
 	} // end function initialize()
 
 
@@ -177,7 +166,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (!empty($update)) {
 			$processing->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 		}
-
 	} // end function updateBrokenLinks()
 
 
@@ -187,14 +175,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	void
 	 */
 	public function render() {
-
 		if ($this->isAccessibleForCurrentUser) {
 			$this->content = $this->drawBrokenLinksTable();
 		} else {
 				// If no access or if ID == zero
 			$this->content .= $this->doc->spacer(10);
 		}
-
 	} // end function render()
 
 
@@ -204,7 +190,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	void
 	 */
 	public function flush() {
-
 		$content.= $this->doc->moduleBody(
 			$this->pageRecord,
 			$this->getDocHeaderButtons(),
@@ -212,17 +197,14 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		);
 
 		return $content;
-
 	} // end function flush()
 
 	/**
 	 * @return string
 	 */
 	protected function getLevelSelector() {
-
 			// Make level selector:
 		$opt = array();
-		//$parts = explode('|',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
 		$parts = array(
 			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
 			1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
@@ -286,7 +268,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$content = t3lib_parsehtml::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 
 		return $content;
-
 	} // end function drawBrokenLinksTable()
 
 
@@ -335,7 +316,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead['tablehead_lastcheck'] = $LANG->getLL('list.tableHead.lastCheck');
 
 		return $makerTableHead;
-
 	} // end function startTable()
 
 
@@ -388,7 +368,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 			// Return the table html code as string
 		return t3lib_parsehtml::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
-
 	} // end function drawTableRow()
 
 
@@ -436,9 +415,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$checkOptionsTemplate = t3lib_parsehtml::substituteSubpart($checkOptionsTemplate, '###HOOK_SECTION###', $hookSectionContent);
 
-		$content = t3lib_parsehtml::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
-		return $content;
-
+		return t3lib_parsehtml::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
 	} // end function getCheckOptions()
 
 
@@ -499,7 +476,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		);
 
 		return $markers;
-
 	} // end function getTemplateMarkers()
 
 
@@ -511,9 +487,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	protected function isCurrentUserAdmin() {
 		return ((bool) $GLOBALS['BE_USER']->user['admin']);
 	}
-
 } // end class
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfunc1/class.tx_linkvalidator_modfunc1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfunc1/class.tx_linkvalidator_modfunc1.php']);

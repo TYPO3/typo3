@@ -13,21 +13,5 @@
             <label index="mlang_labels_tabdescr">Checks the links of your website for validity</label>
             <label index="mlang_labels_tablabel">Validates links</label>
         </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_tabs_tab">Links überprüfen</label>
-            <label index="mlang_labels_tabdescr">Links Ihrer Website auf Validität überprüfen</label>
-            <label index="mlang_labels_tablabel">Links überprüfen</label>
-        </languageKey>
     </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_tabs_tab" type="integer">4702577</label>
-            <label index="mlang_labels_tabdescr" type="integer">210408459</label>
-            <label index="mlang_labels_tablabel" type="integer">100603702</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
 </T3locallang>

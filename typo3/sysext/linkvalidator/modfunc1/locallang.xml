@@ -45,40 +45,6 @@
             <label index="hooks.external">External Links</label>
             <label index="hooks.linkhandler">Linkhandler Links</label>
             <label index="overviews.nbtotal">Broken link total</label>
-            
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="title">Links überprüfen</label>
-            <label index="menu.introduction">Einführung</label>
-            <label index="menu.checkLinks">Links überprüfen</label>
-            <label index="menu.overview">Übersicht der vorhandenen Links</label>
-            <label index="overview.header">Übersicht - bitte auswählen</label>
-            <label index="overview.all.header">Gesamtanzahl</label>
-            <label index="overview.all.records">Einträge mit externen Links: </label>
-            <label index="overview.all.links">Externe Links: </label>
-            <label index="overview.branch.header">Anzahl vom ausgewählten Seitenbaum</label>
-            <label index="overview.branch.records">Einträge mit externen Links: </label>
-            <label index="overview.branch.links">Externe Links: </label>
-            <label index="overview.attention.header">Vorsicht: </label>
-            <label index="overview.attention.text">Links überprüfen kann bis zu 3 Minuten dauern. EINEN Link zu überprüfen kann bis zu 3 Sekunden dauern.</label>
-            <label index="list.header">Übersicht an kaputten Links</label>
-            <label index="list.tableHead.path">Pfad</label>
-            <label index="list.tableHead.type">Typ</label>
-            <label index="list.tableHead.headline">Titel</label>
-            <label index="list.tableHead.linktarget">URL / Linkziel</label>
-            <label index="list.tableHead.linkmessage">Antwort</label>
-            <label index="list.report.pagedeleted">Interne Seite '###title###' gelöscht</label>
-            <label index="list.report.pagenotexisting">Interne Seite existiert nicht</label>
-            <label index="list.report.rowdeleted">###title### Eintrag gelöscht</label>
-            <label index="list.report.rownotexisting">###title### Eintrag existiert nicht</label>
-            <label index="list.report.noresponse">Externer Link nicht erreichbar</label>
-            <label index="list.report.filenotexisting">Datei existiert nicht</label>
-            <label index="label_send">Links überprüfen</label>
-            <label index="label_showalllinks">Alle Links anzeigen (inkl. funktionierende)</label>
-            <label index="hooks.db">Interne Links</label>
-            <label index="hooks.file">Datei Links</label>
-            <label index="hooks.external">Externe Links</label>
-            <label index="hooks.linkhandler">Linkhandler Links</label>
         </languageKey>
     </data>
 </T3locallang>

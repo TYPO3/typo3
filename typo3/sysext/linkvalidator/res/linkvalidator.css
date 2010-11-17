@@ -1,6 +1,5 @@
 @CHARSET "UTF-8";
 
-/* somehow we need to override this in TYPO3 4.2.x */
 #typo3-mod-php .docheader-row2-right a {
 	display: inline;
 }
@@ -12,16 +11,15 @@
     margin-left: 5px;
 }
 
- .linkvalidator_checkoptions {
+.linkvalidator_checkoptions {
 	margin-bottom: 10px;
 }
 
- .linkvalidator_checkoptions_send {
+.linkvalidator_checkoptions_send {
 	margin-top: 5px;
 }
 
-    padding-left: 5px;
- .linkvalidator_singleOption {
+.linkvalidator_singleOption {
 	padding: 2px 0;
 }
 
@@ -29,15 +27,19 @@
 	padding-left: 10px;
 	vertical-align: middle;
 }
+
 .linkvalidator_singleOption input {
 	vertical-align: middle;
 }
- .linkvalidator_singleOption-showalllinks {
+
+.linkvalidator_singleOption-showalllinks {
 	padding-bottom: 10px;
 }
+
 .linkvalidator_table td {
     padding: 0 10px 0 0;
 }
+
 .linkvalidator_table td, .linkvalidator_table span{
     vertical-align: middle;
 }
