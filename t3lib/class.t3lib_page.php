@@ -418,7 +418,13 @@ class t3lib_pageSelect {
 							$this->versionOL($table,$olrow);
 
 								// Merge record content by traversing all fields:
-							if (is_array($olrow))	{
+							if (is_array($olrow)) {
+								if (isset($olrow['_ORIG_uid'])) {
+									$row['_ORIG_uid'] = $olrow['_ORIG_uid'];
+								}
+								if (isset($olrow['_ORIG_pid'])) {
+									$row['_ORIG_pid'] = $olrow['_ORIG_pid'];
+								}
 								foreach($row as $fN => $fV)	{
 									if ($fN!='uid' && $fN!='pid' && isset($olrow[$fN]))	{
 
