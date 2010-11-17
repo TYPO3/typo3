@@ -44,7 +44,7 @@ class tslib_content_Image extends tslib_content_Abstract {
 	public function render($conf = array()) {
 		if ($this->cObj->checkIf($conf['if.'])) {
 			$theValue = $this->cObj->cImage($conf['file'], $conf);
-			if ($conf['stdWrap.']) {
+			if (isset($conf['stdWrap.'])) {
 				$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 			}
 			return $theValue;

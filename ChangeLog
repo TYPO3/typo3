@@ -16,6 +16,7 @@
 	* Added feature #16285: Optimize stdWrap usage for TypoScript content element RECORDS (Thanks to Jo Hasenau)
 	* Added feature #15916: Display a link to list module on sysfolders when in page module (Thanks to Georg Ringer)
 	* Fixed bug #16107: listNum = 0 not working anymore due to stdWrap changes (Thanks to Jo Hasenau)
+	* Added feature #16282: Optimize stdWrap usage for TypoScript content element IMAGE (Thanks to Jo Hasenau)
 
 2010-11-17  Oliver Hader  <oliver@typo3.org>
 
