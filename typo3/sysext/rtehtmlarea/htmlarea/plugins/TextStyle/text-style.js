@@ -397,6 +397,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			if (classNames.length && (selectionEmpty || fullNodeSelected)) {
 				this.setSelectedOption(dropDown, classNames);
 			}
+			var store = dropDown.getStore();
 			dropDown.setDisabled(!(store.getCount()>1) || disabled);
 		}
 	}
