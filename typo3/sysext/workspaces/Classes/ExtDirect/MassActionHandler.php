@@ -49,7 +49,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 
 			// in case we're working within "All Workspaces" we can't provide Mass Actions
 		if ($currentWorkspace != tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
-			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess();
+			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
 			if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
 				$actions[] = array('action' => 'publish', 'title' => 'Publish' //$GLOBALS['LANG']->getLL('label_doaction_publish'));
 				);

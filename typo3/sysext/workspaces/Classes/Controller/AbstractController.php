@@ -86,12 +86,12 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
-	 * @param Tx_Extbase_MVC_Request $request The request object
-	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
+	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
+	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this handler
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 * @return void
 	 */
-	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		$this->template = t3lib_div::makeInstance('template');
 		$this->pageRenderer = $this->template->getPageRenderer();
 
