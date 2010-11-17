@@ -1,3 +1,7 @@
+2010-11-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
+
 2010-11-13  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #7855: IRRE doesn't save collapse/expand state of nested IRRE records

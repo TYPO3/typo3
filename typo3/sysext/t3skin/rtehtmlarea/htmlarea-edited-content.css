@@ -7,7 +7,15 @@
 	background-color:#ffffff;
 	border-width:0;
 }
-
+/* Set cursor for WebKit */
+.htmlarea-content-body img,
+.htmlarea-content-body table {
+	cursor: default;
+}
+.htmlarea-content-body table td,
+.htmlarea-content-body table th {
+	cursor: text;
+}
 /* Selectors for the Table Operations plugin */
 /* Make borders visible */
 /* Make sure we can click in empty cells without too much difficulty */
