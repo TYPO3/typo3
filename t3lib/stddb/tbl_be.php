@@ -570,6 +570,7 @@ $TCA['be_groups'] = array(
 				'maxitems' => 1000,
 				'autoSizeMax' => 50,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'itemListStyle' => 'width:500px',
 			)
 		),
 		'explicit_allowdeny' => array(

@@ -498,6 +498,14 @@ class t3lib_transferData {
 
 				// Get current value array:
 			$dataStructArray = t3lib_BEfunc::getFlexFormDS($fieldConfig['config'],$row,$table);
+
+				// Manipulate Flexform DS via TSConfig and group access lists
+			if (is_array($dataStructArray)) {
+				$flexFormHelper = t3lib_div::makeInstance('t3lib_TCEforms_Flexforms');
+				$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $fieldConfig);
+				unset($flexFormHelper);
+			}
+
 			if (is_array($dataStructArray))	{
 				$currentValueArray['data'] = $this->renderRecord_flexProc_procInData($currentValueArray['data'],$dataStructArray,array($data,$fieldConfig,$TSconfig,$table,$row,$field));
 

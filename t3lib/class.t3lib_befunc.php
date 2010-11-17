@@ -753,11 +753,11 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Returns an array with the exclude-fields as defined in TCA
+	 * Returns an array with the exclude-fields as defined in TCA and FlexForms
 	 * Used for listing the exclude-fields in be_groups forms
 	 * Usage: 2 (t3lib_tceforms + t3lib_transferdata)
 	 *
-	 * @return	array		Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries
+	 * @return	array		Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries and from FlexForms (fieldname, table:extkey;sheetname;fieldname)
 	 */
 	public static function getExcludeFields() {
 		global $TCA;
@@ -780,6 +780,39 @@ final class t3lib_BEfunc {
 				}
 			}
 		}
+			// All FlexForm fields
+		$table = (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] : 'tt_content');
+		$flexFormArray = self::getRegisteredFlexForms($table);
+		foreach ($flexFormArray as $tableField => $flexForms) {
+				// Prefix for field label, e.g. "Plugin Options:"
+			$labelPrefix = '';
+			if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
+				$labelPrefix = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
+			}
+				// Get all sheets and title
+			foreach ($flexForms as $extIdent => $extConf) {
+				$extTitle = $GLOBALS['LANG']->sl($extConf['title']);
+					// Get all fields in sheet
+				foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
+					if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
+						continue;
+					}
+					foreach ($sheet['ROOT']['el'] as $fieldName => $field) {
+							// Use only excludeable fields
+						if (empty($field['TCEforms']['exclude'])) {
+							continue;
+						}
+						$fieldLabel = (!empty($field['TCEforms']['label']) ? $GLOBALS['LANG']->sl($field['TCEforms']['label']) : $fieldName);
+						$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
+						$theExcludeArray[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
+					}
+				}
+			}
+		}
+
+			// Sort fields by label
+		usort($theExcludeArray, array(t3lib_TCEforms_Flexforms, 'compareArraysByFirstValue'));
+
 		return $theExcludeArray;
 	}
 
@@ -1214,15 +1247,89 @@ final class t3lib_BEfunc {
 		return $dataStructArray;
 	}
 
+	/**
+	 * Returns all registered FlexForm definitions with title and fields
+	 * Usage: 1
+	 *
+	 * @param	string		The content table
+	 * @return	array		The data structures with speaking extension title
+	 * @see t3lib_BEfunc::getExcludeFields()
+	 */
+	public static function getRegisteredFlexForms($table = 'tt_content') {
+		if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
+			return array();
+		}
 
+		
+		$flexForms    = array();
 
+		foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
+			if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] == 'flex') {
+				$flexForms[$tableField] = array();
 
+				unset($fieldConf['config']['ds']['default']);
 
+					// Get pointer fields
+				$pointerFields = (!empty($fieldConf['config']['ds_pointerField']) ? $fieldConf['config']['ds_pointerField'] : 'list_type,CType');
+				$pointerFields = t3lib_div::trimExplode(',', $pointerFields);
 
+					// Get FlexForms
+				foreach ($fieldConf['config']['ds'] as $flexFormKey => $dataStruct) {
+						// Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
+					$identFields = t3lib_div::trimExplode(',', $flexFormKey);
+					$extIdent    = $identFields[0];
+					if (!empty($identFields[1]) && $identFields[1] != 'list' && $identFields[1] != '*') {
+						$extIdent = $identFields[1];
+					}
 
+						// Load external file references
+					if (!is_array($dataStruct)) {
+						$file = t3lib_div::getFileAbsFileName(str_ireplace('FILE:', '', $dataStruct));
+						if ($file && @is_file($file)) {
+							$dataStruct = t3lib_div::getUrl($file);
+						}
+						$dataStruct = t3lib_div::xml2array($dataStruct);
+						if (!is_array($dataStruct)) {
+							continue;
+						}
+					}
+						// Get flexform content
+					$dataStruct = t3lib_div::resolveAllSheetsInDS($dataStruct);
+					if (empty($dataStruct['sheets']) || !is_array($dataStruct['sheets'])) {
+						continue;
+					}
 
+						// Use DS pointer to get extension title from TCA
+					$title = $extIdent;
+					$keyFields = t3lib_div::trimExplode(',', $flexFormKey);
+					foreach ($pointerFields as $pointerKey => $pointerName) {
+						if (empty($keyFields[$pointerKey]) || $keyFields[$pointerKey] == '*' || $keyFields[$pointerKey] == 'list') {
+							continue;
+						}
+						if (!empty($GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'])) {
+							$items = $GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'];
+							if (!is_array($items)) {
+								continue;
+							}
+							foreach ($items as $itemConf) {
+								if (!empty($itemConf[0]) && !empty($itemConf[1]) && $itemConf[1] == $keyFields[$pointerKey]) {
+									$title = $itemConf[0];
+									break 2;
+								}
+							}
+						}
+					}
 
+					$flexForms[$tableField][$extIdent] = array(
+						'title' => $title,
+						'ds'    => $dataStruct,
+					);
+				}
+			}
+		}
 
+		return $flexForms;
+	}
 
 
 

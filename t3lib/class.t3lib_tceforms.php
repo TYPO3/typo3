@@ -2470,6 +2470,13 @@ class t3lib_TCEforms	{
 			// Data Structure:
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'],$row,$table);
 
+			// Manipulate Flexform DS via TSConfig and group access lists
+		if (is_array($dataStructArray)) {
+			$flexFormHelper = t3lib_div::makeInstance('t3lib_TCEforms_Flexforms');
+			$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $PA['fieldConf']['config']);
+			unset($flexFormHelper);
+		}
+
 			// Get data structure:
 		if (is_array($dataStructArray))	{
 
