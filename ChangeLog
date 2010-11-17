@@ -4,6 +4,7 @@
 
 2010-11-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16434: GridView does not show cells if they are not mapped to any column
 	* Added feature #16334: Make FlexForms editable via TSConfig and group access lists (Thanks to Kai Vogel)
 	* Fixed bug #16320: Prepare userauthgroup to support custom staging (Thanks to Tolleiv Nietsch)
 	* Fixed bug #16436: Call to undefined method SC_mod_tools_em_index::uploadExtensionToTER()

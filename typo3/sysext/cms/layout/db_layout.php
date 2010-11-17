@@ -1080,7 +1080,7 @@ class SC_db_layout {
 						}
 
 							// If only one column found, display the single-column view.
-						if (count($colList)==1)	{
+						if (count($colList) === 1 && !$this->MOD_SETTINGS['function'] === 4) {
 							$dblist->tt_contentConfig['single'] = 1;	// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
 							$dblist->tt_contentConfig['showSingleCol'] = current($colList);	// The column(s) to show if single mode (under each other)
 						}
