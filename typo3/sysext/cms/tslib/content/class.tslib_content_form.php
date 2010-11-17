@@ -57,49 +57,75 @@ class tslib_content_Form extends tslib_content_Abstract {
 	public function render($conf = array(), $formData = '') {
 		$content = '';
 		if (is_array($formData)) {
-			$dataArr = $formData;
+			$dataArray = $formData;
 		} else {
-			$data = $this->cObj->stdWrap($conf['data'], $conf['data.']);
+			$data = isset($conf['data.'])
+				? $this->cObj->stdWrap($conf['data'], $conf['data.'])
+				: $conf['data'];
 				// Clearing dataArr
-			$dataArr = array();
+			$dataArray = array();
 				// Getting the original config
 			if (trim($data)) {
 				$data = str_replace(LF, '||', $data);
-				$dataArr = explode('||', $data);
+				$dataArray = explode('||', $data);
 			}
 				// Adding the new dataArray config form:
 			if (is_array($conf['dataArray.'])) { // dataArray is supplied
-				$sKeyArray = t3lib_TStemplate::sortedKeyList($conf['dataArray.'], TRUE);
-				foreach ($sKeyArray as $theKey) {
-					$dAA = $conf['dataArray.'][$theKey . '.'];
-					if (is_array($dAA)) {
+				$sortedKeyArray = t3lib_TStemplate::sortedKeyList($conf['dataArray.'], TRUE);
+				foreach ($sortedKeyArray as $theKey) {
+					$singleKeyArray = $conf['dataArray.'][$theKey . '.'];
+					if (is_array($singleKeyArray)) {
 						$temp = array();
-						list ($temp[0]) = explode('|', $dAA['label.'] ? $this->cObj->stdWrap($dAA['label'], $dAA['label.']) : $dAA['label']);
-						list ($temp[1]) = explode('|', $dAA['type']);
-						if ($dAA['required']) {
+						$label = isset($singleKeyArray['label.'])
+							? $this->cObj->stdWrap($singleKeyArray['label'], $singleKeyArray['label.'])
+							: $singleKeyArray['label'];
+						list ($temp[0]) = explode('|', $label);
+						$type = isset($singleKeyArray['type.'])
+							? $this->cObj->stdWrap($singleKeyArray['type'],$singleKeyArray['type.'])
+							: $singleKeyArray['type'];
+						list ($temp[1]) = explode('|', $type);
+						$required = isset($singleKeyArray['required.'])
+							? $this->cObj->stdWrap($singleKeyArray['required'], $singleKeyArray['required.'])
+							: $singleKeyArray['required'];
+						if ($required) {
 							$temp[1] = '*' . $temp[1];
 						}
-						list ($temp[2]) = explode('|', $dAA['value.'] ? $this->cObj->stdWrap($dAA['value'], $dAA['value.']) : $dAA['value']);
+						$singleValue = isset($singleKeyArray['value.'])
+							? $this->cObj->stdWrap($singleKeyArray['value'], $singleKeyArray['value.'])
+							: $singleKeyArray['value'];
+						list ($temp[2]) = explode('|', $singleValue);
 							// If value array is set, then implode those values.
-						if (is_array($dAA['valueArray.'])) {
-							$temp_accum = array();
-							foreach ($dAA['valueArray.'] as $dAKey_vA => $dAA_vA) {
-								if (is_array($dAA_vA) && !strcmp(intval($dAKey_vA) . '.', $dAKey_vA)) {
-									$temp_vA = array();
-									list ($temp_vA[0]) = explode('=', $dAA_vA['label.'] ? $this->cObj->stdWrap($dAA_vA['label'], $dAA_vA['label.']) : $dAA_vA['label']);
-									if ($dAA_vA['selected']) {
-										$temp_vA[0] = '*' . $temp_vA[0];
+						if (is_array($singleKeyArray['valueArray.'])) {
+							$temp_accumulated = array();
+							foreach ($singleKeyArray['valueArray.'] as $singleKey => $singleKey_valueArray) {
+								if (is_array($singleKey_valueArray) && !strcmp(intval($singleKey) . '.', $singleKey)) {
+									$temp_valueArray = array();
+									$valueArrayLabel = isset($singleKey_valueArray['label.'])
+										? $this->cObj->stdWrap($singleKey_valueArray['label'], $singleKey_valueArray['label.'])
+										: $singleKey_valueArray['label'];
+									list ($temp_valueArray[0]) = explode('=', $valueArrayLabel);
+									$selected = isset($singleKeyArray['selected.'])
+										? $this->cObj->stdWrap($singleKeyArray['selected'], $singleKeyArray['selected.'])
+										: $singleKeyArray['selected'];
+									if ($selected) {
+										$temp_valueArray[0] = '*' . $temp_valueArray[0];
 									}
-									list ($temp_vA[1]) = explode(',', $dAA_vA['value']);
+									$singleKeyValue = isset($singleKey_valueArray['value.'])
+										? $this->cObj->stdWrap($singleKey_valueArray['value'], $singleKey_valueArray['value.'])
+										: $singleKey_valueArray['value'];
+									list ($temp_valueArray[1]) = explode(',', $singleKeyValue);
 								}
-								$temp_accum[] = implode('=', $temp_vA);
+								$temp_accumulated[] = implode('=', $temp_valueArray);
 							}
-							$temp[2] = implode(',', $temp_accum);
+							$temp[2] = implode(',', $temp_accumulated);
 						}
-						list ($temp[3]) = explode('|', $dAA['specialEval.'] ? $this->cObj->stdWrap($dAA['specialEval'], $dAA['specialEval.']) : $dAA['specialEval']);
+						$specialEval = isset($singleKeyArray['specialEval.'])
+							? $this->cObj->stdWrap($singleKeyArray['specialEval'], $singleKeyArray['specialEval.'])
+							: $singleKeyArray['specialEval'];
+						list ($temp[3]) = explode('|', $specialEval);
 
 							// adding the form entry to the dataArray
-						$dataArr[] = implode('|', $temp);
+						$dataArray[] = implode('|', $temp);
 					}
 				}
 			}
@@ -110,39 +136,44 @@ class tslib_content_Form extends tslib_content_Abstract {
 		$fieldlist = array();
 		$propertyOverride = array();
 		$fieldname_hashArray = array();
-		$cc = 0;
+		$counter = 0;
 
 		$xhtmlStrict = t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype);
 			// Formname
-		if ($conf['formName']) {
-			$formname = $this->cObj->cleanFormName($conf['formName']);
+		$formName = isset($conf['formName.'])
+			? $this->cObj->stdWrap($conf['formName'], $conf['formName.'])
+			: $conf['formName'];
+		if ($formName) {
+			$formName = $this->cObj->cleanFormName($formName);
 		} else {
-			$formname = $GLOBALS['TSFE']->uniqueHash();
-			$formname = 'a' . $formname; // form name has to start with a letter to reach XHTML compliance
+			$formName = 'a' . $GLOBALS['TSFE']->uniqueHash(); // form name has to start with a letter to reach XHTML compliance
 		}
 
-		if (isset($conf['fieldPrefix'])) {
-			if ($conf['fieldPrefix']) {
-				$prefix = $this->cObj->cleanFormName($conf['fieldPrefix']);
+		$fieldPrefix = isset($conf['fieldPrefix.'])
+			? $this->cObj->stdWrap($conf['fieldPrefix'], $conf['fieldPrefix.'])
+			: $conf['fieldPrefix'];
+		if (isset($conf['fieldPrefix']) || isset($conf['fieldPrefix.'])) {
+			if ($fieldPrefix) {
+				$prefix = $this->cObj->cleanFormName($fieldPrefix);
 			} else {
 				$prefix = '';
 			}
 		} else {
-			$prefix = $formname;
+			$prefix = $formName;
 		}
 
-		foreach ($dataArr as $val) {
+		foreach ($dataArray as $dataValue) {
 
-			$cc++;
+			$counter++;
 			$confData = array();
 			if (is_array($formData)) {
-				$parts = $val;
-				$val = 1; // TRUE...
+				$parts = $dataValue;
+				$dataValue = 1; // TRUE...
 			} else {
-				$val = trim($val);
-				$parts = explode('|', $val);
+				$dataValue = trim($dataValue);
+				$parts = explode('|', $dataValue);
 			}
-			if ($val && strcspn($val, '#/')) {
+			if ($dataValue && strcspn($dataValue, '#/')) {
 					// label:
 				$confData['label'] = trim($parts[0]);
 					// field:
@@ -161,7 +192,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 					}
 						// Duplicate fieldnames resolved
 					if (isset($fieldname_hashArray[md5($confData['fieldname'])])) {
-						$confData['fieldname'] .= '_' . $cc;
+						$confData['fieldname'] .= '_' . $counter;
 					}
 					$fieldname_hashArray[md5($confData['fieldname'])] = $confData['fieldname'];
 						// Attachment names...
@@ -174,8 +205,11 @@ class tslib_content_Form extends tslib_content_Abstract {
 				}
 				$fieldCode = '';
 
-				if ($conf['wrapFieldName']) {
-					$confData['fieldname'] = $this->cObj->wrap($confData['fieldname'], $conf['wrapFieldName']);
+				$wrapFieldName = isset($conf['wrapFieldName'])
+					? $this->cObj->stdWrap($conf['wrapFieldName'], $conf['wrapFieldName.'])
+					: $conf['wrapFieldName'];
+				if ($wrapFieldName) {
+					$confData['fieldname'] = $this->cObj->wrap($confData['fieldname'], $wrapFieldName);
 				}
 
 					// Set field name as current:
@@ -183,9 +217,14 @@ class tslib_content_Form extends tslib_content_Abstract {
 
 					// Additional parameters
 				if (trim($confData['type'])) {
-					$addParams = trim($conf['params']);
-					if (is_array($conf['params.']) && isset($conf['params.'][$confData['type']])) {
-						$addParams = trim($conf['params.'][$confData['type']]);
+					if (isset($conf['params.'][$confData['type']])) {
+						$addParams = isset($conf['params.'][$confData['type'] . '.'])
+							? trim($this->cObj->stdWrap($conf['params.'][$confData['type']], $conf['params.'][$confData['type'] . '.']))
+							: trim($conf['params.'][$confData['type']]);
+					} else {
+						$addParams = isset($conf['params.'])
+							? trim($this->cObj->stdWrap($conf['params'], $conf['params.']))
+							: trim($conf['params']);
 					}
 					if (strcmp('', $addParams)) {
 						$addParams = ' ' . $addParams;
@@ -193,14 +232,20 @@ class tslib_content_Form extends tslib_content_Abstract {
 				} else
 					$addParams = '';
 
-				if ($conf['dontMd5FieldNames']) {
+				$dontMd5FieldNames = isset($conf['dontMd5FieldNames.'])
+					? $this->cObj->stdWrap($conf['dontMd5FieldNames'], $conf['dontMd5FieldNames.'])
+					: $conf['dontMd5FieldNames'];
+				if ($dontMd5FieldNames) {
 					$fName = $confData['fieldname'];
 				} else {
 					$fName = md5($confData['fieldname']);
 				}
 
 					// Accessibility: Set id = fieldname attribute:
-				if ($conf['accessibility'] || $xhtmlStrict) {
+				$accessibility = isset($conf['accessibility.'])
+					? $this->cObj->stdWrap($conf['accessibility'], $conf['accessibility.'])
+					: $conf['accessibility'];
+				if ($accessibility || $xhtmlStrict) {
 					$elementIdAttribute = ' id="' . $prefix . $fName . '"';
 				} else {
 					$elementIdAttribute = '';
@@ -210,8 +255,11 @@ class tslib_content_Form extends tslib_content_Abstract {
 				switch ($confData['type']) {
 					case 'textarea' :
 						$cols = trim($fParts[1]) ? intval($fParts[1]) : 20;
-						$compWidth = doubleval($conf['compensateFieldWidth']
-										? $conf['compensateFieldWidth']
+						$compensateFieldWidth = isset($conf['compensateFieldWidth.'])
+							? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.'])
+							: $conf['compensateFieldWidth'];
+						$compWidth = doubleval($compensateFieldWidth
+										? $compensateFieldWidth
 										: $GLOBALS['TSFE']->compensateFieldWidth
 									);
 						$compWidth = $compWidth ? $compWidth : 1;
@@ -219,13 +267,19 @@ class tslib_content_Form extends tslib_content_Abstract {
 
 						$rows = trim($fParts[2]) ? t3lib_div::intInRange($fParts[2], 1, 30) : 5;
 						$wrap = trim($fParts[3]);
-						if ($conf['noWrapAttr'] || $wrap === 'disabled') {
+						$noWrapAttr = isset($conf['noWrapAttr.'])
+							? $this->cObj->stdWrap($conf['noWrapAttr'], $conf['noWrapAttr.'])
+							: $conf['noWrapAttr'];
+						if ($noWrapAttr || $wrap === 'disabled') {
 							$wrap = '';
 						} else {
 							$wrap = $wrap ? ' wrap="' . $wrap . '"' : ' wrap="virtual"';
 						}
+						$noValueInsert = isset($conf['noValueInsert.'])
+							? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.'])
+							: $conf['noValueInsert'];
 						$default = $this->cObj->getFieldDefaultValue(
-							$conf['noValueInsert'],
+							$noValueInsert,
 							$confData['fieldname'],
 							str_replace('\n', LF, trim($parts[2]))
 						);
@@ -243,13 +297,23 @@ class tslib_content_Form extends tslib_content_Abstract {
 					case 'input' :
 					case 'password' :
 						$size = trim($fParts[1]) ? intval($fParts[1]) : 20;
-						$compWidth = doubleval($conf['compensateFieldWidth']
-										? $conf['compensateFieldWidth']
+						$compensateFieldWidth = isset($conf['compensateFieldWidth.'])
+							? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.'])
+							: $conf['compensateFieldWidth'];
+						$compWidth = doubleval($compensateFieldWidth
+										? $compensateFieldWidth
 										: $GLOBALS['TSFE']->compensateFieldWidth
 									);
 						$compWidth = $compWidth ? $compWidth : 1;
 						$size = t3lib_div::intInRange($size * $compWidth, 1, 120);
-						$default = $this->cObj->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
+						$noValueInsert = isset($conf['noValueInsert.'])
+							? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.'])
+							: $conf['noValueInsert'];
+						$default = $this->cObj->getFieldDefaultValue(
+							$noValueInsert,
+							$confData['fieldname'],
+							trim($parts[2])
+						);
 
 						if ($confData['type'] == 'password') {
 							$default = '';
@@ -282,7 +346,14 @@ class tslib_content_Form extends tslib_content_Abstract {
 					break;
 					case 'check' :
 							// alternative default value:
-						$default = $this->cObj->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
+						$noValueInsert = isset($conf['noValueInsert.'])
+							? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.'])
+							: $conf['noValueInsert'];
+						$default = $this->cObj->getFieldDefaultValue(
+							$noValueInsert,
+							$confData['fieldname'],
+							trim($parts[2])
+						);
 						$checked = $default ? ' checked="checked"' : '';
 						$fieldCode = sprintf(
 							'<input type="checkbox" value="%s" name="%s"%s%s%s />',
@@ -323,7 +394,14 @@ class tslib_content_Form extends tslib_content_Abstract {
 							} // Sets the default value if value/label pair is marked as default.
 						}
 							// alternative default value:
-						$default = $this->cObj->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $defaults);
+						$noValueInsert = isset($conf['noValueInsert.'])
+							? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.'])
+							: $conf['noValueInsert'];
+						$default = $this->cObj->getFieldDefaultValue(
+							$noValueInsert,
+							$confData['fieldname'],
+							$defaults
+						);
 						if (!is_array($default)) {
 							$defaults = array();
 							$defaults[] = $default;
@@ -373,13 +451,20 @@ class tslib_content_Form extends tslib_content_Abstract {
 							} // Sets the default value if value/label pair is marked as default.
 						}
 							// alternative default value:
-						$default = $this->cObj->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $default);
+						$noValueInsert = isset($conf['noValueInsert.'])
+							? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.'])
+							: $conf['noValueInsert'];
+						$default = $this->cObj->getFieldDefaultValue(
+							$noValueInsert,
+							$confData['fieldname'],
+							$default
+						);
 							// Create the select-box:
 						$iCount = count($items);
 						for ($a = 0; $a < $iCount; $a++) {
 							$optionParts = '';
 							$radioId = $prefix . $fName . $this->cObj->cleanFormName($items[$a][0]);
-							if ($conf['accessibility']) {
+							if ($accessibility) {
 								$radioLabelIdAttribute = ' id="' . $radioId . '"';
 							} else {
 								$radioLabelIdAttribute = '';
@@ -387,27 +472,37 @@ class tslib_content_Form extends tslib_content_Abstract {
 							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' .
 									$radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' .
 									(!strcmp($items[$a][1], $default) ? ' checked="checked"' : '') . $addParams . ' />';
-							if ($conf['accessibility']) {
-								$optionParts .= '<label for="' . $radioId . '">' . $this->cObj->stdWrap(trim($items[$a][0]),
-									$conf['radioWrap.']) . '</label>';
+							if ($accessibility) {
+								$label = isset($conf['radioWrap.'])
+									? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.'])
+									: trim($items[$a][0]);
+								$optionParts .= '<label for="' . $radioId . '">' . $label  . '</label>';
 							} else {
-								$optionParts .= $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
+								$optionParts .= isset($conf['radioWrap.'])
+									? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.'])
+									: trim($items[$a][0]);
 							}
-							$option .= $this->cObj->stdWrap($optionParts, $conf['radioInputWrap.']);
+							$option .= isset($conf['radioInputWrap.'])
+								? $this->cObj->stdWrap($optionParts, $conf['radioInputWrap.'])
+								: $optionParts;
 						}
 
-						if ($conf['accessibility']) {
-							$accessibilityWrap = $conf['radioWrap.']['accessibilityWrap'];
+						if ($accessibility) {
+							$accessibilityWrap = isset($conf['radioWrap.']['accessibilityWrap.'])
+								? $this->cObj->stdWrap($conf['radioWrap.']['accessibilityWrap'], $conf['radioWrap.']['accessibilityWrap.'])
+								: $conf['radioWrap.']['accessibilityWrap.'];
 
-							$search = array(
-								'###RADIO_FIELD_ID###', '###RADIO_GROUP_LABEL###'
-							);
-							$replace = array(
-								$elementIdAttribute, $confData['label']
-							);
-							$accessibilityWrap = str_replace($search, $replace, $accessibilityWrap);
+							if($accessibilityWrap) {
+								$search = array(
+									'###RADIO_FIELD_ID###', '###RADIO_GROUP_LABEL###'
+								);
+								$replace = array(
+									$elementIdAttribute, $confData['label']
+								);
+								$accessibilityWrap = str_replace($search, $replace, $accessibilityWrap);
 
-							$option = $this->cObj->wrap($option, $accessibilityWrap);
+								$option = $this->cObj->wrap($option, $accessibilityWrap);
+							}
 						}
 
 						$fieldCode = $option;
@@ -529,35 +624,69 @@ class tslib_content_Form extends tslib_content_Abstract {
 
 						// Field:
 					$fieldLabel = $confData['label'];
-					if ($conf['accessibility'] && trim($fieldLabel) && !preg_match('/^(label|hidden|comment)$/', $confData['type'])) {
+					if ($accessibility && trim($fieldLabel) && !preg_match('/^(label|hidden|comment)$/', $confData['type'])) {
 						$fieldLabel = '<label for="' . $prefix . $fName . '">' . $fieldLabel . '</label>';
 					}
 
 						// Getting template code:
-					$fieldCode = $this->cObj->stdWrap($fieldCode, $conf['fieldWrap.']);
-					$labelCode = $this->cObj->stdWrap($fieldLabel, $conf['labelWrap.']);
-					$commentCode = $this->cObj->stdWrap($confData['label'], $conf['commentWrap.']); // RTF
+					if(isset($conf['fieldWrap.'])) {
+						$fieldCode = $this->cObj->stdWrap($fieldCode, $conf['fieldWrap.']);
+					}
+					$labelCode = isset($conf['labelWrap.'])
+						? $this->cObj->stdWrap($fieldLabel, $conf['labelWrap.'])
+						: $fieldLabel;
+					$commentCode = isset($conf['commentWrap.'])
+						? $this->cObj->stdWrap($confData['label'], $conf['commentWrap.']) // RTF
+						: $confData['label'];
 					$result = $conf['layout'];
-					if ($conf['REQ'] && $confData['required']) {
-						if (is_array($conf['REQ.']['fieldWrap.']))
+					$req = isset($conf['REQ.'])
+						? $this->cObj->stdWrap($conf['REQ'], $conf['REQ.'])
+						: $conf['REQ'];
+					if ($req && $confData['required']) {
+						if (isset($conf['REQ.']['fieldWrap.'])) {
 							$fieldCode = $this->cObj->stdWrap($fieldCode, $conf['REQ.']['fieldWrap.']);
-						if (is_array($conf['REQ.']['labelWrap.']))
+						}
+						if (isset($conf['REQ.']['labelWrap.'])) {
 							$labelCode = $this->cObj->stdWrap($fieldLabel, $conf['REQ.']['labelWrap.']);
-						if ($conf['REQ.']['layout']) {
-							$result = $conf['REQ.']['layout'];
+						}
+						$reqLayout = isset($conf['REQ.']['layout.'])
+							? $this->cObj->stdWrap($conf['REQ.']['layout'], $conf['REQ.']['layout.'])
+							: $conf['REQ.']['layout'];
+						if ($reqLayout) {
+							$result = $reqLayout;
 						}
 					}
-					if ($confData['type'] == 'comment' && $conf['COMMENT.']['layout']) {
-						$result = $conf['COMMENT.']['layout'];
+					if ($confData['type'] == 'comment') {
+						$commentLayout = isset($conf['COMMENT.']['layout.'])
+							? $this->cObj->stdWrap($conf['COMMENT.']['layout'], $conf['COMMENT.']['layout.'])
+							: $conf['COMMENT.']['layout'];
+						if ($commentLayout) {
+							$result = $commentLayout;
+						}
 					}
-					if ($confData['type'] == 'check' && $conf['CHECK.']['layout']) {
-						$result = $conf['CHECK.']['layout'];
+					if ($confData['type'] == 'check') {
+						$checkLayout = isset($conf['CHECK.']['layout.'])
+							? $this->cObj->stdWrap($conf['CHECK.']['layout'], $conf['CHECK.']['layout.'])
+							: $conf['CHECK.']['layout'];
+						if ($checkLayout) {
+							$result = $checkLayout;
+						}
 					}
-					if ($confData['type'] == 'radio' && $conf['RADIO.']['layout']) {
-						$result = $conf['RADIO.']['layout'];
+					if ($confData['type'] == 'radio') {
+						$radioLayout = isset($conf['RADIO.']['layout.'])
+							? $this->cObj->stdWrap($conf['RADIO.']['layout'], $conf['RADIO.']['layout.'])
+							: $conf['RADIO.']['layout'];
+						if ($radioLayout) {
+							$result = $radioLayout;
+						}
 					}
-					if ($confData['type'] == 'label' && $conf['LABEL.']['layout']) {
-						$result = $conf['LABEL.']['layout'];
+					if ($confData['type'] == 'label') {
+						$labelLayout = isset($conf['LABEL.']['layout.'])
+							? $this->cObj->stdWrap($conf['LABEL.']['layout'], $conf['LABEL.']['layout.'])
+							: $conf['CHECK.']['layout'];
+						if ($labelLayout) {
+							$result = $labelLayout;
+						}
 					}
 					$result = str_replace('###FIELD###', $fieldCode, $result);
 					$result = str_replace('###LABEL###', $labelCode, $result);
@@ -566,19 +695,27 @@ class tslib_content_Form extends tslib_content_Abstract {
 				}
 			}
 		}
-		if ($conf['stdWrap.']) {
+		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
 
 
 			// redirect (external: where to go afterwards. internal: where to submit to)
-		$theRedirect = $this->cObj->stdWrap($conf['redirect'], $conf['redirect.']); // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
+		$theRedirect = isset($conf['redirect.'])
+			? $this->cObj->stdWrap($conf['redirect'], $conf['redirect.'])
+			: $conf['redirect']; // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
+		$target = isset($conf['target.'])
+			? $this->cObj->stdWrap($conf['target'], $conf['target.'])
+			: $conf['target']; // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
+		$noCache = isset($conf['no_cache.'])
+			? $this->cObj->stdWrap($conf['no_cache'], $conf['no_cache.'])
+			: $conf['no_cache']; // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
 		$page = $GLOBALS['TSFE']->page;
 		if (!$theRedirect) { // Internal: Just submit to current page
 			$LD = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
-				$conf['target'],
-				$conf['no_cache'],
+				$target,
+				$noCache,
 				'index.php',
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
@@ -587,8 +724,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($theRedirect);
 			$LD = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
-				$conf['target'],
-				$conf['no_cache'],
+				$target,
+				$noCache,
 				'index.php',
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
@@ -596,8 +733,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 		} else { // External URL, redirect-hidden field is rendered!
 			$LD = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
-				$conf['target'],
-				$conf['no_cache'],
+				$target,
+				$noCache,
 				'',
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
@@ -607,13 +744,19 @@ class tslib_content_Form extends tslib_content_Abstract {
 		}
 
 			// Formtype (where to submit to!):
-		$formtype = $propertyOverride['type'] ? $propertyOverride['type'] : $this->cObj->stdWrap($conf['type'], $conf['type.']);
+		if($propertyOverride['type']) {
+			$formtype = $propertyOverride['type'];
+		} else {
+			$formtype = isset($conf['type.'])
+				? $this->cObj->stdWrap($conf['type'], $conf['type.'])
+				: $conf['type'];
+		}
 		if (t3lib_div::testInt($formtype)) { // Submit to a specific page
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($formtype);
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
-				$conf['target'],
-				$conf['no_cache'],
+				$target,
+				$noCache,
 				'',
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
@@ -628,8 +771,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 		} else { // Submit to "nothing" - which is current page
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData(
 				$GLOBALS['TSFE']->page,
-				$conf['target'],
-				$conf['no_cache'],
+				$target,
+				$noCache,
 				'',
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
@@ -638,15 +781,20 @@ class tslib_content_Form extends tslib_content_Abstract {
 		}
 
 			// Recipient:
-		$theEmail = $this->cObj->stdWrap($conf['recipient'], $conf['recipient.']);
+		$theEmail = isset($conf['recipient.'])
+			? $this->cObj->stdWrap($conf['recipient'], $conf['recipient.'])
+			: $conf['recipient'];
 		if ($theEmail && !$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
 			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
 			$hiddenfields .= '<input type="hidden" name="recipient" value="' . htmlspecialchars($theEmail) . '" />';
 		}
 
 			// location data:
-		if ($conf['locationData']) {
-			if ($conf['locationData'] == 'HTTP_POST_VARS' && isset($_POST['locationData'])) {
+		$location = isset($conf['locationData.'])
+			? $this->cObj->stdWrap($conf['locationData'], $conf['locationData.'])
+			: $conf['locationData'];
+		if ($location) {
+			if ($location == 'HTTP_POST_VARS' && isset($_POST['locationData'])) {
 				$locationData = t3lib_div::_POST('locationData');
 			} else {
 					// locationData is [hte page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
@@ -672,13 +820,24 @@ class tslib_content_Form extends tslib_content_Abstract {
 		}
 
 			// Wrap all hidden fields in a div tag (see http://bugs.typo3.org/view.php?id=678)
-		$hiddenfields = '<div style="display:none;">' . $hiddenfields . '</div>';
+		$hiddenfields = isset($conf['hiddenFields.']['stdWrap.'])
+			? $this->cObj->stdWrap($hiddenfields, $conf['hiddenFields.']['stdWrap.'])
+			: '<div style="display:none;">' . $hiddenfields . '</div>';
 
 		if ($conf['REQ']) {
-			$validateForm = ' onsubmit="return validateForm(\'' . $formname . '\',\'' . implode(',', $fieldlist)
-				. '\',' . t3lib_div::quoteJSvalue($conf['goodMess']) . ',' .
-				t3lib_div::quoteJSvalue($conf['badMess']) . ',' .
-				t3lib_div::quoteJSvalue($conf['emailMess']) . ')"';
+			$goodMess = isset($conf['goodMess.'])
+				? $this->cObj->stdWrap($conf['goodMess'], $conf['goodMess.'])
+				: $conf['goodMess'];
+			$badMess = isset($conf['badMess.'])
+				? $this->cObj->stdWrap($conf['badMess'], $conf['badMess.'])
+				: $conf['badMess'];
+			$emailMess = isset($conf['emailMess.'])
+				? $this->cObj->stdWrap($conf['emailMess'], $conf['emailMess.'])
+				: $conf['emailMess'];
+			$validateForm = ' onsubmit="return validateForm(\'' . $formName . '\',\'' . implode(',', $fieldlist)
+				. '\',' . t3lib_div::quoteJSvalue($goodMess) . ',' .
+				t3lib_div::quoteJSvalue($badMess) . ',' .
+				t3lib_div::quoteJSvalue($emailMess) . ')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' .
 				t3lib_div::createVersionNumberedFilename($GLOBALS['TSFE']->absRefPrefix .
 				't3lib/jsfunc.validateform.js') . '"></script>';
@@ -688,19 +847,25 @@ class tslib_content_Form extends tslib_content_Abstract {
 
 			// Create form tag:
 		$theTarget = ($theRedirect ? $LD['target'] : $LD_A['target']);
+		$method = isset($conf['method.'])
+			? $this->cObj->stdWrap($conf['method'], $conf['method.'])
+			: $conf['method'];
 		$content = array(
 			'<form' . ' action="' . htmlspecialchars($action) . '"' . ' id="' .
-			$formname . '"' . ($xhtmlStrict ? '' : ' name="' . $formname . '"') .
+			$formName . '"' . ($xhtmlStrict ? '' : ' name="' . $formName . '"') .
 			' enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '"' .
-			' method="' . ($conf['method'] ? $conf['method'] : 'post') . '"' .
+			' method="' . ($method ? $method : 'post') . '"' .
 			($theTarget ? ' target="' . $theTarget . '"' : '') .
 			$validateForm . '>', $hiddenfields . $content,
 			'</form>'
 		);
 
-		if ($conf['arrayReturnMode']) {
+		$arrayReturnMode = isset($conf['arrayReturnMode.'])
+			? $this->cObj->stdWrap($conf['arrayReturnMode'], $conf['arrayReturnMode.'])
+			: $conf['arrayReturnMode'];
+		if ($arrayReturnMode) {
 			$content['validateForm'] = $validateForm;
-			$content['formname'] = $formname;
+			$content['formname'] = $formName;
 			return $content;
 		} else {
 			return implode('', $content);
