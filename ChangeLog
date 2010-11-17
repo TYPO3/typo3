@@ -1,3 +1,7 @@
+2010-11-17  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #14449: Deprecate usage of ImageMagick version 4 and 5
+
 2010-11-17  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16027: Let typolink honour secure filelink configuration

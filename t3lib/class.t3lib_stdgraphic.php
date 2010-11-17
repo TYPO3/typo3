@@ -256,7 +256,10 @@ class t3lib_stdGraphic	{
 			$this->png_truecolor = true;
 		}
 		if (!$gfxConf['im_version_5'])	{
+			t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is not set, ImageMagic 4 is assumed. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
 			$this->im_version_4 = true;
+		} elseif ($gfxConf['im_version_5'] === 'im5') {
+			t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is set to \'im5\'. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
 		}
 
 			// When GIFBUILDER gets used in truecolor mode
@@ -298,7 +301,6 @@ class t3lib_stdGraphic	{
 		}
 		if ($gfxConf['im_no_effects'])	{
 				// Boolean. This is necessary if using ImageMagick 5+.
-				// Approved version for using effects is version 4.2.9.
 				// Effects in Imagemagick 5+ tends to render very slowly!!
 				// - therefore must be disabled in order not to perform sharpen, blurring and such.
 			$this->NO_IM_EFFECTS = 1;

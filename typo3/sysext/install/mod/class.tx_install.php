@@ -2474,14 +2474,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				<p>
 					<strong>Notice: </strong>
 					<br />
-					ImageMagick 4.2.9 is recommended and the binaries are
-					normally installed by RPM in /usr/X11R6/bin or by compiling
-					in /usr/local/bin. Please look in the "Inside TYPO3"
-					pdf-document for extensive information about ImageMagick issues.
+					ImageMagick 6 or GraphicsMagick is recommended and the binaries are
+					normally installed in /usr/bin.
 					<br />
 					Paths to ImageMagick are defined in localconf.php and may be
 					something else than /usr/bin/, but this is default for
-					ImageMagick 5+
+					ImageMagick 6+
 				</p>
 			', 2);
 			if (ini_get('doc_root')) {
@@ -4357,7 +4355,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				In order to do this, TYPO3 uses two sets of tools:
 			</p>
 			<p>
-				<strong>ImageMagick:</strong>
+				<strong>ImageMagick / GraphicsMagick:</strong>
 				<br />
 				For conversion of non-web formats to webformats, combining
 				images with alpha-masks, performing image-effects like blurring
@@ -4368,20 +4366,18 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				namely \'convert\' (converting fileformats, scaling, effects),
 				\'combine\'/\'composite\' (combining images with masks) and
 				\'identify\' (returns image information).
+				GraphicsMagick is an alternative to ImageMagick and can be enabled
+				by setting [GFX][im_version_5] to \'gm\'. This is recommended and
+				enabled by default.
 				<br />
-				Because ImageMagick are external programs, two requirements must
-				be met: 1) The programs must be installed on the server and
-				working and 2) if safe_mode is enabled, the programs must be
-				located in the folder defined by the php.ini setting,
+				Because ImageMagick and Graphicsmagick are external programs, two
+				requirements must be met: 1) The programs must be installed on the
+				server and working and 2) if safe_mode is enabled, the programs must
+				be located in the folder defined by the php.ini setting,
 				<em>safe_mode_exec_dir</em> (else they are not executed).
 				<br />
 				ImageMagick is available for both Windows and Unix. The current
-				version is 5+, but TYPO3 enthusiasts prefer an old version 4.2.9
-				because that version has three main advantages: It\'s faster in
-				some operations, the blur-function works, the sharpen-function
-				works. Anyway you do it, you must tell TYPO3 by configuration
-				whether you\'re using version 5+ or 4.2.9. (flag:
-				[GFX][im_version_5])
+				version is 6+.
 				<br />
 				ImageMagick homepage is at <a href="http://www.imagemagick.org/">http://www.imagemagick.org/</a>
 			</p>
