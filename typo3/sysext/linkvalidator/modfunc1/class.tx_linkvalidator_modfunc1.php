@@ -72,7 +72,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 		$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
-		$this->updateBrokenLinks(&$processing);
+		$this->updateBrokenLinks($processing);
 
 		$brokenLinkOverView = $processing->getLinkCounts($this->pObj->id);
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
