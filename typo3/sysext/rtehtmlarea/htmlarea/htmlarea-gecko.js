@@ -129,7 +129,12 @@ HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
 			range.selectNodeContents(node);
 		}
 	} else {
-		range.selectNode(node);
+		if (node.nodeType == HTMLArea.DOM.ELEMENT_NODE && (Ext.isWebKit || Ext.isOpera)) {
+			range.setStart(node, 0);
+			range.setEnd(node, 0);
+		} else {
+			range.selectNode(node);
+		}
 	}
 	if (typeof(endPoint) != "undefined") {
 		range.collapse(endPoint);

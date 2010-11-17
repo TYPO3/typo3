@@ -1,6 +1,7 @@
 2010-11-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #2474: htmlArea RTE: Add general element properties editing dialogue
+	* Fixed bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
 
 2010-11-16  Jeff Segars  <jeff@webempoweredchurch.org>
 
