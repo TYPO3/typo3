@@ -1,3 +1,7 @@
+2010-11-18  Ernesto Baschny  <ernesto@typo3.org>
+
+	* Release of TYPO3 4.5.0beta1
+
 2010-11-18  Michael Stucki  <michael@typo3.org>
 
 	* Added feature #7942: Enable UTF-8 by default (Thanks to Benni Mack and Christian Kuhn)
