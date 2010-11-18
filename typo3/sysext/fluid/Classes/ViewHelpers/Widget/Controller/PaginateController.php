@@ -72,7 +72,7 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 		$query = $this->objects->getQuery();
 		$query->setLimit($itemsPerPage);
 		if ($this->currentPage > 1) {
-			$query->setOffset($itemsPerPage * ($this->currentPage - 1));
+			$query->setOffset((integer)($itemsPerPage * ($this->currentPage - 1)));
 		}
 		$modifiedObjects = $query->execute();
 
