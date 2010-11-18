@@ -42,6 +42,20 @@ class tx_em_Connection_ExtDirectServer {
 	var $xmlhandler;
 
 	/**
+	 * Class for printing extension lists
+	 *
+	 * @var tx_em_Extensions_List
+	 */
+	public $extensionList;
+
+	/**
+	 * Class for extension details
+	 *
+	 * @var tx_em_Extensions_Details
+	 */
+	public $extensionDetails;
+
+	/**
 	 * Keeps instance of settings class.
 	 *
 	 * @var tx_em_Settings
@@ -654,11 +668,14 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return  array status
 	 */
 	public function uploadExtension($parameter) {
-		$uploadedTempFile = t3lib_div::upload_to_tempfile($parameter['extupload-path']['tmp_name']);
+		$uploadedTempFile = isset($parameter['extfile']) ? $parameter['extfile'] : t3lib_div::upload_to_tempfile($parameter['extupload-path']['tmp_name']);
 		$location = ($parameter['loc'] === 'G' || $parameter['loc'] === 'S') ? $parameter['loc'] : 'L';
 		$uploadOverwrite = $parameter['uploadOverwrite'] ? TRUE : FALSE;
 
 		$install = t3lib_div::makeInstance('tx_em_Install', $this);
+		$this->extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		$this->extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details', $this);
+
 		$upload = $install->uploadExtensionFile($uploadedTempFile, $location, $uploadOverwrite);
 
 		if ($upload[0] === FALSE) {
@@ -667,14 +684,35 @@ class tx_em_Connection_ExtDirectServer {
 				'error' => $upload[1]
 			);
 		}
+
 		$extKey = $upload[1][0]['extKey'];
-		$result = $install->installExtension($upload[1], $location);
+		$version = '';
+		$dontDelete = TRUE;
+		$result = $install->installExtension($upload[1], $location, $version, $uploadedTempFile, $dontDelete);
 		return array(
 			'success' => TRUE,
 			'data' => $result,
 			'extKey' => $extKey
 		);
 
+	}
+
+	/**
+	 * Enables an extension
+	 *
+	 * @param  $extensionKey
+	 * @return void
+	 */
+	public function enableExtension($extensionKey) {
+		$this->extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		$install = t3lib_div::makeInstance('tx_em_Install', $this);
+
+		list($installedList,) = $this->extensionList->getInstalledExtensions();
+		$newExtensionList = $this->extensionList->addExtToList($extensionKey, $installedList);
+
+		$install->writeNewExtensionList($newExtensionList);
+		tx_em_Tools::refreshGlobalExtList();
+		$install->forceDBupdates($extensionKey, $newExtensionList[$extensionKey]);
 	}
 }
 

@@ -1304,6 +1304,107 @@ class tx_em_Install {
 		return $content;
 	}
 
+	/**
+	 * Writes the extension list to "localconf.php" file
+	 * Removes the temp_CACHED* files before return.
+	 *
+	 * @param	string		List of extensions
+	 * @return	void
+	 */
+	function writeNewExtensionList($newExtList) {
+		$strippedExtensionList = $this->stripNonFrontendExtensions($newExtList);
+
+		// Instance of install tool
+		$instObj = new t3lib_install;
+		$instObj->allowUpdateLocalConf = 1;
+		$instObj->updateIdentity = 'TYPO3 Extension Manager';
+
+		// Get lines from localconf file
+		$lines = $instObj->writeToLocalconf_control();
+		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
+		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList_FE\']', $strippedExtensionList);
+		$instObj->writeToLocalconf_control($lines);
+
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList_FE'] = $strippedExtensionList;
+		t3lib_extMgm::removeCacheFiles();
+	}
+
+	/**
+	 * Removes unneeded extensions from the frontend based on
+	 * EMCONF doNotLoadInFE = 1
+	 *
+	 * @param string $extList
+	 * @return string
+	 */
+	function stripNonFrontendExtensions($extList) {
+		$fullExtList = $this->parentObject->extensionList->getInstalledExtensions();
+		$extListArray = t3lib_div::trimExplode(',', $extList);
+		foreach ($extListArray as $arrayKey => $extKey) {
+			if ($fullExtList[0][$extKey]['EM_CONF']['doNotLoadInFE'] == 1) {
+				unset($extListArray[$arrayKey]);
+			}
+		}
+		$nonFEList = implode(',', $extListArray);
+		return $nonFEList;
+	}
+
+	/**
+	 * Updates the database according to extension requirements
+	 * DBAL compliant (based on Install Tool code)
+	 *
+	 * @param	string		Extension key
+	 * @param	array		Extension information array
+	 * @return	void
+	 */
+	function forceDBupdates($extKey, $extInfo) {
+		$instObj = new t3lib_install;
+
+		// Updating tables and fields?
+		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
+			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables.sql');
+
+			$FDfile = $instObj->getFieldDefinitions_fileContent($fileContent);
+			if (count($FDfile)) {
+				$FDdb = $instObj->getFieldDefinitions_database(TYPO3_db);
+				$diff = $instObj->getDatabaseExtra($FDfile, $FDdb);
+				$update_statements = $instObj->getUpdateSuggestions($diff);
+
+				foreach ((array) $update_statements['add'] as $string) {
+					$GLOBALS['TYPO3_DB']->admin_query($string);
+				}
+				foreach ((array) $update_statements['change'] as $string) {
+					$GLOBALS['TYPO3_DB']->admin_query($string);
+				}
+				foreach ((array) $update_statements['create_table'] as $string) {
+					$GLOBALS['TYPO3_DB']->admin_query($string);
+				}
+			}
+		}
+
+		// Importing static tables?
+		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql', $extInfo['files'])) {
+			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables_static+adt.sql');
+
+			$statements = $instObj->getStatementarray($fileContent, 1);
+			list($statements_table, $insertCount) = $instObj->getCreateTables($statements, 1);
+
+			// Traverse the tables
+			foreach ($statements_table as $table => $query) {
+				$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $table);
+				$GLOBALS['TYPO3_DB']->admin_query($query);
+
+				if ($insertCount[$table]) {
+					$statements_insert = $instObj->getTableInsertStatements($statements, $table);
+
+					foreach ($statements_insert as $v) {
+						$GLOBALS['TYPO3_DB']->admin_query($v);
+					}
+				}
+			}
+		}
+	}
+
 }
 
 ?>

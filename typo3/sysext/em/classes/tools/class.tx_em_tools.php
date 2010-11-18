@@ -93,6 +93,34 @@ final class tx_em_Tools {
 
 
 	/**
+	 * Refreshes the global extension list
+	 *
+	 * @return void
+	 */
+	function refreshGlobalExtList() {
+		global $TYPO3_LOADED_EXT;
+
+		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
+		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
+			require(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_localconf.php');
+		}
+		return;
+
+		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
+		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
+			require(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_localconf.php');
+		} else {
+			$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
+			foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
+				if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php']) {
+					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+					require($temp_lEDat['ext_localconf.php']);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Set category array entries for extension
 	 *
 	 * @param	array		Category index array

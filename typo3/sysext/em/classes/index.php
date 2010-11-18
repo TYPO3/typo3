@@ -428,7 +428,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// temporary unset new modules
 		unset ($this->MOD_MENU['function']['extensionmanager'], $this->MOD_MENU['function']['develop']);
-
+		/*
+		if (!intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'])) {
+			unset ($this->MOD_MENU['function']['develop']);
+		}
+        */
 
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
 
@@ -466,10 +470,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main() {
-		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
 
 		if (empty($this->MOD_SETTINGS['mirrorListURL'])) {
-			$this->MOD_SETTINGS['mirrorListURL'] = $TYPO3_CONF_VARS['EXT']['em_mirrorListURL'];
+			$this->MOD_SETTINGS['mirrorListURL'] = $GLOBALS['TYPO3_CONF_VARS']['EXT']['em_mirrorListURL'];
 		}
 
 		// Starting page:
@@ -1312,9 +1315,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						break;
 				}
 				if ($newExtList != -1) {
-					$this->writeNewExtensionList($newExtList);
-					$this->refreshGlobalExtList();
-					$this->forceDBupdates($extKey, $inst_list[$extKey]);
+					$this->install->writeNewExtensionList($newExtList);
+					tx_em_Tools::refreshGlobalExtList();
+					$this->install->forceDBupdates($extKey, $inst_list[$extKey]);
 					return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_loaded'));
 				}
 			}
@@ -1360,9 +1363,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$this->importExtFromRep($extKey, $version, 'L');
 			$newExtList = $this->extensionList->addExtToList($extKey, $inst_list);
 			if ($newExtList != -1) {
-				$this->writeNewExtensionList($newExtList);
-				$this->refreshGlobalExtList();
-				$this->forceDBupdates($extKey, $inst_list[$extKey]);
+				$this->install->writeNewExtensionList($newExtList);
+				tx_em_Tools::refreshGlobalExtList();
+				$this->install->forceDBupdates($extKey, $inst_list[$extKey]);
 				$this->translations->installTranslationsForExtension($extKey, $this->getMirrorURL());
 				return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_imported'));
 			} else {
@@ -1370,29 +1373,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			}
 		} else {
 			return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a_rep'));
-		}
-	}
-
-	function refreshGlobalExtList() {
-		global $TYPO3_LOADED_EXT;
-
-		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
-		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
-			require(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_localconf.php');
-		}
-		return;
-
-		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
-		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
-			require(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_localconf.php');
-		} else {
-			$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
-			foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
-				if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php']) {
-					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
-					require($temp_lEDat['ext_localconf.php']);
-				}
-			}
 		}
 	}
 
@@ -1613,7 +1593,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							}
 						}
 						if (!$updates || t3lib_div::_GP('_do_install')) {
-							$this->writeNewExtensionList($newExtList);
+							$this->install->writeNewExtensionList($newExtList);
 							$action = $this->CMD['load'] ? 'installed' : 'removed';
 							$GLOBALS['BE_USER']->writelog(5, 1, 0, 0, 'Extension list has been changed, extension %s has been %s', array($extKey, $action));
 
@@ -2418,109 +2398,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	}
 
 
-	/**
-	 * Writes the extension list to "localconf.php" file
-	 * Removes the temp_CACHED* files before return.
-	 *
-	 * @param	string		List of extensions
-	 * @return	void
-	 */
-	function writeNewExtensionList($newExtList) {
-		global $TYPO3_CONF_VARS;
-
-		$strippedExtensionList = $this->stripNonFrontendExtensions($newExtList);
-
-		// Instance of install tool
-		$instObj = new t3lib_install;
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Extension Manager';
-
-		// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList_FE\']', $strippedExtensionList);
-		$instObj->writeToLocalconf_control($lines);
-
-		$TYPO3_CONF_VARS['EXT']['extList'] = $newExtList;
-		$TYPO3_CONF_VARS['EXT']['extList_FE'] = $strippedExtensionList;
-		t3lib_extMgm::removeCacheFiles();
-	}
-
-	/**
-	 * Removes unneeded extensions from the frontend based on
-	 * EMCONF doNotLoadInFE = 1
-	 *
-	 * @param string $extList
-	 * @return string
-	 */
-	function stripNonFrontendExtensions($extList) {
-		$fullExtList = $this->extensionList->getInstalledExtensions();
-		$extListArray = t3lib_div::trimExplode(',', $extList);
-		foreach ($extListArray as $arrayKey => $extKey) {
-			if ($fullExtList[0][$extKey]['EM_CONF']['doNotLoadInFE'] == 1) {
-				unset($extListArray[$arrayKey]);
-			}
-		}
-		$nonFEList = implode(',', $extListArray);
-		return $nonFEList;
-	}
 
 
-	/**
-	 * Updates the database according to extension requirements
-	 * DBAL compliant (based on Install Tool code)
-	 *
-	 * @param	string		Extension key
-	 * @param	array		Extension information array
-	 * @return	void
-	 */
-	function forceDBupdates($extKey, $extInfo) {
-		$instObj = new t3lib_install;
 
-		// Updating tables and fields?
-		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
-			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables.sql');
 
-			$FDfile = $instObj->getFieldDefinitions_fileContent($fileContent);
-			if (count($FDfile)) {
-				$FDdb = $instObj->getFieldDefinitions_database(TYPO3_db);
-				$diff = $instObj->getDatabaseExtra($FDfile, $FDdb);
-				$update_statements = $instObj->getUpdateSuggestions($diff);
-
-				foreach ((array) $update_statements['add'] as $string) {
-					$GLOBALS['TYPO3_DB']->admin_query($string);
-				}
-				foreach ((array) $update_statements['change'] as $string) {
-					$GLOBALS['TYPO3_DB']->admin_query($string);
-				}
-				foreach ((array) $update_statements['create_table'] as $string) {
-					$GLOBALS['TYPO3_DB']->admin_query($string);
-				}
-			}
-		}
-
-		// Importing static tables?
-		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql', $extInfo['files'])) {
-			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables_static+adt.sql');
-
-			$statements = $instObj->getStatementarray($fileContent, 1);
-			list($statements_table, $insertCount) = $instObj->getCreateTables($statements, 1);
-
-			// Traverse the tables
-			foreach ($statements_table as $table => $query) {
-				$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $table);
-				$GLOBALS['TYPO3_DB']->admin_query($query);
-
-				if ($insertCount[$table]) {
-					$statements_insert = $instObj->getTableInsertStatements($statements, $table);
-
-					foreach ($statements_insert as $v) {
-						$GLOBALS['TYPO3_DB']->admin_query($v);
-					}
-				}
-			}
-		}
-	}
 
 
 	/************************************

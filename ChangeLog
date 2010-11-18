@@ -61,6 +61,7 @@
 	* Added feature #11916: New TYPO3_DB method for queries that expect just a single result row: exec_SELECTgetSingleRow (Thanks to Jo Hasenau)
 	* Fixed bug #16444: Bugfix:dbal installs itself automatically whenever the install tool is called (Thanks to Susanne Moog)
 	* Fixed bug #16456: When dbal is activated, styles.content.get (and others) doesn't work anymore (empty result)
+	* Added feature #16457: em: add possibility to install extension from t3x (used by the introduction package)
 
 2010-11-17  Benjamin Mack  <benni@typo3.org>
 

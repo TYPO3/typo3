@@ -544,10 +544,11 @@ EXTENSION KEYS:
 						'</a></td>';
 
 				// Manual download
-				$fileP = PATH_site . $this->parentObject->typePaths[$extInfo['type']] . $extKey . '/doc/manual.sxw';
+				$fileP = PATH_site . tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
 				$cells[] = '<td nowrap="nowrap">' .
-						($this->parentObject->typePaths[$extInfo['type']] && @is_file($fileP) ?
-								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath . '../' . $this->parentObject->typePaths[$extInfo['type']] . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
+						(tx_em_Tools::typePath($extInfo['type']) && @is_file($fileP) ?
+								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath . '../' .
+									tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
 										t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>' : '') .
 						'</td>';
 
@@ -781,6 +782,7 @@ EXTENSION KEYS:
 
 		// Implode unique list of extensions to load and return:
 		$list = implode(',', array_unique($listArr));
+
 		return $list;
 	}
 
@@ -835,8 +837,9 @@ EXTENSION KEYS:
 	 * @see removeExtFromList(), addExtToList()
 	 */
 	function removeRequiredExtFromListArr($listArr) {
+		$requiredExtensions = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'], 1);
 		foreach ($listArr as $k => $ext) {
-			if (in_array($ext, $this->parentObject->requiredExt) || !strcmp($ext, '_CACHEFILE')) {
+			if (in_array($ext, $requiredExtensions) || !strcmp($ext, '_CACHEFILE')) {
 				unset($listArr[$k]);
 			}
 		}
