@@ -396,9 +396,11 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * Logs out the current user and clears the form protection tokens.
 	 */
 	public function logoff() {
-		t3lib_formProtection_Factory::get(
-			't3lib_formprotection_BackendFormProtection'
-		)->clean();
+		if (isset($GLOBALS['BE_USER'])) {
+			t3lib_formProtection_Factory::get(
+				't3lib_formprotection_BackendFormProtection'
+			)->clean();
+		}
 		parent::logoff();
 	}
 }
