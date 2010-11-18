@@ -7392,13 +7392,12 @@ class tslib_cObj {
 	function checkPidArray($listArr) {
 		$outArr = array();
 		if (is_array($listArr) && count($listArr)) {
-			$query = $GLOBALS['TYPO3_DB']->SELECTquery(
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid',
 				'pages',
 				'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') .
 					' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')'
 			);
-			$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
 				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $query, 3);
 			} else {
