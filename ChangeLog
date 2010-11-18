@@ -1,3 +1,7 @@
+2010-11-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16343: htmlArea RTE: JS-Error when closing "Insert Picture" dialogue
+
 2010-11-18  Ernesto Baschny  <ernesto@typo3.org>
 
 	* Release of TYPO3 4.5.0beta1

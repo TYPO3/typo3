@@ -1243,7 +1243,10 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.mon(Ext.get(this.document.documentElement), (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
 		this.mon(Ext.get(this.document.documentElement), 'mouseup', this.onMouse, this);
 		this.mon(Ext.get(this.document.documentElement), 'click', this.onMouse, this);
-		this.mon(Ext.get(this.document.documentElement), Ext.isWebKit ? 'dragend' : 'drop', this.onDrop, this);
+		this.mon(Ext.get(this.document.documentElement), 'drop', this.onDrop, this);
+		if (Ext.isWebKit) {
+			this.mon(Ext.get(this.document.body), 'dragend', this.onDrop, this);
+		}
 	},
 	/*
 	 * Handler for other key events
