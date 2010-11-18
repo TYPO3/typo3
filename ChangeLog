@@ -1,3 +1,7 @@
+2010-11-18  Michael Stucki  <michael@typo3.org>
+
+	* Added feature #7942: Enable UTF-8 by default (Thanks to Benni Mack and Christian Kuhn)
+
 2010-11-17  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16455: DISTINCT as a function is not compatible with DBAL

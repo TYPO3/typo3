@@ -143,6 +143,7 @@
 require_once(t3lib_extMgm::extPath('install') . 'requirements.php');
 
 // include update classes
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_charsetdefaults.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_compatversion.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_cscsplit.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_notinmenu.php');
@@ -6473,12 +6474,27 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 						if (method_exists($tmpObj,'checkForUpdate')) {
 							$explanation = '';
-							if ($tmpObj->checkForUpdate($explanation)) {
+							$showUpdate = NULL;
+								// return value kept for backwards compatibility
+							$returnVal = $tmpObj->checkForUpdate($explanation, $showUpdate);
+							if ($showUpdate == NULL) {
+								$showUpdate = $returnVal;
+							}
+							if ($showUpdate > 0) {
 								$updateMarkers = array(
+									'next' => '<button type="submit" name="TYPO3_INSTALL[update][###IDENTIFIER###]">
+							Next
+							<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+						</button>',
 									'identifier' => $identifier,
 									'explanation' => $explanation,
-									'next' => 'Next'
 								);
+								
+									// only display the message, no button
+								if ($showUpdate == 2) {
+									$updateMarkers['next'] = '';
+								}
+								
 								$singleUpdate[] = t3lib_parsehtml::substituteMarkerArray(
 									$singleUpdateWizardBoxSubpart,
 									$updateMarkers,
