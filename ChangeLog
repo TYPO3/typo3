@@ -1,3 +1,7 @@
+2010-11-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
+
 2010-11-17  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #16147: getRecordOverlay fetches "Versioning Preview Overlay" but does not return the fields _ORIG_uid and _ORIG_pid (Thanks to Andreas Kiessling)
