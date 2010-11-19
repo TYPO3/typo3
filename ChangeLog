@@ -1,3 +1,7 @@
+2010-11-18  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up to bug #7942: "Next" buttons where missing in update wizard.
+
 2010-11-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16343: htmlArea RTE: JS-Error when closing "Insert Picture" dialogue

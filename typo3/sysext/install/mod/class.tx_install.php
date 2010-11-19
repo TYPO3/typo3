@@ -6489,12 +6489,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'identifier' => $identifier,
 									'explanation' => $explanation,
 								);
-								
+
 									// only display the message, no button
-								if ($showUpdate == 2) {
+								if ($showUpdate === 2) {
 									$updateMarkers['next'] = '';
 								}
-								
+
 								$singleUpdate[] = t3lib_parsehtml::substituteMarkerArray(
 									$singleUpdateWizardBoxSubpart,
 									$updateMarkers,
