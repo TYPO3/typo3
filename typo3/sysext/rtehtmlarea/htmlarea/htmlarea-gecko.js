@@ -120,27 +120,26 @@ HTMLArea.Editor.prototype._createRange = function(sel) {
 HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
 	this.focus();
 	var selection = this._getSelection();
-	var range = this._doc.createRange();
-	if (node.nodeType == 1 && node.nodeName.toLowerCase() == "body") {
-		if (Ext.isWebKit) {
-			range.setStart(node, 0);
-			range.setEnd(node, node.childNodes.length);
-		} else {
-			range.selectNodeContents(node);
-		}
+	if (Ext.isWebKit && /^(img)$/i.test(node.nodeName)) {
+		this._getSelection().setBaseAndExtent(node, 0, node, 1);
 	} else {
-		if (node.nodeType == HTMLArea.DOM.ELEMENT_NODE && (Ext.isWebKit || Ext.isOpera)) {
-			range.setStart(node, 0);
-			range.setEnd(node, 0);
+		var range = this._doc.createRange();
+		if (node.nodeType == 1 && node.nodeName.toLowerCase() == "body") {
+			if (Ext.isWebKit) {
+				range.setStart(node, 0);
+				range.setEnd(node, node.childNodes.length);
+			} else {
+				range.selectNodeContents(node);
+			}
 		} else {
 			range.selectNode(node);
 		}
+		if (typeof(endPoint) != "undefined") {
+			range.collapse(endPoint);
+		}
+		this.emptySelection(selection);
+		this.addRangeToSelection(selection, range);
 	}
-	if (typeof(endPoint) != "undefined") {
-		range.collapse(endPoint);
-	}
-	this.emptySelection(selection);
-	this.addRangeToSelection(selection, range);
 };
 /*
  * Select ONLY the contents inside the given node
