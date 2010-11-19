@@ -27,7 +27,6 @@
  * (depending on the current page and your TS configuration)
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 

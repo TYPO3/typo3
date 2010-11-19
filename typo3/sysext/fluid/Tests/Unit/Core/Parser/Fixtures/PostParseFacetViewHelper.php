@@ -22,7 +22,6 @@
 
 /**
  * Enter description here...
- * @scope prototype
  */
 class Tx_Fluid_Core_Parser_Fixtures_PostParseFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
 

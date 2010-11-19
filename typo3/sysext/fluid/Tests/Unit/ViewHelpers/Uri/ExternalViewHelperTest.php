@@ -26,7 +26,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
  * Testcase for the external uri view helper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_ExternalViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 

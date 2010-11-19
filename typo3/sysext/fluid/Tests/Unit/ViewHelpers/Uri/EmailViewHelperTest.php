@@ -26,7 +26,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
  * Testcase for the email uri view helper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
