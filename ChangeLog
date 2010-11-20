@@ -1,4 +1,9 @@
-2010-11-19  Steffen Ritter  <typo3@steffen-ritter.net>
+2010-11-20  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16486: BE livesearch results in errors when DBAL is installed
+	* Fixed bug #16467: Missing array check in tt_content (Thanks to Bjoern Pedersen)
+
+2010-11-20  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Added feature #15080: TYPO3 misses SpriterManager_handler using sprite-generation
 
