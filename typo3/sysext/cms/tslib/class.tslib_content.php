@@ -1940,7 +1940,7 @@ class tslib_cObj {
 				;
 			}
 		}
-		if (count($conf)) {
+		if (is_array($conf) && count($conf)) {
 			// check, which of the available stdWrap functions is needed for the current conf Array
 			// and keep only those but still in the same order
 			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
