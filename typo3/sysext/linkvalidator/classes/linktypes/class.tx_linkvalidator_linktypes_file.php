@@ -27,7 +27,7 @@
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class tx_linkvalidator_checkfilelinks extends tx_linkvalidator_checkbase {
+class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -47,8 +47,8 @@ class tx_linkvalidator_checkfilelinks extends tx_linkvalidator_checkbase {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checkfilelinks.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checkfilelinks.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php']);
 }
 
 ?>

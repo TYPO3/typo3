@@ -27,7 +27,7 @@
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-abstract class tx_linkvalidator_checkbase {
+abstract class tx_linkvalidator_linkTypes_Abstract {
 
 	abstract function checkLink($url, $softRefEntry, $reference);
 
@@ -56,6 +56,5 @@ abstract class tx_linkvalidator_checkbase {
 		return $row['url'];
 	}
 }
-
 
 ?>

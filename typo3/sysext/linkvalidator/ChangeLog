@@ -1,3 +1,7 @@
+2010-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10998: Rename and move link classes and processing class
+
 2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #10912: Rename and move task to classes/tasks and change locallang namespace
