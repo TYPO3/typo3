@@ -325,7 +325,7 @@ class t3lib_search_livesearch {
 	 */
 	protected function makeQuerySearchByTable($tableName, $fieldsToSearchWithin) {
 			// free text search
-		$queryLikeStatement = ' LIKE \'%' . $this->getQueryString() . '%\'';
+		$queryLikeStatement = ' LIKE \'%' . $this->getQueryString($tableName) . '%\'';
 		$queryPart			= ' AND (' . implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
 		$queryPart		   .= t3lib_BEfunc::deleteClause($tableName);
 		$queryPart		   .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
@@ -394,11 +394,12 @@ class t3lib_search_livesearch {
 	/**
 	 * Safely retrieve the queryString.
 	 *
+	 * @param string $tableName
 	 * @return string
 	 * @see t3lib_db::quoteStr()
 	 */
-	public function getQueryString() {
-		return $GLOBALS['TYPO3_DB']->quoteStr($this->queryString, '');
+	public function getQueryString($tableName = '') {
+		return $GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName);
 	}
 
 	/**
