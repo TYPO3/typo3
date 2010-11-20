@@ -1,3 +1,7 @@
+2010-11-19  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Added feature #15080: TYPO3 misses SpriterManager_handler using sprite-generation
+
 2010-11-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
