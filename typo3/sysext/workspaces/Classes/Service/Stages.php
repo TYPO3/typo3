@@ -407,8 +407,10 @@ class Tx_Workspaces_Service_Stages {
 				break;
 		}
 
-		$userRecords = t3lib_BEfunc::getUserNames('username, uid, email, realName',
-				'AND uid IN (' . $userList . ')');
+		if (!empty($userList)) {
+			$userRecords = t3lib_BEfunc::getUserNames('username, uid, email, realName',
+					'AND uid IN (' . $userList . ')');
+		}
 
 		if (!empty($userRecords) && is_array($userRecords)) {
 			foreach ($userRecords as $userUid => $userRecord) {
