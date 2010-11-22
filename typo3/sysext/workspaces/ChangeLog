@@ -1,3 +1,7 @@
+2010-11-22  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Fixed PHPdoc comments
+
 2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
 
 	* Fixed bug: #10916 workspace preview module raises error in conjunction with the newest extbase version
