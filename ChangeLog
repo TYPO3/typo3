@@ -1,3 +1,7 @@
+2010-11-22  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* FYI fixed bug #16513: Class hint "mixed" always results to fatal error in t3lib_tree_Tca_DatabaseNode
+
 2010-11-20  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16486: BE livesearch results in errors when DBAL is installed

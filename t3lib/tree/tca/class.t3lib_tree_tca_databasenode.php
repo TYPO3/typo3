@@ -167,7 +167,7 @@ class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_RepresentationNode {
 	 * @param mixed $sortValue
 	 * @return void
 	 */
-	public function setSortValue(mixed $sortValue) {
+	public function setSortValue($sortValue) {
 		$this->sortValue = $sortValue;
 	}
 
