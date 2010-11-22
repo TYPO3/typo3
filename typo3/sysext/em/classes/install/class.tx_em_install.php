@@ -184,7 +184,7 @@ class tx_em_Install {
 												foreach ($modules as $mD) {
 													$confFileName = $extDirPath . $mD . '/conf.php';
 													if (@is_file($confFileName)) {
-														$messageContent .= tx_em_Tools::writeTYPO3_MOD_PATH($confFileName, $loc, $extKey . '/' . $mD . '/') . '<br />';
+														$messageContent .= tx_em_Tools::writeTYPO3_MOD_PATH($confFileName, $loc, $extKey . '/' . $mD . '/', $this->parentObject->typeRelPaths, $this->parentObject->typeBackPaths) . '<br />';
 													} else {
 														$messageContent .= sprintf($GLOBALS['LANG']->getLL('ext_import_no_conf_file'),
 															$confFileName) . '<br />';

@@ -873,11 +873,13 @@ final class tx_em_Tools {
 	 *
 	 * @param	string		Absolute path to a "conf.php" file of the backend module which we want to write back to.
 	 * @param	string		Install scope type: L, G, S
-	 * @param	string		Relative path for the module folder in extenson
+	 * @param	string		Relative path for the module folder in extension
+	 * @param   array       Array of relative paths per install scope type
+	 * @param   array       Array of back paths per install scope type
 	 * @return	string		Returns message about the status.
 	 * @see modConfFileAnalysis()
 	 */
-	function writeTYPO3_MOD_PATH($confFilePath, $type, $mP) {
+	function writeTYPO3_MOD_PATH($confFilePath, $type, $mP, array $typeRelativePaths, array $typeBackPaths) {
 		$lines = explode(LF, t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
@@ -892,13 +894,13 @@ final class tx_em_Tools {
 
 			unset($reg);
 			if (preg_match('/^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;/', $line, $reg)) {
-				$lines[$k] = str_replace($reg[0], 'define(\'TYPO3_MOD_PATH\', \'' . $this->typeRelPaths[$type] . $mP . '\');', $lines[$k]);
+				$lines[$k] = str_replace($reg[0], 'define(\'TYPO3_MOD_PATH\', \'' . $typeRelativePaths[$type] . $mP . '\');', $lines[$k]);
 				$flag_M = $k + 1;
 			}
 
 			unset($reg);
 			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/', $line, $reg)) {
-				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' . $this->typeBackPaths[$type] . '\';', $lines[$k]);
+				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' . $typeBackPaths[$type] . '\';', $lines[$k]);
 				$flag_B = $k + 1;
 			}
 

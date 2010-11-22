@@ -1,7 +1,8 @@
 2010-11-20  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16322: Incorrect regexp in substituteMarkerArray
-
+	* Fixed bug #16495: conf.php files aren't corrected when installing extensions
+			
 2010-11-22  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #16507: stdWrap unavailable after refactoring of tslib_content
