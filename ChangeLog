@@ -1,4 +1,4 @@
-2010-11-20  Jigal van Hemert <jigal@xs4all.nl>
+2010-11-20  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16486: BE livesearch results in errors when DBAL is installed
 	* Fixed bug #16467: Missing array check in tt_content (Thanks to Bjoern Pedersen)
