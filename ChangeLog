@@ -1,3 +1,7 @@
+2010-11-22  Jigal van Hemert <jigal@xs4all.nl>
+
+  * Fixed bug #14974: Extra frame after default password change (Thanks to Kevin Walter)
+
 2010-11-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
