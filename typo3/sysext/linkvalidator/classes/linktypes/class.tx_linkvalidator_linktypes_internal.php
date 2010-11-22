@@ -64,8 +64,8 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @return  string	  parsed broken url
 	 */
 	function getBrokenUrl($row) {
-		$domaine = t3lib_BEfunc::getViewDomain($row['pid']);
-		return $domaine . 'index.php?id=' . $row['url'];
+		$domain = t3lib_BEfunc::getViewDomain($row['pid']);
+		return $domain . '/index.php?id=' . $row['url'];
 	}
 }
 

@@ -1,3 +1,7 @@
+2010-11-22  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug: #10988: getBrokenUrl returns wrong url (Thanks to Johannes Feustel)
+
 2010-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #10998: Rename and move link classes and processing class
