@@ -1,6 +1,10 @@
+2010-11-22  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #16507: stdWrap unavailable after refactoring of tslib_content
+
 2010-11-22  Steffen Ritter  <typo3@steffen-ritter.net>
 
-	* FYI fixed bug #16513: Class hint "mixed" always results to fatal error in t3lib_tree_Tca_DatabaseNode
+	* Fixed bug #16513: Class hint "mixed" always results to fatal error in t3lib_tree_Tca_DatabaseNode
 
 2010-11-20  Jigal van Hemert  <jigal@xs4all.nl>
 

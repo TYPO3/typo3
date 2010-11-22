@@ -57,6 +57,19 @@ abstract class tslib_content_Abstract {
 	 */
 	public abstract function render($conf = array());
 
+	/**
+	 * Compatibility stdWrap wrapper.
+	 *
+	 * @param	string		$content The content to manipulate using stdWrap functions.
+	 * @param	array		$conf stdWrap configuration.
+	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7, use $this->cObj->stdWrap() instead.
+	 */
+	public function stdWrap($content = '', $conf = array()) {
+		t3lib_div::logDeprecatedFunction();
+
+		return $this->cObj->stdWrap($content, $conf);
+	}
+
 }
 
 ?>
