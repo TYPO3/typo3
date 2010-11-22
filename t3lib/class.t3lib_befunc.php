@@ -4405,7 +4405,7 @@ final class t3lib_BEfunc {
 				$GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99', 'be_users') . self::deleteClause('be_users');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, username, password', 'be_users', $where_clause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$url = "alt_doc.php?returnUrl=index.php&edit[be_users][".$row['uid']."]=edit";
+				$url = 'alt_doc.php?returnUrl=alt_intro.php&edit[be_users][' . $row['uid'] . ']=edit';
 				$warnings["backend_admin"] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
 					'<a href="' . htmlspecialchars($url) . '">',
