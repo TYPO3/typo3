@@ -461,7 +461,7 @@ EXTENSION KEYS:
 		// Icon:
 		$imgInfo = @getImageSize(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . '/ext_icon.gif');
 		if (is_array($imgInfo)) {
-			$cells[] = '<td><img src="' . $GLOBALS['BACK_PATH'] . $this->parentObject->typeRelPaths[$extInfo['type']] . $extKey . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" /></td>';
+			$cells[] = '<td><img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" /></td>';
 		} elseif ($extInfo['_ICON']) {
 			$cells[] = '<td>' . $extInfo['_ICON'] . '</td>';
 		} else {
@@ -653,7 +653,7 @@ EXTENSION KEYS:
 
 				$imgInfo = @getImageSize(tx_em_Tools::getExtPath($name, $data['type']) . '/ext_icon.gif');
 				if (is_array($imgInfo)) {
-					$icon = '<img src="' . $GLOBALS['BACK_PATH'] . $this->parentObject->typeRelPaths[$data['type']] . $name . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" />';
+					$icon = '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($data['type']) . $name . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" />';
 				} elseif ($data['_ICON']) { //TODO: see if this can be removed, seems to be wrong in this context
 					$icon = $data['_ICON'];
 				} else {

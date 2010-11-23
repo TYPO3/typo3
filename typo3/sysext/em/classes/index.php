@@ -114,12 +114,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $typeDescr = array();
 	var $typeBackPaths = array(); // Also static, set in init()
 
-	var $typeRelPaths = array(
-		'S' => 'sysext/',
-		'G' => 'ext/',
-		'L' => '../typo3conf/ext/',
-	);
-
 	var $detailCols = array(
 		0 => 2,
 		1 => 5,
@@ -2391,7 +2385,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$imgInfo = @getImageSize(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . '/ext_icon.gif');
 		$out = '';
 		if (is_array($imgInfo)) {
-			$out .= '<img src="' . $GLOBALS['BACK_PATH'] . $this->typeRelPaths[$extInfo['type']] . $extKey . '/ext_icon.gif" ' . $imgInfo[3] . ' align="' . $align . '" alt="" />';
+			$out .= '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/ext_icon.gif" ' . $imgInfo[3] . ' align="' . $align . '" alt="" />';
 		}
 		$out .= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'], 40)) : '<em>' . htmlspecialchars($extKey) . '</em>';
 		return $out;

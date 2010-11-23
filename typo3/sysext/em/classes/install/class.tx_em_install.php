@@ -184,7 +184,7 @@ class tx_em_Install {
 												foreach ($modules as $mD) {
 													$confFileName = $extDirPath . $mD . '/conf.php';
 													if (@is_file($confFileName)) {
-														$messageContent .= tx_em_Tools::writeTYPO3_MOD_PATH($confFileName, $loc, $extKey . '/' . $mD . '/', $this->parentObject->typeRelPaths, $this->parentObject->typeBackPaths) . '<br />';
+														$messageContent .= tx_em_Tools::writeTYPO3_MOD_PATH($confFileName, $loc, $extKey . '/' . $mD . '/') . '<br />';
 													} else {
 														$messageContent .= sprintf($GLOBALS['LANG']->getLL('ext_import_no_conf_file'),
 															$confFileName) . '<br />';
@@ -954,7 +954,7 @@ class tx_em_Install {
 				if (@is_file($absPath . $mod . '/conf.php')) {
 					$confFileInfo = $extensionDetails->modConfFileAnalysis($absPath . $mod . '/conf.php');
 					if (is_array($confFileInfo['TYPO3_MOD_PATH'])) {
-						$shouldBePath = $this->typeRelPaths[$extInfo['type']] . $extKey . '/' . $mod . '/';
+						$shouldBePath = tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/' . $mod . '/';
 						if (strcmp($confFileInfo['TYPO3_MOD_PATH'][1][1], $shouldBePath)) {
 							$infoArray['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_wrong_mod_path'),
 								$confFileInfo['TYPO3_MOD_PATH'][1][1],
@@ -1113,7 +1113,7 @@ class tx_em_Install {
 
 		// Initialize:
 		$absPath = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
-		$relPath = $this->parentObject->typeRelPaths[$extInfo['type']] . $extKey . '/';
+		$relPath = tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/';
 
 		// Look for template file for form:
 		if (t3lib_extMgm::isLoaded($extKey) && @is_file($absPath . 'ext_conf_template.txt')) {
