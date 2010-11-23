@@ -769,7 +769,7 @@ $TCA['pages'] = array(
 	),
 	'types' => array(
 			// normal
-		'1'	=>	array(
+		(string) t3lib_pageSelect::DOKTYPE_DEFAULT => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
@@ -796,7 +796,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// external URL
-		'3' => array(
+		(string) t3lib_pageSelect::DOKTYPE_LINK => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.external;external,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
@@ -819,7 +819,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// shortcut
-		'4' => array(
+		(string) t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.shortcut;shortcut,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.shortcutpage;shortcutpage,
@@ -843,7 +843,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 				'),
 			// not in menu
-		'5' => array(
+		(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
@@ -870,7 +870,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// mount page
-		'7' => array(
+		(string) t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.mountpoint;mountpoint,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.mountpage;mountpage,
@@ -893,7 +893,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// spacer
-		'199' => array(
+		(string) t3lib_pageSelect::DOKTYPE_SPACER => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
@@ -905,7 +905,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 			'),
 			// sysfolder
-		'254' => array(
+		(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
@@ -919,7 +919,7 @@ $TCA['pages'] = array(
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// trash
-		'255' => array(
+		(string) t3lib_pageSelect::DOKTYPE_RECYCLER => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
