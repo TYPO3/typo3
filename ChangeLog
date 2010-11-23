@@ -1,6 +1,11 @@
+2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Fixed bug #16518: Extra frame after default password change, link from reports module (Thanks to Kevin Walter)
+
+
 2010-11-22  Jigal van Hemert <jigal@xs4all.nl>
 
-  * Fixed bug #14974: Extra frame after default password change (Thanks to Kevin Walter)
+	* Fixed bug #14974: Extra frame after default password change, link from welcome screen (Thanks to Kevin Walter)
 
 2010-11-19  Stanislas Rolland  <typo3@sjbr.ca>
 
