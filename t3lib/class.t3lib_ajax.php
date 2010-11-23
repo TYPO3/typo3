@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains the class "t3lib_ajax" containing functions for doing XMLHTTP requests to the TYPO3 backend and as well for generating replys. This technology is also known as ajax.
  * Call ALL methods without making an object!
@@ -46,17 +46,17 @@
  */
 class t3lib_ajax {
 	/**
- * Gets the JavaScript code needed to handle an XMLHTTP request in the frontend.
- * All JS functions have to call ajax_doRequest(url) to make a request to the server.
- * USE:
- * See examples of using this function in template.php -> getContextMenuCode and alt_clickmenu.php -> printContent
- *
- * @param	string		JS function handling the XML data from the server. That function gets the returned XML data as parameter.
- * @param	string		JS fallback function which is called with the URL of the request in case ajax is not available.
- * @param	boolean		If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
- * @return	string		JavaScript code needed to make and handle an XMLHTTP request
- */
-	function getJScode($handlerFunction, $fallback='', $debug=0)	{
+	 * Gets the JavaScript code needed to handle an XMLHTTP request in the frontend.
+	 * All JS functions have to call ajax_doRequest(url) to make a request to the server.
+	 * USE:
+	 * See examples of using this function in template.php -> getContextMenuCode and alt_clickmenu.php -> printContent
+	 *
+	 * @param	string		JS function handling the XML data from the server. That function gets the returned XML data as parameter.
+	 * @param	string		JS fallback function which is called with the URL of the request in case ajax is not available.
+	 * @param	boolean		If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
+	 * @return	string		JavaScript code needed to make and handle an XMLHTTP request
+	 */
+	function getJScode($handlerFunction, $fallback = '', $debug = 0) {
 			// Init the XMLHTTP request object
 		$code = '
 		function ajax_initObject()	{
@@ -76,7 +76,7 @@ class t3lib_ajax {
 			return A;
 		}';
 			// in case AJAX is not available, fallback function
-		if($fallback)	{
+		if ($fallback) {
 			$fallback .= '(url)';
 		} else {
 			$fallback = 'return';
@@ -87,7 +87,7 @@ class t3lib_ajax {
 
 			x = ajax_initObject();
 			if(!x)	{
-				'.$fallback.';
+				' . $fallback . ';
 			}
 			x.open("GET", url, true);
 
@@ -95,10 +95,10 @@ class t3lib_ajax {
 				if (x.readyState != 4)	{
 					return;
 				}
-				'.($debug?'alert(x.responseText)':'').'
+				' . ($debug ? 'alert(x.responseText)' : '') . '
 				var xmldoc = x.responseXML;
 				var t3ajax = xmldoc.getElementsByTagName("t3ajax")[0];
-				'.$handlerFunction.'(t3ajax);
+				' . $handlerFunction . '(t3ajax);
 			}
 			x.send("");
 
@@ -114,18 +114,18 @@ class t3lib_ajax {
 	 * @param	string		$innerXML	XML data which will be sent to the browser
 	 * @return	void
 	 */
-	function outputXMLreply($innerXML)	{
+	function outputXMLreply($innerXML) {
 			// AJAX needs some XML data
 		header('Content-Type: text/xml');
 		$xml = '<?xml version="1.0"?>
-<t3ajax>'.$innerXML.'</t3ajax>';
+<t3ajax>' . $innerXML . '</t3ajax>';
 		echo $xml;
 	}
 
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_ajax.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_ajax.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_ajax.php']);
 }
 ?>
