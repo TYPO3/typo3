@@ -110,6 +110,7 @@
 			<label index="pages.shortcut_mode.I.1">First subpage</label>
 			<label index="pages.shortcut_mode.I.2">Random subpage</label>
 			<label index="pages.shortcut_mode.I.3">Parent page</label>
+			<label index="pages.shortcut_formlabel">Selected shortcut target</label>
 			<label index="pages.content_from_pid">Show content from this page instead:</label>
 			<label index="pages.content_from_pid_formlabel">With content of the selected page</label>
 			<label index="pages.mount_pid">Mount Point (advanced):</label>

@@ -961,7 +961,7 @@ $TCA['pages'] = array(
 			'canNotCollapse' => 1,
 		),
 		'shortcutpage' => array(
-			'showitem' => 'shortcut;Selected shortcut target||Ausgew�hltes Verweisziel',
+			'showitem' => 'shortcut;LLL:EXT:cms/locallang_tca.xml:pages.shortcut_formlabel',
 			'canNotCollapse' => 1,
 		),
 		'mountpoint' => array(

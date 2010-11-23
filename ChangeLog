@@ -1,6 +1,7 @@
 2010-11-23  Steffen Gebert  <steffen@steffen-gebert.de>
 
-	* Fixed bug #16533: Codemirror contains MacOS meta files
+	* Fixed bug #16533: Codemirror contains MacOS meta files (Thanks to Bjoern Pedersen)
+	* Fixed bug #16532: Field pages.shortcut uses hardcoded form label
 
 2010-11-23  Steffen Kamper  <steffen@typo3.org>
 
