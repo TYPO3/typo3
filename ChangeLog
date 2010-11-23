@@ -1,11 +1,6 @@
-2010-11-23  Steffen Gebert  <steffen@steffen-gebert.de>
-
-	* Fixed bug #16533: Codemirror contains MacOS meta files (Thanks to Bjoern Pedersen)
-	* Fixed bug #16532: Field pages.shortcut uses hardcoded form label
-	* Fixed bug #16531: $TCA for stddb/tbl_pages.php does not use class constants for pages.doktype
-
 2010-11-23  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_div
 	* Follow-up to #16495: conf.php files aren't corrected when installing extensions
 
 2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
