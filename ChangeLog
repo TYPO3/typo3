@@ -1,5 +1,6 @@
 2010-11-23  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16545: befunc helpText use wrong variable
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_bedisplaylog
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_basicfilefunc
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_autoloader

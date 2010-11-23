@@ -2683,12 +2683,12 @@ final class t3lib_BEfunc {
 			$output .= $helpTextArray['description'];
 		}
 			// add see also arrow if we have more info
-		if ($data['moreInfo']) {
+		if ($helpTextArray['moreInfo']) {
 			$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
 		}
 			// add description text
-		if ($data['description'] || $arrow) {
-			$output['description'] = '<p class="t3-help-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
+		if ($helpTextArray['description'] || $arrow) {
+			$output['description'] = '<p class="t3-help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
 		}
 
 		return $output;
