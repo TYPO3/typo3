@@ -5,8 +5,9 @@
 2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #16518: Extra frame after default password change, link from reports module (Thanks to Kevin Walter)
+	* Fixed bug #16517: t3lib_beFunc::getRecordWSOL() does not use it's param $useDeleteClause in else branch
 
-2010-11-20  Jigal van Hemert  <jigal@xs4all.nl>
+2010-11-22  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16322: Incorrect regexp in substituteMarkerArray
 	* Fixed bug #16495: conf.php files aren't corrected when installing extensions
