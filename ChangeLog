@@ -1,3 +1,6 @@
+2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
+	* Fixed bug #16517: t3lib_beFunc::getRecordWSOL() does not use it's param $useDeleteClause in else branch
+
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
