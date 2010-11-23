@@ -32,17 +32,16 @@
  *
  *
  *   53: class gzip_encode
- *  193:     function gzip_encode($level = 3, $debug=false, $outputCompressedSizes=false)
- *  268:     function gzip_accepted()
- *  317:     function get_complevel()
- *  342:     function linux_loadavg()
- *  363:     function freebsd_loadavg()
+ *  193:	 function gzip_encode($level = 3, $debug=false, $outputCompressedSizes=false)
+ *  268:	 function gzip_accepted()
+ *  317:	 function get_complevel()
+ *  342:	 function linux_loadavg()
+ *  363:	 function freebsd_loadavg()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
 
 
 /**
@@ -70,12 +69,12 @@ class gzip_encode {
 	 *
 	 * How to use:
 	 * 1. Output buffering has to be turned on. You can do this with ob_start()
-	 *    <http://php.net/manual/function.ob-start.php> or in the php config
-	 *    file. Nothing bad happens if output buffering isn't turned on, your
-	 *    page just won't get compressed.
+	 *	<http://php.net/manual/function.ob-start.php> or in the php config
+	 *	file. Nothing bad happens if output buffering isn't turned on, your
+	 *	page just won't get compressed.
 	 * 2. Include the class file.
 	 * 3. At the _very_ end of your script create an instance of the encode
-	 *    class.
+	 *	class.
 	 *
 	 * eg:
 	 *	------------Start of file----------
@@ -94,16 +93,16 @@ class gzip_encode {
 	 * Things to note:
 	 * 1. There is no space before the beginning of the file and the '<?php ' tag
 	 * 2. The ob_start() line is optional if output buffering is turned on in
-	 *    the main config file.
+	 *	the main config file.
 	 * 3. Turning on and off output buffering just won't work.
 	 * 4. There must be nothing after the last '?>' tag at the end of the file.
-	 *    Be careful of a space hiding there.
+	 *	Be careful of a space hiding there.
 	 * 5. There are better ways to compress served content but I think this is
-	 *    the only way to compress php output.
+	 *	the only way to compress php output.
 	 * 6. Your auto_prepend_file is a good place for the ob_start() and
-	 *    your auto_append_file is a good place for new gzip_encode().
+	 *	your auto_append_file is a good place for new gzip_encode().
 	 * 7. If you put new gzip_encode() in your auto.append file then you can
-	 *    call ob_end_flush() in your script to disable compression.
+	 *	call ob_end_flush() in your script to disable compression.
 	 *
 	 * This was written from scratch from info freely available on the web.
 	 *
@@ -121,9 +120,9 @@ class gzip_encode {
 	 *
 	 * To Do:
 	 * 1. I have reports of no content errors. I can't seem to duplicate this.
-	 *    Please visit my discussion boards if you think you may be able to help
+	 *	Please visit my discussion boards if you think you may be able to help
 	 * 2. The Accept-Encoding isn't handled to spec. Check out 14.3 in RFC 2616
-	 *    to see how it should be done.
+	 *	to see how it should be done.
 	 *
 	 * Change Log:
 	 *	0.66:	Big bug fix. It wouldn't compress when it should.
@@ -163,11 +162,11 @@ class gzip_encode {
 
 	var $_version = 0.66; // Version of the gzip_encode class
 
-	var $level;		// Compression level
-	var $encoding;	// Encoding type
-	var $crc;		// crc of the output
-	var $size;		// size of the uncompressed content
-	var $gzsize;	// size of the compressed content
+	var $level; // Compression level
+	var $encoding; // Encoding type
+	var $crc; // crc of the output
+	var $size; // size of the uncompressed content
+	var $gzsize; // size of the compressed content
 
 	/**
 	 * gzip_encode constructor - gzip encodes the current output buffer
@@ -176,16 +175,16 @@ class gzip_encode {
 	 * Note: all arguments are optionial.
 	 *
 	 * You can specify one of the following for the first argument:
-	 * 	0:	No compression
-	 * 	1:	Min compression
-	 * 	...	Some compression (integer from 1 to 9)
-	 * 	9:	Max compression
-	 * 	true:	Determin the compression level from the system load. The
-	 * 		higher the load the less the compression.
+	 *	 0:	No compression
+	 *	 1:	Min compression
+	 *	 ...	Some compression (integer from 1 to 9)
+	 *	 9:	Max compression
+	 *	 true:	Determin the compression level from the system load. The
+	 *		 higher the load the less the compression.
 	 *
 	 * You can specify one of the following for the second argument:
-	 * 	true:	Don't actully output the compressed form but run as if it
-	 * 		had. Used for debugging.
+	 *	 true:	Don't actully output the compressed form but run as if it
+	 *		 had. Used for debugging.
 	 *
 	 * @param	integer		$level: Define the level of compression between 0 (none) and 9 (best compression)
 	 * @param	boolean		$debug: If true, no data will be outputted (default: false)
@@ -193,40 +192,48 @@ class gzip_encode {
 	 * @return	void
 	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.6, we're using the "ob_gzhandler" for compression now.
 	 */
-	function gzip_encode($level=3, $debug=false, $outputCompressedSizes=false) {
+	function gzip_encode($level = 3, $debug = FALSE, $outputCompressedSizes = FALSE) {
 		t3lib_div::logDeprecatedFunction();
 
 		if (!function_exists('gzcompress')) {
 			trigger_error('gzcompress not found, ' .
-				'zlib needs to be installed for gzip_encode',
+					'zlib needs to be installed for gzip_encode',
 				E_USER_WARNING);
 			return;
 		}
 		if (!function_exists('crc32')) {
 			trigger_error('crc32() not found, ' .
-				'PHP >= 4.0.1 needed for gzip_encode', E_USER_WARNING);
+					'PHP >= 4.0.1 needed for gzip_encode', E_USER_WARNING);
 			return;
 		}
-		if (headers_sent()) return;
-		if (connection_status() !== 0) return;
+		if (headers_sent()) {
+			return;
+		}
+		if (connection_status() !== 0) {
+			return;
+		}
 		$encoding = $this->gzip_accepted();
-		if (!$encoding) return;
+		if (!$encoding) {
+			return;
+		}
 		$this->encoding = $encoding;
 
-		if (strtolower($level) == 'true' || $level === true) {
+		if (strtolower($level) == 'true' || $level === TRUE) {
 			$level = $this->get_complevel();
 		}
 		$this->level = $level;
 
 		$contents = ob_get_contents();
-		if ($contents === false) return;
+		if ($contents === FALSE) {
+			return;
+		}
 
 		$gzdata = "\x1f\x8b\x08\x00\x00\x00\x00\x00"; // gzip header
 
 			// By Kasper Skårhøj, start
-		if ($outputCompressedSizes)	{
-			$contents.=LF."<!-- Compressed, level ".$level.", original size was ".strlen($contents)." bytes. New size is ".strlen(gzcompress($contents, $level))." bytes -->";
-			$size = strlen($contents);	// Must set again!
+		if ($outputCompressedSizes) {
+			$contents .= LF . "<!-- Compressed, level " . $level . ", original size was " . strlen($contents) . " bytes. New size is " . strlen(gzcompress($contents, $level)) . " bytes -->";
+			$size = strlen($contents); // Must set again!
 		}
 			// By Kasper Skårhøj, end
 
@@ -234,7 +241,7 @@ class gzip_encode {
 		$crc = crc32($contents);
 		$gzdata .= gzcompress($contents, $level);
 		$gzdata = substr($gzdata, 0, strlen($gzdata) - 4); // fix crc bug
-		$gzdata .= pack("V",$crc) . pack("V", $size);
+		$gzdata .= pack("V", $crc) . pack("V", $size);
 
 		$this->size = $size;
 		$this->crc = $crc;
@@ -247,7 +254,7 @@ class gzip_encode {
 		ob_end_clean();
 		Header('Content-Encoding: ' . $encoding);
 		Header('Content-Length: ' . strlen($gzdata));
-		Header('X-Content-Encoded-By: class.gzip_encode '.$this->_version);
+		Header('X-Content-Encoded-By: class.gzip_encode ' . $this->_version);
 
 		echo $gzdata;
 	}
@@ -256,13 +263,13 @@ class gzip_encode {
 	/**
 	 * gzip_accepted() - Test headers for Accept-Encoding: gzip
 	 * Returns: if proper headers aren't found: false
-	 *          if proper headers are found: 'gzip' or 'x-gzip'
+	 *		  if proper headers are found: 'gzip' or 'x-gzip'
 	 *
 	 * Tip: using this function you can test if the class will gzip the output
 	 *  without actually compressing it yet, eg:
-	 *    if (gzip_encode::gzip_accepted()) {
-	 *       echo "Page will be gziped";
-	 *    }
+	 *	if (gzip_encode::gzip_accepted()) {
+	 *	   echo "Page will be gziped";
+	 *	}
 	 *  note the double colon syntax, I don't know where it is documented but
 	 *  somehow it got in my brain.
 	 *
@@ -278,31 +285,32 @@ class gzip_encode {
 		if (preg_match('/(^|,\s*)(x-)?gzip(;q=(\d(\.\d+)?))?(,|$)/i', $acceptEncoding, $match) && ($match[4] === '' || $match[4] > 0)) {
 			$encoding = 'gzip';
 		} else {
-			return false;
+			return FALSE;
 		}
 
 			// Test file type. I wish I could get HTTP response headers.
-		$magic = substr(ob_get_contents(),0,4);
-		if (substr($magic,0,2) === '^_') {
+		$magic = substr(ob_get_contents(), 0, 4);
+		if (substr($magic, 0, 2) === '^_') {
 			// gzip data
-			$encoding = false;
-		} else if (substr($magic,0,3) === 'GIF') {
+			$encoding = FALSE;
+		} elseif (substr($magic, 0, 3) === 'GIF') {
 			// gif images
-			$encoding = false;
-		} else if (substr($magic,0,2) === "\xFF\xD8") {
+			$encoding = FALSE;
+		} elseif (substr($magic, 0, 2) === "\xFF\xD8") {
 			// jpeg images
-			$encoding = false;
-		} else if (substr($magic,0,4) === "\x89PNG") {
+			$encoding = FALSE;
+		} elseif (substr($magic, 0, 4) === "\x89PNG") {
 			// png images
-			$encoding = false;
-		} else if (substr($magic,0,3) === 'FWS') {
+			$encoding = FALSE;
+		} elseif (substr($magic, 0, 3) === 'FWS') {
 			// Don't gzip Shockwave Flash files. Flash on windows incorrectly
 			// claims it accepts gzip'd content.
-			$encoding = false;
-		} else if (substr($magic,0,2) === 'PK') {
+			$encoding = FALSE;
+		} elseif (substr($magic, 0, 2) === 'PK') {
 			// pk zip file
-			$encoding = false;
+			$encoding = FALSE;
 		}
+
 
 		return $encoding;
 	}
@@ -313,7 +321,7 @@ class gzip_encode {
 	 * Returns an int between 0 and 9 inclusive.
 	 *
 	 * Tip: $gzleve = gzip_encode::get_complevel(); to get the compression level
-	 *      that will be used with out actually compressing the output.
+	 *	  that will be used with out actually compressing the output.
 	 *
 	 * Help: if you use an OS other then linux please send me code to make
 	 * this work with your OS - Thanks
@@ -328,15 +336,15 @@ class gzip_encode {
 		switch ($uname['sysname']) {
 			case 'Linux':
 				$cl = (1 - $this->linux_loadavg()) * 10;
-				$level = (int)max(min(9, $cl), 0);
-			break;
+				$level = (int) max(min(9, $cl), 0);
+				break;
 			case 'FreeBSD':
 				$cl = (1 - $this->freebsd_loadavg()) * 10;
-				$level = (int)max(min(9, $cl), 0);
+				$level = (int) max(min(9, $cl), 0);
 				break;
-				default:
+			default:
 				$level = 3;
-			break;
+				break;
 		}
 		return $level;
 	}
@@ -361,7 +369,7 @@ class gzip_encode {
 			fclose($f);
 		}
 		$load = explode(' ', $buffer);
-		return max((float)$load[0], (float)$load[1], (float)$load[2]);
+		return max((float) $load[0], (float) $load[1], (float) $load[2]);
 	}
 
 	/**
@@ -378,11 +386,11 @@ class gzip_encode {
 	function freebsd_loadavg() {
 		t3lib_div::logDeprecatedFunction();
 
-		$buffer= `uptime`;
+		$buffer = `uptime`;
 		$load = array();
 		preg_match('/averag(es|e): ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]*)/', $buffer, $load);
 
-		return max((float)$load[2], (float)$load[3], (float)$load[4]);
+		return max((float) $load[2], (float) $load[3], (float) $load[4]);
 	}
 }
 
