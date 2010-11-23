@@ -265,7 +265,7 @@ final class t3lib_BEfunc {
 				}
 			}
 		} else {
-			$row = self::getRecord($table, $uid, $fields, $where);
+			$row = self::getRecord($table, $uid, $fields, $where, $useDeleteClause);
 			self::workspaceOL($table, $row);
 		}
 		return $row;
