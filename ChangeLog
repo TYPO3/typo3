@@ -1,3 +1,7 @@
+2010-11-23  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16533: Codemirror contains MacOS meta files
+
 2010-11-23  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #16495: conf.php files aren't corrected when installing extensions
