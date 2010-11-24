@@ -1,30 +1,30 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  (c) 2007-2010 Kraft Bernhard (kraftb@kraftb.at)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2007-2010 Kraft Bernhard (kraftb@kraftb.at)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A TS-Config parsing class which performs condition evaluation
  *
@@ -56,7 +56,7 @@ class t3lib_TSparser_TSconfig extends t3lib_TSparser {
 		$this->type = $type;
 		$this->id = $id;
 		$this->rootLine = $rootLine;
-		$hash = md5($type.':'.$TStext);
+		$hash = md5($type . ':' . $TStext);
 		$cachedContent = t3lib_BEfunc::getHash($hash, 0);
 
 		if ($cachedContent) {
@@ -72,7 +72,7 @@ class t3lib_TSparser_TSconfig extends t3lib_TSparser {
 					'cached' => 1,
 				);
 			} else {
-				$shash = md5($checkMD5.$hash);
+				$shash = md5($checkMD5 . $hash);
 				$cachedSpec = t3lib_BEfunc::getHash($shash, 0);
 				if ($cachedSpec) {
 					$storedData = unserialize($cachedSpec);
@@ -83,7 +83,7 @@ class t3lib_TSparser_TSconfig extends t3lib_TSparser {
 				} else {
 					$storeData = $this->parseWithConditions($TStext);
 					$serData = serialize($storeData);
-					t3lib_BEfunc::storeHash($shash, $serData, $type.'_TSconfig');
+					t3lib_BEfunc::storeHash($shash, $serData, $type . '_TSconfig');
 					$res = array(
 						'TSconfig' => $storeData['TSconfig'],
 						'cached' => 0,
@@ -94,7 +94,7 @@ class t3lib_TSparser_TSconfig extends t3lib_TSparser {
 			$storeData = $this->parseWithConditions($TStext);
 			$serData = serialize($storeData);
 			$md5 = md5($serData);
-			t3lib_BEfunc::storeHash($hash, $serData.$md5, $type.'_TSconfig');
+			t3lib_BEfunc::storeHash($hash, $serData . $md5, $type . '_TSconfig');
 			$res = array(
 				'TSconfig' => $storeData['TSconfig'],
 				'cached' => 0,
