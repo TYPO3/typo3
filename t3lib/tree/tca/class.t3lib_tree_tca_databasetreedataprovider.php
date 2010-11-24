@@ -251,6 +251,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			}
 			$node->setChildNodes($childNodes);
 		}
+
 		return $node;
 	}
 
@@ -282,10 +283,10 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		$nodeData = NULL;
 		if ($node->getId() !== 0) {
 			$nodeData = current($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'*',
-				$this->tableName,
-				'uid=' . $node->getId()
-			));
+									'*',
+									$this->tableName,
+									'uid=' . $node->getId()
+								));
 		}
 		if ($nodeData == NULL) {
 			$nodeData = array(
@@ -298,7 +299,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		if (count($children)) {
 			$storage = t3lib_div::makeInstance('t3lib_tree_NodeCollection');
 			foreach ($children as $child) {
-				$node = t3lib_div::makeInstance('t3lib_tree_Node');;
+				$node = t3lib_div::makeInstance('t3lib_tree_Node');
+				;
 				$node->setId($child);
 				if ($level <= $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);
@@ -309,6 +311,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 				$storage->append($node);
 			}
 		}
+
 		return $storage;
 	}
 
@@ -348,12 +351,12 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		$uid = $row['uid'];
 
 		$columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
-		switch ((string)$columnConfiguration['type']) {
+		switch ((string) $columnConfiguration['type']) {
 			case 'inline':
 			case 'select':
 				if ($columnConfiguration['MM']) {
 					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						// dummy field for setting "look from other site"
+					// dummy field for setting "look from other site"
 					$columnConfiguration['MM_oppositeField'] = 'children';
 
 					$dbGroup->start(
@@ -370,8 +373,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 						'uid',
 						$columnConfiguration['foreign_table'],
 						" (CONCAT(','," . $columnConfiguration['foreign_field'] . ",',') LIKE '%," . intval($uid) . ",%' "
-							. (intval($uid) == 0 ? (" OR " . $columnConfiguration['foreign_field'] . " = ''") : '' )
-							. ") " . t3lib_BEfunc::deleteClause( $columnConfiguration['foreign_table'])
+						. (intval($uid) == 0 ? (" OR " . $columnConfiguration['foreign_field'] . " = ''") : '')
+						. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -381,29 +384,31 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 						'uid',
 						$columnConfiguration['foreign_table'],
 						" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
-							. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '' )
-							. ") " . t3lib_BEfunc::deleteClause( $columnConfiguration['foreign_table'])
+						. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
+						. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
 					}
 				}
-				break;
+			break;
 			case 'group':
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$columnConfiguration['foreign_table'],
 					" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
-						. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '' )
-						. ") " . t3lib_BEfunc::deleteClause( $columnConfiguration['foreign_table'])
+					. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
+					. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
 				);
 				foreach ($records as $record) {
 					$relatedUids[] = $record['uid'];
 				}
 			break;
 		}
+
 		return $relatedUids;
 	}
+
 	/**
 	 * Gets related children records depending on TCA configuration
 	 *
@@ -416,7 +421,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		$value = $row[$this->getLookupField()];
 
 		$columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
-		switch ((string)$columnConfiguration['type']) {
+		switch ((string) $columnConfiguration['type']) {
 			case 'inline':
 			case 'select':
 				if ($columnConfiguration['MM']) {
@@ -443,11 +448,12 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 				} else {
 					$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
 				}
-				break;
+			break;
 			case 'group':
 				$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
 			break;
 		}
+
 		return $relatedUids;
 	}
 

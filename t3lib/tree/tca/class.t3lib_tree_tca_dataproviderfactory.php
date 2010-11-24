@@ -82,7 +82,7 @@ class t3lib_tree_Tca_DataProviderFactory {
 				}
 
 				if (isset($treeConfiguration['appearance']['expandAll'])) {
-					$dataProvider->setExpandAll((boolean)$treeConfiguration['appearance']['expandAll']);
+					$dataProvider->setExpandAll((boolean) $treeConfiguration['appearance']['expandAll']);
 				}
 
 				if (isset($treeConfiguration['appearance']['maxLevels'])) {
@@ -115,7 +115,7 @@ class t3lib_tree_Tca_DataProviderFactory {
 			}
 
 		} elseif ($tcaConfiguration['internal_type'] == 'file') {
-				// Not implemented yet
+			// Not implemented yet
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet',
 				'1288215891'
@@ -123,11 +123,12 @@ class t3lib_tree_Tca_DataProviderFactory {
 		} else {
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for "internal_type=' .
-					$tcaConfiguration['internal_type'] .
-					'" not implemented yet',
+				$tcaConfiguration['internal_type'] .
+				'" not implemented yet',
 				'1288215892'
 			);
 		}
+
 		return $dataProvider;
 	}
 }

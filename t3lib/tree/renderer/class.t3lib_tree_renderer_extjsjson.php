@@ -59,6 +59,7 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 			$nodeArray['children'] = $children;
 			$this->recursionLevel--;
 		}
+
 		return $nodeArray;
 	}
 
@@ -68,11 +69,12 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 	protected function getNodeArray(t3lib_tree_RepresentationNode $node) {
 		$nodeArray = array(
 			'iconCls' => $node->getIcon(),
-			'text' => $node->getLabel() ,
+			'text' => $node->getLabel(),
 			'leaf' => !$node->hasChildNodes(),
 			'id' => $node->getId(),
 			'uid' => $node->getId()
 		);
+
 		return $nodeArray;
 	}
 
@@ -98,7 +100,7 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 	 * @return mixed
 	 */
 	public function renderNodeCollection(t3lib_tree_NodeCollection $collection, $recursive = TRUE) {
-		foreach($collection as $node) {
+		foreach ($collection as $node) {
 			$treeItems[] = $this->renderNode($node, $recursive);
 		}
 		return $treeItems;

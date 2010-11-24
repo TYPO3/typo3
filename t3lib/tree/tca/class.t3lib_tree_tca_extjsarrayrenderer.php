@@ -47,14 +47,15 @@ class t3lib_tree_Tca_ExtJsArrayRenderer extends t3lib_tree_Renderer_ExtJsJson {
 		$nodeArray = array_merge(
 			$nodeArray,
 			array(
-				'expanded' => $node->getExpanded(),
-				'expandable' => $node->hasChildNodes(),
-				'checked' => $node->getSelected(),
+				 'expanded' => $node->getExpanded(),
+				 'expandable' => $node->hasChildNodes(),
+				 'checked' => $node->getSelected(),
 			)
 		);
 		if (!$node->getSelectable()) {
 			unset ($nodeArray['checked']);
 		}
+
 		return $nodeArray;
 	}
 

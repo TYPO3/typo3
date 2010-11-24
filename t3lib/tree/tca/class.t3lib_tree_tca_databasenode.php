@@ -133,7 +133,7 @@ class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_RepresentationNode {
 	 * @return void
 	 */
 	public function setHasChildren($value) {
-		$this->hasChildren = (boolean)$value;
+		$this->hasChildren = (boolean) $value;
 	}
 
 	/**
