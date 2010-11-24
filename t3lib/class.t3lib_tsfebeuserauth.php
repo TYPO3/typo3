@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Class for TYPO3 backend user authentication in the TSFE frontend
  *
@@ -39,57 +39,48 @@
  *
  *
  *  103: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth
- *  129:     function extInitFeAdmin()
- *  154:     function extPrintFeAdminDialog()
+ *  129:	 function extInitFeAdmin()
+ *  154:	 function extPrintFeAdminDialog()
  *
- *              SECTION: Creating sections of the Admin Panel
- *  250:     function extGetCategory_preview($out='')
- *  283:     function extGetCategory_cache($out='')
- *  321:     function extGetCategory_publish($out='')
- *  356:     function extGetCategory_edit($out='')
- *  400:     function extGetCategory_tsdebug($out='')
- *  433:     function extGetCategory_info($out='')
+ *			  SECTION: Creating sections of the Admin Panel
+ *  250:	 function extGetCategory_preview($out='')
+ *  283:	 function extGetCategory_cache($out='')
+ *  321:	 function extGetCategory_publish($out='')
+ *  356:	 function extGetCategory_edit($out='')
+ *  400:	 function extGetCategory_tsdebug($out='')
+ *  433:	 function extGetCategory_info($out='')
  *
- *              SECTION: Admin Panel Layout Helper functions
- *  506:     function extGetHead($pre)
- *  526:     function extItemLink($pre,$str)
- *  542:     function extGetItem($pre,$element)
- *  559:     function extFw($str)
- *  568:     function ext_makeToolBar()
+ *			  SECTION: Admin Panel Layout Helper functions
+ *  506:	 function extGetHead($pre)
+ *  526:	 function extItemLink($pre,$str)
+ *  542:	 function extGetItem($pre,$element)
+ *  559:	 function extFw($str)
+ *  568:	 function ext_makeToolBar()
  *
- *              SECTION: TSFE BE user Access Functions
- *  637:     function checkBackendAccessSettingsFromInitPhp()
- *  682:     function extPageReadAccess($pageRec)
- *  693:     function extAdmModuleEnabled($key)
- *  709:     function extSaveFeAdminConfig()
- *  741:     function extGetFeAdminValue($pre,$val='')
- *  783:     function extIsAdmMenuOpen($pre)
+ *			  SECTION: TSFE BE user Access Functions
+ *  637:	 function checkBackendAccessSettingsFromInitPhp()
+ *  682:	 function extPageReadAccess($pageRec)
+ *  693:	 function extAdmModuleEnabled($key)
+ *  709:	 function extSaveFeAdminConfig()
+ *  741:	 function extGetFeAdminValue($pre,$val='')
+ *  783:	 function extIsAdmMenuOpen($pre)
  *
- *              SECTION: TSFE BE user Access Functions
- *  818:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)
- *  849:     function extGetNumberOfCachedPages($page_id)
+ *			  SECTION: TSFE BE user Access Functions
+ *  818:	 function extGetTreeList($id,$depth,$begin=0,$perms_clause)
+ *  849:	 function extGetNumberOfCachedPages($page_id)
  *
- *              SECTION: Localization handling
- *  888:     function extGetLL($key)
+ *			  SECTION: Localization handling
+ *  888:	 function extGetLL($key)
  *
- *              SECTION: Frontend Editing
- *  932:     function extIsEditAction()
- *  954:     function extIsFormShown()
- *  970:     function extEditAction()
+ *			  SECTION: Frontend Editing
+ *  932:	 function extIsEditAction()
+ *  954:	 function extIsFormShown()
+ *  970:	 function extEditAction()
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -135,14 +126,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @var	boolean
 	 */
-	public $writeStdLog = false;
+	public $writeStdLog = FALSE;
 
 	/**
 	 * If the writelog() functions is called if a login-attempt has be tried without success.
 	 *
 	 * @var	boolean
 	 */
-	public $writeAttemptLog = false;
+	public $writeAttemptLog = FALSE;
 
 	/**
 	 * This is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
@@ -163,21 +154,21 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @var	boolean
 	 */
-	public $extAdmEnabled = false;
+	public $extAdmEnabled = FALSE;
 
 	/**
 	 * Instance of the admin panel
 	 *
 	 * @var	tslib_AdminPanel
 	 */
-	public $adminPanel = null;
+	public $adminPanel = NULL;
 
 	/**
 	 * Class for frontend editing.
 	 *
 	 * @var	t3lib_frontendedit
 	 */
-	public $frontendEdit = null;
+	public $frontendEdit = NULL;
 
 	/**
 	 * Initializes the admin panel.
@@ -188,10 +179,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$this->extAdminConfig = $this->getTSConfigProp('admPanel');
 
 		if (isset($this->extAdminConfig['enable.'])) {
-			foreach($this->extAdminConfig['enable.'] as $key => $value) {
+			foreach ($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
 					$this->adminPanel = t3lib_div::makeInstance('tslib_AdminPanel');
-					$this->extAdmEnabled = true;
+					$this->extAdmEnabled = TRUE;
 
 					break;
 				}
@@ -206,7 +197,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 */
 	public function initializeFrontendEdit() {
 		if (isset($this->extAdminConfig['enable.']) && $this->isFrontendEditingActive()) {
-			foreach($this->extAdminConfig['enable.'] as $key => $value) {
+			foreach ($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
 					if ($GLOBALS['TSFE'] instanceof tslib_fe) {
 							// Grab the Page TSConfig property that determines which controller to use.
@@ -218,7 +209,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
 					if ($controllerClass) {
-						$this->frontendEdit = t3lib_div::getUserObj($controllerClass, false);
+						$this->frontendEdit = t3lib_div::getUserObj($controllerClass, FALSE);
 					}
 
 					break;
@@ -234,8 +225,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 */
 	public function isFrontendEditingActive() {
 		return ($this->extAdmEnabled
-			&& ($this->adminPanel->isAdminModuleEnabled('edit') && $this->adminPanel->isAdminModuleOpen('edit')
-			|| $GLOBALS['TSFE']->displayEditIcons == 1)
+				&& ($this->adminPanel->isAdminModuleEnabled('edit') && $this->adminPanel->isAdminModuleOpen('edit')
+					|| $GLOBALS['TSFE']->displayEditIcons == 1)
 		);
 	}
 
@@ -275,39 +266,39 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	public function checkBackendAccessSettingsFromInitPhp() {
 		global $TYPO3_CONF_VARS;
 
-		// **********************
-		// Check Hardcoded lock on BE:
-		// **********************
+			// **********************
+			// Check Hardcoded lock on BE:
+			// **********************
 		if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0) {
-			return false;
+			return FALSE;
 		}
 
-		// **********************
-		// Check IP
-		// **********************
+			// **********************
+			// Check IP
+			// **********************
 		if (trim($TYPO3_CONF_VARS['BE']['IPmaskList'])) {
 			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['BE']['IPmaskList'])) {
-				return false;
+				return FALSE;
 			}
 		}
 
 
-		// **********************
-		// Check SSL (https)
-		// **********************
+			// **********************
+			// Check SSL (https)
+			// **********************
 		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && $TYPO3_CONF_VARS['BE']['lockSSL'] != 3) {
 			if (!t3lib_div::getIndpEnv('TYPO3_SSL')) {
-				return false;
+				return FALSE;
 			}
 		}
 
 			// Finally a check from t3lib_beuserauth::backendCheckLogin()
 		if ($this->isUserAllowedToLogin()) {
-			return true;
+			return TRUE;
 		} else {
-			return false;
+			return FALSE;
 		}
-	 }
+	}
 
 
 	/**
@@ -339,25 +330,25 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
-	public function extGetTreeList($id, $depth, $begin=0, $perms_clause) {
-		$depth=intval($depth);
-		$begin=intval($begin);
-		$id=intval($id);
-		$theList='';
+	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
+		$depth = intval($depth);
+		$begin = intval($begin);
+		$id = intval($id);
+		$theList = '';
 
 		if ($id && $depth > 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'uid,title',
-						'pages',
-						'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0 AND ' . $perms_clause
-					);
+				'uid,title',
+				'pages',
+				'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0 AND ' . $perms_clause
+			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
-					$theList .= $row['uid'].',';
-					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'],$depth));
+					$theList .= $row['uid'] . ',';
+					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
 				}
 				if ($depth > 1) {
-					$theList .= $this->extGetTreeList($row['uid'], $depth-1, $begin-1, $perms_clause);
+					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
 				}
 			}
 		}
@@ -376,30 +367,11 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$pageCacheEntries = $pageCache->getByTag('pageId_' . (int) $pageId);
 			$count = count($pageCacheEntries);
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pages', 'page_id='.intval($pageId));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pages', 'page_id=' . intval($pageId));
 			list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		}
 		return $count;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/*****************************************************
@@ -425,7 +397,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			}
 		}
 
-		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
+		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key)); // Label string in the default backend output charset.
 
 			// Convert to utf-8, then to entities:
 		if ($GLOBALS['LANG']->charSet != 'utf-8') {
@@ -440,7 +412,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsfebeuserauth.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsfebeuserauth.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsfebeuserauth.php']);
 }
 
