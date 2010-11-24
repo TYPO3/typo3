@@ -83,8 +83,8 @@ class t3lib_Compressor {
 			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
 				// if $options['baseDirectories'] set, we only include files below these directories
 			if ((!isset($options['baseDirectories'])
-				|| $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))))
-				&& ($fileOptions['media'] === 'all')
+					|| $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))))
+					&& ($fileOptions['media'] === 'all')
 			) {
 
 				$filesToInclude[] = $filenameFromMainDir;
@@ -96,9 +96,9 @@ class t3lib_Compressor {
 		if (count($filesToInclude)) {
 			$targetFile = $this->createMergedCssFile($filesToInclude);
 			$concatenatedOptions = array(
-					'rel'		=> 'stylesheet',
-					'media'		=> 'all',
-					'compress'	=> TRUE,
+				'rel' => 'stylesheet',
+				'media' => 'all',
+				'compress' => TRUE,
 			);
 			$targetFileRelative = $GLOBALS['BACK_PATH'] . '../' . $targetFile;
 				// place the merged stylesheet on top of the stylesheets
@@ -122,7 +122,7 @@ class t3lib_Compressor {
 			$filepath = t3lib_div::resolveBackPath(PATH_typo3 . $filename);
 			$unique .= $filename . filemtime($filepath) . filesize($filepath);
 		}
-		$targetFile = $this->targetDirectory . 'merged-'. md5($unique) . '.css';
+		$targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.css';
 
 			// if the file doesn't already exist, we create it
 		if (!file_exists(PATH_site . $targetFile)) {
@@ -146,7 +146,7 @@ class t3lib_Compressor {
 	 * Compress multiple css files
 	 *
 	 * @param array $cssFiles	The files to compress (array key = filename), relative to requested page
-	 * @return array 			The CSS files after compression (array key = new filename), relative to requested page
+	 * @return array			 The CSS files after compression (array key = new filename), relative to requested page
 	 */
 	public function compressCssFiles(array $cssFiles) {
 		$filesAfterCompression = array();
@@ -184,7 +184,7 @@ class t3lib_Compressor {
 		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
 			$contents = t3lib_div::getUrl($filenameAbsolute);
 				// Perform some safe CSS optimizations.
-			$contents = str_replace("\r", '', $contents);  // Strip any and all carriage returns.
+			$contents = str_replace("\r", '', $contents); // Strip any and all carriage returns.
 				// Match and process strings, comments and everything else, one chunk at a time.
 				// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
 			$contents = preg_replace_callback('%
@@ -205,10 +205,10 @@ class t3lib_Compressor {
 				(/\*[^/]++(?:(?<!\*)/(?!\*)[^/]*+)*+/(?<=(?<!\\\\)\*/)) |  # or...
 				# Group 8: Match regular non-string, non-comment text.
 				([^"\'/]*+(?:(?!/\*)/[^"\'/]*+)*+)
-				%Ssx', array('self','compressCssPregCallback'), $contents); // Do it!
-			$contents = preg_replace('/^\s++/', '', $contents);				 // Strip leading whitespace.
-			$contents = preg_replace('/[ \t]*+\n\s*+/S', "\n", $contents);  // Consolidate multi-lines space.
-			$contents = preg_replace('/(?<!\s)\s*+$/S', "\n", $contents);   // Ensure file ends in newline.
+				%Ssx', array('self', 'compressCssPregCallback'), $contents); // Do it!
+			$contents = preg_replace('/^\s++/', '', $contents); // Strip leading whitespace.
+			$contents = preg_replace('/[ \t]*+\n\s*+/S', "\n", $contents); // Consolidate multi-lines space.
+			$contents = preg_replace('/(?<!\s)\s*+$/S', "\n", $contents); // Ensure file ends in newline.
 				// we have to fix relative paths, if we aren't working on a file in our target directory
 			if (!is_int(strpos($filename, $this->targetDirectory))) {
 				$filenameRelativeToMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
@@ -228,27 +228,27 @@ class t3lib_Compressor {
 	 * @return string the compressed string
 	 */
 	public static function compressCssPregCallback($matches) {
-		if ($matches[1]) {		// Group 1: Double quoted string.
-			return $matches[1];   // Return the string unmodified.
-		} elseif ($matches[2]) {  // Group 2: Single quoted string.
-			return $matches[2];   // Return the string unmodified.
-		} elseif ($matches[3]) {  // Group 3: Regular non-MacIE5-hack comment.
-			return "\n";				// Return single space.
-		} elseif ($matches[4]) {  // Group 4: MacIE5-hack-type-1 comment.
-			return "\n/*\\T1*/\n";  // Return minimal MacIE5-hack-type-1 comment.
+		if ($matches[1]) { // Group 1: Double quoted string.
+			return $matches[1]; // Return the string unmodified.
+		} elseif ($matches[2]) { // Group 2: Single quoted string.
+			return $matches[2]; // Return the string unmodified.
+		} elseif ($matches[3]) { // Group 3: Regular non-MacIE5-hack comment.
+			return "\n"; // Return single space.
+		} elseif ($matches[4]) { // Group 4: MacIE5-hack-type-1 comment.
+			return "\n/*\\T1*/\n"; // Return minimal MacIE5-hack-type-1 comment.
 		}
-		elseif ($matches[5]) {  // Group 5,6,7: MacIE5-hack-type-2 comment
-			$matches[6] = preg_replace('/\s++([+>{};,)])/S', '$1', $matches[6]);  // Clean pre-punctuation.
+		elseif ($matches[5]) { // Group 5,6,7: MacIE5-hack-type-2 comment
+			$matches[6] = preg_replace('/\s++([+>{};,)])/S', '$1', $matches[6]); // Clean pre-punctuation.
 			$matches[6] = preg_replace('/([+>{}:;,(])\s++/S', '$1', $matches[6]); // Clean post-punctuation.
-			$matches[6] = preg_replace('/;?\}/S', "}\n", $matches[6]);				// Add a touch of formatting.
+			$matches[6] = preg_replace('/;?\}/S', "}\n", $matches[6]); // Add a touch of formatting.
 			return "\n/*T2\\*/" . $matches[6] . "\n/*T2E*/\n"; // Minify and reassemble composite type2 comment.
 		} elseif (isset($matches[8])) { // Group 8: Non-string, non-comment. Safe to clean whitespace here.
-			$matches[8] = preg_replace('/^\s++/', '', $matches[8]);				   // Strip all leading whitespace.
-			$matches[8] = preg_replace('/\s++$/', '', $matches[8]);				   // Strip all trailing whitespace.
-			$matches[8] = preg_replace('/\s{2,}+/', ' ', $matches[8]);				// Consolidate multiple whitespace.
-			$matches[8] = preg_replace('/\s++([+>{};,)])/S', '$1', $matches[8]);  // Clean pre-punctuation.
+			$matches[8] = preg_replace('/^\s++/', '', $matches[8]); // Strip all leading whitespace.
+			$matches[8] = preg_replace('/\s++$/', '', $matches[8]); // Strip all trailing whitespace.
+			$matches[8] = preg_replace('/\s{2,}+/', ' ', $matches[8]); // Consolidate multiple whitespace.
+			$matches[8] = preg_replace('/\s++([+>{};,)])/S', '$1', $matches[8]); // Clean pre-punctuation.
 			$matches[8] = preg_replace('/([+>{}:;,(])\s++/S', '$1', $matches[8]); // Clean post-punctuation.
-			$matches[8] = preg_replace('/;?\}/S', "}\n", $matches[8]);				// Add a touch of formatting.
+			$matches[8] = preg_replace('/;?\}/S', "}\n", $matches[8]); // Add a touch of formatting.
 			return $matches[8];
 		}
 		return $matches[0] . "\n/* ERROR! Unexpected _proccess_css_minify() parameter */\n"; // never get here
@@ -259,7 +259,7 @@ class t3lib_Compressor {
 	 *
 	 * @param	array	$jsFiles		The files to compress (array key = filename), relative to requested page
 	 * @return	array		The js files after compression (array key = new filename), relative to requested page
-		*/
+	 */
 	public function compressJsFiles(array $jsFiles) {
 		$filesAfterCompression = array();
 		foreach ($jsFiles as $filename => $fileOptions) {
@@ -333,7 +333,7 @@ class t3lib_Compressor {
 				// we must not rewrite paths containing ":", e.g. data URIs (see RFC 2397)
 			if (strpos($match, ':') === FALSE) {
 				$newPath = t3lib_div::resolveBackPath('../../' . TYPO3_mainDir . $oldDir . $match);
-				$contents = str_replace($matches[1][$matchCount], '(\'' . $newPath  . '\')', $contents);
+				$contents = str_replace($matches[1][$matchCount], '(\'' . $newPath . '\')', $contents);
 			}
 		}
 		return $contents;
@@ -372,4 +372,5 @@ class t3lib_Compressor {
 		}
 	}
 }
+
 ?>
