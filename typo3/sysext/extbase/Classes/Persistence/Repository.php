@@ -307,7 +307,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$object = $query->matching($query->equals('uid', $uid))
 					->execute()
 					->getFirst();
-			if ($object !== FALSE) {
+			if ($object !== NULL) {
 				$this->identityMap->registerObject($object, $uid);
 			}
 		}

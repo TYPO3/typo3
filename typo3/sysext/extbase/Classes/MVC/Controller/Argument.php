@@ -157,7 +157,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	}
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService 
+	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
@@ -393,7 +393,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Finds an object from the repository by searching for its technical UID.
 	 *
 	 * @param int $uid The object's uid
-	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
+	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
 	protected function findObjectByUid($uid) {
 		$query = $this->queryFactory->create($this->dataType);
