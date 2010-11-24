@@ -31,7 +31,7 @@
  * $Id$
  *
  * @author		Oliver Hader <oh@inpublica.de>
- * @package 	TYPO3
+ * @package	 TYPO3
  * @subpackage	t3lib
  */
 interface t3lib_tceformsInlineHook {
@@ -69,4 +69,5 @@ interface t3lib_tceformsInlineHook {
 	 */
 	public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems);
 }
+
 ?>
