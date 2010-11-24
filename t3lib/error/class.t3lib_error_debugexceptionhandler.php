@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -67,7 +66,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 		 * either remove this line or let the link point to site that offers error information for TYPO3
 		 */
 
-//		$moreInformationLink = ($exceptionCodeNumber != '') ? '(<a href="http://typo3.org/go/exception/' . $exception->getCode() . '">More information</a>)' : '';
+			//		$moreInformationLink = ($exceptionCodeNumber != '') ? '(<a href="http://typo3.org/go/exception/' . $exception->getCode() . '">More information</a>)' : '';
 		$backtraceCode = $this->getBacktraceCode($exception->getTrace());
 
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
@@ -122,7 +121,8 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 						">
 						<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
 						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
-							<strong style="color: #BE0027;">' . $exceptionCodeNumber . $exception->getMessage() . '</strong> ' ./* $moreInformationLink .*/ '<br />
+							<strong style="color: #BE0027;">' . $exceptionCodeNumber . $exception->getMessage() . '</strong> ' . /* $moreInformationLink .*/
+			 '<br />
 							<br />
 							<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
 							<span class="ExceptionProperty">' . $filePathAndName . '</span> in line
@@ -179,7 +179,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 							$preparedArgument = str_replace(LF, '<span style="color:white;">&crarr;</span>', $preparedArgument);
 							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">' . $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
-							$arguments .= '<span style="color:#FF8700;">' . (string)$argument . '</span>';
+							$arguments .= '<span style="color:#FF8700;">' . (string) $argument . '</span>';
 						} else {
 							$arguments .= '<span style="color:#FF8700;"><em>' . gettype($argument) . '</em></span>';
 						}
@@ -217,7 +217,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 				if ($endLine > $startLine) {
 					$codeSnippet = '<br /><span style="font-size:10px;">' . $filePathAndName . ':</span><br /><pre>';
 					for ($line = $startLine; $line < $endLine; $line++) {
-						$codeLine = str_replace(TAB, ' ', $phpFile[$line-1]);
+						$codeLine = str_replace(TAB, ' ', $phpFile[$line - 1]);
 
 						if ($line === $lineNumber) {
 							$codeSnippet .= '</pre><pre style="background-color: #F1F1F1; color: black;">';
@@ -236,7 +236,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_debugexceptionhandler.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_debugexceptionhandler.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_debugexceptionhandler.php']);
 }
 

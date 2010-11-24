@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -58,7 +57,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 	 * Writes exception to different logs
 	 *
 	 * @param Exception $exception The exception
-	 * @param string 	the context where the exception was thrown, WEB or CLI
+	 * @param string	 the context where the exception was thrown, WEB or CLI
 	 * @return void
 	 * @see t3lib_div::sysLog(), t3lib_div::devLog()
 	 */
@@ -67,8 +66,8 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		$exceptionCodeNumber = ($exception->getCode() > 0) ? '#' . $exception->getCode() . ': ' : '';
 		$logTitle = 'Core: Exception handler (' . $context . ')';
 		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | ' .
-			get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
-		$backtrace =  $exception->getTrace();
+					  get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
+		$backtrace = $exception->getTrace();
 
 			// write error message to the configured syslogs
 		t3lib_div::sysLog($logMessage, $logTitle, 4);
@@ -86,10 +85,15 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 				// write error message to devlog
 				// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
 			if (TYPO3_EXCEPTION_DLOG) {
-				t3lib_div::devLog($logMessage, $logTitle, 3, array(
-					'TYPO3_MODE' => TYPO3_MODE,
-					'backtrace' => $backtrace
-				));
+				t3lib_div::devLog(
+					$logMessage,
+					$logTitle,
+					3,
+					array(
+						'TYPO3_MODE' => TYPO3_MODE,
+						'backtrace' => $backtrace
+					)
+				);
 			}
 
 				// write error message to sys_log table
@@ -110,15 +114,15 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 			$userId = 0;
 			$workspace = 0;
 			if (is_object($GLOBALS['BE_USER'])) {
-				if (isset($GLOBALS['BE_USER']->user['uid']))	{
+				if (isset($GLOBALS['BE_USER']->user['uid'])) {
 					$userId = $GLOBALS['BE_USER']->user['uid'];
 				}
-				if (isset($GLOBALS['BE_USER']->workspace))	{
+				if (isset($GLOBALS['BE_USER']->workspace)) {
 					$workspace = $GLOBALS['BE_USER']->workspace;
 				}
 			}
 
-			$fields_values = Array (
+			$fields_values = Array(
 				'userid' => $userId,
 				'type' => 5,
 				'action' => 0,
@@ -137,7 +141,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php']);
 }
 

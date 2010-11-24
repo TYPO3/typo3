@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -46,8 +45,8 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	/**
 	 * Registers this class as default error handler
 	 *
-	 * @param integer 	The integer representing the E_* error level which should be
-	 * 					handled by the registered error handler.
+	 * @param integer	 The integer representing the E_* error level which should be
+	 *					 handled by the registered error handler.
 	 * @return void
 	 */
 	public function __construct($errorHandlerErrors) {
@@ -55,15 +54,14 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	}
 
 
-
 	/**
 	 * Defines which error levels should result in an exception thrown.
 	 *
-	 * @param integer 	The integer representing the E_* error level to handle as exceptions
+	 * @param integer	 The integer representing the E_* error level to handle as exceptions
 	 * @return void
 	 */
 	public function setExceptionalErrors($exceptionalErrors) {
-		$this->exceptionalErrors = (int)$exceptionalErrors;
+		$this->exceptionalErrors = (int) $exceptionalErrors;
 
 	}
 
@@ -74,28 +72,30 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
 	 * is displayed in the admin panel (as TsLog message)
 	 *
-	 * @param integer 	The error level - one of the E_* constants
-	 * @param string 	The error message
-	 * @param string 	Name of the file the error occurred in
-	 * @param integer 	Line number where the error occurred
+	 * @param integer	 The error level - one of the E_* constants
+	 * @param string	 The error message
+	 * @param string	 Name of the file the error occurred in
+	 * @param integer	 Line number where the error occurred
 	 * @return void
 	 * @throws t3lib_error_Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine) {
 			// don't do anything if error_reporting is disabled by an @ sign
-		if (error_reporting()==0) { return TRUE; }
+		if (error_reporting() == 0) {
+			return TRUE;
+		}
 
-		$errorLevels = array (
-			E_WARNING            => 'Warning',
-			E_NOTICE             => 'Notice',
-			E_USER_ERROR         => 'User Error',
-			E_USER_WARNING       => 'User Warning',
-			E_USER_NOTICE        => 'User Notice',
-			E_STRICT             => 'Runtime Notice',
-			E_RECOVERABLE_ERROR  => 'Catchable Fatal Error'
+		$errorLevels = array(
+			E_WARNING => 'Warning',
+			E_NOTICE => 'Notice',
+			E_USER_ERROR => 'User Error',
+			E_USER_WARNING => 'User Warning',
+			E_USER_NOTICE => 'User Notice',
+			E_STRICT => 'Runtime Notice',
+			E_RECOVERABLE_ERROR => 'Catchable Fatal Error'
 		);
 
-		$message = 'PHP ' .$errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
+		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 
 		if ($errorLevel & $this->exceptionalErrors) {
 			if (!class_exists('t3lib_error_Exception', FALSE)) {
@@ -110,14 +110,14 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 				case E_USER_ERROR:
 				case E_RECOVERABLE_ERROR:
 					$severity = 2;
-				break;
+					break;
 				case E_USER_WARNING:
 				case E_WARNING:
 					$severity = 1;
-				break;
+					break;
 				default:
 					$severity = 0;
-				break;
+					break;
 			}
 
 			$logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
@@ -159,10 +159,10 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 				// Add error message to the flashmessageQueue
 			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
 				$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$message,
-						'PHP ' . $errorLevels[$errorLevel],
-						$severity
+					't3lib_FlashMessage',
+					$message,
+					'PHP ' . $errorLevels[$errorLevel],
+					$severity
 				);
 				t3lib_FlashMessageQueue::addMessage($flashMessage);
 			}
@@ -184,15 +184,15 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 			$userId = 0;
 			$workspace = 0;
 			if (is_object($GLOBALS['BE_USER'])) {
-				if (isset($GLOBALS['BE_USER']->user['uid']))	{
+				if (isset($GLOBALS['BE_USER']->user['uid'])) {
 					$userId = $GLOBALS['BE_USER']->user['uid'];
 				}
-				if (isset($GLOBALS['BE_USER']->workspace))	{
+				if (isset($GLOBALS['BE_USER']->workspace)) {
 					$workspace = $GLOBALS['BE_USER']->workspace;
 				}
 			}
 
-			$fields_values = Array (
+			$fields_values = Array(
 				'userid' => $userId,
 				'type' => 5,
 				'action' => 0,
@@ -210,7 +210,7 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_errorhandler.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_errorhandler.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_errorhandler.php']);
 }
 
