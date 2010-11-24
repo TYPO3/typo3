@@ -1749,11 +1749,11 @@ class t3lib_TCEmain	{
 					$newFiles = implode(',', $dbAnalysis->getValueArray());
 					list(,,$recFieldName) = explode(':', $recFID);
 					if ($currentFilesForHistory != $newFiles) {
-						$this->mmHistoryRecords[$currentTable . ':' . $id]['oldRecord'][$recFieldName] = $currentFilesForHistory;
-						$this->mmHistoryRecords[$currentTable . ':' . $id]['newRecord'][$recFieldName] = $newFiles;
+						$this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$recFieldName] = $currentFilesForHistory;
+						$this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$recFieldName] = $newFiles;
 					} else {
-						$this->mmHistoryRecords[$currentTable . ':' . $id]['oldRecord'][$currentField] = '';
-						$this->mmHistoryRecords[$currentTable . ':' . $id]['newRecord'][$currentField] = '';
+						$this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$recFieldName] = '';
+						$this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$recFieldName] = '';
 					}
 				} else {
 					$this->dbAnalysisStore[] = array($dbAnalysis, $tcaFieldConf['MM'], $id, 0);	// This will be traversed later to execute the actions
