@@ -341,7 +341,7 @@ class SC_db_layout {
 				if (is_array($this->MOD_MENU[$table])) {
 					unset ($this->MOD_MENU[$table]);
 				}
-				if (is_array($tableSettings)) {
+				if (is_array($tableSettings) && count($tableSettings) > 1) {
 					foreach ($tableSettings as $key => $settings) {
 						$this->MOD_MENU[$table][$key] = $LANG->sL($settings['MENU']);
 					}

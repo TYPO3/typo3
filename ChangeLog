@@ -1,3 +1,7 @@
+2010-11-24  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16560: Hide mod_menu of record listing in page module if not needed (Thanks to Georg Ringer)
+
 2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #16518: Extra frame after default password change, link from reports module (Thanks to Kevin Walter)
