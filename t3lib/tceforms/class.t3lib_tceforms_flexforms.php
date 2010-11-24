@@ -92,7 +92,8 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 		$TSconfig = $this->setTSconfig($table, $tableRow);
 		if (!empty($TSconfig[$tableField][$flexformIdentifier . '.'])) {
 			$sheetConf = t3lib_div::removeDotsFromTS($TSconfig[$tableField][$flexformIdentifier . '.']);
-		};
+		}
+		;
 
 			// Get non-exclude-fields from group access lists
 		$nonExcludeFields = $this->getFlexFormNonExcludeFields($table, $tableField, $flexformIdentifier);
@@ -183,11 +184,11 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 				continue;
 			}
 
-			$fieldConf   = $sheetConf[$fieldName];
+			$fieldConf = $sheetConf[$fieldName];
 			$removeItems = (!empty($fieldConf['removeItems']) ? t3lib_div::trimExplode(',', $fieldConf['removeItems'], TRUE) : array());
-			$keepItems   = (!empty($fieldConf['keepItems'])   ? t3lib_div::trimExplode(',', $fieldConf['keepItems'], TRUE)   : array());
-			$renameItems = (!empty($fieldConf['altLabels']) && is_array($fieldConf['altLabels']) ? $fieldConf['altLabels']   : array());
-			$addItems    = (!empty($fieldConf['addItems'])  && is_array($fieldConf['addItems'])  ? $fieldConf['addItems']    : array());
+			$keepItems = (!empty($fieldConf['keepItems']) ? t3lib_div::trimExplode(',', $fieldConf['keepItems'], TRUE) : array());
+			$renameItems = (!empty($fieldConf['altLabels']) && is_array($fieldConf['altLabels']) ? $fieldConf['altLabels'] : array());
+			$addItems = (!empty($fieldConf['addItems']) && is_array($fieldConf['addItems']) ? $fieldConf['addItems'] : array());
 
 			unset($fieldConf['removeItems']);
 			unset($fieldConf['keepItems']);
@@ -290,7 +291,7 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 			// Collect only FlexForm fields
 		foreach ($accessListFields as $field) {
 			if (strpos($field, $identPrefix) !== FALSE) {
-				list(,, $sheetName, $fieldName) = explode(';', $field);
+				list(, , $sheetName, $fieldName) = explode(';', $field);
 				$nonExcludeFields[$sheetName][$fieldName] = TRUE;
 			}
 		}

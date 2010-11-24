@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2007-2010 Andreas Wolf <andreas.wolf@ikt-werk.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2007-2010 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Default implementation of a handler class for an ajax record selector.
@@ -128,7 +128,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 
 			// if table is versionized, only get the records from the Live Workspace
 			// the overlay itself of WS-records is done below
-		if ($GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == true) {
+		if ($GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == TRUE) {
 			$this->addWhere .= ' AND t3ver_wsid = 0';
 		}
 
@@ -153,17 +153,17 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		$rows = array();
 
 		$this->params = &$params;
-		$start  = $recursionCounter * 50;
+		$start = $recursionCounter * 50;
 
 		$this->prepareSelectStatement();
 		$this->prepareOrderByStatement();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				$this->table,
-				$this->selectClause,
-				'',
-				$this->orderByStatement,
-				$start . ', 50');
+			'*',
+			$this->table,
+			$this->selectClause,
+			'',
+			$this->orderByStatement,
+			$start . ', 50');
 
 		$allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 
@@ -171,7 +171,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 
 					// check if we already have collected the maximum number of records
-				if (count($rows) > $this->maxItems) break;
+				if (count($rows) > $this->maxItems) {
+					break;
+				}
 
 				$this->manipulateRecord($row);
 				$this->makeWorkspaceOverlay($row);
@@ -187,22 +189,22 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
 					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
-						htmlspecialchars($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) .
-							'...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20)
-						) . '</abbr>';
+								   htmlspecialchars($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) .
+													'...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20)
+								   ) . '</abbr>';
 				} else {
 					$croppedPath = htmlspecialchars($path);
 				}
 
 				$label = $this->getLabel($row);
 				$entry = array(
-					'text'  => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
+					'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
 					'table' => ($this->mmForeignTable ? $this->mmForeignTable : $this->table),
 					'label' => $label,
-					'path'  => $path,
-					'uid'   => $uid,
-					'icon'  => $iconPath,
+					'path' => $path,
+					'uid' => $uid,
+					'icon' => $iconPath,
 					'style' => 'background-image:url(' . $iconPath . ');',
 					'class' => (isset($this->config['cssClass']) ? $this->config['cssClass'] : ''),
 				);
@@ -214,7 +216,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 
 				// if there are less records than we need, call this function again to get more records
 			if (count($rows) < $this->maxItems &&
-					$allRowsCount >= 50 && $recursionCounter < $this->maxItems) {
+				$allRowsCount >= 50 && $recursionCounter < $this->maxItems) {
 				$tmp = self::queryTable($params, ++$recursionCounter);
 				$rows = array_merge($tmp, $rows);
 			}
@@ -236,7 +238,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		if (strlen($searchString)) {
 			$searchString = $GLOBALS['TYPO3_DB']->quoteStr($searchString, $this->table);
 			$likeCondition = ' LIKE \'' . ($searchWholePhrase ? '%' : '') .
-				$GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
+							 $GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
 
 				// Search in all fields given by label or label_alt
 			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'];
@@ -327,15 +329,15 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 *  Selects whether the logged in Backend User is allowed to read a specific record
 	 */
 	protected function checkRecordAccess($row, $uid) {
-		$retValue = true;
+		$retValue = TRUE;
 		$table = ($this->mmForeignTable ? $this->mmForeignTable : $this->table);
 		if ($table == 'pages') {
 			if (!t3lib_BEfunc::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
-				$retValue = false;
+				$retValue = FALSE;
 			}
 		} else {
 			if (!is_array(t3lib_BEfunc::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1)))) {
-				$retValue = false;
+				$retValue = FALSE;
 			}
 		}
 		return $retValue;
@@ -349,7 +351,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 */
 	protected function makeWorkspaceOverlay(&$row) {
 			// check for workspace-versions
-		if ($GLOBALS['BE_USER']->workspace != 0 && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == true) {
+		if ($GLOBALS['BE_USER']->workspace != 0 && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == TRUE) {
 			t3lib_BEfunc::workspaceOL(($this->mmForeignTable ? $this->mmForeignTable : $this->table), $row);
 		}
 	}
@@ -396,7 +398,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 * @return string The label
 	 */
 	protected function getLabel($row) {
-		return t3lib_BEfunc::getRecordTitle(($this->mmForeignTable ? $this->mmForeignTable : $this->table), $row, true);
+		return t3lib_BEfunc::getRecordTitle(($this->mmForeignTable ? $this->mmForeignTable : $this->table), $row, TRUE);
 	}
 
 	/**
@@ -413,8 +415,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		if ($this->config['renderFunc'] != '') {
 			$params = array(
 				'table' => $this->table,
-				'uid'   => $row['uid'],
-				'row'   => $row,
+				'uid' => $row['uid'],
+				'row' => $row,
 				'entry' => &$entry
 			);
 			t3lib_div::callUserFunction($this->config['renderFunc'], $params, $this, '');

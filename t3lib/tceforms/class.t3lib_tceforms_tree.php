@@ -1,30 +1,30 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
-*  (c) 2010 Steffen Kamper <steffen@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
+ *  (c) 2010 Steffen Kamper <steffen@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
@@ -76,13 +76,13 @@ class t3lib_TCEforms_Tree {
 					$item = new stdClass();
 					$item->uid = $additionalItem[1];
 					$item->text = $GLOBALS['LANG']->sL($additionalItem[0]);
-					$item->selectable = true;
-					$item->leaf = true;
+					$item->selectable = TRUE;
+					$item->leaf = TRUE;
 					$item->checked = in_array($additionalItem[1], $selectedNodes);
 					if (file_exists(PATH_typo3 . $additionalItem[3])) {
 						$item->icon = $additionalItem[3];
 					} elseif (strlen(trim($additionalItem[3]))) {
-						$item->iconCls= t3lib_iconWorks::getSpriteIconClasses($additionalItem[3]);
+						$item->iconCls = t3lib_iconWorks::getSpriteIconClasses($additionalItem[3]);
 					}
 
 					$itemArray[] = $item;
@@ -94,12 +94,12 @@ class t3lib_TCEforms_Tree {
 
 		$id = md5($PA['itemFormElName']);
 
-		if (isset($PA['fieldConf']['config']['size']) && intval($PA['fieldConf']['config']['size']) > 0 ) {
+		if (isset($PA['fieldConf']['config']['size']) && intval($PA['fieldConf']['config']['size']) > 0) {
 			$height = intval($PA['fieldConf']['config']['size']) * 20;
 		} else {
 			$height = 280;
 		}
-		if (isset($PA['fieldConf']['config']['autoSizeMax']) && intval($PA['fieldConf']['config']['autoSizeMax']) > 0 ) {
+		if (isset($PA['fieldConf']['config']['autoSizeMax']) && intval($PA['fieldConf']['config']['autoSizeMax']) > 0) {
 			$autoSizeMax = intval($PA['fieldConf']['config']['autoSizeMax']) * 20;
 		}
 
@@ -130,17 +130,17 @@ class t3lib_TCEforms_Tree {
 				onChange: "' . $onChange . '",
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaExclusiveKeys: "' . (
-					$PA['fieldConf']['config']['exclusiveKeys']
-						? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
-				ucId: "' . md5($table . '|' . $field ) . '",
+		$PA['fieldConf']['config']['exclusiveKeys']
+				? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
+				ucId: "' . md5($table . '|' . $field) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel
 			});
 			tree' . $id . '.' . ($autoSizeMax
-					? 'bodyStyle = "max-height: ' . $autoSizeMax . 'px;"'
-					: 'height = ' . $height
-				) . ';
+				? 'bodyStyle = "max-height: ' . $autoSizeMax . 'px;"'
+				: 'height = ' . $height
+		) . ';
 			tree' . $id . '.render("tree_' . $id . '");' .
-			($expanded ? 'tree' . $id . '.expandAll();' : '') . '
+										 ($expanded ? 'tree' . $id . '.expandAll();' : '') . '
 		');
 
 		$formField = '
