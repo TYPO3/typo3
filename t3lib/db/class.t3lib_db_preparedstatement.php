@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * TYPO3 prepared statement for t3lib_db class.
@@ -34,7 +34,7 @@
  * $statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', 'pages', 'uid = :uid');
  * $statement->execute(array(':uid' => 2));
  * while (($row = $statement->fetch()) !== FALSE) {
- *    // ...
+ *	// ...
  * }
  * $statement->free();
  * </code>
@@ -223,7 +223,7 @@ class t3lib_db_PreparedStatement {
 		$key = is_int($parameter) ? $parameter - 1 : $parameter;
 		$this->parameters[$key] = array(
 			'value' => $value,
-			'type'  => ($data_type == self::PARAM_AUTOTYPE ? $this->guessValueType($value) : $data_type),
+			'type' => ($data_type == self::PARAM_AUTOTYPE ? $this->guessValueType($value) : $data_type),
 		);
 
 		return $this;
@@ -233,9 +233,9 @@ class t3lib_db_PreparedStatement {
 	 * Executes the prepared statement. If the prepared statement included parameter
 	 * markers, you must either:
 	 * <ul>
-	 * 	<li>call {@link t3lib_db_PreparedStatement::bindParam()} to bind PHP variables
+	 *	 <li>call {@link t3lib_db_PreparedStatement::bindParam()} to bind PHP variables
 	 *   to the parameter markers: bound variables pass their value as input</li>
-	 * 	<li>or pass an array of input-only parameter values</li>
+	 *	 <li>or pass an array of input-only parameter values</li>
 	 * </ul>
 	 *
 	 * $input_parameters behave as in {@link t3lib_db_PreparedStatement::bindParams()}
@@ -267,7 +267,7 @@ class t3lib_db_PreparedStatement {
 			foreach ($input_parameters as $key => $value) {
 				$parameterValues[$key] = array(
 					'value' => $value,
-					'type'  => $this->guessValueType($value),
+					'type' => $this->guessValueType($value),
 				);
 			}
 		}
