@@ -4,6 +4,7 @@
 
 2010-11-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_stddb_directory
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_spritemanager_directory
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_search_directory
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_message_directory

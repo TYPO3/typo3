@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains the initialization of global TYPO3 variables among which $TCA is the most significant.
  *
@@ -58,26 +58,26 @@
  * NOTE: usage of 'icon' is deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon() instead
  */
 $PAGES_TYPES = array(
-	(string)t3lib_pageSelect::DOKTYPE_LINK => array(
+	(string) t3lib_pageSelect::DOKTYPE_LINK => array(
 	),
-	(string)t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
+	(string) t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
 	),
-	(string)t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
+	(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
 	),
-	(string)t3lib_pageSelect::DOKTYPE_BE_USER_SECTION  => array(
+	(string) t3lib_pageSelect::DOKTYPE_BE_USER_SECTION => array(
 		'type' => 'web',
 		'allowedTables' => '*'
 	),
-	(string)t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
+	(string) t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 	),
-	(string)t3lib_pageSelect::DOKTYPE_SPACER => array(		// TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
+	(string) t3lib_pageSelect::DOKTYPE_SPACER => array( // TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
 		'type' => 'sys',
 	),
-	(string)t3lib_pageSelect::DOKTYPE_SYSFOLDER => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
+	(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array( //  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
 		'allowedTables' => '*'
 	),
-	(string)t3lib_pageSelect::DOKTYPE_RECYCLER => array(		// Doktype 255 is a recycle-bin.
+	(string) t3lib_pageSelect::DOKTYPE_RECYCLER => array( // Doktype 255 is a recycle-bin.
 		'type' => 'sys',
 		'allowedTables' => '*'
 	),
@@ -114,16 +114,6 @@ $LANG_GENERAL_LABELS = array(
 	'any_login' => 'LLL:EXT:lang/locallang_general.php:LGL.any_login',
 	'usergroups' => 'LLL:EXT:lang/locallang_general.php:LGL.usergroups',
 );
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -228,7 +218,7 @@ $TCA['be_users'] = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
-		'adminOnly' => 1,	// Only admin users can edit
+		'adminOnly' => 1, // Only admin users can edit
 		'rootLevel' => 1,
 		'default_sortby' => 'ORDER BY admin, username',
 		'enablecolumns' => array(
@@ -349,35 +339,27 @@ $TCA['sys_language'] = array(
  */
 $TCA['sys_news'] = array(
 	'ctrl' => array(
-		'title'             => 'LLL:EXT:lang/locallang_tca.xml:sys_news',
-		'label'             => 'title',
-		'tstamp'            => 'tstamp',
-		'crdate'            => 'crdate',
-		'cruser_id'         => 'cruser_id',
-		'adminOnly'         => TRUE,
-		'rootLevel'         => TRUE,
-		'delete'            => 'deleted',
-		'enablecolumns'     => array(
-			'disabled'  => 'hidden',
+		'title' => 'LLL:EXT:lang/locallang_tca.xml:sys_news',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'adminOnly' => TRUE,
+		'rootLevel' => TRUE,
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
 			'starttime' => 'starttime',
-			'endtime'   => 'endtime'
+			'endtime' => 'endtime'
 		),
-		'default_sortby'    => 'crdate DESC',
-		'typeicon_classes'  => array(
+		'default_sortby' => 'crdate DESC',
+		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_news',
 		),
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'dividers2tabs'     => TRUE
+		'dividers2tabs' => TRUE
 	)
 );
-
-
-
-
-
-
-
-
 
 
 /**
@@ -403,7 +385,7 @@ $TBE_STYLES = array(
 		'0' => '#E4E0DB,#CBC7C3,#EDE9E5',
 	),
 	'borderschemes' => array(
-		'0' => array('border:solid 1px black;',5)
+		'0' => array('border:solid 1px black;', 5)
 	)
 );
 
@@ -412,17 +394,17 @@ $TBE_STYLES = array(
  * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
  * For information about using the CSH API in TYPO3 you should consult the documentation found in "Inside TYPO3"
  */
-t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:lang/locallang_csh_pages.xml');
-t3lib_extMgm::addLLrefForTCAdescr('be_users','EXT:lang/locallang_csh_be_users.xml');
-t3lib_extMgm::addLLrefForTCAdescr('be_groups','EXT:lang/locallang_csh_be_groups.xml');
-t3lib_extMgm::addLLrefForTCAdescr('sys_filemounts','EXT:lang/locallang_csh_sysfilem.xml');
-t3lib_extMgm::addLLrefForTCAdescr('sys_language','EXT:lang/locallang_csh_syslang.xml');
-t3lib_extMgm::addLLrefForTCAdescr('sys_news','EXT:lang/locallang_csh_sysnews.xml');
-t3lib_extMgm::addLLrefForTCAdescr('sys_workspace','EXT:lang/locallang_csh_sysws.xml');
-t3lib_extMgm::addLLrefForTCAdescr('xMOD_csh_corebe','EXT:lang/locallang_csh_corebe.xml');	// General Core
-t3lib_extMgm::addLLrefForTCAdescr('_MOD_tools_em','EXT:lang/locallang_csh_em.xml');		// Extension manager
-t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info','EXT:lang/locallang_csh_web_info.xml');		// Web > Info
-t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:lang/locallang_csh_web_func.xml');		// Web > Func
+t3lib_extMgm::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml');
+t3lib_extMgm::addLLrefForTCAdescr('be_users', 'EXT:lang/locallang_csh_be_users.xml');
+t3lib_extMgm::addLLrefForTCAdescr('be_groups', 'EXT:lang/locallang_csh_be_groups.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/locallang_csh_sysfilem.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_language', 'EXT:lang/locallang_csh_syslang.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_news', 'EXT:lang/locallang_csh_sysnews.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_workspace', 'EXT:lang/locallang_csh_sysws.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/locallang_csh_corebe.xml'); // General Core
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xml'); // Extension manager
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xml'); // Web > Info
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xml'); // Web > Func
 
 
 /**
@@ -790,19 +772,24 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 );
 
 
-
-
-$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection');
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
+	'hidden',
+	'starttime',
+	'endtime',
+	'futureendtime',
+	'fe_group',
+	'protectedSection'
+);
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
-	'hidden'           => 'status-overlay-hidden',
-	'fe_group'         => 'status-overlay-access-restricted',
-	'starttime'        => 'status-overlay-scheduled',
-	'endtime'          => 'status-overlay-scheduled',
-	'futureendtime'    => 'status-overlay-scheduled-future-end',
-	'readonly'         => 'status-overlay-locked',
-	'deleted'          => 'status-overlay-deleted',
-	'missing'          => 'status-overlay-missing',
-	'translated'       => 'status-overlay-translated',
+	'hidden' => 'status-overlay-hidden',
+	'fe_group' => 'status-overlay-access-restricted',
+	'starttime' => 'status-overlay-scheduled',
+	'endtime' => 'status-overlay-scheduled',
+	'futureendtime' => 'status-overlay-scheduled-future-end',
+	'readonly' => 'status-overlay-locked',
+	'deleted' => 'status-overlay-deleted',
+	'missing' => 'status-overlay-missing',
+	'translated' => 'status-overlay-translated',
 	'protectedSection' => 'status-overlay-includes-subpages',
 );
 

@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups, sys_filemounts and sys_workspace
  *
@@ -33,10 +33,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see tables.php, tables.sql
  */
-
-
-
-
 
 
 /**
@@ -74,7 +70,7 @@ $TCA['be_users'] = array(
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'maxitems' => '20',
-#				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				#				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_PADDING' => 1,
@@ -127,7 +123,7 @@ $TCA['be_users'] = array(
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
-					'allowed' => 'pages',
+				'allowed' => 'pages',
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
@@ -281,7 +277,7 @@ $TCA['be_users'] = array(
 				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0,0,0,12,31,2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020),
 				)
 			)
 		),
@@ -373,7 +369,7 @@ $TCA['be_users'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
+						'type' => t3lib_extMgm::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
@@ -417,7 +413,6 @@ $TCA['be_users'] = array(
 );
 
 
-
 /**
  * Backend usergroups - Much permission criterias are based on membership of backend groups.
  */
@@ -441,7 +436,7 @@ $TCA['be_groups'] = array(
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
-					'allowed' => 'pages',
+				'allowed' => 'pages',
 				'size' => '3',
 				'maxitems' => 20,
 				'autoSizeMax' => 10,
@@ -654,7 +649,7 @@ $TCA['be_groups'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
+						'type' => t3lib_extMgm::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
@@ -755,8 +750,6 @@ $TCA['sys_filemounts'] = array(
 );
 
 
-
-
 /**
  * System languages - Defines possible languages used for translation of records in the system
  */
@@ -817,8 +810,6 @@ $TCA['sys_language'] = array(
 		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
 	)
 );
-
-
 
 
 /**
