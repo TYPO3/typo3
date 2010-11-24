@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Oliver Hader <oliver@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Oliver Hader <oliver@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Matching TypoScript conditions
  *
@@ -53,7 +53,7 @@ abstract class t3lib_matchCondition_abstract {
 	 * (used in TypoScript object browser).
 	 * @var	boolean
 	 */
-	protected $simulateMatchResult = false;
+	protected $simulateMatchResult = FALSE;
 	/**
 	 * Whether to simulat the behaviour and match specific conditions
 	 * (used in TypoScript object browser).
@@ -128,7 +128,7 @@ abstract class t3lib_matchCondition_abstract {
 	/**
 	 * Normalizes an expression and removes the first and last square bracket.
 	 *  + OR normalization: "...]OR[...", "...]||[...", "...][..." --> "...]||[..."
-	 *  + AND normalization: "...]AND[...", "...]&&[..."           --> "...]&&[..."
+	 *  + AND normalization: "...]AND[...", "...]&&[..."		   --> "...]&&[..."
 	 *
 	 * @param	string		$expression: The expression to be normalized (e.g. "[A] && [B] OR [C]")
 	 * @return	string		The normalized expression (e.g. "[A]&&[B]||[C]")
@@ -136,12 +136,12 @@ abstract class t3lib_matchCondition_abstract {
 	protected function normalizeExpression($expression) {
 		$normalizedExpression = preg_replace(
 			array(
-				'/\]\s*(OR|\|\|)?\s*\[/i',
-				'/\]\s*(AND|&&)\s*\[/i',
+				 '/\]\s*(OR|\|\|)?\s*\[/i',
+				 '/\]\s*(AND|&&)\s*\[/i',
 			),
 			array(
-				']||[',
-				']&&[',
+				 ']||[',
+				 ']&&[',
 			),
 			trim($expression)
 		);
@@ -173,7 +173,7 @@ abstract class t3lib_matchCondition_abstract {
 			$this->rootline = $this->determineRootline();
 		}
 
-		$result = false;
+		$result = FALSE;
 		$normalizedExpression = $this->normalizeExpression($expression);
 
 			// First and last character must be square brackets (e.g. "[A]&&[B]":
@@ -186,12 +186,12 @@ abstract class t3lib_matchCondition_abstract {
 				foreach ($andParts as $andPart) {
 					$result = $this->evaluateCondition($andPart);
 						// If condition in AND context fails, the whole block is false:
-					if ($result === false) {
+					if ($result === FALSE) {
 						break;
 					}
 				}
 					// If condition in OR context succeeds, the whole expression is true:
-				if ($result === true) {
+				if ($result === TRUE) {
 					break;
 				}
 			}
@@ -214,54 +214,52 @@ abstract class t3lib_matchCondition_abstract {
 
 		switch ($keyParts[0]) {
 			case 'browser':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 					// take all identified browsers into account, eg chrome deliver
 					// webkit=>532.5, chrome=>4.1, safari=>532.5
 					// so comparing string will be
 					// "webkit532.5 chrome4.1 safari532.5"
 				$all = '';
-				foreach($browserInfo['all'] as $key => $value) {
+				foreach ($browserInfo['all'] as $key => $value) {
 					$all .= $key . $value . ' ';
 				}
 				foreach ($values as $test) {
-					if (stripos($all, $test) !== false) {
-						return true;
+					if (stripos($all, $test) !== FALSE) {
+						return TRUE;
 					}
 				}
 			break;
 			case 'version':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (strcspn($test, '=<>') == 0) {
 						switch (substr($test, 0, 1)) {
 							case '=':
 								if (doubleval(substr($test, 1)) == $browserInfo['version']) {
-									return true;
+									return TRUE;
 								}
 							break;
 							case '<':
 								if (doubleval(substr($test, 1)) > $browserInfo['version']) {
-									return true;
+									return TRUE;
 								}
 							break;
 							case '>':
 								if (doubleval(substr($test, 1)) < $browserInfo['version']) {
-									return true;
+									return TRUE;
 								}
 							break;
 						}
-					} else {
-						if (strpos(' ' . $browserInfo['version'], $test) == 1) {
-							return true;
-						}
+					} elseif (strpos(' ' . $browserInfo['version'], $test) == 1) {
+						return TRUE;
 					}
 				}
 			break;
 			case 'system':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (strpos(' ' . $browserInfo['system'], $test) == 1) {
-						return true;
+						return TRUE;
 					}
 				}
 			break;
@@ -269,10 +267,10 @@ abstract class t3lib_matchCondition_abstract {
 				if (!isset($this->deviceInfo)) {
 					$this->deviceInfo = $this->getDeviceType(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 				}
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if ($this->deviceInfo == $test) {
-						return true;
+						return TRUE;
 					}
 				}
 			break;
@@ -283,26 +281,26 @@ abstract class t3lib_matchCondition_abstract {
 				}
 			break;
 			case 'language':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (preg_match('/^\*.+\*$/', $test)) {
 						$allLanguages = preg_split('/[,;]/', t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 						if (in_array(substr($test, 1, -1), $allLanguages)) {
-							return true;
+							return TRUE;
 						}
-					} else if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
-						return true;
+					} elseif (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
+						return TRUE;
 					}
 				}
 			break;
 			case 'IP':
 				if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value)) {
-					return true;
+					return TRUE;
 				}
 			break;
 			case 'hostname':
 				if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $value)) {
-					return true;
+					return TRUE;
 				}
 			break;
 				// hour, minute, dayofweek, dayofmonth, month, year, julianday
@@ -313,25 +311,39 @@ abstract class t3lib_matchCondition_abstract {
 			case 'dayofweek':
 			case 'dayofmonth':
 			case 'dayofyear':
-				$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];	// In order to simulate time properly in templates.
-				switch($key) {
-					case 'hour':		$theTestValue = date('H', $theEvalTime);	break;
-					case 'minute':		$theTestValue = date('i', $theEvalTime);	break;
-					case 'month':		$theTestValue = date('m', $theEvalTime);	break;
-					case 'year':		$theTestValue = date('Y', $theEvalTime);	break;
-					case 'dayofweek':	$theTestValue = date('w', $theEvalTime);	break;
-					case 'dayofmonth':	$theTestValue = date('d', $theEvalTime);	break;
-					case 'dayofyear':	$theTestValue = date('z', $theEvalTime);	break;
+				$theEvalTime = $GLOBALS['SIM_EXEC_TIME']; // In order to simulate time properly in templates.
+				switch ($key) {
+					case 'hour':
+						$theTestValue = date('H', $theEvalTime);
+					break;
+					case 'minute':
+						$theTestValue = date('i', $theEvalTime);
+					break;
+					case 'month':
+						$theTestValue = date('m', $theEvalTime);
+					break;
+					case 'year':
+						$theTestValue = date('Y', $theEvalTime);
+					break;
+					case 'dayofweek':
+						$theTestValue = date('w', $theEvalTime);
+					break;
+					case 'dayofmonth':
+						$theTestValue = date('d', $theEvalTime);
+					break;
+					case 'dayofyear':
+						$theTestValue = date('z', $theEvalTime);
+					break;
 				}
 				$theTestValue = intval($theTestValue);
 					// comp
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (t3lib_div::testInt($test)) {
 						$test = '=' . $test;
 					}
 					if ($this->compareNumber($test, $theTestValue)) {
-						return true;
+						return TRUE;
 					}
 				}
 			break;
@@ -340,16 +352,14 @@ abstract class t3lib_matchCondition_abstract {
 			break;
 			case 'loginUser':
 				if ($this->isUserLoggedIn()) {
-					$values = t3lib_div::trimExplode(',', $value, true);
+					$values = t3lib_div::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
 						if ($test == '*' || !strcmp($this->getUserId(), $test)) {
-							return true;
+							return TRUE;
 						}
 					}
-				} else {
-					if ($value === '') {
-						return TRUE;
-					}
+				} elseif ($value === '') {
+					return TRUE;
 				}
 			break;
 			case 'page':
@@ -364,7 +374,7 @@ abstract class t3lib_matchCondition_abstract {
 				}
 			break;
 			case 'globalVar':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					$point = strcspn($test, '!=<>');
 					$theVarName = substr($test, 0, $point);
@@ -372,20 +382,20 @@ abstract class t3lib_matchCondition_abstract {
 					$testValue = substr($test, $point);
 
 					if ($this->compareNumber($testValue, $nv)) {
-						return true;
+						return TRUE;
 					}
 				}
 			break;
 			case 'globalString':
-				$values = t3lib_div::trimExplode(',', $value, true);
+				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					$point = strcspn($test, '=');
 					$theVarName = substr($test, 0, $point);
 					$nv = $this->getVariable(trim($theVarName));
-					$testValue = substr($test, $point+1);
+					$testValue = substr($test, $point + 1);
 
 					if ($this->searchStringWildcard($nv, trim($testValue))) {
-						return true;
+						return TRUE;
 					}
 				}
 			break;
@@ -396,13 +406,13 @@ abstract class t3lib_matchCondition_abstract {
 				$prefix = $this->getUserFuncClassPrefix();
 				if ($prefix &&
 					!t3lib_div::isFirstPartOfStr(trim($funcName), $prefix) &&
-					!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
-				)	{
-					$this->log('Match condition: Function "' . $funcName . '" was not prepended with "' . $prefix.'"');
-					return false;
+					!t3lib_div::isFirstPartOfStr(trim($funcName), 'tx_')
+				) {
+					$this->log('Match condition: Function "' . $funcName . '" was not prepended with "' . $prefix . '"');
+					return FALSE;
 				}
-				if (function_exists($funcName) && call_user_func($funcName, $funcValue[0]))	{
-					return true;
+				if (function_exists($funcName) && call_user_func($funcName, $funcValue[0])) {
+					return TRUE;
 				}
 			break;
 		}
@@ -416,24 +426,24 @@ abstract class t3lib_matchCondition_abstract {
 		if (count($vars) == 1) {
 			$value = $this->getGlobal($vars[0]);
 		} else {
-			$splitAgain = explode('|',$vars[1], 2);
+			$splitAgain = explode('|', $vars[1], 2);
 			$k = trim($splitAgain[0]);
 
 			if ($k) {
-				switch((string)trim($vars[0])) {
+				switch ((string) trim($vars[0])) {
 					case 'GP':
 						$value = t3lib_div::_GP($k);
-						break;
+					break;
 					case 'ENV':
 						$value = getenv($k);
-						break;
+					break;
 					case 'IENV':
 						$value = t3lib_div::getIndpEnv($k);
-						break;
-					// return litteral value:
+					break;
+						// return litteral value:
 					case 'LIT':
 						return trim($vars[1]);
-						break;
+					break;
 					default:
 						return NULL;
 				}
@@ -466,27 +476,27 @@ abstract class t3lib_matchCondition_abstract {
 			switch ($operator) {
 				case '>=':
 					return ($leftValue >= doubleval($rightValue));
-					break;
+				break;
 				case '<=':
 					return ($leftValue <= doubleval($rightValue));
-					break;
+				break;
 				case '!=':
 					return ($leftValue != doubleval($rightValue));
-					break;
+				break;
 				case '<':
 					return ($leftValue < doubleval($rightValue));
-					break;
+				break;
 				case '>':
 					return ($leftValue > doubleval($rightValue));
-					break;
+				break;
 				default:
-					// nothing valid found except '=', use '='
+						// nothing valid found except '=', use '='
 					return ($leftValue == trim($rightValue));
-					break;
+				break;
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -497,20 +507,20 @@ abstract class t3lib_matchCondition_abstract {
 	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns true.
 	 */
 	protected function searchStringWildcard($haystack, $needle) {
-		$result = false;
+		$result = FALSE;
 
 		if ($needle) {
 			if (preg_match('/^\/.+\/$/', $needle)) {
-				// Regular expression, only "//" is allowed as delimiter
+					// Regular expression, only "//" is allowed as delimiter
 				$regex = $needle;
 			} else {
 				$needle = str_replace(array('*', '?'), array('###MANY###', '###ONE###'), $needle);
 				$regex = '/^' . preg_quote($needle, '/') . '$/';
-				// Replace the marker with .* to match anything (wildcard)
-				$regex = str_replace(array('###MANY###', '###ONE###'), array('.*' , '.'), $regex);
+					// Replace the marker with .* to match anything (wildcard)
+				$regex = str_replace(array('###MANY###', '###ONE###'), array('.*', '.'), $regex);
 			}
 
-			$result = (boolean)preg_match($regex, (string)$haystack);
+			$result = (boolean) preg_match($regex, (string) $haystack);
 		}
 
 		return $result;
@@ -544,14 +554,16 @@ abstract class t3lib_matchCondition_abstract {
 	 * @param	array		Alternative array than $GLOBAL to get variables from.
 	 * @return	mixed		Whatever value. If none, then blank string.
 	 */
-	protected function getGlobal($var, $source=NULL) {
+	protected function getGlobal($var, $source = NULL) {
 		$vars = explode('|', $var);
 		$c = count($vars);
 		$k = trim($vars[0]);
 		$theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
 
-		for ($a=1;$a<$c;$a++)	{
-			if (!isset($theVar))	{ break; }
+		for ($a = 1; $a < $c; $a++) {
+			if (!isset($theVar)) {
+				break;
+			}
 
 			$key = trim($vars[$a]);
 			if (is_object($theVar)) {
@@ -563,7 +575,7 @@ abstract class t3lib_matchCondition_abstract {
 			}
 		}
 
-		if (!is_array($theVar) && !is_object($theVar))	{
+		if (!is_array($theVar) && !is_object($theVar)) {
 			return $theVar;
 		} else {
 			return '';

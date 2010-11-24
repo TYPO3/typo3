@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Oliver Hader <oliver@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Oliver Hader <oliver@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Matching TypoScript conditions for backend disposal.
@@ -52,7 +52,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * @see t3lib_tsparser::parse()
 	 */
 	protected function evaluateCondition($string) {
-		list($key, $value) = t3lib_div::trimExplode('=', $string, false, 2);
+		list($key, $value) = t3lib_div::trimExplode('=', $string, FALSE, 2);
 
 		$result = parent::evaluateConditionCommon($key, $value);
 
@@ -62,40 +62,40 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			switch ($key) {
 				case 'usergroup':
 					$groupList = $this->getGroupList();
-					$values = t3lib_div::trimExplode(',', $value, true);
+					$values = t3lib_div::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
 						if ($test == '*' || t3lib_div::inList($groupList, $test)) {
-							return true;
+							return TRUE;
 						}
 					}
 				break;
 				case 'adminUser':
 					if ($this->isUserLoggedIn()) {
-						$result = !((bool)$value XOR $this->isAdminUser());
+						$result = !((bool) $value XOR $this->isAdminUser());
 						return $result;
 					}
-					break;
+				break;
 				case 'treeLevel':
-					$values = t3lib_div::trimExplode(',', $value, true);
+					$values = t3lib_div::trimExplode(',', $value, TRUE);
 					$treeLevel = count($this->rootline) - 1;
-					// If a new page is being edited or saved the treeLevel is higher by one:
+						// If a new page is being edited or saved the treeLevel is higher by one:
 					if ($this->isNewPageWithPageId($this->pageId)) {
 						$treeLevel++;
 					}
 					foreach ($values as $test) {
 						if ($test == $treeLevel) {
-							return true;
+							return TRUE;
 						}
 					}
 				break;
 				case 'PIDupinRootline':
 				case 'PIDinRootline':
-					$values = t3lib_div::trimExplode(',', $value, true);
-					if (($key=='PIDinRootline') || (!in_array($this->pageId, $values)) || $this->isNewPageWithPageId($this->pageId)) {
+					$values = t3lib_div::trimExplode(',', $value, TRUE);
+					if (($key == 'PIDinRootline') || (!in_array($this->pageId, $values)) || $this->isNewPageWithPageId($this->pageId)) {
 						foreach ($values as $test) {
 							foreach ($this->rootline as $rl_dat) {
 								if ($rl_dat['uid'] == $test) {
-									return true;
+									return TRUE;
 								}
 							}
 						}
@@ -104,7 +104,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -157,7 +157,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			if ($action === 'edit') {
 				$pageId = $this->getPageIdByRecord($table, $uid);
 			} elseif ($action === 'new') {
-				$pageId = $this->getPageIdByRecord($table, $uid, true);
+				$pageId = $this->getPageIdByRecord($table, $uid, TRUE);
 			}
 			// Determine id from a command statement:
 		} elseif (is_array($commandStatement)) {
@@ -168,7 +168,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			if ($action === 'delete') {
 				$pageId = $this->getPageIdByRecord($table, $uid);
 			} elseif (($action === 'copy') || ($action === 'move')) {
-				$pageId = $this->getPageIdByRecord($table, $target, true);
+				$pageId = $this->getPageIdByRecord($table, $target, TRUE);
 			}
 		}
 
@@ -194,15 +194,15 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 *						id value is considered as page id without any further checks
 	 * @return	integer		Id of the page the record is persisted on
 	 */
-	protected function getPageIdByRecord($table, $id, $ignoreTable = false) {
+	protected function getPageIdByRecord($table, $id, $ignoreTable = FALSE) {
 		$pageId = 0;
-		$id = (int)$id;
+		$id = (int) $id;
 
 		if ($table && $id) {
 			if (($ignoreTable || $table === 'pages') && $id >= 0) {
 				$pageId = $id;
 			} else {
-				$record = t3lib_BEfunc::getRecordWSOL($table, abs($id), '*', '', false);
+				$record = t3lib_BEfunc::getRecordWSOL($table, abs($id), '*', '', FALSE);
 				$pageId = $record['pid'];
 			}
 		}
@@ -227,7 +227,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			if (is_array($data) && isset($data['pages']) && is_array($data['pages'])) {
 				foreach ($data['pages'] as $uid => $fields) {
 					if (strpos($uid, 'NEW') === 0 && $fields['pid'] == $pageId) {
-						return true;
+						return TRUE;
 					}
 				}
 			}
@@ -240,14 +240,14 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 							$element['pid'] = $pageRecord['pid'];
 						}
 						if ($element['pid'] == $pageId) {
-							return true;
+							return TRUE;
 						}
 					}
 				}
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -257,7 +257,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 */
 	protected function determineRootline() {
 		$pageId = (isset($this->pageId) ? $this->pageId : $this->determinePageId());
-		$rootline = t3lib_BEfunc::BEgetRootLine($pageId, '', true);
+		$rootline = t3lib_BEfunc::BEgetRootLine($pageId, '', TRUE);
 		return $rootline;
 	}
 
@@ -287,9 +287,9 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * @return	boolean		Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
-		$userLoggedIn = false;
+		$userLoggedIn = FALSE;
 		if ($GLOBALS['BE_USER']->user['uid']) {
-			$userLoggedIn = true;
+			$userLoggedIn = TRUE;
 		}
 		return $userLoggedIn;
 	}
@@ -300,9 +300,9 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * @return	boolean		Whether the current user is admin
 	 */
 	protected function isAdminUser() {
-		$isAdminUser = false;
+		$isAdminUser = FALSE;
 		if ($GLOBALS['BE_USER']->user['admin']) {
-			$isAdminUser = true;
+			$isAdminUser = TRUE;
 		}
 		return $isAdminUser;
 	}
@@ -321,7 +321,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_backend.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_backend.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_backend.php']);
 }
 
