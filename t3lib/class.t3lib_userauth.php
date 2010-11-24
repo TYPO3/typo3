@@ -476,7 +476,10 @@ class t3lib_userAuth {
 
 			// active logout (eg. with "logout" button)
 		if ($loginData['status']=='logout') {
-			if ($this->writeStdLog) 	$this->writelog(255,2,0,2,'User %s logged out',Array($this->user['username']));	// Logout written to log
+			if ($this->writeStdLog) {
+				// $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
+				$this->writelog(255, 2, 0, 2, 'User %s logged out', array($this->user['username']), '', 0, 0);
+			}	// Logout written to log
 			if ($this->writeDevLog) 	t3lib_div::devLog('User logged out. Id: '.$this->id, 't3lib_userAuth', -1);
 
 			$this->logoff();
@@ -669,8 +672,8 @@ class t3lib_userAuth {
 				if($requestStr == $backendScript && t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 					list(,$url) = explode('://',t3lib_div::getIndpEnv('TYPO3_SITE_URL'),2);
 					list($server,$address) = explode('/',$url,2);
-					if (intval($TYPO3_CONF_VARS['BE']['lockSSLPort'])) {
-						$sslPortSuffix = ':'.intval($TYPO3_CONF_VARS['BE']['lockSSLPort']);
+					if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'])) {
+						$sslPortSuffix = ':'.intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
 						$server = str_replace($sslPortSuffix,'',$server);	// strip port from server
 					}
 					t3lib_utility_Http::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
