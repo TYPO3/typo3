@@ -1,5 +1,6 @@
 2010-11-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_sqlengine
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_spritemanager
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_softrefproc
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_scbase
