@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2003-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the Typo3 project. The Typo3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2003-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the Typo3 project. The Typo3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Soft Reference processing class
  * "Soft References" are references to database elements, files, email addresses, URls etc.
@@ -40,22 +40,22 @@
  *
  *
  *  116: class t3lib_softrefproc
- *  137:     function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
- *  213:     function findRef_images($content, $spParams)
- *  280:     function findRef_typolink($content, $spParams)
- *  317:     function findRef_typolink_tag($content, $spParams)
- *  352:     function findRef_TStemplate($content, $spParams)
- *  434:     function findRef_TSconfig($content, $spParams)
- *  457:     function findRef_email($content, $spParams)
- *  497:     function findRef_url($content, $spParams)
- *  539:     function findRef_extension_fileref($content, $spParams)
+ *  137:	 function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
+ *  213:	 function findRef_images($content, $spParams)
+ *  280:	 function findRef_typolink($content, $spParams)
+ *  317:	 function findRef_typolink_tag($content, $spParams)
+ *  352:	 function findRef_TStemplate($content, $spParams)
+ *  434:	 function findRef_TSconfig($content, $spParams)
+ *  457:	 function findRef_email($content, $spParams)
+ *  497:	 function findRef_url($content, $spParams)
+ *  539:	 function findRef_extension_fileref($content, $spParams)
  *
- *              SECTION: Helper functions
- *  591:     function fileadminReferences($content, &$elements)
- *  634:     function getTypoLinkParts($typolinkValue)
- *  718:     function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
- *  833:     function getPageIdFromAlias($link_param)
- *  845:     function makeTokenID($index='')
+ *			  SECTION: Helper functions
+ *  591:	 function fileadminReferences($content, &$elements)
+ *  634:	 function getTypoLinkParts($typolinkValue)
+ *  718:	 function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
+ *  833:	 function getPageIdFromAlias($link_param)
+ *  845:	 function makeTokenID($index='')
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -80,8 +80,8 @@
  *		For each token there MUST be an entry in the "elements" key which has a "subst" key defining the tokenID and the tokenValue. See below.
  * "elements" is an array where the keys are insignificant, but the values are arrays with these keys:
  *		"matchString" => The value of the match. This is only for informational purposes to show what was found.
- * 		"error"	=> An error message can be set here, like "file not found" etc.
- * 		"subst" => array(	// If this array is found there MUST be a token in the output content as well!
+ *		 "error"	=> An error message can be set here, like "file not found" etc.
+ *		 "subst" => array(	// If this array is found there MUST be a token in the output content as well!
  *			"tokenID" => The tokenID string corresponding to the token in output content, {softref:[tokenID]}. This is typically an md5 hash of a string defining uniquely the position of the element.
  *			"tokenValue" => The value that the token substitutes in the text. Basically, if this value is inserted instead of the token the content should match what was inputted originally.
  *			"type" => file / db / string	= the type of substitution. "file" means it is a relative file [automatically mapped], "db" means a database record reference [automatically mapped], "string" means it is manually modified string content (eg. an email address)
@@ -92,7 +92,6 @@
  *		)
  *
  */
-
 
 
 /**
@@ -133,14 +132,14 @@ class t3lib_softrefproc {
 	 * @param	string		If running from inside a FlexForm structure, this is the path of the tag.
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')	{
+	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 
 		$retVal = FALSE;
 
-		$this->tokenID_basePrefix = $table.':'.$uid.':'.$field.':'.$structurePath.':'.$spKey;
+		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 
-		switch($spKey)	{
-			case 'notify':	// Simple notification
+		switch ($spKey) {
+			case 'notify': // Simple notification
 				$resultArray = array(
 					'elements' => array(
 						array(
@@ -153,7 +152,7 @@ class t3lib_softrefproc {
 			case 'substitute':
 				$tokenID = $this->makeTokenID();
 				$resultArray = array(
-					'content' => '{softref:'.$tokenID.'}',
+					'content' => '{softref:' . $tokenID . '}',
 					'elements' => array(
 						array(
 							'matchString' => $content,
@@ -209,16 +208,16 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_images($content, $spParams)	{
+	function findRef_images($content, $spParams) {
 
 			// Start HTML parser and split content by image tag:
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-		$splitContent = $htmlParser->splitTags('img',$content);
+		$splitContent = $htmlParser->splitTags('img', $content);
 		$elements = array();
 
 			// Traverse splitted parts:
-		foreach($splitContent as $k => $v)	{
-			if ($k%2)	{
+		foreach ($splitContent as $k => $v) {
+			if ($k % 2) {
 
 					// Get file reference:
 				$attribs = $htmlParser->get_tag_attributes($v);
@@ -226,8 +225,8 @@ class t3lib_softrefproc {
 				$pI = pathinfo($srcRef);
 
 					// If it looks like a local image, continue. Otherwise ignore it.
-				$absPath = t3lib_div::getFileAbsFileName(PATH_site.$srcRef);
-				if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef!=='clear.gif')	{
+				$absPath = t3lib_div::getFileAbsFileName(PATH_site . $srcRef);
+				if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
 
 						// Initialize the element entry with info text here:
 					$tokenID = $this->makeTokenID($k);
@@ -235,17 +234,17 @@ class t3lib_softrefproc {
 					$elements[$k]['matchString'] = $v;
 
 						// If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
-					if (t3lib_div::isFirstPartOfStr($srcRef,$this->fileAdminDir.'/') || (t3lib_div::isFirstPartOfStr($srcRef,'uploads/') && preg_match('/^RTEmagicC_/',basename($srcRef))))	{
+					if (t3lib_div::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || (t3lib_div::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef)))) {
 							// Token and substitute value:
-						if (strstr($splitContent[$k], $attribs[0]['src']))	{	// Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
-							$splitContent[$k] = str_replace($attribs[0]['src'], '{softref:'.$tokenID.'}', $splitContent[$k]);	// Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
+						if (strstr($splitContent[$k], $attribs[0]['src'])) { // Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
+							$splitContent[$k] = str_replace($attribs[0]['src'], '{softref:' . $tokenID . '}', $splitContent[$k]); // Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
 							$elements[$k]['subst'] = array(
 								'type' => 'file',
 								'relFileName' => $srcRef,
 								'tokenID' => $tokenID,
 								'tokenValue' => $attribs[0]['src'],
 							);
-							if (!@is_file($absPath))	{	// Finally, notice if the file does not exist.
+							if (!@is_file($absPath)) { // Finally, notice if the file does not exist.
 								$elements[$k]['error'] = 'File does not exist!';
 							}
 						} else {
@@ -257,7 +256,7 @@ class t3lib_softrefproc {
 		}
 
 			// Return result:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
 				'content' => implode('', $splitContent),
 				'elements' => $elements
@@ -276,25 +275,25 @@ class t3lib_softrefproc {
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 * @see tslib_content::typolink(), getTypoLinkParts()
 	 */
-	function findRef_typolink($content, $spParams)	{
+	function findRef_typolink($content, $spParams) {
 
 			// First, split the input string by a comma if the "linkList" parameter is set.
 			// An example: the link field for images in content elements of type "textpic" or "image". This field CAN be configured to define a link per image, separated by comma.
-		if (is_array($spParams) && in_array('linkList',$spParams))	{
-			$linkElement = explode(',', $content);	// Preserving whitespace on purpose.
+		if (is_array($spParams) && in_array('linkList', $spParams)) {
+			$linkElement = explode(',', $content); // Preserving whitespace on purpose.
 		} else {
-			$linkElement = array($content);	// If only one element, just set in this array to make it easy below.
+			$linkElement = array($content); // If only one element, just set in this array to make it easy below.
 		}
 
 			// Traverse the links now:
 		$elements = array();
-		foreach($linkElement as $k => $typolinkValue)	{
+		foreach ($linkElement as $k => $typolinkValue) {
 			$tLP = $this->getTypoLinkParts($typolinkValue);
 			$linkElement[$k] = $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k);
 		}
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
 				'content' => implode(',', $linkElement),
 				'elements' => $elements
@@ -313,24 +312,24 @@ class t3lib_softrefproc {
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 * @see tslib_content::typolink(), getTypoLinkParts()
 	 */
-	function findRef_typolink_tag($content, $spParams)	{
+	function findRef_typolink_tag($content, $spParams) {
 
 			// Parse string for special TYPO3 <link> tag:
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-		$linkTags = $htmlParser->splitTags('link',$content);
+		$linkTags = $htmlParser->splitTags('link', $content);
 
 			// Traverse result:
 		$elements = array();
-		foreach($linkTags as $k => $foundValue)	{
-			if ($k%2)	{
-				$typolinkValue = preg_replace('/<LINK[[:space:]]+/i','',substr($foundValue,0,-1));
+		foreach ($linkTags as $k => $foundValue) {
+			if ($k % 2) {
+				$typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
 				$tLP = $this->getTypoLinkParts($typolinkValue);
-				$linkTags[$k] = '<LINK '.$this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k).'>';
+				$linkTags[$k] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k) . '>';
 			}
 		}
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
 				'content' => implode('', $linkTags),
 				'elements' => $elements
@@ -348,7 +347,7 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_TStemplate($content, $spParams)	{
+	function findRef_TStemplate($content, $spParams) {
 		$elements = array();
 
 			// First, try to find images and links:
@@ -356,13 +355,13 @@ class t3lib_softrefproc {
 		$splitContent = $htmlParser->splitTags('img,a,form', $content);
 
 			// Traverse splitted parts:
-		foreach($splitContent as $k => $v)	{
-			if ($k%2)	{
+		foreach ($splitContent as $k => $v) {
+			if ($k % 2) {
 
 				$attribs = $htmlParser->get_tag_attributes($v);
 
 				$attributeName = '';
-				switch($htmlParser->getFirstTagName($v))	{
+				switch ($htmlParser->getFirstTagName($v)) {
 					case 'img':
 						$attributeName = 'src';
 					break;
@@ -375,7 +374,7 @@ class t3lib_softrefproc {
 				}
 
 					// Get file reference:
-				if (isset($attribs[0][$attributeName]))	{
+				if (isset($attribs[0][$attributeName])) {
 					$srcRef = t3lib_div::htmlspecialchars_decode($attribs[0][$attributeName]);
 
 						// Set entry:
@@ -385,23 +384,23 @@ class t3lib_softrefproc {
 
 						// OK, if it looks like a local file from fileadmin/, include it:
 					$pI = pathinfo($srcRef);
-					$absPath = t3lib_div::getFileAbsFileName(PATH_site.$srcRef);
-					if (t3lib_div::isFirstPartOfStr($srcRef,$this->fileAdminDir.'/') && !$pI['query'] && $absPath)	{
+					$absPath = t3lib_div::getFileAbsFileName(PATH_site . $srcRef);
+					if (t3lib_div::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') && !$pI['query'] && $absPath) {
 
 							// Token and substitute value:
-						if (strstr($splitContent[$k], $attribs[0][$attributeName]))	{	// Very important that the src-value is not DeHSC'ed
-							$splitContent[$k] = str_replace($attribs[0][$attributeName], '{softref:'.$tokenID.'}', $splitContent[$k]);
+						if (strstr($splitContent[$k], $attribs[0][$attributeName])) { // Very important that the src-value is not DeHSC'ed
+							$splitContent[$k] = str_replace($attribs[0][$attributeName], '{softref:' . $tokenID . '}', $splitContent[$k]);
 							$elements[$k]['subst'] = array(
 								'type' => 'file',
 								'relFileName' => $srcRef,
 								'tokenID' => $tokenID,
 								'tokenValue' => $attribs[0][$attributeName],
 							);
-							if (!@is_file($absPath))	{
+							if (!@is_file($absPath)) {
 								$elements[$k]['error'] = 'File does not exist!';
 							}
 						} else {
-							$elements[$k]['error'] = 'Could not substitute attribute ('.$attributeName.') value with token!';
+							$elements[$k]['error'] = 'Could not substitute attribute (' . $attributeName . ') value with token!';
 						}
 					}
 				}
@@ -413,7 +412,7 @@ class t3lib_softrefproc {
 		$content = $this->fileadminReferences($content, $elements);
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
 				'content' => $content,
 				'elements' => $elements
@@ -430,14 +429,14 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_TSconfig($content, $spParams)	{
+	function findRef_TSconfig($content, $spParams) {
 		$elements = array();
 
 			// Process free fileadmin/ references from TSconfig
 		$content = $this->fileadminReferences($content, $elements);
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
 				'content' => $content,
 				'elements' => $elements
@@ -453,20 +452,20 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_email($content, $spParams)	{
+	function findRef_email($content, $spParams) {
 		$resultArray = array();
 
 			// email:
-		$parts = preg_split("/([^[:alnum:]]+)([A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+)/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
-		foreach($parts as $idx => $value)	{
-			if ($idx%3 == 2)	{
+		$parts = preg_split("/([^[:alnum:]]+)([A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
+		foreach ($parts as $idx => $value) {
+			if ($idx % 3 == 2) {
 
 				$tokenID = $this->makeTokenID($idx);
 				$elements[$idx] = array();
 				$elements[$idx]['matchString'] = $value;
 
-				if (is_array($spParams) && in_array('subst',$spParams))	{
-					$parts[$idx] = '{softref:'.$tokenID.'}';
+				if (is_array($spParams) && in_array('subst', $spParams)) {
+					$parts[$idx] = '{softref:' . $tokenID . '}';
 					$elements[$idx]['subst'] = array(
 						'type' => 'string',
 						'tokenID' => $tokenID,
@@ -477,9 +476,9 @@ class t3lib_softrefproc {
 		}
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
-				'content' => substr(implode('',$parts),1,-1),
+				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements
 			);
 			return $resultArray;
@@ -493,22 +492,24 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_url($content, $spParams)	{
+	function findRef_url($content, $spParams) {
 		$resultArray = array();
 
 			// Fileadmin files:
-		$parts = preg_split("/([^[:alnum:]\"']+)((http|ftp):\/\/[^[:space:]\"'<>]*)([[:space:]])/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split("/([^[:alnum:]\"']+)((http|ftp):\/\/[^[:space:]\"'<>]*)([[:space:]])/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 
-		foreach($parts as $idx => $value)	{
-			if ($idx%5 == 3)	{ unset($parts[$idx]); }
-			if ($idx%5 == 2)	{
+		foreach ($parts as $idx => $value) {
+			if ($idx % 5 == 3) {
+				unset($parts[$idx]);
+			}
+			if ($idx % 5 == 2) {
 
 				$tokenID = $this->makeTokenID($idx);
 				$elements[$idx] = array();
 				$elements[$idx]['matchString'] = $value;
 
-				if (is_array($spParams) && in_array('subst',$spParams))	{
-					$parts[$idx] = '{softref:'.$tokenID.'}';
+				if (is_array($spParams) && in_array('subst', $spParams)) {
+					$parts[$idx] = '{softref:' . $tokenID . '}';
 					$elements[$idx]['subst'] = array(
 						'type' => 'string',
 						'tokenID' => $tokenID,
@@ -519,9 +520,9 @@ class t3lib_softrefproc {
 		}
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
-				'content' => substr(implode('',$parts),1,-1),
+				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements
 			);
 			return $resultArray;
@@ -535,14 +536,14 @@ class t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise false
 	 */
-	function findRef_extension_fileref($content, $spParams)	{
+	function findRef_extension_fileref($content, $spParams) {
 		$resultArray = array();
 
 			// Fileadmin files:
-		$parts = preg_split("/([^[:alnum:]\"']+)(EXT:[[:alnum:]_]+\/[^[:space:]\"',]*)/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split("/([^[:alnum:]\"']+)(EXT:[[:alnum:]_]+\/[^[:space:]\"',]*)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 
-		foreach($parts as $idx => $value)	{
-			if ($idx%3 == 2)	{
+		foreach ($parts as $idx => $value) {
+			if ($idx % 3 == 2) {
 
 				$tokenID = $this->makeTokenID($idx);
 				$elements[$idx] = array();
@@ -551,26 +552,14 @@ class t3lib_softrefproc {
 		}
 
 			// Return output:
-		if (count($elements))	{
+		if (count($elements)) {
 			$resultArray = array(
-				'content' => substr(implode('',$parts),1,-1),
+				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements
 			);
 			return $resultArray;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/*************************
@@ -587,37 +576,37 @@ class t3lib_softrefproc {
 	 * @param	array		Element array to be modified with new entries. Passed by reference.
 	 * @return	string		Output content, possibly with tokens inserted.
 	 */
-	function fileadminReferences($content, &$elements)	{
+	function fileadminReferences($content, &$elements) {
 
 			// Fileadmin files are found
-		$parts = preg_split("/([^[:alnum:]]+)(".$this->fileAdminDir."\/[^[:space:]\"'<>]*)/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split("/([^[:alnum:]]+)(" . $this->fileAdminDir . "\/[^[:space:]\"'<>]*)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 
 			// Traverse files:
-		foreach($parts as $idx => $value)	{
-			if ($idx%3 == 2)	{
+		foreach ($parts as $idx => $value) {
+			if ($idx % 3 == 2) {
 
 					// when file is found, set up an entry for the element:
-				$tokenID = $this->makeTokenID('fileadminReferences:'.$idx);
-				$elements['fileadminReferences.'.$idx] = array();
-				$elements['fileadminReferences.'.$idx]['matchString'] = $value;
-				$elements['fileadminReferences.'.$idx]['subst'] = array(
+				$tokenID = $this->makeTokenID('fileadminReferences:' . $idx);
+				$elements['fileadminReferences.' . $idx] = array();
+				$elements['fileadminReferences.' . $idx]['matchString'] = $value;
+				$elements['fileadminReferences.' . $idx]['subst'] = array(
 					'type' => 'file',
 					'relFileName' => $value,
 					'tokenID' => $tokenID,
 					'tokenValue' => $value,
 				);
-				$parts[$idx] = '{softref:'.$tokenID.'}';
+				$parts[$idx] = '{softref:' . $tokenID . '}';
 
 					// Check if the file actually exists:
-				$absPath = t3lib_div::getFileAbsFileName(PATH_site.$value);
-				if (!@is_file($absPath))	{
-					$elements['fileadminReferences.'.$idx]['error'] = 'File does not exist!';
+				$absPath = t3lib_div::getFileAbsFileName(PATH_site . $value);
+				if (!@is_file($absPath)) {
+					$elements['fileadminReferences.' . $idx]['error'] = 'File does not exist!';
 				}
 			}
 		}
-#debug($parts);
+
 			// Implode the content again, removing prefixed and trailing white space:
-		return substr(implode('',$parts),1,-1);
+		return substr(implode('', $parts), 1, -1);
 	}
 
 	/**
@@ -630,20 +619,24 @@ class t3lib_softrefproc {
 	 * @return	array		Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
 	 * @see tslib_content::typolink(), setTypoLinkPartsElement()
 	 */
-	function getTypoLinkParts($typolinkValue)	{
+	function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
 
 			// Split by space into link / target / class
-		list($link_param, $browserTarget, $cssClass) = t3lib_div::trimExplode(' ',$typolinkValue,1);
-		if (strlen($browserTarget))	$finalTagParts['target'] = $browserTarget;
-		if (strlen($cssClass))	$finalTagParts['class'] = $cssClass;
+		list($link_param, $browserTarget, $cssClass) = t3lib_div::trimExplode(' ', $typolinkValue, 1);
+		if (strlen($browserTarget)) {
+			$finalTagParts['target'] = $browserTarget;
+		}
+		if (strlen($cssClass)) {
+			$finalTagParts['class'] = $cssClass;
+		}
 
 			// Parse URL:
 		$pU = @parse_url($link_param);
 
 			// Detecting the kind of reference:
-		if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:
-			$link_param = preg_replace('/^mailto:/i','',$link_param);
+		if (strstr($link_param, '@') && !$pU['scheme']) { // If it's a mail address:
+			$link_param = preg_replace('/^mailto:/i', '', $link_param);
 
 			$finalTagParts['LINK_TYPE'] = 'mailto';
 			$finalTagParts['url'] = trim($link_param);
@@ -653,45 +646,45 @@ class t3lib_softrefproc {
 			$urlChar = intval(strpos($link_param, '.'));
 
 				// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
-			list($rootFileDat) = explode('?',rawurldecode($link_param));
-			$containsSlash = strstr($rootFileDat,'/');
+			list($rootFileDat) = explode('?', rawurldecode($link_param));
+			$containsSlash = strstr($rootFileDat, '/');
 			$rFD_fI = pathinfo($rootFileDat);
-			if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
+			if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || t3lib_div::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
 				$isLocalFile = 1;
-			} elseif ($containsSlash)	{
-				$isLocalFile = 2;		// Adding this so realurl directories are linked right (non-existing).
+			} elseif ($containsSlash) {
+				$isLocalFile = 2; // Adding this so realurl directories are linked right (non-existing).
 			}
 
-			if($pU['scheme'] || ($isLocalFile!=1 && $urlChar && (!$containsSlash || $urlChar<$fileChar)))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
+			if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
 				$finalTagParts['LINK_TYPE'] = 'url';
 				$finalTagParts['url'] = $link_param;
-			} elseif ($containsSlash || $isLocalFile)	{	// file (internal)
+			} elseif ($containsSlash || $isLocalFile) { // file (internal)
 				$splitLinkParam = explode('?', $link_param);
-				if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
+				if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
 					$finalTagParts['LINK_TYPE'] = 'file';
 					$finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
 					$finalTagParts['query'] = $splitLinkParam[1];
 				}
-			} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
+			} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
 				$finalTagParts['LINK_TYPE'] = 'page';
 
-				$link_params_parts = explode('#',$link_param);
-				$link_param = trim($link_params_parts[0]);		// Link-data del
+				$link_params_parts = explode('#', $link_param);
+				$link_param = trim($link_params_parts[0]); // Link-data del
 
-				if (strlen($link_params_parts[1]))	{
+				if (strlen($link_params_parts[1])) {
 					$finalTagParts['anchor'] = trim($link_params_parts[1]);
 				}
 
 					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
-				$pairParts = t3lib_div::trimExplode(',',$link_param);
-				if (count($pairParts)>1)	{
+				$pairParts = t3lib_div::trimExplode(',', $link_param);
+				if (count($pairParts) > 1) {
 					$link_param = $pairParts[0];
-					$finalTagParts['type'] = $pairParts[1];		// Overruling 'type'
+					$finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
 				}
 
 					// Checking if the id-parameter is an alias.
-				if (strlen($link_param))	{
-					if (!t3lib_div::testInt($link_param))	{
+				if (strlen($link_param)) {
+					if (!t3lib_div::testInt($link_param)) {
 						$finalTagParts['alias'] = $link_param;
 						$link_param = $this->getPageIdFromAlias($link_param);
 					}
@@ -714,33 +707,33 @@ class t3lib_softrefproc {
 	 * @return	string		The input content, possibly containing tokens now according to the added substitution entries in $elements
 	 * @see getTypoLinkParts()
 	 */
-	function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)	{
+	function setTypoLinkPartsElement($tLP, &$elements, $content, $idx) {
 
 			// Initialize, set basic values. In any case a link will be shown
-		$tokenID = $this->makeTokenID('setTypoLinkPartsElement:'.$idx);
-		$elements[$tokenID.':'.$idx] = array();
-		$elements[$tokenID.':'.$idx]['matchString'] = $content;
+		$tokenID = $this->makeTokenID('setTypoLinkPartsElement:' . $idx);
+		$elements[$tokenID . ':' . $idx] = array();
+		$elements[$tokenID . ':' . $idx]['matchString'] = $content;
 
 			// Based on link type, maybe do more:
-		switch ((string)$tLP['LINK_TYPE'])	{
+		switch ((string) $tLP['LINK_TYPE']) {
 			case 'mailto':
 			case 'url':
 					// Mail addresses and URLs can be substituted manually:
-				$elements[$tokenID.':'.$idx]['subst'] = array(
+				$elements[$tokenID . ':' . $idx]['subst'] = array(
 					'type' => 'string',
 					'tokenID' => $tokenID,
 					'tokenValue' => $tLP['url'],
 				);
 					// Output content will be the token instead:
-				$content = '{softref:'.$tokenID.'}';
+				$content = '{softref:' . $tokenID . '}';
 			break;
 			case 'file':
 					// Process files found in fileadmin directory:
-				if (!$tLP['query'])	{	// We will not process files which has a query added to it. That will look like a script we don't want to move.
-					if (t3lib_div::isFirstPartOfStr($tLP['filepath'],$this->fileAdminDir.'/'))	{	// File must be inside fileadmin/
+				if (!$tLP['query']) { // We will not process files which has a query added to it. That will look like a script we don't want to move.
+					if (t3lib_div::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) { // File must be inside fileadmin/
 
 							// Set up the basic token and token value for the relative file:
-						$elements[$tokenID.':'.$idx]['subst'] = array(
+						$elements[$tokenID . ':' . $idx]['subst'] = array(
 							'type' => 'file',
 							'relFileName' => $tLP['filepath'],
 							'tokenID' => $tokenID,
@@ -748,69 +741,73 @@ class t3lib_softrefproc {
 						);
 
 							// Depending on whether the file exists or not we will set the
-						$absPath = t3lib_div::getFileAbsFileName(PATH_site.$tLP['filepath']);
-						if (!@is_file($absPath))	{
-							$elements[$tokenID.':'.$idx]['error'] = 'File does not exist!';
+						$absPath = t3lib_div::getFileAbsFileName(PATH_site . $tLP['filepath']);
+						if (!@is_file($absPath)) {
+							$elements[$tokenID . ':' . $idx]['error'] = 'File does not exist!';
 						}
 
 							// Output content will be the token instead
-						$content = '{softref:'.$tokenID.'}';
-					} else return $content;
-				} else return $content;
+						$content = '{softref:' . $tokenID . '}';
+					} else {
+						return $content;
+					}
+				} else {
+					return $content;
+				}
 			break;
 			case 'page':
 					// Rebuild page reference typolink part:
 				$content = '';
 
 					// Set page id:
-				if ($tLP['page_id'])	{
-					$content.= '{softref:'.$tokenID.'}';
-					$elements[$tokenID.':'.$idx]['subst'] = array(
+				if ($tLP['page_id']) {
+					$content .= '{softref:' . $tokenID . '}';
+					$elements[$tokenID . ':' . $idx]['subst'] = array(
 						'type' => 'db',
-						'recordRef' => 'pages:'.$tLP['page_id'],
+						'recordRef' => 'pages:' . $tLP['page_id'],
 						'tokenID' => $tokenID,
-						'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id'],	// Set page alias if that was used.
+						'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id'], // Set page alias if that was used.
 					);
 				}
 
 					// Add type if applicable
-				if (strlen($tLP['type']))	{
-					$content.= ','.$tLP['type'];
+				if (strlen($tLP['type'])) {
+					$content .= ',' . $tLP['type'];
 				}
 
 					// Add anchor if applicable
-				if (strlen($tLP['anchor']))	{
-					if (t3lib_div::testInt($tLP['anchor']))	{	// Anchor is assumed to point to a content elements:
+				if (strlen($tLP['anchor'])) {
+					if (t3lib_div::testInt($tLP['anchor'])) { // Anchor is assumed to point to a content elements:
 							// Initialize a new entry because we have a new relation:
-						$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:'.$idx);
-						$elements[$newTokenID.':'.$idx] = array();
-						$elements[$newTokenID.':'.$idx]['matchString'] = 'Anchor Content Element: '.$tLP['anchor'];
+						$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
+						$elements[$newTokenID . ':' . $idx] = array();
+						$elements[$newTokenID . ':' . $idx]['matchString'] = 'Anchor Content Element: ' . $tLP['anchor'];
 
-						$content.= '#{softref:'.$newTokenID.'}';
-						$elements[$newTokenID.':'.$idx]['subst'] = array(
+						$content .= '#{softref:' . $newTokenID . '}';
+						$elements[$newTokenID . ':' . $idx]['subst'] = array(
 							'type' => 'db',
-							'recordRef' => 'tt_content:'.$tLP['anchor'],
+							'recordRef' => 'tt_content:' . $tLP['anchor'],
 							'tokenID' => $newTokenID,
 							'tokenValue' => $tLP['anchor'],
 						);
-					} else {	// Anchor is a hardcoded string
-						$content.= '#'.$tLP['type'];
+					} else { // Anchor is a hardcoded string
+						$content .= '#' . $tLP['type'];
 					}
 				}
 			break;
 			default:
 				{
-					$elements[$tokenID.':'.$idx]['error'] = 'Couldn\t decide typolink mode.';
-					return $content;
+				$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\t decide typolink mode.';
+				return $content;
 				}
 			break;
 		}
 
 			// Finally, for all entries that was rebuild with tokens, add target and class in the end:
-		if (strlen($content) && strlen($tLP['target']))	{
-			$content.= ' '.$tLP['target'];
-			if (strlen($tLP['class']))	{
-				$content.= ' '.$tLP['class'];
+		if (strlen($content) && strlen($tLP['target'])) {
+			$content .= ' ' . $tLP['target'];
+			if (strlen($tLP['class'])) {
+				$content .= ' ' . $tLP['class'];
 			}
 		}
 
@@ -824,8 +821,8 @@ class t3lib_softrefproc {
 	 * @param	integer		Page alias string value
 	 * @return	integer		Page uid corresponding to alias value.
 	 */
-	function getPageIdFromAlias($link_param)	{
-		$pRec = t3lib_BEfunc::getRecordsByField('pages','alias',$link_param);
+	function getPageIdFromAlias($link_param) {
+		$pRec = t3lib_BEfunc::getRecordsByField('pages', 'alias', $link_param);
 
 		return $pRec[0]['uid'];
 	}
@@ -836,12 +833,12 @@ class t3lib_softrefproc {
 	 * @param	string		suffix value.
 	 * @return	string		Token ID
 	 */
-	function makeTokenID($index='')	{
-		return md5($this->tokenID_basePrefix.':'.$index);
+	function makeTokenID($index = '') {
+		return md5($this->tokenID_basePrefix . ':' . $index);
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_softrefproc.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_softrefproc.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_softrefproc.php']);
 }
 
