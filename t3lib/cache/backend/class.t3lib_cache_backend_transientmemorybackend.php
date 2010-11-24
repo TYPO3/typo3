@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -57,8 +57,12 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) throw new t3lib_cache_Exception('No cache frontend has been set yet via setCache().', 1238244992);
-		if (!is_string($data)) throw new t3lib_cache_exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1238244993);
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception('No cache frontend has been set yet via setCache().', 1238244992);
+		}
+		if (!is_string($data)) {
+			throw new t3lib_cache_exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1238244993);
+		}
 		$this->entries[$entryIdentifier] = $data;
 		foreach ($tags as $tag) {
 			$this->tagsAndEntries[$tag][$entryIdentifier] = TRUE;
@@ -95,7 +99,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
-		if (isset($this->entries[$entryIdentifier]))  {
+		if (isset($this->entries[$entryIdentifier])) {
 			unset($this->entries[$entryIdentifier]);
 			foreach (array_keys($this->tagsAndEntries) as $tag) {
 				if (isset($this->tagsAndEntries[$tag][$entryIdentifier])) {
@@ -136,7 +140,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 */
 	public function findIdentifiersByTags(array $tags) {
 		$taggedEntries = array();
-		$foundEntries  = array();
+		$foundEntries = array();
 
 		foreach ($tags as $tag) {
 			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
@@ -200,7 +204,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php']);
 }
 

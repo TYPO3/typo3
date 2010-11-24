@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -86,7 +86,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			$cacheDirectory = 'typo3temp/cache/';
 			try {
 				$this->setCacheDirectory($cacheDirectory);
-			} catch(t3lib_cache_Exception $exception) {
+			} catch (t3lib_cache_Exception $exception) {
 			}
 		}
 	}
@@ -109,7 +109,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			if (TYPO3_OS === 'WIN') {
 				$delimiter = ';';
 				$cacheDirectory = str_replace('\\', '/', $cacheDirectory);
-				if (!(preg_match('/[A-Z]:/', substr($cacheDirectory,0,2)))) {
+				if (!(preg_match('/[A-Z]:/', substr($cacheDirectory, 0, 2)))) {
 					$cacheDirectory = PATH_site . $cacheDirectory;
 				}
 			} else {
@@ -180,7 +180,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		}
 
 		$this->root = $documentRoot;
-		$this->cacheDirectory =  $cacheDirectory;
+		$this->cacheDirectory = $cacheDirectory;
 	}
 
 	/**
@@ -235,8 +235,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		if (strlen($temporaryCacheEntryPathAndFilename) > $this->maximumPathLength) {
 			throw new t3lib_cache_Exception(
 				'The length of the temporary cache file path "' . $temporaryCacheEntryPathAndFilename .
-					'" is ' . strlen($temporaryCacheEntryPathAndFilename) . ' characters long and exceeds the maximum path length of ' .
-					$this->maximumPathLength . '. Please consider setting the temporaryDirectoryBase option to a shorter path. ',
+				'" is ' . strlen($temporaryCacheEntryPathAndFilename) . ' characters long and exceeds the maximum path length of ' .
+				$this->maximumPathLength . '. Please consider setting the temporaryDirectoryBase option to a shorter path. ',
 				1248710426
 			);
 		}
@@ -289,7 +289,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		if ($this->isCacheFileExpired($pathAndFilename)) {
 			return FALSE;
 		}
-		$dataSize = (integer)file_get_contents($pathAndFilename, NULL, NULL, filesize($pathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
+		$dataSize = (integer) file_get_contents($pathAndFilename, NULL, NULL, filesize($pathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
 		return file_get_contents($pathAndFilename, NULL, NULL, 0, $dataSize);
 	}
 
@@ -357,10 +357,10 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				continue;
 			}
 			$cacheEntryPathAndFilename = $directoryIterator->getPathname();
-			$index = (integer)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
+			$index = (integer) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
 			$metaData = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index);
 
-			$expiryTime = (integer)substr($metaData, 0, self::EXPIRYTIME_LENGTH);
+			$expiryTime = (integer) substr($metaData, 0, self::EXPIRYTIME_LENGTH);
 			if ($expiryTime !== 0 && $expiryTime < $now) {
 				continue;
 			}
@@ -388,10 +388,10 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				continue;
 			}
 			$cacheEntryPathAndFilename = $directoryIterator->getPathname();
-			$index = (integer)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
+			$index = (integer) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
 			$metaData = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index);
 
-			$expiryTime = (integer)substr($metaData, 0, self::EXPIRYTIME_LENGTH);
+			$expiryTime = (integer) substr($metaData, 0, self::EXPIRYTIME_LENGTH);
 			if ($expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME']) {
 				continue;
 			}
@@ -459,7 +459,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		if (!file_exists($cacheEntryPathAndFilename)) {
 			return TRUE;
 		}
-		$index = (integer)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
+		$index = (integer) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
 		$expiryTime = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index, self::EXPIRYTIME_LENGTH);
 		return ($expiryTime != 0 && $expiryTime < $GLOBALS['EXEC_TIME']);
 	}
@@ -486,8 +486,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			foreach ($filesFound as $cacheFilename) {
 				if ($this->isCacheFileExpired($cacheFilename)) {
 					$this->remove(basename($cacheFilename));
- 				}
- 			}
+				}
+			}
 		}
 	}
 
@@ -540,7 +540,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_filebackend.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_filebackend.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_filebackend.php']);
 }
 

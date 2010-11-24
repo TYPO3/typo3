@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Christian Kuhn <lolli@schwarzbu.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Christian Kuhn <lolli@schwarzbu.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A PDO database cache backend
@@ -291,7 +291,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 			'DELETE FROM "cache" WHERE "scope"=? AND "cache"=? AND "identifier" IN (SELECT "identifier" FROM "tags" WHERE "scope"=? AND "cache"=? AND "tag"=?)'
 		);
 		$statementHandle->execute(
-			array($this->scope, $this->cacheIdentifier,$this->scope, $this->cacheIdentifier, $tag)
+			array($this->scope, $this->cacheIdentifier, $this->scope, $this->cacheIdentifier, $tag)
 		);
 
 		$statementHandle = $this->databaseHandle->prepare(
@@ -312,7 +312,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushBytags(array $tags) {
-		foreach($tags as $tag) {
+		foreach ($tags as $tag) {
 			$this->flushByTag($tag);
 		}
 	}
@@ -348,7 +348,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function findIdentifiersByTags(array $tags) {
 		$taggedEntries = array();
-		$foundEntries  = array();
+		$foundEntries = array();
 
 		foreach ($tags as $tag) {
 			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
@@ -375,7 +375,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	public function collectGarbage() {
 		$statementHandle = $this->databaseHandle->prepare(
 			'DELETE FROM "tags" WHERE "scope"=? AND "cache"=? AND "identifier" IN ' .
-				'(SELECT "identifier" FROM "cache" WHERE "scope"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME'] . ')'
+			'(SELECT "identifier" FROM "cache" WHERE "scope"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME'] . ')'
 		);
 		$statementHandle->execute(
 			array($this->scope, $this->cacheIdentifier, $this->scope, $this->cacheIdentifier)
@@ -421,7 +421,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (PDOException $e) {
-#			$this->createCacheTables();
+			#			$this->createCacheTables();
 		}
 	}
 

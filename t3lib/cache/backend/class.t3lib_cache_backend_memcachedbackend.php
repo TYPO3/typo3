@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -243,7 +243,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 		}
 
 		try {
-			if(strlen($data) > self::MAX_BUCKET_SIZE) {
+			if (strlen($data) > self::MAX_BUCKET_SIZE) {
 				$data = str_split($data, 1024 * 1000);
 				$success = TRUE;
 				$chunkNumber = 1;
@@ -281,7 +281,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 					1275830266
 				);
 			}
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			throw new t3lib_cache_Exception(
 				'Could not set value. ' .
 				$exception->getMessage(),
@@ -302,10 +302,10 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 		$value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
 
 		if (substr($value, 0, 14) === 'TYPO3*chunked:') {
-			list( , $chunkCount) = explode(':', $value);
+			list(, $chunkCount) = explode(':', $value);
 			$value = '';
 
-			for ($chunkNumber = 1 ; $chunkNumber < $chunkCount; $chunkNumber++) {
+			for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {
 				$value .= $this->memcache->get($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber);
 			}
 		}
@@ -369,7 +369,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 */
 	public function findIdentifiersByTags(array $tags) {
 		$taggedEntries = array();
-		$foundEntries  = array();
+		$foundEntries = array();
 
 		foreach ($tags as $tag) {
 			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
@@ -408,7 +408,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	public function flushByTag($tag) {
 		$identifiers = $this->findIdentifiersByTag($tag);
 
-		foreach($identifiers as $identifier) {
+		foreach ($identifiers as $identifier) {
 			$this->remove($identifier);
 		}
 	}
@@ -438,20 +438,20 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		if ($this->serverConnected) {
-			foreach($tags as $tag) {
+			foreach ($tags as $tag) {
 					// Update tag-to-identifier index
 				$identifiers = $this->findIdentifiersByTag($tag);
 				if (array_search($entryIdentifier, $identifiers) === false) {
 					$identifiers[] = $entryIdentifier;
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
-						$identifiers);
+										 $identifiers);
 				}
 
 					// Update identifier-to-tag index
 				$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 				if (array_search($tag, $existingTags) === FALSE) {
 					$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
-						array_merge($existingTags, $tags));
+										 array_merge($existingTags, $tags));
 				}
 			}
 		}
@@ -481,7 +481,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				if (($key = array_search($entryIdentifier, $identifiers)) !== false) {
 					unset($identifiers[$key]);
 
-					if(count($identifiers)) {
+					if (count($identifiers)) {
 						$this->memcache->set(
 							$this->identifierPrefix . 'tag_' . $tag,
 							$identifiers
@@ -508,7 +508,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
-		return ($tags === FALSE ? array() : (array)$tags);
+		return ($tags === FALSE ? array() : (array) $tags);
 	}
 
 	/**
@@ -521,7 +521,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_memcachedbackend.php']);
 }
 
