@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
-* All rights reserved
-*
-* This script is part of the TYPO3 project. The TYPO3 project is
-* free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* The GNU General Public License can be found at
-* http://www.gnu.org/copyleft/gpl.html.
-*
-* This script is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class t3lib_formprotection_Abstract.
@@ -94,16 +94,16 @@ abstract class t3lib_formprotection_Abstract {
 	 * Note: This function does not persist the tokens.
 	 *
 	 * @param string $formName
-	 *        the name of the form, for example a table name like "tt_content",
-	 *        or some other identifier like "install_tool_password", must not be
-	 *        empty
+	 *		the name of the form, for example a table name like "tt_content",
+	 *		or some other identifier like "install_tool_password", must not be
+	 *		empty
 	 * @param string $action
-	 *        the name of the action of the form, for example "new", "delete" or
-	 *        "edit", may also be empty
+	 *		the name of the action of the form, for example "new", "delete" or
+	 *		"edit", may also be empty
 	 * @param string $formInstanceName
-	 *        a string used to differentiate two instances of the same form,
-	 *        form example a record UID or a comma-separated list of UIDs,
-	 *        may also be empty
+	 *		a string used to differentiate two instances of the same form,
+	 *		form example a record UID or a comma-separated list of UIDs,
+	 *		may also be empty
 	 *
 	 * @return string the 32-character hex ID of the generated token
 	 */
@@ -142,20 +142,20 @@ abstract class t3lib_formprotection_Abstract {
 	 * FALSE the second time.
 	 *
 	 * @param string $tokenId
-	 *        a form token to check, may also be empty or utterly misformed
+	 *		a form token to check, may also be empty or utterly misformed
 	 * @param string $formName
-	 *        the name of the form to check, for example "tt_content",
-	 *        may also be empty or utterly misformed
+	 *		the name of the form to check, for example "tt_content",
+	 *		may also be empty or utterly misformed
 	 * @param string $action
-	 *        the action of the form to check, for example "edit",
-	 *        may also be empty or utterly misformed
+	 *		the action of the form to check, for example "edit",
+	 *		may also be empty or utterly misformed
 	 * @param string $formInstanceName
-	 *        the instance name of the form to check, for example "42" or "foo"
-	 *        or "31,42", may also be empty or utterly misformed
+	 *		the instance name of the form to check, for example "42" or "foo"
+	 *		or "31,42", may also be empty or utterly misformed
 	 *
 	 * @return boolean
-	 *         TRUE if $tokenId, $formName, $action and $formInstanceName match
-	 *         and the token has not been used yet, FALSE otherwise
+	 *		 TRUE if $tokenId, $formName, $action and $formInstanceName match
+	 *		 and the token has not been used yet, FALSE otherwise
 	 */
 	public function validateToken(
 		$tokenId, $formName, $action = '', $formInstanceName = ''
@@ -163,8 +163,8 @@ abstract class t3lib_formprotection_Abstract {
 		if (isset($this->tokens[$tokenId])) {
 			$token = $this->tokens[$tokenId];
 			$isValid = ($token['formName'] == $formName)
-				&& ($token['action'] == $action)
-				&& ($token['formInstanceName'] == $formInstanceName);
+					   && ($token['action'] == $action)
+					   && ($token['formInstanceName'] == $formInstanceName);
 			$this->dropToken($tokenId);
 		} else {
 			$isValid = FALSE;
@@ -192,7 +192,7 @@ abstract class t3lib_formprotection_Abstract {
 	 * Retrieves all saved tokens.
 	 *
 	 * @return array<arrray>
-	 *         the saved tokens, will be empty if no tokens have been saved
+	 *		 the saved tokens, will be empty if no tokens have been saved
 	 */
 	abstract protected function retrieveTokens();
 
@@ -212,7 +212,7 @@ abstract class t3lib_formprotection_Abstract {
 	 * Note: This function does not persist the tokens.
 	 *
 	 * @param string $tokenId
-	 *        the 32-character ID of an existing token, must not be empty
+	 *		the 32-character ID of an existing token, must not be empty
 	 *
 	 * @return void
 	 */
@@ -244,4 +244,5 @@ abstract class t3lib_formprotection_Abstract {
 		}
 	}
 }
+
 ?>

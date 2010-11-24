@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
-* All rights reserved
-*
-* This script is part of the TYPO3 project. The TYPO3 project is
-* free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* The GNU General Public License can be found at
-* http://www.gnu.org/copyleft/gpl.html.
-*
-* This script is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class t3lib_formprotection_InstallToolFormProtection.
@@ -37,7 +37,7 @@
  *
  * <pre>
  * $formToken = $this->formProtection->generateToken(
- *    'installToolPassword', 'change'
+ *	'installToolPassword', 'change'
  * );
  * // then puts the generated form token in a hidden field in the template
  * </pre>
@@ -60,14 +60,14 @@
  *
  * <pre>
  * if ($dataHasBeenSubmitted && $this->formProtection()->validateToken(
- *     (string) $_POST['formToken'],
- *     'installToolPassword',
- *     'change'
+ *	 (string) $_POST['formToken'],
+ *	 'installToolPassword',
+ *	 'change'
  * ) {
- *     // processes the data
+ *	 // processes the data
  * } else {
- *     // no need to do anything here as the install tool form protection will
- *     // create an error message for an invalid token
+ *	 // no need to do anything here as the install tool form protection will
+ *	 // create an error message for an invalid token
  * }
  * </pre>
  *
@@ -131,7 +131,7 @@ class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtectio
 	protected function createValidationErrorMessage() {
 		$this->installTool->addErrorMessage(
 			'Validating the security token of this form has failed. ' .
-				'Please reload the form and submit it again.'
+			'Please reload the form and submit it again.'
 		);
 	}
 
@@ -139,7 +139,7 @@ class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtectio
 	 * Retrieves all saved tokens.
 	 *
 	 * @return array<array>
-	 *         the saved tokens, will be empty if no tokens have been saved
+	 *		 the saved tokens, will be empty if no tokens have been saved
 	 */
 	protected function retrieveTokens() {
 		if (isset($_SESSION['installToolFormTokens'])

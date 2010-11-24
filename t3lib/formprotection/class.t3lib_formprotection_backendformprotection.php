@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
-* All rights reserved
-*
-* This script is part of the TYPO3 project. The TYPO3 project is
-* free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* The GNU General Public License can be found at
-* http://www.gnu.org/copyleft/gpl.html.
-*
-* This script is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 Oliver Klee <typo3-coding@oliverklee.de>
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class t3lib_formprotection_BackendFormProtection.
@@ -36,12 +36,12 @@
  *
  * <pre>
  * $formToken = t3lib_formprotection_Factory::get(
- *     t3lib_formprotection_Factory::TYPE_BACK_END
+ *	 t3lib_formprotection_Factory::TYPE_BACK_END
  * )->generateToken(
- *     'BE user setup', 'edit'
+ *	 'BE user setup', 'edit'
  * );
  * $this->content .= '<input type="hidden" name="formToken" value="' .
- *     $formToken . '" />';
+ *	 $formToken . '" />';
  * </pre>
  *
  * The three parameters $formName, $action and $formInstanceName can be
@@ -54,9 +54,9 @@
  *
  * <pre>
  * $formToken = t3lib_formprotection_Factory::get(
- *     t3lib_formprotection_Factory::TYPE_BACK_END
+ *	 t3lib_formprotection_Factory::TYPE_BACK_END
  * )->getFormProtection()->generateToken(
- *    'tt_content', 'edit', $uid
+ *	'tt_content', 'edit', $uid
  * );
  * </pre>
  *
@@ -65,7 +65,7 @@
  *
  * <pre>
  * t3lib_formprotection_Factory::get(
- *     t3lib_formprotection_Factory::TYPE_BACK_END
+ *	 t3lib_formprotection_Factory::TYPE_BACK_END
  * )->persistTokens();
  * </pre>
  *
@@ -79,16 +79,16 @@
  *
  * <pre>
  * if ($dataHasBeenSubmitted && t3lib_formprotection_Factory::get(
- *         t3lib_formprotection_Factory::TYPE_BACK_END
- *     )->validateToken(
- *         (string) t3lib_div::_POST('formToken'),
- *         'BE user setup', 'edit
- *     )
+ *		 t3lib_formprotection_Factory::TYPE_BACK_END
+ *	 )->validateToken(
+ *		 (string) t3lib_div::_POST('formToken'),
+ *		 'BE user setup', 'edit
+ *	 )
  * ) {
- *     // processes the data
+ *	 // processes the data
  * } else {
- *     // no need to do anything here as the BE form protection will create a
- *     // flash message for an invalid token
+ *	 // no need to do anything here as the BE form protection will create a
+ *	 // flash message for an invalid token
  * }
  * </pre>
  *
@@ -122,7 +122,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 		if (!isset($GLOBALS['BE_USER'])) {
 			throw new t3lib_error_Exception(
 				'A back-end form protection may only be instantiated if there' .
-					' is an active back-end session.',
+				' is an active back-end session.',
 				1285067843
 			);
 		}
@@ -136,7 +136,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * @return void
 	 */
 	protected function createValidationErrorMessage() {
- 		$message = t3lib_div::makeInstance(
+		$message = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->sL(
 				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
@@ -151,7 +151,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * Retrieves all saved tokens.
 	 *
 	 * @return array<array>
-	 *         the saved tokens as, will be empty if no tokens have been saved
+	 *		 the saved tokens as, will be empty if no tokens have been saved
 	 */
 	protected function retrieveTokens() {
 		$tokens = $GLOBALS['BE_USER']->getSessionData('formTokens');
