@@ -603,7 +603,7 @@ class t3lib_TCEforms_inline {
 		$enabledControls = $config['appearance']['enabledControls'];
 			// Hook: Can disable/enable single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj)	{
-			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, $enabledControls);
+			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $enabledControls);
 		}
 
 			// Icon to visualize that a required field is nested in this inline level:
@@ -718,7 +718,7 @@ class t3lib_TCEforms_inline {
 
 			// Hook: Post-processing of single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj)	{
-			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtual, $cells);
+			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $cells);
 		}
 			// Compile items into a DIV-element:
 		return '
@@ -829,6 +829,8 @@ class t3lib_TCEforms_inline {
 		$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table,array(),$foreign_selector);
 		$config = $PA['fieldConf']['config'];
 
+		//TODO: $disabled is not present - should be read from config?
+		$disabled = FALSE;
 		if(!$disabled) {
 				// Create option tags:
 			$opt = array();
@@ -848,7 +850,7 @@ class t3lib_TCEforms_inline {
 				// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->fObj->defaultMultipleSelectorStyle.'"';
 			$size = intval($conf['size']);
-			$size = $conf['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$conf['autoSizeMax']) : $size;
+			$size = $conf['autoSizeMax'] ? t3lib_div::intInRange(count($selItems)+1,t3lib_div::intInRange($size,1),$conf['autoSizeMax']) : $size;
 			$onChange = "return inline.importNewRecord('" . $this->inlineNames['object']. self::Structure_Separator . $conf['foreign_table'] . "')";
 			$item = '
 				<select id="'.$this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector"'.
@@ -1173,8 +1175,8 @@ class t3lib_TCEforms_inline {
 				$parentRecord = $this->getRecord(0, $parent['table'], $parent['uid']);
 				$parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
 				$childLanguageField = $GLOBALS['TCA'][$current['table']]['ctrl']['languageField'];
-				if ($parentRecord[$languageField]>0) {
-					$record[$childLanguageField] = $parentRecord[$languageField];
+				if ($parentRecord[$parentLanguageField]>0) {
+					$record[$childLanguageField] = $parentRecord[$parentLanguageField];
 				}
 			}
 
