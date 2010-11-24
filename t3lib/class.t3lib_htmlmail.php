@@ -180,8 +180,7 @@
  * @package	TYPO3
  * @subpackage	t3lib
  */
-class t3lib_htmlmail
-{
+class t3lib_htmlmail {
 		// Headerinfo:
 	var $recipient = '';
 	var $recipient_copy = ''; // This recipient (or list of...) will also receive the mail. Regard it as a copy.
@@ -245,8 +244,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function t3lib_htmlmail()
-	{
+	public function t3lib_htmlmail() {
 		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
 
 		$this->mailer = 'TYPO3';
@@ -258,8 +256,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function start()
-	{
+	public function start() {
 		global $TYPO3_CONF_VARS;
 
 			// Sets the message id
@@ -301,8 +298,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function useQuotedPrintable()
-	{
+	public function useQuotedPrintable() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: quoted-printable';
 		$this->html_text_header = 'Content-Type: text/html; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: quoted-printable';
 	}
@@ -312,8 +308,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function useBase64()
-	{
+	public function useBase64() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: base64';
 		$this->html_text_header = 'Content-Type: text/html; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: base64';
 		$this->alt_base64 = 1;
@@ -325,8 +320,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function use8Bit()
-	{
+	public function use8Bit() {
 		$this->plain_text_header = 'Content-Type: text/plain; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: 8bit';
 		$this->html_text_header = 'Content-Type: text/html; charset=' . $this->charset . $this->linebreak . 'Content-Transfer-Encoding: 8bit';
 		$this->alt_8bit = 1;
@@ -340,8 +334,7 @@ class t3lib_htmlmail
 	 * @param	string		$content the content that will be encoded
 	 * @return	string		the encoded content
 	 */
-	public function encodeMsg($content)
-	{
+	public function encodeMsg($content) {
 		if ($this->alt_base64) {
 			return $this->makeBase64($content);
 		} elseif ($this->alt_8bit) {
@@ -358,8 +351,7 @@ class t3lib_htmlmail
 	 * @param	string		$content that will be added
 	 * @return	void
 	 */
-	public function addPlain($content)
-	{
+	public function addPlain($content) {
 		$content = $this->substHTTPurlsInPlainText($content);
 		$this->setPlain($this->encodeMsg($content));
 	}
@@ -371,8 +363,7 @@ class t3lib_htmlmail
 	 * @param	string		$file: the filename to add
 	 * @return	boolean		whether the attachment was added or not
 	 */
-	public function addAttachment($file)
-	{
+	public function addAttachment($file) {
 			// Fetching the content and the mime-type
 		$fileInfo = $this->getExtendedURL($file);
 		if ($fileInfo) {
@@ -400,8 +391,7 @@ class t3lib_htmlmail
 	 * @param	string		$file: the filename to add
 	 * @return	boolean		whether the attachment was added or not
 	 */
-	public function addHTML($file)
-	{
+	public function addHTML($file) {
 		$status = $this->fetchHTML($file);
 		if (!$status) {
 			return FALSE;
@@ -425,8 +415,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: will be added to the html "path" part
 	 * @return	void
 	 */
-	public function extractHtmlInit($html, $url)
-	{
+	public function extractHtmlInit($html, $url) {
 		$this->theParts['html']['content'] = $html;
 		$this->theParts['html']['path'] = $url;
 	}
@@ -438,8 +427,7 @@ class t3lib_htmlmail
 	 * @param	string		$recipient: The recipient the message should be delivered to (if blank, $this->recipient will be used instead)
 	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	public function send($recipient)
-	{
+	public function send($recipient) {
 		if ($recipient) {
 			$this->recipient = $recipient;
 		}
@@ -461,8 +449,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function setHeaders()
-	{
+	public function setHeaders() {
 		$this->headers = '';
 			// Message_id
 		$this->add_header('Message-ID: <' . $this->messageid . '>');
@@ -533,8 +520,7 @@ class t3lib_htmlmail
 	 * @param	mixed		$recipient: the recipient(s) to set
 	 * @return	void
 	 */
-	public function setRecipient($recipient)
-	{
+	public function setRecipient($recipient) {
 		$this->recipient = (is_array($recipient) ? implode(',', $recipient) : $recipient);
 	}
 
@@ -544,8 +530,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	string		the content type
 	 */
-	public function getHTMLContentType()
-	{
+	public function getHTMLContentType() {
 		return (count($this->theParts['html']['media']) ? 'multipart/related' : 'multipart/alternative');
 	}
 
@@ -555,8 +540,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function setContent()
-	{
+	public function setContent() {
 		$this->message = '';
 		$boundary = $this->getBoundary();
 
@@ -587,8 +571,7 @@ class t3lib_htmlmail
 	 * @param	string		$boundary: the mail boundary
 	 * @return	void
 	 */
-	public function constructMixed($boundary)
-	{
+	public function constructMixed($boundary) {
 		$this->add_message('--' . $boundary);
 
 		if ($this->theParts['html']['content']) {
@@ -627,8 +610,7 @@ class t3lib_htmlmail
 	 * @param	string		$boundary: the boundary to use
 	 * @return	void
 	 */
-	public function constructHTML($boundary)
-	{
+	public function constructHTML($boundary) {
 			// If media, then we know, the multipart/related content-type has been set before this function call
 		if (count($this->theParts['html']['media'])) {
 			$this->add_message('--' . $boundary);
@@ -655,8 +637,7 @@ class t3lib_htmlmail
 	 * @param	string		$boundary: the boundary to use
 	 * @return	void
 	 */
-	public function constructAlternative($boundary)
-	{
+	public function constructAlternative($boundary) {
 		$this->add_message('--' . $boundary);
 
 			// plain is added
@@ -679,8 +660,7 @@ class t3lib_htmlmail
 	 * @param	string		$boundary: the boundary to use
 	 * @return	void
 	 */
-	public function constructHTML_media($boundary)
-	{
+	public function constructHTML_media($boundary) {
 			// media is added
 		if (is_array($this->theParts['html']['media'])) {
 			foreach ($this->theParts['html']['media'] as $key => $media) {
@@ -723,8 +703,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	boolean		Returns whether the mail was sent (successfully accepted for delivery)
 	 */
-	public function sendTheMail()
-	{
+	public function sendTheMail() {
 		$mailWasSent = FALSE;
 
 			// Sending the mail requires the recipient and message to be set.
@@ -786,8 +765,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	string	the boundary
 	 */
-	public function getBoundary()
-	{
+	public function getBoundary() {
 		$this->part++;
 		return "----------" . uniqid("part_" . $this->part . "_");
 	}
@@ -799,8 +777,7 @@ class t3lib_htmlmail
 	 * @param	string		$content: the plain content
 	 * @return	void
 	 */
-	public function setPlain($content)
-	{
+	public function setPlain($content) {
 		$this->theParts['plain']['content'] = $content;
 	}
 
@@ -811,8 +788,7 @@ class t3lib_htmlmail
 	 * @param	string		$content: the HTML content
 	 * @return	void
 	 */
-	public function setHtml($content)
-	{
+	public function setHtml($content) {
 		$this->theParts['html']['content'] = $content;
 	}
 
@@ -823,8 +799,7 @@ class t3lib_htmlmail
 	 * @param	string		$header: the header in form of "key: value"
 	 * @return	void
 	 */
-	public function add_header($header)
-	{
+	public function add_header($header) {
 			// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
 		if (!$this->dontEncodeHeader && !stristr($header, 'Content-Type') && !stristr($header, 'Content-Transfer-Encoding')) {
 				// Field tags must not be encoded
@@ -846,8 +821,7 @@ class t3lib_htmlmail
 	 * @param	string		$msg: the message to add
 	 * @return	void
 	 */
-	public function add_message($msg)
-	{
+	public function add_message($msg) {
 		$this->message .= $msg . LF;
 	}
 
@@ -858,8 +832,7 @@ class t3lib_htmlmail
 	 * @param	string		$type: the content type, can either plain or html
 	 * @return	void
 	 */
-	public function getContent($type)
-	{
+	public function getContent($type) {
 		return $this->theParts[$type]['content'];
 	}
 
@@ -869,8 +842,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function preview()
-	{
+	public function preview() {
 		echo nl2br(htmlspecialchars($this->headers));
 		echo "<BR>";
 		echo nl2br(htmlspecialchars($this->message));
@@ -889,8 +861,7 @@ class t3lib_htmlmail
 	 * @param	string		$file: the file to load
 	 * @return	boolean		whether the data was fetched or not
 	 */
-	public function fetchHTML($file)
-	{
+	public function fetchHTML($file) {
 			// Fetches the content of the page
 		$this->theParts['html']['content'] = $this->getURL($file);
 		if ($this->theParts['html']['content']) {
@@ -909,8 +880,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function fetchHTMLMedia()
-	{
+	public function fetchHTMLMedia() {
 		if (!is_array($this->theParts['html']['media']) || !count($this->theParts['html']['media'])) {
 			return;
 		}
@@ -930,8 +900,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function extractMediaLinks()
-	{
+	public function extractMediaLinks() {
 		$html_code = $this->theParts['html']['content'];
 		$attribRegex = $this->tag_regex(array('img', 'table', 'td', 'tr', 'body', 'iframe', 'script', 'input', 'embed'));
 
@@ -1012,7 +981,7 @@ class t3lib_htmlmail
 						$imageData['absRef'] = $this->absRef($imageData['ref']);
 						$this->theParts['html']['media'][] = $imageData;
 					}
-				break;
+					break;
 			}
 		}
 	}
@@ -1023,8 +992,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function extractHyperLinks()
-	{
+	public function extractHyperLinks() {
 		$html_code = $this->theParts['html']['content'];
 		$attribRegex = $this->tag_regex(array('a', 'form', 'area'));
 		$codepieces = preg_split($attribRegex, $html_code); // Splits the document by the beginning of the above tags
@@ -1077,8 +1045,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	array	two-dimensional array with information about each frame
 	 */
-	public function extractFramesInfo()
-	{
+	public function extractFramesInfo() {
 		$htmlCode = $this->theParts['html']['content'];
 		$info = array();
 		if (strpos(' ' . $htmlCode, '<frame ')) {
@@ -1107,8 +1074,7 @@ class t3lib_htmlmail
 	 * @param	boolean		$absolute: If true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
 	 * @return	void
 	 */
-	public function substMediaNamesInHTML($absolute)
-	{
+	public function substMediaNamesInHTML($absolute) {
 		if (is_array($this->theParts['html']['media'])) {
 			foreach ($this->theParts['html']['media'] as $key => $val) {
 				if ($val['use_jumpurl'] && $this->jumperURL_prefix) {
@@ -1133,8 +1099,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function substHREFsInHTML()
-	{
+	public function substHREFsInHTML() {
 		if (!is_array($this->theParts['html']['hrefs'])) {
 			return;
 		}
@@ -1163,8 +1128,7 @@ class t3lib_htmlmail
 	 * @param	string		$content: the content to use to substitute
 	 * @return	string		the changed content
 	 */
-	public function substHTTPurlsInPlainText($content)
-	{
+	public function substHTTPurlsInPlainText($content) {
 		if (!$this->jumperURL_prefix) {
 			return $content;
 		}
@@ -1207,8 +1171,7 @@ class t3lib_htmlmail
 	 *
 	 * @return	void
 	 */
-	public function fixRollOvers()
-	{
+	public function fixRollOvers() {
 		$newContent = '';
 		$items = explode('.src', $this->theParts['html']['content']);
 		if (count($items) <= 1) {
@@ -1250,8 +1213,7 @@ class t3lib_htmlmail
 	 * @param	string		$inputstr: the string to encode
 	 * @return	string		the encoded string
 	 */
-	public function makeBase64($inputstr)
-	{
+	public function makeBase64($inputstr) {
 		return chunk_split(base64_encode($inputstr));
 	}
 
@@ -1262,8 +1224,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: the URL to get information of
 	 * @return	mixed		either false or the array with information
 	 */
-	public function getExtendedURL($url)
-	{
+	public function getExtendedURL($url) {
 		$res = array();
 		$res['content'] = $this->getURL($url);
 		if (!$res['content']) {
@@ -1275,21 +1236,21 @@ class t3lib_htmlmail
 			case 'gif':
 			case 'png':
 				$res['content_type'] = 'image/' . $fileInfo['fileext'];
-			break;
+				break;
 			case 'jpg':
 			case 'jpeg':
 				$res['content_type'] = 'image/jpeg';
-			break;
+				break;
 			case 'html':
 			case 'htm':
 				$res['content_type'] = 'text/html';
-			break;
+				break;
 			case 'css':
 				$res['content_type'] = 'text/css';
-			break;
+				break;
 			case 'swf':
 				$res['content_type'] = 'application/x-shockwave-flash';
-			break;
+				break;
 			default:
 				$res['content_type'] = $this->getMimeType($url);
 		}
@@ -1303,8 +1264,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: the URL
 	 * @return	string		the URL with the added values
 	 */
-	public function addUserPass($url)
-	{
+	public function addUserPass($url) {
 		$user = $this->http_username;
 		$pass = $this->http_password;
 		$matches = array();
@@ -1321,8 +1281,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: the URL to fetch
 	 * @return	string		the content of the URL
 	 */
-	public function getURL($url)
-	{
+	public function getURL($url) {
 		$url = $this->addUserPass($url);
 		return t3lib_div::getURL($url);
 	}
@@ -1335,8 +1294,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: the URL to load
 	 * @return	the content
 	 */
-	public function getStrippedURL($url)
-	{
+	public function getStrippedURL($url) {
 		$content = '';
 		if ($fd = fopen($url, "rb")) {
 			while (!feof($fd)) {
@@ -1357,8 +1315,7 @@ class t3lib_htmlmail
 	 * @param	string		$url: the url
 	 * @return	string		$mimeType: the mime type found in the header
 	 */
-	public function getMimeType($url)
-	{
+	public function getMimeType($url) {
 		$mimeType = '';
 		$headers = trim(t3lib_div::getURL($url, 2));
 		if ($headers) {
@@ -1378,8 +1335,7 @@ class t3lib_htmlmail
 	 * @param	string		$ref: address to use
 	 * @return	string		the absolute address
 	 */
-	public function absRef($ref)
-	{
+	public function absRef($ref) {
 		$ref = trim($ref);
 		$info = parse_url($ref);
 		if ($info['scheme']) {
@@ -1400,8 +1356,7 @@ class t3lib_htmlmail
 	 * @param	string		$fileref: the file to use
 	 * @return	array		path, filename, filebody, fileext
 	 */
-	public function split_fileref($fileref)
-	{
+	public function split_fileref($fileref) {
 		$info = array();
 		if (preg_match('/(.*\/)(.*)$/', $fileref, $reg)) {
 			$info['path'] = $reg[1];
@@ -1429,8 +1384,7 @@ class t3lib_htmlmail
 	 * @param	string		$path: url to check
 	 * @return	array		information about the path / URL
 	 */
-	public function extParseUrl($path)
-	{
+	public function extParseUrl($path) {
 		$res = parse_url($path);
 		preg_match('/(.*\/)([^\/]*)$/', $res['path'], $reg);
 		$res['filepath'] = $reg[1];
@@ -1445,8 +1399,7 @@ class t3lib_htmlmail
 	 * @param	mixed		$tagArray: the list of tags (either as array or string if it is one tag)
 	 * @return	string		the regular expression
 	 */
-	public function tag_regex($tags)
-	{
+	public function tag_regex($tags) {
 		$tags = (!is_array($tags) ? array($tags) : $tags);
 		$regexp = '/';
 		$c = count($tags);
@@ -1466,8 +1419,7 @@ class t3lib_htmlmail
 	 *				 this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
 	 * @return	array		array with attributes as keys in lower-case
 	 */
-	public function get_tag_attributes($tag)
-	{
+	public function get_tag_attributes($tag) {
 		$attributes = array();
 		$tag = ltrim(preg_replace('/^<[^ ]*/', '', trim($tag)));
 		$tagLen = strlen($tag);
@@ -1515,8 +1467,7 @@ class t3lib_htmlmail
 	 * @return	string		The QP encoded string
 	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
 	 */
-	public function quoted_printable($string)
-	{
+	public function quoted_printable($string) {
 		t3lib_div::logDeprecatedFunction();
 
 		return t3lib_div::quoted_printable($string, 76);
@@ -1531,8 +1482,7 @@ class t3lib_htmlmail
 	 * @return	string		the name
 	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
 	 */
-	public function convertName($name)
-	{
+	public function convertName($name) {
 		t3lib_div::logDeprecatedFunction();
 
 		return $name;
