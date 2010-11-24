@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Sebastian Kurfürst <sebastian@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Sebastian Kurfürst <sebastian@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Ext Direct API Generator
@@ -66,16 +66,16 @@ class t3lib_extjs_ExtDirectApi {
 
 			// Check GET-parameter no_cache and extCache setting
 		$extCache = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && (
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
 		);
 		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $extCache;
 
 			// look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . $filterNamespace .
-			serialize($this->settings) . TYPO3_MODE);
-		
+						 serialize($this->settings) . TYPO3_MODE);
+
 			// with no_cache always generate the javascript content
 		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
 
@@ -119,13 +119,13 @@ class t3lib_extjs_ExtDirectApi {
 			if ($filterNamespace) {
 					// namespace error
 				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.namespaceError'),
-								__CLASS__, $filterNamespace
+										__CLASS__, $filterNamespace
 				);
 			}
 			else {
 					// no namespace given
 				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.noNamespace'),
-								__CLASS__
+										__CLASS__
 				);
 			}
 				// make js multiline message
@@ -163,7 +163,7 @@ class t3lib_extjs_ExtDirectApi {
 				$javascriptObjectName = array_pop($splittedJavascriptName);
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
 
-				// only items inside the wanted namespace
+					// only items inside the wanted namespace
 				if (strpos($javascriptNamespace, $filterNamespace) !== 0) {
 					continue;
 				}
@@ -216,7 +216,7 @@ class t3lib_extjs_ExtDirectApi {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/extjs/class.t3lib_extjs_extdirectapi.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/extjs/class.t3lib_extjs_extdirectapi.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/extjs/class.t3lib_extjs_extdirectapi.php']);
 }
 

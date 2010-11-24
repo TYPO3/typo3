@@ -39,18 +39,18 @@ class extDirect_dataProvider_BackendLiveSearch {
 	/**
 	 * @var array
 	 */
-	protected $searchResults = array (
-		'pageJump'	  => '',
+	protected $searchResults = array(
+		'pageJump' => '',
 		'searchItems' => array()
 	);
 
 	/**
 	 * @var array
 	 */
-	protected $helpContent = array (
+	protected $helpContent = array(
 		'title' => 'How to use advanced search tags',
-		'text'  => 'Search in certain tables:<br />page:Home will search for all pages with the title "Home"',
-		'keys'	=> array(),
+		'text' => 'Search in certain tables:<br />page:Home will search for all pages with the title "Home"',
+		'keys' => array(),
 	);
 
 	/**
@@ -67,10 +67,10 @@ class extDirect_dataProvider_BackendLiveSearch {
 	 * Initialize the live search
 	 */
 	public function __construct() {
-		// @todo Use the autoloader for this. Not sure why its not working.
+			// @todo Use the autoloader for this. Not sure why its not working.
 		require_once(PATH_t3lib . 'search/class.t3lib_search_livesearch_queryParser.php');
 
-		$this->liveSearch  = t3lib_div::makeInstance('t3lib_search_livesearch');
+		$this->liveSearch = t3lib_div::makeInstance('t3lib_search_livesearch');
 		$this->queryParser = t3lib_div::makeInstance('t3lib_search_livesearch_queryParser');
 	}
 
@@ -138,4 +138,5 @@ class extDirect_dataProvider_BackendLiveSearch {
 	}
 
 }
+
 ?>
