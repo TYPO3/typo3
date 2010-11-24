@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains the class "t3lib_db" containing functions for building SQL queries
  * and mysql wrappers, thus providing a foundational API to all database
@@ -41,76 +41,66 @@
  *
  *  138: class t3lib_DB
  *
- *              SECTION: Query execution
- *  175:     function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
- *  192:     function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
- *  206:     function exec_DELETEquery($table,$where)
- *  225:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  250:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  278:     function exec_SELECT_queryArray($queryParts)
- *  301:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
+ *			  SECTION: Query execution
+ *  175:	 function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  192:	 function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  206:	 function exec_DELETEquery($table,$where)
+ *  225:	 function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  250:	 function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  278:	 function exec_SELECT_queryArray($queryParts)
+ *  301:	 function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
  *
- *              SECTION: Query building
- *  346:     function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
- *  381:     function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
- *  422:     function DELETEquery($table,$where)
- *  451:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  492:     function listQuery($field, $value, $table)
- *  506:     function searchQuery($searchWords,$fields,$table)
+ *			  SECTION: Query building
+ *  346:	 function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)
+ *  381:	 function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)
+ *  422:	 function DELETEquery($table,$where)
+ *  451:	 function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  492:	 function listQuery($field, $value, $table)
+ *  506:	 function searchQuery($searchWords,$fields,$table)
  *
- *              SECTION: Various helper functions
- *  552:     function fullQuoteStr($str, $table)
- *  569:     function fullQuoteArray($arr, $table, $noQuote=FALSE)
- *  596:     function quoteStr($str, $table)
- *  612:     function escapeStrForLike($str, $table)
- *  625:     function cleanIntArray($arr)
- *  641:     function cleanIntList($list)
- *  655:     function stripOrderBy($str)
- *  669:     function stripGroupBy($str)
- *  681:     function splitGroupOrderLimit($str)
+ *			  SECTION: Various helper functions
+ *  552:	 function fullQuoteStr($str, $table)
+ *  569:	 function fullQuoteArray($arr, $table, $noQuote=FALSE)
+ *  596:	 function quoteStr($str, $table)
+ *  612:	 function escapeStrForLike($str, $table)
+ *  625:	 function cleanIntArray($arr)
+ *  641:	 function cleanIntList($list)
+ *  655:	 function stripOrderBy($str)
+ *  669:	 function stripGroupBy($str)
+ *  681:	 function splitGroupOrderLimit($str)
  *
- *              SECTION: MySQL wrapper functions
- *  749:     function sql($db,$query)
- *  763:     function sql_query($query)
- *  776:     function sql_error()
- *  788:     function sql_num_rows($res)
- *  800:     function sql_fetch_assoc($res)
- *  813:     function sql_fetch_row($res)
- *  825:     function sql_free_result($res)
- *  836:     function sql_insert_id()
- *  847:     function sql_affected_rows()
- *  860:     function sql_data_seek($res,$seek)
- *  873:     function sql_field_type($res,$pointer)
- *  887:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
- *  915:     function sql_select_db($TYPO3_db)
+ *			  SECTION: MySQL wrapper functions
+ *  749:	 function sql($db,$query)
+ *  763:	 function sql_query($query)
+ *  776:	 function sql_error()
+ *  788:	 function sql_num_rows($res)
+ *  800:	 function sql_fetch_assoc($res)
+ *  813:	 function sql_fetch_row($res)
+ *  825:	 function sql_free_result($res)
+ *  836:	 function sql_insert_id()
+ *  847:	 function sql_affected_rows()
+ *  860:	 function sql_data_seek($res,$seek)
+ *  873:	 function sql_field_type($res,$pointer)
+ *  887:	 function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
+ *  915:	 function sql_select_db($TYPO3_db)
  *
- *              SECTION: SQL admin functions
- *  947:     function admin_get_dbs()
- *  965:     function admin_get_tables()
- *  984:     function admin_get_fields($tableName)
- * 1002:     function admin_get_keys($tableName)
- * 1020:     function admin_query($query)
+ *			  SECTION: SQL admin functions
+ *  947:	 function admin_get_dbs()
+ *  965:	 function admin_get_tables()
+ *  984:	 function admin_get_fields($tableName)
+ * 1002:	 function admin_get_keys($tableName)
+ * 1020:	 function admin_query($query)
  *
- *              SECTION: Connecting service
- * 1048:     function connectDB()
+ *			  SECTION: Connecting service
+ * 1048:	 function connectDB()
  *
- *              SECTION: Debugging
- * 1086:     function debug($func)
+ *			  SECTION: Debugging
+ * 1086:	 function debug($func)
  *
  * TOTAL FUNCTIONS: 42
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -131,7 +121,7 @@
  *
  * USE:
  * In all TYPO3 scripts the global variable $TYPO3_DB is an instance of this class. Use that.
- * Eg. 		$GLOBALS['TYPO3_DB']->sql_fetch_assoc()
+ * Eg.		 $GLOBALS['TYPO3_DB']->sql_fetch_assoc()
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -141,18 +131,16 @@ class t3lib_DB {
 
 
 		// Debug:
-	var $debugOutput = FALSE;		// Set "TRUE" if you want database errors outputted.
-	var $debug_lastBuiltQuery = '';		// Internally: Set to last built query (not necessarily executed...)
-	var $store_lastBuiltQuery = FALSE;	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
-	var $explainOutput = 0;			// Set this to 1 to get queries explained (devIPmask must match). Set the value to 2 to the same but disregarding the devIPmask. There is an alternative option to enable explain output in the admin panel under "TypoScript", which will produce much nicer output, but only works in FE.
+	var $debugOutput = FALSE; // Set "TRUE" if you want database errors outputted.
+	var $debug_lastBuiltQuery = ''; // Internally: Set to last built query (not necessarily executed...)
+	var $store_lastBuiltQuery = FALSE; // Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
+	var $explainOutput = 0; // Set this to 1 to get queries explained (devIPmask must match). Set the value to 2 to the same but disregarding the devIPmask. There is an alternative option to enable explain output in the admin panel under "TypoScript", which will produce much nicer output, but only works in FE.
 
 		// Default link identifier:
 	var $link = FALSE;
 
 		// Default character set, applies unless character set or collation are explicitely set
 	var $default_charset = 'utf8';
-
-
 
 
 	/************************************
@@ -300,14 +288,14 @@ class t3lib_DB {
 		}
 
 		return $this->exec_SELECTquery(
-					$select,
-					$tables,
-						// whereClauseMightContainGroupOrderBy
-					$mmWhere . ' ' . $whereClause,
-					$groupBy,
-					$orderBy,
-					$limit
-				);
+			$select,
+			$tables,
+				// whereClauseMightContainGroupOrderBy
+				$mmWhere . ' ' . $whereClause,
+			$groupBy,
+			$orderBy,
+			$limit
+		);
 	}
 
 	/**
@@ -356,7 +344,9 @@ class t3lib_DB {
 					$output[$tempRow[$uidIndexField]] = $tempRow;
 				}
 			} else {
-				while ($output[] = $this->sql_fetch_assoc($res));
+				while ($output[] = $this->sql_fetch_assoc($res)) {
+					;
+				}
 				array_pop($output);
 			}
 			$this->sql_free_result($res);
@@ -403,9 +393,9 @@ class t3lib_DB {
 	 * @return	mixed		Number of rows counter (integer) or false if something went wrong (boolean)
 	 */
 	public function exec_SELECTcountRows($field, $table, $where = '') {
-		$count = false;
+		$count = FALSE;
 		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
-		if ($resultSet !== false) {
+		if ($resultSet !== FALSE) {
 			list($count) = $this->sql_fetch_row($resultSet);
 			$this->sql_free_result($resultSet);
 		}
@@ -425,15 +415,6 @@ class t3lib_DB {
 		}
 		return $res;
 	}
-
-
-
-
-
-
-
-
-
 
 
 	/**************************************
@@ -462,8 +443,8 @@ class t3lib_DB {
 
 				// Build query:
 			$query = 'INSERT INTO ' . $table .
-				' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
-				'(' . implode(',', $fields_values) . ')';
+					' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
+					'(' . implode(',', $fields_values) . ')';
 
 				// Return query:
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -488,7 +469,7 @@ class t3lib_DB {
 		if (count($rows)) {
 				// Build query:
 			$query = 'INSERT INTO ' . $table .
-				' (' . implode(', ', $fields) . ') VALUES ';
+					' (' . implode(', ', $fields) . ') VALUES ';
 
 			$rowSQL = array();
 			foreach ($rows as $row) {
@@ -529,13 +510,13 @@ class t3lib_DB {
 				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
 				foreach ($nArr as $k => $v) {
-					$fields[] = $k.'='.$v;
+					$fields[] = $k . '=' . $v;
 				}
 			}
 
 				// Build query:
 			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
-				(strlen($where) > 0 ? ' WHERE ' . $where : '');
+					(strlen($where) > 0 ? ' WHERE ' . $where : '');
 
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
@@ -562,7 +543,7 @@ class t3lib_DB {
 
 				// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 			$query = 'DELETE FROM ' . $table .
-				(strlen($where) > 0 ? ' WHERE ' . $where : '');
+					(strlen($where) > 0 ? ' WHERE ' . $where : '');
 
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
@@ -593,7 +574,7 @@ class t3lib_DB {
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 			// Build basic query:
 		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table .
-			(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+				(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
 
 			// Group by:
 		$query .= (strlen($groupBy) > 0 ? ' GROUP BY ' . $groupBy : '');
@@ -624,7 +605,7 @@ class t3lib_DB {
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 			// Build basic query:
 		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table .
-			(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+				(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
 
 			// Return query:
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -668,7 +649,7 @@ class t3lib_DB {
 	 * @return	string		WHERE clause for a query
 	 */
 	public function listQuery($field, $value, $table) {
-		$value = (string)$value;
+		$value = (string) $value;
 		if (strpos(',', $value) !== FALSE) {
 			throw new InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !');
 		}
@@ -688,22 +669,13 @@ class t3lib_DB {
 	function searchQuery($searchWords, $fields, $table) {
 		$queryParts = array();
 
-		foreach($searchWords as $sw) {
+		foreach ($searchWords as $sw) {
 			$like = ' LIKE \'%' . $this->quoteStr($sw, $table) . '%\'';
 			$queryParts[] = $table . '.' . implode($like . ' OR ' . $table . '.', $fields) . $like;
 		}
 		$query = '(' . implode(') AND (', $queryParts) . ')';
-		return $query ;
+		return $query;
 	}
-
-
-
-
-
-
-
-
-
 
 
 	/**************************************
@@ -775,15 +747,6 @@ class t3lib_DB {
 	}
 
 
-
-
-
-
-
-
-
-
-
 	/**************************************
 	 *
 	 * Various helper functions
@@ -825,7 +788,7 @@ class t3lib_DB {
 			$noQuote = FALSE;
 		}
 
-		foreach($arr as $k => $v) {
+		foreach ($arr as $k => $v) {
 			if ($noQuote === FALSE || !in_array($k, $noQuote)) {
 				$arr[$k] = $this->fullQuoteStr($v, $table);
 			}
@@ -871,7 +834,7 @@ class t3lib_DB {
 	 * @see cleanIntList()
 	 */
 	function cleanIntArray($arr) {
-		foreach($arr as $k => $v) {
+		foreach ($arr as $k => $v) {
 			$arr[$k] = intval($arr[$k]);
 		}
 		return $arr;
@@ -964,19 +927,6 @@ class t3lib_DB {
 
 		return $wgolParts;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/**************************************
@@ -1175,7 +1125,7 @@ class t3lib_DB {
 	 * @param	string		Password to connect with.
 	 * @return	pointer		Returns a positive MySQL persistent link identifier on success, or FALSE on error.
 	 */
-	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	{
+	function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
 			// mysql_error() is tied to an established connection
 			// if the connection fails we need a different method to get the error message
 		@ini_set('track_errors', 1);
@@ -1194,7 +1144,7 @@ class t3lib_DB {
 					// We use PHP's default value for 4th parameter (new_link), which is false.
 					// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c,
 					// function php_mysql_do_connect(), near line 525
-				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, false, MYSQL_CLIENT_COMPRESS);
+				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, FALSE, MYSQL_CLIENT_COMPRESS);
 			} else {
 				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 			}
@@ -1213,7 +1163,7 @@ class t3lib_DB {
 
 		if (!$this->link) {
 			t3lib_div::sysLog('Could not connect to MySQL server ' . $TYPO3_db_host .
-				' with user ' . $TYPO3_db_username . ': ' . $error_msg,
+					' with user ' . $TYPO3_db_username . ': ' . $error_msg,
 				'Core',
 				4
 			);
@@ -1222,7 +1172,7 @@ class t3lib_DB {
 			foreach ($setDBinit as $v) {
 				if (mysql_query($v, $this->link) === FALSE) {
 					t3lib_div::sysLog('Could not initialize DB connection with query "' . $v .
-						'": ' . mysql_error($this->link),
+							'": ' . mysql_error($this->link),
 						'Core',
 						3
 					);
@@ -1245,21 +1195,13 @@ class t3lib_DB {
 		$ret = @mysql_select_db($TYPO3_db, $this->link);
 		if (!$ret) {
 			t3lib_div::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' .
-				mysql_error(),
+					mysql_error(),
 				'Core',
 				4
 			);
 		}
 		return $ret;
 	}
-
-
-
-
-
-
-
-
 
 
 	/**************************************
@@ -1399,16 +1341,6 @@ class t3lib_DB {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
 	/******************************
 	 *
 	 * Connecting service
@@ -1455,7 +1387,6 @@ class t3lib_DB {
 	}
 
 
-
 	/******************************
 	 *
 	 * Debugging
@@ -1469,7 +1400,7 @@ class t3lib_DB {
 	 * @param	string		Last query if not last built query
 	 * @return	void
 	 */
-	function debug($func, $query='') {
+	function debug($func, $query = '') {
 
 		$error = $this->sql_error();
 		if ($error || $this->debugOutput == 2) {
@@ -1481,7 +1412,7 @@ class t3lib_DB {
 					'debug_backtrace' => t3lib_utility_Debug::debugTrail(),
 				),
 				$func,
-				is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug')) ? '' : 'DB Error'
+					is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug')) ? '' : 'DB Error'
 			);
 		}
 	}
@@ -1506,9 +1437,9 @@ class t3lib_DB {
 				}
 			}
 			$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' .
-				substr($trace[0]['file'], strlen(PATH_site) + 2) . ' in line ' .
-				$trace[0]['line'];
-			t3lib_div::sysLog($msg.'. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
+					substr($trace[0]['file'], strlen(PATH_site) + 2) . ' in line ' .
+					$trace[0]['line'];
+			t3lib_div::sysLog($msg . '. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
 				// Send to devLog if enabled
 			if (TYPO3_DLOG) {
 				$debugLogData = array(
@@ -1540,16 +1471,16 @@ class t3lib_DB {
 	 */
 	protected function explain($query, $from_table, $row_count) {
 
-		if ((int)$this->explainOutput == 1 || ((int)$this->explainOutput == 2 &&
-			t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))
-			) {
+		if ((int) $this->explainOutput == 1 || ((int) $this->explainOutput == 2 &&
+				t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))
+		) {
 				// raw HTML output
 			$explainMode = 1;
-		} elseif ((int)$this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
+		} elseif ((int) $this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
 				// embed the output into the TS admin panel
 			$explainMode = 2;
 		} else {
-			return false;
+			return FALSE;
 		}
 
 		$error = $this->sql_error();
@@ -1570,7 +1501,7 @@ class t3lib_DB {
 			// Notice: Rows are skipped if there is only one result, or if no conditions are set
 		if ($explain_output[0]['rows'] > 1 || t3lib_div::inList('ALL', $explain_output[0]['type'])) {
 				// only enable output if it's really useful
-			$debug = true;
+			$debug = TRUE;
 
 			foreach ($explain_tables as $table) {
 				$tableRes = $this->sql_query('SHOW TABLE STATUS LIKE \'' . $table . '\'');
@@ -1587,7 +1518,7 @@ class t3lib_DB {
 				$this->sql_free_result($tableRes);
 			}
 		} else {
-			$debug = false;
+			$debug = FALSE;
 		}
 
 		if ($debug) {
@@ -1613,16 +1544,16 @@ class t3lib_DB {
 					$GLOBALS['TT']->setTSselectQuery($data);
 				}
 			}
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_db.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_db.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_db.php']);
 }
 
