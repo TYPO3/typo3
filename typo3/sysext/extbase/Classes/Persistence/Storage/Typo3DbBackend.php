@@ -247,21 +247,31 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Returns the number of tuples matching the query.
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return int The number of matching tuples
+	 * @return integer The number of matching tuples
 	 */
 	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
 		$constraint = $query->getConstraint();
-		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with a constraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
+		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
+			throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with a constraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
+		}
 		$parameters = array();
 		$statementParts = $this->parseQuery($query, $parameters);
-		$statementParts['fields'] = array('COUNT(*)');
-		$statement = $this->buildQuery($statementParts, $parameters);
-		$this->replacePlaceholders($statement, $parameters);
-		// debug($statement,-2);
-		$result = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors($statement);
-		$rows = $this->getRowsFromResult($query->getSource(), $result);
-		return current(current($rows));
+		// if limit is set, we need to count the rows "manually" as COUNT(*) ignores LIMIT constraints
+		if (!empty($statementParts['limit'])) {
+			$statement = $this->buildQuery($statementParts, $parameters);
+			$this->replacePlaceholders($statement, $parameters);
+			$result = $this->databaseHandle->sql_query($statement);
+			$this->checkSqlErrors($statement);
+			return $this->databaseHandle->sql_num_rows($result);
+		} else {
+			$statementParts['fields'] = array('COUNT(*)');
+			$statement = $this->buildQuery($statementParts, $parameters);
+			$this->replacePlaceholders($statement, $parameters);
+			$result = $this->databaseHandle->sql_query($statement);
+			$this->checkSqlErrors($statement);
+			$rows = $this->getRowsFromResult($query->getSource(), $result);
+			return current(current($rows));
+		}
 	}
 
 	/**
