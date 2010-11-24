@@ -38,6 +38,7 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
+		$request->setHmacVerified(TRUE);
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
 
 		$this->dispatcher->dispatch($request, $response);
