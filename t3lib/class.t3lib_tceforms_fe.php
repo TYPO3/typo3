@@ -1,40 +1,40 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
  *   60: class t3lib_TCEforms_FE extends t3lib_TCEforms
- *   68:     public function wrapLabels($str)
- *   78:     public function printPalette(array $paletteArray)
- *  102:     public function setFancyDesign()
- *  131:     public function loadJavascriptLib($lib)
- *  146:     public function addStyleSheet($key, $href, $title='', $relation='stylesheet')
+ *   68:	 public function wrapLabels($str)
+ *   78:	 public function printPalette(array $paletteArray)
+ *  102:	 public function setFancyDesign()
+ *  131:	 public function loadJavascriptLib($lib)
+ *  146:	 public function addStyleSheet($key, $href, $title='', $relation='stylesheet')
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -48,7 +48,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 
 /**
@@ -85,12 +84,12 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	public function printPalette(array $paletteArray) {
 		$out = '';
 		$bgColor = ' bgcolor="#D6DAD0"';
-		foreach($paletteArray as $content) {
+		foreach ($paletteArray as $content) {
 			$hRow[] = '<td' . $bgColor . '><font face="verdana" size="1">&nbsp;</font></td><td nowrap="nowrap"' . $bgColor . '><font color="#666666" face="verdana" size="1">' . $content['NAME'] . '</font></td>';
 			$iRow[] = '<td valign="top">' .
-						'<img name="req_' . $content['TABLE'].'_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="10" height="10" alt="" />' .
-						'<img name="cm_' . $content['TABLE'].'_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="7" height="10" alt="" />' .
-						'</td><td nowrap="nowrap" valign="top">' . $content['ITEM'] . $content['HELP_ICON'] . '</td>';
+					  '<img name="req_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="10" height="10" alt="" />' .
+					  '<img name="cm_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="7" height="10" alt="" />' .
+					  '</td><td nowrap="nowrap" valign="top">' . $content['ITEM'] . $content['HELP_ICON'] . '</td>';
 		}
 		$out = '<table border="0" cellpadding="0" cellspacing="0">
 			<tr><td><img src="clear.gif" width="' . intval($this->paletteMargin) . '" height="1" alt="" /></td>' . implode('', $hRow) . '</tr>
@@ -127,7 +126,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	</tr>	';
 	}
 
- 	/**
+	/**
 	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied.
 	 * This method adds the library to $GLOBALS['TSFE']->additionalHeaderData[$lib].
@@ -151,11 +150,11 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	 * @return	string		$relation: value for the rel attribute of the link element
 	 * @return	void
 	 */
-	public function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$pageRenderer->addCssFile($this->prependBackPath($href), $relation, 'screen', $title);
-	 }
+	}
 
 	/**
 	 * Initializes an anonymous template container.
