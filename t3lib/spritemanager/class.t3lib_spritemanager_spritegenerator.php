@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -65,7 +65,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var int
 	 */
-	protected $defaultWidth  = 0;
+	protected $defaultWidth = 0;
 
 	/**
 	 * most common icon-height in the sprite
@@ -316,11 +316,11 @@ class t3lib_spritemanager_SpriteGenerator {
 		natsort($iconNames);
 
 		return array(
-			'spriteImage'	=> PATH_site . $this->spriteFolder . $this->spriteName . '.png',
-			'spriteGifImage'=> PATH_site . $this->spriteFolder . $this->spriteName . '.gif',
-			'cssFile'		=> PATH_site . $this->cssFolder . $this->spriteName . '.css',
-			'cssGif'		=> PATH_site . $this->cssFolder . $this->spriteName . '-ie6.css',
-			'iconNames'		=> $iconNames
+			'spriteImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
+			'spriteGifImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.gif',
+			'cssFile' => PATH_site . $this->cssFolder . $this->spriteName . '.css',
+			'cssGif' => PATH_site . $this->cssFolder . $this->spriteName . '-ie6.css',
+			'iconNames' => $iconNames
 		);
 	}
 
@@ -342,13 +342,13 @@ class t3lib_spritemanager_SpriteGenerator {
 		$spritePathForCSS = $this->resolveSpritePath();
 
 		$markerArray = array(
-			'###NAMESPACE###'		=> $this->nameSpace,
-			'###DEFAULTWIDTH###'	=> $this->defaultWidth,
-			'###DEFAULTHEIGHT###'	=> $this->defaultHeight,
-			'###SPRITENAME###'	=> '',
-			'###SPRITEURL###'		=> ($spritePathForCSS ? $spritePathForCSS . '/' : '')
+			'###NAMESPACE###' => $this->nameSpace,
+			'###DEFAULTWIDTH###' => $this->defaultWidth,
+			'###DEFAULTHEIGHT###' => $this->defaultHeight,
+			'###SPRITENAME###' => '',
+			'###SPRITEURL###' => ($spritePathForCSS ? $spritePathForCSS . '/' : '')
 		);
-		$markerArray['###SPRITEURL###'] .=  $this->spriteName . '.png' . $timestamp;
+		$markerArray['###SPRITEURL###'] .= $this->spriteName . '.png' . $timestamp;
 
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
@@ -365,13 +365,13 @@ class t3lib_spritemanager_SpriteGenerator {
 		foreach ($this->iconsData as $key => $data) {
 			$temp = $data['iconNameParts'];
 			array_shift($temp);
-			$cssName = implode('-' , $temp);
+			$cssName = implode('-', $temp);
 			$markerArrayIcons = array(
-				'###NAMESPACE###'	=> $this->nameSpace,
-				'###ICONNAME###'	=> $cssName,
-				'###LEFT###'		=> $data['left'],
-				'###TOP###'		=> $data['top'],
-				'###SIZE_INFO###'	=> ''
+				'###NAMESPACE###' => $this->nameSpace,
+				'###ICONNAME###' => $cssName,
+				'###LEFT###' => $data['left'],
+				'###TOP###' => $data['top'],
+				'###SIZE_INFO###' => ''
 			);
 			if ($data['height'] != $this->defaultHeight) {
 				$markerArrayIcons['###SIZE_INFO###'] .= TAB . 'height: ' . $data['height'] . 'px;' . LF;
@@ -404,12 +404,12 @@ class t3lib_spritemanager_SpriteGenerator {
 
 		$i = 0;
 		while (isset($cssPathSegments[$i]) && isset($graphicPathSegments[$i]) &&
-				$cssPathSegments[$i] == $graphicPathSegments[$i]) {
+			   $cssPathSegments[$i] == $graphicPathSegments[$i]) {
 			unset($cssPathSegments[$i]);
 			unset($graphicPathSegments[$i]);
 			++$i;
 		}
-		foreach ($cssPathSegments AS $key => $value) {
+		foreach ($cssPathSegments as $key => $value) {
 			$cssPathSegments[$key] = '..';
 		}
 		$completePath = array_merge($cssPathSegments, $graphicPathSegments);
@@ -428,16 +428,16 @@ class t3lib_spritemanager_SpriteGenerator {
 
 		$filePath = array(
 			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
-			'gifFile'  => NULL
+			'gifFile' => NULL
 		);
 			// create black true color image with given size
 		$newSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
-		imagesavealpha($newSprite, true);
+		imagesavealpha($newSprite, TRUE);
 			// make it transparent
 		imagefill($newSprite, 0, 0, imagecolorallocatealpha($newSprite, 0, 255, 255, 127));
-		foreach ($this->iconsData AS $icon) {
+		foreach ($this->iconsData as $icon) {
 			$function = 'imagecreatefrom' . strtolower($icon['fileExtension']);
-			if(function_exists($function)) {
+			if (function_exists($function)) {
 				$currentIcon = $function($icon['fileName']);
 				imagecopy($newSprite, $currentIcon, $icon['left'], $icon['top'], 0, 0, $icon['width'], $icon['height']);
 			}
@@ -449,9 +449,9 @@ class t3lib_spritemanager_SpriteGenerator {
 			$gifSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
 				// make it transparent
 			imagefill($gifSprite, 0, 0, imagecolorallocate($gifSprite, 127, 127, 127));
-			foreach ($this->iconsData AS $icon) {
+			foreach ($this->iconsData as $icon) {
 				$function = 'imagecreatefrom' . strtolower($icon['fileExtension']);
-				if(function_exists($function)) {
+				if (function_exists($function)) {
 					$currentIcon = $function($icon['fileName']);
 					imagecopy($gifSprite, $currentIcon, $icon['left'], $icon['top'], 0, 0, $icon['width'], $icon['height']);
 				}
@@ -467,13 +467,14 @@ class t3lib_spritemanager_SpriteGenerator {
 			t3lib_div::unlink_tempfile($tempSprite . '.gif');
 		}
 	}
+
 	/**
 	 * Arranges icons in sprites,
 	 * afterwards all icons have information about ther position in sprite
 	 */
 	protected function calculateSpritePositions() {
 		$currentLeft = 0;
-		$currentTop  = 0;
+		$currentTop = 0;
 			// calculate width of every icon-size-group
 		$sizes = array();
 		foreach ($this->iconSizes as $sizeTag => $count) {
@@ -511,7 +512,7 @@ class t3lib_spritemanager_SpriteGenerator {
 					$currentLeft = 0;
 				}
 				$this->iconsData[$iconName]['left'] = $currentLeft;
-				$this->iconsData[$iconName]['top']  = $currentTop;
+				$this->iconsData[$iconName]['top'] = $currentTop;
 
 				$currentLeft += $size['width'];
 				$currentLeft += $this->space;
@@ -544,7 +545,7 @@ class t3lib_spritemanager_SpriteGenerator {
 				if (!in_array($folder, $this->spriteBases) && count($icons) && $folder !== '') {
 					$this->spriteBases[] = $folder;
 				}
-				foreach ($icons AS $icon) {
+				foreach ($icons as $icon) {
 					$fileInfo = pathinfo($icon);
 
 					$iconName = ($folder ? $folder . '-' : '') . $fileInfo['filename'];
@@ -569,22 +570,22 @@ class t3lib_spritemanager_SpriteGenerator {
 		foreach ($files as $iconName => $iconFile) {
 
 			$iconNameParts = t3lib_div::trimExplode('-', $iconName);
-			if(!in_array($iconNameParts[0], $this->spriteBases)) {
+			if (!in_array($iconNameParts[0], $this->spriteBases)) {
 				$this->spriteBases[] = $iconNameParts[0];
 			}
 			$fileInfo = @pathinfo(PATH_site . $iconFile);
 			$imageInfo = @getimagesize(PATH_site . $iconFile);
 
 			$this->iconsData[$iconName] = array(
-				'iconName'		=> $iconName,
-				'iconNameParts'	=> $iconNameParts,
-				'singleName'	=> $fileInfo['filename'],
-				'fileExtension'	=> $fileInfo['extension'],
-				'fileName'		=> PATH_site . $iconFile,
-				'width'			=> $imageInfo[0],
-				'height'		=> $imageInfo[1],
-				'left'			=> 0,
-				'top'			=> 0
+				'iconName' => $iconName,
+				'iconNameParts' => $iconNameParts,
+				'singleName' => $fileInfo['filename'],
+				'fileExtension' => $fileInfo['extension'],
+				'fileName' => PATH_site . $iconFile,
+				'width' => $imageInfo[0],
+				'height' => $imageInfo[1],
+				'left' => 0,
+				'top' => 0
 			);
 
 			$sizeTag = $imageInfo[0] . 'x' . $imageInfo[1];
@@ -599,7 +600,7 @@ class t3lib_spritemanager_SpriteGenerator {
 			// find most common image size, save it as default
 		asort($this->iconSizes);
 		$defaultSize = $this->explodeSizeTag(array_pop(array_keys($this->iconSizes)));
-		$this->defaultWidth  = $defaultSize['width'];
+		$this->defaultWidth = $defaultSize['width'];
 		$this->defaultHeight = $defaultSize['height'];
 	}
 
@@ -613,13 +614,13 @@ class t3lib_spritemanager_SpriteGenerator {
 		$size = t3lib_div::trimExplode("x", $tag);
 		return array(
 			'width' => $size[0],
-			'height'=> $size[1]
+			'height' => $size[1]
 		);
 	}
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_spritegenerator.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_spritegenerator.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_spritegenerator.php']);
 }
 ?>

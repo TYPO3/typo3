@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -48,17 +48,17 @@ class t3lib_spritemanager_SpriteBuildingHandler extends t3lib_spritemanager_Abst
 	public function generate() {
 		$this->generatorInstance = t3lib_div::makeInstance('t3lib_spritemanager_SpriteGenerator', 'GeneratorHandler');
 		$this->generatorInstance
-			->setOmmitSpriteNameInIconName(TRUE)
-			->setIncludeTimestampInCSS(TRUE)
-			->setSpriteFolder(t3lib_SpriteManager::$tempPath)
-			->setCSSFolder(t3lib_SpriteManager::$tempPath);
+				->setOmmitSpriteNameInIconName(TRUE)
+				->setIncludeTimestampInCSS(TRUE)
+				->setSpriteFolder(t3lib_SpriteManager::$tempPath)
+				->setCSSFolder(t3lib_SpriteManager::$tempPath);
 
 		$iconsToProcess = array_merge(
 			(array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'],
 			$this->collectTcaSpriteIcons()
 		);
 
-		foreach($iconsToProcess as $iconName => $iconFile) {
+		foreach ($iconsToProcess as $iconName => $iconFile) {
 			$iconsToProcess[$iconName] = t3lib_div::resolveBackPath('typo3/' . $iconFile);
 		}
 
@@ -86,7 +86,7 @@ class t3lib_spritemanager_SpriteBuildingHandler extends t3lib_spritemanager_Abst
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_autogeneratinghandler.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_autogeneratinghandler.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_autogeneratinghandler.php']);
 }
 ?>
