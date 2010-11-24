@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * RTE API parent class.
  *
@@ -36,21 +36,18 @@
  *
  *   64: class t3lib_rteapi
  *
- *              SECTION: Main API functions;
- *   93:     function isAvailable()
- *  118:     function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)
- *  151:     function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)
+ *			  SECTION: Main API functions;
+ *   93:	 function isAvailable()
+ *  118:	 function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)
+ *  151:	 function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)
  *
- *              SECTION: Helper functions
- *  197:     function triggerField($fieldName)
+ *			  SECTION: Helper functions
+ *  197:	 function triggerField($fieldName)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
 
 
 /**
@@ -64,16 +61,10 @@
 class t3lib_rteapi {
 
 		// Internal, dynamic:
-	var $errorLog = array();		// Error messages regarding non-availability is collected here.
+	var $errorLog = array(); // Error messages regarding non-availability is collected here.
 
 		// Internal, static:
-	var $ID = '';					// Set this to the extension key of the RTE so it can identify itself.
-
-
-
-
-
-
+	var $ID = ''; // Set this to the extension key of the RTE so it can identify itself.
 
 
 	/***********************************
@@ -90,13 +81,17 @@ class t3lib_rteapi {
 	 *
 	 * @return	boolean		TRUE if this RTE object offers an RTE in the current browser environment
 	 */
-	function isAvailable()	{
+	function isAvailable() {
 		global $CLIENT;
 
 		$this->errorLog = array();
-		if (!$CLIENT['FORMSTYLE']) 	$this->errorLog[] = 'RTE API: Browser didn\'t support styles';
+		if (!$CLIENT['FORMSTYLE']) {
+			$this->errorLog[] = 'RTE API: Browser didn\'t support styles';
+		}
 
-		if (!count($this->errorLog))	return TRUE;
+		if (!count($this->errorLog)) {
+			return TRUE;
+		}
 	}
 
 	/**
@@ -115,17 +110,18 @@ class t3lib_rteapi {
 	 * @param	integer		PID value of record (true parent page id)
 	 * @return	string		HTML code for RTE!
 	 */
-	function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)	{
+	function drawRTE(&$pObj, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 
 			// Transform value:
-		$value = $this->transformContent('rte',$PA['itemFormElValue'],$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$thePidValue);
+		$value = $this->transformContent('rte', $PA['itemFormElValue'], $table, $field, $row, $specConf, $thisConfig, $RTErelPath, $thePidValue);
 
 			// Create item:
 		$item = '
-			'.$this->triggerField($PA['itemFormElName']).'
-			<textarea name="'.htmlspecialchars($PA['itemFormElName']).'"'.$pObj->formWidthText('48','off').' rows="20" wrap="off" style="background-color: #99eebb;">'.
-			t3lib_div::formatForTextarea($value).
-			'</textarea>';
+			' . $this->triggerField($PA['itemFormElName']) . '
+			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' .
+				$pObj->formWidthText('48', 'off') . ' rows="20" wrap="off" style="background-color: #99eebb;">' .
+				t3lib_div::formatForTextarea($value) .
+				'</textarea>';
 
 			// Return form item:
 		return $item;
@@ -148,18 +144,18 @@ class t3lib_rteapi {
 	 * @param	integer		PID value of record (true parent page id)
 	 * @return	string		Transformed content
 	 */
-	function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)	{
+	function transformContent($dirRTE, $value, $table, $field, $row, $specConf, $thisConfig, $RTErelPath, $pid) {
 
-#debug(array($dirRTE,$value,$table,$field,array(),$specConf,$thisConfig,$RTErelPath,$pid));
+		#debug(array($dirRTE,$value,$table,$field,array(),$specConf,$thisConfig,$RTErelPath,$pid));
 
-		if ($specConf['rte_transform'])	{
+		if ($specConf['rte_transform']) {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-			if ($p['mode'])	{	// There must be a mode set for transformation
-#debug($p['mode'],'MODE');
+			if ($p['mode']) { // There must be a mode set for transformation
+				#debug($p['mode'],'MODE');
 
 					// Initialize transformation:
 				$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-				$parseHTML->init($table.':'.$field, $pid);
+				$parseHTML->init($table . ':' . $field, $pid);
 				$parseHTML->setRelPath($RTErelPath);
 
 					// Perform transformation:
@@ -167,19 +163,9 @@ class t3lib_rteapi {
 			}
 		}
 
-#debug(array($dirRTE,$value),'OUT: '.$dirRTE);
+		#debug(array($dirRTE,$value),'OUT: '.$dirRTE);
 		return $value;
 	}
-
-
-
-
-
-
-
-
-
-
 
 
 	/***********************************
@@ -194,17 +180,17 @@ class t3lib_rteapi {
 	 * @param	string		Field name of the RTE field.
 	 * @return	string		<input> field of type "hidden" with a flag telling the TCEmain that this fields content should be traansformed back to database state.
 	 */
-	function triggerField($fieldName)	{
+	function triggerField($fieldName) {
 
-		$triggerFieldName = preg_replace('/\[([^]]+)\]$/','[_TRANSFORM_\1]', $fieldName);
-		return '<input type="hidden" name="'.htmlspecialchars($triggerFieldName).'" value="RTE" />';
+		$triggerFieldName = preg_replace('/\[([^]]+)\]$/', '[_TRANSFORM_\1]', $fieldName);
+		return '<input type="hidden" name="' . htmlspecialchars($triggerFieldName) . '" value="RTE" />';
 	}
 }
 
 /**
  * @deprecated since TYPO3 4.4: Use XCLASS t3lib/class.t3lib_rteapi.php instead. Will be removed in TYPO3 4.6.
  */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rte/class.tx_rte_base.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rte/class.tx_rte_base.php']) {
 	t3lib_div::deprecationLog('XCLASS "ext/rte/class.tx_rte_base.php" is deprecated since TYPO3 4.4 - use "t3lib/class.t3lib_rteapi.php" instead.');
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rte/class.tx_rte_base.php']);
 }
