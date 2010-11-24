@@ -1078,7 +1078,7 @@ class t3lib_sqlparser {
 						$parseString = trim(substr($parseString, 1));	// Strip of "("
 						$stack[$level][$pnt[$level]]['func']['substr'] = $this->getValue($parseString);
 						if (!$this->nextPart($parseString, '^(,)')) {
-							return $this->parseError('No comma found as expected in parseWhereClause()');
+							return $this->parseError('No comma found as expected in parseWhereClause()', $parseString);
 						}
 						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)[[:space:]]*')) {
 
@@ -1098,7 +1098,7 @@ class t3lib_sqlparser {
 							$stack[$level][$pnt[$level]]['func']['pos'] = $this->getValue($parseString);
 						}
 						if (!$this->nextPart($parseString, '^([)])')) {
-							return $this->parseError('No ) parenthesis at end of function');
+							return $this->parseError('No ) parenthesis at end of function', $parseString);
 	 					}
 					} elseif (preg_match('/^IFNULL[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(IFNULL)[[:space:]]*');
@@ -1121,7 +1121,7 @@ class t3lib_sqlparser {
 							$stack[$level][$pnt[$level]]['func']['default'] = $this->getValue($parseString);
 						}
 						if (!$this->nextPart($parseString, '^([)])')) {
-							return $this->parseError('No ) parenthesis at end of function');
+							return $this->parseError('No ) parenthesis at end of function', $parseString);
 	 					}
 					} elseif (preg_match('/^FIND_IN_SET[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(FIND_IN_SET)[[:space:]]*');
