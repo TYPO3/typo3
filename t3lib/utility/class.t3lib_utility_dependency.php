@@ -89,7 +89,7 @@ class t3lib_utility_Dependency {
 	 * @return t3lib_utility_Dependency
 	 */
 	public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences) {
-		$this->outerMostParentsRequireReferences = (bool)$outerMostParentsRequireReferences;
+		$this->outerMostParentsRequireReferences = (bool) $outerMostParentsRequireReferences;
 		return $this;
 	}
 
@@ -191,3 +191,4 @@ class t3lib_utility_Dependency {
 		return $this->factory;
 	}
 }
+?>

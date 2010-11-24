@@ -192,7 +192,7 @@ class t3lib_utility_Dependency_Element {
 				'*',
 				'sys_refindex',
 				'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') .
-					' AND recuid=' . $this->id
+				' AND recuid=' . $this->id
 			);
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
@@ -224,7 +224,7 @@ class t3lib_utility_Dependency_Element {
 				'*',
 				'sys_refindex',
 				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') .
-					' AND deleted=0 AND ref_uid=' . $this->id
+				' AND deleted=0 AND ref_uid=' . $this->id
 			);
 			if (is_array($rows)) {
 				foreach ($rows as $row) {

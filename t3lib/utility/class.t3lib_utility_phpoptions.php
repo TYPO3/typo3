@@ -62,4 +62,5 @@ final class t3lib_utility_PhpOptions {
 		return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE));
 	}
 }
+
 ?>

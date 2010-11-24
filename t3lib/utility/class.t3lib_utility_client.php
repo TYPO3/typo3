@@ -66,12 +66,12 @@ final class t3lib_utility_Client {
 			'useragent' => $userAgent,
 		);
 
-		// Analyze the userAgent string
-		// Declare known browsers to look for
+			// Analyze the userAgent string
+			// Declare known browsers to look for
 
 		$known = array('msie', 'firefox', 'webkit', 'opera', 'netscape', 'konqueror',
-				'gecko', 'chrome', 'safari', 'seamonkey', 'navigator', 'mosaic',
-				'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
+					   'gecko', 'chrome', 'safari', 'seamonkey', 'navigator', 'mosaic',
+					   'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
 		$matches = array();
 
 		$pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\.[0-9]+)?)#';
@@ -116,9 +116,9 @@ final class t3lib_utility_Client {
 			} elseif (strstr($userAgent, 'Win16') || strstr($userAgent, 'Windows 311')) {
 				$browserInfo['system'] = 'win311';
 			}
-		} elseif (strstr($userAgent,'Mac')) {
+		} elseif (strstr($userAgent, 'Mac')) {
 			$browserInfo['system'] = 'mac';
-			// unixes
+				// unixes
 		} elseif (strstr($userAgent, 'Linux')) {
 			$browserInfo['system'] = 'linux';
 		} elseif (strstr($userAgent, 'SGI') && strstr($userAgent, ' IRIX ')) {
@@ -154,7 +154,7 @@ final class t3lib_utility_Client {
 		$getDeviceTypeHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType'];
 		if (is_array($getDeviceTypeHooks)) {
 			foreach ($getDeviceTypeHooks as $hookFunction) {
-				$returnResult = true;
+				$returnResult = TRUE;
 				$hookParameters = array(
 					'userAgent' => &$userAgent,
 					'returnResult' => &$returnResult,
@@ -174,13 +174,13 @@ final class t3lib_utility_Client {
 		$deviceType = '';
 
 			// pda
-		if(strstr($userAgent, 'avantgo')) {
+		if (strstr($userAgent, 'avantgo')) {
 			$deviceType = 'pda';
 		}
 			// wap
-		$browser=substr($userAgent, 0, 4);
-		$wapviwer=substr(stristr($userAgent,'wap'), 0, 3);
-		if($wapviwer == 'wap' ||
+		$browser = substr($userAgent, 0, 4);
+		$wapviwer = substr(stristr($userAgent, 'wap'), 0, 3);
+		if ($wapviwer == 'wap' ||
 			$browser == 'noki' ||
 			$browser == 'eric' ||
 			$browser == 'r380' ||
@@ -190,7 +190,7 @@ final class t3lib_utility_Client {
 			$deviceType = 'wap';
 		}
 			// grabber
-		if(strstr($userAgent, 'g.r.a.b.') ||
+		if (strstr($userAgent, 'g.r.a.b.') ||
 			strstr($userAgent, 'utilmind httpget') ||
 			strstr($userAgent, 'webcapture') ||
 			strstr($userAgent, 'teleport') ||
@@ -198,7 +198,7 @@ final class t3lib_utility_Client {
 			$deviceType = 'grabber';
 		}
 			// robots
-		if(strstr($userAgent, 'crawler') ||
+		if (strstr($userAgent, 'crawler') ||
 			strstr($userAgent, 'spider') ||
 			strstr($userAgent, 'googlebot') ||
 			strstr($userAgent, 'searchbot') ||
@@ -211,4 +211,5 @@ final class t3lib_utility_Client {
 		return $deviceType;
 	}
 }
+
 ?>

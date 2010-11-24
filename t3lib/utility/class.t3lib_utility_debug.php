@@ -57,7 +57,7 @@ class t3lib_utility_Debug {
 
 
 	public function debug($var = '', $header = '', $group = 'Debug') {
-		// buffer the output of debug if no buffering started before
+			// buffer the output of debug if no buffering started before
 		if (ob_get_level() == 0) {
 			ob_start();
 		}
@@ -124,17 +124,17 @@ class t3lib_utility_Debug {
 	 */
 	public static function prepareVariableForJavascript($string, $asObject) {
 		if ($asObject) {
-			$string = str_replace(array (
-				'"', '/', '<', "\n", "\r"
-			), array (
-				'\"', '\/', '\<', '<br />', ''
-			), $string);
+			$string = str_replace(array(
+									   '"', '/', '<', "\n", "\r"
+								  ), array(
+										  '\"', '\/', '\<', '<br />', ''
+									 ), $string);
 		} else {
-			$string = str_replace(array (
-				'"', '/', '<', "\n", "\r"
-			), array (
-				'\"', '\/', '\<', '', ''
-			), $string);
+			$string = str_replace(array(
+									   '"', '/', '<', "\n", "\r"
+								  ), array(
+										  '\"', '\/', '\<', '', ''
+									 ), $string);
 		}
 
 		return $string;
@@ -225,7 +225,7 @@ class t3lib_utility_Debug {
 		$trail = array_reverse($trail);
 		array_pop($trail);
 
-		$path = array ();
+		$path = array();
 		foreach ($trail as $dat) {
 			$path[] = $dat['class'] . $dat['type'] . $dat['function'] . '#' . $dat['line'];
 		}
@@ -247,13 +247,13 @@ class t3lib_utility_Debug {
 			$firstEl = current($rows);
 			if (is_array($firstEl)) {
 				$headerColumns = array_keys($firstEl);
-				$tRows = array ();
+				$tRows = array();
 
-				// Header:
+					// Header:
 				$tRows[] = '<tr><td colspan="' . count($headerColumns) .
-					'" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' .
-					htmlspecialchars($header) . '</strong></td></tr>';
-				$tCells = array ();
+						   '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' .
+						   htmlspecialchars($header) . '</strong></td></tr>';
+				$tCells = array();
 				foreach ($headerColumns as $key) {
 					$tCells[] = '
 							<td><font face="Verdana,Arial" size="1"><strong>' . htmlspecialchars($key) . '</strong></font></td>';
@@ -262,14 +262,14 @@ class t3lib_utility_Debug {
 						<tr>' . implode('', $tCells) . '
 						</tr>';
 
-				// Rows:
+					// Rows:
 				foreach ($rows as $singleRow) {
-					$tCells = array ();
+					$tCells = array();
 					foreach ($headerColumns as $key) {
 						$tCells[] = '
 							<td><font face="Verdana,Arial" size="1">' .
-							(is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key])) .
-							'</font></td>';
+									(is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key])) .
+									'</font></td>';
 					}
 					$tRows[] = '
 						<tr>' . implode('', $tCells) . '
@@ -279,12 +279,17 @@ class t3lib_utility_Debug {
 				$table = '
 					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">' . implode('', $tRows) . '
 					</table>';
-				if ($returnHTML)
+				if ($returnHTML) {
 					return $table;
+				}
 				else
+				{
 					echo $table;
+				}
 			} else
+			{
 				debug('Empty array of rows', $header);
+			}
 		} else {
 			debug('No array of rows', $header);
 		}
@@ -299,8 +304,9 @@ class t3lib_utility_Debug {
 	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debug_ordvalue instead
 	 */
 	public function ordinalValue($string, $characters = 100) {
-		if (strlen($string) < $characters)
+		if (strlen($string) < $characters) {
 			$characters = strlen($string);
+		}
 		for ($i = 0; $i < $characters; $i++) {
 			$valuestring .= ' ' . ord(substr($string, $i, 1));
 		}
@@ -336,8 +342,8 @@ class t3lib_utility_Debug {
 							$string .= print_r($val, TRUE);
 						}
 						$result .= '<font face="Verdana,Arial" size="1" color="red">' .
-							nl2br(htmlspecialchars($string)) .
-							'<br /></font>';
+								   nl2br(htmlspecialchars($string)) .
+								   '<br /></font>';
 					} else {
 						if (gettype($val) == 'object') {
 							$string = 'Unknown object';
@@ -345,8 +351,8 @@ class t3lib_utility_Debug {
 							$string = (string) $val;
 						}
 						$result .= '<font face="Verdana,Arial" size="1" color="red">' .
-							nl2br(htmlspecialchars($string)) .
-							'<br /></font>';
+								   nl2br(htmlspecialchars($string)) .
+								   '<br /></font>';
 					}
 					$result .= '</td>
 					</tr>';
@@ -357,8 +363,8 @@ class t3lib_utility_Debug {
 			$result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
 					<td><font face="Verdana,Arial" size="1" color="red">' .
-					nl2br(htmlspecialchars((string) $array_in)) .
-					'<br /></font></td>
+					  nl2br(htmlspecialchars((string) $array_in)) .
+					  '<br /></font></td>
 				</tr>
 			</table>'; // Output it as a string.
 		}
@@ -378,7 +384,7 @@ class t3lib_utility_Debug {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_debug.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_debug.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_debug.php']);
 }
 ?>

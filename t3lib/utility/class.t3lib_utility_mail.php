@@ -45,13 +45,13 @@ final class t3lib_utility_Mail {
 	 * @param	string		Email address to send to.
 	 * @param	string		Subject line, non-encoded. (see PHP function mail())
 	 * @param	string		Message content, non-encoded. (see PHP function mail())
-	 * @param	string 		Additional headers for the mail (see PHP function mail())
+	 * @param	string		 Additional headers for the mail (see PHP function mail())
 	 * @param	string		Additional flags for the sending mail tool (see PHP function mail())
 	 * @return	boolean		Indicates whether the mail has been sent or not
 	 * @see		PHP function mail() []
 	 * @link	http://www.php.net/manual/en/function.mail.php
 	 */
-	public static function mail($to, $subject, $messageBody, $additionalHeaders = null, $additionalParameters = null) {
+	public static function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
 		$success = TRUE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'])) {
 			$parameters = array(
@@ -75,4 +75,5 @@ final class t3lib_utility_Mail {
 		return $success;
 	}
 }
+
 ?>
