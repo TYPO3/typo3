@@ -1,3 +1,7 @@
+2010-11-24  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16560: Hide mod_menu of record listing in page module if not needed (Thanks to Georg Ringer)
+
 2010-11-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #14050: CleanUp - CGL format of t3lib files - t3lib_formprotection_directory
