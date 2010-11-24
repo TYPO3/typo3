@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2006-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2006-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains translation tools
  *
@@ -37,24 +37,16 @@
  *
  *
  *   67: class t3lib_transl8tools
- *   74:     function getSystemLanguages($page_id=0,$backPath='')
- *  132:     function translationInfo($table,$uid,$sys_language_uid=0)
- *  187:     function getTranslationTable($table)
- *  197:     function isTranslationInOwnTable($table)
- *  209:     function foreignTranslationTable($table)
+ *   74:	 function getSystemLanguages($page_id=0,$backPath='')
+ *  132:	 function translationInfo($table,$uid,$sys_language_uid=0)
+ *  187:	 function getTranslationTable($table)
+ *  197:	 function isTranslationInOwnTable($table)
+ *  209:	 function foreignTranslationTable($table)
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
-
-
-
 
 
 /**
@@ -64,7 +56,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_transl8tools	{
+class t3lib_transl8tools {
 
 	/**
 	 * Returns array of system languages
@@ -78,8 +70,8 @@ class t3lib_transl8tools	{
 	 * @param	string		Backpath for flags
 	 * @return	array		Array with languages (title, uid, flagIcon)
 	 */
-	function getSystemLanguages($page_id=0,$backPath='')	{
-		global $TCA,$LANG;
+	function getSystemLanguages($page_id = 0, $backPath = '') {
+		global $TCA, $LANG;
 
 		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($page_id, 'mod.SHARED');
 		$languageIconTitles = array();
@@ -91,13 +83,13 @@ class t3lib_transl8tools	{
 
 		$languageIconTitles[0] = array(
 			'uid' => 0,
-			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage').')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
+			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage') . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
 			'ISOcode' => 'DEF',
 			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'] : 'empty-empty',
 		);
 
 			// Set "All" language:
-		$languageIconTitles[-1]=array(
+		$languageIconTitles[-1] = array(
 			'uid' => -1,
 			'title' => $LANG->getLL('multipleLanguages'),
 			'ISOcode' => 'DEF',
@@ -110,16 +102,16 @@ class t3lib_transl8tools	{
 			'sys_language',
 			''
 		);
-		foreach($sys_languages as $row)		{
+		foreach ($sys_languages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
 
-			if ($row['static_lang_isocode'] && t3lib_extMgm::isLoaded('static_info_tables'))	{
-				$staticLangRow = t3lib_BEfunc::getRecord('static_languages',$row['static_lang_isocode'],'lg_iso_2');
+			if ($row['static_lang_isocode'] && t3lib_extMgm::isLoaded('static_info_tables')) {
+				$staticLangRow = t3lib_BEfunc::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$languageIconTitles[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}
 			}
-			if (strlen ($row['flag'])) {
+			if (strlen($row['flag'])) {
 				$languageIconTitles[$row['uid']]['flagIcon'] = t3lib_iconWorks::mapRecordTypeToSpriteIconName('sys_language', $row);
 			}
 		}
@@ -141,34 +133,34 @@ class t3lib_transl8tools	{
 	function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL, $selFieldList = '') {
 		global $TCA;
 
-		if ($TCA[$table] && $uid)	{
+		if ($TCA[$table] && $uid) {
 			t3lib_div::loadTCA($table);
 
 			if ($row === NULL) {
 				$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
 			}
 
-			if (is_array($row))	{
+			if (is_array($row)) {
 				$trTable = $this->getTranslationTable($table);
-				if ($trTable)	{
-					if ($trTable!==$table || $row[$TCA[$table]['ctrl']['languageField']] <= 0)	{
-						if ($trTable!==$table || $row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
+				if ($trTable) {
+					if ($trTable !== $table || $row[$TCA[$table]['ctrl']['languageField']] <= 0) {
+						if ($trTable !== $table || $row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0) {
 
 								// Look for translations of this record, index by language field value:
 							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								($selFieldList ? $selFieldList : 'uid,'.$TCA[$trTable]['ctrl']['languageField']),
+								($selFieldList ? $selFieldList : 'uid,' . $TCA[$trTable]['ctrl']['languageField']),
 								$trTable,
 								$TCA[$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) .
-									' AND pid=' . intval($table === 'pages' ? $row['uid'] : $row['pid']).	// Making exception for pages of course where the translations will always be ON the page, not on the level above...
-									' AND '.$TCA[$trTable]['ctrl']['languageField'].(!$sys_language_uid ? '>0' : '='.intval($sys_language_uid)).
-									t3lib_BEfunc::deleteClause($trTable).
-									t3lib_BEfunc::versioningPlaceholderClause($trTable)
+								' AND pid=' . intval($table === 'pages' ? $row['uid'] : $row['pid']) . // Making exception for pages of course where the translations will always be ON the page, not on the level above...
+								' AND ' . $TCA[$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid)) .
+								t3lib_BEfunc::deleteClause($trTable) .
+								t3lib_BEfunc::versioningPlaceholderClause($trTable)
 							);
 
 							$translations = array();
 							$translations_errors = array();
-							foreach($translationsTemp as $r)	{
-								if (!isset($translations[$r[$TCA[$trTable]['ctrl']['languageField']]]))	{
+							foreach ($translationsTemp as $r) {
+								if (!isset($translations[$r[$TCA[$trTable]['ctrl']['languageField']]])) {
 									$translations[$r[$TCA[$trTable]['ctrl']['languageField']]] = $r;
 								} else {
 									$translations_errors[$r[$TCA[$trTable]['ctrl']['languageField']]][] = $r;
@@ -184,11 +176,21 @@ class t3lib_transl8tools	{
 								'translations' => $translations,
 								'excessive_translations' => $translations_errors
 							);
-						} else return 'Record "'.$table.'_'.$uid.'" seems to be a translation already (has a relation to record "'.$row[$TCA[$table]['ctrl']['transOrigPointerField']].'")';
-					} else return 'Record "'.$table.'_'.$uid.'" seems to be a translation already (has a language value "'.$row[$TCA[$table]['ctrl']['languageField']].'", relation to record "'.$row[$TCA[$table]['ctrl']['transOrigPointerField']].'")';
-				} else return 'Translation is not supported for this table!';
-			} else return 'Record "'.$table.'_'.$uid.'" was not found';
-		} else return 'No table "'.$table.'" or no UID value';
+						} else {
+							return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a relation to record "' . $row[$TCA[$table]['ctrl']['transOrigPointerField']] . '")';
+						}
+					} else {
+						return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a language value "' . $row[$TCA[$table]['ctrl']['languageField']] . '", relation to record "' . $row[$TCA[$table]['ctrl']['transOrigPointerField']] . '")';
+					}
+				} else {
+					return 'Translation is not supported for this table!';
+				}
+			} else {
+				return 'Record "' . $table . '_' . $uid . '" was not found';
+			}
+		} else {
+			return 'No table "' . $table . '" or no UID value';
+		}
 	}
 
 	/**
@@ -224,14 +226,14 @@ class t3lib_transl8tools	{
 
 		$trTable = $TCA[$table]['ctrl']['transForeignTable'];
 
-		if ($trTable && $TCA[$trTable] && $TCA[$trTable]['ctrl']['languageField'] && $TCA[$trTable]['ctrl']['transOrigPointerField'] && $TCA[$trTable]['ctrl']['transOrigPointerTable']===$table)	{
+		if ($trTable && $TCA[$trTable] && $TCA[$trTable]['ctrl']['languageField'] && $TCA[$trTable]['ctrl']['transOrigPointerField'] && $TCA[$trTable]['ctrl']['transOrigPointerTable'] === $table) {
 			return $trTable;
 		}
 	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_transl8tools.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_transl8tools.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_transl8tools.php']);
 }
 ?>
