@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Steffen Ritter <info@steffen-ritter.net>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -45,7 +45,7 @@ class t3lib_SpriteManager {
 	public static $tempPath = 'typo3temp/sprites/';
 
 	/**
-	 *@var t3lib_spritemanager_SpriteIconGenerator Handler class instance
+	 * @var t3lib_spritemanager_SpriteIconGenerator Handler class instance
 	 */
 	protected $handler = NULL;
 
@@ -76,17 +76,17 @@ class t3lib_SpriteManager {
 
 			// Create cache filename, the hash includes all icons, registered CSS styles registered and the extension list
 		$this->tempFileName = PATH_site . self::$tempPath .
-							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
-							md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
-							$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
+							  md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
+								  md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
+								  $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
 
 			// Regenerate cache file if not already existing
 		if (!@file_exists($this->tempFileName)) {
 			if ($allowRegeneration) {
 				$handlerClass = (
-					$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] ?
-					$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] :
-					't3lib_spritemanager_SimpleHandler'
+				$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] ?
+						$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] :
+						't3lib_spritemanager_SimpleHandler'
 				);
 				$this->handler = t3lib_div::makeInstance($handlerClass);
 
@@ -116,9 +116,9 @@ class t3lib_SpriteManager {
 		$this->handler->generate();
 
 			// Get all icons registered from skins, merge with core icon list
-		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
+		$availableSkinIcons = (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
 		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinName => $skinData) {
-			$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
+			$availableSkinIcons = array_merge($availableSkinIcons, (array) $skinData['availableSpriteIcons']);
 		}
 
 			// Merge icon names provided by the skin, with
@@ -154,21 +154,21 @@ class t3lib_SpriteManager {
 		foreach ((array) $GLOBALS['ICON_TYPES'] as $module => $icon) {
 			$iconFile = $icon['icon'];
 			t3lib_div::deprecationLog('Usage of $ICON_TYPES is deprecated since 4.4.' . LF .
-				'The extTables.php entry $ICON_TYPES[\'' . $module . '\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
-				't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'contains-' . $module . '\', \'' . $iconFile . '\');' . LF .
-				'instead.'
+									  'The extTables.php entry $ICON_TYPES[\'' . $module . '\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
+									  't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'contains-' . $module . '\', \'' . $iconFile . '\');' . LF .
+									  'instead.'
 			);
 			t3lib_SpriteManager::addTcaTypeIcon('pages', 'contains-' . $module, $iconFile);
 		}
 
 			// Fallback for $PAGE_TYPES icons
 		foreach ((array) $GLOBALS['PAGES_TYPES'] as $type => $icon) {
-			if(isset($icon['icon'])) {
+			if (isset($icon['icon'])) {
 				$iconFile = $icon['icon'];
 				t3lib_div::deprecationLog('Usage of $PAGES_TYPES[\'icon\'] is deprecated since 4.4.' . LF .
-					'The extTables.php entry $PAGE_TYPES[\'' . $type . '\'][\'icon\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
-					't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'' . $type . '\', \'' . $iconFile . '\');' . LF .
-					'instead.'
+										  'The extTables.php entry $PAGE_TYPES[\'' . $type . '\'][\'icon\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
+										  't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'' . $type . '\', \'' . $iconFile . '\');' . LF .
+										  'instead.'
 				);
 				t3lib_SpriteManager::addTcaTypeIcon('pages', $module, $iconFile);
 			}
@@ -203,7 +203,7 @@ class t3lib_SpriteManager {
 	 */
 	public static function addIconSprite(array $icons, $styleSheetFile = '') {
 		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge(
-		(array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
+			(array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
 			$icons
 		);
 		if ($styleSheetFile !== '') {
@@ -242,7 +242,7 @@ class t3lib_SpriteManager {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_spritemanager.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_spritemanager.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_spritemanager.php']);
 }
 ?>
