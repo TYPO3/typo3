@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Benjamin Mack <benni@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Benjamin Mack <benni@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A class representing error messages shown on a page.
@@ -49,7 +49,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	 * @param	string	The message.
 	 * @param	string	message title.
 	 * @param	integer	Optional severity, must be either of t3lib_message_ErrorpageMessage::INFO, t3lib_message_ErrorpageMessage::OK,
-	 *                  t3lib_message_ErrorpageMessage::WARNING or t3lib_message_ErrorpageMessage::ERROR. Default is t3lib_message_ErrorpageMessage::ERROR.
+	 *				  t3lib_message_ErrorpageMessage::WARNING or t3lib_message_ErrorpageMessage::ERROR. Default is t3lib_message_ErrorpageMessage::ERROR.
 	 * @return	void
 	 */
 	public function __construct($message, $title, $severity = self::ERROR) {
@@ -92,12 +92,12 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 			self::WARNING => 'warning',
 			self::ERROR   => 'error',
 		);
-		
+
 		$markers = array(
-			'###CSS_CLASS###' => $classes[$this->severity],
-			'###TITLE###'     => $this->title,
-			'###MESSAGE###'   => $this->message,
-			'###BASEURL###'   => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
+			'###CSS_CLASS###'     => $classes[$this->severity],
+			'###TITLE###'         => $this->title,
+			'###MESSAGE###'       => $this->message,
+			'###BASEURL###'       => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
 			'###TYPO3_mainDir###' => TYPO3_mainDir,
 		);
 
@@ -119,7 +119,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']);
 }
 
