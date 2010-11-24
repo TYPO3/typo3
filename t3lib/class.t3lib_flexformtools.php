@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2006-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2006-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Contains functions for manipulating flex form data
  *
@@ -37,28 +37,23 @@
  *
  *
  *   71: class t3lib_flexformtools
- *  105:     function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)
- *  203:     function traverseFlexFormXMLData_recurse($dataStruct,$editData,&$PA,$path='')
- *  274:     function getAvailableLanguages()
+ *  105:	 function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)
+ *  203:	 function traverseFlexFormXMLData_recurse($dataStruct,$editData,&$PA,$path='')
+ *  274:	 function getAvailableLanguages()
  *
- *              SECTION: Processing functions
- *  323:     function cleanFlexFormXML($table,$field,$row)
- *  347:     function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)
+ *			  SECTION: Processing functions
+ *  323:	 function cleanFlexFormXML($table,$field,$row)
+ *  347:	 function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)
  *
- *              SECTION: Multi purpose functions
- *  374:     function &getArrayValueByPath($pathArray,&$array)
- *  403:     function setArrayValueByPath($pathArray,&$array,$value)
- *  433:     function flexArray2Xml($array, $addPrologue=FALSE)
+ *			  SECTION: Multi purpose functions
+ *  374:	 function &getArrayValueByPath($pathArray,&$array)
+ *  403:	 function setArrayValueByPath($pathArray,&$array,$value)
+ *  433:	 function flexArray2Xml($array, $addPrologue=FALSE)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
 
 
 /**
@@ -70,33 +65,33 @@
  */
 class t3lib_flexformtools {
 
-	var $convertCharset = FALSE;		// If set, the charset of data XML is converted to system charset.
-	var $reNumberIndexesOfSectionData = FALSE;	// If set, section indexes are re-numbered before processing
+	var $convertCharset = FALSE; // If set, the charset of data XML is converted to system charset.
+	var $reNumberIndexesOfSectionData = FALSE; // If set, section indexes are re-numbered before processing
 
-	var $traverseFlexFormXMLData_DS = array();	// Contains data structure when traversing flexform
-	var $traverseFlexFormXMLData_Data = array();	// Contains data array when traversing flexform
+	var $traverseFlexFormXMLData_DS = array(); // Contains data structure when traversing flexform
+	var $traverseFlexFormXMLData_Data = array(); // Contains data array when traversing flexform
 
 		// Options for array2xml() for flexform. This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
 	var $flexArray2Xml_options = array(
-			'parentTagMap' => array(
-				'data' => 'sheet',
-				'sheet' => 'language',
-				'language' => 'field',
-				'el' => 'field',
-				'field' => 'value',
-				'field:el' => 'el',
-				'el:_IS_NUM' => 'section',
-				'section' => 'itemType'
-			),
-			'disableTypeAttrib' => 2
-		);
+		'parentTagMap' => array(
+			'data' => 'sheet',
+			'sheet' => 'language',
+			'language' => 'field',
+			'el' => 'field',
+			'field' => 'value',
+			'field:el' => 'el',
+			'el:_IS_NUM' => 'section',
+			'section' => 'itemType'
+		),
+		'disableTypeAttrib' => 2
+	);
 
 		// Internal:
 	/**
 	 * Reference to object called
 	 */
 	var $callBackObj = NULL;
-	var $cleanFlexFormXML = array();		// Used for accumulation of clean XML
+	var $cleanFlexFormXML = array(); // Used for accumulation of clean XML
 
 	/**
 	 * Handler for Flex Forms
@@ -110,34 +105,34 @@ class t3lib_flexformtools {
 	 */
 	function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 
-		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) 	{
+		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
 			return 'TCA table/field was not defined.';
 		}
 
 		$this->callBackObj = $callBackObj;
 
 			// Get Data Structure:
-		$dataStructArray = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'],$row,$table);
+		$dataStructArray = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table);
 
 			// If data structure was ok, proceed:
-		if (is_array($dataStructArray))	{
+		if (is_array($dataStructArray)) {
 
 				// Get flexform XML data:
 			$xmlData = $row[$field];
 
 				// Convert charset:
-			if ($this->convertCharset)	{
+			if ($this->convertCharset) {
 				$xmlHeaderAttributes = t3lib_div::xmlGetHeaderAttribs($xmlData);
 				$storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
-				if ($storeInCharset)	{
+				if ($storeInCharset) {
 					$currentCharset = $GLOBALS['LANG']->charSet;
-					$xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData,$storeInCharset,$currentCharset,1);
+					$xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
 				}
 			}
 
 			$editData = t3lib_div::xml2array($xmlData);
-			if (!is_array($editData))	{
-				return 'Parsing error: '.$editData;
+			if (!is_array($editData)) {
+				return 'Parsing error: ' . $editData;
 			}
 
 				// Language settings:
@@ -145,42 +140,42 @@ class t3lib_flexformtools {
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 
 				// empty or invalid <meta>
-			if (!is_array($editData['meta']))	{
+			if (!is_array($editData['meta'])) {
 				$editData['meta'] = array();
 			}
 			$editData['meta']['currentLangId'] = array();
 			$languages = $this->getAvailableLanguages();
 
-			foreach ($languages as $lInfo)	{
+			foreach ($languages as $lInfo) {
 				$editData['meta']['currentLangId'][] = $lInfo['ISOcode'];
 			}
-			if (!count($editData['meta']['currentLangId']))	{
+			if (!count($editData['meta']['currentLangId'])) {
 				$editData['meta']['currentLangId'] = array('DEF');
 			}
 			$editData['meta']['currentLangId'] = array_unique($editData['meta']['currentLangId']);
 
-			if ($langChildren || $langDisabled)	{
+			if ($langChildren || $langDisabled) {
 				$lKeys = array('DEF');
 			} else {
 				$lKeys = $editData['meta']['currentLangId'];
 			}
 
 				// Tabs sheets
-			if (is_array($dataStructArray['sheets']))	{
+			if (is_array($dataStructArray['sheets'])) {
 				$sKeys = array_keys($dataStructArray['sheets']);
 			} else {
 				$sKeys = array('sDEF');
 			}
 
 				// Traverse languages:
-			foreach($lKeys as $lKey)	{
-				foreach($sKeys as $sheet)	{
+			foreach ($lKeys as $lKey) {
+				foreach ($sKeys as $sheet) {
 					$sheetCfg = $dataStructArray['sheets'][$sheet];
-					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sheet);
+					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray, $sheet);
 
 						// Render sheet:
-					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el']))		{
-						$lang = 'l'.$lKey;	// Separate language key
+					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
+						$lang = 'l' . $lKey; // Separate language key
 						$PA['vKeys'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : array('DEF');
 						$PA['lKey'] = $lang;
 						$PA['callBackMethod_value'] = $callBackMethod_value;
@@ -196,12 +191,16 @@ class t3lib_flexformtools {
 							$dataStruct['ROOT']['el'],
 							$editData['data'][$sheet][$lang],
 							$PA,
-							'data/'.$sheet.'/'.$lang
+								'data/' . $sheet . '/' . $lang
 						);
-					} else return 'Data Structure ERROR: No ROOT element found for sheet "'.$sheet.'".';
+					} else {
+						return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheet . '".';
+					}
 				}
 			}
-		} else return 'Data Structure ERROR: '.$dataStructArray;
+		} else {
+			return 'Data Structure ERROR: ' . $dataStructArray;
+		}
 	}
 
 	/**
@@ -213,64 +212,64 @@ class t3lib_flexformtools {
 	 * @param	string		Telling the "path" to the element in the flexform XML
 	 * @return	array
 	 */
-	function traverseFlexFormXMLData_recurse($dataStruct,$editData,&$PA,$path='')	{
+	function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = '') {
 
-		if (is_array($dataStruct))	{
-			foreach($dataStruct as $key => $value)	{
-				if (is_array($value))	{	// The value of each entry must be an array.
+		if (is_array($dataStruct)) {
+			foreach ($dataStruct as $key => $value) {
+				if (is_array($value)) { // The value of each entry must be an array.
 
-					if ($value['type']=='array')	{
-						if ($value['section'])	{		// Array (Section) traversal:
+					if ($value['type'] == 'array') {
+						if ($value['section']) { // Array (Section) traversal:
 
 							$cc = 0;
-							if (is_array($editData[$key]['el']))	{
+							if (is_array($editData[$key]['el'])) {
 
-								if ($this->reNumberIndexesOfSectionData)	{
+								if ($this->reNumberIndexesOfSectionData) {
 									$temp = array();
-									$c3=0;
-									foreach($editData[$key]['el'] as $v3)	{
+									$c3 = 0;
+									foreach ($editData[$key]['el'] as $v3) {
 										$temp[++$c3] = $v3;
 									}
 									$editData[$key]['el'] = $temp;
 								}
 
-								foreach($editData[$key]['el'] as $k3 => $v3)	{
-									if (is_array($v3))	{
-										$cc=$k3;
+								foreach ($editData[$key]['el'] as $k3 => $v3) {
+									if (is_array($v3)) {
+										$cc = $k3;
 										$theType = key($v3);
 										$theDat = $v3[$theType];
 										$newSectionEl = $value['el'][$theType];
-										if (is_array($newSectionEl))	{
+										if (is_array($newSectionEl)) {
 											$this->traverseFlexFormXMLData_recurse(
 												array($theType => $newSectionEl),
 												array($theType => $theDat),
 												$PA,
-												$path.'/'.$key.'/el/'.$cc
+													$path . '/' . $key . '/el/' . $cc
 											);
 										}
 									}
 								}
 							}
-						} else {	// Array traversal:
+						} else { // Array traversal:
 							$this->traverseFlexFormXMLData_recurse(
 								$value['el'],
 								$editData[$key]['el'],
 								$PA,
-								$path.'/'.$key.'/el'
+									$path . '/' . $key . '/el'
 							);
 						}
-					} elseif (is_array($value['TCEforms']['config'])) {	// Processing a field value:
+					} elseif (is_array($value['TCEforms']['config'])) { // Processing a field value:
 
-						foreach($PA['vKeys'] as $vKey)	{
-							$vKey = 'v'.$vKey;
+						foreach ($PA['vKeys'] as $vKey) {
+							$vKey = 'v' . $vKey;
 
 								// Call back:
-							if ($PA['callBackMethod_value'])	{
+							if ($PA['callBackMethod_value']) {
 								$this->callBackObj->$PA['callBackMethod_value'](
 									$value,
 									$editData[$key][$vKey],
 									$PA,
-									$path.'/'.$key.'/'.$vKey,
+										$path . '/' . $key . '/' . $vKey,
 									$this
 								);
 							}
@@ -286,39 +285,36 @@ class t3lib_flexformtools {
 	 *
 	 * @return	array
 	 */
-	function getAvailableLanguages()	{
+	function getAvailableLanguages() {
 		$isL = t3lib_extMgm::isLoaded('static_info_tables');
 
 			// Find all language records in the system:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0'.t3lib_BEfunc::deleteClause('sys_language'), '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . t3lib_BEfunc::deleteClause('sys_language'), '', 'title');
 
 			// Traverse them:
 		$output = array();
-		$output[0]=array(
+		$output[0] = array(
 			'uid' => 0,
 			'title' => 'Default language',
 			'ISOcode' => 'DEF'
 		);
 
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$output[$row['uid']] = $row;
 
-			if ($isL && $row['static_lang_isocode'])	{
-				$rr = t3lib_BEfunc::getRecord('static_languages',$row['static_lang_isocode'],'lg_iso_2');
-				if ($rr['lg_iso_2'])	$output[$row['uid']]['ISOcode']=$rr['lg_iso_2'];
+			if ($isL && $row['static_lang_isocode']) {
+				$rr = t3lib_BEfunc::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				if ($rr['lg_iso_2']) {
+					$output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];
+				}
 			}
 
-			if (!$output[$row['uid']]['ISOcode'])	unset($output[$row['uid']]);
+			if (!$output[$row['uid']]['ISOcode']) {
+				unset($output[$row['uid']]);
+			}
 		}
 		return $output;
 	}
-
-
-
-
-
-
-
 
 
 	/***********************************
@@ -336,7 +332,7 @@ class t3lib_flexformtools {
 	 * @param	array		The record
 	 * @return	string		Clean XML from FlexForm field
 	 */
-	function cleanFlexFormXML($table,$field,$row)	{
+	function cleanFlexFormXML($table, $field, $row) {
 
 			// New structure:
 		$this->cleanFlexFormXML = array();
@@ -344,7 +340,7 @@ class t3lib_flexformtools {
 			// Create and call iterator object:
 		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
 		$flexObj->reNumberIndexesOfSectionData = TRUE;
-		$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'cleanFlexFormXML_callBackFunction');
+		$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'cleanFlexFormXML_callBackFunction');
 
 		return $this->flexArray2Xml($this->cleanFlexFormXML, TRUE);
 	}
@@ -363,23 +359,16 @@ class t3lib_flexformtools {
 	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
 		#debug(array($dsArr, $data, $PA),$path);
 			// Just setting value in our own result array, basically replicating the structure:
-		$pObj->setArrayValueByPath($path,$this->cleanFlexFormXML,$data);
+		$pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
 
 			// Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])	{
-			$vDEFbase = $pObj->getArrayValueByPath($path.'.vDEFbase',$pObj->traverseFlexFormXMLData_Data);
-			if (isset($vDEFbase))	{
-				$pObj->setArrayValueByPath($path.'.vDEFbase',$this->cleanFlexFormXML,$vDEFbase);
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
+			$vDEFbase = $pObj->getArrayValueByPath($path . '.vDEFbase', $pObj->traverseFlexFormXMLData_Data);
+			if (isset($vDEFbase)) {
+				$pObj->setArrayValueByPath($path . '.vDEFbase', $this->cleanFlexFormXML, $vDEFbase);
 			}
 		}
 	}
-
-
-
-
-
-
-
 
 
 	/***********************************
@@ -395,19 +384,19 @@ class t3lib_flexformtools {
 	 * @param	array		Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
 	 * @return	mixed		Value returned
 	 */
-	function &getArrayValueByPath($pathArray,&$array)	{
-		if (!is_array($pathArray))	{
-			$pathArray = explode('/',$pathArray);
+	function &getArrayValueByPath($pathArray, &$array) {
+		if (!is_array($pathArray)) {
+			$pathArray = explode('/', $pathArray);
 		}
-		if (is_array($array))	{
-			if (count($pathArray))	{
+		if (is_array($array)) {
+			if (count($pathArray)) {
 				$key = array_shift($pathArray);
 
-				if (isset($array[$key]))	{
-					if (!count($pathArray))	{
+				if (isset($array[$key])) {
+					if (!count($pathArray)) {
 						return $array[$key];
 					} else {
-						return $this->getArrayValueByPath($pathArray,$array[$key]);
+						return $this->getArrayValueByPath($pathArray, $array[$key]);
 					}
 				} else {
 					return NULL;
@@ -424,23 +413,23 @@ class t3lib_flexformtools {
 	 * @param	mixed		Value to set
 	 * @return	mixed		Value returned
 	 */
-	function setArrayValueByPath($pathArray,&$array,$value)	{
-		if (isset($value))	 {
-			if (!is_array($pathArray))	{
-				$pathArray = explode('/',$pathArray);
+	function setArrayValueByPath($pathArray, &$array, $value) {
+		if (isset($value)) {
+			if (!is_array($pathArray)) {
+				$pathArray = explode('/', $pathArray);
 			}
-			if (is_array($array))	{
-				if (count($pathArray))	{
+			if (is_array($array)) {
+				if (count($pathArray)) {
 					$key = array_shift($pathArray);
 
-					if (!count($pathArray))	{
+					if (!count($pathArray)) {
 						$array[$key] = $value;
 						return TRUE;
 					} else {
-						if (!isset($array[$key]))	{
+						if (!isset($array[$key])) {
 							$array[$key] = array();
 						}
-						return $this->setArrayValueByPath($pathArray,$array[$key],$value);
+						return $this->setArrayValueByPath($pathArray, $array[$key], $value);
 					}
 				}
 			}
@@ -454,24 +443,24 @@ class t3lib_flexformtools {
 	 * @param	boolean		If set, the XML prologue is returned as well.
 	 * @return	string		XML content.
 	 */
-	function flexArray2Xml($array, $addPrologue=FALSE)	{
+	function flexArray2Xml($array, $addPrologue = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {
 			$this->flexArray2Xml_options['useCDATA'] = 1;
 		}
 
 		$options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
 		$spaceInd = ($GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4);
-		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms', $spaceInd, $options);
+		$output = t3lib_div::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
 
-		if ($addPrologue)	{
-			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.LF.$output;
+		if ($addPrologue) {
+			$output = '<?xml version="1.0" encoding="' . $GLOBALS['LANG']->charSet . '" standalone="yes" ?>' . LF . $output;
 		}
 
 		return $output;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_flexformtools.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_flexformtools.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_flexformtools.php']);
 }
 ?>
