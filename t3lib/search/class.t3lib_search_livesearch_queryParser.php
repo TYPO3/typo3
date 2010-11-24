@@ -44,7 +44,7 @@ class t3lib_search_livesearch_queryParser {
 	/**
 	 * @var string
 	 */
-	protected $tableName  = '';
+	protected $tableName = '';
 
 	/**
 	 * @var string
@@ -90,6 +90,7 @@ class t3lib_search_livesearch_queryParser {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']) && array_key_exists($this->commandKey, $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'])) {
 			$tableName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'][$this->commandKey];
 		}
+
 		return $tableName;
 	}
 
@@ -110,10 +111,10 @@ class t3lib_search_livesearch_queryParser {
 	 * @return boolean
 	 */
 	public function isValidPageJump($query) {
-		$isValid = false;
+		$isValid = FALSE;
 
 		if (preg_match('~^#(\d)+$~', $query)) {
-			$isValid = true;
+			$isValid = TRUE;
 		}
 
 		return $isValid;
@@ -126,11 +127,11 @@ class t3lib_search_livesearch_queryParser {
 	 * @return boolean
 	 */
 	public function isValidCommand($query) {
-		$isValid = false;
+		$isValid = FALSE;
 		if (strpos($query, self::COMMAND_KEY_INDICATOR) === 0 &&
-		    strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1 &&
-		    $this->getTableNameFromCommand($query)) {
-			$isValid = true;
+			strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1 &&
+			$this->getTableNameFromCommand($query)) {
+			$isValid = TRUE;
 		}
 
 		return $isValid;
@@ -172,4 +173,5 @@ class t3lib_search_livesearch_queryParser {
 		return $resultQuery;
 	}
 }
+
 ?>

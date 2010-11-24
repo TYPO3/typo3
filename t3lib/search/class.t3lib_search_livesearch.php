@@ -79,7 +79,7 @@ class t3lib_search_livesearch {
 	/**
 	 * @var t3lib_search_livesearch_queryParser
 	 */
-	protected $queryParser = null;
+	protected $queryParser = NULL;
 
 	/**
 	 * Initialize access settings.
@@ -117,7 +117,7 @@ class t3lib_search_livesearch {
 	 */
 	public function find($searchQuery) {
 		$recordArray = array();
-		$pageIdList = $this->getAvailablePageIds (
+		$pageIdList = $this->getAvailablePageIds(
 			implode(',', $GLOBALS['BE_USER']->returnWebmounts()),
 			self::RECURSIVE_PAGE_LEVEL
 		);
@@ -134,7 +134,7 @@ class t3lib_search_livesearch {
 			$recordArray = $this->findByGlobalTableList($pageIdList, $limit);
 		}
 
-		// @todo Need to make sure we don't return too many records. How do we handle this when querying across multiple tables?
+			// @todo Need to make sure we don't return too many records. How do we handle this when querying across multiple tables?
 		$recordArray = array_slice($recordArray, 0, $this->limitCount);
 
 		return $recordArray;
@@ -189,7 +189,7 @@ class t3lib_search_livesearch {
 	protected function findByTable($tableName, $pageIdList, $limit) {
 		$getRecordArray = array();
 		$fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-		$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ' ;
+		$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ';
 		$where = 'pid IN(' . $pageIdList . ')' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
 		$orderBy = $this->makeOrderByTable($tableName);
 		$getRecordArray = $this->getRecordArray(
@@ -220,26 +220,26 @@ class t3lib_search_livesearch {
 	 */
 	protected function getRecordArray($tableName, $where, $orderBy, $limit) {
 		$collect = array();
-		$isFirst = true;
+		$isFirst = TRUE;
 		$queryParts = array(
-			'SELECT'  => '*',
-			'FROM'	  => $tableName,
-			'WHERE'	  => $where,
+			'SELECT' => '*',
+			'FROM' => $tableName,
+			'WHERE' => $where,
 			'ORDERBY' => $orderBy,
-			'LIMIT'	  => $limit
+			'LIMIT' => $limit
 		);
-		$result	 = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$collect[] = array (
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
 				'recordTitle' => ($isFirst) ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
 				'iconHTML' => t3lib_iconWorks::getSpriteIconForRecord($tableName, $row),
 				'title' => $this->getRecordTitlePrep($this->getTitleFromCurrentRow($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),
 				'editLink' => $this->getEditLink($tableName, $row),
 			);
-			$isFirst = false;
+			$isFirst = FALSE;
 		}
 
 		return $collect;
@@ -260,16 +260,16 @@ class t3lib_search_livesearch {
 		$editLink = '';
 
 		if ($tableName == 'pages') {
-			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$row['uid']));
-			$permsEdit = $localCalcPerms&2;
+			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $row['uid']));
+			$permsEdit = $localCalcPerms & 2;
 		} else {
-			$permsEdit = $calcPerms&16;
+			$permsEdit = $calcPerms & 16;
 		}
 
 			// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 			// @todo Is there an existing function to generate this link?
 		if ($permsEdit) {
-			$editLink = 'alt_doc.php?' . '&edit['.$tableName.']['.$row['uid'].']=edit';
+			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit';
 		}
 
 		return $editLink;
@@ -299,7 +299,8 @@ class t3lib_search_livesearch {
 			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 
-		return htmlspecialchars(t3lib_div::fixed_lgd_cs($title, $titleLength));;
+		return htmlspecialchars(t3lib_div::fixed_lgd_cs($title, $titleLength));
+		;
 	}
 
 	/**
@@ -326,9 +327,9 @@ class t3lib_search_livesearch {
 	protected function makeQuerySearchByTable($tableName, $fieldsToSearchWithin) {
 			// free text search
 		$queryLikeStatement = ' LIKE \'%' . $this->getQueryString($tableName) . '%\'';
-		$queryPart			= ' AND (' . implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
-		$queryPart		   .= t3lib_BEfunc::deleteClause($tableName);
-		$queryPart		   .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
+		$queryPart = ' AND (' . implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
+		$queryPart .= t3lib_BEfunc::deleteClause($tableName);
+		$queryPart .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
 
 		return $queryPart;
 	}
@@ -345,7 +346,7 @@ class t3lib_search_livesearch {
 		$orderBy = '';
 
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('sortby', $GLOBALS['TCA'][$tableName]['ctrl'])) {
-			$orderBy = 'ORDER BY '.$GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
+			$orderBy = 'ORDER BY ' . $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
 		} else {
 			$orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
 		}
@@ -363,27 +364,27 @@ class t3lib_search_livesearch {
 		$fieldListArray = array();
 
 			// Traverse configured columns and add them to field array, if available for user.
-		foreach((array) $GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldValue) {
-			// @todo Reformat
+		foreach ((array) $GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldValue) {
+				// @todo Reformat
 			if (
-					(!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $tableName . ':' . $fieldName)) // does current user have access to the field
+				(!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $tableName . ':' . $fieldName)) // does current user have access to the field
 				&&
-					($fieldValue['config']['type'] != 'passthrough') // field type is not searchable
+				($fieldValue['config']['type'] != 'passthrough') // field type is not searchable
 				&&
-					(!preg_match('/date|time|int/', $fieldValue['config']['eval'])) // field can't be of type date, time, int
+				(!preg_match('/date|time|int/', $fieldValue['config']['eval'])) // field can't be of type date, time, int
 				&&
-					(
-							($fieldValue['config']['type'] == 'text')
+				(
+						($fieldValue['config']['type'] == 'text')
 						||
-							($fieldValue['config']['type'] == 'input')
-					)
-				) {
+						($fieldValue['config']['type'] == 'input')
+				)
+			) {
 				$fieldListArray[] = $fieldName;
 			}
 		}
 
 			// Add special fields:
-		if ($GLOBALS['BE_USER']->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$fieldListArray[] = 'uid';
 			$fieldListArray[] = 'pid';
 		}
@@ -450,7 +451,7 @@ class t3lib_search_livesearch {
 		$tree = t3lib_div::makeInstance('t3lib_pageTree');
 		$tree->init('AND ' . $this->userPermissions);
 		$tree->makeHTML = 0;
-		$tree->fieldArray = Array('uid','php_tree_stop');
+		$tree->fieldArray = array('uid', 'php_tree_stop');
 		if ($depth) {
 			$tree->getTree($id, $depth, '');
 		}
