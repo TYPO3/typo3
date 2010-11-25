@@ -89,13 +89,13 @@ class tx_scheduler_CronCmd {
 				// Minute
 			intval(date('i', $tstamp)),
 				// Hour
-			date('G', $tstamp),
+			intval(date('G', $tstamp)),
 				// Day
-			date('j', $tstamp),
+			intval(date('j', $tstamp)),
 				// Month
-			date('n', $tstamp),
+			intval(date('n', $tstamp)),
 				// Year
-			date('Y', $tstamp)
+			intval(date('Y', $tstamp))
 		);
 
 			// Set valid values
