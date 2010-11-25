@@ -1,3 +1,7 @@
+2010-11-25  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #16568: Wrong internal object references after cloning tslib_cObj instances
+
 2010-11-25  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #16432: wrong markup in livesearch

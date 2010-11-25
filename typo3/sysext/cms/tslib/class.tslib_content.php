@@ -608,6 +608,21 @@ class tslib_cObj {
 	}
 
 	/**
+	 * Clone helper.
+	 *
+	 * Resets the references to the TypoScript Content Object implementation
+	 * objects of tslib_content_*. Otherwise they would still point to the
+	 * original tslib_cObj instance's tslib_content_* instances, they in return
+	 * would back-reference to the original tslib_cObj instance instead of the
+	 * newly cloned tslib_cObj instance.
+	 *
+	 * @see http://bugs.typo3.org/view.php?id=16568
+	 */
+	public function __clone() {
+		$this->contentObjects = array();
+	}
+
+	/**
 	 * Gets the 'getImgResource' hook objects.
 	 * The first call initializes the accordant objects.
 	 *
