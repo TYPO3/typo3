@@ -267,7 +267,7 @@ class tx_em_Extensions_List {
 				foreach ($extEkeys as $extKey => $data) {
 					if (array_key_exists($extKey, $TYPO3_LOADED_EXT) && ($this->parentObject->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) && $this->parentObject->searchExtension($extKey, $list[$extKey])) {
 						if (in_array($extKey, $this->parentObject->requiredExt)) {
-							$loadUnloadLink = '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
+							$loadUnloadLink = '<strong>' . tx_em_Tools::rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
 						} else {
 							$loadUnloadLink = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
 								'CMD[showExt]' => $extKey,
@@ -343,7 +343,7 @@ class tx_em_Extensions_List {
 									'SET[singleDetails]' => 'info'
 								))) . '">' . tx_em_Tools::installButton() . '</a>';
 						if (in_array($extKey, $this->parentObject->requiredExt)) {
-							$loadUnloadLink = '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
+							$loadUnloadLink = '<strong>' . tx_em_Tools::rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
 						}
 						$theRowClass = t3lib_extMgm::isLoaded($extKey) ? 'em-listbg1' : 'em-listbg2';
 						$extensions[] = $this->extensionListRow($extKey, $list[$extKey], array('<td class="bgColor">' . $loadUnloadLink . '</td>'), $theRowClass);
@@ -496,7 +496,7 @@ EXTENSION KEYS:
 			$cells[] = '<td nowrap="nowrap">' . (is_array($techInfo['moduleNames']) ? implode('<br />', $techInfo['moduleNames']) : '') . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . ($techInfo['conf'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>';
 			$cells[] = '<td>' .
-					$GLOBALS['TBE_TEMPLATE']->rfw((t3lib_extMgm::isLoaded($extKey) && $techInfo['tables_error'] ?
+					tx_em_Tools::rfw((t3lib_extMgm::isLoaded($extKey) && $techInfo['tables_error'] ?
 							'<strong>' . $GLOBALS['LANG']->getLL('extInfoArray_table_error') . '</strong><br />' .
 									$GLOBALS['LANG']->getLL('extInfoArray_missing_fields') : '') .
 							(t3lib_extMgm::isLoaded($extKey) && $techInfo['static_error'] ?
@@ -508,22 +508,22 @@ EXTENSION KEYS:
 
 			$cells[] = '<td>' . (is_array($techInfo['locallang']) ? implode('<br />', $techInfo['locallang']) : '') . '</td>';
 			$cells[] = '<td>' . (is_array($techInfo['classes']) ? implode('<br />', $techInfo['classes']) : '') . '</td>';
-			$cells[] = '<td>' . (is_array($techInfo['errors']) ? $GLOBALS['TBE_TEMPLATE']->rfw(implode('<hr />', $techInfo['errors'])) : '') . '</td>';
+			$cells[] = '<td>' . (is_array($techInfo['errors']) ? tx_em_Tools::rfw(implode('<hr />', $techInfo['errors'])) : '') . '</td>';
 			$cells[] = '<td>' . (is_array($techInfo['NSerrors']) ?
 					(!t3lib_div::inList($this->parentObject->nameSpaceExceptions, $extKey) ?
 							t3lib_utility_Debug::viewarray($techInfo['NSerrors']) :
-							$GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'))) : '') . '</td>';
+							tx_em_Tools::dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'))) : '') . '</td>';
 		} elseif ($this->parentObject->MOD_SETTINGS['display_details'] == 5) {
 			$currentMd5Array = $this->parentObject->extensionDetails->serverExtensionMD5array($extKey, $extInfo);
 			$affectedFiles = '';
 			$msgLines = array();
 			$msgLines[] = $GLOBALS['LANG']->getLL('listRow_files') . ' ' . count($currentMd5Array);
 			if (strcmp($extInfo['EM_CONF']['_md5_values_when_last_written'], serialize($currentMd5Array))) {
-				$msgLines[] = $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_difference_detected') . '</strong>');
+				$msgLines[] = tx_em_Tools::rfw('<br /><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_difference_detected') . '</strong>');
 				$affectedFiles = tx_em_Tools::findMD5ArrayDiff($currentMd5Array, unserialize($extInfo['EM_CONF']['_md5_values_when_last_written']));
 				if (count($affectedFiles)) {
 					$msgLines[] = '<br /><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_modified_files') . '</strong><br />' .
-							$GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />', $affectedFiles));
+							tx_em_Tools::rfw(implode('<br />', $affectedFiles));
 				}
 			}
 			$cells[] = '<td>' . implode('<br />', $msgLines) . '</td>';
@@ -532,7 +532,7 @@ EXTENSION KEYS:
 			$verDiff = $inst_list[$extKey] && tx_em_Tools::versionDifference($extInfo['EM_CONF']['version'], $inst_list[$extKey]['EM_CONF']['version'], $this->parentObject->versionDiffFactor);
 
 			$cells[] = '<td nowrap="nowrap"><em>' . $extKey . '</em></td>';
-			$cells[] = '<td nowrap="nowrap">' . ($verDiff ? '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw(htmlspecialchars($extInfo['EM_CONF']['version'])) . '</strong>' : $extInfo['EM_CONF']['version']) . '</td>';
+			$cells[] = '<td nowrap="nowrap">' . ($verDiff ? '<strong>' . tx_em_Tools::rfw(htmlspecialchars($extInfo['EM_CONF']['version'])) . '</strong>' : $extInfo['EM_CONF']['version']) . '</td>';
 			if (!$import) { // Listing extension on LOCAL server:
 				// Extension Download:
 				$cells[] = '<td nowrap="nowrap"><a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
@@ -579,20 +579,20 @@ EXTENSION KEYS:
 						$usedExtension,
 						$overriddenExtensions
 					);
-					$doubleInstall = ' <strong><abbr title="' . $doubleInstallTitle . '">' . $GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']) . '</abbr></strong>';
+					$doubleInstall = ' <strong><abbr title="' . $doubleInstallTitle . '">' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</abbr></strong>';
 				}
 				$cells[] = '<td nowrap="nowrap">' . $this->parentObject->typeLabels[$extInfo['type']] . $doubleInstall . '</td>';
 			} else { // Listing extensions from REMOTE repository:
 				$inst_curVer = $inst_list[$extKey]['EM_CONF']['version'];
 				if (isset($inst_list[$extKey])) {
 					if ($verDiff) {
-						$inst_curVer = '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw($inst_curVer) . '</strong>';
+						$inst_curVer = '<strong>' . tx_em_Tools::rfw($inst_curVer) . '</strong>';
 					}
 				}
 				$cells[] = '<td nowrap="nowrap">' . t3lib_befunc::date($extInfo['EM_CONF']['lastuploaddate']) . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['author'], $GLOBALS['BE_USER']->uc[titleLen])) . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . $inst_curVer . '</td>';
-				$cells[] = '<td nowrap="nowrap">' . $this->parentObject->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . $GLOBALS['TBE_TEMPLATE']->rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
+				$cells[] = '<td nowrap="nowrap">' . $this->parentObject->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . ($extInfo['downloadcounter_all'] ? $extInfo['downloadcounter_all'] : '&nbsp;&nbsp;') . '/' . ($extInfo['downloadcounter'] ? $extInfo['downloadcounter'] : '&nbsp;') . '</td>';
 			}
 			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $this->parentObject->stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->parentObject->states[$extInfo['EM_CONF']['state']] . '</td>';
@@ -679,11 +679,11 @@ EXTENSION KEYS:
 				}
 				$warn = '';
 				if (strcmp(serialize($currentMD5Array), serialize($serverMD5Array))) {
-					$warn = '<tr class="bgColor4" style="color:red"><td colspan="7">' . $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>' . $name . ': ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_warn_diff') . '</strong>') . '</td></tr>' . LF;
+					$warn = '<tr class="bgColor4" style="color:red"><td colspan="7">' . tx_em_Tools::rfw('<br /><strong>' . $name . ': ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_warn_diff') . '</strong>') . '</td></tr>' . LF;
 					if ($this->parentObject->MOD_SETTINGS['display_files'] == 1) {
 						$affectedFiles = tx_em_Tools::findMD5ArrayDiff($serverMD5Array, $currentMD5Array);
 						if (count($affectedFiles)) {
-							$warn .= '<tr class="bgColor4"><td colspan="7"><strong>' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_modified') . '</strong><br />' . $GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />', $affectedFiles)) . '</td></tr>' . LF;
+							$warn .= '<tr class="bgColor4"><td colspan="7"><strong>' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_modified') . '</strong><br />' . tx_em_Tools::rfw(implode('<br />', $affectedFiles)) . '</td></tr>' . LF;
 						}
 					}
 				}
@@ -697,7 +697,7 @@ EXTENSION KEYS:
 						'<td valign="top">' . $name . '</td>' .
 						'<td valign="top" align="right">' . $data[EM_CONF][version] . '</td>' .
 						'<td valign="top" align="right">' . $lastversion . '</td>' .
-						'<td valign="top" nowrap="nowrap">' . $this->parentObject->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . $GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']) . '</strong>' : '') . '</td>' .
+						'<td valign="top" nowrap="nowrap">' . $this->parentObject->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</strong>' : '') . '</td>' .
 						'<td valign="top">' . $comment . '</td></tr>' . LF .
 						$warn .
 						'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>' . LF;

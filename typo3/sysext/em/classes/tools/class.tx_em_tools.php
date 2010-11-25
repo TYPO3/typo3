@@ -43,7 +43,8 @@ final class tx_em_Tools {
 	 *
 	 * @var  array
 	 */
-	static protected $defaultCategories = array('be' => 0,
+	protected static $defaultCategories = array(
+		'be' => 0,
 		'module' => 1,
 		'fe' => 2,
 		'plugin' => 3,
@@ -58,7 +59,8 @@ final class tx_em_Tools {
 	 *
 	 * @var  array
 	 */
-	static protected $defaultStates = array('alpha' => 0,
+	protected static $defaultStates = array(
+		'alpha' => 0,
 		'beta' => 1,
 		'stable' => 2,
 		'experimental' => 3,
@@ -77,14 +79,14 @@ final class tx_em_Tools {
 	 * @param string $path		Path to change to before extracting
 	 * @return boolean	True on success, false in failure
 	 */
-	public function unzip($file, $path) {
+	public static function unzip($file, $path) {
 		if (strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
 			chdir($path);
 			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'] . ' -o ' . escapeshellarg($file);
 			exec($cmd, $list, $ret);
 			return ($ret === 0);
 		} else {
-			// we use a pure PHP unzip
+				// we use a pure PHP unzip
 			$unzip = t3lib_div::makeInstance('tx_em_Tools_Unzip', $file);
 			$ret = $unzip->extract(array('add_path' => $path));
 			return (is_array($ret));
@@ -97,7 +99,7 @@ final class tx_em_Tools {
 	 *
 	 * @return void
 	 */
-	function refreshGlobalExtList() {
+	public static function refreshGlobalExtList() {
 		global $TYPO3_LOADED_EXT;
 
 		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -128,28 +130,28 @@ final class tx_em_Tools {
 	 * @param	string		Extension key
 	 * @return	array		Modified category index array
 	 */
-	public function setCat(&$cat, $listArrayPart, $extKey) {
+	public static function setCat(&$cat, $listArrayPart, $extKey) {
 
-		// Getting extension title:
+			// Getting extension title:
 		$extTitle = $listArrayPart['EM_CONF']['title'];
 
-		// Category index:
+			// Category index:
 		$index = $listArrayPart['EM_CONF']['category'];
 		$cat['cat'][$index][$extKey] = $extTitle;
 
-		// Author index:
+			// Author index:
 		$index = $listArrayPart['EM_CONF']['author'] . ($listArrayPart['EM_CONF']['author_company'] ? ', ' . $listArrayPart['EM_CONF']['author_company'] : '');
 		$cat['author_company'][$index][$extKey] = $extTitle;
 
-		// State index:
+			// State index:
 		$index = $listArrayPart['EM_CONF']['state'];
 		$cat['state'][$index][$extKey] = $extTitle;
 
-		// Type index:
+			// Type index:
 		$index = $listArrayPart['type'];
 		$cat['type'][$index][$extKey] = $extTitle;
 
-		// Return categories:
+			// Return categories:
 		return $cat;
 	}
 
@@ -159,7 +161,7 @@ final class tx_em_Tools {
 	 * @param	string		Extension key
 	 * @return	string		Upload folder for extension
 	 */
-	public function uploadFolder($extKey) {
+	public static function uploadFolder($extKey) {
 		return 'uploads/tx_' . str_replace('_', '', $extKey) . '/';
 	}
 
@@ -169,7 +171,7 @@ final class tx_em_Tools {
 	 *
 	 * @return	string		<img> tag
 	 */
-	public function removeButton() {
+	public static function removeButton() {
 		return t3lib_iconWorks::getSpriteIcon('actions-system-extension-uninstall', array('title' => $GLOBALS['LANG']->getLL('ext_details_remove_ext')));
 	}
 
@@ -178,7 +180,7 @@ final class tx_em_Tools {
 	 *
 	 * @return	string		<img> tag
 	 */
-	public function installButton() {
+	public static function installButton() {
 		return t3lib_iconWorks::getSpriteIcon('actions-system-extension-install', array('title' => $GLOBALS['LANG']->getLL('helperFunction_install_extension')));
 	}
 
@@ -187,9 +189,9 @@ final class tx_em_Tools {
 	 *
 	 * @return	string		<img> + text string.
 	 */
-	public function noImportMsg() {
+	public static function noImportMsg() {
 		return t3lib_iconWorks::getSpriteIcon('status-dialog-warning') .
-				'<strong>' . $GLOBALS['LANG']->getLL('helperFunction_import_not_possible') . '</strong>';
+			   '<strong>' . $GLOBALS['LANG']->getLL('helperFunction_import_not_possible') . '</strong>';
 	}
 
 
@@ -199,7 +201,7 @@ final class tx_em_Tools {
 	 * @param	array		$emConf
 	 * @return	array
 	 */
-	public function fixEMCONF($emConf) {
+	public static function fixEMCONF($emConf) {
 		if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends']) || !isset($emConf['constraints']['conflicts']) || !isset($emConf['constraints']['suggests'])) {
 			if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])) {
 				$emConf['constraints']['depends'] = self::stringToDep($emConf['dependencies']);
@@ -236,7 +238,7 @@ final class tx_em_Tools {
 			$emConf['conflicts'] = self::depToString($emConf['constraints'], 'conflicts');
 		}
 
-		// sanity check for version numbers, intentionally only checks php and typo3
+			// sanity check for version numbers, intentionally only checks php and typo3
 		if (isset($emConf['constraints']['depends']) && isset($emConf['constraints']['depends']['php'])) {
 			$versionRange = self::splitVersionRange($emConf['constraints']['depends']['php']);
 			if (version_compare($versionRange[0], '3.0.0', '<')) {
@@ -274,13 +276,13 @@ final class tx_em_Tools {
 	 * @param	string		Extension key.
 	 * @return	array		EMconf array values.
 	 */
-	public function includeEMCONF($path, $_EXTKEY) {
+	public static function includeEMCONF($path, $_EXTKEY) {
 		$EM_CONF = NULL;
 		@include($path);
 		if (is_array($EM_CONF[$_EXTKEY])) {
 			return self::fixEMCONF($EM_CONF[$_EXTKEY]);
 		}
-		return false;
+		return FALSE;
 	}
 
 
@@ -290,11 +292,11 @@ final class tx_em_Tools {
 	 * @param	array		Array of files / directories
 	 * @return	array		Array of directories from the input array.
 	 */
-	function extractDirsFromFileList($files) {
+	public static function extractDirsFromFileList($files) {
 		$dirs = array();
 
 		if (is_array($files)) {
-			// Traverse files / directories array:
+				// Traverse files / directories array:
 			foreach ($files as $file) {
 				if (substr($file, -1) == '/') {
 					$dirs[$file] = $file;
@@ -318,7 +320,7 @@ final class tx_em_Tools {
 	 * @param	string		$ver A string with a version range.
 	 * @return	array
 	 */
-	public function splitVersionRange($ver) {
+	public static function splitVersionRange($ver) {
 		$versionRange = array();
 		if (strstr($ver, '-')) {
 			$versionRange = explode('-', $ver, 2);
@@ -346,7 +348,7 @@ final class tx_em_Tools {
 	 * @param	string		$type The dependency type to list if $dep is an array
 	 * @return	string		A simple dependency list for display
 	 */
-	public function depToString($dep, $type = 'depends') {
+	public static function depToString($dep, $type = 'depends') {
 		if (is_array($dep)) {
 			unset($dep[$type]['php']);
 			unset($dep[$type]['typo3']);
@@ -365,7 +367,7 @@ final class tx_em_Tools {
 	 * @param	string		$type The dependency type to list if $dep is an array
 	 * @return	string		A simple dependency list for display
 	 */
-	public function stringToDep($dep) {
+	public static function stringToDep($dep) {
 		$constraint = array();
 		if (is_string($dep) && strlen($dep)) {
 			$dep = explode(',', $dep);
@@ -385,7 +387,7 @@ final class tx_em_Tools {
 	 * @return	string
 	 * @see renderVersion()
 	 */
-	public function makeVersion($v, $mode) {
+	public static function makeVersion($v, $mode) {
 		$vDat = self::renderVersion($v);
 		return $vDat['version_' . $mode];
 	}
@@ -397,7 +399,7 @@ final class tx_em_Tools {
 	 * @param	string		Increase version part: "main", "sub", "dev"
 	 * @return	string
 	 */
-	public function renderVersion($v, $raise = '') {
+	public static function renderVersion($v, $raise = '') {
 		$parts = t3lib_div::intExplode('.', $v . '..');
 		$parts[0] = t3lib_div::intInRange($parts[0], 0, 999);
 		$parts[1] = t3lib_div::intInRange($parts[1], 0, 999);
@@ -436,7 +438,7 @@ final class tx_em_Tools {
 	 * @param	integer		Tolerance factor. For instance, set to 1000 to ignore difference in dev-version (third part)
 	 * @return	boolean		True if version 1 is greater than version 2
 	 */
-	public function versionDifference($v1, $v2, $div = 1) {
+	public static function versionDifference($v1, $v2, $div = 1) {
 		return floor(self::makeVersion($v1, 'int') / $div) > floor(self::makeVersion($v2, 'int') / $div);
 	}
 
@@ -449,7 +451,7 @@ final class tx_em_Tools {
 	 * @param	boolean		If set, the test is case insensitive
 	 * @return	boolean		True if found.
 	 */
-	public function first_in_array($str, $array, $caseInsensitive = FALSE) {
+	public static function first_in_array($str, $array, $caseInsensitive = FALSE) {
 		if ($caseInsensitive) {
 			$str = strtolower($str);
 		}
@@ -459,11 +461,11 @@ final class tx_em_Tools {
 					$cl = strtolower($cl);
 				}
 				if (t3lib_div::isFirstPartOfStr($cl, $str)) {
-					return true;
+					return TRUE;
 				}
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -473,7 +475,7 @@ final class tx_em_Tools {
 	 * @param	array		Past values
 	 * @return	array		Affected files
 	 */
-	function findMD5ArrayDiff($current, $past) {
+	public static function findMD5ArrayDiff($current, $past) {
 		if (!is_array($current)) {
 			$current = array();
 		}
@@ -493,7 +495,7 @@ final class tx_em_Tools {
 	 * @param	string		Help text.
 	 * @return	string		title="" attribute prepended with a single space
 	 */
-	public function labelInfo($str) {
+	public static function labelInfo($str) {
 		return ' title="' . htmlspecialchars($str) . '" style="cursor:help;"';
 	}
 
@@ -505,7 +507,7 @@ final class tx_em_Tools {
 	 * @param	string		Install scope type: L, G, S
 	 * @return	string		Returns the absolute path to the install scope given by input $type variable. It is checked if the path is a directory. Slash is appended.
 	 */
-	public function getExtPath($extKey, $type, $returnWithoutExtKey = FALSE) {
+	public static function getExtPath($extKey, $type, $returnWithoutExtKey = FALSE) {
 		$typePath = self::typePath($type);
 
 		if ($typePath) {
@@ -521,12 +523,12 @@ final class tx_em_Tools {
 	 *
 	 * @param string $path
 	 */
-	public function getExtTypeFromPath($path) {
-		if (strpos($path, TYPO3_mainDir . 'sysext/') !== false) {
+	public static function getExtTypeFromPath($path) {
+		if (strpos($path, TYPO3_mainDir . 'sysext/') !== FALSE) {
 			return 'S';
-		} elseif (strpos($path, TYPO3_mainDir . 'ext/') !== false) {
+		} elseif (strpos($path, TYPO3_mainDir . 'ext/') !== FALSE) {
 			return 'G';
-		} elseif (strpos($path, 'typo3conf/ext/') !== false) {
+		} elseif (strpos($path, 'typo3conf/ext/') !== FALSE) {
 			return 'L';
 		}
 	}
@@ -536,7 +538,7 @@ final class tx_em_Tools {
 	 *
 	 * @param string $type S/G/L
 	 */
-	public function typePath($type) {
+	public static function typePath($type) {
 		if ($type === 'S') {
 			return PATH_typo3 . 'sysext/';
 		} elseif ($type === 'G') {
@@ -551,7 +553,7 @@ final class tx_em_Tools {
 	 *
 	 * @param string $type S/G/L
 	 */
-	public function typeRelPath($type) {
+	public static function typeRelPath($type) {
 		if ($type === 'S') {
 			return 'sysext/';
 		} elseif ($type === 'G') {
@@ -566,11 +568,11 @@ final class tx_em_Tools {
 	 *
 	 * @param string $type S/G/L
 	 */
-	public function typeBackPath($type) {
+	public static function typeBackPath($type) {
 		if ($type === 'L') {
 			return '../../../../' . TYPO3_mainDir;
 		} else {
-			return  '../../../';
+			return '../../../';
 		}
 	}
 
@@ -579,7 +581,7 @@ final class tx_em_Tools {
 	 *
 	 * @param $file
 	 */
-	public function getArrayFromLocallang($file, $key = 'default') {
+	public static function getArrayFromLocallang($file, $key = 'default') {
 		$content = t3lib_div::getURL($file);
 		$array = t3lib_div::xml2array($content);
 		return $array['data'][$key];
@@ -594,7 +596,7 @@ final class tx_em_Tools {
 	 * @return	array		Array with header/content as key 0/1
 	 * @see makeUploadarray()
 	 */
-	function getSerializedLocalLang($file, $content) {
+	public static function getSerializedLocalLang($file, $content) {
 		$LOCAL_LANG = NULL;
 		$returnParts = explode('$LOCAL_LANG', $content, 2);
 
@@ -616,7 +618,7 @@ final class tx_em_Tools {
 	 * @param	unknown_type		$level
 	 * @return	unknown
 	 */
-	function arrayToCode($array, $level = 0) {
+	public static function arrayToCode($array, $level = 0) {
 		$lines = 'array(' . LF;
 		$level++;
 		foreach ($array as $k => $v) {
@@ -640,16 +642,16 @@ final class tx_em_Tools {
 	 * @return	array		Modified array of extention keys as values
 	 * @see addExtToList()
 	 */
-	function managesPriorities($listArr, $instExtInfo) {
+	public static function managesPriorities($listArr, $instExtInfo) {
 
-		// Initialize:
+			// Initialize:
 		$levels = array(
 			'top' => array(),
 			'middle' => array(),
 			'bottom' => array(),
 		);
 
-		// Traverse list of extensions:
+			// Traverse list of extensions:
 		foreach ($listArr as $ext) {
 			$prio = trim($instExtInfo[$ext]['EM_CONF']['priority']);
 			switch ((string) $prio) {
@@ -678,12 +680,12 @@ final class tx_em_Tools {
 	 * @param   mixed   $cat  category title or category index
 	 * @return  mixed
 	 */
-	static public function getDefaultCategory($cat = NULL) {
+	public static function getDefaultCategory($cat = NULL) {
 		if (is_null($cat)) {
 			return self::$defaultCategories;
 		} else {
 			if (is_string($cat)) {
-				// default category
+					// default category
 				$catIndex = 4;
 				if (array_key_exists(strtolower($cat), self::$defaultCategories)) {
 					$catIndex = self::$defaultCategories[strtolower($cat)];
@@ -692,7 +694,7 @@ final class tx_em_Tools {
 			} else {
 				if (is_int($cat) && $cat >= 0) {
 					$catTitle = array_search($cat, self::$defaultCategories);
-					// default category
+						// default category
 					if (!$catTitle) {
 						$catTitle = 'misc';
 					}
@@ -710,12 +712,12 @@ final class tx_em_Tools {
 	 * @param   mixed   $state  state title or state index
 	 * @return  mixed
 	 */
-	static public function getDefaultState($state = NULL) {
+	public static function getDefaultState($state = NULL) {
 		if (is_null($state)) {
 			return self::$defaultStates;
 		} else {
 			if (is_string($state)) {
-				// default state
+					// default state
 				$stateIndex = 999;
 				if (array_key_exists(strtolower($state), self::$defaultStates)) {
 					$stateIndex = self::$defaultStates[strtolower($state)];
@@ -724,7 +726,7 @@ final class tx_em_Tools {
 			} else {
 				if (is_int($state) && $state >= 0) {
 					$stateTitle = array_search($state, self::$defaultStates);
-					// default state
+						// default state
 					if (!$stateTitle) {
 						$stateTitle = 'n/a';
 					}
@@ -741,19 +743,19 @@ final class tx_em_Tools {
 	 * @param	string		Extension lock-type (eg. "L" or "G")
 	 * @return	boolean		True if installation is allowed.
 	 */
-	function importAsType($type, $lockType = '') {
+	public static function importAsType($type, $lockType = '') {
 		switch ($type) {
 			case 'G':
 				return $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall'] && (!$lockType || !strcmp($lockType, $type));
-				break;
+			break;
 			case 'L':
 				return $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall'] && (!$lockType || !strcmp($lockType, $type));
-				break;
+			break;
 			case 'S':
-				return $this->systemInstall;
-				break;
+				return isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall']) && $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'];
+			break;
 			default:
-				return false;
+				return FALSE;
 		}
 	}
 
@@ -763,16 +765,16 @@ final class tx_em_Tools {
 	 * @param	string		Scope: "G" or "L"
 	 * @return	boolean		True if possible.
 	 */
-	function deleteAsType($type) {
+	public static function deleteAsType($type) {
 		switch ($type) {
 			case 'G':
 				return $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall'];
-				break;
+			break;
 			case 'L':
 				return $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall'];
-				break;
+			break;
 			default:
-				return false;
+				return FALSE;
 		}
 	}
 
@@ -784,7 +786,7 @@ final class tx_em_Tools {
 	 * @param	string		Absolute path to directory.
 	 * @return	mixed		Returns false on success or an error string
 	 */
-	function createDirsInPath($dirs, $extDirPath) {
+	public static function createDirsInPath($dirs, $extDirPath) {
 		if (is_array($dirs)) {
 			foreach ($dirs as $dir) {
 				$error = t3lib_div::mkdir_deep($extDirPath, $dir);
@@ -794,7 +796,7 @@ final class tx_em_Tools {
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -806,8 +808,9 @@ final class tx_em_Tools {
 	 * @return	array		Information array.
 	 * @see makeDetailedExtensionAnalysis()
 	 */
-	function getClassIndexLocallangFiles($absPath, $table_class_prefix, $extKey) {
-		$filesInside = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $absPath, 'php,inc', 0, 99, $this->excludeForPackaging), $absPath);
+	public static function getClassIndexLocallangFiles($absPath, $table_class_prefix, $extKey) {
+		$excludeForPackaging = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
+		$filesInside = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $absPath, 'php,inc', 0, 99, $excludeForPackaging), $absPath);
 		$out = array();
 		$reg = array();
 
@@ -822,7 +825,7 @@ final class tx_em_Tools {
 						unset($reg);
 						if (preg_match('/\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)/', $fContent, $reg)) {
 
-							// Find classes:
+								// Find classes:
 							$lines = explode(LF, $fContent);
 							foreach ($lines as $l) {
 								$line = trim($l);
@@ -830,38 +833,38 @@ final class tx_em_Tools {
 								if (preg_match('/^class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)/', $line, $reg)) {
 									$out['classes'][] = $reg[1];
 									$out['files'][$fileName]['classes'][] = $reg[1];
-									if ($reg[1]!=='ext_update' && substr($reg[1], 0, 3) != 'ux_' && !t3lib_div::isFirstPartOfStr($reg[1], $table_class_prefix) && strcmp(substr($table_class_prefix, 0, -1), $reg[1])) {
+									if ($reg[1] !== 'ext_update' && substr($reg[1], 0, 3) != 'ux_' && !t3lib_div::isFirstPartOfStr($reg[1], $table_class_prefix) && strcmp(substr($table_class_prefix, 0, -1), $reg[1])) {
 										$out['NSerrors']['classname'][] = $reg[1];
 									} else {
 										$out['NSok']['classname'][] = $reg[1];
 									}
 								}
 							}
-							// If class file prefixed 'class.'....
+								// If class file prefixed 'class.'....
 							if (substr($baseName, 0, 6) == 'class.') {
 								$fI = pathinfo($baseName);
 								$testName = substr($baseName, 6, -(1 + strlen($fI['extension'])));
-								if ($testName!=='ext_update' && substr($testName, 0, 3) != 'ux_' && !t3lib_div::isFirstPartOfStr($testName, $table_class_prefix) && strcmp(substr($table_class_prefix, 0, -1), $testName)) {
+								if ($testName !== 'ext_update' && substr($testName, 0, 3) != 'ux_' && !t3lib_div::isFirstPartOfStr($testName, $table_class_prefix) && strcmp(substr($table_class_prefix, 0, -1), $testName)) {
 									$out['NSerrors']['classfilename'][] = $baseName;
 								} else {
 									$out['NSok']['classfilename'][] = $baseName;
 									if (is_array($out['files'][$fileName]['classes']) && tx_em_Tools::first_in_array($testName, $out['files'][$fileName]['classes'], 1)) {
 										$out['msg'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_class_ok'),
-											$fileName, $testName
+																$fileName, $testName
 										);
 									} else {
 										$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_class_not_ok'),
-											$fileName, $testName
+																   $fileName, $testName
 										);
 									}
 								}
 							}
-							// Check for proper XCLASS definition
-							// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
+								// Check for proper XCLASS definition
+								// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
 							$XclassSearch = '\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
 							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
 							if (count($XclassParts) !== 2) {
-								// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
+									// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
 								$XclassSearch = '\$GLOBALS\[[\'"]TYPO3_CONF_VARS[\'"]\]\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
 								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
 							}
@@ -878,14 +881,14 @@ final class tx_em_Tools {
 										}
 									} else {
 										$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_xclass_incorrect'),
-											$reg[1], $cmpF
+																   $reg[1], $cmpF
 										);
 									}
 								} else {
 									$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_filename'), $fileName);
 								}
 							} elseif (!tx_em_Tools::first_in_array('ux_', $out['files'][$fileName]['classes'])) {
-								// No Xclass definition required if classname starts with 'ux_'
+									// No Xclass definition required if classname starts with 'ux_'
 								$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_found'), $fileName);
 							}
 						}
@@ -905,7 +908,7 @@ final class tx_em_Tools {
 	 * @return	string		Returns message about the status.
 	 * @see modConfFileAnalysis()
 	 */
-	function writeTYPO3_MOD_PATH($confFilePath, $type, $mP) {
+	public static function writeTYPO3_MOD_PATH($confFilePath, $type, $mP) {
 		$lines = explode(LF, t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
@@ -926,12 +929,12 @@ final class tx_em_Tools {
 
 			unset($reg);
 			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/', $line, $reg)) {
-				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' .  self::typeBackPath($type) . '\';', $lines[$k]);
+				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' . self::typeBackPath($type) . '\';', $lines[$k]);
 				$flag_B = $k + 1;
 			}
 
-			// Check if this module uses new API (see http://bugs.typo3.org/view.php?id=5278)
-			// where TYPO3_MOD_PATH and BACK_PATH are not required
+				// Check if this module uses new API (see http://bugs.typo3.org/view.php?id=5278)
+				// where TYPO3_MOD_PATH and BACK_PATH are not required
 			unset($reg);
 			if (preg_match('/^\$MCONF\[["\']script["\']\][[:space:]]*=[[:space:]]*["\']_DISPATCH["\'][[:space:]]*;/', $line, $reg)) {
 				$flag_Dispatch = $k + 1;
@@ -942,16 +945,16 @@ final class tx_em_Tools {
 		if ($flag_B && $flag_M) {
 			t3lib_div::writeFile($confFilePath, implode(LF, $lines));
 			return sprintf($GLOBALS['LANG']->getLL('writeModPath_ok'),
-				substr($confFilePath, strlen(PATH_site)));
+						   substr($confFilePath, strlen(PATH_site)));
 		} elseif ($flag_Dispatch) {
 			return sprintf(
 				$GLOBALS['LANG']->getLL('writeModPath_notRequired'),
 				substr($confFilePath, strlen(PATH_site))
 			);
 		} else {
-			return $GLOBALS["TBE_TEMPLATE"]->rfw(
+			return self::rfw(
 				sprintf($GLOBALS['LANG']->getLL('writeModPath_error'),
-					$confFilePath)
+						$confFilePath)
 			);
 		}
 	}
@@ -963,7 +966,7 @@ final class tx_em_Tools {
 	 * @param	string		Email address for use in link.
 	 * @return	string		Output
 	 */
-	function wrapEmail($str, $email) {
+	public static function wrapEmail($str, $email) {
 		if ($email) {
 			$str = '<a href="mailto:' . htmlspecialchars($email) . '">' . htmlspecialchars($str) . '</a>';
 		}
@@ -976,7 +979,7 @@ final class tx_em_Tools {
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
-	function rfw($string) {
+	public static function rfw($string) {
 		return '<span class="typo3-red">' . $string . '</span>';
 	}
 
@@ -986,7 +989,7 @@ final class tx_em_Tools {
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
-	function dfw($string) {
+	public static function dfw($string) {
 		return '<span class="typo3-dimmed">' . $string . '</span>';
 	}
 }

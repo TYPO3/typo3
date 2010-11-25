@@ -73,7 +73,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return void
 	 */
 	public function __construct() {
-		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+
 	}
 
 

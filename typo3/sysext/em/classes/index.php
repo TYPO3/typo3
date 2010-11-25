@@ -474,7 +474,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} elseif ($this->CMD['importExt'] || $this->CMD['uploadExt']) { // Imports an extension from online rep.
 			$err = $this->importExtFromRep($this->CMD['importExt'], $this->CMD['extVersion'], $this->CMD['loc'], $this->CMD['uploadExt']);
 			if ($err) {
-				$this->content .= $this->doc->section('', $GLOBALS['TBE_TEMPLATE']->rfw($err));
+				$this->content .= $this->doc->section('', tx_em_Tools::rfw($err));
 			}
 			if (!$err && $this->CMD['importExt']) {
 				$this->translations->installTranslationsForExtension($this->CMD['importExt'], $this->getMirrorURL());
@@ -784,7 +784,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 										'SET[singleDetails]' => 'info'
 									))) . '">' . tx_em_Tools::installButton() . '</a>';
 							if (in_array($extKey, $this->requiredExt)) {
-								$loadUnloadLink = '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
+								$loadUnloadLink = '<strong>' . tx_em_Tools::rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
 							}
 							$lines[] = $this->extensionList->extensionListRow($extKey, $inst_list[$extKey], array('<td class="bgColor">' . $loadUnloadLink . '</td>'), t3lib_extMgm::isLoaded($extKey) ? 'em-listbg1' : 'em-listbg2');
 						}
@@ -1705,12 +1705,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 										'<strong>' . $saveMD5 . '</strong>'
 								) . '<br />';
 								if ($fileMD5 != $saveMD5) {
-									$info .= $GLOBALS['TBE_TEMPLATE']->rfw(
+									$info .= tx_em_Tools::rfw(
 										'<br /><strong>' . $GLOBALS['LANG']->getLL('ext_details_saving_failed_changes_lost') . '</strong>'
 									) . '<br />';
 								}
 								else {
-									$info .= $GLOBALS['TBE_TEMPLATE']->rfw(
+									$info .= tx_em_Tools::rfw(
 										'<br /><strong>' . $GLOBALS['LANG']->getLL('ext_details_file_saved') . '</strong>'
 									) . '<br />';
 								}
@@ -1727,7 +1727,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 										$GLOBALS['LANG']->getLL('ext_details_file_save_button') . '" />';
 							}
 							else {
-								$outCode .= $GLOBALS['TBE_TEMPLATE']->rfw(
+								$outCode .= tx_em_Tools::rfw(
 									'<br />' . $GLOBALS['LANG']->getLL('ext_details_saving_disabled') . ' '
 								);
 							}
@@ -2336,15 +2336,15 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					<td nowrap="nowrap">
 						<input type="radio" name="em[upload][mode]" id="new_dev" value="new_dev" checked="checked" />
 							<label for="new_dev">' . sprintf($GLOBALS['LANG']->getLL('repositoryUploadForm_new_bugfix'),
-				'x.x.<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw('x+1') . '</strong>'
+				'x.x.<strong>' . tx_em_Tools::rfw('x+1') . '</strong>'
 		) . '</label><br />
 						<input type="radio" name="em[upload][mode]" id="new_sub" value="new_sub" />
 							<label for="new_sub">' . sprintf($GLOBALS['LANG']->getLL('repositoryUploadForm_new_sub_version'),
-				'x.<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw('x+1') . '</strong>.0'
+				'x.<strong>' . tx_em_Tools::rfw('x+1') . '</strong>.0'
 		) . '</label><br />
 						<input type="radio" name="em[upload][mode]" id="new_main" value="new_main" />
 							<label for="new_main">' . sprintf($GLOBALS['LANG']->getLL('repositoryUploadForm_new_main_version'),
-				'<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw('x+1') . '</strong>.0.0'
+				'<strong>' . tx_em_Tools::rfw('x+1') . '</strong>.0.0'
 		) . '</label><br />
 					</td>
 				</tr>

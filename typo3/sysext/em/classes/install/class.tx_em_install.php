@@ -405,7 +405,7 @@ class tx_em_Install {
 			}
 		}
 		if ($depError || $depIgnore) {
-			$content .= $GLOBALS['TBE_TEMPLATE']->section(
+			$content .= $this->parentObject->doc->section(
 				$GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'),
 				implode('<br />', $msg), 0, 1, 2
 			);
@@ -451,7 +451,7 @@ class tx_em_Install {
 			}
 		}
 		if ($conflictError || $conflictIgnore) {
-			$content .= $GLOBALS['TBE_TEMPLATE']->section(
+			$content .= $this->parentObject->doc->section(
 				$GLOBALS['LANG']->getLL('checkDependencies_conflict_error'), implode('<br />', $msg), 0, 1, 2
 			);
 		}
@@ -500,7 +500,7 @@ class tx_em_Install {
 				}
 			}
 			if ($suggestion || $suggestionIgnore) {
-				$content .= $GLOBALS['TBE_TEMPLATE']->section(
+				$content .= $this->parentObject->doc->section(
 					sprintf($GLOBALS['LANG']->getLL('checkDependencies_exts_suggested_by_ext'), $extKey),
 					implode('<br />', $msg), 0, 1, 1
 				);
