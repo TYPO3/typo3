@@ -170,7 +170,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				this.getWindowDimensions(
 					{
 						width:	550,
-						height:	350
+						height:	500
 					},
 					buttonId
 				),

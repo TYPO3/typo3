@@ -5,6 +5,7 @@
 2010-11-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
+	* Fixed bug #16571: htmlArea RTE: Configured height of link and image dialogue windows not honoured
 
 2010-11-24  Stanislas Rolland  <typo3@sjbr.ca>
 

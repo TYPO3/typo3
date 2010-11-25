@@ -93,7 +93,7 @@ HTMLArea.TYPO3Image = HTMLArea.Plugin.extend({
 			this.getWindowDimensions(
 				{
 					width:	610,
-					height:	390
+					height:	500
 				},
 				buttonId
 			),
