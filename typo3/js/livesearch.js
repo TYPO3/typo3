@@ -61,7 +61,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				'<tr class="search-item">',
 					'<td class="search-item-type" width="105" align="right">{recordTitle}</td>',
 					'<td class="search-item-content" width="195">',
-						'<div class="search-item-title">{iconHTML} {title}</span>',
+						'<div class="search-item-title">{iconHTML} {title}</div>',
 					'</td>',
 				'</tr>',
 			'</tpl>',

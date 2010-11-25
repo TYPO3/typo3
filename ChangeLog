@@ -1,5 +1,6 @@
 2010-11-25  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16432: wrong markup in livesearch
 	* Follow-up to #16495: corrected the backpath for imported modules
 	* Follow-up to #15094: removed unused variable, resolved unknown variable
 
