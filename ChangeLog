@@ -13,6 +13,7 @@
 
 2010-11-25  Steffen Kamper  <steffen@typo3.org>
 
+	* Added Test #16552: Add unit tests for t3lib_div::makeInstance (Thanks to Oliver Klee)
 	* Fixed bug #16526: EM resolve dependencies by moving common objects to API class
 	* Fixed bug #16527: EM: delete of extension does not work
 	* Fixed bug #16528: EM: remove dependency to $TBE_TEMPLATE

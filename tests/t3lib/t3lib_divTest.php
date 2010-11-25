@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Testcase for class t3lib_div
  *
@@ -1813,6 +1812,78 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals(
 			$expectedValue,
 			t3lib_div::dirname($input)
+		);
+	}
+
+
+	//////////////////////////////////
+	// Tests concerning makeInstance
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceReturnsClassInstance() {
+		$className = get_class($this->getMock('foo'));
+
+		$this->assertTrue(
+			t3lib_div::makeInstance($className) instanceof $className
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstancePassesParametersToConstructor() {
+		$className = 'testingClass' . uniqid();
+		if (!class_exists($className, FALSE)) {
+			eval(
+				'class ' . $className . ' {' .
+				'  public $constructorParameter1;' .
+				'  public $constructorParameter2;' .
+				'  public function __construct($parameter1, $parameter2) {' .
+				'    $this->constructorParameter1 = $parameter1;' .
+				'    $this->constructorParameter2 = $parameter2;' .
+				'  }' .
+				'}'
+			);
+		}
+
+		$instance = t3lib_div::makeInstance($className, 'one parameter', 'another parameter');
+
+		$this->assertEquals(
+			'one parameter',
+			$instance->constructorParameter1,
+			'The first constructor parameter has not been set.'
+		);
+		$this->assertEquals(
+			'another parameter',
+			$instance->constructorParameter2,
+			'The second constructor parameter has not been set.'
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances() {
+		$className = get_class($this->getMock('foo'));
+
+		$this->assertNotSame(
+			t3lib_div::makeInstance($className),
+			t3lib_div::makeInstance($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance() {
+		$className = get_class($this->getMock('t3lib_Singleton'));
+
+		$this->assertSame(
+			t3lib_div::makeInstance($className),
+			t3lib_div::makeInstance($className)
 		);
 	}
 }
