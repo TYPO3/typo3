@@ -1304,7 +1304,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onMouse: function (event, target) {
 			// In WebKit, select the image when it is clicked
-		if (Ext.isWebKit && /^(img)$/i.test(target.nodeName)) {
+		if (Ext.isWebKit && /^(img)$/i.test(target.nodeName) && event.browserEvent.type == 'click') {
 			this.getEditor().selectNode(target);
 		}
 		this.getToolbar().updateLater.delay(100);
