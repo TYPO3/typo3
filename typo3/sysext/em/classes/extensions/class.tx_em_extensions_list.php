@@ -36,6 +36,13 @@ class tx_em_Extensions_List {
 
 	protected $parentObject;
 
+	/**
+	 * Instance of EM API
+	 *
+	 * @var tx_em_API
+	 */
+	protected $api;
+
 	protected $categories;
 	protected $types;
 
@@ -47,6 +54,7 @@ class tx_em_Extensions_List {
 	 */
 	public function __construct($parentObject = NULL) {
 		$this->parentObject = $parentObject;
+		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
 
 		$this->categories = array(
@@ -581,7 +589,7 @@ EXTENSION KEYS:
 					);
 					$doubleInstall = ' <strong><abbr title="' . $doubleInstallTitle . '">' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</abbr></strong>';
 				}
-				$cells[] = '<td nowrap="nowrap">' . $this->parentObject->typeLabels[$extInfo['type']] . $doubleInstall . '</td>';
+				$cells[] = '<td nowrap="nowrap">' . $this->api->typeLabels[$extInfo['type']] . $doubleInstall . '</td>';
 			} else { // Listing extensions from REMOTE repository:
 				$inst_curVer = $inst_list[$extKey]['EM_CONF']['version'];
 				if (isset($inst_list[$extKey])) {
@@ -592,7 +600,7 @@ EXTENSION KEYS:
 				$cells[] = '<td nowrap="nowrap">' . t3lib_befunc::date($extInfo['EM_CONF']['lastuploaddate']) . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['author'], $GLOBALS['BE_USER']->uc[titleLen])) . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . $inst_curVer . '</td>';
-				$cells[] = '<td nowrap="nowrap">' . $this->parentObject->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
+				$cells[] = '<td nowrap="nowrap">' . $this->api->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . ($extInfo['downloadcounter_all'] ? $extInfo['downloadcounter_all'] : '&nbsp;&nbsp;') . '/' . ($extInfo['downloadcounter'] ? $extInfo['downloadcounter'] : '&nbsp;') . '</td>';
 			}
 			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $this->parentObject->stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->parentObject->states[$extInfo['EM_CONF']['state']] . '</td>';
@@ -697,7 +705,7 @@ EXTENSION KEYS:
 						'<td valign="top">' . $name . '</td>' .
 						'<td valign="top" align="right">' . $data[EM_CONF][version] . '</td>' .
 						'<td valign="top" align="right">' . $lastversion . '</td>' .
-						'<td valign="top" nowrap="nowrap">' . $this->parentObject->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</strong>' : '') . '</td>' .
+						'<td valign="top" nowrap="nowrap">' . $this->api->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</strong>' : '') . '</td>' .
 						'<td valign="top">' . $comment . '</td></tr>' . LF .
 						$warn .
 						'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>' . LF;

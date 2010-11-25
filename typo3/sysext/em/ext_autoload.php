@@ -4,7 +4,8 @@ $emInterfacesPath = PATH_site . 'typo3/sysext/em/interfaces/';
 return array(
 	'tx_em_index_checkdatabaseupdateshook' => $emInterfacesPath . 'interface.tx_em_index_checkdatabaseupdateshook.php',
 
-	'sc_mod_tools_em_index' => $emClassesPath . '../classes/index.php',
+	'sc_mod_tools_em_index' => $emClassesPath . 'index.php',
+	'tx_em_api' => $emClassesPath . 'class.tx_em_api.php',
 
 	'tx_em_connection_ter' => $emClassesPath . 'connection/class.tx_em_connection_ter.php',
 	'tx_em_connection_soap' => $emClassesPath . 'connection/class.tx_em_connection_soap.php',

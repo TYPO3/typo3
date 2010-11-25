@@ -40,6 +40,13 @@ class tx_em_Extensions_Details {
 	protected $parentObject;
 
 	/**
+	 * Instance of EM API
+	 *
+	 * @var tx_em_API
+	 */
+	protected $api;
+
+	/**
 	 * Class for install extensions
 	 *
 	 * @var em_install
@@ -53,6 +60,7 @@ class tx_em_Extensions_Details {
 	 */
 	public function __construct($parentObject = NULL) {
 		$this->parentObject = $parentObject;
+		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
 		$GLOBALS['LANG']->includeLLFile(t3lib_extMgm::extPath('em') . 'language/locallang.xml');
 	}
@@ -565,7 +573,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_type');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_type', $headerCol);
-			$dataCol = $this->parentObject->typeLabels[$extInfo['type']] . ' - <em>' . $this->parentObject->typeDescr[$extInfo['type']] . '</em>';
+			$dataCol = $this->api->typeLabels[$extInfo['type']] . ' - <em>' . $this->parentObject->typeDescr[$extInfo['type']] . '</em>';
 			$lines[] = array($headerCol, $dataCol);
 
 
@@ -735,13 +743,13 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			$others = array();
 			for ($a = 0; $a < strlen($dbInst); $a++) {
 				if (substr($dbInst, $a, 1) != $current) {
-					$others[] = '"' . $this->parentObject->typeLabels[substr($dbInst, $a, 1)] . '"';
+					$others[] = '"' . $this->api->typeLabels[substr($dbInst, $a, 1)] . '"';
 				}
 			}
 			return tx_em_Tools::rfw(
 				sprintf($GLOBALS['LANG']->getLL('extInfoArray_double_installation_infotext'),
 					implode(' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:and') . ' ', $others),
-					$this->parentObject->typeLabels[$current]
+					$this->api->typeLabels[$current]
 				)
 			);
 		} else {

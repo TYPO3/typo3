@@ -107,13 +107,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'excludeFromUpdates' => '#cf7307'
 	);
 
-	/**
-	 * "TYPE" information; labels, paths, description etc. See init()
-	 */
-	var $typeLabels = array();
-	var $typeDescr = array();
-	var $typeBackPaths = array(); // Also static, set in init()
-
 	var $detailCols = array(
 		0 => 2,
 		1 => 5,
@@ -148,6 +141,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 	var $inst_keys = array(); // Storage of installed extensions
 	var $gzcompress = 0; // Is set true, if system support compression.
+
+	/**
+	 * Instance of EM API
+	 *
+	 * @var tx_em_API
+	 */
+	protected $api;
 
 	/**
 	 * instance of TER connection handler
@@ -260,21 +260,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'excludeFromUpdates' => $GLOBALS['LANG']->getLL('state_exclude_from_updates')
 		);
 
-		/**
-		 * "TYPE" information; labels, paths, description etc.
-		 */
-		$this->typeLabels = array(
-			'S' => $GLOBALS['LANG']->getLL('type_system'),
-			'G' => $GLOBALS['LANG']->getLL('type_global'),
-			'L' => $GLOBALS['LANG']->getLL('type_local'),
-		);
-		$this->typeDescr = array(
-			'S' => $GLOBALS['LANG']->getLL('descr_system'),
-			'G' => $GLOBALS['LANG']->getLL('descr_global'),
-			'L' => $GLOBALS['LANG']->getLL('descr_local'),
-		);
-
-
 		$this->script = 'mod.php?M=tools_em';
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
 		$securityMessage = $GLOBALS['LANG']->getLL('security_warning_extensions') .
@@ -316,6 +301,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->doc->setModuleTemplate('templates/em_index.html');
 
 		// Initialize helper objects
+		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
 		$this->terConnection->wsdlURL = $TYPO3_CONF_VARS['EXT']['em_wsdlURL'];
 
@@ -2181,7 +2167,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 					' return false;"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
-						$this->typeLabels[$extInfo['type']],
+						$this->api->typeLabels[$extInfo['type']],
 						substr($absPath, strlen(PATH_site))
 					) . '</a>';
 			$content .= '<br /><br />' . $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_changes') . '<br />

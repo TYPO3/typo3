@@ -43,6 +43,13 @@ class tx_em_Install {
 	protected $parentObject;
 
 	/**
+	 * Instance of EM API
+	 *
+	 * @var tx_em_API
+	 */
+	protected $api;
+
+	/**
 	 *
 	 * @var t3lib_install
 	 */
@@ -59,6 +66,7 @@ class tx_em_Install {
 	public function __construct($parentObject = NULL) {
 		$GLOBALS['LANG']->includeLLFile(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
 		$this->parentObject = $parentObject;
+		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('t3lib_install');
 		$this->install->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
 		$this->systemInstall = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall']) && $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'];
@@ -202,7 +210,7 @@ class tx_em_Install {
 
 											$messageContent .= 'ext_emconf.php: ' . $extDirPath . 'ext_emconf.php<br />';
 											$messageContent .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ';
-											$messageContent .= $this->typeLabels[$loc] . '<br />';
+											$messageContent .= $this->api->typeLabels[$loc] . '<br />';
 											$messageContent .= '<br />';
 
 											// Remove cache files:
@@ -537,7 +545,7 @@ class tx_em_Install {
 			return $GLOBALS['LANG']->getLL('extDelete_ext_active');
 		} elseif (!tx_em_Tools::deleteAsType($extInfo['type'])) {
 			return sprintf($GLOBALS['LANG']->getLL('extDelete_wrong_scope'),
-				$this->typeLabels[$extInfo['type']]
+				$this->api->typeLabels[$extInfo['type']]
 			);
 		} elseif (t3lib_div::inList('G,L', $extInfo['type'])) {
 			if ($command['doDelete'] && !strcmp($absPath, urldecode($command['absPath']))) {
@@ -570,7 +578,7 @@ class tx_em_Install {
 				$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 						' return false;"><strong>' . $deleteFromServer . '</strong> ' .
 						sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
-							$this->typeLabels[$extInfo['type']],
+							$this->api->typeLabels[$extInfo['type']],
 							substr($absPath, strlen(PATH_site))
 						) . '</a>';
 				$content .= '<br /><br />' . $GLOBALS['LANG']->getLL('extDelete_backup');
