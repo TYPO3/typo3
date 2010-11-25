@@ -73,29 +73,55 @@
  * @subpackage t3lib
  */
 class t3lib_admin {
-	var $genTree_includeDeleted = TRUE; // if set, genTree() includes deleted pages. This is default.
-	var $genTree_includeVersions = TRUE; // if set, genTree() includes verisonized pages/records. This is default.
-	var $genTree_includeRecords = FALSE; // if set, genTree() includes records from pages.
-	var $perms_clause = ''; // extra where-clauses for the tree-selection
-	var $genTree_makeHTML = 0; // if set, genTree() generates HTML, that visualizes the tree.
+	/** @var bool If set, genTree() includes deleted pages. This is default.*/
+	var $genTree_includeDeleted = TRUE;
+
+	/** @var bool  If set, genTree() includes versionized pages/records. This is default.*/
+	var $genTree_includeVersions = TRUE;
+
+	/** @var bool  If set, genTree() includes records from pages. */
+	var $genTree_includeRecords = FALSE;
+
+	/** @var string  Extra where-clauses for the tree-selection */
+	var $perms_clause = '';
+
+	/** @var int  If set, genTree() generates HTML, that visualizes the tree. */
+	var $genTree_makeHTML = 0;
 
 		// internal
-	var $page_idArray = array(); // Will hod id/rec pais from genTree()
+	/** @var array Will hold id/rec pairs from genTree() */
+	var $page_idArray = array();
+
+	/** @var array */
 	var $rec_idArray = array();
-	var $getTree_HTML = ''; // Will hold the HTML-code visualising the tree. genTree()
+
+	/** @var string  Will hold the HTML-code visualising the tree. genTree() */
+	var $genTree_HTML = '';
+
+	/** @var string */
 	var $backPath = '';
 
 		// internal
+	/** @var array */
 	var $checkFileRefs = array();
-	var $checkSelectDBRefs = array(); // From the select-fields
-	var $checkGroupDBRefs = array(); // From the group-fields
 
+	/** @var array From the select-fields */
+	var $checkSelectDBRefs = array();
+
+	/** @var array From the group-fields */
+	var $checkGroupDBRefs = array();
+
+	/** @var array Statistics */
 	var $recStats = array(
 		'allValid' => array(),
 		'published_versions' => array(),
 		'deleted' => array(),
 	);
+
+	/** @var array */
 	var $lRecords = array();
+
+	/** @var string */
 	var $lostPagesList = '';
 
 
@@ -113,7 +139,7 @@ class t3lib_admin {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,t3ver_swapmode' . (t3lib_extMgm::isLoaded('cms') ? ',hidden' : ''),
 				'pages',
-					'pid=-1 AND t3ver_oid=' . intval($theID) . ' ' . ((!$this->genTree_includeDeleted) ? 'AND deleted=0' : '') . $this->perms_clause,
+				'pid=-1 AND t3ver_oid=' . intval($theID) . ' ' . ((!$this->genTree_includeDeleted) ? 'AND deleted=0' : '') . $this->perms_clause,
 				'',
 				'sorting'
 			);
@@ -121,7 +147,7 @@ class t3lib_admin {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid,title,doktype,deleted' . (t3lib_extMgm::isLoaded('cms') ? ',hidden' : ''),
 				'pages',
-					'pid=' . intval($theID) . ' ' . ((!$this->genTree_includeDeleted) ? 'AND deleted=0' : '') . $this->perms_clause,
+				'pid=' . intval($theID) . ' ' . ((!$this->genTree_includeDeleted) ? 'AND deleted=0' : '') . $this->perms_clause,
 				'',
 				'sorting'
 			);
@@ -168,12 +194,12 @@ class t3lib_admin {
 			}
 
 			if ($row['deleted']) {
-				$this->recStat['deleted']++;
+				$this->recStats['deleted']++;
 			}
 			if ($row['hidden']) {
-				$this->recStat['hidden']++;
+				$this->recStats['hidden']++;
 			}
-			$this->recStat['doktype'][$row['doktype']]++;
+			$this->recStats['doktype'][$row['doktype']]++;
 
 				// Create the HTML code prefix for recursive call:
 			$genHTML = $depthData . '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/' . $LN . '.gif', 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel;
@@ -198,11 +224,11 @@ class t3lib_admin {
 	}
 
 	/**
-	 * @param	[type]		$theID: ...
-	 * @param	[type]		$depthData: ...
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$versions: ...
-	 * @return	[type]		...
+	 * @param	integer		a pid (page-record id) from which to start making the tree
+	 * @param	string		HTML-code used when this function calls itself recursively.
+	 * @param	string		Table to get the records from
+	 * @param	bool		Internal variable, don't set from outside!
+	 * @return	void
 	 */
 	function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {
 		global $TCA;
@@ -212,16 +238,16 @@ class t3lib_admin {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				t3lib_BEfunc::getCommonSelectFields($table),
 				$table,
-					'pid=-1 AND t3ver_oid=' . intval($theID) .
-							(!$this->genTree_includeDeleted ? t3lib_BEfunc::deleteClause($table) : '')
+				'pid=-1 AND t3ver_oid=' . intval($theID) .
+						(!$this->genTree_includeDeleted ? t3lib_BEfunc::deleteClause($table) : '')
 			);
 		} else {
 				// Select all records from table pointing to this page:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				t3lib_BEfunc::getCommonSelectFields($table),
 				$table,
-					'pid=' . intval($theID) .
-							(!$this->genTree_includeDeleted ? t3lib_BEfunc::deleteClause($table) : '')
+				'pid=' . intval($theID) .
+						(!$this->genTree_includeDeleted ? t3lib_BEfunc::deleteClause($table) : '')
 			);
 		}
 
@@ -278,9 +304,9 @@ class t3lib_admin {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Generates tree and returns statistics
 	 *
-	 * @return	[type]		...
+	 * @return	array		Record statistics
 	 */
 	function genTreeStatus($root = 0) {
 		$this->genTree_includeDeleted = TRUE; // if set, genTree() includes deleted pages. This is default.
@@ -486,11 +512,17 @@ class t3lib_admin {
 					if (t3lib_extMgm::isLoaded('dbal')) {
 						$fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
 						$field = array_shift($fieldArr);
-						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R') ?
-								$field . '!=0' : $field . '!=\'\'';
+						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
+									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
+									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
+								? $field . '!=0'
+								: $field . '!=\'\'';
 						foreach ($fieldArr as $field) {
-							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R') ?
-									' OR ' . $field . '!=0' : ' OR ' . $field . '!=\'\'';
+							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
+										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
+										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
+									? ' OR ' . $field . '!=0'
+									: ' OR ' . $field . '!=\'\'';
 						}
 						unset($fields);
 					}
@@ -508,6 +540,7 @@ class t3lib_admin {
 											// files...
 										if ($fieldConf['MM']) {
 											$tempArr = array();
+											/** @var $dbAnalysis t3lib_loadDBGroup */
 											$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 											$dbAnalysis->start('', 'files', $fieldConf['MM'], $row['uid']);
 											foreach ($dbAnalysis->itemArray as $somekey => $someval) {
@@ -526,7 +559,7 @@ class t3lib_admin {
 										}
 									}
 									if ($fieldConf['internal_type'] == 'db') {
-											// dbs - group
+										/** @var $dbAnalysis t3lib_loadDBGroup */
 										$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 										$dbAnalysis->start($row[$field], $fieldConf['allowed'], $fieldConf['MM'], $row['uid'], $table, $fieldConf);
 										foreach ($dbAnalysis->itemArray as $tempArr) {
@@ -535,7 +568,7 @@ class t3lib_admin {
 									}
 								}
 								if ($fieldConf['type'] == 'select' && $fieldConf['foreign_table']) {
-										// dbs - select
+									/** @var $dbAnalysis t3lib_loadDBGroup */
 									$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 									$dbAnalysis->start($row[$field], $fieldConf['foreign_table'], $fieldConf['MM'], $row['uid'], $table, $fieldConf);
 									foreach ($dbAnalysis->itemArray as $tempArr) {
@@ -690,7 +723,7 @@ class t3lib_admin {
 					// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
 				$fieldConf = $TCA[$table]['columns'][$field]['config'];
 				$allowedTables = ($fieldConf['type'] == 'group') ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
-
+				/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				$dbAnalysis->start($row[$field], $allowedTables, $fieldConf['MM'], $row['uid'], $table, $fieldConf);
 				foreach ($dbAnalysis->itemArray as $tempArr) {
@@ -724,7 +757,7 @@ class t3lib_admin {
 					$field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($filename, $table) . '%\''
 			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-					// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
+					// Now this is the field, where the reference COULD come from. But we're not guaranteed, so we must carefully examine the data.
 				$tempArr = explode(',', trim($row[$field]));
 				foreach ($tempArr as $file) {
 					$file = trim($file);
