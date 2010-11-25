@@ -1,3 +1,7 @@
+2010-11-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16124: htmlArea RTE: Links are incorrectly updated in Google Chrome
+
 2010-11-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #16431: htmlArea RTE: in WebKit, clicking on image does not select it
