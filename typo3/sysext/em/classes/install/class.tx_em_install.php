@@ -540,7 +540,7 @@ class tx_em_Install {
 				$this->typeLabels[$extInfo['type']]
 			);
 		} elseif (t3lib_div::inList('G,L', $extInfo['type'])) {
-			if ($command['doDelete'] && !strcmp($absPath, $command['absPath'])) {
+			if ($command['doDelete'] && !strcmp($absPath, urldecode($command['absPath']))) {
 				$res = $this->removeExtDirectory($absPath);
 				if ($res) {
 					$flashMessage = t3lib_div::makeInstance(
