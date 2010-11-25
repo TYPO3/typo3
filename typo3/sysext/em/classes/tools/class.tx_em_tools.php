@@ -562,6 +562,19 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * Get backpath from type
+	 *
+	 * @param string $type S/G/L
+	 */
+	public function typeBackPath($type) {
+		if ($type === 'L') {
+			return '../../../../' . TYPO3_mainDir;
+		} else {
+			return  '../../../';
+		}
+	}
+
+	/**
 	 * Reads locallang file into array (for possible include in header)
 	 *
 	 * @param $file
@@ -913,7 +926,7 @@ final class tx_em_Tools {
 
 			unset($reg);
 			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/', $line, $reg)) {
-				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' .  self::typeRelPath($type) . '\';', $lines[$k]);
+				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' .  self::typeBackPath($type) . '\';', $lines[$k]);
 				$flag_B = $k + 1;
 			}
 

@@ -275,12 +275,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 
-		$this->typeBackPaths = array(
-			'S' => '../../../',
-			'G' => '../../../',
-			'L' => '../../../../' . TYPO3_mainDir
-		);
-
 		$this->script = 'mod.php?M=tools_em';
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
 		$securityMessage = $GLOBALS['LANG']->getLL('security_warning_extensions') .
