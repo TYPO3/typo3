@@ -18,7 +18,7 @@
 	* Follow-up to #16495: corrected the backpath for imported modules
 	* Follow-up to #15094: removed unused variable, resolved unknown variable
 
-2010-11-25  Jigal van Hemert <jigal@xs4all.nl>
+2010-11-25  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #14050: Cleanup - CGL format of t3lib files - t3lib_admin additional cleanup
 
@@ -26,7 +26,7 @@
 
 	* Fixed bug #16124: htmlArea RTE: Links are incorrectly updated in Google Chrome
 
-2010-11-24  Jigal van Hemert <jigal@xs4all.nl>
+2010-11-24  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16560: Hide mod_menu of record listing in page module if not needed (Thanks to Georg Ringer)
 
