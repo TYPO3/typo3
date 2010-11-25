@@ -232,11 +232,6 @@
  */
 class tslib_cObj {
 
-	/**
-	 * @var tslib_content_abstract
-	 */
-	protected $contentObject;
-
 	var $align = array(
 		'center',
 		'right',
@@ -528,6 +523,9 @@ class tslib_cObj {
 	protected $stdWrapHookObjects = array(); // Containing hook objects for stdWrap
 	protected $getImgResourceHookObjects; // Containing hook objects for getImgResource
 
+	/**
+	 * @var array with members of tslib_content_abstract
+	 */
 	protected $contentObjects = array();
 
 	/**
@@ -7399,7 +7397,7 @@ class tslib_cObj {
 					' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')'
 			);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $query, 3);
+				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery, 3);
 			} else {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$outArr[] = $row['uid'];

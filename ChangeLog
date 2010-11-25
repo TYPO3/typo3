@@ -1,3 +1,7 @@
+2010-11-25  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #15094: removed unused variable, resolved unknown variable
+
 2010-11-25  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #14050: Cleanup - CGL format of t3lib files - t3lib_admin additional cleanup
