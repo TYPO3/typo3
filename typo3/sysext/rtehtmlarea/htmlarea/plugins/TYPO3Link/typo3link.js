@@ -162,53 +162,68 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		var selection, range, anchorClass, imageNode = null, addIconAfterLink;
 		this.editor.focusEditor();
 		var node = this.editor.getParentElement();
-		var el = HTMLArea.getElementObject(node, "a");
-		if (el != null && /^a$/i.test(el.nodeName)) node = el;
-		if (node != null && /^a$/i.test(node.nodeName)) this.editor.selectNode(node);
-			// Clean images from existing anchors otherwise Mozilla may create nested anchors
-		if (HTMLArea.classesAnchorSetup) {
-			selection = this.editor._getSelection();
-			range = this.editor._createRange(selection);
-			this.cleanAllLinks(node, range, true);
+		var el = HTMLArea.getElementObject(node, 'a');
+		if (el != null && /^a$/i.test(el.nodeName)) {
+			node = el;
 		}
-			// In FF, if the url is the same except for upper/lower case of a file name, the link is not updated.
-			// Therefore, we remove the link before creating a new one.
-		if (HTMLArea.is_gecko && node != null && /^a$/i.test(node.nodeName)) {
-				// If the class attribute is not removed, UnLink folowed by CreateLink will create a span element inside the new link
-			node.removeAttribute("class");
-				// Moreover, the selection is sometimes lost after the unlink operation
-			selection = this.editor._getSelection();
-			range = this.editor._createRange(selection);
-			var bookmark = this.editor.getBookmark(range);
-			this.editor._doc.execCommand("UnLink", false, null);
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
-		}
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-			this.editor._doc.execCommand("CreateLink", false, encodeURI(theLink));
-		} else {
-			this.editor._doc.execCommand("CreateLink", false, theLink);
-		}
-		
-		selection = this.editor._getSelection();
-		range = this.editor._createRange(selection);
-		node = this.editor.getParentElement();
-		el = HTMLArea.getElementObject(node, "a");
-		if (el != null && /^a$/i.test(el.nodeName)) node = el;
-		if (node) {
-			if (HTMLArea.classesAnchorSetup && cur_class) {
-				for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
-					anchorClass = HTMLArea.classesAnchorSetup[i];
-					if (anchorClass.name == cur_class && anchorClass.image) {
-						imageNode = this.editor._doc.createElement("img");
-						imageNode.src = anchorClass.image;
-						imageNode.alt = anchorClass.altText;
-						addIconAfterLink = anchorClass.addIconAfterLink;
-						break;
-					}
+		if (HTMLArea.classesAnchorSetup && cur_class) {
+			for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
+				anchorClass = HTMLArea.classesAnchorSetup[i];
+				if (anchorClass.name == cur_class && anchorClass.image) {
+					imageNode = this.editor._doc.createElement('img');
+					imageNode.src = anchorClass.image;
+					imageNode.alt = anchorClass.altText;
+					addIconAfterLink = anchorClass.addIconAfterLink;
+					break;
 				}
 			}
-				// We may have created multiple links in as many blocks
+		}
+		if (node != null && /^a$/i.test(node.nodeName)) {
+				// Update existing link
+			this.editor.selectNode(node);
+			selection = this.editor._getSelection();
+			range = this.editor._createRange(selection);
+				// Clean images
+			if (HTMLArea.classesAnchorSetup) {
+				this.cleanAllLinks(node, range, true);
+			}
+				// Update link href
+			node.href = (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) ? encodeURI(theLink) : theLink;
+				// Update link attributes
 			this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
+		} else {
+				// Create new link
+				// Clean existing anchors otherwise Mozilla may create nested anchors
+			selection = this.editor._getSelection();
+			range = this.editor._createRange(selection);
+				// Selection may be lost when cleaning links
+			var bookmark = this.editor.getBookmark(range);
+			this.cleanAllLinks(node, range);
+			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				this.editor._doc.execCommand('CreateLink', false, encodeURI(theLink));
+			} else {
+				this.editor._doc.execCommand('CreateLink', false, theLink);
+			}
+				// Get the created link
+			selection = this.editor._getSelection();
+			range = this.editor._createRange(selection);
+			node = this.editor.getParentElement();
+			el = HTMLArea.getElementObject(node, 'a');
+			if (el != null && /^a$/i.test(el.nodeName)) {
+				node = el;
+			}
+			if (node) {
+					// Export trailing br that IE may include in the link
+				if (HTMLArea.is_ie) {
+					if (node.lastChild && /^br$/i.test(node.lastChild.nodeName)) {
+						HTMLArea.removeFromParent(node.lastChild);
+						node.parentNode.insertBefore(this.editor._doc.createElement('br'), node.nextSibling);
+					}
+				}
+					// We may have created multiple links in as many blocks
+				this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
+			}
 		}
 		this.dialog.close();
 	},

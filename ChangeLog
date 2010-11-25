@@ -1,4 +1,9 @@
+2010-11-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16124: htmlArea RTE: Links are incorrectly updated in Google Chrome
+
 2010-11-23  Steffen Ritter  <typo3@steffen-ritter.net>
+
 	* Fixed bug #16517: t3lib_beFunc::getRecordWSOL() does not use it's param $useDeleteClause in else branch
 
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
