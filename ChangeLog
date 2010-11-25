@@ -1,3 +1,7 @@
+2010-11-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16124: htmlArea RTE: Links are incorrectly updated in Google Chrome
+
 2010-11-24  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16560: Hide mod_menu of record listing in page module if not needed (Thanks to Georg Ringer)
