@@ -4726,10 +4726,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			width: dimensions.width,
-			height: dimensions.height,
 			border: false,
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			//resizable: !Ext.isIE,
+				// As of ExtJS 3.3, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
@@ -4746,6 +4745,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			items: {
 					// The content iframe
 				xtype: 'box',
+				height: dimensions.height-20,
 				itemId: 'content-iframe',
 				autoEl: {
 					tag: 'iframe',
