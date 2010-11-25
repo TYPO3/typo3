@@ -2,7 +2,7 @@
 
 	* Fixed bug #16319: [scheduler] CronCmd class variable "values" does not contain integers only (Thanks to Marcus Krause)
 
-2010-11-25  Jigal van Hemert <jigal@xs4all.nl>
+2010-11-25  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16322: Incorrect regexp in substituteMarkerArray
 
