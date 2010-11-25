@@ -129,7 +129,7 @@ class t3lib_FlashMessageQueue {
 	 *
 	 * @return object user object
 	 */
-	protected function getUserByContext() {
+	protected static function getUserByContext() {
 		return TYPO3_MODE === 'BE' ? $GLOBALS['BE_USER'] : $GLOBALS['TSFE']->fe_user;
 	}
 
