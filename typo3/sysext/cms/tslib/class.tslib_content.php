@@ -7622,7 +7622,7 @@ class tslib_cObj {
 /**
  * Rendering of framesets
  *
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -7735,7 +7735,7 @@ class tslib_frameset {
  * Rendering of tables for offset
  *
  * @see	tslib_cObj::OTABLE(), tslib_cObj::stdWrap()
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -7829,7 +7829,7 @@ class tslib_tableOffset {
  * Rendering of tables for content positioning
  *
  * @see tslib_cObj::CTABLE()
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
