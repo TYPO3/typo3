@@ -4,6 +4,7 @@
 
 2010-11-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #16582: [Caching framework] Remove misleading memcached configuration example from config_default
 	* Fixed bug #16317: [scheduler] Valid values generated from cron command does not contain integers only (Thanks to Marcus Krause)
 
 2010-11-25  Christian Kuhn  <lolli@schwarzbu.ch>

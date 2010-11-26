@@ -143,18 +143,6 @@ $TYPO3_CONF_VARS = array(
 						'tagsTable' => 'cachingframework_cache_pagesection_tags',
 					)
 				)
-				/*
-				 For memcached, use:
-				=============
-				'cache_pages' => array(
-					'backend' => 't3lib_cache_backend_MemcachedBackend',
-					'options' => array(
-						'servers' => array('localhost:11211', 'otherhost:11211', 'thirdhost:11211'),	// port is mandatory!
-					)
-				),
-				=============
-				You need to have memcached installed as a daemon and also as a PHP extension!
-				*/
 			)
 		),
 		'useCachingFramework' => FALSE,			// Boolean: Enable this if you want to use the caching framework by default for the core caches cache_pages, cache_pagesection and cache_hash.
