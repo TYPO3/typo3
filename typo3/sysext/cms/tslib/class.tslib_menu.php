@@ -1376,7 +1376,13 @@ class tslib_menu {
 
 			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1, $objSuffix))	{
 				$submenu->makeMenu();
+					// Memorize the current menu item count
+				$tempCountMenuObj = $GLOBALS['TSFE']->register['count_MENUOBJ'];
+					// Reset the menu item count for the submenu
+				$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
 				$content = $submenu->writeMenu();
+					// Restore the item count now that the submenu has been handled
+				$GLOBALS['TSFE']->register['count_MENUOBJ'] = $tempCountMenuObj;
 				$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
 				return $content;
 			}

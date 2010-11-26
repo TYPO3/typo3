@@ -1492,6 +1492,7 @@ class tslib_cObj {
 				}
 				$GLOBALS['TSFE']->register['count_HMENU']++;
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']=0;
+				$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']=array();
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId']=array();
 
