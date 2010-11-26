@@ -192,16 +192,23 @@ class tx_scheduler_CronCmd {
 			// Consider special field 'day of week'
 			// @TODO: Implement lists and ranges for day of week (2,3 and 1-5 and */2,3 and 1,1-5/2)
 			// @TODO: Support usage of day names in day of week field ("mon", "sun", etc.)
-		if ((strpos($this->cmd_sections[4], '*') === FALSE && preg_match('/[1-7]{1}/', $this->cmd_sections[4]) !== FALSE)) {
+		if ((strpos($this->cmd_sections[4], '*') === FALSE && preg_match('/[0-7]{1}/', $this->cmd_sections[4]) !== FALSE)) {
 				// Unset days from 'day of month' if * is given
 				// * * * * 1 results to every monday of this month
 				// * * 1,2 * 1 results to every monday, plus first and second day of month
 			if ($this->cmd_sections[2] == '*') {
 				$validDays = array();
 			}
+
+				// Allow 0 as representation for sunday and convert to 7
+			$dayOfWeek = $this->cmd_sections[4];
+			if ($dayOfWeek === '0') {
+				$dayOfWeek = '7';
+			}
+
 				// Get list
 			for ($i = 1; $i <= $max_days; $i++) {
-				if (strftime('%u', mktime(0, 0, 0, $currentMonth, $i, $currentYear)) == $this->cmd_sections[4]) {
+				if (strftime('%u', mktime(0, 0, 0, $currentMonth, $i, $currentYear)) == $dayOfWeek) {
 					if (!in_array($i, $validDays)) {
 						$validDays[] = $i;
 					}
