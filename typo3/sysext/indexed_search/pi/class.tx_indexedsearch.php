@@ -537,7 +537,7 @@ class tx_indexedsearch extends tslib_pibase {
 				// Create header if we are searching more than one indexing configuration:
 			if (count($indexCfgs)>1)	{
 				if ($freeIndexUid>0)	{
-					list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title','index_config','uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));
+					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . intval($freeIndexUid) . $this->cObj->enableFields('index_config'));
 					$titleString = $indexCfgRec['title'];
 				} else {
 					$titleString = $this->pi_getLL('opt_freeIndexUid_header_'.$freeIndexUid);
@@ -1026,7 +1026,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($freeIndexUid>=0)	{
 
 				// First, look if the freeIndexUid is a meta configuration:
-			list($indexCfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('indexcfgs','index_config','type=5 AND uid='.intval($freeIndexUid).$this->cObj->enableFields('index_config'));
+			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . intval($freeIndexUid) . $this->cObj->enableFields('index_config'));
 			if (is_array($indexCfgRec))	{
 				$refs = t3lib_div::trimExplode(',',$indexCfgRec['indexcfgs']);
 				$list = array(-99);	// Default value to protect against empty array.
@@ -1034,7 +1034,7 @@ class tx_indexedsearch extends tslib_pibase {
 					list($table,$uid) = t3lib_div::revExplode('_',$ref,2);
 					switch ($table)	{
 						case 'index_config':
-							list($idxRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid','index_config','uid='.intval($uid).$this->cObj->enableFields('index_config'));
+							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->cObj->enableFields('index_config'));
 							if ($idxRec)	$list[] = $uid;
 						break;
 						case 'pages':
@@ -2168,10 +2168,10 @@ class tx_indexedsearch extends tslib_pibase {
 			} else { // ... otherwise, get flag from sys_language record:
 
 					// Get sys_language record
-				$rowDat = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', 'uid='.intval($row['sys_language_uid']).' '.$this->cObj->enableFields('sys_language'));
+				$rowDat = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_language', 'uid=' . intval($row['sys_language_uid']) . ' ' . $this->cObj->enableFields('sys_language'));
 
 					// Flag code:
-				$flag = $rowDat[0]['flag'];
+				$flag = $rowDat['flag'];
 				if ($flag)	{
 
 // FIXME not all flags from typo3/gfx/flags are available in media/flags/
@@ -2183,7 +2183,7 @@ class tx_indexedsearch extends tslib_pibase {
 #					$imgInfo = @getimagesize(PATH_site.$file);
 
 					if (is_array($imgInfo))	{
-						$output = '<img src="'.$file.'" '.$imgInfo[3].' title="'.htmlspecialchars($rowDat[0]['title']).'" alt="'.htmlspecialchars($rowDat[0]['title']).'" />';
+						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($rowDat['title']) . '" alt="' . htmlspecialchars($rowDat['title']) . '" />';
 						return $output;
 					}
 				}

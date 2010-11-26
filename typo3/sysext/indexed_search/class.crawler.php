@@ -221,7 +221,7 @@ class tx_indexedsearch_crawler {
 		if ($params['indexConfigUid'])	{
 
 				// Load the indexing configuration record:
-			list($cfgRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$cfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
 				'index_config',
 				'uid='.intval($params['indexConfigUid'])

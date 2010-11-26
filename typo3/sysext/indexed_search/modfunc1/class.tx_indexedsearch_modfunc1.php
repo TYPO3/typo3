@@ -467,14 +467,14 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>'.$cmdLinks.'</td>';
 
 					// Query:
-				$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$ftrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 							'*',
 							'index_fulltext',
 							'phash = '.intval($row['phash'])
 						);
 				$lines[] = '<td style="white-space: normal;">'.
-							htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($ftrows[0]['fulltextdata']),3000)).
-							'<hr/><em>Size: '.strlen($ftrows[0]['fulltextdata']).'</em>'.
+							htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($ftrow['fulltextdata']), 3000)) .
+							'<hr/><em>Size: ' . strlen($ftrow['fulltextdata']) . '</em>' .
 							'</td>';
 
 					// Query:
@@ -623,12 +623,11 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		$content = '';
 
 			// Selects the result row:
-		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$phashRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'*',
 					'index_phash',
 					'phash = '.intval($phash)
 				);
-		$phashRecord = $ftrows[0];
 
 			// If found, display:
 		if (is_array($phashRecord))	{
@@ -1175,7 +1174,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	function reindexPhash($phash, $pageId)	{
 
 			// Query:
-		list($resultRow) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$resultRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'ISEC.*, IP.*',
 					'index_phash IP, index_section ISEC',
 					'IP.phash = ISEC.phash

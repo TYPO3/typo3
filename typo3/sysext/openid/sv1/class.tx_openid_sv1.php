@@ -305,7 +305,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	protected function getUserRecord($openIDIdentifier) {
 		$record = null;
 		if ($openIDIdentifier) {
-			list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*',
+			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*',
 				$this->authenticationInformation['db_user']['table'],
 				'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']) .
 					$this->authenticationInformation['db_user']['check_pid_clause'] .

@@ -401,8 +401,7 @@ class tx_cms_layout extends recordList {
 		$rootline = t3lib_BEfunc::BEgetRootLine($id);
 		$backendLayoutUid = null;
 		for ($i = count($rootline); $i > 0; $i--) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,be_layout,be_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
-			$page = $res[0];
+			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, be_layout, be_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
 			if (intval($page['be_layout_next_level']) > 0 && $page['uid'] != $id) {
 				$backendLayoutUid = intval($page['be_layout_next_level']);
 				break;

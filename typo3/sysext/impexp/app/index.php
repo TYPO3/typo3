@@ -1515,7 +1515,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	array		Preset record, if any (otherwise false)
 	 */
 	function getPreset($uid)	{
-		list($preset) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*','tx_impexp_presets','uid='.intval($uid));
+		$preset = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . intval($uid));
 		return $preset;
 	}
 

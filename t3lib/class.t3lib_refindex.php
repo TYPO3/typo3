@@ -184,7 +184,7 @@ class t3lib_refindex {
 
 		if (isset($TCA[$table])) {
 				// Get raw record from DB:
-			list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, 'uid=' . intval($uid));
+			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . intval($uid));
 
 			if (is_array($record)) {
 
@@ -623,7 +623,7 @@ class t3lib_refindex {
 		if (($GLOBALS['BE_USER']->workspace === 0 && $GLOBALS['BE_USER']->isAdmin()) || $bypassWorkspaceAdminCheck) {
 
 				// Get current index from Database:
-			list($refRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$refRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
 				'sys_refindex',
 				'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'sys_refindex')
@@ -634,7 +634,7 @@ class t3lib_refindex {
 				if ($GLOBALS['TCA'][$refRec['tablename']]) {
 
 						// Get that record from database:
-					list($record) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $refRec['tablename'], 'uid=' . intval($refRec['recuid']));
+					$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $refRec['tablename'], 'uid=' . intval($refRec['recuid']));
 
 					if (is_array($record)) {
 

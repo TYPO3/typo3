@@ -4099,7 +4099,7 @@ final class t3lib_BEfunc {
 			if ($workspace !== 0 && $TCA[$table] && $TCA[$table]['ctrl']['versioningWS']) {
 
 					// Select workspace version of record:
-				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					$fields,
 					$table,
 						'pid=-1 AND
@@ -4108,8 +4108,8 @@ final class t3lib_BEfunc {
 								self::deleteClause($table)
 				);
 
-				if (is_array($rows[0])) {
-					return $rows[0];
+				if (is_array($row)) {
+					return $row;
 				}
 			}
 		}
@@ -4288,7 +4288,7 @@ final class t3lib_BEfunc {
 		if ($workspace !== 0 && $TCA[$table] && (int) $TCA[$table]['ctrl']['versioningWS'] >= 2) {
 
 				// Select workspace version of record:
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				$fields,
 				$table,
 					'pid!=-1 AND
@@ -4298,8 +4298,8 @@ final class t3lib_BEfunc {
 							self::deleteClause($table)
 			);
 
-			if (is_array($rows[0])) {
-				return $rows[0];
+			if (is_array($row)) {
+				return $row;
 			}
 		}
 

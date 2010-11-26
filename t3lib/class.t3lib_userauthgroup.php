@@ -1635,7 +1635,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$wsRec = array('uid' => $wsRec);
 				break;
 				default:
-					list($wsRec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 						$fields,
 						'sys_workspace',
 						'pid=0 AND uid=' . intval($wsRec) .

@@ -282,11 +282,11 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	protected function getChildrenOf(t3lib_tree_Node $node, $level) {
 		$nodeData = NULL;
 		if ($node->getId() !== 0) {
-			$nodeData = current($GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-									'*',
-									$this->tableName,
-									'uid=' . $node->getId()
-								));
+			$nodeData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'*',
+				$this->tableName,
+				'uid=' . $node->getId()
+			);
 		}
 		if ($nodeData == NULL) {
 			$nodeData = array(

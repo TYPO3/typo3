@@ -236,9 +236,9 @@ final class tx_em_Database {
 	 * @param   int  $uid  repository UID
 	 */
 	public function getRepositoryByUID($uid) {
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_REPOSITORY, 'uid=' . intval($uid));
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', self::TABLE_REPOSITORY, 'uid=' . intval($uid));
 
-		return $row[0];
+		return $row;
 	}
 
 	/**

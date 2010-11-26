@@ -165,7 +165,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->backend->setCache($cache);
 		$this->backend->set($entryIdentifier, $data);
 
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			$this->testingCacheTable,
 			'identifier = \'' . $entryIdentifier . '\''
@@ -173,7 +173,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$this->assertEquals(
 			$data,
-			$entriesFound[0]['content'],
+			$entryFound['content'],
 			'The original and the retrieved data don\'t match.'
 		);
 	}
@@ -266,13 +266,13 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$this->backend->set($entryIdentifier, $data);
 
-		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
 			$this->testingCacheTable,
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertEquals($data, @gzuncompress($entry[0]['content']), 'Original and compressed data don\'t match');
+		$this->assertEquals($data, @gzuncompress($entry['content']), 'Original and compressed data don\'t match');
 	}
 
 	/**
@@ -296,13 +296,13 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$this->backend->set($entryIdentifier, $data);
 
-		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
 			$this->testingCacheTable,
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertGreaterThan(0, substr_count($entry[0]['content'], $data), 'Plaintext data not found');
+		$this->assertGreaterThan(0, substr_count($entry['content'], $data), 'Plaintext data not found');
 	}
 
 	/**
@@ -690,15 +690,15 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->backend->setCache($cache);
 		$this->backend->set($entryIdentifier, $data, array(), 0);
 
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			$this->testingCacheTable,
 			''
 		);
 
-		$this->assertTrue(is_array($entriesFound), 'entriesFound is not an array.');
+		$this->assertTrue(is_array($entryFound), 'entriesFound is not an array.');
 
-		$retrievedData = $entriesFound[0]['content'];
+		$retrievedData = $entryFound['content'];
 		$this->assertEquals($data, $retrievedData, 'The original and the retrieved data don\'t match.');
 	}
 }

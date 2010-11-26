@@ -97,7 +97,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 		else {
 			$sort = 'tstamp DESC';
 		}
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,content',
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, content',
 			self::ASSOCIATION_TABLE_NAME, $where, '', $sort, '1');
 
 		$result = null;
@@ -187,7 +187,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 			$GLOBALS['TYPO3_DB']->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME),
 			$GLOBALS['TYPO3_DB']->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME),
 			time());
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'COUNT(*) as assocCount', self::ASSOCIATION_TABLE_NAME, $where);
 		return ($row['assocCount'] > 0);
 	}

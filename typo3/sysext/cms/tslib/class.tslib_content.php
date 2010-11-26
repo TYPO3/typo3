@@ -6908,7 +6908,7 @@ class tslib_cObj {
 				);
 				$requestHash = md5(serialize($parameters));
 
-				list ($cacheEntry) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'treelist',
 					'cache_treelist',
 					'md5hash = \'' . $requestHash . '\' AND ( expires > ' . $GLOBALS['EXEC_TIME'] .

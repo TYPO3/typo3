@@ -1709,7 +1709,7 @@
 			}
 
 				// Look for keyword configuration record:
-			list($previewData) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
 				'sys_preview',
 				'keyword='.$GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview').

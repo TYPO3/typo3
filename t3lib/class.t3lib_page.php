@@ -1324,7 +1324,7 @@ class t3lib_pageSelect {
 			if (($table == 'pages' || (int) $TCA[$table]['ctrl']['versioningWS'] >= 2) && $workspace !== 0) {
 
 					// Select workspace version of record:
-				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					$fields,
 					$table,
 					'pid!=-1 AND
@@ -1334,8 +1334,8 @@ class t3lib_pageSelect {
 					$this->deleteClause($table)
 				);
 
-				if (is_array($rows[0])) {
-					return $rows[0];
+				if (is_array($row)) {
+					return $row;
 				}
 			}
 		}
@@ -1366,7 +1366,7 @@ class t3lib_pageSelect {
 			}
 
 				// Select workspace version of record, only testing for deleted.
-			list($newrow) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$newrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				$fields,
 				$table,
 				'pid=-1 AND
@@ -1377,7 +1377,7 @@ class t3lib_pageSelect {
 
 				// If version found, check if it could have been selected with enableFields on as well:
 			if (is_array($newrow)) {
-				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid',
 					$table,
 					'pid=-1 AND
@@ -1391,7 +1391,7 @@ class t3lib_pageSelect {
 				}
 			} else {
 					// OK, so no workspace version was found. Then check if online version can be selected with full enable fields and if so, return 1:
-				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid',
 					$table,
 					'uid=' . intval($uid) . $enFields
@@ -1421,11 +1421,8 @@ class t3lib_pageSelect {
 		}
 		else {
 			if ($wsid > 0) {
-				$ws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_workspace', 'uid=' . intval($wsid) . ' AND deleted=0'); // No $TCA yet!
-				if (count($ws)) {
-					$ws = $ws[0];
-				}
-				else {
+				$ws = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_workspace', 'uid=' . intval($wsid) . ' AND deleted=0'); // No $TCA yet!
+				if (!is_array($ws)) {
 					return FALSE;
 				}
 			}

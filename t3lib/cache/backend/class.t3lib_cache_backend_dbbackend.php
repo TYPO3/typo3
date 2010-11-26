@@ -171,15 +171,15 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function get($entryIdentifier) {
 		$cacheEntry = false;
 
-		$cacheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
 			. 'AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
 		);
 
-		if (count($cacheEntries) == 1) {
-			$cacheEntry = $cacheEntries[0]['content'];
+		if (is_array($cacheEntry)) {
+			$cacheEntry = $cacheEntry['content'];
 		}
 
 		if ($this->compression && strlen($cacheEntry)) {
