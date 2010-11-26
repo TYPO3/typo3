@@ -1,3 +1,7 @@
+2010-11-26  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #16573: Register count_MENUOBJ is not properly initialized
+
 2010-11-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16317: [scheduler] Valid values generated from cron command does not contain integers only (Thanks to Marcus Krause)
