@@ -37,6 +37,46 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	const TIMESTAMP = 1262300400;
 
 	/**
+	 * @test
+	 */
+	public function validValuesContainsIntegersForListOfMinutes() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '23 * * * *', self::TIMESTAMP);
+		$this->assertType('integer', $cronCmdInstance->valid_values[0][0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function validValuesContainsIntegersForListOfHours() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* 23 * * *', self::TIMESTAMP);
+		$this->assertType('integer', $cronCmdInstance->valid_values[1][0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function validValuesContainsIntegersForListOfDays() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 3 * *', self::TIMESTAMP);
+		$this->assertType('integer', $cronCmdInstance->valid_values[2][0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function validValuesContainsIntegersForListOfMonth() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * 7 *', self::TIMESTAMP);
+		$this->assertType('integer', $cronCmdInstance->valid_values[3][0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function validValuesContainsIntegersForListOfYear() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * * 2010', self::TIMESTAMP);
+		$this->assertType('integer', $cronCmdInstance->valid_values[4][0]);
+	}
+
+	/**
 	 * Tests wether step values are correctly parsed for minutes
 	 *
 	 * @test
