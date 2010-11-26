@@ -1,3 +1,7 @@
+2010-11-26  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16487: modulemenu.js breaks livesearch "Show all" when already in list module (Thanks to Andreas Kiessling)
+
 2010-11-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16317: [scheduler] Valid values generated from cron command does not contain integers only (Thanks to Marcus Krause)

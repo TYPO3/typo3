@@ -203,7 +203,7 @@ TYPO3.ModuleMenu.App = {
 			//get id
 			var section = mod.split('_')[0];
 			if (top.fsMod.recentIds[section]) {
-				params = 'id=' + top.fsMod.recentIds[section] + params;
+				params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
 			}
 
 			if (record.navigationComponentId) {
@@ -242,7 +242,7 @@ TYPO3.ModuleMenu.App = {
 		if (this.loadedNavigationComponentId !== '') {
 			Ext.getCmp(this.loadedNavigationComponentId).hide();
 		}
-		
+
 		var component = Ext.getCmp(navigationComponentId);
 		if (typeof component !== 'object') {
 			if (typeof this.availableNavigationComponents[navigationComponentId] !== 'function') {
