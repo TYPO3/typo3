@@ -33,7 +33,7 @@
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class tslib_content_PhpScript_Internal extends tslib_content_Abstract {
+class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 
 	/**
 	 * Rendering the cObject, PHP_SCRIPT_INT and PHP_SCRIPT_EXT
@@ -62,8 +62,8 @@ class tslib_content_PhpScript_Internal extends tslib_content_Abstract {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscript_internal.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscript_internal.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptinternal.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptinternal.php']);
 }
 
 ?>

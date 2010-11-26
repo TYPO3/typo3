@@ -27,39 +27,45 @@
  ***************************************************************/
 
 /**
- * Contains USER_INT class object.
+ * Contains COA_INT class object.
  *
  * $Id: class.tslib_content.php 7905 2010-06-13 14:42:33Z ohader $
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class tslib_content_User_Internal extends tslib_content_Abstract {
+class tslib_content_ContentObjectArrayInternal extends tslib_content_Abstract {
 
 	/**
-	 * Rendering the cObject, USER_INT
+	 * Rendering the cObject, COA_INT
 	 *
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$this->cObj->setUserObjectType(tslib_cObj::OBJECTTYPE_USER_INT);
-		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-		$content = '<!--' . $substKey . '-->';
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
-			'file' => $conf['includeLibs'],
-			'conf' => $conf,
-			'cObj' => serialize($this->cObj),
-			'type' => 'FUNC'
-		);
-		$this->cObj->setUserObjectType(FALSE);
-		return $content;
+		if (is_array($conf)) {
+			$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+			$includeLibs = isset($conf['includeLibs.'])
+				? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.'])
+				: $conf['includeLibs'];
+
+			$content = '<!--' . $substKey . '-->';
+			$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
+				'file' => $includeLibs,
+				'conf' => $conf,
+				'cObj' => serialize($this->cObj),
+				'type' => 'COA'
+			);
+			return $content;
+		} else {
+			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
+		}
 	}
 
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_user_internal.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_user_internal.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_contentobjectarrayinternal.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_contentobjectarrayinternal.php']);
 }
 
 ?>
