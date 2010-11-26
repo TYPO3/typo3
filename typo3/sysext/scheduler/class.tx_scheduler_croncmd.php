@@ -104,7 +104,7 @@ class tx_scheduler_CronCmd {
 			$this->getList($this->cmd_sections[1], 0, 23),
 			$this->getDayList($this->values[3], $this->values[4]),
 			$this->getList($this->cmd_sections[3], 1, 12),
-			$this->getList('*', date('Y', $tstamp), intval(date('Y', $tstamp))+1)
+			$this->getList('*', intval(date('Y', $tstamp)), intval(date('Y', $tstamp)) + 1)
 		);
 	}
 
