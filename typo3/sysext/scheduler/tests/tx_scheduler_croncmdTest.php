@@ -189,6 +189,38 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function weekdayPartCorrectlyParsesZeroAsSunday() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0 0 * * 0', self::TIMESTAMP);
+		$expectedResult = array(
+			'0' => 3,
+			'1' => 10,
+			'2' => 17,
+			'3' => 24,
+			'4' => 31,
+		);
+		$actualResult = $cronCmdInstance->valid_values;
+		$this->assertEquals($expectedResult, $actualResult[2]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function weekdayPartCorrectlyParsesSevenAsSunday() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0 0 * * 7', self::TIMESTAMP);
+		$expectedResult = array(
+			'0' => 3,
+			'1' => 10,
+			'2' => 17,
+			'3' => 24,
+			'4' => 31,
+		);
+		$actualResult = $cronCmdInstance->valid_values;
+		$this->assertEquals($expectedResult, $actualResult[2]);
+	}
+
+	/**
 	 * Tests whether dayList is correctly calculated for a combination of day of month and day of weeks
 	 *
 	 * @test
