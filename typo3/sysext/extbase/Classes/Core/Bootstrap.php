@@ -266,7 +266,6 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	protected function resetSingletons() {
 		$this->persistenceManager->persistAll();
-		$this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages')->persist();
 		$this->reflectionService->shutdown();
 	}
 
