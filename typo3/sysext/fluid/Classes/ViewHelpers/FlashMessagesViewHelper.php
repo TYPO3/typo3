@@ -47,10 +47,8 @@
  */
 class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'ul';
+	const RENDER_MODE_UL = 'ul';
+	const RENDER_MODE_DIV = 'div';
 
 	/**
 	 * Initialize arguments
@@ -66,21 +64,64 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	/**
 	 * Render method.
 	 *
+	 * @param string $renderMode one of the RENDER_MODE_* constants
 	 * @return string rendered Flash Messages, if there are any.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function render() {
-		$flashMessages = $this->controllerContext->getFlashMessageContainer()->getAllAndFlush();
-		if (count($flashMessages) > 0) {
-			$tagContent = '';
-			foreach ($flashMessages as $singleFlashMessage) {
-				$tagContent .=  '<li>' . htmlspecialchars($singleFlashMessage) . '</li>';
-			}
-			$this->tag->setContent($tagContent);
-			return $this->tag->render();
+	public function render($renderMode = self::RENDER_MODE_UL) {
+		$flashMessages = $this->controllerContext->getFlashMessageContainer()->getAllMessagesAndFlush();
+		if ($flashMessages === NULL || count($flashMessages) === 0) {
+			return '';
 		}
-		return '';
+		switch ($renderMode) {
+			case self::RENDER_MODE_UL:
+				return $this->renderUl($flashMessages);
+			case self::RENDER_MODE_DIV:
+				return $this->renderDiv($flashMessages);
+			default:
+				throw new Tx_Fluid_Core_ViewHelper_Exception('Invalid render mode "' . $renderMode . '" passed to FlashMessageViewhelper', 1290697924);
+		}
+	}
+
+	/**
+	 * Renders the flash messages as unordered list
+	 *
+	 * @param array $flashMessages array<t3lib_FlashMessage>
+	 * @return string
+	 */
+	protected function renderUl(array $flashMessages) {
+		$this->tag->setTagName('ul');
+		if ($this->arguments->hasArgument('class')) {
+			$this->tag->addAttribute('class', $this->arguments['class']);
+		}
+		$tagContent = '';
+		foreach ($flashMessages as $singleFlashMessage) {
+			$tagContent .= '<li>' . htmlspecialchars($singleFlashMessage->getMessage()) . '</li>';
+		}
+		$this->tag->setContent($tagContent);
+		return $this->tag->render();
+	}
+
+	/*
+	 * Renders the flash messages as nested divs
+	 *
+	 * @param array $flashMessages array<t3lib_FlashMessage>
+	 * @return string
+	 */
+	protected function renderDiv(array $flashMessages) {
+		$this->tag->setTagName('div');
+		if ($this->arguments->hasArgument('class')) {
+			$this->tag->addAttribute('class', $this->arguments['class']);
+		} else {
+			$this->tag->addAttribute('class', 'typo3-messages');
+		}
+		$tagContent = '';
+		foreach ($flashMessages as $singleFlashMessage) {
+			$tagContent .= $singleFlashMessage->render();
+		}
+		$this->tag->setContent($tagContent);
+		return $this->tag->render();
 	}
 }
 
