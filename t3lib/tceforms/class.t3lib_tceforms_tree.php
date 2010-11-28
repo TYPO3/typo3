@@ -129,6 +129,20 @@ class t3lib_TCEforms_Tree {
 				id: "' . $id . '",
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
+				listeners: {
+					click: function(node, event) {
+						if (typeof(node.attributes.checked) == "boolean") {
+							node.attributes.checked = ! node.attributes.checked;
+							node.getUI().toggleCheck(node.attributes.checked);
+						}
+					},
+					dblclick: function(node, event) {
+						if (typeof(node.attributes.checked) == "boolean") {
+							node.attributes.checked = ! node.attributes.checked;
+							node.getUI().toggleCheck(node.attributes.checked);
+						}
+					}
+				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaExclusiveKeys: "' . (
 		$PA['fieldConf']['config']['exclusiveKeys']
