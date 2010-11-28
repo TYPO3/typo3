@@ -415,9 +415,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid',
 						$columnConfiguration['foreign_table'],
-						" (CONCAT(','," . $columnConfiguration['foreign_field'] . ",',') LIKE '%," . intval($uid) . ",%' "
-						. (intval($uid) == 0 ? (" OR " . $columnConfiguration['foreign_field'] . " = ''") : '')
-						. ") "
+						$GLOBALS['TYPO3_DB']->listQuery($columnConfiguration['foreign_field'], intval($uid), $columnConfiguration['foreign_table'])
+							. (intval($uid) == 0 ? (' OR ' . $columnConfiguration['foreign_field'] . ' = \'\'') : '' )
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -426,9 +425,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid',
 						$columnConfiguration['foreign_table'],
-						" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
-						. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
-						. ") "
+						$GLOBALS['TYPO3_DB']->listQuery($this->getLookupField(), intval($uid), $columnConfiguration['foreign_table'])
+							. (intval($uid) == 0 ? (' OR ' . $this->getLookupField() . ' = \'\'') : '' )
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -439,9 +437,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$columnConfiguration['foreign_table'],
-					" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
-					. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
-					. ") "
+					$GLOBALS['TYPO3_DB']->listQuery($this->getLookupField(), intval($uid), $columnConfiguration['foreign_table'])
+						. (intval($uid) == 0 ? (' OR ' . $this->getLookupField() . ' = \'\'') : '' )
 				);
 				foreach ($records as $record) {
 					$relatedUids[] = $record['uid'];
