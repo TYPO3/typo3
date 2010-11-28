@@ -1,6 +1,7 @@
 2010-11-28  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #16342: TCA tree throws Fatal error on displaying deleted records
+	* Fixed bug #16510: TCA tree should behave like select
 
 2010-11-26  Francois Suter  <francois@typo3.org>
 

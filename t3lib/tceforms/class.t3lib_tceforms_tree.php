@@ -61,6 +61,7 @@ class t3lib_TCEforms_Tree {
 		);
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
 		$treeDataProvider->initializeTreeData();
+		$treeDataProvider->setGeneratedTSConfig($tceForms->setTSconfig($table, $row));
 
 		$treeRenderer = t3lib_div::makeInstance('t3lib_tree_Tca_ExtJsArrayRenderer');
 		$tree = t3lib_div::makeInstance('t3lib_tree_Tca_TcaTree');

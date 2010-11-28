@@ -80,6 +80,26 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	protected $idCache = array();
 
 	/**
+	 * uidWhiteList contains all Uids which may be allowed to display according to
+	 * beUser Rights and foreign_table_where
+	 *
+	 * @var array $uidWhiteList
+	 */
+	protected $uidWhiteList = array();
+
+	/**
+	 * node sort values (the orderings from foreign_Table_where evaluation)
+	 *
+	 * @var array
+	 */
+	protected $nodeSortValues = array();
+
+	/**
+	 * @var array TCEforms compiled TSConfig array
+	 */
+	protected $generatedTSConfig = array();
+
+	/**
 	 * Sets the label field
 	 *
 	 * @param string $labelField
@@ -239,13 +259,14 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			$node->setExpanded($this->isExpanded($basicNode));
 		}
 		$node->setSelectable(!t3lib_div::inList($this->getNonSelectableLevelList(), $level));
+		$node->setSortValue($this->nodeSortValues[$node->getId()]);
 		$node->setIcon(t3lib_iconWorks::mapRecordTypeToSpriteIconClass($this->tableName, $row));
 		$node->setId($basicNode->getId());
 		$node->setParentNode($parent);
 		if ($basicNode->hasChildNodes()) {
 			$node->setHasChildren(TRUE);
 
-			$childNodes = t3lib_div::makeInstance('t3lib_tree_NodeCollection');
+			$childNodes = t3lib_div::makeInstance('t3lib_tree_SortedNodeCollection');
 			foreach ($basicNode->getChildNodes() as $child) {
 				$childNodes->append($this->buildRepresentationForNode($child, $node, $level + 1));
 			}
@@ -262,6 +283,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 */
 	public function initializeTreeData() {
 		parent::initializeTreeData();
+		$this->generateUidWhitelist();
 
 		$this->treeData = t3lib_div::makeInstance('t3lib_tree_Node');
 		$this->treeData->setId($this->getRootUid());
@@ -330,7 +352,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 
 		$allowedArray = array();
 		foreach ($children as $child) {
-			if (!in_array($child, $this->idCache)) {
+			if (!in_array($child, $this->idCache) && in_array($child, $this->uidWhiteList)) {
 				$allowedArray[] = $child;
 			}
 		}
@@ -340,6 +362,27 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		return $allowedArray;
 	}
 
+	/**
+	 * Uses the function in of core to determine "select" elemnents, to
+	 * get all allowed elements for this tree and their orderings.
+	 * Will take of user rights
+	 *
+	 * @return void
+	 */
+	protected function generateUidWhitelist() {
+		$res = t3lib_BEfunc::exec_foreign_table_where_query(
+			$GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()],
+			$this->getLookupField(),
+			$this->getGeneratedTSConfig(),
+			''
+		);
+		while ($tempRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$this->uidWhiteList[] = $tempRow['uid'];
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		$this->nodeSortValues = array_flip($this->uidWhiteList);
+	}
 	/**
 	 * Gets related records depending on TCA configuration
 	 *
@@ -374,7 +417,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 						$columnConfiguration['foreign_table'],
 						" (CONCAT(','," . $columnConfiguration['foreign_field'] . ",',') LIKE '%," . intval($uid) . ",%' "
 						. (intval($uid) == 0 ? (" OR " . $columnConfiguration['foreign_field'] . " = ''") : '')
-						. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
+						. ") "
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -385,7 +428,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 						$columnConfiguration['foreign_table'],
 						" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
 						. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
-						. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
+						. ") "
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -398,7 +441,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					$columnConfiguration['foreign_table'],
 					" (CONCAT(','," . $this->getLookupField() . ",',') LIKE '%," . intval($uid) . ",%' "
 					. (intval($uid) == 0 ? (" OR " . $this->getLookupField() . " = ''") : '')
-					. ") " . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
+					. ") "
 				);
 				foreach ($records as $record) {
 					$relatedUids[] = $record['uid'];
@@ -440,7 +483,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid',
 						$columnConfiguration['foreign_table'],
-						$columnConfiguration['foreign_field'] . '=' . intval($uid) . ' ' . t3lib_BEfunc::deleteClause($columnConfiguration['foreign_table'])
+						$columnConfiguration['foreign_field'] . '=' . intval($uid) . ' '
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -455,6 +498,26 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		}
 
 		return $relatedUids;
+	}
+
+	/**
+	 * Setter for the TSConfig from TCEforms
+	 * used to evalualate and replace markers in foreign_table_where
+	 *
+	 * @param array $generatedTSConfig
+	 * @return void
+	 */
+	public function setGeneratedTSConfig(array $generatedTSConfig) {
+		$this->generatedTSConfig = $generatedTSConfig;
+	}
+
+	/**
+	 * Getter for the TSConfig from TCEforms
+	 *
+	 * @return array
+	 */
+	public function getGeneratedTSConfig() {
+		return $this->generatedTSConfig;
 	}
 
 }
