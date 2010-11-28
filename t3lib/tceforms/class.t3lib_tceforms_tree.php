@@ -135,13 +135,13 @@ class t3lib_TCEforms_Tree {
 				? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 				ucId: "' . md5($table . '|' . $field) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel
-			});
-			tree' . $id . '.' . ($autoSizeMax
-				? 'bodyStyle = "max-height: ' . $autoSizeMax . 'px;"'
-				: 'height = ' . $height
-		) . ';
-			tree' . $id . '.render("tree_' . $id . '");' .
-										 ($expanded ? 'tree' . $id . '.expandAll();' : '') . '
+			});' . LF .
+			($autoSizeMax
+				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
+				: 'tree' . $id . '.height = ' . $height . ';'
+			) . LF .
+			'tree' . $id . '.render("tree_' . $id . '");' .
+			($expanded ? 'tree' . $id . '.expandAll();' : '') . '
 		');
 
 		$formField = '

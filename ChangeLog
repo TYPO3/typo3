@@ -3,6 +3,7 @@
 	* Fixed bug #16342: TCA tree throws Fatal error on displaying deleted records
 	* Fixed bug #16510: TCA tree should behave like select
 	* Fixed bug #16508: TCA tree is not compatible DBAL due to mySQL specific use of CONCAT
+	* Fixed bug #16325: TCA tree does not honour size if autoSizeMax is set
 
 2010-11-26  Francois Suter  <francois@typo3.org>
 
