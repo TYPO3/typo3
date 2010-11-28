@@ -229,7 +229,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			$node->setExpanded(TRUE);
 			$node->setLabel($GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
 		} else {
-			$row = t3lib_BEfunc::getRecordWSOL($this->tableName, $basicNode->getId(), '*');
+			$row = t3lib_BEfunc::getRecordWSOL($this->tableName, $basicNode->getId(), '*', '', FALSE);
 			if ($this->getLabelField() !== '') {
 				$node->setLabel($row[$this->getLabelField()]);
 			} else {
