@@ -1141,11 +1141,11 @@
 
 			// Find $page record depending on shortcut mode:
 		switch($mode)	{
-			case 1:
-			case 2:
+			case t3lib_pageSelect::SHORTCUT_MODE_FIRST_SUBPAGE:
+			case t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE:
 				$pageArray = $this->sys_page->getMenu(($idArray[0] ? $idArray[0] : $thisUid), '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . t3lib_pageSelect::DOKTYPE_BE_USER_SECTION);
 				$pO = 0;
-				if ($mode==2 && count($pageArray))	{	// random
+				if ($mode == t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
 					$randval = intval(rand(0,count($pageArray)-1));
 					$pO = $randval;
 				}
@@ -1158,7 +1158,7 @@
 					$c++;
 				}
 			break;
-			case 3:
+			case t3lib_pageSelect::SHORTCUT_MODE_PARENT_PAGE:
 				$parent = $this->sys_page->getPage($thisUid);
 				$page = $this->sys_page->getPage($parent['pid']);
 			break;
