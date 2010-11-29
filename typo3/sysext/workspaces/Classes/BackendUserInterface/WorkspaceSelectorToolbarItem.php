@@ -166,7 +166,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 
 			// frontend preview toggle
 		$frontendPreviewActiveIcon = $stateUncheckedIcon;
-		if ($GLOBALS['BE_USER']->user['workspace_preview']) {
+		if (!$GLOBALS['BE_USER']->user['workspace_preview']) {
 			$frontendPreviewActiveIcon = $stateCheckedIcon;
 		}
 

@@ -1,3 +1,7 @@
+2010-11-29  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug: #11131: Usability: labels improvements
+
 2010-11-29  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug: #11006: Error when using old-style workspace
