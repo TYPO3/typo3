@@ -151,10 +151,10 @@ class t3lib_TCEforms_Tree {
 		$pageRenderer->addExtOnReadyCode('
 			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
-				checkChangeHandler: TYPO3.Components.Tree.TcaCheckChangeHandler,
 				id: "' . $id . '",
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
+				countSelectedNodes: ' . count ($selectedNodes) . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
@@ -167,7 +167,8 @@ class t3lib_TCEforms_Tree {
 							node.attributes.checked = ! node.attributes.checked;
 							node.getUI().toggleCheck(node.attributes.checked);
 						}
-					}
+					},
+					checkchange: TYPO3.Components.Tree.TcaCheckChangeHandler
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaExclusiveKeys: "' . (
