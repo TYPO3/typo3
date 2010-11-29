@@ -84,6 +84,9 @@ class t3lib_frontendedit {
 		if ($conf['newRecordFromTable']) {
 			$currentRecord = $conf['newRecordFromTable'] . ':NEW';
 			$conf['allow'] = 'new';
+			$checkEditAccessInternals = FALSE;
+		} else {
+			$checkEditAccessInternals = TRUE;
 		}
 
 		list($table, $uid) = explode(':', $currentRecord);
@@ -105,7 +108,7 @@ class t3lib_frontendedit {
 			}
 		}
 
-		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $this->allowedToEditLanguage($table, $dataArray)) {
+		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
 				$edit = t3lib_div::getUserObj($editClass, false);
@@ -497,40 +500,50 @@ class t3lib_frontendedit {
 	 * @param	string	The name of the table.
 	 * @param	array	The data array.
 	 * @param	array	The configuration array for the edit panel.
+	 * @param	boolean	Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
+	 * 					to true but doesn't makes sense when creating new records on a page.
 	 * @return	boolean
 	 */
-	protected function allowedToEdit($table, array $dataArray, array $conf) {
+	protected function allowedToEdit($table, array $dataArray, array $conf, $checkEditAccessInternals = TRUE) {
 
 			// Unless permissions specifically allow it, editing is not allowed.
-		$mayEdit = false;
+		$mayEdit = FALSE;
 
-		if ($table=='pages') {
-				// 2 = permission to edit the page
-			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($dataArray, 2)) {
-				$mayEdit = true;
-			}
+		if ($checkEditAccessInternals) {
+			$editAccessInternals = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $dataArray, FALSE, FALSE);
 		} else {
-				// 16 = permission to edit content on the page
-			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess(t3lib_BEfunc::getRecord('pages', $dataArray['pid']), 16)) {
-				$mayEdit = true;
-			}
+			$editAccessInternals = TRUE;
 		}
-
-		if (!$conf['onlyCurrentPid'] || ($dataArray['pid'] == $GLOBALS['TSFE']->id)) {
-				// Permissions:
-			$types = t3lib_div::trimExplode(',', t3lib_div::strtolower($conf['allow']),1);
-			$allow = array_flip($types);
-
-			$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
-			if ($table == 'pages') {
-				$allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid'], $allow);
-
-					// Can only display editbox if there are options in the menu
-				if (count($allow)) {
+		
+		if ($editAccessInternals) {
+			if ($table=='pages') {
+					// 2 = permission to edit the page
+				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($dataArray, 2)) {
 					$mayEdit = true;
 				}
 			} else {
-				$mayEdit = count($allow) && ($perms & 16);
+					// 16 = permission to edit content on the page
+				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess(t3lib_BEfunc::getRecord('pages', $dataArray['pid']), 16)) {
+					$mayEdit = true;
+				}
+			}
+
+			if (!$conf['onlyCurrentPid'] || ($dataArray['pid'] == $GLOBALS['TSFE']->id)) {
+					// Permissions:
+				$types = t3lib_div::trimExplode(',', t3lib_div::strtolower($conf['allow']),1);
+				$allow = array_flip($types);
+
+				$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
+				if ($table == 'pages') {
+					$allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid'], $allow);
+
+						// Can only display editbox if there are options in the menu
+					if (count($allow)) {
+						$mayEdit = true;
+					}
+				} else {
+					$mayEdit = count($allow) && ($perms & 16);
+				}
 			}
 		}
 
