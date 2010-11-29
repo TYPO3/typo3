@@ -1,3 +1,8 @@
+2010-11-29  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Added last_synched_target file since the system extension "version" is now maintained in an external repository
+	  (see https://svn.typo3.org/TYPO3v4/CoreProjects/workspaces/version/)
+
 2010-11-29  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #16597: TCA tree: Adapt Signature of own select renderMode tree to match the signature other select-modes 
