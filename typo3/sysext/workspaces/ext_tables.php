@@ -15,7 +15,7 @@ if (TYPO3_MODE == 'BE') {
 		array(
 				// An array holding the controller-action-combinations that are accessible
 			'Review'		=> 'index,fullIndex,singleIndex',
-			'Preview'		=> 'index,help'
+			'Preview'		=> 'index,help,newPage'
 		),
 		array(
 			'access' => 'user,group',

@@ -68,6 +68,8 @@
 			<label index="window.sendToNextStageWindow.comments">Comments</label>
 			<label index="error.getStageTitle.stageNotFound">Stage not found</label>
 			<label index="warning.oldStyleWorkspaceInUser">It seems that you're stil using old-style workspace. If you continue using this module without migrating your workspace you might loose data.</label>
+			<label index="info.newpage">New Page!</label>
+			<label index="info.newpage.detail">The previewed page has been created in a workspace and has no live counterpart.</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -92,7 +92,13 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
-		$this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
+		if (tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
+			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), $this, 'workspaces', 'web_workspacesworkspaces');
+			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
+			$this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);
+		} else {
+			$this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
+		}
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
 		$this->view->assign('wsHelpUrl', $wsHelpUrl);
@@ -103,6 +109,19 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 */
 	public function helpAction() {
 		// @todo Implement this action
+	}
+
+	/**
+	 * @return void
+	 */
+	public function newPageAction() {
+		$message = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage.detail'),
+			$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage'),
+			t3lib_FlashMessage::INFO
+		);
+		t3lib_FlashMessageQueue::addMessage($message);
 	}
 
 	/**

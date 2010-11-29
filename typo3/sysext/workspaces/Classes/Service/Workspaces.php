@@ -423,6 +423,37 @@ class tx_Workspaces_Service_Workspaces {
 		}
 		return $oldStyleWorkspaceIsUsed;
 	}
+
+	/**
+	 * Determine whether a specific page is new and not yet available in the LIVE workspace
+	 *
+	 * @static
+	 * @param $id Primary key of the page to check
+	 * @param $language Language for which to check the page
+	 * @return bool
+	 */
+	public static function isNewPage($id, $language = 0) {
+		$isNewPage = FALSE;
+			// If the language is not default, check state of overlay
+		if ($language > 0) {
+			$whereClause = 'pid = ' . $id;
+			$whereClause .= ' AND ' .$GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . $language;
+			$whereClause .= ' AND t3ver_wsid = ' . $GLOBALS['BE_USER']->workspace;
+			$whereClause .= t3lib_BEfunc::deleteClause('pages_language_overlay');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
+			if (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+				$isNewPage = (int) $row['t3ver_state'] === 1;
+			}
+
+			// Otherwise check state of page itself
+		} else {
+			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_state');
+			if (is_array($rec)) {
+				$isNewPage = (int) $rec['t3ver_state'] === 1;
+			}
+		}
+		return $isNewPage;
+	}
 }
 
 

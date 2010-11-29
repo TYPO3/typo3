@@ -1,3 +1,7 @@
+2010-11-29  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug: #10831: New preview window shows wrong behavior for new page in LIVE WS
+
 2010-11-28  Sonja Scholz  <ss@cabag.ch>
 
 	* Fixed bug: #11116: Add some CSS classes for detailView
