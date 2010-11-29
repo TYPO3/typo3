@@ -1,3 +1,7 @@
+2010-11-29  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #16583: Localization overview has no color-coded status anymore
+
 2010-11-26  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #16573: Register count_MENUOBJ is not properly initialized
