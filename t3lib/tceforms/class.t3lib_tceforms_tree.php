@@ -73,7 +73,12 @@ class t3lib_TCEforms_Tree {
 				$selectedNodes[] = $temp[0];
 			}
 		}
-
+		$allowedUids = array();
+		foreach ($possibleSelectboxItems as $item) {
+			if (intval($item[1]) > 0) {
+				$allowedUids[] = $item[1];
+			}
+		}
 		$treeDataProvider = t3lib_tree_Tca_DataProviderFactory::getDataProvider(
 			$GLOBALS['TCA'][$table]['columns'][$field]['config'],
 			$table,
@@ -81,8 +86,8 @@ class t3lib_TCEforms_Tree {
 			$row
 		);
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
+		$treeDataProvider->setItemWhiteList($allowedUids);
 		$treeDataProvider->initializeTreeData();
-		$treeDataProvider->setGeneratedTSConfig($this->tceForms->setTSconfig($table, $row));
 
 		$treeRenderer = t3lib_div::makeInstance('t3lib_tree_Tca_ExtJsArrayRenderer');
 		$tree = t3lib_div::makeInstance('t3lib_tree_Tca_TcaTree');
