@@ -1,3 +1,7 @@
+2010-11-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Follow-up to #15998: Fixed CGL issue with naming and added exception codes
+
 2010-11-29  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #16583: Localization overview has no color-coded status anymore

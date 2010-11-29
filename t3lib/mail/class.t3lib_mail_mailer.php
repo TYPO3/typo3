@@ -41,7 +41,7 @@ require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_mail_mailer extends Swift_Mailer {
+class t3lib_mail_Mailer extends Swift_Mailer {
 
 	/**
 	 * @var Swift_Transport
@@ -61,7 +61,7 @@ class t3lib_mail_mailer extends Swift_Mailer {
 			try {
 				$this->initializeTransport();
 			} catch (Exception $e) {
-				throw new t3lib_exception($e->getMessage());
+				throw new t3lib_exception($e->getMessage(), 1291068569);
 			}
 		}
 		parent::__construct($this->transport);
@@ -81,7 +81,7 @@ class t3lib_mail_mailer extends Swift_Mailer {
 	 *
 	 * $TYPO3_CONF_VARS['MAIL']['transport_sendmail_command'] = '/usr/sbin/sendmail -bs'
 	 *
-	 * @throws Exception
+	 * @throws t3lib_exception
 	 */
 	private function initializeTransport() {
 		$mailSettings = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
@@ -91,7 +91,10 @@ class t3lib_mail_mailer extends Swift_Mailer {
 					// Get settings to be used when constructing the transport object
 				list($host, $port) = split(':', $mailSettings['transport_smtp_server']);
 				if ($host === '') {
-					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp"');
+					throw new t3lib_exception(
+						'$TYPO3_CONF_VARS[\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp"',
+						1291068606
+					);
 				}
 				if ($port === '') {
 					$port = '25';
@@ -115,7 +118,10 @@ class t3lib_mail_mailer extends Swift_Mailer {
 			case 'sendmail':
 				$sendmailCommand = $mailSettings['transport_sendmail_command'];
 				if ($sendmailCommand === '') {
-					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_sendmail_command\'] needs to be set when transport is set to "sendmail"');
+					throw new t3lib_exception(
+						'$TYPO3_CONF_VARS[\'MAIL\'][\'transport_sendmail_command\'] needs to be set when transport is set to "sendmail"',
+						1291068620
+					);
 				}
 					// Create our transport
 				$this->transport = Swift_SendmailTransport::newInstance($sendmailCommand);

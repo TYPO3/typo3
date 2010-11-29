@@ -37,10 +37,10 @@ require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_mail_message extends Swift_Message {
+class t3lib_mail_Message extends Swift_Message {
 
 	/**
-	 * @var t3lib_mail_mailer
+	 * @var t3lib_mail_Mailer
 	 */
 	var $mailer;
 
@@ -61,7 +61,7 @@ class t3lib_mail_message extends Swift_Message {
 	 * @return void
 	 */
 	private function initializeMailer() {
-		$this->mailer = t3lib_div::makeInstance('t3lib_mail_mailer');
+		$this->mailer = t3lib_div::makeInstance('t3lib_mail_Mailer');
 	}
 
 	/**
