@@ -137,19 +137,22 @@ class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_RepresentationNode {
 	}
 
 	/**
-	 * Compares with another nide, used for sorting
+	 * Compares a node to another one.
 	 *
-	 * @param  $other node object
-	 * @return int
+	 * Returns:
+	 * 1 if its greater than the other one
+	 * -1 if its smaller than the other one
+	 * 0 if its equal
+	 *
+	 * @param t3lib_tree_Node $other
+	 * @return int see description above
 	 */
 	public function compareTo($other) {
-		if ($this->sortValue > $other->sortValue) {
-			return 1;
-		} elseif ($this->sortValue < $other->sortValue) {
-			return -1;
-		} else {
+		if ($this->equals($other)) {
 			return 0;
 		}
+
+		return ($this->sortValue > $other->getSortValue()) ? 1 : -1;
 	}
 
 	/**

@@ -258,10 +258,12 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			$node->setSelected(t3lib_div::inList($this->getSelectedList(), $basicNode->getId()));
 			$node->setExpanded($this->isExpanded($basicNode));
 		}
-		$node->setSelectable(!t3lib_div::inList($this->getNonSelectableLevelList(), $level));
-		$node->setSortValue($this->nodeSortValues[$node->getId()]);
-		$node->setIcon(t3lib_iconWorks::mapRecordTypeToSpriteIconClass($this->tableName, $row));
 		$node->setId($basicNode->getId());
+
+		$node->setSelectable(!t3lib_div::inList($this->getNonSelectableLevelList(), $level));
+		$node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
+
+		$node->setIcon(t3lib_iconWorks::mapRecordTypeToSpriteIconClass($this->tableName, $row));
 		$node->setParentNode($parent);
 		if ($basicNode->hasChildNodes()) {
 			$node->setHasChildren(TRUE);
@@ -377,7 +379,6 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * @return array
 	 */
 	protected function getChildrenUidsFromParentRelation(array $row) {
-		$relatedUids = array();
 		$uid = $row['uid'];
 
 		switch ((string) $this->columnConfiguration['type']) {

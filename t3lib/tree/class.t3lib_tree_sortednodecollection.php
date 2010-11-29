@@ -105,25 +105,11 @@ class t3lib_tree_SortedNodeCollection extends t3lib_tree_NodeCollection {
 	 * @param t3lib_tree_Node $node
 	 * @return void
 	 */
-	public function addNode(t3lib_tree_Node $node) {
-		$this->append($node);
+	public function append(t3lib_tree_Node $node) {
+		parent::append($node);
 		$this->asort();
 		$this->normalize();
 	}
 
-	/**
-	 * Removes a specific node from the internal array
-	 *
-	 * @param t3lib_tree_Node $node
-	 * @return void
-	 */
-	public function removeNode(t3lib_tree_Node $node) {
-		$offset = $this->offsetOf($node);
-		if ($offset !== -1) {
-			$this->offsetUnset($offset);
-			$this->normalize();
-		}
-	}
 }
-
 ?>
