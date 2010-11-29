@@ -64,6 +64,14 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	protected $selectedList = '';
 
 	/**
+	 * Contains all ids which may be allowed to display according to
+	 * beUser Rights and foreign_table_where (if type db)
+	 *
+	 * @var array $itemWhiteList
+	 */
+	protected $itemWhiteList = array();
+
+	/**
 	 * Sets the id of the tree
 	 *
 	 * @param string $treeId
@@ -195,6 +203,25 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	 */
 	public function getNonSelectableLevelList() {
 		return $this->nonSelectableLevelList;
+	}
+
+	/**
+	 * Setter for the itemWhiteList
+	 *
+	 * @param array $itemWhiteList
+	 * @return void
+	 */
+	public function setItemWhiteList(array $itemWhiteList) {
+		$this->itemWhiteList = $itemWhiteList;
+	}
+
+	/**
+	 * Getter for the itemWhiteList
+	 *
+	 * @return array
+	 */
+	public function getItemWhiteList() {
+		return $this->itemWhiteList;
 	}
 }
 

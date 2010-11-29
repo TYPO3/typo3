@@ -2,6 +2,7 @@
 
 	* Fixed bug #16597: TCA tree: Adapt Signature of own select renderMode tree to match the signature other select-modes 
 	* Fixed bug #16600: TCA tree: Move the ACL-Checks out from Data-Provider and use the information from tceFroms 
+	* Follow-up to bug #16600: TCA tree: Move the ACL-Checks out from Data-Provider and use the information from tceFroms (added missing class)
 
 2010-11-29  Jigal van Hemert <jigal@xs4all.nl>
 
