@@ -269,7 +269,9 @@ class tx_install extends t3lib_install {
 	function tx_install() {
 		parent::t3lib_install();
 
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])	die("Install Tool deactivated.<br />You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<br /><br />\$TYPO3_CONF_VARS['BE']['installToolPassword'] = 'bacb98acf97e0b6112b1d1b650b84971';");
+		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
+			$this->outputErrorAndExit('Install Tool deactivated.<br />You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be \'joh316\':<br /><br />\$TYPO3_CONF_VARS[\'BE\'][\'installToolPassword\'] = \'bacb98acf97e0b6112b1d1b650b84971\';', 'Fatal error');
+		}
 
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -354,7 +356,7 @@ class tx_install extends t3lib_install {
 			($this->step? '&step=' . $this->step : '');
 		$this->typo3temp_path = PATH_site.'typo3temp/';
 		if (!is_dir($this->typo3temp_path) || !is_writeable($this->typo3temp_path)) {
-			die('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: '. $this->typo3temp_path);
+			$this->outputErrorAndExit('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: ' . htmlspecialchars($this->typo3temp_path), 'Fatal error');
 		}
 
 		try {

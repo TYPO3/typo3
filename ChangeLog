@@ -1,3 +1,7 @@
+2010-11-29  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16559: Ugly errors in install tool (Thanks to Kevin Walter)
+
 2010-11-28  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #15644: Replace magic numbers for shortcut_mode with class constants in tslib_fe
