@@ -1,5 +1,6 @@
-2010-11-29  Sonja Scholz  <ss@cabag.ch>
+2010-11-29  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug: #11006: Error when using old-style workspace
 	* Fixed bug: #10831: New preview window shows wrong behavior for new page in LIVE WS
 
 2010-11-28  Sonja Scholz  <ss@cabag.ch>
