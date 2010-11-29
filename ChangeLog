@@ -9,6 +9,7 @@
 	* Fixed bug #16600: TCA tree: Move the ACL-Checks out from Data-Provider and use the information from tceFroms 
 	* Follow-up to bug #16600: TCA tree: Move the ACL-Checks out from Data-Provider and use the information from tceFroms (added missing class)
 	* Fixed bug #16553: TCA tree does not work for relation-fields without TCA Definition.
+	* Cleanup #16553: TCA tree has redundant code passages 
 
 2010-11-29  Jigal van Hemert <jigal@xs4all.nl>
 

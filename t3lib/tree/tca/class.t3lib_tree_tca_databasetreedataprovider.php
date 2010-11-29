@@ -81,6 +81,13 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 
 
 	/**
+	 * Stores TCA-Configuration of the LookUpField in tableName
+	 *
+	 * @var array
+	 */
+	protected $columnConfiguration;
+
+	/**
 	 * node sort values (the orderings from foreign_Table_where evaluation)
 	 *
 	 * @var array
@@ -278,6 +285,14 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		parent::initializeTreeData();
 		$this->nodeSortValues = array_flip($this->itemWhiteList);
 
+		$this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
+		if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] != $this->getTableName()) {
+			throw new InvalidArgumentException(
+				'TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet',
+				'1290944650'
+			);
+		}
+
 		$this->treeData = t3lib_div::makeInstance('t3lib_tree_Node');
 		$this->treeData->setId($this->getRootUid());
 		$this->treeData->setParentNode(NULL);
@@ -365,56 +380,32 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		$relatedUids = array();
 		$uid = $row['uid'];
 
-		$columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
-		switch ((string) $columnConfiguration['type']) {
+		switch ((string) $this->columnConfiguration['type']) {
 			case 'inline':
 			case 'select':
-				if ($columnConfiguration['MM']) {
+				if ($this->columnConfiguration['MM']) {
 					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					// dummy field for setting "look from other site"
-					$columnConfiguration['MM_oppositeField'] = 'children';
+						// dummy field for setting "look from other site"
+					$this->columnConfiguration['MM_oppositeField'] = 'children';
 
 					$dbGroup->start(
 						$row[$this->getLookupField()],
-						$columnConfiguration['foreign_table'],
-						$columnConfiguration['MM'],
-						$uid, $this->getTableName(),
-						$columnConfiguration
+						$this->getTableName(),
+						$this->columnConfiguration['MM'],
+						$uid,
+						$this->getTableName(),
+						$this->columnConfiguration
 					);
 
-					$relatedUids = $dbGroup->tableArray[$columnConfiguration['foreign_table']];
-				} elseif ($columnConfiguration['foreign_table'] && $GLOBALS['TCA'][$columnConfiguration['foreign_table']] && $columnConfiguration['foreign_field']) {
-					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'uid',
-						$columnConfiguration['foreign_table'],
-						$GLOBALS['TYPO3_DB']->listQuery($columnConfiguration['foreign_field'], intval($uid), $columnConfiguration['foreign_table'])
-							. (intval($uid) == 0 ? (' OR ' . $columnConfiguration['foreign_field'] . ' = \'\'') : '' )
-					);
-					foreach ($records as $record) {
-						$relatedUids[] = $record['uid'];
-					}
+					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
+				} elseif ($this->columnConfiguration['foreign_field']) {
+					$relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
 				} else {
-					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'uid',
-						$columnConfiguration['foreign_table'],
-						$GLOBALS['TYPO3_DB']->listQuery($this->getLookupField(), intval($uid), $columnConfiguration['foreign_table'])
-							. (intval($uid) == 0 ? (' OR ' . $this->getLookupField() . ' = \'\'') : '' )
-					);
-					foreach ($records as $record) {
-						$relatedUids[] = $record['uid'];
-					}
+					$relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
 				}
 			break;
 			default:
-				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					'uid',
-					$columnConfiguration['foreign_table'],
-					$GLOBALS['TYPO3_DB']->listQuery($this->getLookupField(), intval($uid), $columnConfiguration['foreign_table'])
-						. (intval($uid) == 0 ? (' OR ' . $this->getLookupField() . ' = \'\'') : '' )
-				);
-				foreach ($records as $record) {
-					$relatedUids[] = $record['uid'];
-				}
+				$relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
 		}
 
 		return $relatedUids;
@@ -431,27 +422,26 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		$uid = $row['uid'];
 		$value = $row[$this->getLookupField()];
 
-		$columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
-		switch ((string) $columnConfiguration['type']) {
+		switch ((string) $this->columnConfiguration['type']) {
 			case 'inline':
 			case 'select':
-				if ($columnConfiguration['MM']) {
+				if ($this->columnConfiguration['MM']) {
 					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
 					$dbGroup->start(
 						$value,
-						$columnConfiguration['foreign_table'],
-						$columnConfiguration['MM'],
+						$this->getTableName(),
+						$this->columnConfiguration['MM'],
 						$uid,
 						$this->getTableName(),
-						$columnConfiguration
+						$this->columnConfiguration
 					);
 
-					$relatedUids = $dbGroup->tableArray[$columnConfiguration['foreign_table']];
-				} elseif ($columnConfiguration['foreign_table'] && $GLOBALS['TCA'][$columnConfiguration['foreign_table']] && $columnConfiguration['foreign_field']) {
+					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
+				} elseif ($this->columnConfiguration['foreign_field']) {
 					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid',
-						$columnConfiguration['foreign_table'],
-						$columnConfiguration['foreign_field'] . '=' . intval($uid) . ' '
+						$this->getTableName(),
+						$this->columnConfiguration['foreign_field'] . '=' . intval($uid)
 					);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
@@ -467,6 +457,27 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		return $relatedUids;
 	}
 
+	/**
+	 * Queries the table for an field which might contain a list.
+	 *
+	 * @param string $fieldName the name of the field to be queried
+	 * @param int $queryId the uid to search for
+	 *
+	 * @return int[] all uids found
+	 */
+	protected function listFieldQuery($fieldName, $queryId) {
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid',
+			$this->getTableName(),
+			$GLOBALS['TYPO3_DB']->listQuery($fieldName, intval($queryId), $this->getTableName())
+				. (intval($queryId) == 0 ? (' OR ' . $fieldName . ' = \'\'') : '')
+		);
+		$uidArray = array();
+		foreach ($records as $record) {
+			$uidArray[] = $record['uid'];
+		}
+		return $uidArray;
+	}
 }
 
 ?>
