@@ -405,7 +405,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					}
 				}
 			break;
-			case 'group':
+			default:
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid',
 					$columnConfiguration['foreign_table'],
@@ -415,7 +415,6 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 				foreach ($records as $record) {
 					$relatedUids[] = $record['uid'];
 				}
-			break;
 		}
 
 		return $relatedUids;
@@ -461,9 +460,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 					$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
 				}
 			break;
-			case 'group':
+			default:
 				$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
-			break;
 		}
 
 		return $relatedUids;
