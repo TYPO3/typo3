@@ -1,3 +1,7 @@
+2010-11-29  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #16583: Localization overview has no color-coded status anymore
+
 2010-11-29  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Added last_synched_target file since the system extension "version" is now maintained in an external repository
