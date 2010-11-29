@@ -1,3 +1,7 @@
+2010-11-29  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Fixed bug #16597: TCA tree: Adapt Signature of own select renderMode tree to match the signature other select-modes 
+
 2010-11-29  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16417: Field module is not rendered for sysfolders (Thanks to Georg Ringer)

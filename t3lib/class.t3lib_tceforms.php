@@ -1557,8 +1557,8 @@ class t3lib_TCEforms {
 		} elseif (!strcmp($config['renderMode'], 'singlebox')) { // Single selector box renderMode
 			$item = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $PA, $config, $selItems, $nMV_label);
 		} elseif (!strcmp($config['renderMode'], 'tree')) { // Tree renderMode
-			$treeClass = t3lib_div::makeInstance('t3lib_TCEforms_Tree');
-			$item = $treeClass->renderField($table, $field, $row, $PA, $this);
+			$treeClass = t3lib_div::makeInstance('t3lib_TCEforms_Tree', $this);
+			$item = $treeClass->renderField($table, $field, $row, $PA, $config, $selItems, $nMV_label);
 		} else { // Traditional multiple selector box:
 			$item = $this->getSingleField_typeSelect_multiple($table, $field, $row, $PA, $config, $selItems, $nMV_label);
 		}

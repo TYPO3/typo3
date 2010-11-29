@@ -35,15 +35,36 @@
  */
 
 class t3lib_TCEforms_Tree {
+	/**
+	 * Stores a reference to the original tceForms object
+	 *
+	 * @var t3lib_TCEforms
+	 */
+	protected $tceForms = NULL;
 
 	/**
+	 * Constructor which sets the tceForms.
+	 * 
+	 * @param t3lib_TCEforms $tceForms
+	 *
+	 */
+	public function __construct(t3lib_TCEforms &$tceForms) {
+		$this->tceForms = $tceForms;
+	}
+
+	/**
+	 * renders the tree as replacement for the selector
+	 *
 	 * @param string The table name of the record
 	 * @param string The field name which this element is supposed to edit
 	 * @param array The record data array where the value(s) for the field can be found
 	 * @param array An array with additional configuration options.
+	 * @param array (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array Items available for selection
+	 * @param string Label for no-matching-value
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderField($table, $field, $row, &$PA, &$tceForms) {
+	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems, $noMatchLabel) {
 		$valueArray = explode(',', $row[$field]);
 		$selectedNodes = array();
 		if (count($valueArray)) {
@@ -61,7 +82,7 @@ class t3lib_TCEforms_Tree {
 		);
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
 		$treeDataProvider->initializeTreeData();
-		$treeDataProvider->setGeneratedTSConfig($tceForms->setTSconfig($table, $row));
+		$treeDataProvider->setGeneratedTSConfig($this->tceForms->setTSconfig($table, $row));
 
 		$treeRenderer = t3lib_div::makeInstance('t3lib_tree_Tca_ExtJsArrayRenderer');
 		$tree = t3lib_div::makeInstance('t3lib_tree_Tca_TcaTree');
