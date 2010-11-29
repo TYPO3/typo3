@@ -911,6 +911,8 @@ $TCA['pages'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.module;module,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,

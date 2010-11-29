@@ -1,5 +1,6 @@
 2010-11-29  Jigal van Hemert <jigal@xs4all.nl>
 
+	* Fixed bug #16417: Field module is not rendered for sysfolders (Thanks to Georg Ringer)
 	* Fixed bug #16559: Ugly errors in install tool (Thanks to Kevin Walter)
 
 2010-11-28  Steffen Gebert  <steffen@steffen-gebert.de>
