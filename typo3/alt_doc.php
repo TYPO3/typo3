@@ -301,7 +301,7 @@ class SC_alt_doc {
 		}
 
 			// If pages are being edited, we set an instruction about updating the page tree after this operation.
-		if (isset($this->data['pages']))	{
+		if (isset($this->data['pages']) || $BE_USER->workspace != 0 && count($this->data)) {
 			t3lib_BEfunc::setUpdateSignal('updatePageTree');
 		}
 

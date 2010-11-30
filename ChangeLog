@@ -1,3 +1,7 @@
+2010-01-01  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #16604: Changes in workspace are not shown automatically in pagetree
+
 2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16501: DBAL does not support multi-column indexes in create table queries
