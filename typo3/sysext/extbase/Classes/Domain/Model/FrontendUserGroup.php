@@ -168,7 +168,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 * @api
 	 */
 	public function getSubgroup() {
-		return $this->subgroups;
+		return $this->subgroup;
 	}
 
 }
