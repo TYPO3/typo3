@@ -1,3 +1,7 @@
+2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16501: DBAL does not support multi-column indexes in create table queries
+
 2010-11-30  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16614: common.js resets TYPO3 namespace (Thanks to Peter Kühn)
