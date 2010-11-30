@@ -29,7 +29,7 @@ if (Prototype) {
 	Ajax.Responders.register({
 		onCreate: function(request, transport) {
 
-			// if the TYPO3 AJAX backend is used, 
+			// if the TYPO3 AJAX backend is used,
 			// the onSuccess & onComplete callbacks are hooked
 			if (request.url.indexOf("ajax.php") == -1) {
 				return;
@@ -77,7 +77,8 @@ T3AJAX.showError = function(xhr, json) {
 }
 
 // common storage and global object, could later hold more information about the current user etc.
-var TYPO3 = {
+var TYPO3 = TYPO3 || {};
+TYPO3 = Ext.apply(TYPO3, {
 	// store instances that only should be running once
 	_instances: {},
 	getInstance: function(className) {
@@ -87,9 +88,9 @@ var TYPO3 = {
 		TYPO3._instances[className] = instance;
 		return instance;
 	},
-	
+
 	helpers: {
-		// creates an array by splitting a string into parts, taking a delimiter 
+		// creates an array by splitting a string into parts, taking a delimiter
 		split: function(str, delim) {
 			var res = new Array();
 			while (str.indexOf(delim) > 0) {
@@ -99,4 +100,4 @@ var TYPO3 = {
 			return res;
 		}
 	}
-};
+});
