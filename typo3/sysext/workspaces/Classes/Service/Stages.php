@@ -254,25 +254,28 @@ class Tx_Workspaces_Service_Stages {
 	}
 
 	/**
-	 * Get next stage in process for given stage id
+	 * Gets next stage in process for given stage id
 	 *
-	 * @param int			stageid
-	 * @return int			id
+	 * @param integer $stageid Id of the stage to fetch the next one for
+	 * @return integer The next stage Id
 	 */
-	public function getNextStage($stageid) {
-
-		if (!t3lib_div::testInt($stageid)) {
-			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+	public function getNextStage($stageId) {
+		if (!t3lib_div::testInt($stageId)) {
+			throw new InvalidArgumentException(
+				$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'),
+				1291109987
+			);
 		}
 
 		$nextStage = FALSE;
 
 		$workspaceStageRecs = $this->getStagesForWS();
+
 		if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
 			reset($workspaceStageRecs);
 			while (!is_null($workspaceStageRecKey = key($workspaceStageRecs))) {
 				$workspaceStageRec = current($workspaceStageRecs);
-				if ($workspaceStageRec['uid'] == $this->resolveStageUid($stageid)) {
+				if ($workspaceStageRec['uid'] == $this->resolveStageUid($stageId)) {
 					$nextStage = next($workspaceStageRecs);
 					break;
 				}
