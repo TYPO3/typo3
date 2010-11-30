@@ -823,8 +823,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				$selectFields = $this->SQLparser->compileFieldList($queryParts['SELECT']);
 				$fromTables = $this->SQLparser->compileFromTables($queryParts['FROM']);
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
-				$groupBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileWhereClause($queryParts['GROUPBY']) : '';
-				$orderBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileWhereClause($queryParts['ORDERBY']) : '';
+				$groupBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileFieldList($queryParts['GROUPBY']) : '';
+				$orderBy = isset($queryParts['ORDERBY']) ? $this->SQLparser->compileFieldList($queryParts['ORDERBY']) : '';
 				$limit = isset($queryParts['LIMIT']) ? $this->SQLparser->compileWhereClause($queryParts['LIMIT']) : '';
 				return $this->exec_SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy, $limit);
 
