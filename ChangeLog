@@ -1,5 +1,6 @@
 2010-11-30  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16614: common.js resets TYPO3 namespace (Thanks to Peter Kühn)
 	* Fixed bug #16443: FAL Hooks (Thanks to Mathias Schreiber)
 	* Fixed bug #16459 Add uid of overlay record to rootline (Thanks to Mathias Schreiber)
 
