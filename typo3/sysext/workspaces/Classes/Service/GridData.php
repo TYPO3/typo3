@@ -31,15 +31,15 @@
  * @subpackage Service
  */
 class tx_Workspaces_Service_GridData {
-	private $dataArray = array();
-	private $sort = '';
-	private $sortDir = '';
+	protected $dataArray = array();
+	protected $sort = '';
+	protected $sortDir = '';
 
 	/**
 	 * Generates grid list array from given versions.
 	 *
-	 * @param  $versions	Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
-	 * @param  $parameter
+	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param object $parameter
 	 * @return array
 	 */
 	public function generateGridListFromVersions($versions, $parameter) {
@@ -63,14 +63,14 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
-	 * @param  $versions
-	 * @param  $filterTxt
+	 * Generates grid list array from given versions.
+	 *
+	 * @param array $versions
+	 * @param string $filterTxt
 	 * @return void
 	 */
-	protected function generateDataArray($versions, $filterTxt) {
-		/**
-		 * @var Tx_Workspaces_Service_Stages
-		 */
+	protected function generateDataArray(array $versions, $filterTxt) {
+		/** @var $stagesObj Tx_Workspaces_Service_Stages */
 		$stagesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 
 		foreach ($versions as $table => $records) {
@@ -128,8 +128,10 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
-	 * @param  $start
-	 * @param  $limit
+	 * Gets the data array by considering the page to be shown in the grid view.
+	 *
+	 * @param integer $start
+	 * @param integer $limit
 	 * @return array
 	 */
 	protected function getDataArray($start, $limit) {
@@ -144,6 +146,9 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
+	 * Performs sorting on the data array accordant to the
+	 * selected column in the grid view to be used for sorting.
+	 *
 	 * @return void
 	 */
 	protected function sortDataArray() {
@@ -168,11 +173,13 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
-	 * @param  $a
-	 * @param  $b
-	 * @return int
+	 * Implements individual sorting for columns based on integer comparison.
+	 *
+	 * @param array $a
+	 * @param array $b
+	 * @return integer
 	 */
-	protected function intSort($a, $b) {
+	protected function intSort(array $a, array $b) {
 			// Als erstes nach dem Pfad sortieren
 		$path_cmp = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
 
@@ -194,6 +201,8 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
+	 * Implements individual sorting for columns based on string comparison.
+	 *
 	 * @param  $a
 	 * @param  $b
 	 * @return int
@@ -219,11 +228,14 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
-	 * @param  $filterText
-	 * @param  $versionArray
-	 * @return bool
+	 * Determines whether the text used to filter the results is part of
+	 * a column that is visible in the grid view.
+	 *
+	 * @param string $filterText
+	 * @param array $versionArray
+	 * @return boolean
 	 */
-	protected function isFilterTextInVisibleColumns($filterText, $versionArray) {
+	protected function isFilterTextInVisibleColumns($filterText, array $versionArray) {
 		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'])) {
 			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'] as $column => $value) {
 				if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
@@ -252,12 +264,14 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
-	 * @param  $table
-	 * @param  $diffRecordOne
-	 * @param  $diffRecordTwo
-	 * @return float|int
+	 * Calculates the percentage of changes between two records.
+	 *
+	 * @param string $table
+	 * @param array $diffRecordOne
+	 * @param array $diffRecordTwo
+	 * @return integer
 	 */
-	public function calculateChangePercentage($table, $diffRecordOne, $diffRecordTwo) {
+	public function calculateChangePercentage($table, array $diffRecordOne, array $diffRecordTwo) {
 		global $TCA;
 
 			// Initialize:
@@ -269,7 +283,6 @@ class tx_Workspaces_Service_GridData {
 
 				// Load full table description
 			t3lib_div::loadTCA($table);
-
 
 			$similarityPercentage = 0;
 
@@ -326,15 +339,14 @@ class tx_Workspaces_Service_GridData {
 	}
 
 	/**
+	 * Gets the state of a given state value.
 	 *
 	 * @param	integer	stateId of offline record
-	 * @param	integer	hidden flag of online record
-	 * @param	integer	hidden flag of offline record
+	 * @param	boolean	hidden flag of online record
+	 * @param	boolean	hidden flag of offline record
 	 * @return	string
 	 */
 	 protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {
-		$state = FALSE;
-
 		switch ($stateId) {
 			case -1:
 				$state = 'new';

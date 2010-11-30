@@ -150,23 +150,21 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 		if(is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
-			$nextStage = $this->getStageService()->getNextStage($stageId);
 
-			$result = $this->getSentToStageWindow($nextStage['uid']);
-			$result['affects'] = array(
-				'table' => $table,
-				'nextStage' => $nextStage['uid'],
-				't3ver_oid' => $t3ver_oid,
-				'uid' => $uid,
-			);
+			if ($this->getStageService()->isValid($stageId)) {
+				$nextStage = $this->getStageService()->getNextStage($stageId);
+				$result = $this->getSentToStageWindow($nextStage['uid']);
+				$result['affects'] = array(
+					'table' => $table,
+					'nextStage' => $nextStage['uid'],
+					't3ver_oid' => $t3ver_oid,
+					'uid' => $uid,
+				);
+			} else {
+				$result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
+			}
 		} else {
-			$result = array(
-				'error' => array(
-					'code' => 1287264776,
-					'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToNextStage.noRecordFound'),
-				),
-				'success' => FALSE,
-			);
+			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264776);
 		}
 
 		return $result;
@@ -183,34 +181,27 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
 		if(is_array($elementRecord)) {
-			$stageId = intval($elementRecord['t3ver_stage']);
-			if ($stageId !== Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
-				$prevStage = $this->getStageService()->getPrevStage($stageId);
+			$stageId = $elementRecord['t3ver_stage'];
 
-				$result = $this->getSentToStageWindow($prevStage['uid']);
-				$result['affects'] = array(
-					'table' => $table,
-					'uid' => $uid,
-					'nextStage' => $prevStage['uid'],
-				);
+			if ($this->getStageService()->isValid($stageId)) {
+				if ($stageId !== Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
+					$prevStage = $this->getStageService()->getPrevStage($stageId);
+
+					$result = $this->getSentToStageWindow($prevStage['uid']);
+					$result['affects'] = array(
+						'table' => $table,
+						'uid' => $uid,
+						'nextStage' => $prevStage['uid'],
+					);
+				} else {
+						// element is already in edit stage, there is no prev stage - return an error message
+					$result = $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264746);
+				}
 			} else {
-					// element is already in edit stage, there is no prev stage - return an error message
-				$result = array(
-					'error' => array(
-						'code' => 1287264746,
-						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToPrevStage.noPreviousStage'),
-					),
-					'success' => FALSE,
-				);
+				$result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
 			}
 		} else {
-			$result = array(
-				'error' => array(
-					'code' => 1287264765,
-					'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToNextStage.noRecordFound'),
-				),
-				'success' => FALSE,
-			);
+			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264765);
 		}
 
 		return $result;

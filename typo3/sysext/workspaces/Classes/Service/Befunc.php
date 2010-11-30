@@ -49,14 +49,15 @@ class tx_Workspaces_Service_Befunc {
 			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
 			$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 			/**
-			 *  @todo BACK_PATH is not available be still needed when used during AJAX request
+			 *  This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
+			 *  has /index.php as fixed value here and dealing with the backPath is very error-prone
+			 *
 			 *  @todo make sure this would work in local extension installation too
 			 */
-			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] :  '../../../' . TYPO3_mainDir;
+			$backPath = '/' . TYPO3_mainDir;
 				// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 			$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-
-			$viewScript = '/' . $backPath . $uriBuilder->uriFor('index', array(), $ctrl, 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
+			$viewScript = $backPath . $uriBuilder->uriFor('index', array(), $ctrl, 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
 		}
 	}
 

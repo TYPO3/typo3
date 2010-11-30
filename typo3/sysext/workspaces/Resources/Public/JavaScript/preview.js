@@ -45,7 +45,7 @@ Ext.onReady(function() {
 						src: wsUrl
 					}]
 				}, {
-					title: 'Live Workspace',
+					title: 'Live site',
 					id: 'liveRegion',
 					layout: 'fit',
 					items: [{

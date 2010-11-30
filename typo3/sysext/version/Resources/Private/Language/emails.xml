@@ -20,25 +20,3 @@ State was changed by ###USER_FULLNAME### (username: ###USER_USERNAME###)</label>
 		</languageKey>
 	</data>
 </T3locallang>
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<T3locallang>
-	<meta type="array">
-		<description>Module labels</description>
-		<type>module</type>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="subject">TYPO3 Workspace Note: Stage Change for ###ELEMENT_NAME###</label>
-			<label index="message">At the TYPO3 site "###SITE_NAME###" (###SITE_URL###)
-in workspace "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
-the stage has changed for the element(s) "###RECORD_TITLE###" (###ELEMENT_NAME###) at location "###RECORD_PATH###" in the page tree:
-
-=> ###NEXT_STAGE###
-
-User Comment:
-"###COMMENT###"
-
-State was changed by ###USER_FULLNAME### (username: ###USER_USERNAME###)</label>
-		</languageKey>
-	</data>
-</T3locallang>

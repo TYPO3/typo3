@@ -60,6 +60,7 @@
 			<label index="window.swap.message">Do you really want to swap this version??</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>
 			<label index="error.stageId.integer">StageId is supposed to be an integer</label>
+			<label index="error.stageId.invalid">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</label>
 			<label index="error.sendToNextStage.noRecordFound">The record element could not be found.</label>
 			<label index="error.sendToPrevStage.noPreviousStage">The record element is already in editing stage, there is no previous stage.</label>
 			<label index="window.sendToNextStageWindow.itemsWillBeSentTo">The selected element(s) will be sent to </label>
@@ -67,7 +68,9 @@
 			<label index="window.sendToNextStageWindow.additionalRecipients">Additional recipients</label>
 			<label index="window.sendToNextStageWindow.comments">Comments</label>
 			<label index="error.getStageTitle.stageNotFound">Stage not found</label>
-			<label index="warning.oldStyleWorkspaceInUser">It seems that you're stil using old-style workspace. If you continue using this module without migrating your workspace you might loose data.</label>
+			<label index="warning.oldStyleWorkspaceInUser">It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3 Install Tool to run the necessary updates. If you continue using this module without migrating your workspace you might loose data.</label>
+			<label index="info.newpage">New Page!</label>
+			<label index="info.newpage.detail">The previewed page has been created in a workspace and has no live counterpart.</label>
 		</languageKey>
 	</data>
 </T3locallang>

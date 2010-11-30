@@ -1,3 +1,50 @@
+2010-01-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2
+
+2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+
+	* Fixed bug #11143: Editing workspaces record shows PHP warning
+	* Fixed bug #10291: change action icons
+	* Fixed bug #7050: Remove UID from WSP Dropdown
+	* Fixed bug #11152 Calls about this-> in static context in workspaces-lib
+	* Cleanup: Added several small changes from the Skin-Team at the xTemplate
+
+2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+
+	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
+
+2010-11-30  Oliver Hader  <oliver@tpyo3.org>
+
+	* Fixed bug #11124: Stages should use suggest wizard for persons
+	* Cleanup: Fixed PHPdoc comments and exception timestamp
+	* Fixed bug #11115: ExtDirect exception sendToNextStageWindow: StageId is supposed to be an integer
+	* Fixed task #11161: Simplify outputting errors from PHP to the grid component
+	* Fixed bug #11144: Records that belong to a particular workspace shall be removed when the workspace is removed
+
+2010-11-29  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug: #11131: Usability: labels improvements
+
+2010-11-29  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug: #11006: Error when using old-style workspace
+	* Fixed bug: #10831: New preview window shows wrong behavior for new page in LIVE WS
+
+2010-11-28  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug: #11116: Add some CSS classes for detailView
+
+2010-11-22  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Fixed PHPdoc comments
+	* Fixed bug #11033: DB error in query after publish to Live action
+
+2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
+
+	* Fixed bug: #10916 workspace preview module raises error in conjunction with the newest extbase version
+
 2010-11-17  Oliver Hader  <oliver@tpyo3.org>
 
 	* Raised version to 4.5.0beta1a

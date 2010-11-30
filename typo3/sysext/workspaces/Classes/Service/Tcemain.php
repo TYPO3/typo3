@@ -42,23 +42,36 @@ class tx_Workspaces_Service_Tcemain {
 	 * @param string $table
 	 * @param string $id
 	 * @param string $value
-	 * @param object $tcemain
+	 * @param t3lib_TCEmain $tcemain
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $value, $tcemain) {
-
-		if (strcmp($command, 'delete') || strcmp($table, Tx_Workspaces_Service_Stages::TABLE_STAGE)) {
-			return;
+	public function processCmdmap_postProcess($command, $table, $id, $value, t3lib_TCEmain $tcemain) {
+		if ($command === 'delete') {
+			if ($table === Tx_Workspaces_Service_Stages::TABLE_STAGE) {
+				$this->resetStageOfElements($id);
+			} elseif ($table === tx_Workspaces_Service_Workspaces::TABLE_WORKSPACE) {
+				$this->flushWorkspaceElements($id);
+			}
 		}
+	}
 
+	/**
+	 * In case a sys_workspace_stage record is deleted we do a hard reset
+	 * for all existing records in that stage to avoid that any of these end up
+	 * as orphan records.
+	 *
+	 * @param integer $stageId Elements with this stage are resetted
+	 * @return void
+	 */
+	protected function resetStageOfElements($stageId) {
 		$service = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 			// @todo: remove the encode/decode functionality
-		$pseudoStageId = $service->encodeStageUid($id);
+		$pseudoStageId = $service->encodeStageUid($stageId);
 
 		$fields = array('t3ver_stage' => Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
 
-		foreach ($GLOBALS['TCA'] as $tcaTable => $cfg) {
-			if ($GLOBALS['TCA'][$tcaTable]['ctrl']['versioningWS']) {
+		foreach ($this->getTcaTables() as $tcaTable) {
+			if (t3lib_BEfunc::isTableWorkspaceEnabled($tcaTable)) {
 
 				$where = 't3ver_stage = ' . intval($pseudoStageId);
 				$where .= ' AND t3ver_wsid > 0 AND pid=-1';
@@ -67,6 +80,57 @@ class tx_Workspaces_Service_Tcemain {
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tcaTable, $where, $fields);
 			}
 		}
+	}
+
+	/**
+	 * Flushes elements of a particular workspace to avoid orphan records.
+	 *
+	 * @param integer $workspaceId The workspace to be flushed
+	 * @return void
+	 */
+	protected function flushWorkspaceElements($workspaceId) {
+		$command = array();
+
+		foreach ($this->getTcaTables() as $tcaTable) {
+			if (t3lib_BEfunc::isTableWorkspaceEnabled($tcaTable)) {
+				$where = '1=1';
+				$where .= t3lib_BEfunc::getWorkspaceWhereClause($tcaTable, $workspaceId);
+				$where .= t3lib_BEfunc::deleteClause($tcaTable);
+
+				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tcaTable, $where, '', '', '', 'uid');
+				if (is_array($records)) {
+					foreach (array_keys($records) as $recordId) {
+						$command[$tcaTable][$recordId]['version']['action'] = 'flush';
+					}
+				}
+			}
+		}
+
+		if (count($command)) {
+			$tceMain = $this->getTceMain();
+			$tceMain->start(array(), $command);
+			$tceMain->process_cmdmap();
+		}
+	}
+
+	/**
+	 * Gets all defined TCA tables.
+	 *
+	 * @return array
+	 */
+	protected function getTcaTables() {
+		return array_keys($GLOBALS['TCA']);
+	}
+
+	/**
+	 * Gets a new instance of t3lib_TCEmain.
+	 *
+	 * @return t3lib_TCEmain
+	 */
+	protected function getTceMain() {
+		$tceMain = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tceMain->stripslashes_values = 0;
+		return $tceMain;
 	}
 
 }

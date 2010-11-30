@@ -162,6 +162,17 @@ $TCA['sys_workspace'] = array(
 				),
 			)
 		),
+		'stagechg_notification' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.stagechg_notification',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0),
+					array('Notify users on next stage only', 1),
+					array('Notify all users on any change', 10)
+				),
+			)
+		),
 		'custom_stages' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.custom_stages',
@@ -178,7 +189,7 @@ $TCA['sys_workspace'] = array(
 	),
 	'types' => array(
 		'0' => array('showitem' => 'title,description,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,stagechg_notification,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_filemounts.tabs.staging,custom_stages,
@@ -212,7 +223,12 @@ $TCA['sys_workspace_stage'] = array(
 				'size' => '3',
 				'maxitems' => '100',
 				'autoSizeMax' => 20,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'default_mailcomment' => array(
