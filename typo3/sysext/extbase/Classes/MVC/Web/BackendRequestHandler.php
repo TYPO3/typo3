@@ -38,7 +38,11 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
-		$request->setHmacVerified(TRUE);
+
+			// Request hash service
+		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
+		$requestHashService->verifyRequest($request);
+
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
 
 		$this->dispatcher->dispatch($request, $response);
