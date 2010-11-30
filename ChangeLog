@@ -1,3 +1,7 @@
+2010-11-30  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16581: Make jsFooterInline & jsFooterLibs available to render-preProcess hook (Thanks to Morton Jonuschat)
+
 2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16501: DBAL does not support multi-column indexes in create table queries

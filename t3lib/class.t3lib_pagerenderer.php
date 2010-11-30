@@ -1063,12 +1063,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
+				'jsFooterLibs'   => &$this->jsFooterLibs,
 				'jsFiles'        => &$this->jsFiles,
 				'jsFooterFiles'  => &$this->jsFooterFiles,
 				'cssFiles'       => &$this->cssFiles,
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
 				'jsInline'       => &$this->jsInline,
+				'jsFooterInline' => &$this->jsFooterInline,
 				'cssInline'      => &$this->cssInline,
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] as $hook) {
