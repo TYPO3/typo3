@@ -202,6 +202,15 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	public function __clone() {
 		$this->_isClone = TRUE;
 	}
-	
+
+	/**
+	 * Returns the class name and the uid of the object as string
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return get_class($this) . ':' . (string)$this->uid;
+	}
+
 }
 ?>
