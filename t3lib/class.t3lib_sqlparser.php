@@ -1809,10 +1809,12 @@ class t3lib_sqlparser {
 			$fieldsKeys[] = $fN . ' ' . $this->compileFieldCfg($fCfg['definition']);
 		}
 		foreach ($components['KEYS'] as $kN => $kCfg) {
-			if ($kN == 'PRIMARYKEY') {
+			if ($kN === 'PRIMARYKEY') {
 				$fieldsKeys[] = 'PRIMARY KEY (' . implode(',', $kCfg) . ')';
-			} elseif ($kN == 'UNIQUE') {
-				$fieldsKeys[] = 'UNIQUE ' . $kN . ' (' . implode(',', $kCfg) . ')';
+			} elseif ($kN === 'UNIQUE') {
+				$key = key($kCfg);
+				$fields = current($kCfg);
+				$fieldsKeys[] = 'UNIQUE KEY ' . $key . ' (' . implode(',', $fields) . ')';
 			} else {
 				$fieldsKeys[] = 'KEY ' . $kN . ' (' . implode(',', $kCfg) . ')';
 			}
