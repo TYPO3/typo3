@@ -269,33 +269,31 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		return $frameworkConfiguration;
 	}
 
-
 	/**
 	 * Overrides the switchable controller actions from the flexform.
 	 *
 	 * @param array $frameworkConfiguration The original framework configuration
 	 * @param array $flexformConfiguration The full flexform configuration
 	 * @return array the modified framework configuration, if needed
-	 * @todo: Check that the controller has been before inside the switchableControllerActions.
 	 */
 	protected function overrideSwitchableControllerActionsFromFlexform(array $frameworkConfiguration, array $flexformConfiguration) {
 		if (!isset($flexformConfiguration['switchableControllerActions']) || is_array($flexformConfiguration['switchableControllerActions'])) {
 			return $frameworkConfiguration;
 		}
 
-		// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+			// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+			// The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
 		$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']), TRUE);
 
 		$newSwitchableControllerActionsFromFlexform = array();
 		foreach ($switchableControllerActionPartsFromFlexform as $switchableControllerActionPartFromFlexform) {
-			list($controller, $action) = explode('->', $switchableControllerActionPartFromFlexform);
+			list($controller, $action) = t3lib_div::trimExplode('->', $switchableControllerActionPartFromFlexform);
 			if (empty($controller) || empty($action)) {
 				throw new Tx_Extbase_Configuration_Exception_ParseError('Controller or action were empty when overriding switchableControllerActions from flexform.', 1257146403);
 			}
 			$newSwitchableControllerActionsFromFlexform[$controller][] = $action;
 		}
-
-		if (count($newSwitchableControllerActionsFromFlexform)) {
+		if (count($newSwitchableControllerActionsFromFlexform) > 0) {
 			$this->overrideSwitchableControllerActions($frameworkConfiguration, $newSwitchableControllerActionsFromFlexform);
 		}
 		return $frameworkConfiguration;

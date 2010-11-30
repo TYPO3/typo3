@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManager_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var array
@@ -43,6 +43,11 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManager_testcase e
 	protected $typo3DbBackup;
 
 	/**
+	 * @var array
+	 */
+	protected $extConfBackup;
+
+	/**
 	 * @var Tx_Extbase_Configuration_BackendConfigurationManager
 	 */
 	protected $backendConfigurationManager;
@@ -57,7 +62,9 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManager_testcase e
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array());
 
-		$this->backendConfigurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_BackendConfigurationManager'), array('dummy'));
+		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
+
+		$this->backendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_BackendConfigurationManager', array('getTypoScriptSetup'));
 	}
 
 	/**
@@ -66,6 +73,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManager_testcase e
 	public function tearDown() {
 		t3lib_div::_GETset($this->getBackup);
 		$_POST = $this->postBackup;
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = $this->extConfBackup;
 	}
 
 	/**
@@ -161,9 +169,156 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManager_testcase e
 			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
 			->will($this->returnValue(array()));
 
-		$expectedResult = 0;
+		$expectedResult = Tx_Extbase_Configuration_AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound() {
+		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue(array('foo' => 'bar')));
+		$expectedResult = array();
+		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPluginConfigurationReturnsExtensionConfiguration() {
+		$testSetup = array(
+			'module.' => array(
+				'tx_someextensionname.' => array(
+					'settings.' => array(
+						'foo' => 'bar'
+					)
+				),
+			),
+		);
+		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+		$expectedResult = array(
+			'settings' => array(
+				'foo' => 'bar'
+			)
+		);
+		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPluginConfigurationReturnsPluginConfiguration() {
+		$testSetup = array(
+			'module.' => array(
+				'tx_someextensionname_somepluginname.' => array(
+					'settings.' => array(
+						'foo' => 'bar'
+					)
+				),
+			),
+		);
+		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+		$expectedResult = array(
+			'settings' => array(
+				'foo' => 'bar'
+			)
+		);
+		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPluginConfigurationRecursivelyMergesExtensionAndPluginConfiguration() {
+		$testSetup = array(
+			'module.' => array(
+				'tx_someextensionname.' => array(
+					'settings.' => array(
+						'foo' => 'bar',
+						'some.' => array(
+							'nested' => 'value'
+						),
+					),
+				),
+				'tx_someextensionname_somepluginname.' => array(
+					'settings.' => array(
+						'some.' => array(
+							'nested' => 'valueOverridde',
+							'new' => 'value',
+						),
+					),
+				),
+			),
+		);
+		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+		$expectedResult = array(
+			'settings' => array(
+				'foo' => 'bar',
+				'some' => array(
+					'nested' => 'valueOverridde',
+					'new' => 'value'
+				),
+			),
+		);
+		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSwitchableControllerActionsReturnsEmptyArrayByDefault() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = NULL;
+		$expectedResult = array();
+		$actualResult = $this->backendConfigurationManager->_call('getSwitchableControllerActions', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSwitchableControllerActionsReturnsConfigurationStoredInExtconf() {
+		$testSwitchableControllerActions = array(
+			'Controller1' => array(
+				'actions' => array(
+					'action1', 'action2'
+				),
+				'nonCacheableActions' => array(
+					'action1'
+				),
+			),
+			'Controller2' => array(
+				'actions' => array(
+					'action3', 'action4'
+				),
+			)
+		);
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $testSwitchableControllerActions;
+		$expectedResult = $testSwitchableControllerActions;
+		$actualResult = $this->backendConfigurationManager->_call('getSwitchableControllerActions', 'SomeExtensionName', 'SomePluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getContextSpecificFrameworkConfigurationReturnsUnmodifiedFrameworkConfiguration() {
+		$frameworkConfiguration = array(
+			'pluginName' => 'Pi1',
+			'extensionName' => 'SomeExtension',
+			'foo' => array(
+				'bar' => array(
+					'baz' => 'Foo',
+				),
+			)
+		);
+		$expectedResult = $frameworkConfiguration;
+		$actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
