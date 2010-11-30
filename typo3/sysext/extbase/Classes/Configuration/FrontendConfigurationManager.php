@@ -204,14 +204,14 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 							$currentNode = $this->walkFlexformNode($valueDefinition, $valuePointer);
 						}
 					} else {
-						$currentNode = $valueDefinition;	
+						$currentNode = $valueDefinition;
 					}
 				}
 			}
 		}
 		return $settings;
 	}
-	
+
 	/**
 	 * Parses a flexform node recursively and takes care of sections etc
 	 * @param array $nodeArray The flexform node to parse
@@ -225,11 +225,11 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
 					return $this->walkFlexformNode($nodeValue, $valuePointer);
 				}
-				
+
 				if (substr($nodeKey, 0, 1) === '_') {
 					continue;
 				}
-				
+
 				if (strpos($nodeKey, '.')) {
 					$nodeKeyParts = explode('.', $nodeKey);
 					$currentNode =& $return;
@@ -245,13 +245,13 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 						$return[$nodeKey] = $this->walkFlexformNode($nodeValue, $valuePointer);
 					}
 				} else {
-					$return[$nodeKey] = $nodeValue;	
+					$return[$nodeKey] = $nodeValue;
 				}
 			}
 			return $return;
 		}
 
-		return $nodeArray;	
+		return $nodeArray;
 	}
 
 	/**
