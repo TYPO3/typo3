@@ -3,6 +3,7 @@
 	* Fixed bug #11124: Stages should use suggest wizard for persons
 	* Cleanup: Fixed PHPdoc comments and exception timestamp
 	* Fixed bug #11115: ExtDirect exception sendToNextStageWindow: StageId is supposed to be an integer
+	* Fixed task #11161: Simplify outputting errors from PHP to the grid component
 
 2010-11-29  Sonja Scholz <ss@cabag.ch>
 

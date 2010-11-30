@@ -161,22 +161,10 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 					'uid' => $uid,
 				);
 			} else {
-				$result = array(
-					'error' => array(
-						'code' => 1291111644,
-						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.invalid'),
-					),
-					'success' => FALSE,
-				);
+				$result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
 			}
 		} else {
-			$result = array(
-				'error' => array(
-					'code' => 1287264776,
-					'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToNextStage.noRecordFound'),
-				),
-				'success' => FALSE,
-			);
+			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264776);
 		}
 
 		return $result;
@@ -207,31 +195,13 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 					);
 				} else {
 						// element is already in edit stage, there is no prev stage - return an error message
-					$result = array(
-						'error' => array(
-							'code' => 1287264746,
-							'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToPrevStage.noPreviousStage'),
-						),
-						'success' => FALSE,
-					);
+					$result = $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264746);
 				}
 			} else {
-				$result = array(
-					'error' => array(
-						'code' => 1291111644,
-						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.invalid'),
-					),
-					'success' => FALSE,
-				);
+				$result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
 			}
 		} else {
-			$result = array(
-				'error' => array(
-					'code' => 1287264765,
-					'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToNextStage.noRecordFound'),
-				),
-				'success' => FALSE,
-			);
+			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264765);
 		}
 
 		return $result;
