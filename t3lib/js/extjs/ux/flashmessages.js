@@ -33,6 +33,17 @@
 Ext.ns('TYPO3');
 
 /**
+ * Object for named severities
+ */
+TYPO3.Severity = {
+	notice: 0,
+	information: 1,
+	ok: 2,
+	warning: 3,
+	error: 4
+}
+
+/**
  * @class TYPO3.Flashmessage
  * Passive popup box singleton
  * @singleton
