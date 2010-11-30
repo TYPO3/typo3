@@ -131,6 +131,7 @@ $t3libClasses = array(
 	't3lib_pageselect_getrecordoverlayhook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getrecordoverlayhook.php',
 	't3lib_pageselect_getpageoverlayhook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getpageoverlayhook.php',
 	't3lib_singleton' => PATH_t3lib . 'interfaces/interface.t3lib_singleton.php',
+	't3lib_tceforms_dbfileiconshook' => PATH_t3lib . 'interfaces/interface.t3lib_tceforms_dbfileiconshook.php',
 	't3lib_tceformsinlinehook' => PATH_t3lib . 'interfaces/interface.t3lib_tceformsinlinehook.php',
 	't3lib_tcemain_checkmodifyaccesslisthook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_checkmodifyaccesslisthook.php',
 	't3lib_tcemain_processuploadhook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_processuploadhook.php',

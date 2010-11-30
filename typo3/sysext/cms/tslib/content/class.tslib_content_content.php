@@ -118,6 +118,14 @@ class tslib_content_Content extends tslib_content_Abstract {
 						}
 
 						if (is_array($row)) { // Might be unset in the sys_language_contentOL
+								// Call hook for possible manipulation of database row for cObj->data
+							if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow']))	{
+								foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef)	{
+									$_procObj = t3lib_div::getUserObj($_classRef);
+									$_procObj->modifyDBRow($row, $conf['table']);
+								}
+							}
+
 							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'] . ':' . $row['uid']]) {
 								$this->cObj->currentRecordNumber++;
 								$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;

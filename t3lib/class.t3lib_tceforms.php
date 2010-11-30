@@ -3760,6 +3760,31 @@ class t3lib_TCEforms {
 			$thumbnails = '';
 		}
 
+			// Hook: dbFileIcons_postProcess (requested by FAL-team for use with the "fal" extension)
+		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (!($hookObject instanceof t3lib_TCEforms_dbFileIconsHook)) {
+					throw new UnexpectedValueException(
+						'$hookObject must implement interface t3lib_TCEforms_dbFileIconsHook',
+						1290167704
+					);
+				}
+
+				$additionalParams = array(
+					'mode' => $mode,
+					'allowed' => $allowed,
+					'itemArray' => $itemArray,
+					'onFocus' => $onFocus,
+					'table' => $table,
+					'field' => $field,
+					'uid' => $uid
+				);
+				$hookObject->dbFileIcons_postProcess($params, $selector, $thumbnails, $icons, $rightbox, $fName, $uidList, $additionalParams, $this);
+			}
+		}
+
 		$str = '<table border="0" cellpadding="0" cellspacing="0" width="1">
 			' . ($params['headers'] ? '
 				<tr>
