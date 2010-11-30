@@ -1,5 +1,13 @@
 2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
 
+	* Fixed bug #11143: Editing workspaces record shows PHP warning
+	* Fixed bug #10291: change action icons
+	* Fixed bug #7050: Remove UID from WSP Dropdown
+	* Fixed bug #11152 Calls about this-> in static context in workspaces-lib
+	* Cleanup: Added several small changes from the Skin-Team at the xTemplate
+
+2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+
 	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
 
 2010-11-30  Oliver Hader  <oliver@tpyo3.org>
