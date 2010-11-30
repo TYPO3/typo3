@@ -114,7 +114,11 @@ class tslib_content_Content extends tslib_content_Abstract {
 
 							// Language overlay:
 						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+							if ($conf['table'] == 'pages') {
+								$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
+							} else {
+								$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+							}
 						}
 
 						if (is_array($row)) { // Might be unset in the sys_language_contentOL
