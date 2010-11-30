@@ -232,8 +232,21 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroup
 	 * @api
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0 - use Tx_Extbase_Domain_Model_FrontendUser::getUsergroup() instead
 	 */
 	public function getUsergroups() {
+		t3lib_div::logDeprecatedFunction();
+		return $this->usergroup;
+	}
+
+	/**
+	 * Returns the usergroups. Keep in mind that the property is called "usergroup"
+	 * although it can hold several usergroups.
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroup
+	 * @api
+	 */
+	public function getUsergroup() {
 		return $this->usergroup;
 	}
 
