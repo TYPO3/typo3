@@ -31,6 +31,7 @@
  * @subpackage Service
  */
 class tx_Workspaces_Service_Workspaces {
+	const TABLE_WORKSPACE = 'sys_workspace';
 	const SELECT_ALL_WORKSPACES = -98;
 	const LIVE_WORKSPACE_ID = 0;
 	const DRAFT_WORKSPACE_ID = -1;

@@ -4,6 +4,7 @@
 	* Cleanup: Fixed PHPdoc comments and exception timestamp
 	* Fixed bug #11115: ExtDirect exception sendToNextStageWindow: StageId is supposed to be an integer
 	* Fixed task #11161: Simplify outputting errors from PHP to the grid component
+	* Fixed bug #11144: Records that belong to a particular workspace shall be removed when the workspace is removed
 
 2010-11-29  Sonja Scholz <ss@cabag.ch>
 
