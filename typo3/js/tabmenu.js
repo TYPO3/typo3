@@ -63,6 +63,7 @@ function DTM_activate(idBase,index,doToogle) {
 			top.DTM_currentTabs[idBase] = index;
 		}
 	}
+	document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
 }
 function DTM_toggle(idBase,index,isInit) {
 		// Showing one:

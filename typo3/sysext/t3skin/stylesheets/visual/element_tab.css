@@ -5,13 +5,16 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-dyntabmenu td a,
+table.typo3-dyntabmenu td.disabled,
 table#typo3-tabmenu td.tab,
-table#typo3-tabmenu td.tabact {
+table#typo3-tabmenu td.tabact,
+table#typo3-tabmenu td.disabled {
 	background: #dadada;
 	border: 1px solid #adadad;
 	border-bottom: none;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
+	color: #606060;
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;
 	-webkit-border-top-left-radius: 3px;
@@ -24,14 +27,22 @@ table.typo3-dyntabmenu td.tabact_over a,
 table#typo3-tabmenu td.tabact,
 table#typo3-tabmenu td.tab:hover,
 table#typo3-tabmenu td.tabact:hover {
-	color: #000;
 	background: #ffffff;
+	color: #000;
 }
 
-table.typo3-dyntabmenu td.disabled a,
-table.typo3-dyntabmenu td.disabled_over a {
-	background: #ccc;
-	color: #999;
+table.typo3-dyntabmenu td.tab_over a,
+table#typo3-tabmenu td.tab:hover {
+	background-color: #eeeeee;
+	border-color: #adadad;
+	color: #606060;
+}
+
+table.typo3-dyntabmenu td.disabled,
+table.typo3-dyntabmenu td.disabled_over {
+	background: #e8e8e8;
+	border: 1px solid #d6d6d6;
+	color: #b7b7b7;
 	cursor: default;
 }
 
@@ -48,6 +59,11 @@ table.typo3-dyntabmenu td a,
 table#typo3-tabmenu td a {
 	color: #666;
 	text-decoration: none;
+}
+
+table.typo3-dyntabmenu td a:active,
+table#typo3-tabmenu td a {
+	outline: none;
 }
 
 div.typo3-dyntabmenu-divs {
@@ -118,52 +134,4 @@ div.typo3-dyntabmenu-divs-foldout div.tab_over a,
 div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
 	text-decoration: none;
 	color: #000;
-}
-
-/*
-table#typo3-tabmenu td.tab,
-table.typo3-dyntabmenu td {
-	border: solid 1px #a2aab8;
-	border-bottom: 0;
-	color: #606060;
-	cursor: pointer;
-}
-
-table#typo3-tabmenu td.tab,
-table.typo3-dyntabmenu td.tab {
-	background-color: #dadada;
-}
-
-table#typo3-tabmenu td.tabact,
-table.typo3-dyntabmenu td.tabact:hover,
-table.typo3-dyntabmenu td.tabact a {
-	background-color: #ffffff;
-}
-
-table#typo3-tabmenu td.disabled,
-table.typo3-dyntabmenu td.disabled,
-table.typo3-dyntabmenu td.disabled_over {
-	color: #a2aab8;
-	background-color: #efeff4;
-}
-
-table#typo3-tabmenu td.tab:hover,
-table#typo3-tabmenu td a:hover,
-table.typo3-dyntabmenu td:hover,
-table.typo3-dyntabmenu td a:hover {
-	background-color: #ffffff;
-}
-*/
-div.typo3-dyntabmenu-divs-foldout div.disabled,
-div.typo3-dyntabmenu-divs-foldout div.disabled_over {
-	background: #ccc;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tabact {
-	background: #fefefe;
-}
-
-div.typo3-dyntabmenu-divs-foldout div.tab_over,
-div.typo3-dyntabmenu-divs-foldout div.tabact_over {
-	background: #d7dbe2;
 }

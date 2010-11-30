@@ -18,6 +18,7 @@
 
 	* Fixed bug #16598: Login via OpenID is impossible (Thanks to Henrik Ziegenhain)
 	* Fixed bug #16581: Make jsFooterInline & jsFooterLibs available to render-preProcess hook (Thanks to Morton Jonuschat)
+	* Fixed bug #16623: Fix Tab styling (Thanks to Tomas Norre Mikkelsen)
 
 2010-11-29  Ernesto Baschny  <ernst@cron-it.de>
 
