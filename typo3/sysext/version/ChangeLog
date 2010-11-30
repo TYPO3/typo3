@@ -1,0 +1,8 @@
+2010-01-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2
+
+2010-11-28  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #5923: Notify per email if groups are selected instead of single users
