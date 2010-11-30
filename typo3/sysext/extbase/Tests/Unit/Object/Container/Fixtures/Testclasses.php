@@ -25,27 +25,40 @@ class t3lib_object_tests_a {
  * test class A that depends on B and C and has a third default parameter in constructor
  *
  */
-class t3lib_object_tests_amixed_array implements t3lib_Singleton {
-	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, array $myvalue=array()) {
-
+class t3lib_object_tests_amixed_array {
+	public $b;
+	public $c;
+	public $myvalue;
+	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, array $myvalue=array('some' => 'default')) {
+		$this->b = $b;
+		$this->c = $c;
+		$this->myvalue = $myvalue;
 	}
 }
+
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
  *
  */
-class t3lib_object_tests_amixed_string implements t3lib_Singleton {
-	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, $myvalue='test') {
-
+class t3lib_object_tests_amixed_array_singleton implements t3lib_Singleton {
+	public $b;
+	public $c;
+	public $myvalue;
+	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, array $myvalue=array('some' => 'default')) {
+		$this->b = $b;
+		$this->c = $c;
+		$this->myvalue = $myvalue;
 	}
 }
+
 /**
  * test class B that depends on C
  *
  */
 class t3lib_object_tests_b implements t3lib_Singleton {
+	public $c;
 	public function __construct(t3lib_object_tests_c $c) {
-
+		$this->c = $c;
 	}
 }
 
@@ -146,9 +159,9 @@ class t3lib_object_tests_injectsettings {
  *
  */
 class t3lib_object_tests_resolveablecyclic1 implements t3lib_Singleton {
-	public $o;
+	public $o2;
 	public function __construct(t3lib_object_tests_resolveablecyclic2 $cyclic2) {
-		$this->o = $cyclic2;
+		$this->o2 = $cyclic2;
 	}
 }
 
@@ -157,9 +170,24 @@ class t3lib_object_tests_resolveablecyclic1 implements t3lib_Singleton {
  *
  */
 class t3lib_object_tests_resolveablecyclic2 implements t3lib_Singleton {
-	public $o;
-	public function injectCyclic1(t3lib_object_tests_resolveablecyclic1 $o) {
-		$this->o = $o;
+	public $o1;
+	public $o3;
+	public function injectCyclic1(t3lib_object_tests_resolveablecyclic1 $cyclic1) {
+		$this->o1 = $cyclic1;
+	}
+	public function injectCyclic3(t3lib_object_tests_resolveablecyclic3 $cyclic3) {
+		$this->o3 = $cyclic3;
+	}
+}
+
+/**
+ *
+ *
+ */
+class t3lib_object_tests_resolveablecyclic3 implements t3lib_Singleton {
+	public $o1;
+	public function injectCyclic1(t3lib_object_tests_resolveablecyclic1 $cyclic1) {
+		$this->o1 = $cyclic1;
 	}
 }
 

@@ -52,9 +52,10 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	/**
 	 * @test
 	 */
-	public function getInstanceReturnsInstanceOfAClassWithDependency() {
+	public function getInstanceReturnsInstanceOfAClassWithConstructorInjection() {
 		$object = $this->container->getInstance('t3lib_object_tests_b');
 		$this->assertType('t3lib_object_tests_b', $object);
+		$this->assertType('t3lib_object_tests_c', $object->c);
 	}
 
 	/**
@@ -63,22 +64,24 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	public function getInstanceReturnsInstanceOfAClassWithTwoLevelDependency() {
 		$object = $this->container->getInstance('t3lib_object_tests_a');
 		$this->assertType('t3lib_object_tests_a', $object);
+		$this->assertType('t3lib_object_tests_c', $object->b->c);
 	}
 
 	/**
 	 * @test
 	 */
-	public function getInstanceReturnsInstanceOfAClassWithTwoLevelMixedArrayDependency() {
+	public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjection() {
 		$object = $this->container->getInstance('t3lib_object_tests_amixed_array');
 		$this->assertType('t3lib_object_tests_amixed_array', $object);
+		$this->assertEquals(array('some' => 'default'), $object->myvalue);
 	}
 
 	/**
 	 * @test
+	 * @expectedException Tx_Extbase_Object_Exception
 	 */
-	public function getInstanceReturnsInstanceOfAClassWithTwoLevelMixedStringDependency() {
-		$object = $this->container->getInstance('t3lib_object_tests_amixed_string');
-		$this->assertType('t3lib_object_tests_amixed_string', $object);
+	public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters() {
+		$this->container->getInstance('t3lib_object_tests_amixed_array_singleton');
 	}
 
 	/**
@@ -114,7 +117,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException Tx_Extbase_Object_Exception
 	 */
 	public function getInstanceThrowsExceptionIfObjectContainsCyclicDependency() {
 		$this->container->getInstance('t3lib_object_tests_cyclic1');
@@ -123,7 +126,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException Tx_Extbase_Object_Exception
 	 */
 	public function getInstanceThrowsExceptionIfClassWasNotFound() {
 		$this->container->getInstance('nonextistingclass_bla');
@@ -153,7 +156,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	public function test_canBuildCyclicDependenciesWithSetter() {
 		$object = $this->container->getInstance('t3lib_object_tests_resolveablecyclic1');
 		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object);
-		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object->o->o);
+		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
 	}
 
 
