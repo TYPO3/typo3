@@ -223,7 +223,12 @@ $TCA['sys_workspace_stage'] = array(
 				'size' => '3',
 				'maxitems' => '100',
 				'autoSizeMax' => 20,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'default_mailcomment' => array(
