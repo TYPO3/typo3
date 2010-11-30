@@ -1,3 +1,7 @@
+2010-11-30  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16459 Add uid of overlay record to rootline (Thanks to Mathias Schreiber)
+
 2010-11-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16598: Login via OpenID is impossible (Thanks to Henrik Ziegenhain)

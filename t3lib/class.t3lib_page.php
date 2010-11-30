@@ -346,6 +346,7 @@ class t3lib_pageSelect {
 
 				if (is_array($row)) {
 					$row['_PAGES_OVERLAY'] = TRUE;
+					$row['_PAGES_OVERLAY_UID'] = $row['uid'];
 
 						// Unset vital fields that are NOT allowed to be overlaid:
 					unset($row['uid']);
