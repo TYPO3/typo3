@@ -1,3 +1,7 @@
+2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+
+	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
+
 2010-11-30  Oliver Hader  <oliver@tpyo3.org>
 
 	* Fixed bug #11124: Stages should use suggest wizard for persons
