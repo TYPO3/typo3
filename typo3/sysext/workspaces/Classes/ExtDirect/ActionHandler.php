@@ -150,15 +150,25 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 		if(is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
-			$nextStage = $this->getStageService()->getNextStage($stageId);
 
-			$result = $this->getSentToStageWindow($nextStage['uid']);
-			$result['affects'] = array(
-				'table' => $table,
-				'nextStage' => $nextStage['uid'],
-				't3ver_oid' => $t3ver_oid,
-				'uid' => $uid,
-			);
+			if ($this->getStageService()->isValid($stageId)) {
+				$nextStage = $this->getStageService()->getNextStage($stageId);
+				$result = $this->getSentToStageWindow($nextStage['uid']);
+				$result['affects'] = array(
+					'table' => $table,
+					'nextStage' => $nextStage['uid'],
+					't3ver_oid' => $t3ver_oid,
+					'uid' => $uid,
+				);
+			} else {
+				$result = array(
+					'error' => array(
+						'code' => 1291111644,
+						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.invalid'),
+					),
+					'success' => FALSE,
+				);
+			}
 		} else {
 			$result = array(
 				'error' => array(
@@ -183,22 +193,33 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
 		if(is_array($elementRecord)) {
-			$stageId = intval($elementRecord['t3ver_stage']);
-			if ($stageId !== Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
-				$prevStage = $this->getStageService()->getPrevStage($stageId);
+			$stageId = $elementRecord['t3ver_stage'];
 
-				$result = $this->getSentToStageWindow($prevStage['uid']);
-				$result['affects'] = array(
-					'table' => $table,
-					'uid' => $uid,
-					'nextStage' => $prevStage['uid'],
-				);
+			if ($this->getStageService()->isValid($stageId)) {
+				if ($stageId !== Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
+					$prevStage = $this->getStageService()->getPrevStage($stageId);
+
+					$result = $this->getSentToStageWindow($prevStage['uid']);
+					$result['affects'] = array(
+						'table' => $table,
+						'uid' => $uid,
+						'nextStage' => $prevStage['uid'],
+					);
+				} else {
+						// element is already in edit stage, there is no prev stage - return an error message
+					$result = array(
+						'error' => array(
+							'code' => 1287264746,
+							'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToPrevStage.noPreviousStage'),
+						),
+						'success' => FALSE,
+					);
+				}
 			} else {
-					// element is already in edit stage, there is no prev stage - return an error message
 				$result = array(
 					'error' => array(
-						'code' => 1287264746,
-						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.sendToPrevStage.noPreviousStage'),
+						'code' => 1291111644,
+						'message' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.invalid'),
 					),
 					'success' => FALSE,
 				);

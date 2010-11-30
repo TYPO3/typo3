@@ -60,6 +60,7 @@
 			<label index="window.swap.message">Do you really want to swap this version??</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>
 			<label index="error.stageId.integer">StageId is supposed to be an integer</label>
+			<label index="error.stageId.invalid">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</label>
 			<label index="error.sendToNextStage.noRecordFound">The record element could not be found.</label>
 			<label index="error.sendToPrevStage.noPreviousStage">The record element is already in editing stage, there is no previous stage.</label>
 			<label index="window.sendToNextStageWindow.itemsWillBeSentTo">The selected element(s) will be sent to </label>

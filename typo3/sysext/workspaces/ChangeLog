@@ -2,6 +2,7 @@
 
 	* Fixed bug #11124: Stages should use suggest wizard for persons
 	* Cleanup: Fixed PHPdoc comments and exception timestamp
+	* Fixed bug #11115: ExtDirect exception sendToNextStageWindow: StageId is supposed to be an integer
 
 2010-11-29  Sonja Scholz <ss@cabag.ch>
 

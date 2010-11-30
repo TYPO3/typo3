@@ -268,7 +268,6 @@ class Tx_Workspaces_Service_Stages {
 		}
 
 		$nextStage = FALSE;
-
 		$workspaceStageRecs = $this->getStagesForWS();
 
 		if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
@@ -660,6 +659,26 @@ class Tx_Workspaces_Service_Stages {
 			 $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
 		 }
 		return $isAllowed;
+	}
+
+	/**
+	 * Determines whether a stage Id is valid.
+	 *
+	 * @param integer $stageId The stage Id to be checked
+	 * @return boolean
+	 */
+	public function isValid($stageId) {
+		$isValid = FALSE;
+		$stages = $this->getStagesForWS();
+
+		foreach ($stages as $stage) {
+			if ($stage['uid'] == $stageId) {
+				$isValid = TRUE;
+				break;
+			}
+		}
+
+		return $isValid;
 	}
 }
 
