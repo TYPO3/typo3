@@ -77,6 +77,14 @@ a#goPreviewLinkButton {
 	visibility:hidden;
 }
 
+div.x-grid3-row img.x-action-col-icon {
+	display:none;
+}
+
+div.x-grid3-row:hover img.x-action-col-icon {
+	display:inline-block;
+}
+
 div.t3-workspaces-foldoutWrapper {
 	padding:10px;
 	margin-left:40px;
