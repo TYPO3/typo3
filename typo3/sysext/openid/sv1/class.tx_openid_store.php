@@ -97,8 +97,13 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 		else {
 			$sort = 'tstamp DESC';
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, content',
-			self::ASSOCIATION_TABLE_NAME, $where, '', $sort, '1');
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'uid, content',
+			self::ASSOCIATION_TABLE_NAME,
+			$where,
+			'',
+			$sort
+		);
 
 		$result = null;
 		if (is_array($row)) {

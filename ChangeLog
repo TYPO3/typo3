@@ -1,3 +1,7 @@
+2010-11-30  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16598: Login via OpenID is impossible (Thanks to Henrik Ziegenhain)
+
 2010-11-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Follow-up to #15998: Fixed CGL issue with naming and added exception codes
