@@ -57,7 +57,7 @@ class tx_Workspaces_Service_Workspaces {
 		if (count($customWorkspaces)) {
 			foreach ($customWorkspaces as $workspace) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
-					$availableWorkspaces[$workspace['uid']] = $workspace['uid'] . ': ' . htmlspecialchars($workspace['title']);
+					$availableWorkspaces[$workspace['uid']] = htmlspecialchars($workspace['title']);
 				}
 			}
 		}
