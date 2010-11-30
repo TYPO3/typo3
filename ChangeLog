@@ -1,3 +1,7 @@
+2010-11-30  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16614: common.js resets TYPO3 namespace (Thanks to Peter Kühn)
+
 2010-11-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #15189: Frontend Editing edit panels are shown for content element types that cannot be edited
