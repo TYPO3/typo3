@@ -1,3 +1,7 @@
+2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16492: groupBy and orderBy fail on exec_query (thanks to Oguzhan Alan)
+
 2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16501: DBAL does not support multi-column indexes in create table queries
