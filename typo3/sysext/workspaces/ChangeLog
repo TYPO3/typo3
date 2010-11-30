@@ -1,4 +1,4 @@
-2010-11-29  Oliver Hader  <oliver@tpyo3.org>
+2010-11-30  Oliver Hader  <oliver@tpyo3.org>
 
 	* Fixed bug #11124: Stages should use suggest wizard for persons
 	* Cleanup: Fixed PHPdoc comments and exception timestamp
