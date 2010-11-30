@@ -586,6 +586,13 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
 		foreach ($arguments as $argumentKey => $argumentValue) {
+			// if we have a LazyLoadingProxy here, make sure to get the real instance for further processing
+			if ($argumentValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+				$argumentValue = $argumentValue->_loadRealInstance();
+				// also update the value in the arguments array, because the lazyLoaded object could be 
+				// hidden and thus the $argumentValue would be NULL.
+				$arguments[$argumentKey] = $argumentValue;
+			}
 			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 				if ($argumentValue->getUid() !== NULL) {
 					$arguments[$argumentKey] = $argumentValue->getUid();
