@@ -46,10 +46,10 @@ class tx_Workspaces_Service_Workspaces {
 
 			// add default workspaces
 		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::LIVE_WORKSPACE_ID))) {
-			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = $this->getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
+			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
 		}
 		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::DRAFT_WORKSPACE_ID))) {
-			$availableWorkspaces[self::DRAFT_WORKSPACE_ID] = $this->getWorkspaceTitle(self::DRAFT_WORKSPACE_ID);
+			$availableWorkspaces[self::DRAFT_WORKSPACE_ID] = self::getWorkspaceTitle(self::DRAFT_WORKSPACE_ID);
 		}
 
 			// add custom workspaces (selecting all, filtering by BE_USER check):
