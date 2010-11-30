@@ -522,6 +522,30 @@ class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=16501
+	 */
+	public function indexMayBeCreatedOnMultipleColumns() {
+		$sql = '
+			CREATE TABLE sys_registry (
+				uid int(11) unsigned NOT NULL auto_increment,
+				entry_namespace varchar(128) DEFAULT \'\' NOT NULL,
+				entry_key varchar(128) DEFAULT \'\' NOT NULL,
+				entry_value blob,
+				PRIMARY KEY (uid),
+				UNIQUE KEY entry_identifier (entry_namespace,entry_key)
+			)
+		';
+		$parseString = $sql;
+
+		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
+		$this->assertTrue(is_array($createTables), $createTables);
+
+		$actual = $this->fixture->_callRef('compileCREATETABLE', $createTables);
+		$this->assertEquals($this->cleanSql($sql), $this->cleanSql($actual[0]));
+	}
+
+	/**
+	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=12829
 	 */
 	public function indexMayContainALengthRestrictionInAlterTable() {
