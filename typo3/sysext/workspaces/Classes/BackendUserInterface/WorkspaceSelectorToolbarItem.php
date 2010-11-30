@@ -74,7 +74,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	public function checkAccess() {
 		if (t3lib_extMgm::isLoaded('workspaces')) {
 			if ($this->checkAccess == NULL) {
-					$availableWorkspaces = $this->getAvailableWorkspaces();
+					$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 					if (count($availableWorkspaces) > 1) {
 						$this->checkAccess = TRUE;
 					} else {
@@ -87,42 +87,6 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	}
 
 	/**
-	 * retrieves the available workspaces from the database and checks whether
-	 * they're available to the current BE user
-	 *
-	 * @return	array	array of worspaces available to the current user
-	 */
-	protected function getAvailableWorkspaces() {
-		$availableWorkspaces = array();
-
-			// add default workspaces
-		if($GLOBALS['BE_USER']->checkWorkspace(array('uid' => 0))) {
-			$availableWorkspaces[0] = '['.$GLOBALS['LANG']->getLL('bookmark_onlineWS').']';
-		}
-		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => -1))) {
-			$availableWorkspaces[-1] = '['.$GLOBALS['LANG']->getLL('bookmark_offlineWS').']';
-		}
-
-			// add custom workspaces (selecting all, filtering by BE_USER check):
-		$customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid, title, adminusers, members, reviewers',
-			'sys_workspace',
-			'pid = 0'.t3lib_BEfunc::deleteClause('sys_workspace'),
-			'',
-			'title'
-		);
-		if(count($customWorkspaces)) {
-			foreach($customWorkspaces as $workspace) {
-				if($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
-					$availableWorkspaces[$workspace['uid']] = $workspace['uid'] . ': ' . htmlspecialchars($workspace['title']);
-				}
-			}
-		}
-
-		return $availableWorkspaces;
-	}
-
-	/**
 	 * Creates the selector for workspaces
 	 *
 	 * @return	string		workspace selector as HTML select
@@ -130,7 +94,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', true);
 		$this->addJavascriptToBackend();
-		$availableWorkspaces = $this->getAvailableWorkspaces();
+		$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 		$workspaceMenu       = array();
 
 		$stateCheckedIcon = t3lib_iconWorks::getSpriteIcon('status-status-checked');
