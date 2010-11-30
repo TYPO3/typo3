@@ -488,9 +488,9 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 /* the mask for dialogs */
 .ext-el-mask {
 	background-color: #000000;
-	-moz-opacity: 0.9;
-	opacity: 0.9;
-	filter:alpha(opacity=90);
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+	filter:alpha(opacity=75);
 }
 
 /* mask while loading */
