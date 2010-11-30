@@ -960,6 +960,8 @@ class t3lib_DB {
 	/**
 	 * Executes query
 	 * mysql_query() wrapper function
+	 * Beware: Use of this method should be avoided as it is experimentally supported by DBAL. You should consider
+	 *         using exec_SELECTquery() and similar methods instead.
 	 * Usage count/core: 1
 	 *
 	 * @param	string		Query to execute
