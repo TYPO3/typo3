@@ -2479,6 +2479,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	pointer		Result pointer / DBAL object
 	 */
 	public function sql_query($query) {
+		$globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal']);
+		if ($globalConfig['sql_query.passthrough']) {
+			return parent::sql_query($query);
+		}
+
 			// This method is heavily used by Extbase, try to handle it with DBAL-native methods
 		$queryParts = $this->SQLparser->parseSQL($query);
 		if (is_array($queryParts) && t3lib_div::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {

@@ -1,3 +1,7 @@
+2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #16491: Provide a pass-through flag for sql_exec() which goes directly to the native MySQL engine
+
 2010-11-18  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16392: Install tool cannot compare "ENGINE" of MySQL Tables when DBAL is active
