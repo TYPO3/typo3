@@ -1,5 +1,6 @@
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16626: Improve ExtJS grid styling (Thanks to Timo Koenig)
 	* Fixed bug #16622: PageTree - Milestone 2 Release (Thanks to Stefan Galinski + Peter Foerger)
 	* Fixed bug #16621: Stabilize the Context Menu API (Thanks to Stefan Galinski)
 	* Fixed bug #16463: Bug: Custom configured modules can't be enabled for non-admins (Thanks to Bastian Waidelich)
