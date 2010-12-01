@@ -111,16 +111,16 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 			return $pageId;
 		}
 
-			// get root template
-		$rootTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1');
-		if (count($rootTemplates) > 0) {
-			return $rootTemplates[0]['pid'];
-		}
-
 			// get current site root
 		$rootPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1');
 		if (count($rootPages) > 0) {
 			return $rootPages[0]['uid'];
+		}
+
+			// get root template
+		$rootTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1');
+		if (count($rootTemplates) > 0) {
+			return $rootTemplates[0]['pid'];
 		}
 
 			// fallback
