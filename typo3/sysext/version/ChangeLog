@@ -1,4 +1,9 @@
-2010-12-01  Tolleiv Nietsch <typo3@tolleiv.de>
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2a
+
+2010-12-01  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug: #11209: BACK_PATH is not handled right in class.tx_version_gui.php
 
