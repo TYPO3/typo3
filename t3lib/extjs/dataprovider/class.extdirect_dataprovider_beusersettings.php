@@ -129,7 +129,7 @@ class extDirect_DataProvider_BackendUserSettings {
 		if (t3lib_div::inList($list, $value)) {
 			$list = t3lib_div::trimExplode(',', $list, TRUE);
 			$list = t3lib_div::removeArrayEntryByValue($list, $value);
-			$this->set($key, $list);
+			$this->set($key, implode(',' ,$list));
 		}
 	}
 
