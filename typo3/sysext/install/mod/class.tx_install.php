@@ -5681,16 +5681,26 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$diff = $this->getDatabaseExtra($FDdb, $FDfile);
 							$remove_statements = $this->getUpdateSuggestions($diff,'remove');
 
-							$this->performUpdateQueries($update_statements['clear_table'],$this->INSTALL['database_update']);
+							$results = array();
+							$results[] = $this->performUpdateQueries($update_statements['clear_table'], $this->INSTALL['database_update']);
 
-							$this->performUpdateQueries($update_statements['add'],$this->INSTALL['database_update']);
-							$this->performUpdateQueries($update_statements['change'],$this->INSTALL['database_update']);
-							$this->performUpdateQueries($remove_statements['change'],$this->INSTALL['database_update']);
-							$this->performUpdateQueries($remove_statements['drop'],$this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($update_statements['add'], $this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($update_statements['change'], $this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($remove_statements['change'], $this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($remove_statements['drop'], $this->INSTALL['database_update']);
 
-							$this->performUpdateQueries($update_statements['create_table'],$this->INSTALL['database_update']);
-							$this->performUpdateQueries($remove_statements['change_table'],$this->INSTALL['database_update']);
-							$this->performUpdateQueries($remove_statements['drop_table'],$this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($update_statements['create_table'], $this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($remove_statements['change_table'], $this->INSTALL['database_update']);
+							$results[] = $this->performUpdateQueries($remove_statements['drop_table'], $this->INSTALL['database_update']);
+							
+							$this->databaseUpdateErrorMessages = array();
+							foreach ($results as $resultSet) {
+								if (is_array($resultSet)) {
+									foreach ($resultSet as $key => $errorMessage) {
+										$this->databaseUpdateErrorMessages[$key] = $errorMessage;
+									}
+								}
+							}
 						}
 
 							// Init again / first time depending...
@@ -8240,6 +8250,31 @@ $out="
 					'###CURRENT###',
 					$currentSubpart
 				);
+
+				$errorSubpart = '';
+				if (isset($this->databaseUpdateErrorMessages[$key])) {
+						// Get the subpart for current
+					$errorSubpart = t3lib_parsehtml::getSubpart($rowsSubpart, '###ERROR###');
+						// Define the markers content
+					$currentMarkers = array (
+						'errorMessage' => $this->databaseUpdateErrorMessages[$key],
+					);
+						// Fill the markers in the subpart
+					$errorSubpart = t3lib_parsehtml::substituteMarkerArray(
+						$errorSubpart,
+						$currentMarkers,
+						'###|###',
+						TRUE,
+						FALSE
+					);
+				}
+					// Substitute the subpart for error messages
+				$rowsSubpart = t3lib_parsehtml::substituteSubpart(
+					$rowsSubpart,
+					'###ERROR###',
+					$errorSubpart
+				);
+
 					// Fill the markers in the subpart
 				$rowsSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$rowsSubpart,
