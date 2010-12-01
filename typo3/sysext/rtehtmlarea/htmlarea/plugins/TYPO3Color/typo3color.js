@@ -137,7 +137,13 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 				element: element,
 				buttonId: buttonId
 			},
-			this.getWindowDimensions({ width: 350}, buttonId),
+			this.getWindowDimensions(
+				{
+					width: 350,
+					height: 350
+				},
+				buttonId
+			),
 			this.buildItemsConfig(element, buttonId),
 			this.setColor
 		);
@@ -311,7 +317,8 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
+			height: dimensions.height,
+			autoScroll: true,
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
 			iconCls: this.getButton(arguments.buttonId).iconCls,
@@ -324,6 +331,9 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 			items: {
 				xtype: 'container',
 				layout: 'form',
+				style: {
+					width: '95%'
+				},
 				defaults: {
 					labelWidth: 150
 				},

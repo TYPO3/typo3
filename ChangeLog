@@ -1,3 +1,7 @@
+2010-12-01  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16058: htmlArea RTE: Overlay to choose a color exceeds the viewport if many colors are defined
+
 2010-12-01  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16625: TCEforms have surrounding box with background color
