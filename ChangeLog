@@ -1,6 +1,7 @@
 2010-12-01  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added Feature #15604: Install-Tool usability: db compare shows no errors when db-updates fail
+	* Fixed bug #16594: Slide doesn't work without collect (Thanks to Jo Hasenau)
 
 2010-12-01  Francois Suter  <francois@typo3.org>
 

@@ -66,33 +66,35 @@ class tslib_content_Content extends tslib_content_Abstract {
 			$slide = isset($conf['slide.'])
 				? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.']))
 				: intval($conf['slide']);
-			if(!$slide) {
+			if (!$slide) {
 				$slide = 0;
 			}
 
-			if(isset($conf['slide.'])) {
-				$slideCollect = isset($conf['slide.']['collect.'])
-					? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.']))
-					: intval($conf['slide.']['collect']);
-				if(!$slideCollect) {
-					$slideCollect = 0;
-				}
-
-				$slideCollectReverse = isset($conf['slide.']['collectReverse.'])
-					? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']))
-					: intval($conf['slide.']['collectReverse']);
-				$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
-
-				$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.'])
-					? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.']))
-					: intval($conf['slide.']['collectFuzzy']);
-
-				if(!$slideCollectFuzzy) {
-					$slideCollectFuzzy = FALSE;
-				} else if ($slideCollect) {
-					$slideCollectFuzzy = TRUE;
-				};
+			$slideCollect = isset($conf['slide.']['collect.'])
+				? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.']))
+				: intval($conf['slide.']['collect']);
+			if (!$slideCollect) {
+				$slideCollect = 0;
 			}
+
+			$slideCollectReverse = isset($conf['slide.']['collectReverse.'])
+				? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']))
+				: intval($conf['slide.']['collectReverse']);
+			$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
+
+			$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.'])
+				? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.']))
+				: intval($conf['slide.']['collectFuzzy']);
+
+			if ($slideCollectFuzzy) {
+				$slideCollectFuzzy = TRUE;
+			} else {
+				$slideCollectFuzzy = FALSE;
+			}
+
+			if (!$slideCollect) {
+				$slideCollectFuzzy = TRUE;
+			};
 
 			$again = FALSE;
 
@@ -166,7 +168,7 @@ class tslib_content_Content extends tslib_content_Abstract {
 		$wrap = isset($conf['wrap.'])
 			? $this->cObj->stdWrap($conf['wrap'],$conf['wrap.'])
 			: $conf['wrap'];
-		if($wrap) {
+		if ($wrap) {
 			$theValue = $this->cObj->wrap($theValue, $wrap);
 		}
 
