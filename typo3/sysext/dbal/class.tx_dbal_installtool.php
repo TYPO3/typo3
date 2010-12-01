@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Hooks for TYPO3 Install Tool.
@@ -132,8 +132,8 @@ class tx_dbal_installtool {
 				switch ($driver) {
 					case 'oci8':
 						$driverConfig = '\'driverOptions\' => array(' .
-							'\'connectSID\' => ' . ($instObj->INSTALL['localconf.php']['typo_db_type'] === 'sid' ? 'TRUE' : 'FALSE') .
-						')' ;
+								'\'connectSID\' => ' . ($instObj->INSTALL['localconf.php']['typo_db_type'] === 'sid' ? 'TRUE' : 'FALSE') .
+								')';
 						break;
 					case 'mssql':
 					case 'odbc_mssql':
@@ -143,14 +143,14 @@ class tx_dbal_installtool {
 						return;
 				}
 				$config = 'array(' .
-					'\'_DEFAULT\' => array(' .
+						'\'_DEFAULT\' => array(' .
 						'\'type\' => \'adodb\',' .
 						'\'config\' => array(' .
-							'\'driver\' => \'' . $driver . '\',' .
-							$driverConfig .
+						'\'driver\' => \'' . $driver . '\',' .
+						$driverConfig .
 						')' .
-					')' .
-				');';
+						')' .
+						');';
 				$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'handlerCfg\']', $config, FALSE);
 				break;
 		}
@@ -164,28 +164,28 @@ class tx_dbal_installtool {
 	 * @return void
 	 */
 	protected function createConnectionForm(array &$markers, tx_install $instObj) {
-			// Normalize current driver
+		// Normalize current driver
 		if (!$this->driver) {
 			$this->driver = $this->getDefaultDriver();
 		}
 
-			// Get the template file
+		// Get the template file
 		$templateFile = @file_get_contents(
 			t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
 		);
-			// Get the template part from the file
+		// Get the template part from the file
 		$template = t3lib_parsehtml::getSubpart(
 			$templateFile, '###TEMPLATE###'
 		);
 
-			// Get the subpart for the connection form
+		// Get the subpart for the connection form
 		$formSubPart = t3lib_parsehtml::getSubpart(
 			$template, '###CONNECTION_FORM###'
 		);
 		if ($this->getNumberOfAvailableDrivers() == 1 && $this->getDefaultDriver() === 'mysql') {
-				// Only MySQL is actually available (PDO support may be compiled in
-				// PHP itself and as such DBAL was activated, behaves as if DBAL were
-				// not activated
+			// Only MySQL is actually available (PDO support may be compiled in
+			// PHP itself and as such DBAL was activated, behaves as if DBAL were
+			// not activated
 			$driverSubPart = '<input type="hidden" name="TYPO3_INSTALL[localconf.php][typo_db_driver]" value="mysql" />';
 		} else {
 			$driverTemplate = t3lib_parsehtml::getSubpart(
@@ -199,7 +199,7 @@ class tx_dbal_installtool {
 			$driverSubPart
 		);
 
-			// Get the subpart related to selected database driver
+		// Get the subpart related to selected database driver
 		if ($this->driver === '' || $this->driver === 'mysql') {
 			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###DRIVER_MYSQL###'
@@ -215,7 +215,7 @@ class tx_dbal_installtool {
 			}
 		}
 
-			// Define driver-specific markers
+		// Define driver-specific markers
 		$driverMarkers = array();
 		switch ($this->driver) {
 			case 'mssql':
@@ -287,9 +287,9 @@ class tx_dbal_installtool {
 				break;
 		}
 
-			// Add header marker for main template
+		// Add header marker for main template
 		$markers['header'] = 'Connect to your database host';
-			// Define the markers content for the subpart
+		// Define the markers content for the subpart
 		$subPartMarkers = array(
 			'step' => $nextStep,
 			'action' => htmlspecialchars($instObj->action),
@@ -301,7 +301,7 @@ class tx_dbal_installtool {
 		);
 		$subPartMarkers = array_merge($subPartMarkers, $driverMarkers);
 
-			// Add step marker for main template
+		// Add step marker for main template
 		$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 			$formSubPart,
 			$subPartMarkers,
@@ -323,16 +323,16 @@ class tx_dbal_installtool {
 			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###'),
 		);
 
-			// Create the drop-down list of available drivers
+		// Create the drop-down list of available drivers
 		$dropdown = '';
 		foreach ($this->availableDrivers as $abstractionLayer => $drivers) {
 			$options = array();
 			foreach ($drivers as $driver => $label) {
 				$markers = array(
-					'driver'      => $driver,
+					'driver' => $driver,
 					'labelvendor' => $label,
-					'onclick'     => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
-					'selected'    => '',
+					'onclick' => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
+					'selected' => '',
 				);
 				if ($driver === $this->driver) {
 					$markers['selected'] .= ' selected="selected"';
@@ -378,26 +378,26 @@ class tx_dbal_installtool {
 		$supportedDrivers = array(
 			'Native' => array(
 				'mysql' => array(
-					'label'      => 'MySQL/MySQLi (recommended)',
-					'combine'    => 'OR',
+					'label' => 'MySQL/MySQLi (recommended)',
+					'combine' => 'OR',
 					'extensions' => array('mysql', 'mysqli'),
 				),
 				'mssql' => array(
-					'label'      => 'Microsoft SQL Server',
+					'label' => 'Microsoft SQL Server',
 					'extensions' => array('mssql'),
 				),
 				'oci8' => array(
-					'label'      => 'Oracle OCI8',
+					'label' => 'Oracle OCI8',
 					'extensions' => array('oci8'),
 				),
 				'postgres' => array(
-					'label'      => 'PostgreSQL',
+					'label' => 'PostgreSQL',
 					'extensions' => array('pgsql'),
 				)
 			),
 			'ODBC' => array(
 				'odbc_mssql' => array(
-					'label'      => 'Microsoft SQL Server',
+					'label' => 'Microsoft SQL Server',
 					'extensions' => array('odbc', 'mssql'),
 				),
 			),
@@ -420,7 +420,7 @@ class tx_dbal_installtool {
 					$isAvailable = TRUE;
 				}
 
-					// Loop through each PHP module dependency to ensure it is loaded
+				// Loop through each PHP module dependency to ensure it is loaded
 				foreach ($info['extensions'] as $extension) {
 					if (isset($info['combine']) && $info['combine'] === 'OR') {
 						$isAvailable |= extension_loaded($extension);
@@ -490,25 +490,25 @@ class tx_dbal_installtool {
 			</p>
 		';
 
-			// Add header marker for main template
+		// Add header marker for main template
 		$markers['header'] = 'Select database';
-			// There should be a database host connection at this point
+		// There should be a database host connection at this point
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(
 			TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
 		)) {
-				// Get the template file
+			// Get the template file
 			$templateFile = @file_get_contents(
 				t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
 			);
-				// Get the template part from the file
+			// Get the template part from the file
 			$template = t3lib_parsehtml::getSubpart(
 				$templateFile, '###TEMPLATE###'
 			);
-				// Get the subpart for the database choice step
+			// Get the subpart for the database choice step
 			$formSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###DATABASE_FORM###'
 			);
-				// Get the subpart for the database options
+			// Get the subpart for the database options
 			$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart(
 				$formSubPart, '###DATABASEOPTIONS###'
 			);
@@ -516,13 +516,13 @@ class tx_dbal_installtool {
 			$dbArr = $instObj->getDatabaseList();
 			$dbIncluded = FALSE;
 			foreach ($dbArr as $dbname) {
-					// Define the markers content for database options
+				// Define the markers content for database options
 				$step3DatabaseOptionMarkers = array(
 					'databaseValue' => htmlspecialchars($dbname),
 					'databaseSelected' => ($dbname === TYPO3_db) ? 'selected="selected"' : '',
 					'databaseName' => htmlspecialchars($dbname)
 				);
-					// Add the option HTML to an array
+				// Add the option HTML to an array
 				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
 					$step3DatabaseOptionsSubPart,
 					$step3DatabaseOptionMarkers,
@@ -535,13 +535,13 @@ class tx_dbal_installtool {
 				}
 			}
 			if (!$dbIncluded && TYPO3_db) {
-					// // Define the markers content when no access
+				// // Define the markers content when no access
 				$step3DatabaseOptionMarkers = array(
 					'databaseValue' => htmlspecialchars(TYPO3_db),
 					'databaseSelected' => 'selected="selected"',
 					'databaseName' => htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)'
 				);
-					// Add the option HTML to an array
+				// Add the option HTML to an array
 				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
 					$step3DatabaseOptionsSubPart,
 					$step3DatabaseOptionMarkers,
@@ -550,13 +550,13 @@ class tx_dbal_installtool {
 					1
 				);
 			}
-				// Substitute the subpart for the database options
+			// Substitute the subpart for the database options
 			$content = t3lib_parsehtml::substituteSubpart(
 				$formSubPart,
 				'###DATABASEOPTIONS###',
 				implode(chr(10), $step3DatabaseOptions)
 			);
-				// Define the markers content
+			// Define the markers content
 			$step3SubPartMarkers = array(
 				'step' => $instObj->step + 1,
 				'action' => htmlspecialchars($instObj->action),
@@ -564,7 +564,7 @@ class tx_dbal_installtool {
 				'llRemark2' => 'Any tables used by TYPO3 will be overwritten.',
 				'continue' => 'Continue'
 			);
-				// Add step marker for main template
+			// Add step marker for main template
 			$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 				$content,
 				$step3SubPartMarkers,
@@ -573,7 +573,7 @@ class tx_dbal_installtool {
 				1
 			);
 		} else {
-				// Add step marker for main template when no connection
+			// Add step marker for main template when no connection
 			$markers['step'] = $error_missingConnect;
 		}
 	}

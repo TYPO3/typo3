@@ -1,29 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Hooks for TYPO3 Extension Manager.
@@ -90,9 +90,9 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 
 		// Remapping is only mandatory for Oracle:
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['type'] !== 'adodb'
-			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'] !== 'oci8') {
+				&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'] !== 'oci8') {
 
-				// Not using Oracle
+			// Not using Oracle
 			return '';
 		}
 
@@ -102,7 +102,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 			$this->updateMapping(t3lib_div::GPvar('dbal'), $instObj);
 		}
 
-			// Search all table and field names which should be remapped
+		// Search all table and field names which should be remapped
 		$tableCandidates = array();
 		$fieldsCandidates = array();
 		foreach ($diff['extra'] as $table => $config) {
@@ -161,7 +161,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	protected function needsMapping($table, $field = '', $isKeyField = FALSE) {
 		$needsRemapping = FALSE;
 
-			// Take existing DBAL mapping into account
+		// Take existing DBAL mapping into account
 		$origTable = $table;
 		if (isset($this->mapping[$origTable])) {
 			if (isset($this->mapping[$origTable]['mapTableName'])) {
@@ -204,23 +204,23 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		switch ($extKey) {
 			case 'direct_mail':
 				$suggestions['sys_dmail_ttaddress_category_mm'] = array(
-					'mapTableName'  => 'sys_dmail_ttaddress_cat_mm',
+					'mapTableName' => 'sys_dmail_ttaddress_cat_mm',
 				);
 				$suggestions['sys_dmail_ttcontent_category_mm'] = array(
-					'mapTableName'  => 'sys_dmail_ttcontent_cat_mm',
+					'mapTableName' => 'sys_dmail_ttcontent_cat_mm',
 				);
 				break;
 			case 'extbase':
 				$suggestions['tx_extbase_cache_reflection_tags'] = array(
-					'mapTableName'  => 'tx_extbase_cache_reflect_tags',
+					'mapTableName' => 'tx_extbase_cache_reflect_tags',
 				);
 				break;
 			case 'templavoila':
 				$suggestions['tx_templavoila_datastructure'] = array(
-					'mapTableName'  => 'tx_templavoila_ds',
+					'mapTableName' => 'tx_templavoila_ds',
 				);
 				$suggestions['tx_templavoila_tmplobj'] = array(
-					'mapTableName'  => 'tx_templavoila_tmpl',
+					'mapTableName' => 'tx_templavoila_tmpl',
 				);
 				break;
 			default:
@@ -230,7 +230,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 				}
 		}
 
-			// Existing mapping take precedence over suggestions
+		// Existing mapping take precedence over suggestions
 		$suggestions = t3lib_div::array_merge_recursive_overrule($suggestions, $this->mapping);
 
 		return $suggestions;
@@ -248,9 +248,9 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 */
 	protected function storeExtbaseMappingSuggestions(array &$suggestions, $extKey, array $extInfo, array $tables, array $fields) {
 		foreach ($tables as $table) {
-				// Remove the "domain_model" part of the table name
+			// Remove the "domain_model" part of the table name
 			$suggestions[$table] = array(
-				'mapTableName'  => str_replace('domain_model_', '', $table),
+				'mapTableName' => str_replace('domain_model_', '', $table),
 			);
 		}
 	}
@@ -268,13 +268,13 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		$tableId = uniqid('table');
 		$label = 'DBAL Mapping';
 		$description = sprintf('Some table names are longer than %s characters and/or some field names are longer than %s characters.'
-			. ' This is incompatible with your database:'
-			. ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">'
-			. '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the'
-			. '			auto-increment "uid" field within %s characters;</li>'
-			. '		<li>Field names may not contain more than %s characters.</li>'
-			. ' </ul>',
-			$this->maxIdentifierLength - $this->tableNameCharacterReservation,
+				. ' This is incompatible with your database:'
+				. ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">'
+				. '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the'
+				. '			auto-increment "uid" field within %s characters;</li>'
+				. '		<li>Field names may not contain more than %s characters.</li>'
+				. ' </ul>',
+				$this->maxIdentifierLength - $this->tableNameCharacterReservation,
 			$this->maxIdentifierLength,
 			$this->maxIdentifierLength,
 			$this->maxIdentifierLength
@@ -363,7 +363,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 			}
 		}
 
-			// Sort table and field names
+		// Sort table and field names
 		foreach ($newMapping as $table => &$config) {
 			if (isset($config['mapFieldNames'])) {
 				ksort($config['mapFieldNames']);
@@ -371,7 +371,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		}
 		ksort($newMapping);
 
-			// Write new mapping to localconf.php
+		// Write new mapping to localconf.php
 		$key = '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'mapping\']';
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
