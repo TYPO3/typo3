@@ -71,7 +71,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 	 * Prepares a transport using the TYPO3_CONF_VARS configuration
 	 *
 	 * Used options:
-	 * $TYPO3_CONF_VARS['MAIL']['transport'] = 'smtp' | 'sendmail' | 'mail'
+	 * $TYPO3_CONF_VARS['MAIL']['transport'] = 'smtp' | 'sendmail' | 'mail' | 'mbox'
 	 *
 	 * $TYPO3_CONF_VARS['MAIL']['transport_smtp_server'] = 'smtp.example.org';
 	 * $TYPO3_CONF_VARS['MAIL']['transport_smtp_port'] = '25';
@@ -125,6 +125,15 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				}
 					// Create our transport
 				$this->transport = Swift_SendmailTransport::newInstance($sendmailCommand);
+				break;
+
+			case 'mbox':
+				$mboxFile = $mailSettings['transport_mbox_file'];
+				if ($mboxFile == '') {
+					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"');
+				}
+					// Create our transport
+				$this->transport = t3lib_div::makeInstance('t3lib_mail_mboxtransport', $mboxFile);
 				break;
 
 			case 'mail':

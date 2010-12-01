@@ -5,6 +5,7 @@
 	* Fixed bug #16601: tslib_menu and tslib_Xmenu use wrong cObj with stdWrap (since #16446) (Thanks to Thomas Maroschik)
 	* Fixed bug #15794: File>List (and other new sysext) shown even though extension not installed
 	* Fixed bug #16639: DBAL auto-loading rendered the Install Tool unuseable (was switching mode to "123")
+	* Added Feature #16610: Provide a SwiftMailer transport that only saves send mails to files (mbox format)
 
 2010-12-01  Francois Suter  <francois@typo3.org>
 
