@@ -4,7 +4,7 @@
 *
 *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2010 Benjamin Mack (benni@typo3.org)
-* 
+*
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -77,13 +77,13 @@ class tx_version_gui {
 
 					// Add management link:
 				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE) . '" onclick="window.location.href=\'' .
-						htmlspecialchars($GLOBALS['TBE_TEMPLATE']->backPath . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId) . '\';" />';
+						htmlspecialchars($GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId) . '\';" />';
 					// Create onchange handler:
 				$onChange = "window.location.href=this.options[this.selectedIndex].value;";
 
 					// Controls:
 				if ($id == $onlineId) {
-					$controls .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['TBE_TEMPLATE']->backPath, 'gfx/blinkarrow_left.gif','width="5" height="9"') .
+					$controls .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif','width="5" height="9"') .
 						' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE) .
 						'</strong>';
 				} elseif (!$noAction) {
@@ -221,7 +221,7 @@ class tx_version_gui {
 			}
 		}
 	}
-	
+
 }
 
 ?>
