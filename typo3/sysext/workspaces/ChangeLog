@@ -1,3 +1,7 @@
+2010-11-30  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Follow-Up #11131: Usability: labels improvements, change the label as a new one is introduced
+
 2010-12-01  Oliver Hader  <oliver@typo3.org>
 
 	* Raised version to 4.5.0beta2a
@@ -11,7 +15,7 @@
 	* Cleanup: Fixed ext_emconf.php
 	* Raised version to 4.5.0beta2
 
-2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+2010-11-30  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #11143: Editing workspaces record shows PHP warning
 	* Fixed bug #10291: change action icons

@@ -137,7 +137,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		$workspaceMenu[] = '<li class="divider">' . $frontendPreviewActiveIcon .
 			'<a href="backend.php?changeWorkspacePreview=' .
 			($GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1') .
-			'" id="frontendPreviewToggle">' . $GLOBALS['LANG']->getLL('bookmark_FEPreview', true) . '</a></li>';
+			'" id="frontendPreviewToggle">' . $GLOBALS['LANG']->getLL('bookmark_workspaceComparisonView', true) . '</a></li>';
 
 			// go to workspace module link
 		$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
