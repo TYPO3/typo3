@@ -1,4 +1,8 @@
-2010-01-01  Oliver Hader  <oliver@typo3.org>
+2010-12-01  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11193: Remove calls to disable compression and merging of CSS/JS
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed ext_emconf.php
 	* Raised version to 4.5.0beta2

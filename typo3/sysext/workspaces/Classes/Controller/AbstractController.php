@@ -62,9 +62,6 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', ($this->pageId === 0 ? 999 : 1));
 
-		$this->pageRenderer->disableCompressJavascript();
-		$this->pageRenderer->disableConcatenateFiles();
-
 		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/module.css');
 
 		$this->pageRenderer->addInlineLanguageLabelArray(array(
