@@ -1,4 +1,8 @@
-2010-11-30  Steffen Ritter  <typo3@steffen-ritter.net>
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Raised version to 4.5.0beta2b
+
+2010-12-01  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Follow-Up #11131: Usability: labels improvements, change the label as a new one is introduced
 
