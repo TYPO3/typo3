@@ -1,6 +1,34 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0 Beta 2:
+=========================
+included in TYPO3 4.5.0 Beta 2.
+
+The main change is the updating of the FlashMessage ViewHelper and concept:
+
+Since r3062 Extbase uses the t3lib_FlashMessageQueue to store flashmessages.
+Now you can output them including title and severity, making it possible
+to render flashmessages just like the ones from the core in BE mode.
+To keep backwards compatibility, the default rendering still outputs
+only the message bodies in an unordered list. Set the renderMode argument
+to "div" in order to display the new style:
+<f:flashMessages renderMode="div" />
+
+**********************************************************************************************
+*Extbase / Fluid 1.3.0 can now ONLY BE USED WITH TYPO3 4.5, as the older versions do not have*
+*the FlashMessageQueue available!                                                            *
+**********************************************************************************************
+
+Full Changes for 1.3.0 Beta 2:
+==============================
+[+BUGFIX] Fluid (ViewHelpers/Widget): widget.link and widget.uri no create relative URLs
+[+FEATURE] Fluid (ViewHelpers): Add render mode to FlashMessage ViewHelper
+[-TASK] Fluid: Removed all @scope annotations as they are not used in v4
+[+TASK] Fluid (View): Added additional check for deprecated lower case template filenames that works on case insensitive file systems (Windows) too. Watch your deprecation log in typo3conf and fix your template filenames if they're still lower case.
+[+BUGFIX]: explicitly cast offset to integer to avoid exceptions in paginate view helper
+
+
 Changes for 1.3.0 Beta 1a:
 ==========================
 included in TYPO3 4.5.0 Beta 1.
@@ -49,6 +77,11 @@ For more details on how to write widgets, consult the Fluid manual, section "Flu
 Full Changes for 1.3.0 Beta 1a:
 ===============================
 [+FEATURE] Fluid (ViewHelpers): the subject argument of the count ViewHelper is now optional so you can use it like {objects -> f:count()}
+[+BUGFIX] Fluid (ViewHelpers): Fixed inline documentation of widget.autocomplete ViewHelper. This fixes #10882
+[+TASK] Fluid (ViewHelpers): Added some more inline documentation for cObject, widget.paginate, widget.autocomplete & count ViewHelpers
+[+BUGFIX] Fluid (ViewHelpers): replaced two occurrences of Tx_Extbase_Dispatcher::*() by using the injected ConfigurationManager
+[+TASK] Fluid (ViewHelpers): uri.image now works in BE mode too
+[+BUGFIX] Fluid (ViewHelpers): Adjustment to skinning api change
 [+FEATURE] Fluid (ViewHelpers/Widget): Slightly improved paginate widget: The link to the first page now skips the currentPage argument resulting in nicer URLs and less cHashes
 [+FEATURE] Fluid (ViewHelpers): excluding obsolete widget arguments & cHash from widget links if they're not explicitly set
 [+BUGFIX] Fluid (Core/Widget): AjaxWidgetContextHolder now uses a unique id for the Ajax WidgetContext. This makes sure, that the ajax response gets the right context, even if you open multiple browser windows in the same session
