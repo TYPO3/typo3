@@ -168,7 +168,13 @@ class t3lib_TCEforms_Tree {
 							node.getUI().toggleCheck(node.attributes.checked);
 						}
 					},
-					checkchange: TYPO3.Components.Tree.TcaCheckChangeHandler
+					checkchange: TYPO3.Components.Tree.TcaCheckChangeHandler,
+					collapsenode: function(node) {
+						top.TYPO3.BackendUserSettings.ExtDirect.removeFromList("tcaTrees." + this.ucId, node.attributes.uid);
+					},
+					expandnode: function(node) {
+						top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
+					}
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaExclusiveKeys: "' . (

@@ -32,6 +32,7 @@
 
 	* Fixed Bug #16613: CleanUp alt_db_navframe.php to work with new workspaces module
 	* Fixed Bug #16218: TCE-Forms does not use sprite icons -- this leads to inconsistency
+	* Fixed Bug #16635: TCA Tree does not save collapse/expand state
 
 2010-12-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 
