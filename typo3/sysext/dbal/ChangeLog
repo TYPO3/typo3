@@ -4,6 +4,7 @@
 
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed use of undefined variable $mapping in method map_subquery()
 	* Follow-up for bug #16392: Native tables could not be retrieved anymore
 	* Code cleanup
 	* Fixed bug #16492: groupBy and orderBy fail on exec_query (thanks to Oguzhan Alan)
