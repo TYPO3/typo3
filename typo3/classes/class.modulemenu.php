@@ -208,7 +208,7 @@ class ModuleMenu {
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
 			);
 
-			if (!is_array($moduleData['sub'])) {
+			if (!is_array($moduleData['sub']) && $moduleData['script'] != 'dummy.php') {
 					// Work around for modules with own main entry, but being self the only submodule
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,
@@ -222,7 +222,7 @@ class ModuleMenu {
 					'navigationFrameScriptParam' => NULL,
 					'navigationComponentId' => NULL,
 				);
-			} else {
+			} else if (is_array($moduleData['sub'])) {
 				foreach($moduleData['sub'] as $submoduleName => $submoduleData) {
 					$submoduleLink = t3lib_div::resolveBackPath($submoduleData['script']);
 

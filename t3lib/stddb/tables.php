@@ -368,11 +368,11 @@ $TCA['sys_news'] = array(
  * For information about adding modules to TYPO3 you should consult the documentation found in "Inside TYPO3"
  */
 $TBE_MODULES = array(
-	'web' => 'list,info,perm,func',
-	'file' => 'list',
-	'user' => 'ws',
-	'tools' => 'em',
-	'help' => 'about,cshmanual'
+	'web' => 'list',
+	'file' => '',
+	'user' => '',
+	'tools' => '',
+	'help' => '',
 );
 
 
