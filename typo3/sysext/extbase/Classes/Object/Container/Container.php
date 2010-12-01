@@ -245,7 +245,9 @@ class Tx_Extbase_Object_Container_Container {
 	 * @return Tx_Extbase_Object_Container_ClassInfo
 	 */
 	private function getClassInfo($className) {
-		if (!$this->cache->has($className)) {
+			// we also need to make sure that the cache is returning a vaild object
+			// in case something went wrong with unserialization etc.. 
+		if (!$this->cache->has($className) || !is_object($this->cache->get($className))) {
 			$this->cache->set($className, $this->classInfoFactory->buildClassInfoFromClassName($className));
 		}
 		return $this->cache->get($className);
