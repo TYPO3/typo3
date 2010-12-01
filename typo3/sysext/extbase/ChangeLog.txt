@@ -1,7 +1,7 @@
 ChangeLog for Extbase
 =====================
 
-Changes for 1.3.0 Beta 2:
+Changes for 1.3.0 Beta 2a:
 ==========================
 included in TYPO3 4.5.0 Beta 2.
 
@@ -26,8 +26,10 @@ The main changes are:
 * Fixed Tx_Extbase_Domain_Model_FrontendUser (and marked the old API as deprecated)
 * Bugfixes related to Lazy Loading
 
-Full Changes for 1.3.0 Beta 2:
+Full Changes for 1.3.0 Beta 2a:
 ==============================
+[+BUGFIX] Extbase (Configuration): change the order of methods to determine the current pageId for backend modules, which is used to fetch the TS framework configuration. Fixes #11205
+[+TASK] Extbase (Object): Make sure the class info cache is returning valid objects
 [+BUGFIX] Extbase (Persistence): Persistence_Backend::getIdentifierByObject should work with LazyLoadingProxy
 	getIdentifierByObject should check if object is an instance of Tx_Extbase_Persistence_LazyLoadingProxy and should return the
 	identifier of the real object.
