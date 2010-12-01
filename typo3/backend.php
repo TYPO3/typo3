@@ -141,6 +141,7 @@ class TYPO3backend {
 			'viewport'              => 'js/extjs/viewport.js',
 			'iframepanel'           => 'js/extjs/iframepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
+			'backendUserSettings'        => 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings',
 		);
 
 		if ($this->debug) {
