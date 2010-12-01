@@ -171,13 +171,13 @@ class ux_t3lib_DB extends t3lib_DB {
 	    '_DEFAULT' => array(
 				'type' => 'native',
 				'config' => array(
-				    'username' => '',	// Set by default (overridden)
-				    'password' => '',	// Set by default (overridden)
-				    'host' => '',	// Set by default (overridden)
-				    'database' => '',	// Set by default (overridden)
-				    'driver' => '',	// ONLY "adodb" type; eg. "mysql"
-				    'sequenceStart' => 1,	// ONLY "adodb", first number in sequences/serials/...
-				    'useNameQuote' => 0	// ONLY "adodb", whether to use NameQuote() method from ADOdb to quote names
+					'username' => '',	// Set by default (overridden)
+					'password' => '',	// Set by default (overridden)
+					'host' => '',	// Set by default (overridden)
+					'database' => '',	// Set by default (overridden)
+					'driver' => '',	// ONLY "adodb" type; eg. "mysql"
+					'sequenceStart' => 1,	// ONLY "adodb", first number in sequences/serials/...
+					'useNameQuote' => 0	// ONLY "adodb", whether to use NameQuote() method from ADOdb to quote names
 				)
 	    ),
 	);
@@ -450,7 +450,8 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 			// Select API:
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
-		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch ($hType) {
 			case 'native':
 				$this->lastQuery = $this->INSERTquery($table,$fields_values,$no_quote_fields);
 				if (is_string($this->lastQuery)) {
@@ -617,7 +618,8 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
-		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch ($hType) {
 			case 'native':
 				$this->lastQuery = $this->UPDATEquery($table,$where,$fields_values,$no_quote_fields);
 				if (is_string($this->lastQuery)) {
@@ -653,7 +655,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 				break;
 			case 'userdefined':
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields);
 				break;
 		}
 
@@ -664,10 +666,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->debug) {
 			$this->debugHandler(
 				'exec_UPDATEquery',
-				t3lib_div::milliseconds()-$pt,
+				t3lib_div::milliseconds() - $pt,
 				array(
 					'handlerType' => $hType,
-					'args' => array($table,$where, $fields_values),
+					'args' => array($table, $where, $fields_values),
 					'ORIG_from_table' => $ORIG_tableName
 				)
 			);
@@ -706,17 +708,18 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
-		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch ($hType) {
 			case 'native':
-				$this->lastQuery = $this->DELETEquery($table,$where);
+				$this->lastQuery = $this->DELETEquery($table, $where);
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				break;
 			case 'adodb':
-				$this->lastQuery = $this->DELETEquery($table,$where);
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery,FALSE);
+				$this->lastQuery = $this->DELETEquery($table, $where);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				break;
 			case 'userdefined':
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_DELETEquery($table,$where);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_DELETEquery($table, $where);
 				break;
 		}
 
@@ -727,10 +730,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->debug) {
 			$this->debugHandler(
 				'exec_DELETEquery',
-				t3lib_div::milliseconds()-$pt,
+				t3lib_div::milliseconds() - $pt,
 				array(
 					'handlerType' => $hType,
-					'args' => array($table,$where),
+					'args' => array($table, $where),
 					'ORIG_from_table' => $ORIG_tableName
 				)
 			);
@@ -833,7 +836,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			$this->debugHandler(
 				'exec_SELECTquery',
-				t3lib_div::milliseconds()-$pt,
+				t3lib_div::milliseconds() - $pt,
 				$data
 			);
 		}
@@ -864,7 +867,8 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
-		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch ($hType) {
 			case 'native':
 				$this->lastQuery = $this->TRUNCATEquery($table);
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
@@ -874,7 +878,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				break;
 			case 'userdefined':
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATEquery($table,$where);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATEquery($table);
 				break;
 		}
 
