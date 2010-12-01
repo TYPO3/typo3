@@ -47,20 +47,31 @@ abstract class t3lib_contextmenu_extdirect_ContextMenu extends t3lib_contextmenu
 	 * of the node should be given, because we need this information
 	 * to create the ndoe.
 	 *
-	 * @param array $nodeInfo
+	 * @param stdClass $nodeInfo
 	 * @return array
 	 */
-	public function getActionsForNodeArray(array $nodeInfo) {
+	public function getActionsForNodeArray($nodeData) {
 		if ($this->dataProvider === NULL) {
-			$dataProvider = t3lib_div::makeInstance(
-				't3lib_contextmenu_AbstractDataProvider'
-			);
+			$dataProvider = t3lib_div::makeInstance('t3lib_contextmenu_AbstractDataProvider');
 			$this->setDataProvider($dataProvider);
 		}
 
-		$node = t3lib_div::makeInstance($nodeInfo['type'], $nodeInfo);
+		/** @var $node t3lib_tree_Node */
+		$node = t3lib_div::makeInstance('t3lib_tree_Node', (array) $nodeData);
 		$actions = $this->dataProvider->getActionsForNode($node);
 
 		return $actions;
 	}
+
+	/**
+	 * Unused for this implementation
+	 *
+	 * @see getActionsForNodeArray()
+	 * @param t3lib_tree_Node $node
+	 * @return array
+	 */
+	public function getActionsForNode(t3lib_tree_Node $node) {
+	}
 }
+
+?>

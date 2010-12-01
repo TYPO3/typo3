@@ -41,15 +41,15 @@ abstract class t3lib_contextmenu_AbstractContextMenu {
 	protected $dataProvider = NULL;
 
 	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
+	 * @param t3lib_contextmenu_AbstractDataProvider $dataProvider
 	 * @return void
 	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
+	public function setDataProvider(t3lib_contextmenu_AbstractDataProvider $dataProvider) {
 		$this->dataProvider = $dataProvider;
 	}
 
 	/**
-	 * @return t3lib_tree_AbstractDataProvider
+	 * @return t3lib_contextmenu_AbstractDataProvider
 	 */
 	public function getDataProvider() {
 		return $this->dataProvider;
@@ -63,3 +63,5 @@ abstract class t3lib_contextmenu_AbstractContextMenu {
 	 */
 	abstract public function getActionsForNode(t3lib_tree_Node $node);
 }
+
+?>

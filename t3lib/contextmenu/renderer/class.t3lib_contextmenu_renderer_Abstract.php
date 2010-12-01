@@ -64,3 +64,5 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 		t3lib_contextmenu_AbstractContextMenu $contextMenu, $recursive = FALSE
 	);
 }
+
+?>

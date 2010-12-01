@@ -60,10 +60,11 @@ abstract class t3lib_tree_ExtDirect_AbstractExtJsTree extends t3lib_tree_Abstrac
 	 * Fetches the next tree level
 	 *
 	 * @abstract
-	 * @param t3lib_tree_Node $node
+	 * @param int $nodeId
+	 * @param stdClass $nodeData
 	 * @return array
 	 */
-	abstract public function getNextTreeLevel(t3lib_tree_Node $node);
+	abstract public function getNextTreeLevel($nodeId, $nodeData);
 }
 
 ?>

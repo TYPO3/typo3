@@ -34,7 +34,7 @@
  */
 abstract class t3lib_contextmenu_AbstractDataProvider {
 	/**
-	 * Context Menu Type (e.g. records.pages, records.tt_content)
+	 * Context Menu Type (e.g. table.pages, table.tt_content)
 	 *
 	 * @var string
 	 */
@@ -60,8 +60,9 @@ abstract class t3lib_contextmenu_AbstractDataProvider {
 	}
 
 	/**
-	 * Returns the root node
+	 * Returns the actions of the node
 	 *
+	 * @param t3lib_tree_Node $node
 	 * @return t3lib_contextmenu_ActionCollection
 	 */
 	abstract public function getActionsForNode(t3lib_tree_Node $node);
@@ -72,10 +73,12 @@ abstract class t3lib_contextmenu_AbstractDataProvider {
 	 * @return array
 	 */
 	protected function getConfiguration() {
-		$contextMenuAction = $GLOBALS['BE_USER']->getTSConfig(
+		$contextMenuActions = $GLOBALS['BE_USER']->getTSConfig(
 			'options.contextMenu.' . $this->contextMenuType . '.items'
 		);
 
-		return $contextMenuAction;
+		return $contextMenuActions['properties'];
 	}
 }
+
+?>

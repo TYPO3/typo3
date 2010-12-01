@@ -69,6 +69,20 @@ class t3lib_contextmenu_Action {
 	protected $callbackAction = '';
 
 	/**
+	 * Type
+	 *
+	 * @var string
+	 */
+	protected $type = '';
+
+	/**
+	 * Child Action Collection
+	 *
+	 * @var t3lib_contextmenu_ActionCollection
+	 */
+	protected $childActions = NULL;
+
+	/**
 	 * Returns the label
 	 *
 	 * @return string
@@ -102,6 +116,25 @@ class t3lib_contextmenu_Action {
 	 */
 	public function setId($id) {
 		$this->id = $id;
+	}
+
+	/**
+	 * Returns the icon
+	 *
+	 * @return string
+	 */
+	public function getIcon() {
+		return $this->icon;
+	}
+
+	/**
+	 * Sets the icon
+	 *
+	 * @param string $icon
+	 * @return void
+	 */
+	public function setIcon($icon) {
+		$this->icon = $icon;
 	}
 
 	/**
@@ -139,4 +172,80 @@ class t3lib_contextmenu_Action {
 	public function setCallbackAction($callbackAction) {
 		$this->callbackAction = $callbackAction;
 	}
+
+	/**
+	 * Returns the type
+	 *
+	 * @return string
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
+	/**
+	 * Sets the type
+	 *
+	 * @param string $type
+	 * @return void
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * Returns the child actions
+	 *
+	 * @return t3lib_contextmenu_ActionCollection
+	 */
+	public function getChildActions() {
+		return $this->childActions;
+	}
+
+	/**
+	 * Sets the child actions
+	 *
+	 * @param t3lib_contextmenu_ActionCollection $actions
+	 * @return void
+	 */
+	public function setChildActions(t3lib_contextmenu_ActionCollection $actions) {
+		$this->childActions = $actions;
+	}
+
+	/**
+	 * Returns true if the action has child actions
+	 *
+	 * @return boolean
+	 */
+	public function hasChildActions() {
+		if ($this->childActions !== NULL) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Returns the action as an array
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		$arrayRepresentation = array(
+			'label' => $this->getLabel(),
+			'id' => $this->getId(),
+			'icon' => $this->getIcon(),
+			'class' => $this->getClass(),
+			'callbackAction' => $this->getCallbackAction(),
+			'type' => $this->getType(),
+		);
+
+		$arrayRepresentation['childActions'] = '';
+		if ($this->hasChildActions()) {
+			$arrayRepresentation['childActions'] = $this->childActions->toArray();
+		}
+
+		return $arrayRepresentation;
+	}
 }
+
+?>

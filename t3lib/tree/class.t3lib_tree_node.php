@@ -114,7 +114,6 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 		return FALSE;
 	}
 
-
 	/**
 	 * Sets the identifier
 	 *
@@ -220,16 +219,16 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 
 		if (isset($data['parentNode']) && $data['parentNode'] !== '') {
 			$this->setParentNode(t3lib_div::makeInstance(
-									 $data['parentNode']['serializeClassName'],
-									 $data['parentNode']
-								 ));
+				$data['parentNode']['serializeClassName'],
+				$data['parentNode']
+			));
 		}
 
 		if (isset($data['childNodes']) && $data['childNodes'] !== '') {
 			$this->setChildNodes(t3lib_div::makeInstance(
-									 $data['childNodes']['serializeClassName'],
-									 $data['childNodes']
-								 ));
+				$data['childNodes']['serializeClassName'],
+				$data['childNodes']
+			));
 		}
 	}
 
