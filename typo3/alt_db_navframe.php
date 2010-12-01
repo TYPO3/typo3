@@ -315,27 +315,22 @@ class SC_alt_db_navframe {
 	 * @return	string	HTML containing workspace info
 	 */
 	protected function getWorkspaceInfo() {
-		global $LANG;
 
-		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
-			switch($GLOBALS['BE_USER']->workspace)	{
-				case 0:
-					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:bookmark_onlineWS',1).']';
-				break;
-				case -1:
-					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:bookmark_offlineWS',1).']';
-				break;
-				default:
-					$wsTitle = '['.$GLOBALS['BE_USER']->workspace.'] '.htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['title']);
-				break;
-			}
+		if (t3lib_extMgm::isLoaded('workspaces') && ($GLOBALS['BE_USER']->workspace !== 0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
+			$wsTitle = htmlspecialchars(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
 
 			$workspaceInfo = '
-				<div class="bgColor4 workspace-info">
-					<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
-					  t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace') .
-					'</a>'.$wsTitle.'
-				</div>
+				<div class="bgColor4 workspace-info">' .
+					 t3lib_iconWorks::getSpriteIcon(
+						'apps-toolbar-menu-workspace',
+						array(
+							'title' => $wsTitle,
+							'onclick' => 'top.goToModule(\'web_WorkspacesWorkspaces\');',
+							'style' => 'cursor:pointer;'
+						)
+					) .
+					$wsTitle .
+				'</div>
 			';
 		}
 
