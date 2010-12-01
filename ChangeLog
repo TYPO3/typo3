@@ -15,7 +15,7 @@
 2010-11-30  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #5918: No language overlay with TS select on table pages (Thanks to Fabrizio Branca)
-	
+
 2010-11-30  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16608: Javascript flashmessage miss named severity
