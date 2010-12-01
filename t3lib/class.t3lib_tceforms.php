@@ -1644,7 +1644,9 @@ class t3lib_TCEforms {
 				if ($sM) {
 					list($selectIconFile, $selectIconInfo) = $this->getIcon($p[2]);
 					if (!empty($selectIconInfo)) {
-						$selectedStyle = ' style="background: #fff url(' . $selectIconFile . ') 0% 50% no-repeat; padding: 1px 1px 1px 24px; -webkit-background-size: 0;"';
+						$selectedStyle = ' class="typo3-TCEforms-select-selectedItemWithBackgroundImage" style="background-image:url(' . $selectIconFile . ');"';
+					} else {
+						$selectedStyle = ' class="' . t3lib_iconWorks::getSpriteIconClasses($p[2]) . '"';
 					}
 				}
 			}
@@ -1674,18 +1676,24 @@ class t3lib_TCEforms {
 				}
 			}
 
-				// If there is an icon for the selector box (rendered in table under)...:
+				// If there is an icon for the selector box (rendered in selicon-table below)...:
+				// if there is an icon ($p[2]), icons should be shown, and, if only selected are visible, is it selected
 			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM)) {
 				list($selIconFile, $selIconInfo) = $this->getIcon($p[2]);
-				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' .
-							$this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].style.backgroundImage; ' .
-							implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
+				if (!empty($selIconInfo)) {
+					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' .
+						$this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].style.backgroundImage; ' .
+						implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
+				} else {
+					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' .
+						$this->elName($PA['itemFormElName']) . '.class=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].class; ' .
+						implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
+				}
 				$selicons[] = array(
 					(!$onlySelectedIconShown ? '<a href="#" onclick="' . htmlspecialchars($iOnClick) . '">' : '') .
-					'<img src="' . $selIconFile . '" ' . $selIconInfo[3] . ' vspace="2" border="0" title="' . htmlspecialchars($p[0]) . '" alt="' . htmlspecialchars($p[0]) . '" />' .
+					$this->getIconHtml($p[2], htmlspecialchars($p[0]), htmlspecialchars($p[0])) .
 					(!$onlySelectedIconShown ? '</a>' : ''),
 					$c, $sM);
-				$onChangeIcon = 'this.style.backgroundImage=this.options[this.selectedIndex].style.backgroundImage;';
 			}
 			$c++;
 		}
@@ -1803,10 +1811,11 @@ class t3lib_TCEforms {
 					}
 
 						// Icon:
-					$selIconFile = '';
 					if ($p[2]) {
-						list($selIconFile, $selIconInfo) = $this->getIcon($p[2]);
-					}
+						$selIcon = $p[2];
+					} else {
+						$selIcon = t3lib_iconWorks::getSpriteIcon('empty-empty');
+ 					}
 
 						// Compile row:
 					$rowId = uniqid('select_checkbox_row_');
@@ -1838,7 +1847,7 @@ class t3lib_TCEforms {
 						<tr id="' . $rowId . '" class="' . ($sM ? 'c-selectedItem' : 'c-unselectedItem') . '" onclick="' . htmlspecialchars($onClick) . '" style="cursor: pointer;">
 							<td width="12"><input type="checkbox"' . $this->insertDefStyle('check') . ' name="' . htmlspecialchars($PA['itemFormElName'] . '[' . $c . ']') . '" value="' . htmlspecialchars($p[1]) . '"' . $sM . ' onclick="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . ' /></td>
 							<td class="c-labelCell" onclick="' . htmlspecialchars($onClickCell) . '">' .
-							   ($selIconFile ? '<img src="' . $selIconFile . '" ' . $selIconInfo[3] . ' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '') .
+							   $this->getIconHtml($selIcon) .
 							   $label .
 							   '</td>
 								<td class="c-descr" onclick="' . htmlspecialchars($onClickCell) . '">' . (strcmp($p[3], '') ? $help : '') . '</td>
@@ -3933,8 +3942,7 @@ class t3lib_TCEforms {
 						// Title / icon:
 					$iTitle = htmlspecialchars($this->sL($wConf['title']));
 					if ($wConf['icon']) {
-						$iDat = $this->getIcon($wConf['icon']);
-						$icon = '<img src="' . $iDat[0] . '" ' . $iDat[1][3] . ' border="0"' . t3lib_BEfunc::titleAltAttrib($iTitle) . ' />';
+						$icon = $this->getIconHtml($wConf['icon'], $iTitle, $iTitle);
 					} else {
 						$icon = $iTitle;
 					}
@@ -4142,6 +4150,22 @@ class t3lib_TCEforms {
 			$selIconInfo = @getimagesize(PATH_typo3 . $iconPath);
 		}
 		return array($selIconFile, $selIconInfo);
+	}
+
+ 	/**
+	 * Renders the $icon, supports a filename for skinImg or sprite-icon-name
+	 * @param $icon the icon passed, could be a file-reference or a sprite Icon name
+	 * @param string $alt alt attribute of the icon returned
+	 * @param string $title title attribute of the icon return
+	 * @return an tag representing to show the asked icon
+	 */
+	protected function getIconHtml($icon, $alt = '', $title = '') {
+		$iconArray = $this->getIcon($icon);
+		if (is_file(PATH_typo3 . $iconArray[0])) {
+			return '<img src="' . $iconArray[0] . '" alt="' . $alt . '" ' . ($title ? 'title="' . $title . '"' : '') . ' />';
+		} else {
+			return t3lib_iconWorks::getSpriteIcon($icon, array('alt'=> $alt, 'title'=> $title));
+		}
 	}
 
 	/**
@@ -4591,7 +4615,7 @@ class t3lib_TCEforms {
 						if (!$TCA[$theTableNames]['ctrl']['adminOnly']) {
 
 								// Icon:
-							$icon = '../' . TYPO3_mainDir . t3lib_iconWorks::skinImg($this->backPath, t3lib_iconWorks::getIcon($theTableNames, array()), '', 1);
+							$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName($theTableNames, array());
 
 								// Add description texts:
 							if ($this->edit_showFieldHelp) {
@@ -4615,7 +4639,7 @@ class t3lib_TCEforms {
 
 					foreach ($theTypes as $theTypeArrays) {
 							// Icon:
-						$icon = $theTypeArrays[1] != '--div--' ? '../' . TYPO3_mainDir . t3lib_iconWorks::skinImg($this->backPath, t3lib_iconWorks::getIcon('pages', array('doktype' => $theTypeArrays[1])), '', 1) : '';
+						$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));
 
 							// Item configuration:
 						$items[] = array(
@@ -4643,7 +4667,7 @@ class t3lib_TCEforms {
 						$items[] = array(
 							rtrim($theTypeArrays[0], ':'),
 							$theTypeArrays[1],
-							'',
+							'empty-empty',
 							$descr
 						);
 					}
@@ -4653,8 +4677,8 @@ class t3lib_TCEforms {
 
 						// Icons:
 					$icons = array(
-						'ALLOW' => '../' . TYPO3_mainDir . t3lib_iconWorks::skinImg($this->backPath, 'gfx/icon_ok2.gif', '', 1),
-						'DENY' => '../' . TYPO3_mainDir . t3lib_iconWorks::skinImg($this->backPath, 'gfx/icon_fatalerror.gif', '', 1),
+						'ALLOW' => 'status-status-permission-granted',
+						'DENY' => 'status-status-permission-denied',
 					);
 
 						// Traverse types:
@@ -4699,11 +4723,8 @@ class t3lib_TCEforms {
 										// Icon:
 									if ($itemCfg[1]) {
 										list($icon) = $this->getIcon($itemCfg[1]);
-										if ($icon) {
-											$icon = '../' . TYPO3_mainDir . $icon;
-										}
 									} else {
-										$icon = '';
+										$icon = 'empty-empty';
 									}
 
 										// Add item to be selected:
@@ -4825,9 +4846,9 @@ class t3lib_TCEforms {
 					$iParts = t3lib_div::trimExplode(',', $row[$iField], 1);
 					$icon = '../' . $iPath . '/' . trim($iParts[0]);
 				} elseif (t3lib_div::inList('singlebox,checkbox', $fieldValue['config']['renderMode'])) {
-					$icon = '../' . TYPO3_mainDir . t3lib_iconWorks::skinImg($this->backPath, t3lib_iconWorks::getIcon($f_table, $row), '', 1);
+					$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName($f_table, $row);
 				} else {
-					$icon = '';
+					$icon = 'empty-empty';
 				}
 
 					// Add the item:
@@ -6227,7 +6248,15 @@ class t3lib_TCEforms {
 			}
 		}
 
-		return ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] ? '<img src="' . $this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] . '" class="absmiddle" alt="" />' : ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] ? '[' . $this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] . ']' : '')) . '&nbsp;';
+		$out = '';
+		if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']) {
+			$out .= t3lib_iconWorks::getSpriteIcon($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']);
+			$out .= '&nbsp;';
+		} else if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {
+			$out .= '[' . $this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] . ']';
+			$out .= '&nbsp;';
+		}
+		return $out;
 	}
 
 	/**
@@ -6267,9 +6296,16 @@ class t3lib_TCEforms {
 						// Icon + clickmenu:
 					$absFilePath = t3lib_div::getFileAbsFileName($config['config']['uploadfolder'] ? $config['config']['uploadfolder'] . '/' . $imgPath : $imgPath);
 
-					$fI = pathinfo($imgPath);
-					$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-					$fileIcon = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/fileicons/' . $fileIcon, 'width="18" height="16"') . ' class="absmiddle" title="' . htmlspecialchars($fI['basename'] . ($absFilePath && @is_file($absFilePath) ? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' : ' - FILE NOT FOUND!')) . '" alt="" />';
+					$fileInformation = pathinfo($imgPath);
+					$fileIcon = t3lib_iconWorks::getSpriteIconForFile($imgPath,
+						array('title' =>
+							htmlspecialchars($fileInformation['basename'] .
+								($absFilePath && @is_file($absFilePath) ?
+								' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' :
+								' - FILE NOT FOUND!')
+							)
+						)
+					);
 
 					$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['config']['uploadfolder'], 0, ' align="middle"') .
 							  ($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon) .

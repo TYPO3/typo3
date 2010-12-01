@@ -432,3 +432,11 @@ TCEforms Sections
 .t3-form-field-add-flexsection {
 	border-top: 1px solid #cdcdcd;
 }
+
+
+.typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	background-color:#fff;
+	background-position: 0% 50%;
+	background-repeat:no-repeat;
+	padding:1px 1px 1px 24px;
+}

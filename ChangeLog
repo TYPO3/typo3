@@ -21,6 +21,7 @@
 2010-12-01  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed Bug #16613: CleanUp alt_db_navframe.php to work with new workspaces module
+	* Fixed Bug #16218: TCE-Forms does not use sprite icons -- this leads to inconsistency
 
 2010-12-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 
