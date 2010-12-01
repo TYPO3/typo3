@@ -497,6 +497,11 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 	filter:alpha(opacity=75);
 }
 
+.ext-el-mask-msg div {
+	background-image: url(images/grid/loading.gif);
+	background-color: #fff;
+}
+
 /* mask while loading */
 .t3-mask-loading .ext-el-mask {
 	background-color: #f8f8f8;

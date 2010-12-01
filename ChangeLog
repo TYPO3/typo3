@@ -4,6 +4,7 @@
 
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to  bug #16624: Decrease opacity of black ExtJS mask - make mask message readable
 	* Fixed bug #16626: Improve ExtJS grid styling (Thanks to Timo Koenig and Lars Zimmermann)
 	* Fixed bug #16622: PageTree - Milestone 2 Release (Thanks to Stefan Galinski and Peter Foerger)
 	* Fixed bug #16621: Stabilize the Context Menu API (Thanks to Stefan Galinski)
