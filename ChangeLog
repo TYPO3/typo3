@@ -1,3 +1,7 @@
+2010-12-01  Francois Suter  <francois@typo3.org>
+
+	* Feature #16609: Usability: Add new label for workspace preview
+
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16626: Improve ExtJS grid styling (Thanks to Timo Koenig)

@@ -63,6 +63,7 @@
 			<label index="bookmark_inactive">inactive</label>
 			<label index="bookmark_noWSfound">ERROR: No workspaces found!</label>
 			<label index="bookmark_FEPreview">Enable Frontend Preview</label>
+			<label index="bookmark_workspaceComparisonView">Enable comparison view</label>
 			<label index="bookmark_workspace">Go to Workspace Module</label>
 			<label index="overwriteExistingFiles">Overwrite existing files</label>
 			<label index="selectPosition">Select a position for the new page</label>
