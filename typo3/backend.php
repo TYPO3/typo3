@@ -141,7 +141,6 @@ class TYPO3backend {
 			'viewport'              => 'js/extjs/viewport.js',
 			'iframepanel'           => 'js/extjs/iframepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
-			'backendUserSettings'        => 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings',
 		);
 
 		if ($this->debug) {
@@ -241,19 +240,8 @@ class TYPO3backend {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
 
-			// Those lines can be removed once we have at least one official ExtDirect router within the backend.
-		$hasExtDirectRouter = FALSE;
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $key => $value) {
-				if (strpos($key, 'TYPO3.Ajax.ExtDirect') !== FALSE) {
-					$hasExtDirectRouter = TRUE;
-					break;
-				}
-			}
-		}
-		if ($hasExtDirectRouter) {
-			$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
-		}
+		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
+		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings', NULL, FALSE);
 
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);

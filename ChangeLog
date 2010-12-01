@@ -12,6 +12,7 @@
 
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16234: ExtDirect Dataprovider for user settings
 	* Added Feature #16641: Here comes FAL - beta2 version
 	* Fixed bug #16234: ExtDirect Dataprovider for user settings
 	* Follow-up to bug #16624: Decrease opacity of black ExtJS mask - make mask message readable
