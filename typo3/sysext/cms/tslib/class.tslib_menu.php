@@ -320,7 +320,7 @@ class tslib_menu {
 			$directoryLevel = 0;
 			if ($this->conf['special'] == 'directory')	{
 				$value = isset($this->conf['special.']['value.'])
-					? $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
+					? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
 					: $this->conf['special.']['value'];
 				if ($value=='') {
 					$value=$GLOBALS['TSFE']->page['uid'];
@@ -388,7 +388,7 @@ class tslib_menu {
 			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
 			if ($this->menuNumber==1 && $this->conf['special'])	{		// ... only for the FIRST level of a HMENU
 				$value = isset($this->conf['special.']['value.'])
-					? $GLOBALS['TSFE']->cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
+					? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
 					: $this->conf['special.']['value'];
 
 				switch($this->conf['special'])	{
@@ -466,7 +466,7 @@ class tslib_menu {
 							}
 
 								// Get sub-pages:
-							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
+							$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
@@ -582,7 +582,7 @@ class tslib_menu {
 							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_ACCESS_TIME']-$maxAge);
 						}
 
-						$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+						$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 							if (is_array($row))	{
@@ -664,7 +664,7 @@ class tslib_menu {
 									$keyWordsWhereArr[] = $kfield.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%\'';
 								}
 							}
-							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+							$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 								if (is_array($row))	{
@@ -839,7 +839,7 @@ class tslib_menu {
 				}
 				$basePageRow=$this->sys_page->getPage($this->id);
 				if (is_array($basePageRow))	{
-					$res = $GLOBALS['TSFE']->cObj->exec_getQuery('tt_content',	$selectSetup);
+					$res = $this->parent_cObj->exec_getQuery('tt_content',	$selectSetup);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						$GLOBALS['TSFE']->sys_page->versionOL('tt_content',$row);
 
@@ -1562,7 +1562,7 @@ class tslib_menu {
 		if ($this->mconf[$mConfKey])	{
 			$funcConf = $this->mconf[$mConfKey.'.'];
 			$funcConf['parentObj'] = $this;
-			$passVar = $GLOBALS['TSFE']->cObj->callUserFunction($this->mconf[$mConfKey], $funcConf, $passVar);
+			$passVar = $this->parent_cObj->callUserFunction($this->mconf[$mConfKey], $funcConf, $passVar);
 		}
 		return $passVar;
 	}

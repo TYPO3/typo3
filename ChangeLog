@@ -2,6 +2,7 @@
 
 	* Added Feature #15604: Install-Tool usability: db compare shows no errors when db-updates fail
 	* Fixed bug #16594: Slide doesn't work without collect (Thanks to Jo Hasenau)
+	* Fixed bug #16601: tslib_menu and tslib_Xmenu use wrong cObj with stdWrap (since #16446) (Thanks to Thomas Maroschik)
 
 2010-12-01  Francois Suter  <francois@typo3.org>
 
