@@ -45,7 +45,7 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	public function execute(tx_install $instObj) {
-		if ($instObj->mode = '123') {
+		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
 				case 0:
 					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {

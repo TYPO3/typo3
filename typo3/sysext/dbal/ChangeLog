@@ -1,3 +1,7 @@
+2010-12-02  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16639: Install Tool is unusable since DBAL merge
+
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0beta2
