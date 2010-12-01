@@ -3077,7 +3077,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->mapping[$mappingKey]['mapTableName'] =& $this->mapping[$v['table']]['mapTableName'];
 				}
 			}
-			if ($mapping !== $v['table']) {
+			if ($mappingKey !== $v['table']) {
 				$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$v['table']]['mapFieldNames'];
 			}
 		}
