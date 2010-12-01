@@ -603,7 +603,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 				if (strtoupper($config['operator'])=='OR')	{
 					$OR_index++;
 				}
-
+// FIXME: unknown variable $itemKeys
 				if (!isset($itemKeys[$OR_index]))	$itemKeys[$OR_index] = array_keys($this->data[$table]);
 
 				$this->select_evalSingle($table,$config,$itemKeys[$OR_index]);
