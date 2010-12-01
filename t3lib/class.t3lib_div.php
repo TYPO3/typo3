@@ -236,6 +236,20 @@ final class t3lib_div {
 	const SYSLOG_SEVERITY_ERROR = 3;
 	const SYSLOG_SEVERITY_FATAL = 4;
 
+	/**
+	 * Singleton instances returned by makeInstance, using the class names as
+	 * array keys
+	 *
+	 * @var array<t3lib_Singleton>
+	 */
+	protected static $singletonInstances = array();
+
+	/**
+	 * Instances returned by makeInstance, using the class names as array keys
+	 *
+	 * @var array<array><object>
+	 */
+	protected static $nonSingletonInstances = array();
 
 	/*************************
 	 *
@@ -5359,39 +5373,48 @@ final class t3lib_div {
 	 * Creates an instance of a class taking into account the class-extensions
 	 * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
 	 * Eg. "$obj = new myclass;" should be "$obj = t3lib_div::makeInstance("myclass")" instead!
-	 * You can also pass arguments for a constructor:
-	 *	 t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
 	 *
-	 * @param	string		Class name to instantiate
-	 * @return	object		A reference to the object
+	 * You can also pass arguments for a constructor:
+	 * 		t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
+	 *
+	 * @throws	InvalidArgumentException if classname is an empty string
+	 * @param	string		$className
+	 * 			name of the class to instantiate, must not be empty
+	 * @return	object		the created instance
 	 */
 	public static function makeInstance($className) {
-			// holds references of singletons
-		static $instances = array();
+		if ($className === '') {
+			throw new InvalidArgumentException('$classname must not be empty.', 1288965219);
+		}
 
-			// Get final classname
-		$className = self::getClassName($className);
+		$finalClassName = self::getClassName($className);
 
-		if (isset($instances[$className])) {
-				// it's a singleton, get the existing instance
-			$instance = $instances[$className];
+			// Return singleton instance if it is already registered
+		if (isset(self::$singletonInstances[$finalClassName])) {
+			return self::$singletonInstances[$finalClassName];
+		}
+
+			// Return instance if it has been injected by addInstance()
+		if (isset(self::$nonSingletonInstances[$finalClassName])
+			&& !empty(self::$nonSingletonInstances[$finalClassName])
+		) {
+			return array_shift(self::$nonSingletonInstances[$finalClassName]);
+		}
+
+			// Create new instance and call constructor with parameters
+		if (func_num_args() > 1) {
+			$constructorArguments = func_get_args();
+			array_shift($constructorArguments);
+
+			$reflectedClass = new ReflectionClass($finalClassName);
+			$instance = $reflectedClass->newInstanceArgs($constructorArguments);
 		} else {
-			if (func_num_args() > 1) {
-					// getting the constructor arguments by removing this
-					// method's first argument (the class name)
-				$constructorArguments = func_get_args();
-				array_shift($constructorArguments);
+			$instance = new $finalClassName;
+		}
 
-				$reflectedClass = new ReflectionClass($className);
-				$instance = $reflectedClass->newInstanceArgs($constructorArguments);
-			} else {
-				$instance = new $className;
-			}
-
-			if ($instance instanceof t3lib_Singleton) {
-					// it's a singleton, save the instance for later reuse
-				$instances[$className] = $instance;
-			}
+			// Register new singleton instance
+		if ($instance instanceof t3lib_Singleton) {
+			self::$singletonInstances[$finalClassName] = $instance;
 		}
 
 		return $instance;
@@ -5421,6 +5444,97 @@ final class t3lib_div {
 	 */
 	protected function getClassName($className) {
 		return (class_exists($className) && class_exists('ux_' . $className, FALSE) ? self::getClassName('ux_' . $className) : $className);
+	}
+
+	/**
+	 * Sets the instance of a singleton class to be returned by makeInstance.
+	 *
+	 * If this function is called multiple times for the same $className,
+	 * makeInstance will return the last set instance.
+	 *
+	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
+	 *
+	 * @see makeInstance
+	 * @param string $className
+	 *        the name of the class to set, must not be empty
+	 * @param t3lib_Singleton $instance
+	 *        the instance to set, must be an instance of $className
+	 * @return void
+	 */
+	public static function setSingletonInstance($className, t3lib_Singleton $instance) {
+		self::checkInstanceClassName($className, $instance);
+		self::$singletonInstances[$className] = $instance;
+	}
+
+	/**
+	 * Sets the instance of a non-singleton class to be returned by makeInstance.
+	 *
+	 * If this function is called multiple times for the same $className,
+	 * makeInstance will return the instances in the order in which they have
+	 * been added (FIFO).
+	 *
+	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
+	 *
+	 * @see makeInstance
+	 * @throws InvalidArgumentException if class extends t3lib_Singleton
+	 * @param string $className
+	 *        the name of the class to set, must not be empty
+	 * @param object $instance
+	 *        the instance to set, must be an instance of $className
+	 * @return void
+	 */
+	public static function addInstance($className, $instance) {
+		self::checkInstanceClassName($className, $instance);
+
+		if ($instance instanceof t3lib_Singleton) {
+			throw new InvalidArgumentException(
+				'$instance must not be an instance of t3lib_Singleton. ' .
+					'For setting singletons, please use setSingletonInstance.',
+				1288969325
+			);
+		}
+
+		if (!isset(self::$nonSingletonInstances[$className])) {
+			self::$nonSingletonInstances[$className] = array();
+		}
+		self::$nonSingletonInstances[$className][] = $instance;
+	}
+
+	/**
+	 * Checks that $className is non-empty and that $instance is an instance of
+	 * $className.
+	 *
+	 * @throws InvalidArgumentException if $className is empty or if $instance is no instance of $className
+	 * @param string $className a class name
+	 * @param object $instance an object
+	 * @return void
+	 */
+	protected static function checkInstanceClassName($className, $instance) {
+		if ($className === '') {
+			throw new InvalidArgumentException('$className must not be empty.', 1288967479);
+		}
+		if (!($instance instanceof $className)) {
+			throw new InvalidArgumentException(
+				'$instance must be an instance of ' . $className . ', but actually is an instance of ' . get_class($instance) . '.',
+				1288967686
+			);
+		}
+	}
+
+	/**
+	 * Purge all instances returned by makeInstance.
+	 *
+	 * This function is most useful when called from tearDown in a testcase
+	 * to drop any instances that have been created by the tests.
+	 *
+	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
+	 *
+	 * @see makeInstance
+	 * @return void
+	 */
+	public static function purgeInstances() {
+		self::$singletonInstances = array();
+		self::$nonSingletonInstances = array();
 	}
 
 	/**

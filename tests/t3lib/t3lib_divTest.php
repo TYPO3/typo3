@@ -48,6 +48,10 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
+	public function tearDown() {
+		t3lib_div::purgeInstances();
+	}
+
 
 	///////////////////////////////
 	// Tests concerning validIP
@@ -1816,9 +1820,18 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 
-	//////////////////////////////////
-	// Tests concerning makeInstance
-	//////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Tests concerning makeInstance, setSingletonInstance, addInstance, purgeInstances
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 *
+	 * @expectedException InvalidArgumentException
+	 */
+	public function makeInstanceWithEmptyClassNameThrowsException() {
+		t3lib_div::makeInstance('');
+	}
 
 	/**
 	 * @test
@@ -1883,6 +1896,174 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 		$this->assertSame(
 			t3lib_div::makeInstance($className),
+			t3lib_div::makeInstance($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceCalledTwoTimesForSingletonClassWithPurgeInstancesInbetweenReturnsDifferentInstances() {
+		$className = get_class($this->getMock('t3lib_Singleton'));
+
+		$instance = t3lib_div::makeInstance($className);
+		t3lib_div::purgeInstances();
+
+		$this->assertNotSame(
+			$instance,
+			t3lib_div::makeInstance($className)
+		);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function setSingletonInstanceForEmptyClassNameThrowsException() {
+		$instance = $this->getMock('t3lib_Singleton');
+
+		t3lib_div::setSingletonInstance('', $instance);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function setSingletonInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException() {
+		$instance = $this->getMock('t3lib_Singleton', array('foo'));
+		$singletonClassName = get_class($this->getMock('t3lib_Singleton'));
+
+		t3lib_div::setSingletonInstance($singletonClassName, $instance);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setSingletonInstanceMakesMakeInstanceReturnThatInstance() {
+		$instance = $this->getMock('t3lib_Singleton');
+		$singletonClassName = get_class($instance);
+
+		t3lib_div::setSingletonInstance($singletonClassName, $instance);
+
+		$this->assertSame(
+			$instance,
+			t3lib_div::makeInstance($singletonClassName)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setSingletonInstanceCalledTwoTimesMakesMakeInstanceReturnLastSetInstance() {
+		$instance1 = $this->getMock('t3lib_Singleton');
+		$singletonClassName = get_class($instance1);
+		$instance2 = new $singletonClassName();
+
+		t3lib_div::setSingletonInstance($singletonClassName, $instance1);
+		t3lib_div::setSingletonInstance($singletonClassName, $instance2);
+
+		$this->assertSame(
+			$instance2,
+			t3lib_div::makeInstance($singletonClassName)
+		);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addInstanceForEmptyClassNameThrowsException() {
+		$instance = $this->getMock('foo');
+
+		t3lib_div::addInstance('', $instance);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException() {
+		$instance = $this->getMock('foo', array('bar'));
+		$singletonClassName = get_class($this->getMock('foo'));
+
+		t3lib_div::addInstance($singletonClassName, $instance);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addInstanceWithSingletonInstanceThrowsException() {
+		$instance = $this->getMock('t3lib_Singleton');
+
+		t3lib_div::addInstance(get_class($instance), $instance);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addInstanceMakesMakeInstanceReturnThatInstance() {
+		$instance = $this->getMock('foo');
+		$className = get_class($instance);
+
+		t3lib_div::addInstance($className, $instance);
+
+		$this->assertSame(
+			$instance,
+			t3lib_div::makeInstance($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances() {
+		$instance = $this->getMock('foo');
+		$className = get_class($instance);
+
+		t3lib_div::addInstance($className, $instance);
+
+		$this->assertNotSame(
+			t3lib_div::makeInstance($className),
+			t3lib_div::makeInstance($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder() {
+		$instance1 = $this->getMock('foo');
+		$className = get_class($instance1);
+		t3lib_div::addInstance($className, $instance1);
+
+		$instance2 = new $className();
+		t3lib_div::addInstance($className, $instance2);
+
+		$this->assertSame(
+			$instance1,
+			t3lib_div::makeInstance($className),
+			'The first returned instance does not match the first added instance.'
+		);
+		$this->assertSame(
+			$instance2,
+			t3lib_div::makeInstance($className),
+			'The second returned instance does not match the second added instance.'
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function purgeInstancesDropsAddedInstance() {
+		$instance = $this->getMock('foo');
+		$className = get_class($instance);
+
+		t3lib_div::addInstance($className, $instance);
+		t3lib_div::purgeInstances();
+
+		$this->assertNotSame(
+			$instance,
 			t3lib_div::makeInstance($className)
 		);
 	}
