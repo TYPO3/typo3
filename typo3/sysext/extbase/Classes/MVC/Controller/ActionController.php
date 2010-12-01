@@ -34,6 +34,7 @@
  * @api
  */
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
+
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -383,7 +384,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 		$errorFlashMessage = $this->getErrorFlashMessage();
 		if ($errorFlashMessage !== FALSE) {
-			$this->flashMessages->add($errorFlashMessage);
+			$this->flashMessages->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
 		}
 
 		if ($this->request->hasArgument('__referrer')) {

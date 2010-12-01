@@ -237,5 +237,6 @@ return array(
 	'tx_extbase_validation_validator_textvalidator' => $extensionClassesPath . 'Validation/Validator/TextValidator.php',
 	'tx_extbase_validation_validator_validatorinterface' => $extensionClassesPath . 'Validation/Validator/ValidatorInterface.php',
 	'tx_extbase_basetestcase' => $extensionClassesPath . '../Tests/BaseTestCase.php',
+	'tx_extbase_tests_unit_basetestcase' => $extensionClassesPath . '../Tests/Unit/BaseTestCase.php',
 );
 ?>

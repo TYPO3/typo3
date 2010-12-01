@@ -24,10 +24,17 @@
  * Deprecated. Use <f:flashMessages> instead!
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
+ * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
  */
 class Tx_Fluid_ViewHelpers_RenderFlashMessagesViewHelper extends Tx_Fluid_ViewHelpers_FlashMessagesViewHelper {
 
+	/**
+	 * @return void
+	 */
+	public function initialize() {
+		t3lib_div::logDeprecatedFunction();
+		return parent::initialize();
+	}
 }
 
 ?>

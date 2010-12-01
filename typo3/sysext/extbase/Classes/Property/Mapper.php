@@ -79,7 +79,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	protected $queryFactory;
 
 	/**
-	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver 
+	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
 	 * @return void
 	 */
 	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
@@ -324,7 +324,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 *
 	 * @param string $dataType the data type to fetch
 	 * @param int $uid The object's uid
-	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
+	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
 	// TODO This is duplicated code; see Argument class
 	protected function findObjectByUid($dataType, $uid) {

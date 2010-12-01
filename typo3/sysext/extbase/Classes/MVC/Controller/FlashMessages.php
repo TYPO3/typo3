@@ -38,62 +38,59 @@
 class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 
 	/**
-	 * The array of flash messages
-	 * @var array<string>
-	 */
-	protected $flashMessages = array();
-
-	/**
-	 * If FALSE, flash message container still needs to be initialized.
-	 * @var boolean
-	 */
-	protected $initialized = FALSE;
-
-	/**
-	 * The key from which the flash messages should be retrieved.
-	 * We have to incorporate the PluginKey and the Extension Key in here, to make
-	 * it working when multiple plugins are on the same page.
-	 * @var string
-	 */
-	protected $flashMessageStorageKey = NULL;
-
-	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManager
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
 	 * Add another flash message.
+	 * Severity can be specified and must be one of
+	 *  t3lib_FlashMessage::NOTICE,
+	 *  t3lib_FlashMessage::INFO,
+	 *  t3lib_FlashMessage::OK,
+	 *  t3lib_FlashMessage::WARNING,
+	 *  t3lib_FlashMessage::ERROR
 	 *
 	 * @param string $message
+	 * @param string $title optional message title
+	 * @param integer $severity optional severity code. One of the t3lib_FlashMessage constants
 	 * @return void
 	 * @api
 	 */
-	public function add($message) {
+	public function add($message, $title = '', $severity = t3lib_FlashMessage::OK) {
 		if (!is_string($message)) {
 			throw new InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
 		}
-		$this->initialize();
-		$this->flashMessages[] = $message;
+		$flashMessage = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$message,
+			$title,
+			$severity,
+			TRUE
+		);
+		t3lib_FlashMessageQueue::addMessage($flashMessage);
 	}
 
 	/**
 	 * Get all flash messages currently available.
 	 *
 	 * @return array<string> An array of flash messages
-	 * @api
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Use  Use getAllMessages() instead
 	 */
 	public function getAll() {
-		$this->initialize();
-		return $this->flashMessages;
+		t3lib_div::logDeprecatedFunction();
+		$flashMessages = t3lib_FlashMessageQueue::getAllMessages();
+		$messages = array();
+		foreach ($flashMessages as $flashMessage) {
+			$messages[] = $flashMessage->getMessage();
+		}
+		return $messages;
+	}
+
+	/**
+	 * Get all flash messages currently available.
+	 *
+	 * @return array<t3lib_FlashMessage> An array of flash messages
+	 * @api
+	 * @see t3lib_FlashMessage
+	 */
+	public function getAllMessages() {
+		return t3lib_FlashMessageQueue::getAllMessages();
 	}
 
 	/**
@@ -103,82 +100,36 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @api
 	 */
 	public function flush() {
-		$this->initialize();
-		$this->flashMessages = array();
+		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
 	/**
 	 * Get all flash messages currently available and delete them afterwards.
 	 *
 	 * @return array<string>
-	 * @api
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Use getAllMessagesAndFlush() instead
 	 */
 	public function getAllAndFlush() {
-		$this->initialize();
-		$flashMessages = $this->flashMessages;
-		$this->flashMessages = array();
-		return $flashMessages;
+		t3lib_div::logDeprecatedFunction();
+		$flashMessages = t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		$messages = array();
+		foreach ($flashMessages as $flashMessage) {
+			$messages[] = $flashMessage->getMessage();
+		}
+		return $messages;
 	}
 
 	/**
-	 * Initialize the flash message
+	 * Get all flash messages currently available. And removes them from the session.
+	 *
+	 * @return array<t3lib_FlashMessage> An array of flash messages
+	 * @see t3lib_FlashMessage
+	 * @api
 	 */
-	protected function initialize() {
-		if ($this->initialized) return;
-
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$this->flashMessageStorageKey = 'Tx_Extbase_MVC_Controller_FlashMessages_messages_' . $frameworkConfiguration['extensionName'];
-
-		$flashMessages = $this->loadFlashMessagesFromSession();
-		if (is_array($flashMessages)) {
-			$this->flashMessages = $flashMessages;
-		}
-
-		$this->initialized = TRUE;
+	public function getAllMessagesAndFlush() {
+		return t3lib_FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
-	/**
-	 * Loads the flash messages from the current user session.
-	 */
-	protected function loadFlashMessagesFromSession() {
-		if (TYPO3_MODE === 'FE') {
-			$flashMessages = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->flashMessageStorageKey);
-		} else {
-			$flashMessages = $GLOBALS['BE_USER']->uc[$this->flashMessageStorageKey];
-			$GLOBALS['BE_USER']->writeUC();
-		}
-		return $flashMessages;
-	}
-
-	/**
-	 * Reset the flash messages. Needs to be called at the beginning of a new rendering,
-	 * to account when multiple plugins appear on the same page.
-	 */
-	public function reset() {
-		$this->flashMessages = array();
-		$this->initialized = FALSE;
-		$this->flashMessageStorageKey = NULL;
-	}
-
-	/**
-	 * Persist the flash messages in the session.
-	 */
-	public function persist() {
-		if (!$this->initialized) {
-			return;
-		}
-		if (TYPO3_MODE === 'FE') {
-			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',
-				$this->flashMessageStorageKey,
-				$this->flashMessages
-			);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
-		} else {
-			$GLOBALS['BE_USER']->uc[$this->flashMessageStorageKey] = $this->flashMessages;
-			$GLOBALS['BE_USER']->writeUc();
-		}
-	}
 }
 
 ?>

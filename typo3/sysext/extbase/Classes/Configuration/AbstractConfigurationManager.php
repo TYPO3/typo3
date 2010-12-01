@@ -139,16 +139,17 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
 		}
 
-		if ($extensionName !== NULL) {
-			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
-			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($extensionName, $pluginName);
-		} else {
+		// only merge $this->configuration and override switchableControllerActions when retrieving configuration of the current plugin
+		if ($extensionName === NULL || ($extensionName === $this->extensionName && $pluginName === $this->pluginName)) {
 			$pluginConfiguration = $this->getPluginConfiguration($this->extensionName, $this->pluginName);
 			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
 			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($this->extensionName, $this->pluginName);
 			if (isset($this->configuration['switchableControllerActions'])) {
 				$this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
 			}
+		} else {
+			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
+			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($extensionName, $pluginName);
 		}
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $pluginConfiguration);
 
@@ -184,6 +185,9 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected function overrideSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions) {
 		$overriddenSwitchableControllerActions = array();
 		foreach ($switchableControllerActions as $controllerName => $actions) {
+			if (!isset($frameworkConfiguration['controllerConfiguration'][$controllerName])) {
+				continue;
+			}
 			$overriddenSwitchableControllerActions[$controllerName] = array('actions' => $actions);
 			$nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
 			$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);

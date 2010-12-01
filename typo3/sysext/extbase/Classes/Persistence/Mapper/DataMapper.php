@@ -463,9 +463,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
 				if (is_object($result) && $result instanceof Tx_Extbase_Persistence_QueryResultInterface) {
 					$propertyValue = $result->getFirst();
-					if ($propertyValue === FALSE) {
-						$propertyValue = NULL;
-					}
 				} else {
 					$propertyValue = $result;
 				}

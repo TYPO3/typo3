@@ -83,7 +83,7 @@ class Tx_Extbase_Utility_TypoScript {
 						$typoScriptArray[$key] = $value['_typoScriptNodeValue'];
 						unset($value['_typoScriptNodeValue']);
 					}
-					$typoScriptArray[$key.'.'] = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($value);
+					$typoScriptArray[$key.'.'] = self::convertPlainArrayToTypoScriptArray($value);
 				} else {
 					$typoScriptArray[$key] = $value;
 				}

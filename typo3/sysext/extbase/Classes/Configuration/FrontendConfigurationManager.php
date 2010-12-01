@@ -167,7 +167,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	}
 
 	/**
-	 * Parses the FlexForm content recursivly and converts it to an array
+	 * Parses the FlexForm content and converts it to an array
 	 * The resulting array will be multi-dimensional, as a value "bla.blubb"
 	 * results in two levels, and a value "bla.blubb.bla" results in three levels.
 	 *
@@ -187,20 +187,71 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 			if (!is_array($languages[$languagePointer])) {
 				continue;
 			}
+
 			foreach($languages[$languagePointer] as $valueKey => $valueDefinition) {
 				if (strpos($valueKey, '.') === false) {
-					$settings[$valueKey] = $valueDefinition[$valuePointer];
+					$settings[$valueKey] = $this->walkFlexformNode($valueDefinition, $valuePointer);
 				} else {
 					$valueKeyParts = explode('.', $valueKey);
 					$currentNode =& $settings;
 					foreach ($valueKeyParts as $valueKeyPart) {
 						$currentNode =& $currentNode[$valueKeyPart];
 					}
-					$currentNode = $valueDefinition[$valuePointer];
+					if (is_array($valueDefinition)) {
+						if (array_key_exists($valuePointer, $valueDefinition)) {
+							$currentNode = $valueDefinition[$valuePointer];
+						} else {
+							$currentNode = $this->walkFlexformNode($valueDefinition, $valuePointer);
+						}
+					} else {
+						$currentNode = $valueDefinition;
+					}
 				}
 			}
 		}
 		return $settings;
+	}
+
+	/**
+	 * Parses a flexform node recursively and takes care of sections etc
+	 * @param array $nodeArray The flexform node to parse
+	 * @param string $valuePointer The valuePointer to use for value retrieval
+	 */
+	protected function walkFlexformNode($nodeArray, $valuePointer = 'vDEF') {
+		if (is_array($nodeArray)) {
+			$return = array();
+
+			foreach ($nodeArray as $nodeKey => $nodeValue) {
+				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
+					return $this->walkFlexformNode($nodeValue, $valuePointer);
+				}
+
+				if (substr($nodeKey, 0, 1) === '_') {
+					continue;
+				}
+
+				if (strpos($nodeKey, '.')) {
+					$nodeKeyParts = explode('.', $nodeKey);
+					$currentNode =& $return;
+					for ($i = 0; $i < count($nodeKeyParts) - 1; $i++) {
+						$currentNode =& $currentNode[$nodeKeyParts[$i]];
+					}
+					$newNode = array(next($nodeKeyParts) => $nodeValue);
+					$currentNode = $this->walkFlexformNode($newNode, $valuePointer);
+				} else if (is_array($nodeValue)) {
+					if (array_key_exists($valuePointer, $nodeValue)) {
+						$return[$nodeKey] = $nodeValue[$valuePointer];
+					} else {
+						$return[$nodeKey] = $this->walkFlexformNode($nodeValue, $valuePointer);
+					}
+				} else {
+					$return[$nodeKey] = $nodeValue;
+				}
+			}
+			return $return;
+		}
+
+		return $nodeArray;
 	}
 
 	/**
@@ -218,33 +269,31 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		return $frameworkConfiguration;
 	}
 
-
 	/**
 	 * Overrides the switchable controller actions from the flexform.
 	 *
 	 * @param array $frameworkConfiguration The original framework configuration
 	 * @param array $flexformConfiguration The full flexform configuration
 	 * @return array the modified framework configuration, if needed
-	 * @todo: Check that the controller has been before inside the switchableControllerActions.
 	 */
 	protected function overrideSwitchableControllerActionsFromFlexform(array $frameworkConfiguration, array $flexformConfiguration) {
 		if (!isset($flexformConfiguration['switchableControllerActions']) || is_array($flexformConfiguration['switchableControllerActions'])) {
 			return $frameworkConfiguration;
 		}
 
-		// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+			// As "," is the flexform field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+			// The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
 		$switchableControllerActionPartsFromFlexform = t3lib_div::trimExplode(',', str_replace(';', ',', $flexformConfiguration['switchableControllerActions']), TRUE);
 
 		$newSwitchableControllerActionsFromFlexform = array();
 		foreach ($switchableControllerActionPartsFromFlexform as $switchableControllerActionPartFromFlexform) {
-			list($controller, $action) = explode('->', $switchableControllerActionPartFromFlexform);
+			list($controller, $action) = t3lib_div::trimExplode('->', $switchableControllerActionPartFromFlexform);
 			if (empty($controller) || empty($action)) {
 				throw new Tx_Extbase_Configuration_Exception_ParseError('Controller or action were empty when overriding switchableControllerActions from flexform.', 1257146403);
 			}
 			$newSwitchableControllerActionsFromFlexform[$controller][] = $action;
 		}
-
-		if (count($newSwitchableControllerActionsFromFlexform)) {
+		if (count($newSwitchableControllerActionsFromFlexform) > 0) {
 			$this->overrideSwitchableControllerActions($frameworkConfiguration, $newSwitchableControllerActionsFromFlexform);
 		}
 		return $frameworkConfiguration;

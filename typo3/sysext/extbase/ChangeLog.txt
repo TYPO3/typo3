@@ -1,6 +1,67 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0 Beta 2:
+==========================
+included in TYPO3 4.5.0 Beta 2.
+
+This release includes a whole bunch of bugfixes and refactorings, the most important ones listed below.
+Because the FlashMessages now use t3lib_FlashMessage, TYPO3 4.5 is MANDATORY!
+
+The main changes are:
+
+* Tx_Extbase_MVC_Controller_FlashMessages now internally uses the
+  t3lib_FlashMessageQueue that has been introduced with TYPO3 4.3.
+  This results in following changes:
+  - flashmessages are now treated globally, not in a per-extension-scope. As soon as you output the messages first, the session will be flushed
+  - a flashmessage is not a simple strings anymore, but consists of
+    message body and (optionally) title & severity.
+    You can specify title and severity like this:
+    $this->flashMessages->add('Your message', 'some title', t3lib_FlashMessage::WARNING);
+  - you can now output flashmessages in backend that were set from other TYPO3 classes
+  - a revised flashmessage ViewHelper allows you to render flashmessages in the style
+    of core flashmessages now (see Fluid changelog)
+  - Resolves #10821
+* Configuration Manager can now deal with recurring FlexForm Sections (#6067)
+* Fixed Tx_Extbase_Domain_Model_FrontendUser (and marked the old API as deprecated)
+* Bugfixes related to Lazy Loading
+
+Full Changes for 1.3.0 Beta 2:
+==============================
+[+BUGFIX] Extbase (Persistence): Persistence_Backend::getIdentifierByObject should work with LazyLoadingProxy
+	getIdentifierByObject should check if object is an instance of Tx_Extbase_Persistence_LazyLoadingProxy and should return the
+	identifier of the real object.
+[+BUGFIX] Extbase (Configuration): slightly tweaked FrontendConfigurationManager (basically replaced explode() by t3lib_div::trimExplode() call)
+[+TASK] Extbase (Tests): Added some unit tests for Backend- and FrontendConfigurationManager. To be continued
+[+BUGFIX] Extbase (DomainObject): added default __toString method to Tx_Extbase_DomainObject_AbstractDomainObject. Thanks to Marco Huber. Resolves #8083
+[+BUGFIX] Extbase (MVC): Fixed UriBuilder for handling LazyLoadingProxy objects as arguments. Resolves #10705
+[+TASK] Extbase (Object): re-added Tx_Extbase_Object_Manager to gain more backwards compatibility. This class is marked deprecated and will be removed in Extbase 1.5
+[+BUGFIX] Extbase (Tests): tweaked ObjectContainer tests. Tests are failing deliberately for now
+	The DI implementation has to be rewritten, as discussed.
+	This relates to: #11160
+[+BUGFIX] Extbase (Domain): fixed (non-breaking) method name for getting usergroup in Tx_Extbase_Domain_Model_FrontendUser. Resolves #11019
+[+TASK] extbase (ConfigurationManager): Made FrontendConfigurationManager parse recurring sections in flexforms right. Thanks to Franz Koch (resolves #6067)
+[+BUGFIX] Extbase (Configuration): Slightly tweaked AbstractConfigurationManager
+[+TASK] Extbase (Tests): Added unit tests for AbstractConfigurationManager
+	Note: the ConfigurationManager now always overrides switchableControllerActions
+	when retrieving configuration for the current plugin. Before that only happened
+	when no extensionName/pluginName was specified.
+	Additionally: It's not possible anymore to specify new controllers in
+	switchableControllerAction configuration. That was the intended behavior.
+[+TASK] Extbase (Tests): Renamed test files from "*_testcase.php" to "*Test.php"
+[+TASK] Extbase (Tests): Moving all Tests in "Unit" directory.
+[+FEATURE] Extbase (MVC): add possibility to output FlashMessageQueue (Resolves #10821)
+[+TASK] Extbase (Persistence): counting query results does not work with limit constraints (resolves #10956)	Tx_Extbase_Persistence_Storage_Typo3DbBackend::getObjectCountByQuery() replaces the SELECT part
+	of a query by COUNT(*) before executing a statement.
+	This did not work as expected in some cases, e.g. the LIMIT constraint was ignored by the count query.
+[+TASK] Extbase (Persistence): findOneBy*() methods should return NULL if no item was found (Resolves #10958)
+[+TASK] Extbase (Core): Slightly improved error handling in bootstrap (Resolves #11055)
+[~TASK] Extbase (Utility): Changed Tx_Extbase_Utility_TypoScript:convertPlainArrayToTypoScriptArray to self::convertPlainArrayToTypoScriptArray. Resolves #10538.
+[+BUGFIX] Extbase (MVC): UriBuilder: use current plugin if no pluginName has been specified
+	If multiple plugins are found, that are configured to handle the specified action, Extbase
+	will throw an Exception. Now, this only happens if the *current* plugin does not contain
+	the action.
+
 Changes for 1.3.0 Beta 1a:
 ==========================
 included in TYPO3 4.5.0 Beta 1.

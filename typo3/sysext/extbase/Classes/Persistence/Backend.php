@@ -246,6 +246,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return string The identifier for the object if it is known, or NULL
 	 */
 	public function getIdentifierByObject($object) {
+		if ($object instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+			$object = $object->_loadRealInstance();
+			if (!is_object($object)) {
+				return NULL;
+			}
+		}
 		if ($this->identityMap->hasObject($object)) {
 			return $this->identityMap->getIdentifierByObject($object);
 		} else {

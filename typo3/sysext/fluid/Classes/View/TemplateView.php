@@ -25,7 +25,6 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @scope prototype
  */
 class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 
@@ -176,18 +175,22 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			$templatePathAndFilename = $this->templatePathAndFilename;
 		} else {
 			$actionName = ($actionName !== NULL ? $actionName : $this->controllerContext->getRequest()->getControllerActionName());
-			$actionName = ucfirst($actionName);
 
 			$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 			$found = FALSE;
 			foreach ($paths as &$templatePathAndFilename) {
 				// These tokens are replaced by the Backporter for the graceful fallback in version 4.
-				$fallbackPath = str_replace('@action', strtolower($actionName), $templatePathAndFilename);
-				$templatePathAndFilename = str_replace('@action', $actionName, $templatePathAndFilename);
+				$fallbackPath = str_replace('@action', $actionName, $templatePathAndFilename);
+				$templatePathAndFilename = str_replace('@action', ucfirst($actionName), $templatePathAndFilename);
 				if (file_exists($templatePathAndFilename)) {
 					$found = TRUE;
+					// additional check for deprecated template filename for case insensitive file systems (Windows)
+					$realFileName = basename(realpath($templatePathAndFilename));
+					if ($realFileName !== ucfirst($realFileName)) {
+						t3lib_div::deprecationLog('the template filename "' . t3lib_div::fixWindowsFilePath(realpath($templatePathAndFilename)) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
+					}
 					break;
-				}  elseif (file_exists($fallbackPath)) {
+				} elseif (file_exists($fallbackPath)) {
 					$found = TRUE;
 					$templatePathAndFilename = $fallbackPath;
 					t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');

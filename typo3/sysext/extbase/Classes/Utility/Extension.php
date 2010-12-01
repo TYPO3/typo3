@@ -463,7 +463,8 @@ tt_content.' . $pluginSignature . ' {
 	 * Iterates through the global TypoScript configuration and returns the name of the plugin
 	 * that matches specified extensionName, controllerName and actionName.
 	 * If no matching plugin was found, NULL is returned.
-	 * If more than one plugin matches, an Exception will be thrown
+	 * If more than one plugin matches and the current plugin is not configured to handle the action,
+	 * an Exception will be thrown
 	 *
 	 * @param string $extensionName name of the target extension (UpperCamelCase)
 	 * @param string $controllerName name of the target controller (UpperCamelCase)
@@ -471,7 +472,16 @@ tt_content.' . $pluginSignature . ' {
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
-		// TODO use ConfigurationManager to retrieve controllerConfiguration
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			// check, whether the current plugin is configured to handle the action
+		if ($extensionName === $frameworkConfiguration['extensionName']) {
+			if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
+				&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
+				return $frameworkConfiguration['pluginName'];
+			}
+		}
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'])) {
 			return NULL;
 		}

@@ -89,6 +89,12 @@ class Tx_Extbase_Core_Bootstrap {
 	 * @api
 	 */
 	public function initialize($configuration) {
+		if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
+			throw new RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
+		}
+		if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
+			throw new RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
+		}
 		$this->initializeClassLoader();
 		$this->initializeObjectManager();
 		$this->initializeConfiguration($configuration);
@@ -147,14 +153,13 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	public function configureObjectManager() {
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.']) && is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
-			$objectConfiguration = $typoScriptSetup['config.']['tx_extbase.']['objects.'];
-
-			foreach ($objectConfiguration as $classNameWithDot => $classConfiguration) {
-				if (isset($classConfiguration['className'])) {
-					$originalClassName = substr($classNameWithDot, 0, -1);
-					Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
-				}
+		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+			throw new RuntimeException('Object configuration was not found in "config.tx_extbase.objects". Please make sure, that the TypoScript setup is loaded', 1290623010);
+		}
+		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
+			if (isset($classConfiguration['className'])) {
+				$originalClassName = rtrim($classNameWithDot, '.');
+				Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
 			}
 		}
 	}
@@ -261,7 +266,6 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	protected function resetSingletons() {
 		$this->persistenceManager->persistAll();
-		$this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages')->persist();
 		$this->reflectionService->shutdown();
 	}
 

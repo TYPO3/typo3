@@ -96,7 +96,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 			return NULL;
 		}
 	}
-
+	
 	/**
 	 * Reconstitutes a property. Only for internal use.
 	 *
@@ -135,7 +135,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		}
 		return $properties;
 	}
-
+	
 	/**
 	 * Returns the property value of the given property name. Only for internal use.
 	 *
@@ -163,7 +163,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _memorizeCleanState() {
 	}
-
+	
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution. However, value objects can be never updated.
 	 *
@@ -201,6 +201,15 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function __clone() {
 		$this->_isClone = TRUE;
+	}
+
+	/**
+	 * Returns the class name and the uid of the object as string
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return get_class($this) . ':' . (string)$this->uid;
 	}
 
 }

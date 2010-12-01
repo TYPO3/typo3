@@ -27,7 +27,6 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @scope prototype
  */
 class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 
