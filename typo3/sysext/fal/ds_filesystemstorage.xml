@@ -1,0 +1,27 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<path>
+				<TCEforms>
+					<label>Path:</label>
+					<config>
+						<type>input</type>
+						<size>48</size>
+					</config>
+				</TCEforms>
+			</path>
+			<relative>
+				<TCEforms>
+					<label>Relative to site path:</label>
+					<config>
+						<type>check</type>
+					</config>
+				</TCEforms>
+			</relative>
+		</el>
+	</ROOT>
+</T3DataStructure>
