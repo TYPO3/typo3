@@ -43,6 +43,7 @@
 	* Updated Workspaces extension to version 4.5.0beta2a. See their ChangeLog for details.
 	* Fixed bug #15495: Pagetree fails to reload
 	* Updated Version extension to version 4.5.0beta2a.
+	* Updated Workspaces extension to version 4.5.0beta2b.
 
 2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
 
