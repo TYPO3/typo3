@@ -26,9 +26,8 @@
 }
 
 .x-panel-tbar {
-	background-image: url(images/toolbar/ws-toolbar-background.png);
-	border-bottom: 1px solid #d5d5d5;
-	height: 42px;
+	border-bottom: 1px solid #cdcdcd;
+	padding-bottom: 10px;
 }
 
 .x-panel-body {
@@ -160,10 +159,7 @@
 
 .x-toolbar{
 	border-color:#A2AAB8;
-	background-image: url(images/toolbar/ws-toolbar-t3logo.png);
-	background-repeat:no-repeat;
-	background-position: 50px top;
-	padding: 10px 0 0 146px !important;
+	background:#EFEFF4 url(images/toolbar/bg.gif) repeat-x top left;
 }
 .x-toolbar button {
 	color:#333;
@@ -782,23 +778,18 @@ ul.x-tab-strip-bottom{
 	font-weight:normal;
 }
 
-.x-btn-text {
-	color:#eee !important;
-}
-
 .x-btn {
 	background-color: #d5d5d5;
 	background-image: url('../images/backgrounds/button.png');
 	background-repeat: repeat-x;
-	background-image: -moz-linear-gradient(center top, #707171 10%, #474747 90%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #707171), color-stop(0.9, #474747));
-	background-image: linear-gradient(center top, #707171 10%, #474747 90%);
-	border: 0px solid #7c7c7c;
-	-moz-border-radius: 2px 2px 0 0;
-	-webkit-border-radius: 2px 2px 0 0;
-	border-radius: 2px;
-	color: #dddddd;
-	height: 32px !important;
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	border: 1px solid #7c7c7c;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
+	color: #434343;
 }
 
 .x-btn-icon {
@@ -811,9 +802,9 @@ ul.x-tab-strip-bottom{
 .x-btn-icon.x-btn-over {
 	background-color: #bdbcbc;
 	background-image: url('../images/backgrounds/button-hover.png');
-	background-image: -moz-linear-gradient(center top, #9c9c9c 10%, #6a6a6a 90%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #9c9c9c), color-stop(0.9, #6a6a6a));
-	background-image: linear-gradient(center top, #9c9c9c 10%, #6a6a6a 90%);
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #bdbcbc));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
 	border-color: #737f91;
 	color: #1e1e1e;
 }
@@ -889,6 +880,11 @@ ul.x-tab-strip-bottom{
 
 .x-btn-group-notitle .x-btn-group-tc {
 	background-image: url(images/button/group-tb.gif);
+}
+.x-toolbar{
+	border-color:#A2AAB8;
+	background-color:#EFEFF4;
+	background-image:url(images/toolbar/bg.gif);
 }
 
 .x-toolbar td,.x-toolbar span,.x-toolbar input,.x-toolbar div,.x-toolbar select,.x-toolbar label{
