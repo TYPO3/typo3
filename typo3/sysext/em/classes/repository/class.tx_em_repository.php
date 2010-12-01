@@ -119,16 +119,10 @@ class tx_em_Repository {
 	 * @return  void
 	 */
 	function __construct($uid = 0) {
-		if ($uid === 0) {
-			// default repository
-			$this->setTitle('TYPO3.org Main Repository');
-			$this->setId('1');
-			$this->setPriority(1);
-			$this->setDescription('Main repository on typo3.org. For extension download there are mirrors available.');
-			$this->setMirrorListUrl('http://repositories.typo3.org/mirrors.xml.gz');
-			$this->setWsdlUrl('http://typo3.org/wsdl/tx_ter_wsdl.php');
+		$row = tx_em_Database::getRepositoryByUID($uid);
+		if (is_null($row)) {
+			$this->fixMainRepository();
 		} else {
-			$row = tx_em_Database::getRepositoryByUID($uid);
 			$this->setTitle($row['title']);
 			$this->setId($row['uid']);
 			$this->setPriority(1);
@@ -137,7 +131,6 @@ class tx_em_Repository {
 			$this->setLastUpdate($row['lastUpdated']);
 			$this->setExtensionCount($row['extCount']);
 		}
-
 	}
 
 	/**
@@ -389,6 +382,21 @@ class tx_em_Repository {
 	 */
 	public function removeMirrors() {
 		unset($this->mirrors);
+	}
+
+	/**
+	 * Insert main repository if not present
+	 *
+	 * @return void
+	 */
+	protected function fixMainRepository() {
+		$this->setTitle('TYPO3.org Main Repository');
+		$this->setId('1');
+		$this->setPriority(1);
+		$this->setDescription('Main repository on typo3.org. For extension download there are mirrors available.');
+		$this->setMirrorListUrl('http://repositories.typo3.org/mirrors.xml.gz');
+		$this->setWsdlUrl('http://typo3.org/wsdl/tx_ter_wsdl.php');
+		tx_em_Database::insertRepository($this);
 	}
 }
 

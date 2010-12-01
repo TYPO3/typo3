@@ -36,13 +36,6 @@ class tx_em_Extensions_List {
 
 	protected $parentObject;
 
-	/**
-	 * Instance of EM API
-	 *
-	 * @var tx_em_API
-	 */
-	protected $api;
-
 	protected $categories;
 	protected $types;
 
@@ -54,7 +47,6 @@ class tx_em_Extensions_List {
 	 */
 	public function __construct($parentObject = NULL) {
 		$this->parentObject = $parentObject;
-		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
 
 		$this->categories = array(
@@ -86,7 +78,7 @@ class tx_em_Extensions_List {
 		$list = array();
 
 		if (!$new) {
-			$cat = $this->parentObject->defaultCategories;
+			$cat = tx_em_Tools::getDefaultCategory();
 
 			$path = PATH_typo3 . 'sysext/';
 			$this->getInstExtList($path, $list, $cat, 'S');
@@ -184,7 +176,8 @@ class tx_em_Extensions_List {
 	 */
 	public function singleExtInfo($extKey, $path, &$list, $type = '') {
 		if (@is_file($path . $extKey . '/ext_emconf.php')) {
-			$relPath = '../../../../' . substr($path, strlen(PATH_site));
+			$relPath = '../' . substr($path, strlen(PATH_site));
+			$directLink = 'mod.php?M=tools_em';
 			$emConf = tx_em_Tools::includeEMCONF($path . $extKey . '/ext_emconf.php', $extKey);
 			$manual = $path . $extKey . '/doc/manual.sxw';
 			if ($type === '') {
@@ -193,6 +186,8 @@ class tx_em_Extensions_List {
 			if (is_array($emConf)) {
 				$key = count($list);
 				$loaded = t3lib_extMgm::isLoaded($extKey);
+
+
 				if (is_array($list[$key])) {
 					$list[$key] = array('doubleInstall' => $list[$key]['doubleInstall']);
 				}
@@ -210,37 +205,22 @@ class tx_em_Extensions_List {
 				$list[$key]['title'] = htmlspecialchars($list[$key]['title']);
 				$list[$key]['description'] = htmlspecialchars($list[$key]['description']);
 				$list[$key]['files'] = t3lib_div::getFilesInDir($path . $extKey, '', 0, '', $this->excludeForPackaging);
-				$list[$key]['install'] = $loaded ? '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
-					'CMD[showExt]' => $extKey,
-					'CMD[remove]' => 1,
-					'CMD[clrCmd]' => 1,
-					'SET[singleDetails]' => 'info'
-				))) . '">' . tx_em_Tools::removeButton() . '</a>' :
-						'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
-							'CMD[showExt]' => $extKey,
-							'CMD[load]' => 1,
-							'CMD[clrCmd]' => 1,
-							'SET[singleDetails]' => 'info'
-						))) . '">' . tx_em_Tools::installButton() . '</a>';
+				//$list[$key]['install'] = $loaded ? tx_em_Tools::removeButton() : tx_em_Tools::installButton();
 
-				$list[$key]['install'] = $loaded ? tx_em_Tools::removeButton() : tx_em_Tools::installButton();
-
-				$list[$key]['download'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
-					'CMD[doBackup]' => 1,
-					'SET[singleDetails]' => 'backup',
-					'CMD[showExt]' => $extKey
-				))) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-system-extension-download') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:download') . '" alt=""></a>';
+				$list[$key]['download'] = '<a href="' . htmlspecialchars(
+					$directLink .'&CMD[doBackup]=1&SET[singleDetails]=backup&CMD[showExt]=' . $extKey
+				) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:download') . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-system-extension-download') . '</a>';
 
 				$list[$key]['doc'] = '';
 				if (@is_file($manual)) {
-					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '" target="_blank">
-					<img src="res/icons/oodoc.gif" width="13" height="16" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '" alt="" /></a>';
+					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '">'
+						. t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>';
 				}
 				$list[$key]['icon'] = @is_file($path . $extKey . '/ext_icon.gif') ? '<img src="' . $relPath . $extKey . '/ext_icon.gif" alt="" width="16" height="16" />' : '<img src="clear.gif" alt="" width="16" height="16" />';
 
 				$list[$key]['categoryShort'] = $list[$key]['category'];
-				$list[$key]['category'] = $this->categories[$list[$key]['category']];
+				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
 
 				unset($list[$key]['_md5_values_when_last_written']);
 			}
@@ -466,6 +446,8 @@ EXTENSION KEYS:
 	 * @return	string		HTML <tr> content
 	 */
 	function extensionListRow($extKey, $extInfo, $cells, $bgColorClass = '', $inst_list = array(), $import = 0, $altLinkUrl = '') {
+		$stateColors = tx_em_Tools::getStateColors();
+
 		// Icon:
 		$imgInfo = @getImageSize(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . '/ext_icon.gif');
 		if (is_array($imgInfo)) {
@@ -552,7 +534,7 @@ EXTENSION KEYS:
 						'</a></td>';
 
 				// Manual download
-				$fileP = PATH_site . tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
+				$fileP = tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
 				$cells[] = '<td nowrap="nowrap">' .
 						(tx_em_Tools::typePath($extInfo['type']) && @is_file($fileP) ?
 								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath . '../' .
@@ -603,7 +585,7 @@ EXTENSION KEYS:
 				$cells[] = '<td nowrap="nowrap">' . $this->api->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . ($extInfo['downloadcounter_all'] ? $extInfo['downloadcounter_all'] : '&nbsp;&nbsp;') . '/' . ($extInfo['downloadcounter'] ? $extInfo['downloadcounter'] : '&nbsp;') . '</td>';
 			}
-			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $this->parentObject->stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->parentObject->states[$extInfo['EM_CONF']['state']] . '</td>';
+			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->parentObject->states[$extInfo['EM_CONF']['state']] . '</td>';
 		}
 
 		// show a different background through a different class for insecure (-1) extensions,
@@ -695,7 +677,7 @@ EXTENSION KEYS:
 						}
 					}
 				}
-				//TODO: $extInfo is unknown in this context
+
 				$content .= '<tr class="bgColor4"><td valign="top">' . $icon . '</td>' .
 						'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates'
 							? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:write_protected') . '</span>'
@@ -705,7 +687,7 @@ EXTENSION KEYS:
 						'<td valign="top">' . $name . '</td>' .
 						'<td valign="top" align="right">' . $data[EM_CONF][version] . '</td>' .
 						'<td valign="top" align="right">' . $lastversion . '</td>' .
-						'<td valign="top" nowrap="nowrap">' . $this->api->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</strong>' : '') . '</td>' .
+						'<td valign="top" nowrap="nowrap">' . $this->api->typeLabels[$data['type']] . (strlen($data['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($data['doubleInstall']) . '</strong>' : '') . '</td>' .
 						'<td valign="top">' . $comment . '</td></tr>' . LF .
 						$warn .
 						'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>' . LF;
@@ -723,7 +705,7 @@ EXTENSION KEYS:
 	 */
 	function prepareImportExtList($unsetProc = false) {
 		$list = array();
-		$cat = $this->parentObject->defaultCategories;
+		$cat = tx_em_Tools::getDefaultCategory();
 		$filepath = $this->parentObject->getMirrorURL();
 
 		foreach ($this->parentObject->xmlhandler->extensionsXML as $extKey => $data) {

@@ -71,6 +71,31 @@ final class tx_em_Tools {
 	);
 
 	/**
+	 * Colors for states
+	 *
+	 * @var array
+	 */
+	protected static $stateColors = array(
+		'alpha' => '#d12438',
+		'beta' => '#97b17e',
+		'stable' => '#3bb65c',
+		'experimental' => '#007eba',
+		'test' => '#979797',
+		'obsolete' => '#000000',
+		'excludeFromUpdates' => '#cf7307'
+	);
+
+	/**
+	 * Gets the stateColor array
+	 *
+	 * @static
+	 * @return array
+	 */
+	public static function getStateColors() {
+		return self::$stateColors;
+	}
+
+	/**
 	 * Unzips a zip file in the given path.
 	 *
 	 * Uses unzip binary if available, otherwise a pure PHP unzip is used.

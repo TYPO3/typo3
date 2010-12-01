@@ -345,10 +345,17 @@ class tx_em_Connection_Ter {
 
 		$soap = t3lib_div::makeInstance('tx_em_Connection_Soap');
 		$soap->init(array('wsdl' => $this->wsdlURL, 'soapoptions' => array('trace' => 1, 'exceptions' => 0)));
-		$response = $soap->call('uploadExtension', array('accountData' => $accountData, 'extensionData' => $extensionData, 'filesData' => $filesData));
+		$response = $soap->call(
+			'uploadExtension',
+			array(
+				'accountData' => $accountData,
+				'extensionData' => $extensionData,
+				'filesData' => $filesData
+			)
+		);
 
-		if ($response===false) {
-			switch (true) {
+		if ($response === FALSE) {
+			switch (TRUE) {
 				case is_string($soap->error):
 					return $soap->error;
 					break;

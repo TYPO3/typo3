@@ -100,13 +100,14 @@ final class tx_em_Database {
 		);
 		$ret['count'] = count($temp);
 		$ret['results'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*, count(*) versions, max(intversion) maxintversion',
+			'*, count(*) AS versions, max(intversion) AS maxintversion',
 			'cache_extensions',
 			'repository=' . intval($repository) . $andWhere,
 			'extkey',
 			$order,
 			$limit
 		);
+
 		return $ret;
 	}
 
@@ -131,17 +132,19 @@ final class tx_em_Database {
 	 * @return  void
 	 */
 	public function updateRepository(tx_em_Repository $repository) {
+		$repositoryData = array(
+			'title' => $repository->getTitle(),
+			'description' => $repository->getDescription(),
+			'wsdl_url' => $repository->getWsdlUrl(),
+			'mirror_url' => $repository->getMirrorListUrl(),
+			'lastUpdated' => $repository->getLastUpdate(),
+			'extCount' => $repository->getExtensionCount(),
+		);
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 			self::TABLE_REPOSITORY,
 			'uid=' . $repository->getId(),
-			array(
-				'title' => $repository->getTitle(),
-				'description' => $repository->getDescription(),
-				'wsdl_url' => $repository->getWsdlUrl(),
-				'mirror_url' => $repository->getMirrorListUrl(),
-				'lastUpdated' => $repository->getLastUpdate(),
-				'extCount' => $repository->getExtensionCount(),
-			));
+			$repositoryData
+		);
 
 	}
 
@@ -154,15 +157,18 @@ final class tx_em_Database {
 	 * @return  integer  UID of the newly inserted repository object
 	 */
 	public function insertRepository(tx_em_Repository $repository) {
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery(self::TABLE_REPOSITORY,
-			array(
-				'title' => $repository->getId(),
-				'description' => $repository->getDescription(),
-				'wsdl_url' => $repository->getWsdlUrl(),
-				'mirror_url' => $repository->getMirrorListUrl(),
-				'lastUpdated' => $repository->getLastUpdate(),
-				'extCount' => $repository->getExtensionCount(),
-			));
+		$repositoryData = array(
+			'title' => $repository->getTitle(),
+			'description' => $repository->getDescription(),
+			'wsdl_url' => $repository->getWsdlUrl(),
+			'mirror_url' => $repository->getMirrorListUrl(),
+			'lastUpdated' => $repository->getLastUpdate(),
+			'extCount' => $repository->getExtensionCount(),
+		);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			self::TABLE_REPOSITORY,
+			$repositoryData
+		);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	}
 

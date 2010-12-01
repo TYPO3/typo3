@@ -412,7 +412,7 @@ class tx_em_Install {
 				}
 			}
 		}
-		if ($depError || $depIgnore) {
+		if (($depError || $depIgnore) && $this->parentObject instanceof SC_mod_tools_em_index) {
 			$content .= $this->parentObject->doc->section(
 				$GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'),
 				implode('<br />', $msg), 0, 1, 2

@@ -573,7 +573,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_type');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_type', $headerCol);
-			$dataCol = $this->api->typeLabels[$extInfo['type']] . ' - <em>' . $this->parentObject->typeDescr[$extInfo['type']] . '</em>';
+			$dataCol = $this->api->typeLabels[$extInfo['type']] . ' - <em>' . $this->api->typeDescr[$extInfo['type']] . '</em>';
 			$lines[] = array($headerCol, $dataCol);
 
 
@@ -665,7 +665,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				if (!t3lib_div::inList($this->parentObject->nameSpaceExceptions, $extKey)) {
 					$dataCol = t3lib_utility_Debug::viewarray($techInfo['NSerrors']);
 				} else {
-					$dataCol = $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'));
+					$dataCol = tx_em_Tools::dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'));
 				}
 
 			}

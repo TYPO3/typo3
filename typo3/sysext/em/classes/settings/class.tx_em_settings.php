@@ -105,7 +105,7 @@ class tx_em_Settings implements t3lib_Singleton {
 				'translations' => $GLOBALS['LANG']->getLL('menu_translation_handling'),
 				'settings' => $GLOBALS['LANG']->getLL('menu_settings'),
 				'updates' => $GLOBALS['LANG']->getLL('menu_extension_updates'),
-				'extensionmanager' => 'New Extension Manager',
+				'extensionmanager' => 'New Extension manager (beta2)', //$GLOBALS['LANG']->getLL('header'),
 				'develop' => $GLOBALS['LANG']->getLL('menu_extension_develop'),
 			),
 			'listOrder' => array(

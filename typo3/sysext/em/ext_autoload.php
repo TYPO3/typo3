@@ -51,8 +51,8 @@ return array(
 	'tx_em_translations' => $emClassesPath . 'translations/class.tx_em_translations.php',
 
 
-	//'tx_em_develop' => $emClassesPath . 'class.tx_em_develop.php',
-	//'tx_em_extensionmanager' => $emClassesPath . 'class.tx_em_extensionmanager.php',
+	'tx_em_develop' => $emClassesPath . 'class.tx_em_develop.php',
+	'tx_em_extensionmanager' => $emClassesPath . 'class.tx_em_extensionmanager.php',
 
 );
 ?>

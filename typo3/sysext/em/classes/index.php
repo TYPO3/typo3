@@ -76,37 +76,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 	var $states = array(); // Extension States; see init()
 
-	/**
-	 * Internal variable loaded with extension categories (for display/listing). Should reflect $categories above
-	 * Dynamic var.
-	 */
-	var $defaultCategories = array(
-		'cat' => array(
-		'be' => array(),
-		'module' => array(),
-		'fe' => array(),
-		'plugin' => array(),
-		'misc' => array(),
-		'services' => array(),
-		'templates' => array(),
-		'example' => array(),
-		'doc' => array()
-		)
-	);
-
-	/**
-	 * Colors for extension states
-	 */
-	var $stateColors = array(
-		'alpha' => '#d12438',
-		'beta' => '#97b17e',
-		'stable' => '#3bb65c',
-		'experimental' => '#007eba',
-		'test' => '#979797',
-		'obsolete' => '#000000',
-		'excludeFromUpdates' => '#cf7307'
-	);
-
 	var $detailCols = array(
 		0 => 2,
 		1 => 5,
@@ -150,7 +119,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	protected $api;
 
 	/**
-	 * instance of TER connection handler
+	 * Instance of TER connection handler
 	 *
 	 * @var tx_em_Connection_Ter
 	 */
@@ -206,6 +175,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @var tx_em_Install
 	 */
 	public $install;
+
+	/**
+	 * Settings object
+	 *
+	 * @var tx_em_Settings
+	 */
+	public $settings;
 
 
 	var $JScode; // JavaScript code to be forwared to $this->doc->JScode
@@ -284,6 +260,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->lookUpStr = trim(t3lib_div::_GP('lookUp'));
 		$this->listRemote = t3lib_div::_GP('ter_connect');
 		$this->listRemote_search = trim(t3lib_div::_GP('ter_search'));
+		$this->noDocHeader = intval(t3lib_div::_GP('nodoc') > 0);
 
 		$this->settings = t3lib_div::makeInstance('tx_em_Settings');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
@@ -400,13 +377,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			// MENU-ITEMS:
 		$this->MOD_MENU = $this->settings->MOD_MENU;
 
-			// temporary unset new modules
-		unset ($this->MOD_MENU['function']['extensionmanager'], $this->MOD_MENU['function']['develop']);
-		/*
 		if (!intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'])) {
 			unset ($this->MOD_MENU['function']['develop']);
 		}
-        */
 
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
 
@@ -484,7 +457,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			$this->content .= $menu ? $this->doc->section('', '<form action="' . $this->script . '" method="post" name="pageform"><span class="nobr">' . $menu . '</span></form>') : '';
 
-			switch ($this->MOD_SETTINGS['function']) {
+
+			$view = $this->MOD_SETTINGS['function'];
+			if (t3lib_div::_GP('view')) {
+					// temporary overwrite the view with GP var. Used from ExtJS without changing the submodule
+				$view = t3lib_div::_GP('view');
+			}
+
+			switch ($view) {
 				case 'loaded_list':
 					// Lists loaded (installed) extensions
 					$headline = $GLOBALS['LANG']->getLL('loaded_exts');
@@ -540,21 +520,24 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$this->content .= '</form>';
 		}
 
-		// Setting up the buttons and markers for docheader
-		$docHeaderButtons = $this->getButtons();
-		$markers = array(
-			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => $this->getFuncMenu(),
-			'CONTENT' => $this->content
-		);
+		if (!$this->noDocHeader) {
+			// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers = array(
+				'CSH' => $docHeaderButtons['csh'],
+				'FUNC_MENU' => $this->getFuncMenu(),
+				'CONTENT' => $this->content
+			);
 
-		// Build the <body> for the module
-		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			// Build the <body> for the module
+			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		}
 			// Renders the module page
 		$this->content = $this->doc->render(
 			'Extension Manager',
 			$this->content
-		);
+	    );
+
 	}
 
 	/**
@@ -2167,7 +2150,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 					' return false;"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
-						$this->api->typeLabels[$extInfo['type']],
+						$this->typeLabels[$extInfo['type']],
 						substr($absPath, strlen(PATH_site))
 					) . '</a>';
 			$content .= '<br /><br />' . $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_changes') . '<br />

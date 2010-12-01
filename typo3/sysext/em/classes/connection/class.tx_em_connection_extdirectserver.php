@@ -102,6 +102,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string $content
 	 */
 	public function getExtensionList() {
+		/** @var $list tx_em_Extensions_List */
 		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
 		$extList = $list->getInstalledExtensions(TRUE);
 
@@ -155,6 +156,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string $content
 	 */
 	public function getExtensionDetails() {
+		/** @var $list tx_em_Extensions_List */
 		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
 		$extList = $list->getInstalledExtensions(TRUE);
 
@@ -177,7 +179,9 @@ class tx_em_Connection_ExtDirectServer {
 			$path = t3lib_extMgm::extPath($extKey);
 			$ext = array();
 
+			/** @var $install tx_em_Install */
 			$install = t3lib_div::makeInstance('tx_em_Install');
+			/** @var $extension tx_em_Extensions_List */
 			$extension = t3lib_div::makeInstance('tx_em_Extensions_List');
 			$extension->singleExtInfo($extKey, $path, $ext);
 			$ext = $ext[0];
@@ -260,21 +264,24 @@ class tx_em_Connection_ExtDirectServer {
 
 		foreach ($files as $key => $file) {
 			$fileExt = strtolower(substr($file, strrpos($file, '.') + 1));
-			if (in_array($fileExt, $imageTypes)) {
-				$cls = 'tree-image';
-			} elseif (in_array($fileExt, $editTypes)) {
-				$cls = 'tree-edit';
+			if (in_array($fileExt, $imageTypes) || in_array($fileExt, $editTypes)) {
+				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass($fileExt);
+				$type = in_array($fileExt, $imageTypes) ? 'image' : 'text';
 			} else {
-				$cls = 'tree-unknown';
+				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('');
+
 			}
+
 			$fileArray[] = array(
 				'id' => $node . '/' . $file,
 				'text' => htmlspecialchars($file),
 				'leaf' => true,
 				'qtip' => $fileExt . ' - file',
-				'iconCls' => $cls
+				'iconCls' => $cls,
+				'fileType' => $type
 			);
 		}
+
 		return $fileArray;
 	}
 
@@ -370,7 +377,8 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string $content
 	 */
 	public function getRemoteExtensionList($parameters) {
-		$repositoryId = $this->getSettingsObject()->getSelectedRepository();
+		$repositoryId = $parameters->repository;
+		$mirrorUrl = $this->getMirrorUrl($repositoryId);
 
 		$search = $parameters->query;
 		$limit = $parameters->start . ', ' . $parameters->limit;
@@ -395,6 +403,16 @@ class tx_em_Connection_ExtDirectServer {
 			$limit
 		);
 
+			//TODO: compare with local extensions to decide for import/upload/no action
+
+			// transform array
+		foreach ($list['results'] as $key => $value) {
+			$list['results'][$key]['dependencies'] = unserialize($value['dependencies']);
+			$extPath = t3lib_div::strtolower($value['extkey']);
+			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $value['version'] . '.gif" />';
+			$list['results'][$key]['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
+
+		}
 
 		return array(
 			'length' => $list['count'],
@@ -409,13 +427,13 @@ class tx_em_Connection_ExtDirectServer {
 	 *
 	 * @return array
 	 */
-	public function repositoryUpdateLoad() {
+	public function getRepositories() {
 		$settings = $this->getSettings();
 		$repositories = tx_em_Database::getRepositories();
 		foreach ($repositories as $uid => $repository) {
 			$data[] = array(
 				'title' => $repository['title'],
-				'value' => $repository['uid'],
+				'uid' => $repository['uid'],
 				'description' => $repository['description'],
 				'wsdl_url' => $repository['wsdl_url'],
 				'mirror_url' => $repository['mirror_url'],
@@ -432,6 +450,55 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 	/**
+	 * Get Mirrors for selected repository
+	 *
+	 * @param  object $parameter
+	 * @return array
+	 */
+	public function getMirrors($parameter) {
+		$data = array();
+		/** @var $objRepository tx_em_Repository */
+		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $parameter->repository);
+		//debug(array($objRepository->getMirrorListUrl(),$objRepository->getId(), $settings['selectedRepository']));
+		if ($objRepository->getMirrorListUrl()) {
+			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
+			$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
+
+
+			if (count($mirrors)) {
+				$data = array(
+					array(
+						'title' => 'Random (recommended)',
+						'country' => '',
+						'host' => '',
+						'path' => '',
+						'sponsor' => '',
+						'link' => '',
+						'logo' => '',
+					)
+				);
+				foreach ($mirrors as $mirror) {
+					$data[] = array(
+						'title' => $mirror['title'],
+						'country' => $mirror['country'],
+						'host' => $mirror['host'],
+						'path' => $mirror['path'],
+						'sponsor' => $mirror['sponsorname'],
+						'link' => $mirror['sponsorlink'],
+						'logo' => $mirror['sponsorlogo'],
+					);
+				}
+			}
+		}
+
+		return array(
+			'length' => count($data),
+			'data' => $data,
+		);
+
+	}
+
+	/**
 	 * Edit / Create repository
 	 *
 	 * @formHandler
@@ -439,32 +506,62 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function repositoryEditFormSubmit($parameter) {
-		return array(
-			'success' => TRUE,
-			'data' => array(
-				'params' => $parameter
-			),
+		//debug($parameter);
+		$error = FALSE;
+		/** @var $repository tx_em_Repository */
+		$repository = t3lib_div::makeInstance('tx_em_Repository', $parameter['rep']);
+		$repository->setTitle($parameter['title']);
+		$repository->setDescription($parameter['description']);
+		$repository->setWsdlUrl($parameter['wsdl_url']);
+		$repository->setMirrorListUrl($parameter['mirror_url']);
+		$repositoryData = array(
+			'title' => $repository->getTitle(),
+			'description' => $repository->getDescription(),
+			'wsdl_url' => $repository->getWsdlUrl(),
+			'mirror_url' => $repository->getMirrorListUrl(),
+			'lastUpdated' => $repository->getLastUpdate(),
+			'extCount' => $repository->getExtensionCount(),
 		);
+		//debug($repositoryData);
+
+		if ($parameter['rep'] == 0) {
+			// create a new repository
+			$id = tx_em_Database::insertRepository($repository);
+			return array(
+				'success' => TRUE,
+				'newId' => $id,
+				'params' => $repositoryData
+			);
+
+		} else {
+			tx_em_Database::updateRepository($repository);
+			return array(
+				'success' => TRUE,
+				'params' => $repositoryData
+			);
+		}
+
+
+
 	}
 
 	/**
 	 * Update repository
 	 *
-	 * @formHandler
-	 *
 	 * @param array $parameter
 	 * @return array
 	 */
-	public function repositoryUpdate($parameter) {
-		//debug($parameter);
-		if (!intval($parameter['rep'])) {
+	public function repositoryUpdate($repositoryId) {
+
+		if (!intval($repositoryId)) {
 			return array(
 				'success' => FALSE,
-				'errors' => 'no repository choosen'
+				'errors' => 'no repository choosen',
+				'rep' => 0
 			);
 		}
 
-		$objRepository = t3lib_div::makeInstance('tx_em_Repository', intval($parameter['rep']));
+		$objRepository = t3lib_div::makeInstance('tx_em_Repository', intval($repositoryId));
 		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 		$count = $objRepositoryUtility->updateExtList();
 
@@ -477,12 +574,14 @@ class tx_em_Connection_ExtDirectServer {
 				'success' => TRUE,
 				'data' => array(
 					'count' => $count
-				)
+				),
+				'rep' =>  intval($repositoryId)
 			);
 		} else {
 			return array(
 				'success' => FALSE,
-				'errormsg' => 'Your repository is up to date.'
+				'errormsg' => 'Your repository is up to date.',
+				'rep' =>  intval($repositoryId)
 			);
 		}
 	}
@@ -508,11 +607,11 @@ class tx_em_Connection_ExtDirectServer {
 		$lang = array();
 		foreach ($theLanguages as $language) {
 			$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:lang_' . $language));
-			$flag = @is_file(PATH_typo3 . 'gfx/flags/' . $language . '.gif') ? 'gfx/flags/' . $language . '.gif' : 'gfx/flags/unknown.gif';
+			$cls =  t3lib_iconWorks::getSpriteIconClasses('flags-' . $language);
 			$lang[] = array(
 				'label' => $label,
 				'lang' => $language,
-				'flag' => $flag,
+				'cls' => $cls,
 				'selected' => in_array($language, $selected) ? 1 : 0
 			);
 		}
@@ -714,6 +813,37 @@ class tx_em_Connection_ExtDirectServer {
 		tx_em_Tools::refreshGlobalExtList();
 		$install->forceDBupdates($extensionKey, $newExtensionList[$extensionKey]);
 	}
+
+	/**
+	 * Gets the mirror url from selected mirror
+	 *
+	 * @param  $repositoryId
+	 * @return string
+	 */
+	protected function getMirrorUrl($repositoryId) {
+		$settings = $this->getSettings();
+		/** @var $objRepository  tx_em_Repository */
+		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $repositoryId);
+		/** @var $objRepositoryUtility  tx_em_Repository_Utility */
+		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
+		$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
+
+
+		if ($settings['selectedMirror'] == '') {
+			$randomMirror = array_rand($mirrors);
+			$mirrorUrl = $mirrors[$randomMirror]['host'] . $mirrors[$randomMirror]['path'];
+		} else {
+			foreach($mirrors as $mirror) {
+				if ($mirror['host'] == $settings['selectedMirror']) {
+					$mirrorUrl = $mirror['host'] . $mirror['path'];
+					break;
+				}
+			}
+		}
+
+		return 'http://' . $mirrorUrl;
+	}
+
 }
 
 ?>

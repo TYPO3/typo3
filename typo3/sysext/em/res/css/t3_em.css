@@ -1,0 +1,120 @@
+/* Global overwrite */
+strong {
+	font-weight: bold;
+}
+/* Extension list */
+.x-grid3-col-col-title {
+	font-weight: bold;
+	padding: 5px;
+}
+.x-grid3-col-col-title img {
+	vertical-align: middle;
+}
+
+/* extension states */
+.state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
+.state-beta div {background-color:#97b17e;color:#fff !important;font-weight:bold !important;}
+.state-stable div {background-color:#3bb65c;color:#fff !important;font-weight:bold !important;}
+.state-experimental div {background-color:#007eba;color:#fff !important;font-weight:bold !important;}
+.state-test div {background-color:#979797;color:#fff !important;font-weight:bold !important;}
+.state-obsolete div {background-color:#000000;color:#fff !important;font-weight:bold !important;}
+.state-excludeFromUpdates div {background-color:#cf7307;color:#fff !important;font-weight:bold !important;}
+
+img.installExtension, img.removeExtension {
+	cursor: pointer;
+}
+
+/* Repository Update Form */
+.em-repupdate {
+	margin: 5px 0 10px 0;
+	padding: 5px;
+}
+
+/* Translation Handling */
+.saveMessage {
+	font-weight: bold;
+	padding: 10px 5px 0 5px;
+}
+.x-progress-text {text-align: left;}
+
+/* File Editor */
+.editareapanel {
+	padding: 0 !important;
+	-moz-user-select: text;
+	-khtml-user-select: text;
+	-webkit-user-select: text;
+}
+#editarea-context_help::selection, #editarea-context_help::-moz-selection {
+	background: #ffb7b7 !important;
+}
+
+
+.x-btn-filebrowser { background-image:url(../icons/filebrowser.png) !important; }
+.x-tree-node-leaf img.tree-image { background-image:url(../icons/image.png); }
+.x-btn-cancel { background-image:url(../icons/cancel.png) !important;}
+.x-btn-drive { background-image:url(../icons/drive.png) !important;}
+.x-btn-server { background-image:url(../icons/server.png) !important;}
+.x-btn-flag { background-image:url(../icons/flag.png) !important;}
+.x-btn-tools { background-image:url(../icons/tools.png) !important;}
+.x-btn-settings { background-image:url(../icons/settings.png) !important;}
+
+
+/*
+ * FileUploadField component styles
+ */
+.x-form-file-wrap {
+    position: relative;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file {
+	position: absolute;
+	right: 0;
+	-moz-opacity: 0;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file-btn {
+	position: absolute;
+	right: 0;
+	z-index: 1;
+}
+.x-form-file-wrap .x-form-file-text {
+    position: absolute;
+    left: 0;
+    z-index: 3;
+    color: #777;
+}
+
+/*
+ * Settings
+ */
+ .h1Panel {
+ 	margin: 0 0 5px 0 !important;
+ }
+ .panelDescription {
+ 	margin: 15px 0;
+ }
+
+.em-info {
+	margin: 10px;
+}
+
+
+.extvalidinfo ul {
+	list-style: disc;
+	margin: 5px 20px;
+}
+
+.em-extlist-extinfo {
+	line-height: 14px;
+}
+
+.em-extlist-extinfo label,
+.em-info label {
+	vertical-align: none;
+	display: inline-block;
+	width: 100px;
+	font-weight: bold;
+}
