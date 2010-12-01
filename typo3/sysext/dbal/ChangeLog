@@ -1,5 +1,6 @@
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed use of undefined variable $mapping in method map_subquery()
 	* Follow-up for bug #16392: Native tables could not be retrieved anymore
 
 2010-11-18  Xavier Perseguers  <typo3@perseguers.ch>
