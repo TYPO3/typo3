@@ -1,5 +1,6 @@
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16463: Bug: Custom configured modules can't be enabled for non-admins (Thanks to Bastian Waidelich)
 	* Fixed bug #16091: ExtDirect calls get cached with domain resulting in "unable to connect to the server" exceptions (Thanks to Andreas Kiessling)
 
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>

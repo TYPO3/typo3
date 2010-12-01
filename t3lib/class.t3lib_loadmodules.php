@@ -247,7 +247,11 @@ class t3lib_loadModules {
 		if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
 			$obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
 			if (is_callable($obj)) {
-				return call_user_func($obj, $name, $fullpath);
+				$MCONF = call_user_func($obj, $name, $fullpath);
+				if ($this->checkModAccess($name, $MCONF) !== TRUE) {
+					return FALSE;
+				}
+				return $MCONF;
 			}
 		}
 
