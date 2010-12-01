@@ -22,6 +22,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Module 'DBAL Debug' for the 'dbal' extension.
  *
@@ -590,8 +591,6 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php']);
 }
-
-
 
 
 	// Make instance:

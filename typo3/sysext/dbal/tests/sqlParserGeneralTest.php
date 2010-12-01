@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 require_once('BaseTestCase.php');
@@ -267,13 +267,13 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 */
 	public function canParseExtendedInsert() {
 		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
-			"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+				"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
 
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
 		$expected = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'), ('2', '0', '9', '0', 'Oceania'), " .
-			"('3', '0', '19', '0', 'Americas'), ('4', '0', '142', '0', 'Asia')";
+				"('3', '0', '19', '0', 'Americas'), ('4', '0', '142', '0', 'Asia')";
 		$this->assertEquals($expected, $insert);
 	}
 
@@ -518,6 +518,30 @@ class sqlParserGeneralTest extends BaseTestCase {
 
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=16501
+	 */
+	public function indexMayBeCreatedOnMultipleColumns() {
+		$sql = '
+			CREATE TABLE sys_registry (
+				uid int(11) unsigned NOT NULL auto_increment,
+				entry_namespace varchar(128) DEFAULT \'\' NOT NULL,
+				entry_key varchar(128) DEFAULT \'\' NOT NULL,
+				entry_value blob,
+				PRIMARY KEY (uid),
+				UNIQUE KEY entry_identifier (entry_namespace,entry_key)
+			)
+		';
+		$parseString = $sql;
+
+		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
+		$this->assertTrue(is_array($createTables), $createTables);
+
+		$actual = $this->fixture->_callRef('compileCREATETABLE', $createTables);
+		$this->assertEquals($this->cleanSql($sql), $this->cleanSql($actual[0]));
 	}
 
 	/**
@@ -779,4 +803,5 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 }
+
 ?>

@@ -1,4 +1,8 @@
-2010-12-01  Jigal van Hemert <jigal@xs4all.nl>
+2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL to version 1.2.0beta2
+
+2010-12-01  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16591 The new Swift Mailer should be used by TYPO3 for sending all kinds of mail
 

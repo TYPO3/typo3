@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 require_once('BaseTestCase.php');
@@ -52,21 +52,21 @@ class dbOracleTest extends BaseTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-			// Backup DBAL configuration
+		// Backup DBAL configuration
 		$this->dbalConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
-			// Backup database connection
+		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
-			// Reconfigure DBAL to use Oracle
+		// Reconfigure DBAL to use Oracle
 		require('fixtures/oci8.config.php');
 
-		$className =  self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className;
 		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 
-			// Initialize a fake Oracle connection
+		// Initialize a fake Oracle connection
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
 
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
@@ -76,11 +76,11 @@ class dbOracleTest extends BaseTestCase {
 	 * Cleans up the environment after running a test.
 	 */
 	public function tearDown() {
-			// Clear DBAL-generated cache files
+		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
-			// Restore DBAL configuration
+		// Restore DBAL configuration
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'] = $this->dbalConfig;
-			// Restore DB connection
+		// Restore DB connection
 		$GLOBALS['TYPO3_DB'] = $this->db;
 	}
 
@@ -168,7 +168,7 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function canCompileExtendedInsert() {
 		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
-			"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+				"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
 		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseINSERT', $parseString);
 
 		$this->assertTrue(is_array($components), $components);
@@ -216,16 +216,16 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'pages',
-			'pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 '
-			. 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 '
-			. 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR '
-			. 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'
+				'pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 '
+						. 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 '
+						. 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR '
+						. 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'
 		));
 		$expected = 'SELECT * FROM "pages" WHERE "pid" = 0 AND "pages"."deleted" = 0 AND "pages"."hidden" = 0 '
-			. 'AND "pages"."starttime" <= 1281620460 AND ("pages"."endtime" = 0 OR "pages"."endtime" > 1281620460) '
-			. 'AND NOT "pages"."t3ver_state" > 0 AND "pages"."doktype" < 200 AND ("pages"."fe_group" = \'\' '
-			. 'OR "pages"."fe_group" IS NULL OR "pages"."fe_group" = \'0\' OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,0,%\' '
-			. 'OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,-1,%\')';
+				. 'AND "pages"."starttime" <= 1281620460 AND ("pages"."endtime" = 0 OR "pages"."endtime" > 1281620460) '
+				. 'AND NOT "pages"."t3ver_state" > 0 AND "pages"."doktype" < 200 AND ("pages"."fe_group" = \'\' '
+				. 'OR "pages"."fe_group" IS NULL OR "pages"."fe_group" = \'0\' OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,0,%\' '
+				. 'OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,-1,%\')';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -238,11 +238,11 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function selectQueryIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'uid',					// select fields
-			'tt_content',			// from table
-			'pid=1',				// where clause
-			'cruser_id',			// group by
-			'tstamp'				// order by
+			'uid', // select fields
+			'tt_content', // from table
+			'pid=1', // where clause
+			'cruser_id', // group by
+			'tstamp' // order by
 		));
 		$expected = 'SELECT "uid" FROM "tt_content" WHERE "pid" = 1 GROUP BY "cruser_id" ORDER BY "tstamp"';
 		$this->assertEquals($expected, $query);
@@ -264,9 +264,9 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function distinctFieldIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'COUNT(DISTINCT pid)',	// select fields
-			'tt_content',			// from table
-			'1=1'					// where clause
+			'COUNT(DISTINCT pid)', // select fields
+			'tt_content', // from table
+			'1=1' // where clause
 		));
 		$expected = 'SELECT COUNT(DISTINCT "pid") FROM "tt_content" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
@@ -314,8 +314,8 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'sys_refindex, tx_dam_file_tracking',
-			'sys_refindex.tablename = \'tx_dam_file_tracking\''
-			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
+				'sys_refindex.tablename = \'tx_dam_file_tracking\''
+						. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
 		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
@@ -331,8 +331,8 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'content',
 			'cache_hash',
-			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash') .
-				' AND (crdate + lifetime >= ' . $currentTime . ' OR lifetime = 0)'
+				'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash') .
+						' AND (crdate + lifetime >= ' . $currentTime . ' OR lifetime = 0)'
 		));
 		$expected = 'SELECT "content" FROM "cache_hash" WHERE "identifier" = \'abbbabaf2d4b3f9a63e8dde781f1c106\' AND ("crdate"+"lifetime" >= ' . $currentTime . ' OR "lifetime" = 0)';
 		$this->assertEquals($expected, $query);
@@ -347,7 +347,7 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'identifier',
 			'cachingframework_cache_pages',
-			'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+				'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
 		));
 		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
 		$this->assertEquals($expected, $query);
@@ -378,10 +378,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function tablesAndFieldsAreRemappedInMultipleJoins() {
 		$selectFields = '*';
-		$fromTables   = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
-		$whereClause  = '1=1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
+		$whereClause = '1=1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -399,10 +399,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function fieldWithinSqlFunctionIsRemapped() {
 		$selectFields = 'tstamp, script, SUM(exec_time) AS calc_sum, COUNT(*) AS qrycount, MAX(errorFlag) AS error';
-		$fromTables   = 'tx_dbal_debuglog';
-		$whereClause  = '1=1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tx_dbal_debuglog';
+		$whereClause = '1=1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -417,10 +417,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function tableAndFieldWithinSqlFunctionIsRemapped() {
 		$selectFields = 'MAX(tt_news_cat.uid) AS biggest_id';
-		$fromTables   = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign';
-		$whereClause  = 'tt_news_cat_mm.uid_local > 50';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign';
+		$whereClause = 'tt_news_cat_mm.uid_local > 50';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -438,11 +438,11 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function concatAfterLikeOperatorIsRemapped() {
 		$selectFields = '*';
-		$fromTables   = 'sys_refindex, tx_dam_file_tracking';
-		$whereClause  = 'sys_refindex.tablename = \'tx_dam_file_tracking\''
-							. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'sys_refindex, tx_dam_file_tracking';
+		$whereClause = 'sys_refindex.tablename = \'tx_dam_file_tracking\''
+				. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -458,10 +458,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function fieldIsMappedOnRightSideOfAJoinCondition() {
 		$selectFields = 'cpg_categories.uid, cpg_categories.name';
-		$fromTables   = 'cpg_categories, pages';
-		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
-		$groupBy      = '';
-		$orderBy      = 'cpg_categories.pos';
+		$fromTables = 'cpg_categories, pages';
+		$whereClause = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
+		$groupBy = '';
+		$orderBy = 'cpg_categories.pos';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -477,10 +477,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function fieldFromAliasIsRemapped() {
 		$selectFields = 'news.uid';
-		$fromTables   = 'tt_news AS news';
-		$whereClause  = 'news.uid = 1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news AS news';
+		$whereClause = 'news.uid = 1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -498,10 +498,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function fieldFromAliasIsRemappedWithoutBeingTricked() {
 		$selectFields = 'tt_news_cat.uid';
-		$fromTables   = 'tt_news AS tt_news_cat';
-		$whereClause  = 'tt_news_cat.uid = 1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news AS tt_news_cat';
+		$whereClause = 'tt_news_cat.uid = 1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -516,19 +516,19 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function aliasRemappingDoesNotAlterFurtherQueries() {
 		$selectFields = 'foo.uid';
-		$fromTables   = 'tt_news AS foo';
-		$whereClause  = 'foo.uid = 1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news AS foo';
+		$whereClause = 'foo.uid = 1';
+		$groupBy = '';
+		$orderBy = '';
 
-			// First call to possibly alter (in memory) the mapping from localconf.php
+		// First call to possibly alter (in memory) the mapping from localconf.php
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 
 		$selectFields = 'uid';
-		$fromTables   = 'foo';
-		$whereClause  = 'uid = 1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'foo';
+		$whereClause = 'uid = 1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -543,12 +543,12 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function fieldFromAliasInJoinIsRemapped() {
 		$selectFields = 'cat.uid, cat_mm.uid_local, news.uid';
-		$fromTables   = 'tt_news_cat AS cat' .
-			' INNER JOIN tt_news_cat_mm AS cat_mm ON cat.uid = cat_mm.uid_foreign' .
-			' INNER JOIN tt_news AS news ON news.uid = cat_mm.uid_local';
-		$whereClause  = '1=1';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news_cat AS cat' .
+				' INNER JOIN tt_news_cat_mm AS cat_mm ON cat.uid = cat_mm.uid_foreign' .
+				' INNER JOIN tt_news AS news ON news.uid = cat_mm.uid_local';
+		$whereClause = '1=1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -567,10 +567,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function aliasRemappingWithInSubqueryDoesNotAffectMainQuery() {
 		$selectFields = 'foo.uid';
-		$fromTables   = 'tt_news AS foo INNER JOIN tt_news_cat_mm ON tt_news_cat_mm.uid_local = foo.uid';
-		$whereClause  = 'tt_news_cat_mm.uid_foreign IN (SELECT foo.uid FROM tt_news_cat AS foo WHERE foo.hidden = 0)';
-		$groupBy      = '';
-		$orderBy      = 'foo.uid';
+		$fromTables = 'tt_news AS foo INNER JOIN tt_news_cat_mm ON tt_news_cat_mm.uid_local = foo.uid';
+		$whereClause = 'tt_news_cat_mm.uid_foreign IN (SELECT foo.uid FROM tt_news_cat AS foo WHERE foo.hidden = 0)';
+		$groupBy = '';
+		$orderBy = 'foo.uid';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -578,7 +578,7 @@ class dbOracleTest extends BaseTestCase {
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat_mm"."local_uid"="foo"."news_uid"';
 		$expected .= ' WHERE "ext_tt_news_cat_mm"."uid_foreign" IN (';
-		$expected .= 	'SELECT "foo"."cat_uid" FROM "ext_tt_news_cat" AS "foo" WHERE "foo"."hidden" = 0';
+		$expected .= 'SELECT "foo"."cat_uid" FROM "ext_tt_news_cat" AS "foo" WHERE "foo"."hidden" = 0';
 		$expected .= ')';
 		$expected .= ' ORDER BY "foo"."news_uid"';
 		$this->assertEquals($expected, $query);
@@ -590,10 +590,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function aliasRemappingWithExistsSubqueryDoesNotAffectMainQuery() {
 		$selectFields = 'foo.uid';
-		$fromTables   = 'tt_news AS foo INNER JOIN tt_news_cat_mm ON tt_news_cat_mm.uid_local = foo.uid';
-		$whereClause  = 'EXISTS (SELECT foo.uid FROM tt_news_cat AS foo WHERE foo.hidden = 0)';
-		$groupBy      = '';
-		$orderBy      = 'foo.uid';
+		$fromTables = 'tt_news AS foo INNER JOIN tt_news_cat_mm ON tt_news_cat_mm.uid_local = foo.uid';
+		$whereClause = 'EXISTS (SELECT foo.uid FROM tt_news_cat AS foo WHERE foo.hidden = 0)';
+		$groupBy = '';
+		$orderBy = 'foo.uid';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -601,7 +601,7 @@ class dbOracleTest extends BaseTestCase {
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat_mm"."local_uid"="foo"."news_uid"';
 		$expected .= ' WHERE EXISTS (';
-		$expected .= 	'SELECT "foo"."cat_uid" FROM "ext_tt_news_cat" AS "foo" WHERE "foo"."hidden" = 0';
+		$expected .= 'SELECT "foo"."cat_uid" FROM "ext_tt_news_cat" AS "foo" WHERE "foo"."hidden" = 0';
 		$expected .= ')';
 		$expected .= ' ORDER BY "foo"."news_uid"';
 		$this->assertEquals($expected, $query);
@@ -613,22 +613,22 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function aliasRemappingSupportsNestedSubqueries() {
 		$selectFields = 'foo.uid';
-		$fromTables   = 'tt_news AS foo';
-		$whereClause  = 'uid IN (' .
-			'SELECT foobar.uid_local FROM tt_news_cat_mm AS foobar WHERE uid_foreign IN (' .
+		$fromTables = 'tt_news AS foo';
+		$whereClause = 'uid IN (' .
+				'SELECT foobar.uid_local FROM tt_news_cat_mm AS foobar WHERE uid_foreign IN (' .
 				'SELECT uid FROM tt_news_cat WHERE deleted = 0' .
-			'))';
-		$groupBy      = '';
-		$orderBy      = '';
+				'))';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' WHERE "news_uid" IN (';
-		$expected .= 	'SELECT "foobar"."local_uid" FROM "ext_tt_news_cat_mm" AS "foobar" WHERE "uid_foreign" IN (';
-		$expected .=		'SELECT "cat_uid" FROM "ext_tt_news_cat" WHERE "deleted" = 0';
-		$expected .=	')';
+		$expected .= 'SELECT "foobar"."local_uid" FROM "ext_tt_news_cat_mm" AS "foobar" WHERE "uid_foreign" IN (';
+		$expected .= 'SELECT "cat_uid" FROM "ext_tt_news_cat" WHERE "deleted" = 0';
+		$expected .= ')';
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
@@ -639,10 +639,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function remappingDoesNotMixUpAliasesInSubquery() {
 		$selectFields = 'pages.uid';
-		$fromTables   = 'tt_news AS pages INNER JOIN tt_news_cat_mm AS cat_mm ON cat_mm.uid_local = pages.uid';
-		$whereClause  = 'pages.pid IN (SELECT uid FROM pages WHERE deleted = 0 AND cat_mm.uid_local != 100)';
-		$groupBy      = '';
-		$orderBy      = 'pages.uid';
+		$fromTables = 'tt_news AS pages INNER JOIN tt_news_cat_mm AS cat_mm ON cat_mm.uid_local = pages.uid';
+		$whereClause = 'pages.pid IN (SELECT uid FROM pages WHERE deleted = 0 AND cat_mm.uid_local != 100)';
+		$groupBy = '';
+		$orderBy = 'pages.uid';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -650,7 +650,7 @@ class dbOracleTest extends BaseTestCase {
 		$expected = 'SELECT "pages"."news_uid" FROM "ext_tt_news" AS "pages"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" AS "cat_mm" ON "cat_mm"."local_uid"="pages"."news_uid"';
 		$expected .= ' WHERE "pages"."pid" IN (';
-		$expected .= 	'SELECT "page_uid" FROM "my_pages" WHERE "deleted" = 0 AND "cat_mm"."local_uid" != 100';
+		$expected .= 'SELECT "page_uid" FROM "my_pages" WHERE "deleted" = 0 AND "cat_mm"."local_uid" != 100';
 		$expected .= ')';
 		$expected .= ' ORDER BY "pages"."news_uid"';
 		$this->assertEquals($expected, $query);
@@ -708,14 +708,14 @@ class dbOracleTest extends BaseTestCase {
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'tt_content',
-			'uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' .
-				' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)' .
-				' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)' .
-				' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'' .
-				' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'' .
-				' OR tt_content.fe_group=\'0\')' .
-				' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'' .
-				' OR tt_content.fe_group=\'-1\'))'
+				'uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' .
+						' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)' .
+						' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)' .
+						' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'' .
+						' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'' .
+						' OR tt_content.fe_group=\'0\')' .
+						' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'' .
+						' OR tt_content.fe_group=\'-1\'))'
 		));
 		$expected = 'SELECT * FROM "tt_content"';
 		$expected .= ' WHERE "uid" IN (62) AND "tt_content"."deleted" = 0 AND "tt_content"."t3ver_state" <= 0';
@@ -848,10 +848,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function subqueryIsRemappedForInWhereClause() {
 		$selectFields = '*';
-		$fromTables   = 'tx_crawler_queue';
-		$whereClause  = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tx_crawler_queue';
+		$whereClause = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -868,13 +868,13 @@ class dbOracleTest extends BaseTestCase {
 		$currentTime = time();
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery(
 			'cachingframework_cache_hash_tags',
-			'identifier IN (' .
-				$GLOBALS['TYPO3_DB']->SELECTsubquery(
-					'identifier',
-					'cachingframework_cache_pages',
-					'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
-				) .
-			')'
+				'identifier IN (' .
+						$GLOBALS['TYPO3_DB']->SELECTsubquery(
+							'identifier',
+							'cachingframework_cache_pages',
+								'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+						) .
+						')'
 		));
 		$expected = 'DELETE FROM "cachingframework_cache_hash_tags" WHERE "identifier" IN (';
 		$expected .= 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
@@ -893,18 +893,18 @@ class dbOracleTest extends BaseTestCase {
 				$GLOBALS['TYPO3_DB']->SELECTsubquery(
 					'identifier',
 					'cachingframework_cache_pages',
-					'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+						'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
 				) .
-			')';
+				')';
 
-			// Perform remapping (as in method exec_DELETEquery)
+		// Perform remapping (as in method exec_DELETEquery)
 		if ($tableArray = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table)) {
-				// Where clause:
+			// Where clause:
 			$whereParts = $GLOBALS['TYPO3_DB']->SQLparser->parseWhereClause($where);
 			$GLOBALS['TYPO3_DB']->_callRef('map_sqlParts', $whereParts, $tableArray[0]['table']);
 			$where = $GLOBALS['TYPO3_DB']->SQLparser->compileWhereClause($whereParts, FALSE);
 
-				// Table name:
+			// Table name:
 			if ($GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName']) {
 				$table = $GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName'];
 			}
@@ -925,13 +925,13 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'tx_crawler_process',
-			'active = 0 AND NOT EXISTS (' .
-				$GLOBALS['TYPO3_DB']->SELECTsubquery(
-					'*',
-					'tx_crawler_queue',
-					'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)'
-				) .
-			')'
+				'active = 0 AND NOT EXISTS (' .
+						$GLOBALS['TYPO3_DB']->SELECTsubquery(
+							'*',
+							'tx_crawler_queue',
+							'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)'
+						) .
+						')'
 		));
 		$expected = 'SELECT * FROM "tx_crawler_process" WHERE "active" = 0 AND NOT EXISTS (';
 		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_process"."process_id" AND "tx_crawler_queue"."exec_time" = 0';
@@ -945,16 +945,16 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function subqueryIsRemappedForExistsWhereClause() {
 		$selectFields = '*';
-		$fromTables   = 'tx_crawler_process';
-		$whereClause  = 'active = 0 AND NOT EXISTS (' .
-			$GLOBALS['TYPO3_DB']->SELECTsubquery(
-				'*',
-				'tx_crawler_queue',
-				'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0'
-			) .
-		')';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tx_crawler_process';
+		$whereClause = 'active = 0 AND NOT EXISTS (' .
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
+					'*',
+					'tx_crawler_queue',
+					'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0'
+				) .
+				')';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -976,10 +976,10 @@ class dbOracleTest extends BaseTestCase {
 	public function caseStatementIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'process_id, CASE active' .
-				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
-				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
-				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') .
-			' END AS number',
+					' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
+					' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
+					' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') .
+					' END AS number',
 			'tx_crawler_process',
 			'1=1'
 		));
@@ -996,11 +996,11 @@ class dbOracleTest extends BaseTestCase {
 				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
 				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
 				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') .
-			' END AS number';
-		$fromTables   = 'tx_crawler_process';
-		$whereClause  = '1=1';
-		$groupBy      = '';
-		$orderBy      = '';
+				' END AS number';
+		$fromTables = 'tx_crawler_process';
+		$whereClause = '1=1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -1019,11 +1019,11 @@ class dbOracleTest extends BaseTestCase {
 				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') .
 				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') .
 				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') .
-			' END AS number';
-		$fromTables   = 'tx_crawler_process, tt_news';
-		$whereClause  = '1=1';
-		$groupBy      = '';
-		$orderBy      = '';
+				' END AS number';
+		$fromTables = 'tx_crawler_process, tt_news';
+		$whereClause = '1=1';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -1040,9 +1040,9 @@ class dbOracleTest extends BaseTestCase {
 	public function locateStatementIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
-				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
-				' ELSE 1' .
-			' END AS scope',
+					' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
+					' ELSE 1' .
+					' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'
 		));
@@ -1057,9 +1057,9 @@ class dbOracleTest extends BaseTestCase {
 	public function locateStatementWithPositionIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
-				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
-				' ELSE 1' .
-			' END AS scope',
+					' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
+					' ELSE 1' .
+					' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'
 		));
@@ -1101,10 +1101,10 @@ class dbOracleTest extends BaseTestCase {
 	 */
 	public function findInSetFieldIsProperlyRemapped() {
 		$selectFields = 'fe_group';
-		$fromTables   = 'tt_news';
-		$whereClause  = 'FIND_IN_SET(10, fe_group)';
-		$groupBy      = '';
-		$orderBy      = '';
+		$fromTables = 'tt_news';
+		$whereClause = 'FIND_IN_SET(10, fe_group)';
+		$groupBy = '';
+		$orderBy = '';
 
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
@@ -1141,4 +1141,5 @@ class dbOracleTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 }
+
 ?>
