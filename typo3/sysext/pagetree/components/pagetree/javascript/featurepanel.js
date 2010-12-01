@@ -173,8 +173,10 @@ TYPO3.Components.PageTree.FeaturePanel = Ext.extend(Ext.Panel, {
 			// Only call the server if the server implements getNodeTypes();
 			this.pageTree.dataProvider.getNodeTypes(function(response) {
 				var length = response.length;
+				var item = null;
 				for (var i = 0; i < length; ++i) {
-					newNodeToolbar.addItem(response[i]);
+					item = new Ext.Toolbar.Button(response[i]);
+					newNodeToolbar.addItem(item);
 				}
 				newNodeToolbar.doLayout();
 			});
@@ -182,7 +184,6 @@ TYPO3.Components.PageTree.FeaturePanel = Ext.extend(Ext.Panel, {
 
 		this.pageTree.dataProvider.getSpriteIconClasses('actions-page-new', function(result) {
 			var topPanelButton = new Ext.Button({
-				//text: 'filter',
 				cls: 'topPanel-button ' + result
 			});
 
@@ -191,7 +192,7 @@ TYPO3.Components.PageTree.FeaturePanel = Ext.extend(Ext.Panel, {
 	},
 
 	/**
-	 * Adds a language selection menu to the topbar
+	 * Adds a language selection menu to the top bar
 	 * @internal
 	 */
 	addLanguageSelection: function() {
@@ -217,9 +218,9 @@ TYPO3.Components.PageTree.FeaturePanel = Ext.extend(Ext.Panel, {
 			var topPanelButton = new Ext.Button({
 				cls: 'topPanel-button ' + result,
 				listeners: {
-					scope: this.pageTree,
+					scope: this.pageTree.tree,
 					'click': {
-						fn: this.pageTree.refreshTree
+						fn: this.pageTree.tree.refreshTree
 					}
 				}
 			});

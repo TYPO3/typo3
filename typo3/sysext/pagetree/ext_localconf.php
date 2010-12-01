@@ -3,13 +3,12 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-	// pagetree user default configuration
+	// context menu user default configuration
 $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
-	options.pageTree.doktypesToShowInNewPageDragArea = 1,3,4,6,7,199,254
-';
+	options.pageTree {
+		doktypesToShowInNewPageDragArea = 1,3,4,6,7,199,254
+	}
 
-	// contextmenu user default configuration
-$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 	options.contextMenu {
 		defaults {
 		}
@@ -19,9 +18,9 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 				100 = ITEM
 				100 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.viewPage
-					outerIcon = actions-document-view
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.viewPage
+					spriteIcon = actions-document-view
+					displayCondition = canBeViewed != 0
+					callbackAction = viewPage
 				}
 
 				200 = DIVIDER
@@ -29,41 +28,41 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 				300 = ITEM
 				300 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.disablePage
-					outerIcon = actions-edit-hide
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.disablePage
+					spriteIcon = actions-edit-hide
+					displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
+					callbackAction = disablePage
 				}
 
 				400 = ITEM
 				400 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.enablePage
-					outerIcon = actions-edit-unhide
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.enablePage
+					spriteIcon = actions-edit-unhide
+					displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
+					callbackAction = enablePage
 				}
 
 				500 = ITEM
 				500 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.editPageProperties
-					outerIcon = actions-document-open
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.editPageProperties
+					spriteIcon = actions-document-open
+					displayCondition = canBeEdited != 0
+					callbackAction = editPageProperties
 				}
 
 				600 = ITEM
 				600 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.info
-					outerIcon = actions-document-info
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.openInfoPopUp
+					spriteIcon = actions-document-info
+					displayCondition = canShowInfo != 0
+					callbackAction = openInfoPopUp
 				}
 
 				700 = ITEM
 				700 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.history
-					outerIcon = apps-pagetree-page-default+status-overlay-timing
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.openHistoryPopUp
+					spriteIcon = actions-document-history-open
+					displayCondition = canShowHistory != 0
+					callbackAction = openHistoryPopUp
 				}
 
 				800 = DIVIDER
@@ -75,9 +74,9 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 					100 = ITEM
 					100 {
 						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.newPage
-						outerIcon = actions-document-new
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.newPageWizard
+						spriteIcon = actions-document-new
+						displayCondition = canCreateNewPages != 0
+						callbackAction = newPageWizard
 					}
 
 					200 = DIVIDER
@@ -85,43 +84,59 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 					300 = ITEM
 					300 {
 						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.cutPage
-						outerIcon = actions-edit-cut
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						spriteIcon = actions-edit-cut
+						displayCondition = isInCutMode = 0 && canBeCut != 0
+						callbackAction = enableCutMode
 					}
 
 					400 = ITEM
 					400 {
-						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.copyPage
-						outerIcon = actions-edit-copy
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.cutPage
+						spriteIcon = actions-edit-cut-release
+						displayCondition = isInCutMode = 1 && canBeCut != 0
+						callbackAction = disableCutMode
 					}
 
 					500 = ITEM
 					500 {
-						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.pasteIntoPage
-						outerIcon = actions-document-paste-after
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.copyPage
+						spriteIcon = actions-edit-copy
+						displayCondition = isInCopyMode = 0 && canBeCopied != 0
+						callbackAction = enableCopyMode
 					}
 
 					600 = ITEM
 					600 {
-						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.pasteAfterPage
-						outerIcon = actions-document-paste-into
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.copyPage
+						spriteIcon = actions-edit-copy-release
+						displayCondition = isInCopyMode = 1 && canBeCopied != 0
+						callbackAction = disableCopyMode
 					}
 
-					700 = DIVIDER
+					700 = ITEM
+					700 {
+						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.pasteIntoPage
+						spriteIcon = actions-document-paste-after
+						displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1
+						callbackAction = pasteIntoNode
+					}
 
 					800 = ITEM
 					800 {
+						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.pasteAfterPage
+						spriteIcon = actions-document-paste-into
+						displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1
+						callbackAction = pasteAfterNode
+					}
+
+					900 = DIVIDER
+
+					1000 = ITEM
+					1000 {
 						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.deletePage
-						outerIcon = actions-edit-delete
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						spriteIcon = actions-edit-delete
+						displayCondition = canBeRemoved != 0
+						callbackAction = removeNode
 					}
 				}
 
@@ -132,9 +147,9 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 					100 = ITEM
 					100 {
 						label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.tempMountPoint
-						outerIcon = actions-system-extension-documentation
-						icon =
-						callbackAction = TYPO3.Components.PageTree.ContextMenuActions.stub
+						spriteIcon = actions-system-extension-documentation
+						displayCondition = canBeTemporaryMountPoint != 0
+						callbackAction = stub
 					}
 				}
 			}
@@ -145,33 +160,29 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 				100 = ITEM
 				100 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.renameFolder
-					outerIcon = actions-edit-rename
-					icon =
-					callbackAction = TYPO3.Widget.ContextMenu.FolderActions.renameFolder
+					spriteIcon = actions-edit-rename
+					callbackAction = renameFolder
 				}
 
 				200 = ITEM
 				200 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.uploadFilesToFolder
-					outerIcon = actions-edit-upload
-					icon =
-					callbackAction = TYPO3.Widget.ContextMenu.FolderActions.uploadFilesToFolder
+					spriteIcon = actions-edit-upload
+					callbackAction = uploadFilesToFolder
 				}
 
 				300 = ITEM
 				300 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.createFolder
-					outerIcon = actions-edit-add
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.createFolder
+					spriteIcon = actions-edit-add
+					callbackAction = createFolder
 				}
 
 				400 = ITEM
 				400 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.folderInfo
-					outerIcon = actions-document-info
-					icon =
-					callbackAction = TYPO3.Widget.ContextMenu.FolderActions.openInfoPopUp
+					spriteIcon = actions-document-info
+					callbackAction = openInfoPopUp
 				}
 
 				500 = DIVIDER
@@ -179,25 +190,22 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 				600 = ITEM
 				600 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.copyFolder
-					outerIcon = actions-edit-copy
-					icon =
-					callbackAction = TYPO3.Widget.ContextMenu.FolderActions.copyFolder
+					spriteIcon = actions-edit-copy
+					callbackAction = copyFolder
 				}
 
 				700 = ITEM
 				700 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.cutFolder
-					outerIcon = actions-edit-cut
-					icon =
-					callbackAction = TYPO3.Widget.ContextMenu.FolderActions.cutFolder
+					spriteIcon = actions-edit-cut
+					callbackAction = cutFolder
 				}
 
 				800 = ITEM
 				800 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.pasteIntoFolder
-					outerIcon = actions-document-paste-after
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.pasteIntoFolder
+					spriteIcon = actions-document-paste-after
+					callbackAction = pasteIntoFolder
 				}
 
 				900 = DIVIDER
@@ -205,9 +213,8 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 				1000 = ITEM
 				1000 {
 					label = LLL:EXT:pagetree/locallang_contextmenu.xml:cm.deleteFolder
-					outerIcon = actions-edit-delete
-					icon =
-					callbackAction = TYPO3.Components.PageTree.ContextMenuActions.deleteFolder
+					spriteIcon = actions-edit-delete
+					callbackAction = deleteFolder
 				}
 			}
 		}

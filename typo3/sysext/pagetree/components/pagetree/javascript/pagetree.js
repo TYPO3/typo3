@@ -1,81 +1,34 @@
-Ext.namespace('TYPO3.Components.PageTree');
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2010 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 /**
- * This is the TreeNodeUI for the FilteringTree. This is the class which renders
- * the tree nodes.
- * The below modifications add another span tag around the icon for better skinning,
- * and a prefix text which is displayed in front of the real "text" contents.
- * Because the "text" property can be edited inline, the "prefixText" is used to
- * prepend the editable text.
+ * TYPO3 Page Tree Application
  */
-TYPO3.Components.PageTree.PageTreeUI = function() {
-	TYPO3.Components.PageTree.PageTreeUI.superclass.constructor.apply(this, arguments);
-};
-Ext.extend(TYPO3.Components.PageTree.PageTreeUI, Ext.tree.TreeNodeUI, {
-	// private
-	// This method is taken from ExtJS sources. Modifications are marked with // START TYPO3-MODIFICATION
-	renderElements : function(n, a, targetNode, bulkRender) {
-		// add some indent caching, this helps performance when rendering a large tree
-		this.indentMarkup = n.parentNode ? n.parentNode.ui.getChildIndent() : '';
-		var cb = typeof a.checked == 'boolean';
-		var href = a.href ? a.href : Ext.isGecko ? "" : "#";
-		var buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
-			'<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
-			'<img src="', this.emptyIcon, '" class="x-tree-ec-icon x-tree-elbow" />',
-			// START TYPO3-MODIFICATION
-			a.spriteIconCode,
-			'<span class="prefixText">', a.prefixText, '</span>',
-			// END TYPO3-MODIFICATION
-			cb ? ('<input class="x-tree-node-cb" type="checkbox" ' + (a.checked ? 'checked="checked" />' : '/>')) : '',
-			'<a hidefocus="on" class="x-tree-node-anchor" href="',href,'" tabIndex="1" ',
-			a.hrefTarget ? ' target="' + a.hrefTarget + '"' : "", '><span unselectable="on">',n.text,"</span></a></div>",
-			'<ul class="x-tree-node-ct" style="display:none;"></ul>',
-			"</li>"].join('');
 
-		var nel;
-		if (bulkRender !== true && n.nextSibling && (nel = n.nextSibling.ui.getEl())) {
-			this.wrap = Ext.DomHelper.insertHtml("beforeBegin", nel, buf);
-		} else {
-			this.wrap = Ext.DomHelper.insertHtml("beforeEnd", targetNode, buf);
-		}
-
-		this.elNode = this.wrap.childNodes[0];
-		this.ctNode = this.wrap.childNodes[1];
-		var cs = this.elNode.childNodes;
-		this.indentNode = cs[0];
-		this.ecNode = cs[1];
-		this.iconNode = cs[2];
-		// START TYPO3-MODIFICATION
-		Ext.fly(this.iconNode).on('click', function(event) {
-			this.getOwnerTree().openContextMenu(this, event); // calling the context-menu event doesn't work!'
-			event.stopEvent();
-		}, n);
-		// Index from 3 to 4 incremented!
-		var index = 4;
-		// STOP TYPO3-MODIFICATION
-		if (cb) {
-			this.checkbox = cs[3];
-			// fix for IE6
-			this.checkbox.defaultChecked = this.checkbox.checked;
-			index++;
-		}
-		this.anchor = cs[index];
-		this.textNode = cs[index].firstChild;
-	},
-
-	// private
-	// Overwriting the double click event, because we don't want to collapse or expand nodes
-	// by this event
-	onDblClick : function(e) {
-		if (this.disabled) {
-			return;
-		}
-
-		if (this.fireEvent('beforedblclick', this.node, e) !== false) {
-			this.fireEvent('dblclick', this.node, e);
-		}
-	}
-});
+Ext.namespace('TYPO3.Components.PageTree');
 
 TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	id: 'typo3-pagetree',
@@ -85,6 +38,8 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	topPanel: null,
 
 	dataProvider: null,
+	commandProvider : null,
+	contextMenuDataProvider: null,
 
 	contextMenuConfiguration: null,
 
@@ -92,9 +47,12 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 
 	initComponent: function() {
 		this.dataProvider = TYPO3.Components.PageTree.DataProvider;
+		this.commandProvider = TYPO3.Components.PageTree.Actions;
+		this.contextMenuDataProvider = TYPO3.Components.PageTree.ContextMenuDataProvider;
 
 		this.tree = new TYPO3.Components.PageTree.Tree({
-			pageTree: this
+			pageTree: this,
+			plugins: new Ext.ux.plugins.TreePanelStateful()
 		});
 
 		this.topPanel = new TYPO3.Components.PageTree.FeaturePanel({
@@ -123,10 +81,6 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
 	},
 
-	refreshTree: function() {
-		this.tree.root.reload();
-	},
-
 	/**
 	 * Initialize the inline editor for the given tree.
 	 *
@@ -135,16 +89,26 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	addInlineEditorFeature: function(tree) {
 		var treeEditor = new Ext.tree.TreeEditor(
-				tree, {
-			cancelOnEsc: true,
-			completeOnEnter: true,
-			ignoreNoChange: true,
-			editDelay: 250,
-			shadow: false
-		}
-				);
+			tree, {
+				ignoreNoChange: true,
+				editDelay: 250,
+				shadow: false
+			}
+		);
 
-		treeEditor.addListener('complete', TYPO3.Components.PageTree.PageActions.saveTitle, this);
+      	treeEditor.on({
+			beforestartedit: {
+				scope: this,
+				fn: function(treeEditor) {
+					// @todo treeEditor.editNode.attributes.label should be used as editable label
+				}
+			},
+
+			complete: {
+				scope: this,
+				fn: this.commandProvider.saveTitle
+			}
+      	});
 	},
 
 	addNodeCopyPasteFeature: function(tree) {
@@ -165,10 +129,10 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		// This event is ONLY called on move, NOT on copy, insert or delete.
 		tree.addListener('movenode', function(tree, movedNode, oldParent, newParent, position) {
 			if (position == 0) {
-				this.dataProvider.moveNodeToFirstChildOfDestination(movedNode.id, newParent.id);
+				this.commandProvider.moveNodeToFirstChildOfDestination(movedNode, newParent.id);
 			} else {
 				var previousSibling = newParent.childNodes[position - 1];
-				this.dataProvider.moveNodeAfterDestination(movedNode.id, previousSibling.id);
+				this.commandProvider.moveNodeAfterDestination(movedNode, previousSibling.id);
 			}
 		}, this);
 
@@ -217,12 +181,12 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				de.dropNode.disable();
 				if (de.dropNode.previousSibling) {
 					// We have previous sibling, so we want to add the record AFTER the previous sibling
-					this.dataProvider.insertNodeAfterDestination(de.dropNode.parentNode.id, de.dropNode.previousSibling.id, de.dropNode.serverNodeType, callback.createDelegate(de.dropNode));
+					this.commandProvider.insertNodeAfterDestination(de.dropNode, callback);
 				} else {
 					if (de.dropNode.parentNode) {
 						// We do not have a previous sibling, but a parent node. Thus, we add the node as the first child
 						// of the parent.
-						this.dataProvider.insertNodeToFirstChildOfDestination(de.dropNode.parentNode.id, de.dropNode.serverNodeType, callback.createDelegate(de.dropNode));
+						this.commandProvider.insertNodeToFirstChildOfDestination(de.dropNode, callback);
 					} else {
 						// Should not happen!
 					}
@@ -233,12 +197,12 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 					de.dropNode.disable();
 					if (de.dropNode.previousSibling) {
 						// We have previous sibling, so we want to add the record AFTER the previous sibling
-						this.dataProvider.copyNodeAfterDestination(de.dropNode.id, de.dropNode.previousSibling.id, callback.createDelegate(de.dropNode));
+						this.commandProvider.copyNodeAfterDestination(de.dropNode, callback);
 					} else {
 						if (de.dropNode.parentNode) {
 							// We do not have a previous sibling, but a parent node. Thus, we add the node as the first child
 							// of the parent.
-							this.dataProvider.copyNodeToFirstChildOfDestination(de.dropNode.id, de.dropNode.parentNode, callback.createDelegate(de.dropNode));
+							this.commandProvider.copyNodeToFirstChildOfDestination(de.dropNode, callback);
 						} else {
 							// Should not happen!
 						}
@@ -247,8 +211,8 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 
-		// SECTION: Key Handlers
-		new Ext.KeyMap(document, {
+		// SECTION: Key Handlers	
+		(new Ext.KeyMap(document, {
 			key: Ext.EventObject.CONTROL,
 			fn: function() {
 				this.isControlPressed = true;
@@ -259,9 +223,9 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				}
 			},
 			scope: this
-		}, 'keydown');
+		}, 'keydown'));
 
-		new Ext.KeyMap(document, {
+		(new Ext.KeyMap(document, {
 			key: Ext.EventObject.CONTROL,
 			fn: function() {
 				this.isControlPressed = false;
@@ -271,7 +235,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				}
 			},
 			scope: this
-		}, 'keyup');
+		}, 'keyup'));
 	}
 });
 

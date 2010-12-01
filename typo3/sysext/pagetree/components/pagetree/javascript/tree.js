@@ -1,3 +1,33 @@
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2010 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+/**
+ * TYPO3 Page Tree Panel
+ */
+
 Ext.namespace('TYPO3.Components.PageTree');
 
 TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
@@ -7,6 +37,12 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	enableDD: true,
 	dragConfig: {
 		ddGroup: 'TreeDD'
+	},
+
+	t3ContextNode: null,
+	t3ContextInfo: {
+		inCopyMode: false,
+		inCutMode: false
 	},
 
 	rootVisible: false,
@@ -23,7 +59,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 
 		this.loader = new Ext.tree.TreeLoader({
 			directFn: this.pageTree.dataProvider.getNextTreeLevel,
-			paramOrder: 'rootline',
+			paramOrder: 'attributes',
 
 			baseAttrs: {
 				uiProvider: 't3'
@@ -33,38 +69,25 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 				t3: TYPO3.Components.PageTree.PageTreeUI,
 				rootNodeProvider: Ext.tree.TreeNodeUI
 			},
-
-			// The below method fixes a stupid bug of ExtJS / PHP JSON:
-			// ExtJS expects the "expanded" attribute to be "true", and
-			// it compares it with ===.
-			// PHP json_encode submits a "1" if the value is true - thus,
-			// the expanded property is not correctly evaluated by ExtJS.
-			// Below, we do a loose type checking, and if it matches, we
-			// set the JavaScript value "true". This circumvents the bug.
+			
 			createNode: function(attr) {
-				if (attr.expanded) {
-					attr.expanded = true;
+				if (attr.id == 0) {
+					attr.id = 'siteRootNode';
 				}
+
 				return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
 			},
 
 			listeners: {
-				// We always have to transmit the rootline to the server.
 				beforeload: function(treeLoader, node) {
-					treeLoader.baseParams.rootline = node.getPath();
+					treeLoader.baseParams.attributes = node.attributes;
 				},
-				load: function(treeLoader, node) {
-					// Helper function
-					var expandTransmittedNodesRecursively = function(node) {
-						var numberOfSubNodes = node.childNodes.length;
-						if (numberOfSubNodes > 0) {
-							node.expand(false, false);
-						}
-						for (var i = 0; i < numberOfSubNodes; i++) {
-							expandTransmittedNodesRecursively(node.childNodes[i]);
-						}
-					};
-					expandTransmittedNodesRecursively(node);
+
+				load: {
+					scope: this,
+					fn: function(treeLoader, node) {
+						this.restoreState(node.getPath());
+					}
 				}
 			}
 		});
@@ -75,69 +98,72 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	// shows the context menu and creates it if it's not already done
 	openContextMenu: function(node, event) {
 		node.select();
-		var contextMenu = node.getOwnerTree().contextMenu;
-		contextMenu.removeAll();
 
-		var numberOfElementsInside = contextMenu.fillWithMenuItems(node, this.contextMenuConfiguration);
-		if (numberOfElementsInside > 0) {
-			contextMenu.showAt(event.getXY());
-		}
+		var attributes = { t3ContextInfo: node.ownerTree.t3ContextInfo };
+		attributes = Ext.apply(node.attributes.nodeData, attributes);
+
+		this.pageTree.contextMenuDataProvider.getActionsForNodeArray(
+			attributes,
+			function(result) {
+				var contextMenu = node.getOwnerTree().contextMenu;
+				contextMenu.removeAll();
+
+				var numberOfElementsInside = contextMenu.fillWithMenuItems(node, this.pageTree, result);
+				if (numberOfElementsInside > 0) {
+					contextMenu.showAt(event.getXY());
+				}
+			},
+			this
+		);
+	},
+
+	refreshTree: function() {
+		this.getLoader().load(this.root);
+	},
+
+	refreshNode: function(node) {
+		this.getLoader().load(node);
 	},
 
 	listeners: {
-		// SECTION Contextmenu
-		// After rendering of the tree, we start the preloading of the context
-		// menu configuration
-		afterrender: {
-			fn: function(tree) {
-				if (tree.contextMenuConfiguration == null) {
-					this.pageTree.dataProvider.getContextMenuConfiguration(
-						function(result) {
-							tree.contextMenuConfiguration = result;
-						}
-					);
-				}
-			}
-		},
-
 		// this event triggers the context menu
 		contextmenu: {
+			scope: this,
 			fn: function(node, event) {
 				node.getOwnerTree().openContextMenu(node, event);
 			}
 		},
 
-		// SECTION Tree State Remember
-		expandnode: {
-			fn: function (node) {
-				this.pageTree.dataProvider.registerExpandedNode(node.getPath());
-			}
-		},
-
-		collapsenode: {
-			fn: function(node) {
-				this.pageTree.dataProvider.registerCollapsedNode(node.getPath());
-			}
-		},
-
-		// calls a given single click callback for the tree
+			// calls a given single click callback for the tree
 		click: {
-			fn: function (node, event) {
-				if (this.doubleClickEventActive) {
-					this.doubleClickEventActive = false;
+			fn: function(node, event) {
+				if (this.clicksRegistered === 2) {
+					this.clicksRegistered = 0;
 					event.stopEvent();
-				} else {
-					eval(node.attributes.properties.clickCallback + '(node)');
+					return false;
 				}
+
+				this.clicksRegistered = 0;
+				this.pageTree.commandProvider.singleClick(node);
 			},
 			delay: 400
 		},
 
-		// seems to prevent some internal issues with the double-click for the tree editor
-		dblclick: {
+			// needed or the label edit will never work
+		beforedblclick: {
 			fn: function() {
-				this.doubleClickEventActive = true;
 				return false;
+			}
+		},
+
+		beforeclick: {
+			fn: function(node, event) {
+				if (!this.clicksRegistered && this.getSelectionModel().isSelected(node)) {
+					node.fireEvent('click', node, event);
+					++this.clicksRegistered;
+					return false;
+				}
+				++this.clicksRegistered;
 			}
 		}
 	}
