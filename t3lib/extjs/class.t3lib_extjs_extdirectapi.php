@@ -74,7 +74,7 @@ class t3lib_extjs_ExtDirectApi {
 			// look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . $filterNamespace .
-						 serialize($this->settings) . TYPO3_MODE);
+			 serialize($this->settings) . TYPO3_MODE . t3lib_div::getIndpEnv('HTTP_HOST'));
 
 			// with no_cache always generate the javascript content
 		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
