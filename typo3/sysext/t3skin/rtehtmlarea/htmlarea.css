@@ -265,13 +265,21 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	border-width: 1px;
 	border-color: white;
 }
-.htmlarea-custom-colors {
+.htmlarea-color-menu .htmlarea-custom-colors {
+	height: 170px;
+	overflow: auto;
+}
+.htmlarea-window .htmlarea-custom-colors {
 	height: auto;
+	overflow: inherit;
 }
 .htmlarea-custom-colors a {
 	border-color: transparent;
 	float: none;
 	display: block;
+	width: 90%;
+}
+.htmlarea-window .htmlarea-custom-colors a {
 	width: 100%;
 }
 .htmlarea-custom-colors em {

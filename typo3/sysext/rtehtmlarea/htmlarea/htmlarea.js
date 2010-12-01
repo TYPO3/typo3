@@ -3769,6 +3769,7 @@ Ext.ux.form.ColorPaletteField = Ext.extend(Ext.form.TriggerField, {
 		}
 		if (this.menu == null) {
 			this.menu = new Ext.ux.menu.HTMLAreaColorMenu({
+				cls: 'htmlarea-color-menu',
 				hideOnClick: false,
 				colors: this.colors,
 				colorsConfiguration: this.colorsConfiguration,

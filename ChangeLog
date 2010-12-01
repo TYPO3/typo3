@@ -1,3 +1,7 @@
+2010-12-01  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16058: htmlArea RTE: Overlay to choose a color exceeds the viewport if many colors are defined
+
 2010-01-01  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #16604: Changes in workspace are not shown automatically in pagetree
