@@ -171,7 +171,7 @@ var Tree = {
 	refresh: function() {
 		var r = new Date();
 		// randNum is useful so pagetree does not get cached in browser cache when refreshing
-		var loc = window.location.href.replace(/&randNum=\d+/, '');
+		var loc = window.location.href.replace(/&randNum=\d+|#.*/g, '');
 		var addSign = loc.indexOf('?') > 0 ? '&' : '?';
 		window.location = loc + addSign + 'randNum=' + r.getTime();
 	},

@@ -5,6 +5,7 @@
 2010-01-01  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #16604: Changes in workspace are not shown automatically in pagetree
+	* Fixed bug #15495: Pagetree fails to reload
 
 2010-11-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
