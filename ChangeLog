@@ -37,6 +37,7 @@
 
 	* Fixed bug #16058: htmlArea RTE: Overlay to choose a color exceeds the viewport if many colors are defined
 	* Updated htmlArea RTE version to 2.1.4
+	* Fixed bug #16637: htmlArea RTE: TextStyle plugin may raise js error
 
 2010-12-01  Steffen Gebert  <steffen@steffen-gebert.de>
 

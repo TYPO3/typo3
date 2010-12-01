@@ -46,10 +46,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		this.cssArray = {};
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.textstyle;
-		this.tags = this.pageTSconfiguration.tags;
-		if (!this.tags) {
-			this.tags = new Object();
-		}
+		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
 			if (this.editorConfiguration.classesTag.span) {
 				if (!this.tags.span) {
@@ -74,10 +71,9 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		this.showTagFreeClasses = this.pageTSconfiguration.showTagFreeClasses || this.editorConfiguration.showTagFreeClasses;
-		this.prefixLabelWithClassName = this.pageTSconfiguration.prefixLabelWithClassName;
-		this.postfixLabelWithClassName = this.pageTSconfiguration.postfixLabelWithClassName;
-		
+		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
+		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
+		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
 		/*
 		 * Regular expression to check if an element is an inline elment
 		 */
@@ -105,7 +101,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		 * Registering the dropdown list
 		 */
 		var buttonId = 'TextStyle';
-		var fieldLabel = this.pageTSconfiguration.fieldLabel;
+		var fieldLabel = this.pageTSconfiguration ? this.pageTSconfiguration.fieldLabel : '';
 		if (Ext.isEmpty(fieldLabel) && this.isButtonInToolbar('I[text_style]')) {
 			fieldLabel = this.localize('text_style');
 		}
@@ -118,14 +114,16 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
 			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		};
-		if (this.pageTSconfiguration.width) {
-			dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
-		}
-		if (this.pageTSconfiguration.listWidth) {
-			dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
-		}
-		if (this.pageTSconfiguration.maxHeight) {
-			dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+		if (this.pageTSconfiguration) {
+			if (this.pageTSconfiguration.width) {
+				dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
+			}
+			if (this.pageTSconfiguration.listWidth) {
+				dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
+			}
+			if (this.pageTSconfiguration.maxHeight) {
+				dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+			}
 		}
 		this.registerDropDown(dropDownConfiguration);
 		return true;
