@@ -192,7 +192,6 @@ class tx_em_ExtensionManager {
 
 		//Scripts
 		$this->pageRenderer->addJsFile($this->resPath . 'js/em_layouts.js');
-		$this->pageRenderer->addJsFile($this->resPath . 'js/em_templates.js');
 
 		$this->pageRenderer->addJsFile($this->resPath . 'js/em_components.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/em_files.js');
