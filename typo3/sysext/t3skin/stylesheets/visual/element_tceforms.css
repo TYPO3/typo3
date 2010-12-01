@@ -95,7 +95,7 @@ table.typo3-TCEforms span.typo3-TCEforms-recHeader {
 
 table.typo3-TCEforms div.typo3-dyntabmenu-tabs,
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
-	background: #F1F1F1;
+	background: #f8f8f8;
 }
 
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
@@ -265,7 +265,6 @@ table.typo3-TCEforms .wrapperTable3,
 table.typo3-TCEforms .wrapperTable4,
 table.typo3-TCEforms .wrapperTable5 {
 	border: 1px solid #c0c0c0;
-	border-top: none;
 }
 
 table.typo3-TCEforms .wrapperTable1 {

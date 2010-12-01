@@ -1,4 +1,8 @@
-2010-01-01  Oliver Hader  <oliver@typo3.org>
+2010-12-01  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16625: TCEforms have surrounding box with background color
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
 
 	* Updated Workspaces and Version extension to version 4.5.0beta2. See their ChangeLog for details.
 	* Fixed bug #16604: Changes in workspace are not shown automatically in pagetree
