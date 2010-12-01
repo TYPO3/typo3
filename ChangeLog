@@ -42,6 +42,7 @@
 	* Fixed bug #16604: Changes in workspace are not shown automatically in pagetree
 	* Updated Workspaces extension to version 4.5.0beta2a. See their ChangeLog for details.
 	* Fixed bug #15495: Pagetree fails to reload
+	* Updated Version extension to version 4.5.0beta2a.
 
 2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
 
