@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 require_once('BaseTestCase.php');
@@ -56,9 +56,9 @@ class dbGeneralTest extends BaseTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-			// Backup list of loaded extensions
+		// Backup list of loaded extensions
 		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
-			// Backup database connection
+		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
 
@@ -71,13 +71,13 @@ class dbGeneralTest extends BaseTestCase {
 	 * Cleans up the environment after running a test.
 	 */
 	public function tearDown() {
-			// Clear DBAL-generated cache files
+		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
-			// Delete temporary files
+		// Delete temporary files
 		foreach ($this->temporaryFiles as $filename) unlink($filename);
-			// Restore DB connection
+		// Restore DB connection
 		$GLOBALS['TYPO3_DB'] = $this->db;
-			// Restore list of loaded extensions
+		// Restore list of loaded extensions
 		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
 	}
 
@@ -104,7 +104,7 @@ class dbGeneralTest extends BaseTestCase {
 	 * @return void
 	 */
 	protected function createFakeExtension($tableDefinition) {
-			// Prepare a fake extension configuration
+		// Prepare a fake extension configuration
 		$ext_tables = t3lib_div::tempnam('ext_tables');
 		t3lib_div::writeFile($ext_tables, $tableDefinition);
 		$this->temporaryFiles[] = $ext_tables;
@@ -113,7 +113,7 @@ class dbGeneralTest extends BaseTestCase {
 			'ext_tables.sql' => $ext_tables
 		);
 
-			// Append our test table to the list of existing tables
+		// Append our test table to the list of existing tables
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 		$GLOBALS['TYPO3_DB']->_call('initInternalVariables');
 	}
@@ -126,8 +126,8 @@ class dbGeneralTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'sys_refindex, tx_dam_file_tracking',
-			'sys_refindex.tablename = \'tx_dam_file_tracking\''
-			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
+				'sys_refindex.tablename = \'tx_dam_file_tracking\''
+						. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM sys_refindex, tx_dam_file_tracking WHERE sys_refindex.tablename = \'tx_dam_file_tracking\'';
 		$expected .= ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)';
@@ -146,7 +146,7 @@ class dbGeneralTest extends BaseTestCase {
 			);
 		');
 		$data = array(
-			'foo'    => 99.12,
+			'foo' => 99.12,
 			'foobar' => -120,
 		);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
@@ -166,7 +166,7 @@ class dbGeneralTest extends BaseTestCase {
 			);
 		');
 		$data = array(
-			'foo'    => 9223372036854775807,
+			'foo' => 9223372036854775807,
 			'foobar' => 9223372036854775807,
 		);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
@@ -186,7 +186,7 @@ class dbGeneralTest extends BaseTestCase {
 			);
 		');
 		$data = array(
-			'foo'    => -9223372036854775808,
+			'foo' => -9223372036854775808,
 			'foobar' => -9223372036854775808,
 		);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
@@ -282,8 +282,8 @@ class dbGeneralTest extends BaseTestCase {
 	public function similarNamedParametersAreProperlyReplaced() {
 		$sql = 'SELECT * FROM cache WHERE tag = :tag1 OR tag = :tag10 OR tag = :tag100';
 		$parameterValues = array(
-			':tag1'   => 'tag-one',
-			':tag10'  => 'tag-two',
+			':tag1' => 'tag-one',
+			':tag10' => 'tag-two',
 			':tag100' => 'tag-three',
 		);
 
@@ -299,4 +299,5 @@ class dbGeneralTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 }
+
 ?>

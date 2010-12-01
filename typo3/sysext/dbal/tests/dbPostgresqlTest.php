@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 require_once('BaseTestCase.php');
@@ -52,21 +52,21 @@ class dbPostgresqlTest extends BaseTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-			// Backup DBAL configuration
+		// Backup DBAL configuration
 		$this->dbalConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
-			// Backup database connection
+		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
-			// Reconfigure DBAL to use PostgreSQL
+		// Reconfigure DBAL to use PostgreSQL
 		require('fixtures/postgresql.config.php');
 
-		$className =  self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className;
 		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 
-			// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
+		// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
 
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
@@ -76,11 +76,11 @@ class dbPostgresqlTest extends BaseTestCase {
 	 * Cleans up the environment after running a test.
 	 */
 	public function tearDown() {
-			// Clear DBAL-generated cache files
+		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
-			// Restore DBAL configuration
+		// Restore DBAL configuration
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'] = $this->dbalConfig;
-			// Restore DB connection
+		// Restore DB connection
 		$GLOBALS['TYPO3_DB'] = $this->db;
 	}
 
@@ -231,4 +231,5 @@ class dbPostgresqlTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 }
+
 ?>

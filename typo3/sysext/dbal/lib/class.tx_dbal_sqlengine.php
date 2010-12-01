@@ -1,30 +1,30 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
-*  (c) 2004-2009 Kasper Skårhøj <kasperYYYY@typo3.com>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2004-2009 Kasper Skårhøj <kasperYYYY@typo3.com>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -41,57 +41,51 @@
  *
  *
  *  106: class tx_dbal_sqlengine extends ux_t3lib_sqlparser
- *  128:     public function init($config, $pObj)
- *  136:     public function resetStatusVars()
- *  152:     private function processAccordingToConfig(&$value, $fInfo)
+ *  128:	 public function init($config, $pObj)
+ *  136:	 public function resetStatusVars()
+ *  152:	 private function processAccordingToConfig(&$value, $fInfo)
  *
- *              SECTION: SQL queries
- *  207:     public function exec_INSERTquery($table, $fields_values)
- *  275:     public function exec_UPDATEquery($table, $where, $fields_values)
- *  334:     public function exec_DELETEquery($table, $where)
- *  385:     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit)
- *  428:     public function sql_query($query)
- *  439:     public function sql_error()
- *  448:     public function sql_insert_id()
- *  457:     public function sql_affected_rows()
- *  467:     public function quoteStr($str)
+ *			  SECTION: SQL queries
+ *  207:	 public function exec_INSERTquery($table, $fields_values)
+ *  275:	 public function exec_UPDATEquery($table, $where, $fields_values)
+ *  334:	 public function exec_DELETEquery($table, $where)
+ *  385:	 public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit)
+ *  428:	 public function sql_query($query)
+ *  439:	 public function sql_error()
+ *  448:	 public function sql_insert_id()
+ *  457:	 public function sql_affected_rows()
+ *  467:	 public function quoteStr($str)
  *
- *              SECTION: SQL admin functions
- *  493:     public function admin_get_tables()
- *  504:     public function admin_get_fields($tableName)
- *  515:     public function admin_get_keys($tableName)
- *  526:     public function admin_query($query)
+ *			  SECTION: SQL admin functions
+ *  493:	 public function admin_get_tables()
+ *  504:	 public function admin_get_fields($tableName)
+ *  515:	 public function admin_get_keys($tableName)
+ *  526:	 public function admin_query($query)
  *
- *              SECTION: Data Source I/O
- *  551:     public function readDataSource($table)
- *  563:     public function saveDataSource($table)
+ *			  SECTION: Data Source I/O
+ *  551:	 public function readDataSource($table)
+ *  563:	 public function saveDataSource($table)
  *
- *              SECTION: SQL engine functions (PHP simulation of SQL) - still experimental
- *  593:     public function selectFromData($table, $where)
- *  631:     public function select_evalSingle($table,$config,&$itemKeys)
- *  750:     public function getResultSet($keys, $table, $fieldList)
+ *			  SECTION: SQL engine functions (PHP simulation of SQL) - still experimental
+ *  593:	 public function selectFromData($table, $where)
+ *  631:	 public function select_evalSingle($table,$config,&$itemKeys)
+ *  750:	 public function getResultSet($keys, $table, $fieldList)
  *
- *              SECTION: Debugging
- *  793:     public function debug_printResultSet($array)
+ *			  SECTION: Debugging
+ *  793:	 public function debug_printResultSet($array)
  *
  *
  *  832: class tx_dbal_sqlengine_resultobj
- *  846:     public function sql_num_rows()
- *  855:     public function sql_fetch_assoc()
- *  866:     public function sql_fetch_row()
- *  884:     public function sql_data_seek($pointer)
- *  897:     public function sql_field_type()
+ *  846:	 public function sql_num_rows()
+ *  855:	 public function sql_fetch_assoc()
+ *  866:	 public function sql_fetch_row()
+ *  884:	 public function sql_data_seek($pointer)
+ *  897:	 public function sql_field_type()
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
-
-
-
-
-
 
 
 /**
@@ -105,17 +99,14 @@
  */
 class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 
-		// array with data records: [table name][num.index] = records
-	var $data = array();						// Data source storage
+	// array with data records: [table name][num.index] = records
+	var $data = array(); // Data source storage
 
 
-		// Internal, SQL Status vars:
-	var $errorStatus = '';						// Set with error message of last operation
-	var $lastInsertedId = 0;					// Set with last inserted unique ID
-	var $lastAffectedRows = 0;					// Set with last number of affected rows.
-
-
-
+	// Internal, SQL Status vars:
+	var $errorStatus = ''; // Set with error message of last operation
+	var $lastInsertedId = 0; // Set with last inserted unique ID
+	var $lastAffectedRows = 0; // Set with last number of affected rows.
 
 
 	/**
@@ -152,42 +143,37 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	private function processAccordingToConfig(&$value, $fInfo) {
 		$options = $this->parseFieldDef($fInfo['Type']);
 
-		switch(strtolower($options['fieldType']))	{
+		switch (strtolower($options['fieldType'])) {
 			case 'int':
 			case 'smallint':
 			case 'tinyint':
 			case 'mediumint':
 				$value = intval($value);
-				if ($options['featureIndex']['UNSIGNED'])	{
-					$value = t3lib_div::intInRange($value,0);
+				if ($options['featureIndex']['UNSIGNED']) {
+					$value = t3lib_div::intInRange($value, 0);
 				}
-			break;
+				break;
 			case 'double':
-				$value = (double)$value;
-			break;
+				$value = (double) $value;
+				break;
 			case 'varchar':
 			case 'char':
-				$value = substr($value,0,trim($options['value']));
-			break;
+				$value = substr($value, 0, trim($options['value']));
+				break;
 			case 'text':
 			case 'blob':
-				$value = substr($value,0,65536);
-			break;
+				$value = substr($value, 0, 65536);
+				break;
 			case 'tinytext':
 			case 'tinyblob':
-				$value = substr($value,0,256);
-			break;
+				$value = substr($value, 0, 256);
+				break;
 			case 'mediumtext':
 			case 'mediumblob':
 				// ??
-			break;
+				break;
 		}
 	}
-
-
-
-
-
 
 
 	/********************************
@@ -206,56 +192,56 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 */
 	public function exec_INSERTquery($table, $fields_values) {
 
-			// Initialize
+		// Initialize
 		$this->resetStatusVars();
 
-			// Reading Data Source if not done already.
+		// Reading Data Source if not done already.
 		$this->readDataSource($table);
 
-			// If data source is set:
-		if (is_array($this->data[$table]))	{
+		// If data source is set:
+		if (is_array($this->data[$table])) {
 
-			$fieldInformation = $this->admin_get_fields($table);		// Should cache this...!
+			$fieldInformation = $this->admin_get_fields($table); // Should cache this...!
 
-				// Looking for unique keys:
+			// Looking for unique keys:
 			$saveArray = array();
-			foreach($fieldInformation as $fInfo)	{
+			foreach ($fieldInformation as $fInfo) {
 
-					// Field name:
+				// Field name:
 				$fN = $fInfo['Field'];
 
-					// Set value:
+				// Set value:
 // FIXME $options not defined
 				$saveArray[$fN] = isset($fields_values[$fN]) ? $fields_values[$fN] : $options['Default'];
 
-					// Process value:
+				// Process value:
 				$this->processAccordingToConfig($saveArray[$fN], $fInfo);
 
-					// If an auto increment field is found, find the largest current uid:
-				if ($fInfo['Extra'] == 'auto_increment')	{
+				// If an auto increment field is found, find the largest current uid:
+				if ($fInfo['Extra'] == 'auto_increment') {
 
-						// Get all UIDs:
+					// Get all UIDs:
 					$uidArray = array();
-					foreach($this->data[$table] as $r)	{
+					foreach ($this->data[$table] as $r) {
 						$uidArray[] = $r[$fN];
 					}
 
-						// If current value is blank or already in array, we create a new:
-					if (!$saveArray[$fN] || in_array(intval($saveArray[$fN]), $uidArray))	{
-						if (count($uidArray))	{
-							$saveArray[$fN] = max($uidArray)+1;
+					// If current value is blank or already in array, we create a new:
+					if (!$saveArray[$fN] || in_array(intval($saveArray[$fN]), $uidArray)) {
+						if (count($uidArray)) {
+							$saveArray[$fN] = max($uidArray) + 1;
 						} else $saveArray[$fN] = 1;
 					}
 
-						// Update "last inserted id":
+					// Update "last inserted id":
 					$this->lastInsertedId = $saveArray[$fN];
 				}
 			}
 
-				// Insert row in table:
+			// Insert row in table:
 			$this->data[$table][] = $saveArray;
 
-				// Save data source
+			// Save data source
 			$this->saveDataSource($table);
 
 			return TRUE;
@@ -274,41 +260,41 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values) {
 
-			// Initialize:
+		// Initialize:
 		$this->resetStatusVars();
 
-			// Reading Data Source if not done already.
+		// Reading Data Source if not done already.
 		$this->readDataSource($table);
 
-			// If anything is there:
-		if (is_array($this->data[$table]))	{
+		// If anything is there:
+		if (is_array($this->data[$table])) {
 
-				// Parse WHERE clause:
+			// Parse WHERE clause:
 			$where = $this->parseWhereClause($where);
 
-			if (is_array($where))	{
+			if (is_array($where)) {
 
-					// Field information
-				$fieldInformation = $this->admin_get_fields($table);		// Should cache this...!
+				// Field information
+				$fieldInformation = $this->admin_get_fields($table); // Should cache this...!
 
-					// Traverse fields to update:
-				foreach($fields_values as $fName => $fValue)	{
-					$this->processAccordingToConfig($fields_values[$fName],$fieldInformation[$fName]);
+				// Traverse fields to update:
+				foreach ($fields_values as $fName => $fValue) {
+					$this->processAccordingToConfig($fields_values[$fName], $fieldInformation[$fName]);
 				}
 
-					// Do query, returns array with keys to the data array of the result:
-				$itemKeys = $this->selectFromData($table,$where);
+				// Do query, returns array with keys to the data array of the result:
+				$itemKeys = $this->selectFromData($table, $where);
 
-					// Set "last affected rows":
+				// Set "last affected rows":
 				$this->lastAffectedRows = count($itemKeys);
 
-					// Update rows:
-				if ($this->lastAffectedRows)	{
-						// Traverse result set here:
-					foreach($itemKeys as $dataArrayKey)	{
+				// Update rows:
+				if ($this->lastAffectedRows) {
+					// Traverse result set here:
+					foreach ($itemKeys as $dataArrayKey) {
 
-							// Traverse fields to update:
-						foreach($fields_values as $fName => $fValue)	{
+						// Traverse fields to update:
+						foreach ($fields_values as $fName => $fValue) {
 							$this->data[$table][$dataArrayKey][$fName] = $fValue;
 						}
 					}
@@ -318,7 +304,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 				}
 
 				return TRUE;
-			} else $this->errorStatus = 'WHERE clause contained errors: '.$where;
+			} else $this->errorStatus = 'WHERE clause contained errors: ' . $where;
 		} else $this->errorStatus = 'No data loaded.';
 
 		return FALSE;
@@ -333,39 +319,39 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 */
 	public function exec_DELETEquery($table, $where) {
 
-			// Initialize:
+		// Initialize:
 		$this->resetStatusVars();
 
-			// Reading Data Source if not done already.
+		// Reading Data Source if not done already.
 		$this->readDataSource($table);
 
-			// If anything is there:
-		if (is_array($this->data[$table]))	{
+		// If anything is there:
+		if (is_array($this->data[$table])) {
 
-				// Parse WHERE clause:
+			// Parse WHERE clause:
 			$where = $this->parseWhereClause($where);
 
-			if (is_array($where))	{
+			if (is_array($where)) {
 
-					// Do query, returns array with keys to the data array of the result:
-				$itemKeys = $this->selectFromData($table,$where);
+				// Do query, returns array with keys to the data array of the result:
+				$itemKeys = $this->selectFromData($table, $where);
 
-					// Set "last affected rows":
+				// Set "last affected rows":
 				$this->lastAffectedRows = count($itemKeys);
 
-					// Remove rows:
-				if ($this->lastAffectedRows)	{
-						// Traverse result set:
-					foreach($itemKeys as $dataArrayKey)	{
+				// Remove rows:
+				if ($this->lastAffectedRows) {
+					// Traverse result set:
+					foreach ($itemKeys as $dataArrayKey) {
 						unset($this->data[$table][$dataArrayKey]);
 					}
 
-						// Saving data source
+					// Saving data source
 					$this->saveDataSource($table);
 				}
 
 				return TRUE;
-			} else $this->errorStatus = 'WHERE clause contained errors: '.$where;
+			} else $this->errorStatus = 'WHERE clause contained errors: ' . $where;
 		} else $this->errorStatus = 'No data loaded.';
 
 		return FALSE;
@@ -384,37 +370,37 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit) {
 
-			// Initialize:
+		// Initialize:
 		$this->resetStatusVars();
 
-			// Create result object
+		// Create result object
 		$sqlObj = t3lib_div::makeInstance('tx_dbal_sqlengine_resultobj');
-		$sqlObj->result = array();	// Empty result as a beginning
+		$sqlObj->result = array(); // Empty result as a beginning
 
-			// Get table list:
+		// Get table list:
 		$tableArray = $this->parseFromTables($from_table);
 		$table = $tableArray[0]['table'];
 
-			// Reading Data Source if not done already.
+		// Reading Data Source if not done already.
 		$this->readDataSource($table);
 
-			// If anything is there:
-		if (is_array($this->data[$table]))	{
+		// If anything is there:
+		if (is_array($this->data[$table])) {
 
-				// Parse WHERE clause:
+			// Parse WHERE clause:
 			$where = $this->parseWhereClause($where_clause);
-			if (is_array($where))	{
+			if (is_array($where)) {
 
-					// Do query, returns array with keys to the data array of the result:
-				$itemKeys = $this->selectFromData($table,$where);
+				// Do query, returns array with keys to the data array of the result:
+				$itemKeys = $this->selectFromData($table, $where);
 
-					// Finally, read the result rows into this variable:
-				$sqlObj->result = $this->getResultSet($itemKeys,$table,'*');
-					// Reset and return result:
+				// Finally, read the result rows into this variable:
+				$sqlObj->result = $this->getResultSet($itemKeys, $table, '*');
+				// Reset and return result:
 				reset($sqlObj->result);
 				return $sqlObj;
-			} else $this->errorStatus = 'WHERE clause contained errors: '.$where;
-		}  else $this->errorStatus = 'No data loaded: '.$this->errorStatus;
+			} else $this->errorStatus = 'WHERE clause contained errors: ' . $where;
+		} else $this->errorStatus = 'No data loaded: ' . $this->errorStatus;
 
 		return FALSE;
 	}
@@ -469,14 +455,6 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	}
 
 
-
-
-
-
-
-
-
-
 	/**************************************
 	 *
 	 * SQL admin functions
@@ -528,12 +506,6 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	}
 
 
-
-
-
-
-
-
 	/********************************
 	 *
 	 * Data Source I/O
@@ -565,17 +537,6 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
 	/********************************
 	 *
 	 * SQL engine functions (PHP simulation of SQL) - still experimental
@@ -593,23 +554,23 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	public function selectFromData($table, $where) {
 
 		$output = array();
-		if (is_array($this->data[$table]))	{
+		if (is_array($this->data[$table])) {
 
-				// All keys:
+			// All keys:
 			$OR_index = 0;
 
-			foreach($where as $config)	{
+			foreach ($where as $config) {
 
-				if (strtoupper($config['operator'])=='OR')	{
+				if (strtoupper($config['operator']) == 'OR') {
 					$OR_index++;
 				}
 // FIXME: unknown variable $itemKeys
 				if (!isset($itemKeys[$OR_index]))	$itemKeys[$OR_index] = array_keys($this->data[$table]);
 
-				$this->select_evalSingle($table,$config,$itemKeys[$OR_index]);
+				$this->select_evalSingle($table, $config, $itemKeys[$OR_index]);
 			}
 
-			foreach($itemKeys as $uidKeys)	{
+			foreach ($itemKeys as $uidKeys) {
 				$output = array_merge($output, $uidKeys);
 			}
 			$output = array_unique($output);
@@ -628,14 +589,14 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 * @return	void		Data array passed by reference
 	 * @see selectFromData()
 	 */
-	public function select_evalSingle($table,$config,&$itemKeys) {
-		$neg = preg_match('/^AND[[:space:]]+NOT$/',trim($config['operator']));
+	public function select_evalSingle($table, $config, &$itemKeys) {
+		$neg = preg_match('/^AND[[:space:]]+NOT$/', trim($config['operator']));
 
-		if (is_array($config['sub']))	{
-			$subSelKeys = $this->selectFromData($table,$config['sub']);
-			if ($neg)	{
-				foreach($itemKeys as $kk => $vv)	{
-					if (in_array($vv,$subSelKeys))	{
+		if (is_array($config['sub'])) {
+			$subSelKeys = $this->selectFromData($table, $config['sub']);
+			if ($neg) {
+				foreach ($itemKeys as $kk => $vv) {
+					if (in_array($vv, $subSelKeys)) {
 						unset($itemKeys[$kk]);
 					}
 				}
@@ -643,96 +604,96 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 				$itemKeys = array_intersect($itemKeys, $subSelKeys);
 			}
 		} else {
-			$comp = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$config['comparator']));
+			$comp = strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $config['comparator']));
 			$mod = strtoupper($config['modifier']);
-			switch($comp)	{
+			switch ($comp) {
 				case 'NOTLIKE':
 				case 'LIKE':
 					$like_value = strtolower($config['value'][0]);
-					if (substr($like_value,0,1)=='%')	{
+					if (substr($like_value, 0, 1) == '%') {
 						$wildCard_begin = TRUE;
-						$like_value = substr($like_value,1);
+						$like_value = substr($like_value, 1);
 					}
-					if (substr($like_value,-1)=='%')	{
+					if (substr($like_value, -1) == '%') {
 						$wildCard_end = TRUE;
-						$like_value = substr($like_value,0,-1);
+						$like_value = substr($like_value, 0, -1);
 					}
-				break;
+					break;
 				case 'NOTIN':
 				case 'IN':
 					$in_valueArray = array();
-					foreach($config['value'] as $vParts)	{
-						$in_valueArray[] = (string)$vParts[0];
+					foreach ($config['value'] as $vParts) {
+						$in_valueArray[] = (string) $vParts[0];
 					}
-				break;
+					break;
 			}
 
-			foreach($itemKeys as $kk => $v)	{
+			foreach ($itemKeys as $kk => $v) {
 				$field_value = $this->data[$table][$v][$config['field']];
 
-					// Calculate it:
-				if ($config['calc']=='&')	{
-					$field_value&=intval($config['calc_value']);
+				// Calculate it:
+				if ($config['calc'] == '&') {
+					$field_value &= intval($config['calc_value']);
 				}
 
-					// Compare it:
-				switch($comp)	{
+				// Compare it:
+				switch ($comp) {
 					case '<=':
 						$bool = $field_value <= $config['value'][0];
-					break;
+						break;
 					case '>=':
 						$bool = $field_value >= $config['value'][0];
-					break;
+						break;
 					case '<':
 						$bool = $field_value < $config['value'][0];
-					break;
+						break;
 					case '>':
 						$bool = $field_value > $config['value'][0];
-					break;
+						break;
 					case '=':
-						$bool = !strcmp($field_value,$config['value'][0]);
-					break;
+						$bool = !strcmp($field_value, $config['value'][0]);
+						break;
 					case '!=':
-						$bool = strcmp($field_value,$config['value'][0]);
-					break;
+						$bool = strcmp($field_value, $config['value'][0]);
+						break;
 					case 'NOTIN':
 					case 'IN':
-						$bool = in_array((string)$field_value, $in_valueArray);
-						if ($comp=='NOTIN')	$bool = !$bool;
-					break;
+						$bool = in_array((string) $field_value, $in_valueArray);
+						if ($comp == 'NOTIN')	$bool = !$bool;
+						break;
 					case 'NOTLIKE':
 					case 'LIKE':
-						if (!strlen($like_value))	{
+						if (!strlen($like_value)) {
 							$bool = TRUE;
-						} elseif ($wildCard_begin && !$wildCard_end)	{
-							$bool = !strcmp(substr(strtolower($field_value),-strlen($like_value)),$like_value);
-						} elseif (!$wildCard_begin && $wildCard_end)	{
-							$bool = !strcmp(substr(strtolower($field_value),0,strlen($like_value)),$like_value);
-						} elseif ($wildCard_begin && $wildCard_end)	{
-							$bool = strstr($field_value,$like_value);
+						} elseif ($wildCard_begin && !$wildCard_end) {
+							$bool = !strcmp(substr(strtolower($field_value), -strlen($like_value)), $like_value);
+						} elseif (!$wildCard_begin && $wildCard_end) {
+							$bool = !strcmp(substr(strtolower($field_value), 0, strlen($like_value)), $like_value);
+						} elseif ($wildCard_begin && $wildCard_end) {
+							$bool = strstr($field_value, $like_value);
 						} else {
-							$bool = !strcmp(strtolower($field_value),$like_value);
+							$bool = !strcmp(strtolower($field_value), $like_value);
 						}
-						if ($comp=='NOTLIKE')	$bool = !$bool;
-					break;
+						if ($comp == 'NOTLIKE')	$bool = !$bool;
+						break;
 					default:
 						$bool = $field_value ? TRUE : FALSE;
-					break;
+						break;
 				}
 
-					// General negation:
+				// General negation:
 				if ($neg)	$bool = !$bool;
 
-					// Modify?
-				switch($mod)	{
+				// Modify?
+				switch ($mod) {
 					case 'NOT':
 					case '!':
 						$bool = !$bool;
-					break;
+						break;
 				}
 
-					// Action:
-				if (!$bool)	{
+				// Action:
+				if (!$bool) {
 					unset($itemKeys[$kk]);
 				}
 			}
@@ -748,14 +709,14 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 * @return	array		Result array with "rows"
 	 */
 	public function getResultSet($keys, $table, $fieldList) {
-		$fields = t3lib_div::trimExplode(',',$fieldList);
+		$fields = t3lib_div::trimExplode(',', $fieldList);
 
 		$output = array();
-		foreach($keys as $kValue)	{
-			if ($fieldList=='*')	{
+		foreach ($keys as $kValue) {
+			if ($fieldList == '*') {
 				$output[$kValue] = $this->data[$table][$kValue];
 			} else {
-				foreach($fields as $fieldName)	{
+				foreach ($fields as $fieldName) {
 					$output[$kValue][$fieldName] = $this->data[$table][$kValue][$fieldName];
 				}
 			}
@@ -763,19 +724,6 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 
 		return $output;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/*************************
@@ -792,31 +740,31 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 */
 	public function debug_printResultSet($array) {
 
-		if (count($array))	{
-			$tRows=array();
+		if (count($array)) {
+			$tRows = array();
 			$fields = array_keys(current($array));
-					$tCell[]='
+			$tCell[] = '
 							<td>IDX</td>';
-				foreach($fields as $fieldName)	{
-					$tCell[]='
-							<td>'.htmlspecialchars($fieldName).'</td>';
+			foreach ($fields as $fieldName) {
+				$tCell[] = '
+							<td>' . htmlspecialchars($fieldName) . '</td>';
+			}
+			$tRows[] = '<tr>' . implode('', $tCell) . '</tr>';
+
+
+			foreach ($array as $index => $rec) {
+
+				$tCell = array();
+				$tCell[] = '
+						<td>' . htmlspecialchars($index) . '</td>';
+				foreach ($fields as $fieldName) {
+					$tCell[] = '
+							<td>' . htmlspecialchars($rec[$fieldName]) . '</td>';
 				}
-				$tRows[]='<tr>'.implode('',$tCell).'</tr>';
-
-
-			foreach($array as $index => $rec)	{
-
-				$tCell=array();
-				$tCell[]='
-						<td>'.htmlspecialchars($index).'</td>';
-				foreach($fields as $fieldName)	{
-					$tCell[]='
-							<td>'.htmlspecialchars($rec[$fieldName]).'</td>';
-				}
-				$tRows[]='<tr>'.implode('',$tCell).'</tr>';
+				$tRows[] = '<tr>' . implode('', $tCell) . '</tr>';
 			}
 
-			return '<table border="1">'.implode('',$tRows).'</table>';
+			return '<table border="1">' . implode('', $tRows) . '</table>';
 		} else 'Empty resultset';
 	}
 }
@@ -831,7 +779,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
  */
 class tx_dbal_sqlengine_resultobj {
 
-		// Result array, must contain the fields in the order they were selected in the SQL statement (for sql_fetch_row())
+	// Result array, must contain the fields in the order they were selected in the SQL statement (for sql_fetch_row())
 	var $result = array();
 
 	var $TYPO3_DBAL_handlerType = '';
@@ -866,10 +814,10 @@ class tx_dbal_sqlengine_resultobj {
 	public function sql_fetch_row() {
 		$resultRow = $this->sql_fetch_assoc();
 
-		if (is_array($resultRow))	{
+		if (is_array($resultRow)) {
 			$numArray = array();
-			foreach($resultRow as $value)	{
-				$numArray[]=$value;
+			foreach ($resultRow as $value) {
+				$numArray[] = $value;
 			}
 			return $numArray;
 		}
@@ -883,7 +831,7 @@ class tx_dbal_sqlengine_resultobj {
 	 */
 	public function sql_data_seek($pointer) {
 		reset($this->result);
-		for ($a=0;$a<$pointer;$a++)	{
+		for ($a = 0; $a < $pointer; $a++) {
 			next($this->result);
 		}
 		return TRUE;
@@ -898,7 +846,6 @@ class tx_dbal_sqlengine_resultobj {
 		return '';
 	}
 }
-
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_sqlengine.php']) {
