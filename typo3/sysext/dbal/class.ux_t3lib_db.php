@@ -1900,14 +1900,18 @@ class ux_t3lib_DB extends t3lib_DB {
 				// Mapping table names in reverse, first getting list of real table names:
 			$tMap = array();
 			foreach ($this->mapping as $tN => $tMapInfo) {
-				if (isset($tMapInfo['mapTableName']))	$tMap[$tMapInfo['mapTableName']]=$tN;
+				if (isset($tMapInfo['mapTableName'])) {
+					$tMap[$tMapInfo['mapTableName']] = $tN;
+				}
 			}
 
 				// Do mapping:
 			$newList=array();
-			foreach ($whichTables as $tN) {
-				if (isset($tMap[$tN]))	$tN = $tMap[$tN];
-				$newList[$tN] = $tN;
+			foreach ($whichTables as $tN => $tDefinition) {
+				if (isset($tMap[$tN])) {
+					$tN = $tMap[$tN];
+				}
+				$newList[$tN] = $tDefinition;
 			}
 
 			$whichTables = $newList;
