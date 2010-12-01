@@ -89,7 +89,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 
 			case 'smtp':
 					// Get settings to be used when constructing the transport object
-				list($host, $port) = split(':', $mailSettings['transport_smtp_server']);
+				list($host, $port) = preg_split('/:/', $mailSettings['transport_smtp_server']);
 				if ($host === '') {
 					throw new t3lib_exception(
 						'$TYPO3_CONF_VARS[\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp"',

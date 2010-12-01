@@ -137,6 +137,7 @@ $t3libClasses = array(
 	't3lib_tcemain_processuploadhook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_processuploadhook.php',
 	't3lib_mail_message' => PATH_t3lib . 'mail/class.t3lib_mail_message.php',
 	't3lib_mail_mailer' => PATH_t3lib . 'mail/class.t3lib_mail_mailer.php',
+	'tx_t3lib_mail_hooks' => PATH_t3lib . 'mail/class.tx_t3lib_mail_hooks.php',
 	't3lib_matchcondition_abstract' => PATH_t3lib . 'matchcondition/class.t3lib_matchcondition_abstract.php',
 	't3lib_matchcondition_backend' => PATH_t3lib . 'matchcondition/class.t3lib_matchcondition_backend.php',
 	't3lib_matchcondition_frontend' => PATH_t3lib . 'matchcondition/class.t3lib_matchcondition_frontend.php',

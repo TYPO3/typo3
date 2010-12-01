@@ -1,3 +1,7 @@
+2010-12-01  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16591 The new Swift Mailer should be used by TYPO3 for sending all kinds of mail
+
 2010-12-01  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed Bug #16613: CleanUp alt_db_navframe.php to work with new workspaces module
