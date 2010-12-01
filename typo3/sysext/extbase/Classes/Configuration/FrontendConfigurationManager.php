@@ -222,6 +222,10 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 			$return = array();
 
 			foreach ($nodeArray as $nodeKey => $nodeValue) {
+				if ($nodeKey === $valuePointer) {
+					return $nodeValue;	
+				}
+
 				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
 					return $this->walkFlexformNode($nodeValue, $valuePointer);
 				}
