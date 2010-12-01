@@ -390,6 +390,8 @@ class ux_t3lib_DB extends t3lib_DB {
 					$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				} else {
 					$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$new_id = $this->sql_insert_id();
+					$where = $this->cache_autoIncFields[$table] . '=' . $new_id;
 					foreach ($this->lastQuery[1] as $field => $content) {
 						mysql_query('UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
 					}
