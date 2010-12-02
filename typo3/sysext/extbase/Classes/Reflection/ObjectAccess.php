@@ -76,7 +76,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			}
 		}
 
-		throw new RuntimeException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
+		throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
 	}
 
 	/**
@@ -93,8 +93,8 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		foreach ($propertyPathSegments as $pathSegment) {
 			if (is_object($subject) && self::isPropertyGettable($subject, $pathSegment)) {
 				$subject = self::getProperty($subject, $pathSegment);
-			} elseif (is_array($subject) && array_key_exists($pathSegment, $subject)) {
-				$subject = self::getProperty($subject, $pathSegment);
+			} elseif ((is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
+				$subject = $subject[$pathSegment];
 			} else {
 				return NULL;
 			}
@@ -117,7 +117,11 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @return void
 	 * @throws Tx_Extbase_Reflection_Exception if property was could not be set
 	 */
-	static public function setProperty($object, $propertyName, $propertyValue) {
+	static public function setProperty(&$object, $propertyName, $propertyValue) {
+		if (is_array($object)) {
+			$object[$propertyName] = $propertyValue;
+			return TRUE;
+		}
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301368);
 		if (!is_string($propertyName)) throw new InvalidArgumentException('Given property name is not of type string.', 1231178878);
 
@@ -145,14 +149,67 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @todo What to do with ArrayAccess
 	 */
 	static public function getAccessiblePropertyNames($object) {
+		return self::getGettablePropertyNames($object);
+	}
+
+	/**
+	 * Returns an array of properties which can be get with the getProperty()
+	 * method.
+	 * Includes the following properties:
+	 * - which can be get through a public getter method.
+	 * - public properties which can be directly get.
+	 *
+	 * @param object $object Object to receive property names for
+	 * @return array Array of all gettable property names
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	static public function getGettablePropertyNames($object) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301369);
-		$declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
+		if ($object instanceof stdClass) {
+			$declaredPropertyNames = array_keys(get_object_vars($object));
+		} else {
+			$declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
+		}
 
 		foreach (get_class_methods($object) as $methodName) {
-			if (substr($methodName, 0, 3) === 'get') {
-				$propertyName = substr($methodName, 3);
-				$propertyName[0] = strtolower($propertyName[0]);
-				$declaredPropertyNames[] = $propertyName;
+			if (is_callable(array($object, $methodName))) {
+				if (substr($methodName, 0, 2) === 'is') {
+					$declaredPropertyNames[] = strtolower(substr($methodName, 2, 1)) . (substr($methodName, 3));
+				}
+				if (substr($methodName, 0, 3) === 'get') {
+					$declaredPropertyNames[] = strtolower(substr($methodName, 3, 1)) . (substr($methodName, 4));
+				}
+			}
+		}
+
+		$propertyNames = array_unique($declaredPropertyNames);
+		sort($propertyNames);
+		return $propertyNames;
+	}
+
+	/**
+	 * Returns an array of properties which can be set with the setProperty()
+	 * method.
+	 * Includes the following properties:
+	 * - which can be set through a public setter method.
+	 * - public properties which can be directly set.
+	 *
+	 * @param object $object Object to receive property names for
+	 * @return array Array of all settable property names
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	static public function getSettablePropertyNames($object) {
+		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1264022994);
+		if ($object instanceof stdClass) {
+			$declaredPropertyNames = array_keys(get_object_vars($object));
+		} else {
+			$declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
+		}
+
+		foreach (get_class_methods($object) as $methodName) {
+			if (substr($methodName, 0, 3) === 'set' && is_callable(array($object, $methodName))) {
+				$declaredPropertyNames[] = strtolower(substr($methodName, 3, 1)) . (substr($methodName, 4));
 			}
 		}
 
@@ -167,17 +224,50 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param object $object Object to get all properties from.
 	 * @return array Associative array of all properties.
-	 * @todo What to do with ArrayAccess
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Please use getGettableProperties() instead
 	 */
 	static public function getAccessibleProperties($object) {
+		t3lib_div::logDeprecatedFunction();
+		return self::getGettableProperties($object);
+	}
+
+	/**
+	 * Get all properties (names and their current values) of the current
+	 * $object that are accessible through this class.
+	 *
+	 * @param object $object Object to get all properties from.
+	 * @return array Associative array of all properties.
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @todo What to do with ArrayAccess
+	 */
+	static public function getGettableProperties($object) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301370);
 		$properties = array();
-		foreach (self::getAccessiblePropertyNames($object) as $propertyName) {
+		foreach (self::getGettablePropertyNames($object) as $propertyName) {
 			$properties[$propertyName] = self::getProperty($object, $propertyName);
 		}
 		return $properties;
 	}
-	
+
+
+	/**
+	 * Tells if the value of the specified property can be set by this Object Accessor.
+	 *
+	 * @param object $object Object containting the property
+	 * @param string $propertyName Name of the property to check
+	 * @return boolean
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	static public function isPropertySettable($object, $propertyName) {
+		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1259828920);
+		if ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
+			return TRUE;
+		} elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) {
+			return TRUE;
+		}
+		return is_callable(array($object, self::buildSetterMethodName($propertyName)));
+	}
+
 	/**
 	 * Tells if the value of the specified property can be retrieved by this Object Accessor.
 	 *
@@ -187,7 +277,11 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1259828921);
-		if (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) return TRUE;
+		if ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
+			return TRUE;
+		} elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) {
+			return TRUE;
+		}
 		if (is_callable(array($object, 'get' . ucfirst($propertyName)))) return TRUE;
 		return is_callable(array($object, 'is' . ucfirst($propertyName)));
 	}
