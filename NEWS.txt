@@ -34,14 +34,14 @@ General
 	  metacafe, myvideo, liveleak and veoh.
 	* A improved version of misc/advanced.htaccess provides more accurate
 	  and up-to-date information and is a real working sample on how to setup
-	  your Apache to server TYPO3 pages. This setup is now also used in the 
+	  your Apache to server TYPO3 pages. This setup is now also used in the
 	  introduction package as-is.
 
 
 Backend
 =======
 
-	* The frameset was removed. This makes the Backend a lot faster. 
+	* The frameset was removed. This makes the Backend a lot faster.
           Now the navigation tree also can be resized. The new backend works
           using the ExtJS viewport, providing an easy and unified interface
           to manipulate the content of the different panels.
@@ -142,6 +142,12 @@ Development
 	  having no console like the IE
 	* ExtDirect is available in the frontend now (#15754):
 	  http://wiki.typo3.org/ExtDirect
+	* t3lib_div now provides two functions setSingletonInstance and addInstance
+	  that will set the objects to be returned by makeInstance. (#16267)
+	  This will allow unit tests to inject mocks into makeInstance.
+	  In addition, there now is a function purgeInstances that makes
+	  makeInstance return fresh instances (singleton as well as non-singleton).
+
 
 TypoScript
 ==========
