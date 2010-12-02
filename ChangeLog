@@ -6,6 +6,7 @@
 	* Fixed bug #15794: File>List (and other new sysext) shown even though extension not installed
 	* Fixed bug #16639: DBAL auto-loading rendered the Install Tool unuseable (was switching mode to "123")
 	* Added Feature #16610: Provide a SwiftMailer transport that only saves send mails to files (mbox format)
+	* Fixed bug #16643: New sysext modules are placed incorrectly in the Web> module menu. First step: remove hardcoded positions
 
 2010-12-01  Francois Suter  <francois@typo3.org>
 
