@@ -1,3 +1,7 @@
+2010-12-02  Ernesto Baschny  <ernesto@typo3.org>
+
+	* Release of TYPO3 4.5.0beta2
+
 2010-12-01  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added Feature #15604: Install-Tool usability: db compare shows no errors when db-updates fail
