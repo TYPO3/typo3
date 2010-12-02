@@ -146,9 +146,10 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 *
 	 * @param object $object Object to receive property names for
 	 * @return array Array of all declared property names
-	 * @todo What to do with ArrayAccess
+	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Please use getGettablePropertyNames() instead
 	 */
 	static public function getAccessiblePropertyNames($object) {
+		t3lib_div::logDeprecatedFunction();
 		return self::getGettablePropertyNames($object);
 	}
 
