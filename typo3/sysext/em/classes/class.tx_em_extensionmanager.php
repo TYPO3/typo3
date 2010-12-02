@@ -148,7 +148,7 @@ class tx_em_ExtensionManager {
 		$settings = $this->parentObject->MOD_SETTINGS;
 		$settings['siteUrl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		$settings['backPath'] = $this->parentObject->doc->backPath;
-		$settings['hasCredentials'] = ($settings['fe_u'] !== '' && $settings['fe_p'] !== '');
+		$settings['hasCredentials'] = (isset($settings['fe_u']) && isset($settings['fe_p']) && $settings['fe_u'] !== '' && $settings['fe_p'] !== '');
 		$settings['scriptLink'] = $this->parentObject->script;
 
 		// TODO add mirrors to sys_ter record and delete from settings

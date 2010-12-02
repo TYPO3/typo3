@@ -64,7 +64,7 @@ class tx_em_Connection_ExtDirectSoap {
 		/** @var $repository tx_em_Repository */
 		$this->repository = t3lib_div::makeInstance('tx_em_Repository', $this->settings['selectedRepository']);
 
-		if ($this->settings['fe_u'] && $this->settings['fe_p']) {
+		if (isset($this->settings['fe_u']) && isset($this->settings['fe_p']) && $this->settings['fe_u'] !== '' && $this->settings['fe_p'] !== '' ) {
 			$this->setAccountData($this->settings['fe_u'], $this->settings['fe_p']);
 		}
 
@@ -189,7 +189,7 @@ class tx_em_Connection_ExtDirectSoap {
 				'username' => $this->settings['fe_u']
 			)
 		);
-		$result = @$this->soapCall('getExtensionKeys', $params);
+		$result = $this->soapCall('getExtensionKeys', $params);
 		$data = $this->addUploads($result['extensionKeyData']);
 
 		if ($result['simpleResult']['resultCode'] == 10000 && $data !== NULL) {

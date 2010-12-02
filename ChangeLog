@@ -13,6 +13,7 @@
 
 2010-12-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16267 catch empty language selection
 	* Fixed bug #16267 Add functions to provide mocks for makeInstance (Thanks to Oliver Klee)
 	* Added Feature #16642: New extension manager part 2: Add ExtJs Module
 	* Follow-up to #16234: ExtDirect Dataprovider for user settings

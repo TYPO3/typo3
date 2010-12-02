@@ -612,7 +612,7 @@ class tx_em_Connection_ExtDirectServer {
 				'label' => $label,
 				'lang' => $language,
 				'cls' => $cls,
-				'selected' => in_array($language, $selected) ? 1 : 0
+				'selected' => is_array($selected) && in_array($language, $selected) ? 1 : 0
 			);
 		}
 		return array(
