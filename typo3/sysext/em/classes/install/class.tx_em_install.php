@@ -133,6 +133,7 @@ class tx_em_Install {
 		$xmlhandler =& $this->parentObject->xmlhandler;
 		$extensionList =& $this->parentObject->extensionList;
 		$extensionDetails =& $this->parentObject->extensionDetails;
+		$content = '';
 
 		if (tx_em_Tools::importAsType($loc)) {
 			if (is_array($fetchData)) { // There was some data successfully transferred
@@ -147,9 +148,9 @@ class tx_em_Install {
 						list($instExtInfo,) = $extensionList->getInstalledExtensions();
 						$depStatus = $this->checkDependencies($extKey, $EM_CONF, $instExtInfo);
 						if (t3lib_extMgm::isLoaded($extKey) && !$depStatus['returnCode']) {
-							$this->content .= $depStatus['html'];
+							$content .= $depStatus['html'];
 							if ($uploadedTempFile) {
-								$this->content .= '<input type="hidden" name="CMD[alreadyUploaded]" value="' . $uploadedTempFile . '" />';
+								$content .= '<input type="hidden" name="CMD[alreadyUploaded]" value="' . $uploadedTempFile . '" />';
 							}
 						} else {
 							$res = $this->clearAndMakeExtensionDir($fetchData[0], $loc, $dontDelete);
@@ -412,6 +413,7 @@ class tx_em_Install {
 				}
 			}
 		}
+
 		if (($depError || $depIgnore) && $this->parentObject instanceof SC_mod_tools_em_index) {
 			$content .= $this->parentObject->doc->section(
 				$GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'),

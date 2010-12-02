@@ -1,3 +1,7 @@
+2010-12-02  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16645: EM - Install extension with dependency
+
 2010-12-02  Ernesto Baschny  <ernesto@typo3.org>
 
 	* Release of TYPO3 4.5.0beta2
