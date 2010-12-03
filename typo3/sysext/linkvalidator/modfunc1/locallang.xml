@@ -36,6 +36,8 @@
             <label index="list.report.rowdeleted">###title### row deleted</label>
             <label index="list.report.rownotexisting">###title### row doesn't exist</label>
             <label index="list.report.noresponse">External Link not reachable</label>
+            <label index="list.report.pagenotfound404">The requested url was not found (404)</label>
+            <label index="list.report.pageforbidden403">Not allowed to access this address (403)</label>
             <label index="list.report.filenotexisting">File doesn't exist</label>
             <label index="label_update">Check links</label>
             <label index="label_refresh">Refresh display</label>
