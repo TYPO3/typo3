@@ -1,3 +1,7 @@
+2010-12-03  Ingo Renner  <ingo@typo3.org>
+
+	* Follow-up to #16396: cleaned up code, fixed naming convention violations
+
 2010-12-03  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #16396: cleanup code, added phpDoc and XCLASS definition

@@ -524,7 +524,7 @@ class tx_cms_layout extends recordList {
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = t3lib_BEfunc::getProcessedValue('tt_content', 'colPos', $key);
 
-					$tcaItems = t3lib_div::callUserFunction('EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getColPosListItemsParsed', $id, $this);
+					$tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $id, $this);
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);

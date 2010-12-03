@@ -536,10 +536,11 @@ class SC_db_layout {
 				// Find columns
 			$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');		// SHARED page-TSconfig settings.
 			$this->colPosList = strcmp(trim($this->modTSconfig['properties']['tt_content.']['colPos_list']),'') ? trim($this->modTSconfig['properties']['tt_content.']['colPos_list']) : $modTSconfig_SHARED['properties']['colPos_list'];
-			if( !strcmp($this->colPosList,'') ) {
-				$beLayout = t3lib_div::callUserFunction( 'EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getSelectedBackendLayout' , $this->id, $this );
-				if(count($beLayout['__colPosList'])) {
-					$this->colPosList = implode(',', $beLayout['__colPosList']);
+			if (!strcmp($this->colPosList,'')) {
+				$backendLayout = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout' , $this->id, $this );
+
+				if(count($backendLayout['__colPosList'])) {
+					$this->colPosList = implode(',', $backendLayout['__colPosList']);
 				}
 			}
 			if( !strcmp($this->colPosList, '') ){
@@ -1068,7 +1069,7 @@ class SC_db_layout {
 							// Setting up the tt_content columns to show:
 						if (is_array($TCA['tt_content']['columns']['colPos']['config']['items']))	{
 							$colList = array();
-							$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/class.tx_cms_be_layout.php:tx_cms_be_layout->getColPosListItemsParsed' , $this->id, $this );
+							$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed' , $this->id, $this );
 							foreach($tcaItems as $temp)	{
 								$colList[] = $temp[1];
 							}
