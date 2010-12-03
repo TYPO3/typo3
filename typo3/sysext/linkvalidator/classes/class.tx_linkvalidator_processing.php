@@ -86,78 +86,16 @@ class tx_linkvalidator_processing {
 				// re-init selectFields for table
 			$selectFields = 'uid, pid';
 			$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
-
+			
 				// TODO: only select rows that have content in at least one of the relevant fields (via OR)
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-
-					// array to store urls from relevant field contents
-				$urls = array();
-
-					// flag whether row contains a broken link in some field or not
-				$rowContainsBrokenLink = FALSE;
-
-					// put together content of all relevant fields
-				$haystack = '';
-				$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-					// get all references
-				foreach ($fields as $field) {
-					$haystack .= $row[$field] . ' --- ';
-					$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-						// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
-					if ($conf['softref'] && strlen($row[$field])) {
-							// Explode the list of softreferences/parameters
-						$softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']);
-							// Traverse soft references
-						foreach ($softRefs as $spKey => $spParams) {
-								// create / get object
-							$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
-
-							if (is_object($softRefObj)) { // If there was an object returned...:
-									// Do processing
-								$resultArray = $softRefObj->findRef($table, $field, $row['uid'], $row[$field], $spKey, $spParams);
-								if (!empty($resultArray['elements'])) {
-
-									$tagAttr = array();
-									if ($spKey == 'typolink_tag') {
-										$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-										foreach ($linkTags as $tag) {
-											$attr = $htmlParser->split_tag_attributes($tag);
-											$tagAttr[$tag] = $attr[0];
-										}
-									}
-									foreach ($resultArray['elements'] as $element) {
-										$r = $element['subst'];
-										$title = '';
-											// Parse string for special TYPO3 <link> tag:
-
-										if ($spKey == 'typolink_tag') {
-											foreach ($tagAttr as $tag => $attr) {
-												if (in_array('{softref:' . $r['tokenID'] . '}', $attr)) {
-													$title = strip_tags($tag);
-												}
-											}
-										}
-										$type = '';
-										if (!empty($r)) {
-											foreach ($this->hookObjectsArr as $key => $hookObj) {
-												$type = $hookObj->fetchType($r, $type, $key);
-											}
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["substr"] = $r;
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["row"] = $row;
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["table"] = $table;
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["field"] = $field;
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["uid"] = $row['uid'];
-											$results[$type][$table . ':' . $field . ':' . $row['uid'] . ':' . $r["tokenID"]]["linktitle"] = $title;
-										}
-
-									}
-								}
-							}
-						}
-					}
-				}
+				
+				// Analyse each record
+				$this->analyseRecord($results, $table, $fields, $row);
+				
+				
 			} // end while ($row = ...)
 		} // end foreach $table
 
@@ -197,6 +135,94 @@ class tx_linkvalidator_processing {
 		}
 
 	} // end function getLinkStatistics
+
+
+	
+	/**
+	 * Find all supported broken links for a specific record
+	 * @param	array		$results: array of broken links
+	 * @param	string		$table: table name of the record
+	 * @param	array		$fields: array of fields to analyze
+	 * @param	array		$record: record to analyse
+	 * @return	void
+	 */
+	function analyseRecord(&$results, $table, $fields, $record) {
+		
+			// array to store urls from relevant field contents
+		$urls = array();
+
+			// flag whether row contains a broken link in some field or not
+		$rowContainsBrokenLink = FALSE;
+		
+			// put together content of all relevant fields
+		$haystack = '';
+		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
+		
+		$idRecord = $record['uid'];
+		
+			// get all references
+		foreach ($fields as $field) {
+			$haystack .= $record[$field] . ' --- ';
+			$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+			
+			$valueField = $record[$field];
+			
+				// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
+			if ($conf['softref'] && strlen($valueField)) {
+					// Explode the list of softreferences/parameters
+				$softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']);
+					// Traverse soft references
+				foreach ($softRefs as $spKey => $spParams) {
+						// create / get object
+					$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
+
+					if (is_object($softRefObj)) { // If there was an object returned...:
+							// Do processing
+						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
+						if (!empty($resultArray['elements'])) {
+
+							$tagAttr = array();
+							if ($spKey == 'typolink_tag') {
+								$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
+								foreach ($linkTags as $tag) {
+									$attr = $htmlParser->split_tag_attributes($tag);
+									$tagAttr[$tag] = $attr[0];
+								}
+							}
+							
+							foreach ($resultArray['elements'] as $element) {
+								$r = $element['subst'];
+								$title = '';
+									// Parse string for special TYPO3 <link> tag:
+
+								if ($spKey == 'typolink_tag') {
+									foreach ($tagAttr as $tag => $attr) {
+										if (in_array('{softref:' . $r['tokenID'] . '}', $attr)) {
+											$title = strip_tags($tag);
+										}
+									}
+								}
+								$type = '';
+								if (!empty($r)) {
+									foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+										$type = $hookObj->fetchType($r, $type, $keyArr);
+									}
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["linktitle"] = $title;
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}	
+	} // end function analyseRecord
+	
 
 	/**
 	 * Fill a markerarray with the number of link found in a list of page.
