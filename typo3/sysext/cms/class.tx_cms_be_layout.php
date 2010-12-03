@@ -28,15 +28,23 @@
 class tx_cms_be_layout {
 
 	/**
-	 * @mficzel
-	 * @todo add items
-	 * @param unknown_type $params
+	 * ItemProcFunc for colpos items
+	 *
+	 * @param  array $params
+	 * @return void
 	 */
-	function colPosListItemProcFunc(&$params) {
+	public function colPosListItemProcFunc(&$params) {
 		$params['items'] = $this->addColPosListLayoutItems($params['row']['pid'], $params['items']);
 	}
 
-	function addColPosListLayoutItems($pageId, $items) {
+	/**
+	 * Adds items to a colpos list
+	 *
+	 * @param  int  $pageId
+	 * @param  array  $items
+	 * @return array
+	 */
+	protected function addColPosListLayoutItems($pageId, $items) {
 		$layout = $this->getSelectedBackendLayout($pageId);
 		if ($layout && $layout['__items']) {
 			$items = $layout['__items'];
@@ -44,28 +52,46 @@ class tx_cms_be_layout {
 		return $items;
 	}
 
-	function getColPosListItemsParsed($id) {
+	/**
+	 * Gets the list of available columns for a given page id
+	 *
+	 * @param  int  $id
+	 * @return  array  $tcaItems
+	 */
+	public function getColPosListItemsParsed($id) {
 
 		$tsConfig = t3lib_BEfunc::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
 
-		$TCEForms = t3lib_div::makeInstance('t3lib_TCEForms');
+		/** @var $tceForms  t3lib_TCEForms */
+		$tceForms = t3lib_div::makeInstance('t3lib_TCEForms');
 		$tcaItems = $tcaConfig['items'];
-		$tcaItems = $TCEForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
+		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}
 		foreach (t3lib_div::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
 			unset($tcaItems[$removeId]);
 		}
+
 		return $tcaItems;
 	}
 
-	function getSelectedBackendLayout($id) {
+	/**
+	 * Gets the selected backend layout
+	 *
+	 * @param  int  $id
+	 * @return array|null  $backendLayout
+	 */
+	public function getSelectedBackendLayout($id) {
 		$rootline = t3lib_BEfunc::BEgetRootLine($id);
 		$backendLayoutUid = null;
 		for ($i = count($rootline); $i > 0; $i--) {
-			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, be_layout, be_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
+			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'uid, be_layout, be_layout_next_level',
+				'pages',
+				'uid=' . intval($rootline[$i]['uid'])
+			);
 			if (intval($page['be_layout_next_level']) > 0 && $page['uid'] != $id) {
 				$backendLayoutUid = intval($page['be_layout_next_level']);
 				break;
@@ -76,10 +102,11 @@ class tx_cms_be_layout {
 				}
 			}
 		}
-		$backendLayout = null;
+		$backendLayout = NULL;
 		if ($backendLayoutUid) {
 			$backendLayout = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'be_layouts', 'uid=' . $backendLayoutUid);
 			if ($backendLayout) {
+				/** @var $parser  t3lib_TSparser */
 				$parser = t3lib_div::makeInstance('t3lib_TSparser');
 				$parser->parse($backendLayout['config']);
 				$backendLayout['__config'] = $parser->setup;
@@ -89,22 +116,28 @@ class tx_cms_be_layout {
 				// create items and colPosList
 				if ($backendLayout['__config']['be_layout.'] && $backendLayout['__config']['be_layout.']['rows.']) {
 					foreach ($backendLayout['__config']['be_layout.']['rows.'] as $row) {
+						if (isset($row['columns.']) && is_array($row['columns.'])) {
 							foreach ($row['columns.'] as $column) {
-									$backendLayout['__items'][] = array(
-										$column['name'],
-										$column['colPos'],
-								NULL
-									);
-									$backendLayout['__colPosList'][] = $column['colPos'];
-								}
+								$backendLayout['__items'][] = array(
+									$column['name'],
+									$column['colPos'],
+									NULL
+								);
+								$backendLayout['__colPosList'][] = $column['colPos'];
 							}
 						}
+					}
+				}
 
 			}
 		}
 		return $backendLayout;
 	}
 
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/class.tx_cms_be_layout.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/class.tx_cms_be_layout.php']);
 }
 
 ?>
