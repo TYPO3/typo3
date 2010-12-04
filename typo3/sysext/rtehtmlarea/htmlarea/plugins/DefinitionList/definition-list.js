@@ -75,6 +75,8 @@ HTMLArea.DefinitionList = HTMLArea.BlockElements.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId + '-Tooltip'),
+				contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
+				helpText	: this.localize(buttonId + '-helpText'),
 				iconCls		: 'htmlarea-action-' + button[5],
 				action		: 'onButtonPress',
 				context		: button[1],

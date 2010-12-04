@@ -178,6 +178,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 					tooltip		: this.localize(buttonId + '-Tooltip'),
 					iconCls		: 'htmlarea-action-' + button[3],
 					contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
+					helpText	: this.localize(buttonId + '-helpText'),
 					action		: 'onButtonPress',
 					hotKey		: ((this.buttonsConfiguration[button[2]] && this.buttonsConfiguration[button[2]].hotKey) ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};

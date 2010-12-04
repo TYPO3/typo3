@@ -106,6 +106,8 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId + "-Tooltip"),
+				contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
+				helpText	: this.localize(buttonId + '-helpText'),
 				action		: "onButtonPress",
 				context		: button[1],
 				hide		: false,

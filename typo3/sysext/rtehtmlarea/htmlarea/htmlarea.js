@@ -82,7 +82,7 @@ Ext.apply(HTMLArea, {
 	 * LOCALIZATION                                    *
 	 ***************************************************/
 	localize: function (label) {
-		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || label;
+		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
 	},
 	/***************************************************
 	 * INITIALIZATION                                  *

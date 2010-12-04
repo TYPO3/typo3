@@ -15,15 +15,19 @@
 			<label index="Bold-Tooltip">Bold</label>
 			<label index="Citation-Tooltip">Citation</label>
 			<label index="Code-Tooltip">Computer code fragment</label>
+			<label index="Code-contextMenuTitle">Code fragment</label>
 			<label index="Definition-Tooltip">Definition</label>
 			<label index="DeletedText-Tooltip">Deleted text</label>
 			<label index="Emphasis-Tooltip">Emphasis</label>
 			<label index="Keyboard-Tooltip">Text to be entered by the user</label>
+			<label index="Keyboard-contextMenuTitle">Text to enter</label>
 			<label index="InsertedText-Tooltip">Inserted text</label>
 			<label index="Italic-Tooltip">Italic</label>
 			<label index="MonoSpaced-Tooltip">Monospaced text</label>
 			<label index="Quotation-Tooltip">Short inline quotation</label>
+			<label index="Quotation-contextMenuTitle">Short quotation</label>
 			<label index="Sample-Tooltip">Sample program output or script</label>
+			<label index="Sample-contextMenuTitle">Sample output</label>
 			<label index="Small-Tooltip">Small text</label>
 			<label index="Span-Tooltip">Style container</label>
 			<label index="StrikeThrough-Tooltip">Strike-through text</label>
@@ -32,6 +36,7 @@
 			<label index="Superscript-Tooltip">Superscript</label>
 			<label index="Underline-Tooltip">Underline</label>
 			<label index="Variable-Tooltip">Variable or program argument</label>
+			<label index="Variable-contextMenuTitle">Variable</label>
 			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
 		</languageKey>
 	</data>

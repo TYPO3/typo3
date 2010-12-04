@@ -125,9 +125,9 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 								itemId: itemId,
 								cls: 'button',
 								overCls: 'hover',
-								text: (button.contextMenuTitle || button.tooltip.title),
+								text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title),
 								iconCls: button.iconCls,
-								helpText: this.localize(itemId + '-helpText') || this.localize(itemId + '-tooltip'),
+								helpText: (button.helpText ? button.helpText : this.localize(itemId + '-tooltip')),
 								hidden: true
 							});
 							firstInGroup = false;
@@ -201,7 +201,8 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 			} else if (xtype === 'menuitem') {
 				var button = this.getButton(menuItem.getItemId());
 				if (button) {
-					menuItem.setText(button.tooltip.title);
+					menuItem.setText(button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title);
+					menuItem.helpText = button.helpText ? button.helpText : menuItem.helpText;
 					menuItem.setVisible(!button.disabled);
 					lastIsButton = lastIsButton || !button.disabled;
 				} else {

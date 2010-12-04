@@ -1,3 +1,7 @@
+2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16674: htmlARea RTE: Broken/missing labels in context menu
+
 2010-12-03  Ingo Renner  <ingo@typo3.org>
 
 	* Follow-up to #16396: cleaned up code, fixed naming convention violations
