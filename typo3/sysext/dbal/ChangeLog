@@ -1,3 +1,7 @@
+2010-12-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16678: DBAL is active with MySQL at the end of 1-2-3 wizard
+
 2010-12-02  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16639: Install Tool is unusable since DBAL merge

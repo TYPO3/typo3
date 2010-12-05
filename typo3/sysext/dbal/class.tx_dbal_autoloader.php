@@ -48,7 +48,7 @@ class tx_dbal_autoloader {
 		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
 				case 0:
-					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+					if (!is_array($instObj->INSTALL) && !t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
 						$this->activateDbal();
 
 						// Reload page to have Install Tool actually load DBAL
