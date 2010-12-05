@@ -1,3 +1,7 @@
+2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11290: PHP notices from XCLASS inclusions
+
 2010-12-01  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed ext_emconf.php
