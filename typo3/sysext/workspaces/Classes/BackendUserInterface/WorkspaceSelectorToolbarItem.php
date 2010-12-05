@@ -174,7 +174,7 @@ if(!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php']);
 }
 ?>
