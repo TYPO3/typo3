@@ -419,7 +419,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_xmldb.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_xmldb.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_xmldb.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/handlers/class.tx_dbal_handler_xmldb.php']);
 }
 ?>
