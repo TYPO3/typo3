@@ -1,6 +1,7 @@
 2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16674: htmlARea RTE: Broken/missing labels in context menu
+	* Fixed bug #16675: htmlArea RTE: Incorrect result when inserting horizontal rule in FF and WebKit
 
 2010-12-03  Ingo Renner  <ingo@typo3.org>
 
