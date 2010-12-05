@@ -87,8 +87,8 @@
  *		 }
  *
  *			 // CHECKING IF THERE ARE AN EXTENSION CLASS CONFIGURED FOR THIS CLASS:
- *		 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/prototype/index.php'])	{
- *			 include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/prototype/index.php']);
+ *		 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/prototype/index.php'])) {
+ *			 include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/prototype/index.php']);
  *		 }
  *
  *		   // MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()

@@ -254,8 +254,8 @@ class tx_linkvalidator_scheduler_linkAdditionalFieldProvider implements tx_sched
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_linkAdditionalFieldProvider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_linkAdditionalFieldProvider.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_linkAdditionalFieldProvider.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_linkAdditionalFieldProvider.php']);
 }
 
 ?>

@@ -63,7 +63,7 @@ class tx_rtehtmlarea_editelement extends tx_rtehtmlarea_api {
 		return $registerRTEinJavascriptString;
 	}
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditElement/class.tx_rtehtmlarea_editelement.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditElement/class.tx_rtehtmlarea_editelement.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditElement/class.tx_rtehtmlarea_editelement.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditElement/class.tx_rtehtmlarea_editelement.php']);
 }
 ?>

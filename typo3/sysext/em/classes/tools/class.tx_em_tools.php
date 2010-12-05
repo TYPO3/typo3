@@ -885,14 +885,15 @@ final class tx_em_Tools {
 								}
 							}
 								// Check for proper XCLASS definition
-								// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
+								// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
 							$XclassSearch = '\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
 							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
 							if (count($XclassParts) !== 2) {
 									// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
 								$XclassSearch = '\$GLOBALS\[[\'"]TYPO3_CONF_VARS[\'"]\]\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
-								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
+								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && (isset\()?' . $XclassSearch . '/', $fContent, 2);
 							}
+
 							if (count($XclassParts) == 2) {
 								unset($reg);
 								preg_match('/^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]/', $XclassParts[1], $reg);

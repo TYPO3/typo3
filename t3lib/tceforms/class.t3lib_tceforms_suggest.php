@@ -239,8 +239,8 @@ class t3lib_TCEforms_Suggest {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['classes/t3lib/tceforms/class.t3lib_tceforms_suggest.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['classes/t3lib/tceforms/class.t3lib_tceforms_suggest.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['classes/t3lib/tceforms/class.t3lib_tceforms_suggest.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['classes/t3lib/tceforms/class.t3lib_tceforms_suggest.php']);
 }
 
 ?>

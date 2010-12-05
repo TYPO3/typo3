@@ -1,3 +1,7 @@
+2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16574: PHP notices from XCLASS inclusions
+
 2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16674: htmlARea RTE: Broken/missing labels in context menu

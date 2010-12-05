@@ -71,7 +71,7 @@ class tx_rtehtmlarea_statusReport_conflictsCheck implements tx_reports_StatusPro
 		);
 	}
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/statusreport/class.tx_rtehtmlarea_statusreport_conflictscheck.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/statusreport/class.tx_rtehtmlarea_statusreport_conflictscheck.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/statusreport/class.tx_rtehtmlarea_statusreport_conflictscheck.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/statusreport/class.tx_rtehtmlarea_statusreport_conflictscheck.php']);
 }
 ?>

@@ -287,8 +287,8 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_frontend.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_frontend.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_frontend.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/matchcondition/class.t3lib_matchcondition_frontend.php']);
 }
 
 ?>

@@ -119,8 +119,8 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']);
 }
 
 ?>

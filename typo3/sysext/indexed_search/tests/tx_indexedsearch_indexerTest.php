@@ -176,8 +176,8 @@ class tx_indexedsearch_indexerTest extends tx_phpunit_testcase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/tests/class.tx_indexedsearch_indexer_testcase.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/indexed_search/tests/class.tx_indexedsearch_indexer_testcase.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/tests/class.tx_indexedsearch_indexer_testcase.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/tests/class.tx_indexedsearch_indexer_testcase.php']);
 }
 
 ?>

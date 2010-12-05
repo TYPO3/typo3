@@ -92,7 +92,7 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 		return array_diff($show, $removeButtons);
 	}
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']);
 }
 ?>

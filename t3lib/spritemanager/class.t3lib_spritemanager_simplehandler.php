@@ -102,7 +102,7 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php']);
 }
 ?>

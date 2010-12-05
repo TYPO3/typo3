@@ -38,8 +38,8 @@ class t3lib_cache_exception_DuplicateIdentifier extends t3lib_cache_Exception {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_duplicateidentifier.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_duplicateidentifier.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_duplicateidentifier.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_duplicateidentifier.php']);
 }
 
 ?>

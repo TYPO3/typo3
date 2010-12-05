@@ -466,8 +466,8 @@ GLV_timeout_count++;
 
 $GLOBALS['TSFE']->tmpl->menuclasses.=',gmenu_layers';
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php']);
 }
 
 ?>

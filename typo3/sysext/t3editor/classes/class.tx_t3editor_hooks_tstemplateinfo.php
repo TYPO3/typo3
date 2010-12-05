@@ -204,8 +204,8 @@ class tx_t3editor_hooks_tstemplateinfo {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor_hooks_tstemplateinfo.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor_hooks_tstemplateinfo.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor_hooks_tstemplateinfo.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor_hooks_tstemplateinfo.php']);
 }
 
 ?>

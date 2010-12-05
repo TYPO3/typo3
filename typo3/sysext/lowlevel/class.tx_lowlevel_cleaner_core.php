@@ -610,8 +610,8 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php']);
 }
 
 ?>

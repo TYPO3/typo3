@@ -65,8 +65,8 @@ class tx_rtehtmlarea_insertsmiley extends tx_rtehtmlarea_api {
 
 } // end of class
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php']);
 }
 
 ?>

@@ -69,8 +69,8 @@ class tx_taskcenter_status {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/classes/class.tx_taskcenter_status.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/classes/class.tx_taskcenter_status.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/taskcenter/classes/class.tx_taskcenter_status.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/taskcenter/classes/class.tx_taskcenter_status.php']);
 }
 
 ?>

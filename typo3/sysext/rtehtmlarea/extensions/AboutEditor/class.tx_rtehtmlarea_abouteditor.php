@@ -64,7 +64,7 @@ class tx_rtehtmlarea_abouteditor extends tx_rtehtmlarea_api {
 	}
 
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/AboutEditor/class.tx_rtehtmlarea_abouteditor.php']);
 }
 ?>

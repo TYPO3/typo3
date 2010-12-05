@@ -85,8 +85,8 @@ class tx_rsaauth_storagefactory {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_storagefactory.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_storagefactory.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_storagefactory.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_storagefactory.php']);
 }
 
 ?>

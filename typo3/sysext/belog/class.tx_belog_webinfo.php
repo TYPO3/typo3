@@ -267,8 +267,8 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/belog/class.tx_belog_webinfo.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/belog/class.tx_belog_webinfo.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/belog/class.tx_belog_webinfo.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/belog/class.tx_belog_webinfo.php']);
 }
 
 ?>

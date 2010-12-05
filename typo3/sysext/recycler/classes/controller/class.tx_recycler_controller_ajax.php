@@ -183,8 +183,8 @@ class tx_recycler_controller_ajax {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/recycler/classes/controller/class.tx_recycler_controller_ajax.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/recycler/classes/controller/class.tx_recycler_controller_ajax.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/recycler/classes/controller/class.tx_recycler_controller_ajax.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/recycler/classes/controller/class.tx_recycler_controller_ajax.php']);
 }
 
 ?>

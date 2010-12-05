@@ -88,7 +88,7 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlarea_api {
 		return array_unique(array_merge($show, t3lib_div::trimExplode(',', $this->pluginButtons)));
 	}
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php']);
 }
 ?>

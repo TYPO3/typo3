@@ -415,7 +415,7 @@ class tx_simulatestatic {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/simulatestatic/class.tx_simulatestatic.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/simulatestatic/class.tx_simulatestatic.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/simulatestatic/class.tx_simulatestatic.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/simulatestatic/class.tx_simulatestatic.php']);
 }
 ?>

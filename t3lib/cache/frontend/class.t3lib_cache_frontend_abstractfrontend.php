@@ -213,8 +213,8 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']);
 }
 
 ?>
