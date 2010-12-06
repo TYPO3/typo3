@@ -1,3 +1,15 @@
+2010-12-06  Pierre Boivin <pierre.boivin@infoglobe.ca>
+	* Fixed bug : #11274: Change true to 1 for showUpdateButton
+	* Fixed bug : #11272: Fix dos line endings in ext_tables.php
+	* Fixed bug : #11270: List in the BE module should be sorted by record
+	* Fixed bug : #11275: Remove clear.gif in modfunc1
+	* Fixed bug : #10987: linkvalidator doesn't detect hidden page (Thanks to Joh. Feustel)
+
+2010-12-03  Pierre Boivin <pierre.boivin@infoglobe.ca>
+	* Fixed bug : #11271: Lowercase all filenames
+	* Fixed bug : #11280: Refactor class tx_linkvalidator_processing
+	* Fixed bug : #10907: invalid external url not detected
+
 2010-11-22  Tolleiv Nietsch  <info@tolleiv.de>
 
 	* Fixed bug: #10988: getBrokenUrl returns wrong url (Thanks to Johannes Feustel)
