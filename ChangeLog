@@ -1,3 +1,7 @@
+2010-12-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up to #16444: 1-2-3 wizard dies when MySQL driver is not available
+
 2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16574: PHP notices from XCLASS inclusions
