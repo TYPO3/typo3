@@ -43,27 +43,32 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 		if ($this->url_reports[$url]) {
 			return $this->url_reports[$url];
 		}
-		// remove possible anchor from the url
+		
+			// remove possible anchor from the url
 		if (strrpos($url, '#') !== FALSE) {
 			$url = substr($url, 0, strrpos($url, '#'));
 		}
 
-		// try to fetch the content of the URL (just fetching of headers doesn't work!)
+			// try to fetch the content of the URL (just fetching of headers doesn't work!)
 		$report = array();
 		
 		t3lib_div::getURL($url, 1, FALSE, $report);
 		
 		$ret = 1;
 
-		// analyze the response
+			// analyze the response
 		if ($report['error']) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.noresponse');
 		}
-		if($report['http_code'] == '404') {
+		
+		if($report['http_code'] === 404) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 		}
-		if($report['http_code'] == '403') {
+		else if($report['http_code'] === 403) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+		}
+		else if ($report['http_code'] >= 400) {
+			$ret = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $report['http_code']);
 		}
 
 		$this->url_reports[$url] = $ret;
