@@ -1,3 +1,7 @@
+2010-12-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16696: [Caching framework] unit tests: Fatal error in t3lib_cache_backend_dbbackendTest due to call to undefined method
+
 2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16675: htmlArea RTE: Incorrect result when inserting horizontal rule in FF and WebKit
