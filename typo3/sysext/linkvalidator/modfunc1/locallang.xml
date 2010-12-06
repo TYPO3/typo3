@@ -33,6 +33,7 @@
             <label index="list.tableHead.linkmessage">Error message</label>
             <label index="list.report.pagedeleted">Page deleted</label>
             <label index="list.report.pagenotexisting">Page '###title###' doesn't exist</label>
+            <label index="list.report.pagenotvisible">Page '###title###' is not visible</label>
             <label index="list.report.rowdeleted">###title### row deleted</label>
             <label index="list.report.rownotexisting">###title### row doesn't exist</label>
             <label index="list.report.noresponse">External Link not reachable</label>

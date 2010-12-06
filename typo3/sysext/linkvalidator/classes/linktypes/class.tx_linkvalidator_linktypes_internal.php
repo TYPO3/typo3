@@ -39,7 +39,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 */
 	function checkLink($url, $softRefEntry, $reference) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid, deleted, title',
+			'uid, title, deleted, hidden, starttime, endtime',
 			'pages',
 			'uid = ' . intval($url)
 		);
@@ -49,7 +49,15 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
 				$response = str_replace('###title###', $rows[0]['title'], $response);
 				return $response;
+			} elseif ($rows[0]['hidden'] == '1'
+				|| $GLOBALS['EXEC_TIME'] < intval($rows[0]['starttime'])
+				|| ($rows[0]['endtime'] && intval($rows[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
+
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
+				$response = str_replace('###title###', $rows[0]['title'], $response);
+				return $response;
 			}
+			
 		} else {
 			return $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
 		}
