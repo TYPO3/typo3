@@ -1,5 +1,6 @@
 2010-12-06  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #16679: Cannot login to backend at the end of 1-2-3 wizard when using Oracle
 	* Follow-up to #16444: 1-2-3 wizard dies when MySQL driver is not available
 
 2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>

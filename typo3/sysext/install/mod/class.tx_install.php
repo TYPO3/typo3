@@ -289,6 +289,11 @@ class tx_install extends t3lib_install {
 		if ($this->mode !== '123') {
 			$this->mode = '';
 		}
+		if (t3lib_div::_GP('step') === 'go') {
+			$this->step = 'go';
+		} else {
+			$this->step = intval(t3lib_div::_GP('step'));
+		}
 
 			// Let DBAL decide whether to load itself
 		$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
@@ -305,11 +310,6 @@ class tx_install extends t3lib_install {
 						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.'
 				);
 			}
-		}
-		if (t3lib_div::_GP('step') === 'go') {
-			$this->step = 'go';
-		} else {
-			$this->step = intval(t3lib_div::_GP('step'));
 		}
 		$this->redirect_url = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect_url'));
 
