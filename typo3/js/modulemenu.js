@@ -101,7 +101,9 @@ TYPO3.ModuleMenu.App = {
 			callback: function(records, options) {
 				this.renderMenu(records);
 				if (top.startInModule) {
-					this.showModule(top.startInModule[0],top.startInModule[1]);
+					this.showModule(top.startInModule[0], top.startInModule[1]);
+				} else {
+					this.loadFirstAvailableModule();
 				}
 			}
 		});
@@ -196,17 +198,32 @@ TYPO3.ModuleMenu.App = {
 	showModule: function(mod, params) {
 		params = params || '';
 		this.selecteModule = mod;
+
+		params = this.includeId(mod, params);
 		var record = this.getRecordFromName(mod);
 
 		if (record) {
+			this.loadModuleComponents(record, params);
+		} else {
+				//defined startup module is not present, use the first available instead
+			this.loadFirstAvailableModule(params);
+		}
+	},
 
-			//get id
-			var section = mod.split('_')[0];
-			if (top.fsMod.recentIds[section]) {
-				params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
-			}
+	loadFirstAvailableModule: function(params) {
+		params = params || '';
+		if (TYPO3.ModuleMenu.Store.getCount() === 0) {
+				// Store is empty, something went wrong
+			TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Module loader', 'No module found. If this is a temporary error, please reload the Backend!', 50000);
+		} else {
+			mod = TYPO3.ModuleMenu.Store.getAt(0).data.sub[0];
+			this.loadModuleComponents(mod, params);
+		}
+	},
 
-			if (record.navigationComponentId) {
+	loadModuleComponents: function(record, params) {
+		var mod = record.name;
+		if (record.navigationComponentId) {
 				this.loadNavigationComponent(record.navigationComponentId);
 				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
 			} else if (record.navframe) {
@@ -220,14 +237,21 @@ TYPO3.ModuleMenu.App = {
 			this.loadedModule = mod;
 			this.highlightModuleMenuItem(mod);
 
-			// compatibility
+				// compatibility
 			top.currentSubScript = record.originalLink;
 			top.currentModuleLoaded = mod;
 
 			TYPO3.Backend.doLayout();
-		} else {
-			console.log(mod + ' was not found in modules');
+	},
+
+	includeId: function(mod, params) {
+			//get id
+		var section = mod.split('_')[0];
+		if (top.fsMod.recentIds[section]) {
+			params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
 		}
+
+		return params;
 	},
 
 	loadNavigationComponent: function(navigationComponentId) {

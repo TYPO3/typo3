@@ -1,5 +1,6 @@
 2010-12-06  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16646: help_aboutmoules hardcoded as start up module - returns error if uninstalled
 	* Fixed bug #16644: Ext Direct error as popup appears after BE login
 	* Update #16695: Update ExtJS to version 3.3.1
 
