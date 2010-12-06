@@ -160,7 +160,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$processing->init($searchFields, $pageList);
 
-		// check if button press
+			// check if button press
 		$update = t3lib_div::_GP('updateLinkList');
 
 		if (!empty($update)) {
@@ -346,7 +346,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$elementType = $table . ':' . $row['recuid'];
 		}
 
-			//Alternating row colors
+			// Alternating row colors
 		if ($switch == TRUE) {
 			$switch = FALSE;
 			$markerArray['bgcolor_alternating'] = $this->doc->bgColor3;
