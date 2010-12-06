@@ -1,3 +1,7 @@
+2010-12-06  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Update #16695: Update ExtJS to version 3.3.1
+
 2010-12-06  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16679: Cannot login to backend at the end of 1-2-3 wizard when using Oracle
