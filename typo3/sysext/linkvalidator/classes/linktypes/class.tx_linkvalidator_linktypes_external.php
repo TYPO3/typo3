@@ -39,7 +39,7 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
 	 * @return	string		validation error message or succes code
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		if ($this->url_reports[$url]) {
 			return $this->url_reports[$url];
 		}
@@ -82,7 +82,7 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 * @param   string	 $type: current type
 	 * @return	string		fetched type
 	 */
-	function fetchType($value, $type) {
+	public function fetchType($value, $type) {
 		preg_match_all('/((?:http|https|ftp|ftps))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {

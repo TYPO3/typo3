@@ -37,7 +37,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  validation error message or succes code
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, title, deleted, hidden, starttime, endtime',
 			'pages',
@@ -71,7 +71,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @param   array	   $row: broken link record
 	 * @return  string	  parsed broken url
 	 */
-	function getBrokenUrl($row) {
+	public function getBrokenUrl($row) {
 		$domain = t3lib_BEfunc::getViewDomain($row['pid']);
 		return $domain . '/index.php?id=' . $row['url'];
 	}

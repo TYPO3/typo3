@@ -37,7 +37,7 @@ abstract class tx_linkvalidator_linkTypes_Abstract {
 	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type
 	 */
-	function fetchType($value, $type, $key) {
+	public function fetchType($value, $type, $key) {
 		if ($value['type'] == $key) {
 			$type = $value['type'];
 		}
@@ -50,7 +50,7 @@ abstract class tx_linkvalidator_linkTypes_Abstract {
 	 * @param	array		$row: broken link record
 	 * @return	string		parsed broken url
 	 */
-	function getBrokenUrl($row) {
+	public function getBrokenUrl($row) {
 		return $row['url'];
 	}
 }

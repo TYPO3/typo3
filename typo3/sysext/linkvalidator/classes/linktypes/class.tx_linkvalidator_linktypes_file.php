@@ -37,7 +37,7 @@ class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstrac
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  validation error message or succes code
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		if (!@file_exists(PATH_site . rawurldecode($url))) {
 			return $GLOBALS['LANG']->getLL('list.report.filenotexisting');
 		}

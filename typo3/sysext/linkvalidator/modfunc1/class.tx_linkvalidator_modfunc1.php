@@ -102,7 +102,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	public function initialize() {
+	protected function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $classRef) {
 				$this->hookObjectsArr[$linkType] = &t3lib_div::getUserObj($classRef);
@@ -136,7 +136,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		Processing object
 	 * @return	void
 	 */
-	public function updateBrokenLinks($processing) {
+	protected function updateBrokenLinks($processing) {
 		$searchFields = array();
 
 			// get the searchFields from TypoScript
@@ -174,7 +174,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	public function render() {
+	protected function render() {
 		if ($this->isAccessibleForCurrentUser) {
 			$this->content = $this->drawBrokenLinksTable();
 		} else {
@@ -189,7 +189,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	public function flush() {
+	protected function flush() {
 		$content.= $this->doc->moduleBody(
 			$this->pageRecord,
 			$this->getDocHeaderButtons(),
@@ -202,7 +202,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * @return string
 	 */
-	protected function getLevelSelector() {
+	private function getLevelSelector() {
 			// Make level selector:
 		$opt = array();
 		$parts = array(
@@ -225,7 +225,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	html	Content of the table
 	 */
-	protected function drawBrokenLinksTable() {
+	private function drawBrokenLinksTable() {
 		$content = '';
 		$items = array();
 		$brokenLinkItems = '';
@@ -300,7 +300,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	html		Code of content
 	 */
-	protected function startTable() {
+	private function startTable() {
 		global $LANG;
 
 			// Listing head
@@ -329,7 +329,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @param	bool		alternate color between rows
 	 * @return	html		code of content
 	 */
-	protected function drawTableRow($table, $row, $switch, $brokenLinksItemTemplate) {
+	private function drawTableRow($table, $row, $switch, $brokenLinksItemTemplate) {
 		$markerArray = array();
 		if (is_array($row) && !empty($row['typelinks'])) {
 			if (($hookObj = $this->hookObjectsArr[$row['typelinks']])) {
@@ -379,7 +379,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		array of broken links informations
 	 * @return	html		code content
 	 */
-	protected function getCheckOptions($brokenLinkOverView) {
+	private function getCheckOptions($brokenLinkOverView) {
 		global $LANG;
 		$content = '';
 		$checkOptionsTemplate = '';
@@ -426,7 +426,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	protected function loadHeaderData() {
+	private function loadHeaderData() {
 		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'res/linkvalidator.css', 'linkvalidator');
 	}
 
@@ -436,7 +436,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	array		Available buttons for the docHeader
 	 */
-	protected function getDocHeaderButtons() {
+	private function getDocHeaderButtons() {
 		$buttons = array(
 			'csh' => t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
 			'shortcut' => $this->getShortcutButton(),
@@ -451,7 +451,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML representiation of the shortcut button
 	 */
-	protected function getShortcutButton() {
+	private function getShortcutButton() {
 		$result = '';
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
@@ -465,7 +465,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	array		The filled marker array
 	 */
-	protected function getTemplateMarkers() {
+	private function getTemplateMarkers() {
 		$markers = array(
 			'FUNC_MENU'				=> $this->getLevelSelector(),
 			'CONTENT'				=> $this->content,
@@ -486,7 +486,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	boolean		Whether the current user is admin
 	 */
-	protected function isCurrentUserAdmin() {
+	private function isCurrentUserAdmin() {
 		return ((bool) $GLOBALS['BE_USER']->user['admin']);
 	}
 } // end class

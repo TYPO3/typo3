@@ -146,7 +146,7 @@ class tx_linkvalidator_processing {
 	 * @param	array		$record: record to analyse
 	 * @return	void
 	 */
-	function analyseRecord(&$results, $table, $fields, $record) {
+	public function analyseRecord(&$results, $table, $fields, $record) {
 		
 			// array to store urls from relevant field contents
 		$urls = array();
@@ -229,7 +229,7 @@ class tx_linkvalidator_processing {
 	 * @param   string	  $curPage: commat separeted page uid list
 	 * @return  array	   markerarray with the number of link found
 	 */
-	function getLinkCounts($curPage) {
+	public function getLinkCounts($curPage) {
 		$markerArray = array();
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(uid) as nbBrokenLinks,typelinks',

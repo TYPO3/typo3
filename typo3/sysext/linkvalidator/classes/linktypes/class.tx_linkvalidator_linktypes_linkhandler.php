@@ -45,7 +45,7 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  validation error message or succes code
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		$parts = explode(":", $url);
 		if (count($parts) == 3) {
 			$tablename = htmlspecialchars($parts[1]);
@@ -82,7 +82,7 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 * @param   string	 $type: current type
 	 * @return  string	 fetched type
 	 */
-	function fetchType($value, $type) {
+	public function fetchType($value, $type) {
 		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
 			$type = 'linkhandler';
 		}
