@@ -240,7 +240,16 @@ class TYPO3backend {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
 
-		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
+
+			// TYPO3.Ajax.ExtDirec is used for BE toolbar items and may be later for general services
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $key => $value) {
+				if (strpos($key, 'TYPO3.Ajax.ExtDirect') !== FALSE) {
+					$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
+					break;
+				}
+			}
+		}
 		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings', NULL, FALSE);
 
 		$this->generateJavascript();
