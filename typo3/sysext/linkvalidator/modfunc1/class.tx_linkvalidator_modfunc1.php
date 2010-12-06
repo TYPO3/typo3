@@ -252,7 +252,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
-			'recpid in (' . $pageList . ') and typelinks in (\'' . implode("','", $keyOpt) . '\')')
+			'recpid in (' . $pageList . ') and typelinks in (\'' . implode("','", $keyOpt) . '\')',
+			'',
+			'recuid ASC, uid ASC')
 		)) {
 				// table rows containing the broken links
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
