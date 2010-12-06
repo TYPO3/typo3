@@ -27,7 +27,7 @@
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract {
+class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
 	var $url_reports = array();
 

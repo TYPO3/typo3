@@ -21,13 +21,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * This class provides Check File Links plugin implementation.
+ * This class provides interface implementation.
  *
- * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+interface tx_linkvalidator_linkTypes_Interface {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -37,18 +37,8 @@ class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstrac
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  validation error message or succes code
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
-		if (!@file_exists(PATH_site . rawurldecode($url))) {
-			return $GLOBALS['LANG']->getLL('list.report.filenotexisting');
-		}
-
-		return 1;
-	}
-}
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php']);
+	public function checkLink($url, $softRefEntry, $reference);
+	
 }
 
 ?>

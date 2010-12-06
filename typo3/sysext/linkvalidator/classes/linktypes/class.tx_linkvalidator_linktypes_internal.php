@@ -27,7 +27,7 @@
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract {
+class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity

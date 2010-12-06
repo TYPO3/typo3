@@ -1,4 +1,5 @@
 2010-12-06  Pierre Boivin <pierre.boivin@infoglobe.ca>
+	* Fixed bug : #11278: Create an interface for the linktype classes
 	* Fixed bug : #10589: HTTP errors might not be detected (Thanks to Tolleiv Nietsch)
 	* Fixed bug : #11274: Change true to 1 for showUpdateButton
 	* Fixed bug : #11272: Fix dos line endings in ext_tables.php
