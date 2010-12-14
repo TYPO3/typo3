@@ -72,6 +72,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * @return void
 	 */
 	public function indexAction() {
+		// @todo language doesn't always come throught the L parameter
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$language = intval(t3lib_div::_GP('L'));
 
@@ -102,6 +103,15 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
 		$this->view->assign('wsHelpUrl', $wsHelpUrl);
+		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
+		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
+		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll" , "TYPO3.LLL.Workspaces = {
+			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', true) . "',
+			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', true) . "',
+			helpView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.helpView', true) . "',
+			livePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', true) . "',
+			workspacePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', true) . "'
+		};\n");
 	}
 
 	/**

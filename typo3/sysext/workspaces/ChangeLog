@@ -1,3 +1,7 @@
+2010-12-14  Tolleiv Nietsch <typo3q@tolleiv.de>
+
+	* Fixed bug #9819: Workspace preview window
+
 2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #11290: PHP notices from XCLASS inclusions
@@ -71,7 +75,7 @@
 
 2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
 
-	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
+	* Fixed bug: #10896 php-warnings after merge into Core - missing argument
 	* Fixed bug: #10895 php-warnings after merge into Core - array_merge on non-array
 
 2010-11-17  Steffen Ritter  <info@rs-websystems.de>

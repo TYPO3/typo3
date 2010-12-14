@@ -27,53 +27,102 @@
 Ext.onReady(function() {
 	var viewport = new Ext.Viewport({
 		layout: 'border',
-		items: [
-		{
+		items: [{
 			xtype: 'tabpanel',
 			region: 'center', // a center region is ALWAYS required for border layout
 			id: 'preview',
 			activeTab: 0,
-			items: [
+			items: [{
+				title: TYPO3.LLL.Workspaces.visualPreview,
+				layout: 'fit',
+				items: [{
+					layout: 'fit',
+					x: 0, y:0,
+					anchor: '100% 100%',
+					autoScroll: true,
+					items: [{
+						layout: 'absolute',
+						id: 'visualPanel',
+						items: [{
+							x: 0, y:0,
+							anchor: '100% 100%',
+							id: 'wsContainer',
+							layout: 'absolute',
+							autoScroll: false,
+							items:[{
+								xtype: 'iframePanel',
+								x: 0, y:0,
+								id: 'wsPanel',
+								doMask: false,
+								src: wsUrl,
+								autoScroll: false
+							}]
+						},{
+							x: 0, y:0,
+							anchor: '100% 0%',
+							id: 'liveContainer',
+							layout: 'absolute',
+							bodyStyle: 'height:0px;border-bottom: 2px solid red;',
+							autoScroll: false,
+							items:[{
+								xtype: 'iframePanel',
+								x: 0, y:0,
+								id: 'livePanel',
+								doMask: false,
+								src: liveUrl,
+								autoScroll: false
+							}]
+						}]
+					}]
+				}]
+			},{
+				title: TYPO3.LLL.Workspaces.listView,
+				id: 'wsSettings',
+				layout: 'fit',
+				items:  [{
+					xtype: 'iframePanel',
+					id: 'settingsPanel',
+					doMask: false,
+					src: wsSettingsUrl
+				}]
+			},{
+				title: TYPO3.LLL.Workspaces.helpView,
+				id: 'wsHelp',
+				layout: 'fit',
+				items:  [{
+					xtype: 'iframePanel',
+					id: 'settingsPanel',
+					doMask: false,
+					src: wsHelpUrl
+				}]
+			}],
+			tbar: [
+				'->', '-',
 				{
-					title: 'Workspace preview',
-					id: 'workspaceRegion',
-					layout: 'fit',
-					items: [{
-						xtype: 'iframePanel',
-						id: 'wsPanel',
-						doMask: false,
-						src: wsUrl
-					}]
-				}, {
-					title: 'Live site',
-					id: 'liveRegion',
-					layout: 'fit',
-					items: [{
-						xtype: 'iframePanel',
-						id: 'livePanel',
-						doMask: false,
-						src: liveUrl
-					}]
-				},{
-					title: 'List view',
-					id: 'wsSettings',
-					layout: 'fit',
-					items:  [{
-						xtype: 'iframePanel',
-						id: 'settingsPanel',
-						doMask: false,
-						src: wsSettingsUrl
-					}]
-				},{
-					title: 'Help',
-					id: 'wsHelp',
-					layout: 'fit',
-					items:  [{
-						xtype: 'iframePanel',
-						id: 'settingsPanel',
-						doMask: false,
-						src: wsHelpUrl
-					}]
+					xtype: 'tbtext',
+					text: TYPO3.LLL.Workspaces.livePreview
+				},
+				{
+					xtype: 'slider',
+					id: 'sizeSlider',
+					style: 'margin: 0 5px;',
+					maxValue: 100,
+					minValue: 0,
+					value: 100,
+					width: 200,
+					listeners: {
+						change: {
+							fn: function resizeFromValue(slider, newValue, thumb) {
+								var height = Ext.getCmp('wsPanel').getHeight();
+								Ext.getCmp('liveContainer').setHeight(height * (100-newValue) / 100);
+								Ext.getCmp('visualPanel').setHeight(height);
+							}
+						}
+					}
+				},
+				{
+					xtype: 'tbtext',
+					text: TYPO3.LLL.Workspaces.workspacePreview
 				}
 			]
 		}]
