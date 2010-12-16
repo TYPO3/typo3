@@ -527,10 +527,14 @@ class t3lib_TSparser {
 								case 'file':
 									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
 									if (strcmp($filename,''))	{	// Must exist and must not contain '..' and must be relative
-										if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
-												// check for includes in included text
-											$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1);
-											$newString.= $included_text.chr(10);
+										if (t3lib_div::verifyFilenameAgainstDenyPattern($filename)) { // Check for allowed files
+											if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
+													// check for includes in included text
+												$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1);
+												$newString.= $included_text.chr(10);
+											}
+										} else {
+											t3lib_div::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', 2);
 										}
 									}
 								break;
