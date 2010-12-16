@@ -1,6 +1,7 @@
 2010-12-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #14402: XSS in Install tool (thanks to Benjamin Mack)
+	* Fixed bug #16590: t3lib_TSparser::checkIncludeLines() does not check files to be included (thanks to Fabrizio Branca)
 
 2010-12-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
