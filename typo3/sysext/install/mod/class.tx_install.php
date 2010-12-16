@@ -622,7 +622,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$error_missingConnect='<br />
 			'.$this->fontTag2.'<img src="'.$this->backPath.'gfx/icon_fatalerror.gif" width="18" height="16" class="absmiddle">
 			There is no connection to the database!<br />
-			(Username: <i>' . TYPO3_db_username . '</i>, Host: <i>' . TYPO3_db_host . '</i>, Using Password: YES) . <br />
+			(Username: <i>' . htmlspecialchars(TYPO3_db_username) . '</i>, Host: <i>' . htmlspecialchars(TYPO3_db_host) . '</i>, Using Password: YES) . <br />
 			<br />
 			<strong>Go to Step 1</strong> and enter a proper username/password!</span>
 			<br />
@@ -630,7 +630,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		';
 		$error_missingDB='<br />
 			'.$this->fontTag2.'<img src="'.$this->backPath.'gfx/icon_fatalerror.gif" width="18" height="16" class="absmiddle">
-			There is no access to the database (<i>'.TYPO3_db.'</i>)!<br />
+			There is no access to the database (<i>' . htmlspecialchars(TYPO3_db) . '</i>)!<br />
 			<br />
 			<strong>Go to Step 2</strong> and select an accessible database!</span>
 			<br />
@@ -647,15 +647,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Username:</span></td>
-					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.''.TYPO3_db_username.'</span></strong></td>
+					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.'' . htmlspecialchars(TYPO3_db_username) . '</span></strong></td>
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Host:</span></td>
-					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.''.TYPO3_db_host.'</span></strong></td>
+					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.'' . htmlspecialchars(TYPO3_db_host) . '</span></strong></td>
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'Database:</span></td>
-					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.''.TYPO3_db.'</span></strong></td>
+					   		<td valign="top" nowrap="nowrap"><strong>'.$this->fontTag1.'' . htmlspecialchars(TYPO3_db) . '</span></strong></td>
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap="nowrap">'.$this->fontTag1.'# of tables:</span></td>
@@ -687,7 +687,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		</td>
 					   		<td valign="top">
 								  '.$this->fontTag2.'
-								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="'.TYPO3_db_username.'"></span><br />
+								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="' . htmlspecialchars(TYPO3_db_username) . '"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
@@ -698,7 +698,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		</td>
 					   		<td valign="top">
 								  '.$this->fontTag2.'
-								  <input type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="'.TYPO3_db_password.'"></span><br />
+								  <input type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="' . htmlspecialchars(TYPO3_db_password) . '"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
@@ -709,7 +709,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		</td>
 					   		<td valign="top">
 								  '.$this->fontTag2.'
-								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="'.(TYPO3_db_host?TYPO3_db_host:'localhost').'"></span><br />
+								  <input type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="'.(TYPO3_db_host? htmlspecialchars(TYPO3_db_host) :'localhost').'"></span><br />
 					   		</td>
 					   	</tr>
 					   	<tr>
@@ -2055,8 +2055,8 @@ From sub-directory:
 			",2);
 		} else {
 			$cInfo='
-				Username: <strong>'.TYPO3_db_username.'</strong>
-				Host: <strong>'.TYPO3_db_host.'</strong>
+				Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
+				Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 			';
 			if (!TYPO3_db_host || !TYPO3_db_username)	{
 				$this->message($ext, 'Username, password or host not set',"
@@ -2079,13 +2079,13 @@ From sub-directory:
 					$this->config_array['no_database']=1;
 				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))  {
 					$this->message($ext, 'Database',"
-						'".TYPO3_db."' could not be selected as database!
+						'" . htmlspecialchars(TYPO3_db) . "' could not be selected as database!
 						Please select another one or create a new database.
 					",3,1);
 					$this->config_array['no_database']=1;
 				} else  {
 					$this->message($ext, 'Database',"
-						<strong>".TYPO3_db."</strong> is selected as database.
+						<strong>" . htmlspecialchars(TYPO3_db) . "</strong> is selected as database.
 					",1,1);
 				}
 			} else {
@@ -2756,19 +2756,19 @@ From sub-directory:
 		$im_path_lzw = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
 		$im_path_lzw_version = $this->config_array['im_versions'][$im_path_lzw]['convert'];
 		$msg = '
-		ImageMagick enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'].'</strong>
-		ImageMagick path: <strong>'.$im_path.'</strong> ('.$im_path_version.')
-		ImageMagick path/LZW: <strong>'.$im_path_lzw.'</strong>  ('.$im_path_lzw_version.')
-		Version 5/GraphicsMagick flag: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].'</strong>
+		ImageMagick enabled: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) . '</strong>
+		ImageMagick path: <strong>' . htmlspecialchars($im_path) . '</strong> (' . htmlspecialchars($im_path_version) . ')
+		ImageMagick path/LZW: <strong>' . htmlspecialchars($im_path_lzw) . '</strong>  (' . htmlspecialchars($im_path_lzw_version) . ')
+		Version 5/GraphicsMagick flag: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) . '</strong>
 
-		GDLib enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'].'</strong>
-		GDLib using PNG: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'].'</strong>
-		GDLib 2 enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_2'].'</strong>
-		IM5 effects enabled: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'].'</strong> (Blurring/Sharpening with IM 5+)
-		Freetype DPI: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'].'</strong> (Should be 96 for Freetype 2)
-		Mask invert: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'].'</strong> (Should be set for some IM versions approx. 5.4+)
+		GDLib enabled: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) . '</strong>
+		GDLib using PNG: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) . '</strong>
+		GDLib 2 enabled: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_2']) . '</strong>
+		IM5 effects enabled: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects']) . '</strong> (Blurring/Sharpening with IM 5+)
+		Freetype DPI: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']) . '</strong> (Should be 96 for Freetype 2)
+		Mask invert: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) . '</strong> (Should be set for some IM versions approx. 5.4+)
 
-		File Formats: <strong>'.$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].'</strong>
+		File Formats: <strong>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']) . '</strong>
 		';
 
 			// Various checks to detect IM/GM version mismatches
@@ -2787,8 +2787,8 @@ From sub-directory:
 
 		if ($mismatch)	{
 			$msg.= 'Warning: Mismatch between the version of ImageMagick'.
-					' ('.$im_path_version.') and the configuration of '.
-					'[GFX][im_version_5] ('.$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'].')';
+					' (' . htmlspecialchars($im_path_version) . ') and the configuration of '.
+					'[GFX][im_version_5] (' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) . ')';
 			$etype=2;
 		} else $etype=1;
 
@@ -3413,14 +3413,14 @@ From sub-directory:
 		",0);
 
 		$cInfo='
-			Username: <strong>'.TYPO3_db_username.'</strong>
-			Host: <strong>'.TYPO3_db_host.'</strong>
+			Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
+			Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 		';
 		$this->message($headCode, 'Connected to SQL database successfully',"
 		".trim($cInfo)."
 		",-1,1);
 		$this->message($headCode, 'Database',"
-			<strong>".TYPO3_db.'</strong> is selected as database.
+			<strong>" . htmlspecialchars(TYPO3_db) . '</strong> is selected as database.
 			Has <strong>'.count($whichTables)."</strong> tables.
 		",-1,1);
 

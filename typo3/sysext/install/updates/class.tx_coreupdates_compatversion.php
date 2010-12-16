@@ -66,7 +66,7 @@ class tx_coreupdates_compatversion {
 				The compatibility version has been set to the current TYPO3 version. This is a stamp and has no impact for your installation.';
 			}
 		} else {
-			$description = 'Your current TYPO3 installation is configured to <b>behave like version '.$TYPO3_CONF_VARS['SYS']['compat_version'].'</b> of TYPO3. If you just upgraded from this version, you most likely want to <b>use new features</b> as well.</p><p>In the next step, you will see the things that need to be adjusted to make your installation compatible with the new features.';
+			$description = 'Your current TYPO3 installation is configured to <b>behave like version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '</b> of TYPO3. If you just upgraded from this version, you most likely want to <b>use new features</b> as well.</p><p>In the next step, you will see the things that need to be adjusted to make your installation compatible with the new features.';
 		}
 
 		return 1;	// Return 1 in any case so user has possibility to switch back to a previous compat_version.
@@ -93,7 +93,7 @@ class tx_coreupdates_compatversion {
 			}
 			$content .= '</select>';
 		} else {
-			$content = 'TYPO3 output is currently compatible to version '.$TYPO3_CONF_VARS['SYS']['compat_version'].'. To use all the new features in the current TYPO3 version, make sure you follow the guidelines below to upgrade without problems.<br />
+			$content = 'TYPO3 output is currently compatible to version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '. To use all the new features in the current TYPO3 version, make sure you follow the guidelines below to upgrade without problems.<br />
 			<p><strong>Follow the steps below carefully and confirm every step!</strong><br />You will see this list again after you performed the update.</p>';
 
 			$content .= $this->showChangesNeeded($inputPrefix);
