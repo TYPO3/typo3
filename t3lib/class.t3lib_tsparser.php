@@ -534,17 +534,21 @@ class t3lib_TSparser {
 								case 'file':
 									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
 									if (strcmp($filename,''))	{	// Must exist and must not contain '..' and must be relative
-										if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
-												// check for includes in included text
-											$includedFiles[] = $filename;
-											$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1, $returnFiles);
-												// If the method also has to return all included files, merge currently included
-												// files with files included by recursively calling itself
-											if ($returnFiles && is_array($included_text)) {
-												$includedFiles = array_merge($includedFiles, $included_text['files']);
-												$included_text = $included_text['typoscript'];
+										if (t3lib_div::verifyFilenameAgainstDenyPattern($filename)) { // Check for allowed files
+											if (@is_file($filename) && filesize($filename)<100000)	{	// Max. 100 KB include files!
+													// check for includes in included text
+												$includedFiles[] = $filename;
+												$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename),$cycle_counter+1, $returnFiles);
+													// If the method also has to return all included files, merge currently included
+													// files with files included by recursively calling itself
+												if ($returnFiles && is_array($included_text)) {
+													$includedFiles = array_merge($includedFiles, $included_text['files']);
+													$included_text = $included_text['typoscript'];
+												}
+												$newString.= $included_text.chr(10);
 											}
-											$newString.= $included_text.chr(10);
+										} else {
+											t3lib_div::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', 2);
 										}
 									}
 								break;
