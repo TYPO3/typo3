@@ -98,7 +98,7 @@ class tx_coreupdates_compatversion {
 				<p>
 					Your current TYPO3 installation is configured to
 					<strong>behave like version
-					' . $TYPO3_CONF_VARS['SYS']['compat_version'] . '
+					' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '
 					</strong> of TYPO3. If you just upgraded from this version,
 					you most likely want to <strong>use new features</strong> as
 					well.
@@ -154,7 +154,7 @@ class tx_coreupdates_compatversion {
 		} else {
 			$content = '
 				<p>
-					TYPO3 output is currently compatible to version ' . $TYPO3_CONF_VARS['SYS']['compat_version'] . '.
+					TYPO3 output is currently compatible to version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '.
 					To use all the new features in the current TYPO3 version,
 					make sure you follow the guidelines below to upgrade without
 					problems.

@@ -959,8 +959,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					There is no connection to the database!
 				</strong>
 				<br />
-				(Username: <em>' . TYPO3_db_username . '</em>,
-				Host: <em>' . TYPO3_db_host . '</em>,
+				(Username: <em>' . htmlspecialchars(TYPO3_db_username) . '</em>,
+				Host: <em>' . htmlspecialchars(TYPO3_db_host) . '</em>,
 				Using Password: YES)
 				<br />
 				Go to Step 1 and enter a valid username and password!
@@ -969,7 +969,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$error_missingDB = '
 			<p class="typo3-message message-error">
 				<strong>
-					There is no access to the database (<em>' . TYPO3_db . '</em>)!
+					There is no access to the database (<em>' . htmlspecialchars(TYPO3_db) . '</em>)!
 				</strong>
 				<br />
 				Go to Step 2 and select a valid database!
@@ -1045,11 +1045,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'encryptionKey' => $this->createEncryptionKey(),
 						'branch' => TYPO3_branch,
 						'labelUsername' => 'Username',
-						'username' => TYPO3_db_username,
+						'username' => htmlspecialchars(TYPO3_db_username),
 						'labelPassword' => 'Password',
-						'password' => TYPO3_db_password,
+						'password' => htmlspecialchars(TYPO3_db_password),
 						'labelHost' => 'Host',
-						'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+						'host' => TYPO3_db_host ? htmlspecialchars(TYPO3_db_host) : 'localhost',
 						'continue' => 'Continue',
 						'llDescription' => 'If you have not already created a username and password to access the database, please do so now. This can be done using tools provided by your host.'
 					);
@@ -1196,11 +1196,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$step4SubPartMarkers = array(
 								'llSummary' => 'Database summary:',
 								'llUsername' => 'Username:',
-								'username' => TYPO3_db_username,
+								'username' => htmlspecialchars(TYPO3_db_username),
 								'llHost' => 'Host:',
-								'host' => TYPO3_db_host,
+								'host' => htmlspecialchars(TYPO3_db_host),
 								'llDatabase' => 'Database:',
-								'database' => TYPO3_db,
+								'database' => htmlspecialchars(TYPO3_db),
 								'llNumberTables' => 'Number of tables:',
 								'numberTables' => count($whichTables),
 								'action' => htmlspecialchars($this->action),
@@ -3182,9 +3182,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					<p>
 						You may need to enter data for these values:
 						<br />
-						Username: <strong>' . TYPO3_db_username . '</strong>
+						Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
 						<br />
-						Host: <strong>' . TYPO3_db_host . '</strong>
+						Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 						<br />
 						<br />
 						Use the form below.
@@ -3198,13 +3198,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							Username:
 						</dt>
 						<dd>
-							' . TYPO3_db_username . '
+							' . htmlspecialchars(TYPO3_db_username) . '
 						</dd>
 						<dt>
 							Host:
 						</dt>
 						<dd>
-							' . TYPO3_db_host . '
+							' . htmlspecialchars(TYPO3_db_host) . '
 						</dd>
 					</dl>
 				', -1, 1);
@@ -3221,7 +3221,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))  {
 					$this->message($ext, 'Database', '
 						<p>
-							\''.TYPO3_db.'\' could not be selected as database!
+							\'' . htmlspecialchars(TYPO3_db) . '\' could not be selected as database!
 							<br />
 							Please select another one or create a new database.
 						</p>
@@ -3230,7 +3230,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} else  {
 					$this->message($ext, 'Database', '
 						<p>
-							<strong>' . TYPO3_db . '</strong> is selected as
+							<strong>' . htmlspecialchars(TYPO3_db) . '</strong> is selected as
 							database.
 						</p>
 					', 1, 1);
@@ -3249,9 +3249,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					<p>
 						Connecting to SQL database failed with these settings:
 						<br />
-						Username: <strong>' . TYPO3_db_username . '</strong>
+						Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
 						<br />
-						Host: <strong>' . TYPO3_db_host . '</strong>
+						Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 					</p>
 					<p>
 						Make sure you\'re using the correct set of data.
@@ -4479,25 +4479,25 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					ImageMagick enabled:
 				</dt>
 				<dd>
-					' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) . '
 				</dd>
 				<dt>
 					ImageMagick path:
 				</dt>
 				<dd>
-					' . $im_path . ' <span>(' . $im_path_version . ')</span>
+					' . htmlspecialchars($im_path) . ' <span>(' . htmlspecialchars($im_path_version) . ')</span>
 				</dd>
 				<dt>
 					ImageMagick path/LZW:
 				</dt>
 				<dd>
-					' . $im_path_lzw . ' <span>(' . $im_path_lzw_version . ')</span>
+					' . htmlspecialchars($im_path_lzw) . ' <span>(' . htmlspecialchars($im_path_lzw_version) . ')</span>
 				</dd>
 				<dt>
 					Version 5/GraphicsMagick flag:
 				</dt>
 				<dd>
-					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] : '&nbsp;') . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) : '&nbsp;') . '
 				</dd>
 			</dl>
 			<dl id="t3-install-imageprocessingother">
@@ -4505,33 +4505,33 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					GDLib enabled:
 				</dt>
 				<dd>
-					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] : '&nbsp;') . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) : '&nbsp;') . '
 				</dd>
 				<dt>
 					GDLib using PNG:
 				</dt>
 				<dd>
-					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] : '&nbsp;') . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) : '&nbsp;') . '
 				</dd>
 				<dt>
 					IM5 effects enabled:
 				</dt>
 				<dd>
-					' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects']) . '
 					<span>(Blurring/Sharpening with IM 5+)</span>
 				</dd>
 				<dt>
 					Freetype DPI:
 				</dt>
 				<dd>
-					' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'] . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']) . '
 					<span>(Should be 96 for Freetype 2)</span>
 				</dd>
 				<dt>
 					Mask invert:
 				</dt>
 				<dd>
-					' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) . '
 					<span>(Should be set for some IM versions approx. 5.4+)</span>
 				</dd>
 			</dl>
@@ -4540,7 +4540,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					File Formats:
 				</dt>
 				<dd>
-					' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']) . '
 				</dd>
 			</dl>
 		';
@@ -4563,8 +4563,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$msg .= '
 				<p>
 					Warning: Mismatch between the version of ImageMagick' .
-					' (' . $im_path_version.') and the configuration of ' .
-					'[GFX][im_version_5] (' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] . ')
+					' (' . htmlspecialchars($im_path_version) . ') and the configuration of ' .
+					'[GFX][im_version_5] (' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) . ')
 				</p>
 			';
 			$etype=2;
@@ -5498,20 +5498,20 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					Username:
 				</dt>
 				<dd>
-					' . TYPO3_db_username . '
+					' . htmlspecialchars(TYPO3_db_username) . '
 				</dd>
 				<dt>
 					Host:
 				</dt>
 				<dd>
-					' . TYPO3_db_host . '
+					' . htmlspecialchars(TYPO3_db_host) . '
 				</dd>
 			</dl>
 		', -1, 1);
 
 		$this->message($headCode, 'Database', '
 			<p>
-				<strong>' . TYPO3_db . '</strong> is selected as database.
+				<strong>' . htmlspecialchars(TYPO3_db) . '</strong> is selected as database.
 				<br />
 				Has <strong>' . count($whichTables) . '</strong> tables.
 			</p>
