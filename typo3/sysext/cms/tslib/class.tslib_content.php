@@ -1823,7 +1823,7 @@ class tslib_cObj {
 			}
 			if ($val && strcspn($val,'#/')) {
 					// label:
-				$confData['label'] = trim($parts[0]);
+				$confData['label'] = t3lib_div::removeXSS(trim($parts[0]));
 					// field:
 				$fParts = explode(',',$parts[1]);
 				$fParts[0]=trim($fParts[0]);
@@ -1849,6 +1849,7 @@ class tslib_cObj {
 				} else {
 					$confData['fieldname'] = str_replace(' ','_',trim($typeParts[0]));
 				}
+				$confData['fieldname'] = htmlspecialchars($confData['fieldname']);
 				$fieldCode='';
 
 				if ($conf['wrapFieldName'])	{

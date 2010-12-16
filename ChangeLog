@@ -4,6 +4,7 @@
 	* Fixed bug #16590: t3lib_TSparser::checkIncludeLines() does not check files to be included (thanks to Fabrizio Branca)
 	* Fixed bug #15737: quoteStrForLike does not properly escape strings in sql_mode NO_BACKSLASH_ESCAPES
 	* Fixed bug #16653: SQL injection problem in class.db_list.inc (thanks to Jigal van Hemert)
+	* Fixed bug #15735: FORM content object is susceptible to XSS (thanks to Benjamin Mack)
 
 2010-12-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
