@@ -1,3 +1,7 @@
+2010-12-16  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #14402: XSS in Install tool (thanks to Benjamin Mack)
+
 2010-12-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16696: [Caching framework] unit tests: Fatal error in t3lib_cache_backend_dbbackendTest due to call to undefined method
