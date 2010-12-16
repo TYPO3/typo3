@@ -2685,7 +2685,15 @@ class t3lib_stdGraphic {
 	 * @return string $inputName escaped as needed
 	 */
 	protected function wrapFileName($inputName) {
-		return escapeshellarg($inputName);
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+			$currentLocale = setlocale(LC_CTYPE, 0);
+			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		}
+		$escapedInputName = escapeshellarg($inputName);
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+			setlocale(LC_CTYPE, $currentLocale);
+		}
+		return $escapedInputName;
 	}
 
 
