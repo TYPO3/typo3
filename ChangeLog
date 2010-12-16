@@ -1,3 +1,7 @@
+2010-12-16  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #14402: XSS in Install tool (thanks to Benjamin Mack)
+
 2010-11-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15456: Changes made by ColorPicker Wizard are not saved (Thanks to Tobias Hoevelborn)
