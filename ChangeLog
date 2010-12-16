@@ -2,6 +2,7 @@
 
 	* Fixed bug #14402: XSS in Install tool (thanks to Benjamin Mack)
 	* Fixed bug #16590: t3lib_TSparser::checkIncludeLines() does not check files to be included (thanks to Fabrizio Branca)
+	* Fixed bug #15737: quoteStrForLike does not properly escape strings in sql_mode NO_BACKSLASH_ESCAPES
 
 2010-12-01  Oliver Hader  <oliver@typo3.org>
 
