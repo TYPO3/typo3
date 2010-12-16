@@ -1767,5 +1767,41 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals('someFile', $fileInfo['filebody']);
 		$this->assertEquals('png', $fileInfo['fileext']);
 	}
+
+	/**
+	 * Data provider for validPathStrDetectsInvalidCharacters.
+	 *
+	 * @return array
+	 */
+	public function validPathStrInvalidCharactersDataProvider() {
+		return array(
+			'double slash in path' => array('path//path'),
+			'backslash in path' => array('path\\path'),
+			'directory up in path' => array('path/../path'),
+			'directory up at the beginning' => array('../path'),
+			'NUL character in path' => array("path\x00path"),
+			'BS character in path' => array("path\x08path"),
+		);
+	}
+
+	/**
+	 * Tests whether invalid characters are detected.
+	 *
+	 * @param string $path
+	 * @dataProvider validPathStrInvalidCharactersDataProvider
+	 * @test
+	 */
+	public function validPathStrDetectsInvalidCharacters($path) {
+		$this->assertNull(t3lib_div::validPathStr($path));
+	}
+
+	/**
+	 * Tests whether verifyFilenameAgainstDenyPattern detects the null character.
+	 *
+	 * @test
+	 */
+	public function verifyFilenameAgainstDenyPatternDetectsNullCharacter() {
+		$this->assertFalse(t3lib_div::verifyFilenameAgainstDenyPattern("image\x00.gif"));
+	}
 }
 ?>
