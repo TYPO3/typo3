@@ -1,3 +1,7 @@
+2010-12-16  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Release of TYPO3 4.4.5
+
 2010-12-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #14402: XSS in Install tool (thanks to Benjamin Mack)
