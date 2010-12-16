@@ -190,8 +190,9 @@ class recordList extends t3lib_recordList {
 		}
 
 		if ($sL>0)	{
-			$tree = $this->getTreeObject($id,$sL,$this->perms_clause);
-			$this->pidSelect = 'pid IN ('.implode(',',$tree->ids).')';
+			$tree = $this->getTreeObject($this->id, $sL, $this->perms_clause);
+			$pidList = implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($tree->ids));
+			$this->pidSelect = 'pid IN (' . $pidList . ')';
 		} else {
 			$this->pidSelect = 'pid='.intval($id);
 		}
