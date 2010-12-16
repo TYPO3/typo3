@@ -547,6 +547,11 @@ class em_unzip {
 
 			}
 		}
+		
+			// added by TYPO3 secteam to check for invalid paths
+		if (!t3lib_div::validPathStr($p_entry['filename'])) {
+				return $v_result;
+		}
 
 		// Add the path
 		if ($p_path != '')
