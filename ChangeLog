@@ -8,6 +8,7 @@
 	* Fixed bug #16362: Directory traversal attack in em_unzip
 	* Fixed bug #16485: Cross-Site Scripting in showpic functionality
 	* Fixed bug #16593: It is possible to bypass 'verifyFilenameAgainstDenyPattern'
+	* Follow-up to bug #16593: Added unit tests
 
 2010-12-06  Steffen Kamper  <steffen@typo3.org>
 
