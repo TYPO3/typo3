@@ -6,6 +6,7 @@
 	* Fixed bug #16653: SQL injection problem in class.db_list.inc (thanks to Jigal van Hemert)
 	* Fixed bug #15735: FORM content object is susceptible to XSS (thanks to Benjamin Mack)
 	* Fixed bug #16362: Directory traversal attack in em_unzip
+	* Fixed bug #16485: Cross-Site Scripting in showpic functionality
 
 2010-12-07  Christian Kuhn  <lolli@schwarzbu.ch>
 

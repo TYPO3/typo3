@@ -105,9 +105,6 @@ $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 # NOTICE: ALL LINES above can be commented out since this script is now used via the ?eID=tx_cms_showpic parameter passed to index.php!
 # For backwards compatibility in extensions using showpic.php directly this is kept for the version 4.0 until 4.5 where it is planned removed!
 
-# NOTICE: The script below is still backwards compatible with the situation in 4.4.0 with 4.5 the parts using bodyTag, wrap and title to build
-# the HTML can be removed!
-
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 
@@ -138,7 +135,11 @@ class SC_tslib_showpic {
 	var $title;
 	var $wrap;
 	var $md5;
-	var $contentHash;
+
+	/**
+	 * @var string
+	 */
+	protected $parametersEncoded;
 
 	/**
 	 * Init function, setting the input vars in the global space.
@@ -148,17 +149,9 @@ class SC_tslib_showpic {
 	function init()	{
 			// Loading internal vars with the GET/POST parameters from outside:
 		$this->file = t3lib_div::_GP('file');
-		$this->width = t3lib_div::_GP('width');
-		$this->height = t3lib_div::_GP('height');
-		$this->sample = t3lib_div::_GP('sample');
-		$this->alternativeTempPath = t3lib_div::_GP('alternativeTempPath');
-		$this->effects = t3lib_div::_GP('effects');
+		$this->parametersEncoded = implode(t3lib_div::_GP('parameters'));
 		$this->frame = t3lib_div::_GP('frame');
-		$this->bodyTag = t3lib_div::_GP('bodyTag');
-		$this->title = t3lib_div::_GP('title');
-		$this->wrap = t3lib_div::_GP('wrap');
 		$this->md5 = t3lib_div::_GP('md5');
-		$this->contentHash = t3lib_div::_GP('contentHash');
 
 		// ***********************
 		// Check parameters
@@ -169,39 +162,20 @@ class SC_tslib_showpic {
 		}
 
 			// Chech md5-checksum: If this md5-value does not match the one submitted, then we fail... (this is a kind of security that somebody don't just hit the script with a lot of different parameters
-		$md5_value = md5(
-				$this->file.'|'.
-				$this->width.'|'.
-				$this->height.'|'.
-				$this->effects.'|'.
-				$this->bodyTag.'|'.
-				$this->title.'|'.
-				$this->wrap.'|'.
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
+		$md5_value = t3lib_div::hmac(
+			implode(
+				'|',
+				array($this->file, $this->parametersEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
+			)
+		);
 
 		if ($md5_value!=$this->md5) {
 			die('Parameter Error: Wrong parameters sent.');
 		}
 
-			// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
-		$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-		if (TYPO3_UseCachingFramework) {
-			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
-			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
-
-			t3lib_cache::initPageCache();
-			t3lib_cache::initPageSectionCache();
-			t3lib_cache::initContentHashCache();
-		}
-
-			// Check for the new content cache hash
-		if (strlen(t3lib_div::_GP('contentHash')) > 0) {
-			$this->content = t3lib_pageSelect::getHash($this->contentHash);
-			if (is_null($this->content)) {
-				die('Parameter Error: Content not available.');
-			}
+		$parameters = unserialize(base64_decode($this->parametersEncoded));
+		foreach ($parameters as $parameterName => $parameterValue) {
+			$this->$parameterName = $parameterValue;
 		}
 
 		// ***********************
@@ -235,6 +209,10 @@ class SC_tslib_showpic {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
+		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
+		$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+
 		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
 
 		$this->height = t3lib_div::intInRange($this->height,0);
@@ -242,14 +220,9 @@ class SC_tslib_showpic {
 		if ($this->frame)	{$this->frame = intval($this->frame);}
 		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
 
-		if (strlen($this->content) > 0) {
-				// insert image in cached HTML content
-			if (is_array($imgInfo))	{
-				$this->content = str_replace('###IMAGE###', $img->imgTag($imgInfo), $this->content);
-			}
-		} else {
-				// Create HTML output:
-			$this->content .= '
+			// Create HTML output:
+		$this->content='';
+		$this->content.='
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
@@ -259,14 +232,13 @@ class SC_tslib_showpic {
 </head>
 		'.($this->bodyTag ? $this->bodyTag : '<body>');
 
-			if (is_array($imgInfo))	{
-				$wrapParts = explode('|',$this->wrap);
-				$this->content.=trim($wrapParts[0]).$img->imgTag($imgInfo).trim($wrapParts[1]);
-			}
-			$this->content.='
+		if (is_array($imgInfo))	{
+			$wrapParts = explode('|',$this->wrap);
+			$this->content.=trim($wrapParts[0]).$img->imgTag($imgInfo).trim($wrapParts[1]);
+		}
+		$this->content.='
 		</body>
 		</html>';
-		}
 	}
 
 	/**
