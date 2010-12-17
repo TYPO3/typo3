@@ -1,6 +1,7 @@
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #16209: new sysexts need proper icons in extension manager (thanks to Simon Schaufelberger)
+	* Fixed bug #5186: fixed rendering of multi-column image rows (thanks to Michael Bürgi)
 
 2010-12-17  Jeff Segars  <jeff@webempoweredchurch.org>
 

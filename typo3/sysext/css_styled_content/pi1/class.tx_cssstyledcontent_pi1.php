@@ -406,6 +406,77 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	}
 
 	/**
+	 * returns an array containing width relations for $colCount columns.
+	 * 
+	 * tries to use "colRelations" setting given by TS.
+	 * uses "1:1" column relations by default. 
+	 *
+	 * @param array $conf TS configuration for img
+	 * @param int $colCount number of columns
+	 * @return array
+	 */
+	protected function getImgColumnRelations($conf, $colCount) {
+		$relations = array();
+		$equalRelations= array_fill(0, $colCount, 1);
+		$colRelationsTypoScript = trim($this->cObj->stdWrap($conf['colRelations'], $conf['colRelations.']));
+
+		if ($colRelationsTypoScript) {
+				// try to use column width relations given by TS
+			$relationParts = explode(':', $colRelationsTypoScript);
+				// enough columns defined?
+			if (count($relationParts) >= $colCount) {
+				$out = array();
+				for ($a = 0; $a < $colCount; $a++) {
+					$currentRelationValue = intval($relationParts[$a]);
+					if ($currentRelationValue >= 1) {
+						$out[$a] = $currentRelationValue;
+					} else {
+						t3lib_div::devLog('colRelations used with a value smaller than 1 therefore colRelations setting is ignored.', $this->extKey, 2);
+						unset($out);
+						break;
+					}
+				}
+				if (max($out) / min($out) <= 10) {
+					$relations = $out;
+				} else {
+					t3lib_div::devLog('The difference in size between the largest and smallest colRelation was not within a factor of ten therefore colRelations setting is ignored..', $this->extKey, 2);
+				}
+			}
+		}
+		return $relations ? $relations : $equalRelations;
+	}
+	
+	/**
+	 * returns an array containing the image widths for an image row with $colCount columns.
+	 *
+	 * @param array $conf TS configuration of img
+	 * @param int $colCount number of columns
+	 * @param int $netW max usable width for images (without spaces and borders)
+	 * @return array
+	 */
+	protected function getImgColumnWidths($conf, $colCount, $netW) {
+		$columnWidths = array();
+		$colRelations = $this->getImgColumnRelations($conf, $colCount);
+		
+		$accumWidth = 0;
+		$accumDesiredWidth = 0;
+		$relUnitCount = array_sum($colRelations);
+		
+		for ($a = 0; $a < $colCount; $a++)	{
+			$availableWidth = $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
+			$desiredWidth = $netW / $relUnitCount * $colRelations[$a]; // theoretical width of resized image. (float)
+			$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position 
+				// calculate width by comparing actual and desired horizontal position.
+				// this evenly distributes rounding errors across all images in this row. 
+			$suggestedWidth = round($accumDesiredWidth - $accumWidth);
+			$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
+			$accumWidth += $finalImgWidth;
+			$columnWidths[$a] = $finalImgWidth;
+		}
+		return $columnWidths;
+	}
+	
+	/**
 	 * Rendering the IMGTEXT content element, called from TypoScript (tt_content.textpic.20)
 	 *
 	 * @param	string		Content input. Not used, ignore.
@@ -527,37 +598,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			}
 		}
 
-			// All columns have the same width:
-		$defaultColumnWidth = ceil(($maxW-$colspacing*($colCount-1)-$colCount*$border*($borderThickness+$borderSpace)*2)/$colCount);
+			// max usuable width for images (without spacers and borders)
+		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
 
 			// Specify the maximum width for each column
-		$columnWidths = array();
-		$colRelations = trim($this->cObj->stdWrap($conf['colRelations'],$conf['colRelations.']));
-		if (!$colRelations)	{
-				// Default 1:1-proportion, all columns same width
-			for ($a=0;$a<$colCount;$a++)	{
-				$columnWidths[$a] = $defaultColumnWidth;
-			}
-		} else {
-				// We need another proportion
-			$rel_parts = explode(':',$colRelations);
-			$rel_total = 0;
-			for ($a=0;$a<$colCount;$a++)	{
-				$rel_parts[$a] = intval($rel_parts[$a]);
-				$rel_total+= $rel_parts[$a];
-			}
-			if ($rel_total)	{
-				for ($a=0;$a<$colCount;$a++)	{
-					$columnWidths[$a] = round(($defaultColumnWidth*$colCount)/$rel_total*$rel_parts[$a]);
-				}
-				if (min($columnWidths)<=0 || max($rel_parts)/min($rel_parts)>10)	{
-					// The difference in size between the largest and smalles must be within a factor of ten.
-					for ($a=0;$a<$colCount;$a++)	{
-						$columnWidths[$a] = $defaultColumnWidth;
-					}
-				}
-			}
-		}
+		$columnWidths = $this->getImgColumnWidths($conf, $colCount, $netW);
+		
 		$image_compression = intval($this->cObj->stdWrap($conf['image_compression'],$conf['image_compression.']));
 		$image_effects = intval($this->cObj->stdWrap($conf['image_effects'],$conf['image_effects.']));
 		$image_frames = intval($this->cObj->stdWrap($conf['image_frames.']['key'],$conf['image_frames.']['key.']));
@@ -569,12 +615,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 			$gifCreator->init();
 			$relations_cols = Array();
+			$imgWidths = array(); // contains the individual width of all images after scaling to $equalHeight
 			for ($a=0; $a<$imgCount; $a++)	{
 				$imgKey = $a+$imgStart;
 				$imgInfo = $gifCreator->getImageDimensions($imgPath.$imgs[$imgKey]);
 				$rel = $imgInfo[1] / $equalHeight;	// relationship between the original height and the wished height
 				if ($rel)	{	// if relations is zero, then the addition of this value is omitted as the image is not expected to display because of some error.
-					$relations_cols[floor($a/$colCount)] += $imgInfo[0]/$rel;	// counts the total width of the row with the new height taken into consideration.
+					$imgWidths[$a] = $imgInfo[0] / $rel;
+					$relations_cols[floor($a/$colCount)] += $imgWidths[$a];	// counts the total width of the row with the new height taken into consideration.
 				}
 			}
 		}
@@ -587,6 +635,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imageRowsFinalWidths = Array();	// contains the width of every image row
 		$imgsTag = array();		// array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
 		$origImages = array();
+		$rowIdx = 0;
 		for ($a=0; $a<$imgCount; $a++)	{
 			$imgKey = $a+$imgStart;
 			$totalImagePath = $imgPath.$imgs[$imgKey];
@@ -600,18 +649,33 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$imgConf = $conf[$imgObjNum.'.'];
 
 			if ($equalHeight)	{
-				$scale = 1;
-				$totalMaxW = $defaultColumnWidth*$colCount;
-				$rowTotalMaxW = $relations_cols[floor($a/$colCount)];
-				if ($rowTotalMaxW > $totalMaxW)	{
-					$scale = $rowTotalMaxW / $totalMaxW;
+				
+				if ($a % $colCount == 0) {
+						// a new row startsS
+					$accumWidth = 0; // reset accumulated net width
+					$accumDesiredWidth = 0; // reset accumulated desired width
+					$rowTotalMaxW = $relations_cols[$rowIdx];
+					if ($rowTotalMaxW > $netW)	{
+						$scale = $rowTotalMaxW / $netW;
+					} else {
+						$scale = 1;
+					}
+					$desiredHeight = $equalHeight / $scale;
+					$rowIdx++;
 				}
-
-					// transfer info to the imageObject. Please note, that
-				$imgConf['file.']['height'] = round($equalHeight/$scale);
+				
+				$availableWidth= $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
+				$desiredWidth= $imgWidths[$a] / $scale; // theoretical width of resized image. (float)
+				$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position 
+					// calculate width by comparing actual and desired horizontal position.
+					// this evenly distributes rounding errors across all images in this row. 
+				$suggestedWidth = round($accumDesiredWidth - $accumWidth);
+				$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
+				$accumWidth += $finalImgWidth;
+				$imgConf['file.']['width'] = $finalImgWidth;
+				$imgConf['file.']['height'] = round($desiredHeight);
 
 					// other stuff will be calculated accordingly:
-				unset($imgConf['file.']['width']);
 				unset($imgConf['file.']['maxW']);
 				unset($imgConf['file.']['maxH']);
 				unset($imgConf['file.']['minW']);
