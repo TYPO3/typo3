@@ -298,12 +298,25 @@ class TYPO3backend {
 			$absoluteComponentPath = t3lib_extMgm::extPath($info['extKey']) . $componentDirectory;
 			$relativeComponentPath = t3lib_extMgm::extRelPath($info['extKey']) . $componentDirectory;
 
-			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/');
+			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/', 'css');
+			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
+					//don't allow inclusion outside directory
+				$loadOrder = str_replace('../', '', t3lib_div::getURL($absoluteComponentPath . 'css/loadorder.txt'));
+				$cssFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
+				$cssFiles = array_merge($cssFilesOrdered, $cssFiles);
+			}
 			foreach ($cssFiles as $cssFile) {
 				$this->pageRenderer->addCssFile($relativeComponentPath . 'css/' . $cssFile);
 			}
 
-			$jsFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'javascript/');
+			$jsFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
+			if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
+					//don't allow inclusion outside directory
+				$loadOrder = str_replace('../', '', t3lib_div::getURL($absoluteComponentPath . 'javascript/loadorder.txt'));
+				$jsFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
+				$jsFiles = array_merge($jsFilesOrdered, $jsFiles);
+			}
+
 			foreach ($jsFiles as $jsFile) {
 				$this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
 			}
