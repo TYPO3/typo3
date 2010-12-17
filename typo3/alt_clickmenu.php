@@ -560,7 +560,10 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_db_list($table,$uid,$rec)	{
-		$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?table='.($table=='pages'? '' : $table) . '&id=' . ($table == 'pages' ? $uid : $rec['pid']);
+		$urlParams = array();
+		$urlParams['id'] = ($table == 'pages') ? $uid : $rec['pid'];
+		$urlParams['table'] = $table == 'pages' ? '' : $table;
+		$url = t3lib_BEfunc::getModuleUrl('web_list', $urlParams, '', TRUE);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_db_list')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-system-list-open')),

@@ -3219,6 +3219,61 @@ final class t3lib_BEfunc {
 	}
 
 
+
+	/**
+	 * Returns the URL to a given module
+	 *
+	 * @param string $moduleName Name of the module
+	 * @param array $urlParameters URL parameters that should be added as key value pairs
+	 * @param bool/string $backPathOverride backpath that should be used instead of the global $BACK_PATH
+	 * @param bool $returnAbsoluteUrl If set to true, the URL returned will be absolute, $backPathOverride will be ignored in this case
+	 * @return bool/string calculated URL or FALSE
+	 */
+	public static function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
+		if (!$GLOBALS['BE_USER']->check('modules', $moduleName)) {
+			return FALSE;
+		}
+
+		if ($backPathOverride === FALSE) {
+			$backPath = $GLOBALS['BACK_PATH'];
+		} else {
+			$backPath = $backPathOverride;
+		}
+
+		$allUrlParameters = array();
+		$allUrlParameters['M'] = $moduleName;
+		$allUrlParameters = array_merge($allUrlParameters, $urlParameters);
+
+		$url = 'mod.php?' . t3lib_div::implodeArrayForUrl('', $allUrlParameters, '', TRUE);
+
+		if ($returnAbsoluteUrl) {
+			return t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
+		} else {
+			return $backPath . $url;
+		}
+	}
+
+	/**
+	 * Return a link to the list view
+	 *
+	 * @param array $urlParameters URL parameters that should be added as key value pairs
+	 * @param string $linkTitle title for the link tag
+	 * @param string $linkText optional link text after the icon
+	 * @return string a complete link tag or empty string
+	 */
+	public static function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
+		$url = self::getModuleUrl('web_list', $urlParameters);
+
+		if (!t3lib_extMgm::isLoaded('list') || $url === FALSE) {
+			return '';
+		} else {
+			return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($linkTitle) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
+					htmlspecialchars($linkText) .
+					'</a>';
+		}
+	}
+
 	/*******************************************
 	 *
 	 * Core

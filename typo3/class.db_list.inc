@@ -701,24 +701,38 @@ class recordList extends t3lib_recordList {
 	 * @return	string		URL
 	 */
 	function listURL($altId='',$table=-1,$exclList='')	{
-		$id = strcmp($altId, '') ? $altId : $this->id;
-		$additionalParams = '&table=' . rawurlencode($table == -1 ? $this->table : $table) .
-			($this->thumbs ? '&imagemode=' . $this->thumbs : '') .
-			($this->returnUrl ? '&returnUrl=' . rawurlencode($this->returnUrl) : '') .
-			($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') .
-			($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') .
-			($this->showLimit ? '&showLimit=' . rawurlencode($this->showLimit) : '') .
-			($this->firstElementNumber ? '&pointer=' . rawurlencode($this->firstElementNumber) : '') .
-			((!$exclList || !t3lib_div::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') .
-			((!$exclList || !t3lib_div::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '');
+		$urlParameters = array();
+		if (strcmp($altId, '')) {
+			$urlParameters['id'] = $altId;
+		} else {
+			$urlParameters['id'] = $this->id;
+		}
+		if ($this->thumbs) {
+			$urlParameters['imagemode'] = $this->thumbs;
+		}
+		if ($this->returnUrl) {
+			$urlParameters['returnUrl'] = $this->returnUrl;
+		}
+		if ($this->searchString) {
+			$urlParameters['search_field'] = $this->searchString;
+		}
+		if ($this->searchLevels) {
+			$urlParameters['search_levels'] = $this->searchLevels;
+		}
+		if ($this->showLimit) {
+			$urlParameters['showLimit'] = $this->showLimit;
+		}
+		if ($this->firstElementNumber) {
+			$urlParameters['pointer'] = $this->firstElementNumber;
+		}
+		if ((!$exclList || !t3lib_div::inList($exclList, 'sortField')) && $this->sortField) {
+			$urlParameters['sortField'] = $this->sortField;
+		}
+		if ((!$exclList || !t3lib_div::inList($exclList, 'sortRev')) && $this->sortRev) {
+			$urlParameters['sortRev'] = $this->sortRev;
+		}
 
-		return t3lib_extMgm::createListViewLink(
-			$id,
-			$additionalParams,
-			'',
-			'',
-			TRUE
-		);
+		return t3lib_BEfunc::getModuleUrl('web_list', $urlParameters);
 	}
 
 	/**

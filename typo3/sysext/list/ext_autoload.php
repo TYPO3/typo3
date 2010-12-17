@@ -5,6 +5,6 @@
 
 $extensionPath = t3lib_extMgm::extPath('list');
 return array(
-	'sc_db_list' => $extensionPath . 'mod1/db_list.php',
+	'sc_db_list' => $extensionPath . 'mod1/index.php',
 );
 ?>

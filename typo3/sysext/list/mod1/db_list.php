@@ -57,10 +57,6 @@
  */
 
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 require_once ($BACK_PATH.'class.db_list.inc');
 require_once ($BACK_PATH.'class.db_list_extra.inc');
@@ -231,7 +227,7 @@ class SC_db_list {
 			// Initialize the dblist object:
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
-		$dblist->script = t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php';
+		$dblist->script = t3lib_BEfunc::getModuleUrl('web_list', array(), '');
 		$dblist->calcPerms = $BE_USER->calcPerms($this->pageinfo);
 		$dblist->thumbs = $BE_USER->uc['thumbnailsByDefault'];
 		$dblist->returnUrl=$this->returnUrl;
@@ -402,7 +398,7 @@ class SC_db_list {
 					$this->id,
 					'SET[bigControlPanel]',
 					$this->MOD_SETTINGS['bigControlPanel'],
-					'db_list.php',
+					'',
 					($this->table ? '&table=' . $this->table : ''),
 					'id="checkLargeControl"'
 				);
@@ -421,7 +417,7 @@ class SC_db_list {
 						$this->id,
 						'SET[clipBoard]',
 						$this->MOD_SETTINGS['clipBoard'],
-						'db_list.php',
+						'',
 						($this->table ? '&table=' . $this->table : ''),
 						'id="checkShowClipBoard"'
 					);
@@ -440,7 +436,7 @@ class SC_db_list {
 					$this->id,
 					'SET[localization]',
 					$this->MOD_SETTINGS['localization'],
-					'db_list.php',
+					'',
 					($this->table ? '&table=' . $this->table : ''),
 					'id="checkLocalization"'
 				);

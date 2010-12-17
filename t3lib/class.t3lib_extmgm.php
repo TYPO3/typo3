@@ -1463,32 +1463,6 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\'' . addslashes(serialize($extensi
 	}
 
 	/**
-	 * Static function for create a link to list view
-	 *
-	 * @param string $id page id / resource id
-	 * @param string $additionalParams eg "&returnUrl=..."
-	 * @param string $linkTitle title for the link tag
-	 * @param string $linkText optional link text after the icon
-	 * @param boolean $linkOnly if true only the href will be returned
-	 * @return string link / href
-	 */
-	public function createListViewLink($id, $additionalParams = '', $linkTitle = '', $linkText = '', $linkOnly = FALSE) {
-		if (!self::isLoaded('list') || !$GLOBALS['BE_USER']->check('modules', 'web_list')) {
-			return '';
-		}
-		$href = $GLOBALS['BACK_PATH'] . self::extRelPath('list') . 'mod1/db_list.php?id=' .
-				$id . $additionalParams;
-		if ($linkOnly) {
-			return $href;
-		} else {
-			return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($linkTitle) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
-					$linkText .
-					'</a>';
-		}
-	}
-
-	/**
 	 * Gets the behaviour for caching ext_tables.php and ext_localconf.php files
 	 * (see $TYPO3_CONF_VARS['EXT']['extCache'] setting in the install tool).
 	 *

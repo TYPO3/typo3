@@ -387,12 +387,13 @@ class template {
 	 */
 	function viewPageIcon($id,$backPath,$addParams='hspace="3"')	{
 		global $BE_USER;
-		$str = '';
 			// If access to Web>List for user, then link to that module.
-		$str .= t3lib_extMgm::createListViewLink(
-			$id,
-			'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+		$str = t3lib_BEfunc::getListViewLink(
+			array(
+				'id' => $id,
+				'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
+			),
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
 		);
 
 			// Make link to view page

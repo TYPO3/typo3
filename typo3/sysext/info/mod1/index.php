@@ -200,11 +200,14 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		}
 
 			// If access to Web>List for user, then link to that module.
-		$buttons['record_list'] = t3lib_extMgm::createListViewLink(
-			$this->pageinfo['uid'],
-			'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+		$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
+			array(
+				'id' => $this->pageinfo['uid'],
+				'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
+			),
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
 		);
+
 		return $buttons;
 	}
 

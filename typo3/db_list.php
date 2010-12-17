@@ -42,7 +42,7 @@ t3lib_div::deprecationLog('The list module is a system extension now, do not lin
 	'Referer: ' . t3lib_div::getIndpEnv('HTTP_REFERER')
 );
 if (t3lib_extMgm::isLoaded('list')) {
-	t3lib_utility_Http::redirect(t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?' . $query);
+	t3lib_utility_Http::redirect(t3lib_BEfunc::getModuleUrl('web_list', array(), '', TRUE) . '&' . $query);
 } else {
 	$title = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:extension.not.installed'), 'list');
 	$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:link.to.dblist.correctly');

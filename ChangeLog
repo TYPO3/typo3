@@ -5,6 +5,7 @@
 
 2010-12-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15686: Call the list module through the dispatcher instead directly (Thanks to Helmut Hummel)
 	* Fixed bug #16735: Inclusion of js/css for loadResourcesForRegisteredNavigationComponents lacks loading order
 	* Fixed bug #16084: Clicking a label should set the focus on the input field
 

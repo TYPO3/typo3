@@ -479,9 +479,12 @@ class SC_alt_shortcut {
 
 			// Load search for something.
 		if ($this->searchFor)	{
-			$firstMP = intval($GLOBALS['WEBMOUNTS'][0]);
+			$urlParameters = array();
+			$urlParameters['id'] = intval($GLOBALS['WEBMOUNTS'][0]);
+			$urlParameters['search_field'] = $this->searchFor;
+			$urlParameters['search_levels'] = 4;
 			$this->content .= $this->doc->wrapScriptTags('jump(unescape("' .
-				rawurlencode(t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?id=' . $firstMP . '&search_field=' . rawurlencode($this->searchFor) . '&search_levels=4') .
+				rawurlencode(t3lib_BEfunc::getModuleUrl('web_list', $urlParameters, '')) .
 			'"), "web_list", "web");');
 		}
 	}
