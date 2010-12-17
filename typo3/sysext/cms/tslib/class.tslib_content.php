@@ -582,7 +582,7 @@ class tslib_cObj {
 
 				if (!($hookObject instanceof tslib_content_stdWrapHook)) {
 					throw new UnexpectedValueException(
-						'$hookObject must implement interface tslib_content_stdWrapHook',
+						$classData . ' must implement interface tslib_content_stdWrapHook',
 						1195043965
 					);
 				}
@@ -597,7 +597,7 @@ class tslib_cObj {
 
 				if (!($postInitializationProcessor instanceof tslib_content_PostInitHook)) {
 					throw new UnexpectedValueException(
-						'$postInitializationProcessor must implement interface tslib_content_PostInitHook',
+						$classData . ' must implement interface tslib_content_PostInitHook',
 						1274563549
 					);
 				}
