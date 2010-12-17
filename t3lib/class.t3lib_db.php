@@ -233,7 +233,7 @@ class t3lib_DB {
 	 *
 	 * @param	string		List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.

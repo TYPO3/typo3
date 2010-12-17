@@ -1,3 +1,7 @@
+2010-12-17  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #9002: exec_SELECTquery() has wrong documentation: Third parameter (WHERE clause) is NOT optional
+
 2010-12-17  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #16599: Radio Selector for content to show on mount pages not displaying the selected value, credits Joh Hasenau
