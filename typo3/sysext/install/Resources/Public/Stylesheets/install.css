@@ -188,6 +188,10 @@ h1,
 }
 
 /* 5: All configuration */
+.t3-install-description {
+	word-wrap: break-word;
+	width: 48em;
+}
 
 /* 6: typo3temp/ */
 #t3-install-tempmanagernumbers dt {
