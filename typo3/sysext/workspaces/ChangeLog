@@ -1,3 +1,7 @@
+2010-12-17  Tolleiv Nietsch <typo3q@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - empty preview.css included in order to support the skin team
+
 2010-12-14  Tolleiv Nietsch <typo3q@tolleiv.de>
 
 	* Fixed bug #9819: Workspace preview window

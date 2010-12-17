@@ -57,8 +57,9 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 
-		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
-		$this->pageRenderer->addJsFile($resourcePath . 'preview.js');
+		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
+		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
+		$this->pageRenderer->addCssFile($resourcePath . 'StyleSheet/preview.css');
 
 			// todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
