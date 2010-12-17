@@ -139,8 +139,8 @@ class tx_scheduler_CronCmd {
 							if ($increased_value !== false) {
 								$this->values[$i] = $increased_value;
 
-									// Update day list if month was changed
-								if ($i == 3) {
+									// Update day list if month or year was changed
+								if ($i >= 3) {
 									$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]);
 
 										// Check if day had already a valid start value, if not set a new one
@@ -152,11 +152,6 @@ class tx_scheduler_CronCmd {
 								break;
 							} else {
 								$this->values[$i] = $this->valid_values[$i][0];
-
-									// Update day list if month was changed
-								if ($i == 3) {
-									$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]+1);
-								}
 							}
 						}
 					}
