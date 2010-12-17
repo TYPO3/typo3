@@ -1,6 +1,7 @@
 2010-12-17  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #16599: Radio Selector for content to show on mount pages not displaying the selected value, credits Joh Hasenau
+	* Fixed issue #16389: Inconsistent styling of the DB integrity checks overview
 
 2010-12-17  Steffen Kamper  <steffen@typo3.org>
 

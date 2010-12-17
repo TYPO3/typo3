@@ -69,7 +69,7 @@
 			<label index="label">Label</label>
 			<label index="tablename">Table name</label>
 			<label index="total_lost">Records total / lost</label>
-			<label index="relations">Relations:</label>
+			<label index="relations">Relations</label>
 			<label index="relations_description">This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</label>
 			<label index="files_many_ref">Files referenced from more than one record:</label>
 			<label index="files_no_ref">Files with no references at all (delete them!):</label>
@@ -78,7 +78,7 @@
 			<label index="group_db">Group fields:</label>
 			<label index="tree">The Page Tree:</label>
 			<label index="tree_description">This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</label>
-			<label index="records">Records Statistics:</label>
+			<label index="records">Records Statistics</label>
 			<label index="records_description">This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</label>
 			<label index="search">Search whole Database</label>
 			<label index="search_description">This searches through all database tables and records for a text string.</label>

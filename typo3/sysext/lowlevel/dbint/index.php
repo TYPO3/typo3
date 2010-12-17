@@ -319,28 +319,34 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 * Menu
+	 * Creates the overview menu.
 	 *
-	 * @return	void
 	 */
-	function func_default()	{
-		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
-
-		$content = '<dl class="t3-overview-list">';
-
+	protected function func_default() {
 		$availableModFuncs = array('records', 'relations', 'search', 'filesearch', 'refindex');
+
+		$moduleTitle = $GLOBALS['LANG']->getLL('title');
+		$content     = '<dl class="t3-overview-list">';
+
 		foreach ($availableModFuncs as $modFunc) {
-			$link = 'index.php?SET[function]=' . $modFunc;
-			$title = $GLOBALS['LANG']->getLL($modFunc);
+			$link        = 'index.php?SET[function]=' . $modFunc;
+			$title       = $GLOBALS['LANG']->getLL($modFunc);
 			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
+
+			$icon = '<img src="'
+				. t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], 'MOD:tools_dbint/db.gif', '', 1)
+				. '" width="16" height="16" title="' . $title . '" alt="' . $title
+			. '" />';
+
 			$content .= '
-				<dt><a href="' . $link . '">' . $title . '</a></dt>
+				<dt><a href="' . $link . '">' . $icon . $title . '</a></dt>
 				<dd>' . $description . '</dd>
 			';
 		}
 
 		$content .= '</dl>';
-		$this->content .= $content;
+
+		$this->content .= $this->doc->section($moduleTitle, $content, false, true);
 	}
 
 
