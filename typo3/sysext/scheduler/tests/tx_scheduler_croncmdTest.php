@@ -32,7 +32,7 @@
  */
 class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	/**
-	 * @const	integer	timestamp of 1.1.2010 0:00 (Friday)
+	 * @const	integer	timestamp of 2010-01-01 0:00 (Friday)
 	 */
 	const TIMESTAMP = 1262300400;
 
@@ -237,6 +237,48 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 		);
 		$actualResult = $cronCmdInstance->valid_values;
 		$this->assertEquals($expectedResult, $actualResult[2]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function calculateNextValueCorrectlyCalculatesNextWeekdayAtTurnOfMonth() {
+			// 2010-03-30 10:00 (Tuesday)
+		$testTimestamp = 1269939600;
+			// Every monday at 02:31
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '31 2 * * 1', $testTimestamp);
+			// Next execution should be at 2010-04-05 02:31 (Monday)
+		$expectedResult = array(
+			'0' => 31,
+			'1' => 2,
+			'2' => 5,
+			'3' => 4,
+			'4' => 2010,
+		);
+		$cronCmdInstance->calculateNextValue(0);
+		$actualResult = $cronCmdInstance->values;
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function calculateNextValueCorrectlyCalculatesNextWeekdayAtTurnOfYear() {
+			// 2010-12-28 10:00 (Tuesday)
+		$testTimestamp = 1293526800;
+			// Every monday at 02:31
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '31 2 * * 1', $testTimestamp);
+			// Next execution should be at 2011-01-03 02:31 (Monday)
+		$expectedResult = array(
+			'0' => 31,
+			'1' => 2,
+			'2' => 3,
+			'3' => 1,
+			'4' => 2011,
+		);
+		$cronCmdInstance->calculateNextValue(0);
+		$actualResult = $cronCmdInstance->values;
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
 ?>

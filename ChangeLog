@@ -1,3 +1,7 @@
+2010-12-17  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16470: Scheduler fails to calculateNextValue a turn of the year (thanks to Tobias Hövelborn and Christian Kuhn)
+
 2010-12-17  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #16764: Insufficient information about which class is failing to implement interfaces in tslib_cObj->start()
