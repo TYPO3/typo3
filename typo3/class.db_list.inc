@@ -92,7 +92,7 @@ class recordList extends t3lib_recordList {
 	var $itemsLimitPerTable = 20;			// default Max items shown per table in "multi-table mode", may be overridden by tables.php
 	var $itemsLimitSingleTable = 100;		// default Max items shown per table in "single-table mode", may be overridden by tables.php
 	var $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
-	var $script = 'db_list.php';			// Current script name
+	var $script = 'index.php';			// Current script name
 	var $allFields=0;				// Indicates if all available fields for a user should be selected or not.
 	var $localizationView=FALSE;			// Whether to show localization view or not.
 
@@ -199,7 +199,7 @@ class recordList extends t3lib_recordList {
 		}
 
 		// Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['db_list.php']) ? $GLOBALS['BE_USER']->uc['moduleData']['db_list.php'] : array();
+		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['list']) ? $GLOBALS['BE_USER']->uc['moduleData']['list'] : array();
 		$collapseOverride = t3lib_div::_GP('collapse');
 		if (is_array($collapseOverride)) {
 			foreach($collapseOverride as $collapseTable => $collapseValue) {
@@ -208,7 +208,7 @@ class recordList extends t3lib_recordList {
 				}
 			}
 			// Save modified user uc
-			$GLOBALS['BE_USER']->uc['moduleData']['db_list.php'] = $this->tablesCollapsed;
+			$GLOBALS['BE_USER']->uc['moduleData']['list'] = $this->tablesCollapsed;
 			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
 			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))) {
 				$location = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
@@ -398,7 +398,7 @@ class recordList extends t3lib_recordList {
 
 
 				<!--
-					Sys-notes for the db_list.php:
+					Sys-notes for list module:
 				-->
 					<table border="0" cellpadding="1" cellspacing="1" id="typo3-dblist-sysnotes">
 						<tr><td colspan="2" class="bgColor2">'.$iconImg.'<strong>'.$subject.'</strong></td></tr>
@@ -434,14 +434,14 @@ class recordList extends t3lib_recordList {
 	function setDispFields()	{
 
 			// Getting from session:
-		$dispFields = $GLOBALS['BE_USER']->getModuleData('db_list.php/displayFields');
+		$dispFields = $GLOBALS['BE_USER']->getModuleData('list/displayFields');
 
 			// If fields has been inputted, then set those as the value and push it to session variable:
 		if (is_array($this->displayFields))	{
 			reset($this->displayFields);
 			$tKey = key($this->displayFields);
 			$dispFields[$tKey]=$this->displayFields[$tKey];
-			$GLOBALS['BE_USER']->pushModuleData('db_list.php/displayFields',$dispFields);
+			$GLOBALS['BE_USER']->pushModuleData('list/displayFields',$dispFields);
 		}
 
 			// Setting result:
