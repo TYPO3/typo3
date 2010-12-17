@@ -88,6 +88,18 @@ ul.tree div.treeLinkItem {
 	height: 16px;
 	padding-right: 2px;
 }
+
+/* active tree items, we have to work against the border: 1px here,
+   otherwise tree elements would take too much space */
+ul.tree li.active div.treeLinkItem {
+	margin: -1px 0 -1px -1px;
+}
+
+/* subitems of active tree items - reset styling */
+ul.tree li.active li div.treeLinkItem {
+	margin: 0;
+}
+
 span.dragIcon {
 	display: inline-block;
 	height: 16px;

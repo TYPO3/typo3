@@ -33,6 +33,7 @@
 
 	* Fixed bug #16725: Wrong translation markers in Content Element Image (Thanks to Thomas Kieslich)
 	* Fixed bug #14564: Width of one text paragraph in the Install Tool is too big (Thanks to Marc Wöhlken)
+	* Fixed bug #16758: Fix space beetween page tree nodes
 
 2010-12-17  Francois Suter  <francois.suter@typo3.org>
 

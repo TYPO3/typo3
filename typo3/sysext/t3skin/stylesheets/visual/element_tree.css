@@ -100,25 +100,27 @@ ul.tree ul li {
 }
 
 ul.tree ul li.expanded ul {
-	background: transparent url('../../icons/gfx/ol/line.gif') 1px top repeat-y;
+	background: transparent url('../../icons/gfx/ol/line.gif') left top repeat-y;
 }
 
 ul.tree ul li.last > ul {
 	background: none;
 }
 
-ul.tree div.treeLinkItem {
-	border-bottom: 1px solid transparent;
-	border-left: 1px solid transparent;
-	border-top: 1px solid transparent;
+/* active tree items */
+ul.tree li.active div.treeLinkItem {
+	background-color: #f8f8f8;
+	border-color: #d7d7d7;
+	border-width: 1px 0 1px 1px;
+	border-style: solid;
+
 }
 
-ul.tree li.active > div.treeLinkItem,
-ul.tree ul li.active > div.treeLinkItem {
-	background-color: #f8f8f8;
-	border-bottom: 1px solid #d7d7d7;
-	border-left: 1px solid #d7d7d7;
-	border-top: 1px solid #d7d7d7;
+/* subitems of active tree items - reset styling */
+ul.tree li.active li div.treeLinkItem {
+	background-color: transparent;
+	border-width: 0;
+
 }
 
 ul.tree li.active span a,
