@@ -393,7 +393,7 @@ class tslib_cObj {
 
 				if(!($hookObject instanceof tslib_content_stdWrapHook)) {
 					throw new UnexpectedValueException(
-						$classData . ' implement interface tslib_content_stdWrapHook',
+						$classData . ' must implement interface tslib_content_stdWrapHook',
 						1195043965
 					);
 				}
