@@ -1,3 +1,7 @@
+2010-12-17  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16725: Wrong translation markers in Content Element Image (Thanks to Thomas Kieslich)
+
 2010-12-17  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #16751: Uninitialized variable triggers exception in Update wizard
