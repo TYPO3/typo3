@@ -1,3 +1,7 @@
+2010-12-17  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #16703: TCEForms->getIconHTML() does not resolve back paths before checking static files
+
 2010-12-17  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #9002: exec_SELECTquery() has wrong documentation: Third parameter (WHERE clause) is NOT optional
