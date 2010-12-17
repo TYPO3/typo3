@@ -244,6 +244,8 @@ class template {
 	protected $pageRenderer;
 	protected $pageHeaderFooterTemplateFile = '';	// alternative template file
 
+	protected $extDirectStateProvider = FALSE;
+
 	/**
 	 * Whether flashmessages should be rendered or not
 	 *
@@ -337,7 +339,14 @@ class template {
 
 
 
-
+   /**
+	 * Sets inclusion of StateProvider
+	 *
+	 * @return void
+	 */
+	public function setExtDirectStateProvider() {
+		$this->extDirectStateProvider = TRUE;
+	}
 
 
 
@@ -808,6 +817,14 @@ class template {
 		// add docstyles
 		$this->docStyle();
 
+	   if ($this->extDirectStateProvider) {
+			$this->pageRenderer->addJsFile(
+				$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.ExtDirectStateProvider',
+				NULL,
+				FALSE
+			);
+			$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ExtDirect.StateProvider.js');
+		}
 
 			// add jsCode for overriding the console with a debug panel connection
 		$this->pageRenderer->addJsInlineCode(
