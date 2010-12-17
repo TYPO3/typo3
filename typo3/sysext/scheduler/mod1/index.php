@@ -809,7 +809,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$cellContent  = t3lib_BEfunc::cshItem($this->cshKey, 'task_start', $this->backPath, '|', false, 'margin-bottom:0px;');
 		$cellContent .= '<label for="tceforms-datetimefield-task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</label>';
 		$table[$tr][] = $cellContent;
-		$table[$tr][] = '<input name="tx_scheduler[start]" type="text" id="tceforms-datetimefield-task_start" value="' . strftime('%H:%M %d-%m-%Y', $taskInfo['start']) . '" />' .
+		$table[$tr][] = '<input name="tx_scheduler[start]" type="text" id="tceforms-datetimefield-task_start" value="' . ((empty($taskInfo['start'])) ? '' : strftime('%H:%M %d-%m-%Y', $taskInfo['start'])) . '" />' .
 			t3lib_iconWorks::getSpriteIcon(
 				'actions-edit-pick-date',
 				array(

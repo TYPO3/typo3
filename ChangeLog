@@ -22,6 +22,7 @@
 2010-12-17  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #16751: Uninitialized variable triggers exception in Update wizard
+	* Fixed bug #16766: Scheduler: Uninitialized variable triggers warning in BE module
 
 2010-12-17  Jigal van Hemert <jigal@xs4all.nl>
 
