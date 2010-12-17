@@ -257,6 +257,21 @@ class TYPO3backend {
 
 		$this->loadResourcesForRegisteredNavigationComponents();
 
+			// add state provider
+		$GLOBALS['TBE_TEMPLATE']->setExtDirectStateProvider();
+		$states = $GLOBALS['BE_USER']->uc['BackendComponents']['States'];
+			//save states in BE_USER->uc
+		$extOnReadyCode = '
+			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+				key: "BackendComponents.States"
+			}));
+		';
+		if ($states) {
+		    $extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . $states . ');';
+		}
+		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
+
+
 			// set document title:
 		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
 			? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'

@@ -20,6 +20,7 @@
 
 2010-12-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16738: Add ExtDirect Stateprovider for ExtJs States also for backend
 	* Fixed bug #14303: t3lib_compressor causes filemtime errors on files in fileadmin directory (Thanks to Rens Admiraal)
 	* Fixed bug #16096 Bug: addToAllTCATypes after certain fields does not work anymore (Thanks to Jo Hasenau)
 	* Fixed bug #14500: Bug: Unit test failures in t3lib_matchCondition_backend_testcase (Thanks to Oliver Klee)
