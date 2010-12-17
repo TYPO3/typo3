@@ -6459,6 +6459,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 */
 	function updateWizard_parts($action) {
 		$content = '';
+		$updateItems = array();
+
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'UpdateWizardParts.html');
 

@@ -1,3 +1,7 @@
+2010-12-17  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16751: Uninitialized variable triggers exception in Update wizard
+
 2010-12-17  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16724: List Module -> field selector: the table has a wrong background color in current trunk (thanks to Peter Foerger) 
