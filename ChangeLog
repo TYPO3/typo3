@@ -1,3 +1,7 @@
+2010-12-17   Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16084: Clicking a label should set the focus on the input field
+
 2010-12-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16725: Wrong translation markers in Content Element Image (Thanks to Thomas Kieslich)
@@ -9,7 +13,7 @@
 
 2010-12-17  Jigal van Hemert <jigal@xs4all.nl>
 
-	* Fixed bug #16724: List Module -> field selector: the table has a wrong background color in current trunk (thanks to Peter Foerger) 
+	* Fixed bug #16724: List Module -> field selector: the table has a wrong background color in current trunk (thanks to Peter Foerger)
 
 2010-12-16  Jigal van Hemert <jigal@xs4all.nl>
 

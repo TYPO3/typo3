@@ -2621,11 +2621,7 @@ final class t3lib_BEfunc {
 		global $TCA_DESCR, $BE_USER;
 
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && (isset($BE_USER->uc['edit_showFieldHelp']) || $force)) {
-			if ($BE_USER->uc['edit_showFieldHelp'] == 'icon') {
-				$text = self::helpText($table, $field);
-				$text = '<span class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($text, FALSE) . '</span>';
-			}
-			return '<a class="typo3-csh-link" href="#" rel="' . $table . '.' . $field . '">' . t3lib_iconWorks::getSpriteIcon('actions-system-help-open', array('class' => 'typo3-csh-icon')) . $text . '</a>';
+			return self::wrapInHelp($table, $field);
 		}
 	}
 
@@ -2721,13 +2717,15 @@ final class t3lib_BEfunc {
 			// get the help text that should be shown on hover
 		$GLOBALS['LANG']->loadSingleTableDescription($table);
 		$helpText = self::helpText($table, $field);
+		$abbrClassAdd = '';
 		if ($helpText) {
 				// if no text was given, just use the regular help icon
 			if ($text == '') {
 				$text = t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
+				$abbrClassAdd = '-icon';
 			}
-			$text = '<abbr class="t3-help-teaser">' . $text . '</abbr>';
-			$text = '<a class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '">' . $text . '</a>';
+			$text = '<abbr class="t3-help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
+			$text = '<span class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '">' . $text . '</span>';
 		}
 		return $text;
 	}

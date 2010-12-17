@@ -59,8 +59,13 @@ div.t3-help-inline p.t3-help-short {
 	border-top: none;
 }
 
-p.t3-help-short {
+p.t3-help-short.tipIsLinked {
 	cursor: pointer;
+}
+
+.t3-help-teaser,
+.t3-help-teaser-icon {
+	cursor: help;
 }
 
 img.t3-help-icon {

@@ -39,10 +39,13 @@ class extDirect_DataProvider_ContextHelp {
 	 */
 	public function getContextHelp($table, $field) {
 		$helpTextArray = t3lib_befunc::helpTextArray($table, $field);
+		$moreIcon = $helpTextArray['moreInfo'] ? t3lib_iconWorks::getSpriteIcon('actions-view-go-forward') : '';
 		return array(
 			'title' => $helpTextArray['title'],
-			'description' => '<p class="t3-help-short">' . nl2br(strip_tags($helpTextArray['description'])) . '</p>',
+			'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' .
+					$helpTextArray['description'] . $moreIcon . '</p>',
 			'id' => $table . '.' . $field,
+			'moreInfo' =>  $helpTextArray['moreInfo']
 		);
 	}
 }

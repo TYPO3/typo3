@@ -70,6 +70,7 @@ TYPO3.ContextHelp = function() {
 	function updateTip(response) {
 		tip.body.dom.innerHTML = response.description;
 		tip.cshLink = response.id;
+		tip.moreInfo = response.moreInfo;
 		tip.setTitle(response.title);
 		tip.syncShadow();
 	}
@@ -87,18 +88,25 @@ TYPO3.ContextHelp = function() {
 				minWidth: 160,
 				maxWidth: 240,
 				target: Ext.getBody(),
-				delegate: 'a.t3-help-link',
+				delegate: 'span.t3-help-link',
 				renderTo: Ext.getBody(),
 				cls: 'typo3-csh-tooltip',
 				dismissDelay: 0, // tooltip stays while mouse is over target
-				showDelay: 1500, // show after 1.5 seconds
-				hideDelay: 1500, // hide after 1.5 seconds
+				showDelay: 500, // show after 0.5 seconds
+				hideDelay: 3000, // hide after 3 seconds
+				closable: true,
 				listeners: {
 					beforeshow: showToolTipHelp,
 					render: function(tip) {
 						tip.body.on('click', function(event){
 							event.stopEvent();
-							top.TYPO3.ContextHelpWindow.open(this.cshLink);
+							if (tip.moreInfo)
+								try {
+									top.TYPO3.ContextHelpWindow.open(tip.cshLink);
+								} catch(e) {
+									// do nothing
+								}
+
 						});
 					},
 					hide: function(tip) {
@@ -108,7 +116,6 @@ TYPO3.ContextHelp = function() {
 					scope: this
 				}
 			});
-			Ext.select('div').on('click', TYPO3.ContextHelp.openHelpWindow, TYPO3.ContextHelp, {delegate: 'a.t3-help-link'});
 		},
 
 

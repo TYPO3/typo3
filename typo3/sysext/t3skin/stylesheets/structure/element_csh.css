@@ -123,9 +123,6 @@ div.typo3-view-help img.c-inlineimg  {
 
 
 /*** new help code ***/
-.t3-help-teaser {
-	border-bottom: 1px dotted #434343;
-}
 table.t3-help-inline {
 	margin: 3px 4px 20px 0px;
 	padding: 0;
