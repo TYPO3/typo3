@@ -1,6 +1,6 @@
 2010-12-17  Jigal van Hemert <jigal@xs4all.nl>
 
-	* Fixed bug #0016724: List Module -> field selector: the table has a wrong background color in current trunk 
+	* Fixed bug #16724: List Module -> field selector: the table has a wrong background color in current trunk (thanks to Peter Foerger) 
 
 2010-12-16  Jigal van Hemert <jigal@xs4all.nl>
 
