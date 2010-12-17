@@ -637,11 +637,11 @@ $TCA['pages'] = array(
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
-					'0' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.0',
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.0',0
 					),
-					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.1',
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.1',1
 					),
 				),
 			),

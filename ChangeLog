@@ -1,4 +1,8 @@
-2010-12-17   Steffen Kamper  <steffen@typo3.org>
+2010-12-17  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #16599: Radio Selector for content to show on mount pages not displaying the selected value, credits Joh Hasenau
+
+2010-12-17  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16735: Inclusion of js/css for loadResourcesForRegisteredNavigationComponents lacks loading order
 	* Fixed bug #16084: Clicking a label should set the focus on the input field
