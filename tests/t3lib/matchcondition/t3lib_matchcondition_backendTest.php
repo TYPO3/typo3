@@ -111,7 +111,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression() {
-		$this->matchCondition->matchAll = false;
+		$this->matchCondition->matchAll = FALSE;
 		$this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
 	}
 
@@ -838,7 +838,6 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 		if ($table === $this->testTableName) {
 			return array(
 				'scope' => $this->testTableName,
-				'processed' => false,
 				'data' => array(
 					'pid' => 999,
 				),
@@ -855,9 +854,8 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * @param	mixed		$resource
 	 * @return	mixed
 	 */
-	public function determinePageIdByRecordDatabaseFetchCallback(&$resource) {
-		if (is_array($resource) && !$resource['processed'] && $resource['scope'] === $this->testTableName) {
-			$resource['processed'] = true;
+	public function determinePageIdByRecordDatabaseFetchCallback($resource) {
+		if (is_array($resource) && ($resource['scope'] === $this->testTableName)) {
 			return $resource['data'];
 		} else {
 			return FALSE;

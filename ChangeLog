@@ -14,6 +14,7 @@
 
 2010-12-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #14500: Bug: Unit test failures in t3lib_matchCondition_backend_testcase (Thanks to Oliver Klee)
 	* Fixed bug #16738: Add ExtDirect Stateprovider for ExtJs States
 	* Fixed bug #16706: Use ExtJS for collapseable sections like in reports module
 	* Fixed bug #15686: Call the list module through the dispatcher instead directly (Thanks to Helmut Hummel)
