@@ -855,7 +855,7 @@ class t3lib_matchCondition_backend_testcase extends tx_phpunit_testcase {
 	 * @param	mixed		$resource
 	 * @return	mixed
 	 */
-	public function determinePageIdByRecordDatabaseFetchCallback(&$resource) {
+	public function determinePageIdByRecordDatabaseFetchCallback($resource) {
 		if (is_array($resource) && !$resource['processed'] && $resource['scope'] === $this->testTableName) {
 			$resource['processed'] = true;
 			return $resource['data'];
