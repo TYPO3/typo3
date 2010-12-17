@@ -292,7 +292,12 @@ final class t3lib_extMgm {
 	 * @param	string		Table name
 	 * @param	string		Field list to add.
 	 * @param	string		List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @param	string		Insert fields before (default) or after one of this fields (commalist with "before:" or "after:" commands). Example: "before:keywords,--palette--;;4,after:description". Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 * @param	string		Insert fields before (default) or after one
+	 *						of this fields (commalist with "before:", "after:" or "replace:" commands).
+	 *						Example: "before:keywords,--palette--;;4,after:description".
+	 *						Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 *						It will add the list of new fields before or after a palette or replace the field inside the palette,
+	 *						when the field given in $position is found inside a palette used by the type.
 	 * @return	void
 	 */
 	public static function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
@@ -302,11 +307,48 @@ final class t3lib_extMgm {
 		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
 			foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
 				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList, $type)) {
-					$typeDetails['showitem'] = self::executePositionedStringInsertion(
-						$typeDetails['showitem'],
-						$str,
-						$position
-					);
+					$fieldExists = FALSE;
+					if ($position != '' && is_array($GLOBALS['TCA'][$table]['palettes'])) {
+						$positionArray = t3lib_div::trimExplode(':', $position);
+						if ($positionArray[0] == 'replace') {
+							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
+								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) != FALSE
+										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) != FALSE) {
+									self::addFieldsToPalette($table, $palette, $str, $position);
+									$fieldExists = TRUE;
+								}
+							}
+						} else {
+							if (strstr($str, $typeDetails['showitem']) != FALSE) {
+								$fieldExists = TRUE;
+							} else {
+								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
+									if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) != FALSE
+									&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) != FALSE) {
+										$position = $positionArray[0] . ':--palette--;;' . $palette;
+									}
+								}
+							}
+						}
+					} else {
+						if (strstr($str, $typeDetails['showitem']) != FALSE) {
+							$fieldExists = TRUE;
+						} else if(is_array($GLOBALS['TCA'][$table]['palettes'])) {
+							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
+								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) != FALSE
+								&& strstr($str, $paletteDetails['showitem']) != FALSE) {
+									$fieldExists = TRUE;
+								}
+							}
+						}
+					}
+					if ($fieldExists === FALSE) {
+						$typeDetails['showitem'] = self::executePositionedStringInsertion(
+							$typeDetails['showitem'],
+							$str,
+							$position
+						);
+					}
 				}
 			}
 		}
@@ -321,7 +363,7 @@ final class t3lib_extMgm {
 	 * @param	string		$field: Name of the field that has the palette to be extended
 	 * @param	string		$addFields: List of fields to be added to the palette
 	 * @param	string		$insertionPosition: Insert fields before (default) or after one
-	 *						 of this fields (commalist with "before:" or "after:" commands).
+	 *						 of this fields (commalist with "before:", "after:" or "replace:" commands).
 	 *						 Example: "before:keywords,--palette--;;4,after:description".
 	 *						 Palettes must be passed like in the example no matter how the
 	 *						 palette definition looks like in TCA.
@@ -371,7 +413,7 @@ final class t3lib_extMgm {
 	 * @param	string		$palette: Name of the palette to be extended
 	 * @param	string		$addFields: List of fields to be added to the palette
 	 * @param	string		$insertionPosition: Insert fields before (default) or after one
-	 *						 of this fields (commalist with "before:" or "after:" commands).
+	 *						 of this fields (commalist with "before:", "after:" or "replace:" commands).
 	 *						 Example: "before:keywords,--palette--;;4,after:description".
 	 *						 Palettes must be passed like in the example no matter how the
 	 *						 palette definition looks like in TCA.
@@ -403,7 +445,7 @@ final class t3lib_extMgm {
 	 *
 	 * @param	string	$addFields: List of fields to be added to the user settings
 	 * @param	string	$insertionPosition: Insert fields before (default) or after one
-	 *					 of this fields (commalist with "before:" or "after:" commands).
+	 *					 of this fields (commalist with "before:", "after:" or "replace:" commands).
 	 *					 Example: "before:password,after:email".
 	 * @return void
 	 */
@@ -456,6 +498,14 @@ final class t3lib_extMgm {
 					foreach ($needles['after'] as $needle) {
 						if (in_array($needle, $positions)) {
 							$itemDetails['rawData'] .= ', ' . $insertionList;
+							$isInserted = TRUE;
+							break;
+						}
+					}
+						// Replace with data:
+					foreach ($needles['replace'] as $needle) {
+						if (in_array($needle, $positions)) {
+							$itemDetails['rawData'] = $insertionList;
 							$isInserted = TRUE;
 							break;
 						}
@@ -538,6 +588,7 @@ final class t3lib_extMgm {
 		$needles = array(
 			'before' => array($item, 'before:' . $item),
 			'after' => array('after:' . $item),
+			'replace' => array('replace:' . $item),
 		);
 
 		if ($itemDetails['palette']) {
@@ -545,6 +596,7 @@ final class t3lib_extMgm {
 			$needles['before'][] = $palette;
 			$needles['before'][] = 'before:' . $palette;
 			$needles['after'][] = 'after:' . $palette;
+			$needles['replace'][] = 'replace:' . $palette;
 		}
 
 		return $needles;
