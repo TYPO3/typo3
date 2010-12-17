@@ -1,3 +1,7 @@
+2010-12-17  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #0016724: List Module -> field selector: the table has a wrong background color in current trunk 
+
 2010-12-16  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #12661: Problem with german "Umlaute" in BE file list, no thumbs generated
