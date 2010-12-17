@@ -80,7 +80,7 @@ class t3lib_Compressor {
 		$filesToInclude = array();
 		foreach ($cssFiles as $filename => $fileOptions) {
 				// we remove BACK_PATH from $filename, so make it relative to TYPO3_mainDir
-			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
+			$filenameFromMainDir = $this->getFilenameFromMainDir($filename);
 				// if $options['baseDirectories'] set, we only include files below these directories
 			if ((!isset($options['baseDirectories'])
 					|| $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))))
@@ -105,6 +105,38 @@ class t3lib_Compressor {
 			$cssFiles = array_merge(array($targetFileRelative => $concatenatedOptions), $cssFiles);
 		}
 		return $cssFiles;
+	}
+
+	/**
+	 * Finds the relative path to a file, relative to the TYPO3_mainDir.
+	 *
+	 * @param string $filename the name of the file
+	 * @return string the path to the file relative to the TYPO3_mainDir
+	 */
+	private function getFilenameFromMainDir($filename) {
+			// if the file exists in the typo3/ folder or the BACK_PATH is empty, just return the $filename
+		$file = str_replace($GLOBALS['BACK_PATH'], '', $filename);
+		if (is_file(PATH_typo3 . $file) || empty($GLOBALS['BACK_PATH'])) {
+			return $file;
+		}
+
+			// build the file path relatively to the PATH_site
+		$backPath = str_replace(TYPO3_mainDir, '', $GLOBALS['BACK_PATH']);
+		$file = str_replace($backPath, '', $filename);
+		if (substr($file, 0, 3) === '../') {
+			$file = t3lib_div::resolveBackPath(PATH_typo3 . $file);
+		} else {
+			$file = PATH_site . $file;
+		}
+
+			// check if the file exists, and if so, return the path relative to TYPO3_mainDir
+		if (is_file($file)) {
+			$mainDirDepth = substr_count(TYPO3_mainDir, '/');
+			return str_repeat('../', $mainDirDepth) . str_replace(PATH_site, '', $file);
+		}
+
+			// none of above conditions were met, fallback to default behaviour
+		return substr($filename, strlen($GLOBALS['BACK_PATH']));
 	}
 
 	/**
@@ -264,7 +296,7 @@ class t3lib_Compressor {
 		$filesAfterCompression = array();
 		foreach ($jsFiles as $filename => $fileOptions) {
 				// we remove BACK_PATH from $filename, so make it relative to TYPO3_mainDir
-			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
+			$filenameFromMainDir = $this->getFilenameFromMainDir($filename);
 				// if compression is enabled
 			if ($fileOptions['compress']) {
 				$filesAfterCompression[$this->compressJsFile($filename)] = $fileOptions;
@@ -286,7 +318,7 @@ class t3lib_Compressor {
 	 */
 	public function compressJsFile($filename) {
 			// generate the unique name of the file
-		$filenameAbsolute = t3lib_div::resolveBackPath(PATH_typo3 . substr($filename, strlen($GLOBALS['BACK_PATH'])));
+		$filenameAbsolute = t3lib_div::resolveBackPath(PATH_typo3 . $this->getFilenameFromMainDir($filename));
 		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
 
 		$pathinfo = pathinfo($filename);
