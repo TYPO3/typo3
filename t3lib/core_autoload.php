@@ -135,7 +135,7 @@ $t3libClasses = array(
 	't3lib_tceformsinlinehook' => PATH_t3lib . 'interfaces/interface.t3lib_tceformsinlinehook.php',
 	't3lib_tcemain_checkmodifyaccesslisthook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_checkmodifyaccesslisthook.php',
 	't3lib_tcemain_processuploadhook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_processuploadhook.php',
-	't3lib_mail_mboxtransport' => PATH_t3lib . 'mail/class.t3lib_mail_mboxtransport.php', 
+	't3lib_mail_mboxtransport' => PATH_t3lib . 'mail/class.t3lib_mail_mboxtransport.php',
 	't3lib_mail_message' => PATH_t3lib . 'mail/class.t3lib_mail_message.php',
 	't3lib_mail_mailer' => PATH_t3lib . 'mail/class.t3lib_mail_mailer.php',
 	'tx_t3lib_mail_hooks' => PATH_t3lib . 'mail/class.tx_t3lib_mail_hooks.php',
@@ -189,6 +189,7 @@ $t3libClasses = array(
 	't3lib_tree_tca_databasetreedataprovider' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_databasetreedataprovider.php',
 	't3lib_tree_tca_dataproviderfactory' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_dataproviderfactory.php',
 	't3lib_tree_tca_tcatree' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_tcatree.php',
+	'extdirect_dataprovider_backendusersettings' => PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');

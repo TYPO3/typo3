@@ -2131,11 +2131,73 @@ $str.=$this->docBodyTagBegin().
 		return $pageInfo;
 	}
 
+	/**
+	 * Makes a collapseable section. See reports module for an example
+	 *
+	 * @param  string  $title
+	 * @param  string  $html
+	 * @param  string  $id
+	 * @param  string $saveStatePointer
+	 * @return string
+	 */
+	public function collapseableSection($title, $html, $id, $saveStatePointer = '') {
+		$hasSave = $saveStatePointer ? TRUE : FALSE;
+		$collapsedStyle =  $collapsedClass = '';
 
-
-
-
+		if ($hasSave) {
+			/** @var $settings extDirect_DataProvider_BackendUserSettings */
+			$settings = t3lib_div::makeInstance('extDirect_DataProvider_BackendUserSettings');
+			$value = $settings->get($saveStatePointer . '.' . $id);
+			if ($value) {
+				$collapsedStyle = ' style="display: none"';
+				$collapsedClass = ' collapsed';
+			} else {
+				$collapsedStyle = '';
+				$collapsedClass = ' expanded';
+			}
 		}
+
+		$this->pageRenderer->loadExtJS();
+		$this->pageRenderer->addExtOnReadyCode('
+			Ext.select("h2.section-header").each(function(element){
+				element.on("click", function(event, tag) {
+					var state = 0,
+						el = Ext.fly(tag),
+						div = el.next("div"),
+						saveKey = el.getAttribute("rel");
+					if (el.hasClass("collapsed")) {
+						el.removeClass("collapsed").addClass("expanded");
+						div.slideIn("t", {
+							easing: "easeIn",
+							duration: .5
+						});
+					} else {
+						el.removeClass("expanded").addClass("collapsed");
+						div.slideOut("t", {
+							easing: "easeOut",
+							duration: .5,
+							remove: false,
+							useDisplay: true
+						});
+						state = 1;
+					}
+					if (saveKey) {
+						try {
+							top.TYPO3.BackendUserSettings.ExtDirect.set(saveKey + "." + tag.id, state, function(response) {});
+						} catch(e) {}
+					}
+				});
+			});
+		');
+		return '
+		  <h2 id="' . $id . '" class="section-header' . $collapsedClass . '" rel="' . $saveStatePointer . '"> ' . $title . '</h2>
+		  <div' . $collapsedStyle  . '>' . $html . '</div>
+		';
+
+	}
+
+
+}
 
 
 // ******************************

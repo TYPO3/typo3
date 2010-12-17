@@ -164,14 +164,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			$providerState = $this->sortStatuses($providerStatus);
 
 			$id = str_replace(' ', '-', $provider);
-			if (isset($GLOBALS['BE_USER']->uc['reports']['states'][$id]) && $GLOBALS['BE_USER']->uc['reports']['states'][$id]) {
-				$collapsedStyle = 'style="display: none"';
-				$collapsedClass = 'collapsed';
-			} else {
-				$collapsedStyle = '';
-				$collapsedClass = 'expanded';
-			}
-
 			$classes = array(
 				tx_reports_reports_status_Status::NOTICE  => 'notice',
 				tx_reports_reports_status_Status::INFO    => 'information',
@@ -199,8 +191,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			if ($sectionSeverity > 0) {
 				$headerIcon = $icon[$sectionSeverity];
 			}
-			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $headerIcon . $provider . '</h2>
-				<div ' . $collapsedStyle . '>' . $messages . '</div>';
+			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($headerIcon . $provider, $messages, $id, 'reports.states');
 		}
 
 		return $content;
@@ -282,19 +273,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		return $statuses;
 	}
 
-	/**
-	 * Saves the section toggle state in the backend user's uc.
-	 *
-	 * @param	array	Array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX	Object of type TYPO3AJAX
-	 */
-	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
-		$item = t3lib_div::_POST('item');
-		$state = (bool)t3lib_div::_POST('state');
-
-		$GLOBALS['BE_USER']->uc['reports']['states'][$item] = $state;
-		$GLOBALS['BE_USER']->writeUC();
-	}
 }
 
 
