@@ -2,6 +2,7 @@
 
 	* Fixed bug #16209: new sysexts need proper icons in extension manager (thanks to Simon Schaufelberger)
 	* Fixed bug #5186: fixed rendering of multi-column image rows (thanks to Michael Bürgi)
+	* Fixed bug #16768: link to single table view in list module is not working anymore.
 
 2010-12-17  Jeff Segars  <jeff@webempoweredchurch.org>
 

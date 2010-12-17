@@ -707,6 +707,11 @@ class recordList extends t3lib_recordList {
 		} else {
 			$urlParameters['id'] = $this->id;
 		}
+		if ($table === -1) {
+			$urlParameters['table'] = $this->table;
+		} else {
+			$urlParameters['table'] = $table;
+		}
 		if ($this->thumbs) {
 			$urlParameters['imagemode'] = $this->thumbs;
 		}
