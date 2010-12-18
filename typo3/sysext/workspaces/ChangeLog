@@ -1,8 +1,12 @@
-2010-12-17  Tolleiv Nietsch <typo3q@tolleiv.de>
+2010-12-18  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11318: workspaces task miss title
+
+2010-12-17  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Followup-to #9819: Workspace preview window - empty preview.css included in order to support the skin team
 
-2010-12-14  Tolleiv Nietsch <typo3q@tolleiv.de>
+2010-12-14  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #9819: Workspace preview window
 
@@ -39,7 +43,7 @@
 	* Fixed bug #11152 Calls about this-> in static context in workspaces-lib
 	* Cleanup: Added several small changes from the Skin-Team at the xTemplate
 
-2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+2010-11-30  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
 

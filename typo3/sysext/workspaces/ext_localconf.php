@@ -12,8 +12,8 @@ if(TYPO3_MODE == 'BE') {
 	// Register the autopublishing task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_Workspaces_Service_AutoPublishTask'] = array(
 	'extension'        => $_EXTKEY,
-	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.name',
-	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.description'
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.description'
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['workspaces'] = 'EXT:workspaces/Classes/Service/Tcemain.php:tx_Workspaces_Service_Tcemain';
