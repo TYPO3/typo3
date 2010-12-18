@@ -1655,7 +1655,11 @@ class t3lib_TCEforms {
 			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
 				if (!strcmp($p[1], '--div--')) {
 					$optGroupStart[0] = $p[0];
-					$optGroupStart[1] = $styleAttrValue;
+					if ($config['iconsInOptionTags']) {
+						$optGroupStart[1] = $this->optgroupTagStyle($p[2]);
+					} else {
+						$optGroupStart[1] = $styleAttrValue;
+					}
 
 				} else {
 					if (count($optGroupStart)) {
@@ -4187,6 +4191,29 @@ class t3lib_TCEforms {
 			$padTop = t3lib_div::intInRange(($selIconInfo[1] - 12) / 2, 0);
 			$styleAttr = 'background: #fff url(' . $selIconFile . ') 0% 50% no-repeat; height: ' . t3lib_div::intInRange(($selIconInfo[1] + 2) - $padTop, 0) . 'px; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
 			return $styleAttr;
+		}
+	}
+
+	/**
+	 * Creates style attribute content for optgroup tags in a selector box, primarily setting it up to show the icon of an element as background image (works in mozilla).
+	 *
+	 * @param	string		Icon string for option item
+	 * @return	string		Style attribute content, if any
+	 */
+	function optgroupTagStyle($iconString) {
+		if ($iconString) {
+			list($selIconFile, $selIconInfo) = $this->getIcon($iconString);
+
+			$padLeft = $selIconInfo[0] + 4;
+
+			if($padLeft >= 18 && $padLeft <= 24) {
+					// In order to get the same padding for all option tags even if icon sizes differ a little,
+					// set it to 22, if it was between 18 and 24 pixels.
+				$padLeft = 22;
+			}
+			$padTop = t3lib_div::intInRange(($selIconInfo[1] - 12) / 2, 0);
+
+			return 'background: #ffffff url(' . $selIconFile . ') 0 0 no-repeat; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
 		}
 	}
 

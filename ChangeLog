@@ -5,6 +5,7 @@
 2010-12-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16773: User icon in topbar shows part of neighbour sprite icon
+	* Fixed bug #16465: Bug: TCE forms incorrectly render optgroup tags with icons (Thanks to Bastian Waidelich)
 
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
