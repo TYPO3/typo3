@@ -1,3 +1,7 @@
+2010-12-18  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16773: User icon in topbar shows part of neighbour sprite icon
+
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #16209: new sysexts need proper icons in extension manager (thanks to Simon Schaufelberger)
