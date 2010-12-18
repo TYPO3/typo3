@@ -40,12 +40,6 @@
  * @subpackage tests
  */
 class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
-
-	/**
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
 	/**
 	 * If set, the tearDown() method will flush the cache used by this unit test.
 	 *
@@ -77,8 +71,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		} catch (Exception $e) {
 			$this->markTestSkipped('redis server not reachable');
 		}
-
-		$this->backupGlobals = TRUE;
 	}
 
 	/**
@@ -114,6 +106,8 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		if ($this->backend instanceof t3lib_cache_backend_RedisBackend) {
 			$this->backend->flush();
 		}
+
+		unset($this->redis, $this->backend);
 	}
 
 	/**
