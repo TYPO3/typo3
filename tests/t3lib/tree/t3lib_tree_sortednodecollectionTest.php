@@ -30,23 +30,17 @@
  * @subpackage t3lib
  */
 class t3lib_tree_SortedNodeCollectionTest extends tx_phpunit_testcase {
-	public function setUp() {
-	}
-
-	public function tearDown() {
-	}
-
 	protected function createTestCollection() {
 		$nodeCollection = new t3lib_tree_SortedNodeCollection();
 
 		$node = new t3lib_tree_Node(array('id' => 5));
-		$nodeCollection->addNode($node);
+		$nodeCollection->append($node);
 
 		$node = new t3lib_tree_Node(array('id' => 15));
-		$nodeCollection->addNode($node);
+		$nodeCollection->append($node);
 
 		$node = new t3lib_tree_Node(array('id' => 3));
-		$nodeCollection->addNode($node);
+		$nodeCollection->append($node);
 
 		return $nodeCollection;
 	}
@@ -55,10 +49,10 @@ class t3lib_tree_SortedNodeCollectionTest extends tx_phpunit_testcase {
 		$nodeCollection = new t3lib_tree_SortedNodeCollection();
 
 		$node = new t3lib_tree_Node(array('id' => 5));
-		$nodeCollection->addNode($node);
+		$nodeCollection->append($node);
 
 		$node = new t3lib_tree_Node(array('id' => 3));
-		$nodeCollection->addNode($node);
+		$nodeCollection->append($node);
 
 		return $nodeCollection;
 	}
@@ -66,26 +60,10 @@ class t3lib_tree_SortedNodeCollectionTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function addNodesSorted() {
+	public function appendsSorted() {
 		$nodeCollection = $this->createTestCollection();
 
 		$expected = array(3, 5, 15);
-		$ids = array();
-		foreach ($nodeCollection as $node) {
-			$ids[] = $node->getId();
-		}
-		$this->assertSame($expected, $ids);
-	}
-
-	/**
-	 * @test
-	 */
-	public function removeNodeByNodeId() {
-		$nodeCollection = $this->createTestCollection();
-		$node = new t3lib_tree_Node(array('id' => '5'));
-		$nodeCollection->removeNode($node);
-
-		$expected = array(3, 15);
 		$ids = array();
 		foreach ($nodeCollection as $node) {
 			$ids[] = $node->getId();

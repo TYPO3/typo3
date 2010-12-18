@@ -6,6 +6,7 @@
 
 	* Fixed bug #16773: User icon in topbar shows part of neighbour sprite icon
 	* Fixed bug #16465: Bug: TCE forms incorrectly render optgroup tags with icons (Thanks to Bastian Waidelich)
+	* Fixed bug #16776: Unit test crashes in t3lib_tree_SortedNodeCollectionTest (Thanks to Oliver Klee)
 
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
