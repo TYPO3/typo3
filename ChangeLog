@@ -1,3 +1,7 @@
+2010-12-18  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #16771: Change ugly formatting of "pageNotFound_handling" and "pageUnavailable_handling"
+
 2010-12-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16773: User icon in topbar shows part of neighbour sprite icon
