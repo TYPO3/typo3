@@ -75,6 +75,7 @@ class tx_Workspaces_Service_GridData {
 		
 		/** @var $workspacesObj Tx_Workspaces_Service_Workspaces */
 		$workspacesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		$availableWorkspaces = $workspacesObj->getAvailableWorkspaces();
 
 		foreach ($versions as $table => $records) {
 			$versionArray = array('table' => $table);
@@ -85,8 +86,6 @@ class tx_Workspaces_Service_GridData {
 				$versionRecord = t3lib_BEFunc::getRecord($table, $record['uid']);
 
 				// check the given version is from an available workspace
-				$availableWorkspaces = $workspacesObj->getAvailableWorkspaces();
-
 				if (array_key_exists($versionRecord['t3ver_wsid'], $availableWorkspaces)) {
 					
 					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
