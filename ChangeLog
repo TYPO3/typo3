@@ -1,3 +1,7 @@
+2010-12-19  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Follow-up to #16779: t3lib_cache_backend_RedisBackendTest causes t3lib_db_PreparedStatementTest tests to fail (Thanks to Oliver Klee)
+
 2010-12-18  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #16771: Change ugly formatting of "pageNotFound_handling" and "pageUnavailable_handling"

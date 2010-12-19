@@ -115,11 +115,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function constructorThrowsNoExceptionIfPasswordOptionIsSet() {
-		try {
-			$this->setUpBackend(array('password' => 'foo'));
-		} catch (Exception $e) {
-			$this->assertTrue();
-		}
+		$this->setUpBackend(array('password' => 'foo'));
 	}
 
 	/**
@@ -127,11 +123,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function constructorThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
-		try {
-			$this->setUpBackend(array('database' => 1));
-		} catch (Exception $e) {
-			$this->assertTrue();
-		}
+		$this->setUpBackend(array('database' => 1));
 	}
 
 	/**
