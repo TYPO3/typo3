@@ -1,3 +1,7 @@
+2010-12-19  Sonja Scholz <ss@cabag.ch>
+
+	* Cleanup: #11153: Determine whether Tx_Workspaces_Service_Stages::encodeStageUid and resolveStageUid are required
+
 2010-12-19  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Followup-to #9819: Workspace preview window - "live" and "workspace" buttons are clickable now

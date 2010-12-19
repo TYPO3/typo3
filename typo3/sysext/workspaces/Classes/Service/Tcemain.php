@@ -64,16 +64,12 @@ class tx_Workspaces_Service_Tcemain {
 	 * @return void
 	 */
 	protected function resetStageOfElements($stageId) {
-		$service = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
-			// @todo: remove the encode/decode functionality
-		$pseudoStageId = $service->encodeStageUid($stageId);
-
 		$fields = array('t3ver_stage' => Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
 
 		foreach ($this->getTcaTables() as $tcaTable) {
 			if (t3lib_BEfunc::isTableWorkspaceEnabled($tcaTable)) {
 
-				$where = 't3ver_stage = ' . intval($pseudoStageId);
+				$where = 't3ver_stage = ' . intval($stageId);
 				$where .= ' AND t3ver_wsid > 0 AND pid=-1';
 				$where .= t3lib_BEfunc::deleteClause($tcaTable);
 

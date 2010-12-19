@@ -165,10 +165,10 @@ class Tx_Workspaces_Service_Stages {
 				// go through custom stages records
 			foreach ($workspaceStageRecs as $workspaceStageRec) {
 					// check if the user has permissions to the custom stage
-				if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($this->encodeStageUid($workspaceStageRec['uid']))) {
+				if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($workspaceStageRec['uid'])) {
 						// yes, so add to return array
 					$stagesForWSUserData[] = array(
-						'uid' => $this->encodeStageUid($workspaceStageRec['uid']),
+						'uid' => $workspaceStageRec['uid'],
 						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' ' . $workspaceStageRec['title']);
 				} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID) {
 						if ($GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
@@ -188,27 +188,6 @@ class Tx_Workspaces_Service_Stages {
 	public function checkCustomStagingForWS() {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
 		return $workspaceRec['custom_stages'] > 0;
-	}
-
-	/**
-	 * converts from versioning stage id to stage record UID
-	 *
-	 * @return int UID of the database record
-	 */
-	public function resolveStageUid($ver_stage) {
-		return $ver_stage;
-		//return $ver_stage - $this->raiseStageIdAmount;
-	}
-
-	/**
-	 * converts from stage record UID to versioning stage id
-	 *
-	 * @param int UID of the stage database record
-	 * @return int versioning stage id
-	 */
-	public function encodeStageUid($stage_uid) {
-		return $stage_uid;
-		//return $stage_uid + $this->raiseStageIdAmount;
 	}
 
 	/**
@@ -250,7 +229,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array
 	 */
 	public function getStageRecord($stageid) {
-		return t3lib_BEfunc::getRecord('sys_workspace_stage', $this->resolveStageUid($stageid));
+		return t3lib_BEfunc::getRecord('sys_workspace_stage', $stageid);
 	}
 
 	/**
@@ -274,7 +253,7 @@ class Tx_Workspaces_Service_Stages {
 			reset($workspaceStageRecs);
 			while (!is_null($workspaceStageRecKey = key($workspaceStageRecs))) {
 				$workspaceStageRec = current($workspaceStageRecs);
-				if ($workspaceStageRec['uid'] == $this->resolveStageUid($stageId)) {
+				if ($workspaceStageRec['uid'] == $stageId) {
 					$nextStage = next($workspaceStageRecs);
 					break;
 				}
@@ -345,7 +324,7 @@ class Tx_Workspaces_Service_Stages {
 			end($workspaceStageRecs);
 			while (!is_null($workspaceStageRecKey = key($workspaceStageRecs))) {
 				$workspaceStageRec = current($workspaceStageRecs);
-				if ($workspaceStageRec['uid'] == $this->resolveStageUid($stageid)) {
+				if ($workspaceStageRec['uid'] == $stageid) {
 					$prevStage = prev($workspaceStageRecs);
 					break;
 				}
@@ -556,10 +535,6 @@ class Tx_Workspaces_Service_Stages {
 
 		if (!t3lib_div::testInt($stageId)) {
 			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
-		}
-
-		if ($stageId != self::STAGE_PUBLISH_ID && $stageId != self::STAGE_EDIT_ID) {
-			$stageId = $this->resolveStageUid($stageId);
 		}
 
 		$workspaceStage = t3lib_BEfunc::getRecord(self::TABLE_STAGE, $stageId);
