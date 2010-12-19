@@ -34,6 +34,7 @@ Ext.onReady(function() {
 			activeTab: 0,
 			items: [{
 				title: TYPO3.LLL.Workspaces.visualPreview,
+				id: 'wsVisual',
 				layout: 'fit',
 				items: [{
 					layout: 'fit',
@@ -99,8 +100,15 @@ Ext.onReady(function() {
 			tbar: [
 				'->', '-',
 				{
-					xtype: 'tbtext',
-					text: TYPO3.LLL.Workspaces.livePreview
+					xtype: 'button',
+					text: TYPO3.LLL.Workspaces.livePreview,
+					listeners: {
+						click: {
+							fn: function () {
+								Ext.getCmp('sizeSlider').setValue(0);
+							}
+						}
+					}
 				},
 				{
 					xtype: 'slider',
@@ -121,8 +129,15 @@ Ext.onReady(function() {
 					}
 				},
 				{
-					xtype: 'tbtext',
-					text: TYPO3.LLL.Workspaces.workspacePreview
+					xtype: 'button',
+					text: TYPO3.LLL.Workspaces.workspacePreview,
+					listeners: {
+						click: {
+							fn: function () {
+								Ext.getCmp('sizeSlider').setValue(100);
+							}
+						}
+					}
 				}
 			]
 		}]

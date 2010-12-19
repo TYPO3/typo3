@@ -1,3 +1,7 @@
+2010-12-19  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - "live" and "workspace" buttons are clickable now
+
 2010-12-18  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #11318: workspaces task miss title
