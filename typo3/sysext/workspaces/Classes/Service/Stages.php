@@ -395,7 +395,7 @@ class Tx_Workspaces_Service_Stages {
 
 		if (!empty($userRecords) && is_array($userRecords)) {
 			foreach ($userRecords as $userUid => $userRecord) {
-				$recipientArray[$userUid] = $userRecord['email'] . ' ( ' . $userRecord['realName'] . ' )';
+				$recipientArray[$userUid] = $userRecord;
 			}
 		}
 		return $recipientArray;
