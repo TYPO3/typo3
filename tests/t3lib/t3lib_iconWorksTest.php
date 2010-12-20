@@ -33,6 +33,22 @@
  * @subpackage t3lib
  */
 class t3lib_iconWorksTest extends tx_phpunit_testcase {
+
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+	
+	/**
+	 * Exclude TYPO3_DB from backup/restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
 	/**
 	 * @var array
 	 */
@@ -61,6 +77,33 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 
 	public function tearDown() {
 		unset($this->mockRecord);
+	}
+
+
+	//////////////////////////////////////////
+	// Tests concerning imagemake
+	//////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function imagemakeFixesPermissionsOnNewFiles() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('imagemakeFixesPermissionsOnNewFiles() test not available on Windows.');
+		}
+
+		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+
+			// Create image ressource, determine target filename, fake target permission, run method and clean up
+		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
+		$targetFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+		t3lib_iconWorks::imagemake($fixtureGifRessource, $targetFilename);
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($targetFilename)), 2);
+		t3lib_div::unlink_tempfile($targetFilename);
+
+		$this->assertEquals($resultFilePermissions, '0777');
 	}
 
 
