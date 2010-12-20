@@ -1891,6 +1891,7 @@ $TCA['tt_content'] = array(
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.behaviour,
 					select_key;LLL:EXT:cms/locallang_ttc.xml:select_key_formlabel,
 					pages;LLL:EXT:cms/locallang_ttc.xml:pages.ALT.list_formlabel,
+					recursive,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
 			'subtype_value_field' => 'list_type',
 			'subtypes_excludelist' => array(
