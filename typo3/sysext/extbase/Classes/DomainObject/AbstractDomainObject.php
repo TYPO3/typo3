@@ -55,16 +55,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	private $_isClone = FALSE;
 
 	/**
-	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
-	 * $this->initializeObject() in the first line of your constructor.
-	 *
-	 * @var array
-	 */
-	public function __construct() {
-		$this->initializeObject();
-	}
-
-	/**
 	 * This is the magic __wakeup() method. It's invoked by the unserialize statement in the reconstitution process
 	 * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call
 	 * parent::__wakeup() first!
@@ -75,13 +65,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		$this->initializeObject();
 	}
 
-	/**
-	 * A template method to initialize an object. This can be used to manipulate the object after
-	 * reconstitution and before the clean state of it's properties is stored.
-	 *
-	 * @return void
-	 */
-	protected function initializeObject() {
+	public function initializeObject() {
 	}
 
 	/**

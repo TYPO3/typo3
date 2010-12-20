@@ -42,7 +42,7 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
-		$this->objectContainer = Tx_Extbase_Object_Container_Container::getContainer();
+		$this->objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container'); // Singleton
 	}
 
 	/**
@@ -60,7 +60,8 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 */
 	public function get($objectName) {
 		$arguments = func_get_args();
-		return call_user_func_array(array($this->objectContainer, 'getInstance'), $arguments);
+		array_shift($arguments);
+		return $this->objectContainer->getInstance($objectName, $arguments);
 	}
 
 	/**
@@ -78,7 +79,8 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 */
 	public function create($objectName) {
 		$arguments = func_get_args();
-		$instance = call_user_func_array(array($this->objectContainer, 'getInstance'), $arguments);
+		array_shift($arguments);
+		$instance = $this->objectContainer->getInstance($objectName, $arguments);
 
 		if ($instance instanceof t3lib_Singleton) {
 			throw new Tx_Extbase_Object_Exception_WrongScope('Object "' . $objectName . '" is of not of scope prototype, but only prototype is supported by create()', 1265203124);

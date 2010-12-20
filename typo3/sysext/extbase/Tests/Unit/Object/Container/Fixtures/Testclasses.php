@@ -44,10 +44,10 @@ class t3lib_object_tests_amixed_array_singleton implements t3lib_Singleton {
 	public $b;
 	public $c;
 	public $myvalue;
-	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, array $myvalue=array('some' => 'default')) {
+	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, $someDefaultParameter = array('some' => 'default')) {
 		$this->b = $b;
 		$this->c = $c;
-		$this->myvalue = $myvalue;
+		$this->myvalue = $someDefaultParameter;
 	}
 }
 
@@ -78,7 +78,7 @@ class t3lib_object_tests_c implements t3lib_Singleton {
 class t3lib_object_tests_b_child extends t3lib_object_tests_b {
 }
 
-interface t3lib_object_tests_someinterface {
+interface t3lib_object_tests_someinterface extends t3lib_Singleton {
 
 }
 
@@ -86,7 +86,7 @@ interface t3lib_object_tests_someinterface {
  * class which implements a Interface
  *
  */
-class t3lib_object_tests_someimplementation implements t3lib_object_tests_someinterface, t3lib_Singleton {
+class t3lib_object_tests_someimplementation implements t3lib_object_tests_someinterface {
 }
 
 /**

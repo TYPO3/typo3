@@ -37,7 +37,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	private $container;
 
 	public function setUp() {
-		$this->container = Tx_Extbase_Object_Container_Container::getContainer();
+		$this->container = new Tx_Extbase_Object_Container_Container();
 
 	}
 
@@ -81,7 +81,17 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @expectedException Tx_Extbase_Object_Exception
 	 */
 	public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters() {
-		$this->container->getInstance('t3lib_object_tests_amixed_array_singleton');
+		$this->container->getInstance('t3lib_object_tests_amixed_array_singleton', array('somevalue'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getInstanceReturnsInstanceOfAClassWithConstructorInjectionAndDefaultConstructorParameters() {
+		$object = $this->container->getInstance('t3lib_object_tests_amixed_array');
+		$this->assertType('t3lib_object_tests_b', $object->b);
+		$this->assertType('t3lib_object_tests_c', $object->c);
+		$this->assertEquals(array('some' => 'default'), $object->myvalue);
 	}
 
 	/**
@@ -90,7 +100,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	public function getInstancePassesGivenParameterToTheNewObject() {
 		$mockObject = $this->getMock('t3lib_object_tests_c');
 
-		$object = $this->container->getInstance('t3lib_object_tests_a', $mockObject);
+		$object = $this->container->getInstance('t3lib_object_tests_a', array($mockObject));
 		$this->assertType('t3lib_object_tests_a', $object);
 		$this->assertSame($mockObject, $object->c);
 	}
@@ -119,9 +129,17 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @test
 	 * @expectedException Tx_Extbase_Object_Exception
 	 */
+	public function getInstanceThrowsExceptionIfObjectContainsCyclicDependencyAndIsNoSingleton() {
+		$this->container->getInstance('t3lib_object_tests_cyclic1');
+	}
+
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Object_Exception
+	 */
 	public function getInstanceThrowsExceptionIfObjectContainsCyclicDependency() {
 		$this->container->getInstance('t3lib_object_tests_cyclic1');
-
 	}
 
 	/**
@@ -153,7 +171,7 @@ class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_Ba
 	/**
 	 * @test
 	 */
-	public function test_canBuildCyclicDependenciesWithSetter() {
+	public function test_canBuildCyclicDependenciesOfSingletonsWithSetter() {
 		$object = $this->container->getInstance('t3lib_object_tests_resolveablecyclic1');
 		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object);
 		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
