@@ -1,5 +1,6 @@
 2010-12-20  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16778: Test failures in t3lib_tree_NodeTest if tests are in typo3_src/tests/ instead of tests/ (Thanks to Oliver Klee)
 	* Follow-up to #16031: forgotten field recursive for plugins
 	* Fixed bug #16780: PHP warning in any system BE module
 
