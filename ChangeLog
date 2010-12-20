@@ -1,6 +1,7 @@
 2010-12-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16777: Test failure in t3lib_extmgmTest if tests are located in typo3_src/tests/ instead of tests/ (Thanks to Oliver Klee)
+	* Fixed bug #16790: Typo in topbar CSS
 
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
