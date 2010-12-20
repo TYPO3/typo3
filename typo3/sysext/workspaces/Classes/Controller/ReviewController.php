@@ -42,6 +42,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
+		$performWorkspaceSwitch = FALSE;
 
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$wsCur = array($activeWorkspace => true);
@@ -50,15 +51,20 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$wsList = $wsService->getAvailableWorkspaces();
 			if (strlen(t3lib_div::_GP('workspace'))) {
 				$switchWs = (int) t3lib_div::_GP('workspace');
-				if (in_array($switchWs, array_keys($wsList))) {
+				if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
 					$activeWorkspace = $switchWs;
+					$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
+					$performWorkspaceSwitch = TRUE;
+					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 				} elseif ($switchWs == tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
-					$activeWorkspace = tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES;
+					$this->redirect('fullIndex');
 				}
 			}
 		}
+		$this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
+		$this->view->assign('activeWorkspaceTitle', tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
 	}
 

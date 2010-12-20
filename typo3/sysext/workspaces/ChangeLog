@@ -1,3 +1,7 @@
+2010-12-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11141: switching with the tabs in the workspace module should also switch to the related workspace
+
 2010-12-19  Marco Bresch <marco.bresch@starfinanz.de>
 
 	* Fixed bug #11142: The 'All' tab throws Exception 'No such workspace defined'
