@@ -542,6 +542,9 @@ final class t3lib_iconWorks	{
 		} else {
 			@ImageGif($im, $path);
 		}
+		if (@is_file($path)) {
+			t3lib_div::fixPermissions($path);
+		}
 	}
 }
 ?>

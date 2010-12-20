@@ -1,3 +1,7 @@
+2010-12-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #16134: TYPO3 doesn't always fix permissions for new files
+
 2010-12-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #5186: fixed rendering of multi-column image rows (thanks to Michael Bürgi)
