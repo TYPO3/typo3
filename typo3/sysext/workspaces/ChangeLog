@@ -1,5 +1,6 @@
 2010-12-20  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #11532: Generate Workspace Preview Link not working
 	* Fixed bug #11605: Do you really want to swap?? - one question mark is enough
 	* Fixed bug #11531 Check if email is set before trying to send an email
 	* Fixed bug #11141: switching with the tabs in the workspace module should also switch to the related workspace

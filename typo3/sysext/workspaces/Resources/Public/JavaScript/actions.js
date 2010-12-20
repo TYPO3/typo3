@@ -85,7 +85,7 @@ TYPO3.Workspaces.Actions = {
 	},
 	generateWorkspacePreviewLink: function() {
 		TYPO3.Workspaces.ExtDirectActions.generateWorkspacePreviewLink(TYPO3.settings.Workspaces.id, function(response) {
-			top.TYPO3.Dialog.getInformationDialog({title: TYPO3.lang.previewLink, msg: response});
+			top.TYPO3.Dialog.InformationDialog({title: TYPO3.lang.previewLink, msg: response});
 		});
 	},
 	swapSingleRecord: function(table, t3ver_oid, orig_uid) {
