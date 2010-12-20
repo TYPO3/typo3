@@ -1,3 +1,7 @@
+2010-12-20  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug 16780: PHP warning in any system BE module
+
 2010-12-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #16779: t3lib_cache_backend_RedisBackendTest causes t3lib_db_PreparedStatementTest tests to fail (Thanks to Oliver Klee)
