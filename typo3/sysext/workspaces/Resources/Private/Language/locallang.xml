@@ -57,7 +57,7 @@
 			<label index="window.remove.title">Remove version from workspace</label>
 			<label index="window.remove.message">Do you really want to remove this version from workspace?</label>
 			<label index="window.swap.title">Swap version</label>
-			<label index="window.swap.message">Do you really want to swap this version??</label>
+			<label index="window.swap.message">Do you really want to swap this version?</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>
 			<label index="error.stageId.integer">StageId is supposed to be an integer</label>
 			<label index="error.stageId.invalid">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</label>
