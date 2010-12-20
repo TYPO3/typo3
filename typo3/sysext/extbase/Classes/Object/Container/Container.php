@@ -76,9 +76,12 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	}
 
 	/**
-	 * gets an instance of the given class
+	 * Main method which should be used to get an instance of the wished class
+	 * specified by $className.
+	 *
 	 * @param string $className
-	 * @return object
+	 * @param array $givenConstructorArguments the list of constructor arguments as array
+	 * @return object the built object
 	 */
 	public function getInstance($className, $givenConstructorArguments = array()) {
 		$className = $this->getImplementationClassName($className);
@@ -110,10 +113,10 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * Additionally, directly registers all singletons in the singleton registry,
 	 * such that circular references of singletons are correctly instanciated.
 	 *
-	 * @param <type> $className
+	 * @param string $className
 	 * @param Tx_Extbase_Object_Container_ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
-	 * @return <type>
+	 * @return object the new instance
 	 */
 	protected function instanciateObject($className, Tx_Extbase_Object_Container_ClassInfo $classInfo, array $givenConstructorArguments) {
 		$classIsSingleton = $this->isSingleton($className);
@@ -132,6 +135,13 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		return $instance;
 	}
 
+	/**
+	 * Inject setter-dependencies into $instance
+	 *
+	 * @param object $instance
+	 * @param Tx_Extbase_Object_Container_ClassInfo $classInfo
+	 * @return void
+	 */
 	protected function injectDependencies($instance, Tx_Extbase_Object_Container_ClassInfo $classInfo) {
 		if (!$classInfo->hasInjectMethods()) return;
 
@@ -196,7 +206,10 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		return $parameters;
 	}
 
-
+	/**
+	 * @param string/object $object
+	 * @return boolean TRUE if the object is a singleton, FALSE if it is a prototype.
+	 */
 	protected function isSingleton($object) {
 		return in_array('t3lib_Singleton', class_implements($object));
 	}
