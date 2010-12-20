@@ -54,6 +54,131 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	///////////////////////////////
+	// Tests concerning gif_compress
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available on Windows.');
+		}
+
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']) {
+			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available without imagemagick setup.');
+		}
+
+		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
+
+			// Copy file to unique filename in typo3temp, set target permissions and run method
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		@copy($fixtureGifFile, $testFilename);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+		t3lib_div::gif_compress($testFilename, 'IM');
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($testFilename)), 2);
+		t3lib_div::unlink_tempfile($testFilename);
+
+		$this->assertEquals($resultFilePermissions, '0777');
+	}
+
+	/**
+	 * @test
+	 */
+	public function gifCompressFixesPermissionOfConvertedFileIfUsingGd() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available on Windows.');
+		}
+
+		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = TRUE;
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
+
+			// Copy file to unique filename in typo3temp, set target permissions and run method
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		@copy($fixtureGifFile, $testFilename);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+		t3lib_div::gif_compress($testFilename, 'GD');
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($testFilename)), 2);
+		t3lib_div::unlink_tempfile($testFilename);
+
+		$this->assertEquals($resultFilePermissions, '0777');
+	}
+
+	///////////////////////////////
+	// Tests concerning png_to_gif_by_imagemagick
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function pngToGifByImagemagickFixesPermissionsOfConvertedFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('pngToGifByImagemagickFixesPermissionsOfConvertedFile() test not available on Windows.');
+		}
+
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']) {
+			$this->markTestSkipped('pngToGifByImagemagickFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
+		}
+
+		$fixturePngFile = dirname(__FILE__) . '/fixtures/clear.png';
+
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] = TRUE;
+
+			// Copy file to unique filename in typo3temp, set target permissions and run method
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.png';
+		@copy($fixturePngFile, $testFilename);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+		$newGifFile = t3lib_div::png_to_gif_by_imagemagick($testFilename);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($newGifFile)), 2);
+		t3lib_div::unlink_tempfile($newGifFile);
+
+		$this->assertEquals($resultFilePermissions, '0777');
+	}
+
+	///////////////////////////////
+	// Tests concerning read_png_gif
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function readPngGifFixesPermissionsOfConvertedFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('readPngGifFixesPermissionsOfConvertedFile() test not available on Windows.');
+		}
+
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
+			$this->markTestSkipped('readPngGifFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
+		}
+
+		$testGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+		$newPngFile = t3lib_div::read_png_gif($testGifFile, TRUE);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($newPngFile)), 2);
+		t3lib_div::unlink_tempfile($newPngFile);
+
+		$this->assertEquals($resultFilePermissions, '0777');
+	}
+
+	///////////////////////////////
 	// Tests concerning validIP
 	///////////////////////////////
 
@@ -2102,6 +2227,60 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function verifyFilenameAgainstDenyPatternDetectsNullCharacter() {
 		$this->assertFalse(t3lib_div::verifyFilenameAgainstDenyPattern("image\x00.gif"));
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Tests concerning sysLog
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function syslogFixesPermissionsOnFileIfUsingFileLogging() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('syslogFixesPermissionsOnFileIfUsingFileLogging() test not available on Windows.');
+		}
+
+			// Fake all required settings
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
+		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
+		$testLogFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.txt';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+
+			// Call method, get actual permissions and clean up
+		t3lib_div::syslog('testLog', 'test', 1);
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($testLogFilename)), 2);
+		t3lib_div::unlink_tempfile($testLogFilename);
+
+		$this->assertEquals($resultFilePermissions, '0777');
+	}
+
+	/**
+	 * @test
+	 */
+	public function deprecationLogFixesPermissionsOnLogFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
+		}
+
+			// Fake all required settings and get an unique logfilename
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = uniqid('test_');
+		$deprecationLogFilename = t3lib_div::getDeprecationLogFileName();
+		print_r($deprecationLogFilename);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = TRUE;
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+
+			// Call method, get actual permissions and clean up
+		t3lib_div::deprecationLog('foo');
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($deprecationLogFilename)), 2);
+		@unlink($deprecationLogFilename);
+
+		$this->assertEquals($resultFilePermissions, '0777');
 	}
 }
 ?>

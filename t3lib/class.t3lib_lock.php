@@ -159,6 +159,8 @@ class t3lib_lock {
 				if (!$isAcquired) {
 					throw new Exception('Lock file could not be created');
 				}
+
+				t3lib_div::fixPermissions($this->resource);
 			break;
 			case 'flock':
 				if (($this->filepointer = fopen($this->resource, 'w+')) == FALSE) {
