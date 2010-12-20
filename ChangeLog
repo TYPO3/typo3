@@ -2,6 +2,7 @@
 
 	* Follow-up to #16779: t3lib_cache_backend_RedisBackendTest causes t3lib_db_PreparedStatementTest tests to fail (Thanks to Oliver Klee)
 	* Fixed bug #16777: Test failure in t3lib_extmgmTest if tests are located in typo3_src/tests/ instead of tests/ (Thanks to Oliver Klee)
+	* Fixed bug #16790: Typo in topbar CSS
 
 2010-12-18  Susanne Moog  <typo3@susanne-moog.de>
 
@@ -30,7 +31,7 @@
 
 2010-12-17  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #16599: Radio Selector for content to show on mount pages not displaying the selected value, credits Joh Hasenau
+	* Fixed bug #16599: Radio Selector for content to show on mount pages not displaying the selected value (Thanks to Jo Hasenau)
 	* Fixed issue #16389: Inconsistent styling of the DB integrity checks overview
 	* Fixed issue #16764: Insufficient information about which class is failing to implement interfaces in tslib_cObj->start()
 

@@ -8,7 +8,7 @@ $Id$
 	background-color: #3f3f3f;
 	background-image: url('../../images/backgrounds/topbar.png');
 	background-image: gradient(center top , #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
-	background-image: -moz-linear-gradient(center top , #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #494949) color-stop(0.91, #373737), color-stop(0.92, #343434), color-stop(1, #2a2a2a));
+	background-image: -moz-linear-gradient(center top, #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #494949), color-stop(0.91, #373737), color-stop(0.92, #343434), color-stop(1, #2a2a2a));
 	background-repeat: repeat-x;
 }
