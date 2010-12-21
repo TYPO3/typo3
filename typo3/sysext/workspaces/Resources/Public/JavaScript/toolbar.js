@@ -115,6 +115,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 	listeners: {
 		'select' : function (combo, record) {
 			var label = '';
+			var affectWholeWorkspaceWarning = TYPO3.lang["tooltip.affectWholeWorkspace"];
 			switch (record.data.action) {
 				case 'publish':
 					label = TYPO3.lang["tooltip.publishAll"];
@@ -134,7 +135,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						xtype: 'form',
 						id: 'executeMassActionForm',
 						width: '100%',
-						html: label,
+						html: label + '<br /><br />' + affectWholeWorkspaceWarning,
 						bodyStyle: 'padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;'
 					},
 					{

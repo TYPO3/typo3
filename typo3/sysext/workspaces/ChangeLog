@@ -1,3 +1,7 @@
+2010-12-21  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11480: Add warning when choosing mass actions
+
 2010-12-21  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Followup-to #9819: Workspace preview window - browser compatibility fixed
