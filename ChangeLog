@@ -1,3 +1,7 @@
+2010-12-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16760: RTE transformation removes all span tags on save after upgrade TYPO3 4.4.5
+
 2010-12-21  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16802: iFramePanel needs function to detect id in URL
