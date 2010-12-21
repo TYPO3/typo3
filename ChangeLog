@@ -1,3 +1,7 @@
+2010-12-21  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16786: Versioning: Generating preview link not working (thanks to Frederic Gaus)
+
 2010-12-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16760: RTE transformation removes all span tags on save after upgrade TYPO3 4.4.5
