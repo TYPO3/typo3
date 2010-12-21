@@ -1,3 +1,7 @@
+2010-12-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16760: RTE transformation removes all span tags on save after upgrade TYPO3 4.4.5
+
 2010-12-20  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #16134: TYPO3 doesn't always fix permissions for new files
