@@ -128,10 +128,19 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	}
 
 	/**
-	 * We do not want to override anything in the backend.
+	 * We need to set some default request handler if the framework configuration
+	 * could not be loaded; to make sure Extbase also works in Backend modules
+	 * in all contexts.
+	 *
 	 * @return array
 	 */
 	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {
+		if (!isset($frameworkConfiguration['mvc']['requestHandlers'])) {
+			$frameworkConfiguration['mvc']['requestHandlers'] = array(
+				'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'Tx_Extbase_MVC_Web_FrontendRequestHandler',
+				'Tx_Extbase_MVC_Web_BackendRequestHandler' => 'Tx_Extbase_MVC_Web_BackendRequestHandler'
+			);
+		}
 		return $frameworkConfiguration;
 	}
 }
