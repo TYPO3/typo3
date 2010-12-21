@@ -1,3 +1,7 @@
+2010-12-21  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16802: iFramePanel needs function to detect id in URL
+
 2010-12-21  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16795: t3lib_div::unQuoteFilenames fails to detect quotes properly (Thanks to Joerg Wagner, Steffen Ritter, Steffen Gebert, and others)
