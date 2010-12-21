@@ -89,7 +89,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	getIdFromUrl: function() {
 		var url = Ext.urlDecode(this.getUrl().split('?')[1]);
-	    return url.id;
+		return url.id;
 	},
 
 	refresh: function() {
