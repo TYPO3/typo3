@@ -1,6 +1,12 @@
 <script type="text/javascript">
 	document.domain =  '{backendDomain}';
 
-	// @todo redirect to split module if this is opened standalone
-	 parent.resize(document.height);
+		// @todo redirect to split module if this is opened standalone
+	parent.resize(
+		Math.max(
+			Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+			Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
+			Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+		)
+	);
 </script>
