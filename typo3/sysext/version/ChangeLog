@@ -1,3 +1,7 @@
+2010-12-21  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #11633: Versioning module should not be available when workspaces is loaded
+
 2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #11290: PHP notices from XCLASS inclusions
