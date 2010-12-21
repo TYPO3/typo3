@@ -1,3 +1,7 @@
+2010-12-21  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16795: t3lib_div::unQuoteFilenames fails to detect quotes properly (Thanks to Joerg Wagner, Steffen Ritter, Steffen Gebert, and others)
+
 2010-12-20  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #16134: TYPO3 doesn't always fix permissions for new files

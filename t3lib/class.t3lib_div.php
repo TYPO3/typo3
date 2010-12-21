@@ -6254,14 +6254,13 @@ final class t3lib_div {
 			if ($quoteActive > -1) {
 				$paramsArr[$quoteActive] .= ' ' . $v;
 				unset($paramsArr[$k]);
-				if (preg_match('/"$/', $v)) {
+				if (substr($v, -1) === $paramsArr[$quoteActive][0]) {
 					$quoteActive = -1;
 				}
-
 			} elseif (!trim($v)) {
 				unset($paramsArr[$k]); // Remove empty elements
 
-			} elseif (preg_match('/^"/', $v)) {
+			} elseif (preg_match('/^(["\'])/', $v) && substr($v, -1) !== $v[0]) {
 				$quoteActive = $k;
 			}
 		}
@@ -6269,6 +6268,8 @@ final class t3lib_div {
 		if ($unQuote) {
 			foreach ($paramsArr as $key => &$val) {
 				$val = preg_replace('/(^"|"$)/', '', $val);
+				$val = preg_replace('/(^\'|\'$)/', '', $val);
+
 			}
 		}
 			// return reindexed array

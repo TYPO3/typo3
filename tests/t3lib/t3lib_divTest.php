@@ -1865,6 +1865,176 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertTrue($directoryCreated);
 	}
 
+	/**
+	 * Data provider for ImageMagick shell commands
+	 * @see	explodeAndUnquoteImageMagickCommands
+	 */
+	public function imageMagickCommandsDataProvider() {
+		return array(
+			// Some theoretical tests first
+			array(
+				'aa bb "cc" "dd"',
+				array('aa', 'bb', '"cc"', '"dd"'),
+				array('aa', 'bb', 'cc', 'dd'),
+			),
+			array(
+				'aa bb "cc dd"',
+				array('aa', 'bb', '"cc dd"'),
+				array('aa', 'bb', 'cc dd'),
+			),
+			array(
+				'\'aa bb\' "cc dd"',
+				array('\'aa bb\'', '"cc dd"'),
+				array('aa bb', 'cc dd'),
+			),
+			array(
+				'\'aa bb\' cc "dd"',
+				array('\'aa bb\'', 'cc', '"dd"'),
+				array('aa bb', 'cc', 'dd'),
+			),
+			// Now test against some real world examples
+			array(
+				'/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+				array(
+					'/opt/local/bin/gm.exe',
+					'convert',
+					'+profile',
+					'\'*\'',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+					'"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+				),
+				array(
+					'/opt/local/bin/gm.exe',
+					'convert',
+					'+profile',
+					'*',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+					'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+				),
+			),
+			array(
+				'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+				array(
+					'C:/opt/local/bin/gm.exe',
+					'convert',
+					'+profile',
+					'\'*\'',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'"C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+					'"C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+				),
+				array(
+					'C:/opt/local/bin/gm.exe',
+					'convert',
+					'+profile',
+					'*',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+					'C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+				),
+			),
+			array(
+				'/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'\'*\'',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'"/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+					'"/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+				),
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'*',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+					'/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+				),
+			),
+			array(
+				'/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'\'*\'',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'"/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+					'"/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+				),
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'*',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+					'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+				),
+			),
+			array(
+				'/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'\'*\'',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'\'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
+					'\'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
+				),
+				array(
+					'/usr/bin/gm',
+					'convert',
+					'+profile',
+					'*',
+					'-geometry',
+					'170x136!',
+					'-negate',
+					'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+					'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+				),
+			),
+		);
+	}
+
+	/**
+	 * Tests if the commands are exploded and unquoted correctly
+	 *
+	 * @dataProvider	imageMagickCommandsDataProvider
+	 * @test
+	 */
+	public function explodeAndUnquoteImageMagickCommands($source, $expectedQuoted, $expectedUnquoted) {
+		$actualQuoted 	= t3lib_div::unQuoteFilenames($source);
+		$acutalUnquoted = t3lib_div::unQuoteFilenames($source, TRUE);
+
+		$this->assertEquals($expectedQuoted, $actualQuoted, 'The exploded command does not match the expected');
+		$this->assertEquals($expectedUnquoted, $acutalUnquoted, 'The exploded and unquoted command does not match the expected');
+	}
+
 
 	///////////////////////////////
 	// Tests concerning split_fileref
