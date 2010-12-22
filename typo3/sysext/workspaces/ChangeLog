@@ -1,6 +1,7 @@
 2010-12-22  Tolleiv Nietsch <typo3@tolleiv.de>
 
-	* Fixed bug 11479: Label of publish action is confusing
+	* Fixed bug #11568: Remove "Enable comparison view" switch
+	* Fixed bug #11479: Label of publish action is confusing
 
 2010-12-22  Steffen Gebert <steffen@steffen-gebert.de>
 

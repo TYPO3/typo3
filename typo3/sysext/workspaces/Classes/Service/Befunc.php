@@ -54,7 +54,7 @@ class tx_Workspaces_Service_Befunc {
 			$pageUid = $this->getLivePageUid($pageUid);
 		}
 
-		if ($GLOBALS['BE_USER']->workspace !== 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) {
+		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
 			$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 			/**
