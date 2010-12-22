@@ -6,13 +6,13 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_rtehtmlarea_acronym">Acronym</label>
+			<label index="tx_rtehtmlarea_acronym">Abbreviation</label>
 			<label index="tx_rtehtmlarea_acronym.type">Type</label>
 			<label index="tx_rtehtmlarea_acronym.type.I.0">Acronym</label>
 			<label index="tx_rtehtmlarea_acronym.type.I.1">Abbreviation</label>
 			<label index="tx_rtehtmlarea_acronym.term">Term</label>
-			<label index="tx_rtehtmlarea_acronym.acronym">Abridged form</label>
-			<label index="tx_rtehtmlarea_acronym.static_lang_isocode">Language of term</label>
+			<label index="tx_rtehtmlarea_acronym.acronym">Abbreviation</label>
+			<label index="tx_rtehtmlarea_acronym.static_lang_isocode">Language of the abbreviation</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

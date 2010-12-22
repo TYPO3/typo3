@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Context Sensitive Help for table</description>
+		<type>CSH</type>
+		<csh_table>tx_rtehtmlarea_acronym</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">An 'Abbreviation' associates a short form to a given term. The abbreviation may be defined for a specific language.</label>
+			<label index=".details">Defined abbreviations are used in the htmlArea RTE Abbreviation dialogue.
+A defined abbreviation may further be configured so as to be made available only when editing content in a given language.</label>
+			<label index=".seeAlso">xEXT_rtehtmlarea_Acronym</label>
+			<label index="term.description">Enter the term to be abbreviated.</label>
+			<label index="acronym.description">Enter the short form of the term.</label>
+			<label index="hidden.description">Check this option if you wish to disable the availability of this entry to non-admin users.</label>
+			<label index="type.description">Select the type of abbreviation.</label>
+			<label index="type.details">A defined abbreviation may be of two types: abbreviation or acronym. These correspond to HTML elements abbr and acronym. Note however that acronym is deprecated in recent versions of HTML.</label>
+			<label index="starttime.description">Enter a time at which you want the abbreviation to start being available to non-admin users.
+If no time is specified, the abbreviation becomes immediately available to the users of the RTE, if not hidden.</label>
+			<label index="endtime.description">Enter a date and time at which you want the abbreviation to stop being available to non-admin users.
+If no time is specified, the abbreviation is indefinitely available to the users of the RTE, unless it is hidden.</label>
+			<label index="sys_language_uid.description">Select the language of content elements in which the abbreviation may be used.</label>
+			<label index="static_lang_isocode.description">Select the language for which the abbreviation is defined.</label>
+			<label index="static_lang_isocode.details">The selected language will be used as the value of the language attribute of the HTML element inserted in the content element by the RTE.</label>
+		</languageKey>
+	</data>
+</T3locallang>

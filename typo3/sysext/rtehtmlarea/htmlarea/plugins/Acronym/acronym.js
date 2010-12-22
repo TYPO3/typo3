@@ -42,7 +42,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '2.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -77,8 +77,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			typeAhead: true,
 			triggerAction: 'all',
 			forceSelection: true,
-			mode: 'local',
-			helpIcon: true
+			mode: 'local'
 		}
 	},
 	/*
@@ -110,7 +109,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 		};
 			// Open the dialogue window
 		this.openDialogue(
-			'Insert/Modify Acronym',
+			this.getButton(buttonId).tooltip.title,
 			buttonId,
 			this.getWindowDimensions({ width: 580}, buttonId),
 			this.buildTabItemsConfig(abbr),
@@ -133,7 +132,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	 */
 	openDialogue: function (title, buttonId, dimensions, tabItems, buttonsConfig, activeTab) {
 		this.dialog = new Ext.Window({
-			title: this.localize(title),
+			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
@@ -241,9 +240,8 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			xtype: 'combo',
 			displayField: 'term',
 			valueField: 'term',
-			fieldLabel: this.localize('Unabridged_term'),
+			fieldLabel: this.getHelpTip('unabridgedTerm', 'Unabridged_term'),
 			itemId: 'termSelector',
-			helpTitle: this.localize('Select_a_term'),
 			tpl: '<tpl for="."><div ext:qtip="{abbr}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{term}</div></tpl>',
 			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
@@ -275,9 +273,8 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			displayField: 'abbr',
 			valueField: 'abbr',
 			tpl: '<tpl for="."><div ext:qtip="{language}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{abbr}</div></tpl>',
-			fieldLabel: this.localize('Abridged_term'),
+			fieldLabel: this.getHelpTip('abridgedTerm', 'Abridged_term'),
 			itemId: 'abbrSelector',
-			helpTitle: this.localize('Select_an_' + type),
 			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
 				autoLoad: true,
@@ -331,10 +328,8 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			});
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
-				fieldLabel: this.localize('Language'),
+				fieldLabel: this.getHelpTip('language', 'Language'),
 				itemId: 'language',
-				helpTitle: this.localize('Select_a_language'),
-				helpText: this.localize('Language_' + type + '_helpText'),
 				valueField: 'value',
 				displayField: 'text',
 				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>',
@@ -355,7 +350,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 		}
 		return {
 			xtype: 'fieldset',
-			title: this.localize('Defined_' + type),
+			title: this.getHelpTip('preDefined' + ((type == 'abbr') ? 'Abbreviation' : 'Acronym'), 'Defined_' + type),
 			items: itemsConfig,
 			listeners: {
 				render: {
@@ -437,7 +432,8 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	 * Handler when a term is selected
 	 */
 	onTermSelect: function (combo, record, index) {
-		var tab = combo.findParentByType('container');
+		var fieldset = combo.findParentByType('fieldset');
+		var tab = fieldset.findParentByType('container');
 		var term = record.get('term');
 		var abbr = record.get('abbr');
 		var language = record.get('language');
@@ -460,7 +456,8 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	 * Handler when an abbreviation or acronym is selected
 	 */
 	onAbbrSelect: function (combo, record, index) {
-		var tab = combo.findParentByType('container');
+		var fieldset = combo.findParentByType('fieldset');
+		var tab = fieldset.findParentByType('container');
 		var term = record.get('term');
 		var language = record.get('language');
 			// Update the term selector
@@ -488,20 +485,16 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	buildUseTermFieldsetConfig: function (element, type) {
 		var itemsConfig = [];
 		itemsConfig.push({
-			fieldLabel: this.localize('Use_this_term'),
+			fieldLabel: this.getHelpTip('useThisTerm', 'Use_this_term'),
 			labelSeparator: '',
 			itemId: 'useTerm',
 			value: element ? element.title : '',
-			width: 300,
-			helpTitle: this.localize('Use_this_term_explain')
+			width: 300
 		});
 		return {
 			xtype: 'fieldset',
-			title: this.localize('Term_to_abridge'),
+			title: this.getHelpTip('termToAbridge', 'Term_to_abridge'),
 			defaultType: 'textfield',
-			defaults: {
-				helpIcon: true
-			},
 			items: itemsConfig
 		};
 	},
@@ -562,6 +555,10 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 				button.setDisabled(((el.nodeName.toLowerCase() == 'acronym' && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == 'abbr' && this.pageTSConfiguration.noAbbr)));
 				button.setInactive(!(el.nodeName.toLowerCase() == 'acronym' && !this.pageTSConfiguration.noAcronym) && !(el.nodeName.toLowerCase() == 'abbr' && !this.pageTSConfiguration.noAbbr));
 			}
+			button.setTooltip({
+				title: this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation')
+			});
+			button.contextMenuTitle = '';
 			if (this.dialog) {
 				this.dialog.focus();
 			}

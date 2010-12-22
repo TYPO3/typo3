@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Aconym Extension of htmlArea RTE</description>
+		<type>CSH</type>
+		<csh_table>xEXT_rtehtmlarea_Acronym</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">htmlArea RTE &gt; Abbreviation</label>
+			<label index=".description">The "Abbreviation" dialogue allows to associate an abbreviation to a term.</label>
+			<label index=".details">Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
+Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</label>
+			<label index=".image">EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</label>
+			<label index=".image_descr">"Insert abbreviation" icon in the editor tool bar.</label>
+			<label index=".seeAlso">xEXT_rtehtmlarea_Acronym:preDefinedAbbreviation,
+xEXT_rtehtmlarea_Acronym:unabridgedTerm,
+xEXT_rtehtmlarea_Acronym:abridgedTerm,
+xEXT_rtehtmlarea_Acronym:language,
+xEXT_rtehtmlarea_Acronym:termToAbridge,
+xEXT_rtehtmlarea_Acronym:useThisTerm
+tx_rtehtmlarea_acronym
+</label>
+			<label index="preDefinedAbbreviation.alttitle">Pre-defined abbreviations</label>
+			<label index="preDefinedAbbreviation.description">This section lets you select abbreviations already defined in the database.</label>
+			<label index="preDefinedAbbreviation.seeAlso">tx_rtehtmlarea_acronym</label>
+			<label index="preDefinedAcronym.alttitle">Pre-defined acronyms</label>
+			<label index="preDefinedAcronym.description">This section lets you select acronyms already defined in the database.</label>
+			<label index="preDefinedAcronym.seeAlso">tx_rtehtmlarea_acronym</label>
+			<label index="unabridgedTerm.alttitle">Unabbreviated term</label>
+			<label index="unabridgedTerm.description">Select the unabbreviated form of the term.</label>
+			<label index="unabridgedTerm.details">The selected term will be set as the title attribute of the abbreviation (or acronym) element.</label>
+			<label index="abridgedTerm.alttitle">Abbreviation</label>
+			<label index="abridgedTerm.description">Select the short form of the term.</label>
+			<label index="language.alttitle">Language</label>
+			<label index="language.description">Select the language for which the abbreviation is defined.</label>
+			<label index="language.details">The selected language will be set as the language attribute of the abbreviation (or acronym) element.
+If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.</label>
+			<label index="termToAbridge.alttitle">Term to abbreviate</label>
+			<label index="termToAbridge.description">This section lets you enter a term for which the current selection will be the short form.</label>
+			<label index="useThisTerm.alttitle">Use this term</label>
+			<label index="useThisTerm.description">Enter the term that you want to associate as the unabbreviated form of the current selection.</label>
+			<label index="useThisTerm.details">The entered term will be set as the title attribute of the abbreviation (or acronym) element.</label>
+		</languageKey>
+	</data>
+</T3locallang>

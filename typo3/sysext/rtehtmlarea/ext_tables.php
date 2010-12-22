@@ -22,10 +22,12 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 		),
 	);
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
+	t3lib_extMgm::addLLrefForTCAdescr('tx_rtehtmlarea_acronym','EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xml');
 
 		// Add contextual help files
 	$htmlAreaRteContextHelpFiles = array(
 		'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xml',
+		'Acronym' => 'EXT:' . $_EXTKEY . '/extensions/Acronym/locallang_csh.xml',
 		'EditElement' => 'EXT:' . $_EXTKEY . '/extensions/EditElement/locallang_csh.xml',
 		'Language' => 'EXT:' . $_EXTKEY . '/extensions/Language/locallang_csh.xml',
 		'PlainText' => 'EXT:' . $_EXTKEY . '/extensions/PlainText/locallang_csh.xml',

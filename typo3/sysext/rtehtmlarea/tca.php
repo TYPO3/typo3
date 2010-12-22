@@ -63,8 +63,8 @@ $TCA['tx_rtehtmlarea_acronym'] = Array (
 			'config' => Array (
 				'type' => 'radio',
 				'items' => Array (
-					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.0', '1'),
 					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.1', '2'),
+					Array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.0', '1'),
 				),
 				'default' => '2',
 			)

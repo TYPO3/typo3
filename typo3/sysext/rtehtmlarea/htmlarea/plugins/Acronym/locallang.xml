@@ -7,15 +7,16 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="Insert/Modify Acronym">Insert/Modify Acronym or Abbreviation</label>
-			<label index="Acronym-contextMenuTitle">Insert/modify abbreviation</label>
-			<label index="Term_to_abridge">Term to abridge</label>
+			<label index="Insert/Modify Acronym">Insert/edit abbreviation</label>
+			<label index="Insert abbreviation">Insert abbreviation</label>
+			<label index="Edit abbreviation">Edit abbreviation</label>
+			<label index="Term_to_abridge">Term to abbreviate</label>
 			<label index="Defined_acronym">Pre-defined acronyms</label>
 			<label index="Defined_abbr">Pre-defined abbreviations</label>
 			<label index="Term">Term</label>
-			<label index="Unabridged_term">Unabridged Term</label>
+			<label index="Unabridged_term">Term</label>
 			<label index="Select_a_term">Select a term</label>
-			<label index="Abridged_term">Abridged Term</label>
+			<label index="Abridged_term">Short form</label>
 			<label index="Acronym">Acronym</label>
 			<label index="Abbreviation">Abbreviation</label>
 			<label index="Select_an_acronym">Select an acronym</label>
