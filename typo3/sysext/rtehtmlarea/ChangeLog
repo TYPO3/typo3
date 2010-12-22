@@ -1,3 +1,7 @@
+2010-12-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16805: htmlArea RTE: Clicking a label should set the focus on the input field
+
 2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16674: htmlARea RTE: Broken/missing labels in context menu

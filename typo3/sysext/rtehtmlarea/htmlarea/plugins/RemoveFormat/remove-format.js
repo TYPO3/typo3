@@ -111,9 +111,6 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
-				render: {
-					fn: this.enableContextHelp
-				},
 				close: {
 					fn: this.onClose,
 					scope: this

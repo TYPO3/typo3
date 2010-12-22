@@ -4629,20 +4629,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	getHelpTip: function (fieldName, label, pluginName) {
 		if (Ext.isDefined(TYPO3.ContextHelp)) {
 			var pluginName = Ext.isDefined(pluginName) ? pluginName : this.name;
-			return '<a class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + this.localize(label) + '</abbr></a>';
+			return '<span class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + this.localize(label) + '</abbr></span>';
 		} else {
 			return this.localize(label);
-		}
-	},
-	/**
-	 * Initiate context help listening on the dialogue window
-	 * This is normally specified as render handler of the window
-	 *
-	 * @return	void
-	 */
-	enableContextHelp: function () {
-		if (Ext.isDefined(TYPO3.ContextHelp) && Ext.isFunction(TYPO3.ContextHelp.openHelpWindow)) {
-			Ext.select('div').on('click', TYPO3.ContextHelp.openHelpWindow, TYPO3.ContextHelp, {delegate: 'a.t3-help-link'});
 		}
 	},
 	/**
