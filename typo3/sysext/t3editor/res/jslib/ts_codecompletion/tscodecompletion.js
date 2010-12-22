@@ -577,22 +577,19 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		var word = proposals[currWord].word;
 		// tokenize current line
 		mirror.editor.highlightAtCursor();
+		var select = mirror.win.select;
 		var cursorNode = getCursorNode();
+		
 		if (cursorNode.currentText
 			&& cursorNode.currentText != '.'
 			&& cursorNode.currentText.strip() != '' ) {
-			cursorNode.innerHTML = '';
-			cursorNode.currentText = '';
+			// if there is some typed text already, left to the "." -> simply replace node content with the word
+			cursorNode.innerHTML = word;
+			cursorNode.currentText = word;
+			select.setCursorPos(mirror.editor.container, {node: cursorNode, offset: 0});
+		} else { // if there is no text there, insert the word at the cursor position
+			mirror.replaceSelection(word);
 		}
-		mirror.replaceSelection(word);
-		// set cursor behind the selection
-		var select = mirror.win.select;
-		var start = select.cursorPos(mirror.editor.container, true),
-			end = select.cursorPos(mirror.editor.container, false);
-		if (!start || !end) {
-			return;
-		}
-		select.setCursorPos(mirror.editor.container, end, end);
 	}
 
 
