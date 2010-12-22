@@ -247,13 +247,14 @@ final class t3lib_BEfunc {
 	 * @param	string		List of fields to select
 	 * @param	string		Additional WHERE clause, eg. " AND blablabla = 0"
 	 * @param	boolean		Use the deleteClause to check if a record is deleted (default true)
+	 * @param	boolean		If true the function does not return a "pointer" row for moved records in a workspace
 	 * @return	array		Returns the row if found, otherwise nothing
 	 */
-	public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
+	public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
 		if ($fields !== '*') {
 			$internalFields = t3lib_div::uniqueList($fields . ',uid,pid' . ($table == 'pages' ? ',t3ver_swapmode' : ''));
 			$row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
-			self::workspaceOL($table, $row);
+			self::workspaceOL($table, $row, -99, $unsetMovePointers);
 
 			if (is_array($row)) {
 				foreach (array_keys($row) as $key) {
@@ -264,7 +265,7 @@ final class t3lib_BEfunc {
 			}
 		} else {
 			$row = self::getRecord($table, $uid, $fields, $where, $useDeleteClause);
-			self::workspaceOL($table, $row);
+			self::workspaceOL($table, $row, -99, $unsetMovePointers);
 		}
 		return $row;
 	}
@@ -4019,6 +4020,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
+	 * @param	boolean		If true the function does not return a "pointer" row for moved records in a workspace
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid()
 	 */

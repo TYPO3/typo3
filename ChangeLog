@@ -8,6 +8,7 @@
 
 2010-12-21  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16803: Bug/Prerequisite for the new pagetree: Extend getRecordWSOL with possibility to unset workspace move pointers (Thanks to Susanne Moog)
 	* Fixed bug #16802: iFramePanel needs function to detect id in URL
 
 2010-12-21  Jigal van Hemert <jigal@xs4all.nl>
