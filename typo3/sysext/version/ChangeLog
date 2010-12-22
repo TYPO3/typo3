@@ -1,3 +1,7 @@
+2010-12-22  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug:#11606 Remove "Send to review / pub" from contextmenu
+
 2010-12-21  Sonja Scholz  <ss@cabag.ch>
 
 	* Fixed bug #11633: Versioning module should not be available when workspaces is loaded

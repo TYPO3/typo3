@@ -86,6 +86,7 @@ class tx_version_cm1 {
 			);
 
 				// "Send to review" element added:
+			/*
 			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table=='pages'?$uid:$backRef->rec['pid']).'&table='.rawurlencode($table).'&uid='.$uid.'&sendToReview=1';
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS['LANG']->getLLL('title_review',$LL),
@@ -93,6 +94,7 @@ class tx_version_cm1 {
 				$backRef->urlRefForCM($url),
 				1
 			);
+			*/
 
 				// Find position of "delete" element:
 			$c=0;
