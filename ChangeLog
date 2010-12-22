@@ -1,3 +1,7 @@
+2010-12-22  Francois Suter  <francois.suter@typo3.org>
+
+	* Follow-up to #16786: One instance of wrong preview link had not been fixed
+
 2010-12-21  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #16786: Versioning: Generating preview link not working (thanks to Frederic Gaus)
