@@ -1,3 +1,7 @@
+2010-12-22  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16819: Icon to close open documents has no pointer cursor (thanks to Sebastian Michaelsen)
+
 2010-12-22  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #16667: (t3editor) typed text does not get replaced correctly by code completion (thanks to Stephan Petzl)
