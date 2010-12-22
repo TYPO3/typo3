@@ -1,3 +1,7 @@
+2010-12-22  Steffen Gebert <steffen@steffen-gebert.de>
+
+	* Added feature #10642: Design of workspace preview/comparison view (Thanks to Lars Zimmermann)
+
 2010-12-21  Sonja Scholz <ss@cabag.ch>
 
 	* Fixed bug #11480: Add warning when choosing mass actions

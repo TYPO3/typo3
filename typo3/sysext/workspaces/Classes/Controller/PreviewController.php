@@ -42,6 +42,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	protected function initializeAction() {
 		parent::initializeAction();
 
+		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
+		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath . 'StyleSheet/preview.css';
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->enableExtJsDebug();
@@ -57,9 +59,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 
-		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
+		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/Ext.ux.plugins.TabStripContainer.js');
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
-		$this->pageRenderer->addCssFile($resourcePath . 'StyleSheet/preview.css');
 
 			// todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());

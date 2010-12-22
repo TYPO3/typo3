@@ -32,6 +32,57 @@ Ext.onReady(function() {
 			region: 'center', // a center region is ALWAYS required for border layout
 			id: 'preview',
 			activeTab: 0,
+			plugins : [{
+				ptype : 'Ext.ux.plugins.TabStripContainer',
+				id: 'controls',
+				width: 400,
+				items: [{
+					xtype: 'button',
+					id: 'sizeSliderButtonLive',
+					cls: 'sliderButton',
+					text: TYPO3.LLL.Workspaces.livePreview,
+					width: 100,
+					listeners: {
+						click: {
+							fn: function () {
+								Ext.getCmp('sizeSlider').setValue(0);
+							}
+						}
+					}
+				},
+				{
+					xtype: 'slider',
+					id: 'sizeSlider',
+					margins: '0 10 0 10',
+					maxValue: 100,
+					minValue: 0,
+					value: 100,
+					flex: 1,
+					listeners: {
+						change: {
+							fn: function resizeFromValue(slider, newValue, thumb) {
+								var height = Ext.getCmp('wsPanel').getHeight();
+								Ext.getCmp('liveContainer').setHeight(height * (100 - newValue) / 100);
+								Ext.getCmp('visualPanel').setHeight(height);
+							}
+						}
+					}
+				},
+				{
+					xtype: 'button',
+					id: 'sizeSliderButtonWorkspace',
+					cls: 'sliderButton',
+					text: TYPO3.LLL.Workspaces.workspacePreview,
+					width: 100,
+					listeners: {
+						click: {
+							fn: function () {
+								Ext.getCmp('sizeSlider').setValue(100);
+							}
+						}
+					}
+				}]
+			}],
 			items: [{
 				title: TYPO3.LLL.Workspaces.visualPreview,
 				id: 'wsVisual',
@@ -96,50 +147,7 @@ Ext.onReady(function() {
 					doMask: false,
 					src: wsHelpUrl
 				}]
-			}],
-			tbar: [
-				'->', '-',
-				{
-					xtype: 'button',
-					text: TYPO3.LLL.Workspaces.livePreview,
-					listeners: {
-						click: {
-							fn: function () {
-								Ext.getCmp('sizeSlider').setValue(0);
-							}
-						}
-					}
-				},
-				{
-					xtype: 'slider',
-					id: 'sizeSlider',
-					style: 'margin: 0 5px;',
-					maxValue: 100,
-					minValue: 0,
-					value: 100,
-					width: 200,
-					listeners: {
-						change: {
-							fn: function resizeFromValue(slider, newValue, thumb) {
-								var height = Ext.getCmp('wsPanel').getHeight();
-								Ext.getCmp('liveContainer').setHeight(height * (100-newValue) / 100);
-								Ext.getCmp('visualPanel').setHeight(height);
-							}
-						}
-					}
-				},
-				{
-					xtype: 'button',
-					text: TYPO3.LLL.Workspaces.workspacePreview,
-					listeners: {
-						click: {
-							fn: function () {
-								Ext.getCmp('sizeSlider').setValue(100);
-							}
-						}
-					}
-				}
-			]
+			}]
 		}]
 	});
 });
