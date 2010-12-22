@@ -43,6 +43,9 @@ class tx_pagetree_ExtDirect_Commands {
 		/** @var $node tx_pagetree_Node */
 		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
+		/** @var $dataProvider tx_pagetree_DataProvider */
+		$dataProvider = t3lib_div::makeInstance('tx_pagetree_DataProvider');
+
 		try {
 			tx_pagetree_Commands::visiblyNode($node);
 			$newNode = tx_pagetree_Commands::getNode($node->getId());
@@ -67,6 +70,9 @@ class tx_pagetree_ExtDirect_Commands {
 	public function disableNode($nodeData) {
 		/** @var $node tx_pagetree_Node */
 		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
+
+		/** @var $dataProvider tx_pagetree_DataProvider */
+		$dataProvider = t3lib_div::makeInstance('tx_pagetree_DataProvider');
 
 		try {
 			tx_pagetree_Commands::disableNode($node);
@@ -95,7 +101,15 @@ class tx_pagetree_ExtDirect_Commands {
 
 		try {
 			tx_pagetree_Commands::deleteNode($node);
+
 			$returnValue = array();
+			if ($GLOBALS['BE_USER']->workspace) {
+				$record = tx_pagetree_Commands::getNodeRecord($node->getId());
+				if ($record['_ORIG_uid']) {
+					$newNode = tx_pagetree_Commands::getNewNode($record);
+					$returnValue = $newNode->toArray();
+				}
+			}
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,
@@ -104,21 +118,21 @@ class tx_pagetree_ExtDirect_Commands {
 		}
 
 		return $returnValue;
-
 	}
 
 	/**
 	 * Restore the page
 	 *
 	 * @param stdClass $nodeData
+	 * @param int $destination
 	 * @return array
 	 */
-	public function restoreNode($nodeData) {
+	public function restoreNode($nodeData, $destination) {
 		/** @var $node tx_pagetree_Node */
 		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
 		try {
-			tx_pagetree_Commands::restoreNode($node);
+			tx_pagetree_Commands::restoreNode($node, $destination);
 			$newNode = tx_pagetree_Commands::getNode($node->getId());
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
@@ -157,6 +171,21 @@ class tx_pagetree_ExtDirect_Commands {
 	}
 
 	/**
+	 * Sets a temporary mount point
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public static function setTemporaryMountPoint($nodeData) {
+		/** @var $node tx_pagetree_Node */
+		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
+		$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'] = $node->getId();
+		$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+
+		return tx_pagetree_Commands::getMountPointPath();
+	}
+
+	/**
 	 * Moves the source node directly as the first child of the destination node
 	 *
 	 * @param stdClass $nodeData
@@ -169,7 +198,9 @@ class tx_pagetree_ExtDirect_Commands {
 
 		try {
 			tx_pagetree_Commands::moveNode($node, $destination);
-			$returnValue = array();
+			$newNode = tx_pagetree_Commands::getNode($node->getId(), FALSE);
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,
@@ -193,7 +224,9 @@ class tx_pagetree_ExtDirect_Commands {
 
 		try {
 			tx_pagetree_Commands::moveNode($node, -$destination);
-			$returnValue = array();
+			$newNode = tx_pagetree_Commands::getNode($node->getId(), FALSE);
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,
@@ -216,9 +249,14 @@ class tx_pagetree_ExtDirect_Commands {
 		/** @var $node tx_pagetree_Node */
 		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
+		/** @var $dataProvider tx_pagetree_DataProvider */
+		$dataProvider = t3lib_div::makeInstance('tx_pagetree_DataProvider');
+
 		try {
 			$newPageId = tx_pagetree_Commands::copyNode($node, $destination);
-			$returnValue = tx_pagetree_Commands::getNode($newPageId)->toArray();
+			$newNode = tx_pagetree_Commands::getNode($newPageId);
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,
@@ -241,9 +279,14 @@ class tx_pagetree_ExtDirect_Commands {
 		/** @var $node tx_pagetree_Node */
 		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
+		/** @var $dataProvider tx_pagetree_DataProvider */
+		$dataProvider = t3lib_div::makeInstance('tx_pagetree_DataProvider');
+
 		try {
 			$newPageId = tx_pagetree_Commands::copyNode($node, -$destination);
-			$returnValue = tx_pagetree_Commands::getNode($newPageId)->toArray();
+			$newNode = tx_pagetree_Commands::getNode($newPageId);
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,
@@ -307,74 +350,21 @@ class tx_pagetree_ExtDirect_Commands {
 	 * Returns the view link of a given node
 	 *
 	 * @param stdClass $nodeData
-	 * @param string $workspacePreview
 	 * @return string
 	 */
-	public static function getViewLink($nodeData, $workspacePreview) {
-		// @TODO use the hook to get the needed information's
+	public static function getViewLink($nodeData) {
+		/** @var $node tx_pagetree_Node */
+		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
+		$javascriptLink = t3lib_BEfunc::viewOnClick($node->getId());
+		preg_match('/window\.open\(\'([^\']+)\'/i', $javascriptLink, $match);
 
-//		$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
-//		$viewScriptPreviewDisabled = '/index.php?id=';
-//
-//			// check alternate Domains
-//		$rootLine = t3lib_BEfunc::BEgetRootLine($id);
-//		if ($rootLine) {
-//			$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-//			if (t3lib_BEfunc::getDomainStartPage($parts['host'], $parts['path'])) {
-//				$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
-//			}
-//		}
-//		$preUrl = ($preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ?
-//			'https://' : 'http://') . $preUrl_temp : '' . '..');
-//
-//			// Look if a fixed preview language should be added:
-//		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
-//		if (strlen($viewLanguageOrder))	{
-//			$suffix = '';
-//
-//				// Find allowed languages (if none, all are allowed!)
-//			if (!$GLOBALS['BE_USER']->user['admin'] &&
-//				strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
-//				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
-//			}
-//
-//				// Traverse the view order, match first occurrence
-//			$lOrder = t3lib_div::intExplode(',',$viewLanguageOrder);
-//			foreach($lOrder as $langUid)	{
-//				if (is_array($allowed_languages) && count($allowed_languages)) {
-//					if (isset($allowed_languages[$langUid])) {	// Choose if set.
-//						$suffix = '&L='.$langUid;
-//						break;
-//					}
-//				} else {	// All allowed since no lang. are listed.
-//					$suffix = '&L='.$langUid;
-//					break;
-//				}
-//			}
-//
-//				// Add it:
-//			$addGetVars.= $suffix;
-//		}
-//
-//		$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars;
-//		$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars;
-//
-//		if ($workspacePreview) {
-//			return $urlPreviewEnabled;
-//		} else {
-//			return $urlPreviewDisabled;
-//		}
-
-//		$javascriptLink = t3lib_BEfunc::viewOnClick($id);
-//		debug($javascriptLink);
-
-		return 'http://linux-schmie.de/wp-content/uploads/2010/07/Baustelle.png';
+		return $match[1];
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_commands.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_commands.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_commands.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_commands.php']);
 }
 
 ?>

@@ -15,6 +15,13 @@
 			<label index="page.doktype.199">Spacer</label>
 			<label index="page.doktype.254">Sysfolder</label>
 			<label index="defaultTitle">[Default Title]</label>
+			<label index="copyHint">Press Ctrl to copy.</label>
+			<label index="fakeNodeHint">Please Wait...</label>
+			<label index="activeFilterMode">Active Filtering Mode</label>
+			<label index="dropToRemove">Drop here to delete</label>
+			<label index="dropZoneElementRemoved">Click here to undelete</label>
+			<label index="dropZoneElementRestored">Page restored</label>
+			<label index="treeStructure">Tree structure of the website</label>
 		</languageKey>
 	</data>
 </T3locallang>

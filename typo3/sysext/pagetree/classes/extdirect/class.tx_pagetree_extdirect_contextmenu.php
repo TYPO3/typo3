@@ -41,7 +41,6 @@ class tx_pagetree_ExtDirect_ContextMenu extends t3lib_contextmenu_extdirect_Cont
 	protected function initDataProvider() {
 		/** @var $dataProvider tx_pagetree_ContextMenu_DataProvider */
 		$dataProvider = t3lib_div::makeInstance('tx_pagetree_ContextMenu_DataProvider');
-		$dataProvider->setContextMenuType('table.pages');
 		$this->setDataProvider($dataProvider);
 	}
 
@@ -57,15 +56,20 @@ class tx_pagetree_ExtDirect_ContextMenu extends t3lib_contextmenu_extdirect_Cont
 		$node->setRecord(tx_pagetree_Commands::getNodeRecord($node->getId()));
 
 		$this->initDataProvider();
+		$this->dataProvider->setContextMenuType('table.' . $node->getType());
 		$actionCollection = $this->dataProvider->getActionsForNode($node);
 
-		return $actionCollection->toArray();
+		if ($actionCollection instanceof t3lib_contextmenu_ActionCollection) {
+			$actions = $actionCollection->toArray();
+		}
+
+		return $actions;
 	}
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_contextmenu.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_contextmenu.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_contextmenu.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_contextmenu.php']);
 }
 
 ?>

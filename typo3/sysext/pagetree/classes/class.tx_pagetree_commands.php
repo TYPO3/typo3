@@ -40,7 +40,7 @@ final class tx_pagetree_Commands {
 	 * @return void
 	 */
 	public static function visiblyNode(tx_pagetree_Node $node) {
-		$data['pages'][$node->getId()]['hidden'] = 0;
+		$data['pages'][$node->getWorkspaceId()]['hidden'] = 0;
 		self::processTceCmdAndDataMap(array(), $data);
 	}
 
@@ -51,7 +51,7 @@ final class tx_pagetree_Commands {
 	 * @return void
 	 */
 	public static function disableNode(tx_pagetree_Node $node) {
-		$data['pages'][$node->getId()]['hidden'] = 1;
+		$data['pages'][$node->getWorkspaceId()]['hidden'] = 1;
 		self::processTceCmdAndDataMap(array(), $data);
 	}
 
@@ -70,11 +70,16 @@ final class tx_pagetree_Commands {
 	 * Restore the page
 	 *
 	 * @param tx_pagetree_Node $nodeData
+	 * @param int $targetId
 	 * @return void
 	 */
-	public static function restoreNode(tx_pagetree_Node $node) {
+	public static function restoreNode(tx_pagetree_Node $node, $targetId) {
 		$cmd['pages'][$node->getId()]['undelete'] = 1;
 		self::processTceCmdAndDataMap($cmd);
+
+		if ($node->getId() !== $targetId) {
+			self::moveNode($node, $targetId);
+		}
 	}
 
 	/**
@@ -85,8 +90,7 @@ final class tx_pagetree_Commands {
 	 * @return void
 	 */
 	public static function updateNodeLabel(tx_pagetree_Node $node, $updatedLabel) {
-		$updatedLabel = str_replace($node->getPrefix(), '', $updatedLabel);
-		$data['pages'][$node->getId()][$node->getTextSourceField()] = $updatedLabel;
+		$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
 		self::processTceCmdAndDataMap(array(), $data);
 	}
 
@@ -131,14 +135,14 @@ final class tx_pagetree_Commands {
 	public static function createNode(tx_pagetree_Node $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
 		$data['pages'][$placeholder] = array(
-			'pid' => $parentNode->getId(),
+			'pid' => $parentNode->getWorkspaceId(),
 			'doktype' => $pageType,
 			'title' => $GLOBALS['LANG']->sL('LLL:EXT:pagetree/locallang_pagetree.xml:defaultTitle', TRUE),
 		);
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
 
-		if ($parentNode->getId() !== $targetId) {
+		if ($parentNode->getWorkspaceId() !== $targetId) {
 			self::moveNode($node, $targetId);
 		}
 
@@ -166,6 +170,7 @@ final class tx_pagetree_Commands {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
+		$tce->copyTree = t3lib_div::intInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
 
 		if (count($cmd)) {
 			$tce->process_cmdmap();
@@ -187,21 +192,80 @@ final class tx_pagetree_Commands {
 	 * Returns a node from the given node id
 	 *
 	 * @param int $nodeId
+	 * @param boolean $unsetMovePointers
 	 * @return tx_pagetree_Node
 	 */
-	public static function getNode($nodeId) {
-		$record = self::getNodeRecord($nodeId);
+	public static function getNode($nodeId, $unsetMovePointers = TRUE) {
+		$record = self::getNodeRecord($nodeId, $unsetMovePointers);
 		return self::getNewNode($record);
+	}
+
+	/**
+	 * Returns the mount point path
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function getMountPointPath() {
+		$temporaryMountPoint = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+		if (!$temporaryMountPoint) {
+			return '';
+		}
+
+		$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+		$rootline = array_reverse(t3lib_BEfunc::BEgetRootLine($temporaryMountPoint));
+		array_shift($rootline);
+
+		$path = array();
+		foreach ($rootline as $rootlineElement) {
+			$record = tx_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
+
+			$text = $record['title'];
+			if ($useNavTitle && trim($record['nav_title']) !== '') {
+				$text = $record['nav_title'];
+			}
+
+			$path[] = $text;
+		}
+
+		return '/' . implode('/', $path);
 	}
 
 	/**
 	 * Returns a node record from a given id
 	 *
 	 * @param int $nodeId
+	 * @param boolean $unsetMovePointers
 	 * @return array
 	 */
-	public static function getNodeRecord($nodeId) {
-		return t3lib_BEfunc::getRecordWSOL('pages', $nodeId, '*', '', TRUE);
+	public static function getNodeRecord($nodeId, $unsetMovePointers = TRUE) {
+		$record = t3lib_BEfunc::getRecordWSOL('pages', $nodeId, '*', '', TRUE, $unsetMovePointers);
+		return $record;
+	}
+
+	/**
+	 * Returns the first configured domain name for a page
+	 *
+	 * @static
+	 * @param integer $uid
+	 * @return string
+	 */
+	public static function getDomainName($uid) {
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr(
+			'pid=' . intval($uid) . t3lib_BEfunc::deleteClause('sys_domain') .
+				t3lib_BEfunc::BEenableFields('sys_domain'),
+			'sys_domain'
+		);
+
+		$domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'domainName',
+			'sys_domain',
+			$whereClause,
+			'',
+			'sorting'
+		);
+
+		return htmlspecialchars($domain['domainName']);
 	}
 
 	/**
@@ -210,15 +274,21 @@ final class tx_pagetree_Commands {
 	 * @param array $record
 	 * @return tx_pagetree_Node
 	 */
-	public static function getNewNode($record) {
+	public static function getNewNode($record, $mountPoint = 0) {
 		$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$addDomainName = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
 
 		/** @var $subNode tx_pagetree_Node */
 		$subNode = t3lib_div::makeInstance('tx_pagetree_Node');
 		$subNode->setRecord($record);
-		$subNode->setId($record['uid']);
+		$subNode->setCls($record['_CSSCLASS']);
 		$subNode->setQTip('ID: ' . $record['uid']);
+		$subNode->setType('pages');
+
+		$subNode->setId($record['uid']);
+		$subNode->setMountPoint($mountPoint);
+		$subNode->setWorkspaceId(($record['_ORIG_uid'] ? $record['_ORIG_uid'] : $record['uid']));
 
 		$field = 'title';
 		$text = $record['title'];
@@ -227,8 +297,15 @@ final class tx_pagetree_Commands {
 			$text = $record['nav_title'];
 		}
 
+		$suffix = '';
+		if ($addDomainName) {
+			$domain = self::getDomainName($record['uid']);
+			$suffix = ($domain !== '' ? ' [' . $domain . ']' : '');
+		}
+
 		$prefix = ($addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
-		$subNode->setText($text, $field, $prefix);
+		$subNode->setText($text, $field, $prefix, $suffix);
+		$subNode->setEditableText($text);
 
 		if ($record['uid'] !== 0) {
 			$spriteIconCode = t3lib_iconWorks::getSpriteIconForRecord('pages', $record);
@@ -236,6 +313,14 @@ final class tx_pagetree_Commands {
 			$spriteIconCode = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root');
 		}
 		$subNode->setSpriteIconCode($spriteIconCode);
+
+		if (!$subNode->canCreateNewPages() || intval($record['t3ver_state']) === 2) {
+			$subNode->setIsDropTarget(FALSE);
+		}
+
+		if (!$subNode->canBeEdited() || !$subNode->canBeRemoved() || intval($record['t3ver_state']) === 2) {
+			$subNode->setDraggable(FALSE);
+		}
 
 		return $subNode;
 	}

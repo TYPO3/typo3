@@ -8,6 +8,8 @@
 
 2010-12-21  Steffen Kamper  <steffen@typo3.org>
 
+	* Merged new PageTree (version for TYPO3 4.5 Beta 3)
+	* Fixed bug #16804: Bug/Prerequisite for the new pagetree: refresh pageTree with updateSignal, use new shortcuts in JS (Thanks to Stefan Galinski)
 	* Fixed bug #16803: Bug/Prerequisite for the new pagetree: Extend getRecordWSOL with possibility to unset workspace move pointers (Thanks to Susanne Moog)
 	* Fixed bug #16802: iFramePanel needs function to detect id in URL
 
@@ -27,7 +29,6 @@
 
 2010-12-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
-	* Follow-up to #16804: Bug/Prerequisite for the new pagetree: refresh pageTree with updateSignal, use new shortcuts in JS (Thanks to Stefan Galinski)
 	* Follow-up to #16779: t3lib_cache_backend_RedisBackendTest causes t3lib_db_PreparedStatementTest tests to fail (Thanks to Oliver Klee)
 	* Fixed bug #16777: Test failure in t3lib_extmgmTest if tests are located in typo3_src/tests/ instead of tests/ (Thanks to Oliver Klee)
 	* Fixed bug #16790: Typo in topbar CSS

@@ -25,6 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+// @TODO the most functionality should be moved to the parent data provider class
+
 /**
  * Context Menu Data Provider for the Page Tree
  *
@@ -34,26 +36,63 @@
  */
 class tx_pagetree_ContextMenu_DataProvider extends t3lib_contextmenu_AbstractDataProvider {
 	/**
-	 * Old Context Menu Options (access mapping)
+	 * List of actions that are generally disabled
 	 *
 	 * @var array
 	 */
-	protected $contextMenuMapping = array(
-		// @todo should be used (compatibility)
-		'view' => 'canBeViewed',
-		'edit' => 'canBeEdited',
-		'new' => 'canCreateNewPages',
-		'info' => 'canShowInfo',
-		'copy' => 'canBeCopied',
-		'cut' => 'canBeCut',
-		'paste' => 'canBePasted',
-		'move_wizard' => 'canBeMoved',
-		'new_wizard' => 'dsfdsfdsf',
-		'mount_as_treeroot' => 'canBeTemporaryMountPoint',
-		'hide' => 'canBeDisabled',
-		'delete' => 'canBeRemoved',
-		'history' => 'canShowHistory',
+	protected $disableItems = array();
+
+	/**
+	 * Old Context Menu Options (access mapping)
+	 *
+	 * Note: Only option with different namings are mapped!
+	 *
+	 * @var array
+	 */
+	protected $legacyContextMenuMapping = array(
+		'hide' => 'disable',
+		'paste' => 'pasteInto,pasteAfter',
+		'mount_as_treeroot' => 'mountAsTreeroot',
 	);
+
+	/**
+	 * Fetches the items that should be disabled from the context menu
+	 *
+	 * @return array
+	 */
+	protected function getDisableActions() {
+		$tsConfig = $GLOBALS['BE_USER']->getTSConfig(
+			'options.contextMenu.' . $this->getContextMenuType() . '.disableItems'
+		);
+
+		$disableItems = array();
+		if (trim($tsConfig['value']) !== '') {
+			$disableItems = t3lib_div::trimExplode(',', $tsConfig['value']);
+		}
+
+		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.pageTree.disableItems');
+		$oldDisableItems = array();
+		if (trim($tsConfig['value']) !== '') {
+			$oldDisableItems = t3lib_div::trimExplode(',', $tsConfig['value']);
+		}
+
+		$additionalItems = array();
+		foreach ($oldDisableItems as $item) {
+			if (!isset($this->legacyContextMenuMapping[$item])) {
+				$additionalItems[] = $item;
+				continue;
+			}
+
+			if (strpos($this->legacyContextMenuMapping[$item], ',')) {
+				$actions = t3lib_div::trimExplode(',', $this->legacyContextMenuMapping[$item]);
+				$additionalItems = array_merge($additionalItems, $actions);
+			} else {
+				$additionalItems[] = $item;
+			}
+		}
+
+		return array_merge($disableItems, $additionalItems);
+	}
 
 	/**
 	 * Returns the actions for the node
@@ -62,7 +101,12 @@ class tx_pagetree_ContextMenu_DataProvider extends t3lib_contextmenu_AbstractDat
 	 * @return t3lib_contextmenu_ActionCollection
 	 */
 	public function getActionsForNode(t3lib_tree_Node $node) {
-		$contextMenuActions = $this->getNextContextMenuLevel($this->getConfiguration(), $node);
+		$this->disableItems = $this->getDisableActions();
+		$configuration = $this->getConfiguration();
+		$contextMenuActions = array();
+		if (is_array($configuration)) {
+			$contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
+		}
 
 		return $contextMenuActions;
 	}
@@ -177,9 +221,11 @@ class tx_pagetree_ContextMenu_DataProvider extends t3lib_contextmenu_AbstractDat
 			if ($type === 'DIVIDER') {
 				$action->setType('divider');
 			} else {
-				if (isset($actionConfiguration['displayCondition'])
-					&& trim($actionConfiguration['displayCondition']) !== ''
-					&& !$this->evaluateDisplayCondition($node, $actionConfiguration['displayCondition'])
+				if (in_array($actionConfiguration['name'], $this->disableItems)
+					|| (isset($actionConfiguration['displayCondition'])
+						&& trim($actionConfiguration['displayCondition']) !== ''
+						&& !$this->evaluateDisplayCondition($node, $actionConfiguration['displayCondition'])
+					)
 				) {
 					unset($action);
 					continue;
@@ -207,7 +253,8 @@ class tx_pagetree_ContextMenu_DataProvider extends t3lib_contextmenu_AbstractDat
 				}
 			}
 
-			$actionCollection->append($action);
+			$actionCollection->offsetSet($level . intval($index), $action);
+			$actionCollection->ksort();
 		}
 
 		return $actionCollection;

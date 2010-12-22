@@ -54,12 +54,13 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	/**
 	 * Returns the root node of the tree
 	 *
-	 * Not used for the page tree, because the multiple domains/roots feature
-	 *
 	 * @return array
 	 */
 	public function getRoot() {
-		return array();
+		$this->initDataProvider();
+		$node = $this->dataProvider->getRoot();
+
+		return $node->toArray();
 	}
 
 	/**
@@ -87,13 +88,21 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	/**
 	 * Returns a tree that only contains elements that match the given search string
 	 *
+	 * @param int $nodeId
 	 * @param string $searchFilter
 	 * @return array
 	 */
-	public function getFilteredTree($searchFilter) {
-		$this->initDataProvider();
+	public function getFilteredTree($nodeId, $searchFilter) {
+		if ($searchFilter === '') {
+			return array();
+		}
 
-		$nodeCollection = $this->dataProvider->getFilteredNodes($searchFilter);
+		$this->initDataProvider();
+		if ($nodeId === 'root') {
+			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
+		} else {
+			$nodeCollection = $this->dataProvider->getFilteredNodes($nodeId, $searchFilter);
+		}
 
 		return $nodeCollection->toArray();
 	}
@@ -112,13 +121,22 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 		);
 
 		$output = array();
+		$allowedDoktypes = t3lib_div::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
+		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
 		foreach ($doktypes as $doktype) {
+			if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
+				continue;
+			}
+
 			$label = $GLOBALS['LANG']->sL('LLL:EXT:pagetree/locallang_pagetree.xml:page.doktype.' . $doktype, TRUE);
-			$spriteIcon = $this->getSpriteIconClasses($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]);
+			$spriteIcon = t3lib_iconWorks::getSpriteIconClasses(
+				$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]
+			);
 
 			$output[] = array(
 				'nodeType' => $doktype,
-				'cls' => 'topPanel-button ' . $spriteIcon,
+				'cls' => 'typo3-pagetree-topPanel-button',
+				'iconCls' => $spriteIcon,
 				'title' => $label,
 				'tooltip' => $label,
 			);
@@ -128,18 +146,65 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	}
 
 	/**
-	 * Returns the sprite icon classes for a given icon
+	 * Returns
 	 *
-	 * @param string $icon
 	 * @return string
 	 */
-	public function getSpriteIconClasses($icon) {
-		return t3lib_iconWorks::getSpriteIconClasses($icon);
+	public function getIndicators() {
+		/** @var $indicatorProvider tx_pagetree_Indicator */
+		$indicatorProvider = t3lib_div::makeInstance('tx_pagetree_indicator');
+		$indicatorHtml = implode(' ', $indicatorProvider->getAllIndicators());
+		return ($indicatorHtml ? $indicatorHtml : '');
+	}
+
+	/**
+	 * Returns the language labels, sprites and configuration options for the pagetree
+	 *
+	 * @return void
+	 */
+	public function loadResources() {
+		$file = 'LLL:EXT:pagetree/locallang_pagetree.xml:';
+		$configuration = array(
+			'LLL' => array(
+				'copyHint' => $GLOBALS['LANG']->sL($file . 'copyHint', TRUE),
+				'fakeNodeHint' => $GLOBALS['LANG']->sL($file . 'fakeNodeHint', TRUE),
+				'activeFilterMode' => $GLOBALS['LANG']->sL($file . 'activeFilterMode', TRUE),
+				'dropToRemove' => $GLOBALS['LANG']->sL($file . 'dropToRemove', TRUE),
+				'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'dropZoneElementRemoved', TRUE),
+				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'dropZoneElementRestored', TRUE),
+				'treeStructure' => $GLOBALS['LANG']->sL($file . 'treeStructure', TRUE),
+				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl(
+					'LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',
+					TRUE
+				),
+			),
+
+			'Configuration' => array(
+				'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
+				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal(
+					'options.pageTree.disableIconLinkToContextmenu'
+				),
+				'indicator' => $this->getIndicators(),
+				'temporaryMountPoint' => tx_pagetree_Commands::getMountPointPath(),
+			),
+
+			'Sprites' => array(
+				'Filter' => t3lib_iconWorks::getSpriteIconClasses('actions-system-tree-search-open'),
+				'NewNode' => t3lib_iconWorks::getSpriteIconClasses('actions-page-new'),
+				'Refresh' => t3lib_iconWorks::getSpriteIconClasses('actions-system-refresh'),
+				'InputClear' => t3lib_iconWorks::getSpriteIconClasses('actions-input-clear'),
+				'TrashCan' => t3lib_iconWorks::getSpriteIconClasses('actions-edit-delete'),
+				'TrashCanRestore' => t3lib_iconWorks::getSpriteIconClasses('actions-edit-restore'),
+				'Info' => t3lib_iconWorks::getSpriteIconClasses('actions-document-info'),
+			)
+		);
+
+		return $configuration;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_tree.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_tree.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_tree.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/pagetree/classes/extdirect/class.tx_pagetree_extdirect_tree.php']);
 }
 
 ?>

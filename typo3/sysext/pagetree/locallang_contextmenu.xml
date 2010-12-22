@@ -21,15 +21,10 @@
 			<label index="cm.tempMountPoint">Mount as treeroot</label>
 			<label index="cm.branchActions">Branch Actions</label>
 			<label index="cm.copyPasteActions">Page Actions</label>
-			
-			<label index="cm.renameFolder">Rename</label>
-			<label index="cm.uploadFilesToFolder">Upload Files</label>
-			<label index="cm.createFolder">Create New Folder</label>
-			<label index="cm.folderInfo">Folder Info</label>
-			<label index="cm.copyFolder">Copy</label>
-			<label index="cm.cutFolder">Cut</label>
-			<label index="cm.pasteIntoFolder">Paste</label>
-			<label index="cm.deleteFolder">Delete</label>
+			<label index="cm.exportT3d">Export to .t3d</label>
+			<label index="cm.importT3d">Import from .t3d</label>
+			<label index="cm.collapseBranch">Collapse Branch</label>
+			<label index="cm.expandBranch">Expand Branch</label>
 		</languageKey>
 	</data>
 </T3locallang>

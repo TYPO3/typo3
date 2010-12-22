@@ -1,6 +1,46 @@
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2010 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 Ext.namespace('TYPO3.Components.PageTree');
 
+/**
+ * @class TYPO3.Components.PageTree.Actions
+ *
+ * Actions dedicated for the page tree
+ *
+ * @namespace TYPO3.Components.PageTree
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
+ */
 TYPO3.Components.PageTree.Actions = {
+	/**
+	 * Evaluates a response from an ext direct call and shows a flash message
+	 * if it was an exceptional result
+	 *
+	 * @param {Object} response
+	 * @return {Boolean}
+	 */
 	evaluateResponse: function(response) {
 		if (response.success === false) {
 			TYPO3.Flashmessage.display(4, 'Exception', response.message);
@@ -10,196 +50,589 @@ TYPO3.Components.PageTree.Actions = {
 		return true;
 	},
 
-	removeNode: function(node) {
+	/**
+	 * Releases the cut and copy mode from the context menu
+	 *
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	releaseCutAndCopyModes: function(tree) {
+		tree.t3ContextInfo.inCutMode = false;
+		tree.t3ContextInfo.inCopyMode = false;
+
+		if (tree.t3ContextNode) {
+			tree.t3ContextNode.attributes.nodeData.t3InCutMode = false;
+			tree.t3ContextNode.attributes.nodeData.t3InCopyMode = false;
+			tree.t3ContextNode = null;
+		}
+	},
+
+	/**
+	 * Updates an existing node with the given alternative. The new tree node
+	 * is returned afterwards.
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {Boolean} isExpanded
+	 * @param {Object} updatedNode
+	 * @return {Ext.tree.TreeNode}
+	 */
+	updateNode: function(node, isExpanded, updatedNode) {
+		updatedNode.uiProvider = node.ownerTree.uiProvider;
+		var newTreeNode = new Ext.tree.TreeNode(updatedNode);
+
+		node.parentNode.replaceChild(newTreeNode, node);
+		newTreeNode.ownerTree.refreshNode(newTreeNode, function() {
+			newTreeNode.parentNode.expand(false, false);
+			if (isExpanded) {
+				newTreeNode.expand(false, false);
+			} else {
+				newTreeNode.collapse(false, false);
+			}
+		});
+
+		return newTreeNode;
+	},
+
+	/**
+	 * Removes a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	removeNode: function(node, tree) {
 		TYPO3.Components.PageTree.Commands.deleteNode(
 			node.attributes.nodeData,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					node.remove();
+					if (tree.getSelectionModel().getSelectedNode().id === node.id) {
+						this.singleClick(node.parentNode, tree);
+					}
+
+						// the node may not be removed in workspace mode
+					if (top.TYPO3.configuration.inWorkspace && response.id) {
+						this.updateNode(node, node.isExpanded(), response);
+					} else {
+						node.remove();
+					}
 				}
 			},
 			this
 		);
 	},
 
-	restoreNode: function(node) {
-		TYPO3.Components.PageTree.Commands.restoreNode(node.attributes.nodeData);
+	/**
+	 * Restores a given node and moves it to the given destination inside the tree. Use this
+	 * method if you want to add it as the first child of the destination.
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Ext.tree.TreeNode} destination
+	 * @return {void}
+	 */
+	restoreNodeToFirstChildOfDestination: function(node, tree, destination) {
+		TYPO3.Components.PageTree.Commands.restoreNode(
+			node.attributes.nodeData,
+			destination.attributes.nodeData.id,
+			function(updatedNode) {
+				if (this.evaluateResponse(updatedNode)) {
+					var newTreeNode = new Ext.tree.TreeNode(
+						Ext.apply(node.attributes, updatedNode)
+					);
+					destination.insertBefore(newTreeNode, destination.firstChild);
+				}
+			},
+			this
+		);
 	},
 
-	stub: function() {
-		alert('Just a Stub! Don\'t Panic!');
+	/**
+	 * Restores a given node and moves it to the given destination inside the tree. Use this
+	 * method if you want to add the node after the destination node.
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Ext.tree.TreeNode} destination
+	 * @return {void}
+	 */
+	restoreNodeAfterDestination: function(node, tree, destination) {
+		TYPO3.Components.PageTree.Commands.restoreNode(
+			node.attributes.nodeData,
+			-destination.attributes.nodeData.id,
+			function(updatedNode) {
+				if (this.evaluateResponse(updatedNode)) {
+					var newTreeNode = new Ext.tree.TreeNode(
+						Ext.apply(node.attributes, updatedNode)
+					);
+					destination.parentNode.insertBefore(newTreeNode, destination.nextSibling);
+				}
+			},
+			this
+		);
 	},
 
+	/**
+	 * Collapses a whole tree branch
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	collapseBranch: function(node) {
+		node.collapseChildNodes(true);
+		node.collapse();
+	},
+
+	/**
+	 * Expands a whole tree branch
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	expandBranch: function(node) {
+		node.expand();
+		node.expandChildNodes(true);
+	},
+
+	/**
+	 * Opens a popup windows for previewing the given node/page
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	viewPage: function(node) {
 		TYPO3.Components.PageTree.Commands.getViewLink(
 			node.attributes.nodeData,
-			(TYPO3.configuration.workspaceFrontendPreviewEnabled && TYPO3.configuration.currentWorkspace != 0),
 			function(result) {
-				openUrlInWindow(result, 'typo3-contextMenu-view');
+				openUrlInWindow(result, 'typo3ContextMenuView');
 			}
 		);
 	},
 
+	/**
+	 * Creates a temporary tree mount point
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	mountAsTreeRoot: function(node, tree) {
+		TYPO3.Components.PageTree.Commands.setTemporaryMountPoint(
+			node.attributes.nodeData,
+			function(response) {
+				if (TYPO3.Components.PageTree.Configuration.temporaryMountPoint) {
+					TYPO3.Backend.NavigationContainer.PageTree.removeIndicator(
+						TYPO3.Backend.NavigationContainer.PageTree.temporaryMountPointInfoIndicator
+					);
+				}
+
+				TYPO3.Components.PageTree.Configuration.temporaryMountPoint = response;
+				TYPO3.Backend.NavigationContainer.PageTree.addTemporaryMountPointIndicator();
+
+				var selectedNode = TYPO3.Backend.NavigationContainer.PageTree.getSelected();
+				tree.stateId = 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint;
+				tree.refreshTree(function() {
+					var nodeIsSelected = false;
+					if (selectedNode) {
+						nodeIsSelected = TYPO3.Backend.NavigationContainer.PageTree.select(
+							selectedNode.attributes.nodeData.id
+						);
+					}
+
+					var node = (nodeIsSelected ? TYPO3.Backend.NavigationContainer.PageTree.getSelected() : null);
+					if (node) {
+						this.singleClick(node, tree);
+					} else {
+						this.singleClick(tree.getRootNode().firstChild, tree);
+					}
+				}, this);
+			},
+			this
+		);
+	},
+
+	/**
+	 * Opens the edit page properties dialog
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	editPageProperties: function(node) {
+		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'alt_doc.php?edit[pages][' + node.attributes.id + ']=edit'
+			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit'
 		);
 	},
 
+	/**
+	 * Opens the new page wizard
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	newPageWizard: function(node) {
+		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'db_new.php?id=' + node.attributes.id + '&pagesOnly=1'
+			'db_new.php?id=' + node.attributes.nodeData.id + '&pagesOnly=1'
 		);
 	},
 
+	/**
+	 * Opens the info popup
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	openInfoPopUp: function(node) {
-		launchView('pages', node.attributes.id);
+		launchView('pages', node.attributes.nodeData.id);
 	},
 
+	/**
+	 * Opens the history popup
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	openHistoryPopUp: function(node) {
+		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'show_rechis.php?element=pages:' + node.attributes.id
+			'show_rechis.php?element=pages:' + node.attributes.nodeData.id
 		);
 	},
 
-	enableCutMode: function(node, pageTree) {
-		this.disableCopyMode(node, pageTree);
-		node.attributes.nodeData.t3InCutMode = true;
-		pageTree.tree.t3ContextInfo.inCutMode = true;
-		pageTree.tree.t3ContextNode = node;
+	/**
+	 * Opens the export .t3d file dialog
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	exportT3d: function(node) {
+		node.select();
+		TYPO3.Backend.ContentContainer.setUrl(
+			'sysext/impexp/app/index.php?tx_impexp[action]=export&' +
+				'id=0&tx_impexp[pagetree][id]=' + node.attributes.nodeData.id +
+				'&tx_impexp[pagetree][levels]=' + node.attributes.nodeData.id +
+				'&tx_impexp[pagetree][tables][]=_ALL'
+		);
 	},
 
-	disableCutMode: function(node, pageTree) {
-		this.releaseCutAndCopyModes(pageTree);
+	/**
+	 * Opens the import .t3d file dialog
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	importT3d: function(node) {
+		node.select();
+		TYPO3.Backend.ContentContainer.setUrl(
+			'sysext/impexp/app/index.php?id=' + node.attributes.nodeData.id +
+				'&table=pages&tx_impexp[action]=import'
+		);
+	},
+
+	/**
+	 * Enables the cut mode of a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	enableCutMode: function(node, tree) {
+		this.disableCopyMode(node, tree);
+		node.attributes.nodeData.t3InCutMode = true;
+		tree.t3ContextInfo.inCutMode = true;
+		tree.t3ContextNode = node;
+	},
+
+	/**
+	 * Disables the cut mode of a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	disableCutMode: function(node, tree) {
+		this.releaseCutAndCopyModes(tree);
 		node.attributes.nodeData.t3InCutMode = false;
 	},
 
-	enableCopyMode: function(node, pageTree) {
-		this.disableCutMode(node, pageTree);
+	/**
+	 * Enables the copy mode of a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	enableCopyMode: function(node, tree) {
+		this.disableCutMode(node, tree);
 		node.attributes.nodeData.t3InCopyMode = true;
-		pageTree.tree.t3ContextInfo.inCopyMode = true;
-		pageTree.tree.t3ContextNode = node;
+		tree.t3ContextInfo.inCopyMode = true;
+		tree.t3ContextNode = node;
 	},
 
-	disableCopyMode: function(node, pageTree) {
-		this.releaseCutAndCopyModes(pageTree);
+	/**
+	 * Disables the copy mode of a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	disableCopyMode: function(node, tree) {
+		this.releaseCutAndCopyModes(tree);
 		node.attributes.nodeData.t3InCopyMode = false;
 	},
 
-	pasteIntoNode: function(node, pageTree) {
-		this.releaseCutAndCopyModes(pageTree);
-		this.stub();
-	},
+	/**
+	 * Pastes the cut/copy context node into the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	pasteIntoNode: function(node, tree) {
+		if (!tree.t3ContextNode) {
+			return;
+		}
 
-	pasteAfterNode: function(node, pageTree) {
-		this.releaseCutAndCopyModes(pageTree);
-		this.stub();
-	},
+		if (tree.t3ContextInfo.inCopyMode) {
+			var newNode = tree.t3ContextNode = new Ext.tree.TreeNode(tree.t3ContextNode.attributes);
+			newNode.id = 'fakeNode';
+			node.insertBefore(newNode, node.childNodes[0]);
+			node.attributes.nodeData.t3InCopyMode = false;
+			this.copyNodeToFirstChildOfDestination(newNode, tree);
 
-	releaseCutAndCopyModes: function(pageTree) {
-		pageTree.tree.t3ContextInfo.inCutMode = false;
-		pageTree.tree.t3ContextInfo.inCopyMode = false;
-
-		if (pageTree.tree.t3ContextNode) {
-			pageTree.tree.t3ContextNode.attributes.nodeData.t3InCutMode = false;
-			pageTree.tree.t3ContextNode.attributes.nodeData.t3InCopyMode = false;
-			pageTree.tree.t3ContextNode = null;
+		} else if (tree.t3ContextInfo.inCutMode) {
+			node.appendChild(tree.t3ContextNode);
+			node.attributes.nodeData.t3InCutMode = false;
+			this.moveNodeToFirstChildOfDestination(node, tree);
 		}
 	},
 
-	moveNodeToFirstChildOfDestination: function(node, newParent) {
-		TYPO3.Components.PageTree.Commands.moveNodeToFirstChildOfDestination(
-			node.attributes.nodeData,
-			newParent
-		);
+	/**
+	 * Pastes a cut/copy context node after the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	pasteAfterNode: function(node, tree) {
+		if (!tree.t3ContextNode) {
+			return;
+		}
+
+		if (tree.t3ContextInfo.inCopyMode) {
+			var newNode = tree.t3ContextNode = new Ext.tree.TreeNode(tree.t3ContextNode.attributes);
+			newNode.id = 'fakeNode';
+			node.parentNode.insertBefore(newNode, node.nextSibling);
+			node.attributes.nodeData.t3InCopyMode = false;
+			this.copyNodeAfterDestination(newNode, tree);
+
+		} else if (tree.t3ContextInfo.inCutMode) {
+			node.parentNode.insertBefore(tree.t3ContextNode, node.nextSibling);
+			node.attributes.nodeData.t3InCutMode = false;
+			this.moveNodeAfterDestination(node, tree);
+		}
 	},
 
-	moveNodeAfterDestination: function(node, newParent) {
+	/**
+	 * Moves the current tree context node after the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	moveNodeAfterDestination: function(node, tree) {
 		TYPO3.Components.PageTree.Commands.moveNodeAfterDestination(
-			node.attributes.nodeData,
-			newParent
+			tree.t3ContextNode.attributes.nodeData,
+			node.attributes.nodeData.id,
+			function(response) {
+				if (this.evaluateResponse(response) && tree.t3ContextNode) {
+					this.updateNode(tree.t3ContextNode, tree.t3ContextNode.isExpanded(), response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
 		);
 	},
 
-	insertNodeAfterDestination: function(node, callback) {
+	/**
+	 * Moves the current tree context node as the first child of the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	moveNodeToFirstChildOfDestination: function(node, tree) {
+		TYPO3.Components.PageTree.Commands.moveNodeToFirstChildOfDestination(
+			tree.t3ContextNode.attributes.nodeData,
+			node.attributes.nodeData.id,
+			function(response) {
+				if (this.evaluateResponse(response) && tree.t3ContextNode) {
+					this.updateNode(tree.t3ContextNode, tree.t3ContextNode.isExpanded(), response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
+		);
+	},
+
+	/**
+	 * Inserts a new node after the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	insertNodeAfterDestination: function(node, tree) {
 		TYPO3.Components.PageTree.Commands.insertNodeAfterDestination(
-			node.parentNode.attributes.nodeData,
-			node.previousSibling.id,
-			node.serverNodeType,
-			callback.createDelegate(node)
+			tree.t3ContextNode.attributes.nodeData,
+			node.previousSibling.attributes.nodeData.id,
+			tree.t3ContextInfo.serverNodeType,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, node.isExpanded(), response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
 		);
 	},
 
-	insertNodeToFirstChildOfDestination: function(node, callback) {
+	/**
+	 * Inserts a new node as the first child of the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	insertNodeToFirstChildOfDestination: function(node, tree) {
 		TYPO3.Components.PageTree.Commands.insertNodeToFirstChildOfDestination(
-			node.parentNode.attributes.nodeData,
-			node.serverNodeType,
-			callback.createDelegate(node)
+			tree.t3ContextNode.attributes.nodeData,
+			tree.t3ContextInfo.serverNodeType,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					node = this.updateNode(node, true, response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
 		);
 	},
 
-	copyNodeToFirstChildOfDestination: function(node, callback) {
-		TYPO3.Components.PageTree.Commands.copyNodeToFirstChildOfDestination(
-			node.attributes.nodeData,
-			node.parentNode.id,
-			callback.createDelegate(node)
-		);
-	},
-
-	copyNodeAfterDestination: function(node, callback) {
+	/**
+	 * Copies the current tree context node after the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	copyNodeAfterDestination: function(node, tree) {
 		TYPO3.Components.PageTree.Commands.copyNodeAfterDestination(
-			node.attributes.nodeData,
-			node.previousSibling.id,
-			callback.createDelegate(node)
+			tree.t3ContextNode.attributes.nodeData,
+			node.previousSibling.attributes.nodeData.id,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, true, response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
 		);
 	},
 
+	/**
+	 * Copies the current tree context node as the first child of the given node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	copyNodeToFirstChildOfDestination: function(node, tree) {
+		TYPO3.Components.PageTree.Commands.copyNodeToFirstChildOfDestination(
+			tree.t3ContextNode.attributes.nodeData,
+			node.parentNode.attributes.nodeData.id,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, true, response);
+				}
+				this.releaseCutAndCopyModes(tree);
+			},
+			this
+		);
+	},
+
+	/**
+	 * Visibilizes a page
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	enablePage: function(node) {
 		TYPO3.Components.PageTree.Commands.visiblyNode(
 			node.attributes.nodeData,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					this.updateNode(node, response);
+					this.updateNode(node, node.isExpanded(), response);
 				}
 			},
 			this
 		);
 	},
 
+	/**
+	 * Disables a page
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
 	disablePage: function(node) {
 		TYPO3.Components.PageTree.Commands.disableNode(
 			node.attributes.nodeData,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					this.updateNode(node, response);
+					this.updateNode(node, node.isExpanded(), response);
 				}
 			},
 			this
 		);
 	},
 
-	updateNode: function(node, updatedNode) {
-		updatedNode.uiProvider = TYPO3.Components.PageTree.PageTreeUI;
-		var newTreeNode = new Ext.tree.TreeNode(updatedNode);
-		node.parentNode.replaceChild(newTreeNode, node);
-		newTreeNode.getOwnerTree().refreshNode(newTreeNode);
-	},
-
-	singleClick: function(node) {
-		TYPO3.Backend.ContentContainer.setUrl(
-			TS.PATH_typo3 + currentSubScript + '?id=' + node.attributes.id
-		);
-	},
-
-	saveTitle: function(node, newText, oldText) {
-		if (newText === oldText) {
-			return;
+	/**
+	 * Reloads the content frame with the current module and node id
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {void}
+	 */
+	singleClick: function(node, tree) {
+		var separator = '?';
+		if (currentSubScript.indexOf('?') !== -1) {
+			separator = '&';
 		}
 
-		TYPO3.Components.PageTree.Commands.updateLabel(
-			node.editNode.attributes.nodeData,
-			newText,
-			this.evaluateResponse
+		node.select();
+		tree.stateHash['lastSelectedNode'] = node.id;
+		TYPO3.Backend.ContentContainer.setUrl(
+			TS.PATH_typo3 + currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 		);
+	},
+
+	/**
+	 * Updates the title of a node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {String} newText
+	 * @param {String} oldText
+	 * @return {void}
+	 */
+	saveTitle: function(node, newText, oldText) {
+		this.singleClick(node.editNode, node.editNode.ownerTree);
+
+		if (newText !== oldText) {
+			TYPO3.Components.PageTree.Commands.updateLabel(
+				node.editNode.attributes.nodeData,
+				newText,
+				this.evaluateResponse
+			);
+		}
 	}
 };
