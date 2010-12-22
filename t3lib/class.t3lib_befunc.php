@@ -3130,7 +3130,13 @@ final class t3lib_BEfunc {
 				t3lib_div::callUserFunction($updateSignals[$set], $params, $ref);
 				$signals[] = $params['JScode'];
 			} else {
-				if ($set == 'updatePageTree' || $set == 'updateFolderTree') {
+				if ($set === 'updatePageTree') {
+					$signals[] = '
+						if (top && top.TYPO3.Backend.NavigationContainer.PageTree) {
+							top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+						}
+					';
+				} else if ($set == 'updateFolderTree') {
 					$signals[] = '
 					if (top && top.TYPO3.Backend.NavigationIframe) {
 						top.TYPO3.Backend.NavigationIframe.refresh();

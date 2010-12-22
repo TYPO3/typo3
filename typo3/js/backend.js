@@ -37,8 +37,8 @@ function jump(url, modName, mainModName) {
 		// clear information about which entry in nav. tree that might have been highlighted.
 	top.fsMod.navFrameHighlightedID = [];
 
-	if (top.TYPO3.Backend.NavigationIframe.isVisible()) {
-		top.TYPO3.Backend.NavigationIframe.refresh();
+	if (top.TYPO3.Backend.NavigationContainer.PageTree) {
+		top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 	}
 
 	top.nextLoadModuleUrl = url;

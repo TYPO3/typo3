@@ -338,13 +338,13 @@ Ext.onReady(function() {
 
 		// keep backward compatibility
 	top.list = TYPO3.Backend.ContentContainer;
-	top.nav = TYPO3.Backend.NavigationIframe;
+	top.nav = TYPO3.Backend.NavigationContainer.PageTree;
 	top.list_frame = top.list.getIframe();
-	top.nav_frame = TYPO3.Backend.NavigationIframe.getIframe();
+	top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
 
 	top.TYPO3ModuleMenu = TYPO3.ModuleMenu.App;
 	top.content = {
-		nav_frame: TYPO3.Backend.NavigationIframe.getIframe(),
+		nav_frame: TYPO3.Backend.NavigationContainer.PageTree,
 		list_frame: TYPO3.Backend.ContentContainer.getIframe(),
 		location: TYPO3.Backend.ContentContainer.getIframe().location,
 		document: TYPO3.Backend.ContentContainer.getIframe()

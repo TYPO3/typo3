@@ -27,6 +27,7 @@
 
 2010-12-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
+	* Follow-up to #16804: Bug/Prerequisite for the new pagetree: refresh pageTree with updateSignal, use new shortcuts in JS (Thanks to Stefan Galinski)
 	* Follow-up to #16779: t3lib_cache_backend_RedisBackendTest causes t3lib_db_PreparedStatementTest tests to fail (Thanks to Oliver Klee)
 	* Fixed bug #16777: Test failure in t3lib_extmgmTest if tests are located in typo3_src/tests/ instead of tests/ (Thanks to Oliver Klee)
 	* Fixed bug #16790: Typo in topbar CSS
