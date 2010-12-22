@@ -131,6 +131,7 @@ class Tx_Workspaces_Service_Stages {
 					'uid'
 				);
 				foreach($workspaceStageRecs as $stage) {
+					$stage['title'] =  $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stage['title'] . '"'; 
 					$stages[] = $stage;
 				}
 			}
@@ -169,7 +170,8 @@ class Tx_Workspaces_Service_Stages {
 						// yes, so add to return array
 					$stagesForWSUserData[] = array(
 						'uid' => $workspaceStageRec['uid'],
-						'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' ' . $workspaceStageRec['title']);
+						'title' => $workspaceStageRec['title']
+					);
 				} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID) {
 						if ($GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 							$stagesForWSUserData[] = $workspaceStageRec;
