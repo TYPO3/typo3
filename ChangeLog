@@ -1,3 +1,7 @@
+2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16825: Fatal error in lang.php (thanks to Georg Ringer)
+
 2010-12-21  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #16786: Versioning: Generating preview link not working (thanks to Frederic Gaus)
