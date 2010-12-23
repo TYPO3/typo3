@@ -1,3 +1,7 @@
+2010-12-23  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16760: RTE transformation removes all span tags on save after upgrade TYPO3 4.2.16
+
 2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16825: Fatal error in lang.php (thanks to Georg Ringer)
