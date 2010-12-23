@@ -4405,7 +4405,7 @@ class tslib_cObj {
 						$contentAccumP++;
 						$treated = 1;
 							// in-out-tag: img and other empty tags
-						if ($tag[0] == 'img' || substr($tag[1], -3, 2) == ' /') {
+						if (preg_match('/^(area|base|br|col|hr|img|input|meta|param)$/i', $tag[0])) {
 							$tag['out'] = 1;
 						}
 					}
@@ -4510,17 +4510,28 @@ class tslib_cObj {
 
 		foreach ($lParts as $k => $l) {
 			$sameBeginEnd = 0;
+			$emptyTag = 0;
 			$l = trim($l);
 			$attrib = array();
 			$nWrapped = 0;
-			$byPass = 0;
 			if (substr($l, 0, 1) == '<' && substr($l, -1) == '>') {
 				$fwParts = explode('>', substr($l, 1), 2);
-				$backParts = t3lib_div::revExplode('<', substr($fwParts[1], 0, -1), 2);
-				$attrib = t3lib_div::get_tag_attributes('<' . $fwParts[0] . '>');
-				list ($tagName) = explode(' ', $fwParts[0]);
-				$str_content = $backParts[0];
-				$sameBeginEnd = (substr(strtolower($backParts[1]), 1, strlen($tagName)) == strtolower($tagName));
+				list($tagName, $tagParams) = explode(' ',$fwParts[0], 2);
+				if (!$fwParts[1]) {
+					if (substr($tagName, -1) == '/') {
+						$tagName = substr($tagName, 0, -1);
+					}
+					if (substr($fwParts[0], -1) == '/') {
+						$sameBeginEnd = 1;
+						$emptyTag = 1;
+						$attrib = t3lib_div::get_tag_attributes('<'.substr($fwParts[0], 0, -1).'>');
+					}
+				} else {
+					$backParts = t3lib_div::revExplode('<', substr($fwParts[1],0,-1), 2);
+					$attrib = t3lib_div::get_tag_attributes('<'.$fwParts[0].'>');
+					$str_content = $backParts[0];
+					$sameBeginEnd = (substr(strtolower($backParts[1]),1,strlen($tagName))==strtolower($tagName));
+				}
 			}
 
 			if ($sameBeginEnd && in_array(strtolower($tagName), $encapTags)) {
@@ -4564,12 +4575,14 @@ class tslib_cObj {
 					$attrib['align'] = $defaultAlign;
 
 				$params = t3lib_div::implodeAttributes($attrib, 1);
-				if ($conf['removeWrapping']) {
+				if ($conf['removeWrapping'] && !($emptyTag && $conf['removeWrapping.']['keepSingleTag'])) {
 					$str_content = $str_content;
 				} else {
-					$str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . '>' .
-						$str_content .
-						'</' . strtolower($uTagName) . '>';
+					if ($emptyTag) {
+						$str_content='<'.strtolower($uTagName).(trim($params)?' '.trim($params):'').' />';
+					} else {
+						$str_content='<'.strtolower($uTagName).(trim($params)?' '.trim($params):'').'>'.$str_content.'</'.strtolower($uTagName).'>';
+					}
 				}
 			}
 

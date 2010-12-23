@@ -91,7 +91,7 @@
 class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 		// Static:
-	var $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,HR,ADDRESS,DL,DD'; // List of tags for these elements
+	var $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD'; // List of tags for these elements
 
 		// Internal, static:
 	var $recPid = 0; // Set this to the pid of the record manipulated by the class.
@@ -898,13 +898,17 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 					break;
 					default:
-							// Eliminate true linebreaks inside other headlist tags and after hr tag
+							// Eliminate true linebreaks inside other headlist tags
 						$blockSplit[$k] = preg_replace('/[' . preg_quote(LF . CR) . ']+/', ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 					break;
 				}
 			} else { // NON-block:
 				if (strcmp(trim($blockSplit[$k]), '')) {
-					$blockSplit[$k] = $this->divideIntoLines(preg_replace('/[' . preg_quote(LF . CR) . ']+/', ' ', $blockSplit[$k])) . $lastBR;
+						// Remove linebreaks following hr tags
+					$blockSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>[' . preg_quote(LF . CR) . ']+/', '<$1$2 />', $blockSplit[$k]);
+						// Replace other linebreaks with space
+					$blockSplit[$k] = preg_replace('/[' . preg_quote(LF . CR) . ']+/', ' ', $blockSplit[$k]);
+					$blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]) . $lastBR;
 					$blockSplit[$k] = $this->transformStyledATags($blockSplit[$k]);
 				} else {
 					unset($blockSplit[$k]);
@@ -1222,7 +1226,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		}
 
 			// Setting configuration for processing:
-		$allowTagsOutside = t3lib_div::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? $this->procOptions['allowTagsOutside'] : 'img'), 1);
+		$allowTagsOutside = t3lib_div::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), 1);
 		$remapParagraphTag = strtoupper($this->procOptions['remapParagraphTag']);
 		$divSplit = $this->splitIntoBlock('div,p', $value, 1); // Setting the third param to 1 will eliminate false end-tags. Maybe this is a good thing to do...?
 
@@ -1234,7 +1238,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Returns plainly the value if there was no div/p sections in it
 		if (count($divSplit) <= 1 || $count <= 0) {
-			return $value;
+				// Wrap hr tags with LF's
+			$newValue = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2 />' . LF, $value);
+			$newValue = preg_replace('/' . preg_quote(LF . LF) . '/i', LF, $newValue);
+			$newValue = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $newValue);
+			return $newValue;
 		}
 
 			// Traverse the splitted sections:
@@ -1323,6 +1331,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			} else { // outside div:
 					// Remove positions which are outside div/p tags and without content
 				$divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
+					// Wrap hr tags with LF's
+				$divSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2 />' . LF, $divSplit[$k]);
+				$divSplit[$k] = preg_replace('/' . preg_quote(LF . LF) . '/i', LF, $divSplit[$k]);
+				$divSplit[$k] = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $divSplit[$k]);
 				if (!strcmp($divSplit[$k], '')) {
 					unset($divSplit[$k]);
 				} // Remove part if it's empty
@@ -1364,12 +1376,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 			}
 
-				// Wrapping the line in <$dT> is not already wrapped:
-			$testStr = strtolower(trim($parts[$k]));
-			if (substr($testStr, 0, 4) != '<div' || substr($testStr, -6) != '</div>') {
-				if (substr($testStr, 0, 2) != '<p' || substr($testStr, -4) != '</p>') {
-					// Only set p-tags if there is not already div or p tags:
-					$parts[$k] = '<' . $dT . '>' . $parts[$k] . '</' . $dT . '>';
+				// Wrapping the line in <$dT> if not already wrapped and does not contain an hr tag
+			if (!preg_match('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', $parts[$k])) {
+				$testStr = strtolower(trim($parts[$k]));
+				if (substr($testStr, 0, 4) != '<div' || substr($testStr, -6) != '</div>') {
+					if (substr($testStr, 0, 2) != '<p' || substr($testStr, -4) != '</p>') {
+						// Only set p-tags if there is not already div or p tags:
+						$parts[$k] = '<' . $dT . '>' . $parts[$k] . '</' . $dT . '>';
+					}
 				}
 			}
 		}
