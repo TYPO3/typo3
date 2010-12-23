@@ -66,6 +66,37 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 		grid.on('render', function() {
 			view.mainBody.on('mousedown', this.onMouseDown, this);
 		}, this);
+
+		grid.store.on('load', this.onStoreLoaded, this);
+		grid.on("beforestaterestore", this.applyState, this);
+		grid.on("beforestatesave", this.saveState, this);
+	},
+
+	/** @private */
+	onStoreLoaded: function(store, records, options) {
+		var index = -1;
+		for(var key in this.state){
+			if (this.state[key] === true) {
+				index = store.indexOfId(key);
+				if (index > -1) {
+					this.expandRow(index);
+				}
+			}
+		}
+	},
+
+	/** @private */
+	applyState: function(grid, state){
+		this.suspendStateStore = true;
+		if(state.expander) {
+			this.state = state.expander;
+		}
+		this.suspendStateStore = false;
+	},
+
+	/** @private */
+	saveState: function(grid, state){
+		return state.expander = this.state;
 	},
 
 	getBodyContent : function(record, index) {
@@ -126,6 +157,7 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 			row = this.grid.view.getRow(row);
 		}
 		this[Ext.fly(row).hasClass('x-grid3-row-collapsed') ? 'expandRow' : 'collapseRow'](row);
+		this.grid.saveState();
 	},
 
 	expandRow : function(row) {
@@ -137,6 +169,7 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 		if (this.beforeExpand(record, body, row.rowIndex)) {
 			this.state[record.id] = true;
 			Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
+			this.grid.saveState();
 		   	if (this.fireEvent('expand', this, record, body, row.rowIndex) !== false) {
 				//  If the expand event is successful then get the remoteDataMethod
 				this.getRemoteDataMethod(record,row.rowIndex);
@@ -153,6 +186,7 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 		if (this.fireEvent('beforcollapse', this, record, body, row.rowIndex) !== false) {
 			this.state[record.id] = false;
 			Ext.fly(row).replaceClass('x-grid3-row-expanded', 'x-grid3-row-collapsed');
+			this.grid.saveState();
 			this.fireEvent('collapse', this, record, body, row.rowIndex);
 		}
 	}
