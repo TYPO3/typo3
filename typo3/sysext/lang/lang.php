@@ -453,7 +453,7 @@ class language {
 			// Get default file
 		$llang = $this->readLLfile($fileRef);
 
-		if (count($llang)) {
+		if (is_array($llang) && count($llang)) {
 
 			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule((array)$LOCAL_LANG, $llang);
 

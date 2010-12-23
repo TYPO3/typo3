@@ -1,3 +1,7 @@
+2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16825: Fatal error in lang.php (thanks to Georg Ringer)
+
 2010-12-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16823: htmlArea RTE: Abbreviation dialogue and table lack contextual help
