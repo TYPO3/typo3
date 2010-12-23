@@ -1,3 +1,7 @@
+2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
+
+	* Fixed bug #16825: Fatal error in lang.php (thanks to Georg Ringer)
+
 2010-12-16  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Release of TYPO3 4.2.16
