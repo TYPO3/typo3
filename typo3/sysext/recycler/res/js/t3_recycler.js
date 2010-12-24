@@ -83,7 +83,7 @@ Recycler.MainStore = new Ext.data.Store({
 		pagingSizeDefault: TYPO3.settings.Recycler.pagingSize,
 		table: TYPO3.settings.Recycler.tableSelection
 	}
-	
+
 });
 
 /****************************************************
@@ -111,10 +111,10 @@ Recycler.TableStore = new Ext.data.Store({
  * Confirmation Window
  ****************************************************/
 Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
-	
+
 	width: 300,
-	height: 200, 
-	
+	height: 200,
+
 	title: '',
 	confirmText: '',
 	confirmQuestion: '',
@@ -135,7 +135,7 @@ Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
 			xtype: 'form',
 			bodyCssClass: 'recycler-messagebox',
 			modal: true,
-			
+
 			items: [
 				{
 					xtype: 'label',
@@ -162,14 +162,14 @@ Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
 					scope: this,
 					handler: function(button, event) {
 						var tcemainData = [];
-		
+
 						for (var i=0; i < this.records.length; i++) {
 							tcemainData[i] = [this.records[i].data.table, this.records[i].data.uid];
 						}
 						Ext.Ajax.request({
 							url: TYPO3.settings.Recycler.ajaxController + '&cmd=' + this.command,
 							params: {
-								'data': Ext.encode(tcemainData), 
+								'data': Ext.encode(tcemainData),
 								'recursive': this.getComponent('recursiveCheck').getValue()
 							},
 							callback: function(options, success, response) {
@@ -190,7 +190,7 @@ Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
 								}
 							}
 						});
-		
+
 						this.close();
 					}
 				},{
@@ -215,7 +215,7 @@ Recycler.Utility = {
 			top.content.nav_frame.Tree.refresh();
 		}
 	},
-	
+
 	// not used?
 	filterGrid: function(grid, component) {
 		var filterText = component.getValue();
@@ -228,16 +228,16 @@ Recycler.Utility = {
 			}
 		});
 	},
-	
+
 	/****************************************************
 	 * permanent deleting function
 	 ****************************************************/
 
 	function_delete: function(button, event) {
 		Recycler.Utility.rowAction(
-			'doDelete', 
-			TYPO3.lang.cmd_doDelete_confirmText, 
-			TYPO3.lang.title_delete, 
+			'doDelete',
+			TYPO3.lang.cmd_doDelete_confirmText,
+			TYPO3.lang.title_delete,
 			TYPO3.lang.text_delete
 		);
 	},
@@ -249,8 +249,8 @@ Recycler.Utility = {
 	function_undelete: function(button, event) {
 		Recycler.Utility.rowAction(
 			'doUndelete',
-			TYPO3.lang.sure, 
-			TYPO3.lang.title_undelete, 
+			TYPO3.lang.sure,
+			TYPO3.lang.title_undelete,
 			TYPO3.lang.text_undelete
 		);
 	},
@@ -270,7 +270,7 @@ Recycler.Utility = {
 			var arePagesAffected = false;
 			var tables = [];
 			var hideRecursive = ('doDelete' == command);
-			
+
 			for (iterator=0; iterator < records.length; iterator++) {
 				if (tables.indexOf(records[iterator].data.table) < 0) {
 					tables.push(records[iterator].data.table);
@@ -305,7 +305,7 @@ Recycler.Utility = {
 			});
 		}
 	},
-	
+
 	/****************************************************
 	 * pluggable renderer
 	 ****************************************************/
@@ -333,10 +333,13 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 	border: false,
 	defaults: {autoScroll: false},
 	plain: true,
-	
+
 	initComponent : function() {
 		Ext.apply(this, {
 			id: 'delRecordId',
+			stateful: true,
+			stateId: 'recyclerGrid',
+			stateEvents: ['columnmove', 'columnresize', 'sortchange', 'expand', 'collapse'],
 			loadMask: true,
 			stripeRows: true,
 			collapsible: false,
@@ -410,6 +413,9 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 					 ****************************************************/
 
 					xtype: 'combo',
+					stateful: true,
+					stateId: 'depthCombo',
+					stateEvents: ['select'],
 					width: 150,
 					lazyRender: true,
 					valueField: 'depth',
@@ -465,6 +471,9 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 
 					xtype: 'combo',
 					lazyRender: true,
+					stateful: true,
+					stateId: 'tableCombo',
+					stateEvents: ['select'],
 					valueField: 'valueField',
 					displayField: 'tableTitle',
 					id: 'tableSelector',
@@ -475,7 +484,7 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 					triggerAction: 'all',
 					editable: false,
 					forceSelection: true,
-					
+
 					store: Recycler.TableStore,
 					valueNotFoundText: String.format(TYPO3.lang.noValueFound, TYPO3.settings.Recycler.tableSelection),
 					tpl: '<tpl for="."><tpl if="records &gt; 0"><div ext:qtip="{table} ({records})" class="x-combo-list-item">{tableTitle} ({records}) </div></tpl><tpl if="records &lt; 1"><div ext:qtip="{table} ({records})" class="x-combo-list-item x-item-disabled">{tableTitle} ({records}) </div></tpl></tpl>',
@@ -519,6 +528,16 @@ Recycler.App = {
 };
 
 Ext.onReady(function(){
+
+		//save states in BE_USER->uc
+	Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+		key: 'moduleData.web_recycler.States'
+	}));
+
+	if (Ext.isObject(TYPO3.settings.Recycler.States)) {
+		Ext.state.Manager.getProvider().initState(TYPO3.settings.Recycler.States);
+	}
+
 	// disable loadindicator
 	Ext.UpdateManager.defaults.showLoadIndicator = false;
 	// fire recycler grid

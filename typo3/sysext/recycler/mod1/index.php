@@ -61,6 +61,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('recycler') . 'mod1/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setExtDirectStateProvider();
 
 		$this->pageRenderer = $this->doc->getPageRenderer();
 
@@ -189,6 +190,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			'deleteDisable' => $this->allowDelete ? 0 : 1,
 			'depthSelection' => $this->getDataFromSession('depthSelection', 0),
 			'tableSelection' => $this->getDataFromSession('tableSelection', 'pages'),
+			'States' => $GLOBALS['BE_USER']->uc['moduleData']['web_recycler']['States'],
 		);
 		return $configuration;
 	}
