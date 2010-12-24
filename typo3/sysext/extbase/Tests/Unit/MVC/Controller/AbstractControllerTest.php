@@ -58,7 +58,18 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_T
 
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response');
 
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('initializeArguments', 'initializeControllerArgumentsBaseValidators', 'mapRequestArgumentsToControllerArguments'), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')
+			->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')
+			->will($this->returnValue($this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder')));
+
+		$controller = $this->getAccessibleMock(
+			'Tx_Extbase_MVC_Controller_AbstractController',
+			array('initializeArguments', 'initializeControllerArgumentsBaseValidators', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext'),
+			array(), '', FALSE
+		);
+		$controller->_set('objectManager', $mockObjectManager);
+
 		$controller->processRequest($mockRequest, $mockResponse);
 	}
 
@@ -196,7 +207,11 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_T
 	 * @test
 	 */
 	public function mapRequestArgumentsToControllerArgumentsPreparesInformationAndValidatorsAndMapsAndValidates() {
-		$mockValidator = new Tx_Extbase_MVC_Controller_ArgumentsValidator(); // FIXME see original FLOW3 code
+		$mockValidator = $this->getMock('Tx_Extbase_MVC_Controller_ArgumentsValidator');
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')
+			->with('Tx_Extbase_MVC_Controller_ArgumentsValidator')
+			->will($this->returnValue($mockValidator));
 
 		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'), '', FALSE);
 		$mockArgumentFoo->expects($this->any())->method('getName')->will($this->returnValue('foo'));
@@ -218,7 +233,10 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_T
 			->will($this->returnValue(TRUE));
 		$mockPropertyMapper->expects($this->once())->method('getMappingResults')->will($this->returnValue($mockMappingResults));
 
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
+		$controller = $this->getAccessibleMock(
+			'Tx_Extbase_MVC_Controller_AbstractController',
+			array('dummy'), array(), '', FALSE
+		);
 
 		$controller->_set('arguments', $mockArguments);
 		$controller->_set('request', $mockRequest);
@@ -228,8 +246,6 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_T
 		$controller->_call('mapRequestArgumentsToControllerArguments');
 
 		$this->assertSame($mockMappingResults, $controller->_get('argumentsMappingResults'));
-		// $this->assertTrue(in_array('Tx_Extbase_Validation_Validator_ObjectValidatorInterface', class_implements($controller->_get('argumentsMappingResults'))));
 	}
-
 }
 ?>
