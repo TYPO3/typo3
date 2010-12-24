@@ -165,7 +165,7 @@ class t3lib_diff {
 			// Perform diff.
 		$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'] . ' ' . $this->diffOptions . ' ' . $file1 . ' ' . $file2;
 		$res = array();
-		exec($cmd, $res);
+		t3lib_utility_Command::exec($cmd, $res);
 
 		unlink($file1);
 		unlink($file2);

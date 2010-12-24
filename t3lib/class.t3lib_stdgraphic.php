@@ -2587,7 +2587,7 @@ class t3lib_stdGraphic {
 			$frame = $this->noFramePrepended ? '' : '[0]';
 			$cmd = t3lib_div::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
 			$returnVal = array();
-			exec($cmd, $returnVal);
+			t3lib_utility_Command::exec($cmd, $returnVal);
 			$splitstring = $returnVal[0];
 			$this->IM_commands[] = array('identify', $cmd, $returnVal[0]);
 			if ($splitstring) {
@@ -2635,7 +2635,7 @@ class t3lib_stdGraphic {
 			$cmd = t3lib_div::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output, $cmd);
 
-			$ret = exec($cmd);
+			$ret = t3lib_utility_Command::exec($cmd);
 			t3lib_div::fixPermissions($output); // Change the permissions of the file
 
 			return $ret;
@@ -2666,7 +2666,7 @@ class t3lib_stdGraphic {
 			$cmd = t3lib_div::imageMagickCommand('combine', '-compose over +matte ' . $this->wrapFileName($input) . ' ' . $this->wrapFileName($overlay) . ' ' . $this->wrapFileName($theMask) . ' ' . $this->wrapFileName($output)); // +matte = no alpha layer in output
 			$this->IM_commands[] = array($output, $cmd);
 
-			$ret = exec($cmd);
+			$ret = t3lib_utility_Command::exec($cmd);
 			t3lib_div::fixPermissions($output); // Change the permissions of the file
 
 			if (is_file($theMask)) {

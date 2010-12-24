@@ -412,7 +412,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['pdfinfo'])	{
 						// Getting pdf-info:
 					$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
 					if (intval($pdfInfo['pages']))	{
@@ -422,7 +422,7 @@ class tx_indexed_search_extparse {
 						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
 						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
-						exec($cmd);
+						t3lib_utility_Command::exec($cmd);
 						if (@is_file($tempFileName))	{
 							$content = t3lib_div::getUrl($tempFileName);
 							unlink($tempFileName);
@@ -438,7 +438,7 @@ class tx_indexed_search_extparse {
 			case 'doc':
 				if ($this->app['catdoc'])	{
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
 					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
@@ -448,7 +448,7 @@ class tx_indexed_search_extparse {
 			case 'ppt':
 				if ($this->app['ppthtml'])	{
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -459,7 +459,7 @@ class tx_indexed_search_extparse {
 			case 'xls':
 				if ($this->app['xlhtml'])	{
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -476,13 +476,13 @@ class tx_indexed_search_extparse {
 				if ($this->app['unzip'])	{
 						// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$content_xml = implode(LF,$res);
 					unset($res);
 
 						// Read meta.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
-					exec($cmd, $res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$meta_xml = implode(LF,$res);
 					unset($res);
 
@@ -509,7 +509,7 @@ class tx_indexed_search_extparse {
 			case 'rtf':
 				if ($this->app['unrtf'])	{
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
-					exec($cmd,$res);
+					t3lib_utility_Command::exec($cmd, $res);
 					$fileContent = implode(LF,$res);
 					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
@@ -585,7 +585,7 @@ class tx_indexed_search_extparse {
 			case 'pdf':
 					// Getting pdf-info:
 				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
-				exec($cmd,$res);
+				t3lib_utility_Command::exec($cmd, $res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
 

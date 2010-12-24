@@ -502,7 +502,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 									copy($theFile, $theDestFile);
 								} else {
 									$cmd = 'cp "' . $theFile . '" "' . $theDestFile . '"';
-									exec($cmd);
+									t3lib_utility_Command::exec($cmd);
 								}
 								t3lib_div::fixPermissions($theDestFile);
 								clearstatcache();
@@ -546,7 +546,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
 									// No way to do this under windows!
 									$cmd = 'cp -R "' . $theFile . '" "' . $theDestFile . '"';
-									exec($cmd);
+									t3lib_utility_Command::exec($cmd);
 									clearstatcache();
 									if (@is_dir($theDestFile)) {
 										$this->writelog(2, 0, 2, 'Directory "%s" copied to "%s"', Array($theFile, $theDestFile));
@@ -621,7 +621,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 									@rename($theFile, $theDestFile);
 								} else {
 									$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
-									exec($cmd);
+									t3lib_utility_Command::exec($cmd);
 								}
 								clearstatcache();
 								if (@is_file($theDestFile)) {
@@ -667,8 +667,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 									} else {
 										$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
 										$errArr = array();
-										$retVar = 0;
-										exec($cmd, $errArr, $retVar);
+										t3lib_utility_Command::exec($cmd, $errArr);
 									}
 									clearstatcache();
 									if (@is_dir($theDestFile)) {
@@ -997,7 +996,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 							if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
 								// No way to do this under windows.
 								$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
-								exec($cmd);
+								t3lib_utility_Command::exec($cmd);
 								$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', Array($theFile, $theDest));
 								return TRUE;
 							} else {

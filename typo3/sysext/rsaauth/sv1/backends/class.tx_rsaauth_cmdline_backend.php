@@ -95,7 +95,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 		// secure.
 		$command = $this->opensslPath . ' genrsa -out ' .
 			escapeshellarg($privateKeyFile) . ' 1024';
-		exec($command);
+		t3lib_utility_Command::exec($command);
 
 		// Test that we got a private key
 		$privateKey = file_get_contents($privateKeyFile);
@@ -103,7 +103,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 			// Ok, we got the private key. Get the modulus.
 			$command = $this->opensslPath . ' rsa -noout -modulus -in ' .
 				escapeshellarg($privateKeyFile);
-			$value = exec($command);
+			$value = t3lib_utility_Command::exec($command);
 			if (substr($value, 0, 8) === 'Modulus=') {
 				$publicKey = substr($value, 8);
 
@@ -144,7 +144,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 
 		// Execute the command and capture the result
 		$output = array();
-		exec($command, $output);
+		t3lib_utility_Command::exec($command, $output);
 
 		// Remove the file
 		@unlink($privateKeyFile);
@@ -164,7 +164,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 		$result = false;
 		if ($this->opensslPath) {
 			// If path exists, test that command runs and can produce output
-			$test = exec($this->opensslPath . ' version');
+			$test = t3lib_utility_Command::exec($this->opensslPath . ' version');
 			$result = (substr($test, 0, 8) == 'OpenSSL ');
 		}
 		return $result;

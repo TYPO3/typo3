@@ -371,7 +371,7 @@ class SC_show_item {
 				if ($ext=='zip')	{
 					$code = '';
 					$t = array();
-					exec('unzip -l '.$this->file, $t);
+					t3lib_utility_Command::exec('unzip -l ' . $this->file, $t);
 					if (is_array($t))	{
 						reset($t);
 						next($t);
@@ -396,7 +396,7 @@ class SC_show_item {
 						$compr = 'z';
 					}
 					$t = array();
-					exec('tar t'.$compr.'f '.$this->file, $t);
+					t3lib_utility_Command::exec('tar t' . $compr . 'f ' . $this->file, $t);
 					if (is_array($t))	{
 						foreach($t as $val)	{
 							$code.='

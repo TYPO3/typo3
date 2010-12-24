@@ -1,5 +1,6 @@
 2010-12-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16800: Exec-wrapper
 	* Fixed bug #16770: Make recycler stateful
 
 2010-12-23  Steffen Kamper  <steffen@typo3.org>

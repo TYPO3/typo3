@@ -286,7 +286,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			$output = t3lib_div::getURL($tempPath.$filename);
 
 			$cmd = 'rm -r "'.$tempPath.'"';
-			exec($cmd);
+			t3lib_utility_Command::exec($cmd);
 
 			return $output;
 		}

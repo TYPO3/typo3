@@ -240,7 +240,7 @@ class SC_t3lib_thumbs {
 				if (!file_exists($this->output))	{
 					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->input) . '[0] ' . $this->wrapFileName($this->output);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
-					exec($cmd);
+					t3lib_utility_Command::exec($cmd);
 					if (!file_exists($this->output))	{
 						$this->errorGif('No thumb','generated!',basename($this->input));
 					} else {

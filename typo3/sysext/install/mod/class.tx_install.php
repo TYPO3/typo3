@@ -3091,7 +3091,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$src = $this->backPath.'gfx/typo3logo.gif';
 			if (@is_file($src) && !strstr($src,' ') && !strstr($dest,' ')) {
 				$cmd = t3lib_div::imageMagickCommand('convert', $src.' '.$dest, $path);
-				exec($cmd);
+				t3lib_utility_Command::exec($cmd);
 			} else die('No typo3/gfx/typo3logo.gif file!');
 			$out='';
 			if (@is_file($dest)) {
@@ -3150,7 +3150,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		$cmd = t3lib_div::imageMagickCommand($file, $parameters, $path);
 		$retVal = false;
-		exec($cmd, $retVal);
+		t3lib_utility_Command::exec($cmd, $retVal);
 		$string = $retVal[0];
 		list(,$ver) = explode('Magick', $string);
 		list($ver) = explode(' ',trim($ver));
@@ -5694,7 +5694,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$results[] = $this->performUpdateQueries($update_statements['create_table'], $this->INSTALL['database_update']);
 							$results[] = $this->performUpdateQueries($remove_statements['change_table'], $this->INSTALL['database_update']);
 							$results[] = $this->performUpdateQueries($remove_statements['drop_table'], $this->INSTALL['database_update']);
-							
+
 							$this->databaseUpdateErrorMessages = array();
 							foreach ($results as $resultSet) {
 								if (is_array($resultSet)) {

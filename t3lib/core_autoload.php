@@ -145,6 +145,7 @@ $t3libClasses = array(
 	't3lib_pdohelper' => PATH_t3lib . 'class.t3lib_pdohelper.php',
 	't3lib_tceforms_suggest' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest.php',
 	't3lib_tceforms_suggest_defaultreceiver' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest_defaultreceiver.php',
+	't3lib_utility_command' => PATH_t3lib . 'utility/class.t3lib_utility_command.php',
 	't3lib_utility_client' => PATH_t3lib . 'utility/class.t3lib_utility_client.php',
 	't3lib_utility_dependency' => PATH_t3lib . 'utility/class.t3lib_utility_dependency.php',
 	't3lib_utility_dependency_callback' => PATH_t3lib . 'utility/dependency/class.t3lib_utility_dependency_callback.php',

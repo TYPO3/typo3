@@ -160,7 +160,7 @@ class t3lib_exec {
 			// Try to get the executable with the command 'which'.
 			// It does the same like already done, but maybe on other paths
 		if (TYPO3_OS != 'WIN') {
-			$cmd = @exec('which ' . $cmd);
+			$cmd = @t3lib_utility_Command::exec('which ' . $cmd);
 			if (@is_executable($cmd)) {
 				self::$applications[$cmd]['app'] = $cmd;
 				self::$applications[$cmd]['path'] = dirname($cmd) . '/';

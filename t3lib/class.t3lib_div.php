@@ -489,7 +489,7 @@ final class t3lib_div {
 		if ($gfxConf['gif_compress'] && strtolower(substr($theFile, -4, 4)) == '.gif') { // GIF...
 			if (($type == 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) { // IM
 				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
-				exec($cmd);
+				t3lib_utility_Command::exec($cmd);
 				$returnCode = 'IM';
 				if (@is_file($theFile)) {
 					self::fixPermissions($theFile);
@@ -523,7 +523,7 @@ final class t3lib_div {
 				&& @is_file($theFile)) { // IM
 			$newFile = substr($theFile, 0, -4) . '.gif';
 			$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
-			exec($cmd);
+			t3lib_utility_Command::exec($cmd);
 			$theFile = $newFile;
 			if (@is_file($newFile)) {
 				self::fixPermissions($newFile);
@@ -553,7 +553,7 @@ final class t3lib_div {
 			} else {
 				$newFile = PATH_site . 'typo3temp/readPG_' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
 				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
-				exec($cmd);
+				t3lib_utility_Command::exec($cmd);
 				if (@is_file($newFile)) {
 					self::fixPermissions($newFile);
 					return $newFile;
@@ -6183,60 +6183,7 @@ final class t3lib_div {
 	 * @return	string		Compiled command that deals with IM6 & GraphicsMagick
 	 */
 	public static function imageMagickCommand($command, $parameters, $path = '') {
-		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-		$isExt = (TYPO3_OS == 'WIN' ? '.exe' : '');
-		$switchCompositeParameters = FALSE;
-
-		if (!$path) {
-			$path = $gfxConf['im_path'];
-		}
-		$path = self::fixWindowsFilePath($path);
-
-		$im_version = strtolower($gfxConf['im_version_5']);
-		$combineScript = $gfxConf['im_combine_filename'] ? trim($gfxConf['im_combine_filename']) : 'combine';
-
-		if ($command === 'combine') { // This is only used internally, has no effect outside
-			$command = 'composite';
-		}
-
-			// Compile the path & command
-		if ($im_version === 'gm') {
-			$switchCompositeParameters = TRUE;
-			$path = escapeshellarg($path . 'gm' . $isExt) . ' ' . $command;
-		} else {
-			if ($im_version === 'im6') {
-				$switchCompositeParameters = TRUE;
-			}
-			$path = escapeshellarg($path . (($command == 'composite') ? $combineScript : $command) . $isExt);
-		}
-
-			// strip profile information for thumbnails and reduce their size
-		if ($parameters && $command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
-			if (strpos($parameters, $gfxConf['im_stripProfileCommand']) === FALSE) {
-					// Determine whether the strip profile action has be disabled by TypoScript:
-				if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === FALSE) {
-					$parameters = $gfxConf['im_stripProfileCommand'] . ' ' . $parameters;
-				} else {
-					$parameters = str_replace('###SkipStripProfile###', '', $parameters);
-				}
-			}
-		}
-
-		$cmdLine = $path . ' ' . $parameters;
-
-		if ($command == 'composite' && $switchCompositeParameters) { // Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick), it is needed to change the parameters order under some preconditions
-			$paramsArr = self::unQuoteFilenames($parameters);
-
-			if (count($paramsArr) > 5) { // The mask image has been specified => swap the parameters
-				$tmp = $paramsArr[count($paramsArr) - 3];
-				$paramsArr[count($paramsArr) - 3] = $paramsArr[count($paramsArr) - 4];
-				$paramsArr[count($paramsArr) - 4] = $tmp;
-			}
-
-			$cmdLine = $path . ' ' . implode(' ', $paramsArr);
-		}
-
-		return $cmdLine;
+		return t3lib_utility_Command::imageMagickCommand($command, $parameters, $path);
 	}
 
 	/**
