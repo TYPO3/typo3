@@ -424,6 +424,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 					'xtype' => 'checkboxgroup',
 					'itemCls' => 'x-check-group-alt',
 					'columns' => 1,
+					'style' => 'max-height: 200px',
+					'autoScroll' => true,
 					'items' => array(
 						$this->getReceipientsOfStage($nextStageId)
 					)
