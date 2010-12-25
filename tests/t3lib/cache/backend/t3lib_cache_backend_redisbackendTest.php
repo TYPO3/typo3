@@ -65,7 +65,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		}
 
 		try {
-			if (!fsockopen('127.0.0.1', 6379)) {
+			if (!@fsockopen('127.0.0.1', 6379)) {
 				$this->markTestSkipped('redis server not reachable');
 			}
 		} catch (Exception $e) {

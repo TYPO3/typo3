@@ -33,38 +33,8 @@
  * @package TYPO3
  * @subpackage t3lib
  * @version $Id$
- * @scope prototype
  */
 class t3lib_PdoHelper {
-
-	/**
-	 * @var PDO
-	 */
-	protected $databaseHandle;
-
-	/**
-	 * @var string
-	 */
-	protected $pdoDriver;
-
-	/**
-	 * Construct the helper instance and set up PDO connection.
-	 *
-	 * @param string $dataSourceName
-	 * @param string $user
-	 * @param string $password
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function __construct($dataSourceName, $user, $password) {
-		$splitdsn = explode(':', $dataSourceName, 2);
-		$this->pdoDriver = $splitdsn[0];
-
-		$this->databaseHandle = t3lib_div::makeInstance('PDO', $dataSourceName, $user, $password);
-		$this->databaseHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		if ($this->pdoDriver === 'mysql') {
-			$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI_QUOTES\';');
-		}
-	}
 
 	/**
 	 * Pumps the SQL into the database. Use for DDL only.
@@ -73,15 +43,17 @@ class t3lib_PdoHelper {
 	 * be given as "field"(xyz) - no space between double quote and parenthesis -
 	 * so they can be removed automatically.
 	 *
+	 * @param PDO $databaseHandle
+	 * @param string $pdoDriver
 	 * @param string $pathAndFilename
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function importSql($pathAndFilename) {
+	static public function importSql(PDO $databaseHandle, $pdoDriver, $pathAndFilename) {
 		$sql = file($pathAndFilename, FILE_IGNORE_NEW_LINES & FILE_SKIP_EMPTY_LINES);
 
 			// Remove MySQL style key length delimiters (yuck!) if we are not setting up a MySQL db
-		if ($this->pdoDriver !== 'mysql') {
+		if ($pdoDriver !== 'mysql') {
 			$sql = preg_replace('/"\([0-9]+\)/', '"', $sql);
 		}
 
@@ -89,7 +61,7 @@ class t3lib_PdoHelper {
 		foreach ($sql as $line) {
 			$statement .= ' ' . trim($line);
 			if (substr($statement, -1) === ';') {
-				$this->databaseHandle->query($statement);
+				$databaseHandle->exec($statement);
 				$statement = '';
 			}
 		}

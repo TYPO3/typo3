@@ -52,7 +52,7 @@ class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 	 */
 	public function setPassesPhpSourceCodeTagsAndLifetimeToBackend() {
 		$originalSourceCode = 'return "hello world!";';
-		$modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '__halt_compiler();';
+		$modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '#';
 
 		$mockBackend = $this->getMock('t3lib_cache_backend_PhpCapableBackend', array(), array(), '', FALSE);
 		$mockBackend->expects($this->once())->method('set')->with('Foo-Bar', $modifiedSourceCode, array('tags'), 1234);

@@ -33,6 +33,7 @@
  * @version $Id$
  */
 class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend {
+
 	/**
 	 * @var string
 	 */
@@ -67,7 +68,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed $options Configuration options - depends on the actual backend
+	 * @param array $options Configuration options - depends on the actual backend
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function __construct(array $options = array()) {
@@ -411,17 +412,18 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 			$this->pdoDriver = $splitdsn[0];
 
 			if ($this->pdoDriver === 'sqlite' && !file_exists($splitdsn[1])) {
+				$this->databaseHandle = t3lib_div::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
 				$this->createCacheTables();
+			} else {
+				$this->databaseHandle = t3lib_div::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
 			}
 
-			$this->databaseHandle = t3lib_div::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
 			$this->databaseHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			if ($this->pdoDriver === 'mysql') {
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (PDOException $e) {
-			#			$this->createCacheTables();
 		}
 	}
 
@@ -434,8 +436,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	protected function createCacheTables() {
 		try {
-			$pdoHelper = t3lib_div::makeInstance('t3lib_PdoHelper', $this->dataSourceName, $this->username, $this->password);
-			$pdoHelper->importSql(PATH_t3lib . 'cache/backend/resources/ddl.sql');
+			t3lib_PdoHelper::importSql($this->databaseHandle, $this->pdoDriver, PATH_t3lib . 'cache/backend/resources/ddl.sql');
 		} catch (PDOException $e) {
 			throw new RuntimeException(
 				'Could not create cache tables with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(),

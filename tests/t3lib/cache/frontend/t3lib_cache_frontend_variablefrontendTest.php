@@ -93,6 +93,23 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setUsesIgBinarySerializeIfAvailable() {
+		if (!extension_loaded('igbinary')) {
+			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+		}
+
+		$theString = 'Just some value';
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
+
+		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache->set('VariableCacheTest', $theString);
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getFetchesStringValueFromBackend() {
@@ -128,6 +145,24 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 
 		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
 		$this->assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getUsesIgBinaryIfAvailable() {
+		if (!extension_loaded('igbinary')) {
+			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+		}
+
+		$theArray = array('Just some value', 'and another one.');
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
+
+		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+
+		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
 	}
 
 	/**
@@ -190,6 +225,26 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
 	}
 
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getByTagUsesIgBinaryIfAvailable() {
+		if (!extension_loaded('igbinary')) {
+			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+		}
+
+		$tag = 'sometag';
+		$identifiers = array('one', 'two');
+		$entries = array('one value', 'two value');
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+
+		$backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
+		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
+
+		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
+	}
 }
 
 ?>

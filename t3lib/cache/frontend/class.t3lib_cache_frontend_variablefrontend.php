@@ -36,6 +36,37 @@
 class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_AbstractFrontend {
 
 	/**
+	 * If the extension "igbinary" is installed, use it for increased performance
+	 *
+	 * @var boolean
+	 */
+	protected $useIgBinary = FALSE;
+
+	/**
+	 * Constructs the cache
+	 *
+	 * @param string A identifier which describes this cache
+	 * @param t3lib_cache_backend_Backend Backend to be used for this cache
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @throws InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
+	 * @internal
+	 */
+	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
+		parent::__construct($identifier, $backend);
+		$this->initializeObject();
+	}
+
+	/**
+	 * Initializes this cache frontend
+	 *
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	protected function initializeObject() {
+		$this->useIgBinary = extension_loaded('igbinary');
+	}
+
+	/**
 	 * Saves the value of a PHP variable in the cache. Note that the variable
 	 * will be serialized if necessary.
 	 *
@@ -64,7 +95,11 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 			}
 		}
 
-		$this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+		if ($this->useIgBinary === TRUE) {
+			$this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);
+		} else {
+			$this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
+		}
 	}
 
 	/**
@@ -83,7 +118,7 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 			);
 		}
 
-		return unserialize($this->backend->get($entryIdentifier));
+		return ($this->useIgBinary === TRUE) ? igbinary_unserialize($this->backend->get($entryIdentifier)) : unserialize($this->backend->get($entryIdentifier));
 	}
 
 	/**
@@ -105,7 +140,7 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 		$identifiers = $this->backend->findIdentifiersByTag($tag);
 
 		foreach ($identifiers as $identifier) {
-			$entries[] = unserialize($this->backend->get($identifier));
+			$entries[] = ($this->useIgBinary === TRUE) ? igbinary_unserialize($this->backend->get($identifier)) : unserialize($this->backend->get($identifier));
 		}
 
 		return $entries;

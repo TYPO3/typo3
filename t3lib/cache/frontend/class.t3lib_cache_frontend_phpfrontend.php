@@ -78,7 +78,7 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 				);
 			}
 		}
-		$sourceCode = '<?php' . chr(10) . $sourceCode . chr(10) . '__halt_compiler();';
+		$sourceCode = '<?php' . chr(10) . $sourceCode . chr(10) . '#';
 		$this->backend->set($entryIdentifier, $sourceCode, $tags, $lifetime);
 	}
 

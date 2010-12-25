@@ -56,7 +56,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed Configuration options - depends on the actual backend
+	 * @param array $options Configuration options - depends on the actual backend
 	 */
 	public function __construct(array $options = array()) {
 		parent::__construct($options);

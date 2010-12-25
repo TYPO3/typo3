@@ -62,11 +62,11 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed $options Configuration options - unused here
+	 * @param array $options Configuration options - unused here
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function __construct($options = array()) {
+	public function __construct(array $options = array()) {
 		if (!extension_loaded('apc')) {
 			throw new t3lib_cache_Exception(
 				'The PHP extension "apc" must be installed and loaded in order to use the APC backend.',

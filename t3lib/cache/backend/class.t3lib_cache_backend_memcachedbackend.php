@@ -103,10 +103,10 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed $options Configuration options - depends on the actual backend
+	 * @param array $options Configuration options - depends on the actual backend
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function __construct($options = array()) {
+	public function __construct(array $options = array()) {
 		if (!extension_loaded('memcache')) {
 			throw new t3lib_cache_Exception(
 				'The PHP extension "memcached" must be installed and loaded in ' .

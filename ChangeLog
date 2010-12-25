@@ -1,3 +1,7 @@
+2010-12-25  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16824: [Caching framework] Update to latest FLOW3 version
+
 2010-12-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16836: Remove useless alertbox (Thanks to Rens Admiraal)

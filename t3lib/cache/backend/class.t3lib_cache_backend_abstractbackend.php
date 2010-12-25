@@ -60,7 +60,7 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed Configuration options - depends on the actual backend
+	 * @param array $options Configuration options - depends on the actual backend
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct(array $options = array()) {

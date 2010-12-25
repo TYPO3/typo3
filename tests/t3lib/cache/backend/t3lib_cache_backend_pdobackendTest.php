@@ -40,16 +40,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 	protected $backupGlobalVariables;
 
 	/**
-	 * @var string
-	 */
-	protected $fixtureFolder;
-
-	/**
-	 * @var string
-	 */
-	protected $fixtureDB;
-
-	/**
 	 * Sets up this testcase
 	 *
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
@@ -345,18 +335,11 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function setUpBackend() {
-		$this->fixtureFolder = sys_get_temp_dir() . '/' . 'typo3pdobackendtest/';
-		t3lib_div::mkdir_deep(sys_get_temp_dir() . '/', 'typo3pdobackendtest/');
-		$this->fixtureDB = uniqid('Cache') . '.db';
-
-		$pdoHelper = t3lib_div::makeInstance('t3lib_PdoHelper', 'sqlite:' . $this->fixtureFolder . $this->fixtureDB, '', '');
-		$pdoHelper->importSql(PATH_t3lib . 'cache/backend/resources/ddl.sql');
-
 		$mockCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
 
 		$backendOptions = array(
-			'dataSourceName' => 'sqlite:' . $this->fixtureFolder . $this->fixtureDB,
+			'dataSourceName' => 'sqlite::memory:',
 			'username' => '',
 			'password' => '',
 		);
@@ -373,9 +356,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function tearDown() {
-		if ($this->fixtureDB) {
-			t3lib_div::rmdir($this->fixtureFolder, TRUE);
-		}
 		foreach ($this->backupGlobalVariables as $key => $data) {
 			$GLOBALS[$key] = $data;
 		}

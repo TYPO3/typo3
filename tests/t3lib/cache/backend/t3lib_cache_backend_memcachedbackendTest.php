@@ -66,7 +66,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 		$backend = new t3lib_cache_backend_MemcachedBackend($backendOptions);
 
 		$data = 'Some data';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 	}
 
@@ -89,7 +89,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function setThrowsExceptionIfConfiguredServersAreUnreachable() {
 		$backend = $this->setUpBackend(array('servers' => array('julle.did.this:1234')));
 		$data = 'Somedata';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 	}
 
@@ -100,7 +100,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
 		$this->assertTrue($inCache, 'Memcache failed to set and check entry');
@@ -113,7 +113,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
 		$this->assertEquals($data, $fetchedData, 'Memcache failed to set and retrieve data');
@@ -126,7 +126,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
@@ -140,7 +140,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier';
+		$identifier = uniqid('MyIdentifier');
 		$backend->set($identifier, $data);
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
@@ -156,14 +156,14 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$entryIdentifier = 'MyIdentifier';
-		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+		$identifier = uniqid('MyIdentifier');
+		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
-		$this->assertEquals($entryIdentifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
+		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
 
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
-		$this->assertEquals($entryIdentifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
+		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
 	}
 
 	/**
@@ -174,11 +174,11 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$entryIdentifier = 'MyIdentifier';
-		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag3'));
+		$identifier = uniqid('MyIdentifier');
+		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 
-		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
+		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
 	}
 
@@ -188,7 +188,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier';
+		$identifier = uniqid('NonExistingIdentifier');
 		$inCache = $backend->has($identifier);
 		$this->assertFalse($inCache,'"has" did not return false when checking on non existing identifier');
 	}
@@ -199,7 +199,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier';
+		$identifier = uniqid('NonExistingIdentifier');
 		$inCache = $backend->remove($identifier);
 		$this->assertFalse($inCache,'"remove" did not return false when checking on non existing identifier');
 	}
