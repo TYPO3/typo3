@@ -79,7 +79,7 @@ TYPO3.Workspaces.Actions = {
 				top.Ext.getCmp('executeMassActionOkButton').hide();
 				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.lang.close);
 				top.Ext.getCmp('executeMassActionForm').show();
-				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.doneProcessing"] + response.total + TYPO3.lang["runMassAction.elements"]);
+				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.done"].replace('%d', response.total));
 			}
 		}
 	},

@@ -26,8 +26,7 @@
 			<label index="actionSendToStage">Send to stage </label>
 			<label index="publish_execute_action_option">Publish  to LIVE</label>
 			<label index="close">Close</label>
-			<label index="runMassAction.doneProcessing">Done processing</label>
-			<label index="runMassAction.elements"> elements</label>
+			<label index="runMassAction.done">Done processing %d elements</label>
 			<label index="runMassAction.init">init</label>
 			<label index="tooltip.publishAll">Really publish entire workspace?</label>
 			<label index="tooltip.swapAll">Really swap entire workspace?</label>
