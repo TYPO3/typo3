@@ -90,7 +90,7 @@ TYPO3.Workspaces.Toolbar.selectMassActionStore = new Ext.data.DirectStore({
 	],
 	listeners : {
 		load : function(store, records) {
-			if (records.length == 0) {
+			if (records.length == 0 || TYPO3.settings.Workspaces.singleView === '1') {
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.hide();
 			} else {
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.show();
@@ -196,7 +196,7 @@ TYPO3.Workspaces.Toolbar.depthFilter = new Ext.form.ComboBox({
 	triggerAction: 'all',
 	editable: false,
 	forceSelection: true,
-	hidden: TYPO3.lang.showDepthMenu,
+	hidden: (TYPO3.settings.Workspaces.singleView === '1'),
 	store: new Ext.data.SimpleStore({
 		autoLoad: true,
 		fields: ['depth','label'],
