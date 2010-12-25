@@ -805,6 +805,9 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				$fullsearch->noDownloadB = 1;
 
 				$type = $sql_query['qC']['search_query_makeQuery'];
+				if ($sql_query['qC']['labels_noprefix'] === 'on') {
+					$GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] = 'on';
+				}
 				$sqlQuery = $sql_query['qSelect'];
 				$queryIsEmpty = FALSE;
 
