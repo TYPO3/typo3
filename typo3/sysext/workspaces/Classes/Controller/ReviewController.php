@@ -86,6 +86,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
 			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+				// set flag for javascript
+			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
 		}
 	}
 

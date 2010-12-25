@@ -176,6 +176,7 @@ TYPO3.Workspaces.Configuration.SendToPrevStageButton = {
 	xtype: 'actioncolumn',
 	header:'',
 	width: 18,
+	hidden: (TYPO3.settings.Workspaces.allView === '1'),
 	items:[
 		{
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtoprevstage',
@@ -192,6 +193,7 @@ TYPO3.Workspaces.Configuration.SendToNextStageButton = {
 	xtype: 'actioncolumn',
 	header:'',
 	width: 18,
+	hidden: (TYPO3.settings.Workspaces.allView === '1'),
 	items: [
 		{},{	// empty dummy important!!!!
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtonextstage',
@@ -216,14 +218,14 @@ TYPO3.Workspaces.Configuration.Stage = {
 	},
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var returnCode = '';
-		if (record.json.allowedAction_prevStage) {
+		if (record.json.allowedAction_prevStage && TYPO3.settings.Workspaces.allView !== '1') {
 			var prevButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToPrevStageButton);
 			returnCode += prevButton.renderer(1, metaData, record, rowIndex, 1, store);
 		} else {
 			returnCode += "<span class=\"t3-icon t3-icon-empty t3-icon-empty-empty\">&nbsp;</span>";
 		}
 		returnCode += record.json.label_Stage;
-		if (record.json.allowedAction_nextStage) {
+		if (record.json.allowedAction_nextStage && TYPO3.settings.Workspaces.allView !== '1') {
 			var nextButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToNextStageButton);
 			returnCode += nextButton.renderer(2, metaData, record, rowIndex, 2, store);
 		} else {
@@ -249,6 +251,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 	header: TYPO3.lang["column.actions"],
 	width: 70,
 	hideable: false,
+	hidden: (TYPO3.settings.Workspaces.allView === '1'),
 	menuDisabled: true,
 	items: [
 		{
@@ -340,6 +343,7 @@ TYPO3.Workspaces.Configuration.SwapButton = {
 	width: 18,
 	menuDisabled: true,
 	sortable: false,
+	hidden: (TYPO3.settings.Workspaces.allView === '1'),
 	items: [
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-swap-workspace'
