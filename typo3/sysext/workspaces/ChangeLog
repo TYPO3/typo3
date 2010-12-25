@@ -1,5 +1,6 @@
 2010-12-25  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #11635: Remove "Preview of workspace ..." box when in workspace preview module
 	* Fixed bug #11657: singleView should not have depth and mass-action combos
 	* Fixed bug #11600: [All] tab in ws-module should not have action-buttons
 
