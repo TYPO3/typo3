@@ -449,7 +449,9 @@ Use this feature in templates supplying other content-types than HTML. That coul
 "xhtml_strict" for XHTML 1.0 Strict doctype.
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
+"xhtml+rdf_10" for XHTML+RDFa 1.0 doctype.
 "xhtml_2" for XHTML 2 doctype.
+"html_5" for HTML5
 "none" for NO doctype at all.
 
 Note that the keywords also change the way TYPO3 generates some of the XHTML tags to ensure valid XML. If you set doctype to a string, then you must also set config.xhtmlDoctype (see below).
@@ -6610,19 +6612,24 @@ If this is set, it'll substitute the use of the thumbs-script for display of thu
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="jumpurl" type="boolean">
-			<description><![CDATA[Decides if the link should call the script with the jumpurl paramter in order to register any clicks in the stat.
+		<property name="jumpurl" type="filelink.jumpurl">
+			<description><![CDATA[boolean
+			Decides if the link should call the script with the jumpurl paramter in order to register any clicks in the stat.
 This has the advantage that any clicks on the file will register in the stat.
 The disadvantage is, that users cant right-click and select "Save Target As" in the browser.
 
-Properties:
+Extra properties:
 .secure (boolean)If set, then the file pointed to by jumpurl is NOT redirected to, but rather it's read from the file and returned with a correct header. This option adds a hash and locationData to the url and there MUST be access to the record in order to download the file. If the fileposition on the server is furthermore secured by a .htaccess file preventing ANY access, you've got secure download here!
 
 .secure.mimeTypes (list of mimetypes, syntax [ext] = [mimetype]
 
 Example:
 .secure = 1
-.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
+.secure.mimeTypes = pdf=application/pdf, doc=application/msword
+
+.parameter = [string/stdWrap]; By default the jumpurl link will use the current pid and typeNum. 
+If you need alternative values (e.g. for logging) you can specify them here.
+For options see typolink.parameter]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6672,6 +6679,41 @@ Use this to eg. import another label from a database field or such.]]></descript
 			<default><![CDATA[
 ]]></default>
 		</property>
+	</type>
+	<type id="filelink.jumpurl">	
+		<property name="secure" type="boolean">
+			<description><![CDATA[If set, then the file pointed to by jumpurl is NOT redirected to, but rather it's read from the file and returned with a correct header. This option adds a hash and locationData to the url and there MUST be access to the record in order to download the file. If the fileposition on the server is furthermore secured by a .htaccess file preventing ANY access, you've got secure download here!
+
+  .secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
+
+Example:
+
+jumpurl.secure = 1
+
+jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>	
+		<property name="secure.mimetypes" type="string">
+			<description><![CDATA[.secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
+
+Example:
+
+jumpurl.secure = 1
+
+jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>	
+		<property name="parameter" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			By default the jumpurl link will use the current pid and typeNum. 
+If you need alternative values (e.g. for logging) you can specify them here.
+For options see typolink.parameter
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>					
 	</type>
 	<type id="if">
 		<property name="directReturn" type="boolean">
@@ -7241,6 +7283,36 @@ Special keyword: "total" is substituted with count(*)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="markers" type="array">
+			<description><![CDATA[array of markers
+			The markers defined in this section can be used, wrapped in the usual ###markername### way, in any other property of select.
+Each value is properly escaped and quoted to prevent SQL injection problems. This provides a way to safely use external data
+(e.g. database fields, GET/POST parameters) in a query.
+<markername>.value (value) sets the value directly
+<markername>.commaSeparatedList (bool) If set the value is interpreted as a comma separated list of values. Each value in 
+the list is individually escaped and quoted.
+(stdWrap properties ...) All stdWrap properties can be used for each markername
+
+Example:
+
+page.60 = CONTENT
+page.60 {
+  table = tt_content
+  select {
+      pidInList = 73
+      where = header != ###whatever###
+      orderBy = ###sortfield###
+      markers {
+        whatever.data = GP:first
+        sortfield.value = sor
+        sortfield.wrap = |ting
+      }
+  }
+}
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 		<property name="orderBy" type="string">
 			<description><![CDATA[without "order by"! Eg. "sorting, title"]]></description>
 			<default><![CDATA[
