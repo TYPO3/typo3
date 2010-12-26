@@ -514,6 +514,7 @@ class t3lib_cs {
 		'ge' => 'utf-8',
 		'ga' => '',
 		'km' => 'utf-8',
+		'qc' => '',
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:
@@ -532,6 +533,7 @@ class t3lib_cs {
 		'kr' => 'ko',
 		'ua' => 'uk',
 		'jp' => 'ja',
+		'qc' => 'fr_CA',
 		'vn' => 'vi',
 	);
 

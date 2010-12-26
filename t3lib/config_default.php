@@ -508,7 +508,7 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	//		- Update 'setup' extension labels (sysext/setup/mod/locallang.xml)
 	//		- Using translation server? Create new user with username = "language key", member of "translator" group, set to "language key" language.
 	// Thats it! Use extension "llxmltranslate" to begin translation. Language pack is automatically created in "typo3conf/l10n/[language key]/"
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr|sq|ge|ga|km');
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr|sq|ge|ga|km|qc');
 
 	// Unsetting the configured values. Use of these are deprecated.
 unset($typo_db);
