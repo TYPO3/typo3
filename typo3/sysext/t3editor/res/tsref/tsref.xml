@@ -125,8 +125,8 @@ helloWorld.value = this item will be returned
 ]]></description>
 			<default><![CDATA[1]]></default>
 		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[
+		<property name="wrap" type="stdWrap">
+			<description><![CDATA[wrap/stdWrap
 ]]></description>
 			<default><![CDATA[ | <BR>]]></default>
 		</property>
@@ -161,8 +161,8 @@ helloWorld.value = this item will be returned
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[
+		<property name="wrap" type="stdWrap">
+			<description><![CDATA[wrap/stdWrap
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -171,8 +171,9 @@ helloWorld.value = this item will be returned
 	<type id="COA" extends="COBJ_ARRAY">
   </type>
 	<type id="COA_INT" extends="COBJ_ARRAY">
-		<property name="includeLibs" type="stringList">
-			<description><![CDATA[list of resources(This property is used only if the object is COA_INT!, See introduction.)
+		<property name="includeLibs" type="stdWrap">
+			<description><![CDATA[list of resources/stdWrap 
+(This property is used only if the object is COA_INT!, See introduction.)
 This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
 This is possible to do because any include-files will be known before the scripts are included. That's not the case with the regular PHP_SCRIPT cObject.]]></description>
 			<default><![CDATA[
@@ -180,8 +181,8 @@ This is possible to do because any include-files will be known before the script
 		</property>
 	</type>
 	<type id="COLUMNS">
-		<property name="TDparams" type="string">
-			<description><![CDATA[<TD>-params
+		<property name="TDparams" type="stdWrap">
+			<description><![CDATA[<TD>-params/stdWrap
 ]]></description>
 			<default><![CDATA[valign=top]]></default>
 		</property>
@@ -240,8 +241,8 @@ background-color for the gap-tablecells]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="rows" type="int">
-			<description><![CDATA[int (Range: 2-20)
+		<property name="rows" type="stdWrap">
+			<description><![CDATA[int (Range: 2-20)/stdWrap
       The number of rows  in the columns.]]></description>
 			<default><![CDATA[2]]></default>
 		</property>
@@ -251,13 +252,14 @@ background-color for the gap-tablecells]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="tableParams" type="string">
-			<description><![CDATA[<TABLE>-params
+		<property name="tableParams" type="stdWrap">
+			<description><![CDATA[<TABLE>-params/stdWrap
 ]]></description>
 			<default><![CDATA[border=0 cellspacing=0 cellpadding=0]]></default>
 		</property>
-		<property name="totalWidth" type="int">
-			<description><![CDATA[The total-width of the columns+gaps]]></description>
+		<property name="totalWidth" type="stdWrap">
+			<description><![CDATA[int/stdWrap
+			The total-width of the columns+gaps]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -441,6 +443,11 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="disablePreviewNotification" type="boolean">
+			<description><![CDATA[Disables the "preview" notification box completely]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 		<property name="doctype" type="string">
 			<description><![CDATA[If set, then a document type declaration (and an XML prologue) will be generated. The value can either be a complete doctype or one of the following keywords:
 
@@ -715,6 +722,22 @@ If renderCharset and metaCharset are different the output content is automatical
 			<description><![CDATA[
 			If set, all Javascript (includes and inline) will be moved to the bottom of the HTML document, which is after content and before the closing body tag
 			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="namespaces" type="array">
+			<description><![CDATA[array of strings 
+			This property enables you to add xml namespaces (xmlns) to the html tag. The configuration
+
+namespaces.dc = http://purl.org/dc/elements/1.1/
+namespaces.foaf = http://xmlns.com/foaf/0.1/
+
+will result in a html tag like
+
+<html xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+
+This is especially useful if you want to add RDFa or microformats to your html.
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1256,16 +1279,17 @@ Any other string is used as the XML prologue itself.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="slide" type="int">
-			<description><![CDATA[If set and no content element is found by the select command, then the rootLine will be traversed back until some content is found.
+		<property name="slide" type="slide">
+			<description><![CDATA[int/stdWrap
+			If set and no content element is found by the select command, then the rootLine will be traversed back until some content is found.
 
 Possible values are "-1" (slide back up to the siteroot), "1" (only the current level) and "2" (up from one level back).
 
 Use -1 in combination with collect.
 
-.collect (integer): If set, all content elements found on current and parent pages will be collected. Otherwise, the sliding would stop after the first hit. Set this value to the amount of levels to collect on, or use "-1" to collect up to the siteroot.
-.collectFuzzy (boolean): Only useful in collect mode. If no content elements have been found for the specified depth in collect mode, traverse further until at least one match has occurred.
-.collectReverse (boolean): Change order of elements in collect mode. If set, elements of the current page will be on the bottom.]]></description>
+.collect (integer/stdWrap): If set, all content elements found on current and parent pages will be collected. Otherwise, the sliding would stop after the first hit. Set this value to the amount of levels to collect on, or use "-1" to collect up to the siteroot.
+.collectFuzzy (boolean/stdWrap): Only useful in collect mode. If no content elements have been found for the specified depth in collect mode, traverse further until at least one match has occurred.
+.collectReverse (boolean/stdWrap): Change order of elements in collect mode. If set, elements of the current page will be on the bottom.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1283,59 +1307,94 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[Wrap the whole content-story...]]></description>
+		<property name="wrap" type="stdWrap">
+			<description><![CDATA[wrap/stdWrap
+			Wrap the whole content-story...]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+	</type>
+	<type id="slide" extends="stdWrap">
+		<property name="collect" type="stdWrap">
+			<description><![CDATA[int/stdWrap
+			If set, all content elements found on current and parent pages will be collected. Otherwise, the sliding would stop after the first hit. Set this value to the amount of levels to collect on, or use “-1” to collect up to the siteroot.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="collectFuzzy" type="stdWrap">
+			<description><![CDATA[boolean/stdWrap
+			Only useful in collect mode. If no content elements have been found for the specified depth in collect mode, traverse further until at least one match has occurred.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="collectReverse" type="stdWrap">
+			<description><![CDATA[boolean/stdWrap
+			Change order of elements in collect mode. If set, elements of the current page will be at the bottom.
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 	</type>
 	<type id="CTABLE">
-		<property name="bm" type="CARRAY+TDParams">
-			<description><![CDATA[bottomMenu]]></description>
+		<property name="bm" type="stdWrap">
+			<description><![CDATA[CARRAY + TDParams/stdWrap
+			bottomMenu]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="c" type="CARRAY+TDParams">
-			<description><![CDATA[content-cell ]]></description>
+		<property name="c" type="stdWrap">
+			<description><![CDATA[CARRAY + TDParams/stdWrap
+			content-cell ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="cMargins" type="string">
-			<description><![CDATA[margins
+		<property name="cMargins" type="stdWrap">
+			<description><![CDATA[margins/stdWrap
 			Distance around the content-cell "c"]]></description>
 			<default><![CDATA[0,0,0,0]]></default>
 		</property>
-		<property name="cWidth" type="string">
-			<description><![CDATA[pixels
+		<property name="cWidth" type="stdWrap">
+			<description><![CDATA[pixels/stdWrap
 			Width of the content-cell "c"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="lm" type="CARRAY+TDParams">
-			<description><![CDATA[leftMenu]]></description>
+		<property name="lm" type="stdWrap">
+			<description><![CDATA[CARRAY+TDParams/stdWrap
+			leftMenu]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="offset" type="string">
-			<description><![CDATA[x,y
+		<property name="offset" type="stdWrap">
+			<description><![CDATA[x,y/stdWrap
 			Offset from upper left corner]]></description>
 			<default><![CDATA[0,0 = intet]]></default>
 		</property>
-		<property name="rm" type="CARRAY+TDParams">
-			<description><![CDATA[rightMenu]]></description>
+		<property name="rm" type="stdWrap">
+			<description><![CDATA[CARRAY+TDParams/stdWrap
+			rightMenu]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="tableParams" type="string">
-			<description><![CDATA[<TABLE>-params
+		<property name="tableParams" type="stdWrap">
+			<description><![CDATA[<TABLE>-params/stdWrap
 ]]></description>
 			<default><![CDATA[border=0 cellspacing=0 cellpadding=0]]></default>
 		</property>
-		<property name="tm" type="CARRAY+TDParams">
-			<description><![CDATA[topMenu]]></description>
+		<property name="tm" type="stdWrap">
+			<description><![CDATA[CARRAY+TDParams/stdWrap
+			topMenu]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 	</type>
 	<type id="EDITPANEL">
 		<property name="allow" type="string">
@@ -1499,15 +1558,16 @@ If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[useAlt
 ]]></default>
 		</property>
-		<property name="file" type="string">
-			<description><![CDATA[resource
+		<property name="file" type="stdWrap">
+			<description><![CDATA[resource/stdWrap
 			If the resource is jpg,gif,jpeg,png the image is inserted as an image-tag. Al other formats is read and inserted into the HTML-code.
 The maximum filesize of documents to be read is set to 1024 kb internally!]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="linkWrap" type="wrap">
-			<description><![CDATA[(before ".wrap")]]></description>
+		<property name="linkWrap" type="stdWrap">
+			<description><![CDATA[wrap/stdWrap
+			(before ".wrap")]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1518,8 +1578,14 @@ The maximum filesize of documents to be read is set to 1024 kb internally!]]></d
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="wrap" type="wrap">
+		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
+		<property name="wrap" type="stdWrap">
+			<description><![CDATA[wrap/stdWrap
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -1809,6 +1875,20 @@ This sets the default to 200 px width, but excludes check-boxes and sets textare
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="radioWrap.accessibilityWrap" type="wrap">
+			<description><![CDATA[Defines how radio buttons are wrapped when accessibility mode is turned on (see below “accessibility” property)
+			default:
+			
+			<fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
+			]]></description>
+			<default><![CDATA[<fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
+]]></default>
+		</property>
+		<property name="radioInputWrap" type="stdWrap">
+			<description><![CDATA[Wraps the input element and label of a radio button.]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 		<property name="recipient" type="stdWrap">
 			<description><![CDATA[(list of) string /stdWrap
 			Email recipient of the formmail content (generates the hiddenfield "recipient")]]></description>
@@ -2122,6 +2202,46 @@ v,h  is the dimensions]]></description>
 ]]></default>
 		</property>
 	</type>
+	<type id="ELLIPSE" extends="GifBuilderObj">
+		<property name="dimensions" type="string">
+			<description><![CDATA[x,y,w,h +calc
+Dimensions of a filled ellipse.
+x,y    is the offset.
+w,h    is the dimensions. Dimensions of 1 will result in 1-pixel wide lines!
+
+Example:
+file  =  GIFBUILDER
+file  {
+ XY  =  200,200
+ format  =  jpg
+ quality  =  100
+ 10  =  ELLIPSE
+ 10.dimensions  =  100,100,50,50
+ 10.color  =  red
+
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="color" type="string">
+			<description><![CDATA[GraphicColor
+fill-color
+
+Example:
+file  =  GIFBUILDER
+file  {
+ XY  =  200,200
+ format  =  jpg
+ quality  =  100
+ 10  =  ELLIPSE
+ 10.dimensions  =  100,100,50,50
+ 10.color  =  red
+
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>	
+	</type>			
 	<type id="EFFECT" extends="GifBuilderObj">
 		<property name="value" type="string">
 			<description><![CDATA[.value = [Varnavn] = [value] | [Varnavn] = [value]
@@ -2690,8 +2810,8 @@ For these options to make sense, they should only be used when "config.sys_langu
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[
+		<property name="wrap" type="stdWrap">
+			<description>wrap/stdWrap<![CDATA[
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -6318,6 +6438,15 @@ javascriptLibs {
 
      # includes ExtJS debug file (uncompressed)
    ExtJs.debug = 1
+   
+		#load SVG library
+		SVG = 1
+
+		#add SVG debug
+		SVG.debug = 1
+
+		#force render with flash
+		SVG.forceFlash = 1   
 }
 ]]></description>
 			<default><![CDATA[
@@ -6769,8 +6898,9 @@ The list in ".value" may not have spaces between elements!!]]></description>
 		</property>
 	</type>
 	<type id="imageLinkWrap">
-		<property name="JSwindow" type="boolean">
-			<description><![CDATA[The image will be opened in a new window which is fitted to the dimensions of the image!]]></description>
+		<property name="JSwindow" type="stdWrap">
+			<description><![CDATA[boolean/stdWrap
+			The image will be opened in a new window which is fitted to the dimensions of the image!]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6806,6 +6936,20 @@ instead.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="directImageLink" type="boolean">
+			<description><![CDATA[If true, a link to the generated image file will be returned directly (showpic.php is not used)]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="linkParams" type="typolink">
+			<description><![CDATA[Allows the manipulation of the generated typolink if JSwindow is not used. 
+			
+			Example:
+			linkParams.ATagParams.dataWrap =  class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>				
 		<property name="effects" type="string">
 			<description><![CDATA[Example:
 gamma=1,3 | sharpen=80 | solarize=70]]></description>
@@ -6970,6 +7114,26 @@ This crops 100x100px; from landscape-images a bit right of the center and portra
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="noRescale" type="boolean">
+			<description><![CDATA[If set, image will never be scaled. Only width and height are calculated according to the other properties, so that image is _displayed_ resized, but original files is used. Example:
+
+ file = test.jpg // has 1600 x 1200 pixels)
+ file.width = 240m
+ file.height = 240m
+ file.noScale = 1
+
+results in
+
+ <img src="test.jpg" width="240" height="180" />
+ // note src="test.jpg" is the _original_ file.
+
+Usage:
+
+ For creating PDFs or printing of pages the original file could provide much better quality as a recaled one
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 	</type>
 	<type id="mask">
 		<property name="bgImg" type="imgResource">
@@ -7078,6 +7242,27 @@ The property "selectFields" is overridden internally with "count(*)".]]></descri
 ]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+	</type>
+	<type id="numberFormat">
+		<property name="decimals" type="stdWrap">
+			<description><![CDATA[integer / stdWrap
+Number of decimals the formated number will have. Defaults to 0, so that your input will be rounded off in that case.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="dec_point" type="stdWrap">
+			<description><![CDATA[string / stdWrap
+Character that devides the decimals from the rest. Defaults to "."
+]]></description>
+			<default><![CDATA[.]]></default>
+		</property>
+		<property name="thousand_sep" type="stdWrap">
+			<description><![CDATA[string / stdWrap
+Character that devides the thousands of the number. Defaults to ",", set an empty value to have no thousands separator.
+]]></description>
+			<default><![CDATA[,]]></default>
 		</property>
 	</type>
 	<type id="parseFunc">
@@ -7432,8 +7617,9 @@ Notice: Currently this works only with TCA fields of type "select" which are not
 The limits between which layout is used are 60 minutes, 24 hours, 365 days,
 
 NOTE:
-If you set this property with a non-integer, it's used to format the four units. This is the default value:
-" min| hrs| days| yrs"
+If you set this property with a non-integer, it's used to format the four units. Use eight values to format both singular and plural values, where the first four values are the plural values and the last four are singular. This is the default string:
+
+" min| hrs| days| yrs| min| hour| day| year"
 
 Set another string if you want to change the units. You may include the "-signs. They are removed anyway.]]></description>
 			<default><![CDATA[
@@ -7729,6 +7915,41 @@ Example:
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="numberFormat" type="numberFormat">
+			<description><![CDATA[Formats a float value to any number format you need (e.g. prices)
+
+With this property you can format a float value and display it like you want, for example as a price. It's a wrapper for PHP's number_format() function.
+You can define how many decimals you want and which separators you want for decimals and thousands.
+
+Examples:
+
+lib.myPrice = TEXT
+lib.myPrice {
+  value = 0.8
+  numberFormat {
+    decimals = 2
+    dec_point = ,
+  }
+  noTrimWrap = || €|
+}
+# Will result in "0,80 €"
+
+
+lib.carViews = CONTENT
+lib.carViews {
+  table = tx_mycarext_car
+  select.pidInList = 42
+  renderObj = TEXT
+  renderObj {
+    field = views
+    numberFormat.thousands_sep = .
+  }
+}
+# Will result in something like "2.055"
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="offsetWrap" type="intList">
 			<description><![CDATA[This wraps the input in a table with columns to the left and top that offsets the content by the values of x,y. Based on the cObject OTABLE.
 
@@ -7970,6 +8191,56 @@ Uses "renderCharset" for the operation.]]></description>
 ]]></default>
 		</property>
 	</type>
+	<type id="SVG">
+		<property name="width" type="stdWrap">
+			<description><![CDATA[int/stdWrap
+			width of SVG
+]]></description>
+			<default><![CDATA[600]]></default>
+		</property>
+		<property name="height" type="stdWrap">
+			<description><![CDATA[int/stdWrap
+			height of SVG
+]]></description>
+			<default><![CDATA[400]]></default>
+		</property>
+		<property name="src" type="stdWrap">
+			<description><![CDATA[file resource/stdWrap
+			SVG file resource
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="value" type="stdWrap">
+			<description><![CDATA[XML/stdWrap
+			SVG raw XML. When src is defined the file will be loaded and value is ignored.
+			
+Example:
+10 = SVG
+10 {
+   width = 600
+   height = 600
+   value (
+	<rect x="100" y="100" width="500" height="200" fill="white" stroke="black" stroke-width="5px"/>
+	<line x1="0" y1="200" x2="700" y2="200" stroke="red" stroke-width="20px"/>
+        <polygon points="185 0 125 25 185 100" transform="rotate(135 125 25)" />
+        <circle cx="190" cy="150" r="40" stroke="black" stroke-width="2" fill="yellow"/>
+   )
+   noscript.cObject = TEXT
+   noscript.cObject.value = no svg rendering possible, use a browser
+}
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="noscript" type="stdWrap">
+			<description><![CDATA[text/stdWrap
+			Output if SVG output is not possible
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+	</type>
 	<type id="tableStyle">
 		<property name="align" type="stdWrap">
 			<description><![CDATA[
@@ -8135,6 +8406,17 @@ class="board"]]></description>
 		<property name="JSwindow_params" type="string">
 			<description><![CDATA[Preset values for opening the window. This example lists almost all possible attributes:
 status=1,menubar=1,scrollbars=1,resizable=1,location=1,directories=1,toolbar=1]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="jumpurl" type="filelink.jumpurl">
+			<description><![CDATA[boolean
+			Decides if the link should call the script with the jumpurl parameter in order to register any clicks in the stat. This works the same as "filelink.jumpurl", see more details there.
+Example:
+typolink.jumpurl =1
+typolink.jumpurl.secure =1
+typolink.jumpurl.secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

@@ -1,6 +1,7 @@
 2010-12-26  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #16661: include TSRef changes (4.4) for t3editor code completion (thanks to Christian Kartnig)
+	* Fixed bug #16663: include TSRef changes (4.5) for t3editor code completion (thanks to Christian Kartnig)
 
 2010-12-26  Tolleiv Nietsch  <typo3@tolleiv.de>
 
