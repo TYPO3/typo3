@@ -25,11 +25,11 @@
 	font-weight: bold;
 }
 .tx_scheduler_mod1 label {
-	display: block;
 	width: 200px;
 }
 .tx_scheduler_mod1 table.typo3-usersettings td {
-	padding: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 .tx_scheduler_mod1 table.typo3-usersettings td.td-input {
 	width: 400px;

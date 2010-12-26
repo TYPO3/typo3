@@ -1,3 +1,7 @@
+2010-12-26  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16838: Scheduler: Use new CSH rendering API
+
 2010-12-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #16842: Add Canadian French language to TYPO3 core
