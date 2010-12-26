@@ -78,6 +78,9 @@ Backend
 	  checkbox (#13797). In User-TS, you can set:
 	  options.enableShowPalettes=0 to see this feature in action.
 	  Default is still "1" like it used to be.
+	* The cron syntax interpreter of the Scheduler was entirely refactored.
+	  It now supports the full range of cron syntax features as can be found
+	  in Unix manual pages.
 
 
 Frontend

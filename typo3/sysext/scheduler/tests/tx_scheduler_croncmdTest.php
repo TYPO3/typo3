@@ -39,204 +39,230 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function validValuesContainsIntegersForListOfMinutes() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '23 * * * *', self::TIMESTAMP);
-		$this->assertType('integer', $cronCmdInstance->valid_values[0][0]);
+	public function constructorSetsNormalizedCronCommandSections() {
+		$instance = new tx_scheduler_CronCmd('2-3 * * * *');
+		$this->assertSame($instance->getCronCommandSections(), array('2,3', '*', '*', '*', '*'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function constructorThrowsExceptionForInvalidCronCommand() {
+		new tx_scheduler_CronCmd('61 * * * *');
 	}
 
 	/**
 	 * @test
 	 */
-	public function validValuesContainsIntegersForListOfHours() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* 23 * * *', self::TIMESTAMP);
-		$this->assertType('integer', $cronCmdInstance->valid_values[1][0]);
+	public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds() {
+		$instance = new tx_scheduler_CronCmd('* * * * *');
+		$this->assertSame($instance->getTimestamp(), $GLOBALS['ACCESS_TIME'] + 60);
 	}
 
 	/**
 	 * @test
 	 */
-	public function validValuesContainsIntegersForListOfDays() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 3 * *', self::TIMESTAMP);
-		$this->assertType('integer', $cronCmdInstance->valid_values[2][0]);
+	public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds() {
+		$instance = new tx_scheduler_CronCmd('* * * * *', self::TIMESTAMP);
+		$this->assertSame($instance->getTimestamp(), self::TIMESTAMP + 60);
 	}
 
 	/**
 	 * @test
 	 */
-	public function validValuesContainsIntegersForListOfMonth() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * 7 *', self::TIMESTAMP);
-		$this->assertType('integer', $cronCmdInstance->valid_values[3][0]);
+	public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds() {
+		$instance = new tx_scheduler_CronCmd('* * * * *', self::TIMESTAMP + 1);
+		$this->assertSame($instance->getTimestamp(), self::TIMESTAMP + 60);
 	}
 
 	/**
-	 * @test
+	 * @return array
+	 *	0 => cron command
+	 *	1 => start timestamp
+	 *	2 => expected timestamp after first calculateNextValue()
+	 *	3 => expected timestamp after second calculateNextValue()
 	 */
-	public function validValuesContainsIntegersForListOfYear() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * * 2010', self::TIMESTAMP);
-		$this->assertType('integer', $cronCmdInstance->valid_values[4][0]);
-	}
-
-	/**
-	 * Tests wether step values are correctly parsed for minutes
-	 *
-	 * @test
-	 */
-	public function minutePartUsesStepValuesWithinRange() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0-20/10 * * * *');
-		$expectedResult = array(
-			'0' => 0,
-			'1' => 10,
-			'2' => 20,
+	public static function expectedTimestampDataProvider() {
+		return array(
+			'every minute' => array(
+				'* * * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60,
+				self::TIMESTAMP + 120,
+			),
+			'once an hour at 1' => array(
+				'1 * * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60,
+				self::TIMESTAMP + 60 + 60*60,
+			),
+			'once an hour at 0' => array(
+				'0 * * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60,
+				self::TIMESTAMP + 60*60 + 60*60,
+			),
+			'once a day at 1:00' => array(
+				'0 1 * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60,
+				self::TIMESTAMP + 60*60 + 60*60*24,
+			),
+			'once a day at 0:00' => array(
+				'0 0 * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24,
+				self::TIMESTAMP + 60*60*24*2,
+			),
+			'every first day of month' => array(
+				'0 0 1 * *',
+				self::TIMESTAMP,
+				strtotime('01-02-2010'),
+				strtotime('01-03-2010'),
+			),
+			'once a month' => array(
+				'0 0 4 * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24*3,
+				self::TIMESTAMP + 60*60*24*3 + 60*60*24*31,
+			),
+			'once every Saturday' => array(
+				'0 0 * * sat',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24,
+				self::TIMESTAMP + 60*60*24 + 60*60*24*7,
+			),
+			'once every day in February' => array(
+				'0 0 * feb *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24*31,
+				self::TIMESTAMP + 60*60*24*31 + 60*60*24
+			),
+			'once every February' => array(
+				'0 0 1 feb *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24*31,
+				strtotime('01-02-2011'),
+			),
+			'once every Friday February' => array(
+				'0 0 * feb fri',
+				self::TIMESTAMP,
+				strtotime('05-02-2010'),
+				strtotime('12-02-2010'),
+			),
+			'first day in February and every Friday' => array(
+				'0 0 1 feb fri',
+				self::TIMESTAMP,
+				strtotime('01-02-2010'),
+				strtotime('05-02-2010'),
+			),
+			'day of week and day of month restricted, next match in day of month field' => array(
+				'0 0 2 * sun',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24,
+				self::TIMESTAMP + 60*60*24 + 60*60*24,
+			),
+			'day of week and day of month restricted, next match in day of week field' => array(
+				'0 0 3 * sat',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*24,
+				self::TIMESTAMP + 60*60*24 + 60*60*24,
+			),
+			'29th February leap year' => array(
+				'0 0 29 feb *',
+				self::TIMESTAMP,
+				strtotime('29-02-2012'),
+				strtotime('29-02-2016'),
+			),
+			'list of minutes' => array(
+				'2,4 * * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 120,
+				self::TIMESTAMP + 240,
+			),
+			'list of hours' => array(
+				'0 2,4 * * *',
+				self::TIMESTAMP,
+				self::TIMESTAMP + 60*60*2,
+				self::TIMESTAMP + 60*60*4,
+			),
+			'list of days in month' => array(
+				'0 0 2,4 * *',
+				self::TIMESTAMP,
+				strtotime('02-01-2010'),
+				strtotime('04-01-2010'),
+			),
+			'list of month' => array(
+				'0 0 1 2,3 *',
+				self::TIMESTAMP,
+				strtotime('01-02-2010'),
+				strtotime('01-03-2010'),
+			),
+			'list of days of weeks' => array(
+				'0 0 * * 2,4',
+				self::TIMESTAMP,
+				strtotime('05-01-2010'),
+				strtotime('07-01-2010'),
+			),
 		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[0]);
 	}
 
 	/**
-	 * Tests whether dayList is correctly calculated for a single day of month
-	 *
 	 * @test
+	 * @dataProvider expectedTimestampDataProvider
 	 */
-	public function dayPartUsesSingleDay() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2 * *');
-		$expectedResult = array(
-			'0' => 2,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
+	public function calculateNextValueDeterminesCorrectNextTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
+		$instance = new tx_scheduler_CronCmd($cronCommand, $startTimestamp);
+		$instance->calculateNextValue();
+		$this->assertSame($instance->getTimestamp(), $expectedTimestamp);
 	}
 
 	/**
-	 * Tests whether dayList is correctly calculated for a comma separated list of month days
-	 *
 	 * @test
+	 * @dataProvider expectedTimestampDataProvider
 	 */
-	public function dayPartUsesLists() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2,7 * *');
-		$expectedResult = array(
-			'0' => 2,
-			'1' => 7,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
-	}
-
-	/**
-	 * Tests whether dayList is correctly calculated for a range of month days
-	 *
-	 * @test
-	 */
-	public function dayPartUsesRangesWithLists() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2-4,10 * *');
-		$expectedResult = array(
-			'0' => 2,
-			'1' => 3,
-			'2' => 4,
-			'3' => 10,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
-	}
-
-	/**
-	 * Tests whether dayList is correctly calculated for stops of month days
-	 *
-	 * @test
-	 */
-	public function dayPartUsesStepValues() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * */14 * *');
-		$expectedResult = array(
-			'0' => 14,
-			'1' => 28,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
-	}
-
-	/**
-	 * Tests whether dayList is correctly calculated for stops of month days combined with ranges and lists
-	 *
-	 * @test
-	 */
-	public function dayPartUsesListsWithRangesAndSteps() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2,4-6/2,*/14 * *');
-		$expectedResult = array(
-			'0' => 2,
-			'1' => 4,
-			'2' => 6,
-			'3' => 14,
-			'4' => 28,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
-	}
-
-	/**
-	 * Tests whether dayList is correctly calculated for a single day of week
-	 *
-	 * @test
-	 */
-	public function weekdayPartUsesSingleDay() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * * 1', self::TIMESTAMP);
-		$expectedResult = array(
-			'0' => 4,
-			'1' => 11,
-			'2' => 18,
-			'3' => 25,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
+	public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp) {
+		$instance = new tx_scheduler_CronCmd($cronCommand, $firstTimestamp);
+		$instance->calculateNextValue();
+		$this->assertSame($instance->getTimestamp(), $secondTimestamp);
 	}
 
 	/**
 	 * @test
 	 */
-	public function weekdayPartCorrectlyParsesZeroAsSunday() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0 0 * * 0', self::TIMESTAMP);
-		$expectedResult = array(
-			'0' => 3,
-			'1' => 10,
-			'2' => 17,
-			'3' => 24,
-			'4' => 31,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
+	public function calculateNextValueDeterminesCorrectNextTimestampOnChangeToSummertime() {
+		$backupTimezone = date_default_timezone_get();
+		date_default_timezone_set('Europe/Berlin');
+		$instance = new tx_scheduler_CronCmd('* 3 28 mar *', self::TIMESTAMP);
+		$instance->calculateNextValue();
+		date_default_timezone_set($backupTimezone);
+		$this->assertSame($instance->getTimestamp(), 1269741600);
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function calculateNextValueThrowsExceptionWithImpossibleCronCommand() {
+		$instance = new tx_scheduler_CronCmd('* * 31 apr *', self::TIMESTAMP);
+		$instance->calculateNextValue();
 	}
 
 	/**
 	 * @test
 	 */
-	public function weekdayPartCorrectlyParsesSevenAsSunday() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0 0 * * 7', self::TIMESTAMP);
-		$expectedResult = array(
-			'0' => 3,
-			'1' => 10,
-			'2' => 17,
-			'3' => 24,
-			'4' => 31,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
+	public function getTimestampReturnsInteger() {
+		$instance = new tx_scheduler_CronCmd('* * * * *');
+		$this->assertType('integer', $instance->getTimestamp());
 	}
 
 	/**
-	 * Tests whether dayList is correctly calculated for a combination of day of month and day of weeks
-	 *
 	 * @test
 	 */
-	public function dayListUsesListOfDayOfMonthWithSingleDayOfWeek() {
-		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 1,2 * 1', self::TIMESTAMP);
-		$expectedResult = array(
-			'0' => 1,
-			'1' => 2,
-			'2' => 4,
-			'3' => 11,
-			'4' => 18,
-			'5' => 25,
-		);
-		$actualResult = $cronCmdInstance->valid_values;
-		$this->assertEquals($expectedResult, $actualResult[2]);
+	public function getCronCommandSectionsReturnsArray() {
+		$instance = new tx_scheduler_CronCmd('* * * * *');
+		$this->assertType('array', $instance->getCronCommandSections());
 	}
 }
 ?>

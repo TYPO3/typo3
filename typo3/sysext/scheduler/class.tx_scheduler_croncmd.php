@@ -1,303 +1,287 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2008-2010 Markus Friedrich (markus.friedrich@dkd.de)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2008-2010 Markus Friedrich (markus.friedrich@dkd.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * This class provides calulations for the cron command format
+ * This class provides calulations for the cron command format.
  *
- * @author		Markus Friedrich <markus.friedrich@dkd.de>
- * @package		TYPO3
- * @subpackage	tx_scheduler
- *
- * $Id$
+ * @author Markus Friedrich <markus.friedrich@dkd.de>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @package TYPO3
+ * @subpackage tx_scheduler
  */
 class tx_scheduler_CronCmd {
 
 	/**
-	 * Sections of the cron command
+	 * Normalized sections of the cron command.
+	 * Allowed are comma separated lists of integers and the character '*'
 	 *
-	 *	field          allowed values
+	 *	field          lower and upper bound
 	 *	-----          --------------
 	 *	minute         0-59
 	 *	hour           0-23
 	 *	day of month   1-31
-	 *	month          1-12 (or names, see below)
-	 *	day of week    0-7 (0 or 7 is Sun, or use names)
+	 *	month          1-12
+	 *	day of week    1-7
 	 *
-	 * @var	array		$cmd_sections
+	 * @var array $cronCommandSections
 	 */
-	public $cmd_sections;
+	protected $cronCommandSections;
 
 	/**
-	 * Valid values for each part
-	 *
-	 * @var	array		$valid_values
+	 * Timestamp of next execution date.
+	 * This value starts with 'now + 1 minute' if not set externally
+	 * by unit tests. After a call to calculateNextValue() it holds the timestamp of
+	 * the next execution date which matches the cron command restrictions.
 	 */
-	public $valid_values;
-
-	/**
-	 * Array containing the values to build the new execution date
-	 *
-	 * 0	=>	minute
-	 * 1	=>	hour
-	 * 2	=>	day
-	 * 3	=>	month
-	 * 4	=>	year
-	 *
-	 * @var	array		$values
-	 */
-	public $values;
+	protected $timestamp;
 
 	/**
 	 * Constructor
 	 *
-	 * @param	string		$cmd: the cron command
-	 * @param	integer		$tstamp: optional start time
-	 * @return	void
+	 * @api
+	 * @param string $cronCommand: The cron command can hold any combination documented as valid
+	 * 		expression in usual unix like crons like vixiecron. Special commands like @weekly,
+	 * 		ranges, steps and three letter month and weekday abbreviations are allowed.
+	 * @param integer $timestamp: optional start time, used in unit tests
+	 * @return void
 	 */
-	public function __construct($cmd, $tstamp = FALSE) {
-			// Explode cmd in sections
-		$this->cmd_sections = t3lib_div::trimExplode(' ', $cmd);
+	public function __construct($cronCommand, $timestamp = FALSE) {
+		$cronCommand = tx_scheduler_CronCmd_Normalize::normalize($cronCommand);
+
+			// Explode cron command to sections
+		$this->cronCommandSections = t3lib_div::trimExplode(' ', $cronCommand);
 
 			// Initialize the values with the starting time
 			// This takes care that the calculated time is always in the future
-		if ($tstamp === FALSE) {
-			$tstamp = strtotime('+1 minute');
+		if ($timestamp === FALSE) {
+			$timestamp = strtotime('+1 minute');
+		} else {
+			$timestamp += 60;
 		}
-		$this->values = array(
-				// Minute
-			intval(date('i', $tstamp)),
-				// Hour
-			intval(date('G', $tstamp)),
-				// Day
-			intval(date('j', $tstamp)),
-				// Month
-			intval(date('n', $tstamp)),
-				// Year
-			intval(date('Y', $tstamp))
-		);
-
-			// Set valid values
-		$this->valid_values = array(
-			$this->getList($this->cmd_sections[0], 0, 59),
-			$this->getList($this->cmd_sections[1], 0, 23),
-			$this->getDayList($this->values[3], $this->values[4]),
-			$this->getList($this->cmd_sections[3], 1, 12),
-			$this->getList('*', intval(date('Y', $tstamp)), intval(date('Y', $tstamp)) + 1)
-		);
+		$this->timestamp = $this->roundTimestamp($timestamp);
 	}
 
 	/**
-	 * Calulates the next execution
+	 * Calulates the date of the next execution.
 	 *
-	 * @param	integer		$level: number of the current level, e.g. 2 is the day level
-	 * @return	void
+	 * @api
+	 * @param integer $level (Deprecated) Number of the current level, e.g. 2 is the day level
+	 * @return void
 	 */
-	public function calculateNextValue($level) {
-		if (isset($this->values[$level])) {
-			$current_value = &$this->values[$level];
-			$next_level = $level + 1;
-
-			if (in_array($current_value, $this->valid_values[$level])) {
-				$this->calculateNextValue($next_level);
-			} else {
-				$next_value = $this->getNextValue($this->values[$level], $this->valid_values[$level]);
-				if ($next_value === false) {
-						// Set this value and prior values to the start value
-					for ($i = $level; $i >= 0; $i--) {
-						$this->values[$i] = $this->valid_values[$i][0];
-
-							// Update day list if month was changed
-						if ($i == 3) {
-							$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]);
-						}
-					}
-
-						// Calculate next value for the next value
-					for ($i = $next_level; $i <= count($this->values); $i++) {
-						if (isset($this->values[$i])) {
-							$increased_value = $this->getNextValue($this->values[$i], $this->valid_values[$i]);
-
-							if ($increased_value !== false) {
-								$this->values[$i] = $increased_value;
-
-									// Update day list if month was changed
-								if ($i == 3) {
-									$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]);
-
-										// Check if day had already a valid start value, if not set a new one
-									if (!$this->values[2] || !in_array($this->values[2], $this->valid_values[2])) {
-										$this->values[2] = $this->valid_values[2][0];
-									}
-								}
-
-								break;
-							} else {
-								$this->values[$i] = $this->valid_values[$i][0];
-
-									// Update day list if month was changed
-								if ($i == 3) {
-									$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]+1);
-								}
-							}
-						}
-					}
-
-					$this->calculateNextValue($next_level);
-				} else {
-					if ($level == 3) {
-							// Update day list if month was changed
-						$this->valid_values[2] = $this->getDayList($this->values[3], $this->values[4]);
-					}
-
-					$current_value = $next_value;
-					$this->calculateNextValue($next_level);
-				}
-			}
+	public function calculateNextValue($level = NULL) {
+		if (!is_null($level)) {
+			t3lib_div::deprecationLog('The parameter $level is deprecated since TYPO3 version 4.5.');
 		}
+
+		$newTimestamp = $this->getTimestamp();
+
+			// Calculate next minute and hour field
+		$loopCount = 0;
+		while (TRUE) {
+			$loopCount ++;
+				// If there was no match within two days, cron command is invalid.
+				// The second day is needed to catch the summertime leap in some countries.
+			if ($loopCount > 2880) {
+				throw new RuntimeException(
+					'Unable to determine next execution timestamp: Hour and minute combination is invalid.',
+					1291494126
+				);
+			}
+			if ($this->minuteAndHourMatchesCronCommand($newTimestamp)) {
+				break;
+			}
+			$newTimestamp += 60;
+		}
+
+		$loopCount = 0;
+		while (TRUE) {
+			$loopCount ++;
+				// A date must match within the next 4 years, this high number makes
+				// sure leap year cron command configuration are caught.
+				// If the loop runs longer than that, the cron command is invalid.
+			if ($loopCount > 1464) {
+				throw new RuntimeException(
+					'Unable to determine next execution timestamp: Day of month, month and day of week combination is invalid.',
+					1291501280
+				);
+			}
+			if ($this->dayMatchesCronCommand($newTimestamp)) {
+				break;
+			}
+			$newTimestamp += $this->numberOfSecondsInDay($newTimestamp);
+		}
+
+		$this->timestamp = $newTimestamp;
+	}
+
+	/*
+	 * Get next timestamp
+	 *
+	 * @api
+	 * @return integer Unix timestamp
+	 */
+	public function getTimestamp() {
+		return $this->timestamp;
 	}
 
 	/**
-	 * Builds a list of days for a certain month
+	 * Get cron command sections. Array of strings, each containing either
+	 * a list of comma seperated integers or *
 	 *
-	 * @param	integer		$currentMonth: number of a month
-	 * @param	integer		$currentYear: a year
-	 * @return	array		list of days
+	 * @return array command sections:
+	 * 	0 => minute
+	 * 	1 => hour
+	 * 	2 => day of month
+	 * 	3 => month
+	 * 	4 => day of week
 	 */
-	protected function getDayList($currentMonth, $currentYear) {
-			// Create a dummy timestamp at 6:00 of the first day of the current month and year
-			// to get the number of days in the month using date()
-		$dummyTimestamp = mktime(6, 0, 0, $currentMonth, 1, $currentYear);
-		$max_days = date('t', $dummyTimestamp);
-		$validDays = $this->getList($this->cmd_sections[2], 1, $max_days);
-
-			// Consider special field 'day of week'
-			// @TODO: Implement lists and ranges for day of week (2,3 and 1-5 and */2,3 and 1,1-5/2)
-			// @TODO: Support usage of day names in day of week field ("mon", "sun", etc.)
-		if ((strpos($this->cmd_sections[4], '*') === FALSE && preg_match('/[0-7]{1}/', $this->cmd_sections[4]) !== FALSE)) {
-				// Unset days from 'day of month' if * is given
-				// * * * * 1 results to every monday of this month
-				// * * 1,2 * 1 results to every monday, plus first and second day of month
-			if ($this->cmd_sections[2] == '*') {
-				$validDays = array();
-			}
-
-				// Allow 0 as representation for sunday and convert to 7
-			$dayOfWeek = $this->cmd_sections[4];
-			if ($dayOfWeek === '0') {
-				$dayOfWeek = '7';
-			}
-
-				// Get list
-			for ($i = 1; $i <= $max_days; $i++) {
-				if (strftime('%u', mktime(0, 0, 0, $currentMonth, $i, $currentYear)) == $dayOfWeek) {
-					if (!in_array($i, $validDays)) {
-						$validDays[] = $i;
-					}
-				}
-			}
-		}
-		sort($validDays);
-
-		return $validDays;
+	public function getCronCommandSections() {
+		return $this->cronCommandSections;
 	}
 
 	/**
-	 * Builds a list of possible values from a cron command.
+	 * Determine if current timestamp matches minute and hour cron command restriction.
 	 *
-	 * @param	string		$definition: the command e.g. "2-8,14,0-59/20"
-	 * @param	integer		$min: minimum allowed value, greater or equal zero
-	 * @param	integer		$max: maximum allowed value, greater than $min
-	 * @return	array		list with possible values
+	 * @param integer $timestamp to test
+	 * @return boolean TRUE if cron command conditions are met
 	 */
-	protected function getList($definition, $min, $max) {
-		$possibleValues = array();
+	protected function minuteAndHourMatchesCronCommand($timestamp) {
+		$minute = intval(date('i', $timestamp));
+		$hour = intval(date('G', $timestamp));
 
-		$listParts = t3lib_div::trimExplode(',', $definition, TRUE);
-		foreach ($listParts as $part) {
-			$possibleValues = array_merge($possibleValues, $this->getListPart($part, $min, $max));
+		$commandMatch = FALSE;
+		if (
+			$this->isInCommandList($this->cronCommandSections[0], $minute)
+			&& $this->isInCommandList($this->cronCommandSections[1], $hour)
+		) {
+			$commandMatch = TRUE;
 		}
 
-		sort($possibleValues);
-		return $possibleValues;
+		return $commandMatch;
 	}
 
 	/**
-	 * Builds a list of possible values from a single part of a cron command.
-	 * Parses asterisk (*), ranges (2-4) and steps (2-10/2).
+	 * Determine if current timestamp matches day of month, month and day of week
+	 * cron command restriction
 	 *
-	 * @param	string		$definition: a command part e.g. "2-8", "*", "0-59/20"
-	 * @param	integer		$min: minimum allowed value, greater or equal zero
-	 * @param	integer		$max: maximum allowed value, greater than $min
-	 * @return	array		list with possible values or empty array
+	 * @param integer $timestamp to test
+	 * @return boolean TRUE if cron command conditions are met
 	 */
-	protected function getListPart($definition, $min, $max) {
-		$possibleValues = array();
+	protected function dayMatchesCronCommand($timestamp) {
+		$dayOfMonth = date('j', $timestamp);
+		$month = date('n', $timestamp);
+		$dayOfWeek = date('N', $timestamp);
 
-		if ($definition == '*') {
-				// Get list for the asterisk
-			for ($value = $min; $value <= $max; $value++) {
-				$possibleValues[] = $value;
+		$isInDayOfMonth = $this->isInCommandList($this->cronCommandSections[2], $dayOfMonth);
+		$isInMonth = $this->isInCommandList($this->cronCommandSections[3], $month);
+		$isInDayOfWeek = $this->isInCommandList($this->cronCommandSections[4], $dayOfWeek);
+
+			// Quote from vixiecron:
+			// Note: The day of a command's execution can be specified by two fields — day of month, and day of week.
+			// If both fields are restricted (i.e., aren't  *),  the  command will be run when either field
+			// matches the current time.  For example, `30 4 1,15 * 5' would cause
+			// a command to be run at 4:30 am on the 1st and 15th of each month, plus every Friday.
+
+		$isDayOfMonthRestricted = (string)$this->cronCommandSections[2] ===  '*' ? FALSE : TRUE;
+		$isDayOfWeekRestricted = (string)$this->cronCommandSections[4] === '*' ? FALSE : TRUE;
+
+		$commandMatch = FALSE;
+		if ($isInMonth) {
+			if (
+				($isInDayOfMonth && $isDayOfMonthRestricted)
+				|| ($isInDayOfWeek && $isDayOfWeekRestricted)
+				|| ($isInDayOfMonth && !$isDayOfMonthRestricted && $isInDayOfWeek && !$isDayOfWeekRestricted)
+			) {
+				$commandMatch = TRUE;
 			}
-		} else if (strpos($definition, '/') !== false) {
-				// Get list for step values
-			list($listPart, $stepPart) = t3lib_div::trimExplode('/', $definition);
-			$tempList = $this->getListPart($listPart, $min, $max);
-			foreach ($tempList as $tempListValue) {
-				if ($tempListValue % $stepPart == 0) {
-					$possibleValues[] = $tempListValue;
-				}
-			}
-		} else if (strpos($definition, '-') !== false) {
-				// Get list for range definitions
-				// Get list definition parts
-			list($minValue, $maxValue) = t3lib_div::trimExplode('-', $definition);
-			if ($minValue < $min) {
-				$minValue = $min;
-			}
-			if ($maxValue > $max) {
-				$maxValue = $max;
-			}
-			$possibleValues = $this->getListPart('*', $minValue, $maxValue);
-		} else if (is_numeric($definition) && $definition >= $min && $definition <= $max) {
-				// Get list for single values
-			$possibleValues[] = intval($definition);
 		}
 
-		sort($possibleValues);
-		return $possibleValues;
+		return $commandMatch;
+	}
+
+	/**
+	 * Determine if a given number validates a cron command section. The given cron
+	 * command must be a 'normalized' list with only comma separated integers or '*'
+	 *
+	 * @param string $commandExpression: cron command
+	 * @param integer $numberToMatch: number to look up
+	 * @return boolean TRUE if number is in list
+	 */
+	protected function isInCommandList($commandExpression, $numberToMatch) {
+		$inList = FALSE;
+		if ((string)$commandExpression === '*') {
+			$inList = TRUE;
+		} else {
+			$inList = t3lib_div::inList($commandExpression, $numberToMatch);
+		}
+
+		return $inList;
+	}
+
+	/**
+	 * Helper method to calculate number of seconds in a day.
+	 *
+	 * This is not always 86400 (60*60*24) and depends on the timezone:
+	 * Some countries like Germany have a summertime / wintertime switch,
+	 * on every last sunday in march clocks are forwarded by one hour (set from 2:00 to 3:00),
+	 * and on last sunday of october they are set back one hour (from 3:00 to 2:00).
+	 * This shortens and lengthens the length of a day by one hour.
+	 *
+	 * @param integer timestamp
+	 * @return integer Number of seconds of day
+	 */
+	protected function numberOfSecondsInDay($timestamp) {
+		$now = mktime(0, 0, 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
+			// Make sure to be in next day, even if day has 25 hours
+		$nextDay = $now + 60*60*25;
+		$nextDay = mktime(0, 0, 0, date('n', $nextDay), date('j', $nextDay), date('Y', $nextDay));
+
+		return ($nextDay - $now);
+	}
+
+	/**
+	 * Round a timestamp down to full minute.
+	 *
+	 * @param integer timestamp
+	 * @return integer Rounded timestamp
+	 */
+	protected function roundTimestamp($timestamp) {
+		return mktime(date('H', $timestamp), date('i', $timestamp), 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
 	}
 
 	/**
 	 * Returns the first value that is higher than the current value
-	 * from a list of possible values
+	 * from a list of possible values.
 	 *
+	 * @deprecated since 4.5
 	 * @param	mixed	$currentValue: the value to be searched in the list
 	 * @param	array	$listArray: the list of values
 	 * @return	mixed	The value from the list right after the current value
 	 */
 	public function getNextValue($currentValue, array $listArray) {
+		t3lib_div::deprecationLog('The method is deprecated since TYPO3 version 4.5.');
+
 		$next_value = false;
 
 		$numValues = count($listArray);
@@ -312,17 +296,17 @@ class tx_scheduler_CronCmd {
 	}
 
 	/**
-	 * Returns the timestamp for the value parts in $this->values
+	 * Returns the timestamp for the value parts in $this->values.
 	 *
-	 * @return	integer		unix timestamp
+	 * @deprecated since 4.5
+	 * @return integer unix timestamp
 	 */
 	public function getTstamp() {
-		return mktime($this->values[1], $this->values[0], 0, $this->values[3], $this->values[2], $this->values[4]);
+		t3lib_div::deprecationLog('The method is deprecated since TYPO3 version 4.5.');
+		return $this->getTimestamp();
 	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/class.tx_scheduler_croncmd.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/class.tx_scheduler_croncmd.php']);
 }
-
-?>

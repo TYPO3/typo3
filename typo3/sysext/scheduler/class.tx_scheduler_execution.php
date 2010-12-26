@@ -263,9 +263,9 @@ class tx_scheduler_Execution {
 	 */
 	public function getNextCronExecution() {
 		$cronCmd = t3lib_div::makeInstance('tx_scheduler_CronCmd', $this->getCronCmd());
-		$cronCmd->calculateNextValue(0);
+		$cronCmd->calculateNextValue();
 
-		return $cronCmd->getTstamp();
+		return $cronCmd->getTimestamp();
 	}
 
 	/**
