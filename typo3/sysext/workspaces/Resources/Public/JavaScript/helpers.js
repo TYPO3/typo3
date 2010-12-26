@@ -49,6 +49,7 @@ TYPO3.Workspaces.Helpers = {
 	},
 
 	getSendToStageWindow: function(configuration) {
+		top.TYPO3.Windows.close('sendToStageWindow');
 		return top.TYPO3.Windows.showWindow({
 			id: 'sendToStageWindow',
 			title: configuration.title,

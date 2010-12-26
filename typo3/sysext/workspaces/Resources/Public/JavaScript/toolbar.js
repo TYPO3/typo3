@@ -127,6 +127,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 					label = TYPO3.lang["tooltip.releaseAll"];
 					break;
 			}
+			top.TYPO3.Windows.close('executeMassActionWindow');
 			var dialog = top.TYPO3.Windows.showWindow({
 				id: 'executeMassActionWindow',
 				title: TYPO3.lang["window.massAction.title"],
