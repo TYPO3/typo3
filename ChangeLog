@@ -1,3 +1,7 @@
+2010-12-26  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #16661: include TSRef changes for t3editor code completion (thanks to Christian Kartnig)
+
 2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
 
 	* Fixed bug #16825: Fatal error in lang.php (thanks to Georg Ringer)
