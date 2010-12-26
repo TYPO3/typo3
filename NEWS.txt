@@ -226,6 +226,8 @@ Workspaces
 	  workspace to a real workspace and sets up the new stages.
 	* Inline Relational Record Editing (IRRE) can now also be used for 1:n
 	  relations in workspaces.
+	* In order to support custom stages properly it's recommended to change
+	   the type of all t3ver_stage fields from tinyint(4) to int(11).
 
 
 Backend skin
