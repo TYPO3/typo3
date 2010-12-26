@@ -1,0 +1,7 @@
+body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
+	background: none;
+}
+
+body.typo3-in-workspace #typo3-topbar .x-panel-body {
+	background: none;
+}

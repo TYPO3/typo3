@@ -1,3 +1,7 @@
+2010-12-26  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16841: Webkit performance issue with topbar status "in workspace"
+
 2010-12-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16611: [scheduler] tx_scheduler_CronCmd needs refactoring
