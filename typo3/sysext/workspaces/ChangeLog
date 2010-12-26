@@ -1,5 +1,6 @@
 2010-12-26  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed issue #11722: TempFlashMessageQueueViewHelper is not required anymore
 	* Fixed bug #11718: ExtJS confirmation window contents might be "cached"
 
 2010-12-25  Tolleiv Nietsch <typo3@tolleiv.de>
