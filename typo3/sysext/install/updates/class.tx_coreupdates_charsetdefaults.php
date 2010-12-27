@@ -30,18 +30,8 @@
  *
  * @version $Id$
  */
-class tx_coreupdates_charsetDefaults {
-	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	var $needsExternalHelp = FALSE;
-
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	var $pObj;
-	var $userInput;	// user input
-
+class tx_coreupdates_charsetDefaults extends Tx_Install_Updates_Base {
+	protected $title = 'Database Character Set';
 
 	/**
 	 * Checks if the configuration is relying on old default values or not.

@@ -31,16 +31,8 @@
  * @author Sebastian Kurfürst <sebastian@garbage-group.de
  * @version $Id$
  */
-class tx_coreupdates_compatversion {
-	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	var $pObj;
-	var $userInput;	// user input
+class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
+	protected $title = 'Version Compatibility';
 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.

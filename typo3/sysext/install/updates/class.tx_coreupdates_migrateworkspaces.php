@@ -33,15 +33,8 @@
  * @version $Id$
  */
 class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
+	protected $title = 'Versioning and Workspaces: Migrate "draft" workspace';
 
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	public $pObj;
-	public $userInput;	// user input
 	public $sqlQueries;
 
 	/**

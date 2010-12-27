@@ -29,10 +29,8 @@
  *
  * @author	Steffen Ritter <info@rs-websystems.de>
  */
-class tx_coreupdates_compressionlevel {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	public $pObj;	// parent object (tx_install)
-	public $userInput;	// user input
+class tx_coreupdates_compressionlevel extends Tx_Install_Updates_Base {
+	protected $title = 'Check Compression Level';
 
 
 	/**

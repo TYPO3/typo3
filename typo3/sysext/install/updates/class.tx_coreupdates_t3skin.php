@@ -29,10 +29,8 @@
  *
  * @author	Steffen Ritter <info@rs-websystems.de>
  */
-class tx_coreupdates_t3skin {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	public $pObj;	// parent object (tx_install)
-	public $userInput;	// user input
+class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
+	protected $title = 'Install the new TYPO3 Skin "t3skin"';
 
 
 	/**

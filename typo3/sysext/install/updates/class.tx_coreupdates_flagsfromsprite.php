@@ -31,8 +31,8 @@
  * @author Ernesto Baschny <ernst@cron-it.de>
  * @version $Id$
  */
-class tx_coreupdates_flagsfromsprite {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
+class tx_coreupdates_flagsfromsprite extends Tx_Install_Updates_Base {
+	protected $title = 'Update Graphics, Using Sprites for sys_language Records';
 
 	/**
 	 * Checks if an update is needed

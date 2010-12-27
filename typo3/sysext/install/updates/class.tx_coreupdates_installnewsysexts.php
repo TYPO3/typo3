@@ -34,18 +34,9 @@
  * @author  Benjamin Mack <benni@typo3.org>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */
-class tx_coreupdates_installnewsysexts {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
+class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
+	protected $title = 'Install New System Extensions';
 	protected $newSystemExtensions = array('recycler', 't3editor', 'reports', 'scheduler');
-
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	public $pObj;
-	public $userInput;	// user input
-
 
 	/**
 	 * Checks if an update is needed

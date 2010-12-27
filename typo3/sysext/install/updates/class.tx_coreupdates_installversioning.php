@@ -33,18 +33,9 @@
  *
  * @author  Rupert Germann
  */
-class tx_coreupdates_installversioning {
-	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
+class tx_coreupdates_installversioning extends Tx_Install_Updates_Base {
+	protected $title = 'Versioning and Workspaces: Install System Extension';
 	protected $newSystemExtensions = array('version');
-
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	public $pObj;
-	public $userInput;	// user input
-
 
 	/**
 	 * Checks if an update is needed

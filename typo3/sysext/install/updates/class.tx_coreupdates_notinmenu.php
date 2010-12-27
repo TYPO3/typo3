@@ -32,16 +32,8 @@
  * @author Steffen Kamper <info@sk-typo3.de>
  * @version $Id$
  */
-class tx_coreupdates_notinmenu {
-	var $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-
-	/**
-	 * parent object
-	 *
-	 * @var tx_install
-	 */
-	var $pObj;
-	var $userInput;	// user input
+class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
+	protected $title = 'Update Pages with Doktype "Not in menu"';
 
 
 	/**

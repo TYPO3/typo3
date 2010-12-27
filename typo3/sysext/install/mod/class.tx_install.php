@@ -6488,37 +6488,32 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$singleUpdate = array();
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
 						$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
-						if (method_exists($tmpObj,'checkForUpdate')) {
+						if ($tmpObj->shouldRenderWizard()) {
 							$explanation = '';
-							$showUpdate = NULL;
-								// return value kept for backwards compatibility
-							$returnVal = $tmpObj->checkForUpdate($explanation, $showUpdate);
-							if ($showUpdate == NULL) {
-								$showUpdate = $returnVal;
-							}
-							if ($showUpdate > 0) {
-								$updateMarkers = array(
-									'next' => '<button type="submit" name="TYPO3_INSTALL[update][###IDENTIFIER###]">
-							Next
-							<span class="t3-install-form-button-icon-positive">&nbsp;</span>
-						</button>',
-									'identifier' => $identifier,
-									'explanation' => $explanation,
-								);
+							$tmpObj->checkForUpdate($explanation);
 
-									// only display the message, no button
-								if ($showUpdate === 2) {
-									$updateMarkers['next'] = '';
-								}
+							$updateMarkers = array(
+								'next' => '<button type="submit" name="TYPO3_INSTALL[update][###IDENTIFIER###]">
+						Next
+						<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+					</button>',
+								'identifier'  => $identifier,
+								'title'       => $tmpObj->getTitle(),
+								'explanation' => $explanation,
+							);
 
-								$singleUpdate[] = t3lib_parsehtml::substituteMarkerArray(
-									$singleUpdateWizardBoxSubpart,
-									$updateMarkers,
-									'###|###',
-									TRUE,
-									FALSE
-								);
+								// only display the message, no button
+							if (!$tmpObj->shouldRenderNextButton()) {
+								$updateMarkers['next'] = '';
 							}
+
+							$singleUpdate[] = t3lib_parsehtml::substituteMarkerArray(
+								$singleUpdateWizardBoxSubpart,
+								$updateMarkers,
+								'###|###',
+								TRUE,
+								FALSE
+							);
 						}
 					}
 
@@ -6620,6 +6615,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 
 						$updateMarkers['identifier'] = $identifier;
+						$updateMarkers['title'] = $tmpObj->getTitle();
 
 						if (method_exists($tmpObj,'getUserInput')) {
 							$updateMarkers['identifierMethod'] = $tmpObj->getUserInput('TYPO3_INSTALL[update][' . $identifier . ']');
@@ -6671,6 +6667,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 					$updateItemsMarkers['identifier'] = $identifier;
+					$updateItemsMarkers['title'] = $tmpObj->getTitle();
 						// check user input if testing method is available
 					if (method_exists($tmpObj,'checkUserInput') && !$tmpObj->checkUserInput($customOutput)) {
 						$customOutput = '';
@@ -6783,6 +6780,26 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					implode(chr(10), $updateItems)
 				);
 				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = FALSE;
+				
+				// also render the link to the next update wizard, if available
+				$nextUpdateWizard = $this->getNextUpdadeWizardInstance($tmpObj);
+				if ($nextUpdateWizard) {
+					$content = t3lib_parsehtml::substituteMarkerArray(
+						$content,
+						array('NEXTIDENTIFIER' => $nextUpdateWizard->getIdentifier()),
+						'###|###',
+						TRUE,
+						FALSE
+					);
+				} else {
+					// no next wizard, also hide the button to the next update wizard
+					$content = t3lib_parsehtml::substituteSubpart(
+						$content,
+						'###NEXTUPDATEWIZARD###',
+						''
+					);
+				}
+				
 			break;
 		}
 		$this->message('Update Wizard', $title, $content);
@@ -6797,10 +6814,37 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 */
 	function getUpgradeObjInstance($className, $identifier) {
 		$tmpObj = t3lib_div::getUserObj($className);
+		$tmpObj->setIdentifier($identifier);
 		$tmpObj->versionNumber = t3lib_div::int_from_ver(TYPO3_version);
 		$tmpObj->pObj = $this;
 		$tmpObj->userInput = $this->INSTALL['update'][$identifier];
 		return $tmpObj;
+	}
+
+	/**
+	 * Returns the next upgrade wizard object.
+	 *
+	 * Used to show the link/button to the next upgrade wizard
+	 * @param	object	$currentObj		current Upgrade Wizard Object
+	 * @return	mixed	Upgrade Wizard instance or FALSE
+	 */
+	protected function getNextUpdadeWizardInstance($currentObj) {
+		$isPreviousRecord = TRUE;
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
+				// first, find the current update wizard, and then start validating the next ones
+			if ($currentObj->getIdentifier() == $identifier) {
+				$isPreviousRecord = FALSE;
+				continue;
+			}
+
+			if (!$isPreviousRecord) {
+				$nextUpdateWizard = $this->getUpgradeObjInstance($className, $identifier);
+				if ($nextUpdateWizard->shouldRenderWizard()) {
+					return $nextUpdateWizard;
+				}
+			}
+		}
+		return FALSE;
 	}
 
 	/**

@@ -1,3 +1,7 @@
+2010-12-27  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16845: Better API for Update Wizards in the Install Tool (Thanks to Benjamin Mack)
+
 2010-12-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL to version 1.2.0beta3

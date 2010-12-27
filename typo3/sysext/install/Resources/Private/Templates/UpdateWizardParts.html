@@ -10,6 +10,8 @@
 	</head>
 	<body>
 		<!-- ###CHECKFORUPDATE### begin -->
+		<p>If you upgrade your TYPO3 installation from one major version to another (e.g. 4.4 to 4.5), then the upgrade wizards guide you through the necessary steps to upgrade your database records or explicitly install extensions that ship with the latest TYPO3 version.</p> 
+		<hr />
 		<!-- ###UPDATESAVAILABLE### begin -->
 		<!-- ###UPDATEWIZARDBOXES### begin -->
 		<form action="###ACTION####t3-install-bottom" method="post">
@@ -21,7 +23,7 @@
 				</ol>
 			</fieldset>
 			<!-- ###SINGLEUPDATEWIZARDBOX### begin -->
-			<h4>###IDENTIFIER###</h4>
+			<h4>###TITLE###</h4>
 			###EXPLANATION###
 			<fieldset class="t3-install-form-submit">
 				<ol>
@@ -30,6 +32,7 @@
 					</li>
 				</ol>
 			</fieldset>
+			<hr />
 			<!-- ###SINGLEUPDATEWIZARDBOX### end -->
 		</form>
 		<!-- ###UPDATEWIZARDBOXES### end -->
@@ -68,11 +71,7 @@
 					</li>
 				</ol>
 			</fieldset>
-			<p>
-				<h4>
-					###IDENTIFIER###
-				</h4>
-			</p>
+			<h4>###TITLE###</h4>
 			###IDENTIFIERMETHOD###
 			<!-- ###UPDATESAVAILABLE### end -->
 			<fieldset>
@@ -100,7 +99,7 @@
 			<!-- ###UPDATEITEMS### begin -->
 			<p class="innerWidth">
 				<strong>
-					###IDENTIFIER###
+					###TITLE###
 				</strong>
 			</p>
 				<!-- ###CHECKUSERINPUT### begin -->
@@ -132,6 +131,27 @@
 				</strong>
 				<!-- ###NOPERFORMUPDATE### end -->
 			<!-- ###UPDATEITEMS### end -->
+			<!-- ###NEXTUPDATEWIZARD### begin -->
+			<br /><br /><br /><hr />
+			<form action="index.php?TYPO3_INSTALL[type]=update" method="post">
+				<fieldset class="t3-install-hidden">
+					<ol>
+						<li>
+							<input name="TYPO3_INSTALL[database_type]" value="getUserInput" type="hidden">
+						</li>
+					</ol>
+				</fieldset>
+				<fieldset class="t3-install-form-submit">
+					<ol>
+						<li>
+							<button type="submit" name="TYPO3_INSTALL[update][###NEXTIDENTIFIER###]">
+								Go to the next update wizard.
+							</button>
+						</li>
+					</ol>
+				</fieldset>
+			</form>
+			<!-- ###NEXTUPDATEWIZARD### end -->
 		<!-- ###PERFORMUPDATE### end -->
 	</body>
 </html>

@@ -31,7 +31,8 @@
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @version $Id$
  */
-class tx_coreupdates_cscsplit {
+class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
+	protected $title = 'Split TypoScript Templates from CSS Styled Content';
 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.
