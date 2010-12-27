@@ -90,9 +90,6 @@ class t3lib_timeTrack {
 		'flag_content' => 0,
 		'allTime' => 0,
 		'keyLgd' => 40,
-		'factor' => 10,
-		'col' => '#D9D5C9',
-		'highlight_col' => '#FF9933'
 	);
 
 	var $wrapError = array();
@@ -307,7 +304,9 @@ class t3lib_timeTrack {
 			$data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
 			$data['starttime'] = $this->getDifferenceToStarttime($data['starttime']);
 			$data['deltatime'] = $data['endtime'] - $data['starttime'];
-			$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
+			if (is_array($data['tsStack'])) {
+				$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
+			}
 		}
 
 			// Create hierarchical array of keys pointing to the stack
@@ -337,7 +336,7 @@ class t3lib_timeTrack {
 		$out = '';
 		foreach ($outputArr as $row) {
 			$out .= '
-				<th style="text-align:center; background:#ABBBB4;"><strong>' . $row . '</strong></th>';
+				<th><strong>' . $row . '</strong></th>';
 		}
 		$out = '<tr>' . $out . '</tr>';
 
@@ -352,9 +351,10 @@ class t3lib_timeTrack {
 
 		$c = 0;
 		foreach ($this->tsStackLog as $uniqueId => $data) {
-			$bgColor = ' background-color:' . ($c % 2 ? t3lib_div::modifyHTMLColor($col, $factor, $factor, $factor) : $col) . ';';
 			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
-				$bgColor = ' background-color:' . $highlight_col . ';';
+				$logRowClass = 'typo3-adminPanel-logRow-highlight';
+			} else {
+				$logRowClass = ($c % 2) ? 'typo3-adminPanel-logRow-odd' : 'typo3-adminPanel-logRow-even';
 			}
 
 			$item = '';
@@ -386,21 +386,21 @@ class t3lib_timeTrack {
 				$theLabel = $data['key'];
 			}
 			$theLabel = t3lib_div::fixed_lgd_cs($theLabel, -$keyLgd);
-			$theLabel = $data['stackPointer'] ? '<span style="color:maroon;">' . $theLabel . '</span>' : $theLabel;
+			$theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
 			$keyLabel = $theLabel . $keyLabel;
-			$item .= '<td valign="top" style="text-align:left; white-space:nowrap; padding-left:2px;' . $bgColor . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
+			$item .= '<td class="' . $logRowClass . '" style="padding-left:2px;">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
 
 				// key value:
 			$keyValue = $data['value'];
-			$item .= '<td valign="top" style="text-align:left; white-space:nowrap;' . $bgColor . '">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
+			$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime" style="' . $bgColor . '">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
 
 			if ($this->printConf['allTime']) {
-				$item .= '<td valign="top" style="text-align:right; white-space:nowrap;' . $bgColor . '"> ' . $this->fw($data['starttime']) . '</td>';
-				$item .= '<td valign="top" style="text-align:right; white-space:nowrap;' . $bgColor . '"> ' . $this->fw($data['owntime']) . '</td>';
-				$item .= '<td valign="top" style="text-align:left; white-space:nowrap;' . $bgColor . '"> ' . $this->fw($data['subtime'] ? '+' . $data['subtime'] : '') . '</td>';
-				$item .= '<td valign="top" style="text-align:left; white-space:nowrap;' . $bgColor . '"> ' . $this->fw($data['subtime'] ? '=' . $data['deltatime'] : '') . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['starttime']) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['subtime'] ? '+' . $data['subtime'] : '') . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['subtime'] ? '=' . $data['deltatime'] : '') . '</td>';
 			} else {
-				$item .= '<td valign="top" style="text-align:right; white-space:nowrap;' . $bgColor . '"> ' . $this->fw($data['owntime']) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
 			}
 
 
@@ -428,11 +428,11 @@ class t3lib_timeTrack {
 			if (count($msgArr)) {
 				$msg = implode($msgArr, '<hr />');
 			}
-			$item .= '<td valign="top" style="text-align:left;' . $bgColor . '">' . $this->fw($msg) . '</td>';
+			$item .= '<td valign="top" class="' . $logRowClass . '" style="text-align:left;">' . $this->fw($msg) . '</td>';
 			$out .= '<tr>' . $item . '</tr>';
 			$c++;
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0" summary="">' . $out . '</table>';
+		$out = '<table id="typo3-adminPanel-tsLog">' . $out . '</table>';
 		return $out;
 	}
 

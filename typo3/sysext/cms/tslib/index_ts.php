@@ -211,7 +211,7 @@ $TSFE = t3lib_div::makeInstance('tslib_fe',
 	t3lib_div::_GP('MP'),
 	t3lib_div::_GP('RDCT')
 );
-/* @var $TSFE tslib_fe */
+/** @var $TSFE tslib_fe */
 
 if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
 	!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
@@ -275,6 +275,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 // BE_USER
 // *********
 $BE_USER = NULL;
+/** @var $BE_USER t3lib_tsfeBeUserAuth */
 if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(true);
 	$TT->push('Back End user initialized','');
@@ -468,6 +469,7 @@ if ($TSFE->isINTincScript())		{
 // ***************
 // Output content
 // ***************
+$sendTSFEContent = false;
 if ($TSFE->isOutputting())	{
 	$TT->push('Print Content','');
 	$TSFE->processOutput();
@@ -507,7 +509,7 @@ if ($TSFE->isOutputting())	{
 
 		$TT->pull();
 	} else {
-		echo $TSFE->content;
+		$sendTSFEContent = true;
 	}
 	$TT->pull();
 }
@@ -575,7 +577,12 @@ echo $TSFE->beLoginLinkIPList();
 // Admin panel
 // *************
 if (is_object($BE_USER) && $BE_USER->isAdminPanelVisible() && $TSFE->beUserLogin) {
-	echo $BE_USER->displayAdminPanel();
+	$TSFE->content = str_ireplace('</head>',  $BE_USER->adminPanel->getAdminPanelHeaderData() . '</head>', $TSFE->content);
+	$TSFE->content = str_ireplace('</body>',  $BE_USER->displayAdminPanel() . '</body>', $TSFE->content);
+}
+
+if ($sendTSFEContent) {
+	echo $TSFE->content;
 }
 
 // *************

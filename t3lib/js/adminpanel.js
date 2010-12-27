@@ -5,7 +5,7 @@
  *
  * Copyright notice
  *
- * (c) 2009-2010 Ingo Renner <ingo@typo3.org>
+ * (c) 2010 Dmitry Dulepov <dmitry@typo3.org>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,58 +26,64 @@
  ***************************************************************/
 
 /**
- * @author  Ingo Renner  <ingo@typo3.org>
- * @author	Oliver Hader <oliver@typo3.org>
- * @author  Ingmar Schlecht <ingmar@typo3.org>
- * @author  Jonas Dübi <jd@cabag.ch>
+ * @author  Dmitry Dulepov  <dmitry@typo3.org>
  */
 
-var TYPO3AdminPanel = {
+var TYPO3AdminPanel = function() {
+	this.boxElement = null;
+	this.dragging = false;
+	this.dragElement = document;
+	this.previousMouseUpHandler = null;
+	this.previousMouseMoveHandler = null;
+	this.mouseOffset = {
+		x: 0,
+		y: 0
+	};
+}
 
-	positionRestored: false,
-	dragObject: null,
-	dragX: 0,
-	dragY: 0,
-	posX: 0,
-	posY: 0,
+TYPO3AdminPanel.prototype = {
 
-	savePosition: function(panel) {
-		var admPanelPosX = panel.offsetLeft;
-		var admPanelPosY = panel.offsetTop;
-
-		TYPO3AdminPanel.setCookie('admPanelPosX', admPanelPosX, '', '/');
-		TYPO3AdminPanel.setCookie('admPanelPosY', admPanelPosY, '', '/');
+	init: function(headerElementId, boxElementId) {
+		this.boxElement = document.getElementById(boxElementId);
+		this.setInitialPosition();
+		this.setMouseDownHandler(headerElementId);
 	},
 
-	restorePosition: function() {
-		if (TYPO3AdminPanel.positionRestored == false) {
-
-			var admPanelPosX = TYPO3AdminPanel.getCookie('admPanelPosX');
-			if (admPanelPosX > 0) {
-				document.getElementById('admPanel').style.left = admPanelPosX + 'px';
+	dragStart: function(event) {
+		if (!this.dragging) {
+			if (!event) {
+				event = window.event;
 			}
-
-			var admPanelPosY = TYPO3AdminPanel.getCookie('admPanelPosY');
-			if (admPanelPosY > 0) {
-				document.getElementById('admPanel').style.top = admPanelPosY + 'px';
-			}
-
-			TYPO3AdminPanel.positionRestored = true;
+			this.dragging = true;
+			this.setMouseOffsets(event);
+			this.setDragHandlers();
 		}
 	},
 
-	setCookie: function(name, value, expires, path, domain, secure) {
-		document.cookie = name + '=' + escape(value)
-			+ (expires ? '; expires=' + expires.toGMTString() : '')
-			+ (path ? '; path=' + path : '')
-			+ (domain ? '; domain=' + domain : '')
-			+ (secure ? '; secure' : '');
+	dragEnd: function() {
+		if (this.dragging) {
+			this.dragging = false;
+			this.dragElement.onmouseup = this.previousMouseUpHandler;
+			this.dragElement.onmousemove = this.previousMouseMoveHandler;
+			this.setCookie("admPanelPosX", this.boxElement.style.left);
+			this.setCookie("admPanelPosY", this.boxElement.style.top);
+		}
+	},
+
+	drag: function(event) {
+		if (this.dragging) {
+			if (!event) {
+				event = window.event;
+			}
+			this.boxElement.style.left = (event.clientX + this.mouseOffset.x) + "px";
+			this.boxElement.style.top = (event.clientY + this.mouseOffset.y) + "px";
+		}
 	},
 
 	getCookie: function(name) {
 		var dc = document.cookie;
-		var prefix = name + '=';
-		var begin = dc.indexOf('; ' + prefix);
+		var prefix = name + "=";
+		var begin = dc.indexOf("; " + prefix);
 
 		if (begin == -1) {
 			begin = dc.indexOf(prefix);
@@ -88,7 +94,7 @@ var TYPO3AdminPanel = {
 			begin += 2;
 		}
 
-		var end = dc.indexOf(';', begin);
+		var end = dc.indexOf(";", begin);
 		if (end == -1) {
 			end = dc.length;
 		}
@@ -96,28 +102,46 @@ var TYPO3AdminPanel = {
 		return unescape(dc.substring(begin + prefix.length, end));
 	},
 
-	dragInit: function() {
-		document.onmousemove = TYPO3AdminPanel.drag;
-		document.onmouseup = TYPO3AdminPanel.dragStop;
+	setCookie: function(name, value) {
+		document.cookie = name + "=" + escape(value);
 	},
 
-	dragStart: function(element) {
-		TYPO3AdminPanel.dragObject = element;
-		TYPO3AdminPanel.dragX = TYPO3AdminPanel.posX - TYPO3AdminPanel.dragObject.offsetLeft;
-		TYPO3AdminPanel.dragY = TYPO3AdminPanel.posY - TYPO3AdminPanel.dragObject.offsetTop;
-	},
+	setDragHandlers: function() {
+		var _this = this;
 
-	dragStop: function() {
-		TYPO3AdminPanel.dragObject = null;
-	},
-
-	drag: function(dragEvent) {
-		TYPO3AdminPanel.posX = document.all ? window.event.clientX : dragEvent.pageX;
-		TYPO3AdminPanel.posY = document.all ? window.event.clientY : dragEvent.pageY;
-
-		if (TYPO3AdminPanel.dragObject != null) {
-			TYPO3AdminPanel.dragObject.style.left = (TYPO3AdminPanel.posX - TYPO3AdminPanel.dragX) + 'px';
-			TYPO3AdminPanel.dragObject.style.top = (TYPO3AdminPanel.posY - TYPO3AdminPanel.dragY) + 'px';
+		this.previousMouseUpHandler = this.dragElement.onmouseup;
+		this.dragElement.onmouseup = function() {
+			_this.dragEnd.apply(_this, arguments);
 		}
+		this.previousMouseMoveHandler = this.dragElement.onmousemove;
+		this.dragElement.onmousemove = function() {
+			_this.drag.apply(_this, arguments);
+		}
+	},
+
+	setInitialPosition: function() {
+		this.boxElement.style.position = "absolute";
+
+		var pos = this.getCookie("admPanelPosX");
+		if (pos) {
+			this.boxElement.style.left =  pos;
+		}
+		pos = this.getCookie("admPanelPosY");
+		if (pos) {
+			this.boxElement.style.top = pos;
+		}
+	},
+
+	setMouseDownHandler: function(headerElementId) {
+		var _this = this, headerElement = document.getElementById(headerElementId);
+		headerElement.onmousedown = function() {
+			_this.dragStart.apply(_this, arguments);
+		}
+	},
+
+	setMouseOffsets: function(event) {
+		this.mouseOffset.x = this.boxElement.offsetLeft - event.clientX;
+		this.mouseOffset.y = this.boxElement.offsetTop - event.clientY;
 	}
+
 };
