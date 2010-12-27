@@ -47,14 +47,24 @@ class tslib_content_Template extends tslib_content_Abstract {
 		$marks = array();
 		$wraps = array();
 
-		list ($PRE, $POST) = explode('|', $conf['markerWrap'] ? $conf['markerWrap'] : '### | ###');
+		$markerWrap = isset($conf['markerWrap.'])
+			? $this->cObj->stdWrap($conf['markerWrap'], $conf['markerWrap.'])
+			: $conf['markerWrap'];
+		if(!$markerWrap) {
+			$markerWrap = '### | ###';
+		}
+
+		list ($PRE, $POST) = explode('|', $markerWrap);
 		$POST = trim($POST);
 		$PRE = trim($PRE);
 
 			// Getting the content
 		$content = $this->cObj->cObjGetSingle($conf['template'], $conf['template.'], 'template');
-		if ($conf['workOnSubpart']) {
-			$content = $this->cObj->getSubpart($content, $PRE . $conf['workOnSubpart'] . $POST);
+		$workOnSubpart = isset($conf['workOnSubpart.'])
+			? $this->cObj->stdWrap($conf['workOnSubpart'], $conf['workOnSubpart.'])
+			: $conf['workOnSubpart'];
+		if ($workOnSubpart) {
+			$content = $this->cObj->getSubpart($content, $PRE . $workOnSubpart . $POST);
 		}
 
 			// Fixing all relative paths found:
@@ -64,7 +74,10 @@ class tslib_content_Template extends tslib_content_Abstract {
 		}
 
 		if ($content) {
-			if ($conf['nonCachedSubst']) { // NON-CACHED:
+			$nonCachedSubst = isset($conf['nonCachedSubst.'])
+				? $this->cObj->stdWrap($conf['nonCachedSubst'], $conf['nonCachedSubst.'])
+				: $conf['nonCachedSubst'];
+			if ($nonCachedSubst) { // NON-CACHED:
 					// Getting marks
 				if (is_array($conf['marks.'])) {
 					foreach ($conf['marks.'] as $theKey => $theValue) {
@@ -190,7 +203,10 @@ class tslib_content_Template extends tslib_content_Abstract {
 				}
 
 					// Substitution
-				if ($conf['substMarksSeparately']) {
+				$substMarksSeparately = isset($conf['substMarksSeparately.'])
+					? $this->cObj->stdWrap($conf['substMarksSeparately'], $conf['substMarksSeparately.'])
+					: $conf['substMarksSeparately'];
+				if ($substMarksSeparately) {
 					$content = $this->cObj->substituteMarkerArrayCached($content, array(), $subpartArray, $subpartWraps);
 					$content = $this->cObj->substituteMarkerArray($content, $markerArray);
 				} else {
@@ -198,6 +214,11 @@ class tslib_content_Template extends tslib_content_Abstract {
 				}
 			}
 		}
+
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
+
 		return $content;
 	}
 

@@ -1,5 +1,6 @@
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16401: Optimize stdWrap usage for TypoScript content element TEMPLATE (Thanks to Jo Hasenau)
 	* Fixed bug #16402: Optimize stdWrap usage for TypoScript content element SVG (Thanks to Jo Hasenau)
 	* Fixed bug #16386: Optimize stdWrap usage for TypoScript content elements PHP_SCRIPT_INT and PHP_SCRIPT_EXT (Thanks to Jo Hasenau)
 	* Fixed bug #16404: Optimize stdWrap usage for TypoScript content element SWFOBJECT (Thanks to Jo Hasenau)
