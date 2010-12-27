@@ -40,18 +40,8 @@ class t3lib_tree_NodeTest extends tx_phpunit_testcase {
 	 * @return string the absolute fixtures path for this testcase, will not be empty
 	 */
 	private function determineFixturesPath() {
-		$possibleFixturesPath1 = PATH_site . 'tests/t3lib/tree/fixtures/';
-		$possibleFixturesPath2 = PATH_site . 'typo3_src/tests/t3lib/tree/fixtures/';
-
-		if (file_exists($possibleFixturesPath1)) {
-			$fixturesPath = $possibleFixturesPath1;
-		} elseif (file_exists($possibleFixturesPath2)) {
-			$fixturesPath = $possibleFixturesPath2;
-		} else {
-			$this->fail('The fixtures path could not be determined.');
-		}
-
-		return $fixturesPath;
+		return t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder')
+			->getAbsoluteCoreTestsPath() . 't3lib/tree/fixtures/';
 	}
 
 	protected function setUpNodeTestData() {

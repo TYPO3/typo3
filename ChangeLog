@@ -4,7 +4,7 @@
 
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
-	* Add sysext pagetree to required ext
+	* Add sysext pagetree to required extension list
 	* Fixed bug #16387: Optimize stdWrap usage for TypoScript content element QTOBJECT (Thanks to Jo Hasenau)
 	* Fixed bug #16429: Optimize stdWrap usage for tslib_content (Thanks to Jo Hasenau)
 	* Fixed bug #16731: Fill the color gap between module menu and tree-less modules (Thanks to Steffen Gebert)
@@ -26,12 +26,13 @@
 
 2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
 
-	* FYI: Fixed bug #16476: tcaTree should work in flexforms, too
+	* Fixed bug #16476: tcaTree should work in flexforms, too
 	* Follow-up to #16218: Bug/Feature: TCE-Forms does not use sprite icons -- this leads to inconsistency
 
 2010-12-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16845: Better API for Update Wizards in the Install Tool (Thanks to Benjamin Mack)
+	* Fixed bug #16847: Use Tx_Phpunit_Service_TestFinder for finding the path of the Core unit tests (Thanks to Oliver Klee)
 
 2010-12-27  Xavier Perseguers  <typo3@perseguers.ch>
 

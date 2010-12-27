@@ -69,7 +69,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available without imagemagick setup.');
 		}
 
-		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
 
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
 
@@ -95,7 +96,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available on Windows.');
 		}
 
-		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
 
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
@@ -130,7 +132,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('pngToGifByImagemagickFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
 		}
 
-		$fixturePngFile = dirname(__FILE__) . '/fixtures/clear.png';
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixturePngFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.png';
 
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] = TRUE;
 
@@ -164,7 +167,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('readPngGifFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
 		}
 
-		$testGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$testGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
 
 			// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
@@ -2440,7 +2444,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			// Fake all required settings and get an unique logfilename
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = uniqid('test_');
 		$deprecationLogFilename = t3lib_div::getDeprecationLogFileName();
-		print_r($deprecationLogFilename);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 
