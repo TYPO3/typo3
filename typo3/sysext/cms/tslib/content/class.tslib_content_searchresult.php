@@ -121,14 +121,20 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 
 				// range
 			$spointer = intval(t3lib_div::_GP('spointer'));
-			if (isset($conf['range'])) {
-				$theRange = intval($conf['range']);
+			$range = isset($conf['range.'])
+				? $this->cObj->stdWrap($conf['range'], $conf['range.'])
+				: $conf['range'];
+			if ($range) {
+				$theRange = intval($range);
 			} else {
 				$theRange = 20;
 			}
 
 				// Order By:
-			if (!$conf['noOrderBy']) {
+			$noOrderBy = isset($conf['noOrderBy.'])
+				? $this->cObj->stdWrap($conf['noOrderBy'], $conf['noOrderBy.'])
+				: $conf['noOrderBy'];
+			if (!$noOrderBy) {
 				$search->queryParts['ORDERBY'] = 'pages.lastUpdated, pages.tstamp';
 			}
 
@@ -143,9 +149,14 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 				$rangeLow = t3lib_div::intInRange($spointer + 1, 1, $total);
 				$rangeHigh = t3lib_div::intInRange($spointer + $theRange, 1, $total);
 					// prev/next url:
+
+				$target = isset($conf['target.'])
+					? $this->cObj->stdWrap($conf['target'], $conf['target.'])
+					: $conf['target'];
+
 				$LD = $GLOBALS['TSFE']->tmpl->linkData(
 					$GLOBALS['TSFE']->page,
-					$conf['target'],
+					$target,
 					1,
 					'',
 					'',
@@ -194,7 +205,10 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 					$cObj->start($row);
 					$renderCode .= $cObj->cObjGetSingle($conf['renderObj'], $conf['renderObj.'], 'renderObj');
 				}
-				$theValue .= $this->cObj->wrap($renderCode, $conf['renderWrap']);
+				$renderWrap = isset($conf['renderWrap.'])
+					? $this->cObj->stdWrap($conf['renderWrap'], $conf['renderWrap.'])
+					: $conf['renderWrap'];
+				$theValue .= $this->cObj->wrap($renderCode, $renderWrap);
 				$theValue = str_replace('###RESULT###', $theValue, $result);
 			} else {
 				$theValue = $this->cObj->cObjGetSingle($conf['noResultObj'], $conf['noResultObj.'], 'noResultObj');
@@ -204,14 +218,20 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 
 				// wrapping
 			$content = $theValue;
-			if ($conf['wrap']) {
-				$content = $this->cObj->wrap($content, $conf['wrap']);
+
+			$wrap = isset($conf['wrap.'])
+				? $this->cObj->stdWrap( $conf['wrap'], $conf['wrap.'])
+				:  $conf['wrap'];
+			if ($wrap) {
+				$content = $this->cObj->wrap($content, $wrap);
 			}
-			if ($conf['stdWrap.']) {
+
+			if (isset($conf['stdWrap.'])) {
 				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 			}
 				// returning
 			$GLOBALS['TSFE']->set_no_cache();
+
 			return $content;
 		}
 	}
