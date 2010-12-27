@@ -70,7 +70,7 @@ class LiveSearch implements backend_toolbarItem {
 	public function render() {
 		$this->addJavascriptToBackend();
 		return '<div class="live-search-wrapper">
-					<span title="Search" class="t3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search">&nbsp;</span>
+					<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') .'" class="t3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search">&nbsp;</span>
 					<input id="live-search-box" />
 				</div>';
 	}

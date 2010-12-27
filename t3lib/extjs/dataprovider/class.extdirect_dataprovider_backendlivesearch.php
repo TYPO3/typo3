@@ -45,15 +45,6 @@ class extDirect_dataProvider_BackendLiveSearch {
 	);
 
 	/**
-	 * @var array
-	 */
-	protected $helpContent = array(
-		'title' => 'How to use advanced search tags',
-		'text' => 'Search in certain tables:<br />page:Home will search for all pages with the title "Home"',
-		'keys' => array(),
-	);
-
-	/**
 	 * @var t3lib_search_livesearch
 	 */
 	protected $liveSearch = null;
@@ -105,36 +96,6 @@ class extDirect_dataProvider_BackendLiveSearch {
 		}
 
 		return $this->searchResults;
-	}
-
-	/**
-	 * Build up and retrieve the general and custom help text "How can you search"
-	 *
-	 * @return array
-	 */
-	public function getHelp() {
-		$content = array();
-		$this->helpContent['keys'] = $this->getRegisteredHelpContent();
-
-		return $this->helpContent;
-	}
-
-
-	/**
-	 * Find all registerd help information.
-	 *
-	 * @return array All registered help content will collected returned
-	 * @todo Doesn't actually return any data
-	 */
-	public function getRegisteredHelpContent() {
-		$helpArray = array();
-		$liveSearchConfiguration = ((is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'])) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'] : array());
-
-		foreach ($liveSearchConfiguration as $key => $table) {
-			$helpArray[] = '#' . $key;
-		}
-
-		return $helpArray;
 	}
 
 }

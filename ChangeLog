@@ -1,3 +1,7 @@
+2010-12-27  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #16481: Live search uses hardcoded strings and has unused strings
+
 2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* FYI: Fixed bug #16476: tcaTree should work in flexforms, too
