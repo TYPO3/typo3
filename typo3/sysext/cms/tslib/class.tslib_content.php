@@ -1265,7 +1265,9 @@ class tslib_cObj {
 	 * @access private
 	 */
 	function getSlidePids($pidList, $pidConf) {
-		$pidList = trim($this->stdWrap($pidList, $pidConf));
+		$pidList = isset($pidConf)
+			? trim($this->stdWrap($pidList, $pidConf))
+			: trim($pidList);
 		if (!strcmp($pidList, '')) {
 			$pidList = 'this';
 		}
@@ -1336,17 +1338,33 @@ class tslib_cObj {
 			}
 
 			$altParam = $this->getAltParam($conf);
+			if($conf['params'] && !isset($conf['params.'])) {
+				$params = ' ' . $conf['params'];
+			} else {
+				$params = isset($conf['params.'])
+					? ' ' . $this->stdWrap($conf['params'], $conf['params.'])
+					: '';
+			}
 			$theValue = '<img src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix .
 				t3lib_div::rawUrlEncodeFP($info[3])) . '" width="' . $info[0] . '" height="' . $info[1] . '"' .
 				$this->getBorderAttr(' border="' . intval($conf['border']) . '"') .
-				(($conf['params'] || is_array($conf['params.'])) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '') .
+				$params .
 				($altParam) . ' />';
-			if ($conf['linkWrap']) {
-				$theValue = $this->linkWrap($theValue, $conf['linkWrap']);
+			$linkWrap = isset($conf['linkWrap.'])
+				? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.'])
+				: $conf['linkWrap'];
+			if ($linkWrap) {
+				$theValue = $this->linkWrap($theValue, $linkWrap);
 			} elseif ($conf['imageLinkWrap']) {
 				$theValue = $this->imageLinkWrap($theValue, $info['origFile'], $conf['imageLinkWrap.']);
 			}
-			return $this->wrap($theValue, $conf['wrap']);
+			$wrap = isset($conf['wrap.'])
+				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
+			if($wrap) {
+				$theValue = $this->wrap($theValue, $conf['wrap']);
+			}
+			return $theValue;
 		}
 	}
 
@@ -1379,20 +1397,31 @@ class tslib_cObj {
 		$a1 = '';
 		$a2 = '';
 		$content = $string;
-		if ($this->stdWrap($conf['enable'], $conf['enable.'])) {
+		$enable = isset($conf['enable.'])
+			? $this->stdWrap($conf['enable'], $conf['enable.'])
+			: $conf['enable'];
+		if ($enable) {
 			$content = $this->typolink($string, $conf['typolink.']);
-			$imageFile = $this->stdWrap($imageFile, $conf['file.']);
+			if(isset($conf['file.'])) {
+				$imageFile = $this->stdWrap($imageFile, $conf['file.']);
+			}
 
 				// imageFileLink:
 			if ($content == $string && @is_file($imageFile)) {
 				$parameterNames = array('width', 'height', 'effects', 'alternativeTempPath', 'bodyTag', 'title', 'wrap');
 				$parameters = array();
 
-				if (isset($conf['sample']) && $conf['sample']) {
+				$sample = isset($conf['sample.'])
+					? $this->stdWrap($conf['sample'], $conf['sample.'])
+					: $conf['sample'];
+				if ($sample) {
 					$parameters['sample'] = 1;
 				}
 
 				foreach ($parameterNames as $parameterName) {
+					if(isset($conf[$parameterName.'.'])) {
+						$conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName.'.']);
+					}
 					if (isset($conf[$parameterName]) && $conf[$parameterName]) {
 						$parameters[$parameterName] = $conf[$parameterName];
 					}
@@ -1414,7 +1443,10 @@ class tslib_cObj {
 
 				$url = $GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . rawurlencode($imageFile) . $params;
 
-				if ($conf['directImageLink']) {
+				$directImageLink = isset($conf['directImageLink.'])
+					? $this->stdWrap($conf['directImageLink'], $conf['directImageLink.'])
+					: $conf['directImageLink'];
+				if ($directImageLink) {
 					$imgResourceConf = array(
 						'file' => $imageFile,
 						'file.' => $conf
@@ -1428,18 +1460,25 @@ class tslib_cObj {
 
 					// Create TARGET-attribute only if the right doctype is used
 				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype)) {
-					if (isset($conf['target'])) {
-						$target = sprintf(' target="%s"', $conf['target']);
+					$target = isset($conf['target.'])
+						? $this-stdWrap($conf['target'], $conf['target.'])
+						: $conf['target'];
+					if(!$target) {
+						$target = sprintf(' target="%s"', $target);
 					} else {
 						$target = ' target="thePicture"';
 					}
 				} else {
 					$target = '';
 				}
-				$conf['JSwindow'] = $this->stdWrap($conf['JSwindow'], $conf['JSwindow.']);
+				$conf['JSwindow'] = isset($conf['JSwindow.'])
+					? $this->stdWrap($conf['JSwindow'], $conf['JSwindow.'])
+					: $conf['JSwindow'];
 				if ($conf['JSwindow']) {
 					if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.']) {
-						$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
+						$altUrl = isset($conf['JSwindow.']['altUrl.'])
+							? $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.'])
+							: $conf['JSwindow.']['altUrl'];
 						if ($altUrl) {
 							$url = $altUrl .
 								($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' .
@@ -1449,12 +1488,19 @@ class tslib_cObj {
 					$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 					$gifCreator->init();
 					$gifCreator->mayScaleUp = 0;
-					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], '');
-					$offset = t3lib_div::intExplode(',', $conf['JSwindow.']['expand'] . ',');
 
+					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], '');
+					$JSwindowExpand = isset($conf['JSwindow.']['expand.'])
+						? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.'])
+						: $conf['JSwindow.']['expand'];
+					$offset = t3lib_div::intExplode(',', $JSwindowExpand . ',');
+
+					$newWindow = isset($conf['JSwindow.']['newWindow.'])
+						? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.'])
+						: $conf['JSwindow.']['newWindow'];
 					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' .
 						htmlspecialchars('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' .
-						($conf['JSwindow.']['newWindow'] ? md5($url) : 'thePicture') . '\',\'width=' .
+						($newWindow ? md5($url) : 'thePicture') . '\',\'width=' .
 						($dims[0] + $offset[0]) . ',height=' . ($dims[1] + $offset[1]) .
 						',status=0,menubar=0\'); return false;') . '"' .
 						$target . $GLOBALS['TSFE']->ATagParams . '>';
@@ -1465,7 +1511,9 @@ class tslib_cObj {
 					$string = $this->typoLink($string, $conf['linkParams.']);
 				}
 
-				$string = $this->stdWrap($string, $conf['stdWrap.']);
+				if(isset($conf['stdWrap.'])) {
+					$string = $this->stdWrap($string, $conf['stdWrap.']);
+				}
 
 				$content = $a1 . $string . $a2;
 			}
@@ -1544,19 +1592,25 @@ class tslib_cObj {
 	 * @see IMGTEXT(), FILE(), FORM(), cImage(), filelink()
 	 */
 	function getAltParam($conf, $longDesc = TRUE) {
-		$altText = trim($this->stdWrap($conf['altText'], $conf['altText.']));
-		$titleText = trim($this->stdWrap($conf['titleText'], $conf['titleText.']));
-		$longDesc = trim($this->stdWrap($conf['longdescURL'], $conf['longdescURL.']));
+		$altText = isset($conf['altText.'])
+			? trim($this->stdWrap($conf['altText'], $conf['altText.']))
+			: trim($conf['altText']);
+		$titleText = isset($conf['titleText.'])
+			? trim($this->stdWrap($conf['titleText'], $conf['titleText.']))
+			: trim($conf['titleText']);
+		$longDesc = isset($conf['longdescURL.'])
+			? trim($this->stdWrap($conf['longdescURL'], $conf['longdescURL.']))
+			: trim($conf['longdescURL']);
 
 			// "alt":
 		$altParam = ' alt="' . htmlspecialchars($altText) . '"';
 
 			// "title":
 		$emptyTitleHandling = 'useAlt';
-		if ($conf['emptyTitleHandling']) {
+		$emptyTitleHandling = isset($conf['emptyTitleHandling.'])
+			? $this->stdWrap($conf['emptyTitleHandling'], $conf['emptyTitleHandling.'])
+			: $conf['emptyTitleHandling'];
 				// choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
-			$emptyTitleHandling = $conf['emptyTitleHandling'];
-		}
 		if ($titleText || $emptyTitleHandling == 'keepEmpty') {
 			$altParam .= ' title="' . htmlspecialchars($titleText) . '"';
 		} elseif (!$titleText && $emptyTitleHandling == 'useAlt') {
@@ -3043,10 +3097,14 @@ class tslib_cObj {
 	public function stdWrap_offsetWrap($content = '', $conf = array()) {
 		$controlTable = t3lib_div::makeInstance('tslib_tableOffset');
 		if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
-			$controlTable->tableParams = $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.']);
+			$controlTable->tableParams = isset($conf['offsetWrap.']['tableParams.'])
+				? $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.'])
+				: $conf['offsetWrap.']['tableParams'];
 		}
 		if ($conf['offsetWrap.']['tdParams'] || $conf['offsetWrap.']['tdParams.']) {
-			$controlTable->tdParams = ' ' . $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.']);
+			$controlTable->tdParams = ' ' . isset($conf['offsetWrap.']['tdParams.'])
+				? $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.'])
+				: $conf['offsetWrap.']['tdParams'];
 		}
 		$content = $controlTable->start($content, $conf['offsetWrap']);
 		if ($conf['offsetWrap.']['stdWrap.']) {
@@ -3255,46 +3313,62 @@ class tslib_cObj {
 		}
 		$flag = TRUE;
 		if (isset($conf['isTrue']) || isset($conf['isTrue.'])) {
-			$isTrue = trim($this->stdWrap($conf['isTrue'], $conf['isTrue.']));
+			$isTrue = isset($conf['isTrue.'])
+				? trim($this->stdWrap($conf['isTrue'], $conf['isTrue.']))
+				: trim($conf['isTrue']);
 			if (!$isTrue) {
 				$flag = 0;
 			}
 		}
 		if (isset($conf['isFalse']) || isset($conf['isFalse.'])) {
-			$isFalse = trim($this->stdWrap($conf['isFalse'], $conf['isFalse.']));
+			$isFalse = isset($conf['isFalse.'])
+				? trim($this->stdWrap($conf['isFalse'], $conf['isFalse.']))
+				: trim($conf['isFalse']);
 			if ($isFalse) {
 				$flag = 0;
 			}
 		}
 		if (isset($conf['isPositive']) || isset($conf['isPositive.'])) {
-			$number = $this->calc($this->stdWrap($conf['isPositive'], $conf['isPositive.']));
+			$number = isset($conf['isPositive.'])
+				? $this->calc($this->stdWrap($conf['isPositive'], $conf['isPositive.']))
+				: $this->calc($conf['isPositive']);
 			if ($number < 1) {
 				$flag = 0;
 			}
 		}
 		if ($flag) {
-			$value = trim($this->stdWrap($conf['value'], $conf['value.']));
+			$value = isset($conf['value.'])
+				? trim($this->stdWrap($conf['value'], $conf['value.']))
+				: trim($conf['value']);
 
 			if (isset($conf['isGreaterThan']) || isset($conf['isGreaterThan.'])) {
-				$number = trim($this->stdWrap($conf['isGreaterThan'], $conf['isGreaterThan.']));
+				$number = isset($conf['isGreaterThan.'])
+					? trim($this->stdWrap($conf['isGreaterThan'], $conf['isGreaterThan.']))
+					: trim($conf['isGreaterThan']);
 				if ($number <= $value) {
 					$flag = 0;
 				}
 			}
 			if (isset($conf['isLessThan']) || isset($conf['isLessThan.'])) {
-				$number = trim($this->stdWrap($conf['isLessThan'], $conf['isLessThan.']));
+				$number = isset($conf['isLessThan.'])
+					? trim($this->stdWrap($conf['isLessThan'], $conf['isLessThan.']))
+					: trim($conf['isLessThan']);
 				if ($number >= $value) {
 					$flag = 0;
 				}
 			}
 			if (isset($conf['equals']) || isset($conf['equals.'])) {
-				$number = trim($this->stdWrap($conf['equals'], $conf['equals.']));
+				$number = isset($conf['equals.'])
+					? trim($this->stdWrap($conf['equals'], $conf['equals.']))
+					: trim($conf['equals']);
 				if ($number != $value) {
 					$flag = 0;
 				}
 			}
 			if (isset($conf['isInList']) || isset($conf['isInList.'])) {
-				$number = trim($this->stdWrap($conf['isInList'], $conf['isInList.']));
+				$number = isset($conf['isInList.'])
+					? trim($this->stdWrap($conf['isInList'], $conf['isInList.']))
+					: trim($conf['isInList']);
 				if (!t3lib_div::inList($value, $number)) {
 					$flag = 0;
 				}
@@ -3745,7 +3819,9 @@ class tslib_cObj {
 		$align = $this->data[$conf['align.']['field']];
 		$properties = $this->data[$conf['properties.']['field']];
 		if (!$properties) {
-			$properties = $this->stdWrap($conf['properties.']['default'], $conf['properties.']['default.']);
+			$properties = isset($conf['properties.']['default.'])
+				? $this->stdWrap($conf['properties.']['default'], $conf['properties.']['default.'])
+				: $conf['properties.']['default'];
 		}
 
 			// properties
@@ -3763,9 +3839,26 @@ class tslib_cObj {
 		}
 
 			// Fonttag
-		$theFace = $conf['face.'][$face] ? $conf['face.'][$face] : $this->stdWrap($conf['face.']['default'], $conf['face.']['default.']);
-		$theSize = $conf['size.'][$size] ? $conf['size.'][$size] : $this->stdWrap($conf['size.']['default'], $conf['size.']['default.']);
-		$theColor = $conf['color.'][$color] ? $conf['color.'][$color] : $this->stdWrap($conf['color.']['default'], $conf['color.']['default.']);
+		$theFace = $conf['face.'][$face];
+		if(!$theFace) {
+			$theFace = isset($conf['face.']['default.'])
+				? $this->stdWrap($conf['face.']['default'], $conf['face.']['default.'])
+				: $conf['face.']['default'];
+		}
+
+		$theSize = $conf['size.'][$size];
+		if(!$theSize) {
+			$theSize = isset($conf['size.']['default.'])
+				? $this->stdWrap($conf['size.']['default'], $conf['size.']['default.'])
+				: $conf['size.']['default'];
+		}
+
+		$theColor = $conf['color.'][$color];
+		if(!$theColor) {
+			$theColor = isset($conf['color.']['default.'])
+				? $this->stdWrap($conf['color.']['default'], $conf['color.']['default.'])
+				: $conf['color.']['default.'];
+		}
 
 		if ($conf['altWrap']) {
 			$theValue = $this->wrap($theValue, $conf['altWrap']);
@@ -3801,10 +3894,18 @@ class tslib_cObj {
 		$conf['color.'][243] = 'gray';
 		$conf['color.'][244] = 'silver';
 
-		$align = $this->stdWrap($conf['align'], $conf['align.']);
-		$border = intval($this->stdWrap($conf['border'], $conf['border.']));
-		$cellspacing = intval($this->stdWrap($conf['cellspacing'], $conf['cellspacing.']));
-		$cellpadding = intval($this->stdWrap($conf['cellpadding'], $conf['cellpadding.']));
+		$align = isset($conf['align.'])
+			? $this->stdWrap($conf['align'], $conf['align.'])
+			: $conf['align'];
+		$border = isset($conf['border.'])
+			? intval($this->stdWrap($conf['border'], $conf['border.']))
+			: intval($conf['border']);
+		$cellspacing = isset($conf['cellspacing.'])
+			? intval($this->stdWrap($conf['cellspacing'], $conf['cellspacing.']))
+			: intval($conf['cellspacing']);
+		$cellpadding = isset($conf['cellpadding.'])
+			? intval($this->stdWrap($conf['cellpadding'], $conf['cellpadding.']))
+			: intval($conf['cellpadding']);
 
 		$color = $this->data[$conf['color.']['field']];
 		$theColor = $conf['color.'][$color] ? $conf['color.'][$color] : $conf['color.']['default'];
@@ -3861,7 +3962,9 @@ class tslib_cObj {
 				// adds/overrides attributes
 			foreach ($conf as $pkey => $val) {
 				if (substr($pkey, -1) != '.' && substr($pkey, 0, 1) != '_') {
-					$tmpVal = $this->stdWrap($conf[$pkey], $conf[$pkey . '.']);
+					$tmpVal = isset($conf[$pkey . '.'])
+						? $this->stdWrap($conf[$pkey], $conf[$pkey . '.'])
+						: $conf[$pkey];
 					if ($lowerCaseAttributes) {
 						$pkey = strtolower($pkey);
 					}
@@ -3891,14 +3994,18 @@ class tslib_cObj {
 	 * @see stdWrap()
 	 */
 	function filelink($theValue, $conf) {
-		$conf['path'] = $this->stdWrap($conf['path'], $conf['path.']);
+		$conf['path'] = isset($conf['path.'])
+			? $this->stdWrap($conf['path'], $conf['path.'])
+			: $conf['path'];
 		$theFile = trim($conf['path']) . $theValue;
 		if (@is_file($theFile)) {
 			$theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
 
 				// the jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
 			if ($conf['jumpurl.']['secure']) {
-				$alternativeJumpUrlParameter = $this->stdWrap($conf['jumpurl.']['parameter'], $conf['jumpurl.']['parameter.']);
+				$alternativeJumpUrlParameter = isset($conf['jumpurl.']['parameter.'])
+					? $this->stdWrap($conf['jumpurl.']['parameter'], $conf['jumpurl.']['parameter.'])
+					: $conf['jumpurl.']['parameter'];
 				$typoLinkConf = array(
 					'parameter' => ($alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : ($GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type)),
 					'fileTarget' => $conf['target'],
@@ -3933,7 +4040,9 @@ class tslib_cObj {
 				$iconP = t3lib_extMgm::siteRelPath('cms') . 'tslib/media/fileicons/';
 				$icon = @is_file($iconP . $fI['fileext'] . '.gif') ? $iconP . $fI['fileext'] . '.gif' : $iconP . 'default.gif';
 					// Checking for images: If image, then return link to thumbnail.
-				$IEList = $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.']);
+				$IEList = isset($conf['icon_image_ext_list.'])
+					? $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.'])
+					: $conf['icon_image_ext_list'];
 				$image_ext_list = str_replace(' ', '', strtolower($IEList));
 				if ($fI['fileext'] && t3lib_div::inList($image_ext_list, $fI['fileext'])) {
 					if ($conf['iconCObject']) {
@@ -3942,7 +4051,9 @@ class tslib_cObj {
 						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
 							$thumbSize = '';
 							if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.']) {
-								$thumbSize = '&size=' . $this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']);
+								$thumbSize = '&size=' . isset($conf['icon_thumbSize.'])
+									? $this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.'])
+									: $conf['icon_thumbSize'];
 							}
 							$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 							$md5sum = '&md5sum=' . t3lib_div::shortMD5($check);
@@ -3962,27 +4073,43 @@ class tslib_cObj {
 				if ($conf['icon_link']) {
 					$icon = $this->wrap($icon, $theLinkWrap);
 				}
-				$icon = $this->stdWrap($icon, $conf['icon.']);
+				$icon = isset($conf['icon.'])
+					? $this->stdWrap($icon, $conf['icon.'])
+					: $icon;
 			}
 			if ($conf['size']) {
-				$size = $this->stdWrap($theSize, $conf['size.']);
+				$size = isset($conf['size.'])
+					? $this->stdWrap($theSize, $conf['size.'])
+					: $theSize;
 			}
 
 				// Wrapping file label
 			if ($conf['removePrependedNumbers']) {
 				$theValue = preg_replace('/_[0-9][0-9](\.[[:alnum:]]*)$/', '\1', $theValue);
 			}
-			$theValue = $this->stdWrap($theValue, $conf['labelStdWrap.']);
+			if(isset($conf['labelStdWrap.'])) {
+				$theValue = $this->stdWrap($theValue, $conf['labelStdWrap.']);
+			}
 
 				// Wrapping file
+			$wrap = isset($conf['wrap.'])
+				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
 			if ($conf['ATagBeforeWrap']) {
-				$theValue = $this->wrap($this->wrap($theValue, $conf['wrap']), $theLinkWrap);
+				$theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
 			} else {
-				$theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $conf['wrap']);
+				$theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
 			}
-			$file = $this->stdWrap($theValue, $conf['file.']);
+			$file = isset($conf['file.'])
+				? $this->stdWrap($theValue, $conf['file.'])
+				: $theValue;
 				// output
-			return $this->stdWrap($icon . $file . $size, $conf['stdWrap.']);
+			$output = $icon . $file . $size;
+			if(isset($conf['stdWrap.'])) {
+				$output = $this->stdWrap($output, $conf['stdWrap.']);
+			}
+
+			return $output;
 		}
 	}
 
@@ -4085,32 +4212,52 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=319&cHash=1871864c8f
 	 */
 	function splitObj($value, $conf) {
-		$conf['token'] = $this->stdWrap($conf['token'], $conf['token.']);
+		$conf['token'] = isset($conf['token.'])
+			? $this->stdWrap($conf['token'], $conf['token.'])
+			: $conf['token'];
 		if (!$conf['token']) {
 			return $value;
 		}
-		$conf['max'] = intval($this->stdWrap($conf['max'], $conf['max.']));
-		$conf['min'] = intval($this->stdWrap($conf['min'], $conf['min.']));
+		$conf['max'] = isset($conf['max.'])
+			? intval($this->stdWrap($conf['max'], $conf['max.']))
+			: intval($conf['max']);
+		$conf['min'] = isset($conf['min.'])
+			? intval($this->stdWrap($conf['min'], $conf['min.']))
+			: intval($conf['min']);
 
 		$valArr = explode($conf['token'], $value);
 
 		if (count($valArr) && (t3lib_div::testInt($conf['returnKey']) || $conf['returnKey.'])) {
-			$key = intval($this->stdWrap($conf['returnKey'], $conf['returnKey.']));
+			$key = isset($conf['returnKey.'])
+				? intval($this->stdWrap($conf['returnKey'], $conf['returnKey.']))
+				: intval($conf['returnKey']);
 			$content = isset($valArr[$key]) ? $valArr[$key] : '';
 		} else {
 				// calculate splitCount
 			$splitCount = count($valArr);
-			if ($conf['max'] && $splitCount > $conf['max']) {
-				$splitCount = $conf['max'];
+			$max = isset($conf['max.'])
+				? $this->stdWrap($conf['max'],$conf['max.'])
+				: $conf['max'];
+			if ($max && $splitCount > $max) {
+				$splitCount = $max;
 			}
-			if ($conf['min'] && $splitCount < $conf['min']) {
-				$splitCount = $conf['min'];
+			$min = isset($conf['min.'])
+				? $this->stdWrap($conf['min'],$conf['min.'])
+				: $conf['min'];
+			if ($min && $splitCount < $min) {
+				$splitCount = $min;
 			}
 
-			if ($conf['wrap'] || $conf['cObjNum']) {
+			$wrap = isset($conf['wrap.'])
+				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
+			$cObjNum = isset($conf['cObjNum.'])
+				? $this->stdWrap($conf['cObjNum'], $conf['cObjNum.'])
+				: $conf['cObjNum'];
+			if ($wrap || $cObjNum) {
 				$splitArr = array();
-				$splitArr['wrap'] = $conf['wrap'];
-				$splitArr['cObjNum'] = $conf['cObjNum'];
+				$splitArr['wrap'] = $wrap;
+				$splitArr['cObjNum'] = $cObjNum;
 				$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $splitCount);
 			}
 
@@ -4121,10 +4268,15 @@ class tslib_cObj {
 				$this->data[$this->currentValKey] = $value;
 				if ($splitArr[$a]['cObjNum']) {
 					$objName = intval($splitArr[$a]['cObjNum']);
-					$value = $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.']);
+					$value = isset($conf[$objName . '.'])
+						? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
+						: $this->cObjGet($conf[$objName . '.'], $objName . '.');
 				}
-				if ($splitArr[$a]['wrap']) {
-					$value = $this->wrap($value, $splitArr[$a]['wrap']);
+				$wrap = isset($splitArr[$a]['wrap.'])
+					? $this->stdWrap($splitArr[$a]['wrap'], $splitArr[$a]['wrap.'])
+					: $splitArr[$a]['wrap'];
+				if ($wrap) {
+					$value = $this->wrap($value, $wrap);
 				}
 				$content .= $value;
 			}
@@ -4141,9 +4293,15 @@ class tslib_cObj {
 	 * @return	string	The formated number
 	 */
 	function numberFormat($content, $conf) {
-		$decimals = $this->stdWrap($conf['decimals'], $conf['decimals.']);
-		$dec_point = $this->stdWrap($conf['dec_point'], $conf['dec_point.']);
-		$thousands_sep = $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.']);
+		$decimals = isset($conf['decimals.'])
+			? $this->stdWrap($conf['decimals'], $conf['decimals.'])
+			: $conf['decimals'];
+		$dec_point = isset($conf['dec_point.'])
+			? $this->stdWrap($conf['dec_point'], $conf['dec_point.'])
+			: $conf['dec_point'];
+		$thousands_sep = isset($conf['thousands_sep.'])
+			? $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.'])
+			: $conf['thousands_sep'];
 		return number_format($content, $decimals, $dec_point, $thousands_sep);
 	}
 
@@ -4504,7 +4662,9 @@ class tslib_cObj {
 
 		$encapTags = t3lib_div::trimExplode(',', strtolower($conf['encapsTagList']), 1);
 		$nonWrappedTag = $conf['nonWrappedTag'];
-		$defaultAlign = trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.']));
+		$defaultAlign = isset($conf['defaultAlign.'])
+			? trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.']))
+			: trim($conf['defaultAlign']);
 
 		if (!strcmp('', $theValue))
 			return '';
@@ -4654,10 +4814,13 @@ class tslib_cObj {
 						$aTagParams . $this->extLinkATagParams('http://' . $parts[0], 'url') .
 						'>';
 				}
+				$wrap = isset($conf['wrap.'])
+					? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+					: $conf['wrap'];
 				if ($conf['ATagBeforeWrap']) {
-					$res = $res . $this->wrap($linktxt, $conf['wrap']) . '</a>';
+					$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
 				} else {
-					$res = $this->wrap($res . $linktxt . '</a>', $conf['wrap']);
+					$res = $this->wrap($res . $linktxt . '</a>', $wrap);
 				}
 				$textstr .= $res . $parts[1];
 			} else {
@@ -4698,10 +4861,13 @@ class tslib_cObj {
 				list ($mailToUrl, $linktxt) = $this->getMailTo($parts[0], $linktxt, $initP);
 				$mailToUrl = $GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
 				$res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
+				$wrap = isset($conf['wrap.'])
+					? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+					: $conf['wrap'];
 				if ($conf['ATagBeforeWrap']) {
-					$res = $res . $this->wrap($linktxt, $conf['wrap']) . '</a>';
+					$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
 				} else {
-					$res = $this->wrap($res . $linktxt . '</a>', $conf['wrap']);
+					$res = $this->wrap($res . $linktxt . '</a>', $wrap);
 				}
 				$textstr .= $res . $parts[1];
 			} else {
@@ -4746,14 +4912,30 @@ class tslib_cObj {
 					}
 					$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 					if ($theImage) {
-						$fileArray['width'] = $this->stdWrap($fileArray['width'], $fileArray['width.']);
-						$fileArray['height'] = $this->stdWrap($fileArray['height'], $fileArray['height.']);
-						$fileArray['ext'] = $this->stdWrap($fileArray['ext'], $fileArray['ext.']);
-						$fileArray['maxW'] = intval($this->stdWrap($fileArray['maxW'], $fileArray['maxW.']));
-						$fileArray['maxH'] = intval($this->stdWrap($fileArray['maxH'], $fileArray['maxH.']));
-						$fileArray['minW'] = intval($this->stdWrap($fileArray['minW'], $fileArray['minW.']));
-						$fileArray['minH'] = intval($this->stdWrap($fileArray['minH'], $fileArray['minH.']));
-						$fileArray['noScale'] = $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']);
+						$fileArray['width'] = isset($fileArray['width.'])
+							? $this->stdWrap($fileArray['width'], $fileArray['width.'])
+							: $fileArray['width'];
+						$fileArray['height'] = isset($fileArray['height.'])
+							? $this->stdWrap($fileArray['height'], $fileArray['height.'])
+							: $fileArray['height'];
+						$fileArray['ext'] = isset($fileArray['ext.'])
+							? $this->stdWrap($fileArray['ext'], $fileArray['ext.'])
+							: $fileArray['ext'];
+						$fileArray['maxW'] = isset($fileArray['maxW.'])
+							? intval($this->stdWrap($fileArray['maxW'], $fileArray['maxW.']))
+							: intval($fileArray['maxW']);
+						$fileArray['maxH'] = isset($fileArray['maxH.'])
+							? intval($this->stdWrap($fileArray['maxH'], $fileArray['maxH.']))
+							: intval($fileArray['maxH']);
+						$fileArray['minW'] = isset($fileArray['minW.'])
+							? intval($this->stdWrap($fileArray['minW'], $fileArray['minW.']))
+							: intval($fileArray['minW']);
+						$fileArray['minH'] = isset($fileArray['minH.'])
+							? intval($this->stdWrap($fileArray['minH'], $fileArray['minH.']))
+							: intval($fileArray['minH']);
+						$fileArray['noScale'] = isset($fileArray['noScale.'])
+							? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.'])
+							: $fileArray['noScale'];
 						$maskArray = $fileArray['m.'];
 						$maskImages = array();
 						if (is_array($fileArray['m.'])) { // Must render mask images and include in hash-calculating - else we cannot be sure the filename is unique for the setup!
@@ -5253,9 +5435,13 @@ class tslib_cObj {
 		$finalTagParts = array();
 		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
 
-		$link_param = trim($this->stdWrap($conf['parameter'], $conf['parameter.']));
+		$link_param = isset($conf['parameter.'])
+			? trim($this->stdWrap($conf['parameter'], $conf['parameter.']))
+			: trim($conf['parameter']);
 
-		$sectionMark = trim($this->stdWrap($conf['section'], $conf['section.']));
+		$sectionMark = isset($conf['section.'])
+			? trim($this->stdWrap($conf['section'], $conf['section.']))
+			: trim($conf['section']);
 		$sectionMark = $sectionMark ? (t3lib_div::testInt($sectionMark) ? '#c' : '#') . $sectionMark : '';
 		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
@@ -5477,7 +5663,9 @@ class tslib_cObj {
 
 							// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
-						$addQueryParams .= trim($this->stdWrap($conf['additionalParams'], $conf['additionalParams.']));
+						$addQueryParams .= isset($conf['additionalParams.'])
+							? trim($this->stdWrap($conf['additionalParams'], $conf['additionalParams.']))
+							: trim($conf['additionalParams']);
 						if ($addQueryParams == '&' || substr($addQueryParams, 0, 1) != '&') {
 							$addQueryParams = '';
 						}
@@ -5758,10 +5946,13 @@ class tslib_cObj {
 				}
 			}
 
+			$wrap = isset($conf['wrap.'])
+				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
 			if ($conf['ATagBeforeWrap']) {
-				return $res . $this->wrap($linktxt, $conf['wrap']) . '</a>';
+				return $res . $this->wrap($linktxt, $wrap) . '</a>';
 			} else {
-				return $this->wrap($res . $linktxt . '</a>', $conf['wrap']);
+				return $this->wrap($res . $linktxt . '</a>', $wrap);
 			}
 		} else {
 			return $linktxt;
@@ -7201,7 +7392,9 @@ class tslib_cObj {
 		}
 
 			// Construct WHERE clause:
-		$conf['pidInList'] = trim($this->stdWrap($conf['pidInList'], $conf['pidInList.']));
+		$conf['pidInList'] = isset($conf['pidInList.'])
+			? trim($this->stdWrap($conf['pidInList'], $conf['pidInList.']))
+			: trim($conf['pidInList']);
 
 			// Handle recursive function for the pidInList
 		if (isset($conf['recursive'])) {
@@ -7361,7 +7554,9 @@ class tslib_cObj {
 			$query .= ' AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . ')';
 		}
 
-		$andWhere = trim($this->stdWrap($conf['andWhere'], $conf['andWhere.']));
+		$andWhere = isset($conf['andWhere.'])
+			? trim($this->stdWrap($conf['andWhere'], $conf['andWhere.']))
+			: trim($conf['andWhere']);
 		if ($andWhere) {
 			$query .= ' AND ' . $andWhere;
 		}
@@ -7381,13 +7576,16 @@ class tslib_cObj {
 
 			// GROUP BY
 		if (trim($conf['groupBy'])) {
-			$queryParts['GROUPBY'] = trim($conf['groupBy']);
-			$query .= ' GROUP BY ' . $queryParts['GROUPBY'];
+			$queryParts['GROUPBY'] = isset($conf['groupBy.'])
+				? trim($this->stdWrap($conf['groupBy'], $conf['groupBy.']))
+				: trim($conf['groupBy']);
 		}
 
 			// ORDER BY
 		if (trim($conf['orderBy'])) {
-			$queryParts['ORDERBY'] = trim($conf['orderBy']);
+			$queryParts['ORDERBY'] = isset($conf['orderBy.'])
+				? trim($this->stdWrap($conf['orderBy'], $conf['orderBy.']))
+				: trim($conf['orderBy']);
 			$query .= ' ORDER BY ' . $queryParts['ORDERBY'];
 		}
 
@@ -7465,7 +7663,9 @@ class tslib_cObj {
 				$marker = rtrim($dottedMarker, '.');
 				if ($dottedMarker == $marker . '.') {
 						// parse definition
-					$tempValue = $this->stdWrap($conf['markers.'][$dottedMarker]['value'], $conf['markers.'][$dottedMarker]);
+					$tempValue = isset($conf['markers.'][$dottedMarker])
+						? $this->stdWrap($conf['markers.'][$dottedMarker]['value'], $conf['markers.'][$dottedMarker])
+						: $conf['markers.'][$dottedMarker]['value'];
 						// quote/escape if needed
 					if (is_numeric($tempValue)) {
 						if ((int) $tempValue == $tempValue) {
