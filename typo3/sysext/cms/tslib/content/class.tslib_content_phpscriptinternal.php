@@ -41,8 +41,15 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
 	 */
-	public function render($conf = array(), $ext) {
-		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($conf['file']);
+	public function render($conf = array()) {
+		$ext = $conf['scriptSuffix'];
+		unset($conf['scriptSuffix']);
+
+		$file = isset($conf['file.'])
+			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
+			: $conf['file'];
+
+		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		$content = '';
 		if ($incFile && $GLOBALS['TSFE']->checkFileInclude($incFile)) {
 			$substKey = $ext . '_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
@@ -56,6 +63,11 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 				$GLOBALS['TSFE']->config[$ext . 'incScript'][$substKey]['data'] = $this->cObj->data;
 			}
 		}
+
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
+
 		return $content;
 	}
 

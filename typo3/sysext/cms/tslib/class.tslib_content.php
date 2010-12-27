@@ -1127,7 +1127,8 @@ class tslib_cObj {
 	 */
 	function PHP_SCRIPT($conf, $ext = '') {
 		if ($ext === 'INT' || $ext === 'EXT') {
-			return $this->getContentObject('PHP_SCRIPT_INT')->render($conf, $ext);
+			$conf['scriptSuffix'] = $ext;
+			return $this->getContentObject('PHP_SCRIPT_INT')->render($conf);
 		} else {
 			return $this->getContentObject('PHP_SCRIPT')->render($conf);
 		}
