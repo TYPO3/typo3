@@ -45,8 +45,13 @@ class tslib_content_UserInternal extends tslib_content_Abstract {
 		$this->cObj->setUserObjectType(tslib_cObj::OBJECTTYPE_USER_INT);
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
+
+		$includeLibs = isset($conf['includeLibs.'])
+			? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.'])
+			: $conf['includeLibs'];
+
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
-			'file' => $conf['includeLibs'],
+			'file' => $includeLibs,
 			'conf' => $conf,
 			'cObj' => serialize($this->cObj),
 			'type' => 'FUNC'
