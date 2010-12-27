@@ -2204,28 +2204,47 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	display: block;
 }
 
-#typo3-module-menu-xcollapsed:hover .x-layout-mini-west,
-#typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
+#typo3-module-menu-xcollapsed:hover .x-layout-mini-west {
 	left: 5px;
 }
 
-/* Collapsed tree frame is not invisible, but 5px wide */
-#typo3-navigationContainer-xcollapsed {
+/* Collapsed tree frame is not invisible, but 5px wide.
+   If no tree frame is in use, an empty container is shown instead */
+#typo3-navigationContainer-xcollapsed,
+#typo3-navigationDummy {
 	background-color: #ebebeb;
 	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858,
-		inset 0 49px #dadada;
+		inset 0 22px #585858;
 	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858,
-		inset 0 49px #dadada;
+		inset 0 22px #585858;
 	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858,
-		inset 0 49px #dadada;
+		inset 0 22px #585858;
 	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858,
-		inset 0 49px #dadada;
+		inset 0 22px #585858;
 	overflow: visible;
-	width: 5px;
+}
+
+/**
+ * Shadow on the right side of the tree frame,
+ * fallback for missing box-shadow support.
+ *
+ * @see modernizr.js
+ */
+.no-boxshadow #typo3-navigationContainer-xcollapsed,
+.no-boxshadow #typo3-navigationDummy  {
+	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../images/backgrounds/module-menu-right.png");
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+#typo3-navigationContainer-xcollapsed {
+	width: 10px !important;
+}
+
+#typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
+	left: 10px;
 }
 
 /**
