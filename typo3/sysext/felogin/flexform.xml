@@ -205,7 +205,7 @@
 								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
-					</redirectPageLogin>	      
+					</redirectPageLogin>
 					<redirectPageLoginError>
 						<TCEforms>
 							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLoginError</label>
@@ -219,7 +219,7 @@
 								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
-					</redirectPageLoginError>	
+					</redirectPageLoginError>
 					<redirectPageLogout>
 						<TCEforms>
 							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLogout</label>
