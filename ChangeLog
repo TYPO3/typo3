@@ -1,3 +1,7 @@
+2010-12-27  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16385: Optimize stdWrap usage for TypoScript content element PHP_SCRIPT (Thanks to Jo Hasenau)
+
 2010-12-27  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16481: Live search uses hardcoded strings and has unused strings

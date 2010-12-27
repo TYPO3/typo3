@@ -42,7 +42,12 @@ class tslib_content_PhpScript extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($conf['file']);
+
+		$file = isset($conf['file.'])
+			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
+			: $conf['file'];
+
+		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		$content = '';
 		if ($incFile && $GLOBALS['TSFE']->checkFileInclude($incFile)) {
 				// Added 31-12-00: Make backup...
@@ -55,6 +60,11 @@ class tslib_content_PhpScript extends tslib_content_Abstract {
 				$this->cObj->data = $this->cObj->oldData;
 			}
 		}
+
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
+
 		return $content;
 	}
 
