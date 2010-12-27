@@ -14,8 +14,8 @@
 			<label index="cm.pasteIntoPage">Paste into</label>
 			<label index="cm.pasteAfterPage">Paste after</label>
 			<label index="cm.deletePage">Delete page</label>
-			<label index="cm.disablePage">Disable page</label>
-			<label index="cm.enablePage">Enable page</label>
+			<label index="cm.disablePage">Hide page</label>
+			<label index="cm.enablePage">Show page</label>
 			<label index="cm.info">Page infos</label>
 			<label index="cm.history">Page history</label>
 			<label index="cm.tempMountPoint">Mount as treeroot</label>

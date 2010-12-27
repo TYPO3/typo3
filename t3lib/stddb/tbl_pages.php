@@ -55,12 +55,12 @@ $TCA['pages'] = array(
 						'--div--',
 					),
 					array(
-						'LLL:EXT:lang/locallang_tca.php:doktype.I.1',
+						'LLL:EXT:lang/locallang_tca.xml:doktype.I.1',
 						(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER,
 						'i/sysf.gif',
 					),
 					array(
-						'LLL:EXT:lang/locallang_tca.php:doktype.I.2',
+						'LLL:EXT:lang/locallang_tca.xml:doktype.I.2',
 						(string) t3lib_pageSelect::DOKTYPE_RECYCLER,
 						'i/recycler.gif',
 					),
@@ -147,7 +147,7 @@ $TCA['pages'] = array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.editlock_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
 					),
 				),
 			),
@@ -157,10 +157,11 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden',
 			'config' => array(
 				'type' => 'check',
+				'renderInverted' => TRUE,
 				'default' => '1',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.show',
 					),
 				),
 			),
@@ -199,7 +200,7 @@ $TCA['pages'] = array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.normal',
+						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
 						'0',
 					),
 					array(
@@ -225,7 +226,7 @@ $TCA['pages'] = array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'',
+						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
 						0,
 					),
 					array(
@@ -273,7 +274,7 @@ $TCA['pages'] = array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.extendToSubpages_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
 					),
 				),
 			),
@@ -294,9 +295,10 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide',
 			'config' => array(
 				'type' => 'check',
+				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
 					),
 				),
 			),
@@ -352,7 +354,7 @@ $TCA['pages'] = array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'',
+						'LLL:EXT:lang/locallang_core.xml:labels.automatic',
 						'0',
 					),
 					array(
@@ -458,9 +460,10 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache',
 			'config' => array(
 				'type' => 'check',
+				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
 					),
 				),
 			),
@@ -470,9 +473,10 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search',
 			'config' => array(
 				'type' => 'check',
+				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search_checkbox_1_formlabel',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
 					),
 				),
 			),
@@ -626,7 +630,7 @@ $TCA['pages'] = array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot_checkbox_1_formlabel'
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
 					),
 				),
 			),
@@ -695,7 +699,7 @@ $TCA['pages'] = array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'',
+						'LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enable',
 						0,
 					),
 					array(

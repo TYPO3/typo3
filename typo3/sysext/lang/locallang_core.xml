@@ -64,6 +64,9 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.depth_infi">Infinite</label>
 			<label index="labels.allow">Allow</label>
 			<label index="labels.deny">Deny</label>
+			<label index="labels.automatic">Auto</label>
+			<label index="labels.enabled">Enabled</label>
+			<label index="labels.show">Show</label>
 			<label index="labels.generalTab">General</label>
 			<label index="labels.refresh">Reload the tree from server</label>
 			<label index="labels.temporaryDBmount">Cancel temporary DB mount</label>
@@ -80,8 +83,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.rootLevel">root level</label>
 			<label index="labels.addnew">Add new</label>
 			<label index="labels.toggleall">Toggle all</label>
-			<label index="labels.selected">Selected</label>
-			<label index="labels.items">Items</label>
+			<label index="labels.selected">Selected Items</label>
+			<label index="labels.items">Available Items</label>
 			<label index="labels.remove_selected">Remove selected items</label>
 			<label index="labels.move_to_top">Move selected items to top</label>
 			<label index="labels.move_up">Move selected items upwards</label>

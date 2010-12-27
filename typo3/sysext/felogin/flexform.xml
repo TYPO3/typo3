@@ -15,6 +15,12 @@
 							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_forgot_password</label>
 							<config>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</showForgotPassword>
@@ -24,6 +30,12 @@
 							<config>
 								<default>1</default>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</showPermaLogin>
@@ -33,13 +45,19 @@
 							<config>
 								<default></default>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</showLogoutFormAfterLogin>
 					<pages>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>LLL:EXT:lang/locallang_general.php:LGL.startingpoint</label>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.user_storage</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -59,27 +77,27 @@
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.0</numIndex>
 										<numIndex index="1"></numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.1</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.1</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.2</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.2</numIndex>
 										<numIndex index="1">2</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.3</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.3</numIndex>
 										<numIndex index="1">3</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.4</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.4</numIndex>
 										<numIndex index="1">4</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.5</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:recursive.I.5</numIndex>
 										<numIndex index="1">250</numIndex>
 									</numIndex>
 								</items>
@@ -165,6 +183,12 @@
 							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectFirstMethod</label>
 							<config>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</redirectFirstMethod>
@@ -209,12 +233,18 @@
 								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
-					</redirectPageLogout>	
+					</redirectPageLogout>
 					<redirectDisable>
 						<TCEforms>
 							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectDisable</label>
 							<config>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</redirectDisable>

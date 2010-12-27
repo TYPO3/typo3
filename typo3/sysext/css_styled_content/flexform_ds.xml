@@ -35,6 +35,12 @@
 							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_tfoot</label>
 							<config>
 								<type>check</type>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</acctables_tfoot>
@@ -69,6 +75,13 @@
 							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_nostyles</label>
 							<config>
 								<type>check</type>
+								<renderInverted>1</renderInverted>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</acctables_nostyles>

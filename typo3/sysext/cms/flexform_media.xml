@@ -42,6 +42,12 @@
 							<config>
 								<type>check</type>
 								<default>1</default>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</mmforcePlayer>

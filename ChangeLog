@@ -1,3 +1,7 @@
+2010-12-27  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #16857: Refine new labels in pages and tt_content TCE forms (Thanks to Mark Lehm and Jeff Segars for helping)
+
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
 	* Add sysext pagetree to required ext
