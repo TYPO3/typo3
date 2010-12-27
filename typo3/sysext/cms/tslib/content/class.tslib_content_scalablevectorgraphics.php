@@ -36,18 +36,38 @@
 class tslib_content_ScalableVectorGraphics extends tslib_content_Abstract {
 
 	/**
-	 * Rendering the cObject, RESTORE_REGISTER
-	 * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
+	 * Rendering the cObject, SVG
 	 *
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Empty string (the cObject only sets internal data!)
 	 */
 	public function render($conf = array()) {
-		$width = $conf['width'] ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : 600;
-		$height = $conf['height'] ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : 400;
+		$width = isset($conf['width.'])
+			 ? $this->cObj->stdWrap($conf['width'], $conf['width.'])
+			 : $conf['width'];
+		if(!$width) {
+			$width = 600;
+		}
+		$height = isset($conf['height.'])
+			? $this->cObj->stdWrap($conf['height'], $conf['height.'])
+			: $conf['height'];
+		if(!$height) {
+			$height = 400;
+		}
 
-		$src = $conf['src'] ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : NULL;
-		$value = $this->cObj->stdWrap($conf['value'], $conf['value.']);
+		$src = isset($conf['src.'])
+			? $this->cObj->stdWrap($conf['src'], $conf['src.'])
+			: $conf['src'];
+		if(!$src) {
+			$src = NULL;
+		}
+		$value = isset($conf['value.'])
+			? $this->cObj->stdWrap($conf['value'], $conf['value.'])
+			: $conf['value'];
+
+		$noscript = isset($conf['noscript.'])
+			? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.'])
+			: $conf['noscript'];
 
 		if ($src) {
 			$content = '
@@ -58,7 +78,7 @@ class tslib_content_ScalableVectorGraphics extends tslib_content_Abstract {
 					<!--[if !IE]>-->
 					<object data="' . $src . '" type="image/svg+xml" width="' . $width . '" height="' . $height . '">
 					<!--<![endif]-->
-					' . $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) . '
+					' . $noscript . '
 					</object>
 
 			';
@@ -73,11 +93,15 @@ class tslib_content_ScalableVectorGraphics extends tslib_content_Abstract {
 				</svg>
 				</script>
 				<noscript>
-			' . $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) . '
+			' . $noscript . '
 				</noscript>
 			';
 		}
 		$GLOBALS['TSFE']->getPageRenderer()->loadSvg();
+
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
 
 		return $content;
 	}
