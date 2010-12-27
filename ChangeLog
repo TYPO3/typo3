@@ -17,6 +17,7 @@
 2010-12-27  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16481: Live search uses hardcoded strings and has unused strings
+	* Fixed bug #16681: Live search should reset when an iframe gains focus
 
 2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
 

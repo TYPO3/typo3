@@ -46,6 +46,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	resizable: false,
 	title: null,
 	width: 205,
+	hasIframeListeners: false,
 
 	triggerClass : 'x-form-clear-trigger',
 	triggerConfig: '<span tag="a" class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer">&nbsp;</span>',
@@ -178,28 +179,6 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		this.assetHeight += this.footer.getHeight();
 	},
 
-	// private
-	onLoad : function(){
-		TYPO3.BackendLiveSearch.superclass.onLoad.apply(this, arguments);
-
-		// If an pageJump request is done this will immediately load the record for editing.
-		// if (this.dataReader.jsonData.pageJump != '') {
-		//	this.collapse();
-		//	jump(this.dataReader.jsonData.pageJump, 'web_list', 'web');
-		// } else {
-			// Add an event handler to each iframe, closing the search window when there's a click inside the iframe
-			// @todo Is there a cleaner way to handle this?
-			var iframes = Ext.query('iframe');
-			Ext.each(iframes, function(item, index, allItems) {
-				item.contentWindow.document.body.onclick = function() {
-					if (parent.TYPO3LiveSearch && parent.TYPO3LiveSearch.isExpanded()) {
-						parent.TYPO3LiveSearch.collapse();
-					}
-				};
-			}, this);
-		//}
-	},
-
 	initQuery : function(){
 		TYPO3.BackendLiveSearch.superclass.initQuery.apply(this, arguments);
 		this.removeHelp();
@@ -252,16 +231,6 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 			this.helpList.alignTo(this.wrap, this.listAlign);
 			this.helpList.show();
-
-			var iframes = Ext.query('iframe');
-			Ext.each(iframes, function(item, index, allItems) {
-				item.contentWindow.document.body.onclick = function() {
-					if (parent.TYPO3LiveSearch && parent.TYPO3LiveSearch.helpList.isVisible()) {
-						parent.TYPO3LiveSearch.helpList.remove();
-					}
-				};
-			}, this);
-
 		}
 	},
 
@@ -273,6 +242,10 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 	onFocus : function() {
 		TYPO3.BackendLiveSearch.superclass.onFocus.apply(this, arguments);
+
+		if (!this.hasIframeListeners) {
+			this.addIframeListeners();
+		}
 
 		// If search is blank, show the help on focus. Otherwise, show last results
 		if (this.getValue() == '') {
@@ -295,6 +268,32 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	reset : function() {
 	    this.originalValue = this.emptyText;
 		TYPO3.BackendLiveSearch.superclass.reset.apply(this, arguments);
+	},
+
+	addIframeListeners : function () {
+		// Add an event handler to each iframe, closing the search window when there's a click inside the iframe
+		// @todo Is there a cleaner way to handle this?
+		var iframes = Ext.query('iframe');
+		Ext.each(iframes, function(item, index, allItems) {
+			item.contentWindow.document.body.onclick = function() {
+				if (parent.TYPO3LiveSearch && parent.TYPO3LiveSearch.hasFocus) {
+					if (parent.TYPO3LiveSearch.isExpanded()) {
+						parent.TYPO3LiveSearch.collapse();
+					}
+
+					if (parent.TYPO3LiveSearch.getRawValue() == '') {
+						parent.TYPO3LiveSearch.originalValue = parent.TYPO3LiveSearch.emptyText;
+						parent.TYPO3LiveSearch.reset(this);
+					}
+
+					if (parent.TYPO3LiveSearch.helpList.isVisible()) {
+						parent.TYPO3LiveSearch.helpList.remove();
+					}
+				}
+			};
+			this.hasIframeListeners = true;
+		}, this);
+
 	}
 });
 
