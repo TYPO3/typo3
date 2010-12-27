@@ -154,12 +154,13 @@ class Tx_Extbase_Core_Bootstrap {
 	public function configureObjectManager() {
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
-			throw new RuntimeException('Object configuration was not found in "config.tx_extbase.objects". Please make sure, that the TypoScript setup is loaded', 1290623010);
+			return;
 		}
+		$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
 		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
 			if (isset($classConfiguration['className'])) {
 				$originalClassName = rtrim($classNameWithDot, '.');
-				Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
+				$objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
 			}
 		}
 	}

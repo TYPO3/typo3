@@ -1,6 +1,42 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0 Beta 3:
+==========================
+included in TYPO3 4.5.0 Beta 3.
+
+This release features numerous stability improvements, the biggest one
+being a re-written core of the Object Manager, such that Lifecycle Methods
+are supported now. This means, that a method "initializeObject()" gets called
+as soon as all dependencies are injected and initialized.
+
+Additionally, Extbase didn't work in all cases in the TYPO3 Backend. This has
+also been improved, so Extbase (again) works in the backend
+with an empty page tree.
+
+Full Changes for 1.3.0 Beta 3:
+=============================
+
+[+BUGFIX] Extbase (Tests): Fixed Tx_Extbase_MVC_Controller_AbstractController_testcase. Thanks to Oliver Klee. Resolves #11567.
+[BUGFIX] Extbase (Configuration): Make Extbase work again in Backend
+[!!!][+TASK] Extbase (Object): Rewritten Object Container
+[+BUGFIX] Extbase (MVC): Improve Exception message
+	If one misses the @dontvalidate annotation, he will
+	get a strange error which does not have a hint that
+	the @dontvalidate is missing. Now, the exception message
+	is extended.
+[+API] Extbase (Configuration): Adding getContentObject to API
+[+TASK] Extbase (Reflection): Added deprecation annotation to ObjectAccess::getAccessiblePropertyNames()
+	To stay in sync with FLOW3, the methods getAccessibleProperties() and getAccessiblePropertyNames() to
+	getGettableProperties() and getGettablePropertyNames().
+	For compatibility reasons the old methods will stay in Extbase until version 1.5.
+	Note: you can now check wheter properties are settable as well
+[+FEATURE] Extbase (Reflection): Tx_Extbase_Reflection_ObjectAccess supports stdClass objects now
+	I've backported the ObjectAccess class and its unit tests from FLOW3.
+	Note: FLOW3's implementation allows to specify a third argument for the
+	method getPropertyPath() in order to support Closures.
+	This part is not backported as it's not compatible with PHP < 5.3.
+
 Changes for 1.3.0 Beta 2a:
 ==========================
 included in TYPO3 4.5.0 Beta 2.

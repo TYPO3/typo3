@@ -1,3 +1,7 @@
+2010-12-27  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid to 1.3.0beta3
+
 2010-12-26  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16841: Webkit performance issue with topbar status "in workspace"

@@ -104,15 +104,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} else {
 			$this->objectManager = $objectManager;
 		}
-		$this->initializeObject();
-	}
-
-	/**
-	 * Life cycle method. You can override this in your own repository
-	 *
-	 * @return void
-	 */
-	public function initializeObject() {
 	}
 
 	/**
