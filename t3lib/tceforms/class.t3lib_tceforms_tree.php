@@ -80,7 +80,7 @@ class t3lib_TCEforms_Tree {
 			}
 		}
 		$treeDataProvider = t3lib_tree_Tca_DataProviderFactory::getDataProvider(
-			$GLOBALS['TCA'][$table]['columns'][$field]['config'],
+			$config,
 			$table,
 			$field,
 			$row

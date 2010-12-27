@@ -1,3 +1,7 @@
+2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* FYI: Fixed bug #16476: tcaTree should work in flexforms, too
+
 2010-12-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16845: Better API for Update Wizards in the Install Tool (Thanks to Benjamin Mack)
