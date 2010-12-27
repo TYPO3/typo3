@@ -51,15 +51,33 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		}
 		;
 
-		$typeConf = $conf[$conf['type'] . '.'];
+		$type = isset($conf['type.'])
+			? $this->cObj->stdWrap($conf['type'], $conf['type.'])
+			: $conf['type'];
+		$typeConf = $conf[$type . '.'];
 
 			//add SWFobject js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/swfobject/swfobject.js');
 
-		$player = $this->cObj->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
-		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
-		$filename = $this->cObj->stdWrap($conf['file'], $conf['file.']);
-		if ($filename && $conf['forcePlayer']) {
+		$player = isset($typeConf['player.'])
+			? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.'])
+			: $typeConf['player'];
+
+		$installUrl = isset($conf['installUrl.'])
+			? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.'])
+			: $conf['installUrl'];
+		if(!$installUrl) {
+			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
+		}
+
+		$filename = isset($conf['file.'])
+			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
+			: $conf['file'];
+		$forcePlayer = isset($conf['forcePlayer.'])
+			? $this->cObj->stdWrap($conf['forcePlayer'], $conf['forcePlayer.'])
+			: $conf['forcePlayer'];
+
+		if ($filename && $forcePlayer) {
 			if (strpos($filename, '://') !== FALSE) {
 				$conf['flashvars.']['file'] = $filename;
 			} else {
@@ -106,7 +124,10 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		}
 		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 
-		$flashVersion = $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']);
+		$flashVersion = isset($conf['flashVersion.'])
+			? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.'])
+			:  $conf['flashVersion'];
+
 		if (!$flashVersion) {
 			$flashVersion = '9';
 		}
@@ -114,17 +135,29 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$replaceElementIdString = uniqid('mmswf');
 		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
 
-		$alternativeContent = $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']);
+		$alternativeContent = isset($conf['alternativeContent.'])
+			? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.'])
+			:  $conf['alternativeContent'];
 
-		$layout = $this->cObj->stdWrap($conf['layout'], $conf['layout.']);
+		$layout = isset($conf['layout.'])
+			? $this->cObj->stdWrap($conf['layout'], $conf['layout.'])
+			: $conf['layout'];
 		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
 		$layout = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
 
-		$width = $this->cObj->stdWrap($conf['width'], $conf['width.']);
-		$height = $this->cObj->stdWrap($conf['height'], $conf['height.']);
+		$width = isset($conf['width.'])
+			? $this->cObj->stdWrap($conf['width'], $conf['width.'])
+			: $conf['width'];
+		if(!$width) {
+			$width = $conf[$type . '.']['defaultWidth'];
+		}
 
-		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
-		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight'];
+        $height = isset($conf['height.'])
+			? $this->cObj->stdWrap($conf['height'], $conf['height.'])
+			: $conf['height'];
+		if(!$height) {
+			$height = $conf[$type . '.']['defaultHeight'];
+		}
 
 
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
@@ -137,6 +170,10 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 				' . $attributes . '
 				' . $embed . '
 			</script>';
+
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
 
 		return $content;
 	}
