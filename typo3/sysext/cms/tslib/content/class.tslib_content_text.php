@@ -42,7 +42,12 @@ class tslib_content_Text extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		return $this->cObj->stdWrap($conf['value'], $conf);
+		$content = $conf['value'];
+		unset($conf['value']);
+		if(count($conf)) {
+			$content = $this->cObj->stdWrap($content, $conf);
+		}
+		return $content;
 	}
 
 }
