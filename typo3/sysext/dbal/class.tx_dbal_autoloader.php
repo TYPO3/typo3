@@ -47,7 +47,7 @@ class tx_dbal_autoloader {
 	public function execute(tx_install $instObj) {
 		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
-				case 0:
+				case 1:
 					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
 						$this->activateDbal();
 
@@ -56,7 +56,6 @@ class tx_dbal_autoloader {
 						t3lib_utility_Http::redirect($redirectUrl);
 					}
 					break;
-				case 1:
 				case 2:
 					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
 						$this->activateDbal();
@@ -161,8 +160,8 @@ class tx_dbal_autoloader {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php']);
 }
 
 // Make instance:

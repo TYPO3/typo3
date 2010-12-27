@@ -1,27 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  (c) 2004-2009 Karsten Dambekalns (karsten@typo3.org)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2004-2009 Karsten Dambekalns (karsten@typo3.org)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Module 'DBAL Debug' for the 'dbal' extension.
@@ -74,15 +74,15 @@ class tx_dbal_module1 extends t3lib_SCbase {
 
 		$this->thisScript = 'mod.php?M=' . $this->MCONF['name'];
 
-			// Clean up settings:
+		// Clean up settings:
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
-			// Draw the header
+		// Draw the header
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" method="post">';
 
-			// JavaScript
+		// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
 				function jumpToUrl(URL)	{	//
@@ -90,13 +90,13 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				}
 			');
 
-			// DBAL page title:
+		// DBAL page title:
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->spacer(5);
 		$this->content .= $this->doc->section('', $this->doc->funcMenu('', t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 
-			// Debug log:
+		// Debug log:
 		switch ($this->MOD_SETTINGS['function']) {
 			case 'info':
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
@@ -105,11 +105,11 @@ class tx_dbal_module1 extends t3lib_SCbase {
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
 				break;
 			case 0:
-				$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
 				break;
 		}
 
-			// ShortCut
+		// ShortCut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$this->content .= $this->doc->spacer(20) . $this->doc->section('', $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
 		}
@@ -122,7 +122,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	 *
 	 * @return	string HTML output
 	 */
-	public function printContent()	{
+	public function printContent() {
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
@@ -224,7 +224,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 			';
 
 		$out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
-		switch($input['QUERY']) {
+		switch ($input['QUERY']) {
 			case 'SELECT':
 				$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
 				break;
@@ -258,7 +258,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 			} else {
 				$out .= '<th>Result:</th><td style="border:2px solid #f00;">' . $parseResult;
 			}
-			$out .='</td></tr>';
+			$out .= '</td></tr>';
 		}
 
 		$out .= '</table></form>';
@@ -295,8 +295,8 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	 * @return string	HTML output
 	 */
 	protected function printCachedInfo() {
-			// Get cmd:
-		if ((string)t3lib_div::_GP('cmd') === 'clear') {
+		// Get cmd:
+		if ((string) t3lib_div::_GP('cmd') === 'clear') {
 			$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			$GLOBALS['TYPO3_DB']->cacheFieldInfo();
 		}
@@ -330,7 +330,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		ksort($GLOBALS['TYPO3_DB']->cache_fieldType);
 		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
 			$out .= '<th colspan="5">' . $table . '</th>';
-			foreach($fields as $field => $data) {
+			foreach ($fields as $field => $data) {
 				$out .= '<tr>';
 				$out .= '<td>' . $field . '</td>';
 				$out .= '<td>' . $data['type'] . '</td>';
@@ -380,11 +380,11 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	 */
 	protected function printLogMgm() {
 
-			// Disable debugging in any case...
+		// Disable debugging in any case...
 		$GLOBALS['TYPO3_DB']->debug = FALSE;
 
-			// Get cmd:
-		$cmd = (string)t3lib_div::_GP('cmd');
+		// Get cmd:
+		$cmd = (string) t3lib_div::_GP('cmd');
 		switch ($cmd) {
 			case 'flush':
 				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
@@ -394,7 +394,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 			case 'joins':
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script', 'tx_dbal_debuglog', 'table_join!=\'\'', 'table_join,script,exec_time,query');
 
-					// Init vars in which to pick up the query result:
+				// Init vars in which to pick up the query result:
 				$tableIndex = array();
 				$tRows = array();
 				$tRows[] = '
@@ -408,7 +408,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$tableArray = $GLOBALS['TYPO3_DB']->SQLparser->parseFromTables($row['table_join']);
 
-						// Create table name index:
+					// Create table name index:
 					foreach ($tableArray as $a) {
 						foreach ($tableArray as $b) {
 							if ($b['table'] != $a['table']) {
@@ -417,7 +417,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 						}
 					}
 
-						// Create output row
+					// Create output row
 					$tRows[] = '
 						<tr>
 							<td>' . htmlspecialchars($row['exec_time']) . '</td>
@@ -427,11 +427,11 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 						</tr>';
 				}
 
-					// Printing direct joins:
+				// Printing direct joins:
 				$outStr .= '<h4>Direct joins:</h4>' . t3lib_div::view_array($tableIndex);
 
 
-					// Printing total dependencies:
+				// Printing total dependencies:
 				foreach ($tableIndex as $priTable => $a) {
 					foreach ($tableIndex as $tableN => $v) {
 						foreach ($v as $tableP => $vv) {
@@ -443,7 +443,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				}
 				$outStr .= '<h4>Total dependencies:</h4>' . t3lib_div::view_array($tableIndex);
 
-					// Printing data rows:
+				// Printing data rows:
 				$outStr .= '
 					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
@@ -520,11 +520,11 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				break;
 			default:
 
-					// Look for request to view specific script exec:
+				// Look for request to view specific script exec:
 				$specTime = t3lib_div::_GP('specTime');
 
 				if ($specTime) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int)$specTime);
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int) $specTime);
 					$tRows = array();
 					$tRows[] = '
 						<tr>
@@ -588,12 +588,12 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/mod1/index.php']);
 }
 
 
-	// Make instance:
+// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_dbal_module1');
 $SOBE->init();
 $SOBE->main();

@@ -1,3 +1,20 @@
+2010-12-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0beta3
+
+2010-12-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16679: Cannot login to backend at the end of 1-2-3 wizard when using Oracle
+
+2010-12-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16677: PHP notices from XCLASS inclusions
+	* Fixed bug #16678: DBAL is active with MySQL at the end of 1-2-3 wizard
+
+2010-12-02  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16639: Install Tool is unusable since DBAL merge
+
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0beta2

@@ -28,7 +28,7 @@
 /**
  * Hooks for TYPO3 Extension Manager.
  *
- * $Id: class.tx_dbal_em.php 40694 2010-12-01 00:12:45Z xperseguers $
+ * $Id: class.tx_dbal_em.php 40828 2010-12-05 14:55:53Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -386,7 +386,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_em.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_em.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_em.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_em.php']);
 }
 ?>

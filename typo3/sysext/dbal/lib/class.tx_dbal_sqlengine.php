@@ -30,7 +30,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.tx_dbal_sqlengine.php 40716 2010-12-01 10:49:27Z xperseguers $
+ * $Id: class.tx_dbal_sqlengine.php 40828 2010-12-05 14:55:53Z xperseguers $
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -848,8 +848,8 @@ class tx_dbal_sqlengine_resultobj {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_sqlengine.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_sqlengine.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_sqlengine.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_sqlengine.php']);
 }
 
 ?>

@@ -29,7 +29,7 @@
 /**
  * Class that renders fields for the Extension Manager configuration.
  *
- * $Id: class.tx_dbal_tsparserext.php 40716 2010-12-01 10:49:27Z xperseguers $
+ * $Id: class.tx_dbal_tsparserext.php 40828 2010-12-05 14:55:53Z xperseguers $
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
@@ -64,8 +64,8 @@ class tx_dbal_tsparserext {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_tsparserext.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_tsparserext.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_tsparserext.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/lib/class.tx_dbal_tsparserext.php']);
 }
 
 ?>
