@@ -1,6 +1,7 @@
 2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* FYI: Fixed bug #16476: tcaTree should work in flexforms, too
+	* Follow-up to #16218: Bug/Feature: TCE-Forms does not use sprite icons -- this leads to inconsistency
 
 2010-12-27  Steffen Gebert  <steffen@steffen-gebert.de>
 

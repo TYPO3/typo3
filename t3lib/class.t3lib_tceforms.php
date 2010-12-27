@@ -1645,8 +1645,6 @@ class t3lib_TCEforms {
 					list($selectIconFile, $selectIconInfo) = $this->getIcon($p[2]);
 					if (!empty($selectIconInfo)) {
 						$selectedStyle = ' class="typo3-TCEforms-select-selectedItemWithBackgroundImage" style="background-image:url(' . $selectIconFile . ');"';
-					} else {
-						$selectedStyle = ' class="' . t3lib_iconWorks::getSpriteIconClasses($p[2]) . '"';
 					}
 				}
 			}
