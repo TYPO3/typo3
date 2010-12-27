@@ -13,6 +13,7 @@
 2010-12-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #16842: Add Canadian French language to TYPO3 core
+	* Follow-up to issue #16842: Add Canadian French language to TYPO3 core (add flag for 'qc')
 
 2010-12-26  Tobias Liebig  <mail_typo3@etobi.de>
 

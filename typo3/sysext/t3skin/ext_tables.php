@@ -121,7 +121,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 		'lc', 'li', 'lk', 'lr', 'ls', 'lt', 'lu', 'lv', 'ly', 'ma', 'mc', 'md', 
 		'me', 'mg', 'mh', 'mk', 'ml', 'mm', 'mn', 'mo', 'mp', 'mq', 'mr', 'ms', 
 		'mt', 'mu', 'mv', 'mw', 'mx', 'my', 'mz', 'na', 'nc', 'ne', 'nf', 'ng', 
-		'ni', 'nl', 'no', 'np', 'nr', 'nu', 'nz', 'om', 'pa', 'pe', 'pf', 'pg', 
+		'ni', 'nl', 'no', 'np', 'nr', 'nu', 'nz', 'om', 'pa', 'pe', 'pf', 'pg', 'qc',
 	);
 	foreach ($languageKeys as $languageKey) {
 		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($languageKey, $languageKey, '');
@@ -551,6 +551,8 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 			'flags-py-overlay',
 			'flags-qa',
 			'flags-qa-overlay',
+			'flags-qc',
+			'flags-qc-overlay',
 			'flags-re',
 			'flags-re-overlay',
 			'flags-ro',
