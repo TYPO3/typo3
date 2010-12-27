@@ -1735,7 +1735,7 @@ $TCA['tt_content'] = array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.textlayout;textlayout,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
 		),
-		'table' => 		array(
+		'table' => array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,

@@ -114,9 +114,9 @@
 										<numIndex index="1">embed</numIndex>
 									</numIndex>
 								</items>
-								<itemsProcFunc>tx_cms_mediaItems->customMediaRenderTypes</itemsProcFunc> 
+								<itemsProcFunc>tx_cms_mediaItems->customMediaRenderTypes</itemsProcFunc>
 							</config>
-						</TCEforms>	
+						</TCEforms>
 					</mmRenderType>
 					<mmMediaOptions>
 					<tx_templavoila>
@@ -145,26 +145,26 @@
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.loop</numIndex>
 													<numIndex index="1">loop</numIndex>
 												</numIndex>
-												<numIndex index="2">	
+												<numIndex index="2">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.quality</numIndex>
 													<numIndex index="1">quality</numIndex>
 												</numIndex>
-												<numIndex index="3">	
+												<numIndex index="3">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preview</numIndex>
 													<numIndex index="1">preview</numIndex>
 												</numIndex>
 												<numIndex index="4">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowScriptAccess</numIndex>
-													<numIndex index="1">allowScriptAccess</numIndex>                     
+													<numIndex index="1">allowScriptAccess</numIndex>
 												</numIndex>
 												<numIndex index="5">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowFullScreen</numIndex>
-													<numIndex index="1">allowFullScreen</numIndex>                     
+													<numIndex index="1">allowFullScreen</numIndex>
 												</numIndex>
 											</items>
-											<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc> 
+											<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc>
 										</config>
-									</TCEforms>	
+									</TCEforms>
 								</mmParamName>
 								<mmParamSet>
 									<TCEforms>
@@ -182,11 +182,11 @@
 												</numIndex>
 												<numIndex index="2">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.valueEntry</numIndex>
-													<numIndex index="1">2</numIndex>                     
+													<numIndex index="1">2</numIndex>
 												</numIndex>
 											</items>
 										</config>
-									</TCEforms>	
+									</TCEforms>
 								</mmParamSet>
 								<mmParamValue>
 									<TCEforms>
@@ -199,7 +199,7 @@
 									</TCEforms>
 								</mmParamValue>
 							</el>
-							
+
 							</mmMediaOptionsContainer>
 							<mmMediaCustomParameterContainer>
 								<type>array</type>
@@ -216,13 +216,13 @@
 												<cols>60</cols>
 											</config>
 										</TCEforms>
-									</mmParamCustomEntry>	
+									</mmParamCustomEntry>
 								</el>
 							</mmMediaCustomParameterContainer>
 						</el>
 					</mmMediaOptions>
 				</el>
 			</ROOT>
-		</sDEF> 
+		</sDEF>
 	</sheets>
 </T3DataStructure>
