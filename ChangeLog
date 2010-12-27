@@ -1,5 +1,6 @@
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Add sysext pagetree to required ext
 	* Fixed bug #16387: Optimize stdWrap usage for TypoScript content element QTOBJECT (Thanks to Jo Hasenau)
 	* Fixed bug #16429: Optimize stdWrap usage for tslib_content (Thanks to Jo Hasenau)
 	* Fixed bug #16731: Fill the color gap between module menu and tree-less modules (Thanks to Steffen Gebert)
