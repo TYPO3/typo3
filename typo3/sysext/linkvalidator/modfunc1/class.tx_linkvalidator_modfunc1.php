@@ -302,6 +302,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	private function startTable() {
 		global $LANG;
+		global $TYPO3_CONF_VARS;
 
 			// Listing head
 		$makerTableHead = array();
@@ -315,7 +316,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead['tablehead_headlink'] = $LANG->getLL('list.tableHead.headlink');
 		$makerTableHead['tablehead_linktarget'] = $LANG->getLL('list.tableHead.linktarget');
 		$makerTableHead['tablehead_linkmessage'] = $LANG->getLL('list.tableHead.linkmessage');
-		$makerTableHead['tablehead_lastcheck'] = $LANG->getLL('list.tableHead.lastCheck');
+		$makerTableHead['tablehead_lastcheck'] = sprintf($LANG->getLL('list.tableHead.lastCheck'), $TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
 
 		return $makerTableHead;
 	} // end function startTable()

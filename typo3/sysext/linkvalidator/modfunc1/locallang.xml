@@ -22,7 +22,7 @@
             <label index="overview.branch.links">External links: </label>
             <label index="overview.attention.header">Attention: </label>
             <label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
-            <label index="list.tableHead.lastCheck">Last check (DD-MM-YYYY HH:MM)</label>
+            <label index="list.tableHead.lastCheck">Last check (%s)</label>
             <label index="list.header">Listing of certainly broken links</label>
             <label index="list.tableHead.path">Path</label>
             <label index="list.tableHead.type">Type</label>
@@ -43,7 +43,7 @@
             <label index="list.report.filenotexisting">File doesn't exist</label>
             <label index="label_update">Check links</label>
             <label index="label_refresh">Refresh display</label>
-            <label index="list.msg.lastRun">on %1$s at %2$s</label>          
+            <label index="list.msg.lastRun">%1$s %2$s</label>          
             <label index="hooks.db">Internal Links</label>
             <label index="hooks.file">File Links</label>
             <label index="hooks.external">External Links</label>
