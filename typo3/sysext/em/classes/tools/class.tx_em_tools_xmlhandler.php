@@ -372,7 +372,7 @@ class tx_em_Tools_XmlHandler {
 
 		$idx = 0;
 		$defaultCategories = tx_em_Tools::getDefaultCategory();
-		foreach ($defaultCategories['cat'] as $catKey => $tmp) {
+		foreach ($defaultCategories as $catKey => $tmp) {
 			$this->revCatArr[$catKey] = $idx++;
 		}
 

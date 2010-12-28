@@ -24,6 +24,7 @@
 
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to EM-Merge: fixed a php warning
 	* Fixed bug #16384: Optimize stdWrap usage for TypoScript content element OTABLE (Thanks to Jo Hasenau)
 	* Fixed bug #16852: Bugfix: Grid View must be combined with Column View and get some visual usability enhancements (Thanks to Jo Hasenau)
 	* Add sysext pagetree to required extension list
