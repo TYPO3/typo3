@@ -48,7 +48,6 @@ var WorkspaceMenu = Class.create({
 			}
 			this.positionMenu();
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
-			Event.observe('frontendPreviewToggle', 'click', this.toggleFrontendPreview.bind(this));
 			Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
 
 			// observe all clicks on workspace links in the menu
