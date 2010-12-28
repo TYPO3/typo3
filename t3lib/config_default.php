@@ -378,7 +378,7 @@ $TYPO3_CONF_VARS = array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.4.6';	// deprecated: use the constants defined below
+$TYPO_VERSION = '4.4.7-dev';	// deprecated: use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.4');
 define('TYPO3_copyright_year', '1998-2010');
