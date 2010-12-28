@@ -769,3 +769,8 @@ class tx_version_tcemain_CommandMap {
 		return call_user_func_array(array($this, $method), $callbackArguments);
 	}
 }
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain_commandmap.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain_commandmap.php']);
+}
+?>
