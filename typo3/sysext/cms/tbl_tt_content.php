@@ -174,7 +174,7 @@ $TCA['tt_content'] = array(
 				'renderInverted' => TRUE,
 				'items' => array (
 					'1'	=> array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.show',
 					),
 				),
 			),
