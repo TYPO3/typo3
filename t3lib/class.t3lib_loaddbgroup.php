@@ -620,7 +620,18 @@ class t3lib_loadDBGroup {
 			if (!(t3lib_div::testInt($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
 			}
-			$fields = 'uid,' . $foreign_field . ($symmetric_field ? ',' . $symmetric_field : '');
+
+			$considerWorkspaces = ($GLOBALS['BE_USER']->workspace !== 0 && t3lib_BEfunc::isTableWorkspaceEnabled($foreign_table));
+
+			$fields = 'uid,' . $foreign_field;
+				// Consider the symmetric field if defined:
+			if ($symmetric_field) {
+				$fields .= ',' . $symmetric_field;
+			}
+				// Consider workspaces if defined and currently used:
+			if ($considerWorkspaces) {
+				$fields .= ',' . 't3ver_state,t3ver_oid';
+			}
 
 				// update all items
 			foreach ($this->itemArray as $val) {
@@ -628,12 +639,15 @@ class t3lib_loadDBGroup {
 				$table = $val['table'];
 
 					// fetch the current (not overwritten) relation record if we should handle symmetric relations
-				if ($conf['symmetric_field']) {
+				if ($symmetric_field || $considerWorkspaces) {
 					$row = t3lib_BEfunc::getRecord($table, $uid, $fields, '', FALSE);
+				}
+				if ($symmetric_field) {
 					$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $conf, $row);
 				}
 
 				$updateValues = array();
+				$workspaceValues = array();
 
 					// no update to the uid is requested, so this is the normal behaviour
 					// just update the fields and care about sorting
@@ -658,15 +672,16 @@ class t3lib_loadDBGroup {
 						} elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) { // manual sortby for all table records
 							$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
 						}
-							// strip a possible "ORDER BY" in front of the $sortby value
-						$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
-						$symSortby = $conf['symmetric_sortby'];
+							// Apply sorting on the symmetric side (it depends on who created the relation, so what uid is in the symmetric_field):
+						if ($isOnSymmetricSide && isset($conf['symmetric_sortby']) && $conf['symmetric_sortby']) {
+							$sortby = $conf['symmetric_sortby'];
+							// Strip a possible "ORDER BY" in front of the $sortby value:
+						} else {
+							$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
+						}
 
-							// set the sorting on the right side, it depends on who created the relation, so what uid is in the symmetric_field
-						if ($isOnSymmetricSide && $symSortby) {
-							$updateValues[$symSortby] = ++$c;
-						} elseif ($sortby) {
-							$updateValues[$sortby] = ++$c;
+						if ($sortby) {
+							$updateValues[$sortby] = $workspaceValues[$sortby] = ++$c;
 						}
 					}
 
@@ -680,9 +695,16 @@ class t3lib_loadDBGroup {
 					}
 				}
 
+					// Update accordant fields in the database:
 				if (count($updateValues)) {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateValues);
 					$this->updateRefIndex($table, $uid);
+				}
+					// Update accordant fields in the database for workspaces overlays/placeholders:
+				if (count($workspaceValues) && $considerWorkspaces) {
+					if (isset($row['t3ver_oid']) && $row['t3ver_oid'] && $row['t3ver_state'] == -1) {
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($row['t3ver_oid']), $workspaceValues);
+					}
 				}
 			}
 		}

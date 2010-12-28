@@ -1,3 +1,7 @@
+2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #16846: Sorting order of newly created child elements on workspaces is wrong
+
 2010-12-28  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16093: Media content object with selection of "HTML Embed Element" does not respect dimension settings (Thanks to Simon Schaufelberger)
