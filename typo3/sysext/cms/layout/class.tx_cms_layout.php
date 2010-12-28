@@ -539,12 +539,7 @@ class tx_cms_layout extends recordList {
 
 				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
 				$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
-				if (empty($backendLayoutRecord['config'])) {
-                    $this->tt_contentConfig['showAsGrid'] = FALSE;
-				} else {
-                    $this->tt_contentConfig['showAsGrid'] = TRUE;
-
-                }
+				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']);
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
 					foreach ($cList as $k => $key) {
@@ -620,8 +615,8 @@ class tx_cms_layout extends recordList {
 									(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
 									(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
 									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
-                                     (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
-                                     ((isset($columnConfig['colPos']) && ! $head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
+									(!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
+									((isset($columnConfig['colPos']) && ! $head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
 									(isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') .
 									(isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
 
