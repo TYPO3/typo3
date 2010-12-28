@@ -1,6 +1,7 @@
 2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Cleanup: Fixed PHPdoc comments, type hints and XCLASS blocks
+	* Cleanup: Renamed command map class file to start with proper extension prefix
 
 2010-12-22  Tolleiv Nietsch  <typo3@tolleiv.de>
 
