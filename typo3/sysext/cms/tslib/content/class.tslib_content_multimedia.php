@@ -79,6 +79,8 @@ class tslib_content_Multimedia extends tslib_content_Abstract {
 				}
 				if (t3lib_div::inList('swf,swa,dcr', $fileinfo['fileext'])) {
 					$parArray['quality'] = 'quality="high"';
+					$parArray['width'] = 'width="' . $width  . '"';
+					$parArray['height'] = 'height="' . $height . '"';
 				}
 				if (t3lib_div::inList('class', $fileinfo['fileext'])) {
 					$parArray['width'] = 'width="' . $width . '"';

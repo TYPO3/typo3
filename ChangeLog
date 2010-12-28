@@ -1,6 +1,10 @@
+2010-12-28  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16093: Media content object with selection of "HTML Embed Element" does not respect dimension settings (Thanks to Simon Schaufelberger)
+
 2010-12-28  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed issue #16861: Minor alignment issues in TCE forms
+	* Fixed bug #16861: Minor alignment issues in TCE forms
 
 2010-12-28  Steffen Kamper  <steffen@typo3.org>
 
@@ -8,7 +12,7 @@
 
 2010-12-27  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed issue #16857: Refine new labels in pages and tt_content TCE forms (Thanks to Mark Lehm and Jeff Segars for helping)
+	* Fixed bug #16857: Refine new labels in pages and tt_content TCE forms (Thanks to Mark Lehm and Jeff Segars for helping)
 
 2010-12-27  Steffen Kamper  <steffen@typo3.org>
 
