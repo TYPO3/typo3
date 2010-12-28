@@ -1,3 +1,7 @@
+2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Release of TYPO3 4.2.17
+
 2010-12-23  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16760: RTE transformation removes all span tags on save after upgrade TYPO3 4.2.16
