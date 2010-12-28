@@ -9,6 +9,7 @@
 2010-12-28  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #16861: Minor alignment issues in TCE forms
+	* Follow-up to issue #16861: Miss alignment of fields added by extensions
 
 2010-12-28  Steffen Kamper  <steffen@typo3.org>
 

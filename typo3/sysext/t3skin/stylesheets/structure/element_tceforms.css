@@ -161,6 +161,11 @@ table.typo3-TCEforms .class-main53 {
 	padding: 2px 0px 2px 0px;
 }
 
+table.typo3-TCEforms td.formField-header,
+table.typo3-TCEforms td.formField-field {
+	padding-left: 10px;
+}
+
 table.typo3-TCEforms .formField,
 table.typo3-TCEforms .formField1,
 table.typo3-TCEforms .formField2,
