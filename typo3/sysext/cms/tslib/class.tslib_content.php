@@ -2651,6 +2651,8 @@ class tslib_cObj {
 				}
 				if (t3lib_div::inList('swf,swa,dcr',$fileinfo['fileext']))	{
 					$parArray['quality'] = 'quality="high"';
+					$parArray['width'] = 'width="' . ($conf['width'] ? $conf['width'] : 200)  . '"';
+					$parArray['height'] = 'height="' . ($conf['height'] ? $conf['height'] : 200) . '"';
 				}
 				if (t3lib_div::inList('class',$fileinfo['fileext']))	{
 					$parArray['width'] = 'width="' . ($conf['width'] ? $conf['width'] : 200) . '"';

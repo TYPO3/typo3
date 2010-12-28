@@ -1,3 +1,7 @@
+2010-12-28  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16093: Media content object with selection of "HTML Embed Element" does not respect dimension settings (Thanks to Simon Schaufelberger)
+
 2010-12-28  Benjamin Mack  <benni@typo3.org>
 
 	* Release of TYPO3 4.4.6
