@@ -2313,13 +2313,13 @@ class t3lib_TCEforms {
 				$tempFT = t3lib_div::trimExplode(',', $allowed, TRUE);
 				if (!strcmp(trim($tempFT[0]), '*')) {
 					$onlySingleTableAllowed = false;
-					$info .= '<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;' .
+					$info .= '<span class="nobr">' .
 							 htmlspecialchars($this->getLL('l_allTables')) .
 							 '</span><br />';
 				} elseif ($tempFT) {
 					$onlySingleTableAllowed = (count($tempFT) == 1);
 					foreach ($tempFT as $theT) {
-						$info .= '<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;' .
+						$info .= '<span class="nobr">' .
 								 t3lib_iconWorks::getSpriteIconForRecord($theT, array()) .
 								 htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) .
 								 '</span><br />';
