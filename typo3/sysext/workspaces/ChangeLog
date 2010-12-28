@@ -1,3 +1,7 @@
+2010-12-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #11635: Removed remaining event listener
+
 2010-12-26  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed issue #11722: TempFlashMessageQueueViewHelper is not required anymore
