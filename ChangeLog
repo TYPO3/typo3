@@ -1,3 +1,7 @@
+2010-12-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Release of TYPO3 4.5.0beta3
+
 2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug #16846: Sorting order of newly created child elements on workspaces is wrong
