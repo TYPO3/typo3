@@ -79,13 +79,13 @@ TYPO3.Workspaces.Actions = {
 				top.Ext.getCmp('executeMassActionOkButton').hide();
 				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.lang.close);
 				top.Ext.getCmp('executeMassActionForm').show();
-				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.doneProcessing"] + response.total + TYPO3.lang["runMassAction.elements"]);
+				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.done"].replace('%d', response.total));
 			}
 		}
 	},
 	generateWorkspacePreviewLink: function() {
 		TYPO3.Workspaces.ExtDirectActions.generateWorkspacePreviewLink(TYPO3.settings.Workspaces.id, function(response) {
-			top.TYPO3.Dialog.getInformationDialog({title: TYPO3.lang.previewLink, msg: response});
+			top.TYPO3.Dialog.InformationDialog({title: TYPO3.lang.previewLink, msg: response});
 		});
 	},
 	swapSingleRecord: function(table, t3ver_oid, orig_uid) {

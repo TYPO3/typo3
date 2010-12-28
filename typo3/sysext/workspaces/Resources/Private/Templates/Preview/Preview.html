@@ -1,0 +1,19 @@
+<script type="text/javascript">
+	document.domain =  '{backendDomain}';
+
+		// @todo redirect to split module if this is opened standalone
+
+		// make sure we're in the workspace preview module 
+	if (typeof parent.resize == 'function') {
+		parent.resize(
+			Math.max(
+				Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+				Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
+				Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+			)
+		);
+
+		var element = document.getElementById('typo3-previewInfo');
+		element.parentNode.removeChild(element);
+	}
+</script>

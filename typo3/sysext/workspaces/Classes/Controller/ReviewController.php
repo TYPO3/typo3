@@ -42,6 +42,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
+		$performWorkspaceSwitch = FALSE;
 
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$wsCur = array($activeWorkspace => true);
@@ -50,15 +51,20 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$wsList = $wsService->getAvailableWorkspaces();
 			if (strlen(t3lib_div::_GP('workspace'))) {
 				$switchWs = (int) t3lib_div::_GP('workspace');
-				if (in_array($switchWs, array_keys($wsList))) {
+				if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
 					$activeWorkspace = $switchWs;
+					$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
+					$performWorkspaceSwitch = TRUE;
+					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 				} elseif ($switchWs == tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
-					$activeWorkspace = tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES;
+					$this->redirect('fullIndex');
 				}
 			}
 		}
+		$this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
+		$this->view->assign('activeWorkspaceTitle', tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
 	}
 
@@ -80,6 +86,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
 			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+				// set flag for javascript
+			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
 		}
 	}
 
@@ -102,6 +110,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('showGrid', true);
 		$this->view->assign('showAllWorkspaceTab', false);
 		$this->view->assign('workspaceList', $wsList);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
 	}
 
 
@@ -170,8 +179,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/ReviewController.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/ReviewController.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/ReviewController.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Controller/ReviewController.php']);
 }
 
 ?>

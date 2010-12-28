@@ -90,7 +90,7 @@ TYPO3.Workspaces.Toolbar.selectMassActionStore = new Ext.data.DirectStore({
 	],
 	listeners : {
 		load : function(store, records) {
-			if (records.length == 0) {
+			if (records.length == 0 || TYPO3.settings.Workspaces.singleView === '1') {
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.hide();
 			} else {
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.show();
@@ -115,6 +115,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 	listeners: {
 		'select' : function (combo, record) {
 			var label = '';
+			var affectWholeWorkspaceWarning = TYPO3.lang["tooltip.affectWholeWorkspace"];
 			switch (record.data.action) {
 				case 'publish':
 					label = TYPO3.lang["tooltip.publishAll"];
@@ -126,6 +127,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 					label = TYPO3.lang["tooltip.releaseAll"];
 					break;
 			}
+			top.TYPO3.Windows.close('executeMassActionWindow');
 			var dialog = top.TYPO3.Windows.showWindow({
 				id: 'executeMassActionWindow',
 				title: TYPO3.lang["window.massAction.title"],
@@ -134,7 +136,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						xtype: 'form',
 						id: 'executeMassActionForm',
 						width: '100%',
-						html: label,
+						html: label + '<br /><br />' + affectWholeWorkspaceWarning,
 						bodyStyle: 'padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;'
 					},
 					{
@@ -195,7 +197,7 @@ TYPO3.Workspaces.Toolbar.depthFilter = new Ext.form.ComboBox({
 	triggerAction: 'all',
 	editable: false,
 	forceSelection: true,
-	hidden: TYPO3.lang.showDepthMenu,
+	hidden: (TYPO3.settings.Workspaces.singleView === '1'),
 	store: new Ext.data.SimpleStore({
 		autoLoad: true,
 		fields: ['depth','label'],

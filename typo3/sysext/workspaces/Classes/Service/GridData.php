@@ -72,6 +72,10 @@ class tx_Workspaces_Service_GridData {
 	protected function generateDataArray(array $versions, $filterTxt) {
 		/** @var $stagesObj Tx_Workspaces_Service_Stages */
 		$stagesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+		
+		/** @var $workspacesObj Tx_Workspaces_Service_Workspaces */
+		$workspacesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		$availableWorkspaces = $workspacesObj->getAvailableWorkspaces();
 
 		foreach ($versions as $table => $records) {
 			$versionArray = array('table' => $table);
@@ -81,46 +85,50 @@ class tx_Workspaces_Service_GridData {
 				$origRecord = t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
 				$versionRecord = t3lib_BEFunc::getRecord($table, $record['uid']);
 
-				if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
-					$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
-				} else {
-					$recordState = $this->workspaceState($versionRecord['t3ver_state']);
-				}
-				$isDeletedPage = ($table == 'pages' && $recordState == 'deleted');
+				// check the given version is from an available workspace
+				if (array_key_exists($versionRecord['t3ver_wsid'], $availableWorkspaces)) {
+					
+					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
+						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
+					} else {
+						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
+					}
+					$isDeletedPage = ($table == 'pages' && $recordState == 'deleted');
 
-				$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
-				$versionArray['uid'] = $record['uid'];
-				$versionArray['workspace'] = $versionRecord['t3ver_id'];
-				$versionArray['label_Workspace'] = $versionRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
-				$versionArray['label_Live'] = $origRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
-				$versionArray['label_Stage'] = $stagesObj->getStageTitle($versionRecord['t3ver_stage']);
-				$versionArray['change'] = $pctChange;
-				$versionArray['path_Live'] = t3lib_BEfunc::getRecordPath($record['livepid'], '', 999);
-				$versionArray['path_Workspace'] = t3lib_BEfunc::getRecordPath($record['wspid'], '', 999);
-				$versionArray['workspace_Title'] = tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']);
+					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
+					$versionArray['uid'] = $record['uid'];
+					$versionArray['workspace'] = $versionRecord['t3ver_id'];
+					$versionArray['label_Workspace'] = $versionRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
+					$versionArray['label_Live'] = $origRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
+					$versionArray['label_Stage'] = $stagesObj->getStageTitle($versionRecord['t3ver_stage']);
+					$versionArray['change'] = $pctChange;
+					$versionArray['path_Live'] = t3lib_BEfunc::getRecordPath($record['livepid'], '', 999);
+					$versionArray['path_Workspace'] = t3lib_BEfunc::getRecordPath($record['wspid'], '', 999);
+					$versionArray['workspace_Title'] = tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']);
 
-				$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
-				$versionArray['workspace_Formated_Tstamp'] = t3lib_BEfunc::datetime($versionRecord['tstamp']);
-				$versionArray['t3ver_oid'] = $record['t3ver_oid'];
-				$versionArray['livepid'] = $record['livepid'];
-				$versionArray['stage'] = $versionRecord['t3ver_stage'];
-				$versionArray['icon_Live'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $origRecord);
-				$versionArray['icon_Workspace'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $versionRecord);
+					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
+					$versionArray['workspace_Formated_Tstamp'] = t3lib_BEfunc::datetime($versionRecord['tstamp']);
+					$versionArray['t3ver_oid'] = $record['t3ver_oid'];
+					$versionArray['livepid'] = $record['livepid'];
+					$versionArray['stage'] = $versionRecord['t3ver_stage'];
+					$versionArray['icon_Live'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $origRecord);
+					$versionArray['icon_Workspace'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $versionRecord);
 
-				$versionArray['allowedAction_nextStage'] = $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
-				$versionArray['allowedAction_prevStage'] = $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
-					// @todo hide the actions if the user is not allowed to edit the current stage
-				$versionArray['allowedAction_swap'] = $GLOBALS['BE_USER']->workspaceSwapAccess();
-				$versionArray['allowedAction_delete'] = TRUE;
-					// preview and editing of a deleted page won't work ;)
-				$versionArray['allowedAction_view'] = !$isDeletedPage;
-				$versionArray['allowedAction_edit'] = !$isDeletedPage;
-				$versionArray['allowedAction_editVersionedPage'] = !$isDeletedPage;
+					$versionArray['allowedAction_nextStage'] = $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
+					$versionArray['allowedAction_prevStage'] = $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
+						// @todo hide the actions if the user is not allowed to edit the current stage
+					$versionArray['allowedAction_swap'] = $GLOBALS['BE_USER']->workspaceSwapAccess();
+					$versionArray['allowedAction_delete'] = TRUE;
+						// preview and editing of a deleted page won't work ;)
+					$versionArray['allowedAction_view'] = !$isDeletedPage;
+					$versionArray['allowedAction_edit'] = !$isDeletedPage;
+					$versionArray['allowedAction_editVersionedPage'] = !$isDeletedPage;
 
-				$versionArray['state_Workspace'] = $recordState;
+					$versionArray['state_Workspace'] = $recordState;
 
-				if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
-					$this->dataArray[] = $versionArray;
+					if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
+						$this->dataArray[] = $versionArray;
+					}
 				}
 			}
 		}
@@ -373,7 +381,7 @@ class tx_Workspaces_Service_GridData {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']);
 }
 ?>

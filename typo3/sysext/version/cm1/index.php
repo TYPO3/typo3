@@ -356,14 +356,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 				// If access to Web>List for user, then link to that module.
-			$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-				array(
-					'id' => $this->pageinfo['uid'],
-					'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
-				),
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
+			$buttons['record_list'] = t3lib_extMgm::createListViewLink(
+				$this->pageinfo['uid'],
+				'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
 			);
-
 		}
 		return $buttons;
 	}
@@ -729,10 +726,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$ttlHours = ($ttlHours ? $ttlHours : 24*2);
 
 			if (t3lib_div::_POST('_previewLink_wholeWorkspace'))	{
-				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60*60*$ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($this->id);
+				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . 'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours,$GLOBALS['BE_USER']->workspace).'&id='.intval($this->id);
 			} else {
 				$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
-				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'], 60*60*$ttlHours);
+				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) .'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
 			}
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('previewUrl'), sprintf($GLOBALS['LANG']->getLL('previewInstruction'), $ttlHours) . '<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>', 0, 1);
 		}
@@ -1839,8 +1836,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php']);
 }
 
 

@@ -1,3 +1,73 @@
+2010-12-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #11635: Removed remaining event listener
+
+2010-12-26  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed issue #11722: TempFlashMessageQueueViewHelper is not required anymore
+	* Fixed bug #11718: ExtJS confirmation window contents might be "cached"
+
+2010-12-25  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11473: Send to stage window may be too large
+	* Fixed bug #11608: Missing space in Mass Release Confirmation
+	* Fixed bug #11635: Remove "Preview of workspace ..." box when in workspace preview module
+	* Fixed bug #11657: singleView should not have depth and mass-action combos
+	* Fixed bug #11600: [All] tab in ws-module should not have action-buttons
+
+2010-12-22  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11568: Remove "Enable comparison view" switch
+	* Fixed bug #11479: Label of publish action is confusing
+
+2010-12-22  Steffen Gebert <steffen@steffen-gebert.de>
+
+	* Added feature #10642: Design of workspace preview/comparison view (Thanks to Lars Zimmermann)
+
+2010-12-21  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11480: Add warning when choosing mass actions
+
+2010-12-21  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - browser compatibility fixed
+
+2010-12-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #10693: Save and view command previews wrong page record
+	* Fixed bug #11532: Generate Workspace Preview Link not working
+	* Fixed bug #11605: Do you really want to swap?? - one question mark is enough
+	* Fixed bug #11531 Check if email is set before trying to send an email
+	* Fixed bug #11141: switching with the tabs in the workspace module should also switch to the related workspace
+
+2010-12-19  Marco Bresch <marco.bresch@starfinanz.de>
+
+	* Fixed bug #11142: The 'All' tab throws Exception 'No such workspace defined'
+
+2010-12-19  Sonja Scholz <ss@cabag.ch>
+
+	* Cleanup: #11153: Determine whether Tx_Workspaces_Service_Stages::encodeStageUid and resolveStageUid are required
+
+2010-12-19  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - "live" and "workspace" buttons are clickable now
+
+2010-12-18  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11318: workspaces task miss title
+
+2010-12-17  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - empty preview.css included in order to support the skin team
+
+2010-12-14  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #9819: Workspace preview window
+
+2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11290: PHP notices from XCLASS inclusions
+
 2010-12-01  Oliver Hader  <oliver@typo3.org>
 
 	* Raised version to 4.5.0beta2b
@@ -27,7 +97,7 @@
 	* Fixed bug #11152 Calls about this-> in static context in workspaces-lib
 	* Cleanup: Added several small changes from the Skin-Team at the xTemplate
 
-2010-11-30  Tolleiv Nietsch <typo3q@tolleiv.de>
+2010-11-30  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
 
@@ -67,7 +137,7 @@
 
 2010-11-17  Tolleiv Nietsch <info@tolleiv.de>
 
-	* Fixed bug: #10896 php-warnings after merge into Core - missing argument 
+	* Fixed bug: #10896 php-warnings after merge into Core - missing argument
 	* Fixed bug: #10895 php-warnings after merge into Core - array_merge on non-array
 
 2010-11-17  Steffen Ritter  <info@rs-websystems.de>

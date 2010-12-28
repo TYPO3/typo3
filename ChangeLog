@@ -1,3 +1,7 @@
+2010-12-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Updated Workspaces and Version extension to version 4.5.0beta3. See their ChangeLog for details.
+
 2010-12-27  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #16857: Refine new labels in pages and tt_content TCE forms (Thanks to Mark Lehm and Jeff Segars for helping)

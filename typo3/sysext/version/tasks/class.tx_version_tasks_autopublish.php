@@ -54,7 +54,7 @@ class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/tasks/class.tx_version_tasks_autopublish.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/version/tasks/class.tx_version_tasks_autopublish.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/tasks/class.tx_version_tasks_autopublish.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/tasks/class.tx_version_tasks_autopublish.php']);
 }
 ?>

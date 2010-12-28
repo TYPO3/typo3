@@ -48,7 +48,6 @@ var WorkspaceMenu = Class.create({
 			}
 			this.positionMenu();
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
-			Event.observe('frontendPreviewToggle', 'click', this.toggleFrontendPreview.bind(this));
 			Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
 
 			// observe all clicks on workspace links in the menu
@@ -150,34 +149,8 @@ var WorkspaceMenu = Class.create({
 			if (!response.id) {
 				response.id = 0;
 			}
-			if(response.title) {
-				top.TYPO3.Workspaces.workspaceTitle = response.title;
-			}
-			top.TYPO3.configuration.inWorkspace = response.id === 0 ? 0 : 1;
-			if (top.TYPO3.configuration.inWorkspace == 1) {
-				Ext.getBody().addClass('typo3-in-workspace');
-				if (Ext.get('typo3-topbar-workspaces-title')) {
-					Ext.get('typo3-topbar-workspaces-title').remove();
-				}
-				Ext.select('#username a').insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + top.TYPO3.Workspaces.workspaceTitle + '</span>');
-			} else {
-				Ext.getBody().removeClass('typo3-in-workspace');
-				Ext.select('#typo3-topbar-workspaces-title').remove();
-			}
 
-			TYPO3BackendWorkspaceMenu.positionMenu();
-
-			// first remove all checks, then set the check in front of the selected workspace
-			var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
-			var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
-
-			// remove "selected" class and checkmark
-			$$('#workspace-selector-menu li.selected span.t3-icon-status-checked')[0].removeClassName(stateActiveClass).addClassName(stateInactiveClass);
-			$$('#workspace-selector-menu li.selected')[0].removeClassName('selected');
-
-			// add "selected" class and checkmark
-			clickedElement.previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
-			clickedElement.up().addClassName('selected');
+			TYPO3BackendWorkspaceMenu.performWorkspaceSwitch(response.id, response.title);
 
 			// when in web module reload, otherwise send the user to the web module
 			if (currentModuleLoaded.startsWith('web_')) {
@@ -192,7 +165,36 @@ var WorkspaceMenu = Class.create({
 			TYPO3ModuleMenu.refreshMenu();
 		});
 
-		this.toggleMenu(event);
+		TYPO3BackendWorkspaceMenu.toggleMenu(event);
+	},
+
+	performWorkspaceSwitch: function(id, title) {
+		top.TYPO3.Workspaces.workspaceTitle = title;
+		top.TYPO3.configuration.inWorkspace = id === 0 ? 0 : 1;
+		if (top.TYPO3.configuration.inWorkspace == 1) {
+			Ext.getBody().addClass('typo3-in-workspace');
+			if (Ext.get('typo3-topbar-workspaces-title')) {
+				Ext.get('typo3-topbar-workspaces-title').remove();
+			}
+			Ext.select('#username a').insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + top.TYPO3.Workspaces.workspaceTitle + '</span>');
+		} else {
+			Ext.getBody().removeClass('typo3-in-workspace');
+			Ext.select('#typo3-topbar-workspaces-title').remove();
+		}
+
+		TYPO3BackendWorkspaceMenu.positionMenu();
+
+		// first remove all checks, then set the check in front of the selected workspace
+		var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
+		var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
+
+		// remove "selected" class and checkmark
+		$$('#workspace-selector-menu li.selected span.t3-icon-status-checked')[0].removeClassName(stateActiveClass).addClassName(stateInactiveClass);
+		$$('#workspace-selector-menu li.selected')[0].removeClassName('selected');
+
+		// add "selected" class and checkmark
+		$$('#ws-' + id)[0].previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
+		$$('#ws-' + id)[0].up().addClassName('selected');
 	}
 
 });

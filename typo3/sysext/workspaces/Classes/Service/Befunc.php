@@ -31,6 +31,9 @@
  * @subpackage Service
  */
 class tx_Workspaces_Service_Befunc {
+
+	protected static $pageCache = array();
+
 	/**
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
 	 * only if we're in a workspace and if the frontend-preview is disabled.
@@ -44,8 +47,14 @@ class tx_Workspaces_Service_Befunc {
 	 * @param  $switchFocus
 	 * @return void
 	 */
-	public function preProcess($pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
-		if ($GLOBALS['BE_USER']->workspace !== 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) {
+	public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
+
+			// In case a $pageUid is submitted we need to make sure it points to a live-page
+		if ($pageUid >  0) {
+			$pageUid = $this->getLivePageUid($pageUid);
+		}
+
+		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
 			$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 			/**
@@ -61,9 +70,28 @@ class tx_Workspaces_Service_Befunc {
 		}
 	}
 
+	/**
+	 * Find the Live-Uid for a given page,
+	 * the results are cached at run-time to avoid too many database-queries
+	 *
+	 * @throws InvalidArgumentException
+	 * @param  $uid
+	 * @return void
+	 */
+	protected function getLivePageUid($uid) {
+		if (!isset(self::$pageCache[$uid])) {
+			$rec = t3lib_beFunc::getRecord('pages', $uid);
+			if (is_array($rec)) {
+				self::$pageCache[$uid] = $rec['t3ver_oid'] ? $rec['t3ver_oid'] : $uid;
+			} else {
+				throw new InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
+			}
+		}
+		return self::$pageCache[$uid];
+	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Befunc.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Befunc.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Befunc.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Befunc.php']);
 }
 ?>

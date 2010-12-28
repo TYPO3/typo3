@@ -13,6 +13,9 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,34 +26,30 @@
  ***************************************************************/
 
 /**
- * This class provides a wrapper around the autopublication
- * mechanism of workspaces, as a Scheduler task
- *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
+class tx_Workspaces_Service_Fehooks {
 
 	/**
-	 * Method executed from the Scheduler.
-	 * Call on the workspace logic to publish workspaces whose publication date
-	 * is in the past
-	 *
-	 * @return	void
+	 * @param tslib_fe $pObj
+	 * @return void
 	 */
-	public function execute() {
-		$autopubObj = t3lib_div::makeInstance('tx_Workspaces_Service_AutoPublish');
-			// Publish the workspaces that need to be
-		$autopubObj->autoPublishWorkspaces();
-			// There's no feedback from the publishing process,
-			// so there can't be any failure.
-			// TODO: This could certainly be improved.
-		return TRUE;
+	public function hook_eofe($params, $pObj) {
+		if ($pObj->fePreview != 2) {
+			return;
+		}
+
+		echo $GLOBALS['TSFE']->cObj->cObjGetSingle(
+			'FLUIDTEMPLATE',
+			array(
+				'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
+				'variables.' => array(
+					'backendDomain' => 'TEXT',
+					'backendDomain.' => array('value' => $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain'))
+				)
+			)
+		);
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublishTask.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublishTask.php']);
-}
-?>

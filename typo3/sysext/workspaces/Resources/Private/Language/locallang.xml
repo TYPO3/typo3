@@ -26,12 +26,12 @@
 			<label index="actionSendToStage">Send to stage </label>
 			<label index="publish_execute_action_option">Publish  to LIVE</label>
 			<label index="close">Close</label>
-			<label index="runMassAction.doneProcessing">Done processing</label>
-			<label index="runMassAction.elements"> elements</label>
+			<label index="runMassAction.done">Done processing %d elements</label>
 			<label index="runMassAction.init">init</label>
 			<label index="tooltip.publishAll">Really publish entire workspace?</label>
 			<label index="tooltip.swapAll">Really swap entire workspace?</label>
 			<label index="tooltip.releaseAll">Really release entire workspace?</label>
+			<label index="tooltip.affectWholeWorkspace">Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</label>
 			<label index="previewLink">Preview Link</label>
 			<label index="error.noResponse">The server did not send any response whether the action was successful.</label>
 			<label index="rowDetails">Row details...</label>
@@ -57,7 +57,7 @@
 			<label index="window.remove.title">Remove version from workspace</label>
 			<label index="window.remove.message">Do you really want to remove this version from workspace?</label>
 			<label index="window.swap.title">Swap version</label>
-			<label index="window.swap.message">Do you really want to swap this version??</label>
+			<label index="window.swap.message">Do you really want to swap this version?</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>
 			<label index="error.stageId.integer">StageId is supposed to be an integer</label>
 			<label index="error.stageId.invalid">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</label>
@@ -71,6 +71,11 @@
 			<label index="warning.oldStyleWorkspaceInUser">It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3 Install Tool to run the necessary updates. If you continue using this module without migrating your workspace you might loose data.</label>
 			<label index="info.newpage">New Page!</label>
 			<label index="info.newpage.detail">The previewed page has been created in a workspace and has no live counterpart.</label>
+			<label index="preview.visualPreview">Visual preview</label>
+			<label index="preview.listView">List view</label>
+			<label index="preview.helpView">Help</label>
+			<label index="preview.livePreview">Live</label>
+			<label index="preview.workspacePreview">Workspace</label>
 		</languageKey>
 	</data>
 </T3locallang>

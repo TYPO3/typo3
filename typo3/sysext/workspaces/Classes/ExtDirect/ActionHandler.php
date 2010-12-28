@@ -246,9 +246,15 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 			$additionalRecipients = array();
 		}
 
-		$finalRecipients = array_unique(
+		$allRecipients = array_unique(
 			array_merge($recipients, $additionalRecipients)
 		);
+
+		foreach ($allRecipients as $recipient) {
+			if (t3lib_div::validEmail($recipient)) {
+				$finalRecipients[] = $recipient;
+			}
+		}
 
 		return $finalRecipients;
 	}
@@ -418,6 +424,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 					'xtype' => 'checkboxgroup',
 					'itemCls' => 'x-check-group-alt',
 					'columns' => 1,
+					'style' => 'max-height: 200px',
+					'autoScroll' => true,
 					'items' => array(
 						$this->getReceipientsOfStage($nextStageId)
 					)
@@ -443,7 +451,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 	/**
 	 * Gets all assigned recipients of a particular stage.
-	 * 
+	 *
 	 * @param integer $stage
 	 * @return array
 	 */
@@ -452,12 +460,15 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 		$recipients = $this->getStageService()->getResponsibleBeUser($stage);
 
-		foreach ($recipients as $id => $name) {
-			$result[] = array(
-				'boxLabel' => $name,
-				'name' => 'receipients-' . $id,
-				'checked' => TRUE,
-			);
+		foreach ($recipients as $id => $user) {
+			if (t3lib_div::validEmail($user['email'])) {
+				$name = $user['realName'] ? $user['realName'] : $user['username'];
+				$result[] = array(
+					'boxLabel' => sprintf('%s (%s)', $name, $user['email']),
+					'name' => 'receipients-' . $id,
+					'checked' => TRUE,
+				);
+			}
 		}
 
 		return $result;
@@ -489,7 +500,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/ActionHandler.php']);
 }
 ?>
