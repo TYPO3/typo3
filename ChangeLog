@@ -1,3 +1,7 @@
+2010-12-28  Benjamin Mack  <benni@typo3.org>
+
+	* Revert change #16614 (rev. 9684): common.js resets TYPO3 namespace / Fixed regression #16831: 'Ext' is undefinded, Line: 81, js/common.js 
+
 2010-12-26  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #16661: include TSRef changes for t3editor code completion (thanks to Christian Kartnig)
