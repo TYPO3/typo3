@@ -323,7 +323,6 @@ class SC_db_layout {
 				1 => $LANG->getLL('m_function_1'),
 				2 => $LANG->getLL('m_function_2'),
 				3 => $LANG->getLL('pageInformation'),
-				4 => $LANG->getLL('gridView')
 			),
 			'language' => array(
 				0 => $LANG->getLL('m_default')

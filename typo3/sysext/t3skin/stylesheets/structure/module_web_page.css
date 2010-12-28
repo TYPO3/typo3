@@ -85,3 +85,7 @@ table.typo3-page-stdlist tr.c-table-row-spacer td {
 table.typo3-page-stdlist tr td div.typo3-DBctrl {
 	padding: 2px;
 }
+
+td.t3-gridCell div.t3-page-ce {
+	padding: 1px 5px 5px 5px;
+}

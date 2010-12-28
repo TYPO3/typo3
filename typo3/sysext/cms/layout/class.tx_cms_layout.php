@@ -537,14 +537,14 @@ class tx_cms_layout extends recordList {
 				// For EACH column, fit the rendered content into a table cell:
 				$out = '';
 
-				if ($this->tt_contentConfig['showAsGrid']) {
-					$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-					$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
-					if (empty($backendLayoutRecord['config'])) {
-						// TODO: show a message that no layout was found
-						$this->tt_contentConfig['showAsGrid'] = 0;
-					}
-				}
+				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
+				$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
+				if (empty($backendLayoutRecord['config'])) {
+                    $this->tt_contentConfig['showAsGrid'] = FALSE;
+				} else {
+                    $this->tt_contentConfig['showAsGrid'] = TRUE;
+
+                }
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
 					foreach ($cList as $k => $key) {
@@ -620,17 +620,20 @@ class tx_cms_layout extends recordList {
 									(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
 									(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
 									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
-									(!isset($columnConfig['colPos']) ? ' t3-gridCell-disabled' : '') .
+                                     (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
+                                     ((isset($columnConfig['colPos']) && ! $head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
 									(isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') .
 									(isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
 
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
-							if (isset($columnConfig['colPos'])) {
+							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
+							} else if ($head[$columnKey]) {
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
 							} else {
-								$grid .= $this->tt_content_drawColHeader($columnConfig['name'], '', '');
-						}
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
+							}
 
 							$grid .= '</td>';
 						}

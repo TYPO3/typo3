@@ -46,6 +46,7 @@
 			<label index="newPage2">New page</label>
 			<label index="noAccess">No edit access</label>
 			<label index="noAccess_msg">You do not have access to edit the requested record.</label>
+			<label index="notAssigned">Not assigned</label>
 			<label index="undoLastChange">Undo/Redo last change (%s ago)</label>
 			<label index="recordHistory">View record change history</label>
 			<label index="viewContent">Viewing content of</label>
