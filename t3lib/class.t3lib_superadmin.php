@@ -108,6 +108,9 @@ include_once($path_t3lib . 'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
+t3lib_div::deprecationLog('class.t3lib_superadmin.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7.');
+
+
 /**
  * Debug function. Substitute since no config_default.php file is included anywhere
  *

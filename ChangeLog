@@ -1,3 +1,7 @@
+2010-12-28  Christian Kuuhn  <lolli@schwarzbuch>
+
+	* Fixed bug #16840: Remove misc/ directory and deprecate t3lib_superadmin
+
 2010-12-28  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #16852: Code clean-up
