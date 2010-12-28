@@ -542,11 +542,6 @@ class tx_em_Tools_Unzip {
 			}
 		}
 
-			// added by TYPO3 secteam to check for invalid paths
-		if (!t3lib_div::validPathStr($p_entry['filename'])) {
-				return $v_result;
-		}
-
 		// Add the path
 		if ($p_path != '') {
 			$p_entry['filename'] = $p_path . "/" . $p_entry['filename'];
@@ -1387,4 +1382,7 @@ class tx_em_Tools_Unzip {
 
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/tools/class.tx_em_tools_unzip.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/tools/class.tx_em_tools_unzip.php']);
+}
 ?>

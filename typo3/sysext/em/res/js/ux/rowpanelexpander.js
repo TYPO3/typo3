@@ -9,8 +9,7 @@ Ext.ns('Ext.ux.grid');
  *
  * @ptype rowexpander
  */
-Ext.ux.grid.RowPanelExpander = Ext.extend(
-Ext.util.Observable, {
+Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 	/**
 	 * @cfg {Boolean} expandOnEnter
 	 * <tt>true</tt> to toggle selected row(s) between expanded/collapsed when the enter
@@ -76,8 +75,7 @@ Ext.util.Observable, {
 			collapse : true
 		});
 
-		Ext.ux.grid.RowPanelExpander.superclass.constructor
-				.call(this);
+		Ext.ux.grid.RowPanelExpander.superclass.constructor.call(this);
 
 		if (this.tpl) {
 			if (typeof this.tpl == 'string') {
@@ -113,16 +111,25 @@ Ext.util.Observable, {
 		view.enableRowBody = true;
 
 		grid.on('render', this.onRender, this);
+		grid.store.on('load', this.onStoreLoaded, this);
 		grid.on('destroy', this.onDestroy, this);
+		grid.on("beforestaterestore", this.applyState, this);
+		grid.on("beforestatesave", this.saveState, this);
 	},
 
 	// @private
 	onRender : function() {
 		var grid = this.grid;
+
+
 		var mainBody = grid.getView().mainBody;
 		mainBody.on('mousedown', this.onMouseDown, this, {
 			delegate : '.x-grid3-row-expander'
 		});
+
+		grid.getView().on('rowremoved', this.onRowRemoved, this);
+		grid.getView().on('rowupdated', this.onRowUpdated, this);
+
 		if (this.expandOnEnter) {
 			this.keyNav = new Ext.KeyNav(this.grid.getGridEl(),
 					{
@@ -135,7 +142,34 @@ Ext.util.Observable, {
 		}
 	},
 
-	// @private    
+	/** @private */
+	onStoreLoaded: function(store, records,options) {
+		var index = -1;
+		for(var key in this.state){
+			if (this.state[key] === true) {
+				index = store.indexOfId(key);
+				if (index > -1) {
+					this.expandRow(index);
+				}
+			}
+		}
+	},
+
+	/** @private */
+	applyState: function(grid, state){
+		this.suspendStateStore = true;
+		if(state.expander) {
+			this.state = state.expander;
+		}
+		this.suspendStateStore = false;
+	},
+
+	/** @private */
+	saveState: function(grid, state){
+		return state.expander = this.state;
+	},
+
+	/** @private */
 	onDestroy : function() {
 		if (this.keyNav) {
 			this.keyNav.disable();
@@ -151,20 +185,30 @@ Ext.util.Observable, {
 			mainBody.un('mousedown', this.onMouseDown, this);
 		}
 	},
-	// @private
+
+	/** @private */
 	onRowDblClick : function(grid, rowIdx, e) {
 		this.toggleRow(rowIdx);
 	},
 
-	/*onEnter : function(e) {
-		var g = this.grid;
-		var sm = g.getSelectionModel();
-		var sels = sm.getSelections();
-		for ( var i = 0, len = sels.length; i < len; i++) {
-			var rowIdx = g.getStore().indexOf(sels[i]);
-			this.toggleRow(rowIdx);
+
+		// This will not get fired for an update
+	onRowRemoved: function(view, row, rec) {
+		var panelItemIndex = rec.id;
+
+		if (this.expandingRowPanel && this.expandingRowPanel[panelItemIndex]) {
+			this.expandingRowPanel[panelItemIndex].destroy();
+			this.expandingRowPanel[panelItemIndex] = null;
 		}
-	},*/
+	},
+
+	onRowUpdated: function(view, row, rec) {
+		if (typeof row == 'number') {
+			row = this.grid.view.getRow(row);
+		}
+
+		this[Ext.fly(row).hasClass('x-grid3-row-collapsed') ? 'collapseRow' : 'expandRow'](row);
+	},
 
 	getBodyContent : function(record, index) {
 		// extend here
@@ -191,15 +235,12 @@ Ext.util.Observable, {
 	},
 
 	beforeExpand : function(record, body, rowIndex) {
-		if (this.fireEvent('beforeexpand', this, record, body,
-				rowIndex) !== false) {
+		if (this.fireEvent('beforeexpand', this, record, body, rowIndex) !== false) {
 			if (this.tpl && this.lazyRender) {
-				body.innerHTML = this.getBodyContent(record,
-						rowIndex);
+				body.innerHTML = this.getBodyContent(record, rowIndex);
 			}
 			if (body.innerHTML == '' || !this.enableCaching) {
-				this.createExpandingRowPanel(record, body,
-						rowIndex);
+				this.createExpandingRowPanel(record, body, rowIndex);
 			}
 			return true;
 		} else {
@@ -212,6 +253,7 @@ Ext.util.Observable, {
 			row = this.grid.view.getRow(row);
 		}
 		this[Ext.fly(row).hasClass('x-grid3-row-collapsed') ? 'expandRow' : 'collapseRow'](row);
+		this.grid.saveState();
 	},
 
 	expandRow : function(row) {
@@ -223,6 +265,7 @@ Ext.util.Observable, {
 		if (this.beforeExpand(record, body, row.rowIndex)) {
 			this.state[record.id] = true;
 			Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
+			this.grid.saveState();
 			this.fireEvent('expand', this, record, body, row.rowIndex);
 		}
 	},
@@ -237,12 +280,28 @@ Ext.util.Observable, {
 		if (this.fireEvent('beforecollapse', this, record, 	body, row.rowIndex) !== false) {
 			this.state[record.id] = false;
 			Ext.fly(row).replaceClass('x-grid3-row-expanded', 'x-grid3-row-collapsed');
+			this.grid.saveState();
 			this.fireEvent('collapse', this, record, body, row.rowIndex);
 		}
 	},
 
-	createExpandingRowPanel : function(record, rowBody, rowIndex) {
+		// Expand all rows
+	expandAll : function() {
+		var aRows = this.grid.getView().getRows();
+		for (var i = 0; i < aRows.length; i++) {
+			this.expandRow(aRows[i]);
+		}
+	},
 
+		// Collapse all rows
+	collapseAll : function() {
+		var aRows = this.grid.getView().getRows();
+		for (var i = 0; i < aRows.length; i++) {
+			this.collapseRow(aRows[i]);
+		}
+	},
+
+	createExpandingRowPanel : function(record, rowBody, rowIndex) {
 		// record.id is more stable than rowIndex for panel item's key; rows can be deleted.
 		var panelItemIndex = record.id;
 		// var panelItemIndex = rowIndex;

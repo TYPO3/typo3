@@ -118,3 +118,17 @@ img.installExtension, img.removeExtension {
 	width: 100px;
 	font-weight: bold;
 }
+
+#hbox-settings .x-box-inner {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.CodeMirror-line-numbers {
+	width: 48px;
+	padding: 0 1px;
+	background-color: #ddd;
+	color: #888;
+	font-size: 12px;
+	line-height: 14px;
+}

@@ -79,6 +79,7 @@ class tx_em_ExtensionManager {
 	 */
 	public function __construct(SC_mod_tools_em_index $parentObject) {
 		$this->parentObject = $parentObject;
+		$this->parentObject->doc->setExtDirectStateProvider();
 		$this->pageRenderer = $this->parentObject->doc->getPageRenderer();
 		$this->resPath = $this->parentObject->doc->backPath . t3lib_extMgm::extRelPath('em') . 'res/';
 
@@ -119,6 +120,10 @@ class tx_em_ExtensionManager {
 			.x-btn-save { background-image:url(' . $iconsGfxPath . 'savedok.gif) !important;}
 			.x-btn-upload { background-image:url(' . $iconsGfxPath . 'upload.gif) !important;}
 			.x-btn-download { background-image:url(' . $iconsGfxPath . 'down.gif) !important;}
+			.x-btn-undo { background-image:url(' . $this->resPath . 'icons/arrow_undo.png) !important;}
+			.x-btn-redo { background-image:url(' . $this->resPath . 'icons/arrow_redo.png) !important;}
+			.x-btn-jslint { background-image:url(' . $this->resPath . 'icons/jslint.gif) !important;}
+			.x-btn-indent { background-image:url(' . $this->resPath . 'icons/text_indent.png) !important;}
 		');
 
 		/* load ExtJS */
@@ -146,11 +151,6 @@ class tx_em_ExtensionManager {
 
 		/* TODO: new users have no settings */
 		$settings = $this->parentObject->MOD_SETTINGS;
-		$settings['siteUrl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		$settings['backPath'] = $this->parentObject->doc->backPath;
-		$settings['hasCredentials'] = (isset($settings['fe_u']) && isset($settings['fe_p']) && $settings['fe_u'] !== '' && $settings['fe_p'] !== '');
-		$settings['scriptLink'] = $this->parentObject->script;
-
 		// TODO add mirrors to sys_ter record and delete from settings
 		// restructure mirror data
 		$mirrors = unserialize($settings['extMirrors']);
@@ -163,8 +163,20 @@ class tx_em_ExtensionManager {
 				);
 			}
 		}
-		$settings['selectedLanguages'] = unserialize($settings['selectedLanguages']);
-		$settings['selectedLanguagesList'] = implode(',', (array) $settings['selectedLanguages']);
+
+		$additionalSettings = array(
+			'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
+			'backPath' => $this->parentObject->doc->backPath,
+			'hasCredentials' => (isset($settings['fe_u']) && isset($settings['fe_p']) && $settings['fe_u'] !== '' && $settings['fe_p'] !== ''),
+			'scriptLink' => $this->parentObject->script,
+			'editorCss' => $this->resPath . 'css/editor.css',
+			'codemirrorCssPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/css/',
+			'codemirrorJsPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/js/',
+			'selectedLanguages' => unserialize($settings['selectedLanguages']),
+			'selectedLanguagesList' => implode(',', (array) $settings['selectedLanguages']),
+			'state' => $GLOBALS['BE_USER']->uc['moduleData']['tools_em']['States'],
+		);
+		$settings = array_merge($settings, $additionalSettings);
 
 		$this->pageRenderer->addInlineSettingArray('EM', $settings);
 
@@ -172,6 +184,7 @@ class tx_em_ExtensionManager {
 		// Add JS
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'js/extjs/iframepanel.js');
+		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'contrib/codemirror/js/codemirror.js');
 
 		//Plugins
 		$this->pageRenderer->addJsFile($this->resPath . 'js/overrides/ext_overrides.js');
@@ -189,6 +202,7 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/filter/ListFilter.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/filter/NumericFilter.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/filter/StringFilter.js');
+		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/jslint.js');
 
 		//Scripts
 		$this->pageRenderer->addJsFile($this->resPath . 'js/em_layouts.js');
@@ -207,6 +221,8 @@ class tx_em_ExtensionManager {
 		//Application
 		$this->pageRenderer->addJsFile($this->resPath . 'js/em_app.js');
 
+		// clear flashmessages from php
+		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
 
 		//Update from repository - box
 		//$content = $this->parentObject->showRepositoryUpdateForm(0);
@@ -233,4 +249,9 @@ class tx_em_ExtensionManager {
 		}
 	}
 }
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/class.tx_em_extensionsmanager.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/class.tx_em_extensionsmanager.php']);
+}
+
 ?>

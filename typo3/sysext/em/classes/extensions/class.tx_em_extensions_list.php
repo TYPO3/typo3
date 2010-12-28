@@ -38,6 +38,7 @@ class tx_em_Extensions_List {
 
 	protected $categories;
 	protected $types;
+	protected $states;
 
 	/**
 	 * Constructor
@@ -65,6 +66,7 @@ class tx_em_Extensions_List {
 			'G' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:type_global'),
 			'L' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:type_local'),
 		);
+		$this->states = tx_em_Tools::getStates();
 	}
 
 
@@ -214,7 +216,7 @@ class tx_em_Extensions_List {
 
 				$list[$key]['doc'] = '';
 				if (@is_file($manual)) {
-					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '">'
+					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '" target="_blank">'
 						. t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>';
 				}
 				$list[$key]['icon'] = @is_file($path . $extKey . '/ext_icon.gif') ? '<img src="' . $relPath . $extKey . '/ext_icon.gif" alt="" width="16" height="16" />' : '<img src="clear.gif" alt="" width="16" height="16" />';
@@ -538,7 +540,7 @@ EXTENSION KEYS:
 				$cells[] = '<td nowrap="nowrap">' .
 						(tx_em_Tools::typePath($extInfo['type']) && @is_file($fileP) ?
 								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath . '../' .
-									tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
+									tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
 										t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>' : '') .
 						'</td>';
 
@@ -571,7 +573,7 @@ EXTENSION KEYS:
 					);
 					$doubleInstall = ' <strong><abbr title="' . $doubleInstallTitle . '">' . tx_em_Tools::rfw($extInfo['doubleInstall']) . '</abbr></strong>';
 				}
-				$cells[] = '<td nowrap="nowrap">' . $this->api->typeLabels[$extInfo['type']] . $doubleInstall . '</td>';
+				$cells[] = '<td nowrap="nowrap">' . $this->types[$extInfo['type']] . $doubleInstall . '</td>';
 			} else { // Listing extensions from REMOTE repository:
 				$inst_curVer = $inst_list[$extKey]['EM_CONF']['version'];
 				if (isset($inst_list[$extKey])) {
@@ -585,7 +587,7 @@ EXTENSION KEYS:
 				$cells[] = '<td nowrap="nowrap">' . $this->api->typeLabels[$inst_list[$extKey]['type']] . (strlen($inst_list[$extKey]['doubleInstall']) > 1 ? '<strong> ' . tx_em_Tools::rfw($inst_list[$extKey]['doubleInstall']) . '</strong>' : '') . '</td>';
 				$cells[] = '<td nowrap="nowrap">' . ($extInfo['downloadcounter_all'] ? $extInfo['downloadcounter_all'] : '&nbsp;&nbsp;') . '/' . ($extInfo['downloadcounter'] ? $extInfo['downloadcounter'] : '&nbsp;') . '</td>';
 			}
-			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->parentObject->states[$extInfo['EM_CONF']['state']] . '</td>';
+			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:' . $stateColors[$extInfo['EM_CONF']['state']] . ';">' . $this->states[$extInfo['EM_CONF']['state']] . '</td>';
 		}
 
 		// show a different background through a different class for insecure (-1) extensions,
@@ -837,6 +839,10 @@ EXTENSION KEYS:
 	}
 
 
+}
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/extensions/class.tx_em_extensions_list.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/extensions/class.tx_em_extensions_list.php']);
 }
 
 ?>

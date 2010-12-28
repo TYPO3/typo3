@@ -173,6 +173,19 @@ final class tx_em_Database {
 	}
 
 	/**
+	 * Deletes given Repository
+	 *
+	 * @param  tx_em_Repository $repository  repository object
+	 * @return void
+	 */
+	public function deleteRepository(tx_em_Repository $repository) {
+	 	$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			 self::TABLE_REPOSITORY,
+			'uid=' . $repository->getId()
+		 );
+	}
+
+	/**
 	 * Updates ExtCount and lastUpdated  in Repository eg after import
 	 * @param  int $extCount
 	 * @param int $uid

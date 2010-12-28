@@ -35,8 +35,8 @@ Ext.ns('TYPO3.EM');
 TYPO3.EM.Tools = function() {
 	return {
 		displayLocalExtension: function(extKey, reload) {
-			localStore = Ext.StoreMgr.get('localextensionstore');
-			// select local extension list
+			localStore = Ext.StoreMgr.get('localstore');
+				// select local extension list
 			Ext.getCmp('em-main').setActiveTab(0);
 			if (reload === true) {
 				localStore.showAction = extKey;
@@ -53,72 +53,11 @@ TYPO3.EM.Tools = function() {
 		},
 
 		uploadExtension: function() {
-			w = new Ext.Window({
-				title: 'Upload extension file directly (.t3x)',
-				modal: true,
-				closable: true,
-				plain: true,
-				width: 400,
-				height: 160,
-				layout: 'form',
-				fileUpload: true,
-				items: [
-					{
-						xtype: 'fileuploadfield',
-						id: 'form-file',
-						emptyText: 'Select Extension (*.t3x)',
-						fieldLabel: 'Extension',
-						name: 'extupload-path',
-						buttonText: '...',
-						width: 250,
-						validator: function(value) {
-							if (value) {
-								return value.split('.').pop().toLowerCase() === 't3x';
-							}
-							return false;
-						}
-					},
-					TYPO3.EM.UploadLocationCombo,
-					{
-						xtype: 'checkbox',
-						fieldLabel: 'Overwrite any existing extension!',
-						name: 'uploadOverwrite',
-						labelWidth: 250
-					},
-					{
-						xtype: 'button',
-						text: 'Upload extension from your computer',
-						id: 'uploadSubmitButton',
-						width: 420,
-						scope: this,
-						handler: function() {
-							if (this.form.isValid()) {
-								this.form.submit({
-									waitMsg : 'Sending data...',
-									success: function(form, action) {
-										form.reset();
-										TYPO3.Flashmessage.display(TYPO3.Severity.information, 'Extension Upload', 'Extension "' + action.result.extKey + '" was uploaded.', 5);
-										w.close();
-										TYPO3.EM.Tools.displayLocalExtension(action.result.extKey, true);
-									},
-									failure: function(form, action) {
-										if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
-											TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Error',
-													'Status:' + action.response.status + ': ' +
-															action.response.statusText, 15);
-										}
-										if (action.failureType === Ext.form.Action.SERVER_INVALID) {
-											// server responded with success = false
-											TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Invalid', action.result.errormsg, 5);
-										}
-										w.close();
-									}
-								});
-							}
-						}
-					}
-				]
-			}).show();
+			if (Ext.isObject(TYPO3.EM.ExtensionUploadWindowInstance)) {
+				TYPO3.EM.ExtensionUploadWindowInstance.show();
+			} else {
+				TYPO3.EM.ExtensionUploadWindowInstance = new TYPO3.EM.ExtensionUploadWindow().show();
+			}
 		}
 	};
 }();

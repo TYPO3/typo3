@@ -73,7 +73,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return void
 	 */
 	public function __construct() {
-
+		$this->template = t3lib_div::makeInstance('template');
 	}
 
 
@@ -256,7 +256,8 @@ class tx_em_Connection_ExtDirectServer {
 					'id' => $node . '/' . $dir,
 					'text' => htmlspecialchars($dir),
 					'leaf' => false,
-					'qtip' => ''
+					'qtip' => '',
+					'iconCls' => 't3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-folder-temp'
 				);
 			}
 		}
@@ -308,12 +309,22 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return boolean success
 	 */
 	public function saveExtFile($file, $content) {
-		$path = PATH_site . $path;
+		$path = PATH_site . $file;
+		$error = '';
 		if (@file_exists($path)) {
 			//TODO: save only if saving was enabled
-			return t3lib_div::writeFile($path, $content);
+			$done = t3lib_div::writeFile($path, $content);
+		} else {
+			$done = FALSE;
+			$error = 'File does not exist!';
 		}
-		return FALSE;
+		return array(
+			'success' => $done,
+			'path' => $path,
+			'file' => basename($path),
+			'content' => $content,
+			'error' => $error
+		);
 	}
 
 
@@ -385,14 +396,24 @@ class tx_em_Connection_ExtDirectServer {
 		$orderBy = $parameters->sort;
 		$orderDir = $parameters->dir;
 
+		$where = '';
 		if ($search == '*') {
-			$where = '';
+			// show all
 		} else {
 			$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
 				$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
 				'cache_extensions'
 			);
 			$where = ' AND (extkey LIKE \'%' . $quotedSearch . '%\' OR title LIKE \'%' . $quotedSearch . '%\')';
+		}
+	    	// check for filter
+		$where .= $this->makeFilterQuery(get_object_vars($parameters));
+
+		if (is_array($parameters->filter)) {
+
+			foreach ($parameters->filter as $filter) {
+
+			}
 		}
 
 		$list = tx_em_Database::getExtensionListFromRepository(
@@ -410,13 +431,15 @@ class tx_em_Connection_ExtDirectServer {
 			$list['results'][$key]['dependencies'] = unserialize($value['dependencies']);
 			$extPath = t3lib_div::strtolower($value['extkey']);
 			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $value['version'] . '.gif" />';
+			$list['results'][$key]['statevalue'] = $value['state'];
 			$list['results'][$key]['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
-
+			$list['results'][$key]['categoryvalue'] = $value['category'];
 		}
 
 		return array(
 			'length' => $list['count'],
-			'data' => $list['results']
+			'data' => $list['results'],
+			'where' => $where
 		);
 
 	}
@@ -522,7 +545,6 @@ class tx_em_Connection_ExtDirectServer {
 			'lastUpdated' => $repository->getLastUpdate(),
 			'extCount' => $repository->getExtensionCount(),
 		);
-		//debug($repositoryData);
 
 		if ($parameter['rep'] == 0) {
 			// create a new repository
@@ -540,11 +562,29 @@ class tx_em_Connection_ExtDirectServer {
 				'params' => $repositoryData
 			);
 		}
-
-
-
 	}
 
+
+	/**
+	 * Delete repository
+	 *
+	 * @param  int $uid
+	 * @return array
+	 */
+	public function deleteRepository($uid) {
+		if (intval($uid) < 2) {
+			return array(
+				'success' => FALSE,
+				'error' => 'Main repository can not be deleted!'
+			);
+		}
+		$repository = t3lib_div::makeInstance('tx_em_Repository', intval($uid));
+		tx_em_Database::deleteRepository($repository);
+		return array(
+				'success' => TRUE,
+				'uid' => intval($uid)
+			);
+	}
 	/**
 	 * Update repository
 	 *
@@ -815,6 +855,17 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 	/**
+	 * Reset all states for current user
+	 *
+	 * @return void
+	 */
+	public function resetStates() {
+		unset($GLOBALS['BE_USER']->uc['moduleData']['tools_em']['States']);
+		$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+		return array('success' => TRUE);
+	}
+
+	/**
 	 * Gets the mirror url from selected mirror
 	 *
 	 * @param  $repositoryId
@@ -844,6 +895,53 @@ class tx_em_Connection_ExtDirectServer {
 		return 'http://' . $mirrorUrl;
 	}
 
+	/**
+	 * Resolves the filter settings from repository list and makes a whereClause
+	 *
+	 * @param  array  $parameter
+	 * @return string additional whereClause
+	 */
+	protected function makeFilterQuery($parameter) {
+		$where = '';
+		$filter = $found = array();
+
+		foreach ($parameter as $key => $value) {
+			if (substr($key, 0, 6) === 'filter') {
+				eval('$' . $key . ' = \'' . $value . '\';');
+			}
+		}
+		//debug(array($parameter,$filter));
+
+		if (count($filter)) {
+			foreach ($filter as $value) {
+				switch ($value['data']['type']) {
+					case 'list':
+						if ($value['field'] === 'statevalue') {
+							$where .= ' AND state IN(' . htmlspecialchars($value['data']['value']) . ')';
+						}
+						if ($value['field'] === 'categoryvalue') {
+							$where .= ' AND category IN(' . htmlspecialchars($value['data']['value']) . ')';
+						}
+					break;
+					default:
+						$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+							$GLOBALS['TYPO3_DB']->quoteStr($value['data']['value'], 'cache_extensions'),
+							'cache_extensions'
+						);
+						$where .= ' AND ' . htmlspecialchars($value['field']) . ' LIKE "%' . $quotedSearch . '%"';
+				}
+			}
+		}
+		return $where;
+	}
+
+
+
+}
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/connection/class.tx_em_connectionextdirectserver.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/connection/class.tx_em_connection_extdirectserver.php']);
 }
 
 ?>
+

@@ -226,15 +226,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		 * Extension States
 		 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
 		 */
-		$this->states = array(
-			'alpha' => $GLOBALS['LANG']->getLL('state_alpha'),
-			'beta' => $GLOBALS['LANG']->getLL('state_beta'),
-			'stable' => $GLOBALS['LANG']->getLL('state_stable'),
-			'experimental' => $GLOBALS['LANG']->getLL('state_experimental'),
-			'test' => $GLOBALS['LANG']->getLL('state_test'),
-			'obsolete' => $GLOBALS['LANG']->getLL('state_obsolete'),
-			'excludeFromUpdates' => $GLOBALS['LANG']->getLL('state_exclude_from_updates')
-		);
+		$this->states = tx_em_Tools::getStates();
 
 		$this->script = 'mod.php?M=tools_em';
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
@@ -1629,7 +1621,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			} elseif ($this->CMD['editFile'] && !in_array($extKey, $this->requiredExt)) {
 
 				// Editing extension file:
-				$editFile = $this->CMD['editFile'];
+				$editFile = rawurldecode($this->CMD['editFile']);
 				if (t3lib_div::isAllowedAbsPath($editFile) && t3lib_div::isFirstPartOfStr($editFile, $absPath)) {
 
 					$fI = t3lib_div::split_fileref($editFile);
@@ -2522,6 +2514,15 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		return tx_em_Tools::importAsType($type, $lockType);
 	}
 
+	/**
+	 * Returns the list of available (installed) extensions
+	 *
+	 * @return	array		Array with two arrays, list array (all extensions with info) and category index
+	 * @wrapper for compatibility
+	 */
+	public function getInstalledExtensions() {
+		return $this->extensionList->getInstalledExtensions();
+	}
 }
 
 // Make instance:
@@ -2535,8 +2536,11 @@ $SOBE->checkExtObj();
 $SOBE->main();
 $SOBE->printContent();
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['em/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['em/index.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']);
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php']);
+}
 ?>

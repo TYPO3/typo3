@@ -165,6 +165,7 @@ listeners: {
 			itemId: 'UserTools',
 			layout: 'hbox',
 			align: 'stretchmax',
+			bodyStyle: 'padding-top: 10px;',
 			border: false,
 			items: [
 				{

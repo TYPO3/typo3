@@ -37,12 +37,6 @@
  */
 class tx_em_Tools_XmlHandler {
 
-	/**
-	 * Enxtension Manager module
-	 *
-	 * @var SC_mod_tools_em_index
-	 */
-	var $emObj;
 
 	/**
 	 * Holds the parsed XML from extensions.xml.gz
@@ -50,10 +44,62 @@ class tx_em_Tools_XmlHandler {
 	 *
 	 * @var array
 	 */
-	var $extXMLResult = array();
-	var $extensionsXML = array();
-	var $reviewStates = null;
-	var $useObsolete = false;
+	protected $extXMLResult = array();
+
+	/**
+	 * @var array
+	 */
+	public $extensionsXML = array();
+
+	/**
+	 * @var NULL
+	 */
+	protected $reviewStates = NULL;
+
+	/**
+	 * @var bool
+	 */
+	public $useObsolete = FALSE;
+
+	/**
+	 * @var array
+	 */
+	protected $catArr = array();
+
+	/**
+	 * @var array
+	 */
+	protected $stateArr = array();
+
+	/**
+	 * @var int
+	 */
+	public $matchingCount = 0;
+
+	/**
+	 * @var array
+	 */
+	protected $revCatArr = array();
+
+	/**
+	 * @var array
+	 */
+	protected $revStateArr = array();
+
+	/**
+	 * @var string
+	 */
+	protected $currentExt = '';
+
+	/**
+	 * @var string
+	 */
+	protected $currentVersion = '';
+
+	/**
+	 * @var string
+	 */
+	protected $currentTag = '';
 
 	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
@@ -68,7 +114,7 @@ class tx_em_Tools_XmlHandler {
 	 * @param	boolean		$exactMatch If set search is done for exact matches of extension keys only
 	 * @return	void
 	 */
-	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = false, $allVer = false, $offset = 0, $limit = 500, $exactMatch = false) {
+	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $exactMatch = FALSE) {
 		$where = '1=1';
 		if ($search && $exactMatch) {
 			$where .= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
@@ -95,28 +141,30 @@ class tx_em_Tools_XmlHandler {
 		switch ($order) {
 			case 'author_company':
 				$forder = 'authorname, authorcompany';
-				break;
+			break;
 			case 'state':
 				$forder = 'state';
-				break;
+			break;
 			case 'cat':
 			default:
 				$forder = 'category';
-				break;
+			break;
 		}
 		$order = $forder . ', title';
 		if (!$allVer) {
 			$where .= ' AND lastversion > 0';
 		}
-		$this->catArr = array();
+
 		$idx = 0;
-		foreach ($this->emObj->defaultCategories['cat'] as $catKey => $tmp) {
+		$defaultCategories = tx_em_Tools::getDefaultCategory();
+		foreach ($defaultCategories as $catKey => $tmp) {
 			$this->catArr[$idx] = $catKey;
 			$idx++;
 		}
-		$this->stateArr = array();
+
 		$idx = 0;
-		foreach ($this->emObj->states as $state => $tmp) {
+		$states = tx_em_Tools::getStates();
+		foreach ($states as $state => $tmp) {
 			$this->stateArr[$idx] = $state;
 			$idx++;
 		}
@@ -157,8 +205,8 @@ class tx_em_Tools_XmlHandler {
 	 * @param	integer		$limit	Maximum number of entries to return (goes into LIMIT clause)
 	 * @return	void
 	 */
-	function searchExtensionsXMLExact($search, $owner = '', $order = '', $allExt = false, $allVer = false, $offset = 0, $limit = 500) {
-		$this->searchExtensionsXML($search, $owner, $order, $allExt, $allVer, $offset, $limit, true);
+	function searchExtensionsXMLExact($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500) {
+		$this->searchExtensionsXML($search, $owner, $order, $allExt, $allVer, $offset, $limit, TRUE);
 	}
 
 	function countExtensions() {
@@ -171,10 +219,10 @@ class tx_em_Tools_XmlHandler {
 	/**
 	 * Loads the pre-parsed extension list
 	 *
-	 * @return	boolean		true on success, false on error
+	 * @return	boolean		TRUE on success, FALSE on error
 	 */
 	function loadExtensionsXML() {
-		$this->searchExtensionsXML('', '', '', true);
+		$this->searchExtensionsXML('', '', '', TRUE);
 	}
 
 	/**
@@ -321,15 +369,17 @@ class tx_em_Tools_XmlHandler {
 		}
 		$string = gzread($fp, 0xffff); // Read 64KB
 
-		$this->revCatArr = array();
+
 		$idx = 0;
-		foreach ($this->emObj->defaultCategories['cat'] as $catKey => $tmp) {
+		$defaultCategories = tx_em_Tools::getDefaultCategory();
+		foreach ($defaultCategories['cat'] as $catKey => $tmp) {
 			$this->revCatArr[$catKey] = $idx++;
 		}
 
-		$this->revStateArr = array();
+
 		$idx = 0;
-		foreach ($this->emObj->states as $state => $tmp) {
+		$states = tx_em_Tools::getStates();
+		foreach ($states as $state => $tmp) {
 			$this->revStateArr[$state] = $idx++;
 		}
 
@@ -342,7 +392,7 @@ class tx_em_Tools_XmlHandler {
 				// Parse content:
 				if (!xml_parse($parser, $match[0], 0)) {
 					$content .= 'Error in XML parser while decoding extensions XML file. Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
-					$error = true;
+					$error = TRUE;
 					break;
 				}
 				$this->storeXMLResult();
@@ -358,7 +408,7 @@ class tx_em_Tools_XmlHandler {
 					4 => 'PREG_BAD_UTF8_ERROR'
 				);
 				$content .= 'Error in regular expression matching, code: ' . $errorcodes[preg_last_error()] . '<br />See <a href="http://www.php.net/manual/en/function.preg-last-error.php" target="_blank">http://www.php.net/manual/en/function.preg-last-error.php</a>';
-				$error = true;
+				$error = TRUE;
 				break;
 			} else {
 				if (gzeof($fp)) {
@@ -366,12 +416,13 @@ class tx_em_Tools_XmlHandler {
 				} // Nothing more can be read
 				$string .= gzread($fp, 0xffff); // Read another 64KB
 			}
-		} while (true);
+		} while (TRUE);
 
 		xml_parser_free($parser);
 		gzclose($fp);
 
 		if (!$error) {
+			/** @var $flashMessage t3lib_FlashMessage */
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				sprintf($GLOBALS['LANG']->getLL('ext_import_extlist_updated'), $extcount),
@@ -535,7 +586,7 @@ class tx_em_Tools_XmlHandler {
 						unset($oldCurrent);
 						break;
 					case 'complete': // If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
-						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate false if tested with isset()!!
+						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
 						break;
 				}
 			}
@@ -600,13 +651,17 @@ class tx_em_Tools_XmlHandler {
 						unset($oldCurrent);
 						break;
 					case 'complete': // If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
-						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate false if tested with isset()!!
+						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
 						break;
 				}
 			}
 			return $current[$tagName];
 		}
 	}
+}
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/tools/class.tx_em_tools_smlhandler.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/tools/class.tx_em_tools_xmlhandler.php']);
 }
 
 ?>

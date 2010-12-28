@@ -33,30 +33,47 @@
 Ext.ns('TYPO3.EM', 'TYPO3.EM.ExtDirect');
 
 Ext.onReady(function() {
-		//save states in user cookie, TODO: use ucStateProvider instead
-	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+		//save states in BE_USER->uc
+	Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+		key: 'moduleData.tools_em.States'
+	}));
+
+	if (Ext.isObject(TYPO3.settings.EM.States)) {
+		Ext.state.Manager.getProvider().initState(TYPO3.settings.EM.States);
+	}
 	Ext.QuickTips.init();
+
 
 		// fire app
 	var EM = new TYPO3.EM.App.init();
 	TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.header, TYPO3.lang.emLoaded, 2);
 
-
+	/*Ext.state.Manager.getProvider().logState();
+	var val = Ext.state.Manager.getProvider().get('mainTab', '');
+	console.log(val);*/
 });
 
 TYPO3.EM.App = {
 
 	init : function() {
-		if (!TYPO3.settings.hasCredentials &&  TYPO3.settings.EM.mainTab == '4') {
-			TYPO3.settings.EM.mainTab = 0;
-		}
 		var appPanel = new Ext.TabPanel( {
 			renderTo : 'em-app',
 			id: 'em-main',
-			activeTab : TYPO3.settings.EM.mainTab ? TYPO3.settings.EM.mainTab : 0,
 			layoutOnTabChange: true,
 			plain: true,
-			height: 450,
+			activeTab: 0,
+			stateful: true,
+			stateId: 'mainTab',
+			stateEvents:['tabchange'],
+			autoScroll: true,
+			defaults: {
+				layout: 'fit'
+			},
+			getState: function() {
+				return {
+					activeTab: this.items.indexOf(this.getActiveTab())
+				};
+			},
 			items : [
 				TYPO3.EM.LocalListTab,
 				TYPO3.EM.RepositoryListTab,
@@ -65,7 +82,6 @@ TYPO3.EM.App = {
 				TYPO3.EM.UserTab
 			],
 			plugins: [new Ext.ux.plugins.FitToParent()]
-
 		});
 	}
 };

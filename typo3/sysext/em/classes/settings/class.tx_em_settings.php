@@ -105,7 +105,7 @@ class tx_em_Settings implements t3lib_Singleton {
 				'translations' => $GLOBALS['LANG']->getLL('menu_translation_handling'),
 				'settings' => $GLOBALS['LANG']->getLL('menu_settings'),
 				'updates' => $GLOBALS['LANG']->getLL('menu_extension_updates'),
-				'extensionmanager' => 'New Extension manager (beta2)', //$GLOBALS['LANG']->getLL('header'),
+				'extensionmanager' => 'New Extension manager (beta3)', //$GLOBALS['LANG']->getLL('header'),
 				'develop' => $GLOBALS['LANG']->getLL('menu_extension_develop'),
 			),
 			'listOrder' => array(
@@ -273,6 +273,10 @@ class tx_em_Settings implements t3lib_Singleton {
 		// INT = 0 means randomly selected mirror, >0 selects specific mirror
 	}
 
+}
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/settings/class.tx_em_settings.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/repository/class.tx_em_settings.php']);
 }
 
 ?>

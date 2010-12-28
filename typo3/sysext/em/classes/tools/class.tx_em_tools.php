@@ -51,8 +51,8 @@ final class tx_em_Tools {
 		'misc' => 4,
 		'services' => 5,
 		'templates' => 6,
-		'example' => 9,
 		'doc' => 8,
+		'example' => 9,
 	);
 	/**
 	 * Keeps default states.
@@ -108,7 +108,7 @@ final class tx_em_Tools {
 		if (strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
 			chdir($path);
 			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'] . ' -o ' . escapeshellarg($file);
-			t3lib_utility_Command::exec($cmd, $list, $ret);
+			t3liv_utility_Command::exec($cmd, $list, $ret);
 			return ($ret === 0);
 		} else {
 				// we use a pure PHP unzip
@@ -762,6 +762,25 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * Extension States
+	 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
+	 *
+	 * @static
+	 * @return array
+	 */
+	public static function getStates() {
+		return array(
+			'alpha' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_alpha'),
+			'beta' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_beta'),
+			'stable' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_stable'),
+			'experimental' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_experimental'),
+			'test' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_test'),
+			'obsolete' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_obsolete'),
+			'excludeFromUpdates' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:state_exclude_from_updates')
+		);
+	}
+
+	/**
 	 * Reports back if installation in a certain scope is possible.
 	 *
 	 * @param	string		Scope: G, L, S
@@ -885,15 +904,14 @@ final class tx_em_Tools {
 								}
 							}
 								// Check for proper XCLASS definition
-								// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
+								// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
 							$XclassSearch = '\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
 							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
 							if (count($XclassParts) !== 2) {
 									// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
 								$XclassSearch = '\$GLOBALS\[[\'"]TYPO3_CONF_VARS[\'"]\]\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
-								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && (isset\()?' . $XclassSearch . '/', $fContent, 2);
+								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
 							}
-
 							if (count($XclassParts) == 2) {
 								unset($reg);
 								preg_match('/^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]/', $XclassParts[1], $reg);

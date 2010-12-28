@@ -10,6 +10,7 @@ return array(
 	'tx_em_connection_ter' => $emClassesPath . 'connection/class.tx_em_connection_ter.php',
 	'tx_em_connection_soap' => $emClassesPath . 'connection/class.tx_em_connection_soap.php',
 	'tx_em_connection_extdirectserver' => $emClassesPath . 'connection/class.tx_em_connection_extdirectserver.php',
+	'tx_em_connection_extdirectsoap' => $emClassesPath . 'connection/class.tx_em_connection_extdirectsoap.php',
 
 	'tx_em_database' => $emClassesPath . 'database/class.tx_em_database.php',
 
@@ -49,6 +50,8 @@ return array(
 	'tx_em_tools_xmlhandler' => $emClassesPath . 'tools/class.tx_em_tools_xmlhandler.php',
 
 	'tx_em_translations' => $emClassesPath . 'translations/class.tx_em_translations.php',
+
+	'tx_em_reports_extensionstatus' => $emClassesPath . 'reports/class.tx_em_reports_extensionstatus.php',
 
 
 	'tx_em_develop' => $emClassesPath . 'class.tx_em_develop.php',

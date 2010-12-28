@@ -792,4 +792,8 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 	}
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/extensions/class.tx_em_extensions_details.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/extensions/class.tx_em_extensions_details.php']);
+}
+
 ?>

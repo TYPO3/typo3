@@ -10,10 +10,25 @@
 
 Ext.ns('TYPO3.EM');
 
+/** override mousedown for grid to select checkbox respecting singleSelect */
+Ext.override(Ext.grid.CheckboxSelectionModel, {
+	handleMouseDown: function(g, rowIndex, e) {
+		e.stopEvent();
+		if (this.isSelected(rowIndex)) {
+			this.deselectRow(rowIndex);
+		} else {
+			this.selectRow(rowIndex, true);
+			this.grid.getView().focusRow(rowIndex);
+		}
+	}
+});
+
 TYPO3.EM.LanguagesSelectionModel  = new Ext.grid.CheckboxSelectionModel({
 	singleSelect: false,
 	header: '',
-	dataIndex: 'selected'
+	dataIndex: 'selected',
+	checkOnly: false
+
 });
 
 TYPO3.EM.LanguagesColumnModel = new Ext.grid.ColumnModel([
@@ -120,6 +135,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		Ext.apply(this, {
 			languagesLoaded: false,
 			layout:'hbox',
+			bodyStyle: 'padding: 10px 5px 0 5px;',
 			layoutConfig: {
 				align: 'stretch'
 			},
@@ -146,7 +162,8 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 						cm: TYPO3.EM.LanguagesColumnModel,
 						sm: TYPO3.EM.LanguagesSelectionModel,
 						enableColumnMove: false,
-						anchor: '100% 100%'
+						anchor: '100% 100%',
+						onRowClick: Ext.emptyFn
 					}]
 				}]
 			}, {
@@ -184,31 +201,40 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		Ext.getCmp('lang-checkbutton').handler = this.langActionHandler.createDelegate(this);
 		Ext.getCmp('lang-updatebutton').handler = this.langActionHandler.createDelegate(this);
 
+
 	} ,
 
 	langActionHandler: function(button, event) {
+		var lg = Ext.getCmp('em-languagegrid');
 		var bp = Ext.getCmp('LanguagesActionPanel');
 		var pp = Ext.getCmp('langpb');
 		bp.hide();
 		pp.show();
+	    lg.disable();
 
 		if (button.id === 'lang-checkbutton') {
-			// check languages
+				// check languages
 			this.startFetchLanguages(0, Ext.StoreMgr.get('em-languageext-store'), function(){
-				TYPO3.EM.LanguagesProgressBar.updateText(TYPO3.lang.msg_finished);
+				TYPO3.EM.LanguagesProgressBar.updateText(this.interruptProcess ? TYPO3.lang.msg_interrupted : TYPO3.lang.msg_finished);
 				(function() {
 					pp.hide();
 					bp.show();
+					lg.enable();
 				}).defer(5000, this);
-				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.translation_checking_extension, TYPO3.lang.translation_check_done,3);
+				if (!this.interruptProcess) {
+					TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.translation_checking_extension, TYPO3.lang.translation_check_done, 3);
+				}
 			});
 		} else {
-			// update languages
+				// update languages
 			this.startFetchLanguages(1, Ext.StoreMgr.get('em-languageext-store'), function(){
-				TYPO3.EM.LanguagesProgressBar.updateText(TYPO3.lang.msg_finished);
-				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.langtranslation_update_extension, TYPO3.langtranslation_update_done, 3);
+				TYPO3.EM.LanguagesProgressBar.updateText(this.interruptProcess ? TYPO3.lang.msg_interrupted : TYPO3.lang.msg_finished);
+				if (!this.interruptProcess) {
+					TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.translation_update_extension, TYPO3.lang.translation_update_done, 3);
+				}
 				pp.hide();
 				bp.show();
+				lg.enable();
 			});
 		}
 	},
@@ -245,13 +271,14 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 
 
 		// fill arrays
-		for(var i = 0; i < this.extCount; i++) {
+		for (var i = 0; i < this.extCount; i++) {
 			this.extkeyArray.push(store.data.items[i].data.extkey);
 		}
 		if (!this.selectedLanguages.length) {
 			this.getSelectedLanguages();
 		}
 		// start process
+		this.interruptProcess = false;
 		this.fetchLanguage();
 	},
 
@@ -260,6 +287,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		var row = this.extCount - this.extkeyArray.length;
 		var record = grid.store.getAt(row);
 		var i;
+
 
 		// res is response from request
 		// array selectedLanguage key => grid html
@@ -275,7 +303,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
     		fetchedRecord.commit();
 		}
 
-		if(this.extkeyArray.length > 0) {
+		if(this.extkeyArray.length > 0 && !this.interruptProcess) {
 			var ext = this.extkeyArray.shift();
 
 
@@ -300,7 +328,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 				this.fetchLanguage(response);
 			}, this);
 		} else {
-			// finished
+				// finished
 			Ext.getCmp('lang-checkbutton').enable();
 			Ext.getCmp('lang-updatebutton').enable();
 			// call callback
@@ -364,10 +392,22 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 
 	onRender:function() {
 
-
-
 		// call parent
 		TYPO3.EM.Languages.superclass.onRender.apply(this, arguments);
+
+	},
+
+	afterRender:function() {
+			// call parent
+		TYPO3.EM.Languages.superclass.afterRender.apply(this, arguments);
+			//The following are all of the possible keys that can be implemented: enter, left, right, up, down, tab, esc, pageUp, pageDown, del, home, end
+		this.progressNavigation = new Ext.KeyNav(this.getEl(),{
+			'esc': function() {
+				this.interruptProcess = true;
+			},
+			scope: this
+		});
+
 
 	}
 });

@@ -113,4 +113,8 @@ class tx_em_Import_MirrorListImporter implements SplObserver {
 	}
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/import/class.tx_em_import_mirrorlistimporter.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/import/class.tx_em_import_mirrorlistimporter.php']);
+}
+
 ?>

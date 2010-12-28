@@ -35,6 +35,9 @@ Ext.ns('TYPO3.EM', 'TYPO3.EM.GridColumns', 'TYPO3.EM.ExtDirect');
 TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 	border:false,
 	stripeRows: true,
+	stateful: true,
+	stateId: 'RepositoryList',
+	stateEvents: ['columnmove', 'columnresize', 'sortchange', 'groupchange', 'expand', 'collapse'],
 
 	expander: new Ext.ux.grid.RowPanelExpander({
 		createExpandingRowPanelItems: function(record, rowIndex){
@@ -62,6 +65,20 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		}
 	}),
 
+	listeners: { /*
+		beforestaterestore: function(grid, state) {
+			console.log('restore:', state);
+			return true;
+		},
+		statesave: function(grid, state) {
+			console.log('save:', state);
+		},
+		beforestatesave: function(grid, state) {
+			console.log('beforesave:', state);
+			return true;
+		}  */
+	},
+
 	initComponent:function() {
 		this.repositoryListStore = new Ext.data.DirectStore({
 			storeId: 'repositoryliststore',
@@ -74,15 +91,16 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				{name:'install'},
 				{name:'title'},
 				{name:'extkey'},
-				{name:'category'},
+				{name:'categoryvalue'},
 				{name:'version'},
 				{name:'alldownloadcounter', type: 'int'},
+				{name:'statevalue'},
 				{name:'state'},
 				{name:'icon'},
 				{name:'description'},
 				{name:'lastuploaddate'},
-				{name:'authorname'},
-				{name:'authoremail'},
+				{name:'author', mapping: 'authorname'},
+				{name:'author_email', mapping: 'authoremail'},
 				{name:'versions', type: 'int'}
 			],
 			paramNames: {
@@ -109,16 +127,21 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					store.setBaseParam('rep', Ext.getCmp('repCombo').getValue());
 				},
 				load: function(store, records){
-					this.filterBy(this.storeFilter);
+					var hasFilters = false;
+					TYPO3.EM.RemoteFilters.filters.each(function (filter) {
+						if (filter.active) {
+							hasFilters = true;
+						}
+					});
+					if (hasFilters) {
+						this.doClearFilters.show();
+					} else {
+						this.doClearFilters.hide();
+					}
 				},
-				datachanged: function(store){
-					//Ext.getCmp('rdisplayExtensionLabel').setText('Extensions found: ' + store.data.length);
-				}
-			},
-			storeFilter: function(record,id){
-
-				return true;
+				scope: this
 			}
+
 		});
 
 		this.repositoryStore = new Ext.data.DirectStore({
@@ -137,22 +160,29 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			width: 200
 		});
 
-		Ext.apply(this, {
-			loadMask: {msg: 'Loading Repository Extensionlist ...'},
-			store: this.repositoryListStore,
+		var cm = new Ext.grid.ColumnModel({
 			columns: [
-				//sm,
 				this.expander,
 				TYPO3.EM.GridColumns.ImportExtension,
 				TYPO3.EM.GridColumns.ExtensionTitle,
 				TYPO3.EM.GridColumns.ExtensionKey,
 				TYPO3.EM.GridColumns.ExtensionCategoryRemote,
-				TYPO3.EM.GridColumns.ExtensionDownloads,
 				TYPO3.EM.GridColumns.ExtensionAuthor,
 				TYPO3.EM.GridColumns.ExtensionType,
-				TYPO3.EM.GridColumns.ExtensionState
+				TYPO3.EM.GridColumns.ExtensionStateValue
 			],
-			plugins: [this.expander],
+			defaults: {
+				sortable: true,
+				hideable:false
+			}
+
+		});
+
+		Ext.apply(this, {
+			loadMask: {msg: TYPO3.lang.action_loadingRepositoryExtlist},
+			store: this.repositoryListStore,
+			cm: cm,
+			plugins: [this.expander, TYPO3.EM.RemoteFilters],
 			viewConfig: {
 				forceFit: true,
 				enableRowBody: true,
@@ -166,14 +196,22 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			tbar: [
 				{
 					xtype: 'tbtext',
-					text: 'Filter:',
-					qTip: 'Enter something for search and press Enter. To list all, use "*"'
+					text: TYPO3.lang.cmd_filter + ':',
+					qTip: TYPO3.lang.help_remoteFilter
 				},
-				searchField,
-				' ',
+				searchField, ' ', {
+					text: TYPO3.lang.cmd_ClearAllFilters,
+					ref: '../doClearFilters',
+					handler: function() {
+						TYPO3.EM.RemoteFilters.clearFilters();
+					},
+					scope: this,
+					hidden: true
+				},
+				' ', '-',
 				{
 					xtype: 'tbtext',
-					text: 'Repository:'
+					text: TYPO3.lang.repository + ': '
 				},
 				TYPO3.EM.RepositoryCombo,
 				{
@@ -184,7 +222,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				' ',
 				{
 					xtype: 'button',
-					text: 'Retrieve / Update',
+					text: TYPO3.lang.cmd_RetrieveUpdate,
 					scope: this,
 					handler: this.repositoryUpdate
 				}
@@ -197,7 +235,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					store: this.repositoryListStore,
 					pageSize: 50,
 					displayInfo: true,
-					emptyMsg: 'start searching ...'
+					emptyMsg: TYPO3.lang.action_searching
 				}
 			]
 		});

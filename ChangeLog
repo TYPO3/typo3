@@ -8,6 +8,8 @@
 
 2010-12-28  Steffen Kamper  <steffen@typo3.org>
 
+	* Updated ExtensionManager to version 4.5.0beta3a.
+	* Updated Workspaces and Version extension to version 4.5.0beta3b/a. See their ChangeLog for details.
 	* Updated Workspaces and Version extension to version 4.5.0beta3. See their ChangeLog for details.
 
 2010-12-27  Ingo Renner  <ingo@typo3.org>
