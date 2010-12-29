@@ -249,13 +249,9 @@ class t3lib_TStemplate {
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 			/* @var $pageSectionCache t3lib_cache_AbstractCache */
 
-			$cacheEntry = $pageSectionCache->get(
+			$currentPageData = $pageSectionCache->get(
 				intval($GLOBALS['TSFE']->id) . '_' . t3lib_div::md5int($GLOBALS['TSFE']->MP)
 			);
-
-			if ($cacheEntry) {
-				$currentPageData = unserialize($cacheEntry);
-			}
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'content', 'cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . t3lib_div::md5int($GLOBALS['TSFE']->MP));
@@ -401,7 +397,7 @@ class t3lib_TStemplate {
 					/* @var $pageSectionCache t3lib_cache_AbstractCache */
 					$pageSectionCache->set(
 						intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash,
-						serialize($cc),
+						$cc,
 						array(
 							 'pageId_' . intval($GLOBALS['TSFE']->id),
 							 'mpvarHash_' . $mpvarHash
