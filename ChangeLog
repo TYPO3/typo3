@@ -1,5 +1,6 @@
 2010-12-29  Christian Kuuhn  <lolli@schwarzbuch>
 
+	* Fixed bug #16849: [Unit tests] fixPermissions* tests rely on availability of posix_getegid() (Thanks to Steffen Gebert)
 	* Fixed bug #11286: Caching of pagesections uses superfluos serialize() call (Thanks to Rupert Germann)
 
 2010-12-28  Christian Kuuhn  <lolli@schwarzbuch>
