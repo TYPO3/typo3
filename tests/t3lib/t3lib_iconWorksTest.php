@@ -40,7 +40,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-	
+
 	/**
 	 * Exclude TYPO3_DB from backup/restore of $GLOBALS
 	 * because resource types cannot be handled during serializing
@@ -92,7 +92,8 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('imagemakeFixesPermissionsOnNewFiles() test not available on Windows.');
 		}
 
-		$fixtureGifFile = dirname(__FILE__) . '/fixtures/clear.gif';
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
 
 			// Create image ressource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
