@@ -191,9 +191,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 					}
 					break;
 				} elseif (file_exists($fallbackPath)) {
+					t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 					$found = TRUE;
 					$templatePathAndFilename = $fallbackPath;
-					t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 					break;
 				}
 			}
