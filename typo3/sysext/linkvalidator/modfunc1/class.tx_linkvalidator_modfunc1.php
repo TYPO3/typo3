@@ -307,7 +307,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			// Listing head
 		$makerTableHead = array();
 		$makerTableHead['list_header'] = $this->doc->sectionHeader($LANG->getLL('list.header'), $h_func);
-		$makerTableHead['bgColor2'] = $this->doc->bgColor2;
 
 		$makerTableHead['tablehead_path'] = $LANG->getLL('list.tableHead.path');
 		$makerTableHead['tablehead_type'] = $LANG->getLL('list.tableHead.type');
@@ -346,15 +345,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$elementType = $row['headline'];
 		if (empty($elementType)) {
 			$elementType = $table . ':' . $row['recuid'];
-		}
-
-			// Alternating row colors
-		if ($switch == TRUE) {
-			$switch = FALSE;
-			$markerArray['bgcolor_alternating'] = $this->doc->bgColor3;
-		} elseif ($switch == FALSE) {
-			$switch = TRUE;
-			$markerArray['bgcolor_alternating'] = $this->doc->bgColor5;
 		}
 
 		$markerArray['actionlink'] = $actionLinks;
