@@ -1,3 +1,7 @@
+2010-12-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10480: Add missing header in auto_respond_msg (Thanks to Christian Buelter)
+
 2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Release of TYPO3 4.3.10
