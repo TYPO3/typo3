@@ -1,5 +1,6 @@
 2010-12-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15034: Login to backend fails with IPv6 Address as HTTP_HOST (Thanks to Roland Schenke)
 	* Fixed bug #10480: Add missing header in auto_respond_msg (Thanks to Christian Buelter)
 
 2010-12-28  Oliver Hader  <oliver.hader@typo3.org>

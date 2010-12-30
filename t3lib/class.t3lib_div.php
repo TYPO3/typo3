@@ -3893,12 +3893,14 @@ final class t3lib_div {
 				$retVal = $DR;
 			break;
 			case 'TYPO3_HOST_ONLY':
-				$p = explode(':',self::getIndpEnv('HTTP_HOST'));
-				$retVal = $p[0];
+				$httpHost = self::getIndpEnv('HTTP_HOST');
+				$httpHostBracketPosition = strpos($httpHost, ']');
+				$retVal = ($httpHostBracketPosition !== FALSE) ? substr($httpHost, 0, ($httpHostBracketPosition + 1)) : array_shift(explode(':', $httpHost));
 			break;
 			case 'TYPO3_PORT':
-				$p = explode(':',self::getIndpEnv('HTTP_HOST'));
-				$retVal = $p[1];
+				$httpHost = self::getIndpEnv('HTTP_HOST');
+				$httpHostOnly = self::getIndpEnv('TYPO3_HOST_ONLY');
+				$retVal = (strlen($httpHost) > strlen($httpHostOnly)) ? substr($httpHost, strlen($httpHostOnly) + 1) : '';
 			break;
 			case 'TYPO3_REQUEST_HOST':
 				$retVal = (self::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
