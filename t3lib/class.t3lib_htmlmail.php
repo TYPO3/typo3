@@ -722,16 +722,20 @@ class t3lib_htmlmail {
 			// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 		$returnPathPossible = (!t3lib_utility_PhpOptions::isSafeModeEnabled() && $this->forceReturnPath);
 		if ($returnPathPossible) {
-			$mailWasSent = t3lib_utility_Mail::mail($recipient,
-													$this->subject,
-													$this->message,
-													$this->headers,
-													$returnPath);
+			$mailWasSent = t3lib_utility_Mail::mail(
+				$recipient,
+				$this->subject,
+				$this->message,
+				$this->headers,
+				$returnPath
+			);
 		} else {
-			$mailWasSent = t3lib_utility_Mail::mail($recipient,
-													$this->subject,
-													$this->message,
-													$this->headers);
+			$mailWasSent = t3lib_utility_Mail::mail(
+				$recipient,
+				$this->subject,
+				$this->message,
+				$this->headers
+			);
 		}
 
 			// Auto response
@@ -741,16 +745,20 @@ class t3lib_htmlmail {
 			$theParts[1] = str_replace("/", LF, $theParts[1]);
 			$theParts[1] = str_replace("###MESSAGE###", $this->getContent('plain'), $theParts[1]);
 			if ($returnPathPossible) {
-				$mailWasSent = t3lib_utility_Mail::mail($this->from_email,
-														$theParts[0],
-														$theParts[1],
-														'From: ' . $recipient,
-														$returnPath);
+				$mailWasSent = t3lib_utility_Mail::mail(
+					$this->from_email,
+					$theParts[0],
+					$theParts[1],
+					'From: ' . $recipient,
+					$returnPath
+				);
 			} else {
-				$mailWasSent = t3lib_utility_Mail::mail($this->from_email,
-														$theParts[0],
-														$theParts[1],
-														'From: ' . $recipient);
+				$mailWasSent = t3lib_utility_Mail::mail(
+					$this->from_email,
+					$theParts[0],
+					$theParts[1],
+					'From: ' . $recipient
+				);
 			}
 		}
 		if ($this->returnPath) {
