@@ -749,7 +749,7 @@ class t3lib_htmlmail {
 					$this->from_email,
 					$theParts[0],
 					$theParts[1],
-					'From: ' . $recipient,
+					'From: ' . $recipient . $this->linebreak . $this->plain_text_header,
 					$returnPath
 				);
 			} else {
@@ -757,7 +757,7 @@ class t3lib_htmlmail {
 					$this->from_email,
 					$theParts[0],
 					$theParts[1],
-					'From: ' . $recipient
+					'From: ' . $recipient . $this->linebreak . $this->plain_text_header
 				);
 			}
 		}

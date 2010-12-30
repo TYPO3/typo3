@@ -5,6 +5,7 @@
 
 2010-12-29  Christian Kuuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #10480: Add missing header in auto_respond_msg (Thanks to Christian Buelter)
 	* Fixed bug #16849: [Unit tests] fixPermissions* tests rely on availability of posix_getegid() (Thanks to Steffen Gebert)
 	* Fixed bug #11286: Caching of pagesections uses superfluos serialize() call (Thanks to Rupert Germann)
 
