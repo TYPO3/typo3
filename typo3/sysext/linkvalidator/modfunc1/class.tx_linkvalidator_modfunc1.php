@@ -345,6 +345,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$elementType = $table . ':' . $row['recuid'];
 		}
 
+		if ($row['typelinks'] === 'file') {
+				// If a file in the local filesystem is linked, create an absolute URL.
+			$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $brokenUrl;
+		}
+
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
 		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ': ' . $row['recuid']));

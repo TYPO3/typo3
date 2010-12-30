@@ -3,6 +3,7 @@
 	* Fixed bug #11779: Unify usage of tooltips in table rows
 	* Fixed bug #11775: Table should use new design for TYPO3 4.5
 	* Fixed bug #11796: Improve usage of $GLOBALS['LANG']
+	* Fixed bug #11776: URL/Linktarget for files is broken
 
 2010-12-28  Pierre Boivin <pierre.boivin@infoglobe.ca>
 
