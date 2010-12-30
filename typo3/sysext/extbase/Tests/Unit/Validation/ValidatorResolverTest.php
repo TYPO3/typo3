@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: ValidatorResolver_testcase.php 2708 2010-11-10 18:56:01Z bwaidelich $
  */
-class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_ValidatorResolverTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

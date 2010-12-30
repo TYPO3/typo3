@@ -25,7 +25,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
+	/**
+	 * @var Tx_Extbase_MVC_Controller_ActionController
+	 */
+	protected $actionController;
+
+	public function setUp() {
+		$this->actionController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController');
+	}
 
 	/**
 	 * @test

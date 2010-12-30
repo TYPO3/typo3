@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: DateTimeValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-class Tx_Extbase_Validation_Validator_DateTimeValidator_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_DateTimeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

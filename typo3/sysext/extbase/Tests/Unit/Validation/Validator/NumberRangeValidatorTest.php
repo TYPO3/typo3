@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: NumberRangeValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Validation_Validator_NumberRangeValidator_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_NumberRangeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

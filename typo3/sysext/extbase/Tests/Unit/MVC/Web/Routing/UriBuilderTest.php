@@ -27,7 +27,7 @@
 
 require_once (t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/Entity.php');
 
-class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var tslib_fe

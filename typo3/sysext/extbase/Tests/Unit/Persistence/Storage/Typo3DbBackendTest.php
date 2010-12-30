@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * This is the data provider for the statement generation with a basic comparison

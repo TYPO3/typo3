@@ -32,7 +32,7 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fix
  * @package TYPO3
  * @subpackage t3lib
  */
-class Tx_Extbase_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	private $container;
 

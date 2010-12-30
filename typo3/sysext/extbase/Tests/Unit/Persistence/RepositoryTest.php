@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Extbase_Persistence_Repository

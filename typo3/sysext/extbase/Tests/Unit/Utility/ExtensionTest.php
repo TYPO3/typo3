@@ -28,7 +28,7 @@
  * @package Extbase
  * @subpackage extbase
  */
-class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
+class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS
