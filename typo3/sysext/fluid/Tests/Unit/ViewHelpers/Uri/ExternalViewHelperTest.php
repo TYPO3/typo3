@@ -51,6 +51,39 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_ExternalViewHelperTest extends Tx_Flui
 
 		$this->assertEquals('http://www.some-domain.tld', $actualResult);
 	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderAddsHttpPrefixIfSpecifiedUriDoesNotContainScheme() {
+		$this->viewHelper->initialize();
+		$actualResult = $this->viewHelper->render('www.some-domain.tld');
+
+		$this->assertEquals('http://www.some-domain.tld', $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderAddsSpecifiedSchemeIfUriDoesNotContainScheme() {
+		$this->viewHelper->initialize();
+		$actualResult = $this->viewHelper->render('some-domain.tld', 'ftp');
+
+		$this->assertEquals('ftp://some-domain.tld', $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderDoesNotAddEmptyScheme() {
+		$this->viewHelper->initialize();
+		$actualResult = $this->viewHelper->render('some-domain.tld', '');
+
+		$this->assertEquals('some-domain.tld', $actualResult);
+	}
 }
 
 
