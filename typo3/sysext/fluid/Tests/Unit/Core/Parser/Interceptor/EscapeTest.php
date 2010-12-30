@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
