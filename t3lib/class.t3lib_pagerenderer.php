@@ -1478,27 +1478,61 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$jsInline = '';
 		}
 
+			// postRenderHook for possible manipulation
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'])) {
+			$params = array (
+				'jsLibs'               => &$jsLibs,
+				'jsFiles'              => &$jsFiles,
+				'jsFooterFiles'        => &$jsFooterFiles,
+				'cssFiles'             => &$cssFiles,
+				'headerData'           => &$this->headerData,
+				'footerData'           => &$this->footerData,
+				'jsInline'             => &$jsInline,
+				'cssInline'            => &$cssInline,
+				'xmlPrologAndDocType'  => &$this->xmlPrologAndDocType,
+				'htmlTag'              => &$this->htmlTag,
+				'headTag'              => &$this->headTag,
+				'charSet'              => &$this->charSet,
+				'metaCharsetTag'       => &$this->metaCharsetTag,
+				'shortcutTag'          => &$this->shortcutTag,
+				'inlineComments'       => &$this->inlineComments,
+				'baseUrl'              => &$this->baseUrl,
+				'baseUrlTag'           => &$this->baseUrlTag,
+				'favIcon'              => &$this->favIcon,
+				'iconMimeType'         => &$this->iconMimeType,
+				'titleTag'             => &$this->titleTag,
+				'title'                => &$this->title,
+				'metaTags'             => &$metaTags,
+				'jsFooterInline'       => &$jsFooterInline,
+				'jsFooterLibs'         => &$jsFooterLibs,
+				'bodyContent'          => &$this->bodyContent,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'] as $hook) {
+				t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
+
 		$markerArray = array(
 			'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
-			'HTMLTAG' => $this->htmlTag,
-			'HEADTAG' => $this->headTag,
-			'METACHARSET' => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
-			'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
-			'BASEURL' => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
-			'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
-			'CSS_INCLUDE' => $cssFiles,
-			'CSS_INLINE' => $cssInline,
-			'JS_INLINE' => $jsInline,
-			'JS_INCLUDE' => $jsFiles,
-			'JS_LIBS' => $jsLibs,
-			'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
-			'META' => $metaTags,
-			'HEADERDATA' => $this->headerData ? implode(LF, $this->headerData) : '',
-			'FOOTERDATA' => $this->footerData ? implode(LF, $this->footerData) : '',
-			'JS_LIBS_FOOTER' => $jsFooterLibs,
+			'HTMLTAG'           => $this->htmlTag,
+			'HEADTAG'           => $this->headTag,
+			'METACHARSET'       => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
+			'INLINECOMMENT'     => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
+			'BASEURL'           => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
+			'SHORTCUT'          => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
+			'CSS_INCLUDE'       => $cssFiles,
+			'CSS_INLINE'        => $cssInline,
+			'JS_INLINE'         => $jsInline,
+			'JS_INCLUDE'        => $jsFiles,
+			'JS_LIBS'      	    => $jsLibs,
+			'TITLE'             => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
+			'META'              => $metaTags,
+			'HEADERDATA'        => $this->headerData ? implode(LF, $this->headerData) : '',
+			'FOOTERDATA'        => $this->footerData ? implode(LF, $this->footerData) : '',
+			'JS_LIBS_FOOTER'    => $jsFooterLibs,
 			'JS_INCLUDE_FOOTER' => $jsFooterFiles,
-			'JS_INLINE_FOOTER' => $jsFooterInline,
-			'BODY' => $this->bodyContent,
+			'JS_INLINE_FOOTER'  => $jsFooterInline,
+			'BODY'              => $this->bodyContent,
 		);
 
 		$markerArray = array_map('trim', $markerArray);
