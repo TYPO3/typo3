@@ -752,6 +752,40 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals('/', $result[strlen($result) - 1]);
 	}
 
+	/**
+	 * @return array
+	 */
+	public static function hostnameAndPortDataProvider() {
+		return array(
+			'localhost ipv4 without port' => array('127.0.0.1', '127.0.0.1', ''),
+			'localhost ipv4 with port' => array('127.0.0.1:81', '127.0.0.1', '81'),
+			'localhost ipv6 without port' => array('[::1]', '[::1]', ''),
+			'localhost ipv6 with port' => array('[::1]:81', '[::1]', '81'),
+			'ipv6 without port' => array('[2001:DB8::1]', '[2001:DB8::1]', ''),
+			'ipv6 with port' => array('[2001:DB8::1]:81', '[2001:DB8::1]', '81'),
+			'hostname without port' => array('lolli.did.this', 'lolli.did.this', ''),
+			'hostname with port' => array('lolli.did.this:42', 'lolli.did.this', '42'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider hostnameAndPortDataProvider
+	 */
+	public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAdresses($httpHost, $expectedIp) {
+		$_SERVER['HTTP_HOST'] = $httpHost;
+		$this->assertEquals($expectedIp, t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider hostnameAndPortDataProvider
+	 */
+	public function getIndpEnvTypo3PortParsesHostnamesAndIpAdresses($httpHost, $dummy, $expectedPort) {
+		$_SERVER['HTTP_HOST'] = $httpHost;
+		$this->assertEquals($expectedPort, t3lib_div::getIndpEnv('TYPO3_PORT'));
+	}
+
 
 	//////////////////////////////////
 	// Tests concerning underscoredToUpperCamelCase
