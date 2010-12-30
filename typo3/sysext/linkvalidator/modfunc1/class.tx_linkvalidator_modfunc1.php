@@ -383,7 +383,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 
 		$markerArray['total_count_label'] = $GLOBALS['LANG']->getLL('overviews.nbtotal');
-		$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
+		if (empty($brokenLinkOverView['brokenlinkCount'])) {
+			$markerArray['total_count'] = '0';
+		} else {
+			$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
+		}
 
 		$linktypes = t3lib_div::trimExplode(',', $this->modTS['linktypes'], 1);
 		$hookSectionContent = '';
@@ -395,7 +399,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
 					if (in_array($key, $linktypes)) {
 						$hookSectionMarker = array();
-						$hookSectionMarker['count'] = $brokenLinkOverView[$key];
+						if (empty($brokenLinkOverView[$key])) {
+							$hookSectionMarker['count'] = '0';
+						} else {
+							$hookSectionMarker['count'] = $brokenLinkOverView[$key];
+						}
 						$trans = $GLOBALS['LANG']->getLL('hooks.' . $key);
 						$trans = $trans ? $trans : $key;
 						$option = t3lib_BEfunc::getFuncCheck(
