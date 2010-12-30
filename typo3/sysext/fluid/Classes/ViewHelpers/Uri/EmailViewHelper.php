@@ -22,10 +22,10 @@
  * <code title="basic email URI">
  * <f:uri.email email="foo@bar.tld" />
  * </code>
- *
- * Output:
+ * <output>
  * javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
  * (depending on your spamProtectEmailAddresses-settings)
+ * </output>
  *
  */
 class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {

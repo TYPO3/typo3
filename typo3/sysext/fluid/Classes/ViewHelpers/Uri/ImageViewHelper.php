@@ -14,15 +14,38 @@
  *                                                                        */
 
 /*
- * renders a image according to the given dimensions
+ * Resizes a given image (if required) and returns its relative path.
  *
- * @return relative path to the image (typo3temp/...)
+ * = Examples =
  *
+ * <code title="Default">
+ * <f:uri.image src="EXT:myext/Resources/Public/typo3_logo.png" />
+ * </code>
+ * <output>
+ * typo3conf/ext/myext/Resources/Public/typo3_logo.png
+ * or (in BE mode):
+ * ../typo3conf/ext/myext/Resources/Public/typo3_logo.png
+ * </output>
+ *
+ * <code title="Inline notation">
+ * {f:uri.image(src: 'EXT:myext/Resources/Public/typo3_logo.png' minWidth: 30, maxWidth: 40)}
+ * </code>
+ * <output>
+ * typo3temp/pics/[b4c0e7ed5c].png
+ * (depending on your TYPO3s encryption key)
+ * </output>
+ *
+ * <code title="non existing image">
+ * <f:uri.image src="NonExistingImage.png" />
+ * </code>
+ * <output>
+ * Could not get image resource for "NonExistingImage.png".
+ * </output>
  */
 class Tx_Fluid_ViewHelpers_Uri_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var	tslib_cObj
+	 * @var tslib_cObj
 	 */
 	protected $contentObject;
 

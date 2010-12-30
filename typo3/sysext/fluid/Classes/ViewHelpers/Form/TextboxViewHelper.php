@@ -30,9 +30,9 @@
  * <code title="Example">
  * <f:form.textbox name="myTextBox" value="default value" />
  * </code>
- *
- * Output:
+ * <output>
  * <input type="text" name="myTextBox" value="default value" />
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

@@ -17,6 +17,37 @@
  * Translate a key from locallang. The files are loaded from the folder
  * "Resources/Private/Language/".
  *
+ * == Examples ==
+ *
+ * <code title="Translate key">
+ * <f:translate key="key1" />
+ * </code>
+ * <output>
+ * // value of key "key1" in the current website language
+ * </output>
+ *
+ * <code title="Keep HTML tags">
+ * <f:translate key="htmlKey" htmlEscape="false" />
+ * </code>
+ * <output>
+ * // value of key "htmlKey" in the current website language, no htmlspecialchars applied
+ * </output>
+ *
+ * <code title="Translate key from custom locallang file">
+ * <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xml:key1" />
+ * </code>
+ * <output>
+ * // value of key "key1" in the current website language
+ * </output>
+ *
+ * <code title="Inline notation with arguments and default value">
+ * {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
+ * </code>
+ * <output>
+ * // value of key "argumentsKey" in the current website language
+ * // with "%1" and "%2" are replaced by "dog" and "fox" (printf)
+ * // if the key is not found, the output is "default value"
+ * </output>
  */
 class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

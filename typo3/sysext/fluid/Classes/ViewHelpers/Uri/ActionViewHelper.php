@@ -21,10 +21,10 @@
  * <code title="URI to the show-action of the current controller">
  * <f:uri.action action="show" />
  * </code>
- *
- * Output:
+ * <output>
  * index.php?id=123&tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz
  * (depending on the current page and your TS configuration)
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *

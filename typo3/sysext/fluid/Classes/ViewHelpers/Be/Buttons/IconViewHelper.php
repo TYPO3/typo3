@@ -28,23 +28,21 @@
  * <code title="Default">
  * <f:be.buttons.icon uri="{f:uri.action()}" />
  * </code>
- *
- * Output:
+ * <output>
  * An icon button as known from the TYPO3 backend, skinned and linked with the default action of the current controller.
  * Note: By default the "close" icon is used as image
+ * </output>
  *
  * <code title="Default">
  * <f:be.buttons.icon uri="{f:uri.action(action='new')}" icon="new_el" title="Create new Foo" />
  * </code>
- *
- * Output:
+ * <output>
  * This time the "new_el" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
+ * </output>
  *
- * @author		Steffen Kamper <info@sk-typo3.de>
- * @author		Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

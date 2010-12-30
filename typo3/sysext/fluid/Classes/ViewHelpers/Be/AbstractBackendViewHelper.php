@@ -26,11 +26,9 @@
  * @version $Id:
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
- * @author      Steffen Kamper <info@sk-typo3.de>
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

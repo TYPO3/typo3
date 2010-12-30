@@ -29,9 +29,9 @@
  * <code>
  * <f:uri.external uri="http://www.typo3.org" />
  * </code>
- *
- * Output:
+ * <output>
  * http://www.typo3.org
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

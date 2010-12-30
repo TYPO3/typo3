@@ -27,11 +27,11 @@
  * = Examples =
  *
  * <code title="Example">
- * <f:textarea name="myTextArea" value="This is shown inside the textarea" />
+ * <f:form.textarea name="myTextArea" value="This is shown inside the textarea" />
  * </code>
- *
- * Output:
+ * <output>
  * <textarea name="myTextArea">This is shown inside the textarea</textarea>
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

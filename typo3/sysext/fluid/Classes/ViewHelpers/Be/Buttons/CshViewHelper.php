@@ -31,16 +31,20 @@
  * <code title="Default">
  * <f:be.buttons.csh />
  * </code>
- *
- * Output:
+ * <output>
  * CSH button as known from the TYPO3 backend.
+ * </output>
  *
+ * <code title="Full configuration">
+ * <f:be.buttons.csh table="xMOD_csh_corebe" field="someCshKey" iconOnly="1" styleAttributes="border: 1px solid red" />
+ * </code>
+ * <output>
+ * CSH button as known from the TYPO3 backend with some custom settings.
+ * </output>
  *
- * @author		Steffen Kamper <info@sk-typo3.de>
- * @author		Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_CshViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

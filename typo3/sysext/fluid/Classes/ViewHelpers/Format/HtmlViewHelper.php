@@ -21,20 +21,29 @@
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
  * By default lib.parseFunc_RTE is used to parse the string.
  *
- * Example:
+ * == Examples ==
  *
- * (1) default parameters:
+ * <code title="Default parameters">
  * <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
- *
- * Result:
+ * </code>
+ * <output>
  * <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
  * (depending on your TYPO3 setup)
+ * </output>
  *
- * (2) custom parseFunc
+ * <code title="Custom parseFunc">
  * <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
- *
- * Output:
+ * </code>
+ * <output>
  * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
+ * </output>
+ *
+ * <code title="Inline notation">
+ * {someText -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}
+ * </code>
+ * <output>
+ * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
+ * </output>
  *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
  *

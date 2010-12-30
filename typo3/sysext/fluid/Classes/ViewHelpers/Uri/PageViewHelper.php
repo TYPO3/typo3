@@ -21,26 +21,26 @@
  * <code title="URI to the current page">
  * <f:uri.page>page link</f:uri.page>
  * </code>
- *
- * Output:
+ * <output>
  * index.php?id=123
  * (depending on the current page and your TS configuration)
+ * </output>
  *
  * <code title="query parameters">
  * <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
  * </code>
- *
- * Output:
+ * <output>
  * index.php?id=1&foo=bar
  * (depending on your TS configuration)
+ * </output>
  *
  * <code title="query parameters for extensions">
- * <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
+ * <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
  * </code>
- *
- * Output:
- * <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
+ * <output>
+ * index.php?id=1&extension_key[foo]=bar
  * (depending on your TS configuration)
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */

@@ -1,7 +1,5 @@
 <?php
 
-
-
 /*
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
@@ -23,6 +21,17 @@
  *                                                                        */
 
 /**
+ * A view helper for creating URIs to extbase actions within widgets.
+ *
+ * = Examples =
+ *
+ * <code title="URI to the show-action of the current controller">
+ * <f:widget.uri action="show" />
+ * </code>
+ * <output>
+ * index.php?id=123&tx_myextension_plugin[widgetIdentifier][action]=show&tx_myextension_plugin[widgetIdentifier][controller]=Standard&cHash=xyz
+ * (depending on the current page, widget and your TS configuration)
+ * </output>
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
