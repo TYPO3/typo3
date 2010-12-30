@@ -3,11 +3,12 @@
 #typo3-mod-php .docheader-row2-right a {
 	display: inline;
 }
-.linkvalidator_funcmenu{
-	margin-bottom:10px;
+
+.linkvalidator_funcmenu {
+	margin-bottom: 10px;
 }
 
-.linkvalidator_funcmenu input{
+.linkvalidator_funcmenu input {
     margin-left: 5px;
 }
 
@@ -40,6 +41,6 @@
     padding: 0 10px 0 0;
 }
 
-.linkvalidator_table td, .linkvalidator_table span{
+.linkvalidator_table td, .linkvalidator_table span {
     vertical-align: middle;
 }
