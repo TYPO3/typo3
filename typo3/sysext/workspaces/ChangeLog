@@ -1,3 +1,7 @@
+2010-12-30  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #11789: fluid viewhelper renderFlashMessages is deprecated
+
 2010-12-28  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #11635: Removed remaining event listener
