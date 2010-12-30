@@ -206,11 +206,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			// Make level selector:
 		$opt = array();
 		$parts = array(
-			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
-			1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
-			2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_2'),
-			3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_3'),
-			999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.depth_infi'),
+			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_0'),
+			1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_1'),
+			2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_2'),
+			3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_3'),
+			999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi'),
 		);
 
 		foreach ($parts as $kv => $label) {
@@ -301,21 +301,21 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	html		Code of content
 	 */
 	private function startTable() {
-		global $LANG;
 		global $TYPO3_CONF_VARS;
 
 			// Listing head
 		$makerTableHead = array();
-		$makerTableHead['list_header'] = $this->doc->sectionHeader($LANG->getLL('list.header'), $h_func);
+		$makerTableHead['list_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'), $h_func);
 
-		$makerTableHead['tablehead_path'] = $LANG->getLL('list.tableHead.path');
-		$makerTableHead['tablehead_type'] = $LANG->getLL('list.tableHead.type');
-		$makerTableHead['tablehead_headline'] = $LANG->getLL('list.tableHead.headline');
-		$makerTableHead['tablehead_field'] = $LANG->getLL('list.tableHead.field');
-		$makerTableHead['tablehead_headlink'] = $LANG->getLL('list.tableHead.headlink');
-		$makerTableHead['tablehead_linktarget'] = $LANG->getLL('list.tableHead.linktarget');
-		$makerTableHead['tablehead_linkmessage'] = $LANG->getLL('list.tableHead.linkmessage');
-		$makerTableHead['tablehead_lastcheck'] = sprintf($LANG->getLL('list.tableHead.lastCheck'), $TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
+		$makerTableHead['tablehead_path'] = $GLOBALS['LANG']->getLL('list.tableHead.path');
+		$makerTableHead['tablehead_type'] = $GLOBALS['LANG']->getLL('list.tableHead.type');
+		$makerTableHead['tablehead_headline'] = $GLOBALS['LANG']->getLL('list.tableHead.headline');
+		$makerTableHead['tablehead_field'] = $GLOBALS['LANG']->getLL('list.tableHead.field');
+		$makerTableHead['tablehead_headlink'] = $GLOBALS['LANG']->getLL('list.tableHead.headlink');
+		$makerTableHead['tablehead_linktarget'] = $GLOBALS['LANG']->getLL('list.tableHead.linktarget');
+		$makerTableHead['tablehead_linkmessage'] = $GLOBALS['LANG']->getLL('list.tableHead.linkmessage');
+		$makerTableHead['tablehead_lastcheck'] = sprintf($GLOBALS['LANG']->getLL('list.tableHead.lastCheck'),
+				$TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
 
 		return $makerTableHead;
 	} // end function startTable()
@@ -372,7 +372,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	html		code content
 	 */
 	private function getCheckOptions($brokenLinkOverView) {
-		global $LANG;
 		$content = '';
 		$checkOptionsTemplate = '';
 		$checkOptionsTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
@@ -380,7 +379,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$hookSectionContent = '';
 		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 
-		$markerArray['total_count_label'] = $LANG->getLL('overviews.nbtotal');
+		$markerArray['total_count_label'] = $GLOBALS['LANG']->getLL('overviews.nbtotal');
 		$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
 
 		$linktypes = t3lib_div::trimExplode(',', $this->modTS['linktypes'], 1);
