@@ -1,6 +1,7 @@
 2010-12-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #16580: render-postProcess Hook in t3lib_PageRenderer::render() (Thanks to Morton Jonuschat)
+	* Fixed bug #13245: Render Access Lists settings in be_groups configuration as checkboxes (Thanks to Simon Schaufelberger)
 
 2010-12-29  Christian Kuuhn  <lolli@schwarzbu.ch>
 

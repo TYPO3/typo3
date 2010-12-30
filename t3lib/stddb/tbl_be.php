@@ -144,7 +144,6 @@ $TCA['be_users'] = array(
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_PADDING' => 1,
@@ -458,7 +457,6 @@ $TCA['be_groups'] = array(
 				'size' => '3',
 				'maxitems' => 20,
 				'autoSizeMax' => 10,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_PADDING' => 1,
@@ -677,7 +675,6 @@ $TCA['be_groups'] = array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 			)
 		)
