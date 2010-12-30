@@ -339,7 +339,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 
 		$params = '&edit[' . $table . '][' . $row['recuid'] . ']=edit';
-		$actionLinks = '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], '') . '">'.
+		$actionLinks = '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], '') . '"' .
+				' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 
 		$elementType = $row['headline'];
@@ -358,7 +359,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
-		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $row['recuid']));
+		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ': ' . $row['recuid']));
 		$markerArray['headline'] = $elementType;
 		$markerArray['field'] = $row['field'];
 		$markerArray['headlink'] = $row['linktitle'];

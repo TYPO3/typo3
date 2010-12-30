@@ -28,9 +28,10 @@
             <label index="list.tableHead.type">Type</label>
             <label index="list.tableHead.headline">Title</label>
             <label index="list.tableHead.headlink">Link</label>
-            <label index="list.tableHead.field">field</label>
+            <label index="list.tableHead.field">Field</label>
             <label index="list.tableHead.linktarget">URL / Link Target</label>
             <label index="list.tableHead.linkmessage">Error message</label>
+            <label index="list.edit">Edit element containing this broken link</label>
             <label index="list.report.pagedeleted">Page deleted</label>
             <label index="list.report.pagenotexisting">Page '###title###' doesn't exist</label>
             <label index="list.report.pagenotvisible">Page '###title###' is not visible</label>
