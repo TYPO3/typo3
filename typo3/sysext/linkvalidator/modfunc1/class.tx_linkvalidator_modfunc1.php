@@ -258,8 +258,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		)) {
 				// table rows containing the broken links
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$alter = $alter % 2 ? FALSE : TRUE;
-				$items[] = $this->drawTableRow($row['tablename'], $row, $alter, $brokenLinksItemTemplate);
+				$items[] = $this->drawTableRow($row['tablename'], $row, $brokenLinksItemTemplate);
 			}
 		}
 
@@ -326,10 +325,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @param	string		table
 	 * @param	string		row record
-	 * @param	bool		alternate color between rows
 	 * @return	html		code of content
 	 */
-	private function drawTableRow($table, $row, $switch, $brokenLinksItemTemplate) {
+	private function drawTableRow($table, $row, $brokenLinksItemTemplate) {
 		$markerArray = array();
 		if (is_array($row) && !empty($row['typelinks'])) {
 			if (($hookObj = $this->hookObjectsArr[$row['typelinks']])) {
