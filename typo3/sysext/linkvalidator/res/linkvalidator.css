@@ -21,7 +21,7 @@
 }
 
 .linkvalidator_singleOption {
-	padding: 2px 0;
+	padding: 0;
 }
 
 .linkvalidator_singleOption label {
@@ -33,14 +33,24 @@
 	vertical-align: middle;
 }
 
+.linkvalidator_singleOption .checkbox, .linkvalidator_singleOption .checkbox:hover {
+	 margin-top: 0px;
+	 margin-bottom: 0px;	
+}
+
 .linkvalidator_singleOption-showalllinks {
 	padding-bottom: 10px;
 }
 
-.linkvalidator_table td {
-    padding: 0 10px 0 0;
+#linkvalidator_table {
+	width: 230px;
 }
 
-.linkvalidator_table td, .linkvalidator_table span {
+#linkvalidator_table td, #linkvalidator_table span {
     vertical-align: middle;
+}
+
+#linkvalidator_table td.number {
+    padding-right: 6px;
+	text-align: center;
 }
