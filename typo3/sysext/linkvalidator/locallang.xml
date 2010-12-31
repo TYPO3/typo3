@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for linkvalidator mod1</description>
+		<description>Labels for the linkvalidator task.</description>
 		<type>module</type>
 		<csh_table></csh_table>
 		<labelContext type="array">
@@ -11,16 +11,16 @@
 		<languageKey index="default" type="array">
 			<label index="mod_linkvalidator">Link validator</label>
 			<label index="tasks.validate.name">Link validator</label>
-			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module. </label>
+			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module.</label>
 			<label index="tasks.validate.page">Start page</label>
 			<label index="tasks.validate.depth">Depth</label>
-			<label index="tasks.validate.conf">tsconfig override</label>
-			<label index="tasks.validate.email">Send repport to</label>
-			<label index="tasks.validate.emailonbrokenlinkonly">Send email on news broken links only</label>
+			<label index="tasks.validate.conf">TSconfig override</label>
+			<label index="tasks.validate.email">Send report to</label>
+			<label index="tasks.validate.emailonbrokenlinkonly">Send email on new broken links only</label>
 			<label index="tasks.validate.emailfile">Email template file</label>
 			<label index="tasks.validate.invalidEmail">Invalid email format!</label>
 			<label index="tasks.validate.invalidPage">Invalid page uid, please enter a valid page uid!</label>
-			<label index="tasks.validate.invalidDepth">There is no depth set, please set it to a value!</label>
+			<label index="tasks.validate.invalidDepth">There is no depth set, please set it to one of the offered values!</label>
 		</languageKey>
 	</data>
 </T3locallang>
