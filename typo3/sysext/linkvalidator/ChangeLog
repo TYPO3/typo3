@@ -8,6 +8,7 @@
 	* Fixed bug #11813: Give the User Interface a clear structure
 	* Fixed bug #11811: Label tags in Statistics table do not work
 	* Fixed bug #11812: Changing a checkbox from the statistics table resets the depth chosen for pages to check
+	* Fixed bug #11814: Fix indentation in HTML templates, CSS files and SQL file
 
 2010-12-30  Christopher  <chrissitopher@gmx.de>
 

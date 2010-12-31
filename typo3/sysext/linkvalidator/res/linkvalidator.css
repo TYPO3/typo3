@@ -9,7 +9,7 @@
 }
 
 .linkvalidator_funcmenu input {
-    margin-left: 5px;
+	margin-left: 5px;
 }
 
 .linkvalidator_checkoptions {
@@ -34,8 +34,8 @@
 }
 
 .linkvalidator_singleOption .checkbox, .linkvalidator_singleOption .checkbox:hover {
-	 margin-top: 0px;
-	 margin-bottom: 0px;	
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .linkvalidator_singleOption-showalllinks {
@@ -48,10 +48,10 @@
 }
 
 #linkvalidator_table td, #linkvalidator_table span {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 #linkvalidator_table td.number {
-    padding-right: 6px;
+	padding-right: 6px;
 	text-align: center;
 }
