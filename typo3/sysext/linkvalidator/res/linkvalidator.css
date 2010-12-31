@@ -5,7 +5,7 @@
 }
 
 .linkvalidator_funcmenu {
-	margin-bottom: 10px;
+	margin-bottom: 25px;
 }
 
 .linkvalidator_funcmenu input {
@@ -44,6 +44,7 @@
 
 #linkvalidator_table {
 	width: 230px;
+	margin-bottom: 15px;
 }
 
 #linkvalidator_table td, #linkvalidator_table span {

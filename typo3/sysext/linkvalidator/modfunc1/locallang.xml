@@ -24,6 +24,7 @@
 			<label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
 			<label index="label_refresh">Refresh display</label>
 			<label index="label_update">Check links</label>
+			<label index="overviews.statistics.header">Statistics of broken Links</label>
 			<label index="overviews.nbtotal">Broken links total:</label>
 			<label index="hooks.db">Internal Links:</label>
 			<label index="hooks.file">File Links:</label>

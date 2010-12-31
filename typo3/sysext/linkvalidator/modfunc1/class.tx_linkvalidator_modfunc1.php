@@ -382,6 +382,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$hookSectionContent = '';
 		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 
+		$markerArray['statistics_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('overviews.statistics.header'));
 		$markerArray['total_count_label'] = $GLOBALS['LANG']->getLL('overviews.nbtotal');
 		if (empty($brokenLinkOverView['brokenlinkCount'])) {
 			$markerArray['total_count'] = '0';
