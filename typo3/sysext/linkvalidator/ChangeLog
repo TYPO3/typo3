@@ -6,6 +6,7 @@
 	* Fixed bug #11801: Variable in the message "Page '' does not exist." will never be filled
 	* Fixed bug #11798: Table displaying the number of broken links must be styled
 	* Fixed bug #11813: Give the User Interface a clear structure
+	* Fixed bug #11811: Label tags in Statistics table do not work
 
 2010-12-30  Christopher  <chrissitopher@gmx.de>
 

@@ -408,9 +408,13 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 						$trans = $GLOBALS['LANG']->getLL('hooks.' . $key);
 						$trans = $trans ? $trans : $key;
 						$option = t3lib_BEfunc::getFuncCheck(
-							$this->pObj->id, 'SET[' . $key . ']',
-							$this->pObj->MOD_SETTINGS[$key]
-						) . '<label for="' . $key . '">' . $trans . '</label>';
+							$this->pObj->id,
+							'SET[' . $key . ']',
+							$this->pObj->MOD_SETTINGS[$key],
+							'',
+							'',
+							'id="SET[' . $key . ']"'
+						) . '<label for="SET[' . $key . ']">' . $trans . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}
