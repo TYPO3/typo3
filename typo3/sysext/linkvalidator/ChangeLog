@@ -3,6 +3,7 @@
 	* Fixed bug #11776: URL/Linktarget for files is broken
 	* Fixed bug #11800: Checkboxes showing the number of broken links do not display the value "zero"
 	* Fixed bug #11803: Fix locallang files
+	* Fixed bug #11801: Variable in the message "Page '' does not exist." will never be filled
 
 2010-12-30  Christopher  <chrissitopher@gmx.de>
 
