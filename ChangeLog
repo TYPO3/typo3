@@ -1,4 +1,4 @@
-2010-12-29  Christian Kuhn  <lolli@schwarzbu.ch>
+2010-12-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15034: Login to backend fails with IPv6 Address as HTTP_HOST (Thanks to Roland Schenke)
 	* Fixed bug #10480: Add missing header in auto_respond_msg (Thanks to Christian Buelter)
@@ -9,7 +9,7 @@
 
 2010-12-28  Benjamin Mack  <benni@typo3.org>
 
-	* Revert change #16614 (rev. 968333 common.js resets TYPO3 namespace / Fixed regression #16831: 'Ext' is undefinded, Line: 81, js/common.js 
+	* Revert change #16614 (rev. 968333 common.js resets TYPO3 namespace / Fixed regression #16831: 'Ext' is undefinded, Line: 81, js/common.js
 
 2010-12-23  Jigal van Hemert <jigal@xs4all.nl>
 
