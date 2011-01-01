@@ -9,8 +9,8 @@ mod.linkvalidator {
 	showUpdateButton = 1
 	mail{
 		encoding = utf-8
-		fromname = 
-		fromemail = 
+		fromname =
+		fromemail =
 		replytoname =
 		replytoemail =
 		subject = TYPO3 Linkvalidator report

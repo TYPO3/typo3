@@ -51,16 +51,16 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 
 			// try to fetch the content of the URL (just fetching of headers doesn't work!)
 		$report = array();
-		
+
 		t3lib_div::getURL($url, 1, FALSE, $report);
-		
+
 		$ret = 1;
 
 			// analyze the response
 		if ($report['error']) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.noresponse');
 		}
-		
+
 		if($report['http_code'] === 404) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 		}

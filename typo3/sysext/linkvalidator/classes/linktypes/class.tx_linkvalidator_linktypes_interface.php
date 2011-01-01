@@ -38,7 +38,7 @@ interface tx_linkvalidator_linkTypes_Interface {
 	 * @return  string	  validation error message or succes code
 	 */
 	public function checkLink($url, $softRefEntry, $reference);
-	
+
 }
 
 ?>
