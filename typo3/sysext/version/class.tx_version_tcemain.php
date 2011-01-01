@@ -50,6 +50,13 @@ class tx_version_tcemain {
 	 */
 	protected $generalComment = '';
 
+	/**
+	 * Contains remapped IDs.
+	 *
+	 * @var array
+	 */
+	protected $remappedIds = array();
+
 	/****************************
 	 *****  Cmdmap  Hooks  ******
 	 ****************************/
@@ -144,6 +151,8 @@ class tx_version_tcemain {
 
 			// Reset notification array
 		$this->notificationEmailInfo = array();
+			// Reset remapped IDs
+		$this->remappedIds = array();
 	}
 
 
@@ -871,6 +880,9 @@ class tx_version_tcemain {
 										}
 
 										if (!count($sqlErrors)) {
+												// Register swapped ids for later remapping:
+											$this->remappedIds[$table][$id] =$swapWith;
+											$this->remappedIds[$table][$swapWith] = $id;
 
 												// If a moving operation took place...:
 											if ($movePlhID) {
@@ -997,8 +1009,24 @@ class tx_version_tcemain {
 			$dbAnalysisSwap->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisSwap->start('', $conf['foreign_table'], '', $swapVersion['uid'], $table, $conf);
 				// Update relations for both (workspace/versioning) sites:
-			$dbAnalysisCur->writeForeignField($conf, $curVersion['uid'], $swapVersion['uid']);
-			$dbAnalysisSwap->writeForeignField($conf, $swapVersion['uid'], $curVersion['uid']);
+
+			if (count($dbAnalysisCur->itemArray)) {
+				$dbAnalysisCur->writeForeignField($conf, $curVersion['uid'], $swapVersion['uid']);
+				$tcemainObj->addRemapAction(
+					$table, $curVersion['uid'],
+					array($this, 'writeRemappedForeignField'),
+					array($dbAnalysisCur, $conf, $swapVersion['uid'])
+				);
+			}
+
+			if (count($dbAnalysisSwap->itemArray)) {
+				$dbAnalysisSwap->writeForeignField($conf, $swapVersion['uid'], $curVersion['uid']);
+				$tcemainObj->addRemapAction(
+					$table, $curVersion['uid'],
+					array($this, 'writeRemappedForeignField'),
+					array($dbAnalysisSwap, $conf, $curVersion['uid'])
+				);
+			}
 
 			$items = array_merge($dbAnalysisCur->itemArray, $dbAnalysisSwap->itemArray);
 			foreach ($items as $item) {
@@ -1012,6 +1040,24 @@ class tx_version_tcemain {
 			$curVersion[$field] = $swapVersion[$field];
 			$swapVersion[$field] = $tempValue;
 		}
+	}
+
+	/**
+	 * Writes remapped foreign field (IRRE).
+	 *
+	 * @param t3lib_loadDBGroup $dbAnalysis Instance that holds the sorting order of child records
+	 * @param array $configuration The TCA field configuration
+	 * @param integer $parentId The uid of the parent record
+	 * @return void
+	 */
+	public function writeRemappedForeignField(t3lib_loadDBGroup $dbAnalysis, array $configuration, $parentId) {
+		foreach ($dbAnalysis->itemArray as &$item) {
+			if (isset($this->remappedIds[$item['table']][$item['id']])) {
+				$item['id'] = $this->remappedIds[$item['table']][$item['id']];
+			}
+		}
+
+		$dbAnalysis->writeForeignField($configuration, $parentId);
 	}
 
 

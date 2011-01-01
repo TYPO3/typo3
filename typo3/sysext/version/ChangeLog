@@ -1,3 +1,7 @@
+2011-01-01  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #11833: Sorting order of IRRE records is wrong after publishing
+
 2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Cleanup: Fixed PHPdoc comments, type hints and XCLASS blocks
