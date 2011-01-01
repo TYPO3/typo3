@@ -231,9 +231,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	}
 
 	/**
-	 * Displays the table of broken links.
+	 * Displays the table of broken links or a note if there were no broken links.
 	 *
-	 * @return	html	Content of the table
+	 * @return	html	Content of the table or of the note
 	 */
 	private function drawBrokenLinksTable() {
 		$content = '';
@@ -241,13 +241,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$brokenLinkItems = '';
 		$keyOpt = array();
 
-		$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
-
-			// table header
-		$brokenLinksMarker = $this->startTable();
-		$brokenLinksTemplate = t3lib_parsehtml::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
-
-		$brokenLinksItemTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
 		if (is_array($this->checkOpt)) {
 			$keyOpt = array_keys($this->checkOpt);
 		}
@@ -259,6 +252,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
 		$pageList .= $this->pObj->id;
+
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
@@ -266,15 +260,30 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			'',
 			'recuid ASC, uid ASC')
 		)) {
-				// table rows containing the broken links
-			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$items[] = $this->drawTableRow($row['tablename'], $row, $brokenLinksItemTemplate);
+				// Display table with broken links
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+				$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
+
+				$brokenLinksItemTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
+
+					// Table header
+				$brokenLinksMarker = $this->startTable();
+
+					// Table rows containing the broken links
+				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+					$items[] = $this->drawTableRow($row['tablename'], $row, $brokenLinksItemTemplate);
+				}
+				$brokenLinkItems = implode(chr(10), $items);
+
+				// Display note that there are no broken links to display
+			} else {
+				$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
+
+				$brokenLinksMarker['LIST_HEADER'] 		= $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
+				$brokenLinksMarker['NO_BROKEN_LINKS'] 	= $GLOBALS['LANG']->getLL('list.no.broken.links');
 			}
 		}
-
-		if (is_array($items)) {
-			$brokenLinkItems = implode(chr(10), $items);
-		}
+		$brokenLinksTemplate = t3lib_parsehtml::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
 
 		$content = t3lib_parsehtml::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 

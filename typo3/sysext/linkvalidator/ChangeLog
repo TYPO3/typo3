@@ -5,6 +5,7 @@
 	* Fixed bug #11817: Use new documentation template for the manual
 	* Fixed bug #11269: Proofread the manual
 	* Fixed bug #11799: Improve usability of the linkvalidator interface
+	* Fixed bug #11834: Do not show the table with the list of broken links, if there are no broken links
 
 2010-12-31  Christopher  <chrissitopher@gmx.de>
 
