@@ -60,12 +60,18 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$this->initialize();
 
+		$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
+
 		$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 		$this->modTS = $this->modTS['properties'];
+
 		if ($this->modTS['showUpdateButton'] == 1) {
+			$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
+
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+
 		$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
 		$this->updateBrokenLinks($processing);
 
@@ -478,6 +484,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	private function getTemplateMarkers() {
 		$markers = array(
+			'FIRST_STEPS'			=> $this->firstSteps,
 			'FUNC_MENU'				=> $this->getLevelSelector(),
 			'CONTENT'				=> $this->content,
 			'TITLE'					=> $GLOBALS['LANG']->getLL('title'),

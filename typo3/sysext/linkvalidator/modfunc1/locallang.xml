@@ -22,6 +22,8 @@
 			<label index="overview.branch.links">External links:</label>
 			<label index="overview.attention.header">Attention:</label>
 			<label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
+			<label index="first.steps">Choose the level of pages to check and press "Refresh display" to show the results.</label>
+			<label index="first.steps.info.update.button">These results are taken from a cache, which you can update by pressing "Check links". Note that this process can take some time.</label>
 			<label index="label_refresh">Refresh display</label>
 			<label index="label_update">Check links</label>
 			<label index="overviews.statistics.header">Statistics of broken Links</label>

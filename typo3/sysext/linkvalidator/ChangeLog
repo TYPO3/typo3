@@ -3,7 +3,8 @@
 	* Fixed bug #11822: Add extension description in ext_emconf.php
 	* Fixed bug #11820: Remove comments "End of function xy"
 	* Fixed bug #11817: Use new documentation template for the manual
-	* Fixed bug #11269: Proofread the manual 
+	* Fixed bug #11269: Proofread the manual
+	* Fixed bug #11799: Improve usability of the linkvalidator interface
 
 2010-12-31  Christopher  <chrissitopher@gmx.de>
 
