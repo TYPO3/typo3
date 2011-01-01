@@ -3,8 +3,8 @@ mod.linkvalidator {
 		pages = media,url
 		tt_content = bodytext, header_link,records
 		tt_news = bodytext, links
-	}	
-	linktypes = db,file,external	
+	}
+	linktypes = db,file,external
 	checkhidden = 0
 	showUpdateButton = 1
 	mail{
@@ -13,6 +13,6 @@ mod.linkvalidator {
 		fromemail = 
 		replytoname =
 		replytoemail =
-		subject = TYPO3 Linkvalidator report 
+		subject = TYPO3 Linkvalidator report
 	}
 }
