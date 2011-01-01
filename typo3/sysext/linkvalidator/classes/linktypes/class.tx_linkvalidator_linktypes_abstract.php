@@ -32,7 +32,7 @@ abstract class tx_linkvalidator_linkTypes_Abstract {
 	/**
 	 * Base type fetching method, based on the type that softRefParserObj returns.
 	 *
-	 * @param   array	  $value: reference properties
+	 * @param   array	 $value: reference properties
 	 * @param   string	 $type: current type
 	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type

@@ -41,7 +41,7 @@ class tx_linkvalidator_processing {
 	protected $hookObjectsArr = array(); // array for hooks for own checks
 
 	/**
-	 * Fill hookObjectsArr with different links type and possible XClasses
+	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
 	function __construct() {
 			// Hook to handle own checks
@@ -53,10 +53,10 @@ class tx_linkvalidator_processing {
 	}
 
 	/**
-	 * Init Function: here all the needed configuration values are stored in class variables
+	 * Init Function: Here all the needed configuration values are stored in class variables.
 	 *
 	 * @param	array		$searchField: list of fields in which to search for links
-	 * @param	string		$pid: list of comat separated page uid in which to search for links
+	 * @param	string		$pid: list of comma separated page uids in which to search for links
 	 * @return	void
 	 */
 	public function init($searchField, $pid) {
@@ -65,9 +65,10 @@ class tx_linkvalidator_processing {
 	}
 
 	/**
-	 * Find all supported broken links and store it in tx_linkvalidator_links
+	 * Find all supported broken links and store them in tx_linkvalidator_links.
+	 *
 	 * @param	array		$checkOptions: list of hook object to activate
-	 * @param	int			$hidden: define if look into hidden fields or not
+	 * @param	int			$hidden: defines whether to look into hidden fields or not
 	 * @return	void
 	 */
 	public function getLinkStatistics($checkOptions = array(), $hidden = 0) {
@@ -135,7 +136,8 @@ class tx_linkvalidator_processing {
 
 
 	/**
-	 * Find all supported broken links for a specific record
+	 * Find all supported broken links for a specific record.
+	 *
 	 * @param	array		$results: array of broken links
 	 * @param	string		$table: table name of the record
 	 * @param	array		$fields: array of fields to analyze
@@ -221,9 +223,10 @@ class tx_linkvalidator_processing {
 
 
 	/**
-	 * Fill a markerarray with the number of link found in a list of page.
-	 * @param   string	  $curPage: commat separeted page uid list
-	 * @return  array	   markerarray with the number of link found
+	 * Fill a markerarray with the number of links found in a list of pages.
+	 *
+	 * @param   string	   $curPage: comma separated list of page uids
+	 * @return  array	   markerarray with the number of links found
 	 */
 	public function getLinkCounts($curPage) {
 		$markerArray = array();

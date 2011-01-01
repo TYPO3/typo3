@@ -30,12 +30,12 @@
 class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 
 	/**
-	 * Render additional information fields within the scheduler backend
+	 * Render additional information fields within the scheduler backend.
 	 *
 	 * @param	array		$taksInfo: array information of task to return
 	 * @param	task		$task: task object
-	 * @param	tx_scheduler_Module		$schedulerModule: reference to the calling object (Scheduler's BE module)
-	 * @return	array		additionnal fields
+	 * @param	tx_scheduler_Module		$schedulerModule: reference to the calling object (BE module of the Scheduler)
+	 * @return	array		additional fields
 	 * @see interfaces/tx_scheduler_AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
@@ -166,11 +166,11 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 
 
 	/**
-	 * Mark current value as selected by returning the "selected" attribute
+	 * Mark current value as selected by returning the "selected" attribute.
 	 *
 	 * @param	array		$configurationArray: array of configuration
 	 * @param	string		$currentValue: value of selector object
-	 * @return	string		Selected html or empty
+	 * @return	string		Html fragment for a selected option or empty
 	 * @access protected
 	 */
 	protected function getSelectedState($configurationArray, $currentValue) {
@@ -185,11 +185,11 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 
 
 	/**
-	 * This method checks any additional data that is relevant to the specific task
-	 * If the task class is not relevant, the method is expected to return TRUE
+	 * This method checks any additional data that is relevant to the specific task.
+	 * If the task class is not relevant, the method is expected to return TRUE.
 	 *
 	 * @param	array		$submittedData: reference to the array containing the data submitted by the user
-	 * @param	tx_scheduler_module1		$parentObject: reference to the calling object (Scheduler's BE module)
+	 * @param	tx_scheduler_module1		$parentObject: reference to the calling object (BE module of the Scheduler)
 	 * @return	boolean		True if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
@@ -239,7 +239,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 
 	/**
 	 * This method is used to save any additional input into the current task object
-	 * if the task class matches
+	 * if the task class matches.
 	 *
 	 * @param	array		$submittedData: array containing the data submitted by the user
 	 * @param	tx_scheduler_Task		$task: reference to the current task object

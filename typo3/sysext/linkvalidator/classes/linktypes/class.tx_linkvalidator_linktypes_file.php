@@ -30,7 +30,7 @@
 class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity
+	 * Checks a given URL + /path/filename.ext for validity.
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url

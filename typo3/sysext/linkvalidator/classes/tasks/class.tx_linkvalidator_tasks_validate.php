@@ -154,11 +154,11 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 
 
 	/**
-	 * Build and send the new borken links found warning email.
+	 * Build and send warning email when new broken links were found.
 	 *
 	 * @param	string		$pageSections: Content of page section
-	 * @param	string		$modTS: TsConfig array
-	 * @return	bool		Mail sended or not
+	 * @param	string		$modTS: TSconfig array
+	 * @return	bool		Mail sent or not
 	 */
 	function reportEmail($pageSections, $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
@@ -190,8 +190,9 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 		return $Typo3_htmlmail->sendtheMail();
 	}
 
+
 	/**
-	 * Build the mail content
+	 * Build the mail content.
 	 *
 	 * @param	int			$curPage: id of the current page
 	 * @param	string		$pageList: list of pages id
@@ -222,12 +223,13 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 		return $content;
 	}
 
+
 	/**
 	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
 	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
 	 * this is necessary to create the object that is used recursively by the original function.
 	 *
-	 * Generates a list of Page-uid's from $id. List does not include $id itself
+	 * Generates a list of Page uids from $id. List does not include $id itself.
 	 * The only pages excluded from the list are deleted pages.
 	 *
 	 *							  level in the tree to start collecting uid's. Zero means

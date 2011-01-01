@@ -79,7 +79,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Initialize menu array internally
+	 * Initializes the menu array internally.
 	 *
 	 * @return	Module		menu
 	 */
@@ -99,7 +99,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Initializes the Module
+	 * Initializes the Module.
 	 *
 	 * @return	void
 	 */
@@ -132,7 +132,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Update the table of stored broken links
+	 * Updates the table of stored broken links.
 	 *
 	 * @param	array		Processing object
 	 * @return	void
@@ -186,7 +186,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Flushes the rendered content to browser.
+	 * Flushes the rendered content to the browser.
 	 *
 	 * @return	void
 	 */
@@ -202,7 +202,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * @return string
+	 * Builds the selector for the level of pages to search.
+	 *
+	 * @return	string	Html code of that selector
 	 */
 	private function getLevelSelector() {
 			// Make level selector:
@@ -223,7 +225,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	}
 
 	/**
-	 * Display the table of broken links
+	 * Displays the table of broken links.
 	 *
 	 * @return	html	Content of the table
 	 */
@@ -279,10 +281,10 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
 	 * this is necessary to create the object that is used recursively by the original function.
 	 *
-	 * Generates a list of Page-uid's from $id. List does not include $id itself
+	 * Generates a list of page uids from $id. List does not include $id itself.
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 *							  level in the tree to start collecting uid's. Zero means
+	 *							  level in the tree to start collecting uids. Zero means
 	 *							  'start right away', 1 = 'next level and out'
 	 *
 	 * @param	integer		Start page id
@@ -297,7 +299,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Display table begin of the broken links
+	 * Displays the table header of the table with the broken links.
 	 *
 	 * @return	html		Code of content
 	 */
@@ -323,7 +325,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Display line of the broken links table
+	 * Displays one line of the broken links table.
 	 *
 	 * @param	string		table
 	 * @param	string		row record
@@ -371,9 +373,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Builds the checkboxes out of the hooks array
+	 * Builds the checkboxes out of the hooks array.
 	 *
-	 * @param	array		array of broken links informations
+	 * @param	array		array of broken links information
 	 * @return	html		code content
 	 */
 	private function getCheckOptions($brokenLinkOverView) {
@@ -491,7 +493,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 
 	/**
-	 * Determines whether the current user is admin.
+	 * Determines whether the current user is an admin.
 	 *
 	 * @return	boolean		Whether the current user is admin
 	 */
