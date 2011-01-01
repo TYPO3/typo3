@@ -1,3 +1,7 @@
+2011-01-01  Christopher  <chrissitopher@gmx.de>
+
+	* Fixed bug #11822: Add extension description in ext_emconf.php
+
 2010-12-31  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11776: URL/Linktarget for files is broken
