@@ -1,3 +1,7 @@
+2011-01-01  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Follow-up to bug #16846: Allow external objects to modify the remapAction stack
+
 2011-01-01  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #16308: displayEditIcons expects array, null given (Thanks to Daniel Müller)

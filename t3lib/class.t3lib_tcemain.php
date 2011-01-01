@@ -5008,15 +5008,28 @@ class t3lib_TCEmain {
 		if (!$forceRemapStackActions && !isset($this->remapStackRecords[$table][$id]) && !isset($this->remapStackChildIds[$id])) {
 			call_user_func_array($callback, $arguments);
 		} else {
-			$this->remapStackActions[] = array(
-				'affects' => array(
-					'table' => $table,
-					'id' => $id,
-				),
-				'callback' => $callback,
-				'arguments' => $arguments,
-			);
+			$this->addRemapAction($table, $id, $callback, $arguments);
 		}
+	}
+
+	/**
+	 * Adds an instruction to the remap action stack (used with IRRE).
+	 *
+	 * @param string $table The affected table
+	 * @param integer $id The affected ID
+	 * @param array $callback The callback information (object and method)
+	 * @param array $arguments The arguments to be used with the callback
+	 * @return void
+	 */
+	public function addRemapAction($table, $id, array $callback, array $arguments) {
+		$this->remapStackActions[] = array(
+			'affects' => array(
+				'table' => $table,
+				'id' => $id,
+			),
+			'callback' => $callback,
+			'arguments' => $arguments,
+		);
 	}
 
 	/**
