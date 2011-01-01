@@ -1172,6 +1172,9 @@ class tslib_cObj {
 
 
 				// Edit icons:
+			if (!is_array($conf['editIcons.'])) {
+				$conf['editIcons.'] = array();
+			}
 			$editIconsHTML = $conf['editIcons']&&$GLOBALS['TSFE']->beUserLogin ? $this->editIcons('',$conf['editIcons'],$conf['editIcons.']) : '';
 
 				// strech out table:
@@ -3920,6 +3923,9 @@ class tslib_cObj {
 				}
 
 				if ($conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin) {
+					if(!is_array($conf['editIcons.'])) {
+						$conf['editIcons.'] = array();
+					}
 					$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
 				}
 

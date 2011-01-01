@@ -758,6 +758,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 
 			// Edit icons:
+		if (!is_array($conf['editIcons.'])) {
+			$conf['editIcons.'] = array();
+		}
 		$editIconsHTML = $conf['editIcons']&&$GLOBALS['TSFE']->beUserLogin ? $this->cObj->editIcons('',$conf['editIcons'],$conf['editIcons.']) : '';
 
 			// If noRows, we need multiple imagecolumn wraps

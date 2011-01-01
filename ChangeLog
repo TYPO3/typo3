@@ -1,3 +1,7 @@
+2011-01-01  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #16308: displayEditIcons expects array, null given (Thanks to Daniel Müller)
+
 2010-12-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16231: Mail not sent if safe mode is on (Thanks to Boris Gulay)
