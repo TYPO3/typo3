@@ -481,7 +481,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			'CHECKOPTIONS'			=> $this->checkOptHtml,
 			'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
 			'REFRESH'				=> $this->refreshListHtml,
-		    'UPDATE'                =>$this->updateListHtml
+		    'UPDATE'                => $this->updateListHtml
 		);
 
 		return $markers;
