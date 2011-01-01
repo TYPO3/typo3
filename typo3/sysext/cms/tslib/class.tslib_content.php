@@ -3168,7 +3168,10 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_editIcons($content = '', $conf = array()) {
-		if ($GLOBALS['TSFE']->beUserLogin) {
+		if ($GLOBALS['TSFE']->beUserLogin && $conf['editIcons']) {
+			if(!is_array($conf['editIcons.'])) {
+				$conf['editIcons.'] = array();
+			}
 			$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
 		}
 		return $content;
@@ -7767,7 +7770,7 @@ class tslib_cObj {
 	 * @param	string		Additional URL parameters for the link pointing to alt_doc.php
 	 * @return	string		The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
-	function editIcons($content, $params, $conf = array(), $currentRecord = '', $dataArr = array(), $addUrlParamStr = '') {
+	function editIcons($content, $params, array $conf = array(), $currentRecord = '', $dataArr = array(), $addUrlParamStr = '') {
 		if ($GLOBALS['TSFE']->beUserLogin && ($GLOBALS['BE_USER']->frontendEdit instanceof t3lib_frontendedit)) {
 			if (!$currentRecord) {
 				$currentRecord = $this->currentRecord;
