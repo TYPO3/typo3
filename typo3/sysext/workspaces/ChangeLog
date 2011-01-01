@@ -1,3 +1,7 @@
+2011-01-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #3358: make sure only "element" versioning type is supported / used - added status report for Reports module
+
 2010-12-30  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #11789: fluid viewhelper renderFlashMessages is deprecated
