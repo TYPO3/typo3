@@ -408,7 +408,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 						$trans = $GLOBALS['LANG']->getLL('hooks.' . $key);
 						$trans = $trans ? $trans : $key;
 						$option = t3lib_BEfunc::getFuncCheck(
-							array('id'=>$this->pObj->id, 'search_levels'=>$this->search_level),
+							array('id' => $this->pObj->id, 'search_levels' => $this->search_level),
 							'SET[' . $key . ']',
 							$this->pObj->MOD_SETTINGS[$key],
 							'',
