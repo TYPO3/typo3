@@ -75,7 +75,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$this->render();
 
 		return $this->flush();
-	} // end function main()
+	}
+
 
 	/**
 	 * Initialize menu array internally
@@ -94,7 +95,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 
 		return $modMenu;
-	} // end function modMenu()
+	}
 
 
 	/**
@@ -127,7 +128,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$this->isAccessibleForCurrentUser = FALSE;
 		}
-	} // end function initialize()
+	}
 
 
 	/**
@@ -166,7 +167,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (!empty($update)) {
 			$processing->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 		}
-	} // end function updateBrokenLinks()
+	}
 
 
 	/**
@@ -181,7 +182,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				// If no access or if ID == zero
 			$this->content .= $this->doc->spacer(10);
 		}
-	} // end function render()
+	}
 
 
 	/**
@@ -197,7 +198,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		);
 
 		return $content;
-	} // end function flush()
+	}
+
 
 	/**
 	 * @return string
@@ -269,7 +271,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$content = t3lib_parsehtml::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 
 		return $content;
-	} // end function drawBrokenLinksTable()
+	}
 
 
 	/**
@@ -317,7 +319,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				$TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
 
 		return $makerTableHead;
-	} // end function startTable()
+	}
 
 
 	/**
@@ -365,7 +367,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 			// Return the table html code as string
 		return t3lib_parsehtml::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
-	} // end function drawTableRow()
+	}
 
 
 	/**
@@ -425,7 +427,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$checkOptionsTemplate = t3lib_parsehtml::substituteSubpart($checkOptionsTemplate, '###HOOK_SECTION###', $hookSectionContent);
 
 		return t3lib_parsehtml::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
-	} // end function getCheckOptions()
+	}
 
 
 	/**
@@ -485,7 +487,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		);
 
 		return $markers;
-	} // end function getTemplateMarkers()
+	}
 
 
 	/**
@@ -496,7 +498,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	private function isCurrentUserAdmin() {
 		return ((bool) $GLOBALS['BE_USER']->user['admin']);
 	}
-} // end class
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfunc1/class.tx_linkvalidator_modfunc1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfunc1/class.tx_linkvalidator_modfunc1.php']);

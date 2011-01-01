@@ -94,10 +94,9 @@ class tx_linkvalidator_processing {
 				
 				// Analyse each record
 				$this->analyseRecord($results, $table, $fields, $row);
-				
-				
-			} // end while ($row = ...)
-		} // end foreach $table
+
+			}
+		}
 
 		foreach ($this->hookObjectsArr as $key => $hookObj) {
 			if ((is_array($results[$key])) && empty($checkOptions) || (is_array($results[$key]) && $checkOptions[$key])) {
@@ -129,15 +128,12 @@ class tx_linkvalidator_processing {
 						$record['urlresponse'] = '<span style="color:green">OK</span>';
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
 					}
-
 				}
 			}
 		}
+	}
 
-	} // end function getLinkStatistics
 
-
-	
 	/**
 	 * Find all supported broken links for a specific record
 	 * @param	array		$results: array of broken links
@@ -221,8 +217,8 @@ class tx_linkvalidator_processing {
 				}
 			}
 		}	
-	} // end function analyseRecord
-	
+	}
+
 
 	/**
 	 * Fill a markerarray with the number of link found in a list of page.

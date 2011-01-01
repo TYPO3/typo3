@@ -54,6 +54,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 */
 	public $oldTotalBrokenLink = 0;
 
+
 	/**
 	 * Function executed from the Scheduler.
 	 *
@@ -149,7 +150,8 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 			$this->reportEmail($pageSections, $modTS);
 		}
 		return TRUE;
-	} // end function execute()
+	}
+
 
 	/**
 	 * Build and send the new borken links found warning email.

@@ -162,7 +162,8 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		);
 
 		return $additionalFields;
-	} // end function getAdditionalFields()
+	}
+
 
 	/**
 	 * Mark current value as selected by returning the "selected" attribute
@@ -181,6 +182,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		}
 		return $selected;
 	}
+
 
 	/**
 	 * This method checks any additional data that is relevant to the specific task
@@ -234,6 +236,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		return $isValid;
 	}
 
+
 	/**
 	 * This method is used to save any additional input into the current task object
 	 * if the task class matches
@@ -249,8 +252,8 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		$task->emailonbrokenlinkonly = $submittedData['emailonbrokenlinkonly'];
 		$task->configuration = $submittedData['configuration'];
 		$task->emailfile = $submittedData['emailfile'];
-
 	}
+
 
 }
 

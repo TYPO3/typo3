@@ -1,6 +1,7 @@
 2011-01-01  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11822: Add extension description in ext_emconf.php
+	* Fixed bug #11820: Remove comments "End of function xy"
 
 2010-12-31  Christopher  <chrissitopher@gmx.de>
 
