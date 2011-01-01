@@ -280,7 +280,13 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
 
 				$brokenLinksMarker['LIST_HEADER'] 		= $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
-				$brokenLinksMarker['NO_BROKEN_LINKS'] 	= $GLOBALS['LANG']->getLL('list.no.broken.links');
+				$message = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('list.no.broken.links'),
+					'',
+					t3lib_FlashMessage::OK
+				);
+				$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
 			}
 		}
 		$brokenLinksTemplate = t3lib_parsehtml::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
