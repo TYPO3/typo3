@@ -26,6 +26,8 @@
  * This class provides interface implementation.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
 interface tx_linkvalidator_linkTypes_Interface {
 

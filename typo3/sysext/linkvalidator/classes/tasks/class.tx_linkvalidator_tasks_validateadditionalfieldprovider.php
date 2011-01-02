@@ -26,6 +26,8 @@
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
 class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 

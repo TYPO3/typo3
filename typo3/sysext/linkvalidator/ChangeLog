@@ -8,6 +8,7 @@
 	* Fixed bug #11834: Do not show the table with the list of broken links, if there are no broken links
 	* Fixed bug #11836: Make use of Flash Messages
 	* Fixed bug #11819: Prevent PHP notices by fixing XClass inclusion code
+	* Fixed bug #11823: Add @package and @subpackage to comment blocks
 
 2010-12-31  Christopher  <chrissitopher@gmx.de>
 

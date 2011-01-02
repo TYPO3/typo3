@@ -26,6 +26,8 @@
  * This class provides Check Base plugin implementation.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
 abstract class tx_linkvalidator_linkTypes_Abstract {
 

@@ -27,6 +27,8 @@
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Jochen Rieger <j.rieger@connecta.ag>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
 
 $GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');

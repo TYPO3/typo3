@@ -26,6 +26,8 @@
  * This class provides Scheduler plugin implementation.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
 class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 
