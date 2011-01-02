@@ -34,24 +34,24 @@
 
 2010-12-06  Pierre Boivin <pierre.boivin@infoglobe.ca>
 
-	* Fixed bug : #11277: Initialize and other methods in modfunc1 could be protected
-	* Fixed bug : #11278: Create an interface for the linktype classes
-	* Fixed bug : #10589: HTTP errors might not be detected (Thanks to Tolleiv Nietsch)
-	* Fixed bug : #11274: Change true to 1 for showUpdateButton
-	* Fixed bug : #11272: Fix dos line endings in ext_tables.php
-	* Fixed bug : #11270: List in the BE module should be sorted by record
-	* Fixed bug : #11275: Remove clear.gif in modfunc1
-	* Fixed bug : #10987: linkvalidator doesn't detect hidden page (Thanks to Joh. Feustel)
+	* Fixed bug #11277: Initialize and other methods in modfunc1 could be protected
+	* Fixed bug #11278: Create an interface for the linktype classes
+	* Fixed bug #10589: HTTP errors might not be detected (Thanks to Tolleiv Nietsch)
+	* Fixed bug #11274: Change true to 1 for showUpdateButton
+	* Fixed bug #11272: Fix dos line endings in ext_tables.php
+	* Fixed bug #11270: List in the BE module should be sorted by record
+	* Fixed bug #11275: Remove clear.gif in modfunc1
+	* Fixed bug #10987: linkvalidator doesn't detect hidden pages (Thanks to Joh. Feustel)
 
 2010-12-03  Pierre Boivin <pierre.boivin@infoglobe.ca>
 
-	* Fixed bug : #11271: Lowercase all filenames
-	* Fixed bug : #11280: Refactor class tx_linkvalidator_processing
-	* Fixed bug : #10907: invalid external url not detected
+	* Fixed bug #11271: Lowercase all filenames
+	* Fixed bug #11280: Refactor class tx_linkvalidator_processing
+	* Fixed bug #10907: Invalid external url not detected
 
 2010-11-22  Tolleiv Nietsch  <info@tolleiv.de>
 
-	* Fixed bug: #10988: getBrokenUrl returns wrong url (Thanks to Johannes Feustel)
+	* Fixed bug #10988: getBrokenUrl returns wrong url (Thanks to Johannes Feustel)
 
 2010-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
@@ -75,15 +75,15 @@
 2010-11-11  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #10740: news field added in the table tx_linkvalidator_links, 2 new index in locallang.xml for the header of the new column and the format of the string in the column, news column added in tx_linkvalidator_modfunc1 and time() saved in the new field added to the table tx_linkvalidator_links
-	* Fixed bug #10737:  news mod tsconfig added to remove the check link button. mod.linkvalidator.noUpdateButton = 0
-	* Fixed bug #10739 : Button added in tx_linkvalidator_modfunc1, news index in the locallang file, new marquer in the template mod_template.html and new css
-	* Fixed bug #10736: automatic refresh on changing selection of depth level has been removed
-	* Fixed bug #10643: modification of the line 166, add of is_array check before doing a array_search
+	* Fixed bug #10737: news mod tsconfig added to remove the check link button. mod.linkvalidator.noUpdateButton = 0
+	* Fixed bug #10739: Refresh Button added in tx_linkvalidator_modfunc1, news index in the locallang file, new marquer in the template mod_template.html and new css
+	* Fixed bug #10736: Automatic refresh on changing selection of depth level has been removed
+	* Fixed bug #10643: Fix PHP Warning "array_search() expects parameter 2 to be array, null given" in modfunc1/class.tx_linkvalidator_modfunc1.php
 
 2010-11-03  Tolleiv Nietsch  <info@tolleiv.de>
 
-	* Fixed bug #10598: - extend tx_linkvalidator_checkbase API a bit
+	* Fixed bug #10598: Extend tx_linkvalidator_checkbase API a bit
 
-2010-07-19 Jochen Rieger / Dimitri Knig / Michael Miousse  <j.rieger@connecta.ag, mmiousse@infoglobe.ca>
+2010-07-19  Jochen Rieger / Dimitri König / Michael Miousse  <j.rieger@connecta.ag, mmiousse@infoglobe.ca>
 
 	* initial code generated with kickstarter
