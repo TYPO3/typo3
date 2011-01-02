@@ -422,24 +422,24 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 			) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
-					if (in_array($key, $linktypes)) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
+					if (in_array($type, $linktypes)) {
 						$hookSectionMarker = array();
-						if (empty($brokenLinkOverView[$key])) {
+						if (empty($brokenLinkOverView[$type])) {
 							$hookSectionMarker['count'] = '0';
 						} else {
-							$hookSectionMarker['count'] = $brokenLinkOverView[$key];
+							$hookSectionMarker['count'] = $brokenLinkOverView[$type];
 						}
-						$trans = $GLOBALS['LANG']->getLL('hooks.' . $key);
-						$trans = $trans ? $trans : $key;
+						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
+						$translation = $translation ? $translation : $type;
 						$option = t3lib_BEfunc::getFuncCheck(
 							array('id' => $this->pObj->id, 'search_levels' => $this->search_level),
-							'SET[' . $key . ']',
-							$this->pObj->MOD_SETTINGS[$key],
+							'SET[' . $type . ']',
+							$this->pObj->MOD_SETTINGS[$type],
 							'',
 							'',
-							'id="SET[' . $key . ']"'
-						) . '<label for="SET[' . $key . ']">' . $trans . '</label>';
+							'id="SET[' . $type . ']"'
+						) . '<label for="SET[' . $type . ']">' . $translation . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}

@@ -123,8 +123,8 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		);
 		$fieldCode = '<select name="tx_scheduler[depth]" id="' . $fieldID . '">';
 
-		foreach ($fieldValueArray as $key => $label) {
-			$fieldCode .= "\t" . '<option value="' . $key . '"' . (($key == $taskInfo['depth']) ? ' selected="selected"' : '') . '>' . $label . '</option>';
+		foreach ($fieldValueArray as $depth => $label) {
+			$fieldCode .= "\t" . '<option value="' . $depth . '"' . (($depth == $taskInfo['depth']) ? ' selected="selected"' : '') . '>' . $label . '</option>';
 		}
 
 		$fieldCode .= '</select>';

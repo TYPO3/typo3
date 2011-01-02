@@ -116,9 +116,9 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 				if (is_array($linktypes)) {
 					if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 							&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
-							if (in_array($key, $linktypes)) {
-								$array[$key] = 1;
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
+							if (in_array($type, $linktypes)) {
+								$array[$type] = 1;
 							}
 						}
 					}
