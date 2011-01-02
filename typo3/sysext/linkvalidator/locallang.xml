@@ -12,7 +12,7 @@
 			<label index="mod_linkvalidator">Link validator</label>
 			<label index="tasks.validate.name">Link validator</label>
 			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module.</label>
-			<label index="tasks.validate.page">Start page</label>
+			<label index="tasks.validate.page">Start page (uid)</label>
 			<label index="tasks.validate.depth">Depth</label>
 			<label index="tasks.validate.conf">TSconfig override</label>
 			<label index="tasks.validate.email">Send report to</label>
