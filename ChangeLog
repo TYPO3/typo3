@@ -1,6 +1,7 @@
-2011-01-01  Jigal van Hemert  <jigal@xs4all.nl>
+2011-01-03  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #15712: Headline in non latin charsets will break after 100 - substr is not multibyte safe
+	* Fixed bug #16707: Read from and write to same file hangs GM on network file system
 
 2011-01-01  Oliver Hader  <oliver.hader@typo3.org>
 

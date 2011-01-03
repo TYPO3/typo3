@@ -488,8 +488,15 @@ final class t3lib_div {
 		$returnCode = '';
 		if ($gfxConf['gif_compress'] && strtolower(substr($theFile, -4, 4)) == '.gif') { // GIF...
 			if (($type == 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) { // IM
-				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
-				t3lib_utility_Command::exec($cmd);
+					// use temporary file to prevent problems with read and write lock on same file on network file systems
+				$temporaryName  =  dirname($theFile) . '/' . md5(uniqid()) . '.gif';
+					// rename could fail, if a simultaneous thread is currently working on the same thing
+				if (@rename($theFile, $temporaryName)) {
+					$cmd = self::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
+					t3lib_utility_Command::exec($cmd);
+					unlink($temporaryName);
+				}
+
 				$returnCode = 'IM';
 				if (@is_file($theFile)) {
 					self::fixPermissions($theFile);
