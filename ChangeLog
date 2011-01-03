@@ -1,5 +1,9 @@
 2011-01-03  Jigal van Hemert  <jigal@xs4all.nl>
 
+	* Follow-up to #16780: PHP warning in any system BE module
+
+2011-01-03  Jigal van Hemert  <jigal@xs4all.nl>
+
 	* Fixed bug #15712: Headline in non latin charsets will break after 100 - substr is not multibyte safe
 	* Fixed bug #16707: Read from and write to same file hangs GM on network file system
 
