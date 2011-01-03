@@ -20,6 +20,10 @@
 	margin-bottom: 10px;
 }
 
+.linkvalidator_checkoptions .typo3-message {
+	margin-top: 16px;
+}
+
 .linkvalidator_checkoptions_send {
 	margin-top: 5px;
 }
@@ -48,7 +52,7 @@
 
 #linkvalidator_table {
 	width: 230px;
-	margin-bottom: 15px;
+	margin-bottom: 18px;
 }
 
 #linkvalidator_table .t3-row-header td.number {
