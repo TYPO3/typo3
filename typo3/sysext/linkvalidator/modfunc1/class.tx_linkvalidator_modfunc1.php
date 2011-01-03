@@ -378,6 +378,19 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$elementType = $table . ':' . $row['recuid'];
 		}
 
+			// Get the language label for the field from TCA
+		if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
+			$fieldName = $GLOBALS['TCA'][$table]['columns'][$row['field']]['label'];
+			$fieldName = $GLOBALS['LANG']->sL($fieldName);
+				// Crop colon from end if present.
+				// @TODO: Find a way to reliably get the label without colon from TCA.
+			if (substr($fieldName, '-1', '1') === ':') {
+				$fieldName = substr($fieldName, '0', strlen($fieldName)-1);
+			}
+		}
+			// Fallback, if there is no label
+		$fieldName = $fieldName ? $fieldName : $row['field'];
+
 		if ($row['typelinks'] === 'file') {
 				// If a file in the local filesystem is linked, create an absolute URL.
 			$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $brokenUrl;
@@ -387,7 +400,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
 		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ': ' . $row['recuid']));
 		$markerArray['headline'] = $elementType;
-		$markerArray['field'] = $row['field'];
+		$markerArray['field'] = $fieldName;
 		$markerArray['headlink'] = $row['linktitle'];
 		$markerArray['linktarget'] = $brokenUrl;
 		$markerArray['linkmessage'] = $row['urlresponse'];
