@@ -51,6 +51,10 @@
 	margin-bottom: 15px;
 }
 
+#linkvalidator_table .t3-row-header td.number {
+	padding-top: 4px;
+}
+
 #linkvalidator_table td, #linkvalidator_table span {
 	vertical-align: middle;
 }

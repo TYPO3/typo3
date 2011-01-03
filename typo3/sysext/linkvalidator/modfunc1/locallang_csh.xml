@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for linkvalidator labels</description>
+		<type>CSH</type>
+		<csh_table>linkvalidator</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="checkboxes.description">Click the following checkboxes to display or to hide the corresponding broken links.</label>
+			<label index="tablehead_path.description">Path to the content element, which contains the broken link.</label>
+			<label index="tablehead_type.description">Type of the element containing the broken link. Hover over the icons to see the table and uid of the record.</label>
+			<label index="tablehead_headline.description">Headline of the element with the broken link.</label>
+			<label index="tablehead_field.description">Field of the element in which the broken link is located.</label>
+			<label index="tablehead_headlink.description">The linking text.</label>
+			<label index="tablehead_linktarget.description">URL to which the broken link is pointing.</label>
+			<label index="tablehead_linkmessage.description">Status of that link.</label>
+			<label index="tablehead_lastcheck.description">Date and time of the last update of the information in each table row.</label>
+		</languageKey>
+	</data>
+</T3locallang>

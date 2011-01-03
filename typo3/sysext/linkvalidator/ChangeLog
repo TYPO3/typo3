@@ -1,6 +1,7 @@
 2011-01-02  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11821: Do not use abbreviations in code
+	* Fixed bug #11777: Add CSH to table headers
 
 2011-01-01  Christopher  <chrissitopher@gmx.de>
 

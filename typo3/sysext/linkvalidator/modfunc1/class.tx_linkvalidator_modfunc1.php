@@ -283,7 +283,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				$message = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$GLOBALS['LANG']->getLL('list.no.broken.links'),
-					'',
+					'Titel',
 					t3lib_FlashMessage::OK
 				);
 				$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
@@ -329,7 +329,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 			// Listing head
 		$makerTableHead = array();
-		$makerTableHead['list_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'), $h_func);
 
 		$makerTableHead['tablehead_path'] = $GLOBALS['LANG']->getLL('list.tableHead.path');
 		$makerTableHead['tablehead_type'] = $GLOBALS['LANG']->getLL('list.tableHead.type');
@@ -340,6 +339,15 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead['tablehead_linkmessage'] = $GLOBALS['LANG']->getLL('list.tableHead.linkmessage');
 		$makerTableHead['tablehead_lastcheck'] = sprintf($GLOBALS['LANG']->getLL('list.tableHead.lastCheck'),
 				$TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
+
+			// Add CSH to the header of each column
+		foreach($makerTableHead as $column => $label) {
+			$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $column, $label);
+			$makerTableHead[$column] = $label;
+		}
+
+			// Add section header
+		$makerTableHead['list_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
 
 		return $makerTableHead;
 	}
@@ -408,7 +416,11 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 
 		$markerArray['statistics_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('overviews.statistics.header'));
-		$markerArray['total_count_label'] = $GLOBALS['LANG']->getLL('overviews.nbtotal');
+
+		$totalCountLabel = $GLOBALS['LANG']->getLL('overviews.nbtotal');
+		$totalCountLabel = t3lib_BEfunc::wrapInHelp('linkvalidator', 'checkboxes', $totalCountLabel);
+		$markerArray['total_count_label'] = $totalCountLabel;
+
 		if (empty($brokenLinkOverView['brokenlinkCount'])) {
 			$markerArray['total_count'] = '0';
 		} else {

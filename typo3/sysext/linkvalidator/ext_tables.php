@@ -12,4 +12,8 @@ if (TYPO3_MODE == 'BE') {
 		'LLL:EXT:linkvalidator/locallang.xml:mod_linkvalidator'
 	);
 }
+
+	// Initialize Context Sensitive Help (CSH)
+t3lib_extMgm::addLLrefForTCAdescr('linkvalidator', 'EXT:linkvalidator/modfunc1/locallang_csh.xml');
+
 ?>
