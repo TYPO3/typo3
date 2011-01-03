@@ -1,3 +1,7 @@
+2011-01-01  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #15712: Headline in non latin charsets will break after 100 - substr is not multibyte safe
+
 2011-01-01  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Follow-up to bug #16846: Allow external objects to modify the remapAction stack

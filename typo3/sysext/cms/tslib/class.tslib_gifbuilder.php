@@ -596,7 +596,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			// Max length = 100 if automatic line braks are not defined:
 		if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
 			$tlen = (intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100);
-			$conf['text'] = substr($conf['text'], 0, $tlen);
+			if ($this->nativeCharset) {
+				$conf['text'] = $this->csConvObj->substr($this->nativeCharset, $conf['text'], 0, $tlen);
+			} else {
+				$conf['text'] = substr($conf['text'], 0 , $tlen);
+			}
 		}
 		if ((string)$conf['text']!='')	{
 
