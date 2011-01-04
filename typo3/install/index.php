@@ -104,9 +104,9 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 					case sensitive, but the file itself can simply be an empty file.
 				</li>
 				<li class="t3-install-locked-user-settings">
-					Alternatively, in the Backend, go to <a href="../sysext/setup/mod/index.php">User tools &gt; User settings</a>
+					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a>
 					and let TYPO3 create this file for you. When you\'re finished, you can also visit
-					<a href="../sysext/setup/mod/index.php">User tools &gt; User settings</a> and delete the file from there.
+					<a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a> and delete the file from there.
 				</li>
 			</ul>
 			<p>

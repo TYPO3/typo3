@@ -1,6 +1,7 @@
 2011-01-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Follow-up to #15853: Make admin panel styling more bulletproof and remove duplicate styles
+	* Fixed bug #16906: Link from Install Tool to User Settings should make User Settings active in the module menu (Thanks to Georg Ringer)
 
 2011-01-03  Jigal van Hemert  <jigal@xs4all.nl>
 
