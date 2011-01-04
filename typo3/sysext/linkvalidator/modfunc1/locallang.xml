@@ -47,6 +47,7 @@
 			<label index="list.report.pagenotvisible">Page '###title###' is not visible.</label>
 			<label index="list.report.rowdeleted">###title### row deleted.</label>
 			<label index="list.report.rownotexisting">###title### row doesn't exist.</label>
+			<label index="list.report.rowdeleted.rownotexisting.default.title">Linked</label>
 			<label index="list.report.noresponse">External Link not reachable.</label>
 			<label index="list.report.redirectloop">A redirect loop occurred. (%s: %s)</label>
 			<label index="list.report.pagenotfound404">The requested url was not found (404).</label>

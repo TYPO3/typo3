@@ -57,7 +57,7 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 				$tablename,
 				'uid = ' . intval($rowid)
 			);
-			$title = 'Link';
+			$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.rownotexisting.default.title');
 			if ($this->tsconfig['properties'][$tablename . '.']) {
 				$title = $this->tsconfig['properties'][$tablename . '.']['label'];
 			}
