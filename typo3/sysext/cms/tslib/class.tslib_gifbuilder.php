@@ -720,17 +720,18 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
-				// strip everything non-ascii
-			$meaningfulPrefix = preg_replace('/[^A-Za-z0-9_-]/', '', trim($meaningfulPrefix));
+				// Convert raw string to a nice ASCII-only string without spaces
+			$meaningfulPrefix = $GLOBALS['TSFE']->csConvObj->specCharsToASCII($GLOBALS['TSFE']->renderCharset, $meaningfulPrefix);
+			$meaningfulPrefix = str_replace(' ', '_', $meaningfulPrefix);
 			$meaningfulPrefix = substr($meaningfulPrefix, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';
 		}
 
 			// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt. Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional chars - and finally the reason for this investigation: The Bounding box data was changing all the time resulting in new images being generated all the time. With PHP4 it works fine.
-		return $this->tempPath.
-				$pre.
+		return $this->tempPath .
+				$pre .
 				$meaningfulPrefix .
-				t3lib_div::shortMD5(serialize($this->setup)).
-				'.'.$this->extension();
+				t3lib_div::shortMD5(serialize($this->setup)) .
+				'.' . $this->extension();
 	}
 
 	/**
