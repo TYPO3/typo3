@@ -39,7 +39,7 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 * @param	string		$url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
-	 * @return	string		validation error message or succes code
+	 * @return	string		validation error message or success code
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		if ($this->url_reports[$url]) {
@@ -51,26 +51,46 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 			$url = substr($url, 0, strrpos($url, '#'));
 		}
 
-			// try to fetch the content of the URL (just fetching of headers doesn't work!)
+			// try to fetch the content of the URL (headers only)
 		$report = array();
 
-		t3lib_div::getURL($url, 1, FALSE, $report);
+		    // get the header
+        $content = '';
+        $content = t3lib_div::getURL($url, 2, FALSE, $report);
 
-		$ret = 1;
+		$tries = 0;
+		while (($report['http_code'] == 301 || $report['http_code'] == 302
+			|| $report['http_code'] == 303 || $report['http_code'] == 307)
+			&& ($tries < 5)) {
+				$isCodeRedirect = preg_match('/Location: (.*)/', $content, $location);
+				if (isset($location[1])) {
+					$content = t3lib_div::getURL($location[1], 2, FALSE, $report);
+				}
+				$tries++;
+		}
+
+        $ret = 1;
 
 			// analyze the response
 		if ($report['error']) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.noresponse');
 		}
 
-		if($report['http_code'] === 404) {
+        if ($report['http_code'] >= 300) {
+			$ret = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $report['http_code']);
+		}
+
+			// special handling for more information
+		if (($report['http_code'] == 301) || ($report['http_code'] == 302)
+			|| ($report['http_code'] == 303) || ($report['http_code'] == 307)) {
+				$ret = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $report['http_code'], $location[1]);
+        }
+
+		if ($report['http_code'] == 404) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 		}
-		else if($report['http_code'] === 403) {
+		if ($report['http_code'] == 403) {
 			$ret = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
-		}
-		else if ($report['http_code'] >= 400) {
-			$ret = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $report['http_code']);
 		}
 
 		$this->url_reports[$url] = $ret;

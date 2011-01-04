@@ -1,6 +1,7 @@
 2011-01-03  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11866: When the edit pencil next to a link is clicked, you end up at tree root with search_levels=0 after saving
+	* Followup to bug #10907: Invalid external url not detected (thanks to Philipp Gampe)
 
 2011-01-02  Christopher  <chrissitopher@gmx.de>
 
