@@ -369,7 +369,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 
 		$params = '&edit[' . $table . '][' . $row['recuid'] . ']=edit';
-		$actionLinks = '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], '') . '"' .
+		$actionLinks = '<a href="#" onclick="' .
+				t3lib_BEfunc::editOnClick(
+					$params,
+					$GLOBALS['BACK_PATH'],
+					t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->search_level
+				) . '"' .
 				' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 
