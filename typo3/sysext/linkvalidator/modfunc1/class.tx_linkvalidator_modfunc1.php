@@ -254,11 +254,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		
 		$pageList .= $this->pObj->id;
 		
-		$wherePageList = '';
-		if($pageList != 0) {
-			$wherePageList = ' and recpid in (' . $pageList . ')';
-		}
-
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
