@@ -251,12 +251,18 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			0,
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
+		
 		$pageList .= $this->pObj->id;
+		
+		$wherePageList = '';
+		if($pageList != 0) {
+			$wherePageList = ' and recpid in (' . $pageList . ')';
+		}
 
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
-			'recpid in (' . $pageList . ') and typelinks in (\'' . implode("','", $keyOpt) . '\')',
+			'typelinks in (\'' . implode("','", $keyOpt) . '\')' . $wherePageList,
 			'',
 			'recuid ASC, uid ASC')
 		)) {
