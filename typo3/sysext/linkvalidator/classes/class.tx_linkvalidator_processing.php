@@ -186,29 +186,26 @@ class tx_linkvalidator_processing {
 						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
 						if (!empty($resultArray['elements'])) {
 
-							$tagAttr = array();
 							if ($spKey == 'typolink_tag') {
 								$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-								foreach ($linkTags as $tag) {
-									$attr = $htmlParser->split_tag_attributes($tag);
-									$tagAttr[$tag] = $attr[0];
-								}
 							}
-							
+
 							foreach ($resultArray['elements'] as $element) {
 								$r = $element['subst'];
-								$title = '';
-									// Parse string for special TYPO3 <link> tag:
 
-								if ($spKey == 'typolink_tag') {
-									foreach ($tagAttr as $tag => $attr) {
-										if (in_array('{softref:' . $r['tokenID'] . '}', $attr)) {
-											$title = strip_tags($tag);
+								$title = '';
+								$type = '';
+
+								if (!empty($r)) {
+										// Parse string for special TYPO3 <link> tag:
+									if ($spKey == 'typolink_tag') {
+										foreach ($linkTags as $textPart) {
+											if (substr_count($textPart, $r['tokenID'])) {
+												$title = strip_tags($textPart);
+											}
 										}
 									}
-								}
-								$type = '';
-								if (!empty($r)) {
+
 									foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 										$type = $hookObj->fetchType($r, $type, $keyArr);
 									}

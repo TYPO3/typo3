@@ -1,6 +1,7 @@
 2011-01-05  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11797: linkvalidator saves translated texts in the database which is not good (thanks to Michael Miousse and Philipp Gampe)
+	* Fixed bug #11802: Field linktitle often stays empty (thanks to Philipp Gampe)
 
 2011-01-04  Christopher  <chrissitopher@gmx.de>
 
