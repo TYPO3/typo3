@@ -1,3 +1,7 @@
+2011-01-05  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16900: [Cache] Filebackend fails on windows
+
 2010-12-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15034: Login to backend fails with IPv6 Address as HTTP_HOST (Thanks to Roland Schenke)
