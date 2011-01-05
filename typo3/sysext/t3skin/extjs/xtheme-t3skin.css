@@ -1632,16 +1632,12 @@ td.x-date-mp-sep {
 }
 .x-menu {
 	border-color:#898989;
-	background-color:#f0f0f0;
+	background-color: #ffffff;
 	background-image:url(images/menu/menu.gif);
 }
 
 .x-menu-nosep {
 	background-image:none;
-}
-
-.x-menu-list-item{
-	font:normal 10px verdana, arial,tahoma, sans-serif;
 }
 
 .x-menu-item-arrow{
