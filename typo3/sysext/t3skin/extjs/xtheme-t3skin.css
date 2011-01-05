@@ -1198,6 +1198,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 
 .x-grid3-row-expander {
 	background-image:url(images/grid/row-expand-sprite.png);
+	width: 18px;
 }
 
 .x-grid3-row-checker, .x-grid3-hd-checker {

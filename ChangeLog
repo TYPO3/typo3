@@ -4,6 +4,7 @@
 
 2011-01-05  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16922: RowExpander icon is cut in expand mode
 	* Fixed bug #16900: [Cache] Filebackend fails on windows
 	* Fixed bug #16901: [test] t3lib_db_PreparedStatement fails
 
