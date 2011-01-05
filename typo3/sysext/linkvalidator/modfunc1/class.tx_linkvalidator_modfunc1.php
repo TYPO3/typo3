@@ -257,7 +257,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
-			'typelinks in (\'' . implode("','", $keyOpt) . '\')' . $wherePageList,
+			'recpid in (' . $pageList . ') and typelinks in (\'' . implode("','", $keyOpt) . '\')',
 			'',
 			'recuid ASC, uid ASC')
 		)) {
