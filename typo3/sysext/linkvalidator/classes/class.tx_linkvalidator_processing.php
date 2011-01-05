@@ -118,17 +118,22 @@ class tx_linkvalidator_processing {
 					$this->linkCounts[$table]++;
 					$checkURL = $hookObj->checkLink($url, $entryValue, $this);
 						// broken link found!
-					if ($checkURL != 1) {
+					if (!$checkURL) {
+						$response = array();
+						$response['valid'] = FALSE;
+						$response['errorParams'] = $hookObj->getErrorParams();
 						$this->brokenLinkCounts[$table]++;
 						$record['typelinks'] = $key;
 						$record['url'] = $url;
-						$record['urlresponse'] = '<span style="color:red">' . $checkURL . '</span>';
+						$record['urlresponse'] = serialize($response);
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
 					} elseif (t3lib_div::_GP('showalllinks')) {
+						$response = array();
+						$response['valid'] = TRUE;
 						$this->brokenLinkCounts[$table]++;
 						$record['url'] = $url;
 						$record['typelinks'] = $key;
-						$record['urlresponse'] = '<span style="color:green">OK</span>';
+						$record['urlresponse'] = serialize($response);
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
 					}
 				}

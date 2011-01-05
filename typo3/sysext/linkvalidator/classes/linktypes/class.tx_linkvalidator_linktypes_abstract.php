@@ -31,6 +31,8 @@
  */
 abstract class tx_linkvalidator_linkTypes_Abstract {
 
+	private $errorParams = array(); // array      all parameters needed for the rendering of the error message
+
 	/**
 	 * Base type fetching method, based on the type that softRefParserObj returns.
 	 *
@@ -44,6 +46,24 @@ abstract class tx_linkvalidator_linkTypes_Abstract {
 			$type = $value['type'];
 		}
 		return $type;
+	}
+
+	/**
+	 * Set the value of the private property errorParams.
+	 *
+	 * @param  array      all parameters needed for the rendering of the error message
+	 */
+	public function setErrorParams(array $value) {
+		$this->errorParams = $value;
+	}
+
+	/**
+	 * Get the value of the private property errorParams.
+	 *
+	 * @return  array      all parameters needed for the rendering of the error message
+	 */
+	public function getErrorParams() {
+		return $this->errorParams;
 	}
 
 	/**

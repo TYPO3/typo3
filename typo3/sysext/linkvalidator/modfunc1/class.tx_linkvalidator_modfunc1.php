@@ -251,9 +251,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			0,
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
-		
 		$pageList .= $this->pObj->id;
-		
+
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_links',
@@ -409,7 +408,15 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$markerArray['field'] = $fieldName;
 		$markerArray['headlink'] = $row['linktitle'];
 		$markerArray['linktarget'] = $brokenUrl;
-		$markerArray['linkmessage'] = $row['urlresponse'];
+
+		$response = unserialize($row['urlresponse']);
+		if ($response['valid']) {
+			$linkMessage = '<span style="color: green;">' . $GLOBALS['LANG']->getLL('list.msg.ok') . '</span>';
+		} else {
+			$linkMessage = '<span style="color: red;">' . $hookObj->getErrorMessage($response['errorParams']) . '</span>';
+		}
+		$markerArray['linkmessage'] = $linkMessage;
+
 		$lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['lastcheck']);
 		$lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['lastcheck']);
 		$message = sprintf($GLOBALS['LANG']->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);

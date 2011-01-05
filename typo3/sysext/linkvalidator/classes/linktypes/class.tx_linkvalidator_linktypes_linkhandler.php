@@ -30,7 +30,9 @@
  * @subpackage linkvalidator
  */
 class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+
 	public $tsconfig;
+	const DELETED = 'deleted';
 
 	/**
 	 * Get TsConfig on loading of the class
@@ -45,9 +47,11 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
-	 * @return  string	  validation error message or succes code
+	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
+		$response = TRUE;
+		$errorParams = array();
 		$parts = explode(":", $url);
 		if (count($parts) == 3) {
 			$tablename = htmlspecialchars($parts[1]);
@@ -57,24 +61,26 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 				$tablename,
 				'uid = ' . intval($rowid)
 			);
-			$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.rownotexisting.default.title');
-			if ($this->tsconfig['properties'][$tablename . '.']) {
-				$title = $this->tsconfig['properties'][$tablename . '.']['label'];
-			}
+
 			if ($rows[0]) {
 				if ($rows[0]['deleted'] == '1') {
-					$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
-					$response = str_replace('###title###', $title, $response);
-					return $response;
+					$errorParams['errorType'] = DELETED;
+					$errorParams['tablename'] = $tablename;
+					$errorParams['uid'] = $rowid;
+					$response =  FALSE;
 				}
 			} else {
-				$response = $GLOBALS['LANG']->getLL('list.report.rownotexisting');
-				$response = str_replace('###title###', $title, $response);
-				return $response;
+				$errorParams['tablename'] = $tablename;
+				$errorParams['uid'] = $rowid;
+				$response =  FALSE;
 			}
 		}
 
-		return 1;
+		if(!$response) {
+			$this->setErrorParams();
+		}
+
+		return $response;
 	}
 
 	/**
@@ -89,6 +95,37 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 			$type = 'linkhandler';
 		}
 		return $type;
+	}
+
+	/**
+	 * Generate the localized error message from the error params saved from the parsing. 
+	 *
+	 * @param   array    all parameters needed for the rendering of the error message
+	 * @return  string    validation error message
+	 */
+	public function getErrorMessage($errorParams) {
+		$errorType = $errorParams['errorType'];
+		$tablename = $errorParams['tablename'];
+		$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.default.title');
+
+		if ($this->tsconfig['properties'][$tablename . '.']) {
+			$title = $this->tsconfig['properties'][$tablename . '.']['label'];
+		}
+
+		switch ($errorType) {
+			case DELETED:
+				$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
+				$response = str_replace('###title###', $title, $response);
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+
+			default:
+				$response = $GLOBALS['LANG']->getLL('list.report.rownotexisting');
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+		}
+
+		return $response;
 	}
 }
 

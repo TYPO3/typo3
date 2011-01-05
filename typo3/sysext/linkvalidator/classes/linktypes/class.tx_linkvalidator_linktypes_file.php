@@ -37,14 +37,25 @@ class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstrac
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
-	 * @return  string	  validation error message or succes code
+	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		if (!@file_exists(PATH_site . rawurldecode($url))) {
-			return $GLOBALS['LANG']->getLL('list.report.filenotexisting');
+			return FALSE;
 		}
 
-		return 1;
+		return TRUE;
+	}
+
+	/**
+	 * Generate the localized error message from the error params saved from the parsing. 
+	 *
+	 * @param   array    all parameters needed for the rendering of the error message
+	 * @return  string    validation error message
+	 */
+	public function getErrorMessage($errorParams) {
+		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
+		return $response;
 	}
 }
 

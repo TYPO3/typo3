@@ -42,18 +42,19 @@
 			<label index="list.tableHead.linkmessage">Error message</label>
 			<label index="list.tableHead.lastCheck">Last check (%s)</label>
 			<label index="list.edit">Edit element containing this broken link</label>
-			<label index="list.report.pagedeleted">Page '###title###' is deleted.</label>
-			<label index="list.report.pagenotexisting">Page doesn't exist.</label>
-			<label index="list.report.pagenotvisible">Page '###title###' is not visible.</label>
-			<label index="list.report.rowdeleted">###title### row deleted.</label>
-			<label index="list.report.rownotexisting">###title### row doesn't exist.</label>
-			<label index="list.report.rowdeleted.rownotexisting.default.title">Linked</label>
+			<label index="list.report.pagedeleted">Page '###title###' (###uid###) is deleted.</label>
+			<label index="list.report.pagenotexisting">Page (###uid###) does not exist.</label>
+			<label index="list.report.pagenotvisible">Page '###title###' (###uid###) is not visible.</label>
+			<label index="list.report.rowdeleted">###title### row (###uid###) is deleted.</label>
+			<label index="list.report.rowdeleted.default.title">Linked</label>
+			<label index="list.report.rownotexisting">Row (###uid###) does not exist.</label>
 			<label index="list.report.noresponse">External Link not reachable.</label>
 			<label index="list.report.redirectloop">A redirect loop occurred. (%s: %s)</label>
-			<label index="list.report.pagenotfound404">The requested url was not found (404).</label>
 			<label index="list.report.pageforbidden403">Accessing this address is not allowed (403).</label>
+			<label index="list.report.pagenotfound404">The requested url was not found (404).</label>
 			<label index="list.report.externalerror">External Link returned HTTP error code (%s).</label>
 			<label index="list.report.filenotexisting">File doesn't exist.</label>
+			<label index="list.msg.ok">Ok</label>
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links">No broken links to show!</label>
 		</languageKey>

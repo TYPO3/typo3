@@ -32,6 +32,7 @@
 class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
 	var $url_reports = array();
+	var $url_error_params = array();
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -39,13 +40,19 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 * @param	string		$url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
-	 * @return	string		validation error message or success code
+	 * @return	string		TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
-		if ($this->url_reports[$url]) {
+		$errorParams = array();
+		if (isset($this->url_reports[$url])) {
+			if(!$this->url_reports[$url]) {
+				if(is_array($this->url_error_params[$url])) {
+				    $this->setErrorParams($this->url_error_params[$url]);
+				}
+			}
 			return $this->url_reports[$url];
 		}
-		
+
 			// remove possible anchor from the url
 		if (strrpos($url, '#') !== FALSE) {
 			$url = substr($url, 0, strrpos($url, '#'));
@@ -69,32 +76,75 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 				$tries++;
 		}
 
-        $ret = 1;
+		$response = TRUE;
 
 			// analyze the response
 		if ($report['error']) {
-			$ret = $GLOBALS['LANG']->getLL('list.report.noresponse');
+			$response = FALSE;
 		}
 
-        if ($report['http_code'] >= 300) {
-			$ret = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $report['http_code']);
-		}
 
 			// special handling for more information
 		if (($report['http_code'] == 301) || ($report['http_code'] == 302)
 			|| ($report['http_code'] == 303) || ($report['http_code'] == 307)) {
-				$ret = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $report['http_code'], $location[1]);
-        }
-
-		if ($report['http_code'] == 404) {
-			$ret = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
-		}
-		if ($report['http_code'] == 403) {
-			$ret = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+				$errorParams['errorType'] = $report['http_code'];
+				$errorParams['location'] = $location[1];
+				$response = FALSE;
 		}
 
-		$this->url_reports[$url] = $ret;
-		return $ret;
+		if ($report['http_code'] == 404 || $report['http_code'] == 403) {
+			$errorParams['errorType'] = $report['http_code'];
+			$response = FALSE;
+		}
+
+		if ($report['http_code'] >= 300 && $response) {
+			$errorParams['errorType'] = $report['http_code'];
+			$response = FALSE;
+		}
+
+		if(!$response) {
+			$this->setErrorParams($errorParams);
+		}
+
+		$this->url_reports[$url] = $response;
+		$this->url_error_params[$url] = $errorParams;
+
+		return $response;
+	}
+
+	/**
+	 * Generate the localized error message from the error params saved from the parsing.
+	 *
+	 * @param   array    all parameters needed for the rendering of the error message
+	 * @return  string    validation error message
+	 */
+	public function getErrorMessage($errorParams) {
+		$errorType = $errorParams['errorType'];
+		switch ($errorType) {
+			case 300:
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
+				break;
+
+			case 301:
+			case 302:
+			case 303:
+			case 307:
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorType, $errorParams['location']);
+				break;
+
+			case 404:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
+				break;
+
+			case 403:
+				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+				break;
+
+			default:
+				$response = $GLOBALS['LANG']->getLL('list.report.noresponse');
+		}
+
+		return $response;
 	}
 
 	/**

@@ -31,13 +31,16 @@
  */
 class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
+	const DELETED = 'deleted';
+	const HIDDEN = 'hidden';
+
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
-	 * @return  string	  validation error message or succes code
+	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -46,25 +49,63 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 			'uid = ' . intval($url)
 		);
 
+		$response = TRUE;
+		$errorParams = array();
 		if ($rows[0]) {
 			if ($rows[0]['deleted'] == '1') {
-				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-				$response = str_replace('###title###', $rows[0]['title'], $response);
-				return $response;
+				$errorParams['errorType'] = DELETED;
+				$errorParams['title'] = $rows[0]['title'];
+				$errorParams['uid'] = $rows[0]['uid'];
+				$response = FALSE;
 			} elseif ($rows[0]['hidden'] == '1'
 				|| $GLOBALS['EXEC_TIME'] < intval($rows[0]['starttime'])
 				|| ($rows[0]['endtime'] && intval($rows[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
-
-				$response = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
-				$response = str_replace('###title###', $rows[0]['title'], $response);
-				return $response;
+				$errorParams['errorType'] = HIDDEN;
+				$errorParams['title'] = $rows[0]['title'];
+				$errorParams['uid'] = $rows[0]['uid'];
+				$response = FALSE;
 			}
-			
 		} else {
-			return $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+			$errorParams['errorType'] = 'notExisting';
+			$errorParams['uid'] = intval($url);
+			$response = FALSE;
 		}
 
-		return 1;
+		if (is_array($errorParams) && !$response) {
+			$this->setErrorParams($errorParams);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Generate the localized error message from the error params saved from the parsing. 
+	 *
+	 * @param   array    all parameters needed for the rendering of the error message
+	 * @return  string    validation error message
+	 */
+	public function getErrorMessage($errorParams) {
+		$errorType = $errorParams['errorType'];
+		switch ($errorType) {
+			case DELETED:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
+				$response = str_replace('###title###', $errorParams['title'], $response);
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+
+			case HIDDEN:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
+				$response = str_replace('###title###', $errorParams['title'], $response);
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+            
+			default:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+		}
+
+		return $response;
 	}
 
 	/**
