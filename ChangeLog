@@ -2,6 +2,21 @@
 
 	* Fixed bug #16920: Adjust ExtJS context-menu styling
 
+2011-01-05  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16900: [Cache] Filebackend fails on windows
+	* Fixed bug #16901: [test] t3lib_db_PreparedStatement fails
+
+2011-01-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #7837: Remove option if icon generation is needed
+
+2011-01-04  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Follow-up to #15853: Make admin panel styling more bulletproof and remove duplicate styles
+	* Fixed bug #16906: Link from Install Tool to User Settings should make User Settings active in the module menu (Thanks to Georg Ringer)
+	* Fixed bug #15466: meaningfulTempFilePrefix does not convert Umlauts and special characters (Thanks to Sebastian Michaelsen)
+
 2011-01-03  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Follow-up to #16780: PHP warning in any system BE module
