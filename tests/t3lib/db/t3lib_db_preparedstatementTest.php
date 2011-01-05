@@ -251,7 +251,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	public function passingInvalidMarkersThrowsExeptionDataProvider() {
 		return array(
 			'using other prefix than colon' => array('SELECT * FROM pages WHERE pid=#pid', array('#pid' => 1)),
-			'using non alphanumerical character' => array('SELECT * FROM pages WHERE title=:straße', array(':straße' => 1)),
+			'using non alphanumerical character' => array('SELECT * FROM pages WHERE title=:stra≠e', array(':stra≠e' => 1)),
 			'no colon used' => array('SELECT * FROM pages WHERE pid=pid', array('pid' => 1)),
 			'colon at the end' => array('SELECT * FROM pages WHERE pid=pid:', array('pid:' => 1)),
 			'colon without alphanumerical character' => array('SELECT * FROM pages WHERE pid=:', array(':' => 1)),
