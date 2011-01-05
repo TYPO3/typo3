@@ -1,3 +1,7 @@
+2011-01-05  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16900: [Cache] Filebackend fails on windows
+
 2011-01-04  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #15466: meaningfulTempFilePrefix does not convert Umlauts and special characters (Thanks to Sebastian Michaelsen)
