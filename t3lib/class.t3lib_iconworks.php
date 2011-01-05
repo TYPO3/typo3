@@ -168,7 +168,6 @@ final class t3lib_iconWorks {
 		global $TCA, $PAGES_TYPES, $ICON_TYPES;
 
 			// Flags:
-		$doNotGenerateIcon = $GLOBALS['TYPO3_CONF_VARS']['GFX']['noIconProc']; // If set, the icon will NOT be generated with GDlib. Rather the icon will be looked for as [iconfilename]_X.[extension]
 		$doNotRenderUserGroupNumber = TRUE; // If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
 			// Shadow:
@@ -313,13 +312,6 @@ final class t3lib_iconWorks {
 				// Check if tagged icon file name exists (a tagget icon means the icon base name with the flags added between body and extension of the filename, prefixed with underscore)
 			if (@is_file(dirname($absfile) . '/' . $iconFileName_stateTagged) || @is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . '/' . dirname($iconfile) . '/' . $iconFileName_stateTagged)) { // Look for [iconname]_xxxx.[ext]
 				return dirname($iconfile) . '/' . $iconFileName_stateTagged;
-			} elseif ($doNotGenerateIcon) { // If no icon generation can be done, try to look for the _X icon:
-				$iconFileName_X = preg_replace('/.([[:alnum:]]+)$/', '__x.\1', basename($iconfile));
-				if (@is_file(dirname($absfile) . '/' . $iconFileName_X)) {
-					return dirname($iconfile) . '/' . $iconFileName_X;
-				} else {
-					return 'gfx/i/no_icon_found.gif';
-				}
 			} else { // Otherwise, create the icon:
 				$theRes = self::makeIcon($GLOBALS['BACK_PATH'] . $iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
 				return $theRes;
