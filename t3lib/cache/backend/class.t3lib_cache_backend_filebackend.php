@@ -147,7 +147,9 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				$documentRoot = '/';
 			}
 			if (TYPO3_OS === 'WIN') {
-				$documentRoot = '';
+				if (substr($cacheDirectory, 0,  strlen($documentRoot)) === $documentRoot) {
+					$documentRoot = '';
+				}
 			}
 		}
 
