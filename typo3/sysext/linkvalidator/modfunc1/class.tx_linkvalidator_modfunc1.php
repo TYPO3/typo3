@@ -59,26 +59,41 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 
 		$this->initialize();
+		
+		if($this->pObj->id && $this->isAccessibleForCurrentUser) {
 
-		$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
+			$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
+	
+			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
+			$this->modTS = $this->modTS['properties'];
+	
+			if ($this->modTS['showUpdateButton'] == 1) {
+				$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
+				$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
+			}
+	
+			$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+	
+			$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
+			$this->updateBrokenLinks($processing);
+	
+			$brokenLinkOverView = $processing->getLinkCounts($this->pObj->id);
+			$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
+	
+			$this->render();
+			
+		} else {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('clickAPage_content'),
+				$GLOBALS['LANG']->getLL('title'),
+				t3lib_FlashMessage::INFO
+			);
+			$this->content = $flashMessage->render();
 
-		$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
-		$this->modTS = $this->modTS['properties'];
-
-		if ($this->modTS['showUpdateButton'] == 1) {
-			$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
-			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
+			$markers['CONTENT'] = $this->content;
+			
 		}
-
-		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
-
-		$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
-		$this->updateBrokenLinks($processing);
-
-		$brokenLinkOverView = $processing->getLinkCounts($this->pObj->id);
-		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
-
-		$this->render();
 
 		return $this->flush();
 	}
@@ -536,17 +551,32 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	array		The filled marker array
 	 */
 	private function getTemplateMarkers() {
-		$markers = array(
-			'FIRST_STEPS'			=> $this->firstSteps,
-			'FUNC_MENU'				=> $this->getLevelSelector(),
-			'CONTENT'				=> $this->content,
-			'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
-			'CHECKALLLINK'			=> $this->checkAllHtml,
-			'CHECKOPTIONS'			=> $this->checkOptHtml,
-			'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
-			'REFRESH'				=> $this->refreshListHtml,
-		    'UPDATE'                => $this->updateListHtml
-		);
+		
+		if($this->pObj->id && $this->isAccessibleForCurrentUser) {
+			$markers = array(
+				'FIRST_STEPS'			=> $this->firstSteps,
+				'FUNC_MENU'				=> $this->getLevelSelector(),
+				'CONTENT'				=> $this->content,
+				'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
+				'CHECKALLLINK'			=> $this->checkAllHtml,
+				'CHECKOPTIONS'			=> $this->checkOptHtml,
+				'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
+				'REFRESH'				=> $this->refreshListHtml,
+			    'UPDATE'                => $this->updateListHtml
+			);
+		} else {
+			$markers = array(
+				'FIRST_STEPS'			=> '',
+				'FUNC_MENU'				=> '',
+				'CONTENT'				=> $this->content,
+				'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
+				'CHECKALLLINK'			=> '',
+				'CHECKOPTIONS'			=> '',
+				'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
+				'REFRESH'				=> '',
+			    'UPDATE'                => ''
+			);
+		}
 
 		return $markers;
 	}
