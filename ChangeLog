@@ -1,3 +1,7 @@
+2011-01-06  Chrisstian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16931: [Caching framework] APC backend test setRemovesTagsFromPreviousSet() fails
+
 2011-01-06  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16918: Edit Permissions Link in List View does not work (Thanks to Sebastian Michaelsen)

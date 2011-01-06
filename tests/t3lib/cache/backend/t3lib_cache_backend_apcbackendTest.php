@@ -146,10 +146,10 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 		$data = 'Some data';
 		$identifier = uniqid('MyIdentifier');
-		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 
-		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
+		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
 	}
 
