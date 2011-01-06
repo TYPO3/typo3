@@ -57,6 +57,18 @@ class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstrac
 		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
 		return $response;
 	}
+
+
+	/**
+	 * Url parsing
+	 *
+	 * @param   array	   $row: broken link record
+	 * @return  string	  parsed broken url
+	 */
+	public function getBrokenUrl($row) {
+		$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
+		return $brokenUrl;
+	}
 }
 
 

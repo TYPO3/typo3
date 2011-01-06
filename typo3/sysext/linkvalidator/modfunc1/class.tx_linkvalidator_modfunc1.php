@@ -401,18 +401,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$fieldName = $GLOBALS['TCA'][$table]['columns'][$row['field']]['label'];
 			$fieldName = $GLOBALS['LANG']->sL($fieldName);
 				// Crop colon from end if present.
-				// @TODO: Find a way to reliably get the label without colon from TCA.
 			if (substr($fieldName, '-1', '1') === ':') {
 				$fieldName = substr($fieldName, '0', strlen($fieldName)-1);
 			}
 		}
 			// Fallback, if there is no label
 		$fieldName = $fieldName ? $fieldName : $row['field'];
-
-		if ($row['typelinks'] === 'file') {
-				// If a file in the local filesystem is linked, create an absolute URL.
-			$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $brokenUrl;
-		}
 
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
