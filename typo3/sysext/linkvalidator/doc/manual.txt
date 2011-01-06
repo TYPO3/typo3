@@ -1,9 +1,9 @@
-Manual for Link validator
+﻿Manual for Link validator
 Extension Key: linkvalidator
 Language: en
 Version: 1.0.0
 Keywords: forEditors, forAdmins, forBeginners, forIntermediates, forAdvanced
-Copyright 2000-2010, Linkvalidator Team, <j.rieger@connecta.ag>, <mmiousse@infoglobe.ca>
+Copyright 2000-2011, Linkvalidator Team, <j.rieger@connecta.ag>, <mmiousse@infoglobe.ca>
 
 This document is published under the Open Content License
 available from http://www.opencontent.org/opl.shtml
@@ -33,8 +33,8 @@ What does it do?	4
 Screenshots	4
 Administration	6
 Configuration	7
-Reference:	7
-Known problems	9
+Reference	7
+Hint for large sites	9
 Next steps	10
 
 
@@ -44,7 +44,7 @@ Linkvalidator is a system extension which enables you to conveniently check your
 What's new
 The extension is based on cag_linkchecker. For inclusion in TYPO3 4.5 the code has undergone a major overhaul. As a result not only some bugs were fixed, but also the styling was adapted to fit to this TYPO3 version. 
 Credits
-This extension is particularly based on the extension "cag_linkchecker", which was originally developed for Connecta AG, Wiesbaden. cag_linkchecker is maintained by Jochen Rieger and Dimitri K�nig. 
+This extension is particularly based on the extension "cag_linkchecker", which was originally developed for Connecta AG, Wiesbaden. cag_linkchecker is maintained by Jochen Rieger and Dimitri König. 
 Feedback
 For general questions about the documentation get in touch by writing to documentation@typo3.org.
 If you find a bug in this manual, please file an issue in the bug tracker of this extension: http://forge.typo3.org/projects/extension-linkvalidator/issues
@@ -55,13 +55,12 @@ What does it do?
 This system extension provides a way to report broken links or missing files in your TYPO3 installation. It is a sub module of the info module. 
 
 Linkvalidator includes the following features: 
-Linkvalidator can check all kinds of links. This includes internal links to database records, file links to files in the local file system and external links to files somewhere else in the web. 
+Linkvalidator can check all kinds of links. This includes internal links to content elements, file links to files in the local file system and external links to files somewhere else in the web. 
 Linkvalidator by default looks into header fields and bodytext fields. It can be configured to check any field you like. 
 Linkvalidator offers a just in time check of your website. Additionally the TYPO3 Scheduler is fully supported to run checks automatically. In this case you can choose if you want to receive an email report if broken links were found. 
 Linkvalidator is extendable. It provides hooks to check special types of links like those from the extension "linkhandler". The possibility to check these already is built in. 
 
 Screenshots
-
 You can set the depth of pages you want to check. 
 The ID of the content containing the broken link is visible by moving the mouse over the icon for the content type. 
 
@@ -75,9 +74,10 @@ Apply the needed changes to the database.
 
 
 Configuration
-You find an example configuration in typo3/sysext/linkvalidator/res/pagetsconfig.txt. 
+You find the standard configuration in typo3/sysext/linkvalidator/res/pagetsconfig.txt. 
+This may serve you as an example on how to configure the extension for your needs. 
 
-Reference:
+Reference
 You can set the following options in the TSconfig for a page (e.g. the root page) and override them in user or groups TSconfig. You must prefix them with mod.linkvalidator, e.g. mod.linkvalidator.searchFields.pages = media. 
 
 Property
@@ -143,7 +143,6 @@ TYPO3 Linkvalidator report
 
 
 
-
 Example
 mod.linkvalidator {
 	searchFields {
@@ -164,8 +163,9 @@ mod.linkvalidator {
 }
 
 
-Known problems
-It is recommended to use the scheduler for websites with many hundreds of pages. If you still want to check just in time, set the depth of the module to 2 or 3 levels, not to "infinite". 
+Hint for large sites
+If you have a website with many hundreds of pages, checking all links will take some time and might lead to a time out. If you want to do so, you should not use the button "Check Links" in the backend module of linkvalidator. Use the TYPO3 Scheduler instead. The task provided by linkvalidator will cache the broken links. Afterwards you can use the backend module to edit the according elements. 
+If you still want to check trees with many pages just in time, set the depth to a reasonable level like 2 or 3, not to "infinite". 
 
 
 Next steps
