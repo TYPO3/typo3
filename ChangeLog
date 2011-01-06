@@ -1,3 +1,7 @@
+2011-01-06  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16828: missing XCLASS statement in t3lib/class.t3lib_compressor.php
+
 2011-01-06  Chrisstian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16931: [Caching framework] APC backend test setRemovesTagsFromPreviousSet() fails
