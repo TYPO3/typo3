@@ -296,7 +296,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				$message = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$GLOBALS['LANG']->getLL('list.no.broken.links'),
-					'',
+					$GLOBALS['LANG']->getLL('list.no.broken.links.title'),
 					t3lib_FlashMessage::OK
 				);
 				$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
