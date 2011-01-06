@@ -165,6 +165,7 @@ TYPO3.ModuleMenu.App = {
 							}
 						});
 					}
+					return false;
 				},
 				scope: this
 			}
