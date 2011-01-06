@@ -1,3 +1,7 @@
+2011-01-05  Pierre Boivin <pierre.boivin@infoglobe.ca>
+
+	* Fixed bug #11794: If website root is active, searching for links does not work
+
 2011-01-05  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #11797: linkvalidator saves translated texts in the database which is not good (thanks to Michael Miousse and Philipp Gampe)
