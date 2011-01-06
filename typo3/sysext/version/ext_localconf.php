@@ -13,8 +13,8 @@ if (TYPO3_MODE == 'BE') {
 
 	// add default notification options to every page
 t3lib_extMgm::addPageTSconfig('
-	tx_version.workspaces.stageNotificationEmail.subject = LLL:EXT:version/Resources/Private/Language/emails.xml:subject
-	tx_version.workspaces.stageNotificationEmail.message = LLL:EXT:version/Resources/Private/Language/emails.xml:message
+	tx_version.workspaces.stageNotificationEmail.subject = LLL:EXT:version/Resources/Private/Language/locallang_emails.xml:subject
+	tx_version.workspaces.stageNotificationEmail.message = LLL:EXT:version/Resources/Private/Language/locallang_emails.xml:message
 	# tx_version.workspaces.stageNotificationEmail.additionalHeaders =
 ');
 }
