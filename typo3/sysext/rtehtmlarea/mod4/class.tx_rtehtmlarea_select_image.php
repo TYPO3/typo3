@@ -329,33 +329,43 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	void
 	 */
 	public function insertMagicImage($filepath, $imgInfo, $altText='', $titleText='', $additionalParams='') {
-		if (is_array($imgInfo) && count($imgInfo)==4 && $this->RTEImageStorageDir)	{
-			$fI = pathinfo($imgInfo[3]);
-			$fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-			$basename = $fileFunc->cleanFileName('RTEmagicP_'.$fI['basename']);
-			$destPath =PATH_site.$this->RTEImageStorageDir;
-			if (@is_dir($destPath))	{
-				$destName = $fileFunc->getUniqueName($basename,$destPath);
-				@copy($imgInfo[3],$destName);
-				t3lib_div::fixPermissions($destName);
-				$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'), 0, $this->magicMaxWidth);
-				$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'), 0, $this->magicMaxHeight);
-				if (!$cWidth)	$cWidth = $this->magicMaxWidth;
-				if (!$cHeight)	$cHeight = $this->magicMaxHeight;
-
-				$imgI = $this->imgObj->imageMagickConvert($filepath,'WEB',$cWidth.'m',$cHeight.'m');	// ($imagefile,$newExt,$w,$h,$params,$frame,$options,$mustCreate=0)
-				if ($imgI[3])	{
-					$fI=pathinfo($imgI[3]);
-					$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
-					$destName = $fileFunc->getUniqueName($mainBase,$destPath);
-					@copy($imgI[3],$destName);
+		if (is_array($imgInfo) && count($imgInfo) == 4) {
+			if ($this->RTEImageStorageDir) {
+				$fI = pathinfo($imgInfo[3]);
+				$fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+				$basename = $fileFunc->cleanFileName('RTEmagicP_'.$fI['basename']);
+				$destPath =PATH_site.$this->RTEImageStorageDir;
+				if (@is_dir($destPath))	{
+					$destName = $fileFunc->getUniqueName($basename,$destPath);
+					@copy($imgInfo[3],$destName);
 					t3lib_div::fixPermissions($destName);
-					$destName = dirname($destName).'/'.rawurlencode(basename($destName));
-					$iurl = $this->siteURL.substr($destName,strlen(PATH_site));
-					$this->imageInsertJS($iurl, $imgI[0], $imgI[1], $altText, $titleText, $additionalParams);
+					$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'), 0, $this->magicMaxWidth);
+					$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'), 0, $this->magicMaxHeight);
+					if (!$cWidth)	$cWidth = $this->magicMaxWidth;
+					if (!$cHeight)	$cHeight = $this->magicMaxHeight;
+	
+					$imgI = $this->imgObj->imageMagickConvert($filepath,'WEB',$cWidth.'m',$cHeight.'m');	// ($imagefile,$newExt,$w,$h,$params,$frame,$options,$mustCreate=0)
+					if ($imgI[3])	{
+						$fI=pathinfo($imgI[3]);
+						$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
+						$destName = $fileFunc->getUniqueName($mainBase,$destPath);
+						@copy($imgI[3],$destName);
+						t3lib_div::fixPermissions($destName);
+						$destName = dirname($destName).'/'.rawurlencode(basename($destName));
+						$iurl = $this->siteURL.substr($destName,strlen(PATH_site));
+						$this->imageInsertJS($iurl, $imgI[0], $imgI[1], $altText, $titleText, $additionalParams);
+					} else {
+						t3lib_div::sysLog('Attempt at creating a magic image failed due to error converting image: "' . $filepath . '".', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					}
+				} else {
+					t3lib_div::sysLog('Attempt at creating a magic image failed due to incorrect destination path: "' . $destPath . '".', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
 				}
+			} else {
+				t3lib_div::sysLog('Attempt at creating a magic image failed due to absent RTE_imageStorageDir', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			}
-		}
+		} else {
+			t3lib_div::sysLog('Attempt at creating a magic image failed due to missing image file info.', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
+		}	
 	}
 
 	/**
