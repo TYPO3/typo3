@@ -50,8 +50,18 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$this->search_level = t3lib_div::_GP('search_levels');
 
+		if ($this->pObj->id) {
+			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
+			$this->modTS = $this->modTS['properties'];
+		}
+
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $value) {
+					// Compile list of all available types. Used for checking with button "Check Links".
+				if (strpos($this->modTS['linktypes'], $linkType) !== FALSE) {
+					$this->availableOptions[$linkType] = 1;
+				}
+					// Compile list of types currently selected by the checkboxes.
 				if ($this->pObj->MOD_SETTINGS[$linkType]) {
 					$this->checkOpt[$linkType] = 1;
 				}
@@ -63,9 +73,6 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if($this->pObj->id && $this->isAccessibleForCurrentUser) {
 
 			$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
-
-			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
-			$this->modTS = $this->modTS['properties'];
 
 			if ($this->modTS['showUpdateButton'] == 1) {
 				$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
@@ -184,7 +191,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$update = t3lib_div::_GP('updateLinkList');
 
 		if (!empty($update)) {
-			$processing->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
+			$processing->getLinkStatistics($this->availableOptions, $this->modTS['checkhidden']);
 		}
 	}
 

@@ -1,6 +1,7 @@
 2011-01-06  Christopher  <chrissitopher@gmx.de>
 
 	* Followup to bug #11836: Make use of Flash Messages
+	* Fixed bug #11888: Button "Check Links" only checks those categories of links which are marked with the checkboxes below
 
 2011-01-05  Pierre Boivin <pierre.boivin@infoglobe.ca>
 
