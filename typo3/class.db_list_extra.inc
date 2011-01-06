@@ -1210,9 +1210,16 @@ class localRecordList extends recordList {
 
 					// "Edit Perms" link:
 				if ($table=='pages' && $GLOBALS['BE_USER']->check('modules','web_perm'))	{
-					$cells['perms']='<a href="'.htmlspecialchars('mod/web/perm/index.php?id='.$row['uid'].'&return_id='.$row['uid'].'&edit=1').'" title="'.$LANG->getLL('permissions', TRUE).'">'.
-								t3lib_iconWorks::getSpriteIcon('status-status-locked') .
-							'</a>';
+					$cells['perms'] =
+						'<a href="' .
+							htmlspecialchars(
+								t3lib_extMgm::extRelPath('perm') . 'mod1/index.php' .
+								'?id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1'
+							) .
+							'" title="' . $LANG->getLL('permissions', TRUE) .
+						'">'.
+							t3lib_iconWorks::getSpriteIcon('status-status-locked') .
+						'</a>';
 				} elseif(!$this->table && $GLOBALS['BE_USER']->check('modules','web_perm')) {
 					$cells['perms'] = $this->spaceIcon;
 				}

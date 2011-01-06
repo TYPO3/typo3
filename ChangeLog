@@ -1,5 +1,6 @@
 2011-01-06  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16918: Edit Permissions Link in List View does not work (Thanks to Sebastian Michaelsen)
 	* Fixed bug #16930: Module menu lose selection on collapse section
 
 2011-01-05  Steffen Gebert  <steffen@steffen-gebert.de>
