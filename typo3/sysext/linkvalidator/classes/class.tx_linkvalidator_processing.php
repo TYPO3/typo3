@@ -181,7 +181,8 @@ class tx_linkvalidator_processing {
 						// create / get object
 					$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
 
-					if (is_object($softRefObj)) { // If there was an object returned...:
+						// If there was an object returned...:
+					if (is_object($softRefObj)) {
 							// Do processing
 						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
 						if (!empty($resultArray['elements'])) {
