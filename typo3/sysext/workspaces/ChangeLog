@@ -1,5 +1,6 @@
 2011-01-06  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #11815: WorkspacePreviewLink should be a link
 	* Fixed bug #11029: Workspaces module: Row detail view (Thanks to Lars Zimmermann and Berit Jensen)
 
 2011-01-06  Steffen Kamper  <steffen@typo3.org>
