@@ -1,6 +1,7 @@
 2011-01-07  Christopher  <chrissitopher@gmx.de>
 
 	* Followup to bug #11269: Proofread the manual
+	* Followup to bug #11822: Add extension description in ext_emconf.php
 
 2011-01-07  Pierre Boivin <pierre.boivin@infoglobe.ca>
 
