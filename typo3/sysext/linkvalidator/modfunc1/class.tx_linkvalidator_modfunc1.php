@@ -50,7 +50,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$this->search_level = t3lib_div::_GP('search_levels');
 
-		if ($this->pObj->id) {
+		if (isset($this->pObj->id)) {
 			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 			$this->modTS = $this->modTS['properties'];
 		}
@@ -70,36 +70,23 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$this->initialize();
 
-		if($this->pObj->id && $this->isAccessibleForCurrentUser) {
+		$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
 
-			$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
-
-			if ($this->modTS['showUpdateButton'] == 1) {
-				$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
-				$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
-			}
-
-			$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
-
-			$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
-			$this->updateBrokenLinks($processing);
-
-			$brokenLinkOverView = $processing->getLinkCounts($this->pObj->id);
-			$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
-
-			$this->render();
-
-		} else {
-			$flashMessage = t3lib_div::makeInstance(
-				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('clickAPage_content'),
-				$GLOBALS['LANG']->getLL('title'),
-				t3lib_FlashMessage::INFO
-			);
-			$this->content = $flashMessage->render();
-
-			$markers['CONTENT'] = $this->content;
+		if ($this->modTS['showUpdateButton'] == 1) {
+			$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
+			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
+
+		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+
+		$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
+		$this->updateBrokenLinks($processing);
+
+		$brokenLinkOverView = $processing->getLinkCounts($this->pObj->id);
+		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
+
+		$this->render();
+
 
 		return $this->flush();
 	}
@@ -177,7 +164,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			}
 		}
 			// get children pages
-		$pageList = t3lib_tsfeBeUserAuth::extGetTreeList(
+		$pageList = $this->extGetTreeList(
 			$this->pObj->id,
 			$this->search_level,
 			0,
@@ -265,7 +252,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$keyOpt = array_keys($this->checkOpt);
 		}
 
-		$pageList = t3lib_tsfeBeUserAuth::extGetTreeList(
+		$pageList = $this->extGetTreeList(
 			$this->pObj->id,
 			$this->search_level,
 			0,
@@ -335,7 +322,25 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		return t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
+		
+		if($id == 0) {
+				// If root page selected, check for each pages of the first level
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title',
+				'pages',
+				'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0'
+			);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$pageList = $pageList . t3lib_tsfeBeUserAuth::extGetTreeList($row['uid'], $depth, $begin, $perms_clause) . $row['uid'] . ',';
+			}
+			
+		} else {
+		
+			$pageList = t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
+			
+		}
+		
+		return $pageList;
 	}
 
 
@@ -551,31 +556,17 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	private function getTemplateMarkers() {
 
-		if($this->pObj->id && $this->isAccessibleForCurrentUser) {
-			$markers = array(
-				'FIRST_STEPS'			=> $this->firstSteps,
-				'FUNC_MENU'				=> $this->getLevelSelector(),
-				'CONTENT'				=> $this->content,
-				'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
-				'CHECKALLLINK'			=> $this->checkAllHtml,
-				'CHECKOPTIONS'			=> $this->checkOptHtml,
-				'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
-				'REFRESH'				=> $this->refreshListHtml,
-			    'UPDATE'                => $this->updateListHtml
-			);
-		} else {
-			$markers = array(
-				'FIRST_STEPS'			=> '',
-				'FUNC_MENU'				=> '',
-				'CONTENT'				=> $this->content,
-				'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
-				'CHECKALLLINK'			=> '',
-				'CHECKOPTIONS'			=> '',
-				'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
-				'REFRESH'				=> '',
-			    'UPDATE'                => ''
-			);
-		}
+		$markers = array(
+			'FIRST_STEPS'			=> $this->firstSteps,
+			'FUNC_MENU'				=> $this->getLevelSelector(),
+			'CONTENT'				=> $this->content,
+			'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
+			'CHECKALLLINK'			=> $this->checkAllHtml,
+			'CHECKOPTIONS'			=> $this->checkOptHtml,
+			'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
+			'REFRESH'				=> $this->refreshListHtml,
+		    'UPDATE'                => $this->updateListHtml
+		);
 
 		return $markers;
 	}

@@ -244,7 +244,26 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
 	function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		return t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
+		
+		if($id == 0) {
+				// If root page selected, check for each pages of the first level
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title',
+				'pages',
+				'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0'
+			);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$pageList = $pageList . t3lib_tsfeBeUserAuth::extGetTreeList($row['uid'], $depth, $begin, $perms_clause) . $row['uid'] . ',';
+			}
+			
+		} else {
+		
+			$pageList = t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
+			
+		}
+		
+		return $pageList;
+		
 	}
 
 
