@@ -1076,7 +1076,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 								// Add default class for images
 							$lines[]='
 								<tr>
-									<td colspan="2"><img src="'.$iurl.'" width="'.$IW.'" height="'.$IH.'" alt=""' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):''). ' /></td>
+									<td colspan="2"><img src="'.$iurl.'" width="'.$IW.'" height="'.$IH.'" alt=""' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):''). ' style="cursor:move;" /></td>
 								</tr>';
 							$lines[]='
 								<tr>
