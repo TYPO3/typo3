@@ -157,11 +157,10 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'default' => '1',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.show',
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden_checkbox_1_formlabel',
 					),
 				),
 			),
@@ -295,10 +294,9 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide_checkbox_1_formlabel',
 					),
 				),
 			),
@@ -460,10 +458,9 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache_checkbox_1_formlabel',
 					),
 				),
 			),
@@ -473,10 +470,9 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search_checkbox_1_formlabel',
 					),
 				),
 			),

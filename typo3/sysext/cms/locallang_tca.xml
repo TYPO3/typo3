@@ -43,6 +43,7 @@
 			<label index="pages.fe_group_formlabel">Usergroup Access Rights</label>
 			<label index="pages.hidden">Hide page:</label>
 			<label index="pages.hidden_formlabel">Page</label>
+			<label index="pages.hidden_checkbox_1_formlabel">Disable</label>
 			<label index="pages.layout_formlabel">Frontend Layout</label>
 			<label index="pages.layout.I.1">Layout 1</label>
 			<label index="pages.layout.I.2">Layout 2</label>
@@ -56,7 +57,8 @@
 			<label index="pages.nav_title">Navigation title:</label>
 			<label index="pages.nav_title_formlabel">Alternative Navigation Title</label>
 			<label index="pages.nav_hide">Hide in menu:</label>
-			<label index="pages.nav_hide_formlabel">Show in Menus</label>
+			<label index="pages.nav_hide_formlabel">In menus</label>
+			<label index="pages.nav_hide_checkbox_1_formlabel">Hide</label>
 			<label index="pages.subtitle">Subtitle:</label>
 			<label index="pages.subtitle_formlabel">Subtitle</label>
 			<label index="pages.target">Target:</label>
@@ -96,8 +98,10 @@
 			<label index="pages.tabs.behaviour">Behaviour</label>
 			<label index="pages.no_cache">No cache:</label>
 			<label index="pages.no_cache_formlabel">Cache</label>
+			<label index="pages.no_cache_checkbox_1_formlabel">Disable</label>
 			<label index="pages.no_search">No search:</label>
 			<label index="pages.no_search_formlabel">Include in Search</label>
+			<label index="pages.no_search_checkbox_1_formlabel">Disable</label>
 			<label index="pages.shortcut_mode">Shortcut mode:</label>
 			<label index="pages.shortcut_mode_formlabel">Shortcut Mode</label>
 			<label index="pages.shortcut_mode.I.0">Selected page</label>

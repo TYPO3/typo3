@@ -1404,17 +1404,13 @@ class t3lib_TCEforms {
 				if (!($c % $cols)) {
 					$item .= '<tr>';
 				}
-				$renderInverted = !empty($config['renderInverted']) ? TRUE : FALSE;
-				$cBP = $this->checkBoxParams($PA['itemFormElName'], $thisValue, $c, count($selItems), implode('', $PA['fieldChangeFunc']), $renderInverted);
+				$cBP = $this->checkBoxParams($PA['itemFormElName'], $thisValue, $c, count($selItems), implode('', $PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'] . '_' . $c;
 				$cBID = $PA['itemFormElID'] . '_' . $c;
 				$item .= '<td nowrap="nowrap">' .
-					'<input type="checkbox"' . $this->insertDefStyle('check') .
-						' value="1" name="' . $cBName . '"' . $cBP .
-						$disabled . ' id="' . $cBID . '" ' .
-					' />' .
-					$this->wrapLabels('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>&nbsp;') .
-					'</td>';
+						 '<input type="checkbox"' . $this->insertDefStyle('check') . ' value="1" name="' . $cBName . '"' . $cBP . $disabled . ' id="' . $cBID . '" />' .
+						 $this->wrapLabels('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>&nbsp;') .
+						 '</td>';
 				if (($c % $cols) + 1 == $cols) {
 					$item .= '</tr>';
 				}
@@ -1432,16 +1428,12 @@ class t3lib_TCEforms {
 		} else {
 			for ($c = 0; $c < count($selItems); $c++) {
 				$p = $selItems[$c];
-				$renderInverted = !empty($config['renderInverted']) ? TRUE : FALSE;
-				$cBP = $this->checkBoxParams($PA['itemFormElName'], $thisValue, $c, count($selItems), implode('', $PA['fieldChangeFunc']), $renderInverted);
+				$cBP = $this->checkBoxParams($PA['itemFormElName'], $thisValue, $c, count($selItems), implode('', $PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'] . '_' . $c;
 				$cBID = $PA['itemFormElID'] . '_' . $c;
 				$item .= ($c > 0 ? '<br />' : '') .
-					'<input type="checkbox"' . $this->insertDefStyle('check') .
-						' value="1" name="' . $cBName . '"' . $cBP .
-						$PA['onFocus'] . $disabled . ' id="' . $cBID . '" ' .
-					' />' .
-					$this->wrapLabels('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>');
+						 '<input type="checkbox"' . $this->insertDefStyle('check') . ' value="1" name="' . $cBName . '"' . $cBP . $PA['onFocus'] . $disabled . ' id="' . $cBID . '" />' .
+						 $this->wrapLabels('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>');
 			}
 		}
 		if (!$disabled) {
@@ -4282,26 +4274,12 @@ class t3lib_TCEforms {
 	 * @param	string		Additional JavaScript for the onclick handler.
 	 * @return	string		The onclick attribute + possibly the checked-option set.
 	 */
-	protected function checkBoxParams($itemName, $thisValue, $c, $iCount, $addFunc = '', $renderInverted = FALSE) {
-		$toggleOn  = $this->elName($itemName) . '.value&' . (pow(2, $iCount) - 1 - pow(2, $c));
-		$toggleOff = $this->elName($itemName) . '.value|' . pow(2, $c);
-		$isChecked = ($thisValue & pow(2, $checkboxNumber));
-
-		if ($renderInverted) {
-			$isChecked = !$isChecked;
-
-			$tmp       = $toggleOn;
-			$toggleOn  = $toggleOff;
-			$toggleOff = $tmp;
-		}
-
-		$toggle = $this->elName($itemName) . '.value=this.checked?' .
-			'(' . $toggleOff . '):(' . $toggleOn . ');';
-
-		$onclick = ' onclick="' . htmlspecialchars($toggle . $addFunc) . '" ';
-		$checked = $isChecked ? ' checked="checked" ' : '';
-
-		return $onclick . $checked;
+	function checkBoxParams($itemName, $thisValue, $c, $iCount, $addFunc = '') {
+		$onClick = $this->elName($itemName) . '.value=this.checked?(' . $this->elName($itemName) . '.value|' . pow(2, $c) . '):(' . $this->elName($itemName) . '.value&' . (pow(2, $iCount) - 1 - pow(2, $c)) . ');' .
+				   $addFunc;
+		$str = ' onclick="' . htmlspecialchars($onClick) . '"' .
+			   (($thisValue & pow(2, $c)) ? ' checked="checked"' : '');
+		return $str;
 	}
 
 	/**

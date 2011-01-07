@@ -121,6 +121,8 @@
 			<label index="imageborder">Border:</label>
 			<label index="imageborder_formlabel">Border</label>
 			<label index="image_noRows">No rows:</label>
+			<label index="image_noRows_formlabel">Horizontal Rows</label>
+			<label index="image_noRows.I.0">Deactivate</label>
 			<label index="image_noRows_formlabel">Display as Rows</label>
 			<label index="image_link">Link:</label>
 			<label index="image_link_formlabel">Links (Separate with Commas, One Link per Image)</label>
@@ -241,6 +243,7 @@
 			<label index="linkToTop_formlabel">Append with Link to Top of Page</label>
 			<label index="rte_enabled">Disable Rich Text Editor:</label>
 			<label index="rte_enabled_formlabel">Rich Text Editor</label>
+			<label index="rte_enabled.I.0">Disable</label>
 			<label index="pi_flexform">Plugin Options</label>
 			<label index="ALT.imgOptions">Image Options</label>
 			<label index="ALT.imgLinks">Image Links</label>
@@ -304,6 +307,7 @@
 			<label index="sys_language_uid_formlabel">Language</label>
 			<label index="subheader_formlabel">Subheader</label>
 			<label index="hidden_formlabel">Content Element</label>
+			<label index="hidden.I.0">Disable</label>
 			<label index="starttime_formlabel">Publish Date</label>
 			<label index="endtime_formlabel">Expiration Date</label>
 			<label index="fe_group_formlabel">Usergroup Access Rights</label>

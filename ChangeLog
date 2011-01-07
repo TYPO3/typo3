@@ -1,3 +1,7 @@
+2011-01-07  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Follow-up to #16857: Reverted the "renderInverted" feature and its use in the negated checkboxes
+
 2011-01-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #16940: htmlArea RTE: Log magic image creation failures to syslog

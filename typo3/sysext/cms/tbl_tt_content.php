@@ -171,10 +171,9 @@ $TCA['tt_content'] = array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'items' => array (
 					'1'	=> array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.show',
+						'0' => 'LLL:EXT:cms/locallang_ttc.xml:hidden.I.0',
 					),
 				),
 			),
@@ -809,10 +808,9 @@ $TCA['tt_content'] = array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:image_noRows',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'items' => array (
 					'1'	=> array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:cms/locallang_ttc.xml:image_noRows.I.0',
 					),
 				),
 			),
@@ -1599,11 +1597,10 @@ $TCA['tt_content'] = array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:rte_enabled',
 			'config' => array(
 				'type' => 'check',
-				'renderInverted' => TRUE,
 				'showIfRTE' => 1,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+						'0' => 'LLL:EXT:cms/locallang_ttc.xml:rte_enabled.I.0',
 					),
 				),
 			),

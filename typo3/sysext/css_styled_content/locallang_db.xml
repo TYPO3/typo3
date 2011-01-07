@@ -14,7 +14,7 @@
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1">Top</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2">Left</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_headerpos">Table Header Position</label>
-			<label index="tt_content.tx_cssstyledcontent_acctables_nostyles">Use CSS Styles</label>
+			<label index="tt_content.tx_cssstyledcontent_acctables_nostyles">No CSS styles for this table</label>
 			<label index="tt_content.tx_cssstyledcontent_acctables_tableclass">Additional CSS Class</label>
 			<label index="tt_content.tx_cssstyledcontent_tableparsing">CSV parsing</label>
 			<label index="tt_content.tx_cssstyledcontent_tableparsing_quote">Text Delimiter</label>
