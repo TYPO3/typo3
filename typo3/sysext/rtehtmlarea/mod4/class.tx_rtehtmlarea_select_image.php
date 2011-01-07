@@ -1003,7 +1003,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	function TBE_dragNDrop($expandFolder=0,$extensionList='')	{
 		global $BACK_PATH;
 
-		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
+		$expandFolder = $expandFolder ? $expandFolder : t3lib_div::_GP('expandFolder');
 		$out='';
 		if ($expandFolder && $this->checkFolder($expandFolder))	{
 			if ($this->isWebFolder($expandFolder))	{
