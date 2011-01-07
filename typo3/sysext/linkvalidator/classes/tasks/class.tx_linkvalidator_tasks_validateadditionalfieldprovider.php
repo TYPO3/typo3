@@ -212,7 +212,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		}
 
 		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid = ' . $submittedData['page'])) {
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) != 1) {
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0 && $submittedData['page'] > 0) {
 				$isValid = FALSE;
 				$schedulerModule->addMessage(
 					$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidPage'),

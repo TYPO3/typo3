@@ -123,9 +123,9 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 						}
 					}
 				}
-				$pageIds = $this->extGetTreeList($page, $this->depth, 0, '1=1');
-				$pageIds .= $page;
 				$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
+				$pageIds = $processing->extGetTreeList($page, $this->depth, 0, '1=1');
+				$pageIds .= $page;
 				$processing->init($searchFields, $pageIds);
 				if (!empty($this->email)) {
 					$oldLinkCounts = $processing->getLinkCounts($page);
@@ -223,47 +223,6 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 			$content = t3lib_parsehtml::substituteMarkerArray($pageSectionHTML, $markerArray, '###|###', TRUE, TRUE);
 		}
 		return $content;
-	}
-
-
-	/**
-	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
-	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
-	 * this is necessary to create the object that is used recursively by the original function.
-	 *
-	 * Generates a list of Page uids from $id. List does not include $id itself.
-	 * The only pages excluded from the list are deleted pages.
-	 *
-	 *							  level in the tree to start collecting uid's. Zero means
-	 *							  'start right away', 1 = 'next level and out'
-	 *
-	 * @param	integer		Start page id
-	 * @param	integer		Depth to traverse down the page tree.
-	 * @param	integer		$begin is an optional integer that determines at which
-	 * @param	string		Perms clause
-	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
-	 */
-	function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		
-		if($id == 0) {
-				// If root page selected, check for each pages of the first level
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'uid,title',
-				'pages',
-				'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0'
-			);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$pageList = $pageList . t3lib_tsfeBeUserAuth::extGetTreeList($row['uid'], $depth, $begin, $perms_clause) . $row['uid'] . ',';
-			}
-			
-		} else {
-		
-			$pageList = t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
-			
-		}
-		
-		return $pageList;
-		
 	}
 
 

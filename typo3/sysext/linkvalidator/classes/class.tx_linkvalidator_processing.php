@@ -248,6 +248,49 @@ class tx_linkvalidator_processing {
 		}
 		return $markerArray;
 	}
+	
+	/**
+	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
+	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
+	 * this is necessary to create the object that is used recursively by the original function.
+	 *
+	 * Generates a list of page uids from $id. List does not include $id itself.
+	 * The only pages excluded from the list are deleted pages.
+	 *
+	 *							  level in the tree to start collecting uids. Zero means
+	 *							  'start right away', 1 = 'next level and out'
+	 *
+	 * @param	integer		Start page id
+	 * @param	integer		Depth to traverse down the page tree.
+	 * @param	integer		$begin is an optional integer that determines at which
+	 * @param	string		Perms clause
+	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
+	 */
+	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
+		$depth = intval($depth);
+		$begin = intval($begin);
+		$id = intval($id);
+		$theList = '';
+
+		if ($depth > 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title',
+				'pages',
+				'pid=' . $id . ' AND deleted=0 AND ' . $perms_clause
+			);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				if ($begin <= 0) {
+					$theList .= $row['uid'] . ',';
+					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
+				}
+				if ($depth > 1) {
+					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+				}
+			}
+		}
+		return $theList;
+	}
+	
 
 }
 
