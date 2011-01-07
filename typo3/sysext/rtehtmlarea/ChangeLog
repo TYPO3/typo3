@@ -1,3 +1,7 @@
+2011-01-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16945: htmlArea RTE: Incorrect default tab label in image insertion dialogue
+
 2011-01-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #16940: htmlArea RTE: Log magic image creation failures to syslog

@@ -32,7 +32,7 @@
 			<label index="update">Update</label>
 			<label index="magicImage">New Magic Image</label>
 			<label index="plainImage">New Plain Image</label>
-			<label index="dragDropImage">Drag'n'Drop</label>
+			<label index="dragDropImage">Drag and Drop</label>
 			<label index="currentImage">Current Image</label>
 			<label index="bytes">bytes</label>
 			<label index="pixels">pixels</label>
