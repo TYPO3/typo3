@@ -1,6 +1,7 @@
 2011-01-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed issue #16940: htmlArea RTE: Log magic image creation failures to syslog
+	* Fixed bug #16893: htmlArea RTE: Fatal error on invoking the RTE
 
 2010-12-22  Stanislas Rolland  <typo3@sjbr.ca>
 

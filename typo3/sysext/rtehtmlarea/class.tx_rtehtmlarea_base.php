@@ -858,8 +858,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (is_array($this->thisConfig['buttons.'])) {
 			foreach ($this->thisConfig['buttons.'] as $buttonIndex => $conf) {
 				$button = substr($buttonIndex, 0, -1);
+				if (is_array($conf)) {
 					$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].buttons.'.$button.' = ' . $this->buildNestedJSArray($conf) . ';';
+				}
 			}
 		}
 
