@@ -3,6 +3,7 @@
 	* Fixed bug #16945: htmlArea RTE: Incorrect default tab label in image insertion dialogue
 	* Fixed bug #16946: htmlArea RTE: Mouse cursor should be move cursor in drag an drop tab
 	* Fixed bug #16948: htmlArea RTE: Temporary files folder should not be expanded in drag & drop tab
+	* Fixed bug #16904: htmlArea RTE: Trailing slash stripped from href of autolinks
 
 2011-01-07  Ernesto Baschny  <ernst@cron-it.de>
 
