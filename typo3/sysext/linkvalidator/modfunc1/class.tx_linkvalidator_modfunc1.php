@@ -319,9 +319,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead = array();
 
 		$makerTableHead['tablehead_path'] = $GLOBALS['LANG']->getLL('list.tableHead.path');
-		$makerTableHead['tablehead_type'] = $GLOBALS['LANG']->getLL('list.tableHead.type');
-		$makerTableHead['tablehead_headline'] = $GLOBALS['LANG']->getLL('list.tableHead.headline');
-		$makerTableHead['tablehead_field'] = $GLOBALS['LANG']->getLL('list.tableHead.field');
+		$makerTableHead['tablehead_element'] = $GLOBALS['LANG']->getLL('list.tableHead.element');
 		$makerTableHead['tablehead_headlink'] = $GLOBALS['LANG']->getLL('list.tableHead.headlink');
 		$makerTableHead['tablehead_linktarget'] = $GLOBALS['LANG']->getLL('list.tableHead.linktarget');
 		$makerTableHead['tablehead_linkmessage'] = $GLOBALS['LANG']->getLL('list.tableHead.linkmessage');
@@ -382,11 +380,14 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			// Fallback, if there is no label
 		$fieldName = $fieldName ? $fieldName : $row['field'];
 
+			// column "Element"
+		$element = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['recuid']));
+		$element .= $elementHeadline;
+		$element .= ' ' . sprintf($GLOBALS['LANG']->getLL('list.field'), $fieldName);
+
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
-		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['recuid']));
-		$markerArray['headline'] = $elementHeadline;
-		$markerArray['field'] = $fieldName;
+		$markerArray['element'] = $element; 
 		$markerArray['headlink'] = $row['linktitle'];
 		$markerArray['linktarget'] = $brokenUrl;
 

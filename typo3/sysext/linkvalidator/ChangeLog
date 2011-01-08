@@ -1,6 +1,7 @@
 2011-01-08  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #12019: Do not display the format of the date of the last check
+	* Fixed bug #12026: Combine columns Type, Headline and Field
 
 2011-01-07  Christopher  <chrissitopher@gmx.de>
 
