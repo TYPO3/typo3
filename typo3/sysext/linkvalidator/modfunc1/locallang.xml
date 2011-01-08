@@ -58,7 +58,6 @@
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links.title">No broken links to show!</label>
 			<label index="list.no.broken.links">There are no broken links to be displayed.</label>
-			<label index="clickAPage_content">Please click a page title in the page tree.</label>
 		</languageKey>
 	</data>
 </T3locallang>
