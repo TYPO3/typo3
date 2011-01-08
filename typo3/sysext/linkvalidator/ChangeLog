@@ -2,6 +2,7 @@
 
 	* Followup to bug #11269: Proofread the manual
 	* Followup to bug #11822: Add extension description in ext_emconf.php
+	* Fixed bug #12008: Row "Title" should be called "Headline"
 
 2011-01-07  Pierre Boivin <pierre.boivin@infoglobe.ca>
 

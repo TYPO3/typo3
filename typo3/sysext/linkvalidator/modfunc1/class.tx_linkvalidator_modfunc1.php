@@ -366,9 +366,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 				' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 
-		$elementType = $row['headline'];
-		if (empty($elementType)) {
-			$elementType = $table . ':' . $row['recuid'];
+		$elementHeadline = $row['headline'];
+		if (empty($elementHeadline)) {
+			$elementHeadline = $table . ':' . $row['recuid'];
 		}
 
 			// Get the language label for the field from TCA
@@ -386,7 +386,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
 		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ': ' . $row['recuid']));
-		$markerArray['headline'] = $elementType;
+		$markerArray['headline'] = $elementHeadline;
 		$markerArray['field'] = $fieldName;
 		$markerArray['headlink'] = $row['linktitle'];
 		$markerArray['linktarget'] = $brokenUrl;
