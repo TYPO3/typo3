@@ -79,6 +79,17 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
 
+		if (t3lib_extMgm::isLoaded('scheduler')) {
+			if ($GLOBALS['BE_USER']->isAdmin()) {
+				$this->firstSteps .= ' ' . 
+				sprintf($GLOBALS['LANG']->getLL('first.steps.info.scheduler'),
+				 	'<a href="' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/mod.php?M=tools_txschedulerM1">', '</a>'
+				);
+			} else {
+				$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.scheduler.admin');
+			}
+		}
+
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 
 		$this->processing = t3lib_div::makeInstance('tx_linkvalidator_processing');

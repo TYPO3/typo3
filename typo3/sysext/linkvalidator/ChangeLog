@@ -4,6 +4,7 @@
 	* Fixed bug #12026: Combine columns Type, Headline and Field
 	* Fixed bug #12022: Add CSH labels for the labels of the Scheduler job
 	* Fixed bug #12024: Remove cellspacing (thanks to Steffen Gebert)
+	* Fixed bug #12025: Add link to scheduler
 
 2011-01-07  Christopher  <chrissitopher@gmx.de>
 

@@ -22,8 +22,10 @@
 			<label index="overview.branch.links">External links:</label>
 			<label index="overview.attention.header">Attention:</label>
 			<label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
-			<label index="first.steps">Choose the level of pages to check and press "Refresh display" to show the results from cache.</label>
-			<label index="first.steps.info.update.button">You can update the cache by pressing "Check links". Note that this process can take some time.</label>
+			<label index="first.steps">Choose the level of pages to check and press "Refresh display" to show the results.</label>
+			<label index="first.steps.info.update.button">You can update the stored results by pressing "Check links". Note that this process can take some time.</label>
+			<label index="first.steps.info.scheduler">Alternatively you can also configure the %sTYPO3 Scheduler%s to update the stored results regularly.</label>
+			<label index="first.steps.info.scheduler.admin">Alternatively your administrator can also configure the TYPO3 Scheduler to update the stored results regularly.</label>
 			<label index="label_refresh">Refresh display</label>
 			<label index="label_update">Check links</label>
 			<label index="overviews.statistics.header">Statistics of broken Links</label>
