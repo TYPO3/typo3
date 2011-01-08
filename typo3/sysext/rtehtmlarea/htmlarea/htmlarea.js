@@ -4483,8 +4483,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			cls: 'htmlarea-window',
 			width: dimensions.width,
 			border: false,
-				// As of ExtJS 3.3, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {

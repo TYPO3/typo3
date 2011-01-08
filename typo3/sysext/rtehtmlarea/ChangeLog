@@ -1,6 +1,7 @@
 2011-01-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16904: htmlArea RTE: Trailing slash stripped from href of autolinks
+	* Fixed bug #16750: htmlArea RTE: Popup layer for editing links is not resizeable in IE
 
 2010-12-04  Stanislas Rolland  <typo3@sjbr.ca>
 
