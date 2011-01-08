@@ -368,7 +368,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
-			$elementHeadline = $table . ':' . $row['recuid'];
+			$elementHeadline = $GLOBALS['LANG']->getLL('list.no.headline');
 		}
 
 			// Get the language label for the field from TCA

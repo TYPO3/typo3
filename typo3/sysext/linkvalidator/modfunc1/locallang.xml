@@ -42,6 +42,7 @@
 			<label index="list.tableHead.linkmessage">Error message</label>
 			<label index="list.tableHead.lastCheck">Last check (%s)</label>
 			<label index="list.edit">Edit element containing this broken link</label>
+			<label index="list.no.headline">(none)</label>
 			<label index="list.report.pagedeleted">Page '###title###' (###uid###) is deleted.</label>
 			<label index="list.report.pagenotexisting">Page (###uid###) does not exist.</label>
 			<label index="list.report.pagenotvisible">Page '###title###' (###uid###) is not visible.</label>
