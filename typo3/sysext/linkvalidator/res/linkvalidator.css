@@ -61,3 +61,12 @@
 	padding-right: 6px;
 	text-align: center;
 }
+
+#linkvalidator_statsTable td,
+#linkvalidator_brokenLinksTable td {
+	border-left: 1px solid white;
+} 
+#linkvalidator_statsTable td:first-child,
+#linkvalidator_brokenLinksTable td:first-child {
+	border-left: none;
+}
