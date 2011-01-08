@@ -1,3 +1,7 @@
+2011-01-08  Christopher  <chrissitopher@gmx.de>
+
+	* Fixed bug #12019: Do not display the format of the date of the last check
+
 2011-01-07  Christopher  <chrissitopher@gmx.de>
 
 	* Followup to bug #11269: Proofread the manual

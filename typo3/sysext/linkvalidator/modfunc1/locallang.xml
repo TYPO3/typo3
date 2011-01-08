@@ -40,7 +40,7 @@
 			<label index="list.tableHead.headlink">Link</label>
 			<label index="list.tableHead.linktarget">URL / Link Target</label>
 			<label index="list.tableHead.linkmessage">Error message</label>
-			<label index="list.tableHead.lastCheck">Last check (%s)</label>
+			<label index="list.tableHead.lastCheck">Last check</label>
 			<label index="list.edit">Edit element containing this broken link</label>
 			<label index="list.no.headline">(none)</label>
 			<label index="list.report.pagedeleted">Page '###title###' (###uid###) is deleted.</label>

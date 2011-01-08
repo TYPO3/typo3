@@ -325,8 +325,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$makerTableHead['tablehead_headlink'] = $GLOBALS['LANG']->getLL('list.tableHead.headlink');
 		$makerTableHead['tablehead_linktarget'] = $GLOBALS['LANG']->getLL('list.tableHead.linktarget');
 		$makerTableHead['tablehead_linkmessage'] = $GLOBALS['LANG']->getLL('list.tableHead.linkmessage');
-		$makerTableHead['tablehead_lastcheck'] = sprintf($GLOBALS['LANG']->getLL('list.tableHead.lastCheck'),
-				$TYPO3_CONF_VARS['SYS']['ddmmyy'] . ' ' . $TYPO3_CONF_VARS['SYS']['hhmm']);
+		$makerTableHead['tablehead_lastcheck'] = $GLOBALS['LANG']->getLL('list.tableHead.lastCheck');
 
 			// Add CSH to the header of each column
 		foreach($makerTableHead as $column => $label) {
