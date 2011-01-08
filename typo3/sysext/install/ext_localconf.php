@@ -48,4 +48,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['migrateWorkspaces'] = '
 	// Version 4.5: Removes the ".gif" suffix from entries in sys_language
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['flagsFromSprites'] = 'tx_coreupdates_flagsfromsprite';
 
+	// Version 4.5: Adds excludeable FlexForm fields to Backend group access lists (ACL)
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['addFlexformsToAcl'] = 'tx_coreupdates_addflexformstoacl';
+
 ?>

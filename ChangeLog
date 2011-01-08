@@ -1,3 +1,7 @@
+2011-01-07  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #16493: Editable FlexForms require a possibility to update group access lists within update wizard (Thanks to Kai Vogel)
+
 2011-01-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16945: htmlArea RTE: Incorrect default tab label in image insertion dialogue
