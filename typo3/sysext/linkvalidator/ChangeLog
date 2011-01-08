@@ -2,6 +2,7 @@
 
 	* Fixed bug #12019: Do not display the format of the date of the last check
 	* Fixed bug #12026: Combine columns Type, Headline and Field
+	* Fixed bug #12022: Add CSH labels for the labels of the Scheduler job
 
 2011-01-07  Christopher  <chrissitopher@gmx.de>
 
