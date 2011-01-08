@@ -385,7 +385,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
-		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ': ' . $row['recuid']));
+		$markerArray['type'] = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['recuid']));
 		$markerArray['headline'] = $elementHeadline;
 		$markerArray['field'] = $fieldName;
 		$markerArray['headlink'] = $row['linktitle'];
