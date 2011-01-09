@@ -1,3 +1,7 @@
+2011-01-09  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11971: Live Tab is linked in Live view
+
 2011-01-06  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #11815: WorkspacePreviewLink should be a link
