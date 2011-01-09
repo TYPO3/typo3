@@ -726,10 +726,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$ttlHours = ($ttlHours ? $ttlHours : 24*2);
 
 			if (t3lib_div::_POST('_previewLink_wholeWorkspace'))	{
-				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . 'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours,$GLOBALS['BE_USER']->workspace).'&id='.intval($this->id);
+				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60*60*$ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($this->id);
 			} else {
 				$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
-				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) .'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'],60*60*$ttlHours);
+				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'], 60*60*$ttlHours);
 			}
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('previewUrl'), sprintf($GLOBALS['LANG']->getLL('previewInstruction'), $ttlHours) . '<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>', 0, 1);
 		}
