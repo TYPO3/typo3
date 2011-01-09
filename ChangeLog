@@ -1,6 +1,7 @@
 2011-01-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13695: Image output in frontend is not xhtml valid
+	* Fixed bug #5896: Inserting a divider (<hr>) in the RTE breaks XHTML validation (and other things)
 
 2011-01-07  Stanislas Rolland  <typo3@sjbr.ca>
 
