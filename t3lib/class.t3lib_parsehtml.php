@@ -88,6 +88,8 @@
 class t3lib_parsehtml {
 
 	protected $caseShift_cache = array();
+		// Void elements that do not have closing tags, as defined by HTML5, except link element
+	const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
 
 	/**
 	 * Returns the first subpart encapsulated in the marker, $marker
@@ -741,9 +743,12 @@ class t3lib_parsehtml {
 					$tagContent = substr($tok, $endTag, $tagEnd - $endTag);
 					$tagParts = preg_split('/\s+/s', $tagContent, 2);
 					$tagName = strtolower($tagParts[0]);
+					$emptyTag = 0;
 					if (isset($tags[$tagName])) {
 						if (is_array($tags[$tagName])) { // If there is processing to do for the tag:
-
+							if (preg_match('/^(' . self::VOID_ELEMENTS . ' )$/i', $tagName)) {
+								$emptyTag = 1;
+							}
 							if (!$endTag) { // If NOT an endtag, do attribute processing (added dec. 2003)
 									// Override attributes
 								if (strcmp($tags[$tagName]['overrideAttribs'], '')) {
@@ -926,7 +931,7 @@ class t3lib_parsehtml {
 
 								if ($setTag) {
 										// Setting the tag
-									$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . $gt, $addConfig, $endTag, $lt == '&lt;');
+									$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . ($emptyTag ? ' /' : '' ) . $gt, $addConfig, $endTag, $lt == '&lt;');
 								}
 							}
 						} else {
