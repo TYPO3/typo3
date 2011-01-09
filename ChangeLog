@@ -1,3 +1,7 @@
+2011-01-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13695: Image output in frontend is not xhtml valid
+
 2011-01-05  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16900: [Cache] Filebackend fails on windows
