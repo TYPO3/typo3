@@ -1,5 +1,6 @@
 2011-01-09  Tolleiv Nietsch  <typo3@tolleiv.de>
 
+	* Fixed bug #11832: Versioning - t3lib_extMgm::createListViewLink() function no longer available (Thanks to Mark Johnston)
 	* Fixed bug #16786: Generating preview link not working since Update to 4.4.5
 
 2011-01-06  Tolleiv Nietsch  <typo3@tolleiv.de>
