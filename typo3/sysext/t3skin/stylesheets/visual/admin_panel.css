@@ -5,7 +5,7 @@
 	box-shadow: 0px 3px 15px #808080;
 	margin: 0;
 	padding: 0;
-	z-index:0;
+	z-index: 10002;
 }
 
 #TSFE_ADMIN_PANEL_FORM .typo3-adminPanel {

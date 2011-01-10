@@ -1,3 +1,7 @@
+2011-01-11  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Follow-up to #15853: Add z-index to admin panel
+
 2011-01-10  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16172: Accessing FE in fresh install fails with RuntimeException "No database selected" (Thanks to Lars Peipmann)
