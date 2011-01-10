@@ -3138,13 +3138,19 @@ final class t3lib_div {
 	/**
 	 * Sets the file system mode and group ownership of a file or a folder.
 	 *
-	 * @param   string   Absolute filepath of file or folder, must not be escaped.
+	 * @param   string   Path of file or folder, must not be escaped. Path can be absolute or relative
 	 * @param   boolean  If set, also fixes permissions of files and folders in the folder (if $path is a folder)
 	 * @return  mixed	TRUE on success, FALSE on error, always TRUE on Windows OS
 	 */
 	public static function fixPermissions($path, $recursive = FALSE) {
 		if (TYPO3_OS != 'WIN') {
 			$result = FALSE;
+
+				// Make path absolute
+			if (!self::isAbsPath($path)) {
+				$path = self::getFileAbsFileName($path, FALSE);
+			}
+
 			if (self::isAllowedAbsPath($path)) {
 				if (@is_file($path)) {
 						// "@" is there because file is not necessarily OWNED by the user

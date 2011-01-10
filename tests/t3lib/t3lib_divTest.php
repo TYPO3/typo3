@@ -1860,6 +1860,32 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertFalse($fixPermissionsResult);
 	}
 
+	/**
+	 * @test
+	 */
+	public function fixPermissionsSetsPermissionsWithRelativeFileReference() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+		$filename = 'typo3temp/' . uniqid('test_');
+		t3lib_div::writeFileToTypo3tempDir(PATH_site . $filename, '42');
+		chmod($filename, 0742);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+		$fixPermissionsResult = t3lib_div::fixPermissions($filename);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms(PATH_site . $filename)), 2);
+		unlink(PATH_site . $filename);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultFilePermissions, '0660');
+	}
+
 
 	///////////////////////////////
 	// Tests concerning mkdir
