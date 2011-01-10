@@ -1,3 +1,7 @@
+2011-01-10  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16172: Accessing FE in fresh install fails with RuntimeException "No database selected" (Thanks to Lars Peipmann)
+
 2011-01-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13695: Image output in frontend is not xhtml valid

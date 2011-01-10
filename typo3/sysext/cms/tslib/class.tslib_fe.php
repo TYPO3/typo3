@@ -487,53 +487,33 @@
 	 * @return	void
 	 */
 	function connectToDB()	{
-		try {
-			$link = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
-		} catch (RuntimeException $e) {
-			if (TYPO3_db) {
-					// Database is defined, this should normally not happen, user should be informed
-				throw $e;
-			}
-			$link = FALSE;
+		if (!TYPO3_db) {
+				// jump into Install Tool 1-2-3 mode, if no DB name is defined (fresh installation)
+			t3lib_utility_Http::redirect(TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316');
 		}
+
+			// sql_pconnect() can throw an Exception in case of some failures, or it returns FALSE
+		$link = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
 		if ($link !== FALSE) {
-			if (!TYPO3_db)	{
-				throw new RuntimeException('Database Error: No database selected');
-					// Redirects to the Install Tool:
-				echo '<script type="text/javascript">
-						/*<![CDATA[*/
-					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
-						/*]]>*/
-					</script>';
-				exit;
-			} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
+				// Connection to DB server ok, now select the database
+			if (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 				if ($this->checkPageUnavailableHandler())	{
-					$this->pageUnavailableAndExit('Cannot connect to the current database, "'.TYPO3_db.'"');
+					$this->pageUnavailableAndExit('Cannot connect to the configured database "'.TYPO3_db.'"');
 				} else {
-					$message = 'Cannot connect to the current database, "'.TYPO3_db.'"';
+					$message = 'Cannot connect to the configured database "'.TYPO3_db.'"';
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
-					throw new RuntimeException('Database Error: ' . $message);
+					throw new RuntimeException('Database Error: ' . $message, 1293617736);
 				}
 			}
 		} else {
-			if (!TYPO3_db)	{
-					// Redirects to the Install Tool:
-				echo '<script type="text/javascript">
-						/*<![CDATA[*/
-					window.location.href = "'.TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316";
-						/*]]>*/
-					</script>';
-				exit;
-			}
-
 			if ($this->checkPageUnavailableHandler())	{
 				$this->pageUnavailableAndExit('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
 			} else {
 				$message = 'The current username, password or host was not accepted when the connection to the database was attempted to be established!';
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 				header('HTTP/1.0 503 Service Temporarily Unavailable');
-				throw new RuntimeException('Database Error: ' . $message);
+				throw new RuntimeException('Database Error: ' . $message, 1293617741);
 			}
 		}
 
