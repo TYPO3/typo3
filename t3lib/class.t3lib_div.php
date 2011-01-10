@@ -251,6 +251,13 @@ final class t3lib_div {
 	 */
 	protected static $nonSingletonInstances = array();
 
+	/**
+	 * Register for makeInstance with given class name and final class names to reduce number of class_exists() calls
+	 *
+	 * @var array Given class name => final class name
+	 */
+	protected static $finalClassNameRegister = array();
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -5418,7 +5425,12 @@ final class t3lib_div {
 			throw new InvalidArgumentException('$classname must not be empty.', 1288965219);
 		}
 
-		$finalClassName = self::getClassName($className);
+			// Determine final class name which must be instantiated, this takes XCLASS handling
+			// into account. Cache in a local array to save some cycles for consecutive calls.
+		if (!isset(self::$finalClassNameRegister[$className])) {
+			self::$finalClassNameRegister[$className] = self::getClassName($className);
+		}
+		$finalClassName = self::$finalClassNameRegister[$className];
 
 			// Return singleton instance if it is already registered
 		if (isset(self::$singletonInstances[$finalClassName])) {

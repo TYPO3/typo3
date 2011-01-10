@@ -4,6 +4,7 @@
 
 2011-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #16951: [Performance] Speed up makeInstance() by caching getClassName() results
 	* Fixed bug #15133: Rendering images with ImageMagick fails to set file permissions (Thanks to Alexander Grein)
 
 2011-01-10  Ernesto Baschny  <ernst@cron-it.de>
