@@ -1,3 +1,7 @@
+2011-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #15133: Rendering images with ImageMagick fails to set file permissions (Thanks to Alexander Grein)
+
 2011-01-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13695: Image output in frontend is not xhtml valid
