@@ -6,6 +6,7 @@
 
 	* Fixed bug #16878: Make t3lib_utility_Client::getBrowserInfo() aware of more operating systems (Thanks to Andreas Lappe)
 	* Fixed bug #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Fixed bug #16961: When the title length is changed in the user setup module the pagetree needs to be updated (Thanks to Stefan Galinski)
 
 2011-01-11  Jeff Segars  <jeff@webempoweredchurch.org>
 

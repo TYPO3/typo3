@@ -106,6 +106,7 @@ class SC_mod_user_setup_index {
 	 */
 	var $OLD_BE_USER;
 	var $languageUpdate;
+	protected $pagetreeNeedsRefresh = FALSE;
 
 	protected $isAdmin;
 	protected $dividers2tabs;
@@ -159,6 +160,11 @@ class SC_mod_user_setup_index {
 				// reload left frame when switching BE language
 			if (isset($d['lang']) && ($d['lang'] != $BE_USER->uc['lang'])) {
 				$this->languageUpdate = true;
+			}
+
+				// reload pagetree if the title length is changed
+			if (isset($d['titleLen']) && ($d['titleLen'] !== $BE_USER->uc['titleLen'])) {
+				$this->pagetreeNeedsRefresh = TRUE;
 			}
 
 			if ($d['setValuesToDefault']) {
@@ -375,6 +381,10 @@ class SC_mod_user_setup_index {
 					top.TYPO3ModuleMenu.refreshMenu();
 				}
 			';
+		}
+
+		if ($this->pagetreeNeedsRefresh) {
+			t3lib_BEfunc::setUpdateSignal('updatePageTree');
 		}
 
 			// Start page:
