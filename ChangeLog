@@ -1,3 +1,7 @@
+2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
+
 2011-01-11  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16878: Make t3lib_utility_Client::getBrowserInfo() aware of more operating systems (Thanks to Andreas Lappe)

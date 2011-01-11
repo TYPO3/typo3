@@ -115,7 +115,6 @@ $TYPO3_CONF_VARS = array(
 			'cacheBackends' => array(
 				't3lib_cache_backend_DbBackend'              => 't3lib_cache_backend_DbBackend',
 				't3lib_cache_backend_FileBackend'            => 't3lib_cache_backend_FileBackend',
-				't3lib_cache_backend_GlobalsBackend'         => 't3lib_cache_backend_GlobalsBackend',
 				't3lib_cache_backend_MemcachedBackend'       => 't3lib_cache_backend_MemcachedBackend',
 				't3lib_cache_backend_PdoBackend'             => 't3lib_cache_backend_PdoBackend',
 				't3lib_cache_backend_RedisBackend'           => 't3lib_cache_backend_RedisBackend',
