@@ -503,7 +503,8 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 }
 
 /* mask while loading */
-.t3-mask-loading .ext-el-mask {
+.t3-mask-loading .ext-el-mask,
+.x-panel .ext-el-mask {
 	background-color: #f8f8f8;
 }
 

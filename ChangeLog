@@ -1,3 +1,7 @@
+2011-01-11  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16941: Change mask color
+
 2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
