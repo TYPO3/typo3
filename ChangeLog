@@ -1,3 +1,7 @@
+2011-01-11  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16878: Make t3lib_utility_Client::getBrowserInfo() aware of more operating systems (Thanks to Andreas Lappe)
+
 2011-01-11  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Follow-up to #15853: Add z-index to admin panel

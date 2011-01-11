@@ -137,6 +137,77 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether a condition does match the iOS with the correct and more recent 'iOS'
+	 * @test
+	 */
+	public function conditionDoesMatchIosWithCorrectSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7W367a Safari/531.21.10';
+		$result = $this->matchCondition->match('[system = iOS]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a condition does match the iOS with the old 'mac'
+	 * @test
+	 */
+	public function conditionDoesMatchIosWithOldSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7W367a Safari/531.21.10';
+		$result = $this->matchCondition->match('[system = mac]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a condition does match Windows 2000 with the correct and more recent 'win2k'
+	 * @test
+	 */
+	public function conditionDoesMatchWindows2kWithNewSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; SV1)';
+		$result = $this->matchCondition->match('[system = win2k]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a condition does match Windows 2000 with the old 'winNT'
+	 * @test
+	 */
+	public function conditionDoesMatchWindows2kWithOldSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; SV1)';
+		$result = $this->matchCondition->match('[system = winNT]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a condition does match Windows NT with 'winNT'
+	 * @test
+	 */
+	public function conditionDoesMatchWindowsNtWithSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 4.0)';
+		$result = $this->matchCondition->match('[system = winNT]');
+		$this->assertTrue($result);
+	}
+
+
+	/**
+	 * Tests whether a condition does match Android with the correct and more recent 'android'
+	 * @test
+	 */
+	public function conditionDoesMatchAndroidWithNewSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
+		$result = $this->matchCondition->match('[system = android]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a condition does match Android with the old 'linux'
+	 * @test
+	 */
+	public function conditionDoesMatchAndroidWithOldSystemKey() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
+		$result = $this->matchCondition->match('[system = linux]');
+		$this->assertTrue($result);
+	}
+
+	/**
 	 * Tests whether a device type condition matches a crawler.
 	 * @test
 	 */

@@ -201,5 +201,317 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		 	$infoArray['all']['gecko']
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows7() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'win7',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindowsVista() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'winVista',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindowsXp() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'winXP',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows2k() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; SV1)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'win2k',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows2kServicePack1() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.01; SV1)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'win2k',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindowsNt() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 4.0)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'winNT',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringContainingNtAsFallback() {
+		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'winNT',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfIpad() {
+		$userAgentString = 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7W367a Safari/531.21.10';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'iOS',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfIphone() {
+		$userAgentString = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'iOS',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfIpod() {
+		$userAgentString = 'Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Geckto) Version/3.0 Mobile/3A101a Safari/419.3';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'iOS',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfMacOsX() {
+		$userAgentString = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_5; en-us) AppleWebKit/534.15+ (KHTML, like Gecko) Version/5.0.3 Safari/533.19.4';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'mac',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfLinux() {
+		$userAgentString = 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.8) Gecko/20100723 Ubuntu/10.04 (lucid) Firefox/3.6.8';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'linux',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfSolaris() {
+		$userAgentString = 'Mozilla/5.0 (X11; U; SunOS i86pc; en-US; rv:1.9.1.9) Gecko/20100525 Firefox/3.5.9';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'unix_sun',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfAndroid() {
+		$userAgentString = 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'android',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfOpenbsd() {
+		$userAgentString = 'Links (1.00pre20; OpenBSD 4.8 i386; 80x25)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'unix_bsd',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfNetbsd() {
+		$userAgentString = 'Links (2.2; NetBSD 5.1 amd64; 80x25)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'unix_bsd',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfFreebsd() {
+		$userAgentString = 'Mozilla/5.0 (X11; U; FreeBSD amd64; c) AppleWebKit/531.2+ (KHTML, like Gecko) Safari 531.2+ Epiphany/230.2';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'unix_bsd',
+			$infoArray['system']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfChromeOs() {
+		$userAgentString = 'Mozilla/5.0 (X11; U; CrOS i686  9.10.0; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.253.0 Safari 532.5';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'chrome',
+			$infoArray['system']
+		);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfSafari() {
+		$userAgentString = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6; en-us) AppleWebKit/531.9 (KHTML, like Gecko) Version/4.0.3 Safari/531.9';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'safari',
+			$infoArray['browser']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfFirefox() {
+		$userAgentString = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0b8) Gecko/20100101 Firefox/4.0b8';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'firefox',
+			$infoArray['browser']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfOpera() {
+		$userAgentString = 'Opera/9.80 (X11; FreeBSD 8.1-RELEASE amd64; U; en) Presto/2.2.15 Version/10.10';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'opera',
+			$infoArray['browser']
+		);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfMobileSafariOnAndroid() {
+		$userAgentString = 'Mozilla/5.0 (Linux; U; Android WildPuzzleROM v8.0.7 froyo 2.2; de-de; HTC Wildfire Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'safari',
+			$infoArray['browser']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfMobileSafariOnIphone() {
+		$userAgentString = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_2_1 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8C148 Safari/6533.18.5';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'safari',
+			$infoArray['browser']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectBrowserValueForUserAgentStringOfKonqueror() {
+		$userAgentString = 'Mozilla/5.0 (compatible; Konqueror/4.4; FreeBSD) KHTML/4.4.5 (like Gecko)';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertSame(
+			'konqueror',
+			$infoArray['browser']
+		);
+	}
 }
 ?>

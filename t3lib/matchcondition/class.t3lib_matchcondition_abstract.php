@@ -257,8 +257,14 @@ abstract class t3lib_matchCondition_abstract {
 			break;
 			case 'system':
 				$values = t3lib_div::trimExplode(',', $value, TRUE);
+					// Take all identified systems into account, e.g. mac for iOS, Linux
+					// for android and Windows NT for Windows XP
+				$allSystems = $browserInfo['system'];
+				if (!empty($browserInfo['all_systems'])) {
+					$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
+				}
 				foreach ($values as $test) {
-					if (strpos(' ' . $browserInfo['system'], $test) == 1) {
+					if (stripos($allSystems, $test) !== FALSE) {
 						return TRUE;
 					}
 				}

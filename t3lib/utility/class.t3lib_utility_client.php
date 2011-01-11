@@ -104,10 +104,24 @@ final class t3lib_utility_Client {
 		}
 
 			// system
+			// Microsoft Documentation about Platform tokens: http://msdn.microsoft.com/en-us/library/ms537503(VS.85).aspx
 		$browserInfo['system'] = '';
+		$browserInfo['all_systems'] = '';
 		if (strstr($userAgent, 'Win')) {
 				// windows
-			if (strstr($userAgent, 'Win98') || strstr($userAgent, 'Windows 98')) {
+			if (strstr($userAgent, 'Windows NT 6.1')) {
+				$browserInfo['system'] = 'win7';
+				$browserInfo['all_systems'][] = 'winNT';
+			} elseif (strstr($userAgent, 'Windows NT 6.0')) {
+				$browserInfo['system'] = 'winVista';
+				$browserInfo['all_systems'][] = 'winNT';
+			} elseif (strstr($userAgent, 'Windows NT 5.1')) {
+				$browserInfo['system'] = 'winXP';
+				$browserInfo['all_systems'][] = 'winNT';
+			} elseif (strstr($userAgent, 'Windows NT 5.0')) {
+				$browserInfo['system'] = 'win2k';
+				$browserInfo['all_systems'][] = 'winNT';
+			} elseif (strstr($userAgent, 'Win98') || strstr($userAgent, 'Windows 98')) {
 				$browserInfo['system'] = 'win98';
 			} elseif (strstr($userAgent, 'Win95') || strstr($userAgent, 'Windows 95')) {
 				$browserInfo['system'] = 'win95';
@@ -117,16 +131,31 @@ final class t3lib_utility_Client {
 				$browserInfo['system'] = 'win311';
 			}
 		} elseif (strstr($userAgent, 'Mac')) {
-			$browserInfo['system'] = 'mac';
+			if (strstr($userAgent, 'iPad') || strstr($userAgent, 'iPhone') || strstr($userAgent, 'iPod')) {
+				$browserInfo['system'] = 'iOS';
+				$browserInfo['all_systems'][] = 'mac';
+			} else {
+				$browserInfo['system'] = 'mac';
+			}
 				// unixes
 		} elseif (strstr($userAgent, 'Linux')) {
-			$browserInfo['system'] = 'linux';
+			if (strstr($userAgent, 'Android')) {
+				$browserInfo['system'] = 'android';
+				$browserInfo['all_systems'][] = 'linux';
+			} else {
+				$browserInfo['system'] = 'linux';
+			}
+		} elseif (strstr($userAgent, 'BSD')) {
+			$browserInfo['system'] = 'unix_bsd';
 		} elseif (strstr($userAgent, 'SGI') && strstr($userAgent, ' IRIX ')) {
 			$browserInfo['system'] = 'unix_sgi';
 		} elseif (strstr($userAgent, ' SunOS ')) {
 			$browserInfo['system'] = 'unix_sun';
 		} elseif (strstr($userAgent, ' HP-UX ')) {
 			$browserInfo['system'] = 'unix_hp';
+		} elseif (strstr($userAgent, 'CrOS')) {
+			$browserInfo['system'] = 'chrome';
+			$browserInfo['all_systems'][] = 'linux';
 		}
 
 		return $browserInfo;
