@@ -99,7 +99,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 		$this->includeTCA();
 
 			// install version and workspace extension (especially when updating from very old TYPO3 versions
-		$this->installExtensions(array('version', 'workspaces'));
+		$this->installExtensions(array('extbase', 'fluid', 'version', 'workspaces'));
 
 			// migrate all workspaces to support groups and be_users
 		if ($this->isOldStyleAdminFieldUsed()) {
