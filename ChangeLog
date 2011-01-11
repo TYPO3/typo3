@@ -1,3 +1,7 @@
+2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
+
 2011-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15133: Rendering images with ImageMagick fails to set file permissions (Thanks to Alexander Grein)
