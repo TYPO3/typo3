@@ -1,3 +1,7 @@
+2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
+
 2011-01-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13695: Image output in frontend is not xhtml valid
