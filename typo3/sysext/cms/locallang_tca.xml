@@ -53,7 +53,7 @@
 			<label index="pages.url_scheme.http">http://</label>
 			<label index="pages.url_scheme.https">https://</label>
 			<label index="pages.extendToSubpages">Include subpages:</label>
-			<label index="pages.extendToSubpages_formlabel">Include Subpages</label>
+			<label index="pages.extendToSubpages_formlabel">Extend to Subpages</label>
 			<label index="pages.nav_title">Navigation title:</label>
 			<label index="pages.nav_title_formlabel">Alternative Navigation Title</label>
 			<label index="pages.nav_hide">Hide in menu:</label>
