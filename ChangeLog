@@ -1,3 +1,7 @@
+2011-01-12  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #16988: Update Context Sensitive Help for pages and tt_content to match new labels
+
 2011-01-12  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed issue #16806: pages_language_overlay does not fit new page layout

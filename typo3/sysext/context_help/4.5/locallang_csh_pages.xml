@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for pages table, specifically tailored for the CMS extension.</description>
+		<type>CSH</type>
+		<csh_table>pages</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="layout.description">The Frontend Layout can change the way a page design appears.</label>
+			<label index="layout.details">This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</label>
+			<label index="doktype.description">Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</label>
+			<label index="doktype.details">'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</label>
+			<label index="_doktype.seeAlso">pages:shortcut,
+pages:url</label>
+			<label index="hidden.description">If this is checked, the page will be disabled on the website.</label>
+			<label index="hidden.details">The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</label>
+			<label index="_hidden.seeAlso">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</label>
+			<label index="_hidden.image">EXT:context_help/cshimages/hidden_page.gif,
+EXT:context_help/cshimages/pages_1.png</label>
+			<label index="hidden.image_descr">The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red &quot;Preview&quot; box will tell you that this page is visible to you because of this special circumstance.</label>
+			<label index="starttime.description">The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</label>
+			<label index="starttime.syntax">The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</label>
+			<label index="_starttime.seeAlso">pages:endtime,pages:hidden</label>
+			<label index="_.seeAlso">tt_content</label>
+			<label index="endtime.description">The Expiration Date specifies when the page will no longer be visible online.</label>
+			<label index="endtime.syntax">See Page / Publication Date (click below)</label>
+			<label index="_endtime.seeAlso">pages:starttime</label>
+			<label index="fe_group.description">If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise &quot;Show at Any Login&quot; will make the page visible for any logged in Frontend user.</label>
+			<label index="_fe_group.seeAlso">fe_groups</label>
+			<label index="_fe_group.image">EXT:context_help/cshimages/fegroups_4.png</label>
+			<label index="extendToSubpages.description">By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</label>
+			<label index="extendToSubpages.details">Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</label>
+			<label index="_extendToSubpages.seeAlso">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</label>
+			<label index="_extendToSubpages.image">EXT:context_help/cshimages/pages_2.png</label>
+			<label index="extendToSubpages.image_descr">This page has access restricted to a certain group and has &quot;Extend to Subpages&quot; set as well. This is reflected in the way the page icon has changed.</label>
+			<label index="alias.description">A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</label>
+			<label index="alias.details">Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
+URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
+Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</label>
+			<label index="alias.syntax">A URL Alias can contain only lowercase alphanumeric characters and must be unique.
+Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</label>
+			<label index="target.description">This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</label>
+			<label index="target.details">The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page. 
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2
+</label>
+			<label index="no_cache.description">This option disables server caching of the page.</label>
+			<label index="no_cache.details">Normally pages in TYPO3 are cached on the server after being constructed for the first time. This means a page is displayed much faster the second time it's requested.
+For most pages this presents no problems; indeed, it boosts the performance of the website.
+However you may need to disable caching for a page if it contains dynamic content which must not be cached under any circumstances. Normally the PHP-code rendering such content is programmed to disable the caching automatically. But with this option you can force the page not to be cached.</label>
+			<label index="_no_cache.seeAlso">pages:cache_timeout</label>
+			<label index="cache_timeout.description">Sets the Cache Lifetime for the page.</label>
+			<label index="cache_timeout.details">By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</label>
+			<label index="_cache_timeout.seeAlso">pages:no_cache</label>
+			<label index="no_search.description">If enabled, this option excludes the page from searching operations on the website.</label>
+			<label index="author.description">Enter the page author's name.</label>
+			<label index="author.details">Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.			
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</label>
+			<label index="_author.seeAlso">pages:author_email</label>
+			<label index="author_email.description">Enter the page author's email address.</label>
+			<label index="_author_email.seeAlso">pages:author</label>
+			<label index="module.description">Define the page as containing a Frontend plugin.</label>
+			<label index="module.details">Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</label>
+			<label index="media.description">Attach media files related to the page.</label>
+			<label index="media.details">This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</label>
+			<label index="subtitle.description">Enter a subtitle if needed.</label>
+			<label index="subtitle.details">Whether this field is used or not depends on the template. In most cases it's not used.</label>
+			<label index="url.description">Enter the URL this page redirects to.</label>
+			<label index="url.details">For example, 'http://www.typo3.com' or just 'www.typo3.com' if the 'Protocol' selector is set to 'http://'.
+Use the 'Protocol' selector to select a prefix for the URL.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</label>
+			<label index="_url.seeAlso">pages:urltype</label>
+			<label index="shortcut.description">Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</label>
+			<label index="shortcut.details">Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</label>
+			<label index="_shortcut.seeAlso">pages:doktype,
+pages:shortcut_mode</label>
+			<label index="_shortcut.image">EXT:context_help/cshimages/page_shortcut.gif</label>
+			<label index="shortcut.image_descr">Select a Shortcut Target page with the Element Browser.</label>
+			<label index="keywords.description">Enter keywords for the page separated by commas. You may also use short phrases.</label>
+			<label index="keywords.details">Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</label>
+			<label index="_keywords.seeAlso">pages:description</label>
+			<label index="description.description">Enter a short description of the page. It will be displayed in the result lists of most search engines.</label>
+			<label index="description.details">Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.
+			</label>
+			<label index="_description.seeAlso">pages:keywords
+pages:abstract</label>
+			<label index="abstract.description">Enter an abstract of the contents. It may be displayed in an overview of articles.</label>
+			<label index="abstract.details">An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+			
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</label>
+			<label index="_abstract.seeAlso">pages:description</label>
+			<label index="newUntil.description">Enter the date at which this page is no longer considered new.</label>
+			<label index="newUntil.details">The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</label>
+			<label index="newUntil.syntax">See Page / Publication Date (click below)</label>
+			<label index="_newUntil.seeAlso">pages:starttime</label>
+			<label index="lastUpdated.description">Enter the date and time of the most recent update to this page.</label>
+			<label index="lastUpdated.details">How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</label>
+			<label index="lastUpdated.syntax">The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</label>
+			<label index="nav_hide.description">With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</label>
+			<label index="_nav_hide.seeAlso">pages:nav_title</label>
+			<label index="nav_title.description">Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</label>
+			<label index="content_from_pid.description">If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</label>
+			<label index="urltype.description">Set the Protocol for the URL.</label>
+			<label index="shortcut_mode.description">Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</label>
+			<label index="mount_pid.description">Mount this page. If set, subpages of this page come from the Mounted Page instead.</label>
+			<label index="mount_pid.details">In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</label>
+			<label index="_mount_pid.seeAlso">pages:mount_pid_ol</label>
+			<label index="mount_pid_ol.description">Show content for the current page or replace it completely with the Mounted Page.</label>
+			<label index="_mount_pid_ol.seeAlso">pages:mount_pid</label>
+			<label index="title.description.+">This is normally shown in the website navigation.</label>
+			<label index="TSconfig.details.+">&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</label>
+			<label index="l18n_cfg.description">Affect availability of pages in the various languages.</label>
+			<label index="l18n_cfg.details">&lt;b&gt;Hide default translation of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</label>
+		</languageKey>
+	</data>
+</T3locallang>

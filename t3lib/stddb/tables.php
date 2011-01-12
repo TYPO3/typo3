@@ -406,6 +406,9 @@ t3lib_extMgm::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xm
 t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xml'); // Web > Info
 t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xml'); // Web > Func
 
+// Labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_pages.xml'][] = 'EXT:lang/4.5/locallang_csh_pages.xml';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_corebe.xml'][] = 'EXT:lang/4.5/locallang_csh_corebe.xml';
 
 /**
  * $FILEICONS defines icons for the various file-formats
