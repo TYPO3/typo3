@@ -338,9 +338,7 @@ class SC_show_item {
 		$code = '';
 
 			// Setting header:
-		$icon = t3lib_BEfunc::getFileIcon($ext);
-		$url = 'gfx/fileicons/'.$icon;
-		$fileName = '<img src="'.$url.'" width="18" height="16" align="top" alt="" /><strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', 1).':</strong> '.$fI['file'];
+		$fileName = t3lib_iconWorks::getSpriteIconForFile($ext) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', TRUE) . ':</strong> ' . $fI['file'];
 		if (t3lib_div::isFirstPartOfStr($this->file,PATH_site))	{
 			$code.= '<a href="../'.substr($this->file,strlen(PATH_site)).'" target="_blank">'.$fileName.'</a>';
 		} else {

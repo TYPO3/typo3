@@ -18,6 +18,7 @@
 2011-01-12  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16939: ExtJS Tooltip / CSH styling
+	* Fixed bug #16977: show_item shows wrong icon for files (Thanks to Georg Ringer)
 
 2011-01-12  Benjamin Mack  <benjamin.mack@typo3.org>
 
