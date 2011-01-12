@@ -312,7 +312,7 @@ Using the &quot;Search&quot; type, the page you insert will be the page to which
 
 The &quot;Login&quot; type content element also uses this field to direct the login to a certain page. However that page does not need to contain a Login content element in order to perform the authentication - you can in fact submit a login request to any TYPO3 page and it will be evaluated!
 If you specify a second page in this list, the id will be passed to the login system as being the page inside TYPO3 where the database of users to look up is found. You should use this only if your template is not configured to pass this value on.
-In order for the login procedure to work, you must make sure that 1) you have created at least one Website user and member usergroup and is using the correct username and password, 2) you have configured in your TypoScript template on which page (typically a folder) the users can be found - or alternatively have specified this by the second page in the this page list, 3) cookies must be enabled.
+In order for the login procedure to work, you must make sure that 1) you have created at least one Website user and member usergroup and is using the correct username and password, 2) you have configured in your TypoScript template on which page (typically a SysFolder) the users can be found - or alternatively have specified this by the second page in the this page list, 3) cookies must be enabled.
 
 The &quot;Menu/Sitemap&quot; element also uses this field. In that case the page(s) will determine from which point the menu is drawn or maybe even represent the actual pages to which the menu links. All this depends on the subtype of Menu/Sitemap you have selected.
 

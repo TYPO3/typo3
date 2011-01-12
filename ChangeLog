@@ -10,6 +10,7 @@
 
 	* Fixed issue #16985: Rename Sysfolder to Folder
 	* Follow-up to #16857: Changed label "Include Subpages" to "Extend to Subpages"
+	* Reverted changes in CSH where SysFolder was renamed to to Folder - will be re-added with updated CSH
 
 2011-01-12  Sebastian Kurfuerst  <sebastian@typo3.org>
 

@@ -17,10 +17,10 @@
 
 &lt;b&gt;Special types:&lt;/b&gt;
 'Spacer' is only meaningfull if your frontend navigation is programmed to use it. In this case it does not represent a page with content but is intended to be a non-clickable placeholder in the navigation.
-'Folder' is a page type which cannot be shown as a webpage but is rather acting as a place to store records of your choice.
+'SysFolder' is a page type which cannot be shown as a webpage but is rather acting as a storage for records of your choice.
 'Recycler' is a garbage can. Pages and records in a recycler are not visible in the frontend.
 
-&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records on the page (A folder will allow any record if you have any problems).</label>
+&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).</label>
 			<label index="_doktype.seeAlso">pages:shortcut,
 pages:url</label>
 			<label index="hidden.description">If this is checked, the page will be hidden on the website.</label>
