@@ -966,7 +966,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);
 				}
 			}
-			if ($row !== NULL) {
+			if ($row !== NULL && is_array($row)) {
 				$overlayedRows[] = $row;
 			}
 		}
