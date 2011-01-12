@@ -356,12 +356,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 				// If access to Web>List for user, then link to that module.
-			$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-				array(
-					'id' => $this->pageinfo['uid'],
-					'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI')
-				),
-				'', // empty title
+			$buttons['record_list'] = t3lib_extMgm::createListViewLink(
+				$this->pageinfo['uid'],
+				'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
 			);
 		}
