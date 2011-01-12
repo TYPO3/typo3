@@ -68,6 +68,57 @@ class tslib_content_PhpScript extends tslib_content_Abstract {
 		return $content;
 	}
 
+	/**
+	 * Allow access to other tslib_content methods.
+	 *
+	 * Provides backwards compatibility for older included PHP_SCRIPT which simply
+	 * call methods like $this->typoLink (e.g. the old "languageMenu.php" sample).
+	 *
+	 * @deprecated since 4.5, will be removed in 4.7. Use $this->cObj-><method>() instead
+	 *
+	 * @param string $method The called method
+	 * @param array $arguments The original arguments
+	 * @return mixed
+	 */
+	public function __call($method, $arguments) {
+		if (method_exists($this->cObj, $method)) {
+			$trail = debug_backtrace();
+			$location = $trail[1]['file'] . '#' . $trail[1]['line'];
+			t3lib_div::deprecationLog(
+				sprintf('%s: PHP_SCRIPT called $this->%s. Modify it to call $this->cObj->%s instead. Will be removed in 4.7.',
+					$location, $method, $method
+				)
+			);
+			return call_user_func_array(array($this->cObj, $method), $arguments);
+		} else {
+			trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
+		}
+	}
+
+	/**
+	 * Allow access to other tslib_content variables.
+	 *
+	 * Provides backwards compatibility for PHP_SCRIPT which simply
+	 * accesses properties like $this->parameters.
+	 *
+	 * @deprecated since 4.5, will be removed in 4.7. Use $this->cObj-><property> instead.
+	 *
+	 * @param string $name The name of the property
+	 * @return mixed
+	 */
+	public function __get($name) {
+		if (array_key_exists($name, get_object_vars($this->cObj))) {
+			$trail = debug_backtrace();
+			$location = $trail[1]['file'] . '#' . $trail[1]['line'];
+			t3lib_div::deprecationLog(
+				sprintf('%s: PHP_SCRIPT accessed $this->%s. Modify it to access $this->cObj->%s instead. Will be removed in 4.7.',
+					$location, $name, $name
+				)
+			);
+			return $this->cObj->$name;
+		}
+	}
+
 }
 
 
