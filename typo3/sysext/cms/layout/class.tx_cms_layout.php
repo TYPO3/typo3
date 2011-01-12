@@ -394,24 +394,31 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Returns the backend layout which should be used for this page.
 	 *
-	 * @param integer $id: Uid of the current
-	 * @return integer The Uid of the backend layout record
+	 * @param integer $id: Uid of the current page
+	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 */
 	function getSelectedBackendLayoutUid($id) {
-		$rootline = t3lib_BEfunc::BEgetRootLine($id);
-		$backendLayoutUid = null;
-		for ($i = count($rootline); $i > 0; $i--) {
-			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, be_layout, be_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
-			if (intval($page['be_layout_next_level']) > 0 && $page['uid'] != $id) {
-				$backendLayoutUid = intval($page['be_layout_next_level']);
-				break;
-			} else {
-				if (intval($page['be_layout']) > 0) {
-					$backendLayoutUid = intval($page['be_layout']);
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('be_layout', 'pages', 'uid=' . $id);
+		$backendLayoutUid = intval($page['be_layout']);
+		if ($backendLayoutUid == -1) {
+				// if it is set to "none" - don't use any
+			$backendLayoutUid = NULL;
+		} else if ($backendLayoutUid == 0) {
+				// if it not set check the rootline for a layout on next level and use this
+			$rootline = t3lib_BEfunc::BEgetRootLine($id);
+			for ($i = count($rootline) - 2; $i > 0; $i--) {
+				$backendLayoutUid = intval($rootline[$i]['be_layout_next_level']);
+				if ($backendLayoutUid > 0) {
+						// stop searching if a layout for "next level" is set
+					break;
+				} else if ($backendLayoutUid == -1){
+						// if layout for "next level" is set to "none" - don't use any and stop searching
+					$backendLayoutUid = NULL;
 					break;
 				}
 			}
 		}
+			// if it is set to a positive value use this
 		return $backendLayoutUid;
 	}
 
