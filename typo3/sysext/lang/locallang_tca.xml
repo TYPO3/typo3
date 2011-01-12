@@ -89,7 +89,8 @@
 			<label index="sys_workspace.stagechg_notification">Stage change notification by email:</label>
 			<label index="pages">Page</label>
 			<label index="doktype.I.0">Standard</label>
-			<label index="doktype.I.1">Folder</label>
+			<label index="doktype.I.1">SysFolder</label>
+			<label index="doktype.I.folder">Folder</label>
 			<label index="doktype.I.2">Recycler</label>
 			<label index="title">Pagetitle:</label>
 			<label index="php_tree_stop">Stop page tree:</label>

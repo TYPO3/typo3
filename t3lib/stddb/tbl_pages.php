@@ -55,7 +55,7 @@ $TCA['pages'] = array(
 						'--div--',
 					),
 					array(
-						'LLL:EXT:lang/locallang_tca.xml:doktype.I.1',
+						'LLL:EXT:lang/locallang_tca.xml:doktype.I.folder',
 						(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER,
 						'i/sysf.gif',
 					),
