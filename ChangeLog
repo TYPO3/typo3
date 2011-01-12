@@ -1,3 +1,7 @@
+2011-01-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of changeset 9949: Fixed typo in class name
+
 2011-01-12  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16970: Backwards compatibility in PHP_SCRIPT and accessing $this-> methods

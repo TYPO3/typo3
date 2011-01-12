@@ -108,7 +108,7 @@ final class tx_em_Tools {
 		if (strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
 			chdir($path);
 			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'] . ' -o ' . escapeshellarg($file);
-			t3liv_utility_Command::exec($cmd, $list, $ret);
+			t3lib_utility_Command::exec($cmd, $list, $ret);
 			return ($ret === 0);
 		} else {
 				// we use a pure PHP unzip
