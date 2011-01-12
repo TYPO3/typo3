@@ -143,7 +143,7 @@ Also, the description will be displayed if you create a content element of type 
 pages:abstract</label>
 			<label index="abstract.description">Enter an abstract of the contents. It may be displayed in an overview of articles.</label>
 			<label index="abstract.details">An abstract is a short description of the page content, that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
-			
+
 Other than the description, the abstract is not meant for display in search engine result lists, but for use in your own project exclusively.
 
 By default, TYPO3 lets you create a content element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; to create an overview of articles. If an abstract is available it will be used instead of the description.
@@ -152,6 +152,29 @@ By default, TYPO3 lets you create a content element of type &lt;i&gt;Sitemap&lt;
 
 Of course, admins can make custom use of this field via their TypoScript templates.</label>
 			<label index="_abstract.seeAlso">pages:description</label>
+			<label index="be_layout.description">Select a backend layout for this particular page only.</label>
+			<label index="be_layout.details">If you have created any additional backend layouts you can select them here to have the page module render the columns of this page with the selected layout.
+
+Usually it will reflect the frontend layout in a way so that you will be able to recognize easily to which area of the page the content belongs.
+
+You can select nothing or "none" to get the default column view of the page module for this page.
+
+If you select a layout or "none", it will override any settings that might have been inherited from pages in the rootline of the current page.
+
+The selection is &lt;b&gt;NOT&lt;/b&gt; inherited automatically by subpages - use &lt;b&gt;Backend Layout (subpages of this page)&lt;/b&gt; if you want to acchieve this.
+</label>
+			<label index="_be_layout.seeAlso">pages:be_layout_next_level</label>
+			<label index="be_layout_next_level.description">Select a backend layout for all subpages of this page.</label>
+			<label index="be_layout_next_level.details">If you have created any additional backend layouts you can select them here to have the page module render the columns of the subpages of this page with the selected layout.
+
+Usually it will reflect the frontend layout in a way so that you will be able to recognize easily to which area of the page the content belongs.
+
+You can select nothing or "none" to get the default column view of the page module for the subpages.
+
+If you select a layout or "none", it will override any settings that might have been inherited from pages in the rootline of the current page.
+
+The selection is inherited automatically by all subpages - so you don't have to set it seperately for each of them.</label>
+			<label index="_be_layout_next_level.seeAlso">pages:be_layout</label>
 			<label index="newUntil.description">Enter the 'expiry date' of the page.</label>
 			<label index="newUntil.details">The 'expiry date' of the page has no effect on the display of the webpage. This value is rather for internal use meant as a reminder of the date when the content of this page should be revised. So if the content of the page will be outdated at a certain point in time, you could set this value to that approximate date.
 In order to obtain an overview of the expiry dates of pages, use the 'Pagetree overview' in the 'Web&gt;Info' module.</label>

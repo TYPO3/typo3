@@ -149,8 +149,8 @@
 			<label index="pages.fe_login_mode.enableAgain">Re-Enable login</label>
 			<label index="pages.storage_pid_formlabel">Page</label>
 			<label index="pages.TSconfig_formlabel">Page TSConfig</label>
-			<label index="pages.be_layout_formlabel">Backend Layout</label>
- 			<label index="pages.be_layout_next_level_formlabel">Backend Layout (On Next Level)</label>
+			<label index="pages.be_layout_formlabel">Backend Layout (this page only)</label>
+ 			<label index="pages.be_layout_next_level_formlabel">Backend Layout (subpages of this page)</label>
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website user</label>
 			<label index="fe_users.username">Username:</label>
