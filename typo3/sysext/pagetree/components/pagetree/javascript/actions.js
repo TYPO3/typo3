@@ -77,6 +77,10 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {Ext.tree.TreeNode}
 	 */
 	updateNode: function(node, isExpanded, updatedNode) {
+		if (!updatedNode) {
+			return null;
+		}
+
 		updatedNode.uiProvider = node.ownerTree.uiProvider;
 		var newTreeNode = new Ext.tree.TreeNode(updatedNode);
 
@@ -105,10 +109,6 @@ TYPO3.Components.PageTree.Actions = {
 			node.attributes.nodeData,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					if (tree.getSelectionModel().getSelectedNode().id === node.id) {
-						this.singleClick(node.parentNode, tree);
-					}
-
 						// the node may not be removed in workspace mode
 					if (top.TYPO3.configuration.inWorkspace && response.id) {
 						this.updateNode(node, node.isExpanded(), response);
@@ -610,7 +610,10 @@ TYPO3.Components.PageTree.Actions = {
 		}
 
 		node.select();
-		tree.stateHash['lastSelectedNode'] = node.id;
+		if (tree.stateHash) {
+			tree.stateHash.lastSelectedNode = node.id;
+		}
+
 		TYPO3.Backend.ContentContainer.setUrl(
 			TS.PATH_typo3 + currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 		);
@@ -622,17 +625,35 @@ TYPO3.Components.PageTree.Actions = {
 	 * @param {Ext.tree.TreeNode} node
 	 * @param {String} newText
 	 * @param {String} oldText
+	 * @param {TYPO3.Components.PageTree.TreeEditor} treeEditor
 	 * @return {void}
 	 */
-	saveTitle: function(node, newText, oldText) {
+	saveTitle: function(node, newText, oldText, treeEditor) {
 		this.singleClick(node.editNode, node.editNode.ownerTree);
-
-		if (newText !== oldText) {
-			TYPO3.Components.PageTree.Commands.updateLabel(
-				node.editNode.attributes.nodeData,
-				newText,
-				this.evaluateResponse
+		if (newText === oldText) {
+			treeEditor.updateNodeText(
+				node,
+				node.editNode.attributes.nodeData.editableText,
+				Ext.util.Format.htmlEncode(oldText)
 			);
+			return;
 		}
+
+		TYPO3.Components.PageTree.Commands.updateLabel(
+			node.editNode.attributes.nodeData,
+			newText,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					treeEditor.updateNodeText(node, response.editableText, response.updatedText);
+				} else {
+					treeEditor.updateNodeText(
+						node,
+						node.editNode.attributes.nodeData.editableText,
+						Ext.util.Format.htmlEncode(oldText)
+					);
+				}
+			},
+			this
+		);
 	}
 };

@@ -55,6 +55,20 @@ class tx_pagetree_Node extends t3lib_tree_ExtDirect_Node {
 	protected $mountPoint = 0;
 
 	/**
+	 * Readable Rootline
+	 *
+	 * @var string
+	 */
+	protected $readableRootline = '';
+
+	/**
+	 * Indicator if the node is a mount point
+	 *
+	 * @var bool
+	 */
+	protected $isMountPoint = FALSE;
+
+	/**
 	 * Set's the original id of the element
 	 *
 	 * @param int $workspaceId
@@ -80,7 +94,7 @@ class tx_pagetree_Node extends t3lib_tree_ExtDirect_Node {
 	 * @return void
 	 */
 	public function setMountPoint($mountPoint) {
-		$this->mountPoint = $mountPoint;
+		$this->mountPoint = intval($mountPoint);
 	}
 
 	/**
@@ -90,6 +104,44 @@ class tx_pagetree_Node extends t3lib_tree_ExtDirect_Node {
 	 */
 	public function getMountPoint() {
 		return $this->mountPoint;
+	}
+
+	/**
+	 * Sets the indicator if the node is a mount point
+	 *
+	 * @param boolean $isMountPoint
+	 * @return void
+	 */
+	public function setIsMountPoint($isMountPoint) {
+		$this->isMountPoint = ($isMountPoint == TRUE);
+	}
+
+	/**
+	 * Returns true if the node is a mount point
+	 *
+	 * @return bool
+	 */
+	public function isMountPoint() {
+		return $this->isMountPoint;
+	}
+
+	/**
+	 * Sets the readable rootline
+	 *
+	 * @param string $rootline
+	 * @return void
+	 */
+	public function setReadableRootline($rootline) {
+		$this->readableRootline = $rootline;
+	}
+
+	/**
+	 * Returns the readable rootline
+	 *
+	 * @return string
+	 */
+	public function getReadableRootline() {
+		return $this->readableRootline;
 	}
 
 	/**
@@ -257,8 +309,13 @@ class tx_pagetree_Node extends t3lib_tree_ExtDirect_Node {
 		$arrayRepresentation['id'] = 'mp-' . $this->getMountPoint() . '-' . $this->getId();
 		$arrayRepresentation['realId'] = $this->getId();
 		$arrayRepresentation['nodeData']['id'] = $this->getId();
+
+		$arrayRepresentation['readableRootline'] = $this->getReadableRootline();
+		$arrayRepresentation['nodeData']['readableRootline'] = $this->getReadableRootline();
+
 		$arrayRepresentation['nodeData']['mountPoint'] = $this->getMountPoint();
 		$arrayRepresentation['nodeData']['workspaceId'] = $this->getWorkspaceId();
+		$arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
 		$arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
 
 		return $arrayRepresentation;
@@ -274,6 +331,8 @@ class tx_pagetree_Node extends t3lib_tree_ExtDirect_Node {
 		parent::dataFromArray($data);
 		$this->setWorkspaceId($data['workspaceId']);
 		$this->setMountPoint($data['mountPoint']);
+		$this->setReadableRootline($data['readableRootline']);
+		$this->setIsMountPoint($data['isMountPoint']);
 	}
 }
 

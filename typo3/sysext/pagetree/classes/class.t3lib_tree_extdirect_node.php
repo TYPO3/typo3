@@ -199,7 +199,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setLeaf($isLeaf) {
-		$this->leaf = $isLeaf;
+		$this->leaf = ($isLeaf == TRUE);
 	}
 
 	/**
@@ -218,7 +218,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setExpandable($expandable) {
-		$this->expandable = $expandable;
+		$this->expandable = ($expandable == TRUE);
 	}
 
 	/**
@@ -237,7 +237,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setExpanded($expanded) {
-		$this->expanded = $expanded;
+		$this->expanded = ($expanded == TRUE);
 	}
 
 	/**
@@ -260,7 +260,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setDraggable($draggable) {
-		$this->draggable = $draggable;
+		$this->draggable = ($draggable == TRUE);
 	}
 
 	/**
@@ -279,7 +279,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setIsDropTarget($isDropTarget) {
-		$this->isDropTarget = $isDropTarget;
+		$this->isDropTarget = ($isDropTarget == TRUE);
 	}
 
 	/**
@@ -351,7 +351,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setInCopyMode($inCopyMode) {
-		$this->t3InCopyMode = $inCopyMode;
+		$this->t3InCopyMode = ($inCopyMode == TRUE);
 	}
 
 	/**
@@ -370,7 +370,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setInCutMode($inCutMode) {
-		$this->t3InCutMode = $inCutMode;
+		$this->t3InCutMode = ($inCutMode == TRUE);
 	}
 
 	/**
@@ -464,7 +464,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setLabelIsEditable($labelIsEditable) {
-		$this->labelIsEditable = $labelIsEditable;
+		$this->labelIsEditable = ($labelIsEditable == TRUE);
 	}
 
 	/**
@@ -483,7 +483,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setRecord($record) {
-		$this->record = $record;
+		$this->record = (array) $record;
 	}
 
 	/**
@@ -502,7 +502,7 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	 * @return void
 	 */
 	public function setContextInfo($contextInfo) {
-		$this->contextInfo = $contextInfo;
+		$this->contextInfo = (array) $contextInfo;
 	}
 
 	/**
@@ -531,11 +531,11 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 	/**
 	 * Sets the indicator if the node can have child nodes
 	 *
-	 * @param  $allowChildren
+	 * @param boolean $allowChildren
 	 * @return void
 	 */
 	public function setAllowChildren($allowChildren) {
-		$this->allowChildren = $allowChildren;
+		$this->allowChildren = ($allowChildren == TRUE);
 	}
 
 	/**
@@ -575,13 +575,13 @@ class t3lib_tree_ExtDirect_Node extends t3lib_tree_Node {
 			'editable' => $this->isLabelEditable(),
 			'allowChildren' => $this->canHaveChildren(),
 		);
-		$arrayRepresentation['nodeData'] = $arrayRepresentation;
 
 			// only set the leaf attribute if the node has children's,
 			// otherwise you cannot add child's to real leaf nodes
 		if (!$this->isLeafNode()) {
 			$arrayRepresentation['leaf'] = FALSE;
 		}
+		$arrayRepresentation['nodeData'] = $arrayRepresentation;
 
 		if ($this->hasChildNodes()) {
 			$arrayRepresentation['children'] = $this->childNodes->toArray();

@@ -113,6 +113,13 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	tree: null,
 
 	/**
+	 * Application Panel
+	 *
+	 * @cfg {TYPO3.Components.PageTree.App}
+	 */
+	app: null,
+
+	/**
 	 * Initializes the component
 	 *
 	 * @return {void}
@@ -122,8 +129,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 		this.currentlyShownPanel = new Ext.Panel({
 			id: this.id + '-defaultPanel',
-			cls: this.id + '-item',
-			html: TYPO3.Components.PageTree.LLL.treeStructure
+			cls: this.id + '-item'
 		});
 		this.items = [this.currentlyShownPanel];
 
@@ -210,7 +216,9 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	 */
 	createFilterTree: function(textField) {
 		var searchWord = textField.getValue();
-		if ((searchWord.length <= 2 && searchWord.length > 0) || searchWord === this.filteringTree.searchWord) {
+		if ((searchWord.length <= 2 && searchWord.length > 0) ||
+			searchWord === this.filteringTree.searchWord
+		) {
 			return;
 		}
 
@@ -218,34 +226,36 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		if (this.filteringTree.searchWord === '') {
 			this.activeTree = this.tree;
 
+			textField.setHideTrigger(true);
 			this.filteringTree.hide();
 			this.tree.show().refreshTree(function() {
-				textField.focus();
+				textField.focus(false, 500);
 			}, this);
 
 			if (this.filteringIndicator) {
-				this.ownerCt.removeIndicator(this.filteringIndicator);
+				this.app.removeIndicator(this.filteringIndicator);
 				this.filteringIndicator = null;
 			}
 		} else {
-			var selectedNode = this.ownerCt.getSelected();
+			var selectedNode = this.ownerCt.ownerCt.ownerCt.getSelected();
 			this.activeTree = this.filteringTree;
 
 			if (!this.filteringIndicator) {
-				this.filteringIndicator = this.ownerCt.addIndicator(
+				this.filteringIndicator = this.ownerCt.ownerCt.ownerCt.addIndicator(
 					this.createIndicatorItem(textField)
 				);
 			}
 
+			textField.setHideTrigger(false);
 			this.tree.hide();
-			this.ownerCt.ownerCt.getEl().mask('', 'x-mask-loading-message');
-			this.ownerCt.ownerCt.getEl().addClass('t3-mask-loading');
+			this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+			this.app.ownerCt.getEl().addClass('t3-mask-loading');
 			this.filteringTree.show().refreshTree(function() {
 				if (selectedNode) {
-					this.ownerCt.select(selectedNode.attributes.nodeData.id, false);
+					this.app.select(selectedNode.attributes.nodeData.id, false);
 				}
 				textField.focus();
-				this.ownerCt.ownerCt.getEl().unmask();
+				this.app.ownerCt.getEl().unmask();
 			}, this);
 		}
 
@@ -261,16 +271,15 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	createIndicatorItem: function(textField) {
 		return {
 			border: false,
-			id: this.ownerCt.id + '-indicatorBar-filter',
-			cls: this.ownerCt.id + '-indicatorBar-item',
+			id: this.app.id + '-indicatorBar-filter',
+			cls: this.app.id + '-indicatorBar-item',
 			html: '<p>' +
-					'<span id="' + this.ownerCt.id + '-indicatorBar-filter-info' + '" ' +
-						'class="' + this.ownerCt.id + '-indicatorBar-item-leftIcon ' +
-							TYPO3.Components.PageTree.Sprites.Info + '">' + '&nbsp;' +
+					'<span id="' + this.app.id + '-indicatorBar-filter-info' + '" ' +
+						'class="' + this.app.id + '-indicatorBar-item-leftIcon ' +
+							TYPO3.Components.PageTree.Sprites.Info + '">&nbsp;' +
 					'</span>' +
-					'<span id="' + this.ownerCt.id + '-indicatorBar-filter-clear' + '" ' +
-						'class="' + this.ownerCt.id + '-indicatorBar-item-rightIcon ' +
-							TYPO3.Components.PageTree.Sprites.InputClear + '">' + '&nbsp;' +
+					'<span id="' + this.app.id + '-indicatorBar-filter-clear' + '" ' +
+						'class="' + this.app.id + '-indicatorBar-item-rightIcon ' + '">X' +
 					'</span>' +
 					TYPO3.Components.PageTree.LLL.activeFilterMode +
 				'</p>',
@@ -280,7 +289,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 				afterrender: {
 					scope: this,
 					fn: function() {
-						var element = Ext.fly(this.ownerCt.id + '-indicatorBar-filter-clear');
+						var element = Ext.fly(this.app.id + '-indicatorBar-filter-clear');
 						element.on('click', function() {
 							textField.setValue('');
 							this.createFilterTree(textField);
@@ -300,15 +309,37 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		var topPanelButton = new Ext.Button({
 			id: this.id + '-button-filter',
 			cls: this.id + '-button',
-			iconCls: TYPO3.Components.PageTree.Sprites.Filter
+			iconCls: TYPO3.Components.PageTree.Sprites.Filter,
+			tooltip: TYPO3.Components.PageTree.LLL.buttonFilter
 		});
 
 		var textField = new Ext.form.TriggerField({
 			id: this.id + '-filter',
 			enableKeyEvents: true,
 			triggerClass: TYPO3.Components.PageTree.Sprites.InputClear,
+			value: TYPO3.Components.PageTree.LLL.searchTermInfo,
 
 			listeners: {
+				blur: {
+					scope: this,
+					fn:function(textField) {
+						if (textField.getValue() === '') {
+							textField.setValue(TYPO3.Components.PageTree.LLL.searchTermInfo);
+							textField.addClass(this.id + '-filter-defaultText');
+						}
+					}
+				},
+
+				focus: {
+					scope: this,
+					fn: function(textField) {
+						if (textField.getValue() === TYPO3.Components.PageTree.LLL.searchTermInfo) {
+							textField.setValue('');
+							textField.removeClass(this.id + '-filter-defaultText');
+						}
+					}
+				},
+
 				keydown: {
 					fn: this.createFilterTree,
 					scope: this,
@@ -317,6 +348,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			}
 		});
 
+		textField.setHideTrigger(true);
 		textField.onTriggerClick = function() {
 			textField.setValue('');
 			this.createFilterTree(textField);
@@ -366,8 +398,10 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 				var clickedButton = this.dragData.item;
 				var cls = clickedButton.initialConfig.iconCls;
 
-				this.proxyElement.style.width = '150px';
-				this.proxyElement.innerHTML = '<span class="' + cls + '"></span>'  + clickedButton.title;
+				this.proxyElement.innerHTML = '<div class="x-dd-drag-ghost-pagetree">' +
+					'<span class="x-dd-drag-ghost-pagetree-icon ' + cls + '">&nbsp;</span>' +
+					'<span class="x-dd-drag-ghost-pagetree-text">'  + clickedButton.title + '</span>' +
+				'</div>';
 
 				this.proxy.update(this.proxyElement);
 			}
@@ -403,7 +437,8 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		var topPanelButton = new Ext.Button({
 			id: this.id + '-button-newNode',
 			cls: this.id + '-button',
-			iconCls: TYPO3.Components.PageTree.Sprites.NewNode
+			iconCls: TYPO3.Components.PageTree.Sprites.NewNode,
+			tooltip: TYPO3.Components.PageTree.LLL.buttonNewNode
 		});
 
 		this.addButton(topPanelButton, newNodeToolbar);
@@ -419,6 +454,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			id: this.id + '-button-refresh',
 			cls: this.id + '-button',
 			iconCls: TYPO3.Components.PageTree.Sprites.Refresh,
+			tooltip: TYPO3.Components.PageTree.LLL.buttonRefresh,
 
 			listeners: {
 				click: {

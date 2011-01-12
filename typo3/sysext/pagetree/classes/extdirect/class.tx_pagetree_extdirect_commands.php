@@ -159,7 +159,12 @@ class tx_pagetree_ExtDirect_Commands {
 
 		try {
 			tx_pagetree_Commands::updateNodeLabel($node, $updatedLabel);
-			$returnValue = array();
+
+			$shortendedText = t3lib_div::fixed_lgd_cs($updatedLabel, intval($GLOBALS['BE_USER']->uc['titleLen']));
+			$returnValue = array(
+				'editableText' => $updatedLabel,
+				'updatedText' => htmlspecialchars($shortendedText),
+			);
 		} catch (Exception $exception) {
 			$returnValue = array(
 				 'success' => FALSE,

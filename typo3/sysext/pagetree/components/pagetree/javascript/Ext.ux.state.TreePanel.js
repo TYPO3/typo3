@@ -99,10 +99,19 @@ Ext.override(Ext.ux.state.TreePanel, {
 					var node = this.getNodeById(this.stateHash['lastSelectedNode']);
 					if (node) {
 						this.selectPath(node.getPath());
-						if (node.attributes.nodeData.id !== TYPO3.Backend.ContentContainer.getIdFromUrl()
-							&& this.commandProvider && this.commandProvider.singleClick
+
+						var contentId = TYPO3.Backend.ContentContainer.getIdFromUrl() ||
+							String(fsMod.recentIds['web']) || '-1';
+
+						var isCurrentSelectedNode = (
+							String(node.attributes.nodeData.id) === contentId ||
+							contentId.indexOf('pages' + String(node.attributes.nodeData.id)) !== -1
+						);
+
+						if (contentId !== '-1' && !isCurrentSelectedNode &&
+							this.commandProvider && this.commandProvider.singleClick
 						) {
-								this.commandProvider.singleClick(node, this);
+							this.commandProvider.singleClick(node, this);
 						}
 					}
 				}

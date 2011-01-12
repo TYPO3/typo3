@@ -48,6 +48,23 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	protected $nodeCounter = 0;
 
 	/**
+	 * Hidden Records
+	 *
+	 * @var array
+	 */
+	protected $hiddenRecords = array();
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->hiddenRecords = t3lib_div::trimExplode(
+			',',
+			$GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')
+		);
+	}
+
+	/**
 	 * Returns the root node
 	 *
 	 * @return t3lib_tree_Node
@@ -82,6 +99,10 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		foreach ($subpages as $subpage) {
+			if (in_array($subpage['uid'], $this->hiddenRecords)) {
+				continue;
+			}
+
 			$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
 			if (!$subpage) {
 				continue;
@@ -105,29 +126,38 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Returns a node collection of filtered nodes
 	 *
-	 * @param int $nodeId
+	 * @param t3lib_tree_Node $node
 	 * @param string $searchFilter
 	 * @param int $mountPoint
 	 * @return void
 	 */
-	public function getFilteredNodes($nodeId, $searchFilter, $mountPoint = 0) {
-		$nodeId = intval($nodeId);
-		
+	public function getFilteredNodes(t3lib_tree_Node $node, $searchFilter, $mountPoint = 0) {
 		/** @var $nodeCollection tx_pagetree_NodeCollection */
 		$nodeCollection = t3lib_div::makeInstance('tx_pagetree_NodeCollection');
 
-		$subpages = $this->getSubpages(-1, $searchFilter);
-		if (!is_array($subpages) || !count($subpages)) {
+		$records = $this->getSubpages(-1, $searchFilter);
+		if (!is_array($records) || !count($records)) {
 			return $nodeCollection;
 		}
 
-		foreach ($subpages as $subpage) {
-			$rootline = array_reverse(t3lib_BEfunc::BEgetRootLine($subpage['uid']));
-			array_shift($rootline);
+		$nodeId = intval($node->getId());
+		foreach ($records as $record) {
+			$record = tx_pagetree_Commands::getNodeRecord($record['uid']);
+			if (intval($record['pid']) === -1 || in_array($record['uid'], $this->hiddenRecords)) {
+				continue;
+			}
+
+			$rootline = t3lib_BEfunc::BEgetRootLine($record['uid'], ' AND uid != ' . intval($nodeId));
+			$rootline = array_reverse($rootline);
+			if ($nodeId === 0) {
+				array_shift($rootline);
+			}
 			$reference = $nodeCollection;
 
 			$inFilteredRootline = FALSE;
-			foreach ($rootline as $rootlineElement) {
+			$amountOfRootlineElements = count($rootline);
+			for ($i = 0; $i < $amountOfRootlineElements; ++$i) {
+				$rootlineElement = $rootline[$i];
 				if (intval($rootlineElement['pid']) === $nodeId) {
 					$inFilteredRootline = TRUE;
 				}
@@ -137,30 +167,40 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				}
 
 				$rootlineElement = tx_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
-				if ($reference->offsetExists($rootlineElement['uid'])) {
-					/** @var $node tx_pagetree_Node */
-					$node = $reference->offsetGet($rootlineElement['uid']);
-					$node->setExpanded(TRUE);
-					$node->setLeaf(FALSE);
+				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
+				if ($reference->offsetExists($ident)) {
+					/** @var $refNode tx_pagetree_Node */
+					$refNode = $reference->offsetGet($ident);
+					$refNode->setExpanded(TRUE);
+					$refNode->setLeaf(FALSE);
 
-					$reference = $node->getChildNodes();
+					$reference = $refNode->getChildNodes();
 					continue;
 				}
+
+				$refNode = tx_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
+				$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
+				$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
+				$refNode->setText($text, $refNode->getTextSourceField(), $refNode->getPrefix(), $refNode->getSuffix());
 
 				/** @var $childCollection tx_pagetree_NodeCollection */
 				$childCollection = t3lib_div::makeInstance('tx_pagetree_NodeCollection');
 
-				$node = tx_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
-				$node->setChildNodes($childCollection);
+				if (($i +1) >= $amountOfRootlineElements) {
+					$childNodes = $this->getNodes($refNode, $mountPoint);
+					foreach ($childNodes as $childNode) {
+						/** @var $childNode tx_pagetree_Node */
+						$childRecord = $childNode->getRecord();
+						$childIdent = intval($childRecord['sorting']) . intval($childRecord['uid']);
+						$childCollection->offsetSet($childIdent, $childNode);
+					}
+					$refNode->setChildNodes($childNodes);
+				}
 
-				$text = preg_replace(
-					'/(' . $searchFilter . ')/i',
-					'<span class="typo3-pagetree-filteringTree-highlight">$1</span>',
-					$node->getText()
-				);
-				$node->setText($text, $node->getTextSourceField(), $node->getPrefix());
+				$refNode->setChildNodes($childCollection);
+				$reference->offsetSet($ident, $refNode);
+				$reference->ksort();
 
-				$reference->offsetSet($rootlineElement['uid'], $node);
 				$reference = $childCollection;
 			}
 		}
@@ -181,22 +221,23 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		$nodeCollection = t3lib_div::makeInstance('tx_pagetree_NodeCollection');
 
 		$isTemporaryMountPoint = FALSE;
-		$webmountIds = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
-		if (!$webmountIds) {
-			$webmountIds = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
-			$webmountIds = array_unique($webmountIds);
+		$mountPoints = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+		if (!$mountPoints) {
+			$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+			$mountPoints = array_unique($mountPoints);
 		} else {
 			$isTemporaryMountPoint = TRUE;
-			$webmountIds = array($webmountIds);
+			$mountPoints = array($mountPoints);
 		}
 
-		if (!count($webmountIds)) {
+		if (!count($mountPoints)) {
 			return $nodeCollection;
 		}
 
-		$class = (count($webmountIds) <= 1 ? 'typo3-pagetree-node-notExpandable' : '');
-		foreach ($webmountIds as $webmount) {
-			if ($webmount === 0) {
+		$showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
+		$class = (count($mountPoints) <= 1 ? 'typo3-pagetree-node-notExpandable' : '');
+		foreach ($mountPoints as $mountPoint) {
+			if ($mountPoint === 0) {
 				$sitename = 'TYPO3';
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] !== '') {
 					$sitename = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
@@ -208,28 +249,30 @@ class tx_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				);
 				$subNode = tx_pagetree_Commands::getNewNode($record);
 				$subNode->setLabelIsEditable(FALSE);
+				$subNode->setType('pages_root');
 			} else {
-				$record = t3lib_BEfunc::getRecordWSOL('pages', $webmount, '*', '', TRUE);
+				$record = t3lib_BEfunc::getRecordWSOL('pages', $mountPoint, '*', '', TRUE);
 				if (!$record) {
 					continue;
 				}
 
-				$subNode = tx_pagetree_Commands::getNewNode($record, $webmount);
+				$subNode = tx_pagetree_Commands::getNewNode($record, $mountPoint);
+				if ($showRootlineAboveMounts && !$isTemporaryMountPoint) {
+					$rootline = tx_pagetree_Commands::getMountPointPath($record['uid']);
+					$subNode->setReadableRootline($rootline);
+				}
 			}
 
-			if ($webmount === 0 || $isTemporaryMountPoint) {
-				$subNode->setType('pages_root');
-			}
-
+			$subNode->setIsMountPoint(TRUE);
 			$subNode->setExpanded(TRUE);
 			$subNode->setDraggable(FALSE);
 			$subNode->setIsDropTarget(FALSE);
 			$subNode->setCls($class);
 
 			if ($searchFilter === '') {
-				$childNodes = $this->getNodes($subNode, $webmount);
+				$childNodes = $this->getNodes($subNode, $mountPoint);
 			} else {
-				$childNodes = $this->getFilteredNodes(intval($record['uid']), $searchFilter, $webmount);
+				$childNodes = $this->getFilteredNodes($subNode, $searchFilter, $mountPoint);
 				$subNode->setExpanded(TRUE);
 			}
 

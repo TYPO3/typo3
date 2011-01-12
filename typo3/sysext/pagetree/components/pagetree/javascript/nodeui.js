@@ -68,6 +68,12 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
             this.wrap = Ext.DomHelper.insertHtml("beforeEnd", targetNode, buf);
         }
 
+			// TYPO3 modification to show the readable rootline above the user mounts
+		if (a.readableRootline !== '') {
+			var rootline = '<div class="x-tree-node-readableRootline">' + a.readableRootline + '</div>';
+			Ext.DomHelper.insertHtml("beforeBegin", this.wrap, rootline);
+		}
+
         this.elNode = this.wrap.childNodes[0];
         this.ctNode = this.wrap.childNodes[1];
         var cs = this.elNode.childNodes;

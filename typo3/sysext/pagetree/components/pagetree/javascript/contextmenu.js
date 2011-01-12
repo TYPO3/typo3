@@ -64,10 +64,17 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 	listeners: {
 		itemclick: {
 			fn: function (item) {
-                this.pageTree.commandProvider[item.callbackAction](
-					item.parentMenu.node,
-					item.parentMenu.pageTree
-				);
+				if (this.pageTree.commandProvider[item.callbackAction]) {
+					if (item.parentMenu.pageTree.stateHash) {
+						fsMod.recentIds['web'] = item.parentMenu.node.attributes.nodeData.id;
+						item.parentMenu.pageTree.stateHash['lastSelectedNode'] = item.parentMenu.node.id;
+					}
+
+					this.pageTree.commandProvider[item.callbackAction](
+						item.parentMenu.node,
+						item.parentMenu.pageTree
+					);
+				}
 			}
 		}
 	},
@@ -133,7 +140,9 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 					components[index++] = {
 						text: contextMenuConfiguration[singleAction]['label'],
 						cls: 'contextMenu-subMenu',
-						menu: subMenu
+						menu: subMenu,
+						icon: contextMenuConfiguration[singleAction]['icon'],
+						iconCls: contextMenuConfiguration[singleAction]['class']
 					};
 				}
 			} else if (contextMenuConfiguration[singleAction]['type'] === 'divider') {

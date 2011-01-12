@@ -231,14 +231,13 @@ class tx_pagetree_ContextMenu_DataProvider extends t3lib_contextmenu_AbstractDat
 					continue;
 				}
 
+				$label = $GLOBALS['LANG']->sL($actionConfiguration['label'], TRUE);
 				if ($type === 'SUBMENU') {
-					$label = $GLOBALS['LANG']->sL($actionConfiguration['label'], TRUE);
 					$action->setType('submenu');
 					$action->setChildActions(
-						$this->getNextContextMenuLevel($actionConfiguration, $node, ++$level)
+						$this->getNextContextMenuLevel($actionConfiguration, $node, $level + 1)
 					);
 				} else {
-					$label = $GLOBALS['LANG']->sL($actionConfiguration['label'], TRUE);
 					$action->setType('action');
 					$action->setCallbackAction($actionConfiguration['callbackAction']);
 				}

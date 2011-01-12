@@ -89,19 +89,23 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	 * Returns a tree that only contains elements that match the given search string
 	 *
 	 * @param int $nodeId
+	 * @param stdClass $nodeData
 	 * @param string $searchFilter
 	 * @return array
 	 */
-	public function getFilteredTree($nodeId, $searchFilter) {
-		if ($searchFilter === '') {
+	public function getFilteredTree($nodeId, $nodeData, $searchFilter) {
+		if (strval($searchFilter) === '') {
 			return array();
 		}
+
+		/** @var $node tx_pagetree_Node */
+		$node = t3lib_div::makeInstance('tx_pagetree_Node', (array) $nodeData);
 
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
 		} else {
-			$nodeCollection = $this->dataProvider->getFilteredNodes($nodeId, $searchFilter);
+			$nodeCollection = $this->dataProvider->getFilteredNodes($node, $searchFilter, $node->getMountPoint());
 		}
 
 		return $nodeCollection->toArray();
@@ -116,6 +120,17 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	 * @return array
 	 */
 	public function getNodeTypes() {
+		$map = array(
+			1 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.0',
+			3 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.8',
+			4 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.2',
+			6 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.4',
+			7 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.5',
+			199 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.7',
+			254 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.folder',
+			255 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.2'
+		);
+
 		$doktypes = t3lib_div::trimExplode(
 			',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea')
 		);
@@ -128,7 +143,7 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 				continue;
 			}
 
-			$label = $GLOBALS['LANG']->sL('LLL:EXT:pagetree/locallang_pagetree.xml:page.doktype.' . $doktype, TRUE);
+			$label = $GLOBALS['LANG']->sL($map[$doktype], TRUE);
 			$spriteIcon = t3lib_iconWorks::getSpriteIconClasses(
 				$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]
 			);
@@ -148,13 +163,18 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	/**
 	 * Returns
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getIndicators() {
 		/** @var $indicatorProvider tx_pagetree_Indicator */
 		$indicatorProvider = t3lib_div::makeInstance('tx_pagetree_indicator');
-		$indicatorHtml = implode(' ', $indicatorProvider->getAllIndicators());
-		return ($indicatorHtml ? $indicatorHtml : '');
+		$indicatorHtmlArr = $indicatorProvider->getAllIndicators();
+		$indicator = array(
+				'html' => implode(' ', $indicatorHtmlArr),
+				'_COUNT' => count($indicatorHtmlArr)
+		);
+
+		return $indicator;
 	}
 
 	/**
@@ -163,20 +183,21 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 	 * @return void
 	 */
 	public function loadResources() {
-		$file = 'LLL:EXT:pagetree/locallang_pagetree.xml:';
+		$file = 'LLL:EXT:lang/locallang_core.xml:';
+		$indicators = $this->getIndicators();
 		$configuration = array(
 			'LLL' => array(
-				'copyHint' => $GLOBALS['LANG']->sL($file . 'copyHint', TRUE),
-				'fakeNodeHint' => $GLOBALS['LANG']->sL($file . 'fakeNodeHint', TRUE),
-				'activeFilterMode' => $GLOBALS['LANG']->sL($file . 'activeFilterMode', TRUE),
-				'dropToRemove' => $GLOBALS['LANG']->sL($file . 'dropToRemove', TRUE),
-				'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'dropZoneElementRemoved', TRUE),
-				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'dropZoneElementRestored', TRUE),
-				'treeStructure' => $GLOBALS['LANG']->sL($file . 'treeStructure', TRUE),
-				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl(
-					'LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',
-					TRUE
-				),
+				'copyHint' => $GLOBALS['LANG']->sL($file . 'tree.copyHint', TRUE),
+				'fakeNodeHint' => $GLOBALS['LANG']->sL($file . 'mess.please_wait', TRUE),
+				'activeFilterMode' => $GLOBALS['LANG']->sL($file . 'tree.activeFilterMode', TRUE),
+				'dropToRemove' => $GLOBALS['LANG']->sL($file . 'tree.dropToRemove', TRUE),
+				'buttonRefresh' => $GLOBALS['LANG']->sL($file . 'labels.refresh', TRUE),
+				'buttonNewNode' => $GLOBALS['LANG']->sL($file . 'tree.buttonNewNode', TRUE),
+				'buttonFilter' => $GLOBALS['LANG']->sL($file . 'tree.buttonFilter', TRUE),
+				'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved', TRUE),
+				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', TRUE),
+				'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', TRUE),
+				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl($file . 'labels.temporaryDBmount', TRUE),
 			),
 
 			'Configuration' => array(
@@ -184,7 +205,7 @@ class tx_pagetree_ExtDirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree 
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal(
 					'options.pageTree.disableIconLinkToContextmenu'
 				),
-				'indicator' => $this->getIndicators(),
+				'indicator' => $indicators['html'],
 				'temporaryMountPoint' => tx_pagetree_Commands::getMountPointPath(),
 			),
 

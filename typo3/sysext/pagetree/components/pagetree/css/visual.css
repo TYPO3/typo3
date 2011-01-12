@@ -1,0 +1,281 @@
+#typo3-pagetree-treeContainer,
+#typo3-pagetree-topPanelItems {
+	background-color: #EBEBEB;
+}
+
+#typo3-pagetree .x-tree .x-panel-body {
+	background: none;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-el {
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-over,
+#typo3-pagetree .x-tree-node .x-tree-selected {
+	background-color: #F8F8F8;
+	border-bottom: 1px solid #D7D7D7;
+	border-top: 1px solid #D7D7D7;
+}
+
+#typo3-pagetree .x-panel-tbar {
+	background-color: #585858;
+	border: none;
+}
+
+/**
+ *
+ * @section drag and drop
+ *
+ */
+.typo3-pagetree-tree-copy {
+	color: #666;
+}
+
+.x-dd-drag-ghost {
+	background-color: inherit;
+	border: none;
+}
+
+.x-dd-drop-nodrop {
+	background-color: #f6d3cf;
+	border: 1px solid #d66c68;
+}
+
+.typo3-pagetree-deletionDropZone-proxyOver,
+.x-tree-drop-ok-append,
+.x-tree-drop-ok-between,
+.x-tree-drop-ok-below,
+.x-tree-drop-ok-above {
+	background-color: #dce8f4;
+	border: 1px solid #9eb2c5;
+}
+
+.x-dd-drop-nodrop .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/pagetree-drag-place-denied.png);
+}
+
+.x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/pagetree-drag-new-inside.png);
+}
+
+.x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon,
+.x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon,
+.x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/pagetree-drag-new-between.png);
+}
+
+.x-tree-drop-ok-append .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/pagetree-drag-move-into.png);
+}
+
+.x-tree-drop-ok-between .x-dd-drop-icon,
+.x-tree-drop-ok-below .x-dd-drop-icon,
+.x-tree-drop-ok-above .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/pagetree-drag-move-between.png);
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
+.x-tree-node div.x-tree-drag-insert-below,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a {
+	border-bottom: 1px solid #9eb2c5;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-above,
+.x-tree-node .x-tree-drag-insert-above,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a {
+	border-top: 1px solid #9eb2c5;
+}
+
+.x-tree-node .x-tree-drag-append {
+	background: #d7e4f1;
+}
+
+.x-tree-node .x-tree-drag-append a span {
+	background-color: inherit;
+	border: none;
+}
+
+.typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {
+	background-image: url(../images/icons/apps/edit-delete.png);
+}
+
+/**
+ *
+ * @section Top Panel
+ *
+ */
+#typo3-pagetree .x-toolbar {
+	background: none;
+	border: none;
+}
+
+.typo3-pagetree-topPanel-button {
+	background: none;
+	border: none;
+}
+
+#typo3-pagetree-topPanel .x-btn-pressed {
+	background-image: url('../icons/gfx/toolbar_item_active_bg.png');
+}
+
+#typo3-pagetree-topPanel .x-btn-click {
+	border: none;
+	top: 0;
+	left: 0;
+}
+
+#typo3-pagetree-topPanel button:focus {
+	outline: none;
+}
+
+#typo3-pagetree-topPanel button::-moz-focus-inner {
+	border: 0;
+}
+
+.typo3-pagetree-topPanel-button button {
+	border: none;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-item {
+	background-color: #dadada;
+	line-height: normal;
+}
+
+#typo3-pagetree-topPanel-filter {
+	border: 1px solid #AEAEAE;
+	-moz-box-shadow: inset 0 1px 4px #AEAEAE;
+	-ms-box-shadow: inset 0 1px 4px #AEAEAE;
+	-webkit-box-shadow: inset 0 1px 4px #AEAEAE;
+	box-shadow: inset 0 2px 1px #AEAEAE;
+}
+
+.typo3-pagetree-topPanel-filter-defaultText {
+	color: gray;
+}
+
+#typo3-pagetree-topPanelItems,
+.typo3-pagetree-indicatorBar-item,
+#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
+#typo3-pagetree-treeContainer {
+	-moz-box-shadow: inset -2px 0 0px #C4C4C4;
+	-ms-box-shadow: inset -2px 0 0px #C4C4C4;
+	-webkit-box-shadow: inset -2px 0 0px #C4C4C4;
+	box-shadow: inset -2px 0 0px #C4C4C4;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+	border: none;
+	border-radius: 0;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-button button {
+	vertical-align: middle;
+}
+
+#typo3-pagetree-topPanel-defaultPanel {
+	color: #A2AAB8;
+	line-height: 18px;
+}
+
+#typo3-pagetree-topPanel-item-newNode .x-btn-over {
+	background: inherit;
+}
+
+#typo3-pagetree-topPanel-item-newNode button {
+	cursor: move;
+}
+
+#typo3-pagetree-topPanel-button-refresh,
+#typo3-pagetree-topPanel-button-refresh.x-btn-over {
+	background: inherit;
+}
+
+/**
+ *
+ * @section Tree Highlighting
+ *
+ */
+
+#typo3-pagetree .ver-element,
+#typo3-pagetree .ver-versions,
+#typo3-pagetree .ver-page {
+	background-color: #f7c898;
+}
+
+#typo3-pagetree .x-tree-node-over.ver-element,
+#typo3-pagetree .x-tree-node-over.ver-versions,
+#typo3-pagetree .x-tree-node-over.ver-page,
+#typo3-pagetree .x-tree-selected.ver-element,
+#typo3-pagetree .x-tree-selected.ver-versions,
+#typo3-pagetree .x-tree-selected.ver-page {
+	background-color: #fee4c9;
+}
+
+.x-tree-node-readableRootline {
+	font-style: italic;
+}
+
+#typo3-pagetree .typo3-pagetree-filteringTree-highlight {
+	background-color: #F48E0C;
+	color: #FFF;
+}
+
+/**
+ *
+ * @section Indicator Bar
+ *
+ */
+
+#typo3-pagetree-indicatorBar-temporaryMountPoint p {
+	line-height: 13px;
+}
+
+#typo3-pagetree-indicatorBar-temporaryMountPoint,
+#typo3-pagetree-indicatorBar-filter {
+	background-color: #EAF7FF;
+	border-bottom: 1px solid #C5DBE6;
+	color: #4C73A1;
+}
+
+.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-leftIcon,
+.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
+	cursor: pointer;
+}
+
+#typo3-pagetree-indicatorBar-indicatorTitle {
+	background-color: #ffec97;
+	font-weight: bold;
+}
+
+/**
+ *
+ * @section Deletion Drop Zone
+ *
+ */
+
+#typo3-pagetree-deletionDropZone {
+	color: #FFF;
+	background-color: #585858;
+	-moz-box-shadow: inset 0 2px 5px #414141;
+	-ms-box-shadow: inset 0 2px 5px #414141;
+	-webkit-box-shadow: inset 0 2px 5px #414141;
+	box-shadow: inset 0 2px 5px #414141;
+}
+
+#typo3-pagetree-deletionDropZone p {
+	line-height: 25px;
+}
+
+#typo3-pagetree-deletionDropZone-text {
+	font-size: .9em;
+}
+
+#typo3-pagetree .x-panel-tbar,
+#typo3-pagetree-deletionDropZone .x-panel-body {
+	-moz-box-shadow: inset -2px 0 1px #414141;
+	-ms-box-shadow: inset -2px 0 1px #414141;
+	-webkit-box-shadow: inset -2px 0 1px #414141;
+	box-shadow: inset -2px 0 1px #414141;
+}

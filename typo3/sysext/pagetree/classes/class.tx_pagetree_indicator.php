@@ -53,6 +53,10 @@ class tx_pagetree_Indicator {
 	 */
 	protected function getIndicatorProviders() {
 		$providers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['pagetree']['tx_pagetree']['indicator']['providers'];
+		if (!is_array($providers)) {
+			return;
+		}
+
 		foreach ($providers as $indicatorProvider) {
 			/** @var $indicatorProviderInstance tx_pagetree_IndicatorProvider */
 			$indicatorProviderInstance = t3lib_div::makeInstance($indicatorProvider);
@@ -70,7 +74,10 @@ class tx_pagetree_Indicator {
 	public function getAllIndicators() {
 		$indicators = array();
 		foreach ($this->indicatorProviders as $indicatorProvider) {
-			$indicators[] = $indicatorProvider->getIndicator();
+			$indicator = $indicatorProvider->getIndicator();
+			if($indicator) {
+				$indicators[] = $indicator;
+			}
 		}
 
 		return $indicators;

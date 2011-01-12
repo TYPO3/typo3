@@ -41,7 +41,7 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 	 *
 	 * @type {Boolean}
 	 */
-	ignoreNoChange: false,
+	ignoreNoChange: true,
 
 	/**
 	 * Edit delay
@@ -65,25 +65,35 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 	listeners: {
 		beforecomplete: function(node) {
 			this.updatedValue = this.getValue();
-			node.editNode.attributes.editableText = this.updatedValue;
-			this.setValue(node.editNode.attributes.prefix + this.updatedValue + node.editNode.attributes.suffix);
-			this.editNode.attributes.editableText = this.updatedValue;
 		},
 
 		complete: {
 			fn: function(node, newValue, oldValue) {
-				this.editNode.ownerTree.commandProvider.saveTitle(node, this.updatedValue, oldValue);
+				this.editNode.ownerTree.commandProvider.saveTitle(node, this.updatedValue, oldValue, this);
 			}
 		}
 	},
 
 	/**
-	 * Overriden method to set another editable text than the node text attribute
+	 * Updates the edit node
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {String} editableText
+	 * @param {String} updatedNode
+	 * @return {void}
+	 */
+	updateNodeText: function(node, editableText, updatedNode) {
+		this.editNode.setText(this.editNode.attributes.prefix + updatedNode + this.editNode.attributes.suffix);
+		this.editNode.attributes.editableText = editableText;
+	},
+
+	/**
+	 * Overridden method to set another editable text than the node text attribute
 	 *
 	 * @param {Ext.tree.TreeNode} node
 	 * @return {Boolean}
 	 */
-	triggerEdit : function(node) {
+	triggerEdit: function(node) {
 		this.completeEdit();
 		if (node.attributes.editable !== false) {
 			this.editNode = node;

@@ -137,7 +137,7 @@ final class tx_pagetree_Commands {
 		$data['pages'][$placeholder] = array(
 			'pid' => $parentNode->getWorkspaceId(),
 			'doktype' => $pageType,
-			'title' => $GLOBALS['LANG']->sL('LLL:EXT:pagetree/locallang_pagetree.xml:defaultTitle', TRUE),
+			'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE),
 		);
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
@@ -201,19 +201,23 @@ final class tx_pagetree_Commands {
 	}
 
 	/**
-	 * Returns the mount point path
+	 * Returns the mount point path for a temporary mount or the given id
 	 *
 	 * @static
+	 * @param int $uid
 	 * @return void
 	 */
-	public static function getMountPointPath() {
-		$temporaryMountPoint = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
-		if (!$temporaryMountPoint) {
+	public static function getMountPointPath($uid = -1) {
+		if ($uid === -1) {
+			$uid = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+		}
+
+		if ($uid <= 0) {
 			return '';
 		}
 
 		$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-		$rootline = array_reverse(t3lib_BEfunc::BEgetRootLine($temporaryMountPoint));
+		$rootline = array_reverse(t3lib_BEfunc::BEgetRootLine($uid));
 		array_shift($rootline);
 
 		$path = array();
@@ -228,7 +232,7 @@ final class tx_pagetree_Commands {
 			$path[] = $text;
 		}
 
-		return '/' . implode('/', $path);
+		return htmlspecialchars('/' . implode('/', $path));
 	}
 
 	/**
@@ -278,12 +282,13 @@ final class tx_pagetree_Commands {
 		$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$addDomainName = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
+		$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
 
 		/** @var $subNode tx_pagetree_Node */
 		$subNode = t3lib_div::makeInstance('tx_pagetree_Node');
 		$subNode->setRecord($record);
 		$subNode->setCls($record['_CSSCLASS']);
-		$subNode->setQTip('ID: ' . $record['uid']);
+		$subNode->setQTip(str_replace(' - ', '<br />', t3lib_BEfunc::titleAttribForPages($record, '', FALSE)));
 		$subNode->setType('pages');
 
 		$subNode->setId($record['uid']);
@@ -296,6 +301,7 @@ final class tx_pagetree_Commands {
 			$field = 'nav_title';
 			$text = $record['nav_title'];
 		}
+		$visibleText = t3lib_div::fixed_lgd_cs($text, $titleLength);
 
 		$suffix = '';
 		if ($addDomainName) {
@@ -304,8 +310,13 @@ final class tx_pagetree_Commands {
 		}
 
 		$prefix = ($addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
-		$subNode->setText($text, $field, $prefix, $suffix);
 		$subNode->setEditableText($text);
+		$subNode->setText(
+			htmlspecialchars($visibleText),
+			$field,
+			htmlspecialchars($prefix),
+			htmlspecialchars($suffix)
+		);
 
 		if ($record['uid'] !== 0) {
 			$spriteIconCode = t3lib_iconWorks::getSpriteIconForRecord('pages', $record);

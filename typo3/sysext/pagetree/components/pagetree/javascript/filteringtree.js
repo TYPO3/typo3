@@ -50,7 +50,7 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 	addTreeLoader: function() {
 		this.loader = new Ext.tree.TreeLoader({
 			directFn: this.treeDataProvider.getFilteredTree,
-			paramOrder: 'searchWord',
+			paramOrder: 'attributes,searchWord',
 			baseAttrs: {
 				uiProvider: this.uiProvider
 			},
@@ -58,6 +58,7 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 			listeners: {
 				beforeload: function(treeLoader, node) {
 					treeLoader.baseParams.searchWord = node.ownerTree.searchWord;
+					treeLoader.baseParams.attributes = node.attributes.nodeData;
 				}
 			}
 		});

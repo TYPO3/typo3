@@ -28,3 +28,7 @@
 	border-top: 1px solid #F0F0F0;
 	border-bottom: 1px solid #F0F0F0;
 }
+
+#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
+	display: inline-block;
+}

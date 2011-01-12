@@ -127,6 +127,16 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		(new Ext.dd.DropTarget(this.getEl(), {
 			ddGroup: this.ddGroup,
 
+			notifyOver: function(ddProxy, e) {
+				ddProxy.setDragElPos(e.xy[0], e.xy[1] - 60);
+
+				return this.id + '-proxyOver';
+			},
+
+			notifyEnter: function() {
+				return this.id + '-proxyOver';
+			}.createDelegate(this),
+
 			notifyDrop: function(ddProxy, e, n) {
 				var node = n.node;
 				if (!node) {

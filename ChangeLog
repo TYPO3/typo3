@@ -46,6 +46,7 @@
 
 2011-01-12  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Merged Pagetree (tagged as 45b4)
 	* Fixed bug #16970: Backwards compatibility in PHP_SCRIPT and accessing $this-> methods
 	* Fixed bug #16966: be_layout setting "none" is not working and be_layout should not be inherited automatically (Thanks to Jo Hasenau)
 	* Added feature #13319: Add plupload support for uploading files in fileadmin

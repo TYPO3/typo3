@@ -105,7 +105,8 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 */
 	rootNodeConfig: {
 		id: 'root',
-		expanded: true
+		expanded: true,
+		nodeData: {}
 	},
 
 	/**
@@ -131,6 +132,13 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 		inCopyMode: false,
 		inCutMode: false
 	},
+
+	/**
+	 * Registered clicks for the double click feature
+	 *
+	 * @type {int}
+	 */
+	clicksRegistered: 0,
 
 	/**
 	 * Listeners
@@ -214,6 +222,16 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 * return {void}
 	 */
 	refreshTree: function(callback, scope) {
+			// remove readable rootline elements while refreshing
+		if (!this.inRefreshingMode) {
+			var rootlineElements = Ext.select('.x-tree-node-readableRootline');
+			if (rootlineElements) {
+				rootlineElements.each(function(element) {
+					element.remove();
+				});
+			}
+		}
+
 		this.refreshNode(this.root, callback, scope);
 	},
 
@@ -271,7 +289,6 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 
 			listeners: {
 				beforeload: function(treeLoader, node) {
-					node.ownerTree.previousOpenedStateHash = {};
 					treeLoader.baseParams.attributes = node.attributes.nodeData;
 				}
 			}
@@ -351,6 +368,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 				if (this.dragZone.dragging && this.copyHint) {
 					this.shouldCopyNode = !this.shouldCopyNode;
 					this.copyHint.toggle();
+					this.dragZone.proxy.el.toggleClass('typo3-pagetree-copy');
 				}
 			}
 		}, 'keydown'));
@@ -376,11 +394,9 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 */
 	initDDProxyElement: function() {
 		this.shouldCopyNode = false;
-		this.copyHint = new Ext.Element(document.createElement('div'))
-			.addClass(this.id + '-copyHelp');
+		this.copyHint = new Ext.Element(document.createElement('div')).addClass(this.id + '-copy');
 		this.copyHint.dom.appendChild(document.createTextNode(TYPO3.Components.PageTree.LLL.copyHint));
 		this.copyHint.setVisibilityMode(Ext.Element.DISPLAY);
-
 		this.dragZone.proxy.ghost.dom.appendChild(this.copyHint.dom);
 	},
 
@@ -404,6 +420,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 			dragElement.cancel = false;
 
 		} else if (this.shouldCopyNode) {
+			dragElement.dropNode.unselect();
 			var attributes = dragElement.dropNode.attributes;
 			attributes.isCopiedNode = true;
 			attributes.id = 'fakeNode';
