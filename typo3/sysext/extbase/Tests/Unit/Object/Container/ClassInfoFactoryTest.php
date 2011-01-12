@@ -32,7 +32,7 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fix
  * @package TYPO3
  * @subpackage t3lib
  */
-class Tx_Extbase_Object_Container_ClassInfoFactoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var t3lib_object_ClassInfoFactory
@@ -44,6 +44,21 @@ class Tx_Extbase_Object_Container_ClassInfoFactoryTest extends Tx_Extbase_Tests_
 	 */
 	public function setUp() {
 		$this->classInfoFactory = new Tx_Extbase_Object_Container_ClassInfoFactory();
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Object_Container_Exception_UnknownObjectException
+	 */
+	public function buildClassInfoFromClassNameThrowsExceptionIfGivenClassNameCantBeReflected() {
+		$this->classInfoFactory->buildClassInfoFromClassName('SomeNonExistingClass');
+	}
+
+	/**
+	 * @test
+	 */
+	public function moreTestsNeedToBeWritten() {
+		$this->markTestIncomplete('More tests need to be written!');
 	}
 }
 ?>

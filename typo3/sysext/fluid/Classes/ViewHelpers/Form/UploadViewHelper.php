@@ -29,9 +29,9 @@
  * <code title="Example">
  * <f:form.upload name="file" />
  * </code>
- *
- * Output:
+ * <output>
  * <input type="file" name="file" />
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

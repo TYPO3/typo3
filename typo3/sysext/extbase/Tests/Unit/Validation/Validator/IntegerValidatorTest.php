@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: IntegerValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * An array of valid floating point numbers addresses

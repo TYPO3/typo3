@@ -28,34 +28,50 @@
  * <code title="Defaults">
  * <f:format.date>{dateObject}</f:format.date>
  * </code>
- *
- * Output:
+ * <output>
  * 1980-12-13
  * (depending on the current date)
+ * </output>
  *
  * <code title="Custom date format">
  * <f:format.date format="H:i">{dateObject}</f:format.date>
  * </code>
- *
- * Output:
+ * <output>
  * 01:23
  * (depending on the current time)
+ * </output>
  *
  * <code title="strtotime string">
  * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
  * </code>
- *
- * Output:
+ * <output>
  * 13.12.1980 - 21:03:42
  * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
+ * </output>
  *
- * <code title="inline notation">
+ * <code title="output date from unix timestamp">
+ * <f:format.date format="d.m.Y - H:i:s">@{someTimestamp}</f:format.date>
+ * </code>
+ * <output>
+ * 13.12.1980 - 21:03:42
+ * (depending on the current time. Don't forget the "@" in front of the timestamp see http://www.php.net/manual/en/function.strtotime.php)
+ * </output>
+ *
+ * <code title="Inline notation">
  * {f:format.date(date: dateObject)}
  * </code>
- *
- * Output:
+ * <output>
  * 1980-12-13
- * (depending on the current date)
+ * (depending on the value of {dateObject})
+ * </output>
+ *
+ * <code title="Inline notation (2nd variant)">
+ * {dateObject -> f:format.date()}
+ * </code>
+ * <output>
+ * 1980-12-13
+ * (depending on the value of {dateObject})
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

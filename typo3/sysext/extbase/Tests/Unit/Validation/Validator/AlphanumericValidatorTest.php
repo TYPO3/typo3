@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: AlphanumericValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Validation_Validator_AlphanumericValidator_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_AlphanumericValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

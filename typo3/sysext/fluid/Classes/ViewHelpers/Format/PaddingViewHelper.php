@@ -29,16 +29,16 @@
  * <code title="Defaults">
  * <f:format.padding padLength="10">TYPO3</f:format.padding>
  * </code>
- *
- * Output:
+ * <output>
  * TYPO3     (note the trailing whitespace)
+ * <output>
  *
  * <code title="Specify padding string">
  * <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
  * </code>
- *
- * Output:
+ * <output>
  * TYPO3-=-=-
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

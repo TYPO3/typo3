@@ -30,7 +30,7 @@
  * @subpackage extbase
  */
 
-class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
+class Tx_Extbase_Tests_Unit_Utility_TypoScriptTest extends tx_phpunit_testcase {
 
 	/**
 	 * @return array
@@ -56,9 +56,9 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 						),
 					'_typoScriptNodeValue' => 'TEXT',
 				),
-			)		
+			)
 		);
-		
+
 		//convert TypoScript Array To Plain Array Removes Trailing Dots With Changed Order In The TypoScript Array
 		$testdata[1] = array(
 			'typoScriptSettings' => array(
@@ -78,9 +78,9 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 						),
 					'_typoScriptNodeValue' => 'TEXT',
 				),
-			)	
+			)
 		);
-		
+
 		$testdata[2] = array(
 			'typoScriptSettings' => array(
 				'10' => 'COA',
@@ -115,17 +115,17 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 						'foo' => array(
 							'bar' => 5,
 							),
-						'_typoScriptNodeValue' => 'TEXT'	
+						'_typoScriptNodeValue' => 'TEXT'
 					),
 					'20' => array(
 							'10' => array(
 								'value' => 'Test',
 								'wrap' => '[|]',
-								'_typoScriptNodeValue' => 'TEXT',					
+								'_typoScriptNodeValue' => 'TEXT',
 							),
 							'20' => array(
 								'value' => 'Test',
-								'wrap' => '[|]',							
+								'wrap' => '[|]',
 								'_typoScriptNodeValue' => 'TEXT',
 							),
 							'_typoScriptNodeValue' => 'COA',
@@ -133,13 +133,13 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 					'30' => 'custom',
 					'_typoScriptNodeValue' => 'COA',
 				),
-			)	
-		);			
-		
+			)
+		);
+
 		return $testdata;
-		
+
 	}
-	
+
 	/**
 	 * @test
 	 * @dataProvider convertTypoScriptArrayToPlainArrayTestdata
@@ -152,12 +152,12 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * Dataprovider for testcase "convertPlainArrayToTypoScriptArray"
-	 * 
+	 *
 	 * @return array
 	 */
 	public function convertPlainArrayToTypoScriptArrayTestdata() {
 		$testdata = array();
-		
+
 		$testdata[0] = array(
 			'extbaseTS' => array(
 				'10' => array(
@@ -165,7 +165,7 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 					'_typoScriptNodeValue' => 'TEXT'
 				)
 			),
-	
+
 			'classic' => array(
 				'10' => 'TEXT',
 				'10.' => array(
@@ -182,17 +182,17 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 						'foo' => array(
 							'bar' => 5,
 							),
-						'_typoScriptNodeValue' => 'TEXT'	
+						'_typoScriptNodeValue' => 'TEXT'
 					),
 					'20' => array(
 							'10' => array(
 								'value' => 'Test',
 								'wrap' => '[|]',
-								'_typoScriptNodeValue' => 'TEXT',					
+								'_typoScriptNodeValue' => 'TEXT',
 							),
 							'20' => array(
 								'value' => 'Test',
-								'wrap' => '[|]',							
+								'wrap' => '[|]',
 								'_typoScriptNodeValue' => 'TEXT',
 							),
 							'_typoScriptNodeValue' => 'COA',
@@ -200,7 +200,7 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 					'_typoScriptNodeValue' => 'COA',
 				),
 			),
-	
+
 			'classic' => array(
 				'10' => 'COA',
 				'10.' => array(
@@ -227,10 +227,10 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 				)
 			)
 		);
-		
+
 		return $testdata;
 	}
-	
+
 	/**
 	 * @test
 	 * @dataProvider convertPlainArrayToTypoScriptArrayTestdata

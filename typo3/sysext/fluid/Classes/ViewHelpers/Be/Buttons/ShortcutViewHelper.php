@@ -28,26 +28,24 @@
  * <code title="Default">
  * <f:be.buttons.shortcut />
  * </code>
- *
- * Output:
+ * <output>
  * Shortcut button as known from the TYPO3 backend.
  * By default the current page id, module name and all module arguments will be stored
+ * </output>
  *
  * <code title="Explicitly set parameters to be stored in the shortcut">
  * <f:be.buttons.shortcut getVars="{0: 'M', 1: 'myOwnPrefix'}" setVars="{0: 'function'}" />
  * </code>
- *
- * Output:
+ * <output>
  * Shortcut button as known from the TYPO3 backend.
  * This time only the specified GET parameters and SET[]-settings will be stored.
  * Note:
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
+ * </output>
  *
- * @author		Steffen Kamper <info@sk-typo3.de>
- * @author		Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

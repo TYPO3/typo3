@@ -21,10 +21,8 @@
  *                                                                        */
 
 /**
- * With this tag, you can select a layout to be used..
+ * With this tag, you can select a layout to be used for the current template.
  * <code><f:layout name="main" /></code>
- * 
- *
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

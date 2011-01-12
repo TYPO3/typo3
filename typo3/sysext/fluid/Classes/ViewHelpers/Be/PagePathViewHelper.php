@@ -28,16 +28,13 @@
  * <code>
  * <f:be.pagePath />
  * </code>
- *
- * Output:
+ * <output>
  * Current page path, prefixed with "Path:" and wrapped in a span with the class "typo3-docheader-pagePath"
+ * </output>
  *
- *
- * @author      Steffen Kamper <info@sk-typo3.de>
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

@@ -31,7 +31,7 @@
  * @version $Id: RequestHashService_testcase.php 2334 2010-06-14 16:28:25Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
-class Tx_Extbase_Security_Channel_RequestHashService_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	public function dataProviderForGenerateRequestHash() {
 		return array(

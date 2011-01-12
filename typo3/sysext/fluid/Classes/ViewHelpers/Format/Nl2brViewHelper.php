@@ -29,9 +29,16 @@
  * <code title="Example">
  * <f:format.nl2br>{text_with_linebreaks}</f:format.nl2br>
  * </code>
- *
- * Output:
+ * <output>
  * text with line breaks replaced by <br />
+ * </output>
+ *
+ * <code title="Inline notation">
+ * {text_with_linebreaks -> f:format.nl2br()}
+ * </code>
+ * <output>
+ * text with line breaks replaced by <br />
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

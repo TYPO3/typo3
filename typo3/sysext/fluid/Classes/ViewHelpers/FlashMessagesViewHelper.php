@@ -31,16 +31,18 @@
  * <code title="Simple">
  * <f:flashMessages />
  * </code>
- * Renders an ul-list of flash messages.
+ * <output>
+ * An ul-list of flash messages.
+ * </output>
  *
  * <code title="Output with css class">
  * <f:flashMessages class="specialClass" />
  * </code>
- *
- * Output:
+ * <output>
  * <ul class="specialClass">
  *  ...
  * </ul>
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

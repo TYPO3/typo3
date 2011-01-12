@@ -27,7 +27,7 @@
 
 require_once (t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/Entity.php');
 
-class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var tslib_fe
@@ -42,12 +42,12 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	/**
 	 * @var tslib_cObj
 	 */
-	protected $contentObject;
+	protected $mockContentObject;
 
 	/**
 	 * @var Tx_Extbase_MVC_Web_Request
 	 */
-	protected $request;
+	protected $mockRequest;
 
 	/**
 	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
@@ -60,11 +60,12 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 
 		$this->getBackup = t3lib_div::_GET();
 
-		$this->contentObject = $this->getMock('tslib_cObj');
-		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
+		$this->mockContentObject = $this->getMock('tslib_cObj');
+		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
 
-		$this->uriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'), array($this->contentObject));
-		$this->uriBuilder->setRequest($this->request);
+		$this->uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('build'));
+		$this->uriBuilder->setRequest($this->mockRequest);
+		$this->uriBuilder->_set('contentObject', $this->mockContentObject);
 	}
 
 	public function tearDown() {
@@ -84,6 +85,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))
+			->setArgumentPrefix('testArgumentPrefix')
 			->setLinkAccessRestrictedPages(TRUE)
 			->setTargetPageUid(123)
 			->setTargetPageType(321)
@@ -96,6 +98,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 		$this->assertEquals(TRUE, $this->uriBuilder->getCreateAbsoluteUri());
 		$this->assertEquals(TRUE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array('test' => 'addQueryStringExcludeArguments'), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
+		$this->assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
 		$this->assertEquals(TRUE, $this->uriBuilder->getLinkAccessRestrictedPages());
 		$this->assertEquals(123, $this->uriBuilder->getTargetPageUid());
 		$this->assertEquals(321, $this->uriBuilder->getTargetPageType());
@@ -108,7 +111,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 */
 	public function uriForPrefixesArgumentsWithExtensionAndPluginNameAndSetsControllerArgument() {
 		$expectedArguments = array('tx_someextension_someplugin' => array('foo' => 'bar', 'baz' => array('extbase' => 'fluid'), 'controller' => 'SomeController'));
-
+		$GLOBALS['TSFE'] = NULL;
 		$this->uriBuilder->uriFor(NULL, array('foo' => 'bar', 'baz' => array('extbase' => 'fluid')), 'SomeController', 'SomeExtension', 'SomePlugin');
 		$this->assertEquals($expectedArguments, $this->uriBuilder->getArguments());
 	}
@@ -140,7 +143,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function uriForSetsControllerFromRequestIfControllerIsNotSet() {
-		$this->request->expects($this->once())->method('getControllerName')->will($this->returnValue('SomeControllerFromRequest'));
+		$this->mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('SomeControllerFromRequest'));
 
 		$expectedArguments = array('tx_someextension_someplugin' => array('controller' => 'SomeControllerFromRequest'));
 
@@ -152,7 +155,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function uriForSetsExtensionNameFromRequestIfExtensionNameIsNotSet() {
-		$this->request->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('SomeExtensionNameFromRequest'));
+		$this->mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('SomeExtensionNameFromRequest'));
 
 		$expectedArguments = array('tx_someextensionnamefromrequest_someplugin' => array('controller' => 'SomeController'));
 
@@ -164,7 +167,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSet() {
-		$this->request->expects($this->once())->method('getPluginName')->will($this->returnValue('SomePluginNameFromRequest'));
+		$this->mockRequest->expects($this->once())->method('getPluginName')->will($this->returnValue('SomePluginNameFromRequest'));
 
 		$expectedArguments = array('tx_someextension_somepluginnamefromrequest' => array('controller' => 'SomeController'));
 
@@ -264,7 +267,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	public function buildBackendUriCreatesAbsoluteUrisIfSpecified() {
 		t3lib_div::_GETset(array('M' => 'moduleKey'));
 
-		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
+		$this->mockRequest->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
 		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
 
 		$expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'mod.php?M=moduleKey';
@@ -276,10 +279,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function buildFrontendUriCreatesTypoLink() {
-		$uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'), array($this->contentObject));
+		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
+		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('someTypoLinkConfiguration')));
 
-		$this->contentObject->expects($this->once())->method('typoLink_URL')->with(array('someTypoLinkConfiguration'));
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->with(array('someTypoLinkConfiguration'));
 
 		$uriBuilder->buildFrontendUri();
 	}
@@ -288,7 +292,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function buildFrontendUriCreatesRelativeUrisByDefault() {
-		$this->contentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('relative/uri'));
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('relative/uri'));
 
 		$expectedResult = 'relative/uri';
 		$actualResult = $this->uriBuilder->buildFrontendUri();
@@ -300,7 +304,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function buildFrontendUriDoesNotStripLeadingSlashesFromRelativeUris() {
-		$this->contentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('/relative/uri'));
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('/relative/uri'));
 
 		$expectedResult = '/relative/uri';
 		$actualResult = $this->uriBuilder->buildFrontendUri();
@@ -312,10 +316,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function buildFrontendUriCreatesAbsoluteUrisIfSpecified() {
-		$uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'), array($this->contentObject));
+		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
+		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
 
-		$this->contentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar', 'forceAbsoluteUrl' => TRUE))->will($this->returnValue('http://baseuri/relative/uri'));
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar', 'forceAbsoluteUrl' => TRUE))->will($this->returnValue('http://baseuri/relative/uri'));
 		$uriBuilder->setCreateAbsoluteUri(TRUE);
 
 		$expectedResult = 'http://baseuri/relative/uri';
@@ -334,6 +339,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))
+			->setArgumentPrefix('testArgumentPrefix')
 			->setLinkAccessRestrictedPages(TRUE)
 			->setTargetPageUid(123)
 			->setTargetPageType(321)
@@ -348,6 +354,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 		$this->assertEquals(FALSE, $this->uriBuilder->getCreateAbsoluteUri());
 		$this->assertEquals(FALSE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array(), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
+		$this->assertEquals(NULL, $this->uriBuilder->getArgumentPrefix());
 		$this->assertEquals(FALSE, $this->uriBuilder->getLinkAccessRestrictedPages());
 		$this->assertEquals(NULL, $this->uriBuilder->getTargetPageUid());
 		$this->assertEquals(0, $this->uriBuilder->getTargetPageType());
@@ -521,7 +528,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Tests_Un
 		$mockEntity->name = 'foo';
 
 		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
-		$actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', array('object' => $mockEntity));
+		$mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', array('object' => $mockEntity));
 	}
 
 	/**

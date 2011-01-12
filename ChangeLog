@@ -1,3 +1,7 @@
+2011-01-12  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid versions to 1.3.0beta4
+
 2011-01-12  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16982: be_layout and be_layout_next_level got misleading labels and no CSH (Thanks to Jo Hasenau)

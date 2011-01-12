@@ -111,8 +111,13 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	/**
 	 * @test
 	 */
-	public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSet() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())
+	public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound() {
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))
+			->method('exec_SELECTgetRows')
+			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
+			->will($this->returnValue(array()));
+
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))
 			->method('exec_SELECTgetRows')
 			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
 			->will(
@@ -132,13 +137,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	/**
 	 * @test
 	 */
-	public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSetAndNoRootTemplateWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('exec_SELECTgetRows')
-			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
-			->will($this->returnValue(array()));
-
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))
+	public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet() {
+		$GLOBALS['TYPO3_DB']->expects($this->once())
 			->method('exec_SELECTgetRows')
 			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
 			->will(
@@ -161,12 +161,12 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound() {
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))
 			->method('exec_SELECTgetRows')
-			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
+			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
 			->will($this->returnValue(array()));
 
 		$GLOBALS['TYPO3_DB']->expects($this->at(1))
 			->method('exec_SELECTgetRows')
-			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
+			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
 			->will($this->returnValue(array()));
 
 		$expectedResult = Tx_Extbase_Configuration_AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
@@ -307,7 +307,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	/**
 	 * @test
 	 */
-	public function getContextSpecificFrameworkConfigurationReturnsUnmodifiedFrameworkConfiguration() {
+	public function getContextSpecificFrameworkConfigurationReturnsUnmodifiedFrameworkConfigurationIfRequestHandlersAreConfigured() {
 		$frameworkConfiguration = array(
 			'pluginName' => 'Pi1',
 			'extensionName' => 'SomeExtension',
@@ -315,9 +315,46 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 				'bar' => array(
 					'baz' => 'Foo',
 				),
+			),
+			'mvc' => array(
+				'requestHandlers' => array(
+					'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'SomeRequestHandler'
+				)
 			)
 		);
 		$expectedResult = $frameworkConfiguration;
+		$actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getContextSpecificFrameworkConfigurationSetsDefaultRequestHandlersIfRequestHandlersAreNotConfigured() {
+		$frameworkConfiguration = array(
+			'pluginName' => 'Pi1',
+			'extensionName' => 'SomeExtension',
+			'foo' => array(
+				'bar' => array(
+					'baz' => 'Foo',
+				),
+			),
+		);
+		$expectedResult = array(
+			'pluginName' => 'Pi1',
+			'extensionName' => 'SomeExtension',
+			'foo' => array(
+				'bar' => array(
+					'baz' => 'Foo',
+				),
+			),
+			'mvc' => array(
+				'requestHandlers' => array(
+					'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'Tx_Extbase_MVC_Web_FrontendRequestHandler',
+					'Tx_Extbase_MVC_Web_BackendRequestHandler' => 'Tx_Extbase_MVC_Web_BackendRequestHandler'
+				)
+			)
+		);
 		$actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}

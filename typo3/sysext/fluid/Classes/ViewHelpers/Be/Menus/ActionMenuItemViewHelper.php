@@ -24,11 +24,32 @@
  * This view helper only works in conjunction with Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper
  * Note: This view helper is experimental!
  *
+ * = Examples =
  *
- * @author      Steffen Kamper <info@sk-typo3.de>
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
+ * <code title="Simple">
+ * <f:be.menus.actionMenu>
+ *   <f:be.menus.actionMenuItem label="Overview" controller="Blog" action="index" />
+ *   <f:be.menus.actionMenuItem label="Create new Blog" controller="Blog" action="new" />
+ *   <f:be.menus.actionMenuItem label="List Posts" controller="Post" action="index" arguments="{blog: blog}" />
+ * </f:be.menus.actionMenu>
+ * </code>
+ * <output>
+ * Selectbox with the options "Overview", "Create new Blog" and "List Posts"
+ * </output>
+ *
+ * <code title="Localized">
+ * <f:be.menus.actionMenu>
+ *   <f:be.menus.actionMenuItem label="{f:translate(key='overview')}" controller="Blog" action="index" />
+ *   <f:be.menus.actionMenuItem label="{f:translate(key='create_blog')}" controller="Blog" action="new" />
+ * </f:be.menus.actionMenu>
+ * </code>
+ * <output>
+ * localized selectbox
+ * <output>
+ *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 

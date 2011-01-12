@@ -28,25 +28,23 @@
  * <code title="Minimal">
  * <f:be.tableList tableName="fe_users" />
  * </code>
- *
- * Output:
+ * <output>
  * List of all "Website user" records stored in the configured storage PID.
  * Records will be editable, if the current BE user has got edit rights for the table "fe_users".
  * Only the title column (username) will be shown.
  * Context menu is active.
+ * </output>
  *
  * <code title="Full">
  * <f:be.tableList tableName="fe_users" fieldList="{0: 'name', 1: 'email'}" storagePid="1" levels="2" filter='foo' recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" alternateBackgroundColors="true" />
  * </code>
- *
- * Output:
+ * <output>
  * List of "Website user" records with a text property of "foo" stored on PID 1 and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
+ * </output>
  *
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 require_once (PATH_typo3 . 'class.db_list.inc');
 require_once (PATH_typo3 . 'class.db_list_extra.inc');

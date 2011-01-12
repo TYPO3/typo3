@@ -27,7 +27,7 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

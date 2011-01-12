@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id: ConjunctionValidator_testcase.php 1729 2009-11-25 21:37:20Z stucki $
  */
-class Tx_Extbase_Validation_Validator_ConjunctionValidator_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

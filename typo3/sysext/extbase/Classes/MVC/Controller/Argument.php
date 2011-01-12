@@ -309,7 +309,9 @@ class Tx_Extbase_MVC_Controller_Argument {
 			$this->validator = $this->objectManager->create('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 		}
 		foreach ($objectNames as $objectName) {
-			if (!class_exists($objectName)) $objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
+			if (!class_exists($objectName)) {
+				$objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
+			}
 			$this->validator->addValidator($this->objectManager->get($objectName));
 		}
 		return $this;

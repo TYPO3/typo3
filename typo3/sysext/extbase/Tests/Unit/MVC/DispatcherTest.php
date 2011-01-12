@@ -27,7 +27,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

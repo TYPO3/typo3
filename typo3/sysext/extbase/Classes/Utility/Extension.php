@@ -135,9 +135,10 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	 * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
 	 * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
+	 * @param string $pluginIconPathAndFilename is a path to an icon file (relative to TYPO3_mainDir), that will be displayed in the drop down menu in the backend (optional)
 	 * @return void
 	 */
-	static public function registerPlugin($extensionName, $pluginName, $pluginTitle) {
+	static public function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = NULL) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -147,7 +148,7 @@ tt_content.' . $pluginSignature . ' {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
+		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
 	}
 
 	/**

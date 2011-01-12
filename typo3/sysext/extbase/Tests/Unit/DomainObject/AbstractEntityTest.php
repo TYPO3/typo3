@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test

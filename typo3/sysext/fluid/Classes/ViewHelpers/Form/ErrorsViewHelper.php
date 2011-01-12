@@ -27,16 +27,29 @@
  *
  * <code title="Output error messages as a list">
  * <ul class="errors">
- *   <f:errors>
+ *   <f:form.errors>
  *     <li>{error.code}: {error.message}</li>
- *   </f:errors>
+ *   </f:form.errors>
  * </ul>
  * </code>
- *
- * Output:
+ * <output>
  * <ul>
  *   <li>1234567890: Validation errors for argument "newBlog"</li>
  * </ul>
+ * </output>
+ *
+ * <code title="Output error messages for a single property">
+ * <f:form.errors for="someProperty">
+ *   <div class="error">
+ *     <strong>{error.propertyName}</strong>: <f:for each="{error.errors}" as="errorDetail">{errorDetail.message}</f:for>
+ *   </div>
+ * </f:form.errors>
+ * </code>
+ * <output>
+ * <div class="error>
+ *   <strong>someProperty:</strong> errorMessage1 errorMessage2
+ * </div>
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

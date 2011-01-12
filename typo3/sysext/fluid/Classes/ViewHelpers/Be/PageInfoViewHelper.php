@@ -28,15 +28,13 @@
  * <code>
  * <f:be.pageInfo />
  * </code>
- *
- * Output:
+ * <output>
  * Page info icon with context menu
+ * </output>
  *
- * @author      Steffen Kamper <info@sk-typo3.de>
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_PageInfoViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

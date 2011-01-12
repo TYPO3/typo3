@@ -28,23 +28,21 @@
  * <code title="Simple">
  * <f:be.container>your module content</f:be.container>
  * </code>
- *
- * Output:
+ * <output>
  * "your module content" wrapped with propper head & body tags.
  * Default backend CSS styles and JavaScript will be included
+ * </output>
  *
  * <code title="All options">
  * <f:be.container pageTitle="foo" enableJumpToUrl="false" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" addCssFile="{f:uri.resource(path:'styles/backend.css')}" addJsFile="{f:uri.resource('scripts/main.js')}">your module content</f:be.container>
  * </code>
- *
- * Output:
+ * <output>
  * "your module content" wrapped with propper head & body tags.
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
+ * </output>
  *
- * @author      Bastian Waidelich <bastian@typo3.org>
- * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id:
- *
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @license http://www.gnu.org/copyleft/gpl.html
  */
 class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 

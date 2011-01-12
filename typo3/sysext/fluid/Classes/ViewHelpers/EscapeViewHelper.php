@@ -29,23 +29,23 @@
  * <code title="HTML">
  * <f:escape>{text}</f:escape>
  * </code>
- *
- * Output:
+ * <output>
  * Text with & " ' < > * replaced by HTML entities (htmlspecialchars applied).
+ * </output>
  *
  * <code title="Entities">
  * <f:escape type="entities">{text}</f:escape>
  * </code>
- *
- * Output:
+ * <output>
  * Text with all possible chars replaced by HTML entities (htmlentities applied).
+ * </output>
  *
  * <code title="URL">
  * <f:escape type="url">{text}</f:escape>
  * </code>
- *
- * Output:
+ * <output>
  * Text encoded for URL use (rawurlencode applied).
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api

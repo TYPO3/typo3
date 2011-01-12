@@ -1,8 +1,39 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0 Beta 4:
+=========================
+included in TYPO3 4.5.0 Beta 4.
+
+This release contains numerous bugfixes, and a few small features:
+
+* Tx_Extbase_Utility_Extension::registerPlugin() now has a fourth parameter $pluginIconPathAndFilename
+  that you can set to the path of an icon, that will be displayed in the plugin dropdown in the backend.
+  You can use it like:
+  Tx_Extbase_Utility_Extension::registerPlugin(
+		$_EXTKEY,
+		'MyPlugin',
+		'My Plugin description',
+		t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/someIcon.gif'
+  );
+* Hidden Records in Workspaces now work
+  Before, if t3lib_pageSelect::getRecordOverlay returned FALSE (if
+  no translation is found), a fatal error occured:
+  PHP Catchable Fatal Error: Argument 2 passed to Tx_Extbase_Persistence_Mapper_DataMapper::getTargetType()
+  must be an array, boolean given, called in Persistence/Mapper/DataMapper.php
+
+Full Changes for 1.3.0 Beta 4:
+==============================
+
+[+TASK] Extbase (Tests): Fixed a repository unit test so that it works in CLI mode
+[+TASK] Extbase (Tests): Fixed Extbase unit tests
+[+BUGFIX] Extbase (Persistence): Hidden Records in Workspaces now work
+[~TASK] Extbase: Fixed line endings (Windows to Unix).
+[~TASK] Fluid (Tests): Fixed some more testcase class names and some unit tests
+[+FEATURE] Extbase (Utility): Add support for custom specify custom plugin icon. Resolves #11179
+
 Changes for 1.3.0 Beta 3:
-==========================
+=========================
 included in TYPO3 4.5.0 Beta 3.
 
 This release features numerous stability improvements, the biggest one

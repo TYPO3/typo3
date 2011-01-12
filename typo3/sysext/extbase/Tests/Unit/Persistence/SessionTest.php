@@ -27,7 +27,7 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
+class Tx_Extbase_Tests_Unit_Persistence_SessionTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
