@@ -5,8 +5,8 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-csh-inline {
-	background-color: #ffffff;
-	border: 1px solid #a2aab8;
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
 }
 
 .typo3-csh-inline {
@@ -17,14 +17,10 @@ table.typo3-csh-inline {
 }
 
 a.typo3-csh-link .typo3-csh-inline {
-	background: #ffffff;
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
 	color: #000000;
 	font-weight: normal;
-}
-
-div.typo3-csh-inline p.t3-csh-short {
-	border: #b6b6b6 1px solid;
-	border-top: none;
 }
 
 img.typo3-csh-icon {
@@ -37,8 +33,8 @@ a.typo3-csh-link {
 
 /** new CSH code **/
 table.t3-help-inline {
-	background-color: #ffffff;
-	border: 1px solid #a2aab8;
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
 }
 
 .t3-help-inline {
@@ -49,14 +45,9 @@ table.t3-help-inline {
 }
 
 a.t3-help-link .t3-help-inline {
-	background: #ffffff;
+	background: #ffffc7;
 	color: #000000;
 	font-weight: normal;
-}
-
-div.t3-help-inline p.t3-help-short {
-	border: #b6b6b6 1px solid;
-	border-top: none;
 }
 
 p.t3-help-short.tipIsLinked {

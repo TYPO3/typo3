@@ -52,9 +52,17 @@ TYPO3.ContextHelp = function() {
 		var key = table + '.' + field;
 		var response = cshHelp.key(key);
 		tip.target = tip.triggerElement;
-		if (response ) {
+		if (response) {
 			updateTip(response);
 		} else {
+			// clear old tooltip contents
+			updateTip({
+				description: top.TYPO3.LLL.core.csh_tooltip_loading,
+				cshLink: '',
+				moreInfo: '',
+				title: ''
+			});
+			// load content
 			TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
 				cshHelp.add(response);
 				updateTip(response);
@@ -72,7 +80,7 @@ TYPO3.ContextHelp = function() {
 		tip.cshLink = response.id;
 		tip.moreInfo = response.moreInfo;
 		tip.setTitle(response.title);
-		tip.syncShadow();
+		tip.doAutoWidth();
 	}
 
 
@@ -91,6 +99,7 @@ TYPO3.ContextHelp = function() {
 				delegate: 'span.t3-help-link',
 				renderTo: Ext.getBody(),
 				cls: 'typo3-csh-tooltip',
+				shadow: false,
 				dismissDelay: 0, // tooltip stays while mouse is over target
 				showDelay: 500, // show after 0.5 seconds
 				hideDelay: 3000, // hide after 3 seconds
@@ -100,13 +109,13 @@ TYPO3.ContextHelp = function() {
 					render: function(tip) {
 						tip.body.on('click', function(event){
 							event.stopEvent();
-							if (tip.moreInfo)
+							if (tip.moreInfo) {
 								try {
 									top.TYPO3.ContextHelpWindow.open(tip.cshLink);
 								} catch(e) {
 									// do nothing
 								}
-
+							}
 						});
 					},
 					hide: function(tip) {
@@ -133,7 +142,6 @@ TYPO3.ContextHelp = function() {
 			top.TYPO3.ContextHelpWindow.open(id);
 		}
 	}
-
 }();
 
 /**

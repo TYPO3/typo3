@@ -4,9 +4,12 @@ Context sensitive help
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
+.typo3-csh-inline {
+	padding: 4px;
+}
+
 table.typo3-csh-inline {
 	margin: 5px 4px 20px 0px;
-	padding: 0;
 }
 
 table.typo3-csh-inline a.typo3-csh-link {
@@ -16,7 +19,6 @@ table.typo3-csh-inline a.typo3-csh-link {
 
 a.typo3-csh-link .typo3-csh-inline {
 	display: none;
-	padding: 0px;
 	position: absolute;
 	width: 200px;
 	z-index: 100;
@@ -40,10 +42,6 @@ a.typo3-csh-link:hover .typo3-csh-inline {
 .typo3-csh-inline h2.t3-row-header {
 	margin: 0;
 	height: auto;
-}
-
-.typo3-csh-inline p.t3-csh-short {
-	padding: 3px;
 }
 
 table.typo3-csh-inline a.typo3-csh-link {
@@ -123,9 +121,12 @@ div.typo3-view-help img.c-inlineimg  {
 
 
 /*** new help code ***/
+.t3-help-inline {
+	padding: 4px;
+}
+
 table.t3-help-inline {
 	margin: 3px 4px 20px 0px;
-	padding: 0;
 }
 
 table.t3-help-inline a.t3-help-link {
@@ -135,7 +136,6 @@ table.t3-help-inline a.t3-help-link {
 
 a.t3-help-link .t3-help-inline {
 	display: none;
-	padding: 0px;
 	position: absolute;
 	width: 200px;
 	z-index: 100;
@@ -159,10 +159,6 @@ a.t3-help-link:hover .t3-help-inline {
 .t3-help-inline h2.t3-row-header {
 	margin: 0;
 	height: auto;
-}
-
-.t3-help-inline p.t3-help-short {
-	padding: 3px;
 }
 
 table.t3-help-inline a.t3-help-link {
@@ -238,4 +234,15 @@ div.t3-view-help .introduction {
 
 div.t3-view-help img.c-inlineimg  {
 	margin-left: 10px;
+}
+
+/** ExtJS based CSH tooltips */
+.x-tip.typo3-csh-tooltip .x-tip-tl,
+.x-tip.typo3-csh-tooltip .x-tip-cl {
+	padding-left: 8px;
+}
+
+.x-tip.typo3-csh-tooltip .x-tip-tr,
+.x-tip.typo3-csh-tooltip .x-tip-cr {
+	padding-right: 8px;
 }

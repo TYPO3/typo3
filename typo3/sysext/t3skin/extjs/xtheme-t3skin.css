@@ -1594,29 +1594,25 @@ td.x-date-mp-sel a {
 td.x-date-mp-sep {
    border-right-color:#A2AAB8;
 }
-.x-tip .x-tip-close{
-	background-image: url(images/qtip/close.gif);
-}
 
-.x-tip .x-tip-tc, .x-tip .x-tip-tl, .x-tip .x-tip-tr, .x-tip .x-tip-bc, .x-tip .x-tip-bl, .x-tip .x-tip-br, .x-tip .x-tip-ml, .x-tip .x-tip-mr {
-	background-image: url(images/qtip/tip-sprite.gif);
-}
-
-.x-tip .x-tip-mc {
-	font: normal 10px verdana, arial,tahoma,helvetica,sans-serif;
-}
-.x-tip .x-tip-ml {
-	background-color: #fff;
+.x-tip {
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-ms-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .x-tip .x-tip-header-text {
-	font: bold 10px verdana, arial, tahoma, helvetica,sans-serif;
-	color:#444;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 14px;
+	margin-bottom: 4px;
 }
 
-.x-tip .x-tip-body {
-	font: normal 10px verdana, arial, tahoma, helvetica,sans-serif;
-	color:#444;
+.x-tip .x-tool-close {
+	display: none;
 }
 
 .x-form-invalid-tip .x-tip-tc, .x-form-invalid-tip .x-tip-tl, .x-form-invalid-tip .x-tip-tr, .x-form-invalid-tip .x-tip-bc,
@@ -1632,6 +1628,12 @@ td.x-date-mp-sep {
 .x-tip-anchor {
 	background-image:url(images/qtip/tip-anchor-sprite.gif);
 }
+
+.x-tip-anchor-left,
+.x-tip-anchor-right {
+	height: 16px;
+}
+
 .x-menu {
 	border-color:#898989;
 	background-color: #ffffff;

@@ -302,6 +302,7 @@ Check also the following points:\n
 			<label index="link.to.dblist.correctly">Please, do not link to this page. Use t3lib_BEfunc::getListViewLink() for link generation.</label>
 			<label index="link.to.filefile.correctly">Please, do not link to this page.</label>
 			<label index="loadingIndicator">Loading ...</label>
+			<label index="csh_tooltip_loading">Loading help...</label>
 		</languageKey>
 	</data>
 </T3locallang>
