@@ -44,6 +44,7 @@
 	* Fixed bug #16970: Backwards compatibility in PHP_SCRIPT and accessing $this-> methods
 	* Fixed bug #16966: be_layout setting "none" is not working and be_layout should not be inherited automatically (Thanks to Jo Hasenau)
 	* Added feature #13319: Add plupload support for uploading files in fileadmin
+	* Fixed bug #16236: Garbled char in description of All Configuration "[MAIL][transport]" (Thanks to Marc Wöhlken)
 
 2011-01-11  Steffen Kamper  <steffen@typo3.org>
 
