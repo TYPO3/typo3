@@ -1,6 +1,7 @@
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Follow-up to bug #11832: Label of the anchor is empty
+	* Raised version to 4.5.0beta4
 
 2011-01-09  Tolleiv Nietsch  <typo3@tolleiv.de>
 
