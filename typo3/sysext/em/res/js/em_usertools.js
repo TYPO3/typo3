@@ -136,23 +136,23 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 				}
 				return true;
 			},
-listeners: {
-	load: function(store, records) {
-		Ext.getCmp('extvalidformbutton').enable();
-	},
-	exception: function(proxy, response, read, request, ExtDirectParams) {
-		var error;
+			listeners: {
+				load: function(store, records) {
+					Ext.getCmp('extvalidformbutton').enable();
+				},
+				exception: function(proxy, response, read, request, ExtDirectParams) {
+					var error;
 
-		if (!ExtDirectParams.result.raw) {
-			error = 'Unexpected result from SOAP';
-		} else {
-			error = ExtDirectParams.result.raw.error;
-		}
-		TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_invalid, error, 15);
-		Ext.getCmp('extvalidformbutton').disable();
-	},
-	scope: this
-}
+					if (!ExtDirectParams.result.raw) {
+						error = TYPO3.lang.soap_error;
+					} else {
+						error = ExtDirectParams.result.raw.error;
+					}
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_invalid, error, 15);
+					Ext.getCmp('extvalidformbutton').disable();
+				},
+				scope: this
+			}
 		});
 
 		var searchField = new Ext.ux.form.FilterField({
@@ -225,7 +225,7 @@ listeners: {
 													failure: function(form, action) {
 														if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 															TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error,
-																	'Status:' + action.response.status + ': ' +
+																	TYPO3.lang.msg_status + ': ' + action.response.status + ': ' +
 																			action.response.statusText, 15);
 														}
 														if (action.failureType === Ext.form.Action.SERVER_INVALID) {
@@ -288,7 +288,7 @@ listeners: {
 												this.registerForm.getForm().submit({
 													waitMsg : TYPO3.lang.registerkeys_register_extkey,
 													success: function(form, action) {
-														var msg = String.format(registerkeys_register_extkey_success, this.registerForm.getForm().getValues().extkey);
+														var msg = String.format(TYPO3.lang.registerkeys_register_extkey_success, this.registerForm.getForm().getValues().extkey);
 														TYPO3.Flashmessage.display(TYPO3.Severity.information, msg, '', 5);
 														form.reset();
 														this.registerForm.hide();
@@ -347,7 +347,8 @@ listeners: {
 										forceFit: true,
 										autofill: true
 									},
-									//anchor: '100% 100%',
+									stateId: 'userextgrid',
+									stateful: true,
 									tbar: [
 										{
 											xtype: 'tbtext',

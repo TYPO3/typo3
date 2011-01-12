@@ -29,7 +29,6 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 	fixed : true,
 	menuDisabled : true,
 	dataIndex : '',
-	id : 'expander',
 	lazyRender : true,
 	enableCaching : true,
 
@@ -111,7 +110,7 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 		view.enableRowBody = true;
 
 		grid.on('render', this.onRender, this);
-		grid.store.on('load', this.onStoreLoaded, this);
+		view.on('refresh', this.onViewRefresh, this);
 		grid.on('destroy', this.onDestroy, this);
 		grid.on("beforestaterestore", this.applyState, this);
 		grid.on("beforestatesave", this.saveState, this);
@@ -143,11 +142,11 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 	},
 
 	/** @private */
-	onStoreLoaded: function(store, records,options) {
+	onViewRefresh: function(view) {
 		var index = -1;
 		for(var key in this.state){
 			if (this.state[key] === true) {
-				index = store.indexOfId(key);
+				index = view.grid.getStore().indexOfId(key);
 				if (index > -1) {
 					this.expandRow(index);
 				}
@@ -158,15 +157,15 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 	/** @private */
 	applyState: function(grid, state){
 		this.suspendStateStore = true;
-		if(state.expander) {
-			this.state = state.expander;
+		if(state[this.id]) {
+			this.state = state[this.id];
 		}
 		this.suspendStateStore = false;
 	},
 
 	/** @private */
 	saveState: function(grid, state){
-		return state.expander = this.state;
+		return state[this.id] = this.state;
 	},
 
 	/** @private */
@@ -217,8 +216,10 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 		}
 		var content = this.bodyContent[record.id];
 		if (!content) {
-			content = this.tpl.apply(record.data);
-			this.bodyContent[record.id] = content;
+			if (this.tpl) {
+				content = this.tpl.apply(record.data);
+				this.bodyContent[record.id] = content;
+			}
 		}
 		return content;
 	},
@@ -260,13 +261,15 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 		if (typeof row == 'number') {
 			row = this.grid.view.getRow(row);
 		}
-		var record = this.grid.store.getAt(row.rowIndex);
-		var body = Ext.DomQuery.selectNode('tr:nth(2) div.x-grid3-row-body', row);
-		if (this.beforeExpand(record, body, row.rowIndex)) {
-			this.state[record.id] = true;
-			Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
-			this.grid.saveState();
-			this.fireEvent('expand', this, record, body, row.rowIndex);
+		if (row) {
+			var record = this.grid.store.getAt(row.rowIndex);
+			var body = Ext.DomQuery.selectNode('tr:nth(2) div.x-grid3-row-body', row);
+			if (this.beforeExpand(record, body, row.rowIndex)) {
+				this.state[record.id] = true;
+				Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
+				this.grid.saveState();
+				this.fireEvent('expand', this, record, body, row.rowIndex);
+			}
 		}
 	},
 

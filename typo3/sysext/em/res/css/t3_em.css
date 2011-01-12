@@ -11,6 +11,23 @@ strong {
 	vertical-align: middle;
 }
 
+.x-grid-panel .x-panel-body {
+	overflow: auto !important;
+}
+
+.x-panel-tbar {
+    border-bottom: none;
+    padding: 0;
+}
+
+.x-form fieldset {
+	 border: none;
+}
+
+.bold button {
+	font-weight: bold;
+}
+
 /* extension states */
 .state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
 .state-beta div {background-color:#97b17e;color:#fff !important;font-weight:bold !important;}
@@ -22,6 +39,9 @@ strong {
 
 img.installExtension, img.removeExtension {
 	cursor: pointer;
+}
+.extLangTitleWithIcon img {
+	vertical-align: bottom;
 }
 
 /* Repository Update Form */
@@ -44,9 +64,7 @@ img.installExtension, img.removeExtension {
 	-khtml-user-select: text;
 	-webkit-user-select: text;
 }
-#editarea-context_help::selection, #editarea-context_help::-moz-selection {
-	background: #ffb7b7 !important;
-}
+
 
 
 .x-btn-filebrowser { background-image:url(../icons/filebrowser.png) !important; }
@@ -57,6 +75,7 @@ img.installExtension, img.removeExtension {
 .x-btn-flag { background-image:url(../icons/flag.png) !important;}
 .x-btn-tools { background-image:url(../icons/tools.png) !important;}
 .x-btn-settings { background-image:url(../icons/settings.png) !important;}
+.x-btn-repupdate { background-image:url(../icons/repupdate.png) !important;}
 
 
 /*
@@ -99,6 +118,7 @@ img.installExtension, img.removeExtension {
 
 .em-info {
 	margin: 10px;
+	line-height: 18px;
 }
 
 
@@ -111,12 +131,21 @@ img.installExtension, img.removeExtension {
 	line-height: 14px;
 }
 
+#em-extlanguagegrid .x-grid3-row-selected {
+	background-color: #cfffda;
+}
+
 .em-extlist-extinfo label,
 .em-info label {
-	vertical-align: none;
+	vertical-align: top;
 	display: inline-block;
 	width: 100px;
 	font-weight: bold;
+}
+
+a.email {
+	background: url(../icons/email.png) no-repeat;
+	padding-left: 20px;
 }
 
 #hbox-settings .x-box-inner {
@@ -131,4 +160,13 @@ img.installExtension, img.removeExtension {
 	color: #888;
 	font-size: 12px;
 	line-height: 14px;
+}
+
+.insecureExtension {
+	color: red;
+	font-weight: bold;
+}
+
+.paddingActionIcon img {
+	margin-right: 5px;
 }

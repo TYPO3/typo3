@@ -99,13 +99,13 @@ class tx_em_Settings implements t3lib_Singleton {
 	protected function readSettings() {
 		$this->MOD_MENU = array(
 			'function' => array(
+				'extensionmanager' => 'New Extension manager (beta4)', //$GLOBALS['LANG']->getLL('header'),
 				'loaded_list' => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
 				'installed_list' => $GLOBALS['LANG']->getLL('menu_install_extensions'),
 				'import' => $GLOBALS['LANG']->getLL('menu_import_extensions'),
 				'translations' => $GLOBALS['LANG']->getLL('menu_translation_handling'),
 				'settings' => $GLOBALS['LANG']->getLL('menu_settings'),
 				'updates' => $GLOBALS['LANG']->getLL('menu_extension_updates'),
-				'extensionmanager' => 'New Extension manager (beta3)', //$GLOBALS['LANG']->getLL('header'),
 				'develop' => $GLOBALS['LANG']->getLL('menu_extension_develop'),
 			),
 			'listOrder' => array(
@@ -128,6 +128,8 @@ class tx_em_Settings implements t3lib_Singleton {
 			'display_obsolete' => '',
 			'display_installed' => '',
 			'display_files' => '',
+			'hide_shy' => 0,
+			'hide_obsolete' => 0,
 
 
 			'singleDetails' => array(
@@ -168,11 +170,24 @@ class tx_em_Settings implements t3lib_Singleton {
 		}
 
 		$mirrors = unserialize($this->settings['extMirrors']);
-		/*if(!is_array($mirrors)) {
-			$this->fetchMetaData('mirrors');
-			$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-			if(!is_array($mirrors)) return false;
-		}*/
+
+		if(!is_array($mirrors)) {
+			if ($this->settings['selectedRepository'] < 1) {
+				$this->settings['selectedRepository'] = 1;
+			}
+		}
+			/** @var $repository tx_em_Repository */
+			$repository = t3lib_div::makeInstance('tx_em_Repository', $this->settings['selectedRepository']);
+			if ($repository->getMirrorListUrl()) {
+			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $repository);
+			$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
+			if(!is_array($mirrors)) {
+				return FALSE;
+			} else {
+				$this->settings['extMirrors'] = serialize($mirrors);
+				$this->saveSetting('extMirrors', $this->settings['extMirrors']);
+			}
+		}
 		if (!$this->settings['selectedMirror']) {
 			$rand = array_rand($mirrors);
 			$url = 'http://' . $mirrors[$rand]['host'] . $mirrors[$rand]['path'];

@@ -1,6 +1,7 @@
 <?php
-$emClassesPath = PATH_site . 'typo3/sysext/em/classes/';
-$emInterfacesPath = PATH_site . 'typo3/sysext/em/interfaces/';
+$extensionPath = dirname(__FILE__);
+$emClassesPath = $extensionPath . '/classes/';
+$emInterfacesPath = $extensionPath . '/interfaces/';
 return array(
 	'tx_em_index_checkdatabaseupdateshook' => $emInterfacesPath . 'interface.tx_em_index_checkdatabaseupdateshook.php',
 

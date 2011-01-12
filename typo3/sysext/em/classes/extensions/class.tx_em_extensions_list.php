@@ -36,6 +36,9 @@ class tx_em_Extensions_List {
 
 	protected $parentObject;
 
+	/** @var tx_em_Tools_XmlHandler */
+	protected $xmlHandler;
+
 	protected $categories;
 	protected $types;
 	protected $states;
@@ -49,6 +52,7 @@ class tx_em_Extensions_List {
 	public function __construct($parentObject = NULL) {
 		$this->parentObject = $parentObject;
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
+		$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
 
 		$this->categories = array(
 			'be' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_BE'),
@@ -73,13 +77,25 @@ class tx_em_Extensions_List {
 	/**
 	 * Returns the list of available (installed) extensions
 	 *
+	 * @param	boolean		if set, function will return a flat list only
 	 * @return	array		Array with two arrays, list array (all extensions with info) and category index
 	 * @see getInstExtList()
 	 */
-	function getInstalledExtensions($new = FALSE) {
+	function getInstalledExtensions($flatList = FALSE) {
 		$list = array();
 
-		if (!$new) {
+		if ($flatList) {
+			$path = PATH_typo3 . 'sysext/';
+			$this->getFlatInstExtList($path, $list, 'S');
+
+			$path = PATH_typo3 . 'ext/';
+			$this->getFlatInstExtList($path, $list, 'G');
+
+			$path = PATH_typo3conf . 'ext/';
+			$this->getFlatInstExtList($path, $list, 'L');
+
+			return $list;
+		} else {
 			$cat = tx_em_Tools::getDefaultCategory();
 
 			$path = PATH_typo3 . 'sysext/';
@@ -92,17 +108,6 @@ class tx_em_Extensions_List {
 			$this->getInstExtList($path, $list, $cat, 'L');
 
 			return array($list, $cat);
-		} else {
-			$path = PATH_typo3 . 'sysext/';
-			$this->getFlatInstExtList($path, $list, 'S');
-
-			$path = PATH_typo3 . 'ext/';
-			$this->getFlatInstExtList($path, $list, 'G');
-
-			$path = PATH_typo3conf . 'ext/';
-			$this->getFlatInstExtList($path, $list, 'L');
-
-			return $list;
 		}
 	}
 
@@ -189,14 +194,20 @@ class tx_em_Extensions_List {
 				$key = count($list);
 				$loaded = t3lib_extMgm::isLoaded($extKey);
 
+				$exist = $this->findIndex($extKey, $list);
+				if ($exist !== FALSE) {
+					$key = $exist;
+					$list[$key] = array(
+						'doubleInstall' => $list[$key]['doubleInstall'],
+						'doubleInstallShort' => $list[$key]['doubleInstallShort'],
+					);
 
-				if (is_array($list[$key])) {
-					$list[$key] = array('doubleInstall' => $list[$key]['doubleInstall']);
 				}
 				$list[$key]['extkey'] = $extKey;
 				$list[$key]['path'] = $path . $extKey;
 				$list[$key]['nodePath'] = substr($path . $extKey, strlen(PATH_site));
-				$list[$key]['doubleInstall'] .= $this->types[$type];
+				$list[$key]['doubleInstall'] = $list[$key]['doubleInstall'] ? $list[$key]['doubleInstall'] . '/' . $this->types[$type] : $this->types[$type];
+				$list[$key]['doubleInstallShort'] .= $type;
 
 				$list[$key]['type'] = $this->types[$type];
 				$list[$key]['typeShort'] = $type;
@@ -207,7 +218,7 @@ class tx_em_Extensions_List {
 				$list[$key]['title'] = htmlspecialchars($list[$key]['title']);
 				$list[$key]['description'] = htmlspecialchars($list[$key]['description']);
 				$list[$key]['files'] = t3lib_div::getFilesInDir($path . $extKey, '', 0, '', $this->excludeForPackaging);
-				//$list[$key]['install'] = $loaded ? tx_em_Tools::removeButton() : tx_em_Tools::installButton();
+				$list[$key]['reviewstate'] = $this->xmlHandler->getReviewState($extKey, $list[$key]['version']);
 
 				$list[$key]['download'] = '<a href="' . htmlspecialchars(
 					$directLink .'&CMD[doBackup]=1&SET[singleDetails]=backup&CMD[showExt]=' . $extKey
@@ -219,11 +230,11 @@ class tx_em_Extensions_List {
 					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '" target="_blank">'
 						. t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>';
 				}
-				$list[$key]['icon'] = @is_file($path . $extKey . '/ext_icon.gif') ? '<img src="' . $relPath . $extKey . '/ext_icon.gif" alt="" width="16" height="16" />' : '<img src="clear.gif" alt="" width="16" height="16" />';
+				$list[$key]['icon'] = @is_file($path . $extKey . '/ext_icon.gif') ? '<img src="' . $relPath . $extKey . '/ext_icon.gif" alt="" height="16" />' : '<img src="clear.gif" alt="" width="16" height="16" />';
 
 				$list[$key]['categoryShort'] = $list[$key]['category'];
 				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
-
+				$list[$key]['required'] = t3lib_div::inList($GLOBALS['EXT']['requiredExt'], $extKey);
 				unset($list[$key]['_md5_values_when_last_written']);
 			}
 		}
@@ -283,7 +294,7 @@ class tx_em_Extensions_List {
 		$content .= '</form>
 
 			<!-- Loaded Extensions List -->
-			<table border="0" cellpadding="2" cellspacing="1">' . implode('', $lines) . '</table>';
+			<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-loaded">' . implode('', $lines) . '</table>';
 
 		return $content;
 	}
@@ -364,7 +375,7 @@ EXTENSION KEYS:
 			$content .= '<label for="lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->parentObject->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /></form><br /><br />';
 			$content .= $this->securityHint . '<br /><br />';
 
-			$content .= '<table border="0" cellpadding="2" cellspacing="1">' . implode('', $lines) . '</table>';
+			$content .= '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-installed">' . implode('', $lines) . '</table>';
 
 			return $content;
 		}
@@ -592,7 +603,7 @@ EXTENSION KEYS:
 
 		// show a different background through a different class for insecure (-1) extensions,
 		// for unreviewed (0) and reviewed extensions (1), just use the regular class
-		if ($this->parentObject->xmlhandler->getReviewState($extKey, $extInfo['EM_CONF']['version']) < 0) {
+		if ($this->xmlHandler->getReviewState($extKey, $extInfo['EM_CONF']['version']) < 0) {
 			$bgclass = ' class="unsupported-ext"';
 		} else {
 			$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg1') . '"';
@@ -617,7 +628,7 @@ EXTENSION KEYS:
 		global $LANG;
 		$extList = $this->getInstalledExtensions();
 
-		$content = '<table border="0" cellpadding="2" cellspacing="1">' .
+		$content = '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-to-update">>' .
 				'<tr class="t3-row-header">' .
 				'<td></td>' .
 				'<td>' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_name') . '</td>' .
@@ -629,12 +640,12 @@ EXTENSION KEYS:
 				'</tr>';
 
 		foreach ($extList[0] as $name => $data) {
-			$this->parentObject->xmlhandler->searchExtensionsXMLExact($name, '', '', TRUE, TRUE);
-			if (!is_array($this->parentObject->xmlhandler->extensionsXML[$name])) {
+			$this->xmlHandler->searchExtensionsXMLExact($name, '', '', TRUE, TRUE);
+			if (!is_array($this->xmlHandler->extensionsXML[$name])) {
 				continue;
 			}
 
-			$v = $this->parentObject->xmlhandler->extensionsXML[$name]['versions'];
+			$v = $this->xmlHandler->extensionsXML[$name]['versions'];
 			$versions = array_keys($v);
 			natsort($versions);
 			$lastversion = end($versions);
@@ -710,7 +721,7 @@ EXTENSION KEYS:
 		$cat = tx_em_Tools::getDefaultCategory();
 		$filepath = $this->parentObject->getMirrorURL();
 
-		foreach ($this->parentObject->xmlhandler->extensionsXML as $extKey => $data) {
+		foreach ($this->parentObject->xmlHandler->extensionsXML as $extKey => $data) {
 			$GLOBALS['LANG']->csConvObj->convarray($data, 'utf-8', $GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
@@ -737,7 +748,7 @@ EXTENSION KEYS:
 			}
 			tx_em_Tools::setCat($cat, $list[$extKey]['versions'][$version], $extKey);
 			if ($unsetProc) {
-				unset($this->parentObject->xmlhandler->extensionsXML[$extKey]);
+				unset($this->parentObject->xmlHandler->extensionsXML[$extKey]);
 			}
 		}
 
@@ -838,7 +849,21 @@ EXTENSION KEYS:
 		return $listArr;
 	}
 
-
+	/**
+	 * Returns array index of extKey entry
+	 *
+	 * @param  string  $extKey
+	 * @param  array  $list
+	 * @return intval|bool index of array or FALSE if not found
+	 */
+	protected function findIndex($extKey, $list) {
+		foreach ($list as $key => $value) {
+			if ($value['extkey'] === $extKey) {
+				return $key;
+			}
+		}
+		return FALSE;
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/extensions/class.tx_em_extensions_list.php'])) {

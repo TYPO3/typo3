@@ -78,7 +78,7 @@ class tx_em_Connection_ExtDirectSoap {
 	 */
 	public function testUserLogin() {
 		if (is_array($this->accountData)) {
-			$login = false; #$this->soap->login($this->accountData['accountData']['username'], $this->accountData['accountData']['password']);
+			$login = false;
 			if ($login) {
 				$data = array(
 					'success' => TRUE,
@@ -87,13 +87,13 @@ class tx_em_Connection_ExtDirectSoap {
 			} else {
 				$data = array(
 					'success' => FALSE,
-					'error' => 'login failed'
+					'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_loginFailed')
 				);
 			}
 		} else {
 			$data = array(
 				'success' => FALSE,
-				'error' => 'No user login data'
+				'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_noUserLoginData')
 			);
 		}
 
@@ -159,7 +159,7 @@ class tx_em_Connection_ExtDirectSoap {
 		);
 		$result = $this->soapCall('registerExtensionKey', $params);
 		$message = $this->getSoapResultMessageFromCode($result['resultCode']);
-		//debug(array($result,$parameter), $message);
+
 		if ($result['resultCode'] == 10503) {
 			$return =  array(
 				'success' => TRUE,
@@ -390,31 +390,31 @@ class tx_em_Connection_ExtDirectSoap {
 	protected function getSoapResultMessageFromCode($code) {
 		switch ($code) {
 			case 10000:
-				return 'OK';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_ok');
 			break;
 			case 102:
-				return 'User does not exists.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_userNotExists');
 			break;
 			case 10500:
-				return 'Extensionkey already exists.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexExists');
 			break;
 			case 10501:
-				return 'Extensionkey does not exists.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexNotExists');
 			break;
 			case 10502:
-				return 'Extensionkey is not valid.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexNotValid');
 			break;
 			case 10503:
-				return 'Extensionkey was successful registered.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexRegistered');
 			break;
 			case 10504:
-				return 'Extension was successful upladed.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexUploadedSuccess');
 			break;
 			case 10505:
-				return 'Extension was successful deleted.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extkexDeletedSuccess');
 			break;
 			default:
-				return 'Unknow error occured.';
+				return $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_unknownError');
 
 		}
 	}

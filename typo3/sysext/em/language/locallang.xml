@@ -10,7 +10,7 @@
 			<label index="tasks_updateExtensionlistTask.description">Update extension list on a regular basis. Once a day is a good interval.</label>
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
 			<label index="mlang_labels_tabdescr">Manages TYPO3 extensions from a central repository, which includes plugins, modules, class extensions, configuration code etc.</label>
-			<label index="mlang_tabs_tab">Ext Manager</label>
+			<label index="mlang_tabs_tab">Extension Manager</label>
 			<label index="category_BE">Backend</label>
 			<label index="category_BE_modules">Backend Modules</label>
 			<label index="category_FE">Frontend</label>
@@ -40,6 +40,7 @@
 			<label index="menu_loaded_extensions">Loaded extensions</label>
 			<label index="menu_install_extensions">Install extensions</label>
 			<label index="menu_import_extensions">Import extensions</label>
+			<label index="menu_update_extensions">Update extensions</label>
 			<label index="menu_translation_handling">Translation handling</label>
 			<label index="menu_settings">Settings</label>
 			<label index="lang_language">Language</label>
@@ -69,7 +70,11 @@
 			<label index="show">Show:</label>
 			<label index="display_shy">Display shy extensions</label>
 			<label index="display_obsolete">Display obsolete extensions</label>
+			<label index="hide_shy">Hide shy extensions</label>
+			<label index="hide_obsolete">Hide obsolete extensions</label>
 			<label index="display_installedOnly">Display installed extensions only</label>
+			<label index="display_updatesOnly">Display updatable extensions only</label>
+			<label index="display_all">Display all extensions</label>
 			<label index="only_my_ext">Only my extensions:</label>
 			<label index="show_obsolete">Show obsolete:</label>
 			<label index="extensions">Extensions:</label>
@@ -92,6 +97,7 @@
 			<label index="look_up_button">Look up</label>
 			<label index="privacy_notice_header">PRIVACY NOTICE:</label>
 			<label index="extensions_repository_group_by">Extensions in TYPO3 Extension Repository (online) - Grouped by:</label>
+			<label index="extensions_repository_short">Extensions in repository:</label>
 			<label index="extension_required_short">Rq</label>
 			<label index="list_of_local_extensions">This is the list of extensions which are available locally, but not in the repository.</label>
 			<label index="might_be_user_defined">They might be user-defined and should be prepended user_ then.</label>
@@ -107,8 +113,11 @@
 			<label index="global_folder">Global (typo3/ext/)</label>
 			<label index="system_folder">System (typo3/sysext/)</label>
 			<label index="overwrite_ext">Overwrite any existing extension!</label>
+			<label index="upload_ext">Extension Upload</label>
 			<label index="upload_ext_file">Upload extension file</label>
-			<label index="upload_ext_directly">Upload extension file directly (.t3x):</label>
+			<label index="upload_ext_from">Upload extension from your computer</label>
+			<label index="upload_ext_directly">Upload extension file directly (.t3x)</label>
+			<label index="upload_selectExtension">Select Extension (*.t3x)</label>
 			<label index="previous_page">Prev page</label>
 			<label index="next_page">Next page</label>
 			<label index="showing_extensions_from_to">Showing extensions %s to %s</label>
@@ -153,6 +162,8 @@
 			<label index="repository_created">Repository "{0}" was created.</label>
 			<label index="repository_saved">Repository "{0}" was saved.</label>
 			<label index="repository">Repository</label>
+			<label index="repository_main_nodelete">Main repository can not be deleted!</label>
+			<label index="repository_upToDate">Repository is up-to-date.</label>
 			<label index="translation_settings">Translation Settings</label>
 			<label index="languages_to_fetch">Languages to fetch:</label>
 			<label index="translation_info">For the selected languages the EM tries to download and install translation files if available, whenever an extension is installed. (This replaces the &lt;code&gt;csh_*&lt;/code&gt; extensions that were used to install core translations before TYPO3 version 4!)</label>
@@ -172,16 +183,16 @@
 			<label index="translation_checking_extension">Check languages against repository</label>
 			<label index="translation_update_extension">Update languages from repository</label>
 			<label index="translation_no_translation">No translation available</label>
-			<label index="translation_n_a">n/a</label>
+			<label index="translation_n_a">not available</label>
 			<label index="translation_not_installed">Not installed/Unknown</label>
 			<label index="translation_status_unknown">???</label>
-			<label index="translation_status_new">new</label>
-			<label index="translation_status_ok">ok</label>
+			<label index="translation_status_new">New translation available</label>
+			<label index="translation_status_uptodate">up-to-date</label>
 			<label index="translation_needs_update">Needs update</label>
-			<label index="translation_status_update">update</label>
+			<label index="translation_status_update">Update available</label>
 			<label index="translation_status_notchecked">not checked</label>
 			<label index="translation_is_ok">Is up to date</label>
-			<label index="translation_status_ok">OK</label>
+			<label index="translation_status_ok">updated</label>
 			<label index="translation_check_done">Check done.</label>
 			<label index="translation_update_status">Updating translations, please wait...</label>
 			<label index="translation_table_update">This table shows the update results of the translations of the loaded extensions.</label>
@@ -239,12 +250,15 @@
 			<label index="ext_import_install">Install extension</label>
 			<label index="ext_import_imported">The extension has been imported.</label>
 			<label index="ext_import_close_check">Close window and recheck dependencies.</label>
+			<label index="ext_import_close">Close window.</label>
 			<label index="ext_import_ext_path_different">Error: The extension path '%s' was different than expected...</label>
 			<label index="ext_import_ext_only_here">Error: The extension can only be installed in the path %s (lockType=%s).</label>
 			<label index="ext_import_no_ext_key_files">Error: No extension key!!! Why? - nobody knows... (Or there are no files in the file array...)</label>
 			<label index="ext_import_data_transfer">Error: The data transfer did not succeed. %s</label>
 			<label index="ext_import_no_install_here">Error: Installation is not allowed in this path (%s).</label>
 			<label index="ext_import_results">Extension import results</label>
+			<label index="ext_import_versions">Import versions of "{0}"</label>
+			<label index="ext_import_versions_available">{0} versions available</label>
 			<label index="ext_details_ext">Extension:</label>
 			<label index="ext_details_new_tables_fields">Before the extension can be installed the database needs to be updated with new tables or fields.</label>
 			<label index="ext_details_new_tables_fields_select">Please select which operations to perform:</label>
@@ -547,6 +561,7 @@
 			<label index="note_last_update2">To get and update the list, go to the section "Import extensions" and use the button "Retrieve/Update".</label>
 			<label index="note_last_update2_new">To get and update the list, %sgo to the section "Import extensions" and use the button "Retrieve/Update"%s.</label>
 			<label index="double_inclusion">%1$s takes precedence over %2$s</label>
+			<label index="double_inclusion_js">{0} takes precedence over {1}</label>
 			<label index="globalext">Globally installed extension</label>
 			<label index="localext">Locally installed extension</label>
 			<label index="sysext">System extension</label>
@@ -579,7 +594,8 @@
 			<label index="cmd_redo">Redo</label>
 			<label index="cmd_indent">Indent</label>
 			<label index="cmd_jslint">JS Lint</label>
-			<label index="msg_terupload">Extension was uploaded to TER.</label>
+			<label index="msg_terupload">Extension "{0}" was uploaded to TER.</label>
+			<label index="msg_uploaded">Extension "{0}" was uploaded.</label>
 			<label index="msg_error">Error</label>
 			<label index="msg_invalid">Invalid</label>
 			<label index="msg_status">Status</label>
@@ -587,6 +603,8 @@
 			<label index="msg_finished">Finished!</label>
 			<label index="msg_checking">Checking</label>
 			<label index="msg_updating">Updating</label>
+			<label index="msg_updated">Updated</label>
+			<label index="msg_failed">Failed</label>
 			<label index="msg_interrupted">Interrupted!</label>
 			<label index="msg_info">Info</label>
 			<label index="msg_debug">Debug</label>
@@ -596,14 +614,29 @@
 			<label index="msg_files">Files</label>
 			<label index="msg_line">Line</label>
 			<label index="msg_character">Character</label>
-			<label index="msg_terupload">Upload to TER</label>
 			<label index="msg_developerinformation">Developer Information</label>
 			<label index="msg_fileSaved">File "{0}" was saved.</label>
+			<label index="msg_extUpToDate">Extension is up-to-date.</label>
+			<label index="msg_extNotInstalled">Extension "%s" is not installed.</label>
+			<label index="msg_extNoConfiguration">This extension has no configuration.</label>
+			<label index="msg_loginFailed">login failed!</label>
+			<label index="msg_noUserLoginData">No user login data!</label>
+			<label index="msg_ok">Okay</label>
+			<label index="msg_userNotExists">User does not exists!</label>
+			<label index="msg_extkexExists">Extensionkey already exists.</label>
+			<label index="msg_extkexNotExists">Extensionkey does not exists.</label>
+			<label index="msg_extkexNotValid">Extensionkey is not valid.</label>
+			<label index="msg_extkexRegistered">Extensionkey was successful registered.</label>
+			<label index="msg_extkexUploadedSuccess">Extension was successful uploaded.</label>
+			<label index="msg_extkexDeletedSuccess">Extension was successful deleted.</label>
+			<label index="msg_unknownError">Unknow error occured.</label>
 			<label index="configurationSaved">Configuration was saved.</label>
 			<label index="action_loading_extlist">Loading Extensionlist ...</label>
 			<label index="action_loadingRepositoryExtlist">Loading Repository Extensionlist ...</label>
 			<label index="action_loading">Loading  ...</label>
 			<label index="action_searching">Searching ...</label>
+			<label index="action_saving_settings">Saving settings ...</label>
+			<label index="action_sending_data">Sending data ...</label>
 			<label index="registerkeys_rules_heading">Extension key format rules</label>
 			<label index="registerkeys_rules_allowedcharacters">Allowed characters are: a-z (lowercase), 0-9 and '_' (underscore)</label>
 			<label index="registerkeys_rules_prefixes">The key must not being with one of the following prefixes: tx,u,user_,pages,tt_,sys_,ts_language_,csh_</label>
@@ -614,7 +647,7 @@
 			<label index="registerkeys_check_validity_extkey_isvalid">Extension key is valid</label>
 			<label index="registerkeys_checking_validity">Checking validity ...</label>
 			<label index="registerkeys_register_extkey">Register extension key ...</label>
-			<label index="registerkeys_register_extkey_success">Extensionkey {0] was registered</label>
+			<label index="registerkeys_register_extkey_success">Extensionkey {0} was registered</label>
 			<label index="registerkeys_registerkey">Register extension key</label>
 			<label index="registerkeys_cancel_register">Cancel register</label>
 			<label index="transferkeys_info">Transfer an extension key to another user. There is no undo, be sure you have the right username of the user you want to transfer the extension key to.</label>
@@ -629,6 +662,7 @@
 			<label index="reports_insecureExistingExtensions">The following extensions were found on your system, but are currently not installed. Please delete the extension using the extension manager:</label>
 			<label index="reports_StatusInstalledExtensions">Security status of installed extensions</label>
 			<label index="reports_StatusExistingExtensions">Security status of existing extensions</label>
+			<label index="insecureExtension">This extension is marked as insecure and usage might damage your system. Please update this extension as soon as possible or remove it from your system.</label>
 			<label index="reports_insecureExtensionsFound">%s insecure extension(s) found</label>
 			<label index="reports_sysTerNotFound">The table "sys_ter" was not found. Please go to install tool and make a database compare!</label>
 			<label index="reports_MainRepositoryNotFound">The Main Repository entry in table "sys_ter" was not found. Please go to extension manager / em and import static data!</label>
@@ -636,18 +670,18 @@
 			<label index="reports_MainRepositoryOldList">The Main Repository extension list is older than 7 days. Please make an update in extension manager or scheduler.</label>
 			<label index="reports_NoExtensionsFound">No extensions found!</label>
 			<label index="reports_ExtensionsNotUpToDate">Extension list is not up to date!</label>
-			<label index="stateProvider">State provider</label>
-			<label index="stateProviderDescription">States are saved interface changes like grid sorting, grid filtering, column resize, column reorder etc. All these states are saved in the user session and are restored on next load. To get the initial state of the interface, you can clear save states by clicking on button below.</label>
-			<label index="stateProviderClear">Clear user states and reset interface to defaults</label>
-			<label index="stateProviderCleared">User states are cleared, interface is reset to default.</label>
 			<label index="wsdlUrl">WSDL URL</label>
 			<label index="msg_items">Items</label>
 			<label index="msg_item">Item</label>
 			<label index="cmd_ClearAllFilters">Clear all Filters</label>
-			<label index="cmd_ClearGrouping">Clear Grouping</label>
 			<label index="cmd_RetrieveUpdate">Retrieve / Update</label>
+			<label index="help_localFilter">Enter something for filter and press Enter. Look up is in fields "title, description and extkey"</label>
 			<label index="help_remoteFilter">Enter something for search and press Enter. To list all, use "*"</label>
 			<label index="help_loadFileInEditor">Click on a file to load in editor</label>
+			<label index="extTemplate_showOldModules">Show old modules: Enable this option to have old modules like "Loaded Extensions, Installed extensions ..." available in upper left select box of extension manager</label>
+			<label index="extTemplate_selectedLanguages">Language selection: The language setting is saved here as a global setting. You might not change it at this place, use the tab "Translation handling" to add / remove languages to your installation</label>
+			<label index="extTemplate_inlineToWindow">Use windows instead inline expander: On small screens the inline row expanders might take too much space. This switch move this info to windows.</label>
+			<label index="soap_error">Unexpected result from SOAP</label>
 
 		</languageKey>
 	</data>

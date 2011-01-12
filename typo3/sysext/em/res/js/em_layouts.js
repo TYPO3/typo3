@@ -61,19 +61,27 @@ TYPO3.EM.Layouts = {
 			'<div class="em-info">',
 				'<p><label>' + TYPO3.lang.extInfoArray_title + ':</label>{title}</p>',
 				'<p><label>' + TYPO3.lang.listRowHeader_ext_key + '</label>{extkey}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_category + ':</label>{category}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_category + ':</label>{[TYPO3.EM.App.getCategoryLabel(values.category)]}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_version + ':</label>{version}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_downloads + ':</label>{alldownloadcounter}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_state + ':</label>{state}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label>{authorname}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label>{[this.getAuthor(values)]}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_versions + ':</label>{versions}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_description + ':</label>{description}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_description + ':</label>{description:this.getDescription}</p>',
 			'</div>',
 		{
-			getCls: function(value) {
-				return '';
+			getDescription: function(value) {
+				return value ? value : '';
+			},
+
+			getAuthor: function(values) {
+				if (values.author && values.author_email) {
+					return '<a class="email" href="mailto:' + values.author_email + '">' + values.author + '</a>';
+				}
+				return values.authorname;
 			}
-		});
+		}
+		);
 	},
 
 	getExtensionRules: function() {
@@ -92,20 +100,19 @@ TYPO3.EM.Layouts = {
 	repositoryInfo: function() {
 		return new Ext.XTemplate(
 			'<span class="typo3-message message-notice" style="padding-right: 50px;">',
-			'last update: {updated}&nbsp;&nbsp;',
-			'Extensions in repository: {count}</span>'
+			'{updated:this.updatedFormat}&nbsp;&nbsp;',
+			TYPO3.lang.extensions_repository_short + ' {count}</span>',
+			{
+				updatedFormat: function(value) {
+					return TYPO3.lang.ext_list_last_updated.replace('%s', value).replace('(', '').replace(')', '');
+				}
+			}
 		);
 	},
 
-	showExtInfo: function (panel, data) {
-		panel.update('');
-		var t = this.getInfoTemplate().compile();
+	showExtInfo: function (data) {
 		data.shyword = data.shy ? 'Yes' : 'No';
-		t.append(panel.body, data);
-	},
-
-	showExtUpdate: function(panel, data) {
-
+		return this.getInfoTemplate().applyTemplate(data);
 	}
 };
 

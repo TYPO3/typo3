@@ -456,6 +456,23 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * Render version from intVersion
+	 *
+	 * @static
+	 * @param  int  $intVersion
+	 * @return string version
+	 */
+	public static function versionFromInt($intVersion) {
+		$versionString = str_pad($intVersion, 9, '0', STR_PAD_LEFT);
+		$parts = array(
+			substr($versionString, 0, 3),
+			substr($versionString, 3, 3),
+			substr($versionString, 6, 3)
+		);
+		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
+	}
+
+	/**
 	 * Evaluates differences in version numbers with three parts, x.x.x. Returns true if $v1 is greater than $v2
 	 *
 	 * @param	string		Version number 1
@@ -906,12 +923,13 @@ final class tx_em_Tools {
 								// Check for proper XCLASS definition
 								// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
 							$XclassSearch = '\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
-							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
+							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\)(.*)' . $XclassSearch . '/', $fContent, 2);
 							if (count($XclassParts) !== 2) {
 									// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
 								$XclassSearch = '\$GLOBALS\[[\'"]TYPO3_CONF_VARS[\'"]\]\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
-								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
+								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\)(.*)' . $XclassSearch . '/', $fContent, 2);
 							}
+
 							if (count($XclassParts) == 2) {
 								unset($reg);
 								preg_match('/^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]/', $XclassParts[1], $reg);

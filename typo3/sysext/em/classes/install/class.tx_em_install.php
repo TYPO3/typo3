@@ -59,6 +59,11 @@ class tx_em_Install {
 	protected $systemInstall = 0; // If "1" then installs in the sysext directory is allowed. Default: 0
 
 	/**
+	 * @var boolean
+	 */
+	protected $silentMode;
+
+	/**
 	 * Constructor
 	 *
 	 * @param SC_mod_tools_em_index $parentObject
@@ -72,6 +77,9 @@ class tx_em_Install {
 		$this->systemInstall = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall']) && $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'];
 	}
 
+	public function setSilentMode(boolean $silentMode) {
+		$this->silentMode = $silentMode;
+	}
 	/**
 	 * Imports the data of an extension  from upload
 	 *
@@ -130,7 +138,7 @@ class tx_em_Install {
 	 * @return mixed|string
 	 */
 	public function installExtension($fetchData, $loc, $version, $uploadedTempFile, $dontDelete) {
-		$xmlhandler =& $this->parentObject->xmlhandler;
+		$xmlHandler =& $this->parentObject->xmlHandler;
 		$extensionList =& $this->parentObject->extensionList;
 		$extensionDetails =& $this->parentObject->extensionDetails;
 		$content = '';
@@ -140,7 +148,7 @@ class tx_em_Install {
 				if ($fetchData[0]['extKey'] && is_array($fetchData[0]['FILES'])) {
 					$extKey = $fetchData[0]['extKey'];
 					if (!isset($fetchData[0]['EM_CONF']['constraints'])) {
-						$fetchData[0]['EM_CONF']['constraints'] = $xmlhandler->extensionsXML[$extKey]['versions'][$version]['dependencies'];
+						$fetchData[0]['EM_CONF']['constraints'] = $xmlHandler->extensionsXML[$extKey]['versions'][$version]['dependencies'];
 					}
 					$EM_CONF = tx_em_Tools::fixEMCONF($fetchData[0]['EM_CONF']);
 					if (!$EM_CONF['lockType'] || !strcmp($EM_CONF['lockType'], $loc)) {
@@ -228,12 +236,16 @@ class tx_em_Install {
 												)));
 											}
 
-											$flashMessage = t3lib_div::makeInstance(
-												't3lib_FlashMessage',
-												$messageContent,
-												$GLOBALS['LANG']->getLL('ext_import_success')
-											);
-											$content = $flashMessage->render() . $updateContent;
+											if (!$this->silentMode) {
+												$flashMessage = t3lib_div::makeInstance(
+													't3lib_FlashMessage',
+													$messageContent,
+													$GLOBALS['LANG']->getLL('ext_import_success')
+												);
+												$content = $flashMessage->render();
+											} else {
+												$content = $updateContent;
+											}
 
 
 											// Install / Uninstall:
@@ -553,21 +565,27 @@ class tx_em_Install {
 			if ($command['doDelete'] && !strcmp($absPath, urldecode($command['absPath']))) {
 				$res = $this->removeExtDirectory($absPath);
 				if ($res) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						nl2br($res),
-						sprintf($GLOBALS['LANG']->getLL('extDelete_remove_dir_failed'), $absPath),
-						t3lib_FlashMessage::ERROR
-					);
-					return $flashMessage->render();
+					if (!$this->silentMode) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							nl2br($res),
+							sprintf($GLOBALS['LANG']->getLL('extDelete_remove_dir_failed'), $absPath),
+							t3lib_FlashMessage::ERROR
+						);
+						return $flashMessage->render();
+					}
+					return '';
 				} else {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						sprintf($GLOBALS['LANG']->getLL('extDelete_removed'), $absPath),
-						$GLOBALS['LANG']->getLL('extDelete_removed_header'),
-						t3lib_FlashMessage::OK
-					);
-					return $flashMessage->render();
+					if (!$this->silentMode) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							sprintf($GLOBALS['LANG']->getLL('extDelete_removed'), $absPath),
+							$GLOBALS['LANG']->getLL('extDelete_removed_header'),
+							t3lib_FlashMessage::OK
+						);
+						return $flashMessage->render();
+					}
+					return '';
 				}
 			} else {
 				$areYouSure = $GLOBALS['LANG']->getLL('extDelete_sure');
@@ -831,13 +849,16 @@ class tx_em_Install {
 				}
 				$res = $this->removeExtDirectory($extDirPath);
 				if ($res) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						nl2br($res),
-						sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $extDirPath),
-						t3lib_FlashMessage::ERROR
-					);
-					return $flashMessage->render();
+					if (!$this->silentMode) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							nl2br($res),
+							sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $extDirPath),
+							t3lib_FlashMessage::ERROR
+						);
+						return $flashMessage->render();
+					}
+					return '';
 				}
 			}
 
@@ -1185,20 +1206,21 @@ class tx_em_Install {
 					</tr>
 				</table>';
 		} else {
-			$flashMessage = t3lib_div::makeInstance(
-				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('tsStyleConfigForm_additional_config'),
-				'',
-				t3lib_FlashMessage::INFO
-			);
-
+			if (!$this->silentMode) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('tsStyleConfigForm_additional_config'),
+					'',
+					t3lib_FlashMessage::INFO
+				);
+			}
 			$form = '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
 					<tr>
 						<td>
 							<form action="' . htmlspecialchars($script) . '" method="post">' .
 					$addFields .
-					$flashMessage->render() .
+					(!$this->silentMode ? '' : $flashMessage->render()) .
 					'<br /><input type="submit" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
 							</form>
 						</td>

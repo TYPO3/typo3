@@ -387,6 +387,61 @@ final class tx_em_Database {
 	}
 
 	/**
+	 * Link to dump of database tables
+	 *
+	 * @param	array  $tablesArray
+	 * @param	string $extKey
+	 * @param	array  $additionalLinkParameter
+	 * @return	string		HTML
+	 */
+	function dumpDataTablesLine($tablesArray, $extKey, $additionalLinkParameter = array()) {
+		$tables = array();
+		$tablesNA = array();
+		$allTables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
+
+		foreach ($tablesArray as $tableName) {
+			if (in_array($tableName, $allTables)) {
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $tableName);
+				$tables[$tableName] = '<tr><td>&nbsp;</td><td>
+					<a class="t3-link dumpLink" href="' .
+						htmlspecialchars(t3lib_div::linkThisScript(
+							array_merge(array(
+								'CMD[dumpTables]' => $tableName,
+								'CMD[showExt]' => $extKey,
+							), $additionalLinkParameter)
+						)) .
+						'" title="' .
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_dump_table'),
+							$tableName) .
+						'">' . $tableName . '</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>' .
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_number_of_records'),
+							$count) . '</td></tr>';
+			} else {
+				$tablesNA[$tableName] = '<tr><td>&nbsp;</td><td>' . $tableName . '</td><td>&nbsp;</td><td>' .
+						$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_table_not_there') . '</td></tr>';
+			}
+		}
+		$label = '<table border="0" cellpadding="0" cellspacing="0">' .
+				implode('', array_merge($tables, $tablesNA)) .
+				'</table>';
+		if (count($tables)) {
+			$label = '<a class="t3-link dumpLink" href="' .
+					htmlspecialchars(t3lib_div::linkThisScript(
+						array_merge(array(
+							'CMD[dumpTables]' => implode(',', array_keys($tables)),
+							'CMD[showExt]' => $extKey
+						), $additionalLinkParameter)
+					)) .
+					'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_dump_all_tables') . '">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_download_all_data') . '</a><br /><br />' . $label;
+		}
+		else {
+			$label = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_nothing_to_dump') . '<br /><br />' . $label;
+		}
+		return $label;
+	}
+
+	/**
 	 * Dump content for static tables
 	 *
 	 * @param	string		Comma list of tables from which to dump content

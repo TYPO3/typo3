@@ -218,6 +218,7 @@ abstract class tx_em_Parser_MirrorXmlAbstractParser extends tx_em_Parser_XmlAbst
 	 * @return  void
 	 */
 	protected function throwException($message = "", $code = 0) {
+		t3lib_div::requireOnce(t3lib_extMgm::extPath('em') . 'classes/exception/class.tx_em_mirrorxml_exception.php');
 		throw new tx_em_MirrorXmlException(get_class($this) . ': ' . $message, $code);
 	}
 }

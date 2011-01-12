@@ -39,6 +39,9 @@ class tx_em_Extensions_Details {
 	protected $descrTable = '_MOD_tools_em';
 	protected $parentObject;
 
+	protected $categories;
+	protected $states;
+
 	/**
 	 * Instance of EM API
 	 *
@@ -63,6 +66,18 @@ class tx_em_Extensions_Details {
 		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
 		$GLOBALS['LANG']->includeLLFile(t3lib_extMgm::extPath('em') . 'language/locallang.xml');
+		$this->categories = array(
+			'be' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_BE'),
+			'module' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_BE_modules'),
+			'fe' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_FE'),
+			'plugin' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_FE_plugins'),
+			'misc' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_miscellanous'),
+			'services' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_services'),
+			'templates' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_templates'),
+			'example' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_examples'),
+			'doc' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:category_documentation')
+		);
+		$this->states = tx_em_Tools::getStates();
 	}
 
 
@@ -441,7 +456,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the category
 		$key = 'category';
-		$dataCol = $this->parentObject->categories[$emConf[$key]];
+		$dataCol = $this->categories[$emConf[$key]];
 		$lines[] = array(
 			$this->headerCol($key),
 			$dataCol
@@ -449,7 +464,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the state
 		$key = 'state';
-		$dataCol = $this->parentObject->states[$emConf[$key]];
+		$dataCol = $this->states[$emConf[$key]];
 		$lines[] = array(
 			$this->headerCol($key),
 			$dataCol
@@ -481,7 +496,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the dependencies
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_depends_on');
-		$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_dependencies', $headerCol);
+		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_dependencies', $headerCol);
 		$dataCol = tx_em_Tools::depToString($emConf['constraints']);
 		$lines[] = array(
 			$headerCol,
@@ -490,7 +505,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the conflicts
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_conflicts_with');
-		$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_conflicts', $headerCol);
+		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_conflicts', $headerCol);
 		$dataCol = tx_em_Tools::depToString($emConf['constraints'], 'conflicts');
 		$lines[] = array(
 			$headerCol,
@@ -499,7 +514,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the suggestions
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_suggests');
-		$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_conflicts', $headerCol);
+		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_conflicts', $headerCol);
 		$dataCol = tx_em_Tools::depToString($emConf['constraints'], 'suggests');
 		$lines[] = array(
 			$this->headerCol('suggests'),
@@ -516,7 +531,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_clear_cache');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_clearCacheOnLoad', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_clearCacheOnLoad', $headerCol);
 			if ($emConf['clearCacheOnLoad']) {
 				$dataCol = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 			} else {
@@ -529,7 +544,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$key = 'module';
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_incl_modules');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_module', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_module', $headerCol);
 			$lines[] = array(
 				$headerCol,
 				$emConf[$key]
@@ -537,7 +552,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$key = 'lockType';
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_lock_type');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_lockType', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_lockType', $headerCol);
 			$lines[] = array(
 				$headerCol,
 				($emConf[$key] ? $emConf[$key] : '')
@@ -545,7 +560,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$key = 'doNotLoadInFE';
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_load_in_frontend');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_doNotLoadInFE', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_doNotLoadInFE', $headerCol);
 			if (!$emConf['doNotLoadInFE']) {
 				$dataCol = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 			} else {
@@ -558,7 +573,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$key = 'modify_tables';
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_modifies_tables');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_modify_tables', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_modify_tables', $headerCol);
 			$lines[] = array(
 				$headerCol,
 				$emConf[$key]
@@ -572,13 +587,13 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_type');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_type', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_type', $headerCol);
 			$dataCol = $this->api->typeLabels[$extInfo['type']] . ' - <em>' . $this->api->typeDescr[$extInfo['type']] . '</em>';
 			$lines[] = array($headerCol, $dataCol);
 
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_twice');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_doubleInstall', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_doubleInstall', $headerCol);
 			$dataCol = $this->extInformationArray_dbInst($extInfo['doubleInstall'], $extInfo['type']);
 			$lines[] = array($headerCol, $dataCol);
 
@@ -586,7 +601,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			if (is_array($extInfo['files'])) {
 				sort($extInfo['files']);
 				$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_root_files');
-				$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_rootfiles', $headerCol);
+				$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_rootfiles', $headerCol);
 				$dataCol = implode('<br />', $extInfo['files']);
 				$lines[] = array($headerCol, $dataCol);
 			}
@@ -606,73 +621,55 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			}
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_db_requirements');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_dbReq', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_dbReq', $headerCol);
 			$dataCol = $this->extInformationArray_dbReq($techInfo, 1);
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_db_status');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_dbStatus', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_dbStatus', $headerCol);
 			$lines[] = array($headerCol, $tableStatus);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_flags');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_flags', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_flags', $headerCol);
 			$dataCol = (is_array($techInfo['flags']) ? implode('<br />', $techInfo['flags']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_config_template');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_conf', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_conf', $headerCol);
 			$dataCol = ($techInfo['conf'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_typoscript_files');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_TSfiles', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_TSfiles', $headerCol);
 			$dataCol = (is_array($techInfo['TSfiles']) ? implode('<br />', $techInfo['TSfiles']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_language_files');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_locallang', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_locallang', $headerCol);
 			$dataCol = (is_array($techInfo['locallang']) ? implode('<br />', $techInfo['locallang']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_upload_folder');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_uploadfolder', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_uploadfolder', $headerCol);
 			$dataCol = ($techInfo['uploadfolder'] ? $techInfo['uploadfolder'] : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_create_directories');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_createDirs', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_createDirs', $headerCol);
 			$dataCol = (is_array($techInfo['createDirs']) ? implode('<br />', $techInfo['createDirs']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_module_names');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_moduleNames', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_moduleNames', $headerCol);
 			$dataCol = (is_array($techInfo['moduleNames']) ? implode('<br />', $techInfo['moduleNames']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_class_names');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_classNames', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_classNames', $headerCol);
 			$dataCol = (is_array($techInfo['classes']) ? implode('<br />', $techInfo['classes']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
-			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_code_warnings') . '<br />' . $GLOBALS['LANG']->getLL('extInfoArray_dev_relevant');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_errors', $headerCol);
-			$dataCol = (is_array($techInfo['errors']) ? tx_em_Tools::rfw(implode('<br />', $techInfo['errors'])) : '');
-			$lines[] = array($headerCol, $dataCol);
-
-			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_annoyances') . '<br />' . $GLOBALS['LANG']->getLL('extInfoArray_dev_relevant');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_NSerrors', $headerCol);
-			if (is_array($techInfo['NSerrors'])) {
-				if (!t3lib_div::inList($this->parentObject->nameSpaceExceptions, $extKey)) {
-					$dataCol = t3lib_utility_Debug::viewarray($techInfo['NSerrors']);
-				} else {
-					$dataCol = tx_em_Tools::dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'));
-				}
-
-			}
-			$lines[] = array($headerCol, $dataCol);
-
 			$currentMd5Array = $this->serverExtensionMD5array($extKey, $extInfo);
-			$affectedFiles = '';
 
 			$msgLines = array();
 			if (strcmp($extInfo['EM_CONF']['_md5_values_when_last_written'], serialize($currentMd5Array))) {
@@ -685,7 +682,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			}
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_files_changed');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_filesChanged', $headerCol);
+			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_filesChanged', $headerCol);
 			$dataCol = implode('<br />', $msgLines);
 			$lines[] = array($headerCol, $dataCol);
 		}
@@ -772,7 +769,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				return '<td>&nbsp;</td>';
 			}
 			else {
-				return t3lib_BEfunc::cshItem($this->parentObject->descrTable, 'emconf_' . $key, $GLOBALS['BACK_PATH'], '<td>|</td>');
+				return t3lib_BEfunc::cshItem($this->descrTable, 'emconf_' . $key, $GLOBALS['BACK_PATH'], '<td>|</td>');
 			}
 		}
 		else {
@@ -788,7 +785,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 	 */
 	function headerCol($key) {
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_' . $key);
-		return t3lib_BEfunc::wrapInHelp($this->parentObject->descrTable, 'emconf_' . $key, $headerCol);
+		return t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_' . $key, $headerCol);
 	}
 }
 

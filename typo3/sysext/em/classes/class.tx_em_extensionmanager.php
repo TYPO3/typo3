@@ -149,10 +149,9 @@ class tx_em_ExtensionManager {
 		$labels = tx_em_Tools::getArrayFromLocallang(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
 		$this->pageRenderer->addInlineLanguageLabelArray($labels);
 
-		/* TODO: new users have no settings */
+		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
+
 		$settings = $this->parentObject->MOD_SETTINGS;
-		// TODO add mirrors to sys_ter record and delete from settings
-		// restructure mirror data
 		$mirrors = unserialize($settings['extMirrors']);
 		$settings['extMirrors'] = array(array('Random (recommended)', '', '', '', '', '', ''));
 		if (is_array($mirrors)) {
@@ -164,6 +163,9 @@ class tx_em_ExtensionManager {
 			}
 		}
 
+		$allowRepositoryUpdate = !intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.hideRepositoryUpdate'));
+
+			// add the settings
 		$additionalSettings = array(
 			'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
 			'backPath' => $this->parentObject->doc->backPath,
@@ -172,9 +174,10 @@ class tx_em_ExtensionManager {
 			'editorCss' => $this->resPath . 'css/editor.css',
 			'codemirrorCssPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/css/',
 			'codemirrorJsPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/js/',
-			'selectedLanguages' => unserialize($settings['selectedLanguages']),
-			'selectedLanguagesList' => implode(',', (array) $settings['selectedLanguages']),
+			'selectedLanguages' => t3lib_div::trimExplode(',', $globalSettings['selectedLanguages'], TRUE),
 			'state' => $GLOBALS['BE_USER']->uc['moduleData']['tools_em']['States'],
+			'inlineToWindow' => $globalSettings['inlineToWindow'],
+			'allowRepositoryUpdate' => $allowRepositoryUpdate
 		);
 		$settings = array_merge($settings, $additionalSettings);
 
@@ -190,7 +193,7 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addJsFile($this->resPath . 'js/overrides/ext_overrides.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/custom_plugins.js');
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
-		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/rowpanelexpander.js');
+		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/RowPanelExpander.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/searchfield.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/fileuploadfield.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/menu/RangeMenu.js');
@@ -227,7 +230,12 @@ class tx_em_ExtensionManager {
 		//Update from repository - box
 		//$content = $this->parentObject->showRepositoryUpdateForm(0);
 
-		$content .= '<div id="em-message-area"></div><div id="em-app"></div>';
+		$content .= '
+
+			<div id="em-message-area"></div><div id="em-app"></div>
+			<!-- dummy form to make configuration js happy -->
+			<form name="tsStyleConfigForm" action="" method="post"></form>
+		';
 		return $content;
 	}
 

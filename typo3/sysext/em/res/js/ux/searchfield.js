@@ -5,10 +5,10 @@
  * http://www.extjs.com/license
  */
 Ext.ns('Ext.ux.form');
-	
+
 Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
 	initComponent : function(){
-	
+
 		Ext.ux.form.SearchField.superclass.initComponent.call(this);
 		this.on('specialkey', function(f, e){
 			if(e.getKey() == e.ENTER){
@@ -16,7 +16,7 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
 			}
 		}, this);
 	},
-	
+
 	validationEvent:false,
 	validateOnBlur:false,
 	trigger1Class:'x-form-clear-trigger',
@@ -62,7 +62,7 @@ Ext.ux.form.FilterField = Ext.extend(Ext.form.TwinTriggerField, {
 			}
 		}, this);
 	},
-	
+
 	validationEvent:false,
 	validateOnBlur:false,
 	trigger1Class:'x-form-clear-trigger',
@@ -77,7 +77,7 @@ Ext.ux.form.FilterField = Ext.extend(Ext.form.TwinTriggerField, {
 			this.el.dom.value = '';
 			this.triggers[0].hide();
 			this.hasSearch = false;
-			this.store.filterBy(this.store.storeFilter);
+			this.store.reload(); //filterBy(this.store.storeFilter);
 		}
 	},
 
@@ -87,7 +87,7 @@ Ext.ux.form.FilterField = Ext.extend(Ext.form.TwinTriggerField, {
 			this.onTrigger1Click();
 			return;
 		}
-		this.store.filterBy(this.store.storeFilter);
+		this.store.reload(); //filterBy(this.store.storeFilter);
 		this.hasSearch = true;
 		this.triggers[0].show();
 	}

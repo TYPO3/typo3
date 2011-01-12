@@ -95,6 +95,7 @@ class tx_em_Develop {
 		$menu .= '&nbsp;<input type="button" value="Single Ext Update" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'single','sub'=>'update'))) . '\';" />';
 		$menu .= '&nbsp;<input type="button" value="Single Ext Config" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'single','sub'=>'config'))) . '\';" />';
 		$menu .= '&nbsp;<input type="button" value="Single Ext Files" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'single','sub'=>'files'))) . '\';" />';
+		$menu .= '&nbsp;<input type="button" value="Single Ext DevInfo" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'single','sub'=>'devinfo'))) . '\';" />';
 		$menu .= '&nbsp;<input type="button" value="get Settings" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'settings'))) . '\';" />';
 		$menu .= '&nbsp;<input type="button" value="get Labels" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('devCmd'=>'labels'))) . '\';" />';
 		$menu .= '<hr />';
@@ -331,6 +332,10 @@ class tx_em_Develop {
 					$path = $path . $this->extKey . '/';
 					$files = t3lib_div::getAllFilesAndFoldersInPath(array(), $path, '', 1, 20, '.svn');
 					$content = '<h2>Files from ' . $this->extKey . ' (' . $path . ')</h2>' . t3lib_utility_Debug::viewArray($files);
+					break;
+				case 'devinfo':
+					$extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details');
+					$content = '<h2>DevInfo from ' . $this->extKey . ' (' . $path . ')</h2>' . $extensionDetails->extInformationarray($this->extKey, $info);
 			}
 		}
 

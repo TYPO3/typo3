@@ -135,7 +135,7 @@ class tx_em_Connection_Ter {
 		$remote = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 
 		if ($remote !== false) {
-			$parsed = $this->emObj->xmlhandler->parseL10nXML($remote);
+			$parsed = $this->emObj->xmlHandler->parseL10nXML($remote);
 			return $parsed['languagePackIndex'];
 		}
 

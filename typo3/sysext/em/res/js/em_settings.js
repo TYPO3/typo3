@@ -28,7 +28,7 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 			listeners: {
 				load: function(store) {
 					if (this.isLoaded) {
-						record = store.getById(this.repSettingsCombo.getValue()).data;
+						record = store.getById(TYPO3.settings.EM.selectedRepository).data;
 						this.repositoryInfo(record);
 					}
 				},
@@ -52,6 +52,7 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 			listeners: {
 				scope: this,
 				select: function(comboBox, newValue, oldValue) {
+					TYPO3.settings.EM.selectedRepository = newValue.data.uid;
 					this.repositoryInfo(newValue.data);
 					TYPO3.EM.ExtDirect.saveSetting('selectedRepository', newValue.data.uid);
 				}
@@ -163,21 +164,91 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 				align: 'stretchmax',
 				border: false,
 				id: 'hbox-settings',
-				bodyStyle: 'padding-top: 10px;',
-				defaults: {
-					height: 800
-				},
+				bodyStyle: 'padding-top: 10px;overflow: auto;',
 				items: [{
 					width: 450,
 					border: false,
 					labelWidth: 100,
 					items: [{
 							xtype:'fieldset',
-							stateId: 'fsUserSettings',
-							stateful: true,
-							stateEvents: ['collapse', 'expand'],
+							title: TYPO3.lang.repositories,
+							collapsible: false,
+							defaultType: 'textfield',
+							height: 246,
+							items :[
+								this.repSettingsCombo,
+							{
+								title: TYPO3.lang.repository_details,
+								xtype: 'panel',
+								id: 'repDescriptionDisplay',
+								record: null,
+								labelWidth: 0,
+								width: 420,
+								html: '',
+								bodyStyle: 'padding: 10px;',
+								buttons: [{
+									text: TYPO3.lang.cmd_create,
+									iconCls: 'x-btn-new',
+									ref: '../newRep',
+									handler: function() {
+										var win = new TYPO3.EM.EditRepository({
+											isCreate: true,
+											title: TYPO3.lang.repository_create
+										}).show();
+									},
+									scope: this
+								}, ' ', {
+									text: TYPO3.lang.cmd_edit,
+									iconCls: 'x-btn-edit',
+									ref: '../editRep',
+									handler: function() {
+										var record = this.repositoryStore.getById(this.repSettingsCombo.getValue());
+										var win = new TYPO3.EM.EditRepository({
+											title: String.format(TYPO3.lang.repository_edit, record.data.title)
+										});
+										win.getComponent('repForm').getForm().setValues({
+											'title': record.data.title,
+											'description': record.data.description,
+											'wsdl_url': record.data.wsdl_url,
+											'mirror_url': record.data.mirror_url,
+											'rep':  record.data.uid
+										});
+										win.show();
+									},
+									scope: this
+								}, ' ', {
+									text: TYPO3.lang.cmd_delete,
+									iconCls: 'x-btn-delete',
+									ref: '../deleteRep',
+									handler: function() {
+										var record = this.repositoryStore.getById(this.repSettingsCombo.getValue());
+										var wait = Ext.MessageBox.wait(TYPO3.lang.repository_deleting, record.data.title);
+										TYPO3.EM.ExtDirect.deleteRepository(record.data.uid, function(response) {
+											if (response.success !== true) {
+												TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Invalid', action.result.error, 5);
+											} else {
+												TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.repository_delete, String.format(TYPO3.lang.repository_deleted, record.data.title), 5);
+												TYPO3.settings.EM.selectedRepository = 1;
+												this.repSettingsCombo.setValue(1);
+												this.repositoryStore.load({
+													callback: function() {
+														this.repSettingsCombo.fireEvent('select', this.repSettingsCombo, this.repositoryStore.getById(1), 0);
+													},
+													scope: this
+												});
+
+											}
+											wait.hide();
+										}, this);
+									},
+									scope: this
+								}]
+							}]
+						},
+						{
+							xtype:'fieldset',
 							title: TYPO3.lang.user_settings,
-							collapsible: true,
+							collapsible: false,
 							defaults: {},
 							defaultType: 'textfield',
 							items :[
@@ -204,137 +275,27 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 									},
 									scope: this
 								}
-							],
-							listeners: {
-								beforestaterestore: function() {
-									console.log('beforestaterestore', arguments);
-								},
-								beforestateresave: function() {
-									console.log('beforestateresave', arguments);
-								}
-							}
-						}, {
-							xtype:'fieldset',
-							stateId: 'fsRepositories',
-							stateful: true,
-							stateEvents: ['collapse', 'expand'],
-							title: TYPO3.lang.repositories,
-							collapsible: true,
-							defaultType: 'textfield',
-							height: 246,
-							items :[
-								this.repSettingsCombo,
-							{
-								title: TYPO3.lang.repository_details,
-								xtype: 'panel',
-								id: 'repDescriptionDisplay',
-								record: null,
-								labelWidth: 0,
-								width: 420,
-								html: '',
-								bodyStyle: 'padding: 10px;',
-								buttons: [{
-									text: TYPO3.lang.cmd_edit,
-									iconCls: 'x-btn-edit',
-									ref: '../editRep',
-									handler: function() {
-										var record = this.repositoryStore.getById(this.repSettingsCombo.getValue());
-										var win = new TYPO3.EM.EditRepository({
-											title: String.format(TYPO3.lang.repository_edit, record.data.title)
-										});
-										win.getComponent('repForm').getForm().setValues({
-											'title': record.data.title,
-											'description': record.data.description,
-											'wsdl_url': record.data.wsdl_url,
-											'mirror_url': record.data.mirror_url,
-											'rep':  record.data.uid
-										});
-										win.show();
-									},
-									scope: this
-								}, ' ', {
-									text: TYPO3.lang.cmd_create,
-									iconCls: 'x-btn-new',
-									ref: '../newRep',
-									handler: function() {
-										var win = new TYPO3.EM.EditRepository({
-											isCreate: true,
-											title: TYPO3.lang.repository_create
-										}).show();
-									},
-									scope: this
-								}, ' ', {
-									text: TYPO3.lang.cmd_delete,
-									iconCls: 'x-btn-delete',
-									ref: '../deleteRep',
-									handler: function() {
-										var record = this.repositoryStore.getById(this.repSettingsCombo.getValue());
-										var wait = Ext.MessageBox.wait(TYPO3.lang.repository_deleting, record.data.title);
-										TYPO3.EM.ExtDirect.deleteRepository(record.data.uid, function(response) {
-											if (response.success !== true) {
-												TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Invalid', action.result.error, 5);
-											} else {
-												TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.repository_delete, String.format(TYPO3.lang.repository_deleted, record.data.title), 5);
-												this.repSettingsCombo.setValue(1);
-												this.repositoryStore.load({
-													callback: function() {
-														this.repSettingsCombo.fireEvent('select', this.repSettingsCombo, this.repositoryStore.getById(1), 0);
-													},
-													scope: this
-												});
-
-											}
-											wait.hide();
-										}, this);
-									},
-									scope: this
-								}]
-							}]
-						}, {
-							title: TYPO3.lang.stateProvider,
-							stateId: 'fsStateProvider',
-							stateful: true,
-							stateEvents: ['collapse', 'expand'],
-							xtype:'fieldset',
-							collapsible: true,
-							labelWidth: 1,
-							items: {
-								xtype: 'displayfield',
-								layout: 'container',
-								html: TYPO3.lang.stateProviderDescription
-							},
-							buttons: [{
-				                text: TYPO3.lang.stateProviderClear,
-								handler: function() {
-									TYPO3.EM.ExtDirect.resetStates(function(response) {
-							        	TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.stateProvider, TYPO3.lang.stateProviderCleared, 5);
-									});
-								}
-							}]
-					}]
+							]
+						}]
 					}, {
 						flex: 1,
 						border: false,
-						items: [{
-							xtype:'fieldset',
-							title: TYPO3.lang.mirror_selection,
-							collapsible: true,
-							defaults: {},
-							items :[{
-								xtype: 'grid',
-								id: 'em-mirrorgrid',
-								stripeRows: true,
-								store: this.mirrorStore,
-								cm: mirrorCm,
-								sm: mirrorSm,
-								viewConfig: {
-									forceFit: true
-								},
-								height: 750
-							},{
-								xtype: 'hidden',
-								name: 'selectedMirror'
-							}]
+						xtype:'fieldset',
+						title: TYPO3.lang.mirror_selection,
+						collapsible: false,
+						autoHeight:true,
+						items :[{
+							anchor: '100% 100%',
+							xtype: 'grid',
+							id: 'em-mirrorgrid',
+							stripeRows: true,
+							store: this.mirrorStore,
+							cm: mirrorCm,
+							sm: mirrorSm,
+							autoHeight: true
+						},{
+							xtype: 'hidden',
+							name: 'selectedMirror'
 						}]
 					}]
 				}]
@@ -351,7 +312,13 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 			waitMsg : 'Saving Settings...',
 			success: function(form, action) {
 				TYPO3.Flashmessage.display(TYPO3.Severity.information,'Settings', 'Settings were saved ', 5);
-				TYPO3.settings.EM.hasCredentials = (action.result.data.fe_u !== '' && action.result.data.fe_p !== '')
+				TYPO3.settings.EM.hasCredentials = (action.result.data.fe_u !== '' && action.result.data.fe_p !== '');
+					// enable/disable user extension tab
+				if (TYPO3.settings.EM.hasCredentials) {
+					Ext.getCmp('em-main').items.items[4].enable();
+				} else {
+					Ext.getCmp('em-main').items.items[4].disable();
+				}
 			},
 			failure: function(form, action) {
 				if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
@@ -419,9 +386,12 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 			callback: function() {
 				this.getForm().load({
 					success: function(form, response) {
-						record = this.repositoryStore.getById(this.repSettingsCombo.getValue()).data;
-						this.repositoryInfo(record);
-						this.isLoaded = true;
+						record = this.repositoryStore.getById(TYPO3.settings.EM.selectedRepository);
+						if (record) {
+							this.repSettingsCombo.setValue(TYPO3.settings.EM.selectedRepository);
+							this.repositoryInfo(record.data);
+							this.isLoaded = true;
+						}
 					},
 					scope: this
 				});
@@ -466,7 +436,8 @@ TYPO3.EM.EditRepository = Ext.extend(Ext.Window, {
 			items: [{
 				itemId: 'title',
 				fieldLabel: TYPO3.lang.extInfoArray_title,
-				name: 'title'
+				name: 'title',
+				allowBlank: false
 			}, {
 				itemId: 'description',
 				fieldLabel: TYPO3.lang.extInfoArray_description,
@@ -480,7 +451,8 @@ TYPO3.EM.EditRepository = Ext.extend(Ext.Window, {
 			}, {
 				itemId: 'wsdl_url',
 				fieldLabel: TYPO3.lang.wsdlUrl,
-				name: 'wsdl_url'
+				name: 'wsdl_url',
+				allowBlank: false
 			}, {
 				xtype: 'hidden',
 				name: 'create',
@@ -523,13 +495,12 @@ TYPO3.EM.EditRepository = Ext.extend(Ext.Window, {
 	},
 
 	repositoryUpdate: function(form, type) {
-
 		form.getForm().submit({
 			waitMsg : type === 0 ? TYPO3.lang.repository_saving : TYPO3.lang.repository_creating,
 			success: function(form, action) {
 				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.repository, type == 0
-						? String.format(TYPO3.lang.repository_created, action.response.params.title)
-						: String.format(TYPO3.lang.repository_created, action.response.params.title)
+						? String.format(TYPO3.lang.repository_created, action.result.params.title)
+						: String.format(TYPO3.lang.repository_created, action.result.params.title)
 						, 5);
 				Ext.StoreMgr.get('repositoriessettings').load();
 				this.close();

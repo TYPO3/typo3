@@ -58,6 +58,28 @@ TYPO3.EM.Tools = function() {
 			} else {
 				TYPO3.EM.ExtensionUploadWindowInstance = new TYPO3.EM.ExtensionUploadWindow().show();
 			}
+		},
+
+		renderExtensionTitle: function(record) {
+			var description = record.data.description;
+			var value = record.data.title;
+			if (value == '') {
+				value = '[no title]';
+			}
+			if (record.data.reviewstate < 0) {
+				description += '<br><br><strong>' + TYPO3.lang.insecureExtension + '</strong>';
+			}
+			return record.data.icon + ' ' + value + ' (v' + record.data.version + ')';
+		},
+
+		closeImportWindow: function() {
+	   		TYPO3.EM.ImportWindow.close();
+		},
+
+		refreshMenu: function() {
+			if (top.TYPO3ModuleMenu) {
+				top.TYPO3ModuleMenu.refreshMenu();
+			}
 		}
-	};
+	}
 }();

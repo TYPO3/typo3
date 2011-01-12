@@ -100,6 +100,8 @@ class tx_em_Translations {
 				t3lib_div::mkdir_deep(PATH_typo3conf, $path);
 			}
 			t3lib_div::writeFile($file, $l10n[0]);
+			// SteffenG tried this to get first update without errors
+			//t3lib_div::rmdir(PATH_typo3conf . $path, TRUE);
 			if (tx_em_Tools::unzip($file, PATH_typo3conf . $path)) {
 				return true;
 			} else {

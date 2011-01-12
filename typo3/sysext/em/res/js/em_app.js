@@ -42,20 +42,29 @@ Ext.onReady(function() {
 		Ext.state.Manager.getProvider().initState(TYPO3.settings.EM.States);
 	}
 	Ext.QuickTips.init();
-
+	TYPO3.EM.ImportWindow = null;
 
 		// fire app
 	var EM = new TYPO3.EM.App.init();
-	TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.header, TYPO3.lang.emLoaded, 2);
-
-	/*Ext.state.Manager.getProvider().logState();
-	var val = Ext.state.Manager.getProvider().get('mainTab', '');
-	console.log(val);*/
 });
 
 TYPO3.EM.App = {
+	categoryLabels : [
+			TYPO3.lang.category_BE,
+			TYPO3.lang.category_BE_modules,
+			TYPO3.lang.category_FE,
+			TYPO3.lang.category_FE_plugins,
+			TYPO3.lang.category_miscellanous,
+			TYPO3.lang.category_services,
+			TYPO3.lang.category_templates,
+			'',
+			TYPO3.lang.category_documentation,
+			TYPO3.lang.category_examples
+	],
 
 	init : function() {
+
+		TYPO3.settings.EM.selectedRepository = TYPO3.settings.EM.selectedRepository || 1;
 		var appPanel = new Ext.TabPanel( {
 			renderTo : 'em-app',
 			id: 'em-main',
@@ -83,5 +92,9 @@ TYPO3.EM.App = {
 			],
 			plugins: [new Ext.ux.plugins.FitToParent()]
 		});
+	},
+
+	getCategoryLabel: function(index) {
+		return this.categoryLabels[parseInt(index, 10)];
 	}
 };

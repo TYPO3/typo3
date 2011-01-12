@@ -118,9 +118,9 @@ class tx_em_Repository {
 	 * @access  public
 	 * @return  void
 	 */
-	function __construct($uid = 0) {
+	function __construct($uid = 1) {
 		$row = tx_em_Database::getRepositoryByUID($uid);
-		if (is_null($row)) {
+		if (!is_array($row) && $uid === 1) {
 			$this->fixMainRepository();
 		} else {
 			$this->setTitle($row['title']);
@@ -260,7 +260,7 @@ class tx_em_Repository {
 	 * @see	 $mirrorListUrl, getMirrorListUrl()
 	 */
 	public function setMirrorListUrl($url) {
-		if (!empty($url) && t3lib_div::isValidUrl($url)) {
+		if (empty($url) || (!empty($url) && t3lib_div::isValidUrl($url))) {
 			$this->mirrorListUrl = $url;
 		}
 	}

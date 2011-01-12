@@ -39,7 +39,7 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * @var tx_em_Tools_XmlHandler
 	 */
-	var $xmlhandler;
+	var $xmlHandler;
 
 	/**
 	 * Class for printing extension lists
@@ -62,6 +62,7 @@ class tx_em_Connection_ExtDirectServer {
 	 */
 	static protected $objSettings;
 
+	protected $globalSettings;
 
 	/*********************************************************************/
 	/* General                                                           */
@@ -74,6 +75,7 @@ class tx_em_Connection_ExtDirectServer {
 	 */
 	public function __construct() {
 		$this->template = t3lib_div::makeInstance('template');
+		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 	}
 
 
@@ -114,15 +116,31 @@ class tx_em_Connection_ExtDirectServer {
 
 	}
 
+	public function getFlatExtensionList() {
+		$list = $this->getExtensionList();
+		$flatList = array();
+		foreach ($list['data'] as $entry) {
+			$flatList[$entry['extkey']] = array(
+				'version' => $entry['version'],
+				'intversion' => t3lib_div::int_from_ver($entry['version']),
+				'installed' => $entry['installed'],
+				'typeShort' => $entry['typeShort'],
+			);
+		}
+		return array(
+			'length' => count($flatList),
+			'data' => $flatList
+		);
+	}
+
 	/**
-	 * Enter description here...
+	 * Render extensionlist for languages
 	 *
 	 * @return unknown
 	 */
 	public function getInstalledExtkeys() {
-		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
-		$extList = $list->getInstalledExtensions(TRUE);
-
+		$list = $this->getExtensionList();
+		$extList = $list['data'];
 
 		$temp = $this->getSettings();
 		$selectedLanguage = unserialize($temp['selectedLanguages']);
@@ -186,9 +204,9 @@ class tx_em_Connection_ExtDirectServer {
 			$extension->singleExtInfo($extKey, $path, $ext);
 			$ext = $ext[0];
 			$update = $install->checkDBupdates($extKey, $ext);
-			return $update ? $update : 'Extension is up to date.';
+			return $update ? $update : $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extUpToDate');
 		} else {
-			return 'Extension "' . htmlspecialchars($extKey) . '" is not installed.';
+			return sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNotInstalled') ,htmlspecialchars($extKey));
 		}
 	}
 
@@ -205,7 +223,7 @@ class tx_em_Connection_ExtDirectServer {
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		$form = $install->updatesForm($extKey, $list[$extKey], 1);
 		if (!$form) {
-			return '<p>' . 'This extension has no configuration.' . '</p>';
+			return '<p>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNoConfiguration') . '</p>';
 		} else {
 			return $form;
 		}
@@ -219,9 +237,44 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function saveExtensionConfiguration($parameter) {
+
+		$extKey = $parameter['extkey'];
+		$extType = $parameter['exttype'];
+		$absPath = tx_em_Tools::getExtPath($extKey, $extType);
+		$relPath = tx_em_Tools::typeRelPath($extType) . $extKey . '/';
+
+		/** @var $extensionList tx_em_Extensions_List */
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		list($list,) = $extensionList->getInstalledExtensions();
+
+
+		$arr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
+		$arr = is_array($arr) ? $arr : array();
+
+		/** @var $tsStyleConfig t3lib_tsStyleConfig */
+		$tsStyleConfig = t3lib_div::makeInstance('t3lib_tsStyleConfig');
+		$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
+		$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
+			t3lib_div::getUrl($absPath . 'ext_conf_template.txt'),
+			$relPath,
+			$absPath,
+			$GLOBALS['BACK_PATH']
+		);
+
+		$tsStyleConfig->ext_procesInput($parameter, array(), $theConstants, array());
+		$arr = $tsStyleConfig->ext_mergeIncomingWithExisting($arr);
+
+
+		/** @var $install tx_em_Install */
+		$install = t3lib_div::makeInstance('tx_em_Install');
+		$install->INSTALL = $parameter['TYPO3_INSTALL'];
+		$install->checkDBupdates($extKey, $list[$extKey]);
+		$install->writeTsStyleConfig($extKey, $arr);
+
+
 		return array(
 			'success' => true,
-			'data' => $parameter
+			'data' => $parameter['data']
 		);
 	}
 
@@ -246,7 +299,7 @@ class tx_em_Connection_ExtDirectServer {
 		$editTypes = explode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']);
 		$imageTypes = array('gif', 'jpg', 'png');
 
-		if (!is_array($files) || !count($files)) {
+		if (!is_array($dirs) && !is_array($files)) {
 			return array();
 		}
 
@@ -354,12 +407,46 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function uploadExtToTer($parameter) {
+		$temp = $this->getRepositories(TRUE);
+		$wsdlURL = $temp['data'][0]['wsdl_url'];
+
+		$parameter['user']['fe_u'] = $parameter['fe_u'];
+		$parameter['user']['fe_p'] = $parameter['fe_p'];
+		$parameter['upload']['mode'] = $parameter['newversion'];
+
+		/** @var $extensionList tx_em_Extensions_List */
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		list($list,) = $extensionList->getInstalledExtensions();
+		/** @var $extensionDetails tx_em_Extensions_Details */
+		$this->extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details', $this);
+
+		/** @var $terConnection  tx_em_Connection_Ter*/
+		$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
+		$terConnection->wsdlURL = $wsdlURL;
+
+		$parameter['extInfo'] = $list[$parameter['extKey']];
+		$response = $terConnection->uploadToTER($parameter);
+
+		if (!is_array($response)) {
+			return array(
+				'success' => FALSE,
+				'error' => $response,
+				'params' => $parameter,
+			);
+		}
+		if ($response['resultCode'] == 10504) { //success
+			$parameter['extInfo']['EM_CONF']['version'] = $response['version'];
+			$response['resultMessages'][] = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:terCommunication_ext_version'),
+				$response['version']
+			);
+			$response['resultMessages'][] = $this->extensionDetails->updateLocalEM_CONF($parameter['extKey'], $parameter['extInfo']);
+		}
+
 		return array(
 			'success' => TRUE,
-			'fe_p' => $parameter['fe_p'],
-			'fe_u' => $parameter['fe_u'],
-			'newversion' => $parameter['newversion'],
-			'uploadcomment' => $parameter['uploadcomment']
+			'params' => $parameter,
+			'response' => $response
 		);
 	}
 
@@ -367,13 +454,118 @@ class tx_em_Connection_ExtDirectServer {
 	 * Prints developer information
 	 *
 	 * @param string $parameter
-	 * @return array
+	 * @return string
 	 */
 	public function getExtensionDevelopInfo($extKey) {
+		/** @var $extensionList  tx_em_Extensions_List*/
 		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
 		list($list,) = $extensionList->getInstalledExtensions();
+		/** @var $extensionDetails tx_em_Extensions_Details */
 		$extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details', $this);
+
 		return $extensionDetails->extInformationarray($extKey, $list[$extKey]);
+	}
+
+
+/**
+	 * Prints backupdelete
+	 *
+	 * @param string $parameter
+	 * @return string
+	 */
+	public function getExtensionBackupDelete($extKey) {
+		$content='';
+	   /** @var $extensionList  tx_em_Extensions_List*/
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		/** @var $extensionDetails tx_em_Extensions_Details */
+		$extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details');
+		/** @var $extensionDetails tx_em_Connection_Ter */
+		$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter');
+		/** @var $extensionDetails tx_em_Install */
+		$install = t3lib_div::makeInstance('tx_em_Install');
+		/** @var $api tx_em_API */
+		$api = t3lib_div::makeInstance('tx_em_API');
+
+		list($list,) = $extensionList->getInstalledExtensions();
+		$uploadArray = $extensionDetails->makeUploadarray($extKey, $list[$extKey]);
+
+		if (is_array($uploadArray)) {
+			$backUpData = $terConnection->makeUploadDataFromarray($uploadArray);
+			$filename = 'T3X_' . $extKey . '-' . str_replace('.', '_', $list[$extKey]['EM_CONF']['version']) . '-z-' . date('YmdHi') . '.t3x';
+
+			$techInfo = $install->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
+			$lines = array();
+
+			// Backup
+			$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_backup') . '</td></tr>';
+			$lines[] = '<tr class="bgColor4"><td><strong>' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_files') . '</strong></td><td>' .
+					'<a class="t3-link" href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
+				'CMD[doBackup]' => 1,
+				'CMD[showExt]' => $extKey,
+				'SET[singleDetails]' => 'backup'
+			))) .
+					'">' . sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_download'),
+				$extKey
+			) . '</a><br />
+				(' . $filename . ', <br />' .
+					t3lib_div::formatSize(strlen($backUpData)) . ', <br />' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_md5') . ' ' . md5($backUpData) . ')
+				<br /></td></tr>';
+
+
+			if (is_array($techInfo['tables'])) {
+				$lines[] = '<tr class="bgColor4"><td><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_data_tables') .
+						'</strong></td><td>' .
+							tx_em_Database::dumpDataTablesLine($techInfo['tables'], $extKey, array('SET[singleDetails]' => 'backup')) .
+						'</td></tr>';
+			}
+			if (is_array($techInfo['static'])) {
+				$lines[] = '<tr class="bgColor4"><td><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_static_tables') .
+						'</strong></td><td>' .
+							tx_em_Database::dumpDataTablesLine($techInfo['static'], $extKey, array('SET[singleDetails]' => 'backup')) .
+						'</td></tr>';
+			}
+
+			// Delete
+			$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_delete') . '</td></tr>';
+			$lines[] = '<tr class="bgColor4"><td colspan="2">' . $install->extDelete($extKey, $list[$extKey], '') . '</td></tr>';
+
+			// EM_CONF
+			$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_update_em_conf') . '</td></tr>';
+
+
+			$lines[] = '<tr class="bgColor4"><td colspan="2">' .
+			$sure = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_sure');
+			$updateEMConf = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_file');
+
+			$onClick = "if (confirm('$sure')) {window.location.href='" . t3lib_div::linkThisScript(array(
+				'CMD[showExt]' => $extKey,
+				'CMD[doUpdateEMCONF]' => 1
+			)) . "';}";
+
+			$lines[] = '<tr class="bgColor4"><td colspan="2">' .
+					'<a class="t3-link emconfLink" href="#" onclick="' . htmlspecialchars($onClick) .
+					' return false;"><strong>' . $updateEMConf . '</strong> ' .
+					sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extDelete_from_location'),
+						$api->typeLabels[$list[$extKey]['type']],
+						substr(tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']['type']), strlen(PATH_site))
+					) . '</a>'
+					.  '<br /><br />' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_changes') . '<br />
+						' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_reset')
+					. '</td></tr>';
+
+
+
+			$content = '<table border="0" cellpadding="2" cellspacing="2">' . implode('', $lines) . '</table>';
+
+
+
+			return $this->replaceLinks($content);
+		}
 	}
 
 	/*********************************************************************/
@@ -391,10 +583,17 @@ class tx_em_Connection_ExtDirectServer {
 		$repositoryId = $parameters->repository;
 		$mirrorUrl = $this->getMirrorUrl($repositoryId);
 
+		$list = $this->getFlatExtensionList();
+		$localList = $list['data'];
+
 		$search = $parameters->query;
 		$limit = $parameters->start . ', ' . $parameters->limit;
 		$orderBy = $parameters->sort;
 		$orderDir = $parameters->dir;
+		if ($orderBy === 'statevalue') {
+			$orderBy = 'state';
+		}
+		$installedOnly = $parameters->installedOnly;
 
 		$where = '';
 		if ($search == '*') {
@@ -409,12 +608,17 @@ class tx_em_Connection_ExtDirectServer {
 	    	// check for filter
 		$where .= $this->makeFilterQuery(get_object_vars($parameters));
 
-		if (is_array($parameters->filter)) {
-
-			foreach ($parameters->filter as $filter) {
-
+		if ($installedOnly) {
+			$temp = array();
+			foreach ($localList as $key => $value) {
+				if ($value['installed']) {
+					$temp[] = '"' . $key . '"';
+				}
 			}
+			$where .= ' AND extkey IN(' . implode(',', $temp) . ')';
+			$limit = '';
 		}
+
 
 		$list = tx_em_Database::getExtensionListFromRepository(
 			$repositoryId,
@@ -424,16 +628,40 @@ class tx_em_Connection_ExtDirectServer {
 			$limit
 		);
 
-			//TODO: compare with local extensions to decide for import/upload/no action
+		$updateKeys = array();
 
 			// transform array
 		foreach ($list['results'] as $key => $value) {
 			$list['results'][$key]['dependencies'] = unserialize($value['dependencies']);
 			$extPath = t3lib_div::strtolower($value['extkey']);
-			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $value['version'] . '.gif" />';
 			$list['results'][$key]['statevalue'] = $value['state'];
 			$list['results'][$key]['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
-			$list['results'][$key]['categoryvalue'] = $value['category'];
+			$list['results'][$key]['version'] = tx_em_Tools::versionFromInt($value['maxintversion']);
+			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $list['results'][$key]['version'] . '.gif" />';
+
+			$list['results'][$key]['exists'] = 0;
+			$list['results'][$key]['installed'] = 0;
+			$list['results'][$key]['versionislower'] = 0;
+			if (isset($localList[$value['extkey']])) {
+				$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']);
+				$list['results'][$key]['exists'] = 1;
+				$list['results'][$key]['installed'] = $localList[$value['extkey']]['installed'];
+				$list['results'][$key]['versionislower'] = $isUpdatable;
+				if ($isUpdatable) {
+					$updateKeys[] = $key;
+				}
+			} else {
+				$updateKeys[] = $key;
+			}
+		}
+
+		if ($installedOnly == 2 && count($updateKeys)) {
+			$temp = array();
+			foreach ($updateKeys as $key) {
+				$temp[]= $list['results'][$key];
+			}
+			$list['results'] = $temp;
+			$list['count'] -= count($updateKeys);
 		}
 
 		return array(
@@ -448,22 +676,27 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * Loads repositories
 	 *
+	 * @param  boolean $selectedOnly
 	 * @return array
 	 */
-	public function getRepositories() {
+	public function getRepositories($selectedOnly = FALSE) {
 		$settings = $this->getSettings();
 		$repositories = tx_em_Database::getRepositories();
+		$data = array();
+
 		foreach ($repositories as $uid => $repository) {
-			$data[] = array(
-				'title' => $repository['title'],
-				'uid' => $repository['uid'],
-				'description' => $repository['description'],
-				'wsdl_url' => $repository['wsdl_url'],
-				'mirror_url' => $repository['mirror_url'],
-				'count' => $repository['extCount'],
-				'updated' => $repository['lastUpdated'] ? date('d/m/Y H:i', $repository['lastUpdated']) : 'never',
-				'selected' => $repository['uid'] === $settings['selectedRepository'],
-			);
+			if (!$selectedOnly || ($selectedOnly && $repository['uid'] == $settings['selectedRepository'])) {
+				$data[] = array(
+					'title' => $repository['title'],
+					'uid' => $repository['uid'],
+					'description' => $repository['description'],
+					'wsdl_url' => $repository['wsdl_url'],
+					'mirror_url' => $repository['mirror_url'],
+					'count' => $repository['extCount'],
+					'updated' => $repository['lastUpdated'] ? date('d/m/Y H:i', $repository['lastUpdated']) : 'never',
+					'selected' => $repository['uid'] === $settings['selectedRepository'],
+				);
+			}
 		}
 
 		return array(
@@ -471,6 +704,7 @@ class tx_em_Connection_ExtDirectServer {
 			'data' => $data,
 		);
 	}
+
 
 	/**
 	 * Get Mirrors for selected repository
@@ -482,7 +716,7 @@ class tx_em_Connection_ExtDirectServer {
 		$data = array();
 		/** @var $objRepository tx_em_Repository */
 		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $parameter->repository);
-		//debug(array($objRepository->getMirrorListUrl(),$objRepository->getId(), $settings['selectedRepository']));
+
 		if ($objRepository->getMirrorListUrl()) {
 			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 			$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
@@ -491,7 +725,7 @@ class tx_em_Connection_ExtDirectServer {
 			if (count($mirrors)) {
 				$data = array(
 					array(
-						'title' => 'Random (recommended)',
+						'title' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:mirror_use_random'),
 						'country' => '',
 						'host' => '',
 						'path' => '',
@@ -529,10 +763,10 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function repositoryEditFormSubmit($parameter) {
-		//debug($parameter);
-		$error = FALSE;
+		$repId = intval($parameter['rep']);
+
 		/** @var $repository tx_em_Repository */
-		$repository = t3lib_div::makeInstance('tx_em_Repository', $parameter['rep']);
+		$repository = t3lib_div::makeInstance('tx_em_Repository', $repId);
 		$repository->setTitle($parameter['title']);
 		$repository->setDescription($parameter['description']);
 		$repository->setWsdlUrl($parameter['wsdl_url']);
@@ -546,8 +780,8 @@ class tx_em_Connection_ExtDirectServer {
 			'extCount' => $repository->getExtensionCount(),
 		);
 
-		if ($parameter['rep'] == 0) {
-			// create a new repository
+		if ($repId === 0) {
+				// create a new repository
 			$id = tx_em_Database::insertRepository($repository);
 			return array(
 				'success' => TRUE,
@@ -575,7 +809,7 @@ class tx_em_Connection_ExtDirectServer {
 		if (intval($uid) < 2) {
 			return array(
 				'success' => FALSE,
-				'error' => 'Main repository can not be deleted!'
+				'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:repository_main_nodelete')
 			);
 		}
 		$repository = t3lib_div::makeInstance('tx_em_Repository', intval($uid));
@@ -601,7 +835,9 @@ class tx_em_Connection_ExtDirectServer {
 			);
 		}
 
+		/** @var $objRepository tx_em_Repository */
 		$objRepository = t3lib_div::makeInstance('tx_em_Repository', intval($repositoryId));
+		/** @var $objRepositoryUtility tx_em_Repository_Utility */
 		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 		$count = $objRepositoryUtility->updateExtList();
 
@@ -620,7 +856,7 @@ class tx_em_Connection_ExtDirectServer {
 		} else {
 			return array(
 				'success' => FALSE,
-				'errormsg' => 'Your repository is up to date.',
+				'errormsg' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:repository_upToDate'),
 				'rep' =>  intval($repositoryId)
 			);
 		}
@@ -638,13 +874,13 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return unknown
 	 */
 	public function getLanguages() {
+		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
+		$selected = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages'], TRUE);
 
-		$temp = $this->getSettings();
-		$selected = unserialize($temp['selectedLanguages']);
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		//drop default
 		array_shift($theLanguages);
-		$lang = array();
+		$lang = $meta = array();
 		foreach ($theLanguages as $language) {
 			$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:lang_' . $language));
 			$cls =  t3lib_iconWorks::getSpriteIconClasses('flags-' . $language);
@@ -654,10 +890,21 @@ class tx_em_Connection_ExtDirectServer {
 				'cls' => $cls,
 				'selected' => is_array($selected) && in_array($language, $selected) ? 1 : 0
 			);
+			$meta[] = array(
+				'hidden' => is_array($selected) && in_array($language, $selected) ? 'false' : 'true',
+				'header' => $language,
+				'dataIndex' =>  $language,
+				'width' => '100',
+				'fixed' => TRUE,
+				'sortable' => FALSE,
+				'hidable' => FALSE,
+				'menuDisabled' => TRUE,
+			);
 		}
 		return array(
 			'length' => count($lang),
 			'data' => $lang,
+			'meta' => $meta,
 		);
 
 	}
@@ -669,9 +916,27 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string
 	 */
 	public function saveLanguageSelection($parameter) {
-		$this->saveSetting('selectedLanguages', serialize($parameter));
-			//TODO: use language label
-		return 'Saved languages: ' . implode(', ', $parameter);
+		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
+		$selected = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages'], TRUE);
+
+		$dir = count($parameter) - count($selected);
+		$diff = $dir < 0 ? array_diff($selected, $parameter) : array_diff($parameter, $selected);
+		$type = tx_em_Tools::getExtTypeFromPath(t3lib_extMgm::extPath('em'));
+
+		$params = array(
+			'extkey' => 'em',
+			'exttype' => $type,
+			'data' => array(
+				'selectedLanguages' => implode(',', $parameter)
+			)
+		);
+		$this->saveExtensionConfiguration($params);
+
+		return array(
+			'success' => TRUE,
+			'dir' => $dir,
+			'diff' => implode('', $diff)
+		);
 	}
 
 
@@ -687,33 +952,45 @@ class tx_em_Connection_ExtDirectServer {
 		$result = array();
 		if (is_array($selection) && count($selection)) {
 			$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
-			$this->xmlhandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
-			$this->xmlhandler->emObj = $this;
+			$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
+			$this->xmlHandler->emObj = $this;
 			$mirrorURL = $this->getSettingsObject()->getMirrorURL();
+
+			$missingIcon = '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>';
+			$updateIcon = '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update">&nbsp;</span>';
+			$newIcon = '<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-import">&nbsp;</span>';
+			$okIcon = '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked">&nbsp;</span>';
+			$errorIcon = '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied">&nbsp;</span>';
 
 			foreach ($selection as $lang) {
 				$fetch = $terConnection->fetchTranslationStatus($extkey, $mirrorURL);
+
 				$localmd5 = '';
 				if (!isset($fetch[$lang])) {
-					//no translation available
-					$result[0][$lang] = 'N/A';
+						//no translation available
+					$result[$lang] = $missingIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_n_a');
 				} else {
-					$localmd5 = '';
-					if (is_file(PATH_site . 'typo3temp/' . $extkey . '-l10n-' . $lang . '.zip')) {
-						$localmd5 = md5_file(PATH_site . 'typo3temp/' . $extkey . '-l10n-' . $lang . '.zip');
+					$zip = PATH_site . 'typo3temp/' . $extkey . '-l10n-' . $lang . '.zip';
+					if (is_file($zip)) {
+						$localmd5 = md5_file($zip);
 					}
 					if ($localmd5 !== $fetch[$lang]['md5']) {
 						if ($type) {
-							//fetch translation
+								//fetch translation
 							$ret = $terConnection->updateTranslation($extkey, $lang, $mirrorURL);
-							$result[0][$lang] = $ret ? 'updated' : 'failed';
+
+							$result[$lang] = $ret
+									? $okIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_updated')
+									: $errorIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_failed');
 						} else {
-							//translation status
-							$result[0][$lang] = $localmd5 !== '' ? 'update' : 'new';
+								//translation status
+							$result[$lang] = $localmd5 !== ''
+									? $updateIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_update')
+									: $newIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_new');
 						}
 					} else {
-						//translation is up to date
-						$result[0][$lang] = 'ok';
+							//translation is up to date
+						$result[$lang] = $okIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_uptodate');;
 					}
 				}
 
@@ -935,7 +1212,19 @@ class tx_em_Connection_ExtDirectServer {
 		return $where;
 	}
 
-
+	/**
+	 * Replace links that are created with t3lib_div::linkThisScript to point to module
+	 *
+	 * @param  string  $string
+	 * @return string
+	 */
+	protected function replaceLinks($string) {
+		 return str_replace(
+			'ajax.php?ajaxID=ExtDirect%3A%3Aroute&amp;namespace=TYPO3.EM',
+			'mod.php?M=tools_em',
+			$string
+		 );
+	}
 
 }
 

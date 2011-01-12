@@ -11,9 +11,6 @@
 Ext.ns('TYPO3.EM');
 
 TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
-	//border: false,
-	height: 400,
-
 	recordData: null,
 	isWindow: false,
 
@@ -30,13 +27,11 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 
 
 		var fileTree = new Ext.tree.TreePanel ({
-			//directFn: TYPO3.EM.ExtDirect.getExtFileTree,
 			itemId: 'extfiletree',
 			autoScroll: true,
-			containerScroll: true,
+			//containerScroll: true,
 			margins: '0 0 0 0',
 			cmargins: '0 0 0 0',
-			//useArrows: true,
 
 			root: {
 				text: TYPO3.lang.ext_details_ext_files,
@@ -327,7 +322,6 @@ TYPO3.EM.CodeMirrorConfig = {
 
 TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	layout: 'fit',
-	//bodyStyle: 'background:green;',
 	sourceCode: '',
 	stylesheet: null,
 	initComponent: function() {
@@ -443,7 +437,6 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 			path: TYPO3.EM.CodeMirrorConfig.jsPath,
 			autoMatchParens: true,
 			initCallback: function(editor) {
-				editor.win.document.body.lastChild.scrollIntoView();
 				try {
 					var iLineNmbr = ((Ext.state.Manager.get("edcmr_" + me.itemId + '_lnmbr') !== undefined) ? Ext.state.Manager.get("edcmr_" + me.itemId + '_lnmbr') : 1);
 					editor.jumpToLine(iLineNmbr);
