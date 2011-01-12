@@ -554,7 +554,7 @@ class SC_db_layout {
 				$body = $this->renderListContent();	// All other listings
 			}
 
-			// If page is a sysfolder
+			// If page is a folder
 			if ($this->pageinfo['doktype'] == 254) {
 
 					// access to list module

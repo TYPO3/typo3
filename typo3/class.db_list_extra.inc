@@ -186,7 +186,7 @@ class localRecordList extends recordList {
 			if (isset($GLOBALS['SOBE']->modTSconfig['properties']['noViewWithDokTypes'])) {
 				$noViewDokTypes = t3lib_div::trimExplode(',', $GLOBALS['SOBE']->modTSconfig['properties']['noViewWithDokTypes'], true);
 			} else {
-					//default exclusion: doktype 254 (sysfolder), 255 (recycler)
+					//default exclusion: doktype 254 (folder), 255 (recycler)
 				$noViewDokTypes = array(t3lib_pageSelect::DOKTYPE_SYSFOLDER, t3lib_pageSelect::DOKTYPE_RECYCLER);
 			}
 

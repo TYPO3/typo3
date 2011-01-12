@@ -73,7 +73,7 @@ $PAGES_TYPES = array(
 	(string) t3lib_pageSelect::DOKTYPE_SPACER => array( // TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
 		'type' => 'sys',
 	),
-	(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array( //  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
+	(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array( //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
 		'allowedTables' => '*'
 	),

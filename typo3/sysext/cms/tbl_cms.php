@@ -731,7 +731,7 @@ $TCA['pages_language_overlay'] = array(
 			// Separator
 		(string)t3lib_pageSelect::DOKTYPE_SPACER => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2'),
 
-			// Sysfolder
+			// folder
 		(string)t3lib_pageSelect::DOKTYPE_SYSFOLDER => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;LLL:EXT:lang/locallang_general.xml:LGL.title;;;2-2-2'),
 
 			// Recycler

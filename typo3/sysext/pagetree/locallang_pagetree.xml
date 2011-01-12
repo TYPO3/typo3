@@ -13,7 +13,7 @@
 			<label index="page.doktype.6">BE user Section</label>
 			<label index="page.doktype.7">Mountpoint</label>
 			<label index="page.doktype.199">Spacer</label>
-			<label index="page.doktype.254">Sysfolder</label>
+			<label index="page.doktype.254">Folder</label>
 			<label index="defaultTitle">[Default Title]</label>
 			<label index="copyHint">Press Ctrl to copy.</label>
 			<label index="fakeNodeHint">Please Wait...</label>

@@ -85,7 +85,7 @@
 			<label index="pI_hits10days">Last 10 days</label>
 			<label index="content_from_pid_title">Page uses content from this page: %s</label>
 			<label index="goToListModule">Go to list module</label>
-			<label index="goToListModuleMessage">The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</label>
+			<label index="goToListModuleMessage">The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -2628,7 +2628,7 @@ class tx_impexp {
 						$pInfo['msg'].="'".$pInfo['ref']."' cannot be INSERTED on this page! ";
 					}
 					if (!$this->checkDokType($table, $this->display_import_pid_record['doktype']) && !$TCA[$table]['ctrl']['rootLevel'])	{
-						$pInfo['msg'].="'".$table."' cannot be INSERTED on this page type (change to 'sysFolder'!) ";
+						$pInfo['msg'].="'".$table."' cannot be INSERTED on this page type (change page type to 'Folder'.) ";
 					}
 				}
 				if (!$BE_USER->check('tables_modify',$table))	{$pInfo['msg'].="You are not allowed to CREATE '".$table."' tables! ";}

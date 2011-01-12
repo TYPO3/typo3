@@ -154,7 +154,7 @@ Selecting &quot;Extended view&quot; will enable the control buttons in the recor
 			<label index="_new_regular.seeAlso">xMOD_csh_corebe:new_ce,
 xMOD_csh_corebe:new_pages</label>
 			<label index="_new_regular.image">EXT:lang/cshimages/core_70.png</label>
-			<label index="new_regular.image_descr">The selection of records a user can create on this particular page. The selection depends on the users permissions and the page type. For example a SysFolder page type can contain any kind of record while regular pages can contain only some types (like content elements).</label>
+			<label index="new_regular.image_descr">The selection of records a user can create on this particular page. The selection depends on the users permissions and the page type. For example a folder page type can contain any kind of record while regular pages can contain only some types (like content elements).</label>
 			<label index="new_pages.alttitle">Create new page wizard</label>
 			<label index="new_pages.description">Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</label>
 			<label index="_new_pages.seeAlso">xMOD_csh_corebe:new_regular,

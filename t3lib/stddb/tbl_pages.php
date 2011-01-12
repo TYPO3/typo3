@@ -904,7 +904,7 @@ $TCA['pages'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 			'),
-		// sysfolder
+		// Folder
 		(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,

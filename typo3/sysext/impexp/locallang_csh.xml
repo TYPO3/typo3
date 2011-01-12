@@ -25,8 +25,8 @@ Regardless of your configuration for export you will always see a complete refle
 
 &lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</label>
 			<label index="_export.seeAlso">xMOD_tx_impexp:import</label>
-			<label index="_export.image">EXT:impexp/cshimages/export.png, 
-EXT:impexp/cshimages/export1.png, 
+			<label index="_export.image">EXT:impexp/cshimages/export.png,
+EXT:impexp/cshimages/export1.png,
 EXT:impexp/cshimages/export2.png</label>
 			<label index="export.image_descr">To export a page or record, simply click the icon and select &quot;Export&quot; from the context menu.
 With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
@@ -46,13 +46,13 @@ By default all records belonging to a page is included when a page is exported.<
 			<label index="pageTreeRecordLimit.details">In the box &quot;Max number of records&quot; you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</label>
 			<label index="singleRecord.alttitle">Export single record</label>
 			<label index="singleRecord.description">This overview tells you which independent records has been independently selected for export.</label>
-			<label index="_singleRecord.image">EXT:impexp/cshimages/singlerecord.png, 
+			<label index="_singleRecord.image">EXT:impexp/cshimages/singlerecord.png,
 EXT:impexp/cshimages/export2.png</label>
 			<label index="singleRecord.image_descr">The way to export multiple records like this is using the clipboard like shown below.</label>
 			<label index="tableList.alttitle">Table export</label>
 			<label index="tableList.description">Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</label>
 			<label index="tableList.details">Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</label>
-			<label index="_tableList.image">EXT:impexp/cshimages/tablelist.png, 
+			<label index="_tableList.image">EXT:impexp/cshimages/tablelist.png,
 EXT:impexp/cshimages/export1.png</label>
 			<label index="tableList.image_descr">Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
 Here you see how to use the Web&gt;List module to export all records from a table on a page.</label>
@@ -66,16 +66,16 @@ Here you see how to use the Web&gt;List module to export all records from a tabl
 
 &lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a &quot;&amp;lt;link 123&amp;gt;&quot; tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a &quot;soft reference&quot;. The same goes for &amp;lt;img&amp;gt; tags with images from eg. &quot;fileadmin/&quot;.
 By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as &quot;editable&quot; upon import. This is done with a selector box in the export preview.</label>
-			<label index="_inclRelations.image">EXT:impexp/cshimages/references.png, 
-EXT:impexp/cshimages/references1.png, 
+			<label index="_inclRelations.image">EXT:impexp/cshimages/references.png,
+EXT:impexp/cshimages/references1.png,
 EXT:impexp/cshimages/references2.png</label>
-			<label index="inclRelations.image_descr">This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1. 
+			<label index="inclRelations.image_descr">This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
 Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set &quot;fe_groups&quot; as a static table instead. See below.
 This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</label>
 			<label index="staticRelations.alttitle">Set static tables</label>
 			<label index="staticRelations.description">Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over &quot;Include relations&quot; configured tables.</label>
 			<label index="staticRelations.details">By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be &quot;sys_languages&quot; or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</label>
-			<label index="_staticRelations.image">EXT:impexp/cshimages/static.png, 
+			<label index="_staticRelations.image">EXT:impexp/cshimages/static.png,
 EXT:impexp/cshimages/static1.png</label>
 			<label index="staticRelations.image_descr">In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
 The static mapping is obtained by selecting the &quot;sys_language&quot; table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</label>
@@ -101,14 +101,14 @@ To delete old presets, simply select it and press &quot;Delete&quot;.
 The checkbox &quot;Public&quot; can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
 
 In the Taskcenter you can see a list of your presets and jump directly to them.</label>
-			<label index="_presets.image">EXT:impexp/cshimages/impexp_misc1.png, 
+			<label index="_presets.image">EXT:impexp/cshimages/impexp_misc1.png,
 EXT:impexp/cshimages/impexp_misc2.png</label>
 			<label index="presets.image_descr">The preset selector in the export interface.
 Presets from the task center.</label>
 			<label index="metadata.alttitle">Meta data setting</label>
 			<label index="metadata.description">Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</label>
 			<label index="metadata.details">The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
-The &quot;Title&quot; and &quot;Description&quot; should contain the basic information about the export. 
+The &quot;Title&quot; and &quot;Description&quot; should contain the basic information about the export.
 The &quot;Notes&quot; field can be used for additional details, especially remarks about intensions or requirements that apply.
 The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!</label>
 			<label index="_metadata.image">EXT:impexp/cshimages/metadata.png</label>
@@ -123,7 +123,7 @@ Entering a file name to save to makes it possible to write your export directly 
 			<label index="import.alttitle">Importing TYPO3 records</label>
 			<label index="import.description">To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select &quot;More options&quot; (requires the extensions &quot;extra_page_cm_options&quot; to be installed) and then &quot;Import from .t3d&quot;. This will bring up the import interface where you can select a file to import or upload a new one.</label>
 			<label index="import.details">&lt;b&gt;Tip: Import into a Sys Folder&lt;/b&gt;
-To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
+To make sure that no records are lost during the import, you can make yourself safe by importing into a folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a folder is a good idea.
 
 &lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</label>
 			<label index="_import.seeAlso">xMOD_tx_impexp:export</label>
@@ -159,7 +159,7 @@ EXT:impexp/cshimages/phpext.png</label>
 			<label index="options.image_descr">Options for import.
 Here you are told that this PHP file cannot be allowed - because you didn't select the option &quot;Allow to write banned file extensions (eg. PHP scripts), if any&quot;</label>
 			<label index="action.alttitle">Import Action</label>
-			<label index="action.description">Press &quot;Preview&quot; to see the content of the import file or update the preview display according to changed configurations. 
+			<label index="action.description">Press &quot;Preview&quot; to see the content of the import file or update the preview display according to changed configurations.
 Press &quot;Import&quot;/&quot;Update&quot; if you want to perform the actual import.
 
 Before importing make sure you change any editable soft references that are shown in the preview data.</label>

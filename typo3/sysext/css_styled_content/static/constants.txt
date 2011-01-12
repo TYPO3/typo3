@@ -74,7 +74,7 @@ styles.content.imgtext {
     # cat=content/cImage/i4; type=string; label= Image border CSS-selector: If you want your border to apply elsewhere, change this setting. E.g. to apply to the whole image+caption, use 'DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image'.
   borderSelector = DIV.{$styles.content.imgtext.borderClass} DIV.csc-textpic-imagewrap .csc-textpic-image IMG, DIV.{$styles.content.imgtext.borderClass} DIV.csc-textpic-single-image IMG
     # cat=content/cImage/i5; type=string; label= Image border class: The name of the CSS class for creating image borders
-  borderClass = csc-textpic-border  
+  borderClass = csc-textpic-border
     # cat=content/cImage/i5; type=boolean; label= Image row separation: Whether images should be rendered/wrapped in separated rows, e.g. inside a DIV.csc-textpic-imagerow element
   separateRows = 1
     # cat=content/cImage/i6; type=boolean; label= Add clearer after intext images: Whether a clearer should be added after textpic elements of type intext-left or intext-right
@@ -99,7 +99,7 @@ styles.content.mailform {
 
 styles.content.loginform {
   target = _top
-    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the sysFolder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
+    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the folder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
   pid =
     # cat=content/cLogin; type=; label= Message, Login: This is the message (if any) that is popped-up when a user logs in as a front-end user
   goodMess =

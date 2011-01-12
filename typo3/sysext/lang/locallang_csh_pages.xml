@@ -17,7 +17,7 @@ The pages are organized in a tree structure which is not only a very handy way o
 Technically all database elements has a field 'uid' which is a unique identification number. Further they must have a field 'pid' which holds the uid-number of the page (page id) to which they belong. If the 'pid' field is zero the record is found in the so called 'root'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.
 
 &lt;b&gt;Storage of database records&lt;/b&gt;
-Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type &quot;SysFolder&quot;.</label>
+Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type &quot;Folder&quot;.</label>
 			<label index="_.seeAlso">xMOD_csh_corebe:pagetree,
 tt_content,
 About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</label>
@@ -33,17 +33,17 @@ You can use any characters in the page title.</label>
 			<label index="title.image_descr">The field for the page title has a little &quot;required&quot; icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</label>
 			<label index="doktype.description">Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</label>
 			<label index="doktype.details">The 'Standard' type represents a webpage.
-'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
+'Folder' represents a non-webpage - a folder acting as a storage for records of your choice.
 'Recycler' is a garbage bin.
 
-&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).
+&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records in the page (a folder will allow any record if you have any problems).
 
 &lt;b&gt;$PAGES_TYPES [Technical]&lt;/b&gt;
 The restrictions that apply to each page type is defined in the global array $PAGES_TYPES. Here it is defined which tables are allowed on a page. When extensions adds tables to TYPO3 they may need to register their tables in $PAGES_TYPES so they can be created on standard pages.</label>
 			<label index="_doktype.seeAlso">be_groups:pagetypes_select,
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</label>
 			<label index="_doktype.image">EXT:lang/cshimages/pages_4.png</label>
-			<label index="doktype.image_descr">This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are &quot;SysFolders&quot;. They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</label>
+			<label index="doktype.image_descr">This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are, well, &quot;Folders&quot;. They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</label>
 			<label index="TSconfig.description">Page TypoScript configuration.</label>
 			<label index="TSconfig.details">Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
 However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
@@ -71,7 +71,7 @@ If you click the red &quot;+&quot; you will get the page mounted temporarily in 
 			<label index="storage_pid.description">A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</label>
 			<label index="storage_pid.details">It is recommended that applications support &quot;General Storage pages&quot; so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
 
-A General Record Storage Page is typically a page of the &quot;SysFolder&quot; type.</label>
+A General Record Storage Page is typically a page of the &quot;Folder&quot; type.</label>
 			<label index="_storage_pid.seeAlso">The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</label>
 			<label index="editlock.description">If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</label>
 			<label index="fe_login_mode.description">The Login Mode disables the ability to &quot;be logged in&quot; at this page.</label>

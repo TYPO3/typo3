@@ -87,7 +87,7 @@ styles.content.mailform {
 
 styles.content.loginform {
   target = _top
-    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the sysFolder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
+    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the folder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
   pid =
     # cat=content/cLogin; type=; label= Message, Login: This is the message (if any) that is popped-up when a user logs in as a front-end user
   goodMess =
