@@ -53,6 +53,19 @@ Ext.override(Ext.grid.GridView, {
 	}
 });
 
+/** override mousedown for grid to select checkbox respecting singleSelect */
+Ext.override(Ext.grid.CheckboxSelectionModel, {
+	handleMouseDown: function(g, rowIndex, e) {
+		e.stopEvent();
+		if (this.isSelected(rowIndex)) {
+			this.deselectRow(rowIndex);
+		} else {
+			this.selectRow(rowIndex, true);
+			this.grid.getView().focusRow(rowIndex);
+		}
+	}
+});
+
 TYPO3.Workspaces.SelectionModel = new Ext.grid.CheckboxSelectionModel({
 	singleSelect: false,
 	hidden: true,

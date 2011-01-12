@@ -4,7 +4,7 @@
 
 $extensionPath = t3lib_extMgm::extPath('version');
 return array(
-	'tx_version_tcemain_commandmap' => $extensionPath . 'class.t3lib_tcemain_commandmap.php',
+	'tx_version_tcemain_commandmap' => $extensionPath . 'class.tx_version_tcemain_commandmap.php',
 	'tx_version_cm1' => $extensionPath . 'cm1/index.php',
 	'tx_version_gui' => $extensionPath . 'class.tx_version_gui.php',
 	'tx_version_tcemain' => $extensionPath . 'class.tx_version_tcemain.php',

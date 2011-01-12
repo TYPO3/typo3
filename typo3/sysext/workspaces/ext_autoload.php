@@ -12,6 +12,7 @@ return array(
 	'tx_workspaces_extdirect_massactionhandler' => $extensionPath . 'Classes/ExtDirect/MassActionHandler.php',
 	'tx_workspaces_extdirect_server' => $extensionPath . 'Classes/ExtDirect/Server.php',
 	'tx_workspaces_extdirect_toolbarmenu' => $extensionPath . 'Classes/ExtDirect/ToolbarMenu.php',
+	'tx_workspaces_reports_statusprovider' => $extensionPath . 'Classes/Reports/StatusProvider.php',
 	'tx_workspaces_service_autopublish' => $extensionPath . 'Classes/Service/AutoPublish.php',
 	'tx_workspaces_service_autopublishtask' => $extensionPath . 'Classes/Service/AutoPublishTask.php',
 	'tx_workspaces_service_befunc' => $extensionPath . 'Classes/Service/Befunc.php',

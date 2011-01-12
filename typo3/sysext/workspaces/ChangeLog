@@ -1,3 +1,30 @@
+2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Raised version to 4.5.0beta4
+
+2011-01-09  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11971: Live Tab is linked in Live view
+
+2011-01-06  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #11815: WorkspacePreviewLink should be a link
+	* Fixed bug #11029: Workspaces module: Row detail view (Thanks to Lars Zimmermann and Berit Jensen)
+
+2011-01-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #11674: Selection of row deletes checkbox selection
+	* Fixed bug #11647: Switching workspace doesn't refresh new pagetree
+
+2011-01-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #3358: make sure only "element" versioning type is supported / used - added status report for Reports module
+
+2010-12-30  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #11789: fluid viewhelper renderFlashMessages is deprecated
+
 2010-12-28  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #11635: Removed remaining event listener

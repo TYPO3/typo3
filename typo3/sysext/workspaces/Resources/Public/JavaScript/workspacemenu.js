@@ -154,6 +154,7 @@ var WorkspaceMenu = Class.create({
 
 			// when in web module reload, otherwise send the user to the web module
 			if (currentModuleLoaded.startsWith('web_')) {
+				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 				top.TYPO3.ModuleMenu.App.reloadFrames();
 			} else {
 				if (TYPO3.configuration.pageModule) {

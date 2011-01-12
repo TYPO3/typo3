@@ -34,14 +34,28 @@
  */
 class tx_version_tcemain {
 
-		// For accumulating information about workspace stages raised
-		// on elements so a single mail is sent as notification.
-		// previously called "accumulateForNotifEmail" in tcemain
+	/**
+	 * For accumulating information about workspace stages raised
+	 * on elements so a single mail is sent as notification.
+	 * previously called "accumulateForNotifEmail" in tcemain
+	 *
+	 * @var array
+	 */
 	protected $notificationEmailInfo = array();
 
-		// general comment, eg. for staging in workspaces.
+	/**
+	 * General comment, eg. for staging in workspaces
+	 *
+	 * @var string
+	 */
 	protected $generalComment = '';
 
+	/**
+	 * Contains remapped IDs.
+	 *
+	 * @var array
+	 */
+	protected $remappedIds = array();
 
 	/****************************
 	 *****  Cmdmap  Hooks  ******
@@ -64,16 +78,16 @@ class tx_version_tcemain {
 	/**
 	 * hook that is called when no prepared command was found
 	 * 
-	 * @param	$command	the command to be executed
-	 * @param	$table	the table of the record
-	 * @param	$id	the ID of the record
-	 * @param	$value	the value containing the data
-	 * @param	$commandIsProcessed	can be set so that other hooks or
+	 * @param string $command the command to be executed
+	 * @param string $table the table of the record
+	 * @param integer $id the ID of the record
+	 * @param mixed $value the value containing the data
+	 * @param boolean $commandIsProcessed can be set so that other hooks or
 	 * 				TCEmain knows that the default cmd doesn't have to be called
-	 * @param	$tcemainObj	reference to the main tcemain object
+	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
 	 * @return	void
 	 */
-	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, &$tcemainObj) {
+	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, t3lib_TCEmain $tcemainObj) {
 
 			// custom command "version"
 		if ($command == 'version') {
@@ -125,10 +139,11 @@ class tx_version_tcemain {
 	/**
 	 * hook that is called AFTER all commands of the commandmap was 
 	 * executed
-	 * @param	$tcemainObj	reference to the main tcemain object
+	 *
+	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
 	 * @return	void
 	 */
-	public function processCmdmap_afterFinish(&$tcemainObj) {
+	public function processCmdmap_afterFinish(t3lib_TCEmain $tcemainObj) {
 			// Empty accumulation array:
 		foreach ($this->notificationEmailInfo as $notifItem) {
 			$this->notifyStageChange($notifItem['shared'][0], $notifItem['shared'][1], implode(', ', $notifItem['elements']), 0, $notifItem['shared'][2], $tcemainObj, $notifItem['alternativeRecipients']);
@@ -136,16 +151,24 @@ class tx_version_tcemain {
 
 			// Reset notification array
 		$this->notificationEmailInfo = array();
+			// Reset remapped IDs
+		$this->remappedIds = array();
 	}
 
 
 	/**
 	 * hook that is called AFTER all commands of the commandmap was 
 	 * executed
-	 * @param	$tcemainObj	reference to the main tcemain object
+	 *
+	 * @param string $table the table of the record
+	 * @param integer $id the ID of the record
+	 * @param array $record The accordant database record
+	 * @param boolean $recordWasDeleted can be set so that other hooks or
+	 * 				TCEmain knows that the default delete action doesn't have to be called
+	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
 	 * @return	void
 	 */
-	public function processCmdmap_deleteAction($table, $id, $record, &$recordWasDeleted, &$tcemainObj) {
+	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, t3lib_TCEmain $tcemainObj) {
 			// only process the hook if it wasn't processed 
 			// by someone else before
 		if (!$recordWasDeleted) {
@@ -210,9 +233,21 @@ class tx_version_tcemain {
 	/**
 	 * hook for t3lib_TCEmain::moveRecord that cares about moving records that
 	 * are *not* in the live workspace
+	 *
+	 * @param string $table the table of the record
+	 * @param integer $id the ID of the record
+	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to
+	 * 				a page-id on which to insert the record (as the first element).
+	 * 				<0 then it points to a uid from its own table after which to insert it
+	 * @param array $propArr Record properties, like header and pid (includes workspace overlay)
+	 * @param array $moveRec Record properties, like header and pid (without workspace overlay)
+	 * @param integer $resolvedPid The final page ID of the record
+	 * 				(workspaces and negative values are resolved)
+	 * @param boolean $recordWasMoved can be set so that other hooks or
+	 * 				TCEmain knows that the default move action doesn't have to be called
 	 * @param	$table	the table
 	 */
-	public function moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, &$recordWasMoved, &$tcemainObj) {
+	public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 			// Only do something in Draft workspace
@@ -282,16 +317,16 @@ class tx_version_tcemain {
 	/**
 	 * Send an email notification to users in workspace
 	 *
-	 * @param	array		Workspace access array (from t3lib_userauthgroup::checkWorkspace())
-	 * @param	integer		New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
-	 * @param	string		Table name of element (or list of element names if $id is zero)
-	 * @param	integer		Record uid of element (if zero, then $table is used as reference to element(s) alone)
-	 * @param	string		User comment sent along with action
-	 * @param	object		TCEmain object
-	 * @param	string		comma separated list of recipients to notificate instead of be_users selected by sys_workspace, list is generated by workspace extension module
-	 * @return	void
+	 * @param array $stat Workspace access array (from t3lib_userauthgroup::checkWorkspace())
+	 * @param integer $stageId New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
+	 * @param string $table Table name of element (or list of element names if $id is zero)
+	 * @param integer $id Record uid of element (if zero, then $table is used as reference to element(s) alone)
+	 * @param string $comment User comment sent along with action
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param string $notificationAlternativeRecipients Comma separated list of recipients to notificate instead of be_users selected by sys_workspace, list is generated by workspace extension module
+	 * @return void
 	 */
-	protected function notifyStageChange($stat, $stageId, $table, $id, $comment, $tcemainObj, $notificationAlternativeRecipients = FALSE) {
+	protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, t3lib_TCEmain $tcemainObj, $notificationAlternativeRecipients = FALSE) {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
 			// So, if $id is not set, then $table is taken to be the complete element name!
 		$elementName = $id ? $table . ':' . $id : $table;
@@ -539,8 +574,8 @@ class tx_version_tcemain {
 	 * Return be_users that should be notified on stage change from input list.
 	 * previously called notifyStageChange_getEmails() in tcemain
 	 *
-	 * @param	string		List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
-	 * @param	boolean		If set, the input list are integers and not strings.
+	 * @param	string		$listOfUsers List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
+	 * @param	boolean		$noTablePrefix If set, the input list are integers and not strings.
 	 * @return	array		Array of emails
 	 */
 	protected function getEmailsForStageChangeNotification($listOfUsers, $noTablePrefix = FALSE) {
@@ -571,16 +606,16 @@ class tx_version_tcemain {
 	/**
 	 * Setting stage of record
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	integer		Stage ID to set
-	 * @param	string		Comment that goes into log
-	 * @param	boolean		Accumulate state changes in memory for compiled notification email?
-	 * @param	object		TCEmain object
-	 * @param	string		comma separated list of recipients to notificate instead of normal be_users
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $integer Record UID
+	 * @param integer $stageId Stage ID to set
+	 * @param string $comment Comment that goes into log
+	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param string $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
+	 * @return void
 	 */
-	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, $tcemainObj, $notificationAlternativeRecipients = FALSE) {
+	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, t3lib_TCEmain $tcemainObj, $notificationAlternativeRecipients = FALSE) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
 			$tcemainObj->newlog('Attempt to set stage for record failed: ' . $errorCode, 1);
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
@@ -621,13 +656,14 @@ class tx_version_tcemain {
 	/**
 	 * Creates a new version of a page including content and possible subpages.
 	 *
-	 * @param	integer		Page uid to create new version of.
-	 * @param	string		Version label
-	 * @param	integer		Indicating "treeLevel" - "page" (0) or "branch" (>=1) ["element" type must call versionizeRecord() directly]
-	 * @return	void
+	 * @param integer $uid Page uid to create new version of.
+	 * @param string $label Version label
+	 * @param integer $versionizeTree Indicating "treeLevel" - "page" (0) or "branch" (>=1) ["element" type must call versionizeRecord() directly]
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @return void
 	 * @see copyPages()
 	 */
-	protected function versionizePages($uid, $label, $versionizeTree, &$tcemainObj) {
+	protected function versionizePages($uid, $label, $versionizeTree, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 		$uid = intval($uid);
@@ -685,13 +721,14 @@ class tx_version_tcemain {
 	 * Swapping versions of a record
 	 * Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of the online record to swap
-	 * @param	integer		UID of the archived version to swap with!
-	 * @param	boolean		If set, swaps online into workspace instead of publishing out of workspace.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id UID of the online record to swap
+	 * @param integer $swapWith UID of the archived version to swap with!
+	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @return void
 	 */
-	protected function version_swap($table, $id, $swapWith, $swapIntoWS=0, &$tcemainObj) {
+	protected function version_swap($table, $id, $swapWith, $swapIntoWS=0, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 			// First, check if we may actually edit the online record
@@ -843,6 +880,9 @@ class tx_version_tcemain {
 										}
 
 										if (!count($sqlErrors)) {
+												// Register swapped ids for later remapping:
+											$this->remappedIds[$table][$id] =$swapWith;
+											$this->remappedIds[$table][$swapWith] = $id;
 
 												// If a moving operation took place...:
 											if ($movePlhID) {
@@ -945,14 +985,15 @@ class tx_version_tcemain {
 	/**
 	 * Update relations on version/workspace swapping.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$field: Record field
-	 * @param	array		$conf: TCA configuration of current field
-	 * @param	string		$curVersion: Reference to the current (original) record
-	 * @param	string		$swapVersion: Reference to the record (workspace/versionized) to publish in or swap with
-	 * @return 	void
+	 * @param string $table: Record Table
+	 * @param string $field: Record field
+	 * @param array $conf: TCA configuration of current field
+	 * @param array $curVersion: Reference to the current (original) record
+	 * @param array $swapVersion: Reference to the record (workspace/versionized) to publish in or swap with
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @return  void
 	 */
-	protected function version_swap_procBasedOnFieldType($table, $field, $conf, &$curVersion, &$swapVersion, $tcemainObj) {
+	protected function version_swap_procBasedOnFieldType($table, $field, array $conf, array &$curVersion, array &$swapVersion, t3lib_TCEmain $tcemainObj) {
 		$inlineType = $tcemainObj->getInlineFieldType($conf);
 
 			// Process pointer fields on normalized database:
@@ -968,8 +1009,24 @@ class tx_version_tcemain {
 			$dbAnalysisSwap->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisSwap->start('', $conf['foreign_table'], '', $swapVersion['uid'], $table, $conf);
 				// Update relations for both (workspace/versioning) sites:
-			$dbAnalysisCur->writeForeignField($conf, $curVersion['uid'], $swapVersion['uid']);
-			$dbAnalysisSwap->writeForeignField($conf, $swapVersion['uid'], $curVersion['uid']);
+
+			if (count($dbAnalysisCur->itemArray)) {
+				$dbAnalysisCur->writeForeignField($conf, $curVersion['uid'], $swapVersion['uid']);
+				$tcemainObj->addRemapAction(
+					$table, $curVersion['uid'],
+					array($this, 'writeRemappedForeignField'),
+					array($dbAnalysisCur, $conf, $swapVersion['uid'])
+				);
+			}
+
+			if (count($dbAnalysisSwap->itemArray)) {
+				$dbAnalysisSwap->writeForeignField($conf, $swapVersion['uid'], $curVersion['uid']);
+				$tcemainObj->addRemapAction(
+					$table, $curVersion['uid'],
+					array($this, 'writeRemappedForeignField'),
+					array($dbAnalysisSwap, $conf, $curVersion['uid'])
+				);
+			}
 
 			$items = array_merge($dbAnalysisCur->itemArray, $dbAnalysisSwap->itemArray);
 			foreach ($items as $item) {
@@ -985,17 +1042,36 @@ class tx_version_tcemain {
 		}
 	}
 
+	/**
+	 * Writes remapped foreign field (IRRE).
+	 *
+	 * @param t3lib_loadDBGroup $dbAnalysis Instance that holds the sorting order of child records
+	 * @param array $configuration The TCA field configuration
+	 * @param integer $parentId The uid of the parent record
+	 * @return void
+	 */
+	public function writeRemappedForeignField(t3lib_loadDBGroup $dbAnalysis, array $configuration, $parentId) {
+		foreach ($dbAnalysis->itemArray as &$item) {
+			if (isset($this->remappedIds[$item['table']][$item['id']])) {
+				$item['id'] = $this->remappedIds[$item['table']][$item['id']];
+			}
+		}
+
+		$dbAnalysis->writeForeignField($configuration, $parentId);
+	}
+
 
 
 	/**
 	 * Release version from this workspace (and into "Live" workspace but as an offline version).
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
- 	 * @param	boolean		If set, will completely delete element
+	 * @param string $table Table name
+	 * @param integer $id Record UID
+ 	 * @param boolean $flush If set, will completely delete element
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
 	 * @return	void
 	 */
-	protected function version_clearWSID($table, $id, $flush = FALSE, &$tcemainObj) {
+	protected function version_clearWSID($table, $id, $flush = FALSE, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
@@ -1042,13 +1118,14 @@ class tx_version_tcemain {
 	 * Copies all records from tables in $copyTablesArray from page with $old_pid to page with $new_pid
 	 * Uses raw-copy for the operation (meant for versioning!)
 	 *
-	 * @param	integer		Current page id.
-	 * @param	integer		New page id
-	 * @param	array		Array of tables from which to copy
-	 * @return	void
+	 * @param integer $oldPageId Current page id.
+	 * @param integer $newPageId New page id
+	 * @param array $copyTablesArray Array of tables from which to copy
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @return void
 	 * @see versionizePages()
 	 */
-	protected function rawCopyPageContent($oldPageId, $newPageId, $copyTablesArray, &$tcemainObj) {
+	protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 		if ($newPageId) {
@@ -1077,10 +1154,10 @@ class tx_version_tcemain {
 	/**
 	 * Finds all elements for swapping versions in workspace
 	 *
-	 * @param 	string	$table	Table name of the original element to swap
-	 * @param	int	$id	UID of the original element to swap (online)
-	 * @param	int	$offlineId As above but offline
-	 * @return	array	Element data. Key is table name, values are array with first element as online UID, second - offline UID
+	 * @param  string $table Table name of the original element to swap
+	 * @param integer $id UID of the original element to swap (online)
+	 * @param integer $offlineId As above but offline
+	 * @return array Element data. Key is table name, values are array with first element as online UID, second - offline UID
 	 */
 	protected function findPageElementsForVersionSwap($table, $id, $offlineId) {
 		global	$TCA;
@@ -1126,12 +1203,12 @@ class tx_version_tcemain {
 	/**
 	 * Searches for all elements from all tables on the given pages in the same workspace.
 	 *
-	 * @param	array	$pageIdList	List of PIDs to search
-	 * @param	int	$workspaceId	Workspace ID
-	 * @param	array	$elementList	List of found elements. Key is table name, value is array of element UIDs
-	 * @return	void
+	 * @param array $pageIdList List of PIDs to search
+	 * @param integer $workspaceId Workspace ID
+	 * @param array $elementList List of found elements. Key is table name, value is array of element UIDs
+	 * @return void
 	 */
-	protected function findPageElementsForVersionStageChange($pageIdList, $workspaceId, &$elementList) {
+	protected function findPageElementsForVersionStageChange(array $pageIdList, $workspaceId, array &$elementList) {
 		global $TCA;
 
 		if ($workspaceId != 0) {
@@ -1164,14 +1241,14 @@ class tx_version_tcemain {
 	/**
 	 * Finds page UIDs for the element from table <code>$table</code> with UIDs from <code>$idList</code>
 	 *
-	 * @param	array	$table	Table to search
-	 * @param	array	$idList	List of records' UIDs
-	 * @param	int	$workspaceId	Workspace ID. We need this parameter because user can be in LIVE but he still can publisg DRAFT from ws module!
-	 * @param	array	$pageIdList	List of found page UIDs
-	 * @param	array	$elementList	List of found element UIDs. Key is table name, value is list of UIDs
-	 * @return	void
+	 * @param string $table Table to search
+	 * @param array $idList List of records' UIDs
+	 * @param integer $workspaceId Workspace ID. We need this parameter because user can be in LIVE but he still can publisg DRAFT from ws module!
+	 * @param array $pageIdList List of found page UIDs
+	 * @param array $elementList List of found element UIDs. Key is table name, value is list of UIDs
+	 * @return void
 	 */
-	protected function findPageIdsForVersionStateChange($table, $idList, $workspaceId, &$pageIdList, &$elementList) {
+	protected function findPageIdsForVersionStateChange($table, array $idList, $workspaceId, array &$pageIdList, array &$elementList) {
 		if ($workspaceId != 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid',
 				$table . ' A,' . $table . ' B',
@@ -1206,7 +1283,7 @@ class tx_version_tcemain {
 	 * @param	array	$idList	List of page UIDs, possibly versioned
 	 * @return	void
 	 */
-	protected function findRealPageIds(&$idList) {
+	protected function findRealPageIds(array &$idList) {
 		foreach ($idList as $key => $id) {
 			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_oid');
 			if ($rec['t3ver_oid'] > 0) {
@@ -1222,14 +1299,15 @@ class tx_version_tcemain {
 	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=1
 	 * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
 	 *
-	 * @param	string		Table name to move
-	 * @param	integer		Record uid to move (online record)
-	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @param	integer		UID of offline version of online record
-	 * @return	void
+	 * @param string $table Table name to move
+	 * @param integer $uid Record uid to move (online record)
+	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param integer $wsUid UID of offline version of online record
+	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @return void
 	 * @see moveRecord()
 	 */
-	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, &$tcemainObj) {
+	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
 		if ($plh = t3lib_BEfunc::getMovePlaceholder($table, $uid, 'uid')) {
@@ -1302,8 +1380,9 @@ class tx_version_tcemain {
 	/**
 	 * Gets all possible child tables that are used on each parent table as field.
 	 *
-	 * @param string $parentTable
-	 * @param array $possibleInlineChildren
+	 * @param string $parentTable Name of the parent table
+	 * @param array $possibleInlineChildren Collected possible inline children
+	 * 				(will be filled automatically during recursive calls)
 	 * @return array
 	 */
 	protected function getPossibleInlineChildTablesOfParentTable($parentTable, array $possibleInlineChildren = array()) {
@@ -1329,8 +1408,8 @@ class tx_version_tcemain {
 	/**
 	 * Gets an instance of the command map helper.
 	 *
-	 * @param t3lib_TCEmain $tceMain
-	 * @param  $commandMap
+	 * @param t3lib_TCEmain $tceMain TCEmain object
+	 * @param array $commandMap The command map as submitted to t3lib_TCEmain
 	 * @return tx_version_tcemain_CommandMap
 	 */
 	public function getCommandMap(t3lib_TCEmain $tceMain, array $commandMap) {
@@ -1338,4 +1417,7 @@ class tx_version_tcemain {
 	}
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain.php']);
+}
 ?>

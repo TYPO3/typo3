@@ -1,3 +1,7 @@
+2011-01-12  Benjamin Mack  <benjamin.mack@typo3.org>
+
+	* Synchronized external repositories of version (tag 4.5.0beta4) and workspaces (tag 4.5.0beta4)
+
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Cleanup: Fixed last synchronized targets of external SVN repositories
