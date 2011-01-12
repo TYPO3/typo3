@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "linkvalidator".
 #
-# Auto generated 20-10-2010 19:34
+# Auto generated 12-01-2011 17:43
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -41,7 +41,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:26:{s:9:"ChangeLog";s:4:"605b";s:10:"README.txt";s:4:"ee2d";s:16:"ext_autoload.php";s:4:"e79b";s:12:"ext_icon.gif";s:4:"6bc7";s:17:"ext_localconf.php";s:4:"539f";s:14:"ext_tables.php";s:4:"338c";s:14:"ext_tables.sql";s:4:"61f1";s:13:"locallang.xml";s:4:"6351";s:19:"doc/wizard_form.dat";s:4:"ecc2";s:20:"doc/wizard_form.html";s:4:"633b";s:40:"lib/class.tx_linkvalidator_checkbase.php";s:4:"f228";s:49:"lib/class.tx_linkvalidator_checkexternallinks.php";s:4:"13b4";s:45:"lib/class.tx_linkvalidator_checkfilelinks.php";s:4:"03cb";s:49:"lib/class.tx_linkvalidator_checkinternallinks.php";s:4:"4706";s:52:"lib/class.tx_linkvalidator_checklinkhandlerlinks.php";s:4:"2f8b";s:41:"lib/class.tx_linkvalidator_processing.php";s:4:"c757";s:45:"lib/class.tx_linkvalidator_scheduler_link.php";s:4:"00b5";s:68:"lib/class.tx_linkvalidator_scheduler_linkAdditionalFieldProvider.php";s:4:"8f02";s:44:"modfunc1/class.tx_linkvalidator_modfunc1.php";s:4:"e604";s:18:"modfunc1/clear.gif";s:4:"cc11";s:22:"modfunc1/locallang.xml";s:4:"88fb";s:26:"modfunc1/locallang_mod.xml";s:4:"a53c";s:26:"modfunc1/mod_template.html";s:4:"25a9";s:21:"res/linkvalidator.css";s:4:"6e83";s:21:"res/mailTemplate.html";s:4:"51f6";s:20:"res/pageTSconfig.txt";s:4:"8d5f";}',
+	'_md5_values_when_last_written' => 'a:26:{s:9:"ChangeLog";s:4:"ed60";s:16:"ext_autoload.php";s:4:"619e";s:12:"ext_icon.gif";s:4:"6bc7";s:17:"ext_localconf.php";s:4:"0598";s:14:"ext_tables.php";s:4:"6d40";s:14:"ext_tables.sql";s:4:"317e";s:13:"locallang.xml";s:4:"ec0a";s:45:"classes/class.tx_linkvalidator_processing.php";s:4:"611a";s:63:"classes/linktypes/class.tx_linkvalidator_linktypes_abstract.php";s:4:"7f7e";s:63:"classes/linktypes/class.tx_linkvalidator_linktypes_external.php";s:4:"bdfa";s:59:"classes/linktypes/class.tx_linkvalidator_linktypes_file.php";s:4:"ee97";s:64:"classes/linktypes/class.tx_linkvalidator_linktypes_interface.php";s:4:"c385";s:63:"classes/linktypes/class.tx_linkvalidator_linktypes_internal.php";s:4:"6bf5";s:66:"classes/linktypes/class.tx_linkvalidator_linktypes_linkhandler.php";s:4:"cef8";s:55:"classes/tasks/class.tx_linkvalidator_tasks_validate.php";s:4:"d684";s:78:"classes/tasks/class.tx_linkvalidator_tasks_validateadditionalfieldprovider.php";s:4:"12af";s:14:"doc/manual.sxw";s:4:"6694";s:14:"doc/manual.txt";s:4:"d46d";s:44:"modfunc1/class.tx_linkvalidator_modfunc1.php";s:4:"cb5b";s:22:"modfunc1/locallang.xml";s:4:"2319";s:26:"modfunc1/locallang_csh.xml";s:4:"efa4";s:26:"modfunc1/locallang_mod.xml";s:4:"e370";s:26:"modfunc1/mod_template.html";s:4:"7ed2";s:21:"res/linkvalidator.css";s:4:"2f4e";s:21:"res/mailtemplate.html";s:4:"c425";s:20:"res/pagetsconfig.txt";s:4:"ab0f";}',
 	'suggests' => array(
 	),
 );
