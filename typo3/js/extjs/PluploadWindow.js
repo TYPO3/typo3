@@ -1,7 +1,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Christian M?ller <christian@kitsunet.de>
+ *  (c) 2011 Christian Müller <christian@kitsunet.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@ Ext.onReady(function() {
 	/**
 	 * Upload Window based on plupload.
 	 *
-	 * @author	Christian M�ller <christian@kitsunet.de>
+	 * @author	Christian Müller <christian@kitsunet.de>
 	 */
 
 	TYPO3.PluploadWindow = new Ext.Window({
@@ -55,9 +55,9 @@ Ext.onReady(function() {
 				max_file_size: '1mb',
 				flash_swf_url : top.TYPO3.configuration.PATH_typo3 + 'contrib/plupload/js/plupload.flash.swf',
 				runtime_visible: false,
-				addButtonText: top.TYPO3.LLL.fileUpload.buttonSelectFiles,
-				uploadButtonText: top.TYPO3.LLL.fileUpload.buttonStartUpload,
-				cancelButtonText: top.TYPO3.LLL.fileUpload.buttonCancelAll,
+				addButtonText: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-add"></span>' + top.TYPO3.LLL.fileUpload.buttonSelectFiles,
+				uploadButtonText: '<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload"></span>' + top.TYPO3.LLL.fileUpload.buttonStartUpload,
+				cancelButtonText: '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>' + top.TYPO3.LLL.fileUpload.buttonCancelAll,
 				progressText: top.TYPO3.LLL.fileUpload.progressText,
 				emptyText: top.TYPO3.LLL.fileUpload.infoFileQueueEmpty,
 				statusQueuedText: top.TYPO3.LLL.fileUpload.infoFileQueued,

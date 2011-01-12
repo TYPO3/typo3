@@ -24,70 +24,32 @@ $Id$
 }
 
 .x-plupload-body {
-    overflow-x: hidden;
-    overflow-y: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .x-plupload-body dl {
-    padding: 5px;
-    border-bottom: 1px solid #D0D0D0;
-    font: normal 11px arial,tahoma,verdana,helvetica;
-    width: 100%;
+	padding: 5px;
+	width: 100%;
 }
 
 .x-plupload-body dt {
-    float: left;
-    cursor: pointer;
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
+	float: left;
+	display: block;
+	overflow: hidden;
 }
 
 .t3-plupload-remove {
 	visibility: hidden;
 }
 
-.plupload_over {
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-	-moz-opacity: 0.5;
-}
 
 .plupload_over .t3-plupload-remove {
 	visibility: visible;
 }
 
 
-.plupload_selected {
-    background-color: #EFF5FB;
-}
-
 .plupload_emptytext {
-    font: 11px Arial,Helvetica,sans-serif;
-    vertical-align: middle;
-    text-align: center;
-}
-
-.plupload_emptytext span {
-    line-height: 100px;
-}
-
-.silk-accept {
-	background-image: url(../../images/icons/status/dialog-ok.png) !important; background-repeat: no-repeat;
-}
-
-.silk-add {
-	background-image: url(../../images/icons/actions/edit-add.png) !important; background-repeat: no-repeat;
-}
-
-.silk-cross {
-	background-image: url(../../images/icons/status/status-icon-missing.png) !important; background-repeat: no-repeat;
-}
-
-.silk-stop {
-	background-image: url(../../images/icons/status/status-permission-denied.png) !important; background-repeat: no-repeat;
-}
-
-.silk-arrow-up {
-	background-image: url(../../images/icons/actions/edit-upload.png) !important; background-repeat: no-repeat;
+	vertical-align: middle;
+	text-align: center;
 }
