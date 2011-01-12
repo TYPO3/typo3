@@ -125,6 +125,7 @@
 			<label index="pages.author_email_formlabel">Author Email</label>
 			<label index="pages.media">Files:</label>
 			<label index="pages.media_formlabel">Media</label>
+			<label index="pages.php_tree_stop_formlabel">Stop page tree</label>
 			<label index="pages.is_siteroot">Is root of website:</label>
 			<label index="pages.is_siteroot_formlabel">Use as Root Page</label>
 			<label index="pages.module">Contains plugin:</label>

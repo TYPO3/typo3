@@ -111,6 +111,11 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.php:php_tree_stop',
 			'config' => array(
 				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled',
+					),
+				),
 			),
 		),
 		'storage_pid' => array(
@@ -1035,7 +1040,7 @@ $TCA['pages'] = array(
 			'canNotCollapse' => 1,
 		),
 		'miscellaneous' => array(
-			'showitem' => 'is_siteroot;LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot_formlabel, no_search;LLL:EXT:cms/locallang_tca.xml:pages.no_search_formlabel, editlock;LLL:EXT:cms/locallang_tca.xml:pages.editlock_formlabel',
+			'showitem' => 'is_siteroot;LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot_formlabel, no_search;LLL:EXT:cms/locallang_tca.xml:pages.no_search_formlabel, editlock;LLL:EXT:cms/locallang_tca.xml:pages.editlock_formlabel, php_tree_stop;LLL:EXT:cms/locallang_tca.xml:pages.php_tree_stop_formlabel',
 			'canNotCollapse' => 1,
 		),
 		'adminsonly' => array(
