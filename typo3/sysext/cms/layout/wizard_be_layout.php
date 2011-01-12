@@ -92,7 +92,15 @@ class SC_wizard_be_layout {
 			'save' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_labelSave', 1),
 			'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_windowTitle', 1),
 			'name' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_labelName', 1),
-			'column' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_labelColumn', 1)
+			'column' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_labelColumn', 1),
+			'editCell' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_editCell', 1),
+			'mergeCell' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_mergeCell', 1),
+			'splitCell' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_splitCell', 1),
+			'name' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_name', 1),
+			'column' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_column', 1),
+			'notSet' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_notSet', 1),
+			'nameHelp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_nameHelp', 1),
+			'columnHelp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_wizards.xml:grid_columnHelp', 1),
 		);
 		$pageRenderer->addInlineLanguageLabelArray($languageLabels);
 
@@ -182,20 +190,17 @@ class SC_wizard_be_layout {
 
 		}
 
-		$this->doc->JScode .= '
- 			<script type="text/javascript">
-			Ext.onReady(function() {
-				t3Grid = new TYPO3.Backend.t3Grid({
-					data: ' . $t3GridData . ',
-					colCount: ' . $colCount . ',
-					rowCount: ' . $rowCount . ',
-					targetElement: \'editor\'
-				});
+		$pageRenderer->enableExtJSQuickTips();
 
-				t3Grid.drawTable();
+		$pageRenderer->addExtOnReadyCode('
+			t3Grid = new TYPO3.Backend.t3Grid({
+				data: ' . $t3GridData . ',
+				colCount: ' . $colCount . ',
+				rowCount: ' . $rowCount . ',
+				targetElement: \'editor\'
 			});
-			</script>
-		';
+			t3Grid.drawTable();
+			');
 
 
 		$this->doc->styleSheetFile_post = TYPO3_MOD_PATH . 'res/grideditor.css';
@@ -232,20 +237,20 @@ class SC_wizard_be_layout {
 					</div>
 				</td>
 				<td width="20" valign="center">
-					<a id="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addColumn') . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
+					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addColumn') . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableright.png" border="0" />
 					</a><br />
-					<a id="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeColumn') . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
+					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeColumn') . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableleft.png" border="0" />
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" height="20" align="center">
-					<a id="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addRow') . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
+					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addRow') . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tabledown.png" border="0" />
 					</a>
-					<a id="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeRow') . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
+					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeRow') . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableup.png" border="0" />
 					</a>
 				</td>

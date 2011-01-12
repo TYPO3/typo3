@@ -79,6 +79,18 @@
 			<label index="grid_labelName">Name</label>
 			<label index="grid_labelColumn">Column Number</label>
 			<label index="grid_labelSave">Save to cell</label>
+			<label index="grid_addColumn">Click to add a column</label>
+			<label index="grid_removeColumn">Click to remove a column</label>
+			<label index="grid_addRow">Click to add a row</label>
+			<label index="grid_removeRow">Click to remove a row</label>
+			<label index="grid_editCell">Click to edit this cell</label>
+			<label index="grid_mergeCell">Combine with next cell</label>
+			<label index="grid_splitCell">Split cell</label>
+			<label index="grid_name">Name</label>
+			<label index="grid_column">Column number</label>
+			<label index="grid_notSet">not set</label>
+			<label index="grid_nameHelp">Enter a name for the cell.</label>
+			<label index="grid_columnHelp">The column position defines in which area the content is rendered in the frontend.</label>
 		</languageKey>
 	</data>
 </T3locallang>
