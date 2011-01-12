@@ -361,6 +361,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					'id' => $this->pageinfo['uid'],
 					'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
 				),
+				'',
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
  			);
 		}
