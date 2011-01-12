@@ -111,6 +111,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * Life-cycle method that is called by the DI container as soon as this object is completely built
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
 
@@ -416,7 +424,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 	/**
 	 * Creates an URI used for linking to an Extbase action.
-	 * Works in Frondend and Backend mode of TYPO3.
+	 * Works in Frontend and Backend mode of TYPO3.
 	 *
 	 * @param string $actionName Name of the action to be called
 	 * @param array $controllerArguments Additional query parameters. Will be "namespaced" and merged with $this->arguments.
@@ -451,10 +459,10 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($this->format !== '') {
 			$controllerArguments['format'] = $this->format;
 		}
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
 		if ($this->argumentPrefix !== NULL) {
 			$prefixedControllerArguments = array($this->argumentPrefix => $controllerArguments);
 		} else {
+			$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
@@ -589,7 +597,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			// if we have a LazyLoadingProxy here, make sure to get the real instance for further processing
 			if ($argumentValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
 				$argumentValue = $argumentValue->_loadRealInstance();
-				// also update the value in the arguments array, because the lazyLoaded object could be 
+				// also update the value in the arguments array, because the lazyLoaded object could be
 				// hidden and thus the $argumentValue would be NULL.
 				$arguments[$argumentKey] = $argumentValue;
 			}

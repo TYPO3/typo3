@@ -32,17 +32,17 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	/**
 	 * @var Tx_Extbase_Persistence_QueryInterface
 	 */
-	protected $query;
+	protected $mockQuery;
 
 	/**
 	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
-	protected $persistenceManager;
+	protected $mockPersistenceManager;
 
 	/**
 	 * @var Tx_Extbase_Persistence_DataMapper
 	 */
-	protected $dataMapper;
+	protected $mockDataMapper;
 
 	/**
 	 * Sets up this test case
@@ -50,16 +50,16 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @return void
 	 */
 	public function setUp() {
-		$this->persistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$this->persistenceManager->expects($this->any())->method('getObjectDataByQuery')->will($this->returnValue(array('one', 'two')));
-		$this->persistenceManager->expects($this->any())->method('getObjectCountByQuery')->will($this->returnValue(2));
-		$this->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper');
-		$this->query = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
-		$this->queryResult = new Tx_Extbase_Persistence_QueryResult($this->query);
-		$this->queryResult->injectPersistenceManager($this->persistenceManager);
-		$this->queryResult->injectDataMapper($this->dataMapper);
+		$this->mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$this->mockPersistenceManager->expects($this->any())->method('getObjectDataByQuery')->will($this->returnValue(array('one', 'two')));
+		$this->mockPersistenceManager->expects($this->any())->method('getObjectCountByQuery')->will($this->returnValue(2));
+		$this->mockDataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper');
+		$this->mockQuery = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
+		$this->queryResult = new Tx_Extbase_Persistence_QueryResult($this->mockQuery);
+		$this->queryResult->injectPersistenceManager($this->mockPersistenceManager);
+		$this->queryResult->injectDataMapper($this->mockDataMapper);
 		$this->sampleResult = array(array('foo' => 'Foo1', 'bar' => 'Bar1'), array('foo' => 'Foo2', 'bar' => 'Bar2'));
-		$this->dataMapper->expects($this->any())->method('map')->will($this->returnValue($this->sampleResult));
+		$this->mockDataMapper->expects($this->any())->method('map')->will($this->returnValue($this->sampleResult));
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function getQueryReturnsAClone() {
-		$this->assertNotSame($this->query, $this->queryResult->getQuery());
+		$this->assertNotSame($this->mockQuery, $this->queryResult->getQuery());
 	}
 
 	/**
@@ -114,8 +114,8 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function countDoesNotInitializeProxy() {
-		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->query));
-		$queryResult->injectPersistenceManager($this->persistenceManager);
+		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$queryResult->expects($this->never())->method('initialize');
 		$queryResult->count();
 	}
@@ -124,8 +124,8 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function countCallsGetObjectCountByQueryOnPersistenceManager() {
-		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->query));
-		$queryResult->injectPersistenceManager($this->persistenceManager);
+		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$this->assertEquals(2, $queryResult->count());
 	}
 
@@ -154,11 +154,21 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function initializeExecutesQueryWithArrayFetchMode() {
-		$queryResult = $this->getAccessibleMock('Tx_Extbase_Persistence_QueryResult', array('dummy'), array($this->query));
-		$queryResult->injectPersistenceManager($this->persistenceManager);
-		$queryResult->injectDataMapper($this->dataMapper);
-		$this->persistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->query)->will($this->returnValue(array('FAKERESULT')));
+		$queryResult = $this->getAccessibleMock('Tx_Extbase_Persistence_QueryResult', array('dummy'), array($this->mockQuery));
+		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
+		$queryResult->injectDataMapper($this->mockDataMapper);
+		$this->mockPersistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->mockQuery)->will($this->returnValue(array('FAKERESULT')));
 		$queryResult->_call('initialize');
+	}
+
+	/**
+	 * @test
+	 */
+	public function usingCurrentOnTheQueryResultReturnsAWarning() {
+		$queryResult = new Tx_Extbase_Persistence_QueryResult($this->mockQuery);
+		$expectedResult = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_QueryResult. To retrieve the first result, you can use the getFirst() method.';
+		$actualResult = current($queryResult);
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 }

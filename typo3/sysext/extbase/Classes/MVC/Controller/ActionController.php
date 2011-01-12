@@ -123,7 +123,9 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
-		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
+		if (!$this->canProcessRequest($request)) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
+		}
 
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
@@ -147,7 +149,9 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->checkRequestHash();
 		$this->controllerContext = $this->buildControllerContext();
 		$this->view = $this->resolveView();
-		if ($this->view !== NULL) $this->initializeView($this->view);
+		if ($this->view !== NULL) {
+			$this->initializeView($this->view);
+		}
 		$this->callActionMethod();
 	}
 

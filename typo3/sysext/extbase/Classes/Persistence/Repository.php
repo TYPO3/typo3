@@ -123,10 +123,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
+	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
@@ -295,7 +295,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$object = $query->matching($query->equals('uid', $uid))
+			$object = $query
+					->matching(
+						$query->equals('uid', $uid)
+					)
 					->execute()
 					->getFirst();
 			if ($object !== NULL) {

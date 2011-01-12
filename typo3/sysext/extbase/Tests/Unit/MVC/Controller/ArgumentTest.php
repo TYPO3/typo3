@@ -133,9 +133,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 	 */
 	public function setNewValidatorConjunctionCreatesANewValidatorConjunctionObject() {
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
+		$mockConjunctionValidator = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Validation_Validator_ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
+		$argument->injectObjectManager($mockObjectManager);
 		$argument->setNewValidatorConjunction(array());
-
-		$this->assertType('Tx_Extbase_Validation_Validator_ConjunctionValidator', $argument->getValidator(), 'The returned validator is not a conjunction as expected.');
+		$this->assertSame($mockConjunctionValidator, $argument->getValidator());
 	}
 
 	/**
@@ -161,6 +164,11 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 		$mockValidatorConjunction->expects($this->at(1))->method('addValidator')->with($validator2);
 
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager->expects($this->never())->method('create');
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Validator1')->will($this->returnValue($validator1));
+		$mockObjectManager->expects($this->at(1))->method('get')->with('Validator2')->will($this->returnValue($validator2));
+		$argument->injectObjectManager($mockObjectManager);
 		$argument->_set('validator', $mockValidatorConjunction);
 		$argument->setNewValidatorConjunction(array('Validator1', 'Validator2'));
 	}
