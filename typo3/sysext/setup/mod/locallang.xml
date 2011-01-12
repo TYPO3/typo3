@@ -81,6 +81,10 @@
 			<label index="edit_RTE">Enable Rich Text Editor (if available)</label>
 			<label index="edit_docModuleUpload">File upload directly in Doc-module</label>
 			<label index="enableFlashUploader">Enable Flash Uploader (requires Flash 9+)</label>
+			<label index="enableFlashUploader_label">Select Uploader</label>
+			<label index="enableFlashUploader.disable">Classic Form Upload</label>
+			<label index="enableFlashUploader.flash">Flash Uploader (requires Flash 9+)</label>
+			<label index="enableFlashUploader.plupload">Plupload (HTML5, Flash, Silverlight, Form)</label>
 			<label index="resizeTextareas">Make Textareas resizable</label>
 			<label index="resizeTextareas_MaxHeight">Maximal Height of resizable Textarea in Pixel</label>
 			<label index="resizeTextareas_Flexible">Make Textareas flexible</label>

@@ -125,12 +125,15 @@ class TYPO3backend {
 			'swfupload.swfobject'   => 'contrib/swfupload/plugins/swfupload.swfobject.js',
 			'swfupload.cookies'     => 'contrib/swfupload/plugins/swfupload.cookies.js',
 			'swfupload.queue'       => 'contrib/swfupload/plugins/swfupload.queue.js',
+			'plupload'              => 'contrib/plupload/js/plupload.full.min.js',
 			'md5'                   => 'md5.js',
 			'common'                => 'js/common.js',
 			'toolbarmanager'        => 'js/toolbarmanager.js',
 			'modulemenu'            => 'js/modulemenu.js',
 			'iecompatibility'       => 'js/iecompatibility.js',
 			'flashupload'           => 'js/flashupload.js',
+			'pluploadPanel'         => 'js/extjs/ext.ux.plupload.js',
+			'pluploadWindow'        => 'js/extjs/PluploadWindow.js',
 			'evalfield'             => '../t3lib/jsfunc.evalfield.js',
 			'flashmessages'         => '../t3lib/js/extjs/ux/flashmessages.js',
 			'tabclosemenu'          => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
@@ -458,6 +461,9 @@ class TYPO3backend {
 			'ContextHelpWindows' => array(
 				'width' => 600,
 				'height' => 400
+			),
+			'FileUpload' => array(
+				'maxFileSize' => t3lib_div::getMaxUploadFileSize()
 			)
 		);
 		$t3LLLcore = array(
@@ -493,11 +499,17 @@ class TYPO3backend {
 		$t3LLLfileUpload = array(
 			'windowTitle' => $GLOBALS['LANG']->getLL('fileUpload_windowTitle'),
 			'buttonSelectFiles' => $GLOBALS['LANG']->getLL('fileUpload_buttonSelectFiles'),
+			'buttonStartUpload' => $GLOBALS['LANG']->getLL('fileUpload_buttonStartUpload'),
 			'buttonCancelAll' => $GLOBALS['LANG']->getLL('fileUpload_buttonCancelAll'),
+			'progressText' => $GLOBALS['LANG']->getLL('fileUpload_progressText'),
 			'infoComponentMaxFileSize' => $GLOBALS['LANG']->getLL('fileUpload_infoComponentMaxFileSize'),
 			'infoComponentFileUploadLimit' => $GLOBALS['LANG']->getLL('fileUpload_infoComponentFileUploadLimit'),
 			'infoComponentFileTypeLimit' => $GLOBALS['LANG']->getLL('fileUpload_infoComponentFileTypeLimit'),
 			'infoComponentOverrideFiles' => $GLOBALS['LANG']->getLL('fileUpload_infoComponentOverrideFiles'),
+			'infoFileQueueEmpty' => $GLOBALS['LANG']->getLL('fileUpload_infoFileQueueEmpty'),
+			'infoFileQueued' => $GLOBALS['LANG']->getLL('fileUpload_infoFileQueued'),
+			'infoFileFinished' => $GLOBALS['LANG']->getLL('fileUpload_infoFileFinished'),
+			'infoFileUploading' => $GLOBALS['LANG']->getLL('fileUpload_infoFileQueued'),
 	 		'processRunning' => $GLOBALS['LANG']->getLL('fileUpload_processRunning'),
 			'uploadWait' => $GLOBALS['LANG']->getLL('fileUpload_uploadWait'),
 			'uploadStarting' => $GLOBALS['LANG']->getLL('fileUpload_uploadStarting'),

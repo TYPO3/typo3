@@ -112,8 +112,13 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'csh' => 'simuser'
 		),
 		'enableFlashUploader' => array(
-			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader',
+			'type' => 'select',
+			'items' => array(
+				0 => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader.disable',
+				1 => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader.flash',
+				2 => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader.plupload',
+			),
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader_label',
 			'csh' => 'enableFlashUploader',
 		),
 		'resizeTextareas' => array(

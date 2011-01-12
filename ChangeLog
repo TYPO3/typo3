@@ -7,6 +7,7 @@
 	* Fixed bug #16970: Backwards compatibility in PHP_SCRIPT and accessing $this-> methods
 	* Fixed bug #16968: sysext:version: API change list module dispatcher (Thanks to Peter Niederlag)
 	* Fixed bug #16966: be_layout setting "none" is not working and be_layout should not be inherited automatically (Thanks to Jo Hasenau)
+	* Added feature #13319: Add plupload support for uploading files in fileadmin
 
 2011-01-11  Steffen Kamper  <steffen@typo3.org>
 
@@ -19,7 +20,7 @@
 2011-01-11  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16878: Make t3lib_utility_Client::getBrowserInfo() aware of more operating systems (Thanks to Andreas Lappe)
-	* Fixed bug #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Fixed bug #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not installed
 	* Fixed bug #16961: When the title length is changed in the user setup module the pagetree needs to be updated (Thanks to Stefan Galinski)
 
 2011-01-11  Jeff Segars  <jeff@webempoweredchurch.org>

@@ -72,6 +72,8 @@ The default module is &quot;About Modules&quot;.</label>
 			<label index="_option_edit_docModuleUpload.image">EXT:setup/cshimages/setup12.png</label>
 			<label index="option_enableFlashUploader.alttitle">Enable Flash Uploader</label>
 			<label index="option_enableFlashUploader.description">This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</label>
+			<label index="option_enableFlashUploader_choose.alttitle">Select Uploader</label>
+			<label index="option_enableFlashUploader_choose.description">This option will let you choose which uploader should be used: a pure HTML4 upload form ("Classic"), a Flash-Uploader which requires Flash9+ or the most flexible Pluploader, which works with HTML5 on modern browsers, but provides fallback to Flash on non-HTML5 browsers or native HTML if not even Flash is available. Both Flash Uploader and Plupload allow you to select multiple files at once.</label>
 			<label index="option_edit_showFieldHelp.alttitle">Context Sensitive Help mode</label>
 			<label index="option_resizeTextareas.alttitle">Make Textareas Resizable</label>
 			<label index="option_resizeTextareas.description">This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</label>
