@@ -1,6 +1,7 @@
 2011-01-12  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16988: Update Context Sensitive Help for pages and tt_content to match new labels
+	* Fixed bug #16989: Update page and tt_content labels to use title case
 
 2011-01-12  Jigal van Hemert  <jigal@xs4all.nl>
 
