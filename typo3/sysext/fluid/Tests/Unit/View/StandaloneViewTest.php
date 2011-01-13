@@ -53,19 +53,39 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_BaseTestCas
 	protected $mockTemplateParser;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Request
+	 * @var Tx_Extbase_MVC_Web_Request
 	 */
 	protected $mockRequest;
+
+	/**
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 */
+	protected $mockUriBuilder;
 
 	/**
 	 * @var Tx_Fluid_Core_Parser_ParsedTemplateInterface
 	 */
 	protected $mockParsedTemplate;
+
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $mockConfigurationManager;
+
+	/**
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 */
+	protected $mockFlashMessages;
+
+	/**
+	 * @var tslib_cObj
+	 */
+	protected $mockContentObject;
 
 	/**
 	 * Sets up this test case
@@ -74,20 +94,139 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_BaseTestCas
 	 */
 	public function setUp() {
 		$this->view = $this->getAccessibleMock('Tx_Fluid_View_StandaloneView', array('dummy'), array(), '', FALSE);
+
 		$this->mockTemplateParser = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser');
 		$this->mockParsedTemplate = $this->getMock('Tx_Fluid_Core_Parser_ParsedTemplateInterface');
 		$this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
-		$this->view->injectTemplateParser($this->mockTemplateParser);
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->view->injectObjectManager($this->mockObjectManager);
-		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
-		$this->mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
+
+		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+
+		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
+		$this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+		$this->mockObjectManager->expects($this->any())->method('create')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+
+		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
+		$this->mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->mockFlashMessages = $this->getMock('Tx_Extbase_MVC_Controller_FlashMessages');
+		$this->mockContentObject = $this->getMock('tslib_cObj');
+
 		$this->mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
-		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
 		$this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
+
+		$this->mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+
+		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 		$this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
+		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
+
+		$this->view->injectTemplateParser($this->mockTemplateParser);
+		$this->view->injectObjectManager($this->mockObjectManager);
 		$this->view->setRenderingContext($this->mockRenderingContext);
+
+		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $this->mockObjectManager);
+		t3lib_div::addInstance('tslib_cObj', $this->mockContentObject);
+	}
+
+	/**
+	 * @param string $className
+	 * @return object
+	 */
+	public function objectManagerCallback($className) {
+		switch($className) {
+			case 'Tx_Extbase_Configuration_ConfigurationManagerInterface':
+				return $this->mockConfigurationManager;
+			case 'Tx_Fluid_Core_Parser_TemplateParser':
+				return $this->mockTemplateParser;
+			case 'Tx_Fluid_Core_Rendering_RenderingContext':
+				return $this->mockRenderingContext;
+			case 'Tx_Extbase_MVC_Web_Request':
+				return $this->mockRequest;
+			case 'Tx_Extbase_MVC_Web_Routing_UriBuilder':
+				return $this->mockUriBuilder;
+			case 'Tx_Extbase_MVC_Controller_ControllerContext':
+				return $this->mockControllerContext;
+			case 'Tx_Extbase_MVC_Controller_FlashMessages':
+				return $this->mockFlashMessages;
+		}
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorSetsSpecifiedContentObject() {
+		$mockContentObject = $this->getMock('tslib_cObj');
+		// FIXME should be compared with identicalTo() - but that does not seem to work
+		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
+
+		new Tx_Fluid_View_StandaloneView($mockContentObject);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorCreatesContentObjectIfItIsNotSpecified() {
+		// FIXME should be compared with identicalTo() - but that does not seem to work
+		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
+
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorSetsRequestUri() {
+		$expectedRequestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$this->mockRequest->expects($this->once())->method('setRequestURI')->with($expectedRequestUri);
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorSetsBaseUri() {
+		$expectedBaseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$this->mockRequest->expects($this->once())->method('setBaseURI')->with($expectedBaseUri);
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorInjectsRequestToUriBuilder() {
+		$this->mockUriBuilder->expects($this->once())->method('setRequest')->with($this->mockRequest);
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorInjectsRequestToControllerContext() {
+		$this->mockControllerContext->expects($this->once())->method('setRequest')->with($this->mockRequest);
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorInjectsUriBuilderToControllerContext() {
+		$this->mockControllerContext->expects($this->once())->method('setUriBuilder')->with($this->mockUriBuilder);
+		new Tx_Fluid_View_StandaloneView();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function constructorInjectsFlashMessageContainerToControllerContext() {
+		$this->mockControllerContext->expects($this->once())->method('setFlashMessageContainer')->with($this->mockFlashMessages);
+		new Tx_Fluid_View_StandaloneView();
 	}
 
 	/**
