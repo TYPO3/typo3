@@ -9,6 +9,7 @@
 
 2011-01-12  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to Merged Extension Manager: fixed repository / icon directory independent from t3skin
 	* Merged Extension Manager (version for TYPO3 4.5 Beta 4)
 	* Fixed issue #16986: Grid wizard miss tooltips and localization
 

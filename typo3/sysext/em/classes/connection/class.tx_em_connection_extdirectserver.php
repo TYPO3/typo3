@@ -676,27 +676,24 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * Loads repositories
 	 *
-	 * @param  boolean $selectedOnly
 	 * @return array
 	 */
-	public function getRepositories($selectedOnly = FALSE) {
+	public function getRepositories() {
 		$settings = $this->getSettings();
 		$repositories = tx_em_Database::getRepositories();
 		$data = array();
 
 		foreach ($repositories as $uid => $repository) {
-			if (!$selectedOnly || ($selectedOnly && $repository['uid'] == $settings['selectedRepository'])) {
-				$data[] = array(
-					'title' => $repository['title'],
-					'uid' => $repository['uid'],
-					'description' => $repository['description'],
-					'wsdl_url' => $repository['wsdl_url'],
-					'mirror_url' => $repository['mirror_url'],
-					'count' => $repository['extCount'],
-					'updated' => $repository['lastUpdated'] ? date('d/m/Y H:i', $repository['lastUpdated']) : 'never',
-					'selected' => $repository['uid'] === $settings['selectedRepository'],
-				);
-			}
+			$data[] = array(
+				'title' => $repository['title'],
+				'uid' => $repository['uid'],
+				'description' => $repository['description'],
+				'wsdl_url' => $repository['wsdl_url'],
+				'mirror_url' => $repository['mirror_url'],
+				'count' => $repository['extCount'],
+				'updated' => $repository['lastUpdated'] ? date('d/m/Y H:i', $repository['lastUpdated']) : 'never',
+				'selected' => $repository['uid'] === $settings['selectedRepository'],
+			);
 		}
 
 		return array(
@@ -1224,6 +1221,34 @@ class tx_em_Connection_ExtDirectServer {
 			'mod.php?M=tools_em',
 			$string
 		 );
+	}
+
+	/**
+	 * Get the selected repository
+	 *
+	 * @return array
+	 */
+	protected function getSelectedRepository() {
+		$settings = $this->getSettings();
+		$repositories = tx_em_Database::getRepositories();
+		$selectedRepository = array();
+
+		foreach ($repositories as $uid => $repository) {
+			if ($repository['uid'] == $settings['selectedRepository']) {
+				$selectedRepository = array(
+					'title' => $repository['title'],
+					'uid' => $repository['uid'],
+					'description' => $repository['description'],
+					'wsdl_url' => $repository['wsdl_url'],
+					'mirror_url' => $repository['mirror_url'],
+					'count' => $repository['extCount'],
+					'updated' => $repository['lastUpdated'] ? date('d/m/Y H:i', $repository['lastUpdated']) : 'never',
+					'selected' => $repository['uid'] === $settings['selectedRepository'],
+				);
+			}
+		}
+
+		return $selectedRepository;
 	}
 
 }

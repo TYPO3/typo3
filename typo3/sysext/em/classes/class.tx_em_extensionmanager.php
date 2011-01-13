@@ -109,8 +109,8 @@ class tx_em_ExtensionManager {
 
 		}
 
-			// TODO: use sprite iconCls
-		$iconsGfxPath = t3lib_extMgm::extRelPath('t3skin') . 'icons/gfx/';
+
+		$iconsGfxPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'] . 'gfx/';
 		$this->pageRenderer->addCssInlineBlock('em-t3skin-icons', '
 			.x-tree-node-leaf img.tree-edit { background-image:url(' . $iconsGfxPath . 'edit_file.gif);}
 			.x-btn-edit { background-image:url(' . $iconsGfxPath . 'edit2.gif) !important;}
