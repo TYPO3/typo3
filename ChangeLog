@@ -1,3 +1,7 @@
+2011-01-13  Ernesto Baschny  <ernesto.baschny@typo3.org>
+
+	* Release of TYPO3 4.5.0beta4
+
 2011-01-12  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16988: Update Context Sensitive Help for pages and tt_content to match new labels
