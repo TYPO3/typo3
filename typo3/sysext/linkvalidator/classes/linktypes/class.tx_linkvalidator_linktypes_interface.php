@@ -23,39 +23,24 @@
  ***************************************************************/
 
 /**
- * This class provides Check Base plugin implementation.
+ * This class provides interface implementation.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
-abstract class tx_linkvalidator_checkbase {
-
-	abstract function checkLink($url, $softRefEntry, $reference);
+interface tx_linkvalidator_linkTypes_Interface {
 
 	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns.
+	 * Checks a given URL + /path/filename.ext for validity
 	 *
-	 * @param   array	  $value: reference properties
-	 * @param   string	 $type: current type
-	 * @param   string	 $key: validator hook name
-	 * @return  string	 fetched type
+	 * @param   string	  $url: url to check
+	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @return  string	  validation error message or succes code
 	 */
-	function fetchType($value, $type, $key) {
-		if ($value['type'] == $key) {
-			$type = $value['type'];
-		}
-		return $type;
-	}
+	public function checkLink($url, $softRefEntry, $reference);
 
-	/**
-	 * Base url parsing
-	 *
-	 * @param	array		$row: broken link record
-	 * @return	string		parsed broken url
-	 */
-	function getBrokenUrl($row) {
-		return $row['url'];
-	}
 }
-
 
 ?>

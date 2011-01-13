@@ -22,40 +22,42 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check Internal Links plugin implementation.
+ * This class provides Check File Links plugin implementation.
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
-class tx_linkvalidator_checkinternallinks extends tx_linkvalidator_checkbase {
+class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity
+	 * Checks a given URL + /path/filename.ext for validity.
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
-	 * @return  string	  validation error message or succes code
+	 * @return  string	  TRUE on success or FALSE on error
 	 */
-	function checkLink($url, $softRefEntry, $reference) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid, deleted, title',
-			'pages',
-			'uid = ' . intval($url)
-		);
-
-		if ($rows[0]) {
-			if ($rows[0]['deleted'] == '1') {
-				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-				$response = str_replace('###title###', $rows[0]['title'], $response);
-				return $response;
-			}
-		} else {
-			return $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+	public function checkLink($url, $softRefEntry, $reference) {
+		if (!@file_exists(PATH_site . rawurldecode($url))) {
+			return FALSE;
 		}
 
-		return 1;
+		return TRUE;
 	}
+
+	/**
+	 * Generate the localized error message from the error params saved from the parsing. 
+	 *
+	 * @param   array    all parameters needed for the rendering of the error message
+	 * @return  string    validation error message
+	 */
+	public function getErrorMessage($errorParams) {
+		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
+		return $response;
+	}
+
 
 	/**
 	 * Url parsing
@@ -63,15 +65,15 @@ class tx_linkvalidator_checkinternallinks extends tx_linkvalidator_checkbase {
 	 * @param   array	   $row: broken link record
 	 * @return  string	  parsed broken url
 	 */
-	function getBrokenUrl($row) {
-		$domaine = t3lib_BEfunc::getViewDomain($row['pid']);
-		return $domaine . 'index.php?id=' . $row['url'];
+	public function getBrokenUrl($row) {
+		$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
+		return $brokenUrl;
 	}
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checkinternallinks.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_checkinternallinks.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php']);
 }
 
 ?>

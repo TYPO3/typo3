@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Labels for linkvalidator mod1</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <labelContext type="array">
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="mod_linkvalidator">Link validator</label>
-            <label index="link.name">Link validator</label>
-            <label index="link.page">Start page</label>
-            <label index="link.depth">Depth</label>
-            <label index="link.conf">tsconfig override</label>
-            <label index="link.email">Send repport to</label>
-            <label index="link.emailonbrokenlinkonly">Send email on news broken links only</label>
-            <label index="link.emailfile">Email template file</label>
-            <label index="link.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module. </label>
-            <label index="linkvalidator_im.invalidEmail">Invalid email format!</label>
-            <label index="linkvalidator_im.invalidPage">Invalid page uid, please enter a valid page uid!</label>
-            <label index="linkvalidator_im.invalidDepth">There is no depth set, please set it to a value!</label>
-            
-       
-        </languageKey>
-    </data>
+	<meta type="array">
+		<description>Labels for the linkvalidator task.</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mod_linkvalidator">Link validator</label>
+			<label index="tasks.validate.name">Link validator</label>
+			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module.</label>
+			<label index="tasks.validate.page">Start page (uid)</label>
+			<label index="tasks.validate.depth">Depth</label>
+			<label index="tasks.validate.conf">Overwrite TSconfig</label>
+			<label index="tasks.validate.email">Send email report to</label>
+			<label index="tasks.validate.emailonbrokenlinkonly">Send email on new broken links only</label>
+			<label index="tasks.validate.emailfile">Email template file</label>
+			<label index="tasks.validate.invalidEmail">Invalid email format!</label>
+			<label index="tasks.validate.invalidPage">Invalid page uid, please enter a valid page uid!</label>
+			<label index="tasks.validate.invalidDepth">There is no depth set, please set it to one of the offered values!</label>
+		</languageKey>
+	</data>
 </T3locallang>

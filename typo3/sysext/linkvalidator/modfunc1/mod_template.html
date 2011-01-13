@@ -1,69 +1,64 @@
 <!-- ###FULLDOC### begin -->
-            <h3>###TITLE###</h3>
-            <div class="linkvalidator_funcmenu">###FUNC_MENU######REFRESH######UPDATE###</div>
-            <div class="linkvalidator_checkoptions">
-                    ###ID###
-                    ###CHECKALLLINK###                    
-                    ###CHECKOPTIONS###
-            </div>
-            ###CONTENT###
+			<h3>###TITLE###</h3>
+			<p id="linkvalidator_firstSteps">###FIRST_STEPS###</p>
+			<div class="linkvalidator_funcmenu">###FUNC_MENU######REFRESH######UPDATE###</div>
+			<div class="linkvalidator_checkoptions">
+				###ID###
+				###CHECKALLLINK###
+				###CHECKOPTIONS###
+			</div>
+			###CONTENT###
 <!-- ###FULLDOC### end -->
+
+
 <!-- ###CHECKOPTIONS_SECTION### begin -->
-    <table class="linkvalidator_table">
-        <tr>	  
-	        <td>
-	           <label>
-	               ###TOTAL_COUNT_LABEL###
-	           </label>
-	        </td>
-	        <td>
-	           <span>
-	               ###TOTAL_COUNT###
-	           </span>
-	        </td>
-	    </tr>
-	    <!-- ###HOOK_SECTION### begin -->
-	         <tr>
-	            <td>
-		            <div class="linkvalidator_singleOption">
-			            ###OPTION###
-			        </div>
-	            </td>
-	            <td>
-	                <span>
-		             ###COUNT###
-		            </span>
-	            </td>
-	         </tr>
-	    <!-- ###HOOK_SECTION### end -->
-    </table>
+	###STATISTICS_HEADER###
+	<table class="typo3-dblist" id="linkvalidator_statsTable" cellspacing="0" cellpadding="0">
+		<tr class="t3-row-header">
+			<td>
+				###TOTAL_COUNT_LABEL###
+			</td>
+			<td class="number">###TOTAL_COUNT###</td>
+		</tr>
+		<!-- ###HOOK_SECTION### begin -->
+		<tr class="db_list_normal">
+			<td>
+				<div class="linkvalidator_singleOption">###OPTION###</div>
+			</td>
+			<td class="number">###COUNT###</td>
+		</tr>
+		<!-- ###HOOK_SECTION### end -->
+	</table>
 <!-- ###CHECKOPTIONS_SECTION### end -->
+
+
 <!-- ###BROKENLINKS_CONTENT### begin -->
-        ###LIST_HEADER###
-        <table id="brokenLinksList" border="0" width="100%" cellspacing="1" cellpadding="3" align="center" bgcolor="###BGCOLOR2###">
-            <tr>
-                <td class="head" align="center"></td>
-                <td class="head" align="center"><b>###TABLEHEAD_PATH###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_TYPE###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_HEADLINE###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_FIELD###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_HEADLINK###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_LINKTARGET###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_LINKMESSAGE###</b></td>
-                <td class="head" align="center"><b>###TABLEHEAD_LASTCHECK###</b></td>
-            </tr>
-            <!-- ###BROKENLINKS_ITEM### begin -->
-            <tr bgcolor="###BGCOLOR_ALTERNATING###">
-                <td class="content">###ACTIONLINK###</td>
-                <td class="content">###PATH###</td>
-                <td class="content" style="text-align: center">###TYPE###</td>
-                <td class="content">###HEADLINE###</td>
-                <td class="content">###FIELD###</td>
-                <td class="content">###HEADLINK###</td>
-                <td class="content"><a href="###LINKTARGET###" target="_blank">###LINKTARGET###</a></td>
-                <td class="content">###LINKMESSAGE###</td>
-                <td class="content">###LASTCHECK###</td>
-            </tr>
-            <!-- ###BROKENLINKS_ITEM### end -->
-            </table>
+	###LIST_HEADER###
+	<table class="typo3-dblist" id="linkvalidator_brokenLinksTable" cellspacing="0" cellpadding="0">
+		<tr class="t3-row-header">
+			<td></td>
+			<td>###TABLEHEAD_PATH###</td>
+			<td>###TABLEHEAD_ELEMENT###</td>
+			<td>###TABLEHEAD_HEADLINK###</td>
+			<td>###TABLEHEAD_LINKTARGET###</td>
+			<td>###TABLEHEAD_LINKMESSAGE###</td>
+			<td>###TABLEHEAD_LASTCHECK###</td>
+		</tr>
+		<!-- ###BROKENLINKS_ITEM### begin -->
+		<tr class="db_list_normal">
+			<td>###ACTIONLINK###</td>
+			<td>###PATH###</td>
+			<td>###ELEMENT###</td>
+			<td>###HEADLINK###</td>
+			<td><a href="###LINKTARGET###" target="_blank">###LINKTARGET###</a></td>
+			<td>###LINKMESSAGE###</td>
+			<td>###LASTCHECK###</td>
+		</tr>
+		<!-- ###BROKENLINKS_ITEM### end -->
+	</table>
 <!-- ###BROKENLINKS_CONTENT### end -->
+
+<!-- ###NOBROKENLINKS_CONTENT### begin -->
+	###LIST_HEADER###
+	###NO_BROKEN_LINKS###
+<!-- ###NOBROKENLINKS_CONTENT### end -->

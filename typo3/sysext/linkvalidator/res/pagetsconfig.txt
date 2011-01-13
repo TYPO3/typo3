@@ -1,0 +1,18 @@
+mod.linkvalidator {
+	searchFields {
+		pages = media,url
+		tt_content = bodytext,header_link,records
+		tt_news = bodytext,links
+	}
+	linktypes = db,file,external
+	checkhidden = 0
+	showUpdateButton = 1
+	mail{
+		encoding = utf-8
+		fromname =
+		fromemail =
+		replytoname =
+		replytoemail =
+		subject = TYPO3 Linkvalidator report
+	}
+}

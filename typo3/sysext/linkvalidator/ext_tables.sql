@@ -8,7 +8,7 @@ CREATE TABLE tx_linkvalidator_links (
 	linktitle text,
 	url text,
 	urlresponse text,
-    lastcheck int(11) DEFAULT '0' NOT NULL,
+	lastcheck int(11) DEFAULT '0' NOT NULL,
 	typelinks varchar(50) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid)

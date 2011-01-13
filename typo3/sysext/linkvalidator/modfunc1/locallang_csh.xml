@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for linkvalidator labels</description>
+		<type>CSH</type>
+		<csh_table>linkvalidator</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="checkboxes.description">Click the following checkboxes to display or to hide the corresponding broken links.</label>
+			<label index="tablehead_path.description">Path to the content element, which contains the broken link.</label>
+			<label index="tablehead_element.description">Type of the element containing the broken link, its headline and the field in which the broken link is located.</label>
+			<label index="tablehead_headlink.description">The linking text.</label>
+			<label index="tablehead_linktarget.description">URL to which the broken link is pointing.</label>
+			<label index="tablehead_linkmessage.description">Status of that link.</label>
+			<label index="tablehead_lastcheck.description">Date and time of the last update of the information in each table row.</label>
+			<label index="task_page.alttitle">Start page of the task</label>
+			<label index="task_page.description">UID of the start page for this task.</label>
+			<label index="task_depth.alttitle">Depth of the task</label>
+			<label index="task_depth.description">Level of pages the task should check.</label>
+			<label index="task_configuration.alttitle">Special TSconfig code</label>
+			<label index="task_configuration.description">TSconfig Code which defines settings for linkvalidator to be used for this task.</label>
+			<label index="task_email.alttitle">Email address</label>
+			<label index="task_email.description">Email address to which an email report is sent.</label>
+			<label index="task_emailonbrokenlinkonly.alttitle">Mailing option</label>
+			<label index="task_emailonbrokenlinkonly.description">Only send an email, if new broken links were found.</label>
+			<label index="task_emailfile.alttitle">Email template file</label>
+			<label index="task_emailfile.description">Define a template to be used for the email.</label>
+		</languageKey>
+	</data>
+</T3locallang>

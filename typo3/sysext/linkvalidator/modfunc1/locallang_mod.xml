@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Labels for linkvalidator mod1</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <labelContext type="array">
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_tabs_tab">Check Links</label>
-            <label index="mlang_labels_tabdescr">Checks the links of your website for validity</label>
-            <label index="mlang_labels_tablabel">Validates links</label>
-        </languageKey>
-    </data>
+	<meta type="array">
+		<description>Labels for linkvalidator.</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_tabs_tab">Check Links</label>
+			<label index="mlang_labels_tabdescr">Checks the links in your website for validity.</label>
+			<label index="mlang_labels_tablabel">Validates links</label>
+		</languageKey>
+	</data>
 </T3locallang>

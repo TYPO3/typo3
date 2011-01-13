@@ -26,8 +26,10 @@
  * This class provides Scheduler plugin implementation.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @package TYPO3
+ * @subpackage linkvalidator
  */
-class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
+class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 
 	/**
 	 * @var integer
@@ -53,6 +55,7 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 	 * @var integer
 	 */
 	public $oldTotalBrokenLink = 0;
+
 
 	/**
 	 * Function executed from the Scheduler.
@@ -113,16 +116,16 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 				if (is_array($linktypes)) {
 					if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 							&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $value) {
-							if (in_array($key, $linktypes)) {
-								$array[$key] = 1;
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
+							if (in_array($type, $linktypes)) {
+								$array[$type] = 1;
 							}
 						}
 					}
 				}
-				$pageIds = $this->extGetTreeList($page, $this->depth, 0, '1=1');
-				$pageIds .= $page;
 				$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
+				$pageIds = $processing->extGetTreeList($page, $this->depth, 0, '1=1');
+				$pageIds .= $page;
 				$processing->init($searchFields, $pageIds);
 				if (!empty($this->email)) {
 					$oldLinkCounts = $processing->getLinkCounts($page);
@@ -149,14 +152,15 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 			$this->reportEmail($pageSections, $modTS);
 		}
 		return TRUE;
-	} // end function execute()
+	}
+
 
 	/**
-	 * Build and send the new borken links found warning email.
+	 * Build and send warning email when new broken links were found.
 	 *
 	 * @param	string		$pageSections: Content of page section
-	 * @param	string		$modTS: TsConfig array
-	 * @return	bool		Mail sended or not
+	 * @param	string		$modTS: TSconfig array
+	 * @return	bool		Mail sent or not
 	 */
 	function reportEmail($pageSections, $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
@@ -188,8 +192,9 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 		return $Typo3_htmlmail->sendtheMail();
 	}
 
+
 	/**
-	 * Build the mail content
+	 * Build the mail content.
 	 *
 	 * @param	int			$curPage: id of the current page
 	 * @param	string		$pageList: list of pages id
@@ -220,27 +225,6 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 		return $content;
 	}
 
-	/**
-	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
-	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
-	 * this is necessary to create the object that is used recursively by the original function.
-	 *
-	 * Generates a list of Page-uid's from $id. List does not include $id itself
-	 * The only pages excluded from the list are deleted pages.
-	 *
-	 *							  level in the tree to start collecting uid's. Zero means
-	 *							  'start right away', 1 = 'next level and out'
-	 *
-	 * @param	integer		Start page id
-	 * @param	integer		Depth to traverse down the page tree.
-	 * @param	integer		$begin is an optional integer that determines at which
-	 * @param	string		Perms clause
-	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
-	 */
-	function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		return t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
-	}
-
 
 	/**
 	 * Simulate cli call with setting the required options to the $_SERVER['argv']
@@ -264,7 +248,7 @@ class tx_linkvalidator_scheduler_link extends tx_scheduler_Task {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_link.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/lib/class.tx_linkvalidator_scheduler_link.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/tasks/class.tx_linkvalidator_tasks_validate.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/tasks/class.tx_linkvalidator_tasks_validate.php']);
 }
 ?>
