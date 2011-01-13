@@ -407,8 +407,8 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function uploadExtToTer($parameter) {
-		$temp = $this->getRepositories(TRUE);
-		$wsdlURL = $temp['data'][0]['wsdl_url'];
+		$repository = $this->getSelectedRepository();
+		$wsdlURL = $repository['wsdl_url'];
 
 		$parameter['user']['fe_u'] = $parameter['fe_u'];
 		$parameter['user']['fe_p'] = $parameter['fe_p'];
