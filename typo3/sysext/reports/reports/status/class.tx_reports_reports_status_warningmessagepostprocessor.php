@@ -71,7 +71,7 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 
 				$warningMessages['tx_reports_status_notification'] = sprintf(
 					$GLOBALS['LANG']->getLL('status_problemNotification'),
-					'<a href="mod.php?M=tools_txreportsM1&SET[function]=tx_reports.status">',
+					'<a href="javascript:top.goToModule(\'tools_txreportsM1\', 1, \'&SET[function]=tx_reports.status\');">',
 					'</a>'
 				);
 			}

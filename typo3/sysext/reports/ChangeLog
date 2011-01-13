@@ -1,3 +1,7 @@
+2011-01-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #17012: Use javascript goToModule() function in the warning message
+
 2010-11-14  Ingo Renner  <ingo@typo3.org>
 
 	* Changed the overview menu to use the core t3-overview-list CSS class for styling

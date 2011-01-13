@@ -1,3 +1,7 @@
+2011-01-13  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #17012: [reports] Use javascript goToModule() function in the warning message
+
 2011-01-13  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #17006: Language mode is broken as soon as a backend layout is selected for the current page (Thanks to Jo Hasenau)
