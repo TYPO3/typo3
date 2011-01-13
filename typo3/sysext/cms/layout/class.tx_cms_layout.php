@@ -546,7 +546,7 @@ class tx_cms_layout extends recordList {
 
 				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
 				$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
-				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']);
+				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
 					foreach ($cList as $k => $key) {
