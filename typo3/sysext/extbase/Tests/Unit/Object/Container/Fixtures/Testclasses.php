@@ -191,4 +191,11 @@ class t3lib_object_tests_resolveablecyclic3 implements t3lib_Singleton {
 	}
 }
 
+class t3lib_object_tests_class_with_injectsettings {
+	public function injectFoo(t3lib_object_tests_resolveablecyclic1 $c1) {
+	}
+
+	public function injectSettings(array $settings) {
+	}
+}
 

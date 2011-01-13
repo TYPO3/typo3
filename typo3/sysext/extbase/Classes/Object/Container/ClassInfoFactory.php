@@ -80,10 +80,10 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 	}
 
 	/**
-	 * Build a list of inject methods
+	 * Build a list of inject methods for the given class.
 
 	 * @param ReflectionClass $reflectedClass
-	 * @retrn array of inject methods
+	 * @return array (nameOfInjectMethod => nameOfClassToBeInjected)
 	 */
 	private function getInjectMethods(ReflectionClass $reflectedClass) {
 		$result = array();
@@ -91,11 +91,14 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 
 		if (is_array($reflectionMethods)) {
 			foreach ($reflectionMethods as $reflectionMethod) {
-				if ($reflectionMethod->isPublic() && substr($reflectionMethod->getName(), 0, 6) === 'inject') {
+				if ($reflectionMethod->isPublic()
+					&& substr($reflectionMethod->getName(), 0, 6) === 'inject'
+					&& $reflectionMethod->getName() !== 'injectSettings') {
+
 					$reflectionParameter = $reflectionMethod->getParameters();
 					if (isset($reflectionParameter[0])) {
 						if (!$reflectionParameter[0]->getClass()) {
-							throw new Exception('Method is marked as setter for Dependency Injection, but doesnt have a type annotation');
+							throw new Exception('Method "' . $reflectionMethod->getName(). '" of class "' . $reflectedClass->getName() . '" is marked as setter for Dependency Injection, but does not have a type annotation');
 						}
 						$result[$reflectionMethod->getName()] = $reflectionParameter[0]->getClass()->getName();
 					}

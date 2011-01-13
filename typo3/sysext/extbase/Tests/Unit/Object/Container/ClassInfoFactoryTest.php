@@ -35,7 +35,7 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fix
 class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var t3lib_object_ClassInfoFactory
+	 * @var Tx_Extbase_Object_Container_ClassInfoFactory
 	 */
 	private $classInfoFactory;
 
@@ -52,6 +52,14 @@ class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Ext
 	 */
 	public function buildClassInfoFromClassNameThrowsExceptionIfGivenClassNameCantBeReflected() {
 		$this->classInfoFactory->buildClassInfoFromClassName('SomeNonExistingClass');
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildClassInfoDoesNotIncludeInjectSettingsMethodInListOfInjectMethods() {
+		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('t3lib_object_tests_class_with_injectsettings');
+		$this->assertEquals(array('injectFoo' => 't3lib_object_tests_resolveablecyclic1'), $classInfo->getInjectMethods());
 	}
 
 	/**
