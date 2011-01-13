@@ -1,3 +1,7 @@
+2011-01-13  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16991: Fatal Error when calling List when "perm" sysext is not installed (Thanks to Georg Ringer)
+
 2011-01-13  Ernesto Baschny  <ernesto.baschny@typo3.org>
 
 	* Release of TYPO3 4.5.0beta4

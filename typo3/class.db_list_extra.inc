@@ -1209,7 +1209,7 @@ class localRecordList extends recordList {
 				}
 
 					// "Edit Perms" link:
-				if ($table=='pages' && $GLOBALS['BE_USER']->check('modules','web_perm'))	{
+				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules','web_perm') && t3lib_extMgm::isLoaded('perm'))	{
 					$cells['perms'] =
 						'<a href="' .
 							htmlspecialchars(
