@@ -190,6 +190,13 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			}
 			$overriddenSwitchableControllerActions[$controllerName] = array('actions' => $actions);
 			$nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
+
+			if (!is_array($nonCacheableActions)) {
+				// There are no non-cacheable actions, thus we can directly continue
+				// with the next controller name.
+				continue;
+			}
+
 			$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
 			if (!empty($overriddenNonCacheableActions)) {
 				$overriddenSwitchableControllerActions[$controllerName]['nonCacheableActions'] = $overriddenNonCacheableActions;
