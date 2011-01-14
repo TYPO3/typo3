@@ -50,7 +50,7 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
 	position: absolute;
 	right: 4px;
-	top: 6px;
+	top: 28%;
 	z-index: 1000;
 	cursor: pointer;
 }
@@ -59,7 +59,7 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
 	position: absolute;
 	right: 24px;
-	top: 6px;
+	top: 28%;
 	z-index: 1000;
 	cursor: pointer;
 }
@@ -75,6 +75,7 @@ table#typo3-altdoc-header input,
 	position: relative;
 	z-index: 2000;
 	min-height: 14px;
+	padding-right: 20px!important;
 }
 
 .t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
