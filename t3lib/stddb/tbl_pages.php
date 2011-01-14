@@ -82,7 +82,6 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim,required',
-				'checkbox' => '',
 			),
 		),
 		'TSconfig' => array(
@@ -178,7 +177,6 @@ $TCA['pages'] = array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 			),
 		),
@@ -190,7 +188,6 @@ $TCA['pages'] = array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0, 0, 0, 12, 31, 2020),
@@ -290,7 +287,6 @@ $TCA['pages'] = array(
 				'type' => 'input',
 				'size' => '50',
 				'max' => '255',
-				'checkbox' => '',
 				'eval' => 'trim',
 			),
 		),
@@ -314,7 +310,6 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => '',
-				'checkbox' => '',
 			),
 		),
 		'target' => array(
@@ -325,7 +320,6 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '80',
 				'eval' => 'trim',
-				'checkbox' => '',
 			),
 		),
 		'alias' => array(
@@ -337,7 +331,6 @@ $TCA['pages'] = array(
 				'max' => '32',
 				'eval' => 'nospace,alphanum_x,lower,unique',
 				'softref' => 'notify',
-				'checkbox' => '',
 			),
 		),
 		'url' => array(
@@ -348,7 +341,6 @@ $TCA['pages'] = array(
 				'max' => '255',
 				'eval' => 'trim,required',
 				'softref' => 'url',
-				'checkbox' => '',
 			),
 		),
 		'urltype' => array(
@@ -388,7 +380,6 @@ $TCA['pages'] = array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'datetime',
-				'checkbox' => '0',
 				'default' => '0',
 			),
 		),
@@ -400,7 +391,6 @@ $TCA['pages'] = array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 			),
 		),
@@ -594,7 +584,6 @@ $TCA['pages'] = array(
 				'size' => '23',
 				'eval' => 'trim',
 				'max' => '80',
-				'checkbox' => '',
 			),
 		),
 		'author_email' => array(
@@ -606,7 +595,6 @@ $TCA['pages'] = array(
 				'eval' => 'trim',
 				'max' => '80',
 				'softref' => 'email[subst]',
-				'checkbox' => '',
 			),
 		),
 		'media' => array(

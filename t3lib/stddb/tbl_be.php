@@ -114,7 +114,6 @@ $TCA['be_users'] = array(
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => '',
 				'softref' => 'substitute'
 			)
 		),
@@ -263,7 +262,6 @@ $TCA['be_users'] = array(
 				'max' => '20',
 				'eval' => 'date',
 				'default' => '0',
-				'checkbox' => '0'
 			)
 		),
 		'endtime' => array(
@@ -273,7 +271,6 @@ $TCA['be_users'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0, 0, 0, 12, 31, 2020),
@@ -608,7 +605,6 @@ $TCA['be_groups'] = array(
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => '',
 				'softref' => 'substitute'
 			)
 		),
@@ -835,7 +831,6 @@ $TCA['sys_news'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0'
 			)
 		),
@@ -847,7 +842,6 @@ $TCA['sys_news'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0'
 			)
 		),

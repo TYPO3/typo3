@@ -1054,6 +1054,13 @@ class t3lib_TCEforms {
 		$cssClasses = array($classAndStyleAttributes['class']);
 		$cssStyle = $classAndStyleAttributes['style'];
 
+		if (!isset($config['checkbox'])) {
+			$config['checkbox'] = '0';
+			$checkboxIsset = FALSE;
+		} else {
+			$checkboxIsset = TRUE;
+		}
+
 		if (in_array('date', $evalList) || in_array('datetime', $evalList)) {
 			if (in_array('datetime', $evalList)) {
 				$class = 'datetime';
@@ -1079,27 +1086,24 @@ class t3lib_TCEforms {
 		} elseif (in_array('timesec', $evalList)) {
 			$inputId = uniqid('tceforms-timesecfield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
-
 		} elseif (in_array('year', $evalList)) {
 			$inputId = uniqid('tceforms-yearfield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-yearfield';
-
 		} elseif (in_array('time', $evalList)) {
 			$inputId = uniqid('tceforms-timefield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-timefield';
-
 		} elseif (in_array('int', $evalList)) {
 			$inputId = uniqid('tceforms-intfield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-intfield';
-
 		} elseif (in_array('double2', $evalList)) {
 			$inputId = uniqid('tceforms-double2field-');
 			$cssClasses[] = 'tceforms-textfield tceforms-double2field';
-
 		} else {
 			$inputId = uniqid('tceforms-textfield-');
 			$cssClasses[] = 'tceforms-textfield';
-
+			if ($checkboxIsset === FALSE) {
+				$config['checkbox'] = '';
+			}
 		}
 		if (isset($config['wizards']['link'])) {
 			$inputId = uniqid('tceforms-linkfield-');

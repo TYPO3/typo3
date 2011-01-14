@@ -85,7 +85,6 @@ $TCA['fe_users'] = array(
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => '',
 				'softref' => 'substitute'
 			)
 		),
@@ -259,7 +258,6 @@ $TCA['fe_users'] = array(
 				'max' => '20',
 				'eval' => 'date',
 				'default' => '0',
-				'checkbox' => '0'
 			)
 		),
 		'endtime' => array(
@@ -270,7 +268,6 @@ $TCA['fe_users'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
@@ -379,7 +376,6 @@ $TCA['fe_groups'] = array(
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => ''
 			)
 		),
 		'description' => array(
@@ -449,7 +445,6 @@ $TCA['sys_domain'] = array(
 				'type' => 'input',
 				'size' => '35',
 				'max' => '120',
-				'checkbox' => '',
 				'default' => '',
 				'eval' => 'trim',
 				'softref' => 'substitute'
@@ -538,7 +533,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0'
 			)
 		),
@@ -550,7 +544,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
@@ -566,7 +559,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim,required',
-				'checkbox' => '',
 			)
 		),
 		'subtitle' => array(
@@ -578,7 +570,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim',
-				'checkbox' => '',
 			)
 		),
 		'nav_title' => array(
@@ -590,7 +581,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim',
-				'checkbox' => '',
 			)
 		),
 		'keywords' => array(
@@ -628,7 +618,6 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '23',
 				'eval' => 'trim',
 				'max' => '80',
-				'checkbox' => '',
 			)
 		),
 		'author_email' => array(
@@ -640,7 +629,6 @@ $TCA['pages_language_overlay'] = array(
 				'eval' => 'trim',
 				'max' => '80',
 				'softref' => 'email[subst]',
-				'checkbox' => '',
 			)
 		),
 		'media' => array(
@@ -667,7 +655,6 @@ $TCA['pages_language_overlay'] = array(
 				'max' => '255',
 				'eval' => 'trim',
 				'softref' => 'url',
-				'checkbox' => '',
 			)
 		),
 		'urltype' => array(
@@ -930,7 +917,6 @@ $TCA['sys_template'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0'
 			)
 		),
@@ -942,7 +928,6 @@ $TCA['sys_template'] = array(
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'date',
-				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
