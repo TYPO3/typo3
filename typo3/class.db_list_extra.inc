@@ -1472,7 +1472,7 @@ class localRecordList extends recordList {
 	 * @param	integer		UID of record
 	 * @return	string		HTML-table
 	 *
-	 * @deprecated since 4.4: Use getReferenceHTML() instead
+	 * @deprecated since 4.4: Use createReferenceHtml() instead
 	 */
 	function makeRef($table,$uid)	{
 		t3lib_div::logDeprecatedFunction();

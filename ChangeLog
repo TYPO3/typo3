@@ -1,6 +1,11 @@
+2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()
+
 2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
+	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()
+	* Fixed bug #16967: [Caching framework] Remove not existing "GlobalsBackend" from config_default.php
 
 2011-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
