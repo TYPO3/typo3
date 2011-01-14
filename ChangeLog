@@ -11,6 +11,7 @@
 2011-01-14  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16996: CSH tooltip shows for too long time (Thanks to Christian Mueller)
+	* Fixed bug #17001: Rename config.doctype value "html_5" to "html5" (Thanks to Sebastian Michaelsen)
 
 2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
 

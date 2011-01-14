@@ -759,7 +759,7 @@ class template {
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 				// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
-			case 'html_5':
+			case 'html5':
 			default:
 				$headerStart = '<!DOCTYPE html>' . LF;
 				$htmlTag = '<html>';

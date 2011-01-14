@@ -458,7 +458,7 @@ Use this feature in templates supplying other content-types than HTML. That coul
 "xhtml_11" for XHTML 1.1 doctype.
 "xhtml+rdf_10" for XHTML+RDFa 1.0 doctype.
 "xhtml_2" for XHTML 2 doctype.
-"html_5" for HTML5
+"html5" for HTML5
 "none" for NO doctype at all.
 
 Note that the keywords also change the way TYPO3 generates some of the XHTML tags to ensure valid XML. If you set doctype to a string, then you must also set config.xhtmlDoctype (see below).

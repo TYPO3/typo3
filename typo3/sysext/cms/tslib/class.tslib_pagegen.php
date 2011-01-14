@@ -211,6 +211,11 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$GLOBALS['TSFE']->linkVars='';
 		}
 
+		if($GLOBALS['TSFE']->config['config']['doctype'] == 'html_5') {
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.doctype = html_5', 'It will be removed in TYPO3 4.7. Use html5 instead.');
+			$GLOBALS['TSFE']->config['config']['doctype'] = 'html5';
+		}
+		
 			// Setting XHTML-doctype from doctype
 		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
 			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
@@ -427,7 +432,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
 	"http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">';
 					break;
-				case 'html_5' :
+				case 'html5' :
 					$docTypeParts[] = '<!DOCTYPE html>';
 					break;
 				case 'none' :
@@ -443,10 +448,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($GLOBALS['TSFE']->xhtmlVersion) {
 			$htmlTagAttributes['xml:lang'] = $htmlLang;
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion < 110 || $doctype === 'html_5') {
+		if ($GLOBALS['TSFE']->xhtmlVersion < 110 || $doctype === 'html5') {
 			$htmlTagAttributes['lang'] = $htmlLang;
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion || $doctype === 'html_5') {
+		if ($GLOBALS['TSFE']->xhtmlVersion || $doctype === 'html5') {
 			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml'; // We add this to HTML5 to achieve a slightly better backwards compatibility
 			if (is_array($GLOBALS['TSFE']->config['config']['namespaces.'])) {
 				foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
