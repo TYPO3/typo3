@@ -4,6 +4,7 @@
 
 2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()
 	* Fixed bug #17034: Live search also returns records which not available to the user (Thanks to Peter Beernink)
 	* Follow-up to #17032: Remove early return
 
@@ -100,7 +101,7 @@
 
 2011-01-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #16967: [Caching framework] Remove not exising "GlobalsBackend" from config_default.php
+	* Fixed bug #16967: [Caching framework] Remove not existing "GlobalsBackend" from config_default.php
 
 2011-01-11  Ernesto Baschny  <ernst@cron-it.de>
 
