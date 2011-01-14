@@ -15,6 +15,7 @@
 
 2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17042: Double class attribute for select tag of tceforms "type=select" if using icons
 	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()
 	* Fixed bug #17034: Live search also returns records which not available to the user (Thanks to Peter Beernink)
 	* Follow-up to #17032: Remove early return

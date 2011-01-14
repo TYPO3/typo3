@@ -1635,6 +1635,7 @@ class t3lib_TCEforms {
 			// Traverse the Array of selector box items:
 		$optGroupStart = array();
 		$optGroupOpen = FALSE;
+		$classesForSelectTag = array();
 		foreach ($selItems as $p) {
 			$sM = (!strcmp($PA['itemFormElValue'], $p[1]) ? ' selected="selected"' : '');
 			if ($sM) {
@@ -1648,7 +1649,8 @@ class t3lib_TCEforms {
 				if ($sM) {
 					list($selectIconFile, $selectIconInfo) = $this->getIcon($p[2]);
 					if (!empty($selectIconInfo)) {
-						$selectedStyle = ' class="typo3-TCEforms-select-selectedItemWithBackgroundImage" style="background-image:url(' . $selectIconFile . ');"';
+						$selectedStyle = ' style="background-image:url(' . $selectIconFile . ');"';
+						$classesForSelectTag[] = 'typo3-TCEforms-select-selectedItemWithBackgroundImage';
 					}
 				}
 			}
@@ -1720,8 +1722,11 @@ class t3lib_TCEforms {
 		if (!$disabled) {
 			$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . htmlspecialchars($sI) . '" />'; // MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
 		}
+		if ($config['iconsInOptionTags']) {
+			$classesForSelectTag[] = 'icon-select';
+		}
 		$item .= '<select' . $selectedStyle . ' id="' . uniqid('tceforms-select-') . '" name="' . $PA['itemFormElName'] . '"' .
-				 ($config['iconsInOptionTags'] ? $this->insertDefStyle('select', 'icon-select') : $this->insertDefStyle('select')) .
+				 $this->insertDefStyle('select', implode(' ', $classesForSelectTag)) .
 				 ($size ? ' size="' . $size . '"' : '') .
 				 ' onchange="' . htmlspecialchars($onChangeIcon . $sOnChange) . '"' .
 				 $PA['onFocus'] . $disabled . '>';
