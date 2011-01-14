@@ -57,7 +57,7 @@ interface tx_scheduler_AdditionalFieldProvider {
 	 * Takes care of saving the additional fields' values in the task's object
 	 *
 	 * @param	array					An array containing the data submitted by the add/edit task form
-	 * @param	tx_scheduler_Module		Reference to the scheduler backend module
+	 * @param	tx_scheduler_Task		Reference to the scheduler backend module
 	 * @return	void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task);
