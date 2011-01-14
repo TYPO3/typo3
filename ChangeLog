@@ -2,6 +2,7 @@
 
 	* Fixed bug #17035: Positioning and JS behaviour of the icon to clear input fields are suboptimal (Thanks to Jo Hasenau)
 	* Fixed bug #16028: Enable "clear input field" functionality by default (Thanks to Jo Hasenau)
+	* Fixed bug #16256 Bug: Hardcoded label when editing a Page (Thanks to Jo Hasenau)
 
 2011-01-14  Francois Suter  <francois.suter@typo3.org>
 

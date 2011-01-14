@@ -734,7 +734,7 @@ $TCA['pages'] = array(
 				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( be_layouts.pid = ###PAGE_TSCONFIG_ID### OR be_layouts.pid = ###STORAGE_PID### ) ) AND be_layouts.hidden = 0',
 				'items' => array(
 					array('', 0),
-					array('none', -1)
+					array('LLL:EXT:cms/locallang_tca.xml:pages.be_layout.none', -1)
 				),
 				'selicon_cols' => 5,
 				'size' => 1,
@@ -751,7 +751,7 @@ $TCA['pages'] = array(
 				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( be_layouts.pid = ###PAGE_TSCONFIG_ID### OR be_layouts.pid = ###STORAGE_PID### ) ) AND be_layouts.hidden = 0',
 				'items' => array(
 					array('', 0),
-					array('none', -1)
+					array('LLL:EXT:cms/locallang_tca.xml:pages.be_layout.none', -1)
 				),
 				'selicon_cols' => 5,
 				'size' => 1,
