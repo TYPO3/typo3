@@ -189,6 +189,10 @@ class t3lib_search_livesearch {
 	protected function findByTable($tableName, $pageIdList, $limit) {
 		$getRecordArray = array();
 		$fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
+		if (count($fieldsToSearchWithin) == 0) {
+				// No field to search in this table
+			return array();
+		}
 		$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ';
 		$where = 'pid IN(' . $pageIdList . ')' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
 		$orderBy = $this->makeOrderByTable($tableName);

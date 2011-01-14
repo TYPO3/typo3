@@ -1,3 +1,7 @@
+2011-01-14  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17032: Backend search throws Exceptions / SQL errors when running as non-admin
+
 2011-01-14  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed issue #16698: sys_history: optimize indexes (Thanks to Juergen Deisenroth and Christian Kuhn)
