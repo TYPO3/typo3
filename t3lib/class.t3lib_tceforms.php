@@ -2589,7 +2589,12 @@ class t3lib_TCEforms {
 						$lang = 'l' . $lKey; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF'; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_lang'] = $lang;
-						$PA['_cshFile'] = ((isset($dataStruct['ROOT']['TCEforms']) && isset($dataStruct['ROOT']['TCEforms']['cshFile'])) ? $dataStruct['ROOT']['TCEforms']['cshFile'] : '');
+							// Assemble key for loading the correct CSH file
+						$dsPointerFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$field]['config']['ds_pointerField'], TRUE);
+						$PA['_cshKey'] = $table . '.' . $field;
+						foreach ($dsPointerFields as $key) {
+							$PA['_cshKey'] .= '.' . $row[$key];
+						}
 
 							// Push the sheet level tab to DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
@@ -2977,9 +2982,8 @@ class t3lib_TCEforms {
 								$processedTitle = str_replace('\n', '<br />', $theTitle);
 								$tRows[] = '<div class="t3-form-field-container t3-form-field-container-flex">' .
 										   '<div class="t3-form-field-label t3-form-field-label-flex">' .
-										   $this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) .
 										   $languageIcon .
-										   $processedTitle .
+										   t3lib_BEfunc::wrapInHelp($PA['_cshKey'], $key, $processedTitle) .
 										   '</div>
 									<div class="t3-form-field t3-form-field-flex">' . $theFormEl . $defInfo . $this->renderVDEFDiff($editData[$key], $vDEFkey) . '</div>
 								</div>';
@@ -5230,8 +5234,10 @@ class t3lib_TCEforms {
 	 * @param	string		Field title
 	 * @param	string		File name with CSH labels
 	 * @return	string		HTML, <a>-tag with
+	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use t3lib_BEfunc::wrapInHelp() instead.
 	 */
 	function helpTextIcon_typeFlex($field, $fieldTitle, $cshFile) {
+		t3lib_div::logDeprecatedFunction();
 		if ($this->globalShowHelp && $cshFile) {
 			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
 			if (trim($value)) {
@@ -5273,8 +5279,10 @@ class t3lib_TCEforms {
 	 * @param	string		Field name
 	 * @param	string		CSH file name
 	 * @return	string		Description for the field with cion or empty string
+	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use t3lib_BEfunc::wrapInHelp() instead.
 	 */
 	function helpText_typeFlex($field, $fieldTitle, $cshFile) {
+		t3lib_div::logDeprecatedFunction();
 		if ($this->globalShowHelp && $cshFile && $this->edit_showFieldHelp == 'text') {
 			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
 			if (trim($value)) {

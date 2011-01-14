@@ -150,6 +150,15 @@ Development
 	  This will allow unit tests to inject mocks into makeInstance.
 	  In addition, there now is a function purgeInstances that makes
 	  makeInstance return fresh instances (singleton as well as non-singleton).
+	* CSH for FlexForms is handled more cleanly but requires adjustments.
+	  This has an impact in particular for FE plugins. To continue displaying
+	  the CSH for their FlexForm, the CSH file must be declared
+	  as for other elements, i.e.
+
+	  t3lib_extMgm::addLLrefForTCAdescr('somekey', 'EXT:myext/locallang_csh.xml');
+
+	  For more details, in particular how the key is defined, see:
+	  http://wiki.typo3.org/Pending_Documentation#CSH_for_FlexForms
 
 
 TypoScript

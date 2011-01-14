@@ -1,3 +1,7 @@
+2011-01-14  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16848: CSH in FlexForms does not work anymore
+
 2011-01-14  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16996: CSH tooltip shows for too long time (Thanks to Christian Mueller)
