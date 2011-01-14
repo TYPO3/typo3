@@ -1,3 +1,7 @@
+2011-01-14  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed issue #16698: sys_history: optimize indexes (Thanks to Juergen Deisenroth and Christian Kuhn)
+
 2011-01-13  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed issue #16919: Catalan flag is replaced by Canadian flag (Thanks to Alexandre Gravel-Raymond)

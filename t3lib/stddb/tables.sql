@@ -345,9 +345,10 @@ CREATE TABLE sys_history (
   history_files mediumtext,
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
-  KEY recordident (tablename,recuid,tstamp),
+  KEY recordident_1 (tablename,recuid),
+  KEY recordident_2 (tablename,tstamp),
   KEY sys_log_uid (sys_log_uid)
-);
+) ENGINE=InnoDB;
 
 #
 # Table structure for table 'sys_lockedrecords'
