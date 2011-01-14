@@ -187,21 +187,20 @@ class t3lib_search_livesearch {
 	 * @see extractSearchableFieldsFromTable()
 	 */
 	protected function findByTable($tableName, $pageIdList, $limit) {
-		$getRecordArray = array();
 		$fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-		if (count($fieldsToSearchWithin) == 0) {
-				// No field to search in this table
-			return array();
+
+		$getRecordArray = array();
+		if (count($fieldsToSearchWithin) > 0) {
+			$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ';
+			$where = 'pid IN(' . $pageIdList . ')' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
+			$orderBy = $this->makeOrderByTable($tableName);
+			$getRecordArray = $this->getRecordArray(
+				$tableName,
+				$pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin),
+				$this->makeOrderByTable($tableName),
+				$limit
+			);
 		}
-		$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ';
-		$where = 'pid IN(' . $pageIdList . ')' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
-		$orderBy = $this->makeOrderByTable($tableName);
-		$getRecordArray = $this->getRecordArray(
-			$tableName,
-			$pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin),
-			$this->makeOrderByTable($tableName),
-			$limit
-		);
 
 		return $getRecordArray;
 	}

@@ -1,3 +1,7 @@
+2011-01-14  Christia Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #17032: Remove early return
+
 2011-01-14  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17032: Backend search throws Exceptions / SQL errors when running as non-admin
