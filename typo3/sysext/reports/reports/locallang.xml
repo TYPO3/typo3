@@ -19,8 +19,6 @@
 			<label index="status_connectionFailed">Connection Failed</label>
 			<label index="status_updateComplete">Update Complete</label>
 			<label index="status_updateIncomplete">Update Incomplete</label>
-			<label index="status_updateTaskTitle">System Status Update</label>
-			<label index="status_updateTaskDescription">Runs a system status check and sends notifications if problems have been found.</label>
 			<label index="status_problemNotification">One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</label>
 			<label index="status_typo3">TYPO3 System</label>
 			<label index="status_system">System</label>
@@ -52,6 +50,8 @@
 			<label index="status_configuration_DeprecationLogEnabled">The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</label>
 			<label index="status_configuration_DeprecationLogFile">You can find the deprecation log file at %s.</label>
 			<label index="status_configuration_DeprecationLogSize">Your deprecation log file currently takes up %s.</label>
+			<label index="status_updateTaskTitle">System Status Update</label>
+			<label index="status_updateTaskDescription">Runs a system status check and sends notifications if problems have been found.</label>
 		</languageKey>
 	</data>
 </T3locallang>
