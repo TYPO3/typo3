@@ -1,5 +1,6 @@
 2011-01-14  Christia Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17034: Live search also returns records which not available to the user (Thanks to Peter Beernink)
 	* Follow-up to #17032: Remove early return
 
 2011-01-14  Ernesto Baschny  <ernst@cron-it.de>

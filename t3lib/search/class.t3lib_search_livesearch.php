@@ -192,11 +192,11 @@ class t3lib_search_livesearch {
 		$getRecordArray = array();
 		if (count($fieldsToSearchWithin) > 0) {
 			$pageBasedPermission = ($tableName == 'pages' && $this->userPermissions) ? $this->userPermissions : '1=1 ';
-			$where = 'pid IN(' . $pageIdList . ')' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
+			$where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
 			$orderBy = $this->makeOrderByTable($tableName);
 			$getRecordArray = $this->getRecordArray(
 				$tableName,
-				$pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin),
+				$where,
 				$this->makeOrderByTable($tableName),
 				$limit
 			);
