@@ -101,30 +101,67 @@ TYPO3.ContextHelp = function() {
 				cls: 'typo3-csh-tooltip',
 				shadow: false,
 				dismissDelay: 0, // tooltip stays while mouse is over target
+				autoHide: true,
 				showDelay: 500, // show after 0.5 seconds
-				hideDelay: 3000, // hide after 3 seconds
+				hideDelay: 500, // hide after 3 seconds
 				closable: true,
+				isMouseOver: false,
 				listeners: {
 					beforeshow: showToolTipHelp,
 					render: function(tip) {
-						tip.body.on('click', function(event){
-							event.stopEvent();
-							if (tip.moreInfo) {
-								try {
-									top.TYPO3.ContextHelpWindow.open(tip.cshLink);
-								} catch(e) {
-									// do nothing
+						tip.body.on({
+							'click': {
+								fn: function(event) {
+									event.stopEvent();
+									if (tip.moreInfo) {
+										try {
+											top.TYPO3.ContextHelpWindow.open(tip.cshLink);
+										} catch(e) {
+											// do nothing
+										}
+									}
+									tip.hide();
 								}
 							}
 						});
+						tip.el.on({
+							'mouseover': {
+								fn: function() {
+									tip.isMouseOver = true;
+								}
+							},
+							'mouseout': {
+								fn: function() {
+									tip.isMouseOver = false;
+									tip.hide.defer(200, tip, []);
+								}
+							}
+						});		
 					},
 					hide: function(tip) {
 						tip.setTitle('');
 						tip.body.dom.innerHTML = '';
 					},
+					beforehide: function(tip) {
+						return !tip.isMouseOver;
+					},
 					scope: this
 				}
 			});
+
+			Ext.getBody().on({
+				'keydown': {
+					fn: function() {
+						tip.hide();
+					}
+				},
+				'click': {
+					fn: function() {
+						tip.hide();
+					}
+				}
+			});
+
 		},
 
 

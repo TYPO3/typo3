@@ -1,4 +1,8 @@
-2011-01-14  Christia Kuhn  <lolli@schwarzbu.ch>
+2011-01-14  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16996: CSH tooltip shows for too long time (Thanks to Christian Mueller)
+
+2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17034: Live search also returns records which not available to the user (Thanks to Peter Beernink)
 	* Follow-up to #17032: Remove early return
