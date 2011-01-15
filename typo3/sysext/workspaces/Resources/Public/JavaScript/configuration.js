@@ -153,6 +153,7 @@ TYPO3.Workspaces.Configuration.ChangeState = {
 	dataIndex : 'change',
 	width: 80,
 	sortable: true,
+	hidden: true,
 	header : TYPO3.lang["column.difference"],
 	renderer: function(value, metaData) {
 		return value + "%";

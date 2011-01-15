@@ -1,6 +1,7 @@
 2011-01-15  Marco Bresch  <typo3@starfinanz.de>
 
 	* Fixed bug: include htmlspecialchars for labels to display html-tags
+	* Bug #11585: Hide difference column for default
 
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
