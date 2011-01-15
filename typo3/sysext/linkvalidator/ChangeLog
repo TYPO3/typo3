@@ -1,3 +1,7 @@
+2011-01-15  Christopher  <chrissitopher@gmx.de>
+
+	* Fixed bug #12243: Information on storage location of broken links is wrong in text
+
 2011-01-08  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #12019: Do not display the format of the date of the last check
