@@ -1,3 +1,7 @@
+2011-01-15  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #16911: Restructure of t3lib_utility_Mail hook subscriber
+
 2011-01-15  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #16936: wizardtitle "Versioning and Workspaces: Migrate "draft" workspace" is misleading

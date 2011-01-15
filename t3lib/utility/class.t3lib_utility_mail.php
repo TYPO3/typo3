@@ -62,8 +62,28 @@ final class t3lib_utility_Mail {
 				'additionalParameters' => $additionalParameters,
 			);
 			$fakeThis = FALSE;
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] as $hookMethod) {
-				$success = $success && t3lib_div::callUserFunction($hookMethod, $parameters, $fakeThis);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] as $hookSubscriber) {
+				$hookSubscriberContainsArrow = strpos($hookSubscriber, '->');
+
+				if ($hookSubscriberContainsArrow !== FALSE) {
+						// deprecated, remove in TYPO3 4.7
+					t3lib_div::deprecationLog(
+						'The usage of user function notation for the substituteMailDelivery hook is deprecated,
+						use the t3lib_mail_MailerAdapter interface instead.'
+					);
+					$success = $success && t3lib_div::callUserFunction($hookSubscriber, $parameters, $fakeThis);
+				} else {
+					$mailerAdapter = t3lib_div::makeInstance($hookSubscriber);
+					if ($mailerAdapter instanceof t3lib_mail_MailerAdapter) {
+						$success = $success && $mailerAdapter->mail($to, $subject, $messageBody, $additionalHeaders, $additionalParameters, $fakeThis);
+					} else {
+						throw new RuntimeException(
+							$hookSubscriber . ' is not an implementation of t3lib_mail_MailerAdapter,
+							but must implement that interface to be used in the substituteMailDelivery hook.',
+							1294062286
+						);
+					}
+				}
 			}
 		} else {
 			if (t3lib_utility_PhpOptions::isSafeModeEnabled() && !is_null($additionalParameters)) {
