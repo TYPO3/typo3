@@ -161,7 +161,7 @@ You can select nothing or "none" to get the default column view of the page modu
 
 If you select a layout or "none", it will override any settings that might have been inherited from pages in the rootline of the current page.
 
-The selection is &lt;b&gt;NOT&lt;/b&gt; inherited automatically by subpages - use &lt;b&gt;Backend Layout (subpages of this page)&lt;/b&gt; if you want to acchieve this.
+The selection is &lt;b&gt;NOT&lt;/b&gt; inherited automatically by subpages - use &lt;b&gt;Backend Layout (subpages of this page)&lt;/b&gt; if you want to achieve this.
 </label>
 			<label index="_be_layout.seeAlso">pages:be_layout_next_level</label>
 			<label index="be_layout_next_level.description">Select a backend layout for all subpages of this page.</label>
