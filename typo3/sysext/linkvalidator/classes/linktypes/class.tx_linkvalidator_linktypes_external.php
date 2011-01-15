@@ -61,9 +61,9 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 			// try to fetch the content of the URL (headers only)
 		$report = array();
 
-		    // get the header
-        $content = '';
-        $content = t3lib_div::getURL($url, 2, FALSE, $report);
+			// try fetching the content of the URL (just fetching the headers does not work correctly)
+		$content = '';
+		$content = t3lib_div::getURL($url, 1, FALSE, $report);
 
 		$tries = 0;
 		while (($report['http_code'] == 301 || $report['http_code'] == 302

@@ -1,6 +1,7 @@
 2011-01-15  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #12243: Information on storage location of broken links is wrong in text
+	* Fixed bug #12232: Redirects to https get reported as 404 (thanks to Andreas Lappe)
 
 2011-01-08  Christopher  <chrissitopher@gmx.de>
 
