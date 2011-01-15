@@ -80,6 +80,24 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 
 			// analyze the response
 		if ($report['error']) {
+				// More cURL error codes can be found here:
+				// http://curl.haxx.se/libcurl/c/libcurl-errors.html
+			if ($report['lib'] === 'cURL' && $report['error'] === 28) {
+				$errorParams['errorType'] = 'cURL28';
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 22) {
+				if (strstr($report['message'], '404')) {
+					$errorParams['errorType'] = 404;
+				} elseif(strstr($report['message'], '403')) {
+					$errorParams['errorType'] = 403;
+				} elseif(strstr($report['message'], '500')) {
+					$errorParams['errorType'] = 500;
+				}
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 6) {
+				$errorParams['errorType'] = 'cURL6';
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 56) {
+				$errorParams['errorType'] = 'cURL56';
+			}
+
 			$response = FALSE;
 		}
 
@@ -138,6 +156,22 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 
 			case 403:
 				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+				break;
+
+			case 500:
+				$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
+				break;
+
+			case 'cURL6':
+				$response = $GLOBALS['LANG']->getLL('list.report.couldnotresolvehost');
+				break;
+
+			case 'cURL28':
+				$response = $GLOBALS['LANG']->getLL('list.report.timeout');
+				break;
+
+			case 'cURL56':
+				$response = $GLOBALS['LANG']->getLL('list.report.errornetworkdata');
 				break;
 
 			default:

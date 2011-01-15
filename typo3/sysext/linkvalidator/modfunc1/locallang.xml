@@ -56,6 +56,10 @@
 			<label index="list.report.pagenotfound404">The requested url was not found (404).</label>
 			<label index="list.report.externalerror">External Link returned HTTP error code (%s).</label>
 			<label index="list.report.filenotexisting">File doesn't exist.</label>
+			<label index="list.report.timeout">Operation timeout. The specified time-out period was reached according to the conditions.</label>
+			<label index="list.report.internalerror500">Internal Server Error (500)</label>
+			<label index="list.report.couldnotresolvehost">Could not resolve host. The given remote host was not resolved.</label>
+			<label index="list.report.errornetworkdata">Failure with receiving network data.</label>
 			<label index="list.msg.ok">Ok</label>
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links.title">No broken links to show!</label>
