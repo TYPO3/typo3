@@ -98,13 +98,13 @@ class tx_Workspaces_Service_GridData {
 					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
-					$versionArray['label_Workspace'] = $versionRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
-					$versionArray['label_Live'] = $origRecord[$GLOBALS['TCA'][$table]['ctrl']['label']];
-					$versionArray['label_Stage'] = $stagesObj->getStageTitle($versionRecord['t3ver_stage']);
+					$versionArray['label_Workspace'] = htmlspecialchars($versionRecord[$GLOBALS['TCA'][$table]['ctrl']['label']]);
+					$versionArray['label_Live'] = htmlspecialchars($origRecord[$GLOBALS['TCA'][$table]['ctrl']['label']]);
+					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$versionArray['change'] = $pctChange;
-					$versionArray['path_Live'] = t3lib_BEfunc::getRecordPath($record['livepid'], '', 999);
-					$versionArray['path_Workspace'] = t3lib_BEfunc::getRecordPath($record['wspid'], '', 999);
-					$versionArray['workspace_Title'] = tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']);
+					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
+					$versionArray['path_Workspace'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['wspid'], '', 999));
+					$versionArray['workspace_Title'] = htmlspecialchars(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
 					$versionArray['workspace_Formated_Tstamp'] = t3lib_BEfunc::datetime($versionRecord['tstamp']);

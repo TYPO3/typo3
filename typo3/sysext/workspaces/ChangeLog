@@ -1,3 +1,7 @@
+2011-01-15  Marco Bresch  <typo3@starfinanz.de>
+
+	* Fixed bug: include htmlspecialchars for labels to display html-tags
+
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
