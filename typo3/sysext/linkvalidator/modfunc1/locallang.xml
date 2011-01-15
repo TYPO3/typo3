@@ -43,7 +43,7 @@
 			<label index="list.tableHead.lastCheck">Last check</label>
 			<label index="list.edit">Edit element containing this broken link</label>
 			<label index="list.field">(Field: %s)</label>
-			<label index="list.no.headline">&lt;i&gt;(no headline)&lt;/i&gt;</label>
+			<label index="list.no.headline">no headline</label>
 			<label index="list.report.pagedeleted">Page '###title###' (###uid###) is deleted.</label>
 			<label index="list.report.pagenotexisting">Page (###uid###) does not exist.</label>
 			<label index="list.report.pagenotvisible">Page '###title###' (###uid###) is not visible.</label>
