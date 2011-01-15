@@ -33,7 +33,7 @@
  * @version $Id$
  */
 class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
-	protected $title = 'Versioning and Workspaces: Migrate "draft" workspace';
+	protected $title = 'Versioning and Workspaces';
 
 	public $sqlQueries;
 
@@ -45,9 +45,10 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Migrates the old hardcoded draft workspace to be a real workspace element,
-		updates workspace owner fields  to support either users or groups and
-		migrates the old-style workspaces with fixed workflow to a custom-stage workflow';
+		$description = 'Migrates the old hardcoded draft workspace to be a real workspace record,
+		updates workspace owner fields to support either users or groups and
+		migrates the old-style workspaces with fixed workflow to a custom-stage workflow. If required
+		the extbase, fluid, version and workspaces extensions are installed.';
 
 			// TYPO3 version 4.5 and above
 		if ($this->versionNumber >= 4005000) {

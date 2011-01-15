@@ -1,3 +1,7 @@
+2011-01-15  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #16936: wizardtitle "Versioning and Workspaces: Migrate "draft" workspace" is misleading
+
 2011-01-15  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17051: Typo in CSH text (Thanks to Christopher Stemalszyk)
