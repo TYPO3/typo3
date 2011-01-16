@@ -4,11 +4,10 @@
 	var liveUrl = '{liveUrl}';
 	var wsUrl = '{wsUrl}';
 	var wsSettingsUrl = '{wsSettingsUrl}';
-	var wsHelpUrl = '{wsHelpUrl}';
 	document.domain = '{backendDomain}';
 
 	function resize(height) {
-			// poor way to avoid that we require any scrollbars within the frames 
+			// poor way to avoid that we require any scrollbars within the frames
 		var finalHeight = height * 1.1;
 		Ext.getCmp('visualPanel').setHeight(finalHeight);
 		Ext.getCmp('wsPanel').setHeight(finalHeight);

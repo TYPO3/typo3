@@ -86,10 +86,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
 
-		$wsHelpUri = $uriBuilder->uriFor('help', array(), $this, 'workspaces', 'web_workspacesworkspaces');
-		$wsHelpParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
-		$wsHelpUrl = $wsSettingsPath . $wsHelpUri . $wsHelpParams;
-
 		$viewDomain = t3lib_BEfunc::getViewDomain($this->pageId);
 		$wsBaseUrl =  $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
 
@@ -104,23 +100,14 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		}
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
-		$this->view->assign('wsHelpUrl', $wsHelpUrl);
 		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll" , "TYPO3.LLL.Workspaces = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', true) . "',
 			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', true) . "',
-			helpView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.helpView', true) . "',
 			livePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', true) . "',
 			workspacePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', true) . "'
 		};\n");
-	}
-
-	/**
-	 * @return void
-	 */
-	public function helpAction() {
-		// @todo Implement this action
 	}
 
 	/**

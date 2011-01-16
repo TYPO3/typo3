@@ -137,16 +137,6 @@ Ext.onReady(function() {
 					doMask: false,
 					src: wsSettingsUrl
 				}]
-			},{
-				title: TYPO3.LLL.Workspaces.helpView,
-				id: 'wsHelp',
-				layout: 'fit',
-				items:  [{
-					xtype: 'iframePanel',
-					id: 'settingsPanel',
-					doMask: false,
-					src: wsHelpUrl
-				}]
 			}]
 		}]
 	});

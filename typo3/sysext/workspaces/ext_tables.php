@@ -15,7 +15,7 @@ if (TYPO3_MODE == 'BE' && PATH_typo3_mod != 'install/') {
 		array(
 				// An array holding the controller-action-combinations that are accessible
 			'Review'		=> 'index,fullIndex,singleIndex',
-			'Preview'		=> 'index,help,newPage'
+			'Preview'		=> 'index,newPage'
 		),
 		array(
 			'access' => 'user,group',

@@ -73,7 +73,6 @@
 			<label index="info.newpage.detail">The previewed page has been created in a workspace and has no live counterpart.</label>
 			<label index="preview.visualPreview">Visual preview</label>
 			<label index="preview.listView">List view</label>
-			<label index="preview.helpView">Help</label>
 			<label index="preview.livePreview">Live</label>
 			<label index="preview.workspacePreview">Workspace</label>
 		</languageKey>
