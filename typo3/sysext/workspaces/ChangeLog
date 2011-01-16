@@ -1,5 +1,6 @@
 2011-01-17  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12192: Description of workspace module for "about modules" missing
 	* Fixed bug #12194: Legend too wide
 
 2011-01-16  Sonja Scholz <ss@cabag.ch>

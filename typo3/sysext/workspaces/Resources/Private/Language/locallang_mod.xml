@@ -7,6 +7,8 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">Workspaces</label>
+			<label index="mlang_labels_tabdescr">This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</label>
+			<label index="mlang_labels_tablabel">Create and handle versioning workflows</label>
 			<label index="autopublishTask.name">Workspaces auto-publication</label>
 			<label index="autopublishTask.description">This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</label>
 			<label index="stage_ready_to_publish">Ready to publish</label>
