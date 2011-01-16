@@ -2,8 +2,8 @@
 if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
-	// avoid that this block is loaded in the frontend or within the upgrade-wizards 
-if (TYPO3_MODE == 'BE' && PATH_typo3_mod != 'install/') {
+	// avoid that this block is loaded in the frontend or within the upgrade-wizards
+if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) { 
 	/**
 	* Registers a Backend Module
 	*/
