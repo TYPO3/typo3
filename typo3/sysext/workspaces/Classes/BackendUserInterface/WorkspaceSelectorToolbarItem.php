@@ -75,7 +75,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		if (t3lib_extMgm::isLoaded('workspaces')) {
 			if ($this->checkAccess == NULL) {
 					$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
-					if (count($availableWorkspaces) > 1) {
+					if (count($availableWorkspaces) > 0) {
 						$this->checkAccess = TRUE;
 					} else {
 						$this->checkAccess = FALSE;
