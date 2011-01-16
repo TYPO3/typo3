@@ -2,6 +2,7 @@
 
 	* Follow-up to #16966: Missing trailing comma in sliding fields list caused SQL error
 	* Fixed bug #17068: Scheduler: Improve display of status and additional information
+	* Fixed bug #17069: Scheduler: Refresh icon has disappeared
 
 2011-01-15  Jigal van Hemert  <jigal@xs4all.nl>
 
