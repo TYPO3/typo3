@@ -7,11 +7,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="legend.label">Legend:</label>
-			<label index="legend.edited">Record edited</label>
-			<label index="legend.moved">Record moved</label>
-			<label index="legend.deleted">Record deleted</label>
-			<label index="legend.new">Record created</label>
-			<label index="legend.hidden">Record hidden</label>
+			<label index="legend.edited">edited</label>
+			<label index="legend.moved">moved</label>
+			<label index="legend.deleted">deleted</label>
+			<label index="legend.new">created</label>
+			<label index="legend.hidden">hidden</label>
 			<label index="title">Workspaces</label>
 			<label index="ok">ok</label>
 			<label index="cancel">cancel</label>
