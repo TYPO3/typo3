@@ -999,7 +999,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				'0'     => array(
 					'tr'     => array('<tr class="t3-row-header">', '</tr>'),
 					'defCol' => array('<td>', '</td>'),
-					'1'      => array('<td style="width: 36px;">', '</td>')
+					'1'      => array('<td style="width: 36px;">', '</td>'),
+					'3'		 => array('<td colspan="2">', '</td>'),
 				),
 				'defRow' => array(
 					'tr'     => array('<tr class="db_list_normal">', '</tr>'),
@@ -1075,10 +1076,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid
 
-					$name = $registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')';
+					$name = htmlspecialchars($registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')');
 					$additionalInformation = $task->getAdditionalInformation();
 					if (!empty($additionalInformation)) {
-						$name .= ' [' . $additionalInformation . ']';
+						$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
 					}
 
 						// Check if task currently has a running execution
@@ -1156,12 +1157,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 						// Format the execution status,
 						// including failure feedback, if any
-					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . $failureOutput . ' ' . htmlspecialchars($name);
+					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . $failureOutput;
 
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;
 					$table[$tr][] = $schedulerRecord['uid'];
 					$table[$tr][] = $executionStatusOutput;
+					$table[$tr][] = $name;
 					$table[$tr][] = $execType;
 					$table[$tr][] = $frequency;
 					$table[$tr][] = $multiple;

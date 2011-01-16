@@ -1,6 +1,7 @@
 2011-01-16  Francois Suter  <francois.suter@typo3.org>
 
 	* Follow-up to #16966: Missing trailing comma in sliding fields list caused SQL error
+	* Fixed bug #17068: Scheduler: Improve display of status and additional information
 
 2011-01-15  Jigal van Hemert  <jigal@xs4all.nl>
 
