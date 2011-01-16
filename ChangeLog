@@ -1,3 +1,7 @@
+2011-01-16  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #17069: Scheduler: Refresh icon has disappeared
+
 2011-01-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()

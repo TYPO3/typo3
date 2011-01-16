@@ -1581,7 +1581,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		);
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
-			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '>' .
+			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '">' .
 			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
 		  '</a>';
 		}
