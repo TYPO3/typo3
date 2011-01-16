@@ -128,10 +128,12 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 				'</li>';
 		}
 
-			// go to workspace module link
-		$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' .
-			'<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' .
-			' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
+		if ($GLOBALS['BE_USER']->check('modules', 'web_WorkspacesWorkspaces')) {
+				// go to workspace module link
+			$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' .
+				'<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' .
+				' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
+		}
 
 		$workspaceMenu[] = '</ul>';
 

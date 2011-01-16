@@ -2,6 +2,7 @@
 
 	* Fixed bug #11825: non-admin editors can't see non-page records within the review module
 	* Fixed bug #12272: Topbar isn't highlighted if there's only on workspace
+	* Fixed bug #12273: "Go to workspace module" link appears even if user has no access to it
 
 2011-01-16  Tolleiv Nietsch <typo3@tolleiv.de>
 
