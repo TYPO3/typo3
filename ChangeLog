@@ -1,3 +1,7 @@
+2011-01-16  Francois Suter  <francois.suter@typo3.org>
+
+	* Follow-up to #16966: Missing trailing comma in sliding fields list caused SQL error
+
 2011-01-15  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16911: Restructure of t3lib_utility_Mail hook subscriber
