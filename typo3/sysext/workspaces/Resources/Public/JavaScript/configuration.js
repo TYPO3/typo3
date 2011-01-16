@@ -298,7 +298,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 				if (record.json.table == 'pages') {
 					top.loadEditId(record.json.t3ver_oid);
 				} else {
-					top.loadEditId(record.json.realpid);
+					top.loadEditId(record.json.livepid);
 				}
 			},
 			getClass: function(v, meta, rec) {

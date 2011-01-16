@@ -1,3 +1,7 @@
+2011-01-16  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #12291: Icon "Open version of page" does not go the the page of the clicked element
+
 2011-01-15  Marco Bresch  <typo3@starfinanz.de>
 
 	* Fixed bug: include htmlspecialchars for labels to display html-tags
