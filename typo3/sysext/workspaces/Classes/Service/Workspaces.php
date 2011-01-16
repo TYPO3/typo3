@@ -390,7 +390,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * @return array
 	 */
 	protected function filterPermittedElements($recs, $table) {
-		$checkField = ($table == 'pages') ? 'uid' : 'pid';
+		$checkField = ($table == 'pages') ? 'uid' : 'wspid';
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {

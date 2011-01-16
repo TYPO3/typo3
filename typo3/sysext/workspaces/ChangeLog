@@ -1,4 +1,8 @@
-2011-01-17  Tolleiv Nietsch <typo3@tolleiv.de>
+2011-01-16  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11825: non-admin editors can't see non-page records within the review module
+
+2011-01-16  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Followup to #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
 	* Fixed bug #12076: Remove "help" tab
