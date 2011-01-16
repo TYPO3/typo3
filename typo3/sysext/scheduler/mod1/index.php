@@ -1392,32 +1392,39 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Check type and validity of frequency, if recurring
 		if ($this->submittedData['type'] == 2) {
-			$parts = t3lib_div::trimExplode(' ', $this->submittedData['frequency']);
-			$numParts = count($parts);
+			$frequency = trim($this->submittedData['frequency']);
 
-			if ($numParts == 0) {
-					// No parts, empty frequency, not valid
+			if (empty($frequency)) {
+					// Empty frequency, not valid
 
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.noFrequency'), t3lib_FlashMessage::ERROR);
-				$result = false;
-			} else if ($numParts == 1) {
-					// One part, assume it is an interval
-					// Make sure it has a valid value
-				$interval = intval($this->submittedData['frequency']);
-				if ($interval > 0) {
-					$this->submittedData['interval'] = $interval;
-				} else {
-					$this->addMessage($GLOBALS['LANG']->getLL('msg.invalidFrequency'), t3lib_FlashMessage::ERROR);
-					$result = false;
-				}
-			} else if ($numParts == 5) {
-					// Five parts, assume it is a valid cron command
-				$this->submittedData['croncmd'] = $this->submittedData['frequency'];
+				$result = FALSE;
 			} else {
-					// Some other number of parts, assume it is an invalid cron command
+				$cronErrorCode = 0;
+				$cronErrorMessage = '';
 
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.invalidFrequency'), t3lib_FlashMessage::ERROR);
-				$result = false;
+					// Try interpreting the cron command
+				try {
+					tx_scheduler_CronCmd_Normalize::normalize($frequency);
+					$this->submittedData['croncmd'] = $frequency;
+				}
+					// If the cron command was invalid, we may still have a valid frequency in seconds
+				catch (Exception $e) {
+						// Store the exception's result
+					$cronErrorMessage = $e->getMessage();
+					$cronErrorCode = $e->getCode();
+						// Check if the frequency is a valid number
+						// If yes, assume it is a frequency in seconds, and unset cron error code
+					if (is_numeric($frequency)) {
+						$this->submittedData['interval'] = intval($frequency);
+						unset($cronErrorCode);
+					}
+				}
+					// If there's a cron error code, issue validation error message
+				if (!empty($cronErrorCode)) {
+					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.frequencyError'), $cronErrorMessage, $cronErrorCode), t3lib_FlashMessage::ERROR);
+					$result = FALSE;
+				}
 			}
 		}
 
