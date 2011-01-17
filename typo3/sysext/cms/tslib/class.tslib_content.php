@@ -1369,16 +1369,16 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2
+	 * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict, xhtml_11, xhtml_2 or html5
 	 * or if the config parameter 'disableImgBorderAttr' is not set.
 	 *
 	 * @param	string		the border attribute
 	 * @return	string		the border attribute
 	 */
 	function getBorderAttr($borderAttr) {
-		if (!t3lib_div::inList(	'xhtml_strict,xhtml_11,xhtml_2',
-			$GLOBALS['TSFE']->xhtmlDoctype)
-			&& !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
+		if (! t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) &&
+				$GLOBALS['TSFE']->config['config']['doctype'] != 'html5' &&
+				! $GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
 			return $borderAttr;
 		}
 	}
