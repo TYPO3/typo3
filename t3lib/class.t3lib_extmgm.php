@@ -844,8 +844,22 @@ final class t3lib_extMgm {
 		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = array(
 			'componentId' => $componentId,
 			'extKey' => $GLOBALS['_EXTKEY'],
+			'isCoreComponent' => FALSE,
 			'extDirectNamespaces' => $extDirectNamespaces
 		);
+	}
+
+	/**
+	 * Registers a core navigation component
+	 *
+	 * @param string $module
+	 * @param string $componentId
+	 * @param array $extDirectNamespaces
+	 * @return void
+	 */
+	public static function addCoreNavigationComponent($module, $componentId, $extDirectNamespaces = array()) {
+		self::addNavigationComponent($module, $componentId, $extDirectNamespaces);
+		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module]['isCoreComponent'] = TRUE;
 	}
 
 

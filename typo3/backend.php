@@ -313,8 +313,14 @@ class TYPO3backend {
 
 			$component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
 			$componentDirectory = 'components/' . $component . '/';
-			$absoluteComponentPath = t3lib_extMgm::extPath($info['extKey']) . $componentDirectory;
-			$relativeComponentPath = t3lib_extMgm::extRelPath($info['extKey']) . $componentDirectory;
+
+			if ($info['isCoreComponent']) {
+				$absoluteComponentPath = PATH_t3lib . 'js/extjs/' . $componentDirectory;
+				$relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
+			} else {
+				$absoluteComponentPath = t3lib_extMgm::extPath($info['extKey']) . $componentDirectory;
+				$relativeComponentPath = t3lib_extMgm::extRelPath($info['extKey']) . $componentDirectory;
+			}
 
 			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/', 'css');
 			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
