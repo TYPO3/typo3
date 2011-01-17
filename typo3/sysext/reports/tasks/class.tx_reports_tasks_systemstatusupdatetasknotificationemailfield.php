@@ -70,7 +70,7 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 			$fieldHtml = '<input type="text" '
 				. 'name="tx_scheduler[' . $fieldName . ']" '
 				. 'id="' . $fieldId . '" '
-				. 'value="' . $taskInfo[$fieldName] . '" />';
+				. 'value="' . htmlspecialchars($taskInfo[$fieldName]) . '" />';
 
 			$additionalFields[$fieldId] = array(
 				'code'     => $fieldHtml,

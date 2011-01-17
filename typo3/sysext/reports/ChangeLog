@@ -1,6 +1,7 @@
 2011-01-17  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #17033: Notification Emails for system status updates
+	* Fixed issue #17082: XSS in reports scheduler job
 
 2011-01-13  Ingo Renner  <ingo@typo3.org>
 
