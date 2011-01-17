@@ -8,6 +8,7 @@
 	* Fixed bug #16628: All TCA forms "group" with size=1 have height of 85px (Thanks to Benni Mack)
 	* Fixed bug #17048: Remove option "Use condensed mode in backend" in User Settings
 	* Fixed bug #15112: Remove option "Show help text when applicable" in User Settings
+	* Fixed bug #17093: User settings reference nonexistent field edit_showFieldHelp
 
 2011-01-17  Ernesto Baschny  <ernst@cron-it.de>
 
