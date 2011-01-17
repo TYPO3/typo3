@@ -33,6 +33,14 @@
 class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 
 	/**
+	 * Email address to send email notification to in case we find problems with
+	 * the system.
+	 *
+	 * @var	string
+	 */
+	protected $notificationEmail = NULL;
+
+	/**
 	 * Executes the System Status Update task, determing the highest severity of
 	 * status reports and saving that to the registry to be displayed at login
 	 * if necessary.
@@ -48,7 +56,108 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
 
+		if ($highestSeverity > tx_reports_reports_status_Status::OK) {
+			$this->sendNotificationEmail($systemStatus);
+		}
+
 		return true;
+	}
+
+	/**
+	 * Gets the notification email address.
+	 *
+	 * @return	string	Notification email address.
+	 */
+	public function getNotificationEmail() {
+		return $this->notificationEmail;
+	}
+
+	/**
+	 * Sets the notification email address.
+	 *
+	 * @param	string	$notificationEmail Notification email address.
+	 */
+	public function setNotificationEmail($notificationEmail) {
+		$this->notificationEmail = $notificationEmail;
+	}
+
+	/**
+	 * Sends a notification email, reporting system issues.
+	 *
+	 * @param	array	$systemStatus Array of statuses
+	 */
+	protected function sendNotificationEmail(array $systemStatus) {
+		$systemIssues = array();
+
+		foreach ($systemStatus as $statusProvider) {
+			foreach ($statusProvider as $status) {
+				if ($status->getSeverity() > tx_reports_reports_status_Status::OK) {
+					$systemIssues[] = (string) $status;
+				}
+			}
+		}
+
+		$fromEmail = $this->getFromAddress();
+
+		$subject = sprintf(
+			$GLOBALS['LANG']->getLL('status_updateTask_email_subject'),
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
+		);
+
+		$message = sprintf(
+			$GLOBALS['LANG']->getLL('status_problemNotification'),
+			'',
+			''
+		);
+		$message .= CRLF . CRLF;
+		$message .= $GLOBALS['LANG']->getLL('status_updateTask_email_site')
+			. ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+		$message .= CRLF . CRLF;
+		$message .= $GLOBALS['LANG']->getLL('status_updateTask_email_issues')
+			. ': ' .CRLF;
+		$message .= implode(CRLF, $systemIssues);
+		$message .= CRLF . CRLF;
+
+		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail->setFrom(array($fromEmail => 'TYPO3 CMS'));
+		$mail->setTo($this->notificationEmail);
+		$mail->setSubject($subject);
+		$mail->setBody($message);
+
+		$mail->send();
+	}
+
+	/**
+	 * Tries to generate an email address to use for the From field.
+	 *
+	 * @return	string	email address
+	 */
+	protected function getFromAddress() {
+		$user = 'no-reply';
+		$host = php_uname('n');
+
+			// just get us a domain record we can use
+		$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'domainName',
+			'sys_domain',
+			'hidden = 0',
+			'',
+			'pid ASC, sorting ASC'
+		);
+
+		if (!empty($domainRecord['domainName'])) {
+			$tempUrl = $domainRecord['domainName'];
+
+			if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
+					// shouldn't be the case anyways, but you never know
+					// ... there're crazy people out there
+				$tempUrl = 'http://' .$tempUrl;
+			}
+
+			$host = parse_url($tempUrl, PHP_URL_HOST);
+		}
+
+		return $user . '@' . $host;
 	}
 }
 

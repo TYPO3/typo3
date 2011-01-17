@@ -99,6 +99,29 @@ class tx_reports_reports_status_Status {
 	public function getSeverity() {
 		return $this->severity;
 	}
+
+	/**
+	 * Creates a string representation of a status.
+	 *
+	 * @return	string	String representation of this status.
+	 */
+	public function __toString() {
+		$severity = array(
+			self::NOTICE  => 'NOTE',
+			self::INFO    => 'INFO',
+			self::OK      => 'OK',
+			self::WARNING => 'WARN',
+			self::ERROR   => 'ERR',
+		);
+
+			// max length 80 characters
+		$stringRepresentation =
+			str_pad('[' . $severity[$this->severity] . ']', 7) .
+			str_pad($this->title, 40) . ' - ' .
+			substr($this->value, 0, 30);
+
+		return $stringRepresentation;
+	}
 }
 
 
