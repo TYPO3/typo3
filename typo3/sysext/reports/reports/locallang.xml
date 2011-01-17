@@ -53,7 +53,7 @@
 			<label index="status_updateTaskTitle">System Status Update</label>
 			<label index="status_updateTaskDescription">Runs a system status check and sends notifications if problems have been found.</label>
 			<label index="status_updateTaskField_notificationEmail">Notification Email Address</label>
-			<label index="status_updateTaskField_notificationEmail_invlaid">Empty or invalid notification email address.</label>
+			<label index="status_updateTaskField_notificationEmail_invalid">Empty or invalid notification email address.</label>
 			<label index="status_updateTask_email_subject">System Status Notification for site %s</label>
 			<label index="status_updateTask_email_site">Site</label>
 			<label index="status_updateTask_email_issues">Issues</label>
