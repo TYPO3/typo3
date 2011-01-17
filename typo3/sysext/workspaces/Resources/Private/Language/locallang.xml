@@ -52,10 +52,10 @@
 			<label index="tooltip.openPage">Open version of page</label>
 			<label index="tooltip.sendToPrevStage">Send record to previous Stage</label>
 			<label index="tooltip.sendToNextStage">Send record to next Stage</label>
-			<label index="tooltip.removeVersion">Remove version document</label>
+			<label index="tooltip.discardVersion">Discard workspace version of record.</label>
 			<label index="tooltip.swap">Swap live and workspace versions of record</label>
-			<label index="window.remove.title">Remove version from workspace</label>
-			<label index="window.remove.message">Do you really want to remove this version from workspace?</label>
+			<label index="window.discard.title">Discard workspace version of record.</label>
+			<label index="window.discard.message">Do you really want to discard this version from workspace?</label>
 			<label index="window.swap.title">Swap version</label>
 			<label index="window.swap.message">Do you really want to swap this version?</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>

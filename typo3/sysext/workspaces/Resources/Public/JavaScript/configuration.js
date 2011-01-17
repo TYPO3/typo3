@@ -311,12 +311,12 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 		},
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-document-remove',
-			tooltip: TYPO3.lang["tooltip.removeVersion"],
+			tooltip: TYPO3.lang["tooltip.discardVersion"],
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var configuration = {
-					title: TYPO3.lang["window.remove.title"],
-					msg: TYPO3.lang["window.remove.message"],
+					title: TYPO3.lang["window.discard.title"],
+					msg: TYPO3.lang["window.discard.message"],
 					fn: function(result) {
 						if (result == 'yes') {
 							TYPO3.Workspaces.Actions.deleteSingleRecord(record.json.table, record.json.uid);
