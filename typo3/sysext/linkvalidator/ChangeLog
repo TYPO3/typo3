@@ -1,3 +1,7 @@
+2011-01-17  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12226: Website that has multiple domainsrecords produces funny links
+
 2011-01-15  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #12243: Information on storage location of broken links is wrong in text
