@@ -255,6 +255,11 @@ class t3lib_loadModules {
 			}
 		}
 
+			// check if this is a submodule
+		if (strpos($name, '_') !== FALSE) {
+			list($mainModule, ) = explode('_', $name, 2);
+		}
+
 		$modconf = array();
 		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && file_exists($path . '/conf.php')) {
@@ -331,8 +336,13 @@ class t3lib_loadModules {
 					$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
 				}
 
+					// check if there is a navigation component (like the pagetree)
 				if (is_array($this->navigationComponents[$name])) {
 					$modconf['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
+						// check if the parent has a navigation component that also
+						// goes down to the submodules (if they haven't overwritten it yet)
+				} else if ($mainModule && is_array($this->navigationComponents[$mainModule])) {
+					$modconf['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
 				}
 			} else {
 				return FALSE;
