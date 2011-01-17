@@ -5,7 +5,7 @@ content {
     # cat=content/cHeader/h0; type=int[1-5]; label=Default Header type: Enter the number of the header layout to be used by default.
   defaultHeaderType = 1
     # cat=advanced/links; type=small; label=Pageframe object: The name of the "contentframe". Normally set to "page" if the site has a frameset. Otherwise it should be an empty value. This is important, as it determines the target of internal links!
-  pageFrameObj = 
+  pageFrameObj =
 
   shortcut.tables = tt_content,tt_address,tt_links,tt_guest,tt_board,tt_calender,tt_products,tt_news,tt_rating,tt_poll
     # cat=content/other/c; type=wrap; label= Content Element margins: Space above / below each content element (pixels of a clear-gif) in versions below TYPO3 4.3.0.

@@ -5,10 +5,10 @@ content {
     # cat=content/cHeader/h0; type=int[1-5]; label=Default Header type: Enter the number of the header layout to be used by default.
   defaultHeaderType = 1
     # cat=advanced/links; type=small; label=Pageframe object: The name of the "contentframe". Normally set to "page" if the site has a frameset. Otherwise it should be an empty value. This is important, as it determines the target of internal links!
-  pageFrameObj = 
-  
+  pageFrameObj =
+
   shortcut.tables = tt_content,tt_address,tt_links,tt_guest,tt_board,tt_calender,tt_products,tt_news,tt_rating,tt_poll
-   
+
     # cat=content/other/a; type=small; label= Content Element margins (before): Space before each content element.
   spaceBefore = 0
     # cat=content/other/b; type=small; label= Content Element margins (after): Space after each content element.
@@ -123,7 +123,7 @@ styles.content.media {
   	# cat=content/cMedia/j3; type=int+; label= Media Video Height: define the default height for the media video
   defaultVideoHeight = 400
     # cat=content/cMedia/j4; type=; label= Audio Player: configure the path to the video player
-  audioPlayer = typo3/contrib/flashmedia/player.swf	
+  audioPlayer = typo3/contrib/flashmedia/player.swf
    	# cat=content/cMedia/j5; type=int+; label= Media Audio Width: define the default width for the media audio
   defaultAudioWidth = 300
     # cat=content/cMedia/j6; type=int+; label= Media Audio Height: define the default height for the media audio
