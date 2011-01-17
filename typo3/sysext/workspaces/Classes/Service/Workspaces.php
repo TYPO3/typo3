@@ -354,15 +354,22 @@ class tx_Workspaces_Service_Workspaces {
 			if ($pageList) {
 					// Remove the "subbranch" if a page was moved away
 				$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . $wsid . t3lib_BEfunc::deleteClause($table), '', 'uid', '', 't3ver_move_id');
-				$newList = array();
 				$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
 
-				foreach ($pageIds as $tmpId) {
-					if (isset($movedAwayPages[$tmpId]) && !empty($newList) && !in_array($movedAwayPages[$tmpId]['pid'], intval($newList))) {
-						break;
+					// move all pages away
+				$newList = array_diff($pageIds, array_keys($movedAwayPages));
+
+					// move back in if still connected to the "remaining" pages
+				do {
+					$changed = FALSE;
+					foreach ($movedAwayPages as $uid => $rec) {
+						if (in_array($rec['pid'], $newList) && !in_array($uid, $newList)) {
+							$newList[] = $uid;
+							$changed = TRUE;
+						}
 					}
-					$newList[] = $tmpId;
-				}
+				} while ($changed);
+
 				$pageList = implode(',', $newList);
 			}
 				// In case moving pages is enabled we need to replace all move-to pointer with their origin
