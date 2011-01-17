@@ -34,6 +34,13 @@
  */
 abstract class t3lib_contextmenu_AbstractDataProvider {
 	/**
+	 * List of actions that are generally disabled
+	 *
+	 * @var array
+	 */
+	protected $disableItems = array();
+
+	/**
 	 * Context Menu Type (e.g. table.pages, table.tt_content)
 	 *
 	 * @var string
@@ -78,6 +85,154 @@ abstract class t3lib_contextmenu_AbstractDataProvider {
 		);
 
 		return $contextMenuActions['properties'];
+	}
+
+	/**
+	 * Evaluates a given display condition and returns true if the condition matches
+	 *
+	 * Examples:
+	 * getContextInfo|inCutMode:1 || isInCopyMode:1
+	 * isLeafNode:1
+	 * isLeafNode:1 && isInCutMode:1
+	 *
+	 * @param t3lib_tree_Node $node
+	 * @param string $displayCondition
+	 * @return boolean
+	 */
+	protected function evaluateDisplayCondition(t3lib_tree_Node $node, $displayCondition) {
+		if ($displayCondition === '') {
+			return TRUE;
+		}
+
+			// parse condition string
+		$conditions = array();
+		preg_match_all('/(.+?)(>=|<=|!=|=|>|<)(.+?)(\|\||&&|$)/is', $displayCondition, $conditions);
+
+		$lastResult = FALSE;
+		$chainType = '';
+		$amountOfConditions = count($conditions[0]);
+		for ($i = 0; $i < $amountOfConditions; ++$i) {
+				// check method for existence
+			$method = trim($conditions[1][$i]);
+			list($method, $index) = explode('|', $method);
+			if (!method_exists($node, $method)) {
+				continue;
+			}
+
+				// fetch compare value
+			$returnValue = call_user_func(array($node, $method));
+			if (is_array($returnValue)) {
+				$returnValue = $returnValue[$index];
+			}
+
+				// compare fetched and expected values
+			$operator = trim($conditions[2][$i]);
+			$expected = trim($conditions[3][$i]);
+			if ($operator === '=') {
+				$returnValue = ($returnValue == $expected);
+			} elseif ($operator === '>') {
+				$returnValue = ($returnValue > $expected);
+			} elseif ($operator === '<') {
+				$returnValue = ($returnValue < $expected);
+			} elseif ($operator === '>=') {
+				$returnValue = ($returnValue >= $expected);
+			} elseif ($operator === '<=') {
+				$returnValue = ($returnValue <= $expected);
+			} elseif ($operator === '!=') {
+				$returnValue = ($returnValue != $expected);
+			} else {
+				$returnValue = FALSE;
+				$lastResult = FALSE;
+			}
+
+				// chain last result and the current if requested
+			if ($chainType === '||') {
+				$lastResult = ($lastResult || $returnValue);
+			} elseif ($chainType === '&&') {
+				$lastResult = ($lastResult && $returnValue);
+			} else {
+				$lastResult = $returnValue;
+			}
+
+				// save chain type for the next condition
+			$chainType = trim($conditions[4][$i]);
+		}
+
+		return $lastResult;
+	}
+
+	/**
+	 * Returns the next context menu level
+	 *
+	 * @param array $actions
+	 * @param t3lib_tree_Node $node
+	 * @param int $level
+	 * @return t3lib_contextmenu_ActionCollection
+	 */
+	protected function getNextContextMenuLevel(array $actions, t3lib_tree_Node $node, $level = 0) {
+		/** @var $actionCollection t3lib_contextmenu_ActionCollection */
+		$actionCollection = t3lib_div::makeInstance('t3lib_contextmenu_ActionCollection');
+
+		if ($level > 5) {
+			return $actionCollection;
+		}
+
+		$type = '';
+		foreach ($actions as $index => $actionConfiguration) {
+			if (substr($index, -1) !== '.') {
+				$type = $actionConfiguration;
+				if ($type !== 'DIVIDER') {
+					continue;
+				}
+			}
+
+			if (!in_array($type, array('DIVIDER', 'SUBMENU', 'ITEM'))) {
+				continue;
+			}
+
+			/** @var $action t3lib_contextmenu_Action */
+			$action = t3lib_div::makeInstance('t3lib_contextmenu_Action');
+			$action->setId($index);
+
+			if ($type === 'DIVIDER') {
+				$action->setType('divider');
+			} else {
+				if (in_array($actionConfiguration['name'], $this->disableItems)
+					|| (isset($actionConfiguration['displayCondition'])
+						&& trim($actionConfiguration['displayCondition']) !== ''
+						&& !$this->evaluateDisplayCondition($node, $actionConfiguration['displayCondition'])
+					)
+				) {
+					unset($action);
+					continue;
+				}
+
+				$label = $GLOBALS['LANG']->sL($actionConfiguration['label'], TRUE);
+				if ($type === 'SUBMENU') {
+					$action->setType('submenu');
+					$action->setChildActions(
+						$this->getNextContextMenuLevel($actionConfiguration, $node, $level + 1)
+					);
+				} else {
+					$action->setType('action');
+					$action->setCallbackAction($actionConfiguration['callbackAction']);
+				}
+
+				$action->setLabel($label);
+				if (isset($actionConfiguration['icon']) && trim($actionConfiguration['icon']) !== '') {
+					$action->setIcon($actionConfiguration['icon']);
+				} elseif (isset($actionConfiguration['spriteIcon'])) {
+					$action->setClass(
+						t3lib_iconWorks::getSpriteIconClasses($actionConfiguration['spriteIcon'])
+					);
+				}
+			}
+
+			$actionCollection->offsetSet($level . intval($index), $action);
+			$actionCollection->ksort();
+		}
+
+		return $actionCollection;
 	}
 }
 

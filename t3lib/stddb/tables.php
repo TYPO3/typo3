@@ -375,6 +375,10 @@ $TBE_MODULES = array(
 	'help' => '',
 );
 
+	// register the pagetree core navigation component
+t3lib_extMgm::addCoreNavigationComponent('web', 'typo3-pagetree', array(
+	'TYPO3.Components.PageTree'
+));
 
 /**
  * $TBE_STYLES configures backend styles and colors; Basically this contains all the values that can be used to create new skins for TYPO3.

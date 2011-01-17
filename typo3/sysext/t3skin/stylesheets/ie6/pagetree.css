@@ -1,0 +1,40 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Pagetree
+
+$Id: $
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+	margin: 0;
+	padding: 0 2px;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-button button {
+	margin: 0;
+	padding: 0;
+	width: 16px;
+	height: 16px;
+	overflow: hidden;
+}
+
+#typo3-pagetree #typo3-pagetree-indicatorBar {
+	padding: 0;
+	line-height: normal;
+}
+
+#typo3-pagetree #typo3-pagetree-topPanel {
+	height: 53px;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-el {
+	border-top: 1px solid #EBEBEB;
+	border-bottom: 1px solid #EBEBEB;
+	border-left: 1px solid #EBEBEB;
+}
+
+#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
+	display: inline-block;
+}
+
+.x-dd-drag-proxy {
+	width: 1em;
+}

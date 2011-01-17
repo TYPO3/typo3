@@ -1332,32 +1332,50 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	height:15px;
 }
 
+.x-tree-node-el {
+	line-height: 18px;
+	height: 18px;
+	margin-right: 0;
+}
+
+.x-tree-lines .x-tree-elbow-end,
+.x-tree-lines .x-tree-elbow-end-minus,
+.x-tree-lines .x-tree-elbow-end-plus,
+.x-tree-lines .x-tree-elbow-line,
+.x-tree-lines .x-tree-elbow,
+.x-tree-lines .x-tree-elbow-plus,
+.x-tree-lines .x-tree-elbow-minus {
+	background-repeat: repeat-y;
+	background-position: 0 1px;
+	height: 20px;
+}
+
 .x-tree-lines .x-tree-elbow{
-	background-image:url(images/tree/elbow.gif);
+	background-image: url('../icons/gfx/ol/join.gif');
 }
 
-.x-tree-lines .x-tree-elbow-plus{
-	background-image:url(images/tree/elbow-plus.gif);
+.x-tree-lines .x-tree-elbow-plus {
+	background-image: url('../icons/gfx/ol/plus.gif');
 }
 
-.x-tree-lines .x-tree-elbow-minus{
-	background-image:url(images/tree/elbow-minus.gif);
+.x-tree-lines .x-tree-elbow-minus {
+	background-image: url('../icons/gfx/ol/minus.gif');
 }
 
-.x-tree-lines .x-tree-elbow-end{
-	background-image:url(images/tree/elbow-end.gif);
+.x-tree-lines .x-tree-elbow-end-minus {
+	background: url('../icons/gfx/ol/minusbottom.gif') left top no-repeat;
+}
+
+.x-tree-lines .x-tree-elbow-end {
+	background: url('../icons/gfx/ol/joinbottom.gif') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-end-plus{
-	background-image:url(images/tree/elbow-end-plus.gif);
-}
-
-.x-tree-lines .x-tree-elbow-end-minus{
-	background-image:url(images/tree/elbow-end-minus.gif);
+	background: url('../icons/gfx/ol/plusbottom.gif') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-line{
-	background-image:url(images/tree/elbow-line.gif);
+	background-image: url('../icons/gfx/ol/line.gif');
 }
 
 .x-tree-no-lines .x-tree-elbow-plus{
@@ -1397,12 +1415,15 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	font: normal 10px verdana, arial, tahoma, helvetica, sans-serif;
 }
 
-.x-tree-node a, .x-dd-drag-ghost a{
-	color:#000;
+.x-tree-node a, .x-dd-drag-ghost a {
+	color: #000;
+	vertical-align: -1px;
+	font-size: 11px;
+	display: inline-block;
 }
 
-.x-tree-node a span, .x-dd-drag-ghost a span{
-	color:#000;
+.x-tree-node a span, .x-dd-drag-ghost a span {
+	color: #000;
 }
 
 .x-tree-node .x-tree-node-disabled a span{

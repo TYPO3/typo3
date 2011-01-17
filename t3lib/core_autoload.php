@@ -193,6 +193,17 @@ $t3libClasses = array(
 	't3lib_tree_tca_dataproviderfactory' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_dataproviderfactory.php',
 	't3lib_tree_tca_tcatree' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_tcatree.php',
 	'extdirect_dataprovider_backendusersettings' => PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php',
+	't3lib_tree_pagetree_extdirect_tree' => PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php',
+	't3lib_tree_pagetree_extdirect_commands' => PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_commands.php',
+	't3lib_contextmenu_pagetree_extdirect_contextmenu' => PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php',
+	't3lib_tree_pagetree_dataprovider' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php',
+	't3lib_tree_pagetree_node' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_node.php',
+	't3lib_tree_extdirect_node' => PATH_t3lib . 'tree/extdirect/class.t3lib_tree_extdirect_node.php',
+	't3lib_tree_pagetree_nodecollection' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_nodecollection.php',
+	't3lib_tree_pagetree_commands' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_commands.php',
+	't3lib_contextmenu_pagetree_dataprovider' => PATH_t3lib . 'contextmenu/pagetree/class.t3lib_contextmenu_pagetree_dataprovider.php',
+	't3lib_tree_pagetree_indicator' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_indicator.php',
+	't3lib_tree_pagetree_indicatorprovider' => PATH_t3lib . 'tree/pagetree/interfaces/interface.t3lib_tree_pagetree_interfaces_indicatorprovider.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');

@@ -1,0 +1,195 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Pagetree
+
+$Id: $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-pagetree,
+#typo3-pagetree .x-panel-bwrap,
+#typo3-pagetree .x-panel-body {
+	height: 100%;
+}
+
+#typo3-pagetree .x-panel-tbar {
+	padding: 0;
+	margin: 0;
+}
+
+.x-tree-node .x-tree-node-el {
+	margin-right: 0;
+}
+
+.x-tree-node-readableRootline {
+	padding: 10px 0 3px 10px;
+}
+
+.x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
+	visibility: hidden;
+}
+
+.x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
+	visibility: visible;
+}
+
+#typo3-pagetree span.t3-icon {
+	margin-bottom: 2px;
+}
+
+#typo3-pagetree .x-toolbar,
+.typo3-pagetree-topPanel-item .x-toolbar {
+	padding-bottom: 0;
+}
+
+#typo3-pagetree ul.x-tree-root-ct {
+	padding-left: 5px;
+	padding-top: 15px;
+}
+
+/**
+ *
+ * section drag and drop
+ *
+ */
+.typo3-pagetree-tree-copy {
+	margin-top: 5px;
+}
+
+.x-dd-drag-ghost-pagetree-text {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.x-dd-drag-ghost-pagetree,
+.x-dd-drag-ghost {
+	padding-bottom: 5px;
+}
+
+.x-dd-drop-icon {
+	padding-top: 6px;
+}
+
+.x-dd-drag-ghost span {
+	margin: 0 1px 0 3px;
+}
+
+.x-dd-drag-ghost-pagetree span {
+	margin: 3px 3px 0 3px;
+}
+
+/**
+ *
+ * @section Top Panel
+ *
+ */
+#typo3-pagetree-topPanel .x-toolbar-left {
+	height: 20px;
+}
+
+.typo3-pagetree-topPanel-button {
+	margin: 0 5px 0 0;
+	padding: 1px 2px;
+	height: 18px;
+}
+
+.typo3-pagetree-topPanel-button button {
+	height: 16px;
+	width: 16px;
+}
+
+.typo3-pagetree-topPanel-item {
+	padding: 5px 3px 0 3px;
+	height: 22px;
+}
+
+#typo3-pagetree-topPanel-filterWrap {
+	padding-top: 3px;
+	height: 24px;
+}
+
+#typo3-pagetree-topPanel-filter {
+	height: 16px;
+	width: 98% !important;
+	padding: 1px 0 1px 2px;
+}
+
+#typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
+	right: 2%;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+	margin-right: 1px;
+	margin-top: -2px;
+	padding: 2px 3px;
+}
+
+#typo3-pagetree-topPanel-defaultPanel {
+	padding-left: 6px;
+}
+
+#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
+	width: 100% !important;
+	margin: 0 20px 0 0;
+}
+
+.typo3-pagetree-topPanel-item .x-form-trigger {
+	margin: 4px 0 0;
+	display: none;
+}
+
+.typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
+	display: block;
+}
+
+#typo3-pagetree .typo3-pagetree-filteringTree-highlight {
+	padding: 0;
+}
+
+/**
+ *
+ * @section Indicator Bar
+ *
+ */
+.typo3-pagetree-indicatorBar-item p {
+	padding: 5px 10px;
+}
+
+#typo3-pagetree-indicatorBar-filter p,
+#typo3-pagetree-indicatorBar-temporaryMountPoint p {
+	padding: 10px 35px;
+}
+
+.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-leftIcon {
+	left: 10px;
+	top: 9px;
+	position: absolute;
+}
+
+.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
+	right: 10px;
+	top: 5px;
+	position: absolute;
+}
+
+#typo3-pagetree-indicatorBar-indicatorTitle span {
+	margin-right: 10px;
+}
+
+/**
+ *
+ * @section Deletion Drop Zone
+ *
+ */
+#typo3-pagetree-deletionDropZone p {
+	padding: 5px;
+}
+
+#typo3-pagetree-deletionDropZone-text {
+	padding: 0 0 0 5px;
+	display: inline;
+}
+
+.typo3-pagetree-deletionDropZone-restore {
+	display: inline-block;
+	padding: 0px 6px;
+	margin-left: 24px;
+}

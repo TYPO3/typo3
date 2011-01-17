@@ -1,5 +1,6 @@
 2011-01-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17073: Final Integration of the pagetree (Thanks to Stefan Galinski)
 	* Fixed bug #17074: Allow core navigation components (Thanks to Stefan Galinski)
 	* Fixed bug #17017: New pagetree doesn't work with all web submodules
 
