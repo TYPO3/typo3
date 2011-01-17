@@ -240,10 +240,6 @@ table.typo3-TCEforms span.filetypes {
 	width: 250px;
 }
 
-.typo3-TCEforms select.tceforms-multiselect {
-	min-height: 85px;
-}
-
 .typo3-TCEforms-palette .typo3-csh-link img {
 	padding-top: 3px;
 	vertical-align: top;

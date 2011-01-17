@@ -1985,9 +1985,10 @@ class t3lib_TCEforms {
 		$sOnChange = implode('', $PA['fieldChangeFunc']);
 		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"';
 		$size = intval($config['size']);
+		$cssPrefix = ($size === 1) ? 'tceforms-select' : 'tceforms-multiselect';
 		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($selItems) + 1, t3lib_div::intInRange($size, 1), $config['autoSizeMax']) : $size;
-		$selectBox = '<select id="' . uniqid('tceforms-multiselect-') . '" name="' . $PA['itemFormElName'] . '[]"' .
-					 $this->insertDefStyle('select', 'tceforms-multiselect') .
+		$selectBox = '<select id="' . uniqid($cssPrefix) . '" name="' . $PA['itemFormElName'] . '[]"' .
+					 $this->insertDefStyle('select', $cssPrefix) .
 					 ($size ? ' size="' . $size . '"' : '') .
 					 ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' .
 					 $PA['onFocus'] .
