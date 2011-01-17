@@ -1,3 +1,7 @@
+2011-01-17  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #17094: Scheduler: Docheader icons should not be underlined
+
 2011-01-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17072: Missing semicolons in JS code

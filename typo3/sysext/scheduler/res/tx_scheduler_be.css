@@ -10,7 +10,8 @@
 }
 
 .tx_scheduler_mod1 a.icon,
-.tx_scheduler_mod1 a.typo3-csh-link {
+.tx_scheduler_mod1 a.typo3-csh-link,
+.tx_scheduler_mod1 #typo3-docheader a {
 	text-decoration: none;
 }
 
