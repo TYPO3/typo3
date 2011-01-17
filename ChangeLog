@@ -11,6 +11,7 @@
 	* Fixed bug #17093: User settings reference nonexistent field edit_showFieldHelp
 	* Fixed bug #17071: JavaScript errors, used .class instead of .className
 	* Fixed bug #17066: Wrong PHPDoc comment for t3lib_div::writeFileToTypo3tempDir
+	* Fixed bug #17085: Update ext_emconf.php of t3skin
 
 2011-01-17  Ernesto Baschny  <ernst@cron-it.de>
 
