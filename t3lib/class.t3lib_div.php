@@ -3102,7 +3102,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Absolute filepath to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
 	 * @param	string		Content string to write
-	 * @return	string		Returns false on success, otherwise an error string telling about the problem.
+	 * @return	string		Returns NULL on success, otherwise an error string telling about the problem.
 	 */
 	public static function writeFileToTypo3tempDir($filepath,$content)	{
 
