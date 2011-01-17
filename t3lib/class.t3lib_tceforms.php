@@ -5535,7 +5535,7 @@ class t3lib_TCEforms {
 				Element.toggle(""+id+"-content");
 
 				if (Element.visible(id+"-content")) {
-					$(id+"-toggle").update(\'' . $toggleIcon_open . '\')
+					$(id+"-toggle").update(\'' . $toggleIcon_open . '\');
 					$(id+"-toggleClosed").value = 0;
 				} else {
 					$(id+"-toggle").update(\'' . $toggleIcon_close . '\');
@@ -5680,8 +5680,8 @@ class t3lib_TCEforms {
 				browserWin.focus();
 			}
 			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues)	{	//
-				var formObj = setFormValue_getFObj(fName)
-				if (formObj && value!="--div--")	{
+				var formObj = setFormValue_getFObj(fName);
+				if (formObj && value !== "--div--") {
 					fObj = formObj[fName+"_list"];
 					var len = fObj.length;
 						// Clear elements if exclusive values are found
@@ -5689,7 +5689,9 @@ class t3lib_TCEforms {
 						var m = new RegExp("(^|,)"+value+"($|,)");
 						if (exclusiveValues.match(m))	{
 								// the new value is exclusive
-							for (a=len-1;a>=0;a--)	fObj[a] = null;
+							for (a = len - 1; a >= 0; a--) {
+								fObj[a] = null;
+							}
 							len = 0;
 						} else if (len == 1)	{
 							m = new RegExp("(^|,)"+fObj.options[0].value+"($|,)");
@@ -5728,7 +5730,7 @@ class t3lib_TCEforms {
 				}
 			}
 			function setFormValueManipulate(fName,type)	{	//
-				var formObj = setFormValue_getFObj(fName)
+				var formObj = setFormValue_getFObj(fName);
 				if (formObj)	{
 					var localArray_V = new Array();
 					var localArray_L = new Array();

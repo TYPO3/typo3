@@ -840,7 +840,7 @@ class template {
 								info: Ext.log,
 								warn: Ext.log,
 								error: Ext.log
-							}
+							};
 						}
 					}
 				});

@@ -1,3 +1,7 @@
+2011-01-17  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17072: Missing semicolons in JS code
+
 2011-01-17  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16740: <img> Tags are rendered with border attribute in HTML5 mode (Thanks to Sebastian Michaelsen)
