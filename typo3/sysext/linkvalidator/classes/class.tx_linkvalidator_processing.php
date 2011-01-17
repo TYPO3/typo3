@@ -114,7 +114,18 @@ class tx_linkvalidator_processing {
 					$record['linktitle'] = $entryValue['linktitle'];
 					$record['field'] = $entryValue['field'];
 					$record['lastcheck'] = time();
-					$url = $entryValue['substr']['tokenValue'];
+
+					$this->recordReference = $entryValue['substr']['recordRef'];
+
+					$this->pageWithAnchor = $entryValue['pageAndAnchor'];
+					
+					if (!empty($this->pageWithAnchor)) {
+							// page with anchor, e.g. 18#1580
+						$url = $this->pageWithAnchor;
+					} else {
+						$url = $entryValue['substr']['tokenValue'];
+					}
+
 					$this->linkCounts[$table]++;
 					$checkURL = $hookObj->checkLink($url, $entryValue, $this);
 						// broken link found!
@@ -156,6 +167,10 @@ class tx_linkvalidator_processing {
 			// array to store urls from relevant field contents
 		$urls = array();
 
+		$referencedRecordType = '';
+			// last-parsed link element was a page.
+		$wasPage = TRUE;
+
 			// flag whether row contains a broken link in some field or not
 		$rowContainsBrokenLink = FALSE;
 		
@@ -183,49 +198,80 @@ class tx_linkvalidator_processing {
 
 						// If there was an object returned...:
 					if (is_object($softRefObj)) {
+
 							// Do processing
 						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
 						if (!empty($resultArray['elements'])) {
 
 							if ($spKey == 'typolink_tag') {
 								$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-							}
 
-							foreach ($resultArray['elements'] as $element) {
-								$r = $element['subst'];
+								for ($i = 1; $i < count($linkTags); $i += 2) {
+									$referencedRecordType = '';
+									foreach($resultArray['elements'] as $element) {
+											$r = $element['subst'];
 
-								$title = '';
-								$type = '';
-
-								if (!empty($r)) {
-										// Parse string for special TYPO3 <link> tag:
-									if ($spKey == 'typolink_tag') {
-										foreach ($linkTags as $textPart) {
-											if (substr_count($textPart, $r['tokenID'])) {
-												$title = strip_tags($textPart);
+											if (!empty($r['tokenID'])) {
+												if (substr_count($linkTags[$i], $r['tokenID'])) {
+														// Type of referenced record
+													if (strpos($r['recordRef'], 'pages') !== FALSE) {
+														$currentR = $r;
+															// contains number of the page
+														$referencedRecordType = $r['tokenValue'];
+														$wasPage = TRUE;
+													}
+														// append number of content element to the page saved in the last loop
+													elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && ($wasPage === TRUE)) {
+														$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
+														$wasPage = FALSE;
+													} else {
+														$currentR = $r;
+													}
+													$title = strip_tags($linkTags[$i]);
+												}
 											}
-										}
 									}
-
 									foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
-										$type = $hookObj->fetchType($r, $type, $keyArr);
+										$type = $hookObj->fetchType($currentR, $type, $keyArr);
 									}
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["linktitle"] = $title;
-								}
 
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["row"] = $record;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["linktitle"] = $title;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
+
+								}
+							} else {
+
+								foreach ($resultArray['elements'] as $element) {
+									$r = $element['subst'];
+									$title = '';
+									$type = '';
+
+									if (!empty($r)) {
+											// Parse string for special TYPO3 <link> tag:
+
+										foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+											$type = $hookObj->fetchType($r, $type, $keyArr);
+										}
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
+
+									}
+								}
 							}
 						}
 					}
 				}
 			}
-		}	
+		}
 	}
-
 
 	/**
 	 * Fill a markerarray with the number of links found in a list of pages.

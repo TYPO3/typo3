@@ -33,49 +33,161 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 
 	const DELETED = 'deleted';
 	const HIDDEN = 'hidden';
+	const MOVED = 'moved';
+	const NOTEXISTING = 'notExisting';
+
+	var $errorParams = array();
+
+	var $responsePage = TRUE;
+	var $responseContent = TRUE;
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
-	 * @param   string	  $url: url to check
-	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
+	 * @param   string	  $url: url to check as page-id or page-id#anchor (if anchor is present)
+	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid, title, deleted, hidden, starttime, endtime',
-			'pages',
-			'uid = ' . intval($url)
-		);
-
+		$page = '';
+		$anchor = '';
 		$response = TRUE;
-		$errorParams = array();
-		if ($rows[0]) {
-			if ($rows[0]['deleted'] == '1') {
-				$errorParams['errorType'] = DELETED;
-				$errorParams['title'] = $rows[0]['title'];
-				$errorParams['uid'] = $rows[0]['uid'];
-				$response = FALSE;
-			} elseif ($rows[0]['hidden'] == '1'
-				|| $GLOBALS['EXEC_TIME'] < intval($rows[0]['starttime'])
-				|| ($rows[0]['endtime'] && intval($rows[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
-				$errorParams['errorType'] = HIDDEN;
-				$errorParams['title'] = $rows[0]['title'];
-				$errorParams['uid'] = $rows[0]['uid'];
-				$response = FALSE;
-			}
+		$this->responseContent = TRUE;
+
+			// Might already contain values - empty it.
+		unset($this->errorParams);
+
+			// defines the linked page and anchor (if any).
+		if (strpos($url, '#c') !== FALSE) {
+			$parts = explode('#c', $url);
+			$page = $parts[0];
+			$anchor = $parts[1];
 		} else {
-			$errorParams['errorType'] = 'notExisting';
-			$errorParams['uid'] = intval($url);
+			$page = $url;
+		}
+
+			// Check if the linked page is OK.
+		$this->responsePage = $this->checkPage($page, $softRefEntry, $reference);
+
+			// Check if the linked content element is OK.
+		if ($anchor) {
+
+				// Check if the content element is OK.
+			$this->responseContent = $this->checkContent($page, $anchor, $softRefEntry, $reference);
+
+		}
+
+		if ((is_array($this->errorParams['page']) && !$this->responsePage)
+			|| (is_array($this->errorParams['content']) && !$this->responseContent)) {
+			$this->setErrorParams($this->errorParams);
+		}
+
+		if (($this->responsePage === TRUE) && ($this->responseContent === TRUE)) {
+			$response = TRUE;
+		} else {
 			$response = FALSE;
 		}
 
-		if (is_array($errorParams) && !$response) {
-			$this->setErrorParams($errorParams);
+		return $response;
+	}
+
+	/**
+	 * Checks a given page uid for validity
+	 *
+	 * @param   string	  $page: page uid to check
+	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @return  string	  TRUE on success or FALSE on error
+	 */
+	public function checkPage($page, $softRefEntry, $reference) {
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid, title, deleted, hidden, starttime, endtime',
+			'pages',
+			'uid = ' . intval($page)
+		);
+		$this->responsePage = TRUE;
+
+		if ($rows[0]) {
+			if ($rows[0]['deleted'] == '1') {
+				$this->errorParams['errorType']['page'] = DELETED;
+				$this->errorParams['page']['title'] = $rows[0]['title'];
+				$this->errorParams['page']['uid'] = $rows[0]['uid'];
+				$this->responsePage = FALSE;
+			} elseif ($rows[0]['hidden'] == '1'
+				|| $GLOBALS['EXEC_TIME'] < intval($rows[0]['starttime'])
+				|| ($rows[0]['endtime'] && intval($rows[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
+				$this->errorParams['errorType']['page'] = HIDDEN;
+				$this->errorParams['page']['title'] = $rows[0]['title'];
+				$this->errorParams['page']['uid'] = $rows[0]['uid'];
+				$this->responsePage = FALSE;
+			}
+		} else {
+			$this->errorParams['errorType']['page'] = NOTEXISTING;
+			$this->errorParams['page']['uid'] = intval($page);
+			$this->responsePage = FALSE;
 		}
 
-		return $response;
+		return $this->responsePage;
+	}
+
+	/**
+	 * Checks a given content uid for validity
+	 *
+	 * @param   string    $page: uid of the page to which the link is pointing
+	 * @param   string	  $anchor: uid of the content element to check
+	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @return  string	  TRUE on success or FALSE on error
+	 */
+	public function checkContent($page, $anchor, $softRefEntry, $reference) {
+			// Get page ID on which the content element in fact is located
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid, pid, header, deleted, hidden, starttime, endtime',
+			'tt_content',
+			'uid = ' . intval($anchor)
+		);
+		$this->responseContent = TRUE;
+
+			// this content element exists
+		if ($res[0]) {
+				// page ID on which this CE is in fact located.
+			$correctPageID = $res[0]['pid'];
+
+				// check if the element is on the linked page
+				// (the element might have been moved to another page)
+			if (!($correctPageID === $page)) {
+				$this->errorParams['errorType']['content'] = MOVED;
+				$this->errorParams['content']['uid'] = intval($anchor);
+				$this->errorParams['content']['wrongPage'] = intval($page);
+				$this->errorParams['content']['rightPage'] = intval($correctPageID);
+				$this->responseContent = FALSE;
+
+			} else {
+					// the element is located on the page to which the link is pointing
+				if ($res[0]['deleted'] == '1') {
+					$this->errorParams['errorType']['content'] = DELETED;
+					$this->errorParams['content']['title'] = $res[0]['header'];
+					$this->errorParams['content']['uid'] = $res[0]['uid'];
+					$this->responseContent = FALSE;
+				} elseif ($res[0]['hidden'] == '1'
+					|| $GLOBALS['EXEC_TIME'] < intval($res[0]['starttime'])
+					|| ($res[0]['endtime'] && intval($res[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
+					$this->errorParams['errorType']['content'] = HIDDEN;
+					$this->errorParams['content']['title'] = $res[0]['header'];
+					$this->errorParams['content']['uid'] = $res[0]['uid'];
+					$this->responseContent = FALSE;
+				}
+			}
+
+		} else {
+				// content element does not exist
+			$this->errorParams['errorType']['content'] = NOTEXISTING;
+			$this->errorParams['content']['uid'] = intval($anchor);
+			$this->responseContent = FALSE;
+		}
+
+		return $this->responseContent;
 	}
 
 	/**
@@ -86,23 +198,61 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
-		switch ($errorType) {
-			case DELETED:
-				$response = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-				$response = str_replace('###title###', $errorParams['title'], $response);
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
-				break;
 
-			case HIDDEN:
-				$response = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
-				$response = str_replace('###title###', $errorParams['title'], $response);
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
-				break;
+		if (is_array($errorParams['page'])) {
+			switch ($errorType['page']) {
+				case DELETED:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
+					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+					break;
+
+				case HIDDEN:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
+					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+					break;
             
-			default:
-				$response = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
-				break;
+				default:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+			}
+		}
+
+		if (is_array($errorParams['content'])) {
+			switch ($errorType['content']) {
+				case DELETED:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					break;
+
+				case HIDDEN:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					break;
+
+				case MOVED:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
+					$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
+					break;
+
+				default:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+			}
+		}
+
+		if ($errorPage && $errorContent) {
+			$response = $errorPage . '<br />' . $errorContent;
+		} elseif ($errorPage) {
+			$response = $errorPage;
+		} elseif ($errorContent) {
+			$response = $errorContent; 
 		}
 
 		return $response;

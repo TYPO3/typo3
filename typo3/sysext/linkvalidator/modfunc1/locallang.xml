@@ -45,8 +45,12 @@
 			<label index="list.field">(Field: %s)</label>
 			<label index="list.no.headline">no headline</label>
 			<label index="list.report.pagedeleted">Page '###title###' (###uid###) is deleted.</label>
-			<label index="list.report.pagenotexisting">Page (###uid###) does not exist.</label>
 			<label index="list.report.pagenotvisible">Page '###title###' (###uid###) is not visible.</label>
+			<label index="list.report.pagenotexisting">Page (###uid###) does not exist.</label>
+			<label index="list.report.contentmoved">Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</label>
+			<label index="list.report.contentdeleted">Element '###title###' (###uid###) is deleted.</label>
+			<label index="list.report.contentnotvisible">Element '###title###' (###uid###) is not visible.</label>
+			<label index="list.report.contentnotexisting">Element (###uid###) does not exist.</label>
 			<label index="list.report.rowdeleted">###title### row (###uid###) is deleted.</label>
 			<label index="list.report.rowdeleted.default.title">Linked</label>
 			<label index="list.report.rownotexisting">Row (###uid###) does not exist.</label>
