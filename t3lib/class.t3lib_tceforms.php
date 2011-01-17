@@ -1694,7 +1694,7 @@ class t3lib_TCEforms {
 						implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
 				} else {
 					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' .
-						$this->elName($PA['itemFormElName']) . '.class=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].class; ' .
+						$this->elName($PA['itemFormElName']) . '.className=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].className; ' .
 						implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
 				}
 				$selicons[] = array(
