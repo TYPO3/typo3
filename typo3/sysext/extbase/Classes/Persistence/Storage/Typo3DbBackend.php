@@ -960,7 +960,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$tableName = $source->getRight()->getSelectorName();
 			}
 			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
-			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
+			if($tableName == 'pages') {
+				$row = $this->pageSelectObject->getPageOverlay($row, $languageUid);
+			} elseif(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
 				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1,0))) {
 					$overlayMode = ($languageMode === 'strict') ? 'hideNonTranslated' : '';
 					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);
