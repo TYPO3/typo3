@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Stephane Schitter <stephane.schitter@free.fr>
+*  (c) 2007-2011 Stephane Schitter <stephane.schitter@free.fr>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

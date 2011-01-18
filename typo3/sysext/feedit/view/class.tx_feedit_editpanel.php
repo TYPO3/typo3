@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2010 Jeff Segars <jeff@webempoweredchurch.org>
-*  (c) 2008-2010 David Slayback <dave@webempoweredchurch.org>
+*  (c) 2008-2011 Jeff Segars <jeff@webempoweredchurch.org>
+*  (c) 2008-2011 David Slayback <dave@webempoweredchurch.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

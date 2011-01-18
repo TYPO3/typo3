@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2010  Steffen Ritter (info@rs-websystems.de)
+*  (c) 2008-2011  Steffen Ritter (info@rs-websystems.de)
 *           2009  Benjamin Mack (benni@typo3.org)
 *  All rights reserved
 *

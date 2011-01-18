@@ -3,7 +3,7 @@
  *  Copyright notice
  *
  *  (c) Vincent Blavet <vincent@phpconcept.net>
- *  (c) 2005-2010 Karsten Dambekalns <karsten@typo3.org>
+ *  (c) 2005-2011 Karsten Dambekalns <karsten@typo3.org>
  *  All rights reserved
  *
  *  This library is free software; you can redistribute it and/or

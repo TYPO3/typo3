@@ -2,8 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Marcus Krause <marcus#exp2010@t3sec.info>
- *  (c) 2010 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2010-2011 Marcus Krause <marcus#exp2010@t3sec.info>
+ *  (c) 2010-2011 Steffen Kamper <info@sk-typo3.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

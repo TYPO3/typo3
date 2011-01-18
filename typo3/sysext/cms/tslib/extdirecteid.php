@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010 Stefan Galinski <stefan.galinski@gmail.com>
+ * (c) 2010-2011 Stefan Galinski <stefan.galinski@gmail.com>
  *
  * All rights reserved
  *
