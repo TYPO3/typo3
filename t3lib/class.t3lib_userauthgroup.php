@@ -1567,9 +1567,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$fileMountpoints = trim($this->workspaceRec['file_mountpoints']);
 		if ($this->workspace > 0) {
 
-				// no custom filemounts that should serve as filter
+				// no custom filemounts that should serve as filter or user is admin
 				// so all user mountpoints are re-applied
-			if ($fileMountpoints === '') {
+			if ($this->isAdmin() || $fileMountpoints === '') {
 				$this->groupData['filemounts'] = $usersFileMounts;
 			} else {
 					// Fetching all filemounts from the workspace
