@@ -1,3 +1,7 @@
+2011-01-18  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #17101: [reports] Warning in reports module for enabled PHP safe_mode, credits Christian Kuhn
+
 2011-01-17  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Follow-up to #15611: Mention the change of behaviour on copy/translate (hidden by default) in NEWS.txt

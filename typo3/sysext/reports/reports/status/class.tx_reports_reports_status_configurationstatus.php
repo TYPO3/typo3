@@ -41,7 +41,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 	/**
 	 * Backpath to the typo3 main directory
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $backPath = '../';
@@ -55,7 +55,8 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	public function getStatus() {
 		$statuses = array(
 			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
-			'deprecationLog'      => $this->getDeprecationLogStatus()
+			'deprecationLog'      => $this->getDeprecationLogStatus(),
+			'safeModeEnabled'     => $this->getPhpSafeModeStatus()
 		);
 
 		if ($this->isMemcachedUsed()) {
@@ -93,6 +94,27 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		}
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity
+		);
+	}
+
+	/**
+	 * Checks if PHP safe_mode is enabled.
+	 *
+	 * @return	tx_reports_reports_status_Status	A tx_reports_reports_status_Status object representing whether the safe_mode is enabled or not
+	 */
+	protected function getPhpSafeModeStatus() {
+		$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disabled');
+		$message  = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		if (t3lib_utility_PhpOptions::isSafeModeEnabled()) {
+			$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enabled');
+			$severity = tx_reports_reports_status_Status::WARNING;
+			$message  = $GLOBALS['LANG']->sL('status_configuration_PhpSafeModeEnabled');
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_PhpSafeMode'), $value, $message, $severity
 		);
 	}
 
