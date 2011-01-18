@@ -175,7 +175,7 @@ class tx_Workspaces_Service_GridData {
 	 * @return void
 	 */
 	protected function initializeWorkspacesCachingFramework() {
-		if (TYPO3_UseCachingFramework) {
+		if (TYPO3_UseCachingFramework === TRUE) {
 			try {
 				$GLOBALS['typo3CacheFactory']->create(
 					'workspaces_cache',
@@ -198,7 +198,7 @@ class tx_Workspaces_Service_GridData {
 	 * @param string $filterTxt The given filter text from the grid.
 	 */
 	protected function setDataArrayIntoCache (array $versions, $filterTxt) {
-		if (TYPO3_UseCachingFramework) {
+		if (TYPO3_UseCachingFramework === TRUE) {
 			$hash = $this->calculateHash($versions, $filterTxt);
 			$content = serialize($this->dataArray);
 			
@@ -216,7 +216,7 @@ class tx_Workspaces_Service_GridData {
 	protected function getDataArrayFromCache (array $versions, $filterTxt) {
 		$cacheEntry = FALSE;
 		
-		if (TYPO3_UseCachingFramework) {
+		if (TYPO3_UseCachingFramework === TRUE) {
 			$hash = $this->calculateHash($versions, $filterTxt);
 			
 			$content = $this->workspacesCache->get($hash);

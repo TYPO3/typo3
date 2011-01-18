@@ -149,7 +149,7 @@ class tx_Workspaces_Service_Tcemain {
 	 * @return void
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
-		if (TYPO3_UseCachingFramework) {
+		if (TYPO3_UseCachingFramework === TRUE) {
 			try {
 				$GLOBALS['typo3CacheFactory']->create(
 					'workspaces_cache',
