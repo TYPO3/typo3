@@ -211,7 +211,31 @@ HTMLArea.Editor.prototype.getSelectionType = function(selection) {
 	}
 	return type;
 };
-
+/*
+ * Return the ranges of the selection
+ */
+HTMLArea.Editor.prototype.getSelectionRanges = function(selection) {
+	if (!selection) {
+		var selection = this._getSelection();
+	}
+	var ranges = [];
+	for (var i = selection.rangeCount; --i >= 0;) {
+		ranges.push(selection.getRangeAt(i));
+	}
+	return ranges;
+};
+/*
+ * Add ranges to the selection
+ */
+HTMLArea.Editor.prototype.setSelectionRanges = function(ranges, selection) {
+	if (!selection) {
+		var selection = this._getSelection();
+	}
+	this.emptySelection(selection);
+	for (var i = ranges.length; --i >= 0;) {
+		this.addRangeToSelection(selection, ranges[i]);
+	}
+};
 /*
  * Retrieves the selected element (if any), just in the case that a single element (object like and image or a table) is selected.
  */

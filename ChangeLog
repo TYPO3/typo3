@@ -1,3 +1,7 @@
+2011-01-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16045: htmlArea RTE: Merging table cells using context menu doesn't work in Firefox
+
 2011-01-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17066: Wrong PHPDoc comment for t3lib_div::writeFileToTypo3tempDir
