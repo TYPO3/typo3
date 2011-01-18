@@ -66,6 +66,8 @@ TYPO3.ContextHelp = function() {
 			TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
 				cshHelp.add(response);
 				updateTip(response);
+					// Need to re-position because the height may have increased
+				tip.show();
 			}, this);
 		}
 	}
@@ -92,7 +94,8 @@ TYPO3.ContextHelp = function() {
 			tip = new Ext.ToolTip({
 				title: 'CSH', // needs a title for init because of the markup
 				html: '',
-				anchor: 'left',
+					// The tooltip will appear above the label, if viewport allows
+				anchor: 'bottom',
 				minWidth: 160,
 				maxWidth: 240,
 				target: Ext.getBody(),
@@ -136,7 +139,7 @@ TYPO3.ContextHelp = function() {
 									tip.hide.defer(200, tip, []);
 								}
 							}
-						});		
+						});
 					},
 					hide: function(tip) {
 						tip.setTitle('');

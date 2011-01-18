@@ -1,3 +1,7 @@
+2011-01-18  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17041: CSH tooltip often gets in the way of the field it is supposed to provide help for (Thanks to Stanislas Rolland)
+
 2011-01-18  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17113: Wrong filemount calculation in workspaces for admin users
