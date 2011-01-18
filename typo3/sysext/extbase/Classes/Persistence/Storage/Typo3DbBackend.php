@@ -558,7 +558,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 						$childTableName = $columnMap->getChildTableName();
 						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
 					} else {
-						$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
 						$statement = 'FIND_IN_SET(' . $this->getPlainValue($operand2) . ',' . $tableName . '.' . $columnName . ')';
 						$sql['where'][] = $statement;
 					}
