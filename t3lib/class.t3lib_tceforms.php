@@ -2958,6 +2958,7 @@ class t3lib_TCEforms {
 
 								$fakePA['itemFormElName'] = $PA['itemFormElName'] . $formPrefix . '[' . $key . '][' . $vDEFkey . ']';
 								$fakePA['itemFormElName_file'] = $PA['itemFormElName_file'] . $formPrefix . '[' . $key . '][' . $vDEFkey . ']';
+								$fakePA['itemFormElID'] = $fakePA['itemFormElName'];
 
 								if (isset($editData[$key][$vDEFkey])) {
 									$fakePA['itemFormElValue'] = $editData[$key][$vDEFkey];
