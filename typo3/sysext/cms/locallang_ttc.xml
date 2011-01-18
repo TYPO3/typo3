@@ -125,7 +125,7 @@
 			<label index="image_noRows.I.0">Deactivate</label>
 			<label index="image_noRows_formlabel">Display as Rows</label>
 			<label index="image_link">Link:</label>
-			<label index="image_link_formlabel">Links (separate with commas, one link per image)</label>
+			<label index="image_link_formlabel">Links (one per line, one link per image)</label>
 			<label index="image_zoom">Click-enlarge:</label>
 			<label index="image_zoom_formlabel">Enlarge on Click</label>
 			<label index="image_effects">Effects:</label>

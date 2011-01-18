@@ -51,4 +51,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['flagsFromSprites'] = 't
 	// Version 4.5: Adds excludeable FlexForm fields to Backend group access lists (ACL)
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['addFlexformsToAcl'] = 'tx_coreupdates_addflexformstoacl';
 
+	// Version 4.5: Split tt_content image_link to newline by comma
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['imagelink'] = 'tx_coreupdates_imagelink';
 ?>

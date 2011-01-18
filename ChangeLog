@@ -1,3 +1,7 @@
+2011-01-18  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16426: Link field for images is too short to provide links for every image (Thanks to Jo Hasenau)
+
 2011-01-18  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #17101: [reports] Warning in reports module for enabled PHP safe_mode, credits Christian Kuhn
@@ -74,7 +78,7 @@
 
 	* Fixed bug #17042: Double class attribute for select tag of tceforms "type=select" if using icons
 	* Fixed bug #17036: Misleading deprecation comment getReferenceHTML()
-	* Fixed bug #17034: Live search also returns records which not available to the user (Thanks to Peter Beernink)
+	* Fixed bug #17034: Live search also returns records which are not available to the user (Thanks to Peter Beernink)
 	* Follow-up to #17032: Remove early return
 
 2011-01-14  Ernesto Baschny  <ernst@cron-it.de>

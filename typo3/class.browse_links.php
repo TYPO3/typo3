@@ -814,7 +814,13 @@ class browse_links {
 
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
-			$currentLinkParts = t3lib_div::unQuoteFilenames($this->P['currentValue'], TRUE);
+			$currentValues = t3lib_div::trimExplode(chr(10), trim($this->P['currentValue']));
+			if (count($currentValues) > 0) {
+				$currentValue = array_pop($currentValues);
+			} else {
+				$currentValue = '';
+			}
+			$currentLinkParts = t3lib_div::unQuoteFilenames($currentValue, TRUE);
 			$initialCurUrlArray = array (
 				'href'   => $currentLinkParts[0],
 				'target' => $currentLinkParts[1],
@@ -1005,7 +1011,11 @@ class browse_links {
 							cur_params = cur_params.replace(/\bid\=.*?(\&|$)/, "");
 						}
 						input = input + " " + cur_target + " " + cur_class + " " + cur_title + " " + cur_params;
-						field.value = input;
+						if(field.value && field.className.search(/textarea/) != -1) {
+							field.value += "\n" + input;
+						} else {
+							field.value = input;
+						}
 						'.$update.'
 					}
 				}
