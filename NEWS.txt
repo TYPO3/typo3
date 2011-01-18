@@ -48,6 +48,12 @@ Backend
 	* The user can decide the type of each page created in the
 	  "Create multiple pages" Wizard. And the wizard can create more
 	  than 9 pages at once.
+	* When copying or translating content elements, the copy /
+	  translation will now default to be "hidden". In order for editors
+	  not to loose track of copied elements the default for the checkbox
+	  "show hidden elements" is now *on*. This behaviour can be modified
+	  by adding this to typo3conf/extTables.php:
+		$TCA['tt_content']['ctrl']['hideAtCopy'] = FALSE;
 	* All system extensions from typo3/mod were moved to real system
 	  extensions. These modules are:
 		- Extension Manager
