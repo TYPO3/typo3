@@ -36,16 +36,31 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 * @var template
 	 */
 	public $doc;
+
+	/**
+	 * @var string
+	 */
 	protected $relativePath;
+
+	/**
+	 * @var array
+	 */
 	protected $pageRecord = array();
+
+	/**
+	 * @var boolean
+	 */
 	protected $isAccessibleForCurrentUser = FALSE;
-	
+
+	/**
+	 * @var tx_linkvalidator_processing
+	 */
 	protected $processing;
 
 	/**
 	 * Main method of modfunc1
 	 *
-	 * @return	html	Module content
+	 * @return string Module content
 	 */
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
@@ -108,7 +123,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Initializes the menu array internally.
 	 *
-	 * @return	Module		menu
+	 * @return array Module menu
 	 */
 	public function modMenu() {
 		$modMenu = array (
@@ -128,7 +143,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Initializes the Module.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
@@ -161,8 +176,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Updates the table of stored broken links.
 	 *
-	 * @param	array		Processing object
-	 * @return	void
+	 * @return void
 	 */
 	protected function updateBrokenLinks() {
 		$searchFields = array();
@@ -199,13 +213,14 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Renders the content of the module.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function render() {
 		if ($this->isAccessibleForCurrentUser) {
 			$this->content = $this->drawBrokenLinksTable();
 		} else {
 				// If no access or if ID == zero
+				// @todo Show proper error message here
 			$this->content .= $this->doc->spacer(10);
 		}
 	}
@@ -214,7 +229,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Flushes the rendered content to the browser.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function flush() {
 		$content.= $this->doc->moduleBody(
@@ -230,7 +245,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Builds the selector for the level of pages to search.
 	 *
-	 * @return	string	Html code of that selector
+	 * @return string Html code of that selector
 	 */
 	private function getLevelSelector() {
 			// Make level selector:
@@ -253,7 +268,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Displays the table of broken links or a note if there were no broken links.
 	 *
-	 * @return	html	Content of the table or of the note
+	 * @return html Content of the table or of the note
 	 */
 	private function drawBrokenLinksTable() {
 		$content = '';
@@ -321,7 +336,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Displays the table header of the table with the broken links.
 	 *
-	 * @return	html		Code of content
+	 * @return string Code of content
 	 */
 	private function startTable() {
 		global $TYPO3_CONF_VARS;
@@ -352,11 +367,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Displays one line of the broken links table.
 	 *
-	 * @param	string		table
-	 * @param	string		row record
-	 * @return	html		code of content
+	 * @param string $table Name of database table
+	 * @param array $row Record row to be processed
+	 * @param string $brokenLinksItemTemplate Markup of the template to be used
+	 * @return string HTML of the rendered row
 	 */
-	private function drawTableRow($table, $row, $brokenLinksItemTemplate) {
+	private function drawTableRow($table, array $row, $brokenLinksItemTemplate) {
 		$markerArray = array();
 		if (is_array($row) && !empty($row['typelinks'])) {
 			if (($hookObj = $this->hookObjectsArr[$row['typelinks']])) {
@@ -423,10 +439,10 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Builds the checkboxes out of the hooks array.
 	 *
-	 * @param	array		array of broken links information
-	 * @return	html		code content
+	 * @param array $brokenLinkOverView array of broken links information
+	 * @return string code content
 	 */
-	private function getCheckOptions($brokenLinkOverView) {
+	private function getCheckOptions(array $brokenLinkOverView) {
 		$content = '';
 		$checkOptionsTemplate = '';
 		$checkOptionsTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
@@ -487,7 +503,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Loads data in the HTML head section (e.g. JavaScript or stylesheet information).
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	private function loadHeaderData() {
 		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'res/linkvalidator.css', 'linkvalidator');
@@ -497,7 +513,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return	array		Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	private function getDocHeaderButtons() {
 		$buttons = array(
@@ -512,7 +528,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return	string		HTML representiation of the shortcut button
+	 * @return string HTML representiation of the shortcut button
 	 */
 	private function getShortcutButton() {
 		$result = '';
@@ -526,7 +542,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Gets the filled markers that are used in the HTML template.
 	 *
-	 * @return	array		The filled marker array
+	 * @return array The filled marker array
 	 */
 	private function getTemplateMarkers() {
 
@@ -549,7 +565,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	/**
 	 * Determines whether the current user is an admin.
 	 *
-	 * @return	boolean		Whether the current user is admin
+	 * @return boolean Whether the current user is admin
 	 */
 	private function isCurrentUserAdmin() {
 		return ((bool) $GLOBALS['BE_USER']->user['admin']);

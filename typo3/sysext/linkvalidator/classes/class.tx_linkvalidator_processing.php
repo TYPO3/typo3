@@ -45,7 +45,7 @@ class tx_linkvalidator_processing {
 	/**
 	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
-	function __construct() {
+	public function __construct() {
 			// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
@@ -70,17 +70,17 @@ class tx_linkvalidator_processing {
 	 * Find all supported broken links and store them in tx_linkvalidator_links.
 	 *
 	 * @param	array		$checkOptions: list of hook object to activate
-	 * @param	int			$hidden: defines whether to look into hidden fields or not
+	 * @param	boolean		$considerHidden: defines whether to look into hidden fields or not
 	 * @return	void
 	 */
-	public function getLinkStatistics($checkOptions = array(), $hidden = 0) {
+	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_links', 'recpid in (' . $this->pidList . ')');
 
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
 			$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
-			if (!$hidden) {
+			if (!$considerHidden) {
 				$where .= t3lib_BEfunc::BEenableFields($table);
 			}
 				// if table is not configured, we assume the ext is not installed and therefore no need to check it
@@ -94,10 +94,8 @@ class tx_linkvalidator_processing {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				
 				// Analyse each record
 				$this->analyseRecord($results, $table, $fields, $row);
-
 			}
 		}
 

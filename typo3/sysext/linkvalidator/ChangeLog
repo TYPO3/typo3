@@ -1,3 +1,7 @@
+2011-01-18  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Cleanup: Fixed PHPdoc comments and type hints in module, processing and abstract linktype class
+
 2011-01-17  Christopher  <chrissitopher@gmx.de>
 
 	* Fixed bug #10989: Anchors in internal links are incorrectly treated as pages (thanks to Michael Miousse) 
