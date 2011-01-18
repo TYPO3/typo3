@@ -94,7 +94,6 @@ label {
 .checkbox:hover {
 	height: 13px;
 	margin-right: 5px;
-	overflow: hidden;
 	vertical-align: middle;
 	width: 13px;
 }

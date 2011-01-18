@@ -80,7 +80,7 @@ table#typo3-altdoc-header input,
 
 .t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
 .t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
-	z-index: 3000;
+	z-index: 3700;
 }
 
 table.typo3-TCEforms table#typo3-altdoc-header input:hover,

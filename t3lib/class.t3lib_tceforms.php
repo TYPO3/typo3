@@ -5151,7 +5151,7 @@ class t3lib_TCEforms {
 		}
 
 		if ($this->classScheme[4]) {
-			$fieldAttributes .= ' class="t3-form-palette-field' . $this->classScheme[4] . '"';
+			$fieldAttributes .= ' class="t3-form-palette-field ' . $this->classScheme[4] . '"';
 		}
 
 		$row = 0;
@@ -5171,11 +5171,11 @@ class t3lib_TCEforms {
 				$iRow[$row][] = '<span class="t3-form-palette-field-container">' .
 								'<label' . $labelAttributes . '>' .
 								$content['NAME'] .
-								'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
-								'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
 								'</label>' .
 								'<span' . $fieldAttributes . '>' .
-								$content['ITEM'] .
+									'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
+									'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
+									$content['ITEM'] .
 								'</span>' .
 								'</span>';
 			}
