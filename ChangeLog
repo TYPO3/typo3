@@ -13,6 +13,7 @@
 
 2011-01-18  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17014: Update copyright year in constant TYPO3_copyright_year to 2011 
 	* Fixed bug #17049: Flexform labels point to wrong checkbox (Thanks to Steffen Gebert)
 	* Added feature #13938: Backend session is locked to useragent (Thanks to Bjoern Pedersen, Markus Klein, Helmut Hummel)
 	* Follow-up to #15611: Mention the change of behaviour on copy/translate (hidden by default) in NEWS.txt
