@@ -56,6 +56,19 @@ class tx_Workspaces_Service_Tcemain {
 	}
 
 	/**
+	 * hook that is called AFTER all commands of the commandmap was 
+	 * executed
+	 *
+	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @return	void
+	 */
+	public function processCmdmap_afterFinish(t3lib_TCEmain $tcemainObj) {
+		if (TYPO3_UseCachingFramework) {
+			$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);
+		}
+	}
+
+	/**
 	 * In case a sys_workspace_stage record is deleted we do a hard reset
 	 * for all existing records in that stage to avoid that any of these end up
 	 * as orphan records.
@@ -129,6 +142,30 @@ class tx_Workspaces_Service_Tcemain {
 		return $tceMain;
 	}
 
+	/**
+	 * Flushes the workspace cache for current workspace and for the virtual "all workspaces" too.
+	 * 
+	 * @param integer $workspaceId The workspace to be flushed in cache
+	 * @return void
+	 */
+	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
+		if (TYPO3_UseCachingFramework) {
+			try {
+				$GLOBALS['typo3CacheFactory']->create(
+					'workspaces_cache',
+					't3lib_cache_frontend_StringFrontend',
+					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['backend'],
+					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['options']);
+			} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
+				// do nothing, a workspace cache already exists
+			}
+	
+			$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
+	
+			$workspacesCache->flushByTag($workspaceId);
+			$workspacesCache->flushByTag(tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+		}
+	}
 }
 
 

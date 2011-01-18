@@ -45,7 +45,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 		$versions = $wslibObj->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth);
 
 		$workspacesService = t3lib_div::makeInstance('tx_Workspaces_Service_GridData');
-		$data = $workspacesService->generateGridListFromVersions($versions, $parameter);
+		$data = $workspacesService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
 		return $data;
 	}
 

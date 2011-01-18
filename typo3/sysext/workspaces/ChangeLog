@@ -1,3 +1,7 @@
+2011-01-18  Marco Bresch <typo3@starfinanz.de>
+
+	* Fixed bug #10439: Data array used in ws-grid should be cached
+
 2011-01-18  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #12347: Incorrect registration of status report
