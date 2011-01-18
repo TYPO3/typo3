@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  (c) 2010 Benjamin Mack (benni@typo3.org)
+*  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+*  (c) 2010-2011 Benjamin Mack (benni@typo3.org)
 * 
 *  All rights reserved
 *
