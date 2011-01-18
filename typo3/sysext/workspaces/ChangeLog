@@ -1,6 +1,7 @@
 2011-01-18  Sonja Scholz <ss@cabag.ch>
 
 	* Fixed bug #11481: Naming of "Release" mass action is unclear
+	* Fixed bug #12350: Wrong backpath for thumbnail generation in diff view
 
 2011-01-18  Marco Bresch <typo3@starfinanz.de>
 
