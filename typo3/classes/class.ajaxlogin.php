@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2010 Christoph Koehler (christoph@webempoweredchurch.org)
+*  (c) 2008-2011 Christoph Koehler (christoph@webempoweredchurch.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

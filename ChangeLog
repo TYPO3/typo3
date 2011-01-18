@@ -1,3 +1,7 @@
+2011-01-18  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Cleanup: Updated copyright comments
+
 2011-01-18  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16462: Link field for images is too short to provide links for every image (Thanks to Jo Hasenau)

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Steffen Kamper (steffen@typo3.com)
+*  (c) 2010-2011 Steffen Kamper (steffen@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

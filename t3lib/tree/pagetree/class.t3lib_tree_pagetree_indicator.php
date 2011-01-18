@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Susanne Moog <typo3@susanne-moog.de>
+ *  (c) 2010-2011 Susanne Moog <typo3@susanne-moog.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

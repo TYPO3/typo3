@@ -2,8 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2007-2010 Kraft Bernhard (kraftb@kraftb.at)
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2007-2011 Kraft Bernhard (kraftb@kraftb.at)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

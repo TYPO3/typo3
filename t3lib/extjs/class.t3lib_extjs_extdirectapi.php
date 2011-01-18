@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Sebastian Kurfürst <sebastian@typo3.org>
+ *  (c) 2010-2011 Sebastian Kurfürst <sebastian@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2002-2010 René Fritz (r.fritz@colorcube.de)
+ *  (c) 2002-2011 René Fritz (r.fritz@colorcube.de)
  *  All rights reserved
  *
  *  This script is part of the Typo3 project. The Typo3 project is
