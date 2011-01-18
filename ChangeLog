@@ -4,6 +4,7 @@
 
 2011-01-18  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #16685: [Performance] Not using table index while deleting cached imagesize (Thanks to Vladimir Podkovanov)
 	* Fixed bug #16462: Link field for images is too short to provide links for every image (Thanks to Jo Hasenau)
 
 2011-01-18  Ingo Renner  <ingo@typo3.org>

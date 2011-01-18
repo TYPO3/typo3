@@ -2381,25 +2381,40 @@ class t3lib_stdGraphic {
 	 *
 	 * @param	string		The image filepath
 	 * @return	array		Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-	 * @author	Michael Stucki <michael@typo3.org> / Robert Lemke <rl@robertlemke.de>
+	 * @author	Michael Stucki <michael@typo3.org>
+	 * @author	Robert Lemke <rl@robertlemke.de>
 	 */
 	function getCachedImageDimensions($imageFile) {
-		global $TYPO3_DB;
 			// Create a md5 hash of the filename
 		$md5Hash = md5_file($imageFile);
-		preg_match('/([^\.]*)$/', $imageFile, $reg);
-		$res = $TYPO3_DB->exec_SELECTquery('md5hash, imagewidth, imageheight', 'cache_imagesizes', 'md5filename=' . $TYPO3_DB->fullQuoteStr(md5($imageFile), 'cache_imagesizes'));
-		if ($res) {
-			if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
-				if ($row['md5hash'] != $md5Hash) {
-						// file has changed, delete the row
-					$TYPO3_DB->exec_DELETEquery('cache_imagesizes', 'md5hash=' . $TYPO3_DB->fullQuoteStr($row['md5hash'], 'cache_imagesizes'));
-				} else {
-					return (array((int) $row['imagewidth'], (int) $row['imageheight'], strtolower($reg[0]), $imageFile));
-				}
+
+		preg_match('/([^\.]*)$/', $imageFile, $imageExtension);
+
+		$cachedImageDimensions = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'md5hash, md5filename, imagewidth, imageheight',
+			'cache_imagesizes',
+			'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(md5($imageFile), 'cache_imagesizes')
+		);
+
+		$result = FALSE;
+		if (is_array($cachedImageDimensions)) {
+			if ($cachedImageDimensions['md5hash'] != $md5Hash) {
+					// File has changed, delete the row
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+					'cache_imagesizes',
+					'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($cachedImageDimensions['md5filename'], 'cache_imagesizes')
+				);
+			} else {
+				$result = array(
+					(int)$cachedImageDimensions['imagewidth'],
+					(int)$cachedImageDimensions['imageheight'],
+					strtolower($imageExtension[0]),
+					$imageFile,
+				);
 			}
 		}
-		return FALSE;
+
+		return $result;
 	}
 
 	/**
