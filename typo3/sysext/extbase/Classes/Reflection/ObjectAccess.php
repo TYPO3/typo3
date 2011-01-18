@@ -282,6 +282,8 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			return TRUE;
 		} elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) {
 			return TRUE;
+		} elseif ($object instanceof \ArrayAccess && isset($object[$propertyName]) === TRUE) {
+			return TRUE;
 		}
 		if (is_callable(array($object, 'get' . ucfirst($propertyName)))) return TRUE;
 		return is_callable(array($object, 'is' . ucfirst($propertyName)));

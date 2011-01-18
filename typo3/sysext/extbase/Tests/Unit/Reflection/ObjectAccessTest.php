@@ -278,6 +278,17 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	/**
 	 * @test
 	 */
+	public function isPropertyGettableWorksOnArrayAccessObjects() {
+		$arrayObject = new ArrayObject();
+		$arrayObject['key'] = 'v';
+
+		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'key'));
+		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function isPropertyGettableWorksOnStdClass() {
 		$stdClassObject = new stdClass();
 		$stdClassObject->property = 'foo';
