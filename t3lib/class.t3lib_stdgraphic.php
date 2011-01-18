@@ -2356,11 +2356,12 @@ class t3lib_stdGraphic {
 	 * @author	Michael Stucki <michael@typo3.org> / Robert Lemke <rl@robertlemke.de>
 	 */
 	function cacheImageDimensions($identifyResult) {
-		global $TYPO3_DB;
-			// Create a md5 hash of the filename
-		$md5Hash = md5_file($identifyResult[3]);
+			// Create md5 hash of filemtime and filesize
+		$md5Hash = md5(filemtime($identifyResult[3]) . filesize($identifyResult[3]));
+
+		$result = FALSE;
 		if ($md5Hash) {
-			$fieldArr = array(
+			$fieldArray = array(
 				'md5hash' => $md5Hash,
 				'md5filename' => md5($identifyResult[3]),
 				'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -2368,12 +2369,18 @@ class t3lib_stdGraphic {
 				'imagewidth' => $identifyResult[0],
 				'imageheight' => $identifyResult[1],
 			);
-			$TYPO3_DB->exec_INSERTquery('cache_imagesizes', $fieldArr);
-			if (!$err = $TYPO3_DB->sql_error()) {
-				return TRUE;
+
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+				'cache_imagesizes',
+				$fieldArray
+			);
+
+			if (!$err = $GLOBALS['TYPO3_DB']->sql_error()) {
+				$result = TRUE;
 			}
 		}
-		return FALSE;
+
+		return $result;
 	}
 
 	/**
@@ -2385,10 +2392,8 @@ class t3lib_stdGraphic {
 	 * @author	Robert Lemke <rl@robertlemke.de>
 	 */
 	function getCachedImageDimensions($imageFile) {
-			// Create a md5 hash of the filename
-		$md5Hash = md5_file($imageFile);
-
-		preg_match('/([^\.]*)$/', $imageFile, $imageExtension);
+			// Create md5 hash of filemtime and filesize
+		$md5Hash = md5(filemtime($imageFile) . filesize($imageFile));
 
 		$cachedImageDimensions = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'md5hash, md5filename, imagewidth, imageheight',
@@ -2405,6 +2410,7 @@ class t3lib_stdGraphic {
 					'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($cachedImageDimensions['md5filename'], 'cache_imagesizes')
 				);
 			} else {
+				preg_match('/([^\.]*)$/', $imageFile, $imageExtension);
 				$result = array(
 					(int)$cachedImageDimensions['imagewidth'],
 					(int)$cachedImageDimensions['imageheight'],
