@@ -636,7 +636,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($valueFunction === NULL) {
 				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ' ' . $operator . ' ?';
 			} else {
-				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ' ' . $operator . ' ?';
+				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ') ' . $operator . ' ?';
 			}
 
 			$sql['where'][] = $constraintSQL;
