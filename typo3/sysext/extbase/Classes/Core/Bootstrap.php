@@ -195,7 +195,9 @@ class Tx_Extbase_Core_Bootstrap {
 	protected function initializeReflection() {
 		$this->reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
 		$this->reflectionService->setDataCache($this->cacheManager->getCache('cache_extbase_reflection'));
-		$this->reflectionService->initialize();
+		if (!$this->reflectionService->isInitialized()) {
+			$this->reflectionService->initialize();
+		}
 	}
 
 	/**
