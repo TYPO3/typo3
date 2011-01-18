@@ -1,3 +1,7 @@
+2011-01-18  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11481: Naming of "Release" mass action is unclear
+
 2011-01-18  Marco Bresch <typo3@starfinanz.de>
 
 	* Fixed bug #10439: Data array used in ws-grid should be cached

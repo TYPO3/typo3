@@ -37,7 +37,7 @@ TYPO3.Workspaces.Actions = {
 			case 'swap':
 				this.runningMassAction = TYPO3.Workspaces.ExtDirectMassActions.publishWorkspace;
 				break;
-			case 'release':
+			case 'discard':
 				this.runningMassAction = TYPO3.Workspaces.ExtDirectMassActions.flushWorkspace;
 				break;
 		}
