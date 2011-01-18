@@ -27,6 +27,49 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	/**
 	 * @test
 	 */
+	public function theObjectReturnsItsCorrectUid() {
+		$domainObjectName = uniqid('DomainObject_');
+		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
+		$domainObject = new $domainObjectName();
+		$domainObject->_setProperty('uid', 42);
+		$this->assertEquals($domainObject->getUid(), 42);
+	}
+
+	/**
+	 * @test
+	 */
+	public function theObjectReturnsItsCorrectUidIfTheUidIsNull() {
+		$domainObjectName = uniqid('DomainObject_');
+		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
+		$domainObject = new $domainObjectName();
+		$this->assertNull($domainObject->getUid());
+	}
+
+	/**
+	 * @test
+	 */
+	public function theObjectReturnsItsCorrectPid() {
+		$domainObjectName = uniqid('DomainObject_');
+		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
+		$domainObject = new $domainObjectName();
+		$domainObject->setPid(42);
+		$this->assertEquals($domainObject->getPid(), 42);
+	}
+
+	/**
+	 * @test
+	 */
+	public function theObjectReturnsItsCorrectPidIfThePidIsNull() {
+		$domainObjectName = uniqid('DomainObject_');
+		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
+		$domainObject = new $domainObjectName();
+		$this->assertNull($domainObject->getPid());
+	}
+
+
+	/**
+	 * @test
+	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
 		$domainObjectName = uniqid('DomainObject_');
 		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {

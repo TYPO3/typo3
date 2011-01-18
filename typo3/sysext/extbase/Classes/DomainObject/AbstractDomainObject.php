@@ -34,7 +34,7 @@
 abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface, Tx_Extbase_Persistence_ObjectMonitoringInterface {
 
 	/**
-	 * @var int The uid
+	 * @var int The uid of the record. The uid is only unique in the context of the database table.
 	 */
 	protected $uid;
 
@@ -47,6 +47,11 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @var int The uid of the language of the object. In TYPO3 v4.x this is the uid of the language record in the table sys_language.
 	 */
 	protected $_languageUid;
+
+	/**
+	 * @var int The id of the page the record is "stored".
+	 */
+	protected $pid;
 
 	/**
 	 * TRUE if the object is a clone
@@ -78,6 +83,32 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 			return (int)$this->uid;
 		} else {
 			return NULL;
+		}
+	}
+
+	/**
+	 * Setter for the pid.
+	 *
+	 * @return void
+	 */
+	final public function setPid($pid) {
+		if ($pid === NULL) {
+			$this->pid = NULL;
+		} else {
+			$this->pid = (int)$pid;
+		}
+	}
+
+	/**
+	 * Getter for the pid.
+	 *
+	 * @return int The pid or NULL if none set yet.
+	 */
+	final public function getPid() {
+		if ($this->pid === NULL) {
+			return NULL;
+		} else {
+			return (int)$this->pid;
 		}
 	}
 	
