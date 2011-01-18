@@ -618,7 +618,6 @@
 		$this->fe_user = t3lib_div::makeInstance('tslib_feUserAuth');
 
 		$this->fe_user->lockIP = $this->TYPO3_CONF_VARS['FE']['lockIP'];
-		$this->fe_user->lockHashKeyWords = $this->TYPO3_CONF_VARS['FE']['lockHashKeyWords'];
 		$this->fe_user->checkPid = $this->TYPO3_CONF_VARS['FE']['checkFeUserPid'];
 		$this->fe_user->lifetime = intval($this->TYPO3_CONF_VARS['FE']['lifetime']);
 		$this->fe_user->checkPid_value = $GLOBALS['TYPO3_DB']->cleanIntList(t3lib_div::_GP('pid'));	// List of pid's acceptable

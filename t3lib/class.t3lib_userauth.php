@@ -140,7 +140,7 @@ class t3lib_userAuth {
 	var $hash_length = 32; // The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
 	var $getMethodEnabled = FALSE; // Setting this flag true lets user-authetication happen from GET_VARS if POST_VARS are not set. Thus you may supply username/password from the URL.
 	var $lockIP = 4; // If set, will lock the session to the users IP address (all four numbers. Reducing to 1-3 means that only first, second or third part of the IP address is used).
-	var $lockHashKeyWords = 'useragent'; // Keyword list (commalist with no spaces!): "useragent". Each keyword indicates some information that can be included in a integer hash made to lock down usersessions.
+	var $lockHashKeyWords = 'useragent'; // Keyword list (commalist with no spaces!): "useragent". Each keyword indicates some information that can be included in a integer hash made to lock down usersessions. Configurable through $TYPO3_CONF_VARS[TYPO3_MODE]['lockHashKeyWords']
 
 	var $warningEmail = ''; // warning -emailaddress:
 	var $warningPeriod = 3600; // Period back in time (in seconds) in which number of failed logins are collected
@@ -245,6 +245,10 @@ class t3lib_userAuth {
 		if ($mode == 'get' && $this->getFallBack && $this->get_name) {
 			$this->get_URL_ID = '&' . $this->get_name . '=' . $id;
 		}
+
+			// Set session hashKey lock keywords from configuration; currently only 'useragent' can be used.
+		$this->lockHashKeyWords = $TYPO3_CONF_VARS[$this->loginType]['lockHashKeyWords'];
+
 			// Make certain that NO user is set initially
 		$this->user = '';
 
