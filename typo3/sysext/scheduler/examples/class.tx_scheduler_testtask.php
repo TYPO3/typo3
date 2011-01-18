@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
-
 /**
  * Class "tx_scheduler_TestTask" provides testing procedures
  *
@@ -91,18 +89,19 @@ class tx_scheduler_TestTask extends tx_scheduler_Task {
 				. 'cronCmd: ' . ($cronCmd ? $cronCmd : 'not used');
 
 				// Prepare mailer and send the mail
-			$mailer = t3lib_div::makeInstance('t3lib_htmlmail');
-			$mailer->start();
-			$mailer->from_email = $this->email;
-			$mailer->from_name = 'SCHEDULER TEST-TASK';
-			$mailer->replyto_email = $this->email;
-			$mailer->replyto_name = 'SCHEDULER TEST-TASK';
-			$mailer->subject = 'SCHEDULER TEST-TASK';
-			$mailer->setPlain($mailer->encodeMsg($mailBody));
-			$mailer->setRecipient($this->email);
-			$mailer->setHeaders();
-			$mailer->setContent();
-			$success = $mailer->sendtheMail();
+			try {
+				/** @var $mailer t3lib_mail_message */
+				$mailer = t3lib_div::makeInstance('t3lib_mail_message');
+				$mailer->setFrom(array($this->email => 'SCHEDULER TEST-TASK'));
+				$mailer->setReplyTo(array($this->email => 'SCHEDULER TEST-TASK'));
+				$mailer->setSubject('SCHEDULER TEST-TASK');
+				$mailer->setBody($mailBody);
+				$mailer->setTo($this->email);
+				$mailsSend = $mailer->send();
+				$success = ($mailsSend>0);
+			} catch (Exception $e) {
+				throw new t3lib_exception($e->getMessage());
+			}
 		} else {
 				// No email defined, just log the task
 			t3lib_div::devLog('[tx_scheduler_TestTask]: No email address given', 'scheduler', 2);

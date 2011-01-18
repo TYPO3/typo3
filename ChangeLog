@@ -13,6 +13,7 @@
 
 2011-01-18  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17108: Make scheduler sample task use SwiftMailer (Thanks to Ernesto Baschny)
 	* Fixed bug #17130: [Caching framework] Remove commented code from db backend
 	* Fixed bug #12232: [Performance] md5_file() to check if a file has been changed is very expensive (Thanks to André Stösel and Vladimir Podkovanov)
 	* Fixed bug #16685: [Performance] Not using table index while deleting cached imagesize (Thanks to Vladimir Podkovanov)
