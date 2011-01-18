@@ -399,37 +399,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setCacheTable($cacheTable) {
-		/*
-
-	  TODO reenable this check or remove it before 4.3 final
-
-	  This check causes mysql warnings when not being logged in and calling
-	  typo3/backend.php or the install tool.
-	  Reason: the caches in typo3/init.php get initialized before a DB connection
-	  has been established.
-	  Related Question: Why aren't there warnings in the FE as the caches get
-	  initialized in tslib_fe's constructor which is also before a DB conection
-	  exsits?
-	  Assumption Ingo Renner: Is a custom error_reporting level causing that?
-
-	  There's also an unit test for that check (also deactivated for now).
-
-		  $result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			  'id',
-			  $cacheTable,
-			  '',
-			  '',
-			  '',
-			  1
-		  );
-
-		  if (!is_array($result)) {
-			  throw new t3lib_cache_Exception(
-				  'The table "' . $cacheTable . '" does not exist.',
-				  1236516444
-			  );
-		  }
-  */
 		$this->cacheTable = $cacheTable;
 		$this->initializeCommonReferences();
 	}
