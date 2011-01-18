@@ -2,6 +2,7 @@
 
 	* Fixed bug #17041: CSH tooltip often gets in the way of the field it is supposed to provide help for (Thanks to Stanislas Rolland)
 	* Fixed bug #16253: Displaced Arrows in TCEforms (Thanks to Jo Hasenau)
+	* Fixed bug #16081: Different margins of input fields in TCEforms
 
 2011-01-18  Susanne Moog  <typo3@susanne-moog.de>
 
