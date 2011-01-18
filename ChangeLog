@@ -1,3 +1,7 @@
+2011-01-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16045: htmlArea RTE: Merging table cells using context menu doesn't work in Firefox
+
 2011-01-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17041: CSH tooltip often gets in the way of the field it is supposed to provide help for (Thanks to Stanislas Rolland)
