@@ -111,7 +111,8 @@ $TCA['sys_workspace'] = array(
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				)
-			)
+			),
+			'displayCond' => 'FALSE'			// this feature doesn't work yet therefore it's not shown by default
 		),
 		'freeze' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.freeze',

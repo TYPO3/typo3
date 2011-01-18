@@ -1,5 +1,6 @@
 2011-01-16  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12333: "Un-Publish:" should be hidden
 	* Fixed bug #12322: "null" is shown in diff view if original fields are empty in Firefox
 	* Fixed bug #11587: Trash icon should "discard" too
 	* Fixed bug #11529: Infinite not infinite / moved pages not always visible in element list
