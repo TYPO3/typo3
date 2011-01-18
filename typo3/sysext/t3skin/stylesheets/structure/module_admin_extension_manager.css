@@ -7,3 +7,15 @@ $Id$
 body#typo3-mod-tools-em-index-php a {
 	display: inline-block;
 }
+
+body#typo3-mod-tools-em-index-php table.t3-em-extension-list td {
+	line-height: 17px;
+	padding: 1px;
+}
+body#typo3-mod-tools-em-index-php table.t3-em-extension-list tr.t3-row-header td {
+	padding: 1px 7px;
+}
+
+body#typo3-mod-tools-em-index-php table.t3-em-extension-list td img {
+	vertical-align: middle;
+}
