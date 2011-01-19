@@ -154,6 +154,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 		$className1 = uniqid('Class_');
 		eval('class ' . $className1 . ' extends Tx_Extbase_DomainObject_AbstractEntity {
 			public $bar = 42;
+			public $baz = "The quick brown...";
 		}');
 
 		// An entity with a simple property
@@ -166,6 +167,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 		$className2 = uniqid('Class_');
 		eval('class ' . $className2 . ' extends Tx_Extbase_DomainObject_AbstractEntity {
 			public $bar = 99;
+			public $baz = "The quick brown...";
 		}');
 		
 		// A different entity
@@ -221,7 +223,20 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 		$objectStorage2 = clone $emptyObjectStorage;
 		$clonedObjectStorage2 = clone $objectStorage2;
 		$objectStorage2->attach(new stdClass);
-		
+
+		// Two entities with a circular dependency
+		$entity6 = new $className1;
+		$entity6->_setProperty('uid', 123);
+		$entity7 = new $className1;
+		$entity7->_setProperty('uid', 321);
+		$entity7->_setProperty('bar', $entity6); //circular
+		$objectStorage3 = clone $emptyObjectStorage;		
+		$objectStorage3->attach($entity7); // circular
+		$objectStorage3->_memorizeCleanState();
+		$entity6->_setProperty('bar', $objectStorage3);
+		$entity8 = clone $entity6;
+		$entity8->_setProperty('baz', "Another Text");
+
 		return array(
 			'Same integer values' => array(42, 42, FALSE),
 			'Different integer values' => array(42, 666, TRUE),
@@ -243,6 +258,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 			'An empty ObjectStorage and its clone' => array($clonedObjectStorage, $emptyObjectStorage, FALSE),
 			'An ObjectStorage and its clone' => array($clonedObjectStorage1, $objectStorage1, FALSE),
 			'Modified ObjectStorage' => array($clonedObjectStorage2, $objectStorage2, TRUE),
+			'A circular dependency can be resolved' => array($entity6, $entity8, TRUE),
 		);
 	}
 
