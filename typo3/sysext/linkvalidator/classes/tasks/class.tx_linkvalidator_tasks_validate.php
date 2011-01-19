@@ -180,13 +180,10 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
 		} else {
-			$failure = t3lib_div::makeInstance(
-				'Exception',
+			throw new Exception(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
-				t3lib_FlashMessage::ERROR
+				'1295476760'
 			);
-			throw $failure;
-			$sendEmail = FALSE;
 		}
 		if(t3lib_div::validEmail($modTS['mail.']['replytoemail'])) {
 			$mail->setReplyTo(array($modTS['mail.']['replytoemail'] => $modTS['mail.']['replytoname']));
@@ -195,26 +192,19 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 		if(!empty($modTS['mail.']['subject'])) {
 			$mail->setSubject($modTS['mail.']['subject']);
 		} else {
-			$failure = t3lib_div::makeInstance(
-				'Exception',
+			throw new Exception(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.noSubject'),
-				t3lib_FlashMessage::ERROR
+				'1295476808'
 			);
-			throw $failure;
-			$sendEmail = FALSE;
 		}
 		if (!empty($this->email)) {
 			$emailList = t3lib_div::trimExplode(',', $this->email);
 			foreach ($emailList as $emailAdd) {
 				if (!t3lib_div::validEmail($emailAdd)) {
-					$isValid = FALSE;
-					$failure = t3lib_div::makeInstance(
-						'Exception',
+					throw new Exception(
 						$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidToEmail'),
-						t3lib_FlashMessage::ERROR
+						'1295476821'
 					);
-					throw $failure;
-					$sendEmail = FALSE;
 				} else {
 					$validEmailList[] = $emailAdd;
 				}
