@@ -869,6 +869,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		TRUE if user is allowed access
 	 */
 	function workspaceCheckStageForCurrent($stage) {
+		$stage = intval($stage);
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
@@ -878,7 +879,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Check if custom staging is activated
 			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
-			if ($workspaceRec['custom_stages'] > 0 && $stage !== '0' && $stage !== '-10') {
+			if ($workspaceRec['custom_stages'] > 0 && $stage !== 0 && $stage !== '-10') {
 
 					// Get custom stage record
 				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
@@ -886,7 +887,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid'])
 					 && $stat['_ACCESS'] === 'member')
 					|| $stat['_ACCESS'] === 'owner') {
-					return TRUE; // OK for these criteria
+					return TRUE;
 				}
 
 					// Check if the user is in a group which is responsible for the current stage
@@ -894,15 +895,22 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid)
 						 && $stat['_ACCESS'] === 'member')
 						|| $stat['_ACCESS'] === 'owner') {
-						return TRUE; // OK for these criteria
+						return TRUE;
 					}
+				}
+				// only owner is allowed to change records which are "ready to publish"
+			} elseif ($stage == '-10' || $stage == '-20') {
+				if ($stat['_ACCESS'] === 'owner') {
+					return TRUE;
+				} else {
+					return FALSE;
 				}
 			} else {
 				$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
 				if (($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member')
 					|| ($stage <= 1 && $stat['_ACCESS'] === 'reviewer')
 					|| $stat['_ACCESS'] === 'owner') {
-					return TRUE; // OK for these criteria
+					return TRUE;
 				}
 			}
 		} else {

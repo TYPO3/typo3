@@ -20,6 +20,7 @@
 2011-01-19  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17075: No possibility to update the module menu via setUpdateSignal
+	* Fixed bug #17150: Workspaces non-admin user cannot send to next stage (Thanks to Sonja Scholz)
 
 2011-01-18  Stanislas Rolland  <typo3@sjbr.ca>
 
