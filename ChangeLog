@@ -12,6 +12,7 @@
 	* Fixed bug #17144: Adjust CSH tooltip show and hide delay (Thanks to Jens Hoffmann and Lars Zimmermann)
 	* Follow-up to #17073: CSS clean-up
 	* Fixed bug #17127: Streamline usage of ExtJS loading indicators
+	* Follow-up to #17067: Fixed error in Internet Explorer
 
 2011-01-19  Ernesto Baschny  <ernst@cron-it.de>
 

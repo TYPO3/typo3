@@ -120,6 +120,7 @@ class TYPO3backend {
 			// add default BE javascript
 		$this->js      = '';
 		$this->jsFiles = array(
+			'common'                => 'js/common.js',
 			'locallang'             => $this->getLocalLangFileName(),
 			'modernizr'             => 'contrib/modernizr/modernizr.min.js',
 			'swfupload'             => 'contrib/swfupload/swfupload.js',
@@ -128,7 +129,6 @@ class TYPO3backend {
 			'swfupload.queue'       => 'contrib/swfupload/plugins/swfupload.queue.js',
 			'plupload'              => 'contrib/plupload/js/plupload.full.min.js',
 			'md5'                   => 'md5.js',
-			'common'                => 'js/common.js',
 			'toolbarmanager'        => 'js/toolbarmanager.js',
 			'modulemenu'            => 'js/modulemenu.js',
 			'iecompatibility'       => 'js/iecompatibility.js',
