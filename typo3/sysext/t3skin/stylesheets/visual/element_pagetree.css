@@ -314,7 +314,7 @@ $Id: $
 }
 
 .typo3-pagetree-deletionDropZone-restoreText {
-	background: transparent url("../../extjs/images/grid/loading.gif") no-repeat 0 3px;
+	background: transparent url('../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
 }
 
 #typo3-pagetree .x-panel-tbar,
