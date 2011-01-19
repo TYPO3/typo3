@@ -621,8 +621,8 @@ class tx_version_tcemain {
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
 			$record = t3lib_BEfunc::getRecord($table, $id);
 			$stat = $tcemainObj->BE_USER->checkWorkspace($record['t3ver_wsid']);
-
-			if (t3lib_div::inList('admin,online,offline,reviewer,owner', $stat['_ACCESS']) || ($stageId <= 1 && $stat['_ACCESS'] === 'member')) {
+				// check if the usere is allowed to the current stage, so it's also allowed to send to next stage
+			if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
 
 					// Set stage of record:
 				$updateData = array(
