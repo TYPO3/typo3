@@ -1,3 +1,7 @@
+2011-01-19  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #17075: No possibility to update the module menu via setUpdateSignal
+
 2011-01-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16045: htmlArea RTE: Merging table cells using context menu doesn't work in Firefox
