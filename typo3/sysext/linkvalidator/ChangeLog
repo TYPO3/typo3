@@ -1,3 +1,7 @@
+2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	Fixed bug #12377: Other link types than supported use the same type than the last found
+
 2011-01-18  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Cleanup: Fixed PHPdoc comments and type hints in module, processing and abstract linktype class
