@@ -1,3 +1,7 @@
+2011-01-19  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17067: Overwork the JavaScript LLL generation (Thanks to Steffen Gebert)
+
 2011-01-19  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17075: No possibility to update the module menu via setUpdateSignal
