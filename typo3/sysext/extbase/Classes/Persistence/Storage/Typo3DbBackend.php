@@ -928,11 +928,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 					if (is_object($GLOBALS['TSFE'])) {
 						$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
 					} else {
-						require_once(PATH_t3lib . 'class.t3lib_page.php');
 						$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
 					}
 				} else {
-					require_once(PATH_t3lib . 'class.t3lib_page.php');
 					$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
 				}
 			}
