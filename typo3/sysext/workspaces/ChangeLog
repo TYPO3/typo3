@@ -1,6 +1,7 @@
 2011-01-18  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #11972: Switching workspaces with tabs causes module menu to loose its selection
+	* Fixed bug #12307: Workspaces non-admin user cannot send to next stage
 
 2011-01-18  Sonja Scholz <ss@cabag.ch>
 

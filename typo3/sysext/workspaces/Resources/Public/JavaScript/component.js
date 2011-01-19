@@ -168,6 +168,18 @@ Ext.ux.TYPO3.Workspace.RowPanel = Ext.extend(Ext.Panel, {
 TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 	menuDisabled: true,
 	hideable: false,
+	getRowClass : function(record, rowIndex, p, ds) {
+		class = '';
+		if (!record.json.allowedAction_nextStage && !record.json.allowedAction_prevStage) {
+			class = 'typo3-workspaces-row-disabled ';
+		}
+		if(this.state[record.id]) {
+			class += 'x-grid3-row-expanded';
+		} else {
+			class += 'x-grid3-row-collapsed';
+		}
+		return class;
+	},
 	remoteDataMethod : function (record, index) {
 		TYPO3.Workspaces.RowDetail.rowDataStore.baseParams = {
 			uid: record.json.uid,

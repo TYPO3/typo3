@@ -188,3 +188,7 @@ div .t3-workspaces-comments-singleComment-content-title {
 	padding: 8px 0 8px 0;
 	font-weight: bold;
 }
+
+.typo3-workspaces-row-disabled .x-grid3-td-checker {
+	visibility: hidden;
+}
