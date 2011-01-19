@@ -1,3 +1,7 @@
+2011-01-19  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17138: Superfluous backspace in Error Message if no Install Tool Password is set (Thanks to Sebastian Michaelsen)
+
 2011-01-19  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17067: Overwork the JavaScript LLL generation (Thanks to Steffen Gebert)
