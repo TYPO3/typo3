@@ -105,8 +105,8 @@ TYPO3.ContextHelp = function() {
 				shadow: false,
 				dismissDelay: 0, // tooltip stays while mouse is over target
 				autoHide: true,
-				showDelay: 500, // show after 0.5 seconds
-				hideDelay: 500, // hide after 3 seconds
+				showDelay: 1000, // show after 1 second
+				hideDelay: 300, // hide after 0.3 seconds
 				closable: true,
 				isMouseOver: false,
 				listeners: {

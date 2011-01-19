@@ -1,6 +1,7 @@
 2011-01-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17138: Superfluous backspace in Error Message if no Install Tool Password is set (Thanks to Sebastian Michaelsen)
+	* Fixed bug #17144: Adjust CSH tooltip show and hide delay (Thanks to Jens Hoffmann and Lars Zimmermann)
 
 2011-01-19  Ernesto Baschny  <ernst@cron-it.de>
 
