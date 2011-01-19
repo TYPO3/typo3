@@ -207,6 +207,7 @@ class tx_linkvalidator_processing {
 								for ($i = 1; $i < count($linkTags); $i += 2) {
 									$referencedRecordType = '';
 									foreach($resultArray['elements'] as $element) {
+											$type = '';
 											$r = $element['subst'];
 
 											if (!empty($r['tokenID'])) {
