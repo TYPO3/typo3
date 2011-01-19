@@ -41,6 +41,31 @@ interface tx_linkvalidator_linkTypes_Interface {
 	 */
 	public function checkLink($url, $softRefEntry, $reference);
 
+	/**
+	 * Base type fetching method, based on the type that softRefParserObj returns.
+	 *
+	 * @param   array	 $value: reference properties
+	 * @param   string	 $type: current type
+	 * @param   string	 $key: validator hook name
+	 * @return  string	 fetched type
+	 */
+	public function fetchType($value, $type, $key);
+
+	/**
+	 * Get the value of the private property errorParams.
+	 *
+	 * @return  array      all parameters needed for the rendering of the error message
+	 */
+	public function getErrorParams();
+
+	/**
+	 * Base url parsing
+	 *
+	 * @param	array		$row: broken link record
+	 * @return	string		parsed broken url
+	 */
+	public function getBrokenUrl($row);
+
 }
 
 ?>

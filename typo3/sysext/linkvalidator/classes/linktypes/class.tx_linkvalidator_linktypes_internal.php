@@ -29,17 +29,33 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract {
 
 	const DELETED = 'deleted';
 	const HIDDEN = 'hidden';
 	const MOVED = 'moved';
 	const NOTEXISTING = 'notExisting';
 
-	var $errorParams = array();
+	/**
+	 * All parameters needed for rendering the error message.
+	 *
+	 * @var array
+	 */
+	protected $errorParams = array();
 
-	var $responsePage = TRUE;
-	var $responseContent = TRUE;
+	/**
+	 * Result of the check, if the current page uid is valid or not.
+	 *
+	 * @var boolean
+	 */
+	protected $responsePage = TRUE;
+
+	/**
+	 * Result of the check, if the current content uid is valid or not.
+	 *
+	 * @var boolean
+	 */
+	protected $responseContent = TRUE;
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -100,7 +116,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
-	public function checkPage($page, $softRefEntry, $reference) {
+	protected function checkPage($page, $softRefEntry, $reference) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, title, deleted, hidden, starttime, endtime',
 			'pages',
@@ -140,7 +156,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
-	public function checkContent($page, $anchor, $softRefEntry, $reference) {
+	protected function checkContent($page, $anchor, $softRefEntry, $reference) {
 			// Get page ID on which the content element in fact is located
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, pid, header, deleted, hidden, starttime, endtime',

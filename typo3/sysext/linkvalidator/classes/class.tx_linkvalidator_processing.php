@@ -35,12 +35,54 @@ $GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
 
 class tx_linkvalidator_processing {
 
-	protected $searchFields = array(); // array of tables and fields to search for broken links
-	protected $pidList = ''; // list of pidlist (rootline downwards)
-	protected $linkCounts = array(); // array of tables containing number of external link
-	protected $brokenLinkCounts = array(); // array of tables containing number of broken external link
-	protected $recordsWithBrokenLinks = array(); // array of tables and records containing broken links
-	protected $hookObjectsArr = array(); // array for hooks for own checks
+	/**
+	 * Array of tables and fields to search for broken links.
+	 *
+	 * @var array
+	 */
+	protected $searchFields = array();
+
+	/**
+	 * List of comma seperated page uids (rootline downwards).
+	 *
+	 * @var string
+	 */
+	protected $pidList = '';
+
+	/**
+	 * Array of tables and the number of external links they contain.
+	 *
+	 * @var array
+	 */
+	protected $linkCounts = array();
+
+	/**
+	 * Array of tables and the number of broken external links they contain.
+	 *
+	 * @var array
+	 */
+	protected $brokenLinkCounts = array();
+
+	/**
+	 * Array of tables and records containing broken links.
+	 *
+	 * @var array
+	 */
+	protected $recordsWithBrokenLinks = array();
+
+	/**
+	 * Array for hooks for own checks.
+	 *
+	 * @var array
+	 */
+	protected $hookObjectsArr = array();
+
+	/**
+	 * Array with information about the current page.
+	 *
+	 * @var array
+	 */
+	protected $extPageInTreeInfo = array();
 
 	/**
 	 * Fill hookObjectsArr with different link types and possible XClasses.

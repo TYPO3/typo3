@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity.

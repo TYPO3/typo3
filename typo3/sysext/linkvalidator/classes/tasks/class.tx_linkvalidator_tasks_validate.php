@@ -47,15 +47,74 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	public $countInARun;
 
 	/**
+	 * Total number of broken links.
+	 *
 	 * @var integer
 	 */
 	public $totalBrokenLink = 0;
 
 	/**
+	 * Total number of broken links from the last run.
+	 *
 	 * @var integer
 	 */
 	public $oldTotalBrokenLink = 0;
 
+	/**
+	 * Mail template fetched from the given template file.
+	 *
+	 * @var string
+	 */
+	public $templateMail;
+	
+	/**
+	 * specific TSconfig for this task.
+	 *
+	 * @var array
+	 */
+	public $configuration = array();
+
+	/**
+	 * Shows if number of result was diferent from the result of the last check or not.
+	 *
+	 * @var boolean
+	 */
+	public $dif;
+
+	/**
+	 * Template to be used for the email.
+	 *
+	 * @var string
+	 */
+	public $emailTemplateFile;
+
+	/**
+	 * Level of pages the task should check.
+	 *
+	 * @var integer
+	 */
+	public $depth;
+
+	/**
+	 * UID of the start page for this task.
+	 *
+	 * @var integer
+	 */
+	public $page;
+
+	/**
+	 * Email address to which an email report is sent.
+	 *
+	 * @var string
+	 */
+	public $email;
+
+	/**
+	 * Only send an email, if new broken links were found.
+	 *
+	 * @var boolean
+	 */
+	public $emailOnBrokenLinkOnly;
 
 	/**
 	 * Function executed from the Scheduler.
@@ -65,7 +124,12 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	public function execute() {
 		$this->setCliArguments();
 		$successfullyExecuted = TRUE;
-		$file = t3lib_div::getFileAbsFileName($this->emailfile);
+		if (!file_exists($file = t3lib_div::getFileAbsFileName($this->emailTemplateFile)) && !empty($this->email)) {
+			throw new Exception(
+				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidEmailTemplateFile'),
+				'1295476972'
+			);
+		}
 		$htmlFile = t3lib_div::getURL($file);
 		$this->templateMail = t3lib_parsehtml::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
 
@@ -79,6 +143,16 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 				$modTS = t3lib_BEfunc::getModTSconfig($page, 'mod.linkvalidator');
 				$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 				$parseObj->parse($this->configuration);
+				if(count($parseObj->errors) > 0){
+					$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidTSconfig') . '<br />';
+					foreach($parseObj->errors as $errorInfo){
+						$parseErrorMessage .= $errorInfo[0] . '<br />';
+					}
+					throw new Exception(
+						$parseErrorMessage,
+						'1295476989'
+					);
+				}
 				$TSconfig = $parseObj->setup;
 				$modTS = $modTS['properties'];
 				$overrideTs = $TSconfig['mod.']['tx_linkvalidator.'];
@@ -146,7 +220,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 			$this->dif = TRUE;
 		}
 		if ($this->totalBrokenLink > 0
-			&& (!$this->emailonbrokenlinkonly || $this->dif)
+			&& (!$this->emailOnBrokenLinkOnly || $this->dif)
 			&& !empty($this->email)
 		) {
 			$successfullyExecuted = $this->reportEmail($pageSections, $modTS);

@@ -29,10 +29,21 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract {
 
-	var $url_reports = array();
-	var $url_error_params = array();
+	/**
+	 * Cached list of the URLs, which were already checked for the current processing.
+	 *
+	 * @var array
+	 */
+	protected $url_reports = array();
+
+	/**
+	 * Cached list of all error parameters of the URLs, which were already checked for the current processing.
+	 *
+	 * @var array
+	 */
+	protected $url_error_params = array();
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -186,9 +197,10 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 *
 	 * @param   array	  $value: reference properties
 	 * @param   string	 $type: current type
-	 * @return	string		fetched type
+	 * @param   string	 $key: validator hook name
+	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type) {
+	public function fetchType($value, $type, $key) {
 		preg_match_all('/((?:http|https|ftp|ftps))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {

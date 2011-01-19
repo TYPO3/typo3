@@ -43,19 +43,89 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	protected $relativePath;
 
 	/**
+	 * Information about the current page record.
+	 *
 	 * @var array
 	 */
 	protected $pageRecord = array();
 
 	/**
+	 * Information, if the module is accessible for the current user or not.
+	 *
 	 * @var boolean
 	 */
 	protected $isAccessibleForCurrentUser = FALSE;
 
 	/**
+	 * Depth for the recursivity of the link validation.
+	 *
+	 * @var integer
+	 */
+	protected $search_level;
+
+	/**
+	 * Link validation class.
+	 *
 	 * @var tx_linkvalidator_processing
 	 */
 	protected $processing;
+
+	/**
+	 * TSconfig of the current module.
+	 *
+	 * @var array
+	 */
+	protected $modTS = array();
+
+	/**
+	 * List of available link types to check defined in the TSconfig.
+	 *
+	 * @var array
+	 */
+	protected $availableOptions = array();
+
+	/**
+	 * List of link types currently chosen in the Statistics table.
+	 * Used to show broken links of these types only.
+	 *
+	 * @var array
+	 */
+	protected $checkOpt = array();
+
+	/**
+	 * Hint message displayed on top of the module.
+	 *
+	 * @var string
+	 */
+	protected $firstSteps;
+
+	/**
+	 * Html for the button "Check Links".
+	 *
+	 * @var string
+	 */
+	protected $updateListHtml;
+
+	/**
+	 * Html for the button "Refresh Display".
+	 *
+	 * @var string
+	 */
+	protected $refreshListHtml;
+
+	/**
+	 * Html for the Statistics table with the checkboxes of the link types and the numbers of broken links.
+	 *
+	 * @var string
+	 */
+	protected $checkOptHtml;
+
+	/**
+	 * Complete content (html) to be displayed.
+	 *
+	 * @var string
+	 */
+	protected $content;
 
 	/**
 	 * Main method of modfunc1

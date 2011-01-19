@@ -29,13 +29,19 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_Abstract {
 
-	public $tsconfig;
 	const DELETED = 'deleted';
 
 	/**
-	 * Get TsConfig on loading of the class
+	 * TSconfig of the module tx_linkhandler.
+	 *
+	 * @var array
+	 */
+	protected $tsconfig;
+
+	/**
+	 * Get TSconfig when loading the class.
 	 */
 	function __construct() {
 		$this->tsconfig = t3lib_BEfunc::getModTSconfig(1, 'mod.tx_linkhandler');
@@ -88,9 +94,10 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 *
 	 * @param   array	  $value: reference properties
 	 * @param   string	 $type: current type
+	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type) {
+	public function fetchType($value, $type, $key) {
 		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
 			$type = 'linkhandler';
 		}
