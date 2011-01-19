@@ -193,3 +193,8 @@ $Id: $
 	padding: 0px 6px;
 	margin-left: 24px;
 }
+
+.typo3-pagetree-deletionDropZone-restoreText {
+	display: inline-block;
+	padding: 4px 4px 4px 18px;
+}
