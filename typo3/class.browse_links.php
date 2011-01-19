@@ -814,7 +814,7 @@ class browse_links {
 
 			// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard')	{
-			$currentValues = t3lib_div::trimExplode(chr(10), trim($this->P['currentValue']));
+			$currentValues = t3lib_div::trimExplode(LF, trim($this->P['currentValue']));
 			if (count($currentValues) > 0) {
 				$currentValue = array_pop($currentValues);
 			} else {

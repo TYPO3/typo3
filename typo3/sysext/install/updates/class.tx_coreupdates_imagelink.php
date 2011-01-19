@@ -82,9 +82,9 @@ class tx_coreupdates_imagelink extends Tx_Install_Updates_Base {
 
 			foreach ($affectedRows as $row) {
 				$newImageLink = t3lib_div::trimExplode(',', $row['image_link']);
-				$newImageLink = implode(chr(10), $newImageLink);
+				$newImageLink = implode(LF, $newImageLink);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'uid=' . $row['uid'], array('image_link' => $newImageLink));
-				$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+				$dbQueries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 				if ($GLOBALS['TYPO3_DB']->sql_error()) {
 					$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 					$result = $result & FALSE;

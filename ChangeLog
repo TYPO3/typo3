@@ -1,3 +1,7 @@
+2011-01-19  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #16462: Use constant LF instead of chr(10) (Thanks to Georg Ringer)
+
 2011-01-19  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17138: Superfluous backspace in Error Message if no Install Tool Password is set (Thanks to Sebastian Michaelsen)
