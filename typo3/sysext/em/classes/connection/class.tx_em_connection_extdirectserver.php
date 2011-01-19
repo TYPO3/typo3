@@ -75,8 +75,6 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return void
 	 */
 	public function __construct($createTemplateInstance = TRUE) {
-			// Create an instance of template class only if necessary
-			// It is necessary only if extension configuration is to be displayed
 		if ($createTemplateInstance) {
 			$this->template = t3lib_div::makeInstance('template');
 		}
@@ -1130,7 +1128,7 @@ class tx_em_Connection_ExtDirectServer {
 
 		$install->writeNewExtensionList($newExtensionList);
 		tx_em_Tools::refreshGlobalExtList();
-		$install->forceDBupdates($extensionKey, $newExtensionList[$extensionKey]);
+		$install->forceDBupdates($extensionKey, $installedList[$extensionKey]);
 	}
 
 	/**
