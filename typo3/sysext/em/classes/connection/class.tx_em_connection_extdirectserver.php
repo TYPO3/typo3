@@ -71,10 +71,15 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * Constructor
 	 *
+	 * @param boolean $createTemplateInstance: set to FALSE if no instance of template class needs to be created
 	 * @return void
 	 */
-	public function __construct() {
-		$this->template = t3lib_div::makeInstance('template');
+	public function __construct($createTemplateInstance = TRUE) {
+			// Create an instance of template class only if necessary
+			// It is necessary only if extension configuration is to be displayed
+		if ($createTemplateInstance) {
+			$this->template = t3lib_div::makeInstance('template');
+		}
 		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 	}
 
