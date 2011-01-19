@@ -64,7 +64,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 */
 	public function execute() {
 		$this->setCliArguments();
-
+		$successfullyExecuted = TRUE;
 		$file = t3lib_div::getFileAbsFileName($this->emailfile);
 		$htmlFile = t3lib_div::getURL($file);
 		$this->templateMail = t3lib_parsehtml::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
@@ -149,9 +149,9 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 			&& (!$this->emailonbrokenlinkonly || $this->dif)
 			&& !empty($this->email)
 		) {
-			$this->reportEmail($pageSections, $modTS);
+			$successfullyExecuted = $this->reportEmail($pageSections, $modTS);
 		}
-		return TRUE;
+		return $successfullyExecuted;
 	}
 
 
@@ -160,36 +160,78 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 *
 	 * @param	string		$pageSections: Content of page section
 	 * @param	string		$modTS: TSconfig array
-	 * @return	bool		Mail sent or not
+	 * @return	bool		TRUE if mail was sent, FALSE if or not
 	 */
 	function reportEmail($pageSections, $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
+		/** @var array $markerArray */
 		$markerArray = array();
+		/** @var array $validEmailList */
+		$validEmailList = array();
+		/** @var boolean $sendEmail */
+		$sendEmail = TRUE;
+
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 
-		$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
-		$Typo3_htmlmail->start();
-		$Typo3_htmlmail->useBase64();
+		/** @var t3lib_mail_Message $mail */
+		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
+			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
+		} else {
+			$failure = t3lib_div::makeInstance(
+				'Exception',
+				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
+				t3lib_FlashMessage::ERROR
+			);
+			throw $failure;
+			$sendEmail = FALSE;
+		}
+		if(t3lib_div::validEmail($modTS['mail.']['replytoemail'])) {
+			$mail->setReplyTo(array($modTS['mail.']['replytoemail'] => $modTS['mail.']['replytoname']));
+		}
 
-		$convObj = t3lib_div::makeInstance('t3lib_cs');
+		if(!empty($modTS['mail.']['subject'])) {
+			$mail->setSubject($modTS['mail.']['subject']);
+		} else {
+			$failure = t3lib_div::makeInstance(
+				'Exception',
+				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.noSubject'),
+				t3lib_FlashMessage::ERROR
+			);
+			throw $failure;
+			$sendEmail = FALSE;
+		}
+		if (!empty($this->email)) {
+			$emailList = t3lib_div::trimExplode(',', $this->email);
+			foreach ($emailList as $emailAdd) {
+				if (!t3lib_div::validEmail($emailAdd)) {
+					$isValid = FALSE;
+					$failure = t3lib_div::makeInstance(
+						'Exception',
+						$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidToEmail'),
+						t3lib_FlashMessage::ERROR
+					);
+					throw $failure;
+					$sendEmail = FALSE;
+				} else {
+					$validEmailList[] = $emailAdd;
+				}
+			}
+		}
+		if (is_array($validEmailList) && !empty($validEmailList)) {
+			$mail->setTo($this->email);
+		} else {
+			$sendEmail = FALSE;
+		}
 
-		$charset = $convObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'utf-8');
-		$Typo3_htmlmail->subject = $convObj->conv($modTS['mail.']['subject'], $charset, $modTS['mail.']['encoding'], 0);
-		$Typo3_htmlmail->from_email = $modTS['mail.']['fromemail'];
-		$Typo3_htmlmail->from_name = $modTS['mail.']['fromname'];
-		$Typo3_htmlmail->replyto_email = $modTS['mail.']['replytoemail'];
-		$Typo3_htmlmail->replyto_name = $modTS['mail.']['replytoname'];
+		if($sendEmail) {
+			$mail->setBody($content,'text/html');
+			$mail->send();
+		}
 
-		//$Typo3_htmlmail->addPlain($mcontent);
-		$Typo3_htmlmail->setHTML($Typo3_htmlmail->encodeMsg($convObj->conv($content, $charset, $modTS['mail.']['encoding'], 0)));
-
-		$Typo3_htmlmail->setHeaders();
-		$Typo3_htmlmail->setContent();
-		$Typo3_htmlmail->setRecipient($this->email);
-
-		return $Typo3_htmlmail->sendtheMail();
+		return $sendEmail;
 	}
 
 

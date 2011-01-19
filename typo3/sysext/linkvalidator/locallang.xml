@@ -21,6 +21,9 @@
 			<label index="tasks.validate.invalidEmail">Invalid email format!</label>
 			<label index="tasks.validate.invalidPage">Invalid page uid, please enter a valid page uid!</label>
 			<label index="tasks.validate.invalidDepth">There is no depth set, please set it to one of the offered values!</label>
+			<label index="tasks.error.noSubject">No subject for the notification email</label>
+			<label index="tasks.error.invalidToEmail">Invalid format of one or more of the recipient email addresses!</label>
+			<label index="tasks.error.invalidFromEmail">Invalid format of the email address in the from header</label>
 		</languageKey>
 	</data>
 </T3locallang>
