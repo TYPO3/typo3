@@ -249,12 +249,12 @@ class TYPO3backend {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $key => $value) {
 				if (strpos($key, 'TYPO3.Ajax.ExtDirect') !== FALSE) {
-					$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
+					$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect&' . TYPO3_version, NULL, FALSE);
 					break;
 				}
 			}
 		}
-		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings', NULL, FALSE);
+		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.BackendUserSettings&' . TYPO3_version, NULL, FALSE);
 
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
@@ -349,7 +349,7 @@ class TYPO3backend {
 			if (is_array($info['extDirectNamespaces']) && count($info['extDirectNamespaces'])) {
 				foreach ($info['extDirectNamespaces'] as $namespace) {
 					$this->pageRenderer->addJsFile(
-						'ajax.php?ajaxID=ExtDirect::getAPI&namespace=' . $namespace,
+						'ajax.php?ajaxID=ExtDirect::getAPI&namespace=' . $namespace . '&' . TYPO3_version,
 						NULL,
 						FALSE
 					);

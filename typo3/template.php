@@ -823,7 +823,7 @@ class template {
 
 	   if ($this->extDirectStateProvider) {
 			$this->pageRenderer->addJsFile(
-				$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.ExtDirectStateProvider',
+				$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.ExtDirectStateProvider&' . TYPO3_version,
 				NULL,
 				FALSE
 			);
@@ -1639,7 +1639,7 @@ $str.=$this->docBodyTagBegin().
 	protected function loadCshJavascript() {
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->addJsFile($this->backPath .'../t3lib/js/extjs/contexthelp.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.CSH', NULL, FALSE);
+		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.CSH&' . TYPO3_version, NULL, FALSE);
 		$this->pageRenderer->addExtDirectCode();
 	}
 

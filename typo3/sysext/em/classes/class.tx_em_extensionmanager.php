@@ -132,12 +132,12 @@ class tx_em_ExtensionManager {
 
 			// Load  JavaScript:
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EM',
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EM&' . TYPO3_version,
 			NULL,
 			FALSE
 		);
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EMSOAP',
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EMSOAP&' . TYPO3_version,
 			NULL,
 			FALSE
 		);

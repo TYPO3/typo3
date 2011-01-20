@@ -82,7 +82,7 @@ class LiveSearch implements backend_toolbarItem {
 	 */
 	protected function addJavascriptToBackend() {
 		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.LiveSearchActions', 'text/javascript', $compress = FALSE);
+		$pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.LiveSearchActions&' . TYPO3_version, 'text/javascript', $compress = FALSE);
 
 		$this->backendReference->addJavascriptFile('js/livesearch.js');
 	}

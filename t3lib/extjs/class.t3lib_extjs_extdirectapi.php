@@ -93,6 +93,12 @@ class t3lib_extjs_ExtDirectApi {
 			$javascriptNamespaces = unserialize($cacheContent);
 		}
 
+			// enable caching
+		$expireDate = date('r', $GLOBALS['EXEC_TIME'] + 3600 * 24 * 30);
+		header('Expires: ' . $expireDate);
+		header('Cache-control: public');
+		header('Pragma:');
+
 			// return the generated javascript API configuration
 		if (count($javascriptNamespaces)) {
 			$setup = '
