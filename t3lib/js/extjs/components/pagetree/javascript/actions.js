@@ -664,6 +664,8 @@ TYPO3.Components.PageTree.Actions = {
 			tree.stateHash.lastSelectedNode = node.id;
 		}
 
+		fsMod.recentIds['web'] = node.attributes.nodeData.id;
+
 		TYPO3.Backend.ContentContainer.setUrl(
 			TS.PATH_typo3 + currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 		);
