@@ -1,3 +1,7 @@
+2011-01-20  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #17114: Install Tool does not install extensions properly
+
 2011-01-20  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17116: All images get reduced to 25x25px upon saving if no size is set

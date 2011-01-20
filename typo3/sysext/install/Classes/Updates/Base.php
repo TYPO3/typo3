@@ -187,8 +187,38 @@ abstract class Tx_Install_Updates_Base {
 		$res = $this->checkForUpdate($explanation, $showUpdate);
 		return ($showUpdate != 2 || $res == TRUE);
 	}
-	
+
+	/**
+	 * This method creates an instance of a connection to the Extension Manager
+	 * and returns it. This is used when installing an extension.
+	 * 
+	 * @return tx_em_Connection_ExtDirectServer EM connection instance
+	 */
+	public function getExtensionManagerConnection() {
+			// Create an instance of language, if necessary.
+			// Needed in order to make the em_index work
+		if (!isset($GLOBALS['LANG'])) {
+			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+			$GLOBALS['LANG']->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		}
+			// Create an instance of a connection class to the EM
+		$extensionManagerConnection = t3lib_div::makeInstance('tx_em_Connection_ExtDirectServer', FALSE);
+		return $extensionManagerConnection;
+	}
+
+	/**
+	 * This method can be called to install extensions following all proper processes
+	 * (e.g. installing in both extList and extList_FE, respecting priority, etc.)
+	 *
+	 * @param array $extensionKeys List of keys of extensions to install
+	 * @return void
+	 */
+	protected function installExtensions($extensionKeys) {
+		$extensionManagerConnection = $this->getExtensionManagerConnection();
+		foreach ($extensionKeys as $extension) {
+			$extensionManagerConnection->enableExtension($extension);
+		}
+	}
 
 }
-
 ?>

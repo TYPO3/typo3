@@ -179,24 +179,20 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether it worked (true) or not (false)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = false;
+		$result = FALSE;
 
-		// Get extension keys that were submitted by the used to be installed and that are valid for this update wizard:
+			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
 			$extArray = array_intersect(
 				$this->newSystemExtensions,
 				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
 			);
-			$extList = $this->addExtToList($extArray);
-			if ($extList) {
-				$this->writeNewExtensionList($extList);
-				$result = true;
-			}
+			$this->installExtensions($extArray);
+			$result = TRUE;
 		}
 
 		return $result;
 	}
-
 
 	/**
 	 * Adds extension to extension list and returns new list. If -1 is returned, an error happend.
@@ -204,8 +200,10 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		Extension keys to add
 	 * @return	string		New list of installed extensions or -1 if error
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - Should not be needed anymore. Extensions should be installed directly by calling Tx_Install_Updates_Base::installExtensions()
 	 */
 	function addExtToList(array $extKeys) {
+		t3lib_div::logDeprecatedFunction();
 			// Get list of installed extensions and add this one.
 		$tmpLoadedExt = $GLOBALS['TYPO3_LOADED_EXT'];
 		if (isset($tmpLoadedExt['_CACHEFILE'])) {
@@ -226,8 +224,10 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 *
 	 * @param	string		List of extensions
 	 * @return	void
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - Use Tx_Install_Updates_Base::installExtensions() instead
 	 */
-	protected function writeNewExtensionList($newExtList)	{
+	protected function writeNewExtensionList($newExtList) {
+		t3lib_div::logDeprecatedFunction();
 			// Instance of install tool
 		$instObj = new t3lib_install;
 		$instObj->allowUpdateLocalConf = 1;
