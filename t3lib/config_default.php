@@ -573,6 +573,7 @@ $TYPO3_CONF_VARS = array(
 		'transport_smtp_password' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.
 		'transport_sendmail_command' => '/usr/sbin/sendmail -bs',	// String: <em>only with transport=sendmail</em>: The command to call to send a mail locally. The default works on most modern UNIX based mail server (sendmail, postfix, exim)
 		'transport_mbox_file' => '',	// String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
+		'substituteOldMailAPI' => 1,	// Boolean: If this is set, old calls to t3lib_utility_mail::Mail() will be translated to new t3lib_mail calls. This should work on most cases and thus respect the above transport settings. If you get garbled emails (or no attachments), consider setting this off. Ask the extension author to upgrade their code to make use of t3lib_mail (instead of the deprecated t3lib_htmlmail).
 	),
 	'MODS' => array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
@@ -817,7 +818,9 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS[
 $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = $TYPO3_CONF_VARS['SYS']['exceptionalErrors'];
 
 	// Mail sending via Swift Mailer
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 't3lib_mail_SwiftMailerAdapter';
+if ($TYPO3_CONF_VARS['MAIL']['substituteOldMailAPI']) {
+	$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 't3lib_mail_SwiftMailerAdapter';
+}
 
 	// Turn error logging on/off.
 if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')	{
