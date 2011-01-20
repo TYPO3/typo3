@@ -103,10 +103,7 @@ ul.x-tab-strip-top {
  * Slider
  */
 #controls {
-	padding-top: 5px;
-}
-#slider {
-	padding-top: 5px;
+	padding-top: 10px;
 }
 
 /* remove default ExtJS border */
@@ -144,48 +141,6 @@ ul.x-tab-strip-top {
 /* alignment of text in Button "Workspace" */
 #sizeSliderButtonWorkspace .x-btn-mc {
 	text-align: left;
-}
-
-#visual-mode-selector {
-	list-style: none;
-	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-top: none;
-}
-
-#visual-mode-selector td {
-	text-align: left;
-}
-
-#visual-mode-selector td button {
-	font-size: 11px;
-	line-height: 12px;
-	text-decoration: none;
-}
-
-#visual-mode-options {
-	display: block;
-	height: 20px;
-	margin: 5px 0 0 0;
-}
-#visual-mode-options.x-btn-menu-active {
-	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-bottom: none;
-}
-#visual-mode-options .x-btn-arrow {
-	padding-right: 2px;
-}
-
-#visual-mode-options .x-btn-text {
-	font-size: 11px;
-}
-#visual-mode-options.x-btn-menu-active .x-btn-text {
-	color: black;
-}
-
-#visual-mode-toolbar {
-	border:none;
 }
 
 /**

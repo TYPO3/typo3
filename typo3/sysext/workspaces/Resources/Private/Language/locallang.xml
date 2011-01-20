@@ -77,6 +77,9 @@
 			<label index="preview.livePreviewDetail">Click this element to hide the workspace version and see the live version of the page.</label>
 			<label index="preview.workspacePreview">Workspace</label>
 			<label index="preview.workspacePreviewDetail">Click this element to hide the live version and see the workspace version of the page.</label>
+			<label index="preview.modeSlider">Slider</label>
+			<label index="preview.modeVbox">Vertical</label>
+			<label index="preview.modeHbox">Horizontal</label>
 			<label index="label_doaction_publish">Publish</label>
 			<label index="label_doaction_swap">Swap</label>
 			<label index="label_doaction_discard">Discard</label>
