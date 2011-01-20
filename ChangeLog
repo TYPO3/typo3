@@ -34,6 +34,7 @@
 	* Fixed bug #17044: Styling of TCEforms with renderMode=checkbox
 	* Fixed bug #17155: Active and hover states are hard to distinguish
 	* Fixed bug #16971: Improve ExtDirect error handling (Thanks to Stefan Galinski)
+	* Fixed bug #17131: ExtDirect Caching: Differentiate between HTTPS/HTTP protocols (Thanks to Stefan Galinski)
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
