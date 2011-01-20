@@ -53,6 +53,15 @@ final class t3lib_utility_Mail {
 	 */
 	public static function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
 		$success = TRUE;
+
+			// If the mail does not have a From: header, fall back to the default in TYPO3_CONF_VARS.
+		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress']) {
+			if (!is_null($additionalHeaders) && substr($additionalHeaders, -1) != LF) {
+				$additionalHeaders .= LF;
+			}
+			$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
+		}
+
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'])) {
 			$parameters = array(
 				'to' => $to,

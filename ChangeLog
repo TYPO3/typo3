@@ -1,3 +1,7 @@
+2011-01-20  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #14098: When sending mail, use TYPO3_CONF_VAR for default from address if no other address is provided, credits Jeff Segars and Marcus Krause
+
 2011-01-20  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #17105: deprecate "disable_autocreate" feature
@@ -17,7 +21,7 @@
 
 2011-01-20  Steffen Kamper  <steffen@typo3.org>
 
-	* Fixed bug #17162: Missing localization in t3lib_tsstyleconfig 
+	* Fixed bug #17162: Missing localization in t3lib_tsstyleconfig
 
 2011-01-20  Steffen Gebert  <steffen@steffen-gebert.de>
 
