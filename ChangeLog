@@ -13,6 +13,7 @@
 2011-01-20  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17116: All images get reduced to 25x25px upon saving if no size is set
+	* Fixed bug #17063: Creating new pages in a workspace shows the page also live
 
 2011-01-20  Steffen Kamper  <steffen@typo3.org>
 

@@ -4270,14 +4270,7 @@ final class t3lib_BEfunc {
 	public static function versioningPlaceholderClause($table) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$currentWorkspace = intval($GLOBALS['BE_USER']->workspace);
-			if ($currentWorkspace !== 0) {
-					// show only the items of the current workspace
-					// if in any workspace other than live
-				return ' AND (' . $table . '.t3ver_state <= 0 OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
-			} elseif ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] == 2) {
-					// if in live workspace, don't show "MOVE-TO-PLACEHOLDERS"
-				return ' AND (' . $table . '.t3ver_state != 3)';
-			}
+			return ' AND (' . $table . '.t3ver_state <= 0 OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
 		}
 	}
 
