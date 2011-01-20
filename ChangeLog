@@ -18,6 +18,7 @@
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17143: Unclean property declaration in t3lib_mail_Message API (Thanks to Steffen Müller)
 	* Fixed issue #17153: Protect C(R)UD actions against CSRF (Thanks to Helmut Hummel)
 	* Fixed bug #17163: CSH tooltips should be placed nearer to the text (Thanks to Stanislas Rolland)
 	* Fixed issue #17109: Make the t3lib_utility_Mail hook subscriber optional / configureable
@@ -1878,7 +1879,7 @@
 
 2010-09-20  Francois Suter  <francois@typo3.org>
 
-	* Fixed bug #14783: absRefPrefix should work with $TYPO3_CONF_VARS[BE][RTE_imageStorageDir] (thanks to Steffen Mueller)
+	* Fixed bug #14783: absRefPrefix should work with $TYPO3_CONF_VARS[BE][RTE_imageStorageDir] (thanks to Steffen Müller)
 	* Fixed bug #15290: Wrong behavior of workspace preview "Enable Frontend Preview" (Thanks to Andreas Kiessling)
 
 2010-09-19  Oliver Hader  <oliver@typo3.org>
@@ -4011,7 +4012,7 @@
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen M�ller).
+	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 
@@ -4646,7 +4647,7 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12759: button styling missed some buttons: type reset / button (thanks to Georg Ringer)
-	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen M�ller)
+	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Müller)
 	* Fixed bug #12467: TYPO3 Inline User Manual is broken
 	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (Thanks to Andreas Kundoch)
@@ -4681,7 +4682,7 @@
 
 2009-11-24  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen M�ller)
+	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Müller)
 
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 

@@ -42,19 +42,19 @@ class t3lib_mail_Message extends Swift_Message {
 	/**
 	 * @var t3lib_mail_Mailer
 	 */
-	var $mailer;
+	protected $mailer;
 
 	/**
 	 * True if the message has been sent.
 	 * @var boolean
 	 */
-	var $sent = FALSE;
+	protected $sent = FALSE;
 
 	/**
 	 * Holds the failed recipients after the message has been sent
 	 * @var array
 	 */
-	var $failedRecipients = array();
+	protected $failedRecipients = array();
 
 	/**
 	 *
