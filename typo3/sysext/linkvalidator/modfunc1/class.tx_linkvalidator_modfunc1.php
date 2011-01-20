@@ -290,8 +290,13 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			$this->content = $this->drawBrokenLinksTable();
 		} else {
 				// If no access or if ID == zero
-				// @todo Show proper error message here
-			$this->content .= $this->doc->spacer(10);
+			$message = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('no.access'),
+				$GLOBALS['LANG']->getLL('no.access.title'),
+				t3lib_FlashMessage::ERROR
+			);
+			$this->content .= $message->render();
 		}
 	}
 

@@ -68,6 +68,8 @@
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links.title">No broken links to show!</label>
 			<label index="list.no.broken.links">There are no broken links to be displayed.</label>
+			<label index="no.access.title">No access!</label>
+			<label index="no.access">You do not have access to these listings.</label>
 		</languageKey>
 	</data>
 </T3locallang>
