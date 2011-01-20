@@ -963,6 +963,12 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 							transaction.data = [token];
 						}
 					});
+
+					provider.on("call", function(provider, transaction, meta) {
+						if (transaction.isForm) {
+							transaction.params.securityToken = token;
+						}
+					});
 				}
 			})();
 

@@ -60,7 +60,10 @@ class t3lib_extjs_ExtDirectRouter {
 			$request->action = $postParameters['extAction'];
 			$request->method = $postParameters['extMethod'];
 			$request->tid = $postParameters['extTID'];
+
+			unset($_POST['securityToken']);
 			$request->data = array($_POST + $_FILES);
+			$request->data[] = $postParameters['securityToken'];
 		} elseif (!empty($rawPostData)) {
 			$request = json_decode($rawPostData);
 		} else {
