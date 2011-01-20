@@ -39,48 +39,59 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		// Configuration of supported browsers
 	var $conf_supported_browser = array (
 			'msie' => array (
-				1 => array (
+				array (
 					'version' => 6.0,
-					'system' => 'winNT'
 				),
-				2 => array (
-					'version' => 6.0,
-					'system' => 'win98'
-				),
-				3 => array (
-					'version' => 6.0,
-					'system' => 'win95'
-				)
 			),
 			'gecko' => array (
-				1 => array (
+				array (
 					'version' => 1.8
-				)
+				),
 			),
 			'webkit' => array (
-				1 => array (
+				array (
 					'version' => 523,
 					'system' => 'mac'
 				),
-				2 => array (
-					'version' => 523,
-					'system' => 'winNT'
-				),
-				3 => array (
+				array (
 					'version' => 523,
 					'system' => 'linux'
 				),
-				4 => array (
+				array (
+					'version' => 523,
+					'system' => 'win7'
+				),
+				array (
+					'version' => 523,
+					'system' => 'winVista'
+				),
+				array (
+					'version' => 523,
+					'system' => 'winXP'
+				),
+				array (
+					'version' => 523,
+					'system' => 'win2k'
+				),
+				array (
+					'version' => 523,
+					'system' => 'winNT'
+				),
+				array (
 					'version' => 523,
 					'system' => 'win98'
 				),
-				5 => array (
+				array (
 					'version' => 523,
 					'system' => 'win95'
-				)
+				),
+				array (
+					'version' => 523,
+					'system' => 'chrome'
+				),
 			),
 			'opera' => array (
-				1 => array (
+				array (
 					'version' => 9.62
 				)
 			)
@@ -1398,15 +1409,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
 					break;
 				}
-			}
-		}
-		if ($browserInfo['system'] == 'mac') {
-			if (strstr($userAgent,'iPad')) {
-				$browserInfo['system'] = 'iPad';
-			} elseif (strstr($userAgent,'iPhone')) {
-				$browserInfo['system'] = 'iPhone';
-			} elseif (strstr($userAgent,'iPod')) {
-				$browserInfo['system'] = 'iPod';
 			}
 		}
 		return $browserInfo;
