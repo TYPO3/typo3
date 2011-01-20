@@ -945,12 +945,26 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addExtDirectCode() {
+		$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+		$token = $formprotection->generateToken('extDirect');
+		$formprotection->persistTokens();
+
 			// Note: we need to iterate thru the object, because the addProvider method
 			// does this only with multiple arguments
-		$this->addExtOnReadyCode(
-			'for (var api in Ext.app.ExtDirectAPI) {
-				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
-			}
+		$this->addExtOnReadyCode('
+			(function() {
+				var token = "' . $token . '";
+				for (var api in Ext.app.ExtDirectAPI) {
+					var provider = Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
+					provider.on("beforecall", function(provider, transaction, meta) {
+						if (transaction.data) {
+							transaction.data[transaction.data.length] = token;
+						} else {
+							transaction.data = [token];
+						}
+					});
+				}
+			})();
 
 			var extDirectDebug = function(message, header, group) {
 				var TYPO3ViewportInstance = null;

@@ -4977,6 +4977,18 @@ class t3lib_TCEforms {
 	}
 
 	/**
+	 * Generates a token and returns an input field with it
+	 *
+	 * @param string $formName Context of the token
+	 * @param string $tokenName The name of the token GET/POST variable
+	 * @return string a complete input field
+	 */
+	public static function getHiddenTokenField($formName = 'securityToken', $tokenName = 'formToken') {
+		$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+		return '<input type="hidden" name="' .$tokenName . '" value="' . $formprotection->generateToken($formName) . '" />';
+	}
+
+	/**
 	 * This replaces markers in the total wrap
 	 *
 	 * @param	array		An array of template parts containing some markers.

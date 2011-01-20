@@ -3290,6 +3290,18 @@ final class t3lib_BEfunc {
 		}
 	}
 
+	/**
+	 * Generates a token and returns a parameter for the URL
+	 *
+	 * @param string $formName Context of the token
+	 * @param string $tokenName The name of the token GET variable
+	 * @return string a URL GET variable including ampersand
+	 */
+	public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken') {
+		$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+		return '&' . $tokenName . '=' . $formprotection->generateToken($formName);
+	}
+
 	/*******************************************
 	 *
 	 * Core

@@ -636,7 +636,8 @@ class t3lib_clipboard {
 				'&vC=' . $GLOBALS['BE_USER']->veriCode() .
 				'&prErr=1&uPT=1' .
 				'&CB[paste]=' . rawurlencode($table . '|' . $uid) .
-				'&CB[pad]=' . $this->current;
+				'&CB[pad]=' . $this->current .
+				t3lib_BEfunc::getUrlToken('tceAction');
 		return $rU;
 	}
 
@@ -653,7 +654,8 @@ class t3lib_clipboard {
 				'&vC=' . $GLOBALS['BE_USER']->veriCode() .
 				'&prErr=1&uPT=1' .
 				'&CB[delete]=1' .
-				'&CB[pad]=' . $this->current;
+				'&CB[pad]=' . $this->current .
+				t3lib_BEfunc::getUrlToken('tceAction');
 		return $rU;
 	}
 

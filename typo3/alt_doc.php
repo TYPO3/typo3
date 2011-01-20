@@ -483,7 +483,7 @@ class SC_alt_doc {
 				if (
 					'.($GLOBALS['BE_USER']->jsConfirmation(4)?'confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).')':'1==1').'
 				)	{
-					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1' . t3lib_BEfunc::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $BE_USER->veriCode() . '&prErr=1&uPT=1";
 				}
 				return false;
 			}
@@ -969,7 +969,7 @@ class SC_alt_doc {
 			<input type="hidden" name="closeDoc" value="0" />
 			<input type="hidden" name="doSave" value="0" />
 			<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />
-			<input type="hidden" name="_scrollPosition" value="" />';
+			<input type="hidden" name="_scrollPosition" value="" />' . t3lib_TCEforms::getHiddenTokenField('editRecord');
 
 		return $formContent;
 	}
@@ -986,7 +986,7 @@ class SC_alt_doc {
 			// Show palettes:
 			return '
 				<!-- Function menu (checkbox for showing all palettes): -->
-				<br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
+				<br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))) . t3lib_BEfunc::getUrlToken('editRecord'),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 		}
 		else {
 			return '';
@@ -1137,14 +1137,14 @@ class SC_alt_doc {
 							if($newTranslation) {
 								$href = $this->doc->issueCommand(
 									'&cmd['.$table.']['.$rowsByLang[0]['uid'].'][localize]='.$lang['uid'],
-									$this->backPath.'alt_doc.php?justLocalized='.rawurlencode($table.':'.$rowsByLang[0]['uid'].':'.$lang['uid']).'&returnUrl='.rawurlencode($this->retUrl)
+									$this->backPath.'alt_doc.php?justLocalized='.rawurlencode($table.':'.$rowsByLang[0]['uid'].':'.$lang['uid']).'&returnUrl='.rawurlencode($this->retUrl) . t3lib_BEfunc::getUrlToken('editRecord')
 								);
 
 								// create edit url
 							} else {
 								$href = $this->backPath.'alt_doc.php?';
 								$href .= '&edit['.$table.']['.$rowsByLang[$lang['uid']]['uid'].']=edit';
-								$href .= '&returnUrl='.rawurlencode($this->retUrl);
+								$href .= '&returnUrl='.rawurlencode($this->retUrl) . t3lib_BEfunc::getUrlToken('editRecord');
 							}
 
 							$langSelItems[$lang['uid']]='
@@ -1191,7 +1191,7 @@ class SC_alt_doc {
 					// Create parameters and finally run the classic page module for creating a new page translation
 				$params = '&edit['.$table.']['.$localizedRecord['uid'].']=edit';
 				$returnUrl = '&returnUrl='.rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl')));
-				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
+				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl . t3lib_BEfunc::getUrlToken('editRecord');
 
 				t3lib_utility_Http::redirect($location);
 			}
@@ -1209,7 +1209,7 @@ class SC_alt_doc {
 		global $LANG;
 
 		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
-		
+
 			// fallback non sprite-configuration
 		if (preg_match('/\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
 			$modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace('.gif', '', $modSharedTSconfig['properties']['defaultLanguageFlag']);
@@ -1490,14 +1490,19 @@ $SOBE = t3lib_div::makeInstance('SC_alt_doc');
 
 // Preprocessing, storing data if submitted to
 $SOBE->preInit();
-if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or the doSave variable is sent)
-	$SOBE->processData();
-}
 
+$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+
+if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or the doSave variable is sent)
+	if ($formprotection->validateToken(t3lib_div::_GP('formToken'), 'editRecord')) {
+		$SOBE->processData();
+	}
+}
 
 // Main:
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+$formprotection->persistTokens();
 
 ?>

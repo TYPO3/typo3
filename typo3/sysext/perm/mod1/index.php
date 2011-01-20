@@ -516,7 +516,7 @@ class SC_mod_web_perm_index {
 			<input type="submit" name="submit" value="'.$LANG->getLL('Save',1).'" />'.
 			'<input type="submit" value="'.$LANG->getLL('Abort',1).'" onclick="'.htmlspecialchars('jumpToUrl(\'index.php?id='.$this->id.'\'); return false;').'" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
-		';
+		' . t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 			// Adding section with the permission setting matrix:
 		$this->content.=$this->doc->divider(5);
@@ -851,5 +851,6 @@ $SOBE = t3lib_div::makeInstance('SC_mod_web_perm_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

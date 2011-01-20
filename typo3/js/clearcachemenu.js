@@ -120,16 +120,20 @@ var ClearCacheMenu = Class.create({
 		var oldIcon = toolbarItemIcon.replace(spinner);
 
 		if (clickedElement.tagName === 'SPAN') {
-			url =  clickedElement.up('a').href;
+			link =  clickedElement.up('a');
 		} else {
-			url =  clickedElement.href;
+			link =  clickedElement;
 		}
 
-		if (url) {
-			var call = new Ajax.Request(url, {
+		if (link.href) {
+			var call = new Ajax.Request(link.href, {
 				'method': 'get',
-				'onComplete': function() {
+				'onComplete': function(result) {
 					spinner.replace(oldIcon);
+						// replace used token with new one
+					if (result.responseText.length > 0) {
+						link.href = link.href.substr(0, link.href.length - result.responseText.length) + result.responseText
+					}
 				}.bind(this)
 			});
 		}

@@ -445,7 +445,7 @@ class SC_db_layout {
 
 				function deleteRecord(table,id,url)	{	//
 					if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
-						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
+						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $BE_USER->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . '&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -902,7 +902,7 @@ class SC_db_layout {
 					<input type="hidden" name="_disableRTE" value="'.$tceforms->disableRTE.'" />
 					<input type="hidden" name="edit_record" value="'.$edit_record.'" />
 					<input type="hidden" name="redirect" value="'.htmlspecialchars($uidVal=='new' ? t3lib_extMgm::extRelPath('cms').'layout/db_layout.php?id='.$this->id.'&new_unique_uid='.$new_unique_uid.'&returnUrl='.rawurlencode($this->returnUrl) : $this->R_URI ).'" />
-					';
+					' . t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 					// Add JavaScript as needed around the form:
 				$theCode=$tceforms->printNeededJSFunctions_top().$theCode.$tceforms->printNeededJSFunctions();
@@ -1413,5 +1413,6 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

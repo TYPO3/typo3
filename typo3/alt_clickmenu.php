@@ -753,7 +753,7 @@ class clickMenu {
 			$conf = '1==1';
 		}
 		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'".
-			"&cmd[".$table.']['.$uid.'][delete]=1&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';}hideCM();top.nav.refresh();";
+			"&cmd[" . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh();";
 
 		return $this->linkItem(
 			$this->label('delete'),
@@ -823,7 +823,7 @@ class clickMenu {
 		$loc = 'top.content.list_frame';
 		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'" .
 			"&data[" . $table . '][' . $uid . '][' . $flagField . ']=' .
-                ($rec[$flagField] ? 0 : 1) .'&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode()."';}hideCM();top.nav.refresh();";
+                ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh();";
 
 		return $this->linkItem(
 			$title,
@@ -1140,7 +1140,7 @@ class clickMenu {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_db.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') . ')+"' .
-			'&cmd[pages]['.$srcUid.']['.$action.']='.$negativeSign.$dstUid.'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode().'";}hideCM();top.nav.refresh();';
+			'&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . '";}hideCM();top.nav.refresh();';
 
 		return $this->linkItem(
 			$this->label($action.'Page_'.$into),
@@ -1784,5 +1784,5 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
-
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 ?>

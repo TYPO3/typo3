@@ -233,5 +233,6 @@ $SOBE->checkSubExtObj();	// Checking second level external objects
 
 $SOBE->main();
 $SOBE->printContent();
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

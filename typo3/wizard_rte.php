@@ -198,7 +198,8 @@ class SC_wizard_rte {
 
 				// Adding hidden fields:
 			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($this->R_URI).'" />
-						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
+						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />' .
+						t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 
 				// Finally, add the whole setup:
@@ -338,5 +339,6 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_rte');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

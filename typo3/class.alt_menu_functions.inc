@@ -599,7 +599,11 @@ class alt_menu_functions {
 			$functions[]=array(
 				'id' => 'temp_CACHED',
 				'title' => $title,
-				'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=temp_CACHED',
+				'href' => $backPath .
+						'tce_db.php?vC=' . $BE_USER->veriCode() .
+						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
+						'&cacheCmd=temp_CACHED' .
+						t3lib_BEfunc::getUrlToken('tceAction'),
 				'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_cache_files_in_typo3c.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
 			);
 		}
@@ -609,7 +613,10 @@ class alt_menu_functions {
 		$functions[]=array(
 			'id' => 'all',
 			'title' => $title,
-			'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=all',
+			'href' => $backPath . 'tce_db.php?vC=' . $BE_USER->veriCode() .
+					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
+					'&cacheCmd=all' .
+					t3lib_BEfunc::getUrlToken('tceAction'),
 			'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_all_cache.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
 		);
 

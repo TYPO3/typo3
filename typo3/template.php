@@ -423,11 +423,15 @@ class template {
 	 */
 	function issueCommand($params,$rUrl='')	{
 		$rUrl = $rUrl ? $rUrl : t3lib_div::getIndpEnv('REQUEST_URI');
-		return $this->backPath.'tce_db.php?'.
-				$params.
-				'&redirect='.($rUrl==-1?"'+T3_THIS_LOCATION+'":rawurlencode($rUrl)).
-				'&vC='.rawurlencode($GLOBALS['BE_USER']->veriCode()).
+		$commandUrl = $this->backPath.'tce_db.php?' .
+				$params .
+				'&redirect=' . ($rUrl==-1 ? "'+T3_THIS_LOCATION+'" : rawurlencode($rUrl)) .
+				'&vC='.rawurlencode($GLOBALS['BE_USER']->veriCode()) .
+				t3lib_BEfunc::getUrlToken('tceAction') .
 				'&prErr=1&uPT=1';
+
+		t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
+		return $commandUrl;
 	}
 
 	/**
@@ -1556,12 +1560,17 @@ $str.=$this->docBodyTagBegin().
 				this.selectedIndex=0;
 			} else if (this.options[this.selectedIndex].value.indexOf(\';\')!=-1) {
 				eval(this.options[this.selectedIndex].value);
-			}else{
-				window.location.href=\''.$this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&cacheCmd=\'+this.options[this.selectedIndex].value;
+			} else {
+				window.location.href=\'' . $this->backPath .
+						'tce_db.php?vC=' . $BE_USER->veriCode() .
+						t3lib_BEfunc::getUrlToken('tceAction') .
+						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
+						'&cacheCmd=\'+this.options[this.selectedIndex].value;
 			}';
 		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 		if (count($opt)>1)	{
+			t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 			return $af_content;
 		}
 	}

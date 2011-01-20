@@ -130,7 +130,11 @@ class ext_posMap_pages extends t3lib_positionMap {
 	 * @return	string		Onclick attribute content
 	 */
 	function onClickEvent($pid,$newPagePID)	{
-		return 'window.location.href=\'tce_db.php?cmd[pages]['.$GLOBALS['SOBE']->moveUid.']['.$this->moveOrCopy.']='.$pid.'&redirect='.rawurlencode($this->R_URI).'&prErr=1&uPT=1&vC='.$GLOBALS['BE_USER']->veriCode().'\';return false;';
+		return 'window.location.href=\'tce_db.php?cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid .
+				'&redirect=' . rawurlencode($this->R_URI) .
+				'&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() .
+				t3lib_BEfunc::getUrlToken('tceAction') .
+				'\';return false;';
 	}
 
 	/**
@@ -462,5 +466,6 @@ $SOBE = t3lib_div::makeInstance('SC_move_el');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

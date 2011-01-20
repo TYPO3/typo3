@@ -142,7 +142,8 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
 			),
 			'',
-			t3lib_FlashMessage::ERROR
+			t3lib_FlashMessage::ERROR,
+			TRUE
 		);
 		t3lib_FlashMessageQueue::addMessage($message);
 	}

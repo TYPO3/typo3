@@ -74,6 +74,8 @@ class t3lib_extjs_ExtDirectRouter {
 			$request = array($request);
 		}
 
+		$validToken = FALSE;
+		$firstCall = TRUE;
 		foreach ($request as $index => $singleRequest) {
 			$response[$index] = array(
 				'tid' => $singleRequest->tid,
@@ -81,7 +83,18 @@ class t3lib_extjs_ExtDirectRouter {
 				'method' => $singleRequest->method
 			);
 
+			$token = array_pop($singleRequest->data);
+			if ($firstCall) {
+				$firstCall = FALSE;
+				$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+				$validToken = $formprotection->validateToken($token, 'extDirect');
+			}
+
 			try {
+				if (!$validToken) {
+					throw new t3lib_formprotection_InvalidTokenException('ExtDirect: Invalid Security Token!');
+				}
+
 				$response[$index]['type'] = 'rpc';
 				$response[$index]['result'] = $this->processRpc($singleRequest, $namespace);
 				$response[$index]['debug'] = $GLOBALS['error']->toString();

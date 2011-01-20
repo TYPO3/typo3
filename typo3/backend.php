@@ -38,7 +38,6 @@ require('classes/class.clearcachemenu.php');
 require('classes/class.shortcutmenu.php');
 require('classes/class.livesearch.php');
 
-require_once('class.alt_menu_functions.inc');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 
 

@@ -496,9 +496,9 @@ class t3lib_positionMap {
 	function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table = 'tt_content';
 		if (is_array($row)) {
-			$location = 'tce_db.php?cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode();
+			$location = 'tce_db.php?cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction');
 		} else {
-			$location = 'tce_db.php?cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode();
+			$location = 'tce_db.php?cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction');
 		}
 			//		$location.='&redirect='.rawurlencode($this->R_URI);		// returns to prev. page
 		$location .= '&uPT=1&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')); // This redraws screen

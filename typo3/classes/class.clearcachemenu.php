@@ -63,7 +63,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 			$this->cacheActions[] = array(
 				'id'    => 'all',
 				'title' => $title,
-				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
+				'href'  => $this->backPath .
+						'tce_db.php?vC=' .
+						$GLOBALS['BE_USER']->veriCode() .
+						'&cacheCmd=all&ajaxCall=1' .
+						t3lib_BEfunc::getUrlToken('tceAction'),
 				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-high')
 			);
 		}
@@ -74,7 +78,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 			$this->cacheActions[] = array(
 				'id'    => 'pages',
 				'title' => $title,
-				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=pages',
+				'href'  => $this->backPath .
+						'tce_db.php?vC=' .
+						$GLOBALS['BE_USER']->veriCode() .
+						'&cacheCmd=pages&ajaxCall=1' .
+						t3lib_BEfunc::getUrlToken('tceAction'),
 				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
 		}
@@ -85,7 +93,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
-				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=temp_CACHED',
+				'href'  => $this->backPath .
+						'tce_db.php?vC=' .
+						$GLOBALS['BE_USER']->veriCode() .
+						'&cacheCmd=temp_CACHED&ajaxCall=1' .
+						t3lib_BEfunc::getUrlToken('tceAction'),
 				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-low')
 			);
 		}
@@ -103,6 +115,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 			}
 		}
 
+		t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 	}
 
 	/**
