@@ -125,7 +125,11 @@ HTMLArea.prototype.addRangeToSelection = function(selection, range) {
  * Create a range for the current selection
  */
 HTMLArea.prototype._createRange = function(sel) {
-	if (HTMLArea.is_safari) {
+	if (typeof(sel) == "undefined") {
+		return this._doc.createRange();
+	}
+		// Older versions of WebKit did not support getRangeAt
+	if (HTMLArea.is_safari && !sel.getRangeAt) {
 		var range = this._doc.createRange();
 		if (typeof(sel) == "undefined") {
 			return range;
@@ -143,7 +147,6 @@ HTMLArea.prototype._createRange = function(sel) {
 			return range;
 		}
 	}
-	if (typeof(sel) == "undefined") return this._doc.createRange();
 	try {
 		return sel.getRangeAt(0);
 	} catch(e) {
