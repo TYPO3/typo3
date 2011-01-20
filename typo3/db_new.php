@@ -436,7 +436,7 @@ class SC_db_new {
 			$startRows[] = '
 				<tr>
 					<td nowrap="nowrap">' . $rowContent . '</td>
-					<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+					<td>' . t3lib_BEfunc::wrapInHelp($table, '') . '</td>
 				</tr>
 			';
 		}
@@ -540,7 +540,7 @@ class SC_db_new {
 							$startRows[] = '
 								<tr>
 									<td nowrap="nowrap">' . $rowContent . '</td>
-									<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+									<td>' . t3lib_BEfunc::wrapInHelp($table, '') . '</td>
 								</tr>';
 						} else {
 							$this->tRows[$groupName]['title'] = $thisTitle;
@@ -566,14 +566,14 @@ class SC_db_new {
 			$row = '<tr>
 						<td nowrap="nowrap">' . $halfLine . '<br />' .
 						$firstLevel . '' . $iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong>' .
-						'</td><td>'.t3lib_BEfunc::cshItem($t,'',$this->doc->backPath,'',$doNotShowFullDescr).'</td>
+						'</td><td>' . t3lib_BEfunc::wrapInHelp($table, '') . '</td>
 						</tr>';
 			$count = count($value['html']) - 1;
 			foreach ($value['html'] as $recordKey => $record) {
 				$row .= '
 					<tr>
 						<td nowrap="nowrap">' . ($recordKey < $count ? $secondLevel : $secondLevelLast) . $record . '</td>
-						<td>'.t3lib_BEfunc::cshItem($value['table'][$recordKey], '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+						<td>' . t3lib_BEfunc::wrapInHelp($value['table'][$recordKey], '') . '</td>
 					</tr>';
 			}
 			$finalRows[] = $row;

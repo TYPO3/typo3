@@ -13,6 +13,7 @@
 	* Fixed bug #17114: Install Tool does not install extensions properly
 	* Fixed bug #16926: Database is not updated during workspace-migration wizard
 	* Fixed bug #17102: migrateWorkspaces in Install-Tool doesn't show up in all relevant situations (Thanks to Tolleiv Nietsch)
+	* Fixed bug #17088: Cleanup: CSH display in new record wizard should use new API
 
 2011-01-20  Susanne Moog  <typo3@susanne-moog.de>
 
