@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups, sys_filemounts and sys_workspace
+ * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
  *
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
