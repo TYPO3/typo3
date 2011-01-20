@@ -160,14 +160,24 @@ $Id: $
 	border: none;
 }
 
-#typo3-pagetree-topPanel .x-btn-pressed {
-	background-image: url('../../icons/gfx/toolbar_item_active_bg.png');
+#typo3-pagetree-topPanel .x-btn-click,
+#typo3-pagetree-topPanel .x-btn-over {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
+	*background-image: url("../../images/backgrounds/docheader-pagetree-button-hover.png");
 }
 
+#typo3-pagetree-topPanel .x-btn-pressed {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
+	*background-image: url("../../images/backgrounds/docheader-pagetree-button.png");
+}
+
+#typo3-pagetree-topPanel .x-btn-pressed,
+#typo3-pagetree-topPanel .x-btn-over,
 #typo3-pagetree-topPanel .x-btn-click {
 	border: none;
 	top: 0;
 	left: 0;
+	background-repeat: repeat-x;
 }
 
 #typo3-pagetree-topPanel button:focus {

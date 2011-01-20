@@ -1,4 +1,8 @@
-2009-01-21  Tobias Liebig  <mail_typo3@etobi.de>
+2011-01-21  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #17169: Bug: Wrong color gradients for filter and new button in new page tree
+
+2011-01-21  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #17180: t3editor claims more then 100% width
 
