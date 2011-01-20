@@ -467,6 +467,12 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		}
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 
+		if ($actionName !== NULL
+			&& $this->getUseCacheHash() === TRUE
+			&& !$this->isActionCacheable($actionName, $controllerArguments['controller'], $extensionName, $pluginName)) {
+				$this->setUseCacheHash(FALSE);
+		}
+
 		return $this->build();
 	}
 
@@ -639,6 +645,32 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Checks if the given action is cacheable or not.
+	 *
+	 * @param string $actionName Name of the action to be called
+	 * @param string $controllerName Name of the target controller.
+	 * @param string $extensionName Name of the target extension, without underscores.
+	 * @param string $pluginName Name of the target plugin.
+	 * @return boolean
+	 */
+	protected function isActionCacheable($actionName, $controllerName, $extensionName, $pluginName) {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(
+			Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+			$extensionName,
+			$pluginName
+		);
+
+		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
+			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])
+			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
+			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
+				return FALSE;
+		}
+
+		return TRUE;
 	}
 
 }
