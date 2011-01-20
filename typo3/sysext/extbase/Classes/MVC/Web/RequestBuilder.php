@@ -136,14 +136,27 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
-		} else {
+		} elseif (!empty($this->defaultControllerName)) {
 			$controllerName = $this->defaultControllerName;
+		} else {
+			throw new Tx_Extbase_MVC_Exception(
+				'The default controller can not be determined.<br />'
+				. 'Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+				1295479650
+			);
 		}
+
 		$allowedActions = $this->allowedControllerActions[$controllerName];
 		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
 			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-		} else {
+		} elseif (!empty($this->defaultActionName)) {
 			$actionName = $this->defaultActionName;
+		} else {
+			throw new Tx_Extbase_MVC_Exception(
+				'The default action can not be determined for controller "' . $controllerName . '".<br />'
+				. 'Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+				1295479651
+			);
 		}
 
 		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');

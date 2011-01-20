@@ -216,6 +216,28 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception
+	 */
+	public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet() {
+		unset($this->configuration['controllerConfiguration']);
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception
+	 */
+	public function buildThrowsExceptionIfControllerConfigurationHasNoDefaultActionDefined() {
+		$this->configuration['controllerConfiguration']['TheFirstController'] = array();
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
 	 */
 	public function buildSetsParametersFromGetAndPostVariables() {
 		$this->configuration['extensionName'] = 'SomeExtensionName';
