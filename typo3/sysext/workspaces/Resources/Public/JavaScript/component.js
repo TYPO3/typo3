@@ -169,16 +169,16 @@ TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 	menuDisabled: true,
 	hideable: false,
 	getRowClass : function(record, rowIndex, p, ds) {
-		class = '';
+		cssClass = '';
 		if (!record.json.allowedAction_nextStage && !record.json.allowedAction_prevStage) {
-			class = 'typo3-workspaces-row-disabled ';
+			cssClass = 'typo3-workspaces-row-disabled ';
 		}
 		if(this.state[record.id]) {
-			class += 'x-grid3-row-expanded';
+			cssClass += 'x-grid3-row-expanded';
 		} else {
-			class += 'x-grid3-row-collapsed';
+			cssClass += 'x-grid3-row-collapsed';
 		}
-		return class;
+		return cssClass;
 	},
 	remoteDataMethod : function (record, index) {
 		TYPO3.Workspaces.RowDetail.rowDataStore.baseParams = {

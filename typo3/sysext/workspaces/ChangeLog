@@ -7,6 +7,7 @@
 2011-01-18  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #11972: Switching workspaces with tabs causes module menu to loose its selection
+	* Fixed bug #12405: The workspaces module does not work in Internet Explorer
 
 2011-01-18  Sonja Scholz <ss@cabag.ch>
 
