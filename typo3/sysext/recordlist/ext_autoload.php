@@ -3,7 +3,7 @@
 // This file was generated on 2009-10-26 22:04
 
 
-$extensionPath = t3lib_extMgm::extPath('list');
+$extensionPath = t3lib_extMgm::extPath('recordlist');
 return array(
 	'sc_db_list' => $extensionPath . 'mod1/index.php',
 );
