@@ -866,7 +866,7 @@ class wslib_gui {
 	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)	{
 		global	$LANG;
 
-		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===10))	{
+		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===-10))	{
 			$actionLinks =
 				'<a href="'.htmlspecialchars($this->doc->issueCommand(
 				'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

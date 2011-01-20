@@ -1688,7 +1688,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)	{
-		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===10))	{
+		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===-10))	{
 			$actionLinks =
 				'<a href="'.htmlspecialchars($this->doc->issueCommand(
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.

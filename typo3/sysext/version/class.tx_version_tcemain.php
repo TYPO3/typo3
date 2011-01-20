@@ -4,7 +4,7 @@
 *
 *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2010-2011 Benjamin Mack (benni@typo3.org)
-* 
+*
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -77,7 +77,7 @@ class tx_version_tcemain {
 
 	/**
 	 * hook that is called when no prepared command was found
-	 * 
+	 *
 	 * @param string $command the command to be executed
 	 * @param string $table the table of the record
 	 * @param integer $id the ID of the record
@@ -96,7 +96,7 @@ class tx_version_tcemain {
 			switch ($action) {
 
 				case 'new':
-						// check if page / branch versioning is needed, 
+						// check if page / branch versioning is needed,
 						// or if "element" version can be used
 					$versionizeTree = -1;
 					if (isset($value['treeLevels'])) {
@@ -137,7 +137,7 @@ class tx_version_tcemain {
 	}
 
 	/**
-	 * hook that is called AFTER all commands of the commandmap was 
+	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
 	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
@@ -157,7 +157,7 @@ class tx_version_tcemain {
 
 
 	/**
-	 * hook that is called AFTER all commands of the commandmap was 
+	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
 	 * @param string $table the table of the record
@@ -169,12 +169,12 @@ class tx_version_tcemain {
 	 * @return	void
 	 */
 	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, t3lib_TCEmain $tcemainObj) {
-			// only process the hook if it wasn't processed 
+			// only process the hook if it wasn't processed
 			// by someone else before
 		if (!$recordWasDeleted) {
 			$recordWasDeleted = TRUE;
 			$id = $record['uid'];
-	
+
 				// For Live version, try if there is a workspace version because if so, rather "delete" that instead
 				// Look, if record is an offline version, then delete directly:
 			if ($record['pid'] != -1) {
@@ -283,8 +283,8 @@ class tx_version_tcemain {
 
 				// Workspace destination check:
 
-				// All records can be inserted if $destRes is greater than zero. 
-				// Only new versions can be inserted if $destRes is false. 
+				// All records can be inserted if $destRes is greater than zero.
+				// Only new versions can be inserted if $destRes is false.
 				// NO RECORDS can be inserted if $destRes is negative which indicates a stage
 				//  not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
 			if (!($destRes > 0 || ($canMoveRecord && !$destRes))) {
@@ -294,7 +294,7 @@ class tx_version_tcemain {
 			}
 
 			if (!count($workspaceAccessBlocked)) {
-					// If the move operation is done on a versioned record, which is 
+					// If the move operation is done on a versioned record, which is
 					// NOT new/deleted placeholder and versioningWS is in version 2, then...
 				if ($WSversion['uid'] && !$recIsNewVersion && (int)$TCA[$table]['ctrl']['versioningWS'] >= 2) {
 					$this->moveRecord_wsPlaceholders($table, $uid, $destPid, $WSversion['uid'], $tcemainObj);
@@ -428,7 +428,7 @@ class tx_version_tcemain {
 
 				// prepare and then send the emails
 			if (count($emails)) {
-				
+
 					// Path to record is found:
 				list($elementTable, $elementUid) = explode(':', $elementName);
 				$elementUid = intval($elementUid);
@@ -472,8 +472,8 @@ class tx_version_tcemain {
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 
-					
-					// sending the emails the old way with sprintf(), 
+
+					// sending the emails the old way with sprintf(),
 					// because it was set explicitly in TSconfig
 				if ($emailMessage && $emailSubject) {
 					t3lib_div::deprecationLog('This TYPO3 installation uses Workspaces staging notification by setting the TSconfig options "TCEMAIN.notificationEmail_subject" / "TCEMAIN.notificationEmail_body". Please use the more flexible marker-based options tx_version.workspaces.stageNotificationEmail.message / tx_version.workspaces.stageNotificationEmail.subject');
@@ -507,7 +507,7 @@ class tx_version_tcemain {
 						$emailMessage
 					);
 				} else {
-						// send an email to each individual user, to ensure the 
+						// send an email to each individual user, to ensure the
 						// multilanguage version of the email
 
 					$emailHeaders = $emailConfig['additionalHeaders'];
@@ -529,12 +529,12 @@ class tx_version_tcemain {
 						$emailMessage = $emailConfig['message'];
 						$emailRecipients[$recipientData['email']] = $recipientData['email'];
 
-							// check if the email needs to be localized 
+							// check if the email needs to be localized
 							// in the users' language
 						if (t3lib_div::isFirstPartOfStr($emailSubject, 'LLL:') || t3lib_div::isFirstPartOfStr($emailMessage, 'LLL:')) {
 							$recipientLanguage = ($recipientData['lang'] ? $recipientData['lang'] : 'default');
 							if (!isset($languageObjects[$recipientLanguage])) {
-									// a LANG object in this language hasn't been 
+									// a LANG object in this language hasn't been
 									// instantiated yet, so this is done here
 								/** @var $languageObject language */
 								$languageObject = t3lib_div::makeInstance('language');
@@ -646,7 +646,7 @@ class tx_version_tcemain {
 			} else $tcemainObj->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', 1);
 		} else $tcemainObj->newlog('Attempt to set stage for record failed because you do not have edit access', 1);
 	}
-	
+
 
 
 	/*****************************
@@ -743,7 +743,7 @@ class tx_version_tcemain {
 			if (is_array($curVersion) && is_array($swapVersion)) {
 				if ($tcemainObj->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
 					$wsAccess = $tcemainObj->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
-					if ($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === 10) {
+					if ($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10) {
 						if ($tcemainObj->doesRecordExist($table,$swapWith,'show') && $tcemainObj->checkRecordUpdateAccess($table,$swapWith)) {
 							if (!$swapIntoWS || $tcemainObj->BE_USER->workspaceSwapAccess()) {
 
@@ -768,7 +768,7 @@ class tx_version_tcemain {
 										if ($TCA[$table]['ctrl']['sortby']) {
 											$keepFields[] = $TCA[$table]['ctrl']['sortby'];
 										}
-											// l10n-fields must be kept otherwise the localization 
+											// l10n-fields must be kept otherwise the localization
 											// will be lost during the publishing
 										if (!isset($TCA[$table]['ctrl']['transOrigPointerTable']) && $TCA[$table]['ctrl']['transOrigPointerField']) {
 											$keepFields[] = $TCA[$table]['ctrl']['transOrigPointerField'];
@@ -936,7 +936,7 @@ class tx_version_tcemain {
 
 													// Collect table names that should be copied along with the tables:
 												foreach ($TCA as $tN => $tCfg)	{
-														// For "Branch" publishing swap ALL, 
+														// For "Branch" publishing swap ALL,
 														// otherwise for "page" publishing, swap only "versioning_followPages" tables
 													if ($swapVersion['t3ver_swapmode'] > 0 || $TCA[$tN]['ctrl']['versioning_followPages']) {
 														$temporaryPid = -($id+1000000);
@@ -1228,7 +1228,7 @@ class tx_version_tcemain {
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					if (is_array($elementList[$table])) {
-						// Yes, it is possible to get non-unique array even with DISTINCT above! 
+						// Yes, it is possible to get non-unique array even with DISTINCT above!
 						// It happens because several UIDs are passed in the array already.
 						$elementList[$table] = array_unique($elementList[$table]);
 					}
@@ -1261,7 +1261,7 @@ class tx_version_tcemain {
 			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 				$pageIdList[] = $row[0];
 					// Find ws version
-					// Note: cannot use t3lib_BEfunc::getRecordWSOL() 
+					// Note: cannot use t3lib_BEfunc::getRecordWSOL()
 					// here because it does not accept workspace id!
 				$rec = t3lib_BEfunc::getRecord('pages', $row[0]);
 				t3lib_BEfunc::workspaceOL('pages', $rec, $workspaceId);

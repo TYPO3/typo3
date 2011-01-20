@@ -1,3 +1,7 @@
+2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
+
 2011-01-20  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #12397: CSRF protection for clickmenu and old workspace module (Thanks to Helmut Hummel)
