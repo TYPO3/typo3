@@ -1,11 +1,11 @@
 2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fxied bug #12334:"Allow members to edit records in "Review" stage" should be removed
 	* Fixed bug #12286: Wrong icon for "Generate workspace preview link" - use eye icon instead
 
 2011-01-18  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #11972: Switching workspaces with tabs causes module menu to loose its selection
-	* Fixed bug #12307: Workspaces non-admin user cannot send to next stage
 
 2011-01-18  Sonja Scholz <ss@cabag.ch>
 

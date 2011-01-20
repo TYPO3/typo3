@@ -17,7 +17,6 @@ CREATE TABLE sys_workspace (
   unpublish_time int(11) DEFAULT '0' NOT NULL,
   freeze tinyint(3) DEFAULT '0' NOT NULL,
   live_edit tinyint(3) DEFAULT '0' NOT NULL,
-  review_stage_edit tinyint(3) DEFAULT '0' NOT NULL,
   vtypes tinyint(3) DEFAULT '0' NOT NULL,
   disable_autocreate tinyint(1) DEFAULT '0' NOT NULL,
   swap_modes tinyint(3) DEFAULT '0' NOT NULL,
