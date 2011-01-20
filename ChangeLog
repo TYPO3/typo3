@@ -1,3 +1,7 @@
+2011-01-21  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #17149: Remove sys_refindex_* tables and unused code
+
 2011-01-20  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #14098: When sending mail, use TYPO3_CONF_VAR for default from address if no other address is provided (Thanks to Jeff Segars and Marcus Krause)

@@ -149,11 +149,6 @@ class t3lib_refindex {
 			} else {
 				return FALSE;
 			} // Weird mistake I would say...
-
-				// Words:
-			if (!$testOnly) {
-				$this->wordIndexing($table, $uid);
-			}
 		}
 
 			// If any old are left, remove them:
@@ -845,105 +840,6 @@ class t3lib_refindex {
 			}
 		} else {
 			return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
-		}
-	}
-
-
-	/*******************************
-	 *
-	 * Indexing words
-	 *
-	 *******************************/
-
-	/**
-	 * Indexing words from table records. Can be useful for quick backend look ups in records across the system.
-	 */
-	function wordIndexing($table, $uid) {
-		return; // Disabled until Kasper finishes this feature. If someone else needs it in the meantime you are welcome to complete it. Below my todo list.
-
-			// TODO:
-			// - Flag to disable indexing
-			// - Clean-up to remove words not used anymore  and indexes for records not in the system anymore.
-			// - UTF-8 compliant substr()
-		$lexer = t3lib_div::makeInstance('tx_indexedsearch_lexer');
-		$words = $lexer->split2Words(implode(' ', $this->words_strings));
-		foreach ($words as $w) {
-			$words[] = substr($w, 0, 3);
-		}
-		$words = array_unique($words);
-		$this->updateWordIndex($words, $table, $uid);
-	}
-
-	/**
-	 * Update/Create word index for record
-	 *
-	 * @param	array		Word list array (words are values in array)
-	 * @param	string		Table
-	 * @param	integer		Rec uid
-	 * @return	void
-	 */
-	function updateWordIndex($words, $table, $uid) {
-
-			// Submit words to
-		$this->submitWords($words);
-
-			// Result id and remove relations:
-		$rid = t3lib_div::md5int($table . ':' . $uid);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex_rel', 'rid=' . intval($rid));
-
-			// Add relations:
-		foreach ($words as $w) {
-			$insertFields = array(
-				'rid' => $rid,
-				'wid' => t3lib_div::md5int($w)
-			);
-
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_rel', $insertFields);
-		}
-
-			// Add result record:
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex_res', 'rid=' . intval($rid));
-		$insertFields = array(
-			'rid' => $rid,
-			'tablename' => $table,
-			'recuid' => $uid
-		);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_res', $insertFields);
-	}
-
-	/**
-	 * Adds new words to db
-	 *
-	 * @param	array		Word List array (where each word has information about position etc).
-	 * @return	void
-	 */
-	function submitWords($wl) {
-
-		$hashArr = array();
-		foreach ($wl as $w) {
-			$hashArr[] = t3lib_div::md5int($w);
-		}
-		$wl = array_flip($wl);
-
-		if (count($hashArr)) {
-			$cwl = implode(',', $hashArr);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'sys_refindex_words', 'wid IN (' . $cwl . ')');
-
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) != count($wl)) {
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					unset($wl[$row['baseword']]);
-				}
-
-				foreach ($wl as $key => $val) {
-					$insertFields = array(
-						'wid' => t3lib_div::md5int($key),
-						'baseword' => $key
-					);
-
-						// A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as long as the words in $wl are NOT longer as 60 chars (the baseword varchar is 60 characters...) this is not a problem.
-					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex_words', $insertFields);
-				}
-			}
 		}
 	}
 

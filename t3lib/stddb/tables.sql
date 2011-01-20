@@ -360,35 +360,6 @@ CREATE TABLE sys_refindex (
 );
 
 #
-# Table structure for table 'sys_refindex_words'
-#
-CREATE TABLE sys_refindex_words (
-  wid int(11) DEFAULT '0' NOT NULL,
-  baseword varchar(60) DEFAULT '' NOT NULL,
-  PRIMARY KEY (wid)
-);
-
-#
-# Table structure for table 'sys_refindex_rel'
-#
-CREATE TABLE sys_refindex_rel (
-  rid int(11) DEFAULT '0' NOT NULL,
-  wid int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (rid,wid)
-);
-
-
-#
-# Table structure for table 'sys_refindex_res'
-#
-CREATE TABLE sys_refindex_res (
-  rid int(11) DEFAULT '0' NOT NULL,
-  tablename varchar(255) DEFAULT '' NOT NULL,
-  recuid int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (rid)
-);
-
-#
 # Table structure for table 'sys_log'
 #
 CREATE TABLE sys_log (
