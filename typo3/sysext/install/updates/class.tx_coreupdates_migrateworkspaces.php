@@ -143,26 +143,6 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	}
 
 	/**
-	 * Install a extensions
-	 *
-	 * @param	array		List of extension keys
-	 * @return	boolean	Determines whether this was successful or not
-	 */
-	protected function installExtensions($extensionKeys) {
-		if (!is_array($extensionKeys)) {
-			return FALSE;
-		}
-
-		$result = FALSE;
-		$extList = $this->addExtToList($extensionKeys);
-		if ($extList) {
-			$this->writeNewExtensionList($extList);
-			$result = TRUE;
-		}
-		return $result;
-	}
-
-	/**
 	 * Check if any table contains draft-workspace records
 	 *
 	 * @return bool

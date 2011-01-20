@@ -1,6 +1,7 @@
 2011-01-20  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17114: Install Tool does not install extensions properly
+	* Fixed bug #16926: Database is not updated during workspace-migration wizard
 
 2011-01-20  Susanne Moog  <typo3@susanne-moog.de>
 
