@@ -35,6 +35,7 @@
 	* Fixed bug #17155: Active and hover states are hard to distinguish
 	* Fixed bug #16971: Improve ExtDirect error handling (Thanks to Stefan Galinski)
 	* Fixed bug #17131: ExtDirect Caching: Differentiate between HTTPS/HTTP protocols (Thanks to Stefan Galinski)
+	* Fixed bug #15118: Context menu icons are on the right side
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -224,6 +224,7 @@ $TYPO3_CONF_VARS = array(
 				doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,255,199
 			}
 
+			options.contextMenu.options.leftIcons = 1
 			options.contextMenu {
 				table {
 					pages_root {
