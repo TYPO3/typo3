@@ -534,7 +534,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			<input type="hidden" name="prErr" value="1" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars($this->REQUEST_URI).'" />
 			<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('createNewVersion') . '" />
-
+			' . t3lib_TCEforms::getHiddenTokenField('tceAction') . '
 			</form>
 
 		';
@@ -1853,5 +1853,7 @@ $SOBE->init();
 
 $SOBE->main();
 $SOBE->printContent();
+
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

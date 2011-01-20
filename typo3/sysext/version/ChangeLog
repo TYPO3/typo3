@@ -1,3 +1,7 @@
+2011-01-20  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12397: CSRF protection for clickmenu and old workspace module (Thanks to Helmut Hummel)
+
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Follow-up to bug #11832: Label of the anchor is empty
