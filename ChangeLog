@@ -12,6 +12,7 @@
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed bug #17163: CSH tooltips should be placed nearer to the text (Thanks to Stanislas Rolland)
 	* Fixed issue #17109: Make the t3lib_utility_Mail hook subscriber optional / configureable
 
 2011-01-20  Jeff Segars  <jeff@webempoweredchurch.org>
