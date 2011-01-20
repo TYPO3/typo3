@@ -1773,7 +1773,12 @@ class t3lib_TCEforms {
 	 * @return	string		The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
-	function getSingleField_typeSelect_checkbox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+	function getSingleField_typeSelect_checkbox(
+		$table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+
+		if (empty($selItems)) {
+			return '';
+		}
 
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
@@ -1793,22 +1798,6 @@ class t3lib_TCEforms {
 			foreach ($selItems as $p) {
 					// Non-selectable element:
 				if (!strcmp($p[1], '--div--')) {
-					if (count($setAll)) {
-						$tRows[] = '
-								<tr class="c-header-checkbox-controls">
-									<td colspan="3">' .
-								   '<a href="#" onclick="' . htmlspecialchars(implode('', $setAll) . ' return false;') . '">' .
-								   htmlspecialchars($this->getLL('l_checkAll')) .
-								   '</a>
-										<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll) . ' return false;') . '">' .
-								   htmlspecialchars($this->getLL('l_uncheckAll')) .
-								   '</a>
-									</td>
-								</tr>';
-						$setAll = array();
-						$unSetAll = array();
-					}
-
 					$tRows[] = '
 						<tr class="c-header">
 							<td colspan="3">' . htmlspecialchars($p[0]) . '</td>
@@ -1843,7 +1832,7 @@ class t3lib_TCEforms {
 					$hasHelp = ($p[3] != '');
 
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' .
+					$help = $hasHelp ? '<span class="typo3-csh-inline"><span class="header">' . $label . '</span>' .
 									   '<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
 
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
@@ -1856,7 +1845,7 @@ class t3lib_TCEforms {
 
 					$tRows[] = '
 						<tr id="' . $rowId . '" class="' . ($sM ? 'c-selectedItem' : 'c-unselectedItem') . '" onclick="' . htmlspecialchars($onClick) . '" style="cursor: pointer;">
-							<td width="12"><input type="checkbox"' . $this->insertDefStyle('check') . ' name="' . htmlspecialchars($PA['itemFormElName'] . '[' . $c . ']') . '" value="' . htmlspecialchars($p[1]) . '"' . $sM . ' onclick="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . ' /></td>
+							<td class="c-checkbox"><input type="checkbox"' . $this->insertDefStyle('check') . ' name="' . htmlspecialchars($PA['itemFormElName'] . '[' . $c . ']') . '" value="' . htmlspecialchars($p[1]) . '"' . $sM . ' onclick="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . ' /></td>
 							<td class="c-labelCell" onclick="' . htmlspecialchars($onClickCell) . '">' .
 							   $this->getIconHtml($selIcon) .
 							   $label .
@@ -1866,21 +1855,6 @@ class t3lib_TCEforms {
 					$c++;
 				}
 			}
-
-				// Remaining checkboxes will get their set-all link:
-			if (count($setAll)) {
-				$tRows[] = '
-						<tr class="c-header-checkbox-controls">
-							<td colspan="3">' .
-						   '<a href="#" onclick="' . htmlspecialchars(implode('', $setAll) . ' return false;') . '">' .
-						   htmlspecialchars($this->getLL('l_checkAll')) .
-						   '</a>
-								<a href="#" onclick="' . htmlspecialchars(implode('', $unSetAll) . ' return false;') . '">' .
-						   htmlspecialchars($this->getLL('l_uncheckAll')) .
-						   '</a>
-							</td>
-						</tr>';
-			}
 		}
 
 			// Remaining values (invalid):
@@ -1889,7 +1863,7 @@ class t3lib_TCEforms {
 					// Compile <checkboxes> tag:
 				array_unshift($tRows, '
 						<tr class="c-invalidItem">
-							<td><input type="checkbox"' . $this->insertDefStyle('check') . ' name="' . htmlspecialchars($PA['itemFormElName'] . '[' . $c . ']') . '" value="' . htmlspecialchars($theNoMatchValue) . '" checked="checked" onclick="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . ' /></td>
+							<td class="c-checkbox"><input type="checkbox"' . $this->insertDefStyle('check') . ' name="' . htmlspecialchars($PA['itemFormElName'] . '[' . $c . ']') . '" value="' . htmlspecialchars($theNoMatchValue) . '" checked="checked" onclick="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . ' /></td>
 							<td class="c-labelCell">' .
 									  t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))) .
 									  '</td><td>&nbsp;</td>
@@ -1901,17 +1875,30 @@ class t3lib_TCEforms {
 			// Add an empty hidden field which will send a blank value if all items are unselected.
 		$item .= '<input type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
 
+			// Remaining checkboxes will get their set-all link:
+		if (count($setAll)) {
+			$tableHead = '<thead>
+					<tr class="c-header-checkbox-controls t3-row-header">
+						<td class="c-checkbox">
+						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $setAll) . '} else {' .  implode('', $unSetAll) . '}') . '">
+						</td>
+						<td colspan="2">
+						</td>
+					</tr></thead>';
+		}
+			// Implode rows in table:
+		$item .= '
+			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">' .
+				$tableHead .
+				'<tbody>' . implode('', $tRows) . '</tbody>
+			</table>
+			';
+
 			// Add revert icon
 		if (is_array($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd) . ' return false;' . '">' .
 					 t3lib_iconWorks::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLL('l_revertSelection')))) . '</a>';
 		}
-			// Implode rows in table:
-		$item .= '
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">' .
-				 implode('', $tRows) . '
-			</table>
-			';
 
 		return $item;
 	}

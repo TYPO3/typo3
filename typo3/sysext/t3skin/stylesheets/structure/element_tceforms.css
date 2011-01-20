@@ -111,32 +111,34 @@ table.typo3-TCEforms select.icon-select option {
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
 	margin-bottom: 10px;
-	width: 98%;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tbody {
+	display: block;
+	max-height: 300px;
+	overflow-y: scroll;
 }
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
-	padding: 1px 3px 1px 3px;
+	vertical-align: middle;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td,
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+	padding: 1px 3px;
 }
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	padding-right: 30px;
+	min-width: 300px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell P.c-descr {
-	margin-left: 30px;
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell img {
+	margin-right: 5px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
-	padding-left: 4px;
-	padding-top: 10px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td {
-	padding-right: 16px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td a {
-	padding-left: 16px;
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr {
+	width: 40px;
 }
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr img {

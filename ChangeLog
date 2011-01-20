@@ -1,3 +1,7 @@
+2011-01-20  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17044: Styling of TCEforms with renderMode=checkbox
+
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed issue #17109: Make the t3lib_utility_Mail hook subscriber optional / configureable

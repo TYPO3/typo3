@@ -113,48 +113,42 @@ table.typo3-TCEforms span.typo3-TCEforms-helpText {
 	color: #fff;
 }
 
-table.typo3-TCEforms-select-checkbox  {
-	background-color: #efeff4;
+table.typo3-TCEforms-select-checkbox {
+	background-color: #ffffff;
 	border: 1px solid #aaa;
-}
-
-table.typo3-TCEforms-select-checkbox tr {
-	background-color: #efeff4;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
-	background-color: #d7dbe2;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-unselectedItem {
-	background-color: #efeff4;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
-	background-color: #ff6600;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td {
-	background-color: #b8bec9;
-	text-align: right;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td a {
-	color: white;
 }
 
 table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
 	background-color: #fff;
-	border-bottom: 1px solid #999999;
 	font-weight: bold;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
-	border-bottom: 1px #999 dashed;
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
+	background-color: #f7f7f7;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell p.c-descr {
-	font-style: italic;
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
+	background-color: #d8ecd0;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
+	color: #dddddd;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:hover {
+	background-color: #dedede;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
+	background-color: #abd99a;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
+	background-color: transparent;
+}
+
+table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+	white-space: nowrap;
 }
 
 table.typo3-TCEforms optgroup.c-divider,
