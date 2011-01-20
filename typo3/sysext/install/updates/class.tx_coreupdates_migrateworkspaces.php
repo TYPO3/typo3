@@ -50,19 +50,36 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 		migrates the old-style workspaces with fixed workflow to a custom-stage workflow. If required
 		the extbase, fluid, version and workspaces extensions are installed.';
 
+		$reason = '';
 			// TYPO3 version 4.5 and above
 		if ($this->versionNumber >= 4005000) {
-			$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
-				// sys_workspace table might not exists if version extension was never installed
-			if (in_array('sys_workspace', $tables)) {
-				$wsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', '');
-				$result = $wsCount > 0;
+
+			if(!t3lib_extMgm::isLoaded('version') || !t3lib_extMgm::isLoaded('workspaces')) {
+				$result = TRUE;
+				$reason .= ' The extensions "version" and "workspaces" need to be
+					present to use the entire versioning and workflow featureset of TYPO3.';
 			}
 
-			if (!$result) {
-				$this->includeTCA();
-				$result = $this->isDraftWorkspaceUsed();
+			$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
+				// sys_workspace table might not exists if version extension was never installed
+			if (!in_array('sys_workspace', $tables) || !in_array('sys_workspace_stage', $tables)) {
+				$result = TRUE;
+				$reason .= ' The database tables for the workspace functionality are missing.';
+			} else {
+				$wsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', '');
+				$result |= $wsCount > 0;
+				$reason .= ' The existing workspaces will be checked for compatibility with the new features.';
 			}
+
+			$this->includeTCA();
+			$draftWorkspaceTestResult = $this->isDraftWorkspaceUsed();
+			if ($draftWorkspaceTestResult) {
+				$reason .= ' The old style draft workspace is used.
+					Related records will be moved into a full featured workspace.';
+				$result = TRUE;
+			}
+
+			$description .= '<br /><strong>Why do you need this wizard?</strong><br />' . $reason;
 		}
 
 		return $result;
