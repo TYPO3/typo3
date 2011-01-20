@@ -661,9 +661,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if (isset($parentKeyFieldName)) {
 				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
 			} else {
-				$onStatement = '(' . $tableName . '.' . $columnName . ' LIKE CONCAT(\'%,\',' . $childTableName . '.uid,\',%\')';
-				$onStatement .= ' OR ' . $tableName . '.' . $columnName . ' LIKE CONCAT(\'%,\',' . $childTableName . '.uid)';
-				$onStatement .= ' OR ' . $tableName . '.' . $columnName . ' LIKE CONCAT(' . $childTableName . '.uid,\',%\'))';
+				$onStatement = '(FIND_IN_SET(' . $childTableName . '.uid, ' . $tableName . '.' . $columnName . '))';
 				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $onStatement;
 			}
 			$className = $this->dataMapper->getType($className, $propertyName);
