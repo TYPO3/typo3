@@ -36,6 +36,7 @@ Ext.ns('TYPO3.configuration');
 function jump(url, modName, mainModName) {
 		// clear information about which entry in nav. tree that might have been highlighted.
 	top.fsMod.navFrameHighlightedID = [];
+	top.fsMod.recentIds['web'] = -1;
 
 	if (top.TYPO3.Backend.NavigationContainer.PageTree) {
 		top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();

@@ -1,3 +1,7 @@
+2011-01-20  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Follow-up to #17073: Unset fsMod.recentIDs when opening module via JS jump() (Thanks to Stefan Galinski)
+
 2011-01-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17156: htmlArea RTE: Disable Cell merge button in FF when less than two cells are selected
