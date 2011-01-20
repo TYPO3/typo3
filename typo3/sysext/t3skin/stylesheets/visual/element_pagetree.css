@@ -20,10 +20,35 @@ $Id: $
 
 #typo3-pagetree .x-tree-node .x-tree-node-over,
 #typo3-pagetree .x-tree-node .x-tree-selected {
-	background-color: #f8f8f8;
 	border-bottom: 1px solid #d7d7d7;
 	border-top: 1px solid #d7d7d7;
 	border-left: 1px solid #d7d7d7;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-node-over {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/shadows/navigation-container.png");
+	background-position: right;
+	background-repeat: repeat-y;
+	background-color: #f2f2f2;
+	-moz-border-radius-topright: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-selected {
+	background-color: #f8f8f8;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-selected.x-tree-node-over {
+	background-image: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
 }
 
 #typo3-pagetree .x-panel-tbar {
@@ -164,24 +189,14 @@ $Id: $
 
 #typo3-pagetree-topPanel-filter {
 	border: 1px solid #aeaeae;
-	-moz-box-shadow: inset 0 1px 4px #aeaeae;
-	-ms-box-shadow: inset 0 1px 4px #aeaeae;
-	-webkit-box-shadow: inset 0 1px 4px #aeaeae;
+	-moz-box-shadow: inset 0 1px 1px #aeaeae;
+	-ms-box-shadow: inset 0 1px 1px #aeaeae;
+	-webkit-box-shadow: inset 0 1px 1px #aeaeae;
 	box-shadow: inset 0 2px 1px #aeaeae;
 }
 
 .typo3-pagetree-topPanel-filter-defaultText {
 	color: gray;
-}
-
-#typo3-pagetree-topPanelItems,
-.typo3-pagetree-indicatorBar-item,
-#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
-#typo3-pagetree-treeContainer {
-	-moz-box-shadow: inset -2px 0 0px #c4c4c4;
-	-ms-box-shadow: inset -2px 0 0px #c4c4c4;
-	-webkit-box-shadow: inset -2px 0 0px #c4c4c4;
-	box-shadow: inset -2px 0 0px #c4c4c4;
 }
 
 #typo3-pagetree .typo3-pagetree-topPanel-button {
@@ -315,14 +330,6 @@ $Id: $
 
 .typo3-pagetree-deletionDropZone-restoreText {
 	background: transparent url('../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
-}
-
-#typo3-pagetree .x-panel-tbar,
-#typo3-pagetree-deletionDropZone .x-panel-body {
-	-moz-box-shadow: inset -2px 0 1px #414141;
-	-ms-box-shadow: inset -2px 0 1px #414141;
-	-webkit-box-shadow: inset -2px 0 1px #414141;
-	box-shadow: inset -2px 0 1px #414141;
 }
 
 .typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {

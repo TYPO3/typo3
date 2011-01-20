@@ -9,30 +9,41 @@ body#typo3-alt-file-navframe-php {
 	background: #ebebeb;
 }
 
-/**
- * Shadow on the right side of the tree frame.
- */
-#typo3-pagetree #typo3-docbody,
-#typo3-alt-file-navframe-php #typo3-docbody {
-	-moz-box-shadow: inset -2px 0 1px #c4c4c4;
-	-ms-box-shadow: inset -2px 0 1px #c4c4c4;
-	-webkit-box-shadow: inset -2px 0 1px #c4c4c4;
-	box-shadow: inset -2px 0 1px #c4c4c4;
-}
-
-/**
- * Shadow on the right side of the tree frame,
- * fallback for missing box-shadow support.
- *
- * @see modernizr.js
- */
-.no-boxshadow #typo3-pagetree #typo3-docbody,
-.no-boxshadow #typo3-alt-file-navframe-php #typo3-docbody {
-	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
-	/* star-hack targets IE6+7 */
-	*background-image: url("../../images/backgrounds/module-menu-right.png");
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-alt-file-navframe-php #typo3-docheader-row1,
+#typo3-alt-file-navframe-php #typo3-docheader-row2,
+.typo3-pagetree-indicatorBar-item,
+#typo3-pagetree-topPanelItems,
+#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
+#typo3-pagetree-treeContainer,
+#typo3-pagetree .x-panel-tbar,
+#typo3-pagetree-deletionDropZone .x-panel-body {
 	background-position: right;
 	background-repeat: repeat-y;
+}
+
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-pagetree-treeContainer {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/shadows/navigation-container.png");
+}
+
+#typo3-alt-file-navframe-php #typo3-docheader-row1,
+#typo3-pagetree-topPanelItems,
+#typo3-pagetree .x-panel-tbar,
+#typo3-pagetree-deletionDropZone .x-panel-body {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AEBAQExAQECzQEBA/xb3BD8CHBN0AAAAAElFTkSuQmCC");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/shadows/docheader1.png");
+}
+
+#typo3-alt-file-navframe-php #typo3-docheader-row2,
+.typo3-pagetree-indicatorBar-item,
+#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/ALi4uEy4uLi0uLi4/zSECHijpwMGAAAAAElFTkSuQmCC");
+	/* star-hack targets IE6+7 */
+	*background-image: url("../../images/shadows/docheader2.png");
 }
 
 table#typo3-tree a {

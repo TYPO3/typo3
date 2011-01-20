@@ -26,6 +26,7 @@
 2011-01-20  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17044: Styling of TCEforms with renderMode=checkbox
+	* Fixed bug #17155: Active and hover states are hard to distinguish
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 

@@ -14,20 +14,8 @@ $Id$
 /**
  * Shadow on the right side of the module menu.
  */
-#typo3-module-menu {
-	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
-	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
-	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
-	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
-}
-
-/**
- * Shadow on the right side of the module menu,
- * fallback for missing box-shadow support.
- *
- * @see modernizr.js
- */
-.no-boxshadow #typo3-module-menu {
+#typo3-module-menu,
+#typo3-menu li.menuSection li a:hover {
 	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
 	/* star-hack targets IE6+7 */
 	*background-image: url("../../images/backgrounds/module-menu-right.png");
@@ -60,16 +48,31 @@ $Id$
 	border-bottom: none;
 }
 
+/* hovered menu item */
 #typo3-menu li.menuSection li a:hover,
-#typo3-menu li.menuSection li.hover a,
 #typo3-menu li.highlighted a {
-	background-color: #ebebeb;
 	border-top: 1px solid #b8b8b8;
 	border-bottom: 1px solid #b8b8b8;
 }
 
+#typo3-menu li.menuSection li a:hover {
+	background-color: #e8e8e8;
+}
+
+/* active menu item */
 #typo3-menu li.highlighted {
 	font-weight: bold;
+}
+
+#typo3-menu li.highlighted a,
+#typo3-menu li.menuSection li.highlighted a:hover,
+.no-boxshadow #typo3-menu li.menuSection li.highlighted a:hover {
+	background-color: #ebebeb;
+	background-image: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 #typo3-menu li div.modgroup {
