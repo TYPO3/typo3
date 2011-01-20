@@ -1,6 +1,5 @@
 .CodeMirror-wrapping {
 	position: relative;
-	margin-left: 21px;
 }
 .CodeMirror-wrapping div {
 	line-height: 13px !important;
@@ -132,10 +131,11 @@ div.CodeMirror-line-numbers {
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index:999;
 }
 
 .t3e_iframe_wrap {
-	margin: 0 0 0 5px;
+	margin: 0 0 0 3px;
 }
 
 .t3e_iframe {

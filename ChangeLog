@@ -1,3 +1,7 @@
+2009-01-21  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #17180: t3editor claims more then 100% width
+
 2011-01-21  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17149: Remove sys_refindex_* tables and unused code
