@@ -3280,7 +3280,7 @@ final class t3lib_BEfunc {
 	public static function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
 		$url = self::getModuleUrl('web_list', $urlParameters);
 
-		if (!t3lib_extMgm::isLoaded('list') || $url === FALSE) {
+		if (!t3lib_extMgm::isLoaded('recordlist') || $url === FALSE) {
 			return '';
 		} else {
 			return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($linkTitle) . '">' .

@@ -591,7 +591,7 @@ class TYPO3backend {
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => (isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? intval($GLOBALS['TBE_STYLES']['dims']['topFrameH']) : 30),
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
-			'listModulePath' => t3lib_extMgm::isLoaded('list') ? t3lib_extMgm::extRelPath('list') . 'mod1/' : '',
+			'listModulePath' => t3lib_extMgm::isLoaded('recordlist') ? t3lib_extMgm::extRelPath('recordlist') . 'mod1/' : '',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,

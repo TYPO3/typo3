@@ -560,7 +560,7 @@ class t3lib_clipboard {
 			if ($this->fileMode) {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				if (t3lib_extMgm::isLoaded('list')) {
+				if (t3lib_extMgm::isLoaded('recordlist')) {
 					$str = '<a href="' . htmlspecialchars(
 						t3lib_BEfunc::getModuleUrl(
 							'web_list',
