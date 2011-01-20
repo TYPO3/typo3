@@ -145,15 +145,16 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Get the form for extension configuration
 	 *
-	 * @param	[type]		$cat: ...
-	 * @param	[type]		$theConstants: ...
-	 * @param	[type]		$script: ...
-	 * @param	[type]		$addFields: ...
-	 * @return	[type]		...
+	 * @param  string  $cat
+	 * @param  array $theConstants
+	 * @param  string  $script
+	 * @param  string $addFields
+	 * @param  string $extKey
+	 * @return  string the form
 	 */
-	function ext_getForm($cat, $theConstants, $script = "", $addFields = "") {
+	function ext_getForm($cat, $theConstants, $script = "", $addFields = "", $extKey = "") {
 		$this->ext_makeHelpInformationForCategory($cat);
 		$printFields = trim($this->ext_printFields($theConstants, $cat));
 
@@ -166,7 +167,8 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		$content .= '<form action="' . htmlspecialchars($script ? $script : t3lib_div::linkThisScript()) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		$content .= $addFields;
 		$content .= $printFields;
-		$content .= '<input type="Submit" name="submit" value="Update" />';
+		$content .= '<input type="Submit" name="submit" value="' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update') . '" id="configuration-submit-' . $extKey . '" />';
 
 		$example = $this->ext_displayExample();
 		$content .= $example ? '<hr/>' . $example : "";

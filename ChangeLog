@@ -1,3 +1,7 @@
+2011-01-20  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17162: Missing localization in t3lib_tsstyleconfig 
+
 2011-01-20  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17044: Styling of TCEforms with renderMode=checkbox
