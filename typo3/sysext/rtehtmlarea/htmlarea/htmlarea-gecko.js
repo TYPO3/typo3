@@ -86,7 +86,11 @@ HTMLArea.Editor.prototype.addRangeToSelection = function(selection, range) {
  * Create a range for the current selection
  */
 HTMLArea.Editor.prototype._createRange = function(sel) {
-	if (Ext.isWebKit) {
+	if (Ext.isEmpty(sel)) {
+		return this._doc.createRange();
+	}
+		// Older versions of WebKit did not support getRangeAt
+	if (Ext.isWebKit && !sel.getRangeAt) {
 		var range = this._doc.createRange();
 		if (typeof(sel) == "undefined") {
 			return range;
@@ -103,9 +107,6 @@ HTMLArea.Editor.prototype._createRange = function(sel) {
 			}
 			return range;
 		}
-	}
-	if (Ext.isEmpty(sel)) {
-		return this._doc.createRange();
 	}
 	try {
 		return sel.getRangeAt(0);
@@ -219,8 +220,11 @@ HTMLArea.Editor.prototype.getSelectionRanges = function(selection) {
 		var selection = this._getSelection();
 	}
 	var ranges = [];
-	for (var i = selection.rangeCount; --i >= 0;) {
-		ranges.push(selection.getRangeAt(i));
+		// Older versions of WebKit did not support getRangeAt
+	if (selection.getRangeAt) {
+		for (var i = selection.rangeCount; --i >= 0;) {
+			ranges.push(selection.getRangeAt(i));
+		}
 	}
 	return ranges;
 };
@@ -231,9 +235,11 @@ HTMLArea.Editor.prototype.setSelectionRanges = function(ranges, selection) {
 	if (!selection) {
 		var selection = this._getSelection();
 	}
-	this.emptySelection(selection);
-	for (var i = ranges.length; --i >= 0;) {
-		this.addRangeToSelection(selection, ranges[i]);
+	if (selection.getRangeAt) {
+		this.emptySelection(selection);
+		for (var i = ranges.length; --i >= 0;) {
+			this.addRangeToSelection(selection, ranges[i]);
+		}
 	}
 };
 /*
