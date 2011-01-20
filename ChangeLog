@@ -30,6 +30,7 @@
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17176: Remove unnecessary comments and color profiles from all shipped .png / .gif files (Thanks to Steffen Gebert)
 	* Fixed issue #17143: Unclean property declaration in t3lib_mail_Message API (Thanks to Steffen Müller)
 	* Fixed issue #17153: Protect C(R)UD actions against CSRF (Thanks to Helmut Hummel)
 	* Fixed bug #17163: CSH tooltips should be placed nearer to the text (Thanks to Stanislas Rolland)
