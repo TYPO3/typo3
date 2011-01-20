@@ -31,7 +31,7 @@
  * Used by the update wizard in the install tool.
  *
  * @author	Benjamin Mack <benni@typo3.org>
- * @version $Id: 
+ * @version $Id$
  */
 abstract class Tx_Install_Updates_Base {
 
