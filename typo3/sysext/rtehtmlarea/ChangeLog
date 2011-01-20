@@ -1,3 +1,7 @@
+2011-01-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17156: htmlArea RTE: Disable Cell merge button in FF when less than two cells are selected
+
 2011-01-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16045: htmlArea RTE: Merging table cells using context menu doesn't work in Firefox

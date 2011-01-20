@@ -681,8 +681,18 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'TO-toggle-borders') {
-			button.setInactive(!HTMLArea.DOM.hasClass(this.editor._doc.body, 'htmlarea-showtableborders'));
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			switch (button.itemId) {
+				case 'TO-toggle-borders':
+					button.setInactive(!HTMLArea.DOM.hasClass(this.editor.document.body, 'htmlarea-showtableborders'));
+					break;
+				case 'TO-cell-merge':
+					if (Ext.isGecko) {
+						var selection = this.editor._getSelection();
+						button.setDisabled(button.disabled || selection.rangeCount < 2);
+					}
+					break;
+			}
 		}
 	},
 	/*
