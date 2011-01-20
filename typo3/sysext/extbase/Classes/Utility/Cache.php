@@ -33,13 +33,14 @@
  * @version $Id$
  */
 class Tx_Extbase_Utility_Cache {
+
 	/**
-	 * Clears certain page IDs given as array
+	 * Clears the page cache
 	 *
-	 * @param array<integer> $pageIdsToClear Page ID array to clear
+	 * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
 	 * @return void
 	 */
-	static public function clearPageCache(array $pageIdsToClear) {
+	static public function clearPageCache($pageIdsToClear = NULL) {
 		self::flushPageCache($pageIdsToClear);
 		self::flushPageSectionCache($pageIdsToClear);
 	}
@@ -47,22 +48,26 @@ class Tx_Extbase_Utility_Cache {
 	/**
 	 * Flushes cache_pages or cachinframework_cache_pages.
 	 *
-	 * @param	array		$pageIds: (optional) Ids of pages to be deleted
-	 * @return	void
+	 * @param mixed $pageIdsToClear (int) single oder (array) multiple pageIds to clear the cache for
+	 * @return void
 	 */
-	static protected function flushPageCache(array $pageIds = NULL) {
+	static protected function flushPageCache($pageIds = NULL) {
 		if (TYPO3_UseCachingFramework) {
 			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 
-			if (!is_null($pageIds)) {
+			if (is_array($pageIds) && !empty($pageIds)) {
 				foreach ($pageIds as $pageId) {
 					$pageCache->flushByTag('pageId_' . $pageId);
 				}
+			} elseif (is_numeric($pageIds)) {
+				$pageCache->flushByTag('pageId_' . intval($pageIds));
 			} else {
 				$pageCache->flush();
 			}
-		} elseif (!is_null($pageIds)) {
+		} elseif (is_array($pageIds) && !empty($pageIds)) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN (' . implode(',', $pageIds) . ')');
+		} elseif (is_numeric($pageIds)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id = ' . intval($pageIds));
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', '');
 		}
@@ -71,22 +76,26 @@ class Tx_Extbase_Utility_Cache {
 	/**
 	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
 	 *
-	 * @param	array	$pageIds: (optional) Ids of pages to be deleted
-	 * @return	void
+	 * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
+	 * @return void
 	 */
 	static protected function flushPageSectionCache(array $pageIds = NULL) {
 		if (TYPO3_UseCachingFramework) {
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 
-			if (!is_null($pageIds)) {
+			if (is_array($pageIds) && !empty($pageIds)) {
 				foreach ($pageIds as $pageId) {
 					$pageSectionCache->flushByTag('pageId_' . $pageId);
 				}
+			} elseif (is_numeric($pageIds)) {
+				$pageSectionCache->flushByTag('pageId_' . intval($pageIds));
 			} else {
 				$pageSectionCache->flush();
 			}
-		} elseif (!is_null($pageIds)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN (' . implode(',',$pageIds) . ')');
+		} elseif (is_array($pageIds) && !empty($pageIds)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN (' . implode(',', $pageIds) . ')');
+		} elseif (is_numeric($pageIds)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id = ' . intval($pageIds));
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', '');
 		}
