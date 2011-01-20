@@ -288,8 +288,10 @@ final class t3lib_tree_pagetree_Commands {
 		$subNode = t3lib_div::makeInstance('t3lib_tree_pagetree_Node');
 		$subNode->setRecord($record);
 		$subNode->setCls($record['_CSSCLASS']);
-		$subNode->setQTip(str_replace(' - ', '<br />', t3lib_BEfunc::titleAttribForPages($record, '', FALSE)));
 		$subNode->setType('pages');
+
+		$qtip = t3lib_BEfunc::titleAttribForPages($record, '', FALSE);
+		$subNode->setQTip(str_replace(' - ', '<br />', htmlspecialchars($qtip)));
 
 		$subNode->setId($record['uid']);
 		$subNode->setMountPoint($mountPoint);
