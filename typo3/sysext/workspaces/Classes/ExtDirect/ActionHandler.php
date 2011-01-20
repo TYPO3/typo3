@@ -140,12 +140,12 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to the next stage.
 	 *
+	 *	@param integer $uid
 	 * @param string $table
-	 * @param integer $uid
 	 * @param integer $t3ver_oid
 	 * @return array
 	 */
-	public function sendToNextStageWindow($table, $uid, $t3ver_oid) {
+	public function sendToNextStageWindow($uid, $table, $t3ver_oid) {
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
 		if(is_array($elementRecord)) {
@@ -173,11 +173,11 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to the previous stage.
 	 *
-	 * @param string $table
 	 * @param integer $uid
+	 * @param string $table
 	 * @return array
 	 */
-	public function sendToPrevStageWindow($table, $uid) {
+	public function sendToPrevStageWindow($uid, $table) {
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
 		if(is_array($elementRecord)) {
@@ -371,7 +371,6 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 */
 	public function sendToSpecificStageExecute(stdClass $parameters) {
 		$cmdArray = array();
-		$recipients = array();
 
 		$setStageId = $parameters->affects->nextStage;
 		$comments = $parameters->comments;

@@ -30,6 +30,7 @@ Ext.ns('TYPO3.Workspaces');
 TYPO3.Workspaces.Actions = {
 
 	runningMassAction: null,
+	currentSendToMode: 'next',
 	triggerMassAction: function(action) {
 
 		switch (action) {
@@ -80,6 +81,7 @@ TYPO3.Workspaces.Actions = {
 				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.lang.close);
 				top.Ext.getCmp('executeMassActionForm').show();
 				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.done"].replace('%d', response.total));
+				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 			}
 		}
 	},
@@ -106,95 +108,65 @@ TYPO3.Workspaces.Actions = {
 			eval(response);
 		});
 	},
+	sendToStageWindow: function(response, selection) {
+		if (Ext.isObject(response.error)) {
+			TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+		} else {
+			var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
+				title: response.title,
+				items: response.items,
+				executeHandler: function(event) {
+					var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
+					affects = response.affects;
+					affects.elements = TYPO3.Workspaces.Helpers.getElementsArrayOfSelection(selection);
+					var parameters = {
+						affects: affects,
+						receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
+						additional: values.additional,
+						comments: values.comments
+					};
+
+
+
+					TYPO3.Workspaces.Actions.sendToStageExecute(parameters);
+					top.TYPO3.Windows.close('sendToStageWindow');
+					TYPO3.Workspaces.MainStore.reload();
+					top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+				}
+			});
+		}
+	},
 	sendToNextStageWindow: function(table, uid, t3ver_oid) {
-		TYPO3.Workspaces.ExtDirectActions.sendToNextStageWindow(table, uid, t3ver_oid, function(response) {
-			if (Ext.isObject(response.error)) {
-				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
-			} else {
-				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
-					title: response.title,
-					items: response.items,
-					executeHandler: function(event) {
-						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
-
-						var parameters = {
-							affects: response.affects,
-							receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
-							additional: values.additional,
-							comments: values.comments
-						};
-
-						TYPO3.Workspaces.Actions.sendToNextStageExecute(parameters);
-						top.TYPO3.Windows.close('sendToStageWindow');
-						TYPO3.Workspaces.MainStore.reload();
-					}
-				});
-			}
+		TYPO3.Workspaces.ExtDirectActions.sendToNextStageWindow(uid, table, t3ver_oid, function(response) {
+			TYPO3.Workspaces.Actions.currentSendToMode = 'next';
+			TYPO3.Workspaces.Actions.sendToStageWindow(response);
 		});
 	},
-	sendToPrevStageWindow: function(table, uid, t3ver_oid) {
-		TYPO3.Workspaces.ExtDirectActions.sendToPrevStageWindow(table, uid, function(response) {
-			if (Ext.isObject(response.error)) {
-				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
-			} else {
-				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
-					title: response.title,
-					items: response.items,
-					executeHandler: function(event) {
-						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
-
-						var parameters = {
-							affects: response.affects,
-							receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
-							additional: values.additional,
-							comments: values.comments
-						};
-
-						TYPO3.Workspaces.Actions.sendToPrevStageExecute(parameters);
-						top.TYPO3.Windows.close('sendToStageWindow');
-						TYPO3.Workspaces.MainStore.reload();
-					}
-				});
-			}
+	sendToPrevStageWindow: function(table, uid) {
+		TYPO3.Workspaces.ExtDirectActions.sendToPrevStageWindow(uid, table, function(response) {
+			TYPO3.Workspaces.Actions.currentSendToMode = 'prev';
+			TYPO3.Workspaces.Actions.sendToStageWindow(response);
 		});
 	},
 	sendToSpecificStageWindow: function(selection, nextStage) {
 		TYPO3.Workspaces.ExtDirectActions.sendToSpecificStageWindow(nextStage, function(response) {
-			if (Ext.isObject(response.error)) {
-				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
-			} else {
-				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
-					title: response.title,
-					items: response.items,
-					executeHandler: function(event) {
-						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
-
-						var parameters = {
-							affects: {
-								nextStage: response.affects.nextStage,
-								elements: TYPO3.Workspaces.Helpers.getElementsArrayOfSelection(selection)
-							},
-							receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
-							additional: values.additional,
-							comments: values.comments
-						};
-
-						TYPO3.Workspaces.Actions.sendToSpecificStageExecute(parameters);
-						top.TYPO3.Windows.close('sendToStageWindow');
-						TYPO3.Workspaces.MainStore.reload();
-					}
-				});
-			}
+			TYPO3.Workspaces.Actions.currentSendToMode = 'specific';
+			TYPO3.Workspaces.Actions.sendToStageWindow(response, selection);
 		});
 	},
-	sendToNextStageExecute: function (parameters) {
-		TYPO3.Workspaces.ExtDirectActions.sendToNextStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
-	},
-	sendToPrevStageExecute: function (parameters) {
-		TYPO3.Workspaces.ExtDirectActions.sendToPrevStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
-	},
-	sendToSpecificStageExecute: function (parameters) {
-		TYPO3.Workspaces.ExtDirectActions.sendToSpecificStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
+	sendToStageExecute: function (parameters) {
+		switch (TYPO3.Workspaces.Actions.currentSendToMode) {
+			case 'next':
+				TYPO3.Workspaces.ExtDirectActions.sendToNextStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
+			break;
+			case 'prev':
+				TYPO3.Workspaces.ExtDirectActions.sendToPrevStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
+			break;
+			case 'specific':
+				TYPO3.Workspaces.ExtDirectActions.sendToSpecificStageExecute(parameters, TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction);
+			break;
+		}
+
 	},
 	updateColModel: function(colModel) {
 		var dataArray = [];
