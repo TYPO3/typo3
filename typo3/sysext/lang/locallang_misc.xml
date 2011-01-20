@@ -147,6 +147,8 @@
 			<label index="liveSearch_helpTitle">How to use advanced search tags</label>
 			<label index="liveSearch_helpDescription">Search in certain tables:</label>
 			<label index="liveSearch_helpDescriptionPages">#page:Home will search for all pages with the title "Home"</label>
+			<label index="extDirect_timeoutHeader">Connection Problem</label>
+			<label index="extDirect_timeoutMessage">Sorry, but an error occurred while connecting to the server. Please check your network connection.</label>
 		</languageKey>
 	</data>
 </T3locallang>

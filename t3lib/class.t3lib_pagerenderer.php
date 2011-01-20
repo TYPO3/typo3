@@ -985,19 +985,28 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			};
 
 			Ext.Direct.on("exception", function(event) {
-				var backtrace = "";
-				if (event.where) {
-					backtrace = "<p style=\"margin-top: 20px;\">" +
-						"<strong>Backtrace:<\/strong><br \/>" +
-						event.where.replace(/#/g, "<br \/>#") +
-						"<\/p>";
-				}
+				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
+					TYPO3.Flashmessage.display(
+						TYPO3.Severity.error,
+						TYPO3.LLL.extDirect.timeoutHeader,
+						TYPO3.LLL.extDirect.timeoutMessage,
+						30
+					);
+				} else {
+					var backtrace = "";
+					if (event.where) {
+						backtrace = "<p style=\"margin-top: 20px;\">" +
+							"<strong>Backtrace:<\/strong><br \/>" +
+							event.where.replace(/#/g, "<br \/>#") +
+							"<\/p>";
+					}
 
-				extDirectDebug(
-					"<p>" + event.message + "<\/p>" + backtrace,
-					event.method,
-					"ExtDirect - Exception"
-				);
+					extDirectDebug(
+						"<p>" + event.message + "<\/p>" + backtrace,
+						event.method,
+						"ExtDirect - Exception"
+					);
+				}
 			});
 
 			Ext.Direct.on("event", function(event, provider) {

@@ -525,6 +525,10 @@ class TYPO3backend {
 				'helpDescriptionPages',
 				'helpDescriptionContent',
 			),
+			'extDirect' => array(
+				'timeoutHeader',
+				'timeoutMessage',
+			),
 		);
 		$generatedLabels = array();
 		$generatedLabels['core'] = $coreLabels;

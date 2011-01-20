@@ -1,6 +1,6 @@
 2011-01-20  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed issue #14098: When sending mail, use TYPO3_CONF_VAR for default from address if no other address is provided, credits Jeff Segars and Marcus Krause
+	* Fixed issue #14098: When sending mail, use TYPO3_CONF_VAR for default from address if no other address is provided (Thanks to Jeff Segars and Marcus Krause)
 
 2011-01-20  Tolleiv Nietsch  <typo3@tolleiv.de>
 
@@ -29,6 +29,7 @@
 
 	* Fixed bug #17044: Styling of TCEforms with renderMode=checkbox
 	* Fixed bug #17155: Active and hover states are hard to distinguish
+	* Fixed bug #16971: Improve ExtDirect error handling (Thanks to Stefan Galinski)
 
 2011-01-20  Ernesto Baschny  <ernst@cron-it.de>
 
