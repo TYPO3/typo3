@@ -150,9 +150,9 @@
 			<label index="pages.fe_login_mode.enableAgain">Re-Enable login</label>
 			<label index="pages.storage_pid_formlabel">Page</label>
 			<label index="pages.TSconfig_formlabel">Page TSConfig</label>
-			<label index="pages.be_layout_formlabel">Backend Layout (this page only)</label>
- 			<label index="pages.be_layout_next_level_formlabel">Backend Layout (subpages of this page)</label>
-			<label index="pages.be_layout.none">None</label>
+			<label index="pages.backend_layout_formlabel">Backend Layout (this page only)</label>
+ 			<label index="pages.backend_layout_next_level_formlabel">Backend Layout (subpages of this page)</label>
+			<label index="pages.backend_layout.none">None</label>
 			<label index="tt_content">Pagecontent</label>
 			<label index="fe_users">Website User</label>
 			<label index="fe_users.username">Username:</label>
@@ -203,12 +203,12 @@
 			<label index="sys_template.tabs.options">Options</label>
 			<label index="sys_template.tabs.access">Access</label>
 			<label index="pages_language_overlay">Alternative Page Language</label>
-			<label index="be_layouts">Backend Layouts</label>
-			<label index="be_layouts.title">Title</label>
-			<label index="be_layouts.description">Description</label>
-			<label index="be_layouts.config">Config</label>
-			<label index="be_layouts.wizard">Wizard</label>
-			<label index="be_layouts.icon">Icon</label>
+			<label index="backend_layout">Backend Layout</label>
+			<label index="backend_layout.title">Title</label>
+			<label index="backend_layout.description">Description</label>
+			<label index="backend_layout.config">Config</label>
+			<label index="backend_layout.wizard">Wizard</label>
+			<label index="backend_layout.icon">Icon</label>
 		</languageKey>
 	</data>
 </T3locallang>

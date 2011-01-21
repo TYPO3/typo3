@@ -438,9 +438,9 @@ CREATE TABLE tt_content (
 );
 
 #
-# Table structure for table 'be_layouts'
+# Table structure for table 'backend_layout'
 #
-CREATE TABLE be_layouts (
+CREATE TABLE backend_layout (
   uid int(11) NOT NULL auto_increment,
   pid int(11) DEFAULT '0' NOT NULL,
   t3ver_oid int(11) DEFAULT '0' NOT NULL,

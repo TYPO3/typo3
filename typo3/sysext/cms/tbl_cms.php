@@ -1134,19 +1134,19 @@ $TCA['sys_template'] = array(
 );
 
 // ******************************************************************
-// be_layouts
+// backend_layout
 // ******************************************************************
 /**
  * @todo add lll
  */
-$TCA['be_layouts'] = array(
-	'ctrl' => $TCA['be_layouts']['ctrl'],
+$TCA['backend_layout'] = array(
+	'ctrl' => $TCA['backend_layout']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'title,config,description,hidden,icon'
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.title',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -1155,7 +1155,7 @@ $TCA['be_layouts'] = array(
 			)
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.description',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => '5',
@@ -1163,7 +1163,7 @@ $TCA['be_layouts'] = array(
 			)
 		),
 		'config' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.config',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.config',
 			'config' => array(
 				'type' => 'text',
 				'rows' => '5',
@@ -1171,10 +1171,10 @@ $TCA['be_layouts'] = array(
 				'wizards' => Array(
 					'_PADDING' => 4,
 					0 => Array(
-						'title' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.wizard',
+						'title' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.wizard',
 						'type' => 'popup',
-						'icon' => t3lib_extMgm::extRelPath('cms').'layout/wizard_be_layout.png',
-						'script' => t3lib_extMgm::extRelPath('cms').'layout/wizard_be_layout.php',
+						'icon' => t3lib_extMgm::extRelPath('cms').'layout/wizard_backend_layout.png',
+						'script' => t3lib_extMgm::extRelPath('cms').'layout/wizard_backend_layout.php',
 						'JSopenParams' => 'height=800,width=800,status=0,menubar=0,scrollbars=0',
 					),
 				),
@@ -1189,7 +1189,7 @@ $TCA['be_layouts'] = array(
 			)
 		),
 		'icon' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:be_layouts.icon',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.icon',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'group',

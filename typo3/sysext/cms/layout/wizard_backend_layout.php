@@ -42,7 +42,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  * @package TYPO3
  * @subpackage core
  */
-class SC_wizard_be_layout {
+class SC_wizard_backend_layout {
 
 	// GET vars:
 	var $P; // Wizard parameters, coming from TCEforms linking to the wizard.
@@ -83,7 +83,7 @@ class SC_wizard_be_layout {
 			function storeData(data)	{
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"])	{
 					parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"].value = data;
-					parent.opener.TBE_EDITOR.fieldChanged("be_layouts","' . $uid . '","config","data[be_layouts][' . $uid . '][config]");
+					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config","data[backend_layout][' . $uid . '][config]");
 				}
 			}
 		');
@@ -115,7 +115,7 @@ class SC_wizard_be_layout {
 			// load TS parser
 			$parser = t3lib_div::makeInstance('t3lib_TSparser');
 			$parser->parse($record[0][$this->P['field']]);
-			$data = $parser->setup['be_layout.'];
+			$data = $parser->setup['backend_layout.'];
 			$t3GridData = '[';
 			$colCount = $data['colCount'];
 			$rowCount = $data['rowCount'];
@@ -276,13 +276,13 @@ class SC_wizard_be_layout {
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_be_layout.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_be_layout.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_backend_layout.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_backend_layout.php']);
 }
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_be_layout');
+$SOBE = t3lib_div::makeInstance('SC_wizard_backend_layout');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

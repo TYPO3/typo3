@@ -92,17 +92,17 @@ class tx_cms_BackendLayout {
 
 		for ($i = count($rootline); $i > 0; $i--) {
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-				'uid, be_layout, be_layout_next_level',
+				'uid, backend_layout, backend_layout_next_level',
 				'pages',
 				'uid=' . intval($rootline[$i]['uid'])
 			);
 
-			if (intval($page['be_layout_next_level']) > 0 && $page['uid'] != $id) {
-				$backendLayoutUid = intval($page['be_layout_next_level']);
+			if (intval($page['backend_layout_next_level']) > 0 && $page['uid'] != $id) {
+				$backendLayoutUid = intval($page['backend_layout_next_level']);
 				break;
 			} else {
-				if (intval($page['be_layout']) > 0) {
-					$backendLayoutUid = intval($page['be_layout']);
+				if (intval($page['backend_layout']) > 0) {
+					$backendLayoutUid = intval($page['backend_layout']);
 					break;
 				}
 			}
@@ -112,7 +112,7 @@ class tx_cms_BackendLayout {
 		if ($backendLayoutUid) {
 			$backendLayout = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
-				'be_layouts',
+				'backend_layout',
 				'uid=' . $backendLayoutUid
 			);
 
@@ -125,8 +125,8 @@ class tx_cms_BackendLayout {
 				$backendLayout['__colPosList'] = array();
 
 					// create items and colPosList
-				if ($backendLayout['__config']['be_layout.'] && $backendLayout['__config']['be_layout.']['rows.']) {
-					foreach ($backendLayout['__config']['be_layout.']['rows.'] as $row) {
+				if ($backendLayout['__config']['backend_layout.'] && $backendLayout['__config']['backend_layout.']['rows.']) {
+					foreach ($backendLayout['__config']['backend_layout.']['rows.'] as $row) {
 						if (isset($row['columns.']) && is_array($row['columns.'])) {
 							foreach ($row['columns.'] as $column) {
 								$backendLayout['__items'][] = array(

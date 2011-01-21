@@ -398,8 +398,8 @@ class tx_cms_layout extends recordList {
 	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 */
 	function getSelectedBackendLayoutUid($id) {
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('be_layout', 'pages', 'uid=' . $id);
-		$backendLayoutUid = intval($page['be_layout']);
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 'uid=' . $id);
+		$backendLayoutUid = intval($page['backend_layout']);
 		if ($backendLayoutUid == -1) {
 				// if it is set to "none" - don't use any
 			$backendLayoutUid = NULL;
@@ -407,7 +407,7 @@ class tx_cms_layout extends recordList {
 				// if it not set check the rootline for a layout on next level and use this
 			$rootline = t3lib_BEfunc::BEgetRootLine($id);
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
-				$backendLayoutUid = intval($rootline[$i]['be_layout_next_level']);
+				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
 				if ($backendLayoutUid > 0) {
 						// stop searching if a layout for "next level" is set
 					break;
@@ -545,7 +545,7 @@ class tx_cms_layout extends recordList {
 				$out = '';
 
 				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-				$backendLayoutRecord = t3lib_BEfunc::getRecord('be_layouts', intval($backendLayoutUid));
+				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
 				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
@@ -589,8 +589,8 @@ class tx_cms_layout extends recordList {
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="80%" height="100%" class="t3-page-columns t3-gridTable">';
 
 					// add colgroups
-					$colCount = intval($parser->setup['be_layout.']['colCount']);
-					$rowCount = intval($parser->setup['be_layout.']['rowCount']);
+					$colCount = intval($parser->setup['backend_layout.']['colCount']);
+					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
 
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
@@ -600,7 +600,7 @@ class tx_cms_layout extends recordList {
 
 					// cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['be_layout.']['rows.'][$row . '.'];
+						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}

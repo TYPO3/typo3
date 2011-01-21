@@ -24,7 +24,7 @@ if (TYPO3_MODE == 'BE') {
 
 
 	// Add allowed records to pages:
-t3lib_extMgm::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,be_layouts');
+t3lib_extMgm::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
 
 
 // ******************************************************************
@@ -259,9 +259,9 @@ $TCA['sys_template'] = array (
 // ******************************************************************
 // layouts
 // ******************************************************************
-$TCA['be_layouts'] = array (
+$TCA['backend_layout'] = array (
 	'ctrl' => array (
-		'title'     => 'LLL:EXT:cms/locallang_tca.xml:be_layouts',
+		'title'     => 'LLL:EXT:cms/locallang_tca.xml:backend_layout',
 		'label'     => 'title',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
@@ -274,7 +274,7 @@ $TCA['be_layouts'] = array (
 			'disabled' => 'hidden',
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'iconfile' => 'be_layout.gif',
+		'iconfile' => 'backend_layout.gif',
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',
 		'thumbnail' => 'resources',

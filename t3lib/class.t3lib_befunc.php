@@ -605,7 +605,7 @@ final class t3lib_BEfunc {
 					't3ver_state' => $val['t3ver_state'],
 					't3ver_swapmode' => $val['t3ver_swapmode'],
 					't3ver_stage' => $val['t3ver_stage'],
-					'be_layout_next_level' => $val['be_layout_next_level']
+					'backend_layout_next_level' => $val['backend_layout_next_level']
 				);
 				if (isset($val['_ORIG_pid'])) {
 					$output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
@@ -633,7 +633,7 @@ final class t3lib_BEfunc {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage,be_layout_next_level',
+				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage,backend_layout_next_level',
 				'pages',
 					'uid=' . intval($uid) . ' ' .
 							self::deleteClause('pages') . ' ' .

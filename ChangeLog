@@ -9,7 +9,8 @@
 
 2011-01-21  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed issues #17188: [reports] change status update task to use the new default From email address setting from config_default
+	* Fixed issue #17188: [reports] change status update task to use the new default From email address setting from config_default
+	* Fixed issue #16458: Rename table be_layouts to backend_layout
 
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
