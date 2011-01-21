@@ -1,3 +1,7 @@
+2011-01-21  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Follow-up to issue #11103: Cleanup of _.htaccess and references to misc/advanced.htaccess in config_default
+
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17024: CSH not rendered properly in select-type fields with renderMode = checkbox
