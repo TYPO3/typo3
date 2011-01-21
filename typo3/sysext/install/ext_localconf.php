@@ -29,9 +29,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeImagecolsValue'] 
 	// register eID script for install tool AJAX calls
 $TYPO3_CONF_VARS['FE']['eID_include']['tx_install_ajax'] = 'EXT:install/mod/class.tx_install_ajax.php';
 
-	// install versioning since TYPO3 4.3
-$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installVersioning'] = 'tx_coreupdates_installversioning';
-
 	// add static_template if needed (since TYPO3 4.4 this table is not standard)
 	// if needed, sysext statictables is loaded, which gives back functionality
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForStaticTypoScriptTemplates'] = 'tx_coreupdates_statictemplates';
