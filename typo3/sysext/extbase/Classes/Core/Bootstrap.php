@@ -234,7 +234,8 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	public function run($content, $configuration) {
 		//var_dump(Tx_Extbase_Utility_Extension::createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'), array(
-		//	'tx_extbase_basetestcase' => '$extensionClassesPath . \'../Tests/BaseTestCase.php\''
+		//	'tx_extbase_basetestcase' => '$extensionClassesPath . \'../Tests/BaseTestCase.php\'',
+		//	'tx_extbase_tests_unit_basetestcase' => '$extensionClassesPath . \'../Tests/Unit/BaseTestCase.php\'',
 		//)));
 		//die("autoload registry");
 
