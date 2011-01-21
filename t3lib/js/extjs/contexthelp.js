@@ -142,13 +142,17 @@ TYPO3.ContextHelp = function() {
 						tip.el.on({
 							'mouseover': {
 								fn: function() {
-									tip.isMouseOver = true;
+									if (tip.moreInfo) {
+										tip.isMouseOver = true;
+									}
 								}
 							},
 							'mouseout': {
 								fn: function() {
-									tip.isMouseOver = false;
-									tip.hide.defer(200, tip, []);
+									if (tip.moreInfo) {
+										tip.isMouseOver = false;
+										tip.hide.defer(tip.hideDelay, tip, []);
+									}
 								}
 							}
 						});
@@ -176,7 +180,7 @@ TYPO3.ContextHelp = function() {
 					}
 				}
 			});
-			
+
 			/**
 			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'botton'
 			 * This positions the tip box closer to the target element when the anchor is on the bottom side of the box
