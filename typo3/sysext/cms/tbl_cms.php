@@ -1136,9 +1136,6 @@ $TCA['sys_template'] = array(
 // ******************************************************************
 // backend_layout
 // ******************************************************************
-/**
- * @todo add lll
- */
 $TCA['backend_layout'] = array(
 	'ctrl' => $TCA['backend_layout']['ctrl'],
 	'interface' => array(
@@ -1181,7 +1178,7 @@ $TCA['backend_layout'] = array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -1203,9 +1200,7 @@ $TCA['backend_layout'] = array(
 		),
 	),
 	'types' => array(
-		'1' => array('showitem' => '
-			hidden,title;;1;;2-2-2, icon, description, config'
-		)
+		'1' => array('showitem' => 'hidden,title;;1;;2-2-2, icon, description, config')
 	)
 );
 
