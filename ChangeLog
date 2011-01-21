@@ -15,6 +15,7 @@
 
 2011-01-21  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed bug #17184: Disable the CSRF protection in ExtDirect calls coming from the frontend (Thanks to Stefan Galinski)
 	* Fixed bug #17201: The unit test for t3lib_formprotection_BackendFormProtection is broken (Thanks to Helmut Hummel)
 	* Follow-up to issue #15589: Move debug functions to own utility class, missing t3lib_div commit from original patch, and declared all relevant methods "static" (Thanks to Stefan Galinski)
 	* Fixed issue #17065: Use Swift Mailer in core (t3lib_mail_*) and deprecate t3lib_htmlmail and related settings (Thanks to Jigal van Hemert)

@@ -77,7 +77,8 @@ class t3lib_extjs_ExtDirectRouter {
 			$request = array($request);
 		}
 
-		$validToken = FALSE;
+		$backendUserExists = is_object($GLOBALS['BE_USER']);
+		$validToken = !$backendUserExists;
 		$firstCall = TRUE;
 		foreach ($request as $index => $singleRequest) {
 			$response[$index] = array(
@@ -87,7 +88,7 @@ class t3lib_extjs_ExtDirectRouter {
 			);
 
 			$token = array_pop($singleRequest->data);
-			if ($firstCall) {
+			if ($firstCall && $backendUserExists) {
 				$firstCall = FALSE;
 				$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
 				$validToken = $formprotection->validateToken($token, 'extDirect');
