@@ -47,9 +47,7 @@ class tslib_ExtDirectEid {
 	 * @return void
 	 */
 	public function routeAction() {
-		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
-		$GLOBALS['LANG']->init();
-
+		tslib_eidtools::initLanguage();
 		tslib_eidtools::connectDB();
 
 		$ajaxID = t3lib_div::_GP('action');
