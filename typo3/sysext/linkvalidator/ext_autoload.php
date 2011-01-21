@@ -11,7 +11,7 @@ return array(
 
 	'tx_linkvalidator_processor' => $extensionPath . 'classes/class.tx_linkvalidator_processor.php',
 
-	'tx_linkvalidator_tasks_validator'  => $extensionPath . 'classes/task/class.tx_linkvalidator_tasks_validator.php',
-	'tx_linkvalidator_tasks_validatoradditionalfieldprovider' => $extensionPath . 'classes/task/class.tx_linkvalidator_tasks_validatoradditionalfieldprovider.php',
+	'tx_linkvalidator_tasks_validator'  => $extensionPath . 'classes/tasks/class.tx_linkvalidator_tasks_validator.php',
+	'tx_linkvalidator_tasks_validatoradditionalfieldprovider' => $extensionPath . 'classes/tasks/class.tx_linkvalidator_tasks_validatoradditionalfieldprovider.php',
 );
 ?>

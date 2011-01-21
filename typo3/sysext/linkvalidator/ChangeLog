@@ -1,4 +1,5 @@
 2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca> 
+	* Fixed bug #12426: Rename classes according to naming conventions
 	* Fixed bug #12425: Give modfunc1 a better name
 	* Fixed bug #12424: Only use the class name for the hook
 	* Fixed bug #12416 tx_linkvalidator_tasks_Validate: Missing public / protected declarations	
