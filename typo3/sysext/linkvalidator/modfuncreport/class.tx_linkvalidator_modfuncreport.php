@@ -288,7 +288,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function render() {
 		if ($this->isAccessibleForCurrentUser) {
-			$this->content = $this->drawBrokenLinksTable();
+			$this->content = $this->renderBrokenLinksTable();
 		} else {
 				// If no access or if ID == zero
 			$message = t3lib_div::makeInstance(
@@ -346,7 +346,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 *
 	 * @return html Content of the table or of the note
 	 */
-	private function drawBrokenLinksTable() {
+	private function renderBrokenLinksTable() {
 		$content = '';
 		$items = array();
 		$brokenLinkItems = '';
@@ -382,7 +382,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 					// Table rows containing the broken links
 				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-					$items[] = $this->drawTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
+					$items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
 				}
 				$brokenLinkItems = implode(chr(10), $items);
 
@@ -448,7 +448,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 * @param string $brokenLinksItemTemplate Markup of the template to be used
 	 * @return string HTML of the rendered row
 	 */
-	private function drawTableRow($table, array $row, $brokenLinksItemTemplate) {
+	private function renderTableRow($table, array $row, $brokenLinksItemTemplate) {
 		$markerArray = array();
 		if (is_array($row) && !empty($row['link_type'])) {
 			if (($hookObj = $this->hookObjectsArr[$row['link_type']])) {
