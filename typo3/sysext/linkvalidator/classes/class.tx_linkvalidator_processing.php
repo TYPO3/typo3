@@ -109,7 +109,7 @@ class tx_linkvalidator_processing {
 	}
 
 	/**
-	 * Find all supported broken links and store them in tx_linkvalidator_links.
+	 * Find all supported broken links and store them in tx_linkvalidator_link.
 	 *
 	 * @param	array		$checkOptions: list of hook object to activate
 	 * @param	boolean		$considerHidden: defines whether to look into hidden fields or not
@@ -117,7 +117,7 @@ class tx_linkvalidator_processing {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_links', 'recpid in (' . $this->pidList . ')');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'recpid in (' . $this->pidList . ')');
 
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
@@ -177,7 +177,7 @@ class tx_linkvalidator_processing {
 						$record['typelinks'] = $key;
 						$record['url'] = $url;
 						$record['urlresponse'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
+						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					} elseif (t3lib_div::_GP('showalllinks')) {
 						$response = array();
 						$response['valid'] = TRUE;
@@ -185,7 +185,7 @@ class tx_linkvalidator_processing {
 						$record['url'] = $url;
 						$record['typelinks'] = $key;
 						$record['urlresponse'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
+						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					}
 				}
 			}
@@ -324,7 +324,7 @@ class tx_linkvalidator_processing {
 		$markerArray = array();
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(uid) as nbBrokenLinks,typelinks',
-				'tx_linkvalidator_links',
+				'tx_linkvalidator_link',
 				'recpid in (' . $this->pidList . ')',
 				'typelinks'
 		))) {

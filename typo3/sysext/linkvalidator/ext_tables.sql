@@ -1,4 +1,4 @@
-CREATE TABLE tx_linkvalidator_links (
+CREATE TABLE tx_linkvalidator_link (
 	uid int(11) NOT NULL auto_increment,
 	recuid int(11) DEFAULT '0' NOT NULL,
 	recpid int(11) DEFAULT '0' NOT NULL,
