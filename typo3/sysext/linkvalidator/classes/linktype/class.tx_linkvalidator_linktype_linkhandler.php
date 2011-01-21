@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_Abstract {
+class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Abstract {
 
 	const DELETED = 'deleted';
 
@@ -53,7 +53,7 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {

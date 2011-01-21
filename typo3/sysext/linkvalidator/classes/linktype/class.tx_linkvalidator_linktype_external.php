@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract {
+class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstract {
 
 	/**
 	 * Cached list of the URLs, which were already checked for the current processing.
@@ -51,7 +51,7 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 *
 	 * @param	string		$url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
+	 * @param	object		$reference:  parent instance of tx_linkvalidator_Processor
 	 * @return	string		TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {

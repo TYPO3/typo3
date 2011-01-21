@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
+class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 	/**
 	 * @var template
@@ -67,9 +67,9 @@ class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 	/**
 	 * Link validation class.
 	 *
-	 * @var tx_linkvalidator_processing
+	 * @var tx_linkvalidator_Processor
 	 */
-	protected $processing;
+	protected $processor;
 
 	/**
 	 * TSconfig of the current module.
@@ -178,10 +178,10 @@ class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 
-		$this->processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
+		$this->processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
 		$this->updateBrokenLinks();
 
-		$brokenLinkOverView = $this->processing->getLinkCounts($this->pObj->id);
+		$brokenLinkOverView = $this->processor->getLinkCounts($this->pObj->id);
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
 
 		$this->render();
@@ -262,7 +262,7 @@ class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 			}
 		}
 			// get children pages
-		$pageList = $this->processing->extGetTreeList(
+		$pageList = $this->processor->extGetTreeList(
 			$this->pObj->id,
 			$this->search_level,
 			0,
@@ -270,13 +270,13 @@ class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 		);
 		$pageList .= $this->pObj->id;
 
-		$this->processing->init($searchFields, $pageList);
+		$this->processor->init($searchFields, $pageList);
 
 			// check if button press
 		$update = t3lib_div::_GP('updateLinkList');
 
 		if (!empty($update)) {
-			$this->processing->getLinkStatistics($this->availableOptions, $this->modTS['checkhidden']);
+			$this->processor->getLinkStatistics($this->availableOptions, $this->modTS['checkhidden']);
 		}
 	}
 
@@ -356,7 +356,7 @@ class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 			$keyOpt = array_keys($this->checkOpt);
 		}
 
-		$pageList = $this->processing->extGetTreeList(
+		$pageList = $this->processor->extGetTreeList(
 			$this->pObj->id,
 			$this->search_level,
 			0,

@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abstract {
+class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstract {
 
 	const DELETED = 'deleted';
 	const HIDDEN = 'hidden';
@@ -63,7 +63,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 *
 	 * @param   string	  $url: url to check as page-id or page-id#anchor (if anchor is present)
 	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
@@ -114,7 +114,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 *
 	 * @param   string	  $page: page uid to check
 	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page, $softRefEntry, $reference) {
@@ -154,7 +154,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 * @param   string    $page: uid of the page to which the link is pointing
 	 * @param   string	  $anchor: uid of the content element to check
 	 * @param	 array	  $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	protected function checkContent($page, $anchor, $softRefEntry, $reference) {

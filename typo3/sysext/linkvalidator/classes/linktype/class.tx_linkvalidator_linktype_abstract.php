@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-abstract class tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_linktype_Interface {
 
 	/**
 	 * Contains parameters needed for the rendering of the error message

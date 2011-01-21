@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
+class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 
 	/**
 	 * @var integer
@@ -312,19 +312,19 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 						}
 					}
 				}
-				$processing = t3lib_div::makeInstance('tx_linkvalidator_processing');
-				$pageIds = $processing->extGetTreeList($page, $this->depth, 0, '1=1');
+				$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
+				$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1');
 				$pageIds .= $page;
-				$processing->init($searchFields, $pageIds);
+				$processor->init($searchFields, $pageIds);
 				if (!empty($this->email)) {
-					$oldLinkCounts = $processing->getLinkCounts($page);
+					$oldLinkCounts = $processor->getLinkCounts($page);
 					$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
 				}
 
-				$processing->getLinkStatistics($array, $modTS['checkhidden']);
+				$processor->getLinkStatistics($array, $modTS['checkhidden']);
 
 				if (!empty($this->email)) {
-					$linkCounts = $processing->getLinkCounts($page);
+					$linkCounts = $processor->getLinkCounts($page);
 					$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
 					$pageSections .= $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
 				}
@@ -469,7 +469,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/tasks/class.tx_linkvalidator_tasks_validate.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/tasks/class.tx_linkvalidator_tasks_validate.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/task/class.tx_linkvalidator_tasks_validator.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/task/class.tx_linkvalidator_tasks_validator.php']);
 }
 ?>

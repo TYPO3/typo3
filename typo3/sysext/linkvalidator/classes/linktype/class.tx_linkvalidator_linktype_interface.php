@@ -29,14 +29,14 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-interface tx_linkvalidator_linkTypes_Interface {
+interface tx_linkvalidator_linktype_Interface {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  validation error message or succes code
 	 */
 	public function checkLink($url, $softRefEntry, $reference);
