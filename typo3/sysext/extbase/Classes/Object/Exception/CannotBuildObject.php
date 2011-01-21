@@ -32,7 +32,7 @@
  * @subpackage Object\Exception
  * @version $Id$
  */
-class Tx_Extbase_Object_CannotBuildObject extends Tx_Extbase_Object_Exception {
+class Tx_Extbase_Object_Exception_CannotBuildObject extends Tx_Extbase_Object_Exception {
 
 }
 

@@ -102,12 +102,12 @@ class t3lib_object_tests_b_child_someimplementation extends t3lib_object_tests_b
  */
 class t3lib_object_tests_needsinterface {
 	public function __construct(t3lib_object_tests_someinterface $i) {
-
+		$this->dependency = $i;
 	}
 }
 
 /**
- * classes that depends on each other (death look)
+ * Prototype classes that depend on each other
  *
  */
 class t3lib_object_tests_cyclic1 {
@@ -118,6 +118,18 @@ class t3lib_object_tests_cyclic1 {
 
 class t3lib_object_tests_cyclic2 {
 	public function __construct(t3lib_object_tests_cyclic1 $c) {
+
+	}
+}
+
+class t3lib_object_tests_cyclic1WithSetterDependency {
+	public function injectFoo(t3lib_object_tests_cyclic2WithSetterDependency $c) {
+
+	}
+}
+
+class t3lib_object_tests_cyclic2WithSetterDependency {
+	public function injectFoo(t3lib_object_tests_cyclic1WithSetterDependency $c) {
 
 	}
 }
@@ -199,3 +211,58 @@ class t3lib_object_tests_class_with_injectsettings {
 	}
 }
 
+/*
+ *  a Singleton requires a Prototype for Injection -> allowed, autowiring active, but in development context we write a log message, as it is bad practice and most likely points to some logic error.
+If a Singleton requires a Singleton for Injection -> allowed, autowiring active
+If a Prototype requires a Prototype for Injection -> allowed, autowiring active
+If a Prototype requires a Singleton for Injection -> allowed, autowiring active
+ */
+class t3lib_object_singleton implements t3lib_Singleton {
+}
+
+class t3lib_object_prototype {
+}
+
+class t3lib_object_singletonNeedsPrototype implements t3lib_Singleton {
+	public function injectDependency(t3lib_object_prototype $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+
+class t3lib_object_singletonNeedsSingleton implements t3lib_Singleton {
+	public function injectDependency(t3lib_object_singleton $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+class t3lib_object_prototypeNeedsPrototype {
+	public function injectDependency(t3lib_object_prototype $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+class t3lib_object_prototypeNeedsSingleton {
+	public function injectDependency(t3lib_object_singleton $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+
+class t3lib_object_singletonNeedsPrototypeInConstructor implements t3lib_Singleton {
+	public function __construct(t3lib_object_prototype $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+
+class t3lib_object_singletonNeedsSingletonInConstructor implements t3lib_Singleton {
+	public function __construct(t3lib_object_singleton $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+class t3lib_object_prototypeNeedsPrototypeInConstructor {
+	public function __construct(t3lib_object_prototype $dependency) {
+		$this->dependency = $dependency;
+	}
+}
+class t3lib_object_prototypeNeedsSingletonInConstructor {
+	public function __construct(t3lib_object_singleton $dependency) {
+		$this->dependency = $dependency;
+	}
+}
