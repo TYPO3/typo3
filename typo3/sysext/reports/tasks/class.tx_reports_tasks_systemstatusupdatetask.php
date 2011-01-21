@@ -128,36 +128,55 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Tries to generate an email address to use for the From field.
+	 * Tries to find an email address to use for the From email header.
+	 *
+	 * Uses a fall back chain:
+	 *     Install Tool ->
+	 *     no-reply@FirstDomainRecordFound ->
+	 *     no-reply@php_uname('n')
 	 *
 	 * @return	string	email address
 	 */
 	protected function getFromAddress() {
-		$user = 'no-reply';
-		$host = php_uname('n');
+		$email = '';
+		$user  = 'no-reply';
 
-			// just get us a domain record we can use
-		$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'domainName',
-			'sys_domain',
-			'hidden = 0',
-			'',
-			'pid ASC, sorting ASC'
-		);
+			// default
+		$email = $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
 
-		if (!empty($domainRecord['domainName'])) {
-			$tempUrl = $domainRecord['domainName'];
+			// find domain record
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				// just get us a domain record we can use
+			$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'domainName',
+				'sys_domain',
+				'hidden = 0',
+				'',
+				'pid ASC, sorting ASC'
+			);
 
-			if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
-					// shouldn't be the case anyways, but you never know
-					// ... there're crazy people out there
-				$tempUrl = 'http://' .$tempUrl;
+			if (!empty($domainRecord['domainName'])) {
+				$tempUrl = $domainRecord['domainName'];
+
+				if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
+						// shouldn't be the case anyways, but you never know
+						// ... there're crazy people out there
+					$tempUrl = 'http://' .$tempUrl;
+				}
+
+				$host = parse_url($tempUrl, PHP_URL_HOST);
 			}
 
-			$host = parse_url($tempUrl, PHP_URL_HOST);
+			$email = $user . '@' . $host;
 		}
 
-		return $user . '@' . $host;
+			// uname
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$host  = php_uname('n');
+			$email = $user . '@' . $host;
+		}
+
+		return $email;
 	}
 }
 

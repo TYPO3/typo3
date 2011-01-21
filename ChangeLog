@@ -3,6 +3,10 @@
 	* Fixed bug #17120: Problem with the integration of third-party trees (Thanks to Stefan Galinksi)
 	* Follow-up to issue #11103: Cleanup of _.htaccess and references to misc/advanced.htaccess in config_default
 
+2011-01-21  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issues #17188: [reports] change status update task to use the new default From email address setting from config_default
+
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17024: CSH not rendered properly in select-type fields with renderMode = checkbox
