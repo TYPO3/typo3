@@ -62,7 +62,7 @@ Please notice: If the entered value was not unique, it will automatically be pre
 			<label index="target.details">Set this value only to overrule the default link, which should be configured correctly for most pages in the website TypoScript template.
 There are more options with the target field
 
-Setting an integer value at the start of the field adds it as the default type for the page. 
+Setting an integer value at the start of the field adds it as the default type for the page.
 For example, if an RSS feed is configured in Typoscript as typeNum=100, setting the target to 100 could be used to add an RSS link in the menu.
 
 For open in popup use following syntax:
@@ -87,7 +87,7 @@ This option is used quite rarely.</label>
 			<label index="author.description">Enter the page authors name.</label>
 			<label index="author.details">Whether the author name is used or not depends on the setup of your TypoScript template.
 
-- You may use it in a meta-tag.			
+- You may use it in a meta-tag.
 - If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</label>
 			<label index="_author.seeAlso">pages:author_email</label>
 			<label index="author_email.description">Enter the page authors email address.</label>
