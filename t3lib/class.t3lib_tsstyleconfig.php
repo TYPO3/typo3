@@ -168,7 +168,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		$content .= $addFields;
 		$content .= $printFields;
 		$content .= '<input type="Submit" name="submit" value="' .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update') . '" id="configuration-submit-' . $extKey . '" />';
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
 
 		$example = $this->ext_displayExample();
 		$content .= $example ? '<hr/>' . $example : "";

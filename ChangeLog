@@ -1,5 +1,6 @@
 2011-01-21  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #17162: Missing localization in t3lib_tsstyleconfig - add HSC
 	* Fixed bug #17190: Make the drag area on the split bars wider than 1px
 
 2011-01-21  Tolleiv Nietsch  <typo3@tolleiv.de>
