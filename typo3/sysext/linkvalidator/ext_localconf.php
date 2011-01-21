@@ -16,9 +16,9 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLink
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] = array();
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['db'] = 'EXT:linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_internal.php:tx_linkvalidator_linkTypes_Internal';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['file'] = 'EXT:linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_file.php:tx_linkvalidator_linkTypes_File';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['external'] = 'EXT:linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_external.php:tx_linkvalidator_linkTypes_External';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['linkhandler'] = 'EXT:linkvalidator/classes/linktypes/class.tx_linkvalidator_linktypes_linkhandler.php:tx_linkvalidator_linkTypes_LinkHandler';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['db'] = 'tx_linkvalidator_linkTypes_Internal';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['file'] = 'tx_linkvalidator_linkTypes_File';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['external'] = 'tx_linkvalidator_linkTypes_External';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['linkhandler'] = 'tx_linkvalidator_linkTypes_LinkHandler';
 
 ?>
