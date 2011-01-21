@@ -240,7 +240,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 				// injection, and thus the passed constructor takes precendence over
 				// autowiring.
 				$parameter = array_shift($givenConstructorArguments);
-			} elseif (isset($argumentInformation['defaultValue'])) {
+			} elseif (array_key_exists('defaultValue', $argumentInformation)) {
 				// no value to set anymore, we take default value
 				$parameter = $argumentInformation['defaultValue'];
 			} else {

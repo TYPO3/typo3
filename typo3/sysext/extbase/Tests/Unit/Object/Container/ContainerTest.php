@@ -77,6 +77,15 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 
 	/**
 	 * @test
+	 */
+	public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue() {
+		$object = $this->container->getInstance('t3lib_object_tests_amixed_null');
+		$this->assertType('t3lib_object_tests_amixed_null', $object);
+		$this->assertNull($object->myvalue);
+	}
+
+	/**
+	 * @test
 	 * @expectedException Tx_Extbase_Object_Exception
 	 */
 	public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters() {

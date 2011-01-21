@@ -37,6 +37,21 @@ class t3lib_object_tests_amixed_array {
 }
 
 /**
+ * test class A that depends on B and C and has a third default parameter in constructor that defaults to NULL
+ *
+ */
+class t3lib_object_tests_amixed_null {
+	public $b;
+	public $c;
+	public $myvalue;
+	public function __construct(t3lib_object_tests_b $b, t3lib_object_tests_c $c, $myvalue = NULL) {
+		$this->b = $b;
+		$this->c = $c;
+		$this->myvalue = $myvalue;
+	}
+}
+
+/**
  * test class A that depends on B and C and has a third default parameter in constructor
  *
  */
