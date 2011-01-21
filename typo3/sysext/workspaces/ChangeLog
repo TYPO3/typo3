@@ -10,6 +10,7 @@
 
 	* Fixed bug #12055: Publishing a page does not update the new page tree
 	* Fixed bug #12413: Rename extension "list" to "recordlist"
+	* Fixed bug #12000: Cache and Favorites submenus shifts when in Workspaces
 
 2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
 
