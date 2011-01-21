@@ -117,11 +117,16 @@ class tx_linkvalidator_Processor {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ')');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')');
 
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
-			$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+			if($table == 'pages'){
+				$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+			}
+			else{
+				$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+			}
 			if (!$considerHidden) {
 				$where .= t3lib_BEfunc::BEenableFields($table);
 			}
