@@ -55,11 +55,16 @@ final class t3lib_utility_Mail {
 		$success = TRUE;
 
 			// If the mail does not have a From: header, fall back to the default in TYPO3_CONF_VARS.
-		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress']) {
+		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) {
 			if (!is_null($additionalHeaders) && substr($additionalHeaders, -1) != LF) {
 				$additionalHeaders .= LF;
 			}
-			$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
+			if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
+				$additionalHeaders .= 'From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] 
+						. '" <' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'] . '>';
+			} else {
+				$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
+			}
 		}
 
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'])) {

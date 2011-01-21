@@ -13,6 +13,7 @@
 
 2011-01-21  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17198: Introduce setting "defaultMailFromName" and move defaultMailFromAddress to [MAIL] section (Thanks to Jigal van Hemert)
 	* Fixed issue #17175: t3lib_compressor should write .htaccess to set Expires headers for .js/.css files (Thanks to Steffen Gebert)
 	* Fixed bug #17120: Problem with the integration of third-party trees (Thanks to Stefan Galinksi)
 	* Follow-up to issue #11103: Cleanup of _.htaccess and references to misc/advanced.htaccess in config_default

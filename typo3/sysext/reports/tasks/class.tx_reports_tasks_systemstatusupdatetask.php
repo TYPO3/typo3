@@ -119,7 +119,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 		$message .= CRLF . CRLF;
 
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
-		$mail->setFrom(array($fromEmail => 'TYPO3 CMS'));
+		$mail->setFrom(array($fromEmail => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']));
 		$mail->setTo($this->notificationEmail);
 		$mail->setSubject($subject);
 		$mail->setBody($message);
@@ -142,7 +142,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 		$user  = 'no-reply';
 
 			// default
-		$email = $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
+		$email = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
 
 			// find domain record
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
