@@ -134,8 +134,8 @@ class ModuleMenu {
 							'link' => $subData['link'],
 							'originalLink' => $subData['originalLink'],
 							'index' => $index++,
-							'navigationFrameScript' => $subData['navFrameScript'],
-							'navigationFrameScriptParam' => $subData['navFrameScriptParam'],
+							'navigationFrameScript' => $subData['navigationFrameScript'],
+							'navigationFrameScriptParam' => $subData['navigationFrameScriptParam'],
 							'navigationComponentId' => $subData['navigationComponentId'],
 						);
 					}

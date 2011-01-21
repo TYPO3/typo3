@@ -228,11 +228,11 @@ TYPO3.ModuleMenu.App = {
 				this.loadNavigationComponent(record.navigationComponentId);
 				TYPO3.Backend.NavigationDummy.hide();
 				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
-			} else if (record.navframe) {
+			} else if (record.navframe || record.navigationFrameScript) {
 				TYPO3.Backend.NavigationDummy.hide();
 				TYPO3.Backend.NavigationContainer.show();
 				this.loadNavigationComponent('typo3-navigationIframe');
-				this.openInNavFrame(record.navframe);
+				this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
 				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
 			} else {
 				TYPO3.Backend.NavigationContainer.hide();
