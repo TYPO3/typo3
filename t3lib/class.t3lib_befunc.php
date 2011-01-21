@@ -2718,7 +2718,7 @@ final class t3lib_BEfunc {
 			// Initialize some variables
 		$helpText = '';
 		$abbrClassAdd = '';
-		$wrappedText = '';
+		$wrappedText = $text;
 		$hasHelpTextOverload = count($overloadHelpText) > 0;
 
 			// Get the help text that should be shown on hover
@@ -2747,6 +2747,7 @@ final class t3lib_BEfunc {
 			}
 			$wrappedText .= '>' . $text . '</span>';
 		}
+
 		return $wrappedText;
 	}
 
