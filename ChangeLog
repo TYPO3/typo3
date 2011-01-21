@@ -22,6 +22,7 @@
 	* Fixed issue #16458: Rename table be_layouts to backend_layout
 	* Fixed issue #17191: Missing styling in Ext Js Grid Headers
 	* Follow-up to #17024: Labels missing for fields without CSH
+	* Updated sprite images and CSS
 
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
