@@ -1097,9 +1097,23 @@ td.sort-desc, td.sort-asc  {
 td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	border-left-color: #5b5b5b;
 	border-right-color: transparent;
-	background-image: -moz-linear-gradient(center bottom, #7f7f7f 10%, #5b5b5b 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #5b5b5b), color-stop(0.1, #7f7f7f));
-	background-image: linear-gradient(center bottom, #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#7f7f7f 10%,
+		#5b5b5b 100%
+	);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.1, #7f7f7f),
+		color-stop(1.0, #5b5b5b)
+	);
+	background-image: linear-gradient(
+		center bottom,
+		#7f7f7f 10%,
+		#5b5b5b 100%
+	);
 }
 
 .sort-asc .x-grid3-sort-icon {
@@ -1200,7 +1214,6 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-grid3-hd-btn {
-	background-color:#d8d8d8;
 	background-image:url(images/grid/grid3-hd-btn.gif);
 }
 
