@@ -55,20 +55,32 @@ TYPO3.ContextHelp = function() {
 		if (response) {
 			updateTip(response);
 		} else {
-			// clear old tooltip contents
-			updateTip({
-				description: top.TYPO3.LLL.core.csh_tooltip_loading,
-				cshLink: '',
-				moreInfo: '',
-				title: ''
-			});
-			// load content
-			TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
-				cshHelp.add(response);
-				updateTip(response);
-					// Need to re-position because the height may have increased
-				tip.show();
-			}, this);
+				// If a table is defined, use ExtDirect call to get the tooltip's content
+			if (table) {
+					// Clear old tooltip contents
+				updateTip({
+					description: top.TYPO3.LLL.core.csh_tooltip_loading,
+					cshLink: '',
+					moreInfo: '',
+					title: ''
+				});
+					// Load content
+				TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
+					cshHelp.add(response);
+					updateTip(response);
+						// Need to re-position because the height may have increased
+					tip.show();
+				}, this);
+
+				// No table was given, use directly title and description
+			} else {
+				updateTip({
+					description: link.getAttribute('data-description'),
+					cshLink: '',
+					moreInfo: '',
+					title: link.getAttribute('data-title')
+				});
+			}
 		}
 	}
 

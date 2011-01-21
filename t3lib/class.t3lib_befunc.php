@@ -2714,21 +2714,40 @@ final class t3lib_BEfunc {
 	 * @return	string	the HTML code ready to render
 	 * @api	public
 	 */
-	public static function wrapInHelp($table, $field, $text = '') {
-			// get the help text that should be shown on hover
-		$GLOBALS['LANG']->loadSingleTableDescription($table);
-		$helpText = self::helpText($table, $field);
+	public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = array()) {
+			// Initialize some variables
+		$helpText = '';
 		$abbrClassAdd = '';
-		if ($helpText) {
-				// if no text was given, just use the regular help icon
+		$wrappedText = '';
+		$hasHelpTextOverload = count($overloadHelpText) > 0;
+
+			// Get the help text that should be shown on hover
+		if (!$hasHelpTextOverload) {
+			$helpText = self::helpText($table, $field);
+		}
+
+			// If there's a help text or some overload information, proceed with preparing an output
+		if (!empty($helpText) || $hasHelpTextOverload) {
+				// If no text was given, just use the regular help icon
 			if ($text == '') {
 				$text = t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
 				$abbrClassAdd = '-icon';
 			}
 			$text = '<abbr class="t3-help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
-			$text = '<span class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '">' . $text . '</span>';
+			$wrappedText = '<span class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '"';
+				// The overload array may provide a title and a description
+				// If either one is defined, add them to the "data" attributes
+			if ($hasHelpTextOverload) {
+				if (isset($overloadHelpText['title'])) {
+					$wrappedText .= ' data-title="' . htmlspecialchars($overloadHelpText['title']) . '"';
+				}
+				if (isset($overloadHelpText['description'])) {
+					$wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
+				}
+			}
+			$wrappedText .= '>' . $text . '</span>';
 		}
-		return $text;
+		return $wrappedText;
 	}
 
 

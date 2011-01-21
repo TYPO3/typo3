@@ -1829,18 +1829,27 @@ class t3lib_TCEforms {
 									'$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' .
 									'$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
 
-					$hasHelp = ($p[3] != '');
+						// Check if some help text is available
+						// Since TYPO3 4.5 help text is expected to be an associative array
+						// with two key, "title" and "description"
+						// For the sake of backwards compatibility, we test if the help text
+						// is a string and use it as a description (this could happen if items
+						// are modified with an itemProcFunc)
+					$hasHelp = FALSE;
+					$help = '';
+					$helpArray = array();
+					if ((is_array($p[3]) && count($p[3]) > 0) || !empty($p[3])) {
+						$hasHelp = TRUE;
+						if (is_array($p[3])) {
+							$helpArray = $p[3];
+						} else {
+							$helpArray['description'] = $p[3];
+						}
+					}
 
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline"><span class="header">' . $label . '</span>' .
-									   '<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
-
-					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
-						$helpIcon = '<a class="typo3-csh-link" href="#">';
-						$helpIcon .= t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
-						$helpIcon .= $help;
-						$helpIcon .= '</a>';
-						$help = $helpIcon;
+					if ($hasHelp) {
+						$help = t3lib_BEfunc::wrapInHelp('', '', '', $helpArray);
 					}
 
 					$tRows[] = '
@@ -1850,7 +1859,7 @@ class t3lib_TCEforms {
 							   $this->getIconHtml($selIcon) .
 							   $label .
 							   '</td>
-								<td class="c-descr" onclick="' . htmlspecialchars($onClickCell) . '">' . (strcmp($p[3], '') ? $help : '') . '</td>
+								<td class="c-descr" onclick="' . htmlspecialchars($onClickCell) . '">' . ((empty($help)) ? '' : $help) . '</td>
 						</tr>';
 					$c++;
 				}
@@ -4644,11 +4653,12 @@ class t3lib_TCEforms {
 								// Icon:
 							$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName($theTableNames, array());
 
-								// Add description texts:
-							if ($this->edit_showFieldHelp) {
-								$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
-								$fDat = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
-								$descr = $fDat['description'];
+								// Add help text
+							$helpText = array();
+							$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
+							$helpTextArray = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
+							if (!empty($helpTextArray['description'])) {
+								$helpText['description'] = $helpTextArray['description'];
 							}
 
 								// Item configuration:
@@ -4656,7 +4666,7 @@ class t3lib_TCEforms {
 								$this->sL($TCA[$theTableNames]['ctrl']['title']),
 								$theTableNames,
 								$icon,
-								$descr
+								$helpText
 							);
 						}
 					}
@@ -4683,11 +4693,12 @@ class t3lib_TCEforms {
 					foreach ($theTypes as $theTypeArrays) {
 						list($theTable, $theField) = explode(':', $theTypeArrays[1]);
 
-							// Add description texts:
-						if ($this->edit_showFieldHelp) {
-							$GLOBALS['LANG']->loadSingleTableDescription($theTable);
-							$fDat = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theField];
-							$descr = $fDat['description'];
+							// Add help text
+						$helpText = array();
+						$GLOBALS['LANG']->loadSingleTableDescription($theTable);
+						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theField];
+						if (!empty($helpTextArray['description'])) {
+							$helpText['description'] = $helpTextArray['description'];
 						}
 
 							// Item configuration:
@@ -4695,7 +4706,7 @@ class t3lib_TCEforms {
 							rtrim($theTypeArrays[0], ':'),
 							$theTypeArrays[1],
 							'empty-empty',
-							$descr
+							$helpText
 						);
 					}
 				break;
@@ -4754,12 +4765,18 @@ class t3lib_TCEforms {
 										$icon = 'empty-empty';
 									}
 
+										// Add help text
+									$helpText = array();
+									if (!empty($itemCfg[2])) {
+										$helpText['description'] = $GLOBALS['LANG']->sl($itemCfg[2]);
+									}
+
 										// Add item to be selected:
 									$items[] = array(
 										$GLOBALS['LANG']->sl($itemCfg[0]),
 										$coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
 										$icon,
-										$GLOBALS['LANG']->sl($itemCfg[2]),
+										$helpText,
 									);
 								}
 							}
@@ -4783,19 +4800,18 @@ class t3lib_TCEforms {
 								$icon = '../' . substr($icon, strlen(PATH_site));
 							}
 
-								// Description texts:
-							if ($this->edit_showFieldHelp) {
-								$descr = $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tablabel'] .
-										 LF .
-										 $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tabdescr'];
-							}
+								// Add help text
+							$helpText = array(
+								'title' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tablabel'],
+								'description' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tabdescr']
+							);
 
 								// Item configuration:
 							$items[] = array(
 								$this->addSelectOptionsToItemArray_makeModuleData($theMod),
 								$theMod,
 								$icon,
-								$descr
+								$helpText
 							);
 						}
 					}

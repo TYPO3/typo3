@@ -1,3 +1,7 @@
+2011-01-21  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #17024: CSH not rendered properly in select-type fields with renderMode = checkbox
+
 2011-01-21  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #17129: Minor styling issues with live search
