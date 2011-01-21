@@ -1,6 +1,34 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0 RC1:
+======================
+included in TYPO3 4.5.0 RC1.
+
+This change contains numerous bugfixes, most notably fixes the Widget
+Bootstrap and the Standalone View (which is used in "FLUIDTEMPLATE").
+
+Full Changes for 1.3.0 RC1:
+===========================
+
+[+BUGFIX] Fluid (View): Fix StandaloneView
+	Since implementation of Dependency Injection the Fluid
+	Standalone view was broken in some cases, cause it did not
+	properly initialize all needed objects.
+	Fixes: #11520
+[+BUGFIX] Fluid (Core): Allow ViewHelpers to be placed in t3lib and tslib
+	The Fluid template parser does now recognize ViewHelpers inside t3lib/
+	or sysext/cms/tslib/, so Fluid can now be used inside the TYPO3 core.
+	Thanks to Andreas Wolf for the patch!
+	Resolves: #12061
+[+BUGFIX] Fluid (Widget): Adopt Widget Bootstrap to Extbase Bootstrap changes
+	Problem: The configureObjectManager method in Tx_Fluid_Core_Widget_Bootstrap
+	uses a call on a static method Tx_Extbase_Object_Container_Container::getContainer()
+	which doesn't exist anymore. The Container has become a t3lib_Singleton.
+	This patch changes the behavior, and makes it work again.
+	Thanks to Thomas Maroschik for the patch!
+	Resolves: #11991
+
 Changes for 1.3.0 Beta 4:
 =========================
 included in TYPO3 4.5.0 Beta 4.
