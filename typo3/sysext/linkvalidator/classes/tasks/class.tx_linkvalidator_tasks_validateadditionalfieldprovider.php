@@ -46,9 +46,9 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['configuration'] = '';
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['configuration'] = $task->configuration;
+				$taskInfo['configuration'] = $task->getConfiguration();
 			} else {
-				$taskInfo['configuration'] = $task->configuration;
+				$taskInfo['configuration'] = $task->getConfiguration();
 			}
 		}
 
@@ -56,9 +56,9 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['depth'] = array();
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['depth'] = $task->depth;
+				$taskInfo['depth'] = $task->getDepth();
 			} else {
-				$taskInfo['depth'] = $task->depth;
+				$taskInfo['depth'] = $task->getDepth();
 			}
 		}
 
@@ -66,38 +66,37 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['page'] = '';
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['page'] = $task->page;
+				$taskInfo['page'] = $task->getPage();
 			} else {
-				$taskInfo['page'] = $task->page;
+				$taskInfo['page'] = $task->getPage();
 			}
 		}
 		if (empty($taskInfo['email'])) {
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['email'] = '';
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['email'] = $task->email;
+				$taskInfo['email'] = $task->getEmail();
 			} else {
-				$taskInfo['email'] = $task->email;
+				$taskInfo['email'] = $task->getEmail();
 			}
 		}
 
 		if (empty($taskInfo['emailOnBrokenLinkOnly'])) {
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['emailOnBrokenLinkOnly'] = 1;
-				$task->emailOnBrokenLinkOnly = 1;
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['emailOnBrokenLinkOnly'] = $task->emailOnBrokenLinkOnly;
+				$taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
 			} else {
-				$taskInfo['emailOnBrokenLinkOnly'] = $task->emailOnBrokenLinkOnly;
+				$taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
 			}
 		}
 		if (empty($taskInfo['emailTemplateFile'])) {
 			if ($schedulerModule->CMD == 'add') {
 				$taskInfo['emailTemplateFile'] = 'EXT:linkvalidator/res/mailtemplate.html';
 			} elseif ($schedulerModule->CMD == 'edit') {
-				$taskInfo['emailTemplateFile'] = $task->emailTemplateFile;
+				$taskInfo['emailTemplateFile'] = $task->getEmailTemplateFile();
 			} else {
-				$taskInfo['emailTemplateFile'] = $task->emailTemplateFile;
+				$taskInfo['emailTemplateFile'] = $task->getEmailTemplateFile();
 			}
 		}
 
@@ -255,12 +254,17 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 	 * @return	void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
-		$task->depth = $submittedData['linkvalidator']['depth'];
-		$task->page = $submittedData['linkvalidator']['page'];
-		$task->email = $submittedData['linkvalidator']['email'];
-		$task->emailOnBrokenLinkOnly = $submittedData['linkvalidator']['emailOnBrokenLinkOnly'];
-		$task->configuration = $submittedData['linkvalidator']['configuration'];
-		$task->emailTemplateFile = $submittedData['linkvalidator']['emailTemplateFile'];
+		$task->setDepth($submittedData['linkvalidator']['depth']);
+		$task->setPage($submittedData['linkvalidator']['page']);
+		$task->setEmail($submittedData['linkvalidator']['email']);
+		if($submittedData['linkvalidator']['emailOnBrokenLinkOnly']){
+			$task->setEmailOnBrokenLinkOnly(1);
+		}
+		else{
+			$task->setEmailOnBrokenLinkOnly(0);
+		}
+		$task->setConfiguration($submittedData['linkvalidator']['configuration']);
+		$task->setEmailTemplateFile($submittedData['linkvalidator']['emailTemplateFile']);
 	}
 
 

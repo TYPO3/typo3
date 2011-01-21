@@ -34,88 +34,203 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	/**
 	 * @var integer
 	 */
-	public $sleepTime;
+	protected $sleepTime;
 
 	/**
 	 * @var integer
 	 */
-	public $sleepAfterFinish;
+	protected $sleepAfterFinish;
 
 	/**
 	 * @var integer
 	 */
-	public $countInARun;
+	protected $countInARun;
 
 	/**
 	 * Total number of broken links.
 	 *
 	 * @var integer
 	 */
-	public $totalBrokenLink = 0;
+	protected $totalBrokenLink = 0;
 
 	/**
 	 * Total number of broken links from the last run.
 	 *
 	 * @var integer
 	 */
-	public $oldTotalBrokenLink = 0;
+	protected $oldTotalBrokenLink = 0;
 
 	/**
 	 * Mail template fetched from the given template file.
 	 *
 	 * @var string
 	 */
-	public $templateMail;
+	protected $templateMail;
 	
 	/**
 	 * specific TSconfig for this task.
 	 *
 	 * @var array
 	 */
-	public $configuration = array();
+	protected $configuration = array();
 
 	/**
 	 * Shows if number of result was diferent from the result of the last check or not.
 	 *
 	 * @var boolean
 	 */
-	public $dif;
+	protected $dif;
 
 	/**
 	 * Template to be used for the email.
 	 *
 	 * @var string
 	 */
-	public $emailTemplateFile;
+	protected $emailTemplateFile;
 
 	/**
 	 * Level of pages the task should check.
 	 *
 	 * @var integer
 	 */
-	public $depth;
+	protected $depth;
 
 	/**
 	 * UID of the start page for this task.
 	 *
 	 * @var integer
 	 */
-	public $page;
+	protected $page;
 
 	/**
 	 * Email address to which an email report is sent.
 	 *
 	 * @var string
 	 */
-	public $email;
-
+	protected $email;
+	
 	/**
 	 * Only send an email, if new broken links were found.
 	 *
 	 * @var boolean
 	 */
-	public $emailOnBrokenLinkOnly;
+	protected $emailOnBrokenLinkOnly;
 
+	/**
+	 * Get the value of the protected property email.
+	 *
+	 * @return  string      Email address to which an email report is sent
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+	
+	/**
+	 * Set the value of the private property email.
+	 *
+	 * @param  string       Email address to which an email report is sent
+	 * @return void
+	 */
+	public function setEmail($email) {
+		$this->email=$email;
+	}
+	
+	/**
+	 * Get the value of the protected property emailOnBrokenLinkOnly.
+	 *
+	 * @return  boolean      Only send an email, if new broken links were found.
+	 */
+	public function getEmailOnBrokenLinkOnly() {
+		return $this->emailOnBrokenLinkOnly;
+	}
+	
+	/**
+	 * Set the value of the private property emailOnBrokenLinkOnly.
+	 *
+	 * @param  boolean      Only send an email, if new broken links were found.
+	 * @return void
+	 */
+	public function setEmailOnBrokenLinkOnly($emailOnBrokenLinkOnly) {
+		$this->emailOnBrokenLinkOnly = $emailOnBrokenLinkOnly;
+	}
+	
+	/**
+	 * Get the value of the protected property page.
+	 *
+	 * @return  integer      UID of the start page for this task.
+	 */
+	public function getPage() {
+		return $this->page;
+	}
+	
+	/**
+	 * Set the value of the private property page.
+	 *
+	 * @param  integer      UID of the start page for this task.
+	 * @return void
+	 */
+	public function setPage($page) {
+		$this->page =$page;
+	}
+	
+	/**
+	 * Get the value of the protected property depth.
+	 *
+	 * @return  integer     Level of pages the task should check.
+	 */
+	public function getDepth() {
+		return $this->depth;
+	}
+	
+	/**
+	 * Set the value of the private property depth.
+	 *
+	 * @param  integer     Level of pages the task should check.
+	 * @return void
+	 */
+	public function setDepth($depth) {
+		$this->depth = $depth;
+	}
+	
+	/**
+	 * Get the value of the protected property emailTemplateFile.
+	 *
+	 * @return  string    Template to be used for the email.
+	 */
+	public function getEmailTemplateFile() {
+		return $this->emailTemplateFile;
+	}
+	
+	/**
+	 * Set the value of the private property emailTemplateFile.
+	 *
+	 * @param  string    Template to be used for the email.
+	 * @return void
+	 */
+	public function setEmailTemplateFile($emailTemplateFile) {
+		$this->emailTemplateFile = $emailTemplateFile;
+	}
+	
+	/**
+	 * Get the value of the protected property configuration.
+	 *
+	 * @return  array    specific TSconfig for this task.
+	 */
+	public function getConfiguration() {
+		return $this->configuration;
+	}
+	
+	/**
+	 * Set the value of the private property configuration.
+	 *
+	 * @param  array    specific TSconfig for this task.
+	 * @return void
+	 */
+	public function setConfiguration($configuration) {
+		$this->configuration = $configuration;
+	}
+	
+	
 	/**
 	 * Function executed from the Scheduler.
 	 *
