@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'The TYPO3 Scheduler let\'s you register tasks to happen at a specific time',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.0.2',
+	'version' => '1.1.0',
 	'dependencies' => '',
 	'conflicts' => 'gabriel',
 	'priority' => '',
@@ -36,7 +36,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
+			'typo3' => '4.5.0-0.0.0',
 		),
 		'conflicts' => array(
 			'gabriel' => '',

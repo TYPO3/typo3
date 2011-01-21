@@ -13,20 +13,15 @@
 			<label index=".alttitle">Scheduler</label>
 			<label index=".description">The Scheduler provides an interface to register and manage recurring or one-time tasks.</label>
 			<label index=".syntax">
-				The Scheduler uses a single cron job which handles all registered tasks. It is thus very convenient as a single cron job needs to be set up and all task frequencies can be managed from the BE module.
+				The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
 			</label>
 			<label index="task_class.alttitle">Class of the task</label>
 			<label index="task_class.description">Choose a class from the list of available tasks</label>
 			<label index="task_class.details">
-				The tasks are provided by various extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
+				Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
 			</label>
 			<label index="task_disable.alttitle">Disable task</label>
 			<label index="task_disable.description">Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</label>
-			<label index="task_arguments.alttitle">Additional call arguments</label>
-			<label index="task_arguments.description">Enter whatever arguments exist for the chosen task class</label>
-			<label index="task_arguments.details">
-				Call arguments are entered using a syntax similar to HTTP query strings, i.e. &amp;arg1=value1&amp;arg2=value2 etc.
-			</label>
 			<label index="task_type.alttitle">Type of task</label>
 			<label index="task_type.description">Choose whether the task must happen a single time or will be repeated</label>
 			<label index="task_start.alttitle">Start of task</label>
@@ -44,14 +39,16 @@
 				Can be left blank, if task is not supposed to end at any point.
 			</label>
 			<label index="task_frequency.alttitle">Frequency of task</label>
-			<label index="task_frequency.description">Enter a frequency, either in seconds or using a cron-like syntax</label>
+			<label index="task_frequency.description">Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</label>
 			<label index="task_frequency.details">
 				The frequency of the task can be simply entered as a number of seconds.
 
-				Alternately it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
+				Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
 
 				*/5 * * * * means every 5 minutes
 				30 22 * * * means every day at 22:30
+
+				The Scheduler supports the full cron syntax.
 			</label>
 			<label index="task_frequency.seeAlso">
 				Wikipedia reference|http://en.wikipedia.org/wiki/Cron

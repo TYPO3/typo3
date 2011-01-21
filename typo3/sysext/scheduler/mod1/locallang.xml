@@ -54,6 +54,7 @@
 			<label index="msg.deleteSuccess">The task was successfully deleted.</label>
 			<label index="msg.endDateSmallerThanStartDate">The end date is before the start date.</label>
 			<label index="msg.executed">Executed: %s</label>
+			<label index="msg.frequencyError">Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</label>
 			<label index="msg.incompleteLastRun">The information about the last execution of the Scheduler is incomplete.</label>
 			<label index="msg.infoScreenIntro">This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</label>
 			<label index="msg.invalidFrequency">Invalid frequency. Please enter either a number of seconds or a valid cron command.</label>
