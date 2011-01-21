@@ -79,10 +79,11 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$language = intval(t3lib_div::_GP('L'));
 
 		$controller = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', TRUE);
-		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
+		$uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 
 		$wsSettingsPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
-		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), $controller, 'workspaces', 'web_workspacesworkspaces');
+		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'Tx_Workspaces_Controller_ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
 
@@ -92,7 +93,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
 		if (tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
-			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), $this, 'workspaces', 'web_workspacesworkspaces');
+			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces');
 			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
 			$this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);
 		} else {

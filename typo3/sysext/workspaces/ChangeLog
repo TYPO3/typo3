@@ -12,6 +12,7 @@
 	* Fixed bug #12413: Rename extension "list" to "recordlist"
 	* Fixed bug #12000: Cache and Favorites submenus shifts when in Workspaces
 	* Fixed bug #11574: Workspaces grid: stages should "sit" on one line
+	* Fixed bug #12446: Fixed instantiation of UriBuilder (broken since extbase merge)
 
 2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
 

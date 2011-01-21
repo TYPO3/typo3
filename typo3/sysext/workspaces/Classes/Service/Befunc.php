@@ -56,7 +56,9 @@ class tx_Workspaces_Service_Befunc {
 
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
-			$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
+			$uriBuilder = $objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 			/**
 			 *  This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
 			 *  has /index.php as fixed value here and dealing with the backPath is very error-prone
@@ -66,7 +68,7 @@ class tx_Workspaces_Service_Befunc {
 			$backPath = '/' . TYPO3_mainDir;
 				// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 			$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-			$viewScript = $backPath . $uriBuilder->uriFor('index', array(), $ctrl, 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
+			$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
 		}
 	}
 
