@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
