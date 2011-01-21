@@ -9,8 +9,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mod_linkvalidator">Link validator</label>
-			<label index="tasks.validate.name">Link validator</label>
+			<label index="mod_linkvalidator">Linkvalidator</label>
+			<label index="tasks.validate.name">Linkvalidator</label>
 			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</label>
 			<label index="tasks.validate.page">Start page (uid)</label>
 			<label index="tasks.validate.depth">Depth</label>

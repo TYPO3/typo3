@@ -24,7 +24,7 @@
  ***************************************************************/
 
 /**
- * Module 'Link Validator' for the 'linkvalidator' extension.
+ * Module 'Linkvalidator' for the 'linkvalidator' extension.
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Jochen Rieger <j.rieger@connecta.ag>
