@@ -57,7 +57,7 @@ class tx_Workspaces_Service_AutoPublish {
 				t3lib_BEfunc::deleteClause('sys_workspace')
 			);
 
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspace');
+		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 
 		foreach ($workspaces as $rec) {
 
