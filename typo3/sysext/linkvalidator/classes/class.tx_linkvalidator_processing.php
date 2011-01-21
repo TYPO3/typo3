@@ -31,7 +31,7 @@
  * @subpackage linkvalidator
  */
 
-$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modreport/locallang.xml');
 
 class tx_linkvalidator_processing {
 
