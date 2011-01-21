@@ -36,6 +36,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	emptyText: null,
 	enableKeyEvents: true,
 	helpTitle: null,
+	hideTrigger: true,
 	itemSelector: 'div.search-item-title',
 	listAlign : 'tr-br',
 	listClass: 'live-search-list',
@@ -101,6 +102,13 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				} else {
 					TYPO3.ModuleMenu.App.showModule('web_list', this.dbListUrl + this.getValue());
 				}
+			}
+		},
+		keyup : function() {
+			if ((this.getValue() == this.emptyText) || (this.getValue() == '')) {
+				this.setHideTrigger(true);
+			} else {
+				this.setHideTrigger(false);
 			}
 		}
 	},
@@ -267,6 +275,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 	reset : function() {
 	    this.originalValue = this.emptyText;
+		this.setHideTrigger(true);
 		TYPO3.BackendLiveSearch.superclass.reset.apply(this, arguments);
 	},
 

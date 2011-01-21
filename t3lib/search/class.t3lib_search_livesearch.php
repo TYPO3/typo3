@@ -54,7 +54,7 @@ class t3lib_search_livesearch {
 	/**
 	 * @var integer
 	 */
-	const RECORD_TITLE_MAX_LENGTH = 37;
+	const RECORD_TITLE_MAX_LENGTH = 28;
 
 	/**
 	 * @var string

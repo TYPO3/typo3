@@ -10,6 +10,7 @@ Backend  Live Search
 }
 
 .t3-icon-input-clear {
+	cursor: pointer;
 	position: absolute;
 	top: 0px;
 	right: 20px;
