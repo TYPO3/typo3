@@ -435,3 +435,15 @@ TCEforms Sections
 	background-repeat:no-repeat;
 	padding:1px 1px 1px 24px;
 }
+
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	text-indent: 20px;
+	background-position-x: 6px;
+}
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage optgroup option {
+	text-indent: 20px;
+}
+.ext-chrome:not(.ext-mac) .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	text-indent: 0px;
+	background-position-x: 5px;
+}
