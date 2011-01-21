@@ -103,7 +103,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 
 
 		$fieldID = 'task_page';
-		$fieldCode = '<input type="text" name="tx_scheduler[page]"  id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
+		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]"  id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.page');
 		$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -121,7 +121,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			'4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
 			'999' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi'),
 		);
-		$fieldCode = '<select name="tx_scheduler[depth]" id="' . $fieldID . '">';
+		$fieldCode = '<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldID . '">';
 
 		foreach ($fieldValueArray as $depth => $label) {
 			$fieldCode .= "\t" . '<option value="' . $depth . '"' . (($depth == htmlspecialchars($taskInfo['depth'])) ? ' selected="selected"' : '') . '>' . $label . '</option>';
@@ -136,7 +136,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		);
 
 		$fieldID = 'task_configuration';
-		$fieldCode = '<textarea  name="tx_scheduler[configuration]" id="' . $fieldID . '" >' . htmlspecialchars($taskInfo['configuration']) . '</textarea>';
+		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldID . '" >' . htmlspecialchars($taskInfo['configuration']) . '</textarea>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.conf');
 		$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -145,7 +145,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		);
 
 		$fieldID = 'task_email';
-		$fieldCode = '<input type="text"  name="tx_scheduler[email]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['email']) . '" />';
+		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['email']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.email');
 		$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -153,7 +153,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			'label' => $label
 		);
 		$fieldID = 'task_emailOnBrokenLinkOnly';
-		$fieldCode = '<input type="checkbox"  name="tx_scheduler[emailOnBrokenLinkOnly]" id="' . $fieldID . '" ' . (htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
+		$fieldCode = '<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldID . '" ' . (htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailOnBrokenLinkOnly');
 		$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -162,7 +162,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		);
 
 		$fieldID = 'task_emailTemplateFile';
-		$fieldCode = '<input type="text"  name="tx_scheduler[emailTemplateFile]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
+		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailTemplateFile');
 		$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -205,8 +205,8 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 		$isValid = TRUE;
 
 		//!TODO add validation to validate the $submittedData['configuration'] wich is normally a comma seperated string
-		if (!empty($submittedData['email'])) {
-			$emailList = t3lib_div::trimExplode(',', $submittedData['email']);
+		if (!empty($submittedData['linkvalidator']['email'])) {
+			$emailList = t3lib_div::trimExplode(',', $submittedData['linkvalidator']['email']);
 			foreach ($emailList as $emailAdd) {
 				if (!t3lib_div::validEmail($emailAdd)) {
 					$isValid = FALSE;
@@ -218,8 +218,8 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			}
 		}
 
-		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid = ' . $submittedData['page'])) {
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0 && $submittedData['page'] > 0) {
+		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid = ' . $submittedData['linkvalidator']['page'])) {
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0 && $submittedData['linkvalidator']['page'] > 0) {
 				$isValid = FALSE;
 				$schedulerModule->addMessage(
 					$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidPage'),
@@ -234,7 +234,7 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 			);
 		}
 
-		if ($submittedData['depth'] < 0) {
+		if ($submittedData['linkvalidator']['depth'] < 0) {
 			$isValid = FALSE;
 			$schedulerModule->addMessage(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidDepth'),
@@ -255,12 +255,12 @@ class tx_linkvalidator_tasks_ValidateAdditionalFieldProvider implements tx_sched
 	 * @return	void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
-		$task->depth = $submittedData['depth'];
-		$task->page = $submittedData['page'];
-		$task->email = $submittedData['email'];
-		$task->emailOnBrokenLinkOnly = $submittedData['emailOnBrokenLinkOnly'];
-		$task->configuration = $submittedData['configuration'];
-		$task->emailTemplateFile = $submittedData['emailTemplateFile'];
+		$task->depth = $submittedData['linkvalidator']['depth'];
+		$task->page = $submittedData['linkvalidator']['page'];
+		$task->email = $submittedData['linkvalidator']['email'];
+		$task->emailOnBrokenLinkOnly = $submittedData['linkvalidator']['emailOnBrokenLinkOnly'];
+		$task->configuration = $submittedData['linkvalidator']['configuration'];
+		$task->emailTemplateFile = $submittedData['linkvalidator']['emailTemplateFile'];
 	}
 
 

@@ -1,3 +1,8 @@
+2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca> 
+
+	* Fixed bug #12385 Conflict scheduler:testtask with linkvalidator::task	
+	* Fixed bug #12411: Fix Copyright Notices
+	
 2011-01-20  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12360: Show error message, if the module is not accessible for the current user
