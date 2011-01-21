@@ -86,6 +86,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function addActuallyAddsAnObjectToTheInternalObjectsArray() {
 		$someObject = new stdClass();
+
 		$this->repository->_set('objectType', get_class($someObject));
 		$this->repository->add($someObject);
 
@@ -96,9 +97,9 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function removeActuallyRemovesAnObjectFromTheInternalObjectsArray() {
-		$object1 = new stdClass();
-		$object2 = new stdClass();
-		$object3 = new stdClass();
+		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
+		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
+		$object3 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 
 		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
@@ -116,17 +117,17 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function removeRemovesTheRightObjectEvenIfItHasBeenModifiedSinceItsAddition() {
-		$object1 = new ArrayObject(array('val' => '1'));
-		$object2 = new ArrayObject(array('val' => '2'));
-		$object3 = new ArrayObject(array('val' => '3'));
+		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
+		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
+		$object3 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 
 		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
 		$this->repository->add($object2);
 		$this->repository->add($object3);
 
-		$object2['foo'] = 'bar';
-		$object3['val'] = '2';
+		$object2->setPid(1);
+		$object3->setPid(2);
 
 		$this->repository->remove($object2);
 
@@ -142,7 +143,10 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function removeRetainsObjectForObjectsNotInCurrentSession() {
-		$object = new ArrayObject(array('val' => '1'));
+		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
+			// if the object is not currently add()ed, it is not new
+		$object->expects($this->once())->method('_isNew')->will($this->returnValue(FALSE));
+
 		$this->repository->_set('objectType', get_class($object));
 		$this->repository->remove($object);
 

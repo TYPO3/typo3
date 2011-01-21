@@ -37,8 +37,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	private $container;
 
 	public function setUp() {
-		$this->container = new Tx_Extbase_Object_Container_Container();
-
+		$this->container = $this->getMock('Tx_Extbase_Object_Container_Container', array('log'));
 	}
 
 	/**
@@ -74,6 +73,15 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$object = $this->container->getInstance('t3lib_object_tests_amixed_array');
 		$this->assertType('t3lib_object_tests_amixed_array', $object);
 		$this->assertEquals(array('some' => 'default'), $object->myvalue);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue() {
+		$object = $this->container->getInstance('t3lib_object_tests_amixed_null');
+		$this->assertType('t3lib_object_tests_amixed_null', $object);
+		$this->assertNull($object->myvalue);
 	}
 
 	/**
@@ -127,18 +135,17 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Object_Exception
+	 * @expectedException Tx_Extbase_Object_Exception_CannotBuildObject
 	 */
-	public function getInstanceThrowsExceptionIfObjectContainsCyclicDependencyAndIsNoSingleton() {
-		$this->container->getInstance('t3lib_object_tests_cyclic1');
+	public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaConstructorInjectionContainCyclicDependencies() {
+		$this->container->getInstance('t3lib_object_tests_cyclic1WithSetterDependency');
 	}
-
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Object_Exception
+	 * @expectedException Tx_Extbase_Object_Exception_CannotBuildObject
 	 */
-	public function getInstanceThrowsExceptionIfObjectContainsCyclicDependency() {
+	public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaSetterInjectionContainCyclicDependencies() {
 		$this->container->getInstance('t3lib_object_tests_cyclic1');
 	}
 
@@ -148,7 +155,6 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceThrowsExceptionIfClassWasNotFound() {
 		$this->container->getInstance('nonextistingclass_bla');
-
 	}
 
 	/**
@@ -166,6 +172,9 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
 		$object = $this->container->getInstance('t3lib_object_tests_needsinterface');
 		$this->assertType('t3lib_object_tests_needsinterface', $object);
+
+		$this->assertType('t3lib_object_tests_someinterface', $object->dependency);
+		$this->assertType('t3lib_object_tests_someimplementation', $object->dependency);
 	}
 
 	/**
@@ -177,9 +186,84 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->assertType('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
 	}
 
+	/**
+	 * @test
+	 */
+	public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage() {
+		$this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 
+		$object = $this->container->getInstance('t3lib_object_singletonNeedsPrototype');
+		$this->assertType('t3lib_object_prototype', $object->dependency);
+	}
 
+	/**
+	 * @test
+	 */
+	public function singletonWhichRequiresSingletonViaSetterInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_singletonNeedsSingleton');
+		$this->assertType('t3lib_object_singleton', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototype');
+		$this->assertType('t3lib_object_prototype', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function prototypeWhichRequiresSingletonViaSetterInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_prototypeNeedsSingleton');
+		$this->assertType('t3lib_object_singleton', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage() {
+		$this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
+
+		$object = $this->container->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
+		$this->assertType('t3lib_object_prototype', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function singletonWhichRequiresSingletonViaConstructorInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
+		$this->assertType('t3lib_object_singleton', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
+		$this->assertType('t3lib_object_prototype', $object->dependency);
+	}
+
+	/**
+	 * @test
+	 */
+	public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks() {
+		$this->container->expects($this->never())->method('log');
+
+		$object = $this->container->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
+		$this->assertType('t3lib_object_singleton', $object->dependency);
+	}
 }
-
-
 ?>

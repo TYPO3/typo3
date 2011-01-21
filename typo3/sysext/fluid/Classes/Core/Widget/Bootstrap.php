@@ -100,14 +100,14 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 	 */
 	public function configureObjectManager() {
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.']) && is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
-			$objectConfiguration = $typoScriptSetup['config.']['tx_extbase.']['objects.'];
-
-			foreach ($objectConfiguration as $classNameWithDot => $classConfiguration) {
-				if (isset($classConfiguration['className'])) {
-					$originalClassName = substr($classNameWithDot, 0, -1);
-					Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($originalClassName, $classConfiguration['className']);
-				}
+		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+			return;
+		}
+		$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
+		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
+			if (isset($classConfiguration['className'])) {
+				$originalClassName = rtrim($classNameWithDot, '.');
+				$objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
 			}
 		}
 	}

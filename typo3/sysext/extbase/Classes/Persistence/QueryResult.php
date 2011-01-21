@@ -128,9 +128,9 @@ class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_Query
 			$queryResult = $this->queryResult;
 			reset($queryResult);
 		} else {
-			$query = clone $this->query;
+			$query = $this->getQuery();
 			$query->setLimit(1);
-			$queryResult = $this->dataMapper->map($this->query->getType(), $this->persistenceManager->getObjectDataByQuery($this->query));
+			$queryResult = $this->dataMapper->map($query->getType(), $this->persistenceManager->getObjectDataByQuery($query));
 		}
 		$firstResult = current($queryResult);
 		if ($firstResult === FALSE) {

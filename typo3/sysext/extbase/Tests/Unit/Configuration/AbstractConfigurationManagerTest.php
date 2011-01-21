@@ -416,5 +416,48 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 		$actualResult = $mergedConfiguration['controllerConfiguration'];
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function setStoragePidWithStdWrap() {
+
+		unset($this->abstractConfigurationManager);
+		$this->abstractConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration'));
+
+		$pluginConfiguration = $this->testPluginConfiguration;
+		$pluginConfiguration['persistence']['storagePid'] = array(
+			'cObject' => array(
+				'value' => '8,3',
+				'_typoScriptNodeValue' => 'TEXT'
+			)
+		);
+
+		$this->abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
+		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($pluginConfiguration));
+		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue(NULL));
+
+		$expectedResult = array(
+			'settings' => array(
+				'setting1' => 'overriddenValue1',
+				'setting2' => 'value2',
+				'setting3' => 'additionalValue',
+			),
+			'view' => array(
+				'viewSub' => array(
+					'key1' => 'overridden',
+					'key2' => 'value2',
+					'key3' => 'new key',
+				)
+			),
+			'persistence' => array(
+				'storagePid' => '8,3',
+			),
+			'controllerConfiguration' => NULL
+		);
+
+		$actualResult = $this->abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 ?>

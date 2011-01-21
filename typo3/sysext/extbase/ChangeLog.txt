@@ -1,6 +1,72 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0 RC1:
+======================
+included in TYPO3 4.5.0 RC1.
+
+This release features many bugfixes, in the following areas:
+* Persistence - invalid SQL has been fixed at various places
+* MVC - the URI Builder can now handle cached / uncached actions correctly
+* Improved error handling to catch some configuration errors
+* Localization - TypoScript overrides for locallang keys with dot inside now works (_LOCAL_LANG.foo.bar)
+* Persistence - added "pid" property and getter and setter to AbstractDomainModel; thus you can now move
+  domain objects to different pages. However, this feature has *no support for workspaces* yet.
+* Dependency Injection - now allows the injection of prototypes (see below)
+* Configuration - for defining the Storage PID, one can use arbitary TypoScript objects (see below)
+
+Dependency Injection Improvements
+---------------------------------
+
+Now, Prototype objects are allowed to be injected into other objects. This means the following cases
+are supported:
+
+* Singletons which need Singletons (most common)
+* Singletons which need Prototypes (very uncommon,
+  as it usually hints at the fact that the injected
+  prototype should be a singleton). In this case,
+  WE WRITE A DEVLOG MESSAGE
+* Prototypes which need Singletons
+* Prototypes which need Prototypes
+
+TypoScript Storage PID Improvements
+-----------------------------------
+
+The persistence.storagePid now has stdWrap properties so the storagePid can be set dynamically.
+Now follows an example for use in the Frontend:
+	plugin.tx_extkey.persistence.storagePid.cObject = TEXT
+	plugin.tx_extkey.persistence.storagePid.cObject.value = 8,3
+... and this is how you can use it in the backend:
+	module.tx_extkey.persistence.storagePid.cObject = TEXT
+	module.tx_extkey.persistence.storagePid.cObject.value = 8,3
+
+Full Changes for 1.3.0 RC1:
+===========================
+[+BUGFIX] Extbase (Object): constructor injection now works if default value for a dependency is NULL. Thanks to Lienhart Woitok! Resolves #11623
+[+BUGFIX] Extbase (Object): Allow injection of prototypes via dependency injection. Resolves #12013
+[+BUGFIX] Extbase (Persistence): Use sql_free_result() in Typo3DbBackend to free result memory. Resolves #10957
+[~BUGFIX] Extbase (Persistence): fixed an wrong referenced exception (resolves #12403)
+[~BUGFIX] Extbase (Persistence): make Tx_Extbase_Persistence_Repository::remove() handle freshly created objects right. (resolves #11128)
+[+BUGFIX] Extbase (MVC): UriBuilder automatically added a cHash even on links to nonCacheable actions where this is not needed/recommended (resolves #8565)
+[~BUGFIX] Extbase (Persistence): made union statement on comma seperated list use find_in_set (Thanks to Marc Bastian Heinrichs) (resolves #9772)
+[~FOLLOWUP] Extbase (Utility): allow clearPageCache() to clear single, multiple and all pageCaches. (resolves 11978)
+[+TASK] Extbase (Utility): allow clearPageCache() to clear single, multiple and all pageCaches.
+[+BUGFIX] Extbase (MVC): Improve Error Handling in Request Builder. Resolves #11302
+[+BUGFIX] Extbase (Persistence): remove superfluous require_once statements. Thanks to Oliver Klee. Resolves #12324
+[+BUGFIX] Extbase (Tests): Remove require_once of phpunit testclasses. Thanks to Oliver Klee. Resolves #12323
+[+BUGFIX] Extbase (Utility): Make _LOCAL_LANG override work with dots. Thanks to Thomas Maroschik. Resolves #12121
+[+BUGFIX] Extbase (Persistence): Fixed using the correct columnname for contains comparison with RELATION_HAS_MANY and empty parentKeyFieldName. Resolves #11048
+[+BUGFIX] Extbase (Persistence): Added the missing pid property to the AbstractDomainModel. Related to #11361
+[+BUGFIX] Extbase (Persistence): Language Oberlay now works with page table as well. Thanks to Andre Stoesel. Resolves #11319
+[+BUGFIX] Extbase (Persistence): The QueryObject gets cloned now in the getFirst() method of the QueryResult (as it was intended). Thanks to Sebastian Fischer. Resolves #11855.
+[+BUGFIX] Extbase (Bootstrap): Bootstrap calls initialize on reflectionService if it's already initialized. Resolves #12346, resolves #12156
+[+BUGFIX] Extbase (Persistence): Fix equals constraint with $caseSensitive FALSE (closing bracket missing). Thanks to Alexander Berl. Resolves #10781
+[+BUGFIX] Extbase (Reflection): ObjectAccess::isPropertyGettable works for ArrayAccess objects. Resolves #10148
+[+BUGFIX] Extbase (Configuration): Allow StoragePid to be manually defined by TS. Thanks to Rens Admiraal! Resolves #8397
+[+BUGFIX] Extbase (Configuration): Fix warning in AbstractConfigurationManager. Resolves #11631
+[+BUGFIX] Extbase (Object): Disabling Dependency Injection for injectSettings method. Resolves #11011
+
+
 Changes for 1.3.0 Beta 4:
 =========================
 included in TYPO3 4.5.0 Beta 4.

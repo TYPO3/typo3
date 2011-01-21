@@ -55,27 +55,36 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 
 	/**
 	 * Constructor
+	 *
+	 * @param tslib_cObj $contentObject The current cObject. If NULL a new instance will be created
 	 */
-	public function __construct() {
+	public function __construct(tslib_cObj $contentObject = NULL) {
 		if (!t3lib_extMgm::isLoaded('extbase')) {
 			return 'In the current version you still need to have Extbase installed in order to use the Fluid Standalone view!';
 		}
 		$this->initializeAutoloader();
-		$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
-		$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+
+		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		if ($contentObject === NULL) {
+			$contentObject = t3lib_div::makeInstance('tslib_cObj');
+		}
+		$configurationManager->setContentObject($contentObject);
+
+		$this->templateParser = $this->objectManager->get('Tx_Fluid_Core_Parser_TemplateParser');
 		$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContext'));
 
-		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
+		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 
-		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$uriBuilder->setRequest($request);
 
 		$controllerContext = $this->objectManager->create('Tx_Extbase_MVC_Controller_ControllerContext');
 		$controllerContext->setRequest($request);
 		$controllerContext->setUriBuilder($uriBuilder);
-		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessageContainer = $this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$controllerContext->setFlashMessageContainer($flashMessageContainer);
 		$this->setControllerContext($controllerContext);
 	}

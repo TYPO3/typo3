@@ -144,7 +144,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		}
 
 		$this->addedObjects->attach($object);
-		$this->removedObjects->detach($object);
+
+		if ($this->removedObjects->contains($object)) {
+			$this->removedObjects->detach($object);
+		}
 	}
 
 	/**
@@ -161,7 +164,9 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
-		} else {
+		}
+
+		if (!$object->_isNew()) {
 			$this->removedObjects->attach($object);
 		}
 	}

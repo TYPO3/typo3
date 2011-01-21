@@ -543,7 +543,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
 		$actualResult = $mockUriBuilder->_call('convertTransientObjectToArray', $mockValueObject);
 
-		$expectedResult = array('name' => 'foo', 'uid' => NULL);
+		$expectedResult = array('name' => 'foo', 'uid' => NULL, 'pid' => NULL);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -573,8 +573,12 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$expectedResult = array(
 			'object' => array(
 				'object' => 99,
-				'uid' => NULL),
-			'uid' => NULL);
+				'uid' => NULL,
+				'pid' => NULL
+				),
+			'uid' => NULL,
+			'pid' => NULL
+			);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 

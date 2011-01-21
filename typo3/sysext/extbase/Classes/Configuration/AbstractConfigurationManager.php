@@ -158,6 +158,19 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
 		}
 
+		if (!empty($frameworkConfiguration['persistence']['storagePid']) &&
+			is_array($frameworkConfiguration['persistence']['storagePid'])) {
+				/**
+				 * We simulate the frontend to enable the use of cObjects in
+				 * stdWrap. Than we convert the configuration to normal TypoScript
+				 * and apply the stdWrap to the storagePid
+				 */
+			Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
+			$conf = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
+			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
+			Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+		}
+
 		// 1st level cache
 		$this->configurationCache[$configurationCacheKey] = $frameworkConfiguration;
 		return $frameworkConfiguration;
@@ -190,6 +203,13 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			}
 			$overriddenSwitchableControllerActions[$controllerName] = array('actions' => $actions);
 			$nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'];
+
+			if (!is_array($nonCacheableActions)) {
+				// There are no non-cacheable actions, thus we can directly continue
+				// with the next controller name.
+				continue;
+			}
+
 			$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
 			if (!empty($overriddenNonCacheableActions)) {
 				$overriddenSwitchableControllerActions[$controllerName]['nonCacheableActions'] = $overriddenNonCacheableActions;
