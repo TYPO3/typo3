@@ -462,6 +462,32 @@ class tx_Workspaces_Service_Workspaces {
 		}
 		return $isNewPage;
 	}
+
+	/**
+	 * Generates a view link for a page.
+	 *
+	 * @static
+	 * @param  $table
+	 * @param  $uid
+	 * @param  $record
+	 * @return string
+	 */
+	public static function viewSingleRecord($table, $uid, $record=null) {
+		$viewUrl = '';
+		if ($table == 'pages') {
+			$viewUrl = t3lib_BEfunc::viewOnClick($uid);
+		} elseif ($table == 'pages_language_oderlay' || $table == 'tt_content') {
+			$elementRecord = is_array($record) ? $record : t3lib_BEfunc::getRecord($table, $uid);
+			$viewUrl = t3lib_BEfunc::viewOnClick($elementRecord['pid']);
+		} else {
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
+				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
+				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
+				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, null);
+			}
+		}
+		return $viewUrl;
+	}
 }
 
 

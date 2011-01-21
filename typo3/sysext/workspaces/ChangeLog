@@ -1,5 +1,6 @@
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12325: Hide icons that don't work in the current context
 	* Fixed bug #11539: Split view
 
 2011-01-20  Susanne Moog <typo3@susanne-moog.de>

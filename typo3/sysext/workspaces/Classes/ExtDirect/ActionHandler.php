@@ -103,11 +103,12 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	/**
 	 * Generates a view link for a page.
 	 *
-	 * @param string $pid
+	 * @param string $table
+	 * @param string $uid
 	 * @return void
 	 */
-	public function viewSingleRecord($pid) {
-		return t3lib_BEfunc::viewOnClick($pid);
+	public function viewSingleRecord($table, $uid) {
+		return tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $uid);
 	}
 
 

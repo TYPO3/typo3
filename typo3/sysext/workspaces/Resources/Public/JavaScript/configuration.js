@@ -260,11 +260,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			,tooltip: TYPO3.lang["tooltip.viewElementAction"]
 			,handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-				if (record.json.table == 'pages') {
-					TYPO3.Workspaces.Actions.viewSingleRecord(record.json.t3ver_oid);
-				} else {
-					TYPO3.Workspaces.Actions.viewSingleRecord(record.json.livepid);
-				}
+				TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.livepid);
 			},
 			getClass: function(v, meta, rec) {
 				if(!rec.json.allowedAction_view) {
@@ -302,7 +298,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 				}
 			},
 			getClass: function(v, meta, rec) {
-				if(!rec.json.allowedAction_editVersionedPage) {
+				if(!rec.json.allowedAction_editVersionedPage || !top.TYPO3.configuration.pageModule) {
 					return 'icon-hidden';
 				} else {
 					return '';

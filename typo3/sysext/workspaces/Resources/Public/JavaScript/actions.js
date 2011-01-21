@@ -103,8 +103,8 @@ TYPO3.Workspaces.Actions = {
 			TYPO3.Workspaces.MainStore.load();
 		});
 	},
-	viewSingleRecord: function(pid) {
-		TYPO3.Workspaces.ExtDirectActions.viewSingleRecord(pid, function(response) {
+	viewSingleRecord: function(table, uid) {
+		TYPO3.Workspaces.ExtDirectActions.viewSingleRecord(table, uid, function(response) {
 			eval(response);
 		});
 	},
