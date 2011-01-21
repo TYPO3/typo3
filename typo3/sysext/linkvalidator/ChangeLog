@@ -3,6 +3,7 @@
 	* Fixed bug #12360: Show error message, if the module is not accessible for the current user
 	* Fixed bug #12412: XSS issue in tx_linkvalidator_tasks_ValidateAdditionalFieldProvider
 	* Fixed bug #12419: Use American English for "analyseRecord"
+	* Fixed bug #12420: Indentation in modfunc1, getTemplateMarkers()
 
 2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca> 
 

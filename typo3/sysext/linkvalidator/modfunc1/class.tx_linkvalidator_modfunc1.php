@@ -622,15 +622,15 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	private function getTemplateMarkers() {
 
 		$markers = array(
-			'FIRST_STEPS'			=> $this->firstSteps,
-			'FUNC_MENU'				=> $this->getLevelSelector(),
-			'CONTENT'				=> $this->content,
-			'TITLE'					=> $GLOBALS['LANG']->getLL('title'),
-			'CHECKALLLINK'			=> $this->checkAllHtml,
-			'CHECKOPTIONS'			=> $this->checkOptHtml,
-			'ID'					=> '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
-			'REFRESH'				=> $this->refreshListHtml,
-		    'UPDATE'                => $this->updateListHtml
+			'FIRST_STEPS'           => $this->firstSteps,
+			'FUNC_MENU'             => $this->getLevelSelector(),
+			'CONTENT'               => $this->content,
+			'TITLE'                 => $GLOBALS['LANG']->getLL('title'),
+			'CHECKALLLINK'          => $this->checkAllHtml,
+			'CHECKOPTIONS'          => $this->checkOptHtml,
+			'ID'                    => '<input type="hidden" name="id" value="' . $this->pObj->id . '"/>',
+			'REFRESH'               => $this->refreshListHtml,
+			'UPDATE'                => $this->updateListHtml
 		);
 
 		return $markers;
