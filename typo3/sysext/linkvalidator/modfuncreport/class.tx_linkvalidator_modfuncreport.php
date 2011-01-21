@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_modreport extends t3lib_extobjbase {
+class tx_linkvalidator_modfuncreport extends t3lib_extobjbase {
 
 	/**
 	 * @var template
@@ -129,12 +129,12 @@ class tx_linkvalidator_modreport extends t3lib_extobjbase {
 	protected $content;
 
 	/**
-	 * Main method of modreport
+	 * Main method of modfuncreport
 	 *
 	 * @return string Module content
 	 */
 	public function main() {
-		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modreport/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
 
 		$this->search_level = t3lib_div::_GP('search_levels');
 
@@ -224,7 +224,7 @@ class tx_linkvalidator_modreport extends t3lib_extobjbase {
 		}
 
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modreport/mod_template.html');
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 		$this->relativePath = t3lib_extMgm::extRelPath('linkvalidator');
@@ -648,8 +648,8 @@ class tx_linkvalidator_modreport extends t3lib_extobjbase {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modreport.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modreport.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfuncreport/class.tx_linkvalidator_modfuncreport.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfuncreport/class.tx_linkvalidator_modfuncreport.php']);
 }
 
 ?>
