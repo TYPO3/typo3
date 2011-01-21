@@ -283,7 +283,7 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 	 */
 	public function getBrokenUrl($row) {
 		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
-		$rootLine = t3lib_BEfunc::BEgetRootLine($row['recpid']);
+		$rootLine = t3lib_BEfunc::BEgetRootLine($row['record_pid']);
 			// checks alternate domains
 		if (count($rootLine) > 0) {
 				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';

@@ -117,7 +117,7 @@ class tx_linkvalidator_processing {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'recpid in (' . $this->pidList . ')');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ')');
 
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
@@ -148,8 +148,8 @@ class tx_linkvalidator_processing {
 					$table = $entryValue['table'];
 					$record = array();
 					$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
-					$record['recpid'] = $entryValue['row']['pid'];
-					$record['recuid'] = $entryValue['uid'];
+					$record['record_pid'] = $entryValue['row']['pid'];
+					$record['record_uid'] = $entryValue['uid'];
 					$record['table_name'] = $table;
 					$record['link_title'] = $entryValue['link_title'];
 					$record['field'] = $entryValue['field'];
@@ -325,7 +325,7 @@ class tx_linkvalidator_processing {
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(uid) as nbBrokenLinks,link_type',
 				'tx_linkvalidator_link',
-				'recpid in (' . $this->pidList . ')',
+				'record_pid in (' . $this->pidList . ')',
 				'link_type'
 		))) {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {

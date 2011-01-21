@@ -1,7 +1,7 @@
 CREATE TABLE tx_linkvalidator_link (
 	uid int(11) NOT NULL auto_increment,
-	recuid int(11) DEFAULT '0' NOT NULL,
-	recpid int(11) DEFAULT '0' NOT NULL,
+	record_uid int(11) DEFAULT '0' NOT NULL,
+	record_pid int(11) DEFAULT '0' NOT NULL,
 	headline varchar(255) DEFAULT '' NOT NULL,
 	field varchar(255) DEFAULT '' NOT NULL,
 	table_name varchar(255) DEFAULT '' NOT NULL,

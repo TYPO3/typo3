@@ -367,9 +367,9 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_link',
-			'recpid in (' . $pageList . ') and link_type in (\'' . implode("','", $keyOpt) . '\')',
+			'record_pid in (' . $pageList . ') and link_type in (\'' . implode("','", $keyOpt) . '\')',
 			'',
-			'recuid ASC, uid ASC')
+			'record_uid ASC, uid ASC')
 		)) {
 				// Display table with broken links
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
@@ -456,7 +456,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 			}
 		}
 
-		$params = '&edit[' . $table . '][' . $row['recuid'] . ']=edit';
+		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
 		$actionLinks = '<a href="#" onclick="' .
 				t3lib_BEfunc::editOnClick(
 					$params,
@@ -484,12 +484,12 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$fieldName = $fieldName ? $fieldName : $row['field'];
 
 			// column "Element"
-		$element = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['recuid']));
+		$element = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['record_uid']));
 		$element .= $elementHeadline;
 		$element .= ' ' . sprintf($GLOBALS['LANG']->getLL('list.field'), $fieldName);
 
 		$markerArray['actionlink'] = $actionLinks;
-		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
+		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['record_pid'], '', 0, 0);
 		$markerArray['element'] = $element; 
 		$markerArray['headlink'] = $row['link_title'];
 		$markerArray['linktarget'] = $brokenUrl;
