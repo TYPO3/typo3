@@ -11,7 +11,7 @@
 	* Fixed bug #12420: Indentation in modfunc1, getTemplateMarkers()
 	* Fixed bug #12421: Rename tx_linkvalidator_links to tx_linkvalidator_link
 	* Fixed bug #12423: ext_tables.sql: Use underscores to separate words in field names
-	* Fixed bug #12422: ext_tables.sql: Do not use appreviations for field names
+	* Fixed bug #12422: ext_tables.sql: Do not use abbreviations for field names
 
 2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca> 
 
