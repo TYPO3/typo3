@@ -120,67 +120,37 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		if ($this->uid !== NULL && is_array($this->_cleanProperties) && $this->uid != $this->_getCleanProperty('uid')) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		if ($propertyName === NULL) {
 			foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
-				if ($this->_propertyValueHasChanged($cleanPropertyValue, $this->$propertyName) === TRUE) return TRUE;
+				if ($this->isPropertyDirty($cleanPropertyValue, $this->$propertyName) === TRUE) return TRUE;
 			}
 		} else {
-			if ($this->_propertyValueHasChanged($this->_getCleanProperty($propertyName), $this->$propertyName) === TRUE) return TRUE;
+			if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->$propertyName) === TRUE) return TRUE;
 		}
 		return FALSE;
 	}
 
 	/**
-	 * Checks if the current value of a property differs from the previous value.
+	 * Checks the $value against the $cleanState.
 	 *
 	 * @param mixed $previousValue
 	 * @param mixed $currentValue
 	 * @return boolan
 	 */
-	protected function _propertyValueHasChanged($previousValue, $currentValue) {
+	protected function isPropertyDirty($previousValue, $currentValue) {
 		$result = FALSE;
+		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
+		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
 		if (is_object($currentValue)) {
-			if ($currentValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
-				if ($previousValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
-					$result = $this->_getHash($previousValue) !== $this->_getHash($currentValue);
-				} else {
-					$result = TRUE;
-				}
-			} elseif ($currentValue instanceof Tx_Extbase_Persistence_ObjectMonitoringInterface) {
-				$result = $currentValue->_isDirty();
+			if ($currentValue instanceof Tx_Extbase_Persistence_ObjectMonitoringInterface) {
+				$result = !is_object($previousValue) || $currentValue->_isDirty() || (get_class($previousValue) !== get_class($currentValue));
 			} else {
-				$result = $previousValue != $currentValue;
+				// For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
+				$result = ($previousValue != $currentValue);
 			}
 		} else {
 			$result = ($previousValue !== $currentValue);
 		}
 		return $result;
 	}
-
-	/**
-	 * Generates the value hash for the object
-	 *
-	 * @var Tx_Extbase_DomainObject_AbstractDomainObject $domainObject The domain object to generate the hash code from
-	 * @return string The hash code
-	 */
-	protected function _getHash(Tx_Extbase_DomainObject_AbstractDomainObject $domainObject) {
-		$hashSource = get_class($domainObject);
-		$properties = $domainObject->_getProperties();
-		if ($domainObject instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
-			unset($properties['uid']);
-		}
-		foreach ($properties as $propertyName => $propertyValue) {
-			if (is_array($propertyValue)) {
-				$hashSource .= serialize($propertyValue);
-			} elseif (!is_object($propertyValue)) {
-				$hashSource .= $propertyValue;
-			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-				$hashSource .= get_class($propertyValue);
-				$hashSource .= $propertyValue->getUid();
-			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
-				$hashSource .= $this->_getHash($propertyValue);
-			}
-		}
-		return sha1($hashSource);
-	}
-
+	
 }
 ?>

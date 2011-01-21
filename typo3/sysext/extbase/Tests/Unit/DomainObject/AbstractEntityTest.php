@@ -27,49 +27,6 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	/**
 	 * @test
 	 */
-	public function theObjectReturnsItsCorrectUid() {
-		$domainObjectName = uniqid('DomainObject_');
-		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
-		$domainObject = new $domainObjectName();
-		$domainObject->_setProperty('uid', 42);
-		$this->assertEquals($domainObject->getUid(), 42);
-	}
-
-	/**
-	 * @test
-	 */
-	public function theObjectReturnsItsCorrectUidIfTheUidIsNull() {
-		$domainObjectName = uniqid('DomainObject_');
-		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
-		$domainObject = new $domainObjectName();
-		$this->assertNull($domainObject->getUid());
-	}
-
-	/**
-	 * @test
-	 */
-	public function theObjectReturnsItsCorrectPid() {
-		$domainObjectName = uniqid('DomainObject_');
-		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
-		$domainObject = new $domainObjectName();
-		$domainObject->setPid(42);
-		$this->assertEquals($domainObject->getPid(), 42);
-	}
-
-	/**
-	 * @test
-	 */
-	public function theObjectReturnsItsCorrectPidIfThePidIsNull() {
-		$domainObjectName = uniqid('DomainObject_');
-		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
-		$domainObject = new $domainObjectName();
-		$this->assertNull($domainObject->getPid());
-	}
-
-
-	/**
-	 * @test
-	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
 		$domainObjectName = uniqid('DomainObject_');
 		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {
@@ -117,7 +74,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 		$domainObject->bar = 'It is raining outside';
 		$domainObject->_memorizeCleanState();
 
-		$this->assertEquals($domainObject->_isDirty(), FALSE);
+		$this->assertFalse($domainObject->_isDirty());
 	}
 
 	/**
@@ -144,135 +101,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 		$domainObject->bar = 'It is raining outside';
 		$domainObject->_memorizeCleanState();
 
-		$this->assertEquals($domainObject->_isDirty(), FALSE);
+		$this->assertFalse($domainObject->_isDirty());
 	}
-
-	/**
-	 * dataProvider for aChangedValueCanBeDetected
-	 */
-	public function previousAndCurrentValue() {
-		$className1 = uniqid('Class_');
-		eval('class ' . $className1 . ' extends Tx_Extbase_DomainObject_AbstractEntity {
-			public $bar = 42;
-			public $baz = "The quick brown...";
-		}');
-
-		// An entity with a simple property
-		$entity1 = new $className1;
-		$entity1->_setProperty('uid', 123);
-
-		// A clone of the entity above
-		$clonedEntity1 = clone $entity1;
-
-		$className2 = uniqid('Class_');
-		eval('class ' . $className2 . ' extends Tx_Extbase_DomainObject_AbstractEntity {
-			public $bar = 99;
-			public $baz = "The quick brown...";
-		}');
-		
-		// A different entity
-		$entity2 = new $className2;
-		$entity2->_setProperty('uid', 321);
-
-		// An entity similar to the second one but with a different uid
-		$entity3 = new $className2;
-		$entity3->_setProperty('uid', 222);
-
-		// An entity identical to the second one but pointing to a different memory space (identical in sense of Domain-Driven Design)
-		$entity4 = new $className2;
-		$entity4->_setProperty('uid', 321);
-
-		// An entity similar to the first entity (same properties and uid, but different class)
-		$entity5 = new $className2;
-		$entity5->bar = 42;
-		$entity5->_setProperty('uid', 123);
-
-		$className3 = uniqid('Class_');
-		eval('class ' . $className3 . ' extends Tx_Extbase_DomainObject_AbstractValueObject {
-			public $bar = 49;
-			public $baz = "The quick brown...";
-		}');
-
-		// A simple value object
-		$valueObject1 = new $className3;
-		$valueObject1->_setProperty('uid', 321);
-
-		// A clone of the value object
-		$clonedValueObject1 = clone $valueObject1;
-
-		// A value object with the same property values than the first one but with a different uid (identical to the first value object)
-		$valueObject2 = new $className3;
-		$valueObject2->_setProperty('uid', 111);
-
-		// A value with different property value but the same uid than the first one (not identical to the first value object)
-		$valueObject3 = new $className3;
-		$valueObject->bar = 456;
-		$valueObject3->_setProperty('uid', 111);
-
-		// An empty Object Storage and its clone
-		$emptyObjectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$clonedObjectStorage = clone $emptyObjectStorage;
-
-		// An Object Storage in a clean state holding an object, and its clone
-		$objectStorage1 = clone $emptyObjectStorage;
-		$objectStorage1->attach(new stdClass);
-		$objectStorage1->_memorizeCleanState();
-		$clonedObjectStorage1 = clone $objectStorage1;
-
-		// An Object Storage in a dirty state holding an object
-		$objectStorage2 = clone $emptyObjectStorage;
-		$clonedObjectStorage2 = clone $objectStorage2;
-		$objectStorage2->attach(new stdClass);
-
-		// Two entities with a circular dependency
-		$entity6 = new $className1;
-		$entity6->_setProperty('uid', 123);
-		$entity7 = new $className1;
-		$entity7->_setProperty('uid', 321);
-		$entity7->_setProperty('bar', $entity6); //circular
-		$objectStorage3 = clone $emptyObjectStorage;		
-		$objectStorage3->attach($entity7); // circular
-		$objectStorage3->_memorizeCleanState();
-		$entity6->_setProperty('bar', $objectStorage3);
-		$entity8 = clone $entity6;
-		$entity8->_setProperty('baz', "Another Text");
-
-		return array(
-			'Same integer values' => array(42, 42, FALSE),
-			'Different integer values' => array(42, 666, TRUE),
-			'Same number but different types' => array(42, '42', TRUE),
-			'Change from NULL to 0 value' => array(NULL, 0, TRUE),
-			'Change from 0 to NULL value' => array(0, NULL, TRUE),
-			'Two different standard class instances' => array(new stdClass, new stdClass, FALSE),
-			'Change from NULL to standard class instance' => array(NULL, new stdClass, TRUE),
-			'Change from standard class instance to NULL' => array(new stdClass, NULL, TRUE),
-			'Two equal entities (same memory pointer)' => array($entity1, $entity1, FALSE),
-			'Entities with different class, uid, and properties' => array($entity1, $entity2, TRUE),
-			'Entities with different class but the same uid and properties' => array($entity1, $entity5, TRUE),
-			'Entities of same class and property values but different uid' => array($entity2, $entity3, TRUE),
-			'Same entity (same class, uid, and property values)' => array($entity2, $entity4, FALSE),
-			'An entity and its clone' => array($entity1, $clonedEntity1, FALSE),
-			'Value objects with the same property values but a different uid' => array($valueObject1, $valueObject2, FALSE),
-			'Value objects with the same uid but different property values' => array($valueObject2, $valueObject3, FALSE),
-			'A Value object and its clone' => array($valueObject1, $clonedValueObject1, FALSE),
-			'An empty ObjectStorage and its clone' => array($clonedObjectStorage, $emptyObjectStorage, FALSE),
-			'An ObjectStorage and its clone' => array($clonedObjectStorage1, $objectStorage1, FALSE),
-			'Modified ObjectStorage' => array($clonedObjectStorage2, $objectStorage2, TRUE),
-			'A circular dependency can be resolved' => array($entity6, $entity8, TRUE),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider previousAndCurrentValue
-	 */
-	public function aChangedValueCanBeDetected($previousValue, $currentValue, $expectedResult) {
-		$className = uniqid('Class_');
-		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractEntity {}');
-		$mockObject = $this->getMock($this->buildAccessibleProxy($className), array('dummy'), array(), '', FALSE);
-		
-		$this->assertEquals($expectedResult, $mockObject->_call('_propertyValueHasChanged', $previousValue, $currentValue));
-	}
-
 }
 ?>
