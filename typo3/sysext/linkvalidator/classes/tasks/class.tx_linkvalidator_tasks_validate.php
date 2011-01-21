@@ -351,7 +351,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 * @param	string		$modTS: TSconfig array
 	 * @return	bool		TRUE if mail was sent, FALSE if or not
 	 */
-	function reportEmail($pageSections, $modTS) {
+	protected function reportEmail($pageSections, $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
 		/** @var array $markerArray */
 		$markerArray = array();
@@ -423,7 +423,7 @@ class tx_linkvalidator_tasks_Validate extends tx_scheduler_Task {
 	 * @param	array		$oldBrokenLink: markerarray with the number of link found
 	 * @return	string		Content of the mail
 	 */
-	function buildMail($curPage, $pageList, $markerArray, $oldBrokenLink) {
+	protected function buildMail($curPage, $pageList, $markerArray, $oldBrokenLink) {
 		$pageSectionHTML = t3lib_parsehtml::getSubpart($this->templateMail, '###PAGE_SECTION###');
 
 		if (is_array($markerArray)) {
