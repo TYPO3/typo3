@@ -94,6 +94,29 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		return $className;
 	}
 
+	/**
+	 * Mock session methods in t3lib_beUserAuth
+	 *
+	 * @return t3lib_beUserAuth Instance of BE_USER object with mocked session storage methods
+	 */
+	private function createBackendUserSessionStorageStub() {
+		$className = 't3lib_beUserAuthMocked';
+		if (!class_exists($className)) {
+			eval(
+				'class ' . $className . ' extends t3lib_beUserAuth {' .
+				'  protected $session=array();' .
+				'  public function getSessionData($key) {' .
+				'    return $this->session[$key];' .
+				'  }' .
+				'  public function setAndSaveSessionData($key,$data) {' .
+				'    $this->session[$key] = $data;' .
+				'  }' .
+				'}'
+			);
+		}
+
+		return $this->getMock($className, array('foo'));// $className;
+	}
 
 	////////////////////////////////////
 	// Tests for the utility functions
@@ -108,6 +131,25 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$this->assertTrue(
 			(new $className()) instanceof t3lib_formprotection_BackendFormProtection
 		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function createBackendUserSessionStorageStubWorkProperly() {
+		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
+
+		$allTokens = array(
+			'12345678' => array(
+					'formName' => 'foo',
+					'action' => 'edit',
+					'formInstanceName' => '42'
+				),
+		);
+
+		$GLOBALS['BE_USER']->setAndSaveSessionData('tokens', $allTokens);
+
+		$this->assertEquals($GLOBALS['BE_USER']->getSessionData('tokens'), $allTokens);
 	}
 
 
@@ -184,6 +226,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	 * @test
 	 */
 	public function createValidationErrorMessageAddsErrorFlashMessage() {
+		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
 		$this->fixture->createValidationErrorMessage();
 
 		$messages = t3lib_FlashMessageQueue::getAllMessagesAndFlush();
