@@ -23,6 +23,7 @@
 	* Fixed issue #17191: Missing styling in Ext Js Grid Headers
 	* Follow-up to #17024: Labels missing for fields without CSH
 	* Updated sprite images and CSS
+	* Fixed tt_content typeicon_classes mapping for search form and file list
 
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
