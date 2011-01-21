@@ -103,58 +103,75 @@ final class t3lib_utility_Client {
 			}
 		}
 
-			// system
 			// Microsoft Documentation about Platform tokens: http://msdn.microsoft.com/en-us/library/ms537503(VS.85).aspx
+			// 'system' is deprecated, use 'all_systems' (array) in future!
 		$browserInfo['system'] = '';
 		$browserInfo['all_systems'] = '';
 		if (strstr($userAgent, 'Win')) {
 				// windows
 			if (strstr($userAgent, 'Windows NT 6.1')) {
-				$browserInfo['system'] = 'win7';
+				$browserInfo['system'] = 'winNT'; // backwards compatible
+				$browserInfo['all_systems'][] = 'win7';
 				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Windows NT 6.0')) {
-				$browserInfo['system'] = 'winVista';
+				$browserInfo['system'] = 'winNT'; // backwards compatible
+				$browserInfo['all_systems'][] = 'winVista';
 				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Windows NT 5.1')) {
-				$browserInfo['system'] = 'winXP';
+				$browserInfo['system'] = 'winNT'; // backwards compatible
+				$browserInfo['all_systems'][] = 'winXP';
 				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Windows NT 5.0')) {
-				$browserInfo['system'] = 'win2k';
+				$browserInfo['system'] = 'winNT'; // backwards compatible
+				$browserInfo['all_systems'][] = 'win2k';
 				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Win98') || strstr($userAgent, 'Windows 98')) {
 				$browserInfo['system'] = 'win98';
+				$browserInfo['all_systems'][] = 'win98';
 			} elseif (strstr($userAgent, 'Win95') || strstr($userAgent, 'Windows 95')) {
 				$browserInfo['system'] = 'win95';
+				$browserInfo['all_systems'][] = 'win95';
 			} elseif (strstr($userAgent, 'WinNT') || strstr($userAgent, 'Windows NT')) {
 				$browserInfo['system'] = 'winNT';
+				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Win16') || strstr($userAgent, 'Windows 311')) {
 				$browserInfo['system'] = 'win311';
+				$browserInfo['all_systems'][] = 'win311';
 			}
 		} elseif (strstr($userAgent, 'Mac')) {
 			if (strstr($userAgent, 'iPad') || strstr($userAgent, 'iPhone') || strstr($userAgent, 'iPod')) {
-				$browserInfo['system'] = 'iOS';
+				$browserInfo['system'] = 'mac'; // backwards compatible
+				$browserInfo['all_systems'][] = 'iOS';
 				$browserInfo['all_systems'][] = 'mac';
 			} else {
 				$browserInfo['system'] = 'mac';
+				$browserInfo['all_systems'][] = 'mac';
 			}
 				// unixes
 		} elseif (strstr($userAgent, 'Linux')) {
 			if (strstr($userAgent, 'Android')) {
-				$browserInfo['system'] = 'android';
+				$browserInfo['system'] = 'linux'; // backwards compatible
+				$browserInfo['all_systems'][] = 'android';
 				$browserInfo['all_systems'][] = 'linux';
 			} else {
 				$browserInfo['system'] = 'linux';
+				$browserInfo['all_systems'][] = 'linux';
 			}
 		} elseif (strstr($userAgent, 'BSD')) {
 			$browserInfo['system'] = 'unix_bsd';
+			$browserInfo['all_systems'][] = 'unix_bsd';
 		} elseif (strstr($userAgent, 'SGI') && strstr($userAgent, ' IRIX ')) {
 			$browserInfo['system'] = 'unix_sgi';
+			$browserInfo['all_systems'][] = 'unix_sgi';
 		} elseif (strstr($userAgent, ' SunOS ')) {
 			$browserInfo['system'] = 'unix_sun';
+			$browserInfo['all_systems'][] = 'unix_sun';
 		} elseif (strstr($userAgent, ' HP-UX ')) {
 			$browserInfo['system'] = 'unix_hp';
+			$browserInfo['all_systems'][] = 'unix_hp';
 		} elseif (strstr($userAgent, 'CrOS')) {
-			$browserInfo['system'] = 'chrome';
+			$browserInfo['system'] = 'linux';
+			$browserInfo['all_systems'][] = 'chrome';
 			$browserInfo['all_systems'][] = 'linux';
 		}
 

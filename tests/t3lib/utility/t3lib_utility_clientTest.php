@@ -209,8 +209,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'win7',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertEquals(
+			'winNT',
 			$infoArray['system']
 		);
 	}
@@ -222,8 +227,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'winVista',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'winNT',
 			$infoArray['system']
 		);
 	}
@@ -235,8 +245,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'winXP',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'winNT',
 			$infoArray['system']
 		);
 	}
@@ -248,8 +263,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; SV1)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'win2k',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'winNT',
 			$infoArray['system']
 		);
 	}
@@ -261,8 +281,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.01; SV1)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'win2k',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'winNT',
 			$infoArray['system']
 		);
 	}
@@ -300,8 +325,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7W367a Safari/531.21.10';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'iOS',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'mac',
 			$infoArray['system']
 		);
 	}
@@ -313,8 +343,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'iOS',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'mac',
 			$infoArray['system']
 		);
 	}
@@ -326,8 +361,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Geckto) Version/3.0 Mobile/3A101a Safari/419.3';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'iOS',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'mac',
 			$infoArray['system']
 		);
 	}
@@ -378,8 +418,13 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'android',
+			$infoArray['all_systems']
+		);
+			// Check for backwards compatibility (deprecated since 4.5)
+		$this->assertSame(
+			'linux',
 			$infoArray['system']
 		);
 	}
@@ -391,9 +436,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Links (1.00pre20; OpenBSD 4.8 i386; 80x25)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'unix_bsd',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -404,9 +449,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Links (2.2; NetBSD 5.1 amd64; 80x25)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'unix_bsd',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -417,9 +462,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (X11; U; FreeBSD amd64; c) AppleWebKit/531.2+ (KHTML, like Gecko) Safari 531.2+ Epiphany/230.2';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'unix_bsd',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -430,9 +475,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (X11; U; CrOS i686  9.10.0; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.253.0 Safari 532.5';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'chrome',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 	
