@@ -31,7 +31,7 @@
  * </output>
  *
  * <code title="Email link with custom linktext">
- * <f:link.email email="foo@bar.tld">some custom content</f:emaillink>
+ * <f:link.email email="foo@bar.tld">some custom content</f:link.email>
  * </code>
  * <output>
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
