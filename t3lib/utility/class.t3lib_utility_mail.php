@@ -61,9 +61,9 @@ final class t3lib_utility_Mail {
 			}
 			if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
 				$additionalHeaders .= 'From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] 
-						. '" <' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'] . '>';
+						. '" <' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '>';
 			} else {
-				$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultMailFromAddress'];
+				$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
 			}
 		}
 
