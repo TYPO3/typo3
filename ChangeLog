@@ -5,6 +5,7 @@
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17024: CSH not rendered properly in select-type fields with renderMode = checkbox
+	* Fixed bug #17186: Scheduler: CSH not displayed properly in docheader
 
 2011-01-21  Jeff Segars  <jeff@webempoweredchurch.org>
 

@@ -1547,6 +1547,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
+			'CSH' => t3lib_BEfunc::wrapInHelp('_MOD_tools_txschedulerM1', ''),
 			'FUNC_MENU' => $this->getFunctionMenu(),
 			'CONTENT'   => $this->content,
 			'TITLE'     => $GLOBALS['LANG']->getLL('title'),
@@ -1578,7 +1579,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh'      => t3lib_BEfunc::cshItem('_MOD_tools_txschedulerM1', '', $this->backPath),
 			'reload'   => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
