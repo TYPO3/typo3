@@ -116,6 +116,14 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	protected $maximumNumberOfTokens = 20000;
 
 	/**
+	 * Keeps the instance of the user which existed during creation
+	 * of the object.
+	 *
+	 * @var t3lib_beUserAuth
+	 */
+	protected $backendUser;
+
+	/**
 	 * Only allow construction if we have a backend session
 	 */
 	public function __construct() {
@@ -126,6 +134,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 				1285067843
 			);
 		}
+		$this->backendUser = $GLOBALS['BE_USER'];
 		parent::__construct();
 	}
 
@@ -155,7 +164,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 *		 the saved tokens as, will be empty if no tokens have been saved
 	 */
 	protected function retrieveTokens() {
-		$tokens = $GLOBALS['BE_USER']->getSessionData('formTokens');
+		$tokens = $this->backendUser->getSessionData('formTokens');
 		if (!is_array($tokens)) {
 			$tokens = array();
 		}
@@ -170,7 +179,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * @return void
 	 */
 	public function persistTokens() {
-		$GLOBALS['BE_USER']->setAndSaveSessionData('formTokens', $this->tokens);
+		$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
 	}
 }
 

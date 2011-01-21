@@ -121,12 +121,35 @@ class SC_mod_user_setup_index {
 	protected $installToolFileExists = FALSE;
 	protected $installToolFileKeep = FALSE;
 
+	/**
+	 * Form protection instance
+	 *
+	 * @var t3lib_formprotection_BackendFormProtection
+	 */
+	protected $formProtection;
 
 	/******************************
 	 *
 	 * Saving data
 	 *
 	 ******************************/
+
+
+	/**
+	 * Instanciate the form protection before a simulated user is initialized.
+	 */
+	public function __construct() {
+		$this->formProtection = t3lib_formProtection_Factory::get(
+			't3lib_formprotection_BackendFormProtection'
+		);
+	}
+
+	/**
+	 * Getter for the form protection instance.
+	 */
+	public function getFormProtection() {
+		return $this->formProtection;
+	}
 
 	/**
 	 * If settings are submitted to _POST[DATA], store them
@@ -144,10 +167,7 @@ class SC_mod_user_setup_index {
 		$storeRec = array();
 		$fieldList = $this->getFieldsFromShowItem();
 
-		$formProtection = t3lib_formProtection_Factory::get(
-			't3lib_formprotection_BackendFormProtection'
-		);
-		if (is_array($d) && $formProtection->validateToken(
+		if (is_array($d) && $this->formProtection->validateToken(
 				(string) t3lib_div::_POST('formToken'),
 				'BE user setup', 'edit'
 			)
@@ -443,10 +463,7 @@ class SC_mod_user_setup_index {
 
 		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 0, 1, FALSE, 1, $this->dividers2tabs);
 
-		$formProtection = t3lib_formProtection_Factory::get(
-			't3lib_formprotection_BackendFormProtection'
-		);
-		$formToken = $formProtection->generateToken('BE user setup', 'edit');
+		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 
 			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
@@ -998,6 +1015,5 @@ $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
 
-t3lib_formProtection_Factory::get('t3lib_formprotection_BackendFormProtection')
-	->persistTokens();
+$SOBE->getFormProtection()->persistTokens();
 ?>
