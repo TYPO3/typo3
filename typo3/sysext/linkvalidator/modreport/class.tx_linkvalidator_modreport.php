@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
+class tx_linkvalidator_modreport extends t3lib_extobjbase {
 
 	/**
 	 * @var template
@@ -129,7 +129,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	protected $content;
 
 	/**
-	 * Main method of modfunc1
+	 * Main method of modreport
 	 *
 	 * @return string Module content
 	 */
@@ -648,8 +648,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modfunc1.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modfunc1.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modreport.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modreport/class.tx_linkvalidator_modreport.php']);
 }
 
 ?>
