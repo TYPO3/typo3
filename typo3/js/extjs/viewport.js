@@ -26,6 +26,59 @@
 
 Ext.ns('TYPO3');
 
+	// override splitregion to fit the splitbars in our design
+Ext.override(Ext.layout.BorderLayout.SplitRegion, {
+	render : function(ct, p) {
+		Ext.layout.BorderLayout.SplitRegion.superclass.render.call(this, ct, p);
+
+		var ps = this.position;
+
+		this.splitEl = ct.createChild({
+			cls: "x-layout-split x-layout-split-" + ps, html: " ",
+			id: this.panel.id + '-xsplit'
+		});
+
+		if (this.enableChildSplit) {
+			this.splitChildEl = this.splitEl.createChild({
+				cls: 'x-layout-mini-wrapper'
+			});
+
+		}
+		if (this.collapseMode == 'mini') {
+			this.miniSplitEl = this.splitEl.createChild({
+				cls: "x-layout-mini x-layout-mini-" + ps, html: " "
+			});
+			this.miniSplitEl.addClassOnOver('x-layout-mini-over');
+			this.miniSplitEl.on('click', this.onCollapseClick, this, {stopEvent:true});
+		}
+
+		var s = this.splitSettings[ps];
+
+		if (this.enableChildSplit) {
+			this.split = new Ext.SplitBar(this.splitChildEl.dom, p.el, s.orientation);
+		} else {
+			this.split = new Ext.SplitBar(this.splitEl.dom, p.el, s.orientation);
+		}
+		this.split.tickSize = this.tickSize;
+		this.split.placement = s.placement;
+		this.split.getMaximumSize = this[s.maxFn].createDelegate(this);
+		this.split.minSize = this.minSize || this[s.minProp];
+		this.split.on("beforeapply", this.onSplitMove, this);
+		this.split.useShim = this.useShim === true;
+		this.maxSize = this.maxSize || this[s.maxProp];
+
+		if (p.hidden) {
+			this.splitEl.hide();
+		}
+
+		if (this.useSplitTips) {
+			this.splitEl.dom.title = this.collapsible ? this.collapsibleSplitTip : this.splitTip;
+		}
+		if (this.collapsible) {
+			this.splitEl.on("dblclick", this.onCollapseClick, this);
+		}
+	}
+});
 /**
  * Extends the viewport with some functionality for TYPO3.
  *
@@ -120,26 +173,6 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		this.ModuleMenuContainer = Ext.getCmp('typo3-module-menu');
 		this.DebugConsole = Ext.getCmp('typo3-debug-console');
 
-		// place a wrapper-div inside the split bar,
-		// this enables us to set width of the split bar to 0 to make it invisible
-		Ext.getCmp('typo3-viewport').on(
-			'afterRender',
-			function(el) {
-				Ext.each([
-					'typo3-navigationContainer-xsplit',
-					'typo3-module-menu-xsplit'
-					], function(value) {
-					var splitbar = Ext.get(value);
-					var button = splitbar.first();
-					var wrapper = splitbar.createChild({
-						cls: 'x-layout-mini-wrapper'
-					});
-					if (button !== null) {
-						wrapper.appendChild(button);
-					}
-				});
-			}
-		);
 	}
 });
 

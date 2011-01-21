@@ -1,3 +1,7 @@
+2011-01-21  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17190: Make the drag area on the split bars wider than 1px
+
 2011-01-21  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #16935: tx_coreupdates_installversioning is obsolete

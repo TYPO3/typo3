@@ -54,6 +54,7 @@ TYPO3.Viewport.configuration = {
 			floatable: true,
 			hideCollapseTool: true,
 			split: true,
+			enableChildSplit: true,
 			border: false,
 			autoScroll: true
 		},
@@ -71,6 +72,7 @@ TYPO3.Viewport.configuration = {
 					floatable: true,
 					animCollapse: false,
 					split: true,
+					enableChildSplit: true,
 					collapsible: true,
 					collapseMode: 'mini',
 					hideCollapseTool: true,

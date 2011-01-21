@@ -2294,9 +2294,9 @@ body.x-body-masked .x-window-plain .x-window-mc {
  */
 .x-layout-mini-wrapper {
 	height: 100%;
-	left: 0;
+	left: -5px;
 	position: absolute;
-	width: 1px;
+	width: 10px;
 }
 
 .x-splitbar-proxy.x-splitbar-proxy-h {
