@@ -1,3 +1,7 @@
+2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0rc1
+
 2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
