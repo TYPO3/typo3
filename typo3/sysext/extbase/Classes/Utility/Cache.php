@@ -41,6 +41,10 @@ class Tx_Extbase_Utility_Cache {
 	 * @return void
 	 */
 	static public function clearPageCache($pageIdsToClear = NULL) {
+		if ($pageIdsToClear !== NULL && !is_array($pageIdsToClear)) {
+			$pageIdsToClear = array(intval($pageIdsToClear));
+		}
+
 		self::flushPageCache($pageIdsToClear);
 		self::flushPageSectionCache($pageIdsToClear);
 	}
@@ -48,56 +52,48 @@ class Tx_Extbase_Utility_Cache {
 	/**
 	 * Flushes cache_pages or cachinframework_cache_pages.
 	 *
-	 * @param mixed $pageIdsToClear (int) single oder (array) multiple pageIds to clear the cache for
+	 * @param array $pageIdsToClear pageIds to clear the cache for
 	 * @return void
 	 */
 	static protected function flushPageCache($pageIds = NULL) {
 		if (TYPO3_UseCachingFramework) {
 			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 
-			if (is_array($pageIds) && !empty($pageIds)) {
+			if ($pageIds !== NULL) {
 				foreach ($pageIds as $pageId) {
 					$pageCache->flushByTag('pageId_' . $pageId);
 				}
-			} elseif (is_numeric($pageIds)) {
-				$pageCache->flushByTag('pageId_' . intval($pageIds));
 			} else {
 				$pageCache->flush();
 			}
-		} elseif (is_array($pageIds) && !empty($pageIds)) {
+		} elseif ($pageIds !== NULL) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN (' . implode(',', $pageIds) . ')');
-		} elseif (is_numeric($pageIds)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id = ' . intval($pageIds));
 		} else {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', '');
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pages');
 		}
 	}
 
 	/**
 	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
 	 *
-	 * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
+	 * @param array $pageIdsToClear pageIds to clear the cache for
 	 * @return void
 	 */
-	static protected function flushPageSectionCache(array $pageIds = NULL) {
+	static protected function flushPageSectionCache($pageIds = NULL) {
 		if (TYPO3_UseCachingFramework) {
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 
-			if (is_array($pageIds) && !empty($pageIds)) {
+			if ($pageIds !== NULL) {
 				foreach ($pageIds as $pageId) {
 					$pageSectionCache->flushByTag('pageId_' . $pageId);
 				}
-			} elseif (is_numeric($pageIds)) {
-				$pageSectionCache->flushByTag('pageId_' . intval($pageIds));
 			} else {
 				$pageSectionCache->flush();
 			}
-		} elseif (is_array($pageIds) && !empty($pageIds)) {
+		} elseif ($pageIds !== NULL) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN (' . implode(',', $pageIds) . ')');
-		} elseif (is_numeric($pageIds)) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id = ' . intval($pageIds));
 		} else {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', '');
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pagesection');
 		}
 	}
 }
