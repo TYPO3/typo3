@@ -30,6 +30,7 @@
 2011-01-21  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17167: Cache ExtDirect::getAPI calls
+	* Fixed bug #17181: Add Expires header to _.htaccess
 
 2011-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
