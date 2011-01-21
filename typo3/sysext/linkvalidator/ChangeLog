@@ -1,5 +1,6 @@
 2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca> 
-
+	* Fixed bug #12226 website that has multiple domainsrecords produces funny links
+	* Fixed bug #12414: OOP principle of data encapsulation violated in tx_linkvalidator_tasks_Validate	
 	* Fixed bug #12385: Conflict scheduler:testtask with linkvalidator::task	
 	* Fixed bug #12411: Fix Copyright Notices
 	

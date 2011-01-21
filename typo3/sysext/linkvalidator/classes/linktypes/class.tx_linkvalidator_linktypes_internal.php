@@ -287,7 +287,10 @@ class tx_linkvalidator_linkTypes_Internal extends tx_linkvalidator_linkTypes_Abs
 			// checks alternate domains
 		if (count($rootLine) > 0) {
 				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-				$domain = $protocol . t3lib_BEfunc::firstDomainRecord($rootLine);
+				$domainRecord = t3lib_BEfunc::firstDomainRecord($rootLine);
+				if(!empty($domainRecord)) {
+					$domain = $protocol . $domainRecord;
+				}
 		}
 		return $domain . '/index.php?id=' . $row['url'];
 	}
