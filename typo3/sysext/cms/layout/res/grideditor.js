@@ -158,7 +158,7 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 			border: '0',
 			width: '100%',
 			height: '100%',
-			class: 'editor',
+			'class': 'editor',
 			cellspacing: '0',
 			cellpadding: '0'
 		};

@@ -25,6 +25,7 @@
 	* Follow-up to #17024: Labels missing for fields without CSH
 	* Updated sprite images and CSS
 	* Fixed tt_content typeicon_classes mapping for search form and file list
+	* Fixed issue #17199: Use of reserved word "class" breaks grid editor in Safari
 
 2011-01-21  Francois Suter  <francois.suter@typo3.org>
 
