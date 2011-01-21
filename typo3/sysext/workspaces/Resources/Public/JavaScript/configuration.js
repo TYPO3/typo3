@@ -260,7 +260,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			,tooltip: TYPO3.lang["tooltip.viewElementAction"]
 			,handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-				TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.livepid);
+				TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.uid);
 			},
 			getClass: function(v, meta, rec) {
 				if(!rec.json.allowedAction_view) {

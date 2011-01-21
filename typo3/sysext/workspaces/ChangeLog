@@ -1,5 +1,6 @@
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
 	
+	* Fixed bug #12448: grid preview links are broken
 	* Raised version to 4.5.0rc1
 	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
 	* Fixed bug #12308: Workspace non-admin not workspace owner sees icon to swap updated version with Live site
