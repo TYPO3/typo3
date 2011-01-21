@@ -86,6 +86,11 @@ class tx_Workspaces_Service_GridData {
 		$workspacesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$availableWorkspaces = $workspacesObj->getAvailableWorkspaces();
 
+		$workspaceAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspace);
+		$swapStage = ($workspaceAccess['publish_access'] & 1) ? Tx_Workspaces_Service_Stages::STAGE_PUBLISH_ID : 0;
+		$swapAccess =  $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace) &&
+					   $GLOBALS['BE_USER']->workspaceSwapAccess();
+
 		$this->initializeWorkspacesCachingFramework();
 
 		// check for dataArray in cache
@@ -129,8 +134,14 @@ class tx_Workspaces_Service_GridData {
 
 					$versionArray['allowedAction_nextStage'] = $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
 					$versionArray['allowedAction_prevStage'] = $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
-						// @todo hide the actions if the user is not allowed to edit the current stage
-					$versionArray['allowedAction_swap'] = $GLOBALS['BE_USER']->workspaceSwapAccess();
+
+					if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
+						$versionArray['allowedAction_swap'] = $stagesObj->isNextStageAllowedForUser($swapStage);
+					} else if ($swapAccess && $swapStage == 0) {
+						$versionArray['allowedAction_swap'] = TRUE;
+					} else {
+						$versionArray['allowedAction_swap'] = FALSE;
+					}
 					$versionArray['allowedAction_delete'] = TRUE;
 						// preview and editing of a deleted page won't work ;)
 					$versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
