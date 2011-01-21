@@ -238,6 +238,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$result = $this->databaseHandle->sql_query($sql);
 		$this->checkSqlErrors($sql);
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		$this->databaseHandle->sql_free_result($result);
 		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
 		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
 		return $rows;
@@ -262,7 +263,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$this->replacePlaceholders($statement, $parameters);
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
-			return $this->databaseHandle->sql_num_rows($result);
+			$count = $this->databaseHandle->sql_num_rows($result);
 		} else {
 			$statementParts['fields'] = array('COUNT(*)');
 			$statement = $this->buildQuery($statementParts, $parameters);
@@ -270,8 +271,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
 			$rows = $this->getRowsFromResult($query->getSource(), $result);
-			return current(current($rows));
+			$count = current(current($rows));
 		}
+		$this->databaseHandle->sql_free_result($result);
+		return $count;
 	}
 
 	/**
