@@ -1890,8 +1890,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > $max) {
 					// OK, so there were more than the max allowed number of login failures - so we will send an email then.
 				$subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-				$email_body = '
-There has been numerous attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res) . ') to login at the TYPO3
+				$email_body = 'There have been some attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res) . ') to login at the TYPO3
 site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . t3lib_div::getIndpEnv('HTTP_HOST') . ').
 
 This is a dump of the failures:
@@ -1902,11 +1901,14 @@ This is a dump of the failures:
 					$email_body .= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $testRows['tstamp']) . ':  ' . @sprintf($testRows['details'], '' . $theData[0], '' . $theData[1], '' . $theData[2]);
 					$email_body .= LF;
 				}
-				t3lib_utility_Mail::mail($email,
-										 $subject,
-										 $email_body,
-										 'From: TYPO3 Login WARNING<>'
-				);
+				$from = t3lib_utility_Mail::getSystemFrom();
+				/** @var $mail t3lib_mail_Message */
+				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+				$mail->setTo($email)
+						->setFrom($from)
+						->setSubject($subject)
+						->setBody($email_body);
+				$mail->send();
 				$this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', array($GLOBALS['TYPO3_DB']->sql_num_rows($res), $secondsBack, $email)); // Logout written to log
 			}
 		}

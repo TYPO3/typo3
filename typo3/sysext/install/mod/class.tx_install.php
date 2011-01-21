@@ -2655,17 +2655,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			case 'get_form':
 				$out = '
 					<p id="checkMailForm">
-						You can check the mail() function by entering your email
+						You can check the t3lib_mail functionality by entering your email
 						address here and press the button. You should then
-						receive a testmail from test@test.test.
-						<br />
-						Since almost all mails in TYPO3 are sent using the
-						t3lib_htmlmail class, sending with this class can be
-						tested by checking the box
-						<strong>Test t3lib_htmlmail</strong> below.
-						The return-path of the mail is set to null@' . t3lib_div::getIndpEnv('HTTP_HOST') . '.
-						Some mail servers won\'t send the mail if the host of
-						the return-path is not resolved correctly.
+						receive a testmail from "typo3installtool@example.org".
 					</p>
 				';
 					// Get the template file
@@ -2688,7 +2680,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'message' => $this->mailMessage,
 					'enterEmail' => 'Enter the email address',
 					'actionUrl' => $this->action . '#checkMailForm',
-					'useHtmlMailLabel' => 'Test t3lib_htmlmail',
 					'submit' => 'Send test mail'
 				);
 					// Fill the markers
@@ -2705,20 +2696,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$subject = 'TEST SUBJECT';
 					$email = trim($this->INSTALL['check_mail']);
 
-					if($this->INSTALL['use_htmlmail']) {
-					  	$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
-					  	/* @var $emailObj t3lib_htmlmail */
-						$emailObj->start();
-						$emailObj->subject = $subject;
-						$emailObj->from_email = 'test@test.test';
-						$emailObj->from_name = 'TYPO3 Install Tool';
-						$emailObj->returnPath = 'null@'.t3lib_div::getIndpEnv('HTTP_HOST');
-						$emailObj->addPlain('TEST CONTENT');
-						$emailObj->setHTML($emailObj->encodeMsg('<html><body>HTML TEST CONTENT</body></html>'));
-						$emailObj->send($email);
-					} else {
-						t3lib_div::plainMailEncoded($email,$subject,'TEST CONTENT','From: test@test.test');
-					}
+						/** @var $mailMessage t3lib_mail_Message */
+					$mailMessage = t3lib_div::makeInstance('t3lib_mail_Message');
+					$mailMessage->addTo($email)
+							->addFrom('typo3installtool@example.org', 'TYPO3 Install Tool')
+							->setSubject($subject)
+							->setBody('<html><body>HTML TEST CONTENT</body></html>');
+					$mailMessage->addPart('TEST CONTENT');
+					$mailMessage->send();
 					$this->mailMessage= 'Mail was sent to: ' . $email;
 				}
 			break;

@@ -116,6 +116,90 @@ final class t3lib_utility_Mail {
 		}
 		return $success;
 	}
+
+	/**
+	 * Gets a valid "from" for mail messages (email and name).
+	 *
+	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
+	 *
+	 * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender. NULL if no address is configured
+	 */
+	public static function getSystemFrom() {
+		$address = self::getSystemFromAddress();
+		$name = self::getSystemFromName();
+		if (!$address) {
+			return NULL;
+		} elseif ($name) {
+			return array($address => $name);
+		} else {
+			return array($address);
+		}
+	}
+
+	/**
+	 * Creates a valid "from" name for mail messages.
+	 *
+	 * As configured in Install Tool.
+	 *
+	 * @return string The name (unquoted, unformatted). NULL if none is set
+	 */
+	public static function getSystemFromName() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
+			return $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'];
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * Creates a valid email address for the sender of mail messages.
+	 *
+	 * Uses a fall back chain:
+	 *     Install Tool ->
+	 *     no-reply@FirstDomainRecordFound ->
+	 *     no-reply@php_uname('n')
+	 *
+	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
+	 *
+	 * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender
+	 */
+	public static function getSystemFromAddress() {
+
+			// first check the localconf setting
+		$address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
+		if (!t3lib_div::validEmail($address)) {
+				// just get us a domain record we can use
+			$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'domainName',
+				'sys_domain',
+				'hidden = 0',
+				'',
+				'pid ASC, sorting ASC'
+			);
+			if (!empty($domainRecord['domainName'])) {
+				$tempUrl = $domainRecord['domainName'];
+
+				if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
+						// shouldn't be the case anyways, but you never know
+						// ... there're crazy people out there
+					$tempUrl = 'http://' .$tempUrl;
+				}
+				$host = parse_url($tempUrl, PHP_URL_HOST);
+			}
+			$address = 'no-reply@' . $host;
+			if (!t3lib_div::validEmail($address)) {
+					// get host name from server
+				$host = php_uname('n');
+				$address = 'no-reply@' . $host;
+				if (!t3lib_div::validEmail($address)) {
+						// if everything fails use a dummy address
+					$address = 'no-reply@example.org';
+				}
+			}
+
+		}
+		return $address;
+	}
 }
 
 ?>

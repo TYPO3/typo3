@@ -97,8 +97,6 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 			}
 		}
 
-		$fromEmail = $this->getFromAddress();
-
 		$subject = sprintf(
 			$GLOBALS['LANG']->getLL('status_updateTask_email_subject'),
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
@@ -118,65 +116,15 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 		$message .= implode(CRLF, $systemIssues);
 		$message .= CRLF . CRLF;
 
+		$from = t3lib_utility_Mail::getSystemFrom();
+
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
-		$mail->setFrom(array($fromEmail => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']));
+		$mail->setFrom($from);
 		$mail->setTo($this->notificationEmail);
 		$mail->setSubject($subject);
 		$mail->setBody($message);
 
 		$mail->send();
-	}
-
-	/**
-	 * Tries to find an email address to use for the From email header.
-	 *
-	 * Uses a fall back chain:
-	 *     Install Tool ->
-	 *     no-reply@FirstDomainRecordFound ->
-	 *     no-reply@php_uname('n')
-	 *
-	 * @return	string	email address
-	 */
-	protected function getFromAddress() {
-		$email = '';
-		$user  = 'no-reply';
-
-			// default
-		$email = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
-
-			// find domain record
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				// just get us a domain record we can use
-			$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-				'domainName',
-				'sys_domain',
-				'hidden = 0',
-				'',
-				'pid ASC, sorting ASC'
-			);
-
-			if (!empty($domainRecord['domainName'])) {
-				$tempUrl = $domainRecord['domainName'];
-
-				if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
-						// shouldn't be the case anyways, but you never know
-						// ... there're crazy people out there
-					$tempUrl = 'http://' .$tempUrl;
-				}
-
-				$host = parse_url($tempUrl, PHP_URL_HOST);
-			}
-
-			$email = $user . '@' . $host;
-		}
-
-			// uname
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$host  = php_uname('n');
-			$email = $user . '@' . $host;
-		}
-
-		return $email;
 	}
 }
 

@@ -45,6 +45,11 @@ class t3lib_mail_Message extends Swift_Message {
 	protected $mailer;
 
 	/**
+	 * @var string This will be added as X-Mailer to all outgoing mails
+	 */
+	protected $mailerHeader = 'TYPO3';
+
+	/**
 	 * True if the message has been sent.
 	 * @var boolean
 	 */
@@ -73,6 +78,7 @@ class t3lib_mail_Message extends Swift_Message {
 	public function send() {
 		$this->initializeMailer();
 		$this->sent = TRUE;
+		$this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
 		return $this->mailer->send($this, $this->failedRecipients);
 	}
 

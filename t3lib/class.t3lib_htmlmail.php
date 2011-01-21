@@ -245,6 +245,7 @@ class t3lib_htmlmail {
 	 * @return	void
 	 */
 	public function t3lib_htmlmail() {
+		t3lib_div::logDeprecatedFunction();
 		$this->forceReturnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
 
 		$this->mailer = 'TYPO3';

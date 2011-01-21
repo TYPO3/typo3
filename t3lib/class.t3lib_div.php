@@ -6038,13 +6038,20 @@ final class t3lib_div {
 				// send message per mail
 			elseif ($type == 'mail') {
 				list($to, $from) = explode('/', $destination);
-				t3lib_utility_Mail::mail($to, 'Warning - error in TYPO3 installation',
-						'Host: ' . $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF .
+				if (!t3lib_div::validEmail($from)) {
+					$from = t3lib_utility_Mail::getSystemFrom();
+				}
+				/** @var $mail t3lib_mail_Message */
+				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+				$mail->setTo($to)
+						->setFrom($from)
+						->setSubject('Warning - error in TYPO3 installation')
+						->setBody('Host: ' . $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF .
 								'Extension: ' . $extKey . LF .
 								'Severity: ' . $severity . LF .
-								LF . $msg,
-					($from ? 'From: ' . $from : '')
+								LF . $msg
 				);
+				$mail->send();
 			}
 				// use the PHP error log
 			elseif ($type == 'error_log') {

@@ -256,7 +256,7 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 				// The headers have already been set, so use header information
 			$contentType = $this->message->getContentType();
 			$charset = $this->message->getCharset();
-			$encoding = $this->message->getEncoder();
+			$encoding = $this->message->getEncoder()->getName();
 				// reverse encoding and set body
 			$rawBody = $this->decode($body, $encoding);
 			$this->message->setBody($rawBody, $contentType, $charset);

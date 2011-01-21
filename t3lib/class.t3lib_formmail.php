@@ -37,7 +37,7 @@
  *
  *
  *
- *   69: class t3lib_formmail extends t3lib_htmlmail
+ *   69: class t3lib_formmail
  *   95:	 function start($V,$base64=false)
  *  172:	 function addAttachment($file, $filename)
  *
@@ -55,10 +55,29 @@
  * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php
  */
-class t3lib_formmail extends t3lib_htmlmail {
+class t3lib_formmail {
 	protected $reserved_names = 'recipient,recipient_copy,auto_respond_msg,auto_respond_checksum,redirect,subject,attachment,from_email,from_name,replyto_email,replyto_name,organisation,priority,html_enabled,quoted_printable,submit_x,submit_y';
-	var $dirtyHeaders = array(); // collection of suspicious header data, used for logging
+	protected $dirtyHeaders = array(); // collection of suspicious header data, used for logging
 
+	protected $characterSet;
+	protected $subject;
+	protected $fromName;
+	protected $replyToName;
+	protected $organisation;
+	protected $fromAddress;
+	protected $replyToAddress;
+	protected $priority;
+	protected $autoRespondMessage;
+	protected $encoding = 'quoted-printable';
+
+	/** @var t3lib_mail_Message */
+	protected $mailMessage;
+	protected $recipient;
+	protected $returnPath;
+	protected $plainContent = '';
+
+	/** @var array Files to clean up at the end (attachments) */
+	protected $temporaryFiles = array();
 
 	/**
 	 * Start function
@@ -82,116 +101,153 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * @param	boolean		Whether to base64 encode the mail content
 	 * @return	void
 	 */
-	function start($V, $base64 = false) {
-		$convCharset = FALSE; // do we need to convert form data?
+	function start($valueList, $base64 = false) {
 
-		if ($GLOBALS['TSFE']->config['config']['formMailCharset']) { // Respect formMailCharset if it was set
-			$this->charset = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
-			$convCharset = TRUE;
+		$this->mailMessage = t3lib_div::makeInstance('t3lib_mail_Message');
 
-		} elseif ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset) { // Use metaCharset for mail if different from renderCharset
-			$this->charset = $GLOBALS['TSFE']->metaCharset;
-			$convCharset = TRUE;
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath']) {
+			$this->returnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
+			$this->mailMessage->setReturnPath($this->returnPath);
+		}
+		$this->mailMessage->getHeaders()->addTextHeader('X-Mailer', 'TYPO3');
+
+		if ($GLOBALS['TSFE']->config['config']['formMailCharset']) {
+				// Respect formMailCharset if it was set
+			$this->characterSet = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
+		} elseif ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset) {
+				// Use metaCharset for mail if different from renderCharset
+			$this->characterSet = $GLOBALS['TSFE']->metaCharset;
 		}
 
-		parent::start();
-
-		if ($base64 || $V['use_base64']) {
-			$this->useBase64();
+		if ($base64 || $valueList['use_base64']) {
+			$this->encoding = 'base64';
 		}
 
-		if (isset($V['recipient'])) {
+		if (isset($valueList['recipient'])) {
 				// convert form data from renderCharset to mail charset
-			$val = ($V['subject']) ? $V['subject'] : 'Formmail on ' . t3lib_div::getIndpEnv('HTTP_HOST');
-			$this->subject = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val, $GLOBALS['TSFE']->renderCharset, $this->charset) : $val;
+			$this->subject = ($valueList['subject'])
+					? $valueList['subject']
+					: 'Formmail on ' . t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->subject = $this->sanitizeHeaderString($this->subject);
-			$val = ($V['from_name']) ? $V['from_name'] : (($V['name']) ? $V['name'] : ''); // Be careful when changing $val! It is used again as the fallback value for replyto_name
-			$this->from_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val, $GLOBALS['TSFE']->renderCharset, $this->charset) : $val;
-			$this->from_name = $this->sanitizeHeaderString($this->from_name);
-			$this->from_name = preg_match('/\s|,/', $this->from_name) >= 1 ? '"' . $this->from_name . '"' : $this->from_name;
-			$val = ($V['replyto_name']) ? $V['replyto_name'] : $val;
-			$this->replyto_name = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val, $GLOBALS['TSFE']->renderCharset, $this->charset) : $val;
-			$this->replyto_name = $this->sanitizeHeaderString($this->replyto_name);
-			$this->replyto_name = preg_match('/\s|,/', $this->replyto_name) >= 1 ? '"' . $this->replyto_name . '"' : $this->replyto_name;
-			$val = ($V['organisation']) ? $V['organisation'] : '';
-			$this->organisation = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val, $GLOBALS['TSFE']->renderCharset, $this->charset) : $val;
+
+			$this->fromName = ($valueList['from_name'])
+					? $valueList['from_name']
+					: (($valueList['name']) ? $valueList['name'] : '');
+			$this->fromName = $this->sanitizeHeaderString($this->fromName);
+			$this->fromName = preg_match('/\s|,/', $this->fromName) >= 1 ? '"' . $this->fromName . '"' : $this->fromName;
+
+			$this->replyToName = ($valueList['replyto_name']) ? $valueList['replyto_name'] : $this->fromName;
+			$this->replyToName = $this->sanitizeHeaderString($this->replyToName);
+			$this->replyToName = preg_match('/\s|,/', $this->replyToName) >= 1 ? '"' . $this->replyToName . '"' : $this->replyToName;
+
+			$this->organisation = ($valueList['organisation']) ? $valueList['organisation'] : '';
 			$this->organisation = $this->sanitizeHeaderString($this->organisation);
 
-			$this->from_email = ($V['from_email']) ? $V['from_email'] : (($V['email']) ? $V['email'] : '');
-			$this->from_email = t3lib_div::validEmail($this->from_email) ? $this->from_email : '';
-			$this->replyto_email = ($V['replyto_email']) ? $V['replyto_email'] : $this->from_email;
-			$this->replyto_email = t3lib_div::validEmail($this->replyto_email) ? $this->replyto_email : '';
-			$this->priority = ($V['priority']) ? t3lib_div::intInRange($V['priority'], 1, 5) : 3;
+			$this->fromAddress = ($valueList['from_email']) ? $valueList['from_email'] : (
+				($valueList['email']) ? $valueList['email'] : ''
+			);
+			$this->fromAddress = t3lib_div::validEmail($this->fromAddress)
+					? $this->fromAddress
+					: t3lib_utility_Mail::getSystemFromAddress();
+
+			$this->replyToAddress = ($valueList['replyto_email']) ? $valueList['replyto_email'] : $this->fromAddress;
+			$this->replyToAddress = t3lib_div::validEmail($this->replyToAddress)
+					? $this->replyToAddress
+					: t3lib_utility_Mail::getSystemFromAddress();
+
+			$this->priority = ($valueList['priority']) ? t3lib_div::intInRange($valueList['priority'], 1, 5) : 3;
 
 				// auto responder
-			$this->auto_respond_msg = (trim($V['auto_respond_msg']) && $this->from_email) ? trim($V['auto_respond_msg']) : '';
+			$this->autoRespondMessage = (trim($valueList['auto_respond_msg']) && $this->fromAddress)
+					? trim($valueList['auto_respond_msg'])
+					: '';
 
-			if ($this->auto_respond_msg !== '') {
+			if ($this->autoRespondMessage !== '') {
 					// Check if the value of the auto responder message has been modified with evil intentions
-				$autoRespondChecksum = $V['auto_respond_checksum'];
-				$correctHmacChecksum = t3lib_div::hmac($this->auto_respond_msg);
+				$autoRespondChecksum = $valueList['auto_respond_checksum'];
+				$correctHmacChecksum = t3lib_div::hmac($this->autoRespondMessage);
 				if ($autoRespondChecksum !== $correctHmacChecksum) {
-					t3lib_div::sysLog('Possible misuse of t3lib_formmail auto respond method. Subject: ' . $V['subject'], 'Core', 3);
+					t3lib_div::sysLog('Possible misuse of t3lib_formmail auto respond method. Subject: ' . $valueList['subject'],
+						'Core',
+						3);
 					return;
 				} else {
-					$this->auto_respond_msg = $this->sanitizeHeaderString($this->auto_respond_msg);
+					$this->autoRespondMessage = $this->sanitizeHeaderString($this->autoRespondMessage);
 				}
 			}
 
-			$Plain_content = '';
-			$HTML_content = '<table border="0" cellpadding="2" cellspacing="2">';
+			$plainTextContent = '';
+			$htmlContent = '<table border="0" cellpadding="2" cellspacing="2">';
 
 				// Runs through $V and generates the mail
-			if (is_array($V)) {
-				foreach ($V as $key => $val) {
+			if (is_array($valueList)) {
+				foreach ($valueList as $key => $val) {
 					if (!t3lib_div::inList($this->reserved_names, $key)) {
 						$space = (strlen($val) > 60) ? LF : '';
 						$val = (is_array($val) ? implode($val, LF) : $val);
 
 							// convert form data from renderCharset to mail charset (HTML may use entities)
-						$Plain_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val, $GLOBALS['TSFE']->renderCharset, $this->charset, 0) : $val;
-						$HTML_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv(htmlspecialchars($val), $GLOBALS['TSFE']->renderCharset, $this->charset, 1) : htmlspecialchars($val);
+						$plainTextValue = $val;
+						$HtmlValue = htmlspecialchars($val);
 
-						$Plain_content .= strtoupper($key) . ':  ' . $space . $Plain_val . LF . $space;
-						$HTML_content .= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><strong>' . strtoupper($key) . '</strong></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">' . nl2br($HTML_val) . '&nbsp;</font></td></tr>';
+						$plainTextContent .= strtoupper($key) . ':  ' . $space . $plainTextValue . LF . $space;
+						$htmlContent .= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><strong>' . strtoupper($key)
+								. '</strong></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">' . nl2br($HtmlValue)
+								. '&nbsp;</font></td></tr>';
 					}
 				}
 			}
-			$HTML_content .= '</table>';
+			$htmlContent .= '</table>';
 
-			if ($V['html_enabled']) {
-				$this->setHTML($this->encodeMsg($HTML_content));
+			$this->plainContent = $plainTextContent;
+
+			if ($valueList['html_enabled']) {
+				$this->mailMessage->setBody($htmlContent, 'text/html');
+				$this->mailMessage->addPart($plainTextContent, 'text/plain');
+			} else {
+				$this->mailMessage->setBody($plainTextContent, 'text/plain');
 			}
-			$this->addPlain($Plain_content);
 
 			for ($a = 0; $a < 10; $a++) {
-				$varname = 'attachment' . (($a) ? $a : '');
-				if (!isset($_FILES[$varname])) {
+				$variableName = 'attachment' . (($a) ? $a : '');
+				if (!isset($_FILES[$variableName])) {
 					continue;
 				}
-				if (!is_uploaded_file($_FILES[$varname]['tmp_name'])) {
-					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$varname]['tmp_name'] . '" ("' . $_FILES[$varname]['name'] . '") was not an uploaded file.', 'Core', 3);
+				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
+					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name']
+							. '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', 3);
 				}
-				if ($_FILES[$varname]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					t3lib_div::sysLog('Error in uploaded file in t3lib_formmail: temporary file "' . $_FILES[$varname]['tmp_name'] . '" ("' . $_FILES[$varname]['name'] . '") Error code: ' . $_FILES[$varname]['tmp_name']['error'], 'Core', 3);
+				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
+					t3lib_div::sysLog('Error in uploaded file in t3lib_formmail: temporary file "'
+							. $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: '
+							. $_FILES[$variableName]['tmp_name']['error'], 'Core', 3);
 				}
-				$theFile = t3lib_div::upload_to_tempfile($_FILES[$varname]['tmp_name']);
-				$theName = $_FILES[$varname]['name'];
+				$theFile = t3lib_div::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
+				$theName = $_FILES[$variableName]['name'];
 
 				if ($theFile && file_exists($theFile)) {
 					if (filesize($theFile) < $GLOBALS['TYPO3_CONF_VARS']['FE']['formmailMaxAttachmentSize']) {
-						$this->addAttachment($theFile, $theName);
+						$this->mailMessage->attach(Swift_Attachment::fromPath($theFile)->setFilename($theName));
 					}
 				}
-				t3lib_div::unlink_tempfile($theFile);
+				$this->temporaryFiles[] = $theFile;
 			}
 
-			$this->setHeaders();
-			$this->setContent();
-			$this->setRecipient($V['recipient']);
-			if ($V['recipient_copy']) {
-				$this->recipient_copy = trim($V['recipient_copy']);
+			$this->recipient = $valueList['recipient'];
+			$this->mailMessage->setSubject($this->subject)
+					->setFrom(array($this->fromAddress => $this->fromName))
+					->setTo($this->recipient)
+					->setPriority($this->priority);
+			$this->mailMessage->getHeaders()->addTextHeader('Organization', $this->organisation);
+			if ($valueList['recipient_copy']) {
+				$this->mailMessage->addCc(trim($valueList['recipient_copy']));
 			}
+			if ($this->characterSet) {
+				$this->mailMessage->setCharset($this->characterSet);
+			}
+				// Ignore target encoding. This is handled automatically by Swift Mailer and overriding the defaults
+				// is not worth the trouble
+
 				// log dirty header lines
 			if ($this->dirtyHeaders) {
 				t3lib_div::sysLog('Possible misuse of t3lib_formmail: see TYPO3 devLog', 'Core', 3);
@@ -203,57 +259,62 @@ class t3lib_formmail extends t3lib_htmlmail {
 	}
 
 	/**
-	 * Adds an attachment to the mail
-	 *
-	 * @param	string		The absolute path to the file to add as attachment
-	 * @param	string		The files original filename (not necessarily the same as the current since this could be uploaded files...)
-	 * @return	boolean		True if the file existed and was added.
-	 * @access private
-	 */
-	function addAttachment($file, $filename) {
-		$content = $this->getURL($file); // We fetch the content and the mime-type
-		$fileInfo = $this->split_fileref($filename);
-		if ($fileInfo['fileext'] == 'gif') {
-			$content_type = 'image/gif';
-		}
-		if ($fileInfo['fileext'] == 'bmp') {
-			$content_type = 'image/bmp';
-		}
-		if ($fileInfo['fileext'] == 'jpg' || $fileInfo['fileext'] == 'jpeg') {
-			$content_type = 'image/jpeg';
-		}
-		if ($fileInfo['fileext'] == 'html' || $fileInfo['fileext'] == 'htm') {
-			$content_type = 'text/html';
-		}
-		if (!$content_type) {
-			$content_type = 'application/octet-stream';
-		}
-
-		if ($content) {
-			$theArr['content_type'] = $content_type;
-			$theArr['content'] = $content;
-			$theArr['filename'] = $filename;
-			$this->theParts['attach'][] = $theArr;
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-
-	/**
 	 * Checks string for suspicious characters
 	 *
 	 * @param	string	String to check
 	 * @return	string	Valid or empty string
 	 */
-	function sanitizeHeaderString($string) {
+	protected function sanitizeHeaderString($string) {
 		$pattern = '/[\r\n\f\e]/';
 		if (preg_match($pattern, $string) > 0) {
 			$this->dirtyHeaders[] = $string;
 			$string = '';
 		}
 		return $string;
+	}
+	
+	/**
+	 * Sends the actual mail and handles autorespond message
+	 *
+	 * @return boolean
+	 */
+	public function sendTheMail() {
+
+			// Sending the mail requires the recipient and message to be set.
+		if (!$this->mailMessage->getTo() || !trim($this->mailMessage->getBody())) {
+			return FALSE;
+		}
+
+		$this->mailMessage->send();
+
+			// Auto response
+		if ($this->autoRespondMessage) {
+			$theParts = explode('/', $this->autoRespondMessage, 2);
+			$theParts[0] = str_replace('###SUBJECT###', $this->subject, $theParts[0]);
+			$theParts[1] = str_replace("/", LF, $theParts[1]);
+			$theParts[1] = str_replace("###MESSAGE###", $this->plainContent, $theParts[1]);
+
+				/** @var $autoRespondMail t3lib_mail_Message */
+			$autoRespondMail = t3lib_div::makeInstance('t3lib_mail_Message');
+			$autoRespondMail->setTo($this->fromAddress)
+					->setSubject($theParts[0])
+					->setFrom($this->recipient)
+					->setBody($theParts[1]);
+			if ($this->returnPath) {
+				$autoRespondMail->setReturnPath($this->returnPath);
+			}
+			$autoRespondMail->send();
+		}
+		return $this->mailMessage->isSent();
+	}
+
+	/**
+	 * Do some cleanup at the end (deleting attachment files)
+	 */
+	public function __destruct() {
+		foreach ($this->temporaryFiles as $file) {
+			t3lib_div::unlink_tempfile($file);
+		}
 	}
 }
 

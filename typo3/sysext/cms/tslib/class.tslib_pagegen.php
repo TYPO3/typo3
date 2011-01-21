@@ -278,6 +278,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 			// Include HTML mail library?
 		if ($GLOBALS['TSFE']->config['config']['incT3Lib_htmlmail'])	{
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.incT3Lib_htmlmail');
 			$incFilesArray[] = 't3lib/class.t3lib_htmlmail.php';
 		}
 		return $incFilesArray;

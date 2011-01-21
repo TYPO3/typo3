@@ -74,7 +74,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $userident_column = 'password'; // Column for password
 	var $userid_column = 'uid'; // Column for user-id
 	var $lastLogin_column = 'lastlogin';
-	var $notifyHeader = 'From: TYPO3 Login notify <no_reply@no_reply.no_reply>';
 
 	var $enablecolumns = Array(
 		'rootLevel' => 1,
@@ -348,21 +347,27 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 					$prefix = '[AdminLoginWarning]';
 				}
 				if ($warn) {
-					t3lib_utility_Mail::mail($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'],
-							$prefix . ' ' . $subject,
-						$msg,
-						$this->notifyHeader
-					);
+					$from = t3lib_utility_Mail::getSystemFrom();
+					/** @var $mail t3lib_mail_Message */
+					$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+					$mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])
+							->setFrom($from)
+							->setSubject($prefix . ' ' . $subject)
+							->setBody($msg);
+					$mail->send();
 				}
 			}
 
 				// If An email should be sent to the current user, do that:
 			if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
-				t3lib_utility_Mail::mail($this->user['email'],
-					$subject,
-					$msg,
-					$this->notifyHeader
-				);
+				$from = t3lib_utility_Mail::getSystemFrom();
+				/** @var $mail t3lib_mail_Message */
+				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+				$mail->setTo($this->user['email'])
+						->setFrom($from)
+						->setSubject($subject)
+						->setBody($msg);
+				$mail->send();
 			}
 		}
 	}
