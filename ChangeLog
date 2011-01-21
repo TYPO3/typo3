@@ -19,6 +19,7 @@
 2011-01-21  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17169: Bug: Wrong color gradients for filter and new button in new page tree
+	* Fixed bug #17179: No possibility to refresh the positioning of the toolbar items with a common function
 
 2011-01-21  Tobias Liebig  <mail_typo3@etobi.de>
 

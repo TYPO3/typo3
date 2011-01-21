@@ -35,46 +35,15 @@ var SysActionMenu = Class.create({
 	 * registers for resize event listener and executes on DOM ready
 	 */
 	initialize: function() {
-		Event.observe(window, 'resize', this.positionMenu);
 
 		Ext.onReady(function() {
-			this.positionMenu();
+			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('tx-sys-action-menu'));
+			TYPO3BackendToolbarManager.positionMenu('tx-sys-action-menu');
 			this.toolbarItemIcon = $$('#tx-sys-action-menu .toolbar-item span')[0].src;
 
 			Event.observe('tx-sys-action-menu', 'click', this.toggleMenu);
 
 		}, this);
-	},
-
-	/**
-	 * positions the menu below the toolbar icon, let's do some math!
-	 */
-	positionMenu: function() {
-		var calculatedOffset = 0;
-		var parentWidth      = $('tx-sys-action-menu').getWidth();
-		var currentToolbarItemLayer = $$('#tx-sys-action-menu ul')[0];
-		var ownWidth         = currentToolbarItemLayer.getWidth();
-		var parentSiblings   = $('tx-sys-action-menu').previousSiblings();
-
-		parentSiblings.each(function(toolbarItem) {
-			calculatedOffset += toolbarItem.getWidth() - 1;
-			// -1 to compensate for the margin-right -1px of the list items,
-			// which itself is necessary for overlaying the separator with the active state background
-
-			if(toolbarItem.down().hasClassName('no-separator')) {
-				calculatedOffset -= 1;
-			}
-		});
-		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
-
-			// border correction
-		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
-			calculatedOffset += 2;
-		}
-
-		$$('#tx-sys-action-menu ul')[0].setStyle({
-			left: calculatedOffset + 'px'
-		});
 	},
 
 	/**

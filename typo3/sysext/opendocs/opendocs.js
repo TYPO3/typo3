@@ -37,47 +37,16 @@ var OpenDocs = Class.create({
 	 * registers for resize event listener and executes on DOM ready
 	 */
 	initialize: function() {
-		Event.observe(window, 'resize', this.positionMenu);
 
 		Ext.onReady(function() {
-			this.positionMenu();
+			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu'));
+			TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu');
 			this.toolbarItemIcon = $$('#tx-opendocs-menu .toolbar-item span.t3-icon')[0];
 			this.ajaxScript      = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
 
 			Event.observe($$('#tx-opendocs-menu .toolbar-item')[0], 'click', this.toggleMenu);
 			this.menu = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
 		}, this);
-	},
-
-	/**
-	 * positions the menu below the toolbar icon, let's do some math!
-	 */
-	positionMenu: function() {
-		var calculatedOffset = 0;
-		var parentWidth      = $('tx-opendocs-menu').getWidth();
-		var currentToolbarItemLayer = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
-		var ownWidth         = currentToolbarItemLayer.getWidth();
-		var parentSiblings   = $('tx-opendocs-menu').previousSiblings();
-
-		parentSiblings.each(function(toolbarItem) {
-			calculatedOffset += toolbarItem.getWidth() - 1;
-			// -1 to compensate for the margin-right -1px of the list items,
-			// which itself is necessary for overlaying the separator with the active state background
-
-			if(toolbarItem.down().hasClassName('no-separator')) {
-				calculatedOffset -= 1;
-			}
-		});
-		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
-
-			// border correction
-		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
-			calculatedOffset += 2;
-		}
-
-		$$('#tx-opendocs-menu .toolbar-item-menu')[0].setStyle({
-			left: calculatedOffset + 'px'
-		});
 	},
 
 	/**

@@ -35,10 +35,10 @@ var ClearCacheMenu = Class.create({
 	 * registers for resize event listener and executes on DOM ready
 	 */
 	initialize: function() {
-		Event.observe(window, 'resize', this.positionMenu);
 
 		Ext.onReady(function() {
-			this.positionMenu();
+			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('clear-cache-actions-menu'));
+			TYPO3BackendToolbarManager.positionMenu('clear-cache-actions-menu');
 			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item span.t3-icon')[0];
 
 			Event.observe('clear-cache-actions-menu', 'click', this.toggleMenu)
@@ -48,38 +48,6 @@ var ClearCacheMenu = Class.create({
 				Event.observe(element, 'click', this.clearCache.bind(this));
 			}.bindAsEventListener(this));
 		}, this);
-	},
-
-	/**
-	 * positions the menu below the toolbar icon, let's do some math!
-	 */
-	positionMenu: function() {
-		var calculatedOffset = 0;
-		var parentWidth      = $('clear-cache-actions-menu').getWidth();
-		var currentToolbarItemLayer = $$('#clear-cache-actions-menu ul')[0];
-		var ownWidth         = currentToolbarItemLayer.getWidth();
-		var parentSiblings   = $('clear-cache-actions-menu').previousSiblings();
-
-		parentSiblings.each(function(toolbarItem) {
-			calculatedOffset += toolbarItem.getWidth() - 1;
-			// -1 to compensate for the margin-right -1px of the list items,
-			// which itself is necessary for overlaying the separator with the active state background
-
-			if (toolbarItem.down().hasClassName('no-separator')) {
-				calculatedOffset -= 1;
-			}
-		});
-		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
-
-			// border correction
-		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
-			calculatedOffset += 2;
-		}
-
-
-		$$('#clear-cache-actions-menu ul')[0].setStyle({
-			left: calculatedOffset + 'px'
-		});
 	},
 
 	/**
