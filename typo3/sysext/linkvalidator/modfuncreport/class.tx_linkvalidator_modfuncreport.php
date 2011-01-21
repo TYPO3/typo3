@@ -94,13 +94,6 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected $checkOpt = array();
 
 	/**
-	 * Hint message displayed on top of the module.
-	 *
-	 * @var string
-	 */
-	protected $firstSteps;
-
-	/**
 	 * Html for the button "Check Links".
 	 *
 	 * @var string
@@ -158,22 +151,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 		$this->initialize();
 
-		$this->firstSteps = $GLOBALS['LANG']->getLL('first.steps');
-
 		if ($this->modTS['showUpdateButton'] == 1) {
-			$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
-		}
-
-		if (t3lib_extMgm::isLoaded('scheduler')) {
-			if ($GLOBALS['BE_USER']->isAdmin()) {
-				$this->firstSteps .= ' ' . 
-				sprintf($GLOBALS['LANG']->getLL('first.steps.info.scheduler'),
-				 	'<a href="' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/mod.php?M=tools_txschedulerM1">', '</a>'
-				);
-			} else {
-				$this->firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.scheduler.admin');
-			}
 		}
 
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
@@ -613,7 +592,30 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		}
 		return $result;
 	}
+	/**
+	 * construct the Hint message displayed on top of the module.
+	 *
+	 * @return string Hint message displayed on top of the module.
+	 */
+	protected function getFirstSteps(){
+		$firstSteps = $GLOBALS['LANG']->getLL('first.steps');
 
+		if ($this->modTS['showUpdateButton'] == 1) {
+			$firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.update.button');
+		}
+
+		if (t3lib_extMgm::isLoaded('scheduler')) {
+			if ($GLOBALS['BE_USER']->isAdmin()) {
+				$firstSteps .= ' ' . 
+				sprintf($GLOBALS['LANG']->getLL('first.steps.info.scheduler'),
+				 	'<a href="' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/mod.php?M=tools_txschedulerM1">', '</a>'
+				);
+			} else {
+				$firstSteps .= ' ' . $GLOBALS['LANG']->getLL('first.steps.info.scheduler.admin');
+			}
+		}
+		return $firstSteps;
+	}
 
 	/**
 	 * Gets the filled markers that are used in the HTML template.
@@ -623,7 +625,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function getTemplateMarkers() {
 
 		$markers = array(
-			'FIRST_STEPS'           => $this->firstSteps,
+			'FIRST_STEPS'           => $this->getFirstSteps(),
 			'FUNC_MENU'             => $this->getLevelSelector(),
 			'CONTENT'               => $this->content,
 			'TITLE'                 => $GLOBALS['LANG']->getLL('title'),
