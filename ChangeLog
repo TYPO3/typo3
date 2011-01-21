@@ -52,6 +52,7 @@
 	* Fixed bug #17140: htmlArea RTE: In WebKit, RTE inserts incorrect link if text is double-clicked
 	* Updated htmlArea RTE version to 2.1.5
 	* Fixed bug #16975: htmlArea RTE: Use parentNode rather than parentElement
+	* Follow-up to bug #17157: htmlArea RTE: Not enabled in various browser/system combinations
 
 2011-01-21  Susanne Moog  <typo3@susanne-moog.de>
 

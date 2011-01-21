@@ -41,59 +41,34 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			'msie' => array (
 				array (
 					'version' => 6.0,
+					'system' => array(
+						'allowed' => array(
+							'winNT',
+							'win98',
+							'win95',
+						),
+					),
 				),
 			),
 			'gecko' => array (
 				array (
-					'version' => 1.8
+					'version' => 1.8,
 				),
 			),
 			'webkit' => array (
 				array (
 					'version' => 523,
-					'system' => 'mac'
-				),
-				array (
-					'version' => 523,
-					'system' => 'linux'
-				),
-				array (
-					'version' => 523,
-					'system' => 'win7'
-				),
-				array (
-					'version' => 523,
-					'system' => 'winVista'
-				),
-				array (
-					'version' => 523,
-					'system' => 'winXP'
-				),
-				array (
-					'version' => 523,
-					'system' => 'win2k'
-				),
-				array (
-					'version' => 523,
-					'system' => 'winNT'
-				),
-				array (
-					'version' => 523,
-					'system' => 'win98'
-				),
-				array (
-					'version' => 523,
-					'system' => 'win95'
-				),
-				array (
-					'version' => 523,
-					'system' => 'chrome'
+					'system' => array(
+						'disallowed' => array(
+							'iOS',
+						),
+					),
 				),
 			),
 			'opera' => array (
 				array (
-					'version' => 9.62
-				)
+					'version' => 9.62,
+				),
 			)
 		);
 
@@ -168,32 +143,54 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 *
 	 * @return	boolean		TRUE if this RTE object offers an RTE in the current browser environment
 	 */
-
 	function isAvailable()	{
-		global $TYPO3_CONF_VARS;
 
 		$this->client = $this->clientInfo();
 		$this->errorLog = array();
 		if (!$this->debugMode)	{	// If debug-mode, let any browser through
-			$rteIsAvailable = 0;
+			$rteIsAvailable = FALSE;
 			$rteConfBrowser = $this->conf_supported_browser;
 			if (is_array($rteConfBrowser)) {
 				foreach ($rteConfBrowser as $browser => $browserConf) {
 					if ($browser == $this->client['browser']) {
 							// Config for Browser found, check it:
 						if (is_array($browserConf)) {
-							foreach ($browserConf as $browserConfNr => $browserConfSub) {
+							foreach ($browserConf as $browserConfSub) {
 								if ($browserConfSub['version'] <= $this->client['version'] || empty($browserConfSub['version'])) {
-									// Version is correct
-									if ($browserConfSub['system'] == $this->client['system'] || empty($browserConfSub['system'])) {
-											// System is correctly
-										$rteIsAvailable = 1;
+										// Version is supported
+									if (is_array($browserConfSub['system'])) {
+											// Check against allowed systems
+										if (is_array($browserConfSub['system']['allowed'])) {
+											foreach ($browserConfSub['system']['allowed'] as $system) {
+												if (in_array($system, $this->client['all_systems'])) {
+													$rteIsAvailable = TRUE;
+													break;
+												}
+											}
+										} else {
+												// All allowed
+											$rteIsAvailable = TRUE;
+										}
+											// Check against disallowed systems
+										if (is_array($browserConfSub['system']['disallowed'])) {
+											foreach ($browserConfSub['system']['disallowed'] as $system) {
+												if (in_array($system, $this->client['all_systems'])) {
+													$rteIsAvailable = FALSE;
+													break;
+												}
+											}
+										}
+									} else {		
+											// No system config: system is supported
+										$rteIsAvailable = TRUE;
+										break;
 									}// End of System
 								}// End of Version
 							}// End of foreach-BrowserSubpart
 						} else {
 							// no config for this browser found, so all versions or system with this browsers are allow
-							$rteIsAvailable = 1;
+							$rteIsAvailable = TRUE;
+							break;
 						}
 					} // End of Browser Check
 				} // foreach: Browser Check
@@ -201,14 +198,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// no Browser config for this RTE-Editor, so all Clients are allow
 			}
 			if (!$rteIsAvailable) {
-				$this->errorLog[] = 'rte: Browser not supported. Only msie Version 5 or higher and Mozilla based client 1. and higher.';
+				$this->errorLog[] = 'RTE: Browser not supported.';
 			}
 			if (t3lib_div::int_from_ver(TYPO3_version) < 4000000) {
-				$rteIsAvailable = 0;
+				$rteIsAvailable = FALSE;
 				$this->errorLog[] = 'rte: This version of htmlArea RTE cannot run under this version of TYPO3.';
 			}
 		}
-		if ($rteIsAvailable)	return true;
+		return $rteIsAvailable;
 	}
 
 	/**
