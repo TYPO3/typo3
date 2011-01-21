@@ -108,8 +108,6 @@ TYPO3.ContextHelp = function() {
 				html: '',
 					// The tooltip will appear above the label, if viewport allows
 				anchor: 'bottom',
-					// The anchor is pushed slightly to the left in order to align with the help icon of doc headers
-				anchorOffset: -10,
 				minWidth: 160,
 				maxWidth: 240,
 				target: Ext.getBody(),
@@ -182,14 +180,23 @@ TYPO3.ContextHelp = function() {
 			/**
 			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'botton'
 			 * This positions the tip box closer to the target element when the anchor is on the bottom side of the box
+			 * When anchor position is 'top' or 'bottom', the anchor is pushed slightly to the left in order to align with the help icon, if any
 			 *
 			 */
 			Ext.ToolTip.prototype.showAt = Ext.ToolTip.prototype.showAt.createSequence(
 				function() {
 					var ap = this.getAnchorPosition().charAt(0);
-					if (this.anchorToTarget && !this.trackMouse && ap == 'b') {
-						var xy = this.getPosition();
-						this.setPagePosition(xy[0], xy[1]+5);
+					if (this.anchorToTarget && !this.trackMouse) {
+						switch (ap) {
+							case 'b':
+								var xy = this.getPosition();
+								this.setPagePosition(xy[0]-10, xy[1]+5);
+								break;
+							case 't':
+								var xy = this.getPosition();
+								this.setPagePosition(xy[0]-10, xy[1]);
+								break;
+						}
 					}
 				}
 			);
