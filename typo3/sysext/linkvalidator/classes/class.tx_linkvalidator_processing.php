@@ -137,7 +137,7 @@ class tx_linkvalidator_processing {
 				// Get record rows of table
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Analyse each record
-				$this->analyseRecord($results, $table, $fields, $row);
+				$this->analyzeRecord($results, $table, $fields, $row);
 			}
 		}
 
@@ -202,7 +202,7 @@ class tx_linkvalidator_processing {
 	 * @param	array		$record: record to analyse
 	 * @return	void
 	 */
-	public function analyseRecord(&$results, $table, $fields, $record) {
+	public function analyzeRecord(&$results, $table, $fields, $record) {
 		
 			// array to store urls from relevant field contents
 		$urls = array();
