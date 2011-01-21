@@ -346,10 +346,22 @@ class tx_Workspaces_Service_Workspaces {
 		 **/
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$searchObj = t3lib_div::makeInstance('t3lib_fullsearch');
-		$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
-
+		$pageList = FALSE;
+		if ($pageId > 0) {
+			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
+		} else {
+			$mountPoints = $GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
+			if (!is_array($mountPoints) || empty($mountPoints)) {
+				$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+				$mountPoints = array_unique($mountPoints);
+			}
+			$newList = array();
+			foreach($mountPoints as $mountPoint) {
+				$newList[] = $searchObj->getTreeList($mountPoint, $recursionLevel, 0, $perms_clause);
+			}
+			$pageList = implode(',', $newList);
+		}
 		unset($searchObj);
-
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
 			if ($pageList) {
 					// Remove the "subbranch" if a page was moved away
@@ -377,6 +389,9 @@ class tx_Workspaces_Service_Workspaces {
 
 			$newList = array();
 			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
+			if (!in_array($pageId, $pageIds)) {
+				$pageIds[] = $pageId;
+			}
 			foreach ($pageIds as $pageId) {
 				if (intval($pages[$pageId]['t3ver_move_id']) > 0) {
 					$newList[] = intval($pages[$pageId]['t3ver_move_id']);
