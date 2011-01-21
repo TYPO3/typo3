@@ -43,6 +43,14 @@ class t3lib_Compressor {
 		// default compression level is -1
 	protected $gzipCompressionLevel = -1;
 
+	protected $htaccessTemplate = '<FilesMatch "\.(js|css)(\.gzip)?$">
+	<IfModule mod_expires.c>
+		ExpiresActive on
+		ExpiresDefault "access plus 7 days"
+	</IfModule>
+	FileETag MTime Size
+</FilesMatch>';
+
 	/**
 	 * Constructor
 	 */
@@ -51,6 +59,15 @@ class t3lib_Compressor {
 			// we check for existance of our targetDirectory
 		if (!is_dir(PATH_site . $this->targetDirectory)) {
 			t3lib_div::mkdir(PATH_site . $this->targetDirectory);
+		}
+
+			// if enabled, we check whether we should auto-create the .htaccess file
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) {
+				// check whether .htaccess exists
+			$htaccessPath = PATH_site . $this->targetDirectory . '.htaccess';
+			if (!file_exists($htaccessPath)) {
+				t3lib_div::writeFile($htaccessPath, $this->htaccessTemplate);
+			}
 		}
 
 			// decide whether we should create gzipped versions or not
