@@ -353,7 +353,7 @@ class tx_linkvalidator_Processor {
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
-	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
+	public function extGetTreeList($id, $depth, $begin = 0, $permsClause) {
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
@@ -363,7 +363,7 @@ class tx_linkvalidator_Processor {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid,title',
 				'pages',
-				'pid=' . $id . ' AND deleted=0 AND ' . $perms_clause
+				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
@@ -371,7 +371,7 @@ class tx_linkvalidator_Processor {
 					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
 				}
 				if ($depth > 1) {
-					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause);
 				}
 			}
 		}

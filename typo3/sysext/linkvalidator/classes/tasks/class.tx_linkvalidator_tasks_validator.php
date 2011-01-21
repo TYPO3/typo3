@@ -276,14 +276,14 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 				}
 
 					// get the searchFields from TCA
-				foreach ($GLOBALS['TCA'] as $tablename => $table) {
+				foreach ($GLOBALS['TCA'] as $tableName => $table) {
 					if (!empty($table['columns'])) {
-						foreach ($table['columns'] as $columnname => $column) {
+						foreach ($table['columns'] as $columnName => $column) {
 							if ($column['config']['type'] == 'text' || $column['config']['type'] == 'input') {
 								if (!empty($column['config']['softref']) && (stripos($column['config']['softref'], "typolink")
 										!== FALSE || stripos($column['config']['softref'], "url") !== FALSE)) {
 
-									$searchFields[$tablename][] = $columnname;
+									$searchFields[$tableName][] = $columnName;
 								}
 							}
 						}
@@ -301,12 +301,12 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 						}
 					}
 				}
-				$linktypes = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
-				if (is_array($linktypes)) {
+				$linkTypes = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
+				if (is_array($linkTypes)) {
 					if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 							&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
-							if (in_array($type, $linktypes)) {
+							if (in_array($type, $linkTypes)) {
 								$array[$type] = 1;
 							}
 						}

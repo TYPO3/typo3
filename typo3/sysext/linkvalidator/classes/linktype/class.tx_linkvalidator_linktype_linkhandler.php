@@ -61,23 +61,23 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 		$errorParams = array();
 		$parts = explode(":", $url);
 		if (count($parts) == 3) {
-			$tablename = htmlspecialchars($parts[1]);
+			$tableName = htmlspecialchars($parts[1]);
 			$rowid = intval($parts[2]);
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
-				$tablename,
+				$tableName,
 				'uid = ' . intval($rowid)
 			);
 
 			if ($rows[0]) {
 				if ($rows[0]['deleted'] == '1') {
 					$errorParams['errorType'] = DELETED;
-					$errorParams['tablename'] = $tablename;
+					$errorParams['tablename'] = $tableName;
 					$errorParams['uid'] = $rowid;
 					$response =  FALSE;
 				}
 			} else {
-				$errorParams['tablename'] = $tablename;
+				$errorParams['tablename'] = $tableName;
 				$errorParams['uid'] = $rowid;
 				$response =  FALSE;
 			}
@@ -113,11 +113,11 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
-		$tablename = $errorParams['tablename'];
+		$tableName = $errorParams['tablename'];
 		$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.default.title');
 
-		if ($this->tsconfig['properties'][$tablename . '.']) {
-			$title = $this->tsconfig['properties'][$tablename . '.']['label'];
+		if ($this->tsconfig['properties'][$tableName . '.']) {
+			$title = $this->tsconfig['properties'][$tableName . '.']['label'];
 		}
 
 		switch ($errorType) {

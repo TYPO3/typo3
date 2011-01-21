@@ -62,7 +62,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 *
 	 * @var integer
 	 */
-	protected $search_level;
+	protected $searchLevel;
 
 	/**
 	 * Link validation class.
@@ -136,7 +136,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
 
-		$this->search_level = t3lib_div::_GP('search_levels');
+		$this->searchLevel = t3lib_div::_GP('search_levels');
 
 		if (isset($this->pObj->id)) {
 			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
@@ -264,7 +264,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			// get children pages
 		$pageList = $this->processor->extGetTreeList(
 			$this->pObj->id,
-			$this->search_level,
+			$this->searchLevel,
 			0,
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
@@ -335,7 +335,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		);
 
 		foreach ($parts as $kv => $label) {
-			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->search_level) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->searchLevel) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 		}
 		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
 		return $lMenu;
@@ -358,7 +358,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 		$pageList = $this->processor->extGetTreeList(
 			$this->pObj->id,
-			$this->search_level,
+			$this->searchLevel,
 			0,
 			$GLOBALS['BE_USER']->getPagePermsClause(1)
 		);
@@ -461,7 +461,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				t3lib_BEfunc::editOnClick(
 					$params,
 					$GLOBALS['BACK_PATH'],
-					t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->search_level
+					t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel
 				) . '"' .
 				' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
@@ -556,7 +556,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
 						$option = t3lib_BEfunc::getFuncCheck(
-							array('id' => $this->pObj->id, 'search_levels' => $this->search_level),
+							array('id' => $this->pObj->id, 'search_levels' => $this->searchLevel),
 							'SET[' . $type . ']',
 							$this->pObj->MOD_SETTINGS[$type],
 							'',

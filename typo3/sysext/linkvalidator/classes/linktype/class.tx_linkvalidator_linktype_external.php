@@ -37,14 +37,14 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 *
 	 * @var array
 	 */
-	protected $url_reports = array();
+	protected $urlReports = array();
 
 	/**
 	 * Cached list of all error parameters of the URLs, which were already checked for the current processing.
 	 *
 	 * @var array
 	 */
-	protected $url_error_params = array();
+	protected $urlErrorParams = array();
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -56,13 +56,13 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		$errorParams = array();
-		if (isset($this->url_reports[$url])) {
-			if(!$this->url_reports[$url]) {
-				if(is_array($this->url_error_params[$url])) {
-				    $this->setErrorParams($this->url_error_params[$url]);
+		if (isset($this->urlReports[$url])) {
+			if(!$this->urlReports[$url]) {
+				if(is_array($this->urlErrorParams[$url])) {
+				    $this->setErrorParams($this->urlErrorParams[$url]);
 				}
 			}
-			return $this->url_reports[$url];
+			return $this->urlReports[$url];
 		}
 
 			// remove possible anchor from the url
@@ -136,8 +136,8 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$this->setErrorParams($errorParams);
 		}
 
-		$this->url_reports[$url] = $response;
-		$this->url_error_params[$url] = $errorParams;
+		$this->urlReports[$url] = $response;
+		$this->urlErrorParams[$url] = $errorParams;
 
 		return $response;
 	}
