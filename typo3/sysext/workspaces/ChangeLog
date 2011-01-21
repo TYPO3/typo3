@@ -1,3 +1,70 @@
+2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
+	
+	* Raised version to 4.5.0rc1
+	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
+	* Fixed bug #12308: Workspace non-admin not workspace owner sees icon to swap updated version with Live site
+	* Fixed bug #12384: Mount points are not taken into account in element-list
+	* Fixed bug #12325: Hide icons that don't work in the current context
+	* Fixed bug #11539: Split view
+
+2011-01-20  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12055: Publishing a page does not update the new page tree
+	* Fixed bug #12413: Rename extension "list" to "recordlist"
+	* Fixed bug #12000: Cache and Favorites submenus shifts when in Workspaces
+	* Fixed bug #11574: Workspaces grid: stages should "sit" on one line
+	* Fixed bug #12446: Fixed instantiation of UriBuilder (broken since extbase merge)
+
+2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #12077: Tooltips for slider
+	* Fxied bug #12334:"Allow members to edit records in "Review" stage" should be removed
+	* Fixed bug #12286: Wrong icon for "Generate workspace preview link" - use eye icon instead
+
+2011-01-18  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #11972: Switching workspaces with tabs causes module menu to loose its selection
+	* Fixed bug #12405: The workspaces module does not work in Internet Explorer
+
+2011-01-18  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11481: Naming of "Release" mass action is unclear
+	* Fixed bug #12350: Wrong backpath for thumbnail generation in diff view
+
+2011-01-18  Marco Bresch <typo3@starfinanz.de>
+
+	* Fixed bug #10439: Data array used in ws-grid should be cached
+
+2011-01-18  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #12347: Incorrect registration of status report
+	* Fixed bug #12333: "Un-Publish:" should be hidden
+	* Fixed bug #12322: "null" is shown in diff view if original fields are empty in Firefox
+	* Fixed bug #11587: Trash icon should "discard" too
+	* Fixed bug #11529: Infinite not infinite / moved pages not always visible in element list
+
+2011-01-16  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #11825: non-admin editors can't see non-page records within the review module
+	* Fixed bug #12272: Topbar isn't highlighted if there's only on workspace
+	* Fixed bug #12273: "Go to workspace module" link appears even if user has no access to it
+
+2011-01-16  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Followup to #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Fixed bug #12076: Remove "help" tab
+	* Fixed bug #12192: Description of workspace module for "about modules" missing
+	* Fixed bug #12194: Legend too wide
+
+2011-01-16  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #12291: Icon "Open version of page" does not go the the page of the clicked element
+
+2011-01-15  Marco Bresch  <typo3@starfinanz.de>
+
+	* Fixed bug: include htmlspecialchars for labels to display html-tags
+	* Bug #11585: Hide difference column for default
+
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled

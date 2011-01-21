@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ *  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -157,29 +157,39 @@ class Tx_Workspaces_Service_Stages {
 	 */
 	public function getStagesForWSUser() {
 
-			// initiate return array of stages with edit stage
 		$stagesForWSUserData = array();
+		$allowedStages = array();
+		$orderedAllowedStages = array();
 
-			// get all stages for the current workspace
 		$workspaceStageRecs = $this->getStagesForWS();
 		if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
-				// go through custom stages records
-			foreach ($workspaceStageRecs as $workspaceStageRec) {
-					// check if the user has permissions to the custom stage
-				if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($workspaceStageRec['uid'])) {
-						// yes, so add to return array
-					$stagesForWSUserData[] = array(
-						'uid' => $workspaceStageRec['uid'],
-						'title' => $workspaceStageRec['title']
-					);
-				} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID) {
-						if ($GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
-							$stagesForWSUserData[] = $workspaceStageRec;
-						}
+			if ($GLOBALS['BE_USER']->isAdmin()) {
+				$orderedAllowedStages = $workspaceStageRecs;
+			} else {
+				foreach ($workspaceStageRecs as $workspaceStageRec) {
+					if ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
+						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
+					} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
+						$allowedStages[] = $workspaceStageRec;
+						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
+					}
 				}
+
+				foreach ($stagesForWSUserData as $allowedStage) {
+					$nextStage = $this->getNextStage($allowedStage['uid']);
+					$prevStage = $this->getPrevStage($allowedStage['uid']);
+					if (isset($nextStage['uid'])) {
+						$allowedStages[$nextStage['uid']] = $nextStage;
+					}
+					if (isset($prevStage['uid'])) {
+						$allowedStages[$prevStage['uid']] = $prevStage;
+					}
+				}
+
+				$orderedAllowedStages = array_values($allowedStages);
 			}
 		}
-		return $stagesForWSUserData;
+		return $orderedAllowedStages;
 	}
 
 	/**
@@ -591,7 +601,8 @@ class Tx_Workspaces_Service_Stages {
 				// if there's no prev-stage the stageIds match,
 				// otherwise we've to check if the user is permitted to use the stage
 			if (!empty($prevStage) && $prevStage['uid'] != $stageId) {
-				$isAllowed = $this->isStageAllowedForUser($prevStage['uid']);
+					// if the current stage is allowed for the user, the user is also allowed to send to prev
+				$isAllowed = $this->isStageAllowedForUser($stageId);
 			}
 		} catch (Exception $e) {
 			// Exception raised - we're not allowed to go this way
@@ -613,7 +624,8 @@ class Tx_Workspaces_Service_Stages {
 				// if there's no next-stage the stageIds match,
 				// otherwise we've to check if the user is permitted to use the stage
 			if (!empty($nextStage) && $nextStage['uid'] != $stageId) {
-				$isAllowed = $this->isStageAllowedForUser($nextStage['uid']);
+					// if the current stage is allowed for the user, the user is also allowed to send to next
+				$isAllowed = $this->isStageAllowedForUser($stageId);
 			}
 		} catch (Exception $e) {
 			// Exception raised - we're not allowed to go this way
@@ -630,10 +642,10 @@ class Tx_Workspaces_Service_Stages {
 		$cacheKey = $this->getWorkspaceId() . '_' . $stageId;
 		$isAllowed = FALSE;
  		if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
-			 $isAllowed = $this->workspaceStageAllowedCache[$cacheKey];
+			$isAllowed = $this->workspaceStageAllowedCache[$cacheKey];
 		 } else {
-			 $isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
-			 $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
+			$isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
+			$this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
 		 }
 		return $isAllowed;
 	}

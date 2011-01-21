@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+*  (c) 2004-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -534,7 +534,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			<input type="hidden" name="prErr" value="1" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars($this->REQUEST_URI).'" />
 			<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('createNewVersion') . '" />
-
+			' . t3lib_TCEforms::getHiddenTokenField('tceAction') . '
 			</form>
 
 		';
@@ -1688,7 +1688,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)	{
-		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===10))	{
+		if ($this->publishAccess && (!($GLOBALS['BE_USER']->workspaceRec['publish_access']&1) || (int)$rec_off['t3ver_stage']===-10))	{
 			$actionLinks =
 				'<a href="'.htmlspecialchars($this->doc->issueCommand(
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
@@ -1853,5 +1853,7 @@ $SOBE->init();
 
 $SOBE->main();
 $SOBE->printContent();
+
+t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

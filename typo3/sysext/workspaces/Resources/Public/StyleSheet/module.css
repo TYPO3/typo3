@@ -188,3 +188,25 @@ div .t3-workspaces-comments-singleComment-content-title {
 	padding: 8px 0 8px 0;
 	font-weight: bold;
 }
+
+.typo3-workspaces-row-disabled .x-grid3-td-checker {
+	visibility: hidden;
+}
+
+div.x-grid3-row img.t3-icon-extensions-workspaces {
+	display: inline-block !important;
+	width: 17px;
+	visibility: hidden;
+}
+
+div.x-grid3-row-over img.t3-icon-extensions-workspaces {
+	visibility: visible;
+}
+
+img.t3-icon-workspaces-sendtonextstage {
+	background-position: 0 4px !important;
+}
+
+img.t3-icon-workspaces-sendtoprevstage {
+	background-position: 0 4px !important;
+}

@@ -1,3 +1,15 @@
+2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0rc1
+
+2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
+
+2011-01-20  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12397: CSRF protection for clickmenu and old workspace module (Thanks to Helmut Hummel)
+
 2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Follow-up to bug #11832: Label of the anchor is empty

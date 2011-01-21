@@ -153,6 +153,7 @@ TYPO3.Workspaces.Configuration.ChangeState = {
 	dataIndex : 'change',
 	width: 80,
 	sortable: true,
+	hidden: true,
 	header : TYPO3.lang["column.difference"],
 	renderer: function(value, metaData) {
 		return value + "%";
@@ -259,11 +260,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			,tooltip: TYPO3.lang["tooltip.viewElementAction"]
 			,handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-				if (record.json.table == 'pages') {
-					TYPO3.Workspaces.Actions.viewSingleRecord(record.json.t3ver_oid);
-				} else {
-					TYPO3.Workspaces.Actions.viewSingleRecord(record.json.livepid);
-				}
+				TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.livepid);
 			},
 			getClass: function(v, meta, rec) {
 				if(!rec.json.allowedAction_view) {
@@ -297,11 +294,11 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 				if (record.json.table == 'pages') {
 					top.loadEditId(record.json.t3ver_oid);
 				} else {
-					top.loadEditId(record.json.realpid);
+					top.loadEditId(record.json.livepid);
 				}
 			},
 			getClass: function(v, meta, rec) {
-				if(!rec.json.allowedAction_editVersionedPage) {
+				if(!rec.json.allowedAction_editVersionedPage || !top.TYPO3.configuration.pageModule) {
 					return 'icon-hidden';
 				} else {
 					return '';
@@ -310,12 +307,12 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 		},
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-document-remove',
-			tooltip: TYPO3.lang["tooltip.removeVersion"],
+			tooltip: TYPO3.lang["tooltip.discardVersion"],
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var configuration = {
-					title: TYPO3.lang["window.remove.title"],
-					msg: TYPO3.lang["window.remove.message"],
+					title: TYPO3.lang["window.discard.title"],
+					msg: TYPO3.lang["window.discard.message"],
 					fn: function(result) {
 						if (result == 'yes') {
 							TYPO3.Workspaces.Actions.deleteSingleRecord(record.json.table, record.json.uid);

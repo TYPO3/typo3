@@ -9,6 +9,7 @@
 
 2011-01-21  Tolleiv Nietsch  <typo3@tolleiv.de>
 
+	* Synchronized external repositories of version (tag 4.5.0rc1) and workspaces (tag 4.5.0rc1)
 	* Fixed bug #16935: tx_coreupdates_installversioning is obsolete
 
 2011-01-21  Ernesto Baschny  <ernst@cron-it.de>

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Steffen Ritter (steffen@typo3.org)
+ *  (c) 2010-2011 Steffen Ritter (steffen@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -139,7 +139,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode();
-		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces', NULL, FALSE);
+		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces&' . TYPO3_version, NULL, FALSE);
 
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.grid.RowExpander.js');

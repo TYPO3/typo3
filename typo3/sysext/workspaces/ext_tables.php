@@ -2,8 +2,8 @@
 if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
-	// avoid that this block is loaded in the frontend or within the upgrade-wizards 
-if (TYPO3_MODE == 'BE' && PATH_typo3_mod != 'install/') {
+	// avoid that this block is loaded in the frontend or within the upgrade-wizards
+if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) { 
 	/**
 	* Registers a Backend Module
 	*/
@@ -15,7 +15,7 @@ if (TYPO3_MODE == 'BE' && PATH_typo3_mod != 'install/') {
 		array(
 				// An array holding the controller-action-combinations that are accessible
 			'Review'		=> 'index,fullIndex,singleIndex',
-			'Preview'		=> 'index,help,newPage'
+			'Preview'		=> 'index,newPage'
 		),
 		array(
 			'access' => 'user,group',
@@ -32,7 +32,7 @@ if (TYPO3_MODE == 'BE' && PATH_typo3_mod != 'install/') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Ajax.ExtDirect.ToolbarMenu'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:tx_Workspaces_ExtDirect_ToolbarMenu';
 
 		// register the reports statusprovider
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Configuration'][] = 'Tx_Workspaces_Reports_StatusProvider';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['configuration'][] = 'Tx_Workspaces_Reports_StatusProvider';
 
 
 }
@@ -84,6 +84,7 @@ $TCA['sys_workspace_stage'] = array(
 $icons = array(
 	'sendtonextstage' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
 	'sendtoprevstage' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtoprevstage.png',
+	'generatepreviewlink' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/generate-ws-preview-link.png',
 );
 t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
 t3lib_extMgm::addLLrefForTCAdescr('sys_workspace_stage','EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xml');

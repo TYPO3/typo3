@@ -123,8 +123,8 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 				case 'swap':
 					label = TYPO3.lang["tooltip.swapAll"];
 					break;
-				case 'release':
-					label = TYPO3.lang["tooltip.releaseAll"];
+				case 'discard':
+					label = TYPO3.lang["tooltip.discardAll"];
 					break;
 			}
 			top.TYPO3.Windows.close('executeMassActionWindow');

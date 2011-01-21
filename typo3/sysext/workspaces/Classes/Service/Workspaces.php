@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ *  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -346,23 +346,42 @@ class tx_Workspaces_Service_Workspaces {
 		 **/
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$searchObj = t3lib_div::makeInstance('t3lib_fullsearch');
-		$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
-
+		$pageList = FALSE;
+		if ($pageId > 0) {
+			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
+		} else {
+			$mountPoints = $GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
+			if (!is_array($mountPoints) || empty($mountPoints)) {
+				$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+				$mountPoints = array_unique($mountPoints);
+			}
+			$newList = array();
+			foreach($mountPoints as $mountPoint) {
+				$newList[] = $searchObj->getTreeList($mountPoint, $recursionLevel, 0, $perms_clause);
+			}
+			$pageList = implode(',', $newList);
+		}
 		unset($searchObj);
-
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
 			if ($pageList) {
 					// Remove the "subbranch" if a page was moved away
 				$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . $wsid . t3lib_BEfunc::deleteClause($table), '', 'uid', '', 't3ver_move_id');
-				$newList = array();
 				$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
 
-				foreach ($pageIds as $tmpId) {
-					if (isset($movedAwayPages[$tmpId]) && !empty($newList) && !in_array($movedAwayPages[$tmpId]['pid'], intval($newList))) {
-						break;
+					// move all pages away
+				$newList = array_diff($pageIds, array_keys($movedAwayPages));
+
+					// move back in if still connected to the "remaining" pages
+				do {
+					$changed = FALSE;
+					foreach ($movedAwayPages as $uid => $rec) {
+						if (in_array($rec['pid'], $newList) && !in_array($uid, $newList)) {
+							$newList[] = $uid;
+							$changed = TRUE;
+						}
 					}
-					$newList[] = $tmpId;
-				}
+				} while ($changed);
+
 				$pageList = implode(',', $newList);
 			}
 				// In case moving pages is enabled we need to replace all move-to pointer with their origin
@@ -370,6 +389,9 @@ class tx_Workspaces_Service_Workspaces {
 
 			$newList = array();
 			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
+			if (!in_array($pageId, $pageIds)) {
+				$pageIds[] = $pageId;
+			}
 			foreach ($pageIds as $pageId) {
 				if (intval($pages[$pageId]['t3ver_move_id']) > 0) {
 					$newList[] = intval($pages[$pageId]['t3ver_move_id']);
@@ -390,7 +412,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * @return array
 	 */
 	protected function filterPermittedElements($recs, $table) {
-		$checkField = ($table == 'pages') ? 'uid' : 'pid';
+		$checkField = ($table == 'pages') ? 'uid' : 'wspid';
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
@@ -454,6 +476,32 @@ class tx_Workspaces_Service_Workspaces {
 			}
 		}
 		return $isNewPage;
+	}
+
+	/**
+	 * Generates a view link for a page.
+	 *
+	 * @static
+	 * @param  $table
+	 * @param  $uid
+	 * @param  $record
+	 * @return string
+	 */
+	public static function viewSingleRecord($table, $uid, $record=null) {
+		$viewUrl = '';
+		if ($table == 'pages') {
+			$viewUrl = t3lib_BEfunc::viewOnClick($uid);
+		} elseif ($table == 'pages_language_oderlay' || $table == 'tt_content') {
+			$elementRecord = is_array($record) ? $record : t3lib_BEfunc::getRecord($table, $uid);
+			$viewUrl = t3lib_BEfunc::viewOnClick($elementRecord['pid']);
+		} else {
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
+				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
+				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
+				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, null);
+			}
+		}
+		return $viewUrl;
 	}
 }
 

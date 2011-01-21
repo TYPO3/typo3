@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Ingo Renner <ingo@typo3.org>
-*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+*  (c) 2007-2011 Ingo Renner <ingo@typo3.org>
+*  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -75,7 +75,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		if (t3lib_extMgm::isLoaded('workspaces')) {
 			if ($this->checkAccess == NULL) {
 					$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
-					if (count($availableWorkspaces) > 1) {
+					if (count($availableWorkspaces) > 0) {
 						$this->checkAccess = TRUE;
 					} else {
 						$this->checkAccess = FALSE;
@@ -128,10 +128,12 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 				'</li>';
 		}
 
-			// go to workspace module link
-		$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' .
-			'<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' .
-			' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
+		if ($GLOBALS['BE_USER']->check('modules', 'web_WorkspacesWorkspaces')) {
+				// go to workspace module link
+			$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' .
+				'<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' .
+				' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
+		}
 
 		$workspaceMenu[] = '</ul>';
 

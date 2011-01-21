@@ -111,7 +111,8 @@ $TCA['sys_workspace'] = array(
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				)
-			)
+			),
+			'displayCond' => 'FALSE'			// this feature doesn't work yet therefore it's not shown by default
 		),
 		'freeze' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.freeze',
@@ -122,13 +123,6 @@ $TCA['sys_workspace'] = array(
 		),
 		'live_edit' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.live_edit',
-			'config' => array(
-				'type' => 'check',
-				'default' => '0'
-			)
-		),
-		'review_stage_edit' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.review_stage_edit',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
@@ -193,7 +187,7 @@ $TCA['sys_workspace'] = array(
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_filemounts.tabs.staging,custom_stages,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,publish_access'
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access'
 		)
 	)
 );

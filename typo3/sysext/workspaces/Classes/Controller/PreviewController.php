@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ *  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -51,7 +51,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode();
 		$this->pageRenderer->addJsFile(
-			$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces',
+			$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces&' . TYPO3_version,
 			NULL,
 			FALSE
 		);
@@ -79,16 +79,13 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$language = intval(t3lib_div::_GP('L'));
 
 		$controller = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', TRUE);
-		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
+		$uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 
 		$wsSettingsPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
-		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), $controller, 'workspaces', 'web_workspacesworkspaces');
+		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'Tx_Workspaces_Controller_ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
-
-		$wsHelpUri = $uriBuilder->uriFor('help', array(), $this, 'workspaces', 'web_workspacesworkspaces');
-		$wsHelpParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
-		$wsHelpUrl = $wsSettingsPath . $wsHelpUri . $wsHelpParams;
 
 		$viewDomain = t3lib_BEfunc::getViewDomain($this->pageId);
 		$wsBaseUrl =  $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
@@ -96,7 +93,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
 		if (tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
-			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), $this, 'workspaces', 'web_workspacesworkspaces');
+			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces');
 			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
 			$this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);
 		} else {
@@ -104,23 +101,19 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		}
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
-		$this->view->assign('wsHelpUrl', $wsHelpUrl);
 		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll" , "TYPO3.LLL.Workspaces = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', true) . "',
 			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', true) . "',
-			helpView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.helpView', true) . "',
 			livePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', true) . "',
-			workspacePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', true) . "'
+			livePreviewDetail: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreviewDetail', true) . "',
+			workspacePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', true) . "',
+			workspacePreviewDetail: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', true) . "',
+			modeSlider: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', true) . "',
+			modeVbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', true) . "',
+			modeHbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', true) . "'
 		};\n");
-	}
-
-	/**
-	 * @return void
-	 */
-	public function helpAction() {
-		// @todo Implement this action
 	}
 
 	/**

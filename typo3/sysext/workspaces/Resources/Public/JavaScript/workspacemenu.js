@@ -37,16 +37,16 @@ var WorkspaceMenu = Class.create({
 	 * registers for resize event listener and executes on DOM ready
 	 */
 	initialize: function() {
-		Event.observe(window, 'resize', this.positionMenu);
 
 		Ext.onReady(function() {
+			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'));
 			if (top.TYPO3.configuration.inWorkspace == 1) {
 				Ext.getBody().addClass('typo3-in-workspace');
 				Ext.select('#username a').insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + top.TYPO3.Workspaces.workspaceTitle + '</span>');
 			} else {
 				Ext.getBody().removeClass('typo3-in-workspace');
 			}
-			this.positionMenu();
+			TYPO3BackendToolbarManager.refreshAll();
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
 			Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
 
@@ -56,36 +56,6 @@ var WorkspaceMenu = Class.create({
 			}.bindAsEventListener(this));
 
 		}, this);
-	},
-	/**
-	 * positions the menu below the toolbar icon, let's do some math!
-	 */
-	positionMenu: function() {
-		var calculatedOffset = 0;
-		var parentWidth = $('workspace-selector-menu').getWidth();
-		var currentToolbarItemLayer = $$('#workspace-selector-menu ul')[0];
-		var ownWidth = currentToolbarItemLayer.getWidth();
-		var parentSiblings = $('workspace-selector-menu').previousSiblings();
-
-		parentSiblings.each(function(toolbarItem) {
-			calculatedOffset += toolbarItem.getWidth() - 1;
-			// -1 to compensate for the margin-right -1px of the list items,
-			// which itself is necessary for overlaying the separator with the active state background
-
-			if (toolbarItem.down().hasClassName('no-separator')) {
-				calculatedOffset -= 1;
-			}
-		});
-		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
-
-		// border correction
-		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
-			calculatedOffset += 2;
-		}
-
-		$$('#workspace-selector-menu ul')[0].setStyle({
-			left: calculatedOffset + 'px'
-		});
 	},
 
 	/**
@@ -183,7 +153,7 @@ var WorkspaceMenu = Class.create({
 			Ext.select('#typo3-topbar-workspaces-title').remove();
 		}
 
-		TYPO3BackendWorkspaceMenu.positionMenu();
+		TYPO3BackendToolbarManager.refreshAll();
 
 		// first remove all checks, then set the check in front of the selected workspace
 		var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';

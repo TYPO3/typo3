@@ -51,6 +51,13 @@ TYPO3.Workspaces.RowDetail.rowDataStore = new Ext.data.DirectStore({
 		{name : 'icon_Workspace'}
 	]
 });
+
+Ext.override(Ext.XTemplate, {
+	exists: function(o, name) {
+		return typeof o != 'undefined' && o != null && o!='';
+	}
+});
+
 TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 	'<div class="t3-workspaces-foldoutWrapper">',
 	'<tpl for=".">',
@@ -78,7 +85,11 @@ TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 							'<table class="t3-workspaces-foldout-contentDiff">',
 								'<tr><th><span class="{icon_Workspace}">&nbsp;</span></th><td>{type_Workspace}</td></tr>',
 								'<tpl for="diff">',
-									'<tr><th>{label}</th><td>{content}</td></tr>',
+									'<tr><th>{label}</th><td>',
+										'<tpl if="this.exists(content)">',
+											'{content}',
+										'</tpl>',
+									'</td></tr>',
 								'</tpl>',
 							'</table>',
 						'</div>',
@@ -88,7 +99,11 @@ TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 							'<table class="t3-workspaces-foldout-contentDiff">',
 								'<tr><th><span class="{icon_Live}"></span></th><td>{type_Live}</td></tr>',
 								'<tpl for="live_record">',
-									'<tr><th>{label}</th><td>{content}</td></tr>',
+									'<tr><th>{label}</th><td>',
+										'<tpl if="this.exists(content)">',
+											'{content}',
+										'</tpl>',
+									'</td></tr>',
 								'</tpl>',
 							'</table>',
 						'</div>',
@@ -153,6 +168,18 @@ Ext.ux.TYPO3.Workspace.RowPanel = Ext.extend(Ext.Panel, {
 TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 	menuDisabled: true,
 	hideable: false,
+	getRowClass : function(record, rowIndex, p, ds) {
+		cssClass = '';
+		if (!record.json.allowedAction_nextStage && !record.json.allowedAction_prevStage) {
+			cssClass = 'typo3-workspaces-row-disabled ';
+		}
+		if(this.state[record.id]) {
+			cssClass += 'x-grid3-row-expanded';
+		} else {
+			cssClass += 'x-grid3-row-collapsed';
+		}
+		return cssClass;
+	},
 	remoteDataMethod : function (record, index) {
 		TYPO3.Workspaces.RowDetail.rowDataStore.baseParams = {
 			uid: record.json.uid,

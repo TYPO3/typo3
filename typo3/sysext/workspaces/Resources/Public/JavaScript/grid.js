@@ -70,6 +70,13 @@ TYPO3.Workspaces.SelectionModel = new Ext.grid.CheckboxSelectionModel({
 	singleSelect: false,
 	hidden: true,
 	listeners: {
+		beforerowselect : function (selection, rowIndex, keep, rec) {
+			if (rec.json.allowedAction_nextStage || rec.json.allowedAction_prevStage) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 		selectionchange: function (selection) {
 			var record = selection.grid.getSelectionModel().getSelections();
 			if (record.length > 0) {

@@ -7,11 +7,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="legend.label">Legend:</label>
-			<label index="legend.edited">Record edited</label>
-			<label index="legend.moved">Record moved</label>
-			<label index="legend.deleted">Record deleted</label>
-			<label index="legend.new">Record created</label>
-			<label index="legend.hidden">Record hidden</label>
+			<label index="legend.edited">edited</label>
+			<label index="legend.moved">moved</label>
+			<label index="legend.deleted">deleted</label>
+			<label index="legend.new">created</label>
+			<label index="legend.hidden">hidden</label>
 			<label index="title">Workspaces</label>
 			<label index="ok">ok</label>
 			<label index="cancel">cancel</label>
@@ -30,7 +30,7 @@
 			<label index="runMassAction.init">init</label>
 			<label index="tooltip.publishAll">Really publish entire workspace?</label>
 			<label index="tooltip.swapAll">Really swap entire workspace?</label>
-			<label index="tooltip.releaseAll">Really release entire workspace?</label>
+			<label index="tooltip.discardAll">Do you really want to discard changes from the whole workspace?</label>
 			<label index="tooltip.affectWholeWorkspace">Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</label>
 			<label index="previewLink">Preview Link</label>
 			<label index="error.noResponse">The server did not send any response whether the action was successful.</label>
@@ -52,10 +52,10 @@
 			<label index="tooltip.openPage">Open version of page</label>
 			<label index="tooltip.sendToPrevStage">Send record to previous Stage</label>
 			<label index="tooltip.sendToNextStage">Send record to next Stage</label>
-			<label index="tooltip.removeVersion">Remove version document</label>
+			<label index="tooltip.discardVersion">Discard workspace version of record.</label>
 			<label index="tooltip.swap">Swap live and workspace versions of record</label>
-			<label index="window.remove.title">Remove version from workspace</label>
-			<label index="window.remove.message">Do you really want to remove this version from workspace?</label>
+			<label index="window.discard.title">Discard workspace version of record.</label>
+			<label index="window.discard.message">Do you really want to discard this version from workspace?</label>
 			<label index="window.swap.title">Swap version</label>
 			<label index="window.swap.message">Do you really want to swap this version?</label>
 			<label index="window.massAction.title">Prepare to start mass action</label>
@@ -73,9 +73,16 @@
 			<label index="info.newpage.detail">The previewed page has been created in a workspace and has no live counterpart.</label>
 			<label index="preview.visualPreview">Visual preview</label>
 			<label index="preview.listView">List view</label>
-			<label index="preview.helpView">Help</label>
 			<label index="preview.livePreview">Live</label>
+			<label index="preview.livePreviewDetail">Click this element to hide the workspace version and see the live version of the page.</label>
 			<label index="preview.workspacePreview">Workspace</label>
+			<label index="preview.workspacePreviewDetail">Click this element to hide the live version and see the workspace version of the page.</label>
+			<label index="preview.modeSlider">Slider</label>
+			<label index="preview.modeVbox">Vertical</label>
+			<label index="preview.modeHbox">Horizontal</label>
+			<label index="label_doaction_publish">Publish</label>
+			<label index="label_doaction_swap">Swap</label>
+			<label index="label_doaction_discard">Discard</label>
 		</languageKey>
 	</data>
 </T3locallang>

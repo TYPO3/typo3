@@ -2,8 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,6 +38,12 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	const MAX_RECORDS_TO_PROCESS = 30;
 
 	/**
+	 * Path to the locallang file
+	 * @var string
+	 */
+	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xml';
+
+	/**
 	 * Get list of available mass workspace actions.
 	 *
 	 * @param object $parameter
@@ -51,16 +57,16 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 		if ($currentWorkspace != tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
 			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
 			if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
-				$actions[] = array('action' => 'publish', 'title' => 'Publish' //$GLOBALS['LANG']->getLL('label_doaction_publish'));
+				$actions[] = array('action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')
 				);
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
-					$actions[] = array('action' => 'swap', 'title' => 'Swap' //$GLOBALS['LANG']->getLL('label_doaction_swap')
+					$actions[] = array('action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap')
 					);
 				}
 			}
 
 			if ($currentWorkspace !== tx_Workspaces_Service_Workspaces::LIVE_WORKSPACE_ID) {
-				$actions[] = array('action' => 'release', 'title' => 'Release' // $GLOBALS['LANG']->getLL('label_doaction_release'));
+				$actions[] = array('action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard')
 				);
 			}
 		}

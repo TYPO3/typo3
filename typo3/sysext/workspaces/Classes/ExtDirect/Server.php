@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+*  (c) 2010-2011 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,7 +45,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 		$versions = $wslibObj->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth);
 
 		$workspacesService = t3lib_div::makeInstance('tx_Workspaces_Service_GridData');
-		$data = $workspacesService->generateGridListFromVersions($versions, $parameter);
+		$data = $workspacesService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
 		return $data;
 	}
 
@@ -80,10 +80,6 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 		global $TCA,$BE_USER;
 		$diffReturnArray = array();
 		$liveReturnArray = array();
-		/**
-		 * @todo  make sure this would work in local extension installation too
-		 */
-		$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '../../../' . TYPO3_mainDir;
 
 		$t3lib_diff = t3lib_div::makeInstance('t3lib_diff');
 		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
@@ -116,8 +112,8 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 					$fieldTitle = $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($parameter->table, $fieldName));
 
 					if ($TCA[$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $TCA[$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
-						$versionThumb = t3lib_BEfunc::thumbCode($versionRecord, $parameter->table, $fieldName, $backPath);
-						$liveThumb = t3lib_BEfunc::thumbCode($liveRecord, $parameter->table, $fieldName, $backPath);
+						$versionThumb = t3lib_BEfunc::thumbCode($versionRecord, $parameter->table, $fieldName, '');
+						$liveThumb = t3lib_BEfunc::thumbCode($liveRecord, $parameter->table, $fieldName, '');
 
 						$diffReturnArray[] = array(
 							'label' => $fieldTitle,
