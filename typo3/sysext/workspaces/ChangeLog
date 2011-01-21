@@ -1,5 +1,6 @@
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
 	* Fixed bug #12308: Workspace non-admin not workspace owner sees icon to swap updated version with Live site
 	* Fixed bug #12384: Mount points are not taken into account in element-list
 	* Fixed bug #12325: Hide icons that don't work in the current context

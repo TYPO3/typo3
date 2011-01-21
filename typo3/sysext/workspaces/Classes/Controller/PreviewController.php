@@ -51,7 +51,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode();
 		$this->pageRenderer->addJsFile(
-			$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces',
+			$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces&' . TYPO3_version,
 			NULL,
 			FALSE
 		);
