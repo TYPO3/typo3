@@ -1060,7 +1060,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 					});
 					break;
 				}
-				var tr = cell.parentElement;
+				var tr = cell.parentNode;
 				var no_cols = parseInt(prompt(this.localize("How many columns would you like to merge?"), 2));
 				if (!no_cols) break;
 				var no_rows = parseInt(prompt(this.localize("How many rows would you like to merge?"), 2));
