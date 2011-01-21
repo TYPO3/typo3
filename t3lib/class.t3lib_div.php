@@ -3678,6 +3678,9 @@ final class t3lib_div {
 	 *
 	 *************************/
 
+	/* Deprecated since 4.5, use t3lib_utility_Debug */
+
+
 	/**
 	 * Returns a string with a list of ascii-values for the first $characters characters in $string
 	 * Usage: 0
@@ -3685,15 +3688,11 @@ final class t3lib_div {
 	 * @param	string		String to show ASCII value for
 	 * @param	integer		Number of characters to show
 	 * @return	string		The string with ASCII values in separated by a space char.
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::ordinalValue instead
 	 */
 	public static function debug_ordvalue($string, $characters = 100) {
-		if (strlen($string) < $characters) {
-			$characters = strlen($string);
-		}
-		for ($i = 0; $i < $characters; $i++) {
-			$valuestring .= ' ' . ord(substr($string, $i, 1));
-		}
-		return trim($valuestring);
+		self::logDeprecatedFunction();
+		return t3lib_utility_Debug::ordinalValue($string, $characters);
 	}
 
 	/**
@@ -3704,49 +3703,11 @@ final class t3lib_div {
 	 *
 	 * @param	mixed		Array to view
 	 * @return	string		HTML output
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::viewArray instead
 	 */
 	public static function view_array($array_in) {
-		if (is_array($array_in)) {
-			$result = '
-			<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
-			if (count($array_in) == 0) {
-				$result .= '<tr><td><font face="Verdana,Arial" size="1"><strong>EMPTY!</strong></font></td></tr>';
-			} else {
-				foreach ($array_in as $key => $val) {
-					$result .= '<tr>
-						<td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string) $key) . '</font></td>
-						<td>';
-					if (is_array($val)) {
-						$result .= self::view_array($val);
-					} elseif (is_object($val)) {
-						$string = '';
-						if (method_exists($val, '__toString')) {
-							$string .= get_class($val) . ': ' . (string) $val;
-						} else {
-							$string .= print_r($val, TRUE);
-						}
-						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
-					} else {
-						if (gettype($val) == 'object') {
-							$string = 'Unknown object';
-						} else {
-							$string = (string) $val;
-						}
-						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
-					}
-					$result .= '</td>
-					</tr>';
-				}
-			}
-			$result .= '</table>';
-		} else {
-			$result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
-				<tr>
-					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string) $array_in)) . '<br /></font></td>
-				</tr>
-			</table>'; // Output it as a string.
-		}
-		return $result;
+		self::logDeprecatedFunction();
+		return t3lib_utility_Debug::viewArray($array_in);
 	}
 
 	/**
@@ -3756,9 +3717,11 @@ final class t3lib_div {
 	 * @param	mixed		Array to print visually (in a table).
 	 * @return	void
 	 * @see view_array()
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::printArray instead
 	 */
 	public static function print_array($array_in) {
-		echo self::view_array($array_in);
+		self::logDeprecatedFunction();
+		t3lib_utility_Debug::printArray($array_in);
 	}
 
 	/**
@@ -3772,122 +3735,22 @@ final class t3lib_div {
 	 * @param	string		The header.
 	 * @param	string		Group for the debug console
 	 * @return	void
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debug instead
 	 */
 	public static function debug($var = '', $header = '', $group = 'Debug') {
-			// buffer the output of debug if no buffering started before
-		if (ob_get_level() == 0) {
-			ob_start();
-		}
-		$debug = '';
-
-		if ($header) {
-			$debug .= '
-			<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;">
-				<tr>
-					<td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">' .
-					htmlspecialchars((string) $header) .
-					'</td>
-				</tr>
-				<tr>
-					<td>';
-		}
-
-		if (is_array($var)) {
-			$debug .= self::view_array($var);
-		} elseif (is_object($var)) {
-			$debug .= '<strong>|Object:<pre>';
-			$debug .= print_r($var, TRUE);
-			$debug .= '</pre>|</strong>';
-		} elseif ((string) $var !== '') {
-			$debug .= '<strong>|' . htmlspecialchars((string) $var) . '|</strong>';
-		} else {
-			$debug .= '<strong>| debug |</strong>';
-		}
-
-		if ($header) {
-			$debug .= '
-					</td>
-				</tr>
-			</table>';
-		}
-
-		if (TYPO3_MODE === 'BE') {
-			$group = htmlspecialchars($group);
-
-			if ($header !== '') {
-				$tabHeader = htmlspecialchars($header);
-			} else {
-				$tabHeader = 'Debug';
-			}
-
-			if (is_object($var)) {
-				$debug = str_replace(
-					array('"', '/', '<', "\n", "\r"),
-					array('\"', '\/', '\<', '<br />', ''),
-					$debug
-				);
-			} else {
-				$debug = str_replace(
-					array('"', '/', '<', "\n", "\r"),
-					array('\"', '\/', '\<', '', ''),
-					$debug
-				);
-			}
-
-			$script = '
-				(function debug() {
-					var debugMessage = "' . $debug . '";
-					var header = "' . $tabHeader . '";
-					var group = "' . $group . '";
-
-					if (typeof Ext !== "object" && (top && typeof top.Ext !== "object")) {
-						document.write(debugMessage);
-						return;
-					}
-
-					if (top && typeof Ext !== "object") {
-						Ext = top.Ext;
-					}
-
-					Ext.onReady(function() {
-						var TYPO3ViewportInstance = null;
-
-						if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
-							TYPO3ViewportInstance = top.TYPO3.Backend;
-						} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
-							TYPO3ViewportInstance = TYPO3.Backend;
-						}
-
-						if (TYPO3ViewportInstance !== null) {
-							TYPO3ViewportInstance.DebugConsole.addTab(debugMessage, header, group);
-						} else {
-							document.write(debugMessage);
-						}
-					});
-				})();
-			';
-			echo self::wrapJS($script);
-		} else {
-			echo $debug;
-		}
+		self::logDeprecatedFunction();
+		t3lib_utility_Debug::debug($var, $header, $group);
 	}
 
 	/**
 	 * Displays the "path" of the function call stack in a string, using debug_backtrace
 	 *
 	 * @return	string
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debugTrail instead
 	 */
 	public static function debug_trail() {
-		$trail = debug_backtrace();
-		$trail = array_reverse($trail);
-		array_pop($trail);
-
-		$path = array();
-		foreach ($trail as $dat) {
-			$path[] = $dat['class'] . $dat['type'] . $dat['function'] . '#' . $dat['line'];
-		}
-
-		return implode(' // ', $path);
+		self::logDeprecatedFunction();
+		return t3lib_utility_Debug::debugTrail();
 	}
 
 	/**
@@ -3897,52 +3760,11 @@ final class t3lib_div {
 	 * @param	string		Table header
 	 * @param	boolean		If TRUE, will return content instead of echo'ing out.
 	 * @return	void		Outputs to browser.
+	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debugRows instead
 	 */
 	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
-		if (is_array($rows)) {
-			reset($rows);
-			$firstEl = current($rows);
-			if (is_array($firstEl)) {
-				$headerColumns = array_keys($firstEl);
-				$tRows = array();
-
-					// Header:
-				$tRows[] = '<tr><td colspan="' . count($headerColumns) . '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' . htmlspecialchars($header) . '</strong></td></tr>';
-				$tCells = array();
-				foreach ($headerColumns as $key) {
-					$tCells[] = '
-							<td><font face="Verdana,Arial" size="1"><strong>' . htmlspecialchars($key) . '</strong></font></td>';
-				}
-				$tRows[] = '
-						<tr>' . implode('', $tCells) . '
-						</tr>';
-
-					// Rows:
-				foreach ($rows as $singleRow) {
-					$tCells = array();
-					foreach ($headerColumns as $key) {
-						$tCells[] = '
-							<td><font face="Verdana,Arial" size="1">' . (is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key])) . '</font></td>';
-					}
-					$tRows[] = '
-						<tr>' . implode('', $tCells) . '
-						</tr>';
-				}
-
-				$table = '
-					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">' . implode('', $tRows) . '
-					</table>';
-				if ($returnHTML) {
-					return $table;
-				} else {
-					echo $table;
-				}
-			} else {
-				debug('Empty array of rows', $header);
-			}
-		} else {
-			debug('No array of rows', $header);
-		}
+		self::logDeprecatedFunction();
+		t3lib_utility_Debug::debugRows($rows, $header, $returnHTML);
 	}
 
 
@@ -5615,7 +5437,7 @@ final class t3lib_div {
 					if (is_object($obj)) {
 						if (!@is_callable(array($obj, 'init'))) {
 								// use silent logging??? I don't think so.
-							die ('Broken service:' . self::view_array($info));
+							die ('Broken service:' . t3lib_utility_Debug::viewArray($info));
 						}
 						$obj->info = $info;
 						if ($obj->init()) { // service available?
@@ -6130,7 +5952,7 @@ final class t3lib_div {
 
 			// do not use console in login screen
 		if (stripos($log, 'console') !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
-			self::debug($msg, $date, 'Deprecation Log');
+			t3lib_utility_Debug::debug($msg, $date, 'Deprecation Log');
 		}
 	}
 
@@ -6180,7 +6002,7 @@ final class t3lib_div {
 
 			// write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
-		$logMsg .= '() - ' . $msg . ' - ' . self::debug_trail();
+		$logMsg .= '() - ' . $msg.' - ' . t3lib_utility_Debug::debugTrail();
 		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
 		self::deprecationLog($logMsg);
 	}

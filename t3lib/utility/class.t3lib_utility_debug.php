@@ -35,7 +35,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_Debug {
+final class t3lib_utility_Debug {
 
 	/**
 	 * Template for debug output
@@ -56,7 +56,7 @@ class t3lib_utility_Debug {
 	';
 
 
-	public function debug($var = '', $header = '', $group = 'Debug') {
+	public static function debug($var = '', $header = '', $group = 'Debug') {
 			// buffer the output of debug if no buffering started before
 		if (ob_get_level() == 0) {
 			ob_start();
@@ -125,16 +125,16 @@ class t3lib_utility_Debug {
 	public static function prepareVariableForJavascript($string, $asObject) {
 		if ($asObject) {
 			$string = str_replace(array(
-									   '"', '/', '<', "\n", "\r"
-								  ), array(
-										  '\"', '\/', '\<', '<br />', ''
-									 ), $string);
+				'"', '/', '<', "\n", "\r"
+			), array(
+				'\"', '\/', '\<', '<br />', ''
+			), $string);
 		} else {
 			$string = str_replace(array(
-									   '"', '/', '<', "\n", "\r"
-								  ), array(
-										  '\"', '\/', '\<', '', ''
-									 ), $string);
+				'"', '/', '<', "\n", "\r"
+		  ), array(
+				'\"', '\/', '\<', '', ''
+			), $string);
 		}
 
 		return $string;
@@ -220,7 +220,7 @@ class t3lib_utility_Debug {
 	 *
 	 * @return	string
 	 */
-	public function debugTrail() {
+	public static function debugTrail() {
 		$trail = debug_backtrace();
 		$trail = array_reverse($trail);
 		array_pop($trail);
@@ -241,7 +241,7 @@ class t3lib_utility_Debug {
 	 * @param	boolean		If TRUE, will return content instead of echo'ing out.
 	 * @return	void		Outputs to browser.
 	 */
-	public function debugRows($rows, $header = '', $returnHTML = FALSE) {
+	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
 		if (is_array($rows)) {
 			reset($rows);
 			$firstEl = current($rows);
@@ -301,9 +301,8 @@ class t3lib_utility_Debug {
 	 * @param	string		String to show ASCII value for
 	 * @param	integer		Number of characters to show
 	 * @return	string		The string with ASCII values in separated by a space char.
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debug_ordvalue instead
 	 */
-	public function ordinalValue($string, $characters = 100) {
+	public static function ordinalValue($string, $characters = 100) {
 		if (strlen($string) < $characters) {
 			$characters = strlen($string);
 		}
@@ -321,7 +320,7 @@ class t3lib_utility_Debug {
 	 * @param	mixed		Array to view
 	 * @return	string		HTML output
 	 */
-	public function viewArray($array_in) {
+	public static function viewArray($array_in) {
 		if (is_array($array_in)) {
 			$result = '
 			<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
@@ -378,13 +377,9 @@ class t3lib_utility_Debug {
 	 * @return	void
 	 * @see view_array()
 	 */
-	public function printArray($array_in) {
+	public static function printArray($array_in) {
 		echo self::viewArray($array_in);
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_debug.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_debug.php']);
-}
 ?>

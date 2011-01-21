@@ -15,6 +15,7 @@
 
 2011-01-21  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Follow-up to issue #15589: Move debug functions to own utility class, missing t3lib_div commit from original patch, and declared all relevant methods "static" (Thanks to Stefan Galinski)
 	* Fixed issue #17065: Use Swift Mailer in core (t3lib_mail_*) and deprecate t3lib_htmlmail and related settings (Thanks to Jigal van Hemert)
 	* Fixed bug #17173: CSRF: In the user settings module, saving form data is not possible if simulate user option is used (Thanks to Helmut Hummel)
 	* Follow-up to issue #16878: Keep t3lib_utility_Client::getBrowserInfo backwards compatible, deprecate 'system' and only use 'all_systems' from now on
