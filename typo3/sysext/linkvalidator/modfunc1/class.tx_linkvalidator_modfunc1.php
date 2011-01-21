@@ -367,7 +367,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_linkvalidator_link',
-			'recpid in (' . $pageList . ') and typelinks in (\'' . implode("','", $keyOpt) . '\')',
+			'recpid in (' . $pageList . ') and link_type in (\'' . implode("','", $keyOpt) . '\')',
 			'',
 			'recuid ASC, uid ASC')
 		)) {
@@ -382,7 +382,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 
 					// Table rows containing the broken links
 				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-					$items[] = $this->drawTableRow($row['tablename'], $row, $brokenLinksItemTemplate);
+					$items[] = $this->drawTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
 				}
 				$brokenLinkItems = implode(chr(10), $items);
 
@@ -450,8 +450,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 	 */
 	private function drawTableRow($table, array $row, $brokenLinksItemTemplate) {
 		$markerArray = array();
-		if (is_array($row) && !empty($row['typelinks'])) {
-			if (($hookObj = $this->hookObjectsArr[$row['typelinks']])) {
+		if (is_array($row) && !empty($row['link_type'])) {
+			if (($hookObj = $this->hookObjectsArr[$row['link_type']])) {
 				$brokenUrl = $hookObj->getBrokenUrl($row);
 			}
 		}
@@ -491,10 +491,10 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		$markerArray['actionlink'] = $actionLinks;
 		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['recpid'], '', 0, 0);
 		$markerArray['element'] = $element; 
-		$markerArray['headlink'] = $row['linktitle'];
+		$markerArray['headlink'] = $row['link_title'];
 		$markerArray['linktarget'] = $brokenUrl;
 
-		$response = unserialize($row['urlresponse']);
+		$response = unserialize($row['url_response']);
 		if ($response['valid']) {
 			$linkMessage = '<span style="color: green;">' . $GLOBALS['LANG']->getLL('list.msg.ok') . '</span>';
 		} else {
@@ -502,8 +502,8 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		}
 		$markerArray['linkmessage'] = $linkMessage;
 
-		$lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['lastcheck']);
-		$lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['lastcheck']);
+		$lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']);
+		$lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['last_check']);
 		$message = sprintf($GLOBALS['LANG']->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);
 		$markerArray['lastcheck'] = $message;
 

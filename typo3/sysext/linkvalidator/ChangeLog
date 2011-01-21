@@ -1,6 +1,6 @@
 2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca> 
 
-	* Fixed bug #12385 Conflict scheduler:testtask with linkvalidator::task	
+	* Fixed bug #12385: Conflict scheduler:testtask with linkvalidator::task	
 	* Fixed bug #12411: Fix Copyright Notices
 	
 2011-01-20  Christopher Stelmaszyk  <chrissitopher@gmx.de>
@@ -10,6 +10,7 @@
 	* Fixed bug #12419: Use American English for "analyseRecord"
 	* Fixed bug #12420: Indentation in modfunc1, getTemplateMarkers()
 	* Fixed bug #12421: Rename tx_linkvalidator_links to tx_linkvalidator_link
+	* Fixed bug #12423: ext_tables.sql: Use underscores to separate words in field names
 
 2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca> 
 

@@ -4,12 +4,12 @@ CREATE TABLE tx_linkvalidator_link (
 	recpid int(11) DEFAULT '0' NOT NULL,
 	headline varchar(255) DEFAULT '' NOT NULL,
 	field varchar(255) DEFAULT '' NOT NULL,
-	tablename varchar(255) DEFAULT '' NOT NULL,
-	linktitle text,
+	table_name varchar(255) DEFAULT '' NOT NULL,
+	link_title text,
 	url text,
-	urlresponse text,
-	lastcheck int(11) DEFAULT '0' NOT NULL,
-	typelinks varchar(50) DEFAULT '' NOT NULL,
+	url_response text,
+	last_check int(11) DEFAULT '0' NOT NULL,
+	link_type varchar(50) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid)
 );

@@ -150,10 +150,10 @@ class tx_linkvalidator_processing {
 					$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
 					$record['recpid'] = $entryValue['row']['pid'];
 					$record['recuid'] = $entryValue['uid'];
-					$record['tablename'] = $table;
-					$record['linktitle'] = $entryValue['linktitle'];
+					$record['table_name'] = $table;
+					$record['link_title'] = $entryValue['link_title'];
 					$record['field'] = $entryValue['field'];
-					$record['lastcheck'] = time();
+					$record['last_check'] = time();
 
 					$this->recordReference = $entryValue['substr']['recordRef'];
 
@@ -174,17 +174,17 @@ class tx_linkvalidator_processing {
 						$response['valid'] = FALSE;
 						$response['errorParams'] = $hookObj->getErrorParams();
 						$this->brokenLinkCounts[$table]++;
-						$record['typelinks'] = $key;
+						$record['link_type'] = $key;
 						$record['url'] = $url;
-						$record['urlresponse'] = serialize($response);
+						$record['url_response'] = serialize($response);
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					} elseif (t3lib_div::_GP('showalllinks')) {
 						$response = array();
 						$response['valid'] = TRUE;
 						$this->brokenLinkCounts[$table]++;
 						$record['url'] = $url;
-						$record['typelinks'] = $key;
-						$record['urlresponse'] = serialize($response);
+						$record['link_type'] = $key;
+						$record['url_response'] = serialize($response);
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					}
 				}
@@ -281,7 +281,7 @@ class tx_linkvalidator_processing {
 									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
 									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
 									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["linktitle"] = $title;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["link_title"] = $title;
 									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
 
 								}
@@ -323,13 +323,13 @@ class tx_linkvalidator_processing {
 	public function getLinkCounts($curPage) {
 		$markerArray = array();
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'count(uid) as nbBrokenLinks,typelinks',
+				'count(uid) as nbBrokenLinks,link_type',
 				'tx_linkvalidator_link',
 				'recpid in (' . $this->pidList . ')',
-				'typelinks'
+				'link_type'
 		))) {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$markerArray[$row['typelinks']] = $row['nbBrokenLinks'];
+				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
 			}
 		}
