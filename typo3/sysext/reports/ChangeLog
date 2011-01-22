@@ -1,3 +1,7 @@
+2011-01-22  Ingo Renner  <ingo@typo3.org>
+
+	* Changed version to 1.1.0
+
 2011-01-21  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issues #17188: change status update task to use the new default From email address setting from config_default
