@@ -12,9 +12,17 @@ else
 
 
 	#replace login
-$TCA['tt_content']['types']['login']['showitem']='CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,
-							--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.14, pi_flexform;;;;1-1-1,
-							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
+$TCA['tt_content']['types']['login']['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
+													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
+													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.plugin,
+													pi_flexform;;;;1-1-1,
+													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
+													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
+													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
+													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
+													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.behaviour,
+													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended';
 
 	// Adds the redirect field to the fe_groups table
 $tempColumns = array(
