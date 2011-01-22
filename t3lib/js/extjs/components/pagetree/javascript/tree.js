@@ -106,6 +106,13 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	deletionDropZoneId: '',
 
 	/**
+	 * Main applicaton
+	 * 
+	 * @cfg {TYPO3.Components.PageTree.App}
+	 */
+	app: null,
+
+	/**
 	 * Root Node Configuration
 	 *
 	 * @type {Object}

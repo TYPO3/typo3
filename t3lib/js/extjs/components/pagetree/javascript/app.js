@@ -107,6 +107,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				commandProvider: TYPO3.Components.PageTree.Actions,
 				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
 				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+				app: this,
 				listeners: {
 					resize: {
 						fn: function() {
@@ -128,7 +129,8 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				autoHeight: false,
 				commandProvider: TYPO3.Components.PageTree.Actions,
 				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
-				treeDataProvider: TYPO3.Components.PageTree.DataProvider
+				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+				app: this
 			}).hide();
 
 			var topPanel = new TYPO3.Components.PageTree.TopPanel({

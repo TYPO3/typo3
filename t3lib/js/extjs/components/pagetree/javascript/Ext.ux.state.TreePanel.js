@@ -108,7 +108,7 @@ Ext.override(Ext.ux.state.TreePanel, {
 							contentId.indexOf('pages' + String(node.attributes.nodeData.id)) !== -1
 						);
 
-						if (contentId !== '-1' && !isCurrentSelectedNode &&
+						if (contentId !== '-1' && !isCurrentSelectedNode && this.app.isVisible() &&
 							this.commandProvider && this.commandProvider.singleClick
 						) {
 							this.commandProvider.singleClick(node, this);
