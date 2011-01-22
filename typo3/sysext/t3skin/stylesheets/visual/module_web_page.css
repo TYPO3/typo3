@@ -6,8 +6,8 @@ $Id$
 
 .t3-page-colHeader {
 	font-weight: bold;
-	text-transform: uppercase;
 	text-align: left;
+	font-size: 11px;
 }
 
 .t3-page-colHeader-label {

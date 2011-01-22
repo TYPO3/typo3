@@ -5,6 +5,7 @@
 2011-01-22  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed incorrect english label for table tt_content from "Pagecontent" to "Page Content"
+	* Fixed bug #17213: Names of backend layout columns not displayed properly
 
 2011-01-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
