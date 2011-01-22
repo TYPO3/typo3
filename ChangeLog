@@ -1,6 +1,7 @@
 2011-01-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16680: Deactivate live search if list module is not available
+	* Fixed bug #17045: Live Search uses id=0 to display all search results to non-admin users
 
 2011-01-22  Susann Moog  <typo3@susanne-moog.de>
 

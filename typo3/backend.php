@@ -599,7 +599,8 @@ class TYPO3backend {
 			'ContextHelpWindows' => array(
 				'width' => 600,
 				'height' => 400
-			)
+			),
+			'firstWebmountPid' => intval($GLOBALS['WEBMOUNTS'][0]),
 		);
 		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
 			$t3Configuration['username'] = $GLOBALS['LANG']->csConvObj->conv($t3Configuration['username'], $GLOBALS['LANG']->charSet, 'utf-8');

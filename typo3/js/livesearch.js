@@ -31,7 +31,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	autoSelect: false,
 	ctCls: 'live-search-results',
 	dataProvider: null,
-	dbListUrl : 'id=0&search_levels=4&search_field=',
+	searchResultsPid : 0,
 	displayField: 'title',
 	emptyText: null,
 	enableKeyEvents: true,
@@ -100,7 +100,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				if (this.dataReader.jsonData.pageJump != '') {
 					jump(this.dataReader.jsonData.pageJump, 'web_list', 'web');
 				} else {
-					TYPO3.ModuleMenu.App.showModule('web_list', this.dbListUrl + this.getValue());
+					TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(this.getValue()));
 				}
 			}
 		},
@@ -178,7 +178,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 							// go to db_list.php and search for given search value
 							// @todo the current selected page ID from the page tree is required, also we need the
 							// values of $BE_USER->returnWebmounts() to search only during the allowed pages
-						TYPO3.ModuleMenu.App.showModule('web_list', this.dbListUrl + this.getValue());
+						TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(this.getValue()));
 						this.collapse();
 					}
 				}
@@ -279,6 +279,10 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		TYPO3.BackendLiveSearch.superclass.reset.apply(this, arguments);
 	},
 
+	getSearchResultsUrl : function(searchTerm) {
+		return 'id=' + this.searchResultsPid + '&search_levels=4&search_field=' + searchTerm;
+	},
+
 	addIframeListeners : function () {
 		// Add an event handler to each iframe, closing the search window when there's a click inside the iframe
 		// @todo Is there a cleaner way to handle this?
@@ -315,7 +319,8 @@ Ext.onReady(function() {
 		helpTitle: TYPO3.LLL.liveSearch.helpTitle,
 		emptyText: TYPO3.LLL.liveSearch.emptyText,
 		loadingText: TYPO3.LLL.liveSearch.loadingText,
-		listEmptyText: TYPO3.LLL.liveSearch.listEmptyText
+		listEmptyText: TYPO3.LLL.liveSearch.listEmptyText,
+		searchResultsPid: TYPO3.configuration.firstWebmountPid
 	});
 
 	TYPO3LiveSearch.applyToMarkup(Ext.get('live-search-box'));
