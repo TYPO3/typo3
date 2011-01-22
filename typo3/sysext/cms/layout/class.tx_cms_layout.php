@@ -586,7 +586,7 @@ class tx_cms_layout extends recordList {
 					$parser = t3lib_div::makeInstance('t3lib_TSparser');
 					$parser->parse($backendLayoutRecord['config']);
 
-					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="80%" height="100%" class="t3-page-columns t3-gridTable">';
+					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 
 					// add colgroups
 					$colCount = intval($parser->setup['backend_layout.']['colCount']);
