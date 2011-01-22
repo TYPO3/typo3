@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "filelist".
 #
-# Auto generated 24-08-2010 14:20
+# Auto generated 22-01-2011 20:10
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"adc5";s:14:"ext_tables.php";s:4:"ff29";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"0c90";s:18:"mod1/file_list.php";s:4:"f5da";s:13:"mod1/list.gif";s:4:"adc5";}',
+	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"7d9b";s:14:"ext_tables.php";s:4:"ff29";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"0c90";s:18:"mod1/file_list.php";s:4:"d7a0";s:13:"mod1/list.gif";s:4:"2225";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',

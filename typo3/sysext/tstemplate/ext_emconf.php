@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate".
 #
-# Auto generated 23-08-2010 17:04
+# Auto generated 22-01-2011 20:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.1',
-	'_md5_values_when_last_written' => 'a:10:{s:9:"ChangeLog";s:4:"9bb8";s:12:"ext_icon.gif";s:4:"a421";s:14:"ext_tables.php";s:4:"041b";s:12:"ts/clear.gif";s:4:"cc11";s:11:"ts/conf.php";s:4:"c6d6";s:12:"ts/index.php";s:4:"cc21";s:16:"ts/locallang.xml";s:4:"f223";s:20:"ts/locallang_mod.xml";s:4:"98d2";s:9:"ts/ts.gif";s:4:"18cb";s:10:"ts/ts1.gif";s:4:"a421";}',
+	'_md5_values_when_last_written' => 'a:10:{s:9:"ChangeLog";s:4:"9bb8";s:12:"ext_icon.gif";s:4:"e0ad";s:14:"ext_tables.php";s:4:"041b";s:12:"ts/clear.gif";s:4:"cc11";s:11:"ts/conf.php";s:4:"c6d6";s:12:"ts/index.php";s:4:"157f";s:16:"ts/locallang.xml";s:4:"f223";s:20:"ts/locallang_mod.xml";s:4:"98d2";s:9:"ts/ts.gif";s:4:"18cb";s:10:"ts/ts1.gif";s:4:"e0ad";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',

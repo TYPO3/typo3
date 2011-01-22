@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "t3editor".
 #
-# Auto generated 21-01-2011 22:21
+# Auto generated 22-01-2011 20:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

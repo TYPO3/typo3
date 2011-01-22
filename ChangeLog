@@ -1,3 +1,7 @@
+2011-01-22  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Cleanup: Updated ext_emconf.php files in system extensions
+
 2011-01-22  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug: #16524: No inline relation to tables with tabs possible

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "recordlist".
 #
-# Auto generated 20-01-2011 23:27
+# Auto generated 22-01-2011 20:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

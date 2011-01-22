@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "rsaauth".
 #
-# Auto generated 23-08-2010 16:58
+# Auto generated 22-01-2011 20:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:31:{s:9:"ChangeLog";s:4:"698c";s:21:"ext_conf_template.txt";s:4:"f6cd";s:12:"ext_icon.gif";s:4:"fa34";s:17:"ext_localconf.php";s:4:"7dfa";s:14:"ext_tables.php";s:4:"cc8e";s:14:"ext_tables.sql";s:4:"736a";s:14:"doc/manual.sxw";s:4:"bc75";s:42:"hooks/class.tx_rsaauth_backendwarnings.php";s:4:"3d6a";s:38:"hooks/class.tx_rsaauth_feloginhook.php";s:4:"4b25";s:40:"hooks/class.tx_rsaauth_loginformhook.php";s:4:"5ee9";s:19:"hooks/locallang.xml";s:4:"c455";s:20:"resources/rsaauth.js";s:4:"8e22";s:24:"resources/rsaauth_min.js";s:4:"0ba4";s:22:"resources/jsbn/LICENSE";s:4:"3205";s:24:"resources/jsbn/base64.js";s:4:"b2c3";s:22:"resources/jsbn/jsbn.js";s:4:"2a43";s:23:"resources/jsbn/jsbn2.js";s:4:"35c5";s:23:"resources/jsbn/prng4.js";s:4:"e591";s:21:"resources/jsbn/rng.js";s:4:"0153";s:21:"resources/jsbn/rsa.js";s:4:"8505";s:22:"resources/jsbn/rsa2.js";s:4:"61a1";s:28:"sv1/class.tx_rsaauth_sv1.php";s:4:"5f5b";s:50:"sv1/backends/class.tx_rsaauth_abstract_backend.php";s:4:"e0e2";s:48:"sv1/backends/class.tx_rsaauth_backendfactory.php";s:4:"7d19";s:49:"sv1/backends/class.tx_rsaauth_cmdline_backend.php";s:4:"856d";s:41:"sv1/backends/class.tx_rsaauth_keypair.php";s:4:"dbe2";s:45:"sv1/backends/class.tx_rsaauth_php_backend.php";s:4:"d52b";s:49:"sv1/storage/class.tx_rsaauth_abstract_storage.php";s:4:"f2ff";s:48:"sv1/storage/class.tx_rsaauth_session_storage.php";s:4:"5985";s:46:"sv1/storage/class.tx_rsaauth_split_storage.php";s:4:"28d4";s:47:"sv1/storage/class.tx_rsaauth_storagefactory.php";s:4:"3ef3";}',
+	'_md5_values_when_last_written' => 'a:31:{s:9:"ChangeLog";s:4:"698c";s:21:"ext_conf_template.txt";s:4:"f6cd";s:12:"ext_icon.gif";s:4:"50af";s:17:"ext_localconf.php";s:4:"7dfa";s:14:"ext_tables.php";s:4:"cc8e";s:14:"ext_tables.sql";s:4:"736a";s:14:"doc/manual.sxw";s:4:"bc75";s:42:"hooks/class.tx_rsaauth_backendwarnings.php";s:4:"d5e8";s:38:"hooks/class.tx_rsaauth_feloginhook.php";s:4:"cf5e";s:40:"hooks/class.tx_rsaauth_loginformhook.php";s:4:"1942";s:19:"hooks/locallang.xml";s:4:"c455";s:20:"resources/rsaauth.js";s:4:"8e22";s:24:"resources/rsaauth_min.js";s:4:"0ba4";s:22:"resources/jsbn/LICENSE";s:4:"3205";s:24:"resources/jsbn/base64.js";s:4:"b2c3";s:22:"resources/jsbn/jsbn.js";s:4:"2a43";s:23:"resources/jsbn/jsbn2.js";s:4:"35c5";s:23:"resources/jsbn/prng4.js";s:4:"e591";s:21:"resources/jsbn/rng.js";s:4:"0153";s:21:"resources/jsbn/rsa.js";s:4:"8505";s:22:"resources/jsbn/rsa2.js";s:4:"61a1";s:28:"sv1/class.tx_rsaauth_sv1.php";s:4:"f25c";s:50:"sv1/backends/class.tx_rsaauth_abstract_backend.php";s:4:"5df8";s:48:"sv1/backends/class.tx_rsaauth_backendfactory.php";s:4:"f154";s:49:"sv1/backends/class.tx_rsaauth_cmdline_backend.php";s:4:"9e99";s:41:"sv1/backends/class.tx_rsaauth_keypair.php";s:4:"7954";s:45:"sv1/backends/class.tx_rsaauth_php_backend.php";s:4:"01be";s:49:"sv1/storage/class.tx_rsaauth_abstract_storage.php";s:4:"1c22";s:48:"sv1/storage/class.tx_rsaauth_session_storage.php";s:4:"a981";s:46:"sv1/storage/class.tx_rsaauth_split_storage.php";s:4:"9dbe";s:47:"sv1/storage/class.tx_rsaauth_storagefactory.php";s:4:"933d";}',
 	'suggests' => array(
 	),
 );
