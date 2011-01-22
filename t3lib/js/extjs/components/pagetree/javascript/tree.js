@@ -435,10 +435,16 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 * Enables the deletion drop zone if configured. Also it creates the
 	 * shown dd proxy element.
 	 *
+	 * @param {TYPO3.Components.PageTree.Tree} treePane
+	 * @param {Ext.tree.TreeNode} node
 	 * @return {void}
 	 */
-	initDd: function() {
-		if (this.deletionDropZoneId) {
+	initDd: function(treePanel, node) {
+		var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
+		if (this.deletionDropZoneId &&
+			(!nodeHasChildNodes ||
+			(nodeHasChildNodes && TYPO3.Components.PageTree.Configuration.canDeleteRecursivly)
+		)) {
 			Ext.getCmp(this.deletionDropZoneId).show();
 		}
 		this.initDDProxyElement();

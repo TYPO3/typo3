@@ -102,24 +102,32 @@ TYPO3.Components.PageTree.Actions = {
 	 *
 	 * @param {Ext.tree.TreeNode} node
 	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Function} callback
+	 * @param {Boolean} recursiveDelete
 	 * @return {void}
 	 */
-	confirmDelete: function(node, tree) {
-		TYPO3.Components.PageTree.Commands.getConfirmContentDeletionMessage(node.attributes.nodeData.id, function(message, options) {
-			Ext.Msg.show({
-				title: message.title,
-				msg: message.message,
-				buttons: Ext.Msg.YESNO,
-				fn: function (answer, text, button) {
-					if (answer === 'yes') {
-						TYPO3.Components.PageTree.Actions.deleteNode(node, tree);
-						return true;
-					}
-					return false;
-				},
-				animEl: 'elId'
-			});
-		}, this);
+	confirmDelete: function(node, tree, callback, recursiveDelete) {
+		callback = callback || null;
+
+		var title = TYPO3.Components.PageTree.LLL.deleteDialogTitle,
+			message = TYPO3.Components.PageTree.LLL.deleteDialogMessage;
+		if (recursiveDelete) {
+			message = TYPO3.Components.PageTree.LLL.recursiveDeleteDialogMessage;
+		}
+
+		Ext.Msg.show({
+			title: title,
+			msg: message,
+			buttons: Ext.Msg.YESNO,
+			fn: function (answer) {
+				if (answer === 'yes') {
+					TYPO3.Components.PageTree.Actions.deleteNode(node, tree, callback);
+					return true;
+				}
+				return false;
+			},
+			animEl: 'elId'
+		});
 	},
 
 	/**
@@ -127,13 +135,19 @@ TYPO3.Components.PageTree.Actions = {
 	 *
 	 * @param {Ext.tree.TreeNode} node
 	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Function} callback
 	 * @return {void}
 	 */
-	deleteNode: function(node, tree) {
+	deleteNode: function(node, tree, callback) {
 		TYPO3.Components.PageTree.Commands.deleteNode(
 			node.attributes.nodeData,
 			function(response) {
-				if (this.evaluateResponse(response)) {
+				var succeeded = this.evaluateResponse(response);
+				if (callback !== null) {
+					callback(node, tree, succeeded);
+				}
+
+				if (succeeded) {
 						// the node may not be removed in workspace mode
 					if (top.TYPO3.configuration.inWorkspace && response.id) {
 						this.updateNode(node, node.isExpanded(), response);
@@ -160,8 +174,6 @@ TYPO3.Components.PageTree.Actions = {
 			this.deleteNode(node, tree);
 		}
 	},
-
-
 
 	/**
 	 * Restores a given node and moves it to the given destination inside the tree. Use this

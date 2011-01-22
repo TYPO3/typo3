@@ -21,6 +21,7 @@
 			<label index="move_page">Move page</label>
 			<label index="deleteItem">Delete</label>
 			<label index="deleteWarning">Are you sure you want to delete this record?</label>
+			<label index="recursiveDeleteWarning">You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</label>
 			<label index="editColumn">Edit this column</label>
 			<label index="editPageProperties_curLang">Edit translation properties</label>
 			<label index="editInRTE">Edit in Rich Text Editor</label>

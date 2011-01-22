@@ -198,11 +198,15 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', TRUE),
 				'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', TRUE),
 				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl($file . 'labels.temporaryDBmount', TRUE),
+				'deleteDialogTitle' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteItem', TRUE),
+				'deleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteWarning', TRUE),
+				'recursiveDeleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:recursiveDeleteWarning', TRUE),
 			),
 
 			'Configuration' => array(
 				'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
 				'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(4),
+				'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == TRUE,
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal(
 					'options.pageTree.disableIconLinkToContextmenu'
 				),

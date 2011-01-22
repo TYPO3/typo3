@@ -121,19 +121,6 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	}
 
 	/**
-	 * Gets title and message for JS deletion confirmation window
-	 *
-	 * @param  $uid The uid of the record to be deleted
-	 * @return array The title and the message for the confirmation window
-	 */
-	public function getConfirmContentDeletionMessage($uid) {
-		return array(
-			'title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteItem'),
-			'message' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteWarning')
-		);
-	}
-
-	/**
 	 * Restore the page
 	 *
 	 * @param stdClass $nodeData

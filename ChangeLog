@@ -1,3 +1,7 @@
+2011-01-22  Susann Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #17091: Pagetree: undelete recursive deleted pages only undeletes the top node, not the other child nodes of the deleted page (Thanks to Stefan Galinski)
+
 2011-01-22  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17107: page/branch action submenus close whole menu on click (Thanks to Stefan Galinski)

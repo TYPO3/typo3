@@ -173,40 +173,65 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 				}
 
 				var tree = node.ownerTree;
-				if (!top.TYPO3.configuration.inWorkspace) {
-					this.setHeight(50);
-					this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCanRestore);
-					this.updateText(
-						node.text + '<br />' +
-						'<span class="' + this.id + '-restore">' +
-							'<span class="' + this.id + '-restoreText">' +
-							TYPO3.Components.PageTree.LLL.dropZoneElementRemoved +
-							'</span>' +
-						'</span>',
-						false
-					);
+				var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
 
-					++this.amountOfDrops;
-					(function() {
-						if (!--this.amountOfDrops) {
-							this.toOriginState();
-						}
-					}).defer(10000, this);
-
-					this.textClickHandler = this.restoreNode.createDelegate(this, [node, tree]);
-					Ext.get(this.id + '-text').on('click', this.textClickHandler);
-
-					this.isPreviousSibling = false;
-					this.previousNode = node.parentNode;
-					if (node.previousSibling) {
-						this.previousNode = node.previousSibling;
-						this.isPreviousSibling = true;
-					}
+				var callback = null;
+				if (!top.TYPO3.configuration.inWorkspace && !nodeHasChildNodes) {
+					callback = this.setRecoverState.createDelegate(this);
 				}
 
-				node.ownerTree.commandProvider.deleteNode(node, tree);
+				if (nodeHasChildNodes) {
+					node.ownerTree.commandProvider.confirmDelete(node, tree, callback, true);
+				} else {
+					node.ownerTree.commandProvider.deleteNode(node, tree, callback);
+				}
 			}.createDelegate(this)
 		}));
+	},
+
+	/**
+	 * Sets the drop zone into the recovery state
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Boolean} succeeded
+	 * @return {void}
+	 */
+	setRecoverState: function(node, tree, succeeded) {
+		if (!succeeded) {
+			this.toOriginState();
+			return;
+		}
+
+		this.show();
+		this.setHeight(50);
+		this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCanRestore);
+		this.updateText(
+			node.text + '<br />' +
+			'<span class="' + this.id + '-restore">' +
+				'<span class="' + this.id + '-restoreText">' +
+				TYPO3.Components.PageTree.LLL.dropZoneElementRemoved +
+				'</span>' +
+			'</span>',
+			false
+		);
+
+		++this.amountOfDrops;
+		(function() {
+			if (!--this.amountOfDrops) {
+				this.toOriginState();
+			}
+		}).defer(10000, this);
+
+		this.textClickHandler = this.restoreNode.createDelegate(this, [node, tree]);
+		Ext.get(this.id + '-text').on('click', this.textClickHandler);
+
+		this.isPreviousSibling = false;
+		this.previousNode = node.parentNode;
+		if (node.previousSibling) {
+			this.previousNode = node.previousSibling;
+			this.isPreviousSibling = true;
+		}
 	},
 
 	/**
