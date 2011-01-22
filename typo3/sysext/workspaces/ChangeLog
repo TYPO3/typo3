@@ -1,5 +1,9 @@
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
 	
+	* Followup to #11539: Split view / tooltip styling added
+
+2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
+	
 	* Fixed bug #12448: grid preview links are broken
 	* Raised version to 4.5.0rc1
 	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
@@ -19,6 +23,7 @@
 
 2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
 	* Fixed bug #12077: Tooltips for slider
 	* Fxied bug #12334:"Allow members to edit records in "Review" stage" should be removed
 	* Fixed bug #12286: Wrong icon for "Generate workspace preview link" - use eye icon instead
