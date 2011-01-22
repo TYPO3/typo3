@@ -2524,7 +2524,7 @@ class t3lib_TCEforms_inline {
 	 */
 	protected function getHeadTags() {
 		$headTags = array();
-		$headDataRaw = $this->fObj->JStop();
+		$headDataRaw = $this->fObj->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
 
 		if ($headDataRaw) {
 				// Create instance of the HTML parser:
@@ -2550,6 +2550,24 @@ class t3lib_TCEforms_inline {
 		}
 
 		return $headTags;
+	}
+
+	/**
+	 * Gets the JavaScript of the pageRenderer.
+	 * This can be used to extract newly added files which have been added
+	 * during an AJAX request. Due to the spread possibilities of the pageRenderer
+	 * to add JavaScript rendering and extracting seems to be the easiest way.
+	 *
+	 * @return string
+	 */
+	protected function getJavaScriptAndStyleSheetsOfPageRenderer() {
+		/** @var $pageRenderer t3lib_PageRenderer */
+		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
+
+		$pageRenderer->setTemplateFile(TYPO3_mainDir . 'templates/helper_javascript_css.html');
+		$javaScriptAndStyleSheets = $pageRenderer->render();
+
+		return $javaScriptAndStyleSheets;
 	}
 
 

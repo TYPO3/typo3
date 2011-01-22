@@ -1,3 +1,7 @@
+2011-01-22  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug: #16524: No inline relation to tables with tabs possible
+
 2011-01-22  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #17211: Thumbnails in TCEforms have broken clickMenu
