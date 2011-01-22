@@ -22,34 +22,3 @@ $Id$
 	margin-right: 3px;
 	vertical-align: text-bottom;
 }
-
-.x-plupload-body {
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-.x-plupload-body dl {
-	padding: 5px;
-	width: 100%;
-}
-
-.x-plupload-body dt {
-	float: left;
-	display: block;
-	overflow: hidden;
-}
-
-.t3-plupload-remove {
-	visibility: hidden;
-}
-
-
-.plupload_over .t3-plupload-remove {
-	visibility: visible;
-}
-
-
-.plupload_emptytext {
-	vertical-align: middle;
-	text-align: center;
-}

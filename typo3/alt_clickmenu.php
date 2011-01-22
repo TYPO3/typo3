@@ -957,24 +957,16 @@ class clickMenu {
 		$script = 'file_upload.php';
 		$type = 'upload';
 		$image = 'upload.gif';
-		if ($GLOBALS['BE_USER']->uc['enableFlashUploader'] == 1) {
+		if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
 			$loc = 'top.content.list_frame';
 
 			$editOnClick = 'if (top.TYPO3.FileUploadWindow.isFlashAvailable()) { initFlashUploader("' . rawurlencode($path) . '"); } else if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . "';}";
 
 			return $this->linkItem(
 				$this->label($type),
-				$this->excludeIcon('<img' . t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/' . $image, 'width="12" height="12"').' alt="" />'),
+				$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
 				$editOnClick . 'top.nav.refresh();return hideCM();'
 				);
-		} elseif ($GLOBALS['BE_USER']->uc['enableFlashUploader'] == 2) {
-			$editOnClick = 'top.TYPO3.configuration.FileUpload.targetDirectory = "' . $path . '"; top.TYPO3.PluploadWindow.reloadWindow = top.content.list_frame;	top.TYPO3.PluploadWindow.show();';
-			return $this->linkItem(
-				$this->label($type),
-				$this->excludeIcon('<img' . t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/' . $image, 'width="12" height="12"') . ' alt="" />'),
-				$editOnClick . 'return hideCM();'
-			);
-
 		} else {
 			return $this->FILE_launch($path, $script, $type, $image, true);
 		}

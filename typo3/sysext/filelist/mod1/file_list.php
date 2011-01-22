@@ -174,7 +174,7 @@ class SC_file_list {
 			// There there was access to this file path, continue, make the list
 		if ($access)	{
 				// include the initialization for the flash uploader
-			if ($GLOBALS['BE_USER']->uc['enableFlashUploader'] == 1) {
+			if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
 
 				$this->doc->JScodeArray['flashUploader'] = '
 					if (top.TYPO3.FileUploadWindow.isFlashAvailable()) {
@@ -185,7 +185,7 @@ class SC_file_list {
 							function initFlashUploader(event) {
 									// set the page specific options for the flashUploader
 								var flashUploadOptions = {
-									uploadURL:           top.TYPO3.configuration.PATH_typo3 + "ajax.php",
+									uploadURL:           top.TS.PATH_typo3 + "ajax.php",
 									uploadFileSizeLimit: "' . t3lib_div::getMaxUploadFileSize() . '",
 									uploadFileTypes: {
 										allow:  "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow'] . '",
@@ -233,22 +233,6 @@ class SC_file_list {
 						});
 					}
 				';
-			} elseif ($GLOBALS['BE_USER']->uc['enableFlashUploader'] == 2) {
-
-				$this->doc->JScodeArray['flashUploader'] = '
-						Ext.onReady(function() {
-							// monitor the button
-							$("button-upload").observe("click", function(event) {
-								event.stop();
-								top.TYPO3.configuration.FileUpload.targetDirectory = "'.$this->id.'";
-								// set window object to reload on finish.
-								top.TYPO3.PluploadWindow.reloadWindow = window;
-								top.TYPO3.PluploadWindow.show();
-
-							});
-						});
-				';
-
 			}
 				// Create filelisting object
 			$this->filelist = t3lib_div::makeInstance('fileList');

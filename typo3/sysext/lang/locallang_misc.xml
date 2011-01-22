@@ -104,17 +104,11 @@
 			<label index="switchtousershort">SU:</label>
 			<label index="fileUpload_windowTitle">File Upload Progress</label>
 			<label index="fileUpload_buttonSelectFiles">Select Files</label>
-			<label index="fileUpload_buttonStartUpload">Start Upload</label>
 			<label index="fileUpload_buttonCancelAll">Cancel All Uploads</label>
-			<label index="fileUpload_progressText">{2} of {1} file(s) uploaded (Speed: {5}/s)</label>
 			<label index="fileUpload_infoComponentMaxFileSize">You can upload files with a maximum size of {0}.</label>
 			<label index="fileUpload_infoComponentFileUploadLimit">You can upload a total of {0}.</label>
 			<label index="fileUpload_infoComponentFileTypeLimit">You can upload the following file types {0}.</label>
 			<label index="fileUpload_infoComponentOverrideFiles">Overwrite existing files</label>
-			<label index="fileUpload_infoFileQueueEmpty">no files queued</label>
-			<label index="fileUpload_infoFileQueued">File queued</label>
-			<label index="fileUpload_infoFileFinished">Upload finished</label>
-			<label index="fileUpload_infoFileUploading">Uploading ({0}%)</label>
 			<label index="fileUpload_processRunning">Another process is already uploading</label>
 			<label index="fileUpload_uploadWait">Waiting to start upload of {0}</label>
 			<label index="fileUpload_uploadStarting">Starting upload of {0}</label>

@@ -126,14 +126,11 @@ class TYPO3backend {
 			'swfupload.swfobject'   => 'contrib/swfupload/plugins/swfupload.swfobject.js',
 			'swfupload.cookies'     => 'contrib/swfupload/plugins/swfupload.cookies.js',
 			'swfupload.queue'       => 'contrib/swfupload/plugins/swfupload.queue.js',
-			'plupload'              => 'contrib/plupload/js/plupload.full.min.js',
 			'md5'                   => 'md5.js',
 			'toolbarmanager'        => 'js/toolbarmanager.js',
 			'modulemenu'            => 'js/modulemenu.js',
 			'iecompatibility'       => 'js/iecompatibility.js',
 			'flashupload'           => 'js/flashupload.js',
-			'pluploadPanel'         => 'js/extjs/ext.ux.plupload.js',
-			'pluploadWindow'        => 'js/extjs/PluploadWindow.js',
 			'evalfield'             => '../t3lib/jsfunc.evalfield.js',
 			'flashmessages'         => '../t3lib/js/extjs/ux/flashmessages.js',
 			'tabclosemenu'          => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
@@ -479,17 +476,11 @@ class TYPO3backend {
 			'fileUpload' => array(
 				'windowTitle',
 				'buttonSelectFiles',
-				'buttonStartUpload',
 				'buttonCancelAll',
-				'progressText',
 				'infoComponentMaxFileSize',
 				'infoComponentFileUploadLimit',
 				'infoComponentFileTypeLimit',
 				'infoComponentOverrideFiles',
-				'infoFileQueueEmpty',
-				'infoFileQueued',
-				'infoFileFinished',
-				'infoFileUploading',
 				'processRunning',
 				'uploadWait',
 				'uploadStarting',
@@ -600,9 +591,6 @@ class TYPO3backend {
 			'ContextHelpWindows' => array(
 				'width' => 600,
 				'height' => 400
-			),
-			'FileUpload' => array(
-				'maxFileSize' => t3lib_div::getMaxUploadFileSize()
 			)
 		);
 		if ($GLOBALS['LANG']->charSet !== 'utf-8') {

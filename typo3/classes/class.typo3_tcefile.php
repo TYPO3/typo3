@@ -166,24 +166,13 @@ class TYPO3_tcefile {
 		$this->init();
 		$this->main();
 		$errors = $this->fileProcessor->getErrorMessages();
-		$uploaderType = t3lib_div::_GP('uploaderType');
 		if (count($errors)) {
 			$ajaxObj->setError(implode(',', $errors));
 		} else {
-			if ($uploaderType === 'plupload') {
-				$ajaxObj->addContent('result', $this->fileData);
-				if (count($this->fileData)) {
-					$ajaxObj->addContent('success', TRUE);
-				} else {
-					$ajaxObj->addContent('success', FALSE);
-				}
-			} else {
-				$ajaxObj->addContent('result', $this->fileData);
-				if ($this->redirect) {
-					$ajaxObj->addContent('redirect', $this->redirect);
-				}
+			$ajaxObj->addContent('result', $this->fileData);
+			if ($this->redirect) {
+				$ajaxObj->addContent('redirect', $this->redirect);
 			}
-
 			$ajaxObj->setContentFormat('json');
 		}
 	}

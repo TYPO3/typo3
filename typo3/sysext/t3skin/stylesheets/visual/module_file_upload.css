@@ -15,29 +15,3 @@ $Id$
 	text-align: left;
 	text-indent: 6px;
 }
-
-.x-plupload-body dl {
-	border-bottom: 1px solid #D0D0D0;
-	font: normal 11px Verdana,Arial,Helvetica,sans-serif;
-}
-
-.x-plupload-body dt {
-	cursor: pointer;
-	white-space: nowrap;
-}
-
-.plupload_emptytext {
-	font: 11px Arial,Helvetica,sans-serif;
-}
-
-.plupload_over {
-	background-color: #dedede;
-}
-
-.plupload_selected {
-	background-color: #EFF5FB;
-}
-
-.plupload_emptytext span {
-	line-height: 100px;
-}
