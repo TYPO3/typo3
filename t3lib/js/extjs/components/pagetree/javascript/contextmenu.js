@@ -57,6 +57,13 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 	id: 'typo3-pagetree-contextmenu',
 
 	/**
+	 * Parent clicks should be ignored
+	 *
+	 * @type {Boolean}
+	 */
+	ignoreParentClicks: true,
+
+	/**
 	 * Listeners
 	 *
 	 * The itemclick event triggers the configured single click action
