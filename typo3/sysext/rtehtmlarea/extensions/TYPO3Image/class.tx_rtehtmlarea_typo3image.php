@@ -46,9 +46,12 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlarea_api {
 		);
 
 	public function main($parentObject) {
-			// Check if this should be enabled based on Page TSConfig
-		return parent::main($parentObject) && !$this->thisConfig['disableTYPO3Browsers']
-				&& !(is_array( $this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.']) && is_array($this->thisConfig['buttons.']['image.']['TYPO3Browser.']) && $this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled']);
+			// Check if this should be enabled based on extension configuration and Page TSConfig
+			// The 'Minimal' and 'Typical' default configurations include Page TSConfig that removes images on the way to the database
+		return parent::main($parentObject)
+			&& !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1')
+			&& !$this->thisConfig['disableTYPO3Browsers']
+			&& !$this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled'];
 	}
 
 	/**

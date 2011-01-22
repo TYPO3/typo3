@@ -64,6 +64,7 @@
 	* Follow-up to bug #17157: htmlArea RTE: Not enabled in various browser/system combinations
 	* Fixed bug #17187: CSH tooltip does not render correctly for allowed Excludefields
 	* Fixed bug #17160: htmlArea RTE: Link editing problems in Internet Explorer
+	* Fixed bug #17205: htmlArea RTE: Remove Image button when images are not enabled
 
 2011-01-21  Susanne Moog  <typo3@susanne-moog.de>
 
