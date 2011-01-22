@@ -1,3 +1,7 @@
+2011-01-22  Ernesto Baschny  <ernesto.baschny@typo3.org>
+
+	* Release of TYPO3 4.5.0rc1
+
 2011-01-22  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17203: The ExtDirect token needs to be regenerated after relogin by popup window (Thanks to Helmut Hummel)
