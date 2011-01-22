@@ -153,7 +153,7 @@
 			<label index="pages.backend_layout_formlabel">Backend Layout (this page only)</label>
  			<label index="pages.backend_layout_next_level_formlabel">Backend Layout (subpages of this page)</label>
 			<label index="pages.backend_layout.none">None</label>
-			<label index="tt_content">Pagecontent</label>
+			<label index="tt_content">Page Content</label>
 			<label index="fe_users">Website User</label>
 			<label index="fe_users.username">Username:</label>
 			<label index="fe_users.password">Password:</label>
