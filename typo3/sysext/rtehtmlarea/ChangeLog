@@ -2,6 +2,7 @@
 
 	* Fixed bug #16975: htmlArea RTE: Use parentNode rather than parentElement
 	* Follow-up to bug #17157: htmlArea RTE: Not enabled in various browser/system combinations
+	* Fixed bug #17160: htmlArea RTE: Link editing problems in Internet Explorer
 
 2011-01-20  Stanislas Rolland  <typo3@sjbr.ca>
 
