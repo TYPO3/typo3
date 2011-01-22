@@ -303,7 +303,13 @@ final class t3lib_tree_pagetree_Commands {
 			$field = 'nav_title';
 			$text = $record['nav_title'];
 		}
-		$visibleText = t3lib_div::fixed_lgd_cs($text, $titleLength);
+
+		if (trim($text) === '') {
+			$visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title', TRUE) . ']';
+		} else {
+			$visibleText = $text;
+		}
+		$visibleText = t3lib_div::fixed_lgd_cs($visibleText, $titleLength);
 
 		$suffix = '';
 		if ($addDomainName) {
