@@ -2226,25 +2226,7 @@ class t3lib_TCEforms {
 						$rowCopy = array();
 						$rowCopy[$field] = $imgPath;
 
-							// Icon + clickmenu:
-						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'] ? $config['uploadfolder'] . '/' . $imgPath : $imgPath);
-
-						$fI = pathinfo($imgPath);
-						$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
-							strtolower($fI['extension']),
-							array(
-								 'title' => htmlspecialchars(
-									 $fI['basename'] .
-									 ($absFilePath && @is_file($absFilePath)
-											 ? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' :
-											 ' - FILE NOT FOUND!'
-									 )
-								 )
-							)
-						);
-
 						$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"') .
-								  ($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon) .
 								  $imgPath .
 								  '</span>';
 					}

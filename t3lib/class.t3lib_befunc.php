@@ -1907,9 +1907,23 @@ final class t3lib_BEfunc {
 					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
 					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img src="' . htmlspecialchars($backPath . $url) . '" hspace="2" border="0" title="' . trim($theFile) . '"' . $tparams . ' alt="" /></a> ';
 				} else {
-					$icon = self::getFileIcon($ext);
-					$url = 'gfx/fileicons/' . $icon;
-					$thumbData .= '<img src="' . $backPath . $url . '" hspace="2" border="0" title="' . trim($theFile) . '"' . $tparams . ' alt="" /> ';
+						// Icon
+					$theFile_abs = PATH_site . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
+					$theFile = ($abs ? '' : '../') . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
+
+					$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
+						strtolower($ext),
+						array('title' => htmlspecialchars(trim($theFile)))
+					);
+
+					$check = basename($theFile_abs) . ':' . filemtime($theFile_abs) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+					$params = '&file=' . rawurlencode($theFile);
+					$params .= $size ? '&size=' . $size : '';
+					$params .= '&md5sum=' . t3lib_div::shortMD5($check);
+
+					$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
+					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
+					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
 				}
 			}
 		}

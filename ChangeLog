@@ -1,3 +1,7 @@
+2011-01-22  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17211: Thumbnails in TCEforms have broken clickMenu
+
 2011-01-22  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed incorrect english label for table tt_content from "Pagecontent" to "Page Content"
