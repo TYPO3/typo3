@@ -2,6 +2,7 @@
 
 	* Fixed bug #17140: htmlArea RTE: In WebKit, RTE inserts incorrect link if text is double-clicked
 	* Updated htmlArea RTE version to 2.0.8
+	* Fixed bug #17160: htmlArea RTE: Link editing problems in Internet Explorer
 
 2011-01-19  Stanislas Rolland  <typo3@sjbr.ca>
 
