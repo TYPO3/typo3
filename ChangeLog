@@ -6,6 +6,7 @@
 
 	* Fixed incorrect english label for table tt_content from "Pagecontent" to "Page Content"
 	* Fixed bug #17213: Names of backend layout columns not displayed properly
+	* Follow-up to #17213: icons to add content were shifted down a bit, credits Steffen Gebert
 
 2011-01-22  Jeff Segars  <jeff@webempoweredchurch.org>
 

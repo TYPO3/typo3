@@ -47,7 +47,7 @@ td.t3-page-column {
 
 .t3-page-ce .t3-row-header .t3-icon,
 .t3-page-colHeader .t3-icon {
-	margin-top: 2px;
+	margin-top: -1px;
 }
 
 .t3-page-ce-icons-move span {
