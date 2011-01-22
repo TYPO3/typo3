@@ -44,7 +44,14 @@ class AjaxLogin {
 	 */
 	public function login(array $parameters, TYPO3AJAX $ajaxObj) {
 		if ($GLOBALS['BE_USER']->user['uid']) {
-			$json = array('success' => TRUE);
+			$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+			$token = $formprotection->generateToken('extDirect');
+			$formprotection->persistTokens();
+
+			$json = array(
+				'success' => TRUE,
+				'token' => $token
+			);
 		} else {
 			$json = array('success' => FALSE);
 		}

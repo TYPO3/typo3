@@ -956,20 +956,20 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// does this only with multiple arguments
 		$this->addExtOnReadyCode('
 			(function() {
-				var token = "' . $token . '";
+				TYPO3.ExtDirectToken = "' . $token . '";
 				for (var api in Ext.app.ExtDirectAPI) {
 					var provider = Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
 					provider.on("beforecall", function(provider, transaction, meta) {
 						if (transaction.data) {
-							transaction.data[transaction.data.length] = token;
+							transaction.data[transaction.data.length] = TYPO3.ExtDirectToken;
 						} else {
-							transaction.data = [token];
+							transaction.data = [TYPO3.ExtDirectToken];
 						}
 					});
 
 					provider.on("call", function(provider, transaction, meta) {
 						if (transaction.isForm) {
-							transaction.params.securityToken = token;
+							transaction.params.securityToken = TYPO3.ExtDirectToken;
 						}
 					});
 				}
