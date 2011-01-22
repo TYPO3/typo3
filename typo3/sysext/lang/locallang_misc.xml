@@ -143,6 +143,9 @@
 			<label index="liveSearch_helpDescriptionPages">#page:Home will search for all pages with the title "Home"</label>
 			<label index="extDirect_timeoutHeader">Connection Problem</label>
 			<label index="extDirect_timeoutMessage">Sorry, but an error occurred while connecting to the server. Please check your network connection.</label>
+			<label index="viewPort_tooltipModuleMenuSplit">Drag to resize the Modules Menu</label>
+			<label index="viewPort_tooltipNavigationContainerSplitDrag">Drag to resize or double click to collapse the tree</label>
+			<label index="viewPort_tooltipDebugPanelSplitDrag">Drag to resize or click to collapse the Debug Panel.</label>
 		</languageKey>
 	</data>
 </T3locallang>

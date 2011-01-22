@@ -14,6 +14,7 @@
 	* Fixed bug #17107: page/branch action submenus close whole menu on click (Thanks to Stefan Galinski)
 	* Fixed bug #17145: Replace label "Hide" in Pagetree menu with "Disable" (Thanks to Stefan Galinski)
 	* Fixed bug #17161: be_layout foreign_table_where excludes local page when GRSP set (Thanks to Jo Hasenau)
+	* Fixed bug #16085: Tool tips for collapsing and resizing panels missing
 
 2011-01-21  Sebastian Kurfuerst  <sebastian@typo3.org>
 

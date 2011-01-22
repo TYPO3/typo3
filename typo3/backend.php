@@ -522,6 +522,12 @@ class TYPO3backend {
 				'timeoutHeader',
 				'timeoutMessage',
 			),
+			'viewPort' => array(
+				'tooltipModuleMenuSplit',
+				'tooltipNavigationContainerSplitDrag',
+				'tooltipDebugPanelSplitDrag',
+
+			),
 		);
 		$generatedLabels = array();
 		$generatedLabels['core'] = $coreLabels;
