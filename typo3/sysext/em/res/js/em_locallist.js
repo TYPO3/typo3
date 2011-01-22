@@ -50,34 +50,110 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					plain: true,
 					activeTab: 0,
 					defaults: {
-						bodyStyle: 'background:#fff;padding:10px;overflow: auto;',
+						cls: 'gridrowpanel',
 						height: 250
 					},
 					record: record,
 					items:[
 						{
 							title: TYPO3.lang.msg_info,
-							html: TYPO3.EM.Layouts.showExtInfo(record.data)
+							html: TYPO3.EM.Layouts.showExtInfo(record.data),
+							listeners: {
+								activate: function(panel) {
+									var updateScriptLink = Ext.fly('update-check-' + record.data.extkey);
+									if (updateScriptLink) {
+										updateScriptLink.on('click', function() {
+											panel.getEl().mask('loading');
+											TYPO3.EM.ExtDirect.getExtensionUpdateScript(record.data.extkey, function(response) {
+												panel.getEl().unmask();
+												if (response.success) {
+													var w = new Ext.Window({
+														width: 500,
+														height: 500,
+														layout: 'fit',
+														title: TYPO3.lang.ext_details_updateScript + ' (' + record.data.extkey + ')',
+														items: [{
+															xtype: 'iframePanel',
+															id: 'updateScript-' + record.data.extkey
+														}]
+													}).show(true, function(){
+														Ext.getCmp('updateScript-' + record.data.extkey).setUrl('mod.php?M=tools_em&nodoc=1&CMD[showExt]=' + record.data.extkey + '&SET[singleDetails]=updateModule');
+													});
+												} else {
+													TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.cmd_update, TYPO3.lang.repository_update_not_needed, 5);
+												}
+											});
+										}, this);
+									}
+
+								}
+							}
 						},
 						{
-							title: TYPO3.lang.msg_update,
-							html: '<div class="loading-indicator">' + TYPO3.lang.action_loading + '</div>',
+							title: TYPO3.lang.msg_dbupdate,
+							html: TYPO3.EM.App.loadingIndicor,
+							xtype: 'form',
 							disabled: record.data.installed === 0,
 							listeners: {
 								activate: function(panel) {
+									panel.update(TYPO3.EM.App.loadingIndicor);
 									TYPO3.EM.ExtDirect.getExtensionUpdate(record.data.extkey, function(response) {
-										panel.update(response);
-									});
+										panel.update(response, true,  this.readUpdateForm.createDelegate(this));
+									}, this);
 								}
+							},
+							scope: this,
+							readUpdateForm: function() {
+								var button = Ext.get('update-submit-' + record.data.extkey);
+								Ext.apply(this.form,{
+									api: {
+										submit: TYPO3.EM.ExtDirect.saveExtensionConfiguration
+									},
+									paramsAsHash: false
+								});
+								if (button) {
+									button.on('click', function() {
+										this.doUpdate(false);
+									}, this);
+								}
+							},
+							doUpdate: function(noSave) {
+								this.form.submit({
+									waitMsg : noSave ? ' ' : TYPO3.lang.action_updateDatabase,
+									params: {
+										extkey: record.data.extkey,
+										exttype: record.data.typeShort,
+										noSave: noSave
+									},
+									success: function(form, action) {
+										this.ownerCt.activeTab.update(TYPO3.EM.App.loadingIndicor);
+										TYPO3.EM.ExtDirect.getExtensionUpdate(record.data.extkey, function(response) {
+											this.ownerCt.activeTab.update(response, true,  this.readUpdateForm.createDelegate(this));
+									}, this);
+									},
+									failure: function(form, action) {
+										if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error,
+																	TYPO3.lang.msg_error + ':' + action.response.status + ': ' +
+																	action.response.statusText, 5);
+										}
+										if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+												// server responded with success = false
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.invalid, action.result.errormsg, 5);
+										}
+									 },
+									scope: this
+								 });
 							}
 						},
 						{
 							title: TYPO3.lang.msg_configuration,
 							xtype: 'form',
 							disabled: record.data.installed === 0,
-							html: '<div class="loading-indicator">' + TYPO3.lang.action_loading + '</div>',
+							html: TYPO3.EM.App.loadingIndicor,
 							listeners: {
 								activate: function(panel) {
+									panel.update(TYPO3.EM.App.loadingIndicor);
 									TYPO3.EM.ExtDirect.getExtensionConfiguration(record.data.extkey, function(response) {
 										panel.update(response, true, this.readConfigForm.createDelegate(this));
 									}, this);
@@ -85,45 +161,70 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							},
 							scope: this,
 							readConfigForm: function() {
-								var button = Ext.select('input[type="submit"]');
+								var button = Ext.get('configuration-submit-' + record.data.extkey);
+								var select = Ext.select('.mod-menu-template-select');
+								Ext.apply(this.form,{
+									api: {
+										submit: TYPO3.EM.ExtDirect.saveExtensionConfiguration
+									},
+									paramsAsHash: false
+								});
+								if (select) {
+									var converted = new Ext.form.ComboBox({
+										transform: select.elements[0],
+										typeAhead: true,
+										listeners: {
+											beforequery: function(o) {
+												o.forceAll = true;
+											},
+											select: function() {
+												this.doSubmit(true);
+											},
+											scope: this
+										}
+									});
+								}
 								if (button) {
 									button.on('click', function() {
-										Ext.apply(this.form,{
-										api: {
-											submit: TYPO3.EM.ExtDirect.saveExtensionConfiguration
-										},
-										paramsAsHash: false
-
-									});
-										this.form.submit({
-											waitMsg : TYPO3.lang.action_saving_settings,
-											params: {
-												extkey: record.data.extkey,
-												exttype: record.data.typeShort
-											},
-											success: function(form, action) {
-												TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.msg_configuration, TYPO3.lang.configurationSaved, 5);
-											},
-											failure: function(form, action) {
-												if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
-													TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error,
-																			TYPO3.lang.msg_error + ':' + action.response.status + ': ' +
-																			action.response.statusText, 5);
-											}
-											if (action.failureType === Ext.form.Action.SERVER_INVALID) {
-													// server responded with success = false
-												TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.invalid, action.result.errormsg, 5);
-											}
-										 }
-									 });
+										this.doSubmit(false);
 									}, this);
 								}
+							},
+							doSubmit: function(noSave) {
+								this.form.submit({
+									waitMsg : noSave ? ' ' : TYPO3.lang.action_saving_settings,
+									params: {
+										extkey: record.data.extkey,
+										exttype: record.data.typeShort,
+										noSave: noSave
+									},
+									success: function(form, action) {
+										if (action.result.html) {
+											this.ownerCt.activeTab.update(action.result.html, true, this.readConfigForm.createDelegate(this));
+										} else {
+											TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.msg_configuration, TYPO3.lang.configurationSaved, 5);
+										}
+									},
+									failure: function(form, action) {
+										if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error,
+																	TYPO3.lang.msg_error + ':' + action.response.status + ': ' +
+																	action.response.statusText, 5);
+										}
+										if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+												// server responded with success = false
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.invalid, action.result.errormsg, 5);
+										}
+									 },
+									scope: this
+								 });
 							}
 						},
 						{
 							title: TYPO3.lang.msg_files,
 							xtype: 'extfilelist',
-							recordData: record.data
+							recordData: record.data,
+							cls: 'gridrowfilespanel'
 						},
 						{
 							xtype: 'terupload',
@@ -143,9 +244,9 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							}
 						},
 						{
-							title: TYPO3.lang.details_backup_delete,
+							title: TYPO3.lang.details_maintainance,
 							//disabled: record.data.installed === 0,
-							html: '<div class="loading-indicator">' + TYPO3.lang.action_loading + '</div>',
+							html: TYPO3.EM.App.loadingIndicor,
 							listeners: {
 								activate: function(panel) {
 									TYPO3.EM.ExtDirect.getExtensionBackupDelete(record.data.extkey, function(response) {
@@ -155,11 +256,16 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							},
 							scope: this,
 							readBackupDeleteLinks: function() {
-								var emconflink = Ext.select('a.t3-link emconfLink');
-								if (emconflink) {
-										//todo catch the link and do it the ext way
-									emconflink.on('click', function() {
-										return false;
+								var emconflink = Ext.select('a.emconfLink');
+								if (emconflink.elements.length) {
+									var link = emconflink.elements[0];
+									link.removeAttribute('onclick');
+									Ext.get(link).on('click', function() {
+										this.waitBox = Ext.Msg.wait(TYPO3.lang.ext_details_update_em_conf, record.data.extkey);
+										TYPO3.EM.ExtDirect.cleanEmConf(record.data.extkey, function(response) {
+											this.waitBox.hide();
+											TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.ext_details_update_em_conf, response.result, 5);
+										}, this);
 									});
 								}
 
@@ -205,7 +311,8 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					{name:'reviewstate'},
 					{name:'required'},
 					{name:'doubleInstall'},
-					{name:'doubleInstallShort'}
+					{name:'doubleInstallShort'},
+					{name:'updateModule'}
 				]
 			}),
 
@@ -242,6 +349,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					}
 				},
 				load: function(store) {
+					TYPO3.EM.App.refreshLocalList = false;
 					if (store.showAction) {
 						this.showExtension.defer(500, this);
 					}
@@ -250,13 +358,12 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 				scope: this
 			},
 			validateRecord: function(record){
-				//return false; //testcase
 				var control = Ext.getCmp('localSearchField');
 				if (control) {
 					var filtertext = control.getRawValue();
 					if (filtertext) {
 							//filter by search string
-						var re = new RegExp(Ext.escapeRe(filtertext));
+						var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
 						var isMatched = record.data.extkey.match(re) || record.data.title.match(re) ||  record.data.description.match(re);
 						if (!isMatched) {
 							return false;
@@ -277,10 +384,12 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 			}
 		});
 
-		var searchField = new Ext.ux.form.FilterField({
+		var searchField = new Ext.ux.form.SearchField({
 			store: this.localstore,
+			filterFunction: this.filterRecords,
 			id: 'localSearchField',
-			width: 200
+			width: 200,
+			charCountTrigger: 1
 		});
 
 		var cols = [
@@ -302,6 +411,13 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 
 		});
 
+		var sm = Ext.emptyFn();
+		if (TYPO3.settings.EM.inlineToWindow == 1) {
+			var sm = new Ext.grid.RowSelectionModel({
+				singleSelect: true
+			});
+		}
+
 		Ext.apply(this, {
 			itemId: 'em-localLocalExtensionlist',
 			title: TYPO3.lang.localExtensionList,
@@ -309,6 +425,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 			layout: 'fit',
 			store: this.localstore,
 			cm: cm,
+			sm: sm,
 			plugins: TYPO3.settings.EM.inlineToWindow == 1 ? [TYPO3.EM.Filters] : [this.rowExpander, TYPO3.EM.Filters],
 			view : new Ext.grid.GroupingView({
 				forceFit : true,
@@ -336,7 +453,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 								handler: function(item, event) {
 									TYPO3.settings.EM.display_installed =  item.checked ? 0 : 1;
 									TYPO3.EM.ExtDirect.saveSetting('display_installed', TYPO3.settings.EM.display_installed);
-									this.store.reload();
+									this.filterRecords();
 								},
 								scope: this
 							}, {
@@ -345,7 +462,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 								handler: function(item, event) {
 									TYPO3.settings.EM.hide_shy =  item.checked ? 0 : 1;
 										TYPO3.EM.ExtDirect.saveSetting('hide_shy', TYPO3.settings.EM.hide_shy);
-										this.store.reload();
+										this.filterRecords();
 								},
 								scope: this
 							}, {
@@ -354,7 +471,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 								handler: function(item, event) {
 									TYPO3.settings.EM.hide_obsolete = item. checked ? 0 : 1;
 									TYPO3.EM.ExtDirect.saveSetting('hide_obsolete', TYPO3.settings.EM.hide_obsolete);
-									this.store.reload();
+									this.filterRecords();
 								} ,
 								scope: this
 							}
@@ -403,7 +520,11 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 	showExtension: function() {
 		var row = this.store.find('extkey', this.store.showAction);
 		if (row) {
-			this.rowExpander.expandRow(row);
+			if (TYPO3.settings.EM.inlineToWindow == 1) {
+
+			} else {
+				this.rowExpander.expandRow(row);
+			}
 			this.getSelectionModel().selectRow(row);
 			this.getView().focusRow(row);
 		}
@@ -417,7 +538,13 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 		}
 
 		this.on('rowdblclick',function(grid, rowIndex, event) {
-			if (TYPO3.settings.EM.inlineToWindow) {
+			if (TYPO3.settings.EM.inlineToWindow == 1) {
+				this.showExtInfoInWindow(rowIndex);
+			}
+		});
+
+		this.on('cellclick',function(grid, rowIndex, columnIndex, event) {
+			if (TYPO3.settings.EM.inlineToWindow == 1 && columnIndex == 2) {
 				this.showExtInfoInWindow(rowIndex);
 			}
 		});
@@ -436,11 +563,15 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 		});
 		var w = new Ext.Window({
 			title: TYPO3.EM.Tools.renderExtensionTitle(record),
-			width: 700,
+			width: 720,
 			height: 400,
 			layout: 'fit',
 			items : tabs
 		}).show();
+	},
+
+	filterRecords: function() {
+		Ext.StoreMgr.get('localstore').filterBy(TYPO3.EM.Filters.getRecordFilter());
 	}
 
 });

@@ -2,8 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2005-2011 Karsten Dambekalns <karsten@typo3.org>
+ *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2005-2010 Karsten Dambekalns <karsten@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -124,13 +124,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @var tx_em_Connection_Ter
 	 */
 	public $terConnection;
-
-	/**
-	 * Develop Module
-	 *
-	 * @var tx_em_Develop
-	 */
-	public $developModule;
 
 
 	/**
@@ -259,6 +252,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		if (t3lib_div::_GP('silentMode')) {
 			$this->CMD['silentMode'] = 1;
+			$this->noDocHeader = 1;
+		}
+
+		if ($this->CMD['silentMode']) {
 			$this->install->setSilentMode(TRUE);
 		}
 
@@ -291,14 +288,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} else {
 			$this->extensionmanager = &$this;
 		}
-
-		// Initialize develop module
-		if (isset($this->MOD_MENU['function']['develop'])) {
-			$this->developModule = t3lib_div::makeInstance('tx_em_Develop', $this);
-		} else {
-			$this->developModule = &$this;
-		}
-
 
 
 		// Output classes
@@ -375,8 +364,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->MOD_MENU = $this->settings->MOD_MENU;
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 
-		if (!intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'])) {
-			unset ($this->MOD_MENU['function']['develop']);
+		if (!isset($globalSettings['showOldModules'])) {
+				// no settings saved yet, set default values
+			$globalSettings['showOldModules'] = 1;
+			$globalSettings['inlineToWindow'] = 1;
+			$globalSettings['displayMyExtensions'] = 0;
 		}
 
 		if ($globalSettings['showOldModules'] == 0) {
@@ -385,11 +377,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$this->MOD_MENU['function']['installed_list'],
 				$this->MOD_MENU['function']['import'],
 				$this->MOD_MENU['function']['translations'],
-				$this->MOD_MENU['function']['settings'],
-				$this->MOD_MENU['function']['updates']
+				$this->MOD_MENU['function']['settings']
 			);
 		}
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
+		$this->MOD_MENU['extensionInfo'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', array());
 
 
 			// page/be_user TSconfig settings and blinding of menu-items
@@ -425,6 +417,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main() {
+
+		$menu = '';
 
 		if (empty($this->MOD_SETTINGS['mirrorListURL'])) {
 			$this->MOD_SETTINGS['mirrorListURL'] = $GLOBALS['TYPO3_CONF_VARS']['EXT']['em_mirrorListURL'];
@@ -509,10 +503,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					// Shows a list of extensions with updates in TER
 					$this->checkForUpdates();
 					break;
-				case 'develop':
-					$this->content .= $this->developModule->renderModule();
-					break;
-				default:
 				case 'extensionmanager':
 					$this->content .= $this->extensionmanager->render();
 					break;
@@ -1782,6 +1772,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 						if (t3lib_extMgm::isLoaded($extKey)) {
 							$updates = $this->install->updatesForm($extKey, $list[$extKey]);
+							debug(array($extKey, $list[$extKey]));
 							if ($updates) {
 								$this->content .= $this->doc->spacer(10);
 								$this->content .= $this->doc->section(
@@ -2517,6 +2508,21 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} else {
 			return '<a id="closewindow" href="javascript:parent.TYPO3.EM.Tools.closeImportWindow();">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
 		}
+	}
+
+
+	/* Compatibility wrappers */
+
+
+/**
+	 * Returns the absolute path where the extension $extKey is installed (based on 'type' (SGL))
+	 *
+	 * @param	string		Extension key
+	 * @param	string		Install scope type: L, G, S
+	 * @return	string		Returns the absolute path to the install scope given by input $type variable. It is checked if the path is a directory. Slash is appended.
+	 */
+	public function getExtPath($extKey, $type, $returnWithoutExtKey = FALSE) {
+		return tx_em_Tools::getExtPath($extKey, $type, $returnWithoutExtKey);
 	}
 }
 

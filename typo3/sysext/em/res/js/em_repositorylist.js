@@ -82,17 +82,19 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				{name:'category', type: 'int'},
 				{name:'version'},
 				{name:'alldownloadcounter', type: 'int'},
+				{name:'downloadcounter', type: 'int'},
 				{name:'statevalue'},
 				{name:'state'},
 				{name:'icon'},
 				{name:'description'},
-				{name:'lastuploaddate'},
+				{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'},
 				{name:'authorname'},
 				{name:'authoremail'},
 				{name:'versions', type: 'int'},
 				{name:'installed', type: 'int'},
 				{name:'versionislower', type: 'bool'},
-				{name:'exists', type: 'int'}
+				{name:'exists', type: 'int'},
+				{name:'relevance', type: 'int'}
 			],
 			paramNames: {
 				start : 'start',
@@ -102,7 +104,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				query: 'query'
 			},
 			baseParams: {
-				query: '*',
+				query: '',
 				repository: 1,
 				start: 0,
 				limit: 50
@@ -155,7 +157,8 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		var searchField = new Ext.ux.form.SearchField({
 			id: 'rsearchField',
 			store: this.repositoryListStore,
-			width: 200
+			width: 260,
+			emptyText: TYPO3.lang.msg_startTyping
 		});
 
 		var cm = new Ext.grid.ColumnModel({
@@ -167,6 +170,8 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				TYPO3.EM.GridColumns.ExtensionCategoryRemote,
 				TYPO3.EM.GridColumns.ExtensionRemoteAuthor,
 				TYPO3.EM.GridColumns.ExtensionType,
+				TYPO3.EM.GridColumns.Relevance,
+				TYPO3.EM.GridColumns.ExtensionDownloads,
 				TYPO3.EM.GridColumns.ExtensionStateValue
 			],
 			defaults: {
@@ -322,7 +327,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 									installAction: 'import',
 									listeners: {
 										close: function() {
-											TYPO3.EM.Tools.refreshMenu();
+											TYPO3.EM.Tools.refreshMenu(record, 'import');
 										}
 									}
 								}).show(true, function(){
@@ -337,7 +342,12 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		});
 
 		this.on('rowdblclick',function(grid, rowIndex, event) {
-			if (TYPO3.settings.EM.inlineToWindow) {
+			if (TYPO3.settings.EM.inlineToWindow == 1) {
+				this.showExtInfoInWindow(rowIndex);
+			}
+		});
+		this.on('cellclick',function(grid, rowIndex, columnIndex, event) {
+			if (TYPO3.settings.EM.inlineToWindow == 1 && columnIndex == 2) {
 				this.showExtInfoInWindow(rowIndex);
 			}
 		});

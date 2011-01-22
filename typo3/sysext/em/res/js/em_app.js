@@ -48,7 +48,11 @@ Ext.onReady(function() {
 	var EM = new TYPO3.EM.App.init();
 });
 
+
 TYPO3.EM.App = {
+	refreshLocalList: false,
+	loadingIndicor: '<div class="loading-indicator">' + TYPO3.lang.action_loading + '</div>',
+
 	categoryLabels : [
 			TYPO3.lang.category_BE,
 			TYPO3.lang.category_BE_modules,
@@ -65,7 +69,17 @@ TYPO3.EM.App = {
 	init : function() {
 
 		TYPO3.settings.EM.selectedRepository = TYPO3.settings.EM.selectedRepository || 1;
-		var appPanel = new Ext.TabPanel( {
+		var items = [
+			TYPO3.EM.LocalListTab,
+			TYPO3.EM.RepositoryListTab,
+			TYPO3.EM.LanguageTab,
+			TYPO3.EM.SettingsTab
+		];
+		if (TYPO3.settings.EM.displayMyExtensions == 1) {
+			items.push(TYPO3.EM.UserTab)
+		}
+
+		this.appPanel = new Ext.TabPanel( {
 			renderTo : 'em-app',
 			id: 'em-main',
 			layoutOnTabChange: true,
@@ -83,13 +97,7 @@ TYPO3.EM.App = {
 					activeTab: this.items.indexOf(this.getActiveTab())
 				};
 			},
-			items : [
-				TYPO3.EM.LocalListTab,
-				TYPO3.EM.RepositoryListTab,
-				TYPO3.EM.LanguageTab,
-				TYPO3.EM.SettingsTab,
-				TYPO3.EM.UserTab
-			],
+			items : items,
 			plugins: [new Ext.ux.plugins.FitToParent()]
 		});
 	},

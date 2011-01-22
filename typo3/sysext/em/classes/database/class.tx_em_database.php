@@ -2,8 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Marcus Krause <marcus#exp2010@t3sec.info>
- *  (c) 2010-2011 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2010 Marcus Krause <marcus#exp2010@t3sec.info>
+ *  (c) 2010 Steffen Kamper <info@sk-typo3.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -83,14 +83,13 @@ final class tx_em_Database {
 	 * Get extension list from cache_extensions
 	 *
 	 * @param int $repository
+	 * @param string $addFields
 	 * @param string $andWhere
-	 * @param string $orderBy
-	 * @param string $orderDir
+	 * @param string $order
 	 * @param string $limit
 	 * @return array
 	 */
-	public function getExtensionListFromRepository($repository, $andWhere = '', $orderBy = '', $orderDir = 'ASC', $limit = '') {
-		$order = $orderBy ? $orderBy . ' ' . $orderDir : '';
+	public function getExtensionListFromRepository($repository, $addFields = '', $andWhere = '', $order = '', $limit = '') {
 		$ret = array();
 		$temp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'count(*) count',
@@ -99,15 +98,21 @@ final class tx_em_Database {
 			'extkey'
 		);
 		$ret['count'] = count($temp);
-		$ret['results'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*, count(*) AS versions, max(intversion) AS maxintversion',
+		$subQuery =  $GLOBALS['TYPO3_DB']->SELECTsubquery(
+			'*, MAX(intversion) AS maxintversion',
 			'cache_extensions',
-			'repository=' . intval($repository) . $andWhere,
-			'extkey',
+			''
+		) . ' GROUP BY extkey';
+		$ret['results'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'cache_extensions2.*, count(*) AS versions, cache_extensions2.maxintversion AS maxintversion' .
+			($addFields === '' ? '' : ',' . $addFields),
+			'cache_extensions INNER JOIN (' . $subQuery . ') AS cache_extensions2 ON cache_extensions.extkey = cache_extensions2.extkey',
+			'cache_extensions.repository=' . intval($repository) . $andWhere,
+			'cache_extensions.extkey',
 			$order,
 			$limit
 		);
-
+		//debug($GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 		return $ret;
 	}
 

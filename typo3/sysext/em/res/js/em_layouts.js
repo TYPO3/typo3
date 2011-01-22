@@ -38,20 +38,32 @@ TYPO3.EM.Layouts = {
 		// later get template via Ajax
 		return new Ext.XTemplate(
 			'<div class="em-extlist-extinfo">',
-				'<h2>{icon} {title}</h2>',
+				'<h2>{icon} {title} ({extkey})</h2>',
 				'<p class="desc">{description}</p>',
-				'<h3>' + TYPO3.lang.show_links + '</h3>',
-				'<p><label>' + TYPO3.lang.cmd_downloadext + ':</label> {download}</p> ',
-				'<tpl if="doc"><p><label>' + TYPO3.lang.cmd_readdoc + ':</label> {doc}</p></tpl>',
-				'<h3>' + TYPO3.lang.show_details + '</h3>',
-				'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label> {author}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_version + ':</label> {version}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_category + ':</label> {category}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_state + ':</label> {state}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_shy + ':</label> {shyword}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_internal + ':</label> {internal}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_depends_on + ':</label> {depends}<br />',
-				'<label>' + TYPO3.lang.extInfoArray_conflicts_with + ':</label> {conflicts}<br />',
+				'<div class="em-extlist-extinfo-sub">',
+					'<div class="em-extlist-extinfo-left">',
+						'<h3>' + TYPO3.lang.show_details + '</h3>',
+						'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label> {author}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_version + ':</label> {version}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_category + ':</label> {category}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_state + ':</label> {state}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_shy + ':</label> {shyword}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_internal + ':</label> {internal}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_depends_on + ':</label> {depends}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_conflicts_with + ':</label> {conflicts}<br />',
+					'</div>',
+					'<div class="em-extlist-extinfo-right">',
+						'<h3>' + TYPO3.lang.show_links + '</h3>',
+						'<p><label>' + TYPO3.lang.cmd_downloadext + ':</label> {download}</p> ',
+						'<tpl if="doc">',
+							'<p><label>' + TYPO3.lang.cmd_readdoc + ':</label> {doc}</p>',
+						'</tpl>',
+						'<tpl if="updateModule">',
+							'<h3>' + TYPO3.lang.cmd_update + '</h3>',
+							'<p><a href="#" id="update-check-{extkey}" class="update-check-link">' + TYPO3.lang.ext_details_checkUpdateScript + '</a></p>',
+						'</tpl>',
+					'</div>',
+				'</div>',
 			'</div>'
 		);
 	},
@@ -63,7 +75,8 @@ TYPO3.EM.Layouts = {
 				'<p><label>' + TYPO3.lang.listRowHeader_ext_key + '</label>{extkey}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_category + ':</label>{[TYPO3.EM.App.getCategoryLabel(values.category)]}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_version + ':</label>{version}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_downloads + ':</label>{alldownloadcounter}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_downloads + ':</label>{alldownloadcounter} / {downloadcounter}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_lastUpdate + ':</label>{lastuploaddate:this.getDateFormat}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_state + ':</label>{state}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label>{[this.getAuthor(values)]}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_versions + ':</label>{versions}</p>',
@@ -79,6 +92,9 @@ TYPO3.EM.Layouts = {
 					return '<a class="email" href="mailto:' + values.author_email + '">' + values.author + '</a>';
 				}
 				return values.authorname;
+			},
+			getDateFormat: function(value) {
+				return value.format("d-m-Y");
 			}
 		}
 		);

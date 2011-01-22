@@ -62,7 +62,12 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 							this.layout.center.panel.undoButton.enable();
 							this.layout.center.panel.redoButton.enable();
 							this.layout.center.panel.indentButton.enable();
-
+							if (node.attributes.ext == 'js') {
+								this.layout.center.panel.jslintButton.enable();
+							} else {
+								this.layout.center.panel.jslintButton.disable();
+							}
+							console.log(node.attributes);
 						}, this);
 					}
 					if (node.attributes.fileType === 'image') {
@@ -295,25 +300,25 @@ TYPO3.EM.CodeMirrorConfig = {
 			stylesheet: [TYPO3.settings.EM.codemirrorCssPath + "jscolors.css"]
 		},
 		php: {
-			parserfile: ["tokenizephp.js", "parsephp.js"],
-			stylesheet: [TYPO3.settings.EM.codemirrorCssPath + "phpcolors.css"]
+			parserfile: ["../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js"],
+			stylesheet: [TYPO3.settings.EM.codemirrorContribPath + "php/css/phpcolors.css"]
 		},
 		html: {
-			parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+			parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js", "../contrib/php/js/parsephphtmlmixed.js"],
 			stylesheet: [
 				TYPO3.settings.EM.codemirrorCssPath + "xmlcolors.css",
 				TYPO3.settings.EM.codemirrorCssPath + "jscolors.css",
 				TYPO3.settings.EM.codemirrorCssPath + "csscolors.css",
-				TYPO3.settings.EM.codemirrorCssPath + "phpcolors.css"]
+				TYPO3.settings.EM.codemirrorContribPath + "php/css/phpcolors.css"]
 
 		},
 		mixed: {
-			parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+			parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js", "../contrib/php/js/parsephphtmlmixed.js"],
 			stylesheet: [
 				TYPO3.settings.EM.codemirrorCssPath + "xmlcolors.css",
 				TYPO3.settings.EM.codemirrorCssPath + "jscolors.css",
 				TYPO3.settings.EM.codemirrorCssPath + "csscolors.css",
-				TYPO3.settings.EM.codemirrorCssPath + "phpcolors.css"
+				TYPO3.settings.EM.codemirrorContribPath + "php/css/phpcolors.css"
 			]
 		}
 	}
@@ -418,7 +423,7 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	/** @private */
 	resizeCodeEditor: function(component, width, height, origWidth, origHeight) {
 		var el = Ext.fly(this.codeMirrorEditor.frame);
-		el.setSize(width - 50, height);
+		el.setSize(width , height);
 		el.next().setHeight(height);
 		this.doLayout();
 	},
@@ -460,12 +465,6 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 		this.editorConfig = Ext.applyIf(this.editorConfig, TYPO3.EM.CodeMirrorConfig.parser[sParserType]);
 		this.codeMirrorEditor = new CodeMirror.fromTextArea(Ext.getDom(oCmp.id).id, this.editorConfig);
 
-		// Disable spell check button for non-js content
-		if (sParserType == 'js' || sParserType == 'css') {
-			this.ownerCt.jslintButton.enable();
-		} else {
-			this.ownerCt.jslintButton.disable();
-		}
 	},
 
 	changeAction: function(changed) {
@@ -494,10 +493,6 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	},
 
 	openText: function(text, parser) {
-		/*this.parser = parser;
-		this.editorConfig = Ext.applyIf(this.editorConfig, TYPO3.EM.CodeMirrorConfig.parser[parser]);
-		console.log(this.editorConfig);
-		this.codeMirrorEditor.setParser(parser, this.editorConfig);*/
 		this.codeMirrorEditor.setCode(text);
 	}
 

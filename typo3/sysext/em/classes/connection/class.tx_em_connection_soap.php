@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) webservices.nl
-*  (c) 2006-2011 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2006-2010 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

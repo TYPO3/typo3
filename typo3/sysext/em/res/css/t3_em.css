@@ -11,22 +11,25 @@ strong {
 	vertical-align: middle;
 }
 
-.x-grid-panel .x-panel-body {
-	overflow: auto !important;
-}
-
 .x-panel-tbar {
     border-bottom: none;
     padding: 0;
 }
 
-.x-form fieldset {
+.x-form fieldset, .x-fieldset {
 	 border: none;
 }
 
 .bold button {
 	font-weight: bold;
 }
+
+.gridrowpanel .x-panel-body {
+	background: #fff;
+	padding:10px;
+	overflow: auto !important;
+}
+
 
 /* extension states */
 .state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
@@ -40,6 +43,11 @@ strong {
 img.installExtension, img.removeExtension {
 	cursor: pointer;
 }
+
+.action-title-cell {
+	cursor: pointer;
+}
+
 .extLangTitleWithIcon img {
 	vertical-align: bottom;
 }
@@ -131,7 +139,23 @@ img.installExtension, img.removeExtension {
 	line-height: 14px;
 }
 
-#em-extlanguagegrid .x-grid3-row-selected {
+.em-extlist-extinfo-sub {
+	overflow: auto;
+}
+
+.em-extlist-extinfo-left {
+	float: left;
+	padding: 10px 40px 0 0;
+}
+
+.em-extlist-extinfo-right {
+	float: left;
+	padding: 10px 40px 0 0;
+}
+
+#em-local-extensions .x-grid3-row-selected,
+#em-extlanguagegrid .x-grid3-row-selected
+{
 	background-color: #cfffda;
 }
 
@@ -141,6 +165,10 @@ img.installExtension, img.removeExtension {
 	display: inline-block;
 	width: 100px;
 	font-weight: bold;
+}
+.em-extlist-extinfo-right label {
+	width: auto;
+	margin-bottom: 5px;
 }
 
 a.email {

@@ -2,7 +2,12 @@
 showOldModules = 1
 
   # cat=basic; type=boolean; label=LLL:EXT:em/language/locallang.xml:extTemplate_inlineToWindow
-inlineToWindow = 0
+inlineToWindow = 1
+
+  # cat=basic; type=boolean; label=LLL:EXT:em/language/locallang.xml:extTemplate_displayMyExtensions
+displayMyExtensions =
 
   # cat=basic; type=string; label=LLL:EXT:em/language/locallang.xml:extTemplate_selectedLanguages
 selectedLanguages =
+
+

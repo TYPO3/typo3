@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Steffen Kamper (info@sk-typo3.de)
+ *  (c) 2010 Steffen Kamper (info@sk-typo3.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -99,14 +99,13 @@ class tx_em_Settings implements t3lib_Singleton {
 	protected function readSettings() {
 		$this->MOD_MENU = array(
 			'function' => array(
-				'extensionmanager' => 'New Extension manager (beta4)', //$GLOBALS['LANG']->getLL('header'),
 				'loaded_list' => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
 				'installed_list' => $GLOBALS['LANG']->getLL('menu_install_extensions'),
 				'import' => $GLOBALS['LANG']->getLL('menu_import_extensions'),
 				'translations' => $GLOBALS['LANG']->getLL('menu_translation_handling'),
 				'settings' => $GLOBALS['LANG']->getLL('menu_settings'),
+				'extensionmanager' => $GLOBALS['LANG']->getLL('header'),
 				'updates' => $GLOBALS['LANG']->getLL('menu_extension_updates'),
-				'develop' => $GLOBALS['LANG']->getLL('menu_extension_develop'),
 			),
 			'listOrder' => array(
 				'cat' => $GLOBALS['LANG']->getLL('list_order_category'),

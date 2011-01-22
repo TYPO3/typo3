@@ -107,11 +107,10 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 		]);
 
 		var userExtStore = new Ext.data.DirectStore({
-			storeId	 : 'em-userext',
-			autoLoad	: false,
-			directFn	: TYPO3.EMSOAP.ExtDirect.getExtensions,
-			paramsAsHash: false,
-			root		: 'data',
+			storeId	: 'em-userext',
+			autoLoad: false,
+			directFn: TYPO3.EMSOAP.ExtDirect.getExtensions,
+			root: 'data',
 			idProperty  : 'extensionkey',
 			fields : [
 				{name : 'extensionkey', type : 'string'},
@@ -127,8 +126,8 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 			storeFilter: function(record, id) {
 				var filtertext = Ext.getCmp('myExtSearchField').getRawValue();
 				if (filtertext) {
-					//filter by search string
-					var re = new RegExp(Ext.escapeRe(filtertext));
+						//filter by search string
+					var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
 					var isMatched = record.data.extensionkey.match(re) || record.data.title.match(re) || record.data.description.match(re);
 					if (!isMatched) {
 						return false;
@@ -139,6 +138,7 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 			listeners: {
 				load: function(store, records) {
 					Ext.getCmp('extvalidformbutton').enable();
+					store.filterBy(store.storeFilter);
 				},
 				exception: function(proxy, response, read, request, ExtDirectParams) {
 					var error;
@@ -155,7 +155,7 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 			}
 		});
 
-		var searchField = new Ext.ux.form.FilterField({
+		var searchField = new Ext.ux.form.SearchField({
 			store: userExtStore,
 			id: 'myExtSearchField',
 			width: 200
@@ -164,7 +164,12 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 		Ext.apply(this, {
 			itemId: 'UserTools',
 			layout: 'hbox',
-			align: 'stretchmax',
+			layoutConfig: {
+				align: 'stretch'
+			},
+			defaults: {
+				border: false
+			},
 			bodyStyle: 'padding-top: 10px;',
 			border: false,
 			items: [
@@ -329,7 +334,7 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 				{
 					flex: 1,
 					border: false,
-					//layout: 'fit',
+					layout: 'fit',
 					items: [
 						{
 							xtype: 'fieldset',
@@ -347,6 +352,9 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 										forceFit: true,
 										autofill: true
 									},
+									autoheight: true,
+									bodyStyle: 'padding: 10px 10px 0 10px;',
+									anchor: '100% 100%',
 									stateId: 'userextgrid',
 									stateful: true,
 									tbar: [
@@ -378,8 +386,7 @@ TYPO3.EM.UserTools = Ext.extend(Ext.Panel, {
 											handler: this.deletekey,
 											scope: this
 										}
-									],
-									height: 450
+									]
 								}
 							]
 						}

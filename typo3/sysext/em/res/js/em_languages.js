@@ -86,9 +86,7 @@ TYPO3.EM.LanguagesColumnModel = new Ext.grid.ColumnModel([
 		header: TYPO3.lang.lang_language,
 		sortable: true,
 		menuDisabled: true,
-		fixed: true,
 		dataIndex: 'label',
-		width: 150,
 		hidable: false,
 		renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 			return '<span class="' + record.data.cls + '">&nbsp</span>' + value;
@@ -97,7 +95,6 @@ TYPO3.EM.LanguagesColumnModel = new Ext.grid.ColumnModel([
 		id: 'lang-key',
 		header: TYPO3.lang.lang_short,
 		menuDisabled: true,
-		fixed: true,
 		sortable: true,
 		dataIndex: 'lang',
 		hidable: false
@@ -108,7 +105,7 @@ TYPO3.EM.LanguagesProgressBar = new Ext.ProgressBar ({
 	id:  'langpb',
 	cls: 'left-align',
 	autoWidth: true,
-	style: 'margin: 10px',
+	style: 'margin: 0 0 20px 0',
 	animate: true,
 	height: 20,
 	hidden: true
@@ -191,39 +188,56 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 				border: false
 			},
 			items: [{
-				width: 350,
+				width: 250,
 				layout: 'fit',
 				items: [{
-					xtype:'fieldset',
-					title: TYPO3.lang.translation_settings,
-					collapsible: false,
-					labelWidth: 1,
-					labelPad: 0,
-					defaults: {
-						border: false
-					},
-					items: [{
-						xtype: 'grid',
-						id: 'em-languagegrid',
-						stripeRows: true,
-						store: this.langStore,
-						cm: TYPO3.EM.LanguagesColumnModel,
-						sm: TYPO3.EM.LanguagesSelectionModel,
-						enableColumnMove: false,
-						anchor: '100% 100%',
-						onRowClick: Ext.emptyFn
-					}]
+					xtype: 'grid',
+					id: 'em-languagegrid',
+					stripeRows: true,
+					store: this.langStore,
+					cm: TYPO3.EM.LanguagesColumnModel,
+					sm: TYPO3.EM.LanguagesSelectionModel,
+					enableColumnMove: false,
+					onRowClick: Ext.emptyFn,
+					viewConfig: {
+						forceFit: true
+					}
 				}]
 			}, {
 				flex: 1,
 				layout: 'fit',
 				items: [{
 					xtype:'fieldset',
-					title: TYPO3.lang.translation_status,
+					//title: TYPO3.lang.translation_status,
 					collapsible: false,
 					items: [
 						TYPO3.EM.LanguagesActionPanel,
-						TYPO3.EM.LanguagesProgressBar, {
+						{
+							xtype: 'container',
+							layout: 'hbox',
+							height: 40,
+							id: 'LanguagesActionPanel',
+							layoutConfig: {
+								align: 'stretch'
+							},
+							defaults: {
+								border:false,
+								flex: 1
+							},
+							items: [{
+								xtype: 'button',
+								text: TYPO3.lang.translation_check_status_button,
+								id: 'lang-checkbutton',
+								margins: '0 10 10 0'
+							}, {
+								xtype: 'button',
+								text: TYPO3.lang.translation_update_button,
+								id: 'lang-updatebutton',
+								margins: '0 0 10 10'
+							}]
+						},
+						TYPO3.EM.LanguagesProgressBar,
+						{
 					    	xtype: 'grid',
 							id: 'em-extlanguagegrid',
 							stripeRows: true,
@@ -234,23 +248,52 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 							autoheight: true,
 							cm: new Ext.grid.DynamicColumnModelForLanguages(langExtStore),
 							margins: '0 10 0 0',
-							anchor: '100% -40'
+							anchor: '100% -40',
+							listeners: {
+								render: this.onExtensionLangguageGridRender
+							}
 						}]
 					}]
 				}]
 		});
 
-		// call parent
+			// call parent
 		TYPO3.EM.Languages.superclass.initComponent.apply(this, arguments);
 		this.langGrid = Ext.getCmp('em-languagegrid');
 		this.langGrid.getSelectionModel().on('selectionchange', function(){
+			this.langGrid.disable();
 			this.saveSelection();
 		}, this);
 		Ext.getCmp('lang-checkbutton').handler = this.langActionHandler.createDelegate(this);
 		Ext.getCmp('lang-updatebutton').handler = this.langActionHandler.createDelegate(this);
-
-
 	} ,
+
+	onExtensionLangguageGridRender: function() {
+		this.on('cellclick',function(grid, rowIndex, columnIndex, event) {
+			if (!this.interruptProcess && columnIndex > 0) {
+				var record = grid.store.getAt(rowIndex);
+				var lang = grid.colModel.config[columnIndex].dataIndex;
+				Ext.Msg.confirm(
+					TYPO3.lang.menu_language_packges,
+					String.format(TYPO3.lang.translation_singleCheckQuestion, lang, '<strong>' + record.data.extkey + '</strong>'),
+					function(btn) {
+						if (btn === 'yes') {
+							this.waitBox = Ext.Msg.wait(
+								String.format(TYPO3.lang.translation_singleCheck, lang, '<strong>' + record.data.extkey + '</strong>'),
+								TYPO3.lang.translation_checking
+							);
+							TYPO3.EM.ExtDirect.fetchTranslations(record.data.extkey, 1, [lang], function(response) {
+								record.set(lang, response[lang]);
+								record.commit();
+								this.waitBox.hide()
+							}, this);
+						}
+					},
+					this
+				);
+			}
+		});
+	},
 
 	langActionHandler: function(button, event) {
 		var lg = Ext.getCmp('em-languagegrid');
@@ -268,7 +311,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 					pp.hide();
 					bp.show();
 					lg.enable();
-				}).defer(5000, this);
+				}).defer(1000, this);
 				if (!this.interruptProcess) {
 					TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.translation_checking_extension, TYPO3.lang.translation_check_done, 3);
 					Ext.getCmp('em-extlanguagegrid').getSelectionModel().clearSelections();
@@ -306,6 +349,13 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 				record = this.langStore.getById(response.diff);
 				this.addRemoveExtLanguageGridColumn(record.data);
 			},this);
+			if (this.selectedLanguages.length) {
+				Ext.getCmp('lang-checkbutton').enable();
+				Ext.getCmp('lang-updatebutton').enable();
+			} else {
+				Ext.getCmp('lang-checkbutton').disable();
+				Ext.getCmp('lang-updatebutton').disable();
+			}
 		}
 	},
 
@@ -328,21 +378,18 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		this.fetchLanguage();
 	},
 
-	fetchLanguage: function(res) {
+	fetchLanguage: function(response) {
 		var grid = Ext.getCmp('em-extlanguagegrid');
 		var row = this.extCount - this.extkeyArray.length;
 		var record = grid.store.getAt(row);
 		var i;
 
 
-		// res is response from request
-		// array selectedLanguage key => grid html
-
-		if (res) {
+		if (response) {
 			// update fetched record
 			var fetchedRecord = grid.store.getAt(row - 1);
 			for (i = 0; i < this.selectedLanguages.length; i++) {
-				fetchedRecord.set(this.selectedLanguages[i], res[this.selectedLanguages[i]]);
+				fetchedRecord.set(this.selectedLanguages[i], response[this.selectedLanguages[i]]);
     		}
     		fetchedRecord.commit();
 		}
@@ -411,11 +458,14 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 			}, {
 				header: '<span class="' + record.cls + '">&nbsp</span>' + record.label,
 				dataIndex: record.lang,
-				id: record.lang
+				id: record.lang,
+				css: 'cursor:pointer;',
+				tooltip: TYPO3.lang.translation_singleCheckTip
 			});
 		} else {
 			columns.removeColumn(index);
 		}
+		this.langGrid.enable();
 	},
 
 	afterRender: function() {

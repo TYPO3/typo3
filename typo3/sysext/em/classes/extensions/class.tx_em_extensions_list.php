@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) webservices.nl
-*  (c) 2006-2011 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2006-2010 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -190,6 +190,7 @@ class tx_em_Extensions_List {
 			if ($type === '') {
 				$type = tx_em_Tools::getExtTypeFromPath($path);
 			}
+
 			if (is_array($emConf)) {
 				$key = count($list);
 				$loaded = t3lib_extMgm::isLoaded($extKey);
@@ -209,6 +210,11 @@ class tx_em_Extensions_List {
 				$list[$key]['doubleInstall'] = $list[$key]['doubleInstall'] ? $list[$key]['doubleInstall'] . '/' . $this->types[$type] : $this->types[$type];
 				$list[$key]['doubleInstallShort'] .= $type;
 
+				if (@is_file($path . $extKey . '/class.ext_update.php')) {
+					$list[$key]['updateModule'] = TRUE;
+				} else {
+					$list[$key]['updateModule'] = FALSE;
+				}
 				$list[$key]['type'] = $this->types[$type];
 				$list[$key]['typeShort'] = $type;
 				$list[$key]['installed'] = $loaded ? 1 : 0;
@@ -217,6 +223,8 @@ class tx_em_Extensions_List {
 				$list[$key] = t3lib_div::array_merge_recursive_overrule($list[$key], $emConf);
 				$list[$key]['title'] = htmlspecialchars($list[$key]['title']);
 				$list[$key]['description'] = htmlspecialchars($list[$key]['description']);
+				$list[$key]['author'] = htmlspecialchars($list[$key]['author']);
+				$list[$key]['author_email'] = htmlspecialchars($list[$key]['author_email']);
 				$list[$key]['files'] = t3lib_div::getFilesInDir($path . $extKey, '', 0, '', $this->excludeForPackaging);
 				$list[$key]['reviewstate'] = $this->xmlHandler->getReviewState($extKey, $list[$key]['version']);
 
@@ -234,7 +242,7 @@ class tx_em_Extensions_List {
 
 				$list[$key]['categoryShort'] = $list[$key]['category'];
 				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
-				$list[$key]['required'] = t3lib_div::inList($GLOBALS['EXT']['requiredExt'], $extKey);
+				$list[$key]['required'] = t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'], $extKey);
 				unset($list[$key]['_md5_values_when_last_written']);
 			}
 		}

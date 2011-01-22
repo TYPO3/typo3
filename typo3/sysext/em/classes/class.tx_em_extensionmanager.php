@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2011 Steffen Kamper (info@sk-typo3.de)
+*  (c) 2010 Steffen Kamper (info@sk-typo3.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -99,15 +99,9 @@ class tx_em_ExtensionManager {
 	public function render() {
 
 		/* Add CSS */
-		if ($this->debug == 2 || 1) {
-			$this->pageRenderer->addCssFile($this->resPath . 'js/ux/css/GridFilters.css');
-			$this->pageRenderer->addCssFile($this->resPath . 'js/ux/css/RangeMenu.css');
-			$this->pageRenderer->addCssFile($this->resPath . 'css/t3_em.css');
-		} elseif($this->debug == 1) {
-
-		} else {
-
-		}
+		$this->pageRenderer->addCssFile($this->resPath . 'js/ux/css/GridFilters.css');
+		$this->pageRenderer->addCssFile($this->resPath . 'js/ux/css/RangeMenu.css');
+		$this->pageRenderer->addCssFile($this->resPath . 'css/t3_em.css');
 
 
 		$iconsGfxPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'] . 'gfx/';
@@ -128,16 +122,16 @@ class tx_em_ExtensionManager {
 
 		/* load ExtJS */
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->enableExtJsDebug();
+		$this->pageRenderer->enableExtJSQuickTips();
 
 			// Load  JavaScript:
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EM&' . TYPO3_version,
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EM',
 			NULL,
 			FALSE
 		);
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EMSOAP&' . TYPO3_version,
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EMSOAP',
 			NULL,
 			FALSE
 		);
@@ -150,7 +144,12 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addInlineLanguageLabelArray($labels);
 
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
-
+		if (!isset($globalSettings)) {
+			$globalSettings = array(
+				'displayMyExtensions' => 0,
+				'selectedLanguages' => array()
+			);
+		}
 		$settings = $this->parentObject->MOD_SETTINGS;
 		$mirrors = unserialize($settings['extMirrors']);
 		$settings['extMirrors'] = array(array('Random (recommended)', '', '', '', '', '', ''));
@@ -174,10 +173,12 @@ class tx_em_ExtensionManager {
 			'editorCss' => $this->resPath . 'css/editor.css',
 			'codemirrorCssPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/css/',
 			'codemirrorJsPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/js/',
+			'codemirrorContribPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/contrib/',
 			'selectedLanguages' => t3lib_div::trimExplode(',', $globalSettings['selectedLanguages'], TRUE),
 			'state' => $GLOBALS['BE_USER']->uc['moduleData']['tools_em']['States'],
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
-			'allowRepositoryUpdate' => $allowRepositoryUpdate
+			'allowRepositoryUpdate' => $allowRepositoryUpdate,
+			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
 		);
 		$settings = array_merge($settings, $additionalSettings);
 
@@ -227,11 +228,7 @@ class tx_em_ExtensionManager {
 		// clear flashmessages from php
 		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
 
-		//Update from repository - box
-		//$content = $this->parentObject->showRepositoryUpdateForm(0);
-
-		$content .= '
-
+		$content =  '
 			<div id="em-message-area"></div><div id="em-app"></div>
 			<!-- dummy form to make configuration js happy -->
 			<form name="tsStyleConfigForm" action="" method="post"></form>

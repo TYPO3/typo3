@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Steffen Kamper <steffen@typo3.org>
+ *  (c) 2010 Steffen Kamper <steffen@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -183,7 +183,7 @@ class tx_em_Connection_ExtDirectSoap {
 	 *
 	 * @return array
 	 */
-	public function getExtensions() {
+	public function getExtensions($parameter) {
 		$params = array(
 			'extensionKeyFilterOptions' => array(
 				'username' => $this->settings['fe_u']
@@ -363,6 +363,13 @@ class tx_em_Connection_ExtDirectSoap {
 	 * @return string $response
 	 */
 	protected function soapCall($name, $params) {
+		if (!is_object($this->soap)) {
+			return array(
+				'success' => FALSE,
+				'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_noUserLoginData')
+			);
+		}
+
 		try {
 			$response = $this->soap->call(
 				$name,
