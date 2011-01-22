@@ -280,7 +280,7 @@ $TYPO3_CONF_VARS = array(
 							300 = ITEM
 							300 {
 								name = disable
-								label = LLL:EXT:lang/locallang_core.xml:cm.hide
+								label = LLL:EXT:lang/locallang_common.xml:disable
 								spriteIcon = actions-edit-hide
 								displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
 								callbackAction = disablePage
@@ -289,7 +289,7 @@ $TYPO3_CONF_VARS = array(
 							400 = ITEM
 							400 {
 								name = enable
-								label = LLL:EXT:lang/locallang_core.xml:cm.unhide
+								label = LLL:EXT:lang/locallang_common.xml:enable
 								spriteIcon = actions-edit-unhide
 								displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
 								callbackAction = enablePage
