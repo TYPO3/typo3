@@ -284,6 +284,10 @@ TYPO3.ModuleMenu.App = {
 		}
 
 		component.show()
+
+			// backwards compatibility
+		top.nav = component;
+		
 		TYPO3.Backend.NavigationContainer.show();
 		this.loadedNavigationComponentId = navigationComponentId;
 	},
@@ -343,7 +347,6 @@ Ext.onReady(function() {
 
 		// keep backward compatibility
 	top.list = TYPO3.Backend.ContentContainer;
-	top.nav = TYPO3.Backend.NavigationContainer.PageTree;
 	top.list_frame = top.list.getIframe();
 	top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
 

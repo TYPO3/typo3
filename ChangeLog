@@ -3,6 +3,7 @@
 	* Fixed bug #17091: Pagetree: undelete recursive deleted pages only undeletes the top node, not the other child nodes of the deleted page (Thanks to Stefan Galinski)
 	* Fixed bug #17204: Pagetree: Only call the singleClick method if the navigation component is visible (Thanks to Stefan Galinski)
 	* Fixed bug #17158: Pagetree: now uses [No title] from language file if no title is there (Thanks to Stefan Galinski)
+	* Fixed bug #17208: Backwards compatibility broken (top.nav) and JS errors when editing files in file list module
 
 2011-01-22  Steffen Gebert  <steffen@steffen-gebert.de>
 
