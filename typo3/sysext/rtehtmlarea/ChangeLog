@@ -3,6 +3,7 @@
 	* Fixed bug #16975: htmlArea RTE: Use parentNode rather than parentElement
 	* Follow-up to bug #17157: htmlArea RTE: Not enabled in various browser/system combinations
 	* Fixed bug #17205: htmlArea RTE: Remove Image button when images are not enabled
+	* htmlArea RTE: Updated Manual and ext_emconf
 
 2011-01-20  Stanislas Rolland  <typo3@sjbr.ca>
 
