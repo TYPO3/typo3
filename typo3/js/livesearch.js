@@ -42,13 +42,12 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	listClass: 'live-search-list',
 	listEmptyText: null,
 	listWidth: 315,
+	listHovered: false,
 	loadingText: null,
 	minChars: 2,
 	resizable: false,
 	title: null,
 	width: 205,
-	hasIframeListeners: false,
-
 	triggerClass : 'x-form-clear-trigger',
 	triggerConfig: '<span tag="a" class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer">&nbsp;</span>',
 	onTriggerClick: function() {
@@ -152,8 +151,11 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 	initList : function () {
 		TYPO3.BackendLiveSearch.superclass.initList.apply(this, arguments);
-
 		var cls = 'x-combo-list';
+
+			// Track whether the hovering over the results list or not, to aid in detecting iframe clicks.
+		this.mon(this.list, 'mouseover', function() {this.listHovered = true;}, this);
+		this.mon(this.list, 'mouseout', function() {this.listHovered = false; }, this);
 
 		/**
 		 * Create bottom Toolbar to the result layer
@@ -202,6 +204,10 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				constrain:false
 			});
 
+				// Track whether the hovering over the help list or not, to aid in detecting iframe clicks.
+			this.mon(this.helpList, 'mouseover', function() {this.listHovered = true;}, this);
+			this.mon(this.helpList, 'mouseout', function() {this.listHovered = false; }, this);
+
 			var lw = this.listWidth || Math.max(this.wrap.getWidth(), this.minListWidth);
 			this.helpList.setSize(lw);
 			this.helpList.swallowEvent('mousewheel');
@@ -245,15 +251,12 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	removeHelp : function() {
 		if (this.helpList) {
 			this.helpList.destroy();
+			delete this.helpList;
 		}
 	},
 
 	onFocus : function() {
 		TYPO3.BackendLiveSearch.superclass.onFocus.apply(this, arguments);
-
-		if (!this.hasIframeListeners) {
-			this.addIframeListeners();
-		}
 
 		// If search is blank, show the help on focus. Otherwise, show last results
 		if (this.getValue() == '') {
@@ -261,6 +264,15 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		} else {
 			this.expand();
 		}
+	},
+
+	/**
+	 * Fired when search results are clicked. We do not want the search result
+	 * appear so we always set doFocus = false
+	 */
+	onViewClick : function(doFocus){
+		doFocus = false;
+		TYPO3.BackendLiveSearch.superclass.onViewClick.apply(this, arguments);
 	},
 
 	postBlur : function() {
@@ -283,29 +295,15 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		return 'id=' + this.searchResultsPid + '&search_levels=4&search_field=' + searchTerm;
 	},
 
-	addIframeListeners : function () {
-		// Add an event handler to each iframe, closing the search window when there's a click inside the iframe
-		// @todo Is there a cleaner way to handle this?
-		var iframes = Ext.query('iframe');
-		Ext.each(iframes, function(item, index, allItems) {
-			item.contentWindow.document.body.onclick = function() {
-				if (parent.TYPO3LiveSearch && parent.TYPO3LiveSearch.hasFocus) {
-					if (parent.TYPO3LiveSearch.isExpanded()) {
-						parent.TYPO3LiveSearch.collapse();
-					}
+	handleBlur : function(e) {
 
-					if (parent.TYPO3LiveSearch.getRawValue() == '') {
-						parent.TYPO3LiveSearch.originalValue = parent.TYPO3LiveSearch.emptyText;
-						parent.TYPO3LiveSearch.reset(this);
-					}
-
-					if (parent.TYPO3LiveSearch.helpList.isVisible()) {
-						parent.TYPO3LiveSearch.helpList.remove();
-					}
-				}
-			};
-			this.hasIframeListeners = true;
-		}, this);
+		if (!this.listHovered) {
+			this.hasFocus = false;
+			if (this.getValue() == '') {
+				this.reset();
+			}
+			this.postBlur();
+		}
 
 	}
 });
@@ -324,4 +322,7 @@ Ext.onReady(function() {
 	});
 
 	TYPO3LiveSearch.applyToMarkup(Ext.get('live-search-box'));
+
+		// Add a blur event listener outside the ExtJS widget to handle clicks in iframes also.
+	Ext.get('live-search-box').on('blur', TYPO3LiveSearch.handleBlur, TYPO3LiveSearch);
 });
