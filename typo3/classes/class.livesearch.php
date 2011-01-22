@@ -58,8 +58,19 @@ class LiveSearch implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-			// LiveSearch module is enabled for everybody
-		return true;
+		$access = FALSE;
+
+			// Loads the backend modules available for the logged in user.
+		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$loadModules->observeWorkspaces = TRUE;
+		$loadModules->load($GLOBALS['TBE_MODULES']);
+
+			// Live search is heavily dependent on the list module and only available when that module is.
+		if (is_array($loadModules->modules['web']['sub']['list'])) {
+			$access = TRUE;
+		}
+
+		return $access;
 	}
 
 	/**

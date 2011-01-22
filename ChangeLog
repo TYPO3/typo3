@@ -1,3 +1,7 @@
+2011-01-22  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #16680: Deactivate live search if list module is not available
+
 2011-01-22  Susann Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #17091: Pagetree: undelete recursive deleted pages only undeletes the top node, not the other child nodes of the deleted page (Thanks to Stefan Galinski)

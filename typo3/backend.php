@@ -363,9 +363,11 @@ class TYPO3backend {
 	protected function renderToolbar() {
 
 			// move search to last position
-		$search = $this->toolbarItems['liveSearch'];
-		unset($this->toolbarItems['liveSearch']);
-		$this->toolbarItems['liveSearch'] = $search;
+		if (array_key_exists('liveSearch', $this->toolbarItems)) {
+			$search = $this->toolbarItems['liveSearch'];
+			unset($this->toolbarItems['liveSearch']);
+			$this->toolbarItems['liveSearch'] = $search;
+		}
 
 		$toolbar = '<ul id="typo3-toolbar">';
 		$toolbar.= '<li>'.$this->getLoggedInUserLabel().'</li>
