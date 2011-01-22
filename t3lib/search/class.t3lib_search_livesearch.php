@@ -131,11 +131,8 @@ class t3lib_search_livesearch {
 			}
 		} else {
 			$this->setQueryString($searchQuery);
-			$recordArray = $this->findByGlobalTableList($pageIdList, $limit);
+			$recordArray = $this->findByGlobalTableList($pageIdList);
 		}
-
-			// @todo Need to make sure we don't return too many records. How do we handle this when querying across multiple tables?
-		$recordArray = array_slice($recordArray, 0, $this->limitCount);
 
 		return $recordArray;
 	}
@@ -161,13 +158,22 @@ class t3lib_search_livesearch {
 	 * Find records from all registered TCA table & column values.
 	 *
 	 * @param string $pageIdList Comma seperated list of page IDs
-	 * @param string $limit MySql Limit notation
 	 * @return array Records found in the database matching the searchQuery
 	 */
-	protected function findByGlobalTableList($pageIdList, $limit) {
+	protected function findByGlobalTableList($pageIdList) {
+		$limit = $this->limitCount;
 		$getRecordArray = array();
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
-			$getRecordArray[] = $this->findByTable($tableName, $pageIdList, $limit);
+			$recordArray = $this->findByTable($tableName, $pageIdList, '0,' . $limit);
+			$recordCount = count($recordArray);
+			if ($recordCount) {
+				$limit = $limit - $recordCount;
+				$getRecordArray[] = $recordArray;
+
+				if ($limit <= 0) {
+					break;
+				}
+			}
 		}
 
 		return $getRecordArray;
