@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,9 +29,14 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-abstract class tx_linkvalidator_linkTypes_Abstract {
+abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_linktype_Interface {
 
-	private $errorParams = array(); // array      all parameters needed for the rendering of the error message
+	/**
+	 * Contains parameters needed for the rendering of the error message
+	 *
+	 * @var array
+	 */
+	protected $errorParams = array();
 
 	/**
 	 * Base type fetching method, based on the type that softRefParserObj returns.
@@ -52,8 +57,9 @@ abstract class tx_linkvalidator_linkTypes_Abstract {
 	 * Set the value of the private property errorParams.
 	 *
 	 * @param  array      all parameters needed for the rendering of the error message
+	 * @return void
 	 */
-	public function setErrorParams(array $value) {
+	protected function setErrorParams(array $value) {
 		$this->errorParams = $value;
 	}
 

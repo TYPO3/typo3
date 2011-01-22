@@ -9,18 +9,23 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mod_linkvalidator">Link validator</label>
-			<label index="tasks.validate.name">Link validator</label>
-			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table sys_register in order to ease up the backend module.</label>
+			<label index="mod_linkvalidator">Linkvalidator</label>
+			<label index="tasks.validate.name">Linkvalidator</label>
+			<label index="tasks.validate.description">Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</label>
 			<label index="tasks.validate.page">Start page (uid)</label>
 			<label index="tasks.validate.depth">Depth</label>
 			<label index="tasks.validate.conf">Overwrite TSconfig</label>
 			<label index="tasks.validate.email">Send email report to</label>
-			<label index="tasks.validate.emailonbrokenlinkonly">Send email on new broken links only</label>
-			<label index="tasks.validate.emailfile">Email template file</label>
+			<label index="tasks.validate.emailOnBrokenLinkOnly">Send email on new broken links only</label>
+			<label index="tasks.validate.emailTemplateFile">Email template file</label>
 			<label index="tasks.validate.invalidEmail">Invalid email format!</label>
 			<label index="tasks.validate.invalidPage">Invalid page uid, please enter a valid page uid!</label>
 			<label index="tasks.validate.invalidDepth">There is no depth set, please set it to one of the offered values!</label>
+			<label index="tasks.error.noSubject">No subject for the notification email</label>
+			<label index="tasks.error.invalidToEmail">Invalid format of one or more of the recipient email addresses!</label>
+			<label index="tasks.error.invalidFromEmail">Invalid format of the email address in the from header</label>
+			<label index="tasks.error.invalidTSconfig">Invalid TSconfig in the task configuration!</label>
+			<label index="tasks.error.invalidEmailTemplateFile">The email template file is not existing!</label>
 		</languageKey>
 	</data>
 </T3locallang>

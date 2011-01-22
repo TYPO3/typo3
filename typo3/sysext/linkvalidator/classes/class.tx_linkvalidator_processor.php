@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,21 +31,63 @@
  * @subpackage linkvalidator
  */
 
-$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfunc1/locallang.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
 
-class tx_linkvalidator_processing {
+class tx_linkvalidator_Processor {
 
-	protected $searchFields = array(); // array of tables and fields to search for broken links
-	protected $pidList = ''; // list of pidlist (rootline downwards)
-	protected $linkCounts = array(); // array of tables containing number of external link
-	protected $brokenLinkCounts = array(); // array of tables containing number of broken external link
-	protected $recordsWithBrokenLinks = array(); // array of tables and records containing broken links
-	protected $hookObjectsArr = array(); // array for hooks for own checks
+	/**
+	 * Array of tables and fields to search for broken links.
+	 *
+	 * @var array
+	 */
+	protected $searchFields = array();
+
+	/**
+	 * List of comma seperated page uids (rootline downwards).
+	 *
+	 * @var string
+	 */
+	protected $pidList = '';
+
+	/**
+	 * Array of tables and the number of external links they contain.
+	 *
+	 * @var array
+	 */
+	protected $linkCounts = array();
+
+	/**
+	 * Array of tables and the number of broken external links they contain.
+	 *
+	 * @var array
+	 */
+	protected $brokenLinkCounts = array();
+
+	/**
+	 * Array of tables and records containing broken links.
+	 *
+	 * @var array
+	 */
+	protected $recordsWithBrokenLinks = array();
+
+	/**
+	 * Array for hooks for own checks.
+	 *
+	 * @var array
+	 */
+	protected $hookObjectsArr = array();
+
+	/**
+	 * Array with information about the current page.
+	 *
+	 * @var array
+	 */
+	protected $extPageInTreeInfo = array();
 
 	/**
 	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
-	function __construct() {
+	public function __construct() {
 			// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
@@ -67,20 +109,25 @@ class tx_linkvalidator_processing {
 	}
 
 	/**
-	 * Find all supported broken links and store them in tx_linkvalidator_links.
+	 * Find all supported broken links and store them in tx_linkvalidator_link.
 	 *
 	 * @param	array		$checkOptions: list of hook object to activate
-	 * @param	int			$hidden: defines whether to look into hidden fields or not
+	 * @param	boolean		$considerHidden: defines whether to look into hidden fields or not
 	 * @return	void
 	 */
-	public function getLinkStatistics($checkOptions = array(), $hidden = 0) {
+	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_links', 'recpid in (' . $this->pidList . ')');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')');
 
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
-			$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
-			if (!$hidden) {
+			if($table == 'pages'){
+				$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+			}
+			else{
+				$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+			}
+			if (!$considerHidden) {
 				$where .= t3lib_BEfunc::BEenableFields($table);
 			}
 				// if table is not configured, we assume the ext is not installed and therefore no need to check it
@@ -94,10 +141,8 @@ class tx_linkvalidator_processing {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				
 				// Analyse each record
-				$this->analyseRecord($results, $table, $fields, $row);
-
+				$this->analyzeRecord($results, $table, $fields, $row);
 			}
 		}
 
@@ -108,13 +153,24 @@ class tx_linkvalidator_processing {
 					$table = $entryValue['table'];
 					$record = array();
 					$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
-					$record['recpid'] = $entryValue['row']['pid'];
-					$record['recuid'] = $entryValue['uid'];
-					$record['tablename'] = $table;
-					$record['linktitle'] = $entryValue['linktitle'];
+					$record['record_pid'] = $entryValue['row']['pid'];
+					$record['record_uid'] = $entryValue['uid'];
+					$record['table_name'] = $table;
+					$record['link_title'] = $entryValue['link_title'];
 					$record['field'] = $entryValue['field'];
-					$record['lastcheck'] = time();
-					$url = $entryValue['substr']['tokenValue'];
+					$record['last_check'] = time();
+
+					$this->recordReference = $entryValue['substr']['recordRef'];
+
+					$this->pageWithAnchor = $entryValue['pageAndAnchor'];
+					
+					if (!empty($this->pageWithAnchor)) {
+							// page with anchor, e.g. 18#1580
+						$url = $this->pageWithAnchor;
+					} else {
+						$url = $entryValue['substr']['tokenValue'];
+					}
+
 					$this->linkCounts[$table]++;
 					$checkURL = $hookObj->checkLink($url, $entryValue, $this);
 						// broken link found!
@@ -123,18 +179,18 @@ class tx_linkvalidator_processing {
 						$response['valid'] = FALSE;
 						$response['errorParams'] = $hookObj->getErrorParams();
 						$this->brokenLinkCounts[$table]++;
-						$record['typelinks'] = $key;
+						$record['link_type'] = $key;
 						$record['url'] = $url;
-						$record['urlresponse'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
+						$record['url_response'] = serialize($response);
+						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					} elseif (t3lib_div::_GP('showalllinks')) {
 						$response = array();
 						$response['valid'] = TRUE;
 						$this->brokenLinkCounts[$table]++;
 						$record['url'] = $url;
-						$record['typelinks'] = $key;
-						$record['urlresponse'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_links', $record);
+						$record['link_type'] = $key;
+						$record['url_response'] = serialize($response);
+						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
 					}
 				}
 			}
@@ -151,10 +207,14 @@ class tx_linkvalidator_processing {
 	 * @param	array		$record: record to analyse
 	 * @return	void
 	 */
-	public function analyseRecord(&$results, $table, $fields, $record) {
+	public function analyzeRecord(&$results, $table, $fields, $record) {
 		
 			// array to store urls from relevant field contents
 		$urls = array();
+
+		$referencedRecordType = '';
+			// last-parsed link element was a page.
+		$wasPage = TRUE;
 
 			// flag whether row contains a broken link in some field or not
 		$rowContainsBrokenLink = FALSE;
@@ -183,49 +243,81 @@ class tx_linkvalidator_processing {
 
 						// If there was an object returned...:
 					if (is_object($softRefObj)) {
+
 							// Do processing
 						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
 						if (!empty($resultArray['elements'])) {
 
 							if ($spKey == 'typolink_tag') {
 								$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-							}
 
-							foreach ($resultArray['elements'] as $element) {
-								$r = $element['subst'];
+								for ($i = 1; $i < count($linkTags); $i += 2) {
+									$referencedRecordType = '';
+									foreach($resultArray['elements'] as $element) {
+											$type = '';
+											$r = $element['subst'];
 
-								$title = '';
-								$type = '';
-
-								if (!empty($r)) {
-										// Parse string for special TYPO3 <link> tag:
-									if ($spKey == 'typolink_tag') {
-										foreach ($linkTags as $textPart) {
-											if (substr_count($textPart, $r['tokenID'])) {
-												$title = strip_tags($textPart);
+											if (!empty($r['tokenID'])) {
+												if (substr_count($linkTags[$i], $r['tokenID'])) {
+														// Type of referenced record
+													if (strpos($r['recordRef'], 'pages') !== FALSE) {
+														$currentR = $r;
+															// contains number of the page
+														$referencedRecordType = $r['tokenValue'];
+														$wasPage = TRUE;
+													}
+														// append number of content element to the page saved in the last loop
+													elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && ($wasPage === TRUE)) {
+														$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
+														$wasPage = FALSE;
+													} else {
+														$currentR = $r;
+													}
+													$title = strip_tags($linkTags[$i]);
+												}
 											}
-										}
 									}
-
 									foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
-										$type = $hookObj->fetchType($r, $type, $keyArr);
+										$type = $hookObj->fetchType($currentR, $type, $keyArr);
 									}
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["linktitle"] = $title;
-								}
 
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["row"] = $record;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["link_title"] = $title;
+									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
+
+								}
+							} else {
+
+								foreach ($resultArray['elements'] as $element) {
+									$r = $element['subst'];
+									$title = '';
+									$type = '';
+
+									if (!empty($r)) {
+											// Parse string for special TYPO3 <link> tag:
+
+										foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+											$type = $hookObj->fetchType($r, $type, $keyArr);
+										}
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
+										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
+
+									}
+								}
 							}
 						}
 					}
 				}
 			}
-		}	
+		}
 	}
-
 
 	/**
 	 * Fill a markerarray with the number of links found in a list of pages.
@@ -236,13 +328,13 @@ class tx_linkvalidator_processing {
 	public function getLinkCounts($curPage) {
 		$markerArray = array();
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'count(uid) as nbBrokenLinks,typelinks',
-				'tx_linkvalidator_links',
-				'recpid in (' . $this->pidList . ')',
-				'typelinks'
+				'count(uid) as nbBrokenLinks,link_type',
+				'tx_linkvalidator_link',
+				'record_pid in (' . $this->pidList . ')',
+				'link_type'
 		))) {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$markerArray[$row['typelinks']] = $row['nbBrokenLinks'];
+				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
 			}
 		}
@@ -266,7 +358,7 @@ class tx_linkvalidator_processing {
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
-	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
+	public function extGetTreeList($id, $depth, $begin = 0, $permsClause) {
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
@@ -276,7 +368,7 @@ class tx_linkvalidator_processing {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid,title',
 				'pages',
-				'pid=' . $id . ' AND deleted=0 AND ' . $perms_clause
+				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
@@ -284,7 +376,7 @@ class tx_linkvalidator_processing {
 					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
 				}
 				if ($depth > 1) {
-					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
+					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause);
 				}
 			}
 		}
@@ -294,7 +386,7 @@ class tx_linkvalidator_processing {
 
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processing.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processing.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processor.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processor.php']);
 }
 ?>

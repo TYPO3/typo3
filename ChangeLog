@@ -15,6 +15,7 @@
 
 2011-01-21  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Merged Linkvalidator (tagged as 4.5RC1)
 	* Reverted #13319: Removed Plupload integration and removed contrib/plupload
 	* Fixed bug #17182: migrateWorkspaces in Install-Tool shows up even if nothing has to be done (Thanks to Tolleiv Nietsch)
 	* Fixed bug #17184: Disable the CSRF protection in ExtDirect calls coming from the frontend (Thanks to Stefan Galinski)

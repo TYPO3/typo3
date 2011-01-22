@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,14 +30,14 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_File extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity.
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {

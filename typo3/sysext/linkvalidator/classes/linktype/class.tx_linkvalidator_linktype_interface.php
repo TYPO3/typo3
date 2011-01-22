@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,17 +29,42 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-interface tx_linkvalidator_linkTypes_Interface {
+interface tx_linkvalidator_linktype_Interface {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  validation error message or succes code
 	 */
 	public function checkLink($url, $softRefEntry, $reference);
+
+	/**
+	 * Base type fetching method, based on the type that softRefParserObj returns.
+	 *
+	 * @param   array	 $value: reference properties
+	 * @param   string	 $type: current type
+	 * @param   string	 $key: validator hook name
+	 * @return  string	 fetched type
+	 */
+	public function fetchType($value, $type, $key);
+
+	/**
+	 * Get the value of the private property errorParams.
+	 *
+	 * @return  array      all parameters needed for the rendering of the error message
+	 */
+	public function getErrorParams();
+
+	/**
+	 * Base url parsing
+	 *
+	 * @param	array		$row: broken link record
+	 * @return	string		parsed broken url
+	 */
+	public function getBrokenUrl($row);
 
 }
 

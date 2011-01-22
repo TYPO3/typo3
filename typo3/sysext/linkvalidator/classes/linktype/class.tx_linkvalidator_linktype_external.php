@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,28 +30,39 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstract {
 
-	var $url_reports = array();
-	var $url_error_params = array();
+	/**
+	 * Cached list of the URLs, which were already checked for the current processing.
+	 *
+	 * @var array
+	 */
+	protected $urlReports = array();
+
+	/**
+	 * Cached list of all error parameters of the URLs, which were already checked for the current processing.
+	 *
+	 * @var array
+	 */
+	protected $urlErrorParams = array();
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param	string		$url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
+	 * @param	object		$reference:  parent instance of tx_linkvalidator_Processor
 	 * @return	string		TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		$errorParams = array();
-		if (isset($this->url_reports[$url])) {
-			if(!$this->url_reports[$url]) {
-				if(is_array($this->url_error_params[$url])) {
-				    $this->setErrorParams($this->url_error_params[$url]);
+		if (isset($this->urlReports[$url])) {
+			if(!$this->urlReports[$url]) {
+				if(is_array($this->urlErrorParams[$url])) {
+				    $this->setErrorParams($this->urlErrorParams[$url]);
 				}
 			}
-			return $this->url_reports[$url];
+			return $this->urlReports[$url];
 		}
 
 			// remove possible anchor from the url
@@ -61,9 +73,9 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 			// try to fetch the content of the URL (headers only)
 		$report = array();
 
-		    // get the header
-        $content = '';
-        $content = t3lib_div::getURL($url, 2, FALSE, $report);
+			// try fetching the content of the URL (just fetching the headers does not work correctly)
+		$content = '';
+		$content = t3lib_div::getURL($url, 1, FALSE, $report);
 
 		$tries = 0;
 		while (($report['http_code'] == 301 || $report['http_code'] == 302
@@ -80,6 +92,24 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 
 			// analyze the response
 		if ($report['error']) {
+				// More cURL error codes can be found here:
+				// http://curl.haxx.se/libcurl/c/libcurl-errors.html
+			if ($report['lib'] === 'cURL' && $report['error'] === 28) {
+				$errorParams['errorType'] = 'cURL28';
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 22) {
+				if (strstr($report['message'], '404')) {
+					$errorParams['errorType'] = 404;
+				} elseif(strstr($report['message'], '403')) {
+					$errorParams['errorType'] = 403;
+				} elseif(strstr($report['message'], '500')) {
+					$errorParams['errorType'] = 500;
+				}
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 6) {
+				$errorParams['errorType'] = 'cURL6';
+			} elseif ($report['lib'] === 'cURL' && $report['error'] === 56) {
+				$errorParams['errorType'] = 'cURL56';
+			}
+
 			$response = FALSE;
 		}
 
@@ -106,8 +136,8 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 			$this->setErrorParams($errorParams);
 		}
 
-		$this->url_reports[$url] = $response;
-		$this->url_error_params[$url] = $errorParams;
+		$this->urlReports[$url] = $response;
+		$this->urlErrorParams[$url] = $errorParams;
 
 		return $response;
 	}
@@ -140,6 +170,22 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
 				break;
 
+			case 500:
+				$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
+				break;
+
+			case 'cURL6':
+				$response = $GLOBALS['LANG']->getLL('list.report.couldnotresolvehost');
+				break;
+
+			case 'cURL28':
+				$response = $GLOBALS['LANG']->getLL('list.report.timeout');
+				break;
+
+			case 'cURL56':
+				$response = $GLOBALS['LANG']->getLL('list.report.errornetworkdata');
+				break;
+
 			default:
 				$response = $GLOBALS['LANG']->getLL('list.report.noresponse');
 		}
@@ -152,9 +198,10 @@ class tx_linkvalidator_linkTypes_External extends tx_linkvalidator_linkTypes_Abs
 	 *
 	 * @param   array	  $value: reference properties
 	 * @param   string	 $type: current type
-	 * @return	string		fetched type
+	 * @param   string	 $key: validator hook name
+	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type) {
+	public function fetchType($value, $type, $key) {
 		preg_match_all('/((?:http|https|ftp|ftps))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {

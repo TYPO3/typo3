@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,13 +30,19 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_Abstract implements tx_linkvalidator_linkTypes_Interface {
+class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Abstract {
 
-	public $tsconfig;
 	const DELETED = 'deleted';
 
 	/**
-	 * Get TsConfig on loading of the class
+	 * TSconfig of the module tx_linkhandler.
+	 *
+	 * @var array
+	 */
+	protected $tsconfig;
+
+	/**
+	 * Get TSconfig when loading the class.
 	 */
 	function __construct() {
 		$this->tsconfig = t3lib_BEfunc::getModTSconfig(1, 'mod.tx_linkhandler');
@@ -46,7 +53,7 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 *
 	 * @param   string	  $url: url to check
 	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_processing
+	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
@@ -54,23 +61,23 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 		$errorParams = array();
 		$parts = explode(":", $url);
 		if (count($parts) == 3) {
-			$tablename = htmlspecialchars($parts[1]);
+			$tableName = htmlspecialchars($parts[1]);
 			$rowid = intval($parts[2]);
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
-				$tablename,
+				$tableName,
 				'uid = ' . intval($rowid)
 			);
 
 			if ($rows[0]) {
 				if ($rows[0]['deleted'] == '1') {
 					$errorParams['errorType'] = DELETED;
-					$errorParams['tablename'] = $tablename;
+					$errorParams['tablename'] = $tableName;
 					$errorParams['uid'] = $rowid;
 					$response =  FALSE;
 				}
 			} else {
-				$errorParams['tablename'] = $tablename;
+				$errorParams['tablename'] = $tableName;
 				$errorParams['uid'] = $rowid;
 				$response =  FALSE;
 			}
@@ -88,9 +95,10 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 *
 	 * @param   array	  $value: reference properties
 	 * @param   string	 $type: current type
+	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type) {
+	public function fetchType($value, $type, $key) {
 		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
 			$type = 'linkhandler';
 		}
@@ -105,11 +113,11 @@ class tx_linkvalidator_linkTypes_LinkHandler extends tx_linkvalidator_linkTypes_
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
-		$tablename = $errorParams['tablename'];
+		$tableName = $errorParams['tablename'];
 		$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.default.title');
 
-		if ($this->tsconfig['properties'][$tablename . '.']) {
-			$title = $this->tsconfig['properties'][$tablename . '.']['label'];
+		if ($this->tsconfig['properties'][$tableName . '.']) {
+			$title = $this->tsconfig['properties'][$tableName . '.']['label'];
 		}
 
 		switch ($errorType) {

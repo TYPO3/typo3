@@ -1,4 +1,58 @@
-2011-01-08  Christopher  <chrissitopher@gmx.de>
+2011-01-20  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Merged changes from mantis-#17176: Remove unnecessary comments and color profiles from all shipped .png / .gif files (Thanks to Steffen Gebert)
+
+2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12432: Selected page metas are not processed
+	* Fixed bug #12431: Do not put labels into members
+	* Fixed bug #12429: Do not use private accessors
+	* Fixed bug #12428: Adapt Variable Names to naming conventions
+	* Fixed bug #12427: Rename draw*() methods to render*()
+	* Fixed bug #12426: Rename classes according to naming conventions
+	* Fixed bug #12425: Give modfunc1 a better name
+	* Fixed bug #12424: Only use the class name for the hook
+	* Fixed bug #12416: tx_linkvalidator_tasks_Validate: Missing public / protected declarations
+	* Fixed bug #12226: website that has multiple domainsrecords produces funny links
+	* Fixed bug #12414: OOP principle of data encapsulation violated in tx_linkvalidator_tasks_Validate
+	* Fixed bug #12385: Conflict scheduler:testtask with linkvalidator::task
+	* Fixed bug #12411: Fix Copyright Notices
+
+2011-01-20  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12360: Show error message, if the module is not accessible for the current user
+	* Fixed bug #12412: XSS issue in tx_linkvalidator_tasks_ValidateAdditionalFieldProvider
+	* Fixed bug #12419: Use American English for "analyseRecord"
+	* Fixed bug #12420: Indentation in modfunc1, getTemplateMarkers()
+	* Fixed bug #12421: Rename tx_linkvalidator_links to tx_linkvalidator_link
+	* Fixed bug #12423: ext_tables.sql: Use underscores to separate words in field names
+	* Fixed bug #12422: ext_tables.sql: Do not use abbreviations for field names
+
+2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Added Feature #12340: Enhance the tx_linkvalidator_linkTypes_Interface (thanks to Ernesto Baschny and Christopher Stelmaszyk)
+	* Added Feature #12344: Migrate to t3lib_htmlmail to SwiftMailer (thanks to Ernesto Baschny and Christopher Stelmaszyk)
+	* Fixed bug #12377: Other link types than supported use the same type than the last found
+
+2011-01-18  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Cleanup: Fixed PHPdoc comments and type hints in module, processing and abstract linktype class
+
+2011-01-17  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #10989: Anchors in internal links are incorrectly treated as pages (thanks to Michael Miousse)
+
+2011-01-17  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12226: Website that has multiple domainsrecords produces funny links
+
+2011-01-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12243: Information on storage location of broken links is wrong in text
+	* Fixed bug #12232: Redirects to https get reported as 404 (thanks to Andreas Lappe)
+	* Fixed bug #12235: Reporting errors does not work with cURL (thanks to Andreas Lappe)
+
+2011-01-08  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12019: Do not display the format of the date of the last check
 	* Fixed bug #12026: Combine columns Type, Headline and Field
@@ -6,7 +60,7 @@
 	* Fixed bug #12024: Remove cellspacing (thanks to Steffen Gebert)
 	* Fixed bug #12025: Add link to scheduler
 
-2011-01-07  Christopher  <chrissitopher@gmx.de>
+2011-01-07  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Followup to bug #11269: Proofread the manual
 	* Followup to bug #11822: Add extension description in ext_emconf.php
@@ -17,7 +71,7 @@
 
 	* Followup to bug #11794: If website root is active, searching for links does not work
 
-2011-01-06  Christopher  <chrissitopher@gmx.de>
+2011-01-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Followup to bug #11836: Make use of Flash Messages
 	* Fixed bug #11888: Button "Check Links" only checks those categories of links which are marked with the checkboxes below
@@ -27,28 +81,28 @@
 
 	* Fixed bug #11794: If website root is active, searching for links does not work
 
-2011-01-05  Christopher  <chrissitopher@gmx.de>
+2011-01-05  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11797: linkvalidator saves translated texts in the database which is not good (thanks to Michael Miousse and Philipp Gampe)
 	* Fixed bug #11802: Field linktitle often stays empty (thanks to Philipp Gampe)
 	* Followup to bug #11776: URL/Linktarget for files is broken
 
-2011-01-04  Christopher  <chrissitopher@gmx.de>
+2011-01-04  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11889: Clean up CSS
 
-2011-01-03  Christopher  <chrissitopher@gmx.de>
+2011-01-03  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11866: When the edit pencil next to a link is clicked, you end up at tree root with search_levels=0 after saving
 	* Followup to bug #10907: Invalid external url not detected (thanks to Philipp Gampe)
 
-2011-01-02  Christopher  <chrissitopher@gmx.de>
+2011-01-02  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11821: Do not use abbreviations in code
 	* Fixed bug #11777: Add CSH to table headers
 	* Fixed bug #11848: Use labels for the table fields containing the broken links
 
-2011-01-01  Christopher  <chrissitopher@gmx.de>
+2011-01-01  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11822: Add extension description in ext_emconf.php
 	* Fixed bug #11820: Remove comments "End of function xy"
@@ -60,7 +114,7 @@
 	* Fixed bug #11819: Prevent PHP notices by fixing XClass inclusion code
 	* Fixed bug #11823: Add @package and @subpackage to comment blocks
 
-2010-12-31  Christopher  <chrissitopher@gmx.de>
+2010-12-31  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11776: URL/Linktarget for files is broken
 	* Fixed bug #11800: Checkboxes showing the number of broken links do not display the value "zero"
@@ -72,7 +126,7 @@
 	* Fixed bug #11812: Changing a checkbox from the statistics table resets the depth chosen for pages to check
 	* Fixed bug #11814: Fix indentation in HTML templates, CSS files and SQL file
 
-2010-12-30  Christopher  <chrissitopher@gmx.de>
+2010-12-30  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #11779: Unify usage of tooltips in table rows
 	* Fixed bug #11775: Table should use new design for TYPO3 4.5
