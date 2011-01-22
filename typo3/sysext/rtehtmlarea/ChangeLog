@@ -1,3 +1,7 @@
+2011-01-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17160: htmlArea RTE: Link editing problems in Internet Explorer
+
 2011-01-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17140: htmlArea RTE: In WebKit, RTE inserts incorrect link if text is double-clicked

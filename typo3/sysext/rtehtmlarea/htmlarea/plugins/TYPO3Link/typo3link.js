@@ -162,6 +162,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		var selection, range, anchorClass, imageNode = null, addIconAfterLink;
 		this.editor.focusEditor();
 		var node = this.editor.getParentElement();
+			// Looking at parent
 		var el = HTMLArea.getElementObject(node, 'a');
 		if (el != null && /^a$/i.test(el.nodeName)) {
 			node = el;
@@ -178,8 +179,8 @@ TYPO3Link = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		if (node != null && /^a$/i.test(node.nodeName)) {
-				// Update existing link
+		if (!HTMLArea.is_ie && node != null && /^a$/i.test(node.nodeName)) {
+				// Update existing link in non-IE
 			this.editor.selectNode(node);
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
@@ -193,13 +194,21 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 		} else {
 				// Create new link
-				// Clean existing anchors otherwise Mozilla may create nested anchors
+				// Update links in IE
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
-				// Selection may be lost when cleaning links
-			var bookmark = this.editor.getBookmark(range);
-			this.cleanAllLinks(node, range);
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			if (HTMLArea.is_ie) {
+					// Clean images, keep links
+				if (HTMLArea.classesAnchorSetup) {
+					this.cleanAllLinks(node, range, true);
+				}
+			} else {
+					// Clean existing anchors otherwise Mozilla may create nested anchors
+					// Selection may be lost when cleaning links
+				var bookmark = this.editor.getBookmark(range);
+				this.cleanAllLinks(node, range);
+				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			}
 			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 				this.editor._doc.execCommand('CreateLink', false, encodeURI(theLink));
 			} else {
@@ -209,7 +218,8 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
 			node = this.editor.getParentElement();
-			el = HTMLArea.getElementObject(node, 'a');
+				// Looking at parent
+			var el = HTMLArea.getElementObject(node, 'a');
 			if (el != null && /^a$/i.test(el.nodeName)) {
 				node = el;
 			}
@@ -281,7 +291,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 				} else {
 					var nodeRange = this.editor._doc.body.createTextRange();
 					nodeRange.moveToElementText(node);
-					nodeInRange = range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+					nodeInRange = nodeRange.inRange(range) || range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
 				}
 			}
 			if (nodeInRange) {
