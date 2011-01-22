@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'System Reports',
-	'description' => 'The system reports module groups several system reports.',
+	'description' => 'The reports module groups several system reports.',
 	'category' => 'module',
 	'author' => 'Ingo Renner',
 	'author_email' => 'ingo@typo3.org',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => '',
 	'module' => 'mod',
-	'state' => 'beta',
+	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
