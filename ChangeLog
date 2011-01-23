@@ -1,3 +1,7 @@
+2011-01-22  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Follow-up to #17181: Corrected typo in _.htaccess (Thanks to Simon Schaufelberger)
+
 2011-01-22  Ernesto Baschny  <ernesto.baschny@typo3.org>
 
 	* Release of TYPO3 4.5.0rc1

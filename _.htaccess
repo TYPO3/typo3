@@ -56,7 +56,7 @@
 # Enable long browser caching for JavaScript and CSS files.
 
 # This affects Frontend and Backend and increases performance.
-# You can also add other file extensions (like gif, png, jpg), if you want them to be longer caced, too.
+# You can also add other file extensions (like gif, png, jpg), if you want them to be longer cached, too.
 
 <FilesMatch "\.(js|css)$">
   <IfModule mod_expires.c>
