@@ -1,6 +1,7 @@
 2011-01-23  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed phpDoc comment of t3lib_utility_Mail::getSystemFromAddress() and some readability clean-up
+	* Follow-up to #17214: Page module not using full width with default layout
 
 2011-01-22  Steffen Gebert  <steffen@steffen-gebert.de>
 

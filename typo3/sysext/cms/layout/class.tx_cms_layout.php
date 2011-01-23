@@ -574,7 +574,7 @@ class tx_cms_layout extends recordList {
 
 					// Wrap the cells into a table row:
 					$out = '
-					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns">
+					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns" width="100%">
 						<tr>' . $out . '
 						</tr>
 					</table>';
