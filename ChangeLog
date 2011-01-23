@@ -1,3 +1,7 @@
+2011-01-23  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed phpDoc comment of t3lib_utility_Mail::getSystemFromAddress() and some readability clean-up
+
 2011-01-22  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #17181: Corrected typo in _.htaccess (Thanks to Simon Schaufelberger)

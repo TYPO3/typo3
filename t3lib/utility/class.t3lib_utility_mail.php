@@ -60,7 +60,7 @@ final class t3lib_utility_Mail {
 				$additionalHeaders .= LF;
 			}
 			if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
-				$additionalHeaders .= 'From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] 
+				$additionalHeaders .= 'From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
 						. '" <' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '>';
 			} else {
 				$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
@@ -154,21 +154,23 @@ final class t3lib_utility_Mail {
 	/**
 	 * Creates a valid email address for the sender of mail messages.
 	 *
-	 * Uses a fall back chain:
-	 *     Install Tool ->
+	 * Uses a fallback chain:
+	 *     $TYPO3_CONF_VARS['MAIL']['defaultMailFromAddress'] ->
 	 *     no-reply@FirstDomainRecordFound ->
-	 *     no-reply@php_uname('n')
+	 *     no-reply@php_uname('n') ->
+	 *     no-reply@example.com
 	 *
 	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
 	 *
-	 * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender
+	 * @return	string	An email address
 	 */
 	public static function getSystemFromAddress() {
-
-			// first check the localconf setting
+			// default, first check the localconf setting
 		$address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
+
 		if (!t3lib_div::validEmail($address)) {
-				// just get us a domain record we can use
+				// just get us a domain record we can use as the host
+			$host = '';
 			$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'domainName',
 				'sys_domain',
@@ -176,6 +178,7 @@ final class t3lib_utility_Mail {
 				'',
 				'pid ASC, sorting ASC'
 			);
+
 			if (!empty($domainRecord['domainName'])) {
 				$tempUrl = $domainRecord['domainName'];
 
@@ -186,18 +189,20 @@ final class t3lib_utility_Mail {
 				}
 				$host = parse_url($tempUrl, PHP_URL_HOST);
 			}
+
 			$address = 'no-reply@' . $host;
+
 			if (!t3lib_div::validEmail($address)) {
-					// get host name from server
-				$host = php_uname('n');
-				$address = 'no-reply@' . $host;
+					// still nothing, get host name from server
+				$address = 'no-reply@' . php_uname('n');
+
 				if (!t3lib_div::validEmail($address)) {
 						// if everything fails use a dummy address
-					$address = 'no-reply@example.org';
+					$address = 'no-reply@example.com';
 				}
 			}
-
 		}
+
 		return $address;
 	}
 }
