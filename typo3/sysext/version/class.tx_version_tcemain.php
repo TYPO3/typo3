@@ -691,7 +691,7 @@ class tx_version_tcemain {
 					// Versionize this page:
 				$theNewRootID = $tcemainObj->versionizeRecord('pages', $uid, $label, FALSE, $versionizeTree);
 				if ($theNewRootID) {
-					$tcemainObj->rawCopyPageContent($uid, $theNewRootID, $verTablesArray, $tcemainObj);
+					$this->rawCopyPageContent($uid, $theNewRootID, $verTablesArray, $tcemainObj);
 
 						// If we're going to copy recursively...:
 					if ($versionizeTree > 0) {
@@ -704,7 +704,7 @@ class tx_version_tcemain {
 							$newPid = $tcemainObj->copyMappingArray['pages'][$thePagePid];
 							if (isset($newPid)) {
 								$theNewRootID = $tcemainObj->copyRecord_raw('pages', $thePageUid, $newPid);
-								$tcemainObj->rawCopyPageContent($thePageUid, $theNewRootID, $verTablesArray, $tcemainObj);
+								$this->rawCopyPageContent($thePageUid, $theNewRootID, $verTablesArray, $tcemainObj);
 							} else {
 								$tcemainObj->newlog('Something went wrong during copying branch (for versioning)', 1);
 								break;

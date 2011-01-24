@@ -1,3 +1,7 @@
+2011-01-24  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12505: Fatal Error: Call to undefined method t3lib_TCEmain::rawCopyPageContent()
+
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Raised version to 4.5.0rc1
