@@ -24,19 +24,24 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 
 	fitSizeToParent : function() {
 			// Uses the dimension of the current viewport, but removes the document header
-		var documentHeaderHeight = 0;
+		var documentHeaderHeight = top.TYPO3.Backend.Topbar.getHeight();
 		var documentHeader = Ext.get('typo3-docheader');
 
 		if (Ext.isObject(documentHeader)) {
-			documentHeaderHeight = documentHeader.getHeight();
+				// use 5px bottom margin
+			documentHeaderHeight -= documentHeader.getHeight() + 5;
+		}
+
+		if (this.heightOffset && Ext.isNumber(this.heightOffset)) {
+			documentHeaderHeight -= parseInt(this.heightOffset, 10);
 		}
 
 		this.fitToElement.setHeight(
-			Ext.lib.Dom.getViewportHeight() - this.fitToElement.getTop() - documentHeaderHeight
+			Ext.lib.Dom.getViewportHeight() - this.fitToElement.getTop() + documentHeaderHeight
 		);
 
 		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
 		this.setSize(size.width - pos[0], size.height - pos[1]);
-		
+
 	}
 });
