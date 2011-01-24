@@ -1,10 +1,14 @@
+2011-01-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17222: fitToParent calculates wrong height - workspace grid needs 40 pixel offset for render the legend
+
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
-	
+
 	* Followup to #11539: Split view / initial height calculated right
 	* Followup to #11539: Split view / tooltip styling added
 
 2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
-	
+
 	* Fixed bug #12448: grid preview links are broken
 	* Raised version to 4.5.0rc1
 	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
