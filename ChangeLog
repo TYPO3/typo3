@@ -1,3 +1,7 @@
+2011-01-24  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #17274: SQL error in Update Wizard of workspaces
+
 2011-01-24  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #17078: in fileadmin saving changes from t3editor doesn't work

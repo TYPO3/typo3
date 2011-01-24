@@ -369,12 +369,12 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	}
 
 	/**
-	 * Returns all sys_workspace records which are not referenced by  anysys_workspace_stages record
+	 * Returns all sys_workspace records which are not referenced by any sys_workspace_stages record
 	 *
 	 * @return array
 	 */
 	protected function getWorkspacesWithoutStages() {
-		$stages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('parentid', 'sys_workspace_stages', 'parenttable="sys_workspace"');
+		$stages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('parentid', 'sys_workspace_stage', 'parenttable="sys_workspace"');
 		$wsWhitelist = array();
 		foreach ($stages as $stage) {
 			$wsWhitelist[] = $stage['parentid'];
