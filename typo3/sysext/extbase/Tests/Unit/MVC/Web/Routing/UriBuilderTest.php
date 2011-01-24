@@ -178,6 +178,28 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	/**
 	 * @test
 	 */
+	public function uriForDisablesCacheHashForNonCacheableActions() {
+		$mockConfiguration = array(
+			'controllerConfiguration' => array(
+				'SomeController' => array(
+					'nonCacheableActions' => array('someNonCacheableAction')
+				)
+			)
+		);
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($mockConfiguration));
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
+		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
+		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
+
+		$this->assertTrue($this->uriBuilder->getUseCacheHash());
+		$this->uriBuilder->uriFor('someNonCacheableAction', array(), 'SomeController', 'SomeExtension');
+		$this->assertFalse($this->uriBuilder->getUseCacheHash());
+	}
+
+	/**
+	 * @test
+	 */
 	public function buildBackendUriKeepsQueryParametersIfAddQueryStringIsSet() {
 		t3lib_div::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 
