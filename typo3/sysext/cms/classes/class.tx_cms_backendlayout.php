@@ -34,7 +34,16 @@ class tx_cms_BackendLayout {
 	 * @return void
 	 */
 	public function colPosListItemProcFunc(&$params) {
-		$params['items'] = $this->addColPosListLayoutItems($params['row']['pid'], $params['items']);
+		if ($params['row']['pid'] > 0) {
+			$params['items'] = $this->addColPosListLayoutItems($params['row']['pid'], $params['items']);
+		} else {
+			// negative uid_pid values indicate that the element has been inserted after an existing element
+			// so there is no pid to get the backendLayout for and we have to get that first
+			$existingElement = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . -(intval($params['row']['pid'])));
+			if ($existingElement['pid'] > 0) {
+				$params['items'] = $this->addColPosListLayoutItems($existingElement['pid'], $params['items']);
+			}
+		}
 	}
 
 	/**
@@ -74,7 +83,11 @@ class tx_cms_BackendLayout {
 		}
 
 		foreach (t3lib_div::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
-			unset($tcaItems[$removeId]);
+			foreach ($tcaItems as $key => $item) {
+				if ($item[1] == $removeId) {
+					unset($tcaItems[$key]);
+				}
+			}
 		}
 
 		return $tcaItems;
@@ -96,15 +109,21 @@ class tx_cms_BackendLayout {
 				'pages',
 				'uid=' . intval($rootline[$i]['uid'])
 			);
-
-			if (intval($page['backend_layout_next_level']) > 0 && $page['uid'] != $id) {
-				$backendLayoutUid = intval($page['backend_layout_next_level']);
-				break;
-			} else {
-				if (intval($page['backend_layout']) > 0) {
-					$backendLayoutUid = intval($page['backend_layout']);
-					break;
+			$selectedBackendLayout = intval($page['backend_layout']);
+			$selectedBackendLayoutNextLevel = intval($page['backend_layout_next_level']);
+			if ($selectedBackendLayout != 0 && $page['uid'] == $id) {
+				if ($selectedBackendLayout > 0) {
+						// Backend layout for current page is set
+					$backendLayoutUid = $selectedBackendLayout;
 				}
+				break;
+			} else if ($selectedBackendLayoutNextLevel == -1 && $page['uid'] != $id) {
+					// Some previous page in our rootline sets layout_next to "None"
+				break;
+			} else if ($selectedBackendLayoutNextLevel > 0 && $page['uid'] != $id) {
+					// Some previous page in our rootline sets some backend_layout, use it
+				$backendLayoutUid = $selectedBackendLayoutNextLevel;
+				break;
 			}
 		}
 
