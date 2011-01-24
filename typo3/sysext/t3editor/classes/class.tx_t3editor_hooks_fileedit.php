@@ -86,6 +86,7 @@ class tx_t3editor_hooks_fileedit {
 				return;
 			}
 			$pObj->JScode .= $t3editor->getJavascriptCode($pObj);
+			$pObj->loadJavascriptLib(t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/fileedit.js');
 		}
 	}
 

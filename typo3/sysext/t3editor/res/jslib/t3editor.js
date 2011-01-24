@@ -95,6 +95,7 @@ T3editor.prototype = {
 		saveButtons: null,
 		updateTextareaEvent: null,
 		adjustWidth: -30,
+		disabled: false,
 
 		init: function() {
 			var textareaDim = $(this.textarea).getDimensions();
@@ -189,6 +190,7 @@ T3editor.prototype = {
 		// toggle between the textarea and t3editor
 		toggleView: function(disable) {
 			$(this.outerdiv).fire('t3editor:toggleView', {t3editor: this, disable: disable});
+			this.disabled = disable;
 			if (disable) {
 				this.textarea.value = this.mirror.editor.getCode();
 				this.outerdiv.hide();
