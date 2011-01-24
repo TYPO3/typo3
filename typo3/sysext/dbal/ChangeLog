@@ -1,5 +1,6 @@
 2011-01-24  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 1.2.0
 	* Fixed bug #17269: Search with LIKE is case sensitive on Oracle
 
 2010-12-27  Xavier Perseguers  <typo3@perseguers.ch>
@@ -333,7 +334,7 @@
 
 2009-11-11  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Added unit test for bug #11093: bigint (int8) values get converted to int4 by int-cast 
+	* Added unit test for bug #11093: bigint (int8) values get converted to int4 by int-cast
 
 2009-11-10  Xavier Perseguers  <typo3@perseguers.ch>
 
