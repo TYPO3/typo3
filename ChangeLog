@@ -15,6 +15,7 @@
 2011-01-24  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #17078: in fileadmin saving changes from t3editor doesn't work
+	* Fixed bug #17270: t3editor not enabled when editing .php/.inc files
 
 2011-01-24  Francois Suter  <francois.suter@typo3.org>
 
