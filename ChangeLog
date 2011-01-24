@@ -1,3 +1,7 @@
+2011-01-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17263: JS error in contexthelp
+
 2011-01-23  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed phpDoc comment of t3lib_utility_Mail::getSystemFromAddress() and some readability clean-up

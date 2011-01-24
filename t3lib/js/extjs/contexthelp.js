@@ -47,6 +47,9 @@ TYPO3.ContextHelp = function() {
 	 */
 	function showToolTipHelp() {
 		var link = tip.triggerElement;
+		if (!link) {
+			return false;
+		}
 		var table = link.getAttribute('data-table');
 		var field = link.getAttribute('data-field');
 		var key = table + '.' + field;
