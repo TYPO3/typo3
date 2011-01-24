@@ -29,7 +29,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.ux_t3lib_sqlparser.php 40828 2010-12-05 14:55:53Z xperseguers $
+ * $Id: class.ux_t3lib_sqlparser.php 42538 2011-01-24 15:04:19Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -608,10 +608,18 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											$fieldType = $GLOBALS['TYPO3_DB']->sql_field_metatype($tableName, $fieldName);
 											$isLob = ($fieldType === 'B' || $fieldType === 'XL');
 										}
-										if ($isLob) {
-											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+										if (strtoupper(substr($v['comparator'], -6)) === 'BINARY') {
+											if ($isLob) {
+												$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											} else {
+												$output .= '(instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											}
 										} else {
-											$output .= '(instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											if ($isLob) {
+												$output .= '(dbms_lob.instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . t3lib_div::strtolower($compareValue) . ',1,1) > 0)';
+											} else {
+												$output .= '(instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . t3lib_div::strtolower($compareValue) . ',1,1) > 0)';
+											}
 										}
 										break;
 									default:

@@ -1,5 +1,6 @@
 2011-01-24  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Raised DBAL to version 1.2.0
 	* Fixed bug #17267: Live search is unusable with Oracle
 
 2011-01-24  Oliver Hader  <oliver.hader@typo3.org>
