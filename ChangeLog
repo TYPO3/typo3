@@ -16,6 +16,7 @@
 
 	* Fixed bug #17078: in fileadmin saving changes from t3editor doesn't work
 	* Fixed bug #17270: t3editor not enabled when editing .php/.inc files
+	* Fixed bug #17268: t3editor dont save the "deactivated" state in fileadmin/fileedit
 
 2011-01-24  Francois Suter  <francois.suter@typo3.org>
 

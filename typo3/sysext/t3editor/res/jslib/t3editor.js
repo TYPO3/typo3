@@ -280,6 +280,13 @@ T3editor.toggleEditor = function(checkbox, index) {
 		&& !Prototype.Browser.WebKit) {
 
 		if (index == undefined) {
+			if (top.TYPO3.BackendUserSettings) {
+				top.TYPO3.BackendUserSettings.ExtDirect.set(
+					'disableT3Editor',
+					checkbox.checked,
+					function(response) {}
+				);
+			}
 			$$('textarea.t3editor').each(
 				function(textarea, i) {
 					T3editor.toggleEditor(checkbox, i);

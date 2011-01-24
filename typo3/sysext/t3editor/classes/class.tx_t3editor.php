@@ -132,28 +132,8 @@ class tx_t3editor implements t3lib_Singleton {
 	 * @return	void
 	 */
 	public function __construct() {
-		$this->checkEditorIsDisabled();
-
 			// disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
 		$GLOBALS["BE_USER"]->uc['disablePMKTextarea'] = 1;
-	}
-
-	/**
-	 * check if the t3editor should be disabled (by a POST value)
-	 */
-	protected function checkEditorIsDisabled() {
-		$editorIsDisabled = t3lib_div::_POST('t3editor_disableEditor');
-
-		if (!empty($editorIsDisabled)) {
-			$editorIsDisabled = ($editorIsDisabled == 'true');
-		} else {
-			$editorIsDisabled = $GLOBALS['BE_USER']->uc['disableT3Editor'];
-		}
-
-		if ($GLOBALS['BE_USER']->uc['disableT3Editor'] != $editorIsDisabled) {
-			$GLOBALS['BE_USER']->uc['disableT3Editor'] = $editorIsDisabled;
-			$GLOBALS['BE_USER']->writeUC();
-		}
 	}
 
 	/**
