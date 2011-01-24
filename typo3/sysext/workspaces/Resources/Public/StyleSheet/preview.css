@@ -122,7 +122,7 @@ ul.x-tab-strip-top {
 	width: 7px;
 }
 
-.x-slider-horz .x-slider-thumb-over {
+.x-slider-horz .x-slider-thumb-over, .x-slider-horz .x-slider-thumb-drag {
 	background-position: -7px -21px;
 }
 
