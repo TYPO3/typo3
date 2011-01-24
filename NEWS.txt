@@ -164,7 +164,7 @@ Development
 	  t3lib_extMgm::addLLrefForTCAdescr('somekey', 'EXT:myext/locallang_csh.xml');
 
 	  For more details, in particular how the key is defined, see:
-	  http://wiki.typo3.org/Pending_Documentation#CSH_for_FlexForms
+	  http://buzz.typo3.org/teams/core/article/getting-ready-for-45-changes-in-csh-for-flexforms/
 
 
 TypoScript

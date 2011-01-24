@@ -1,3 +1,7 @@
+2011-01-24  Francois Suter  <francois.suter@typo3.org>
+
+	* Follow-up to #16848: Added link to buzz.typo3.org article about changes to CSH in FlexForms to NEWS.txt
+
 2011-01-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17263: JS error in contexthelp
