@@ -38,7 +38,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 *
 	 * @var int
 	 */
-	protected $nodeLimit = 500;
+	protected $nodeLimit = 0;
 
 	/**
 	 * Current amount of nodes
@@ -56,8 +56,15 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 	/**
 	 * Constructor
+	 *
+	 * @param int $nodeLimit (optional)
 	 */
-	public function __construct() {
+	public function __construct($nodeLimit = NULL) {
+		if ($nodeLimit === NULL) {
+			$nodeLimit = $GLOBALS['BE']['pageTree']['preloadLimit'];
+		}
+		$this->nodeLimit = abs(intval($nodeLimit));
+
 		$this->hiddenRecords = t3lib_div::trimExplode(
 			',',
 			$GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')

@@ -215,6 +215,9 @@ $TYPO3_CONF_VARS = array(
 		'maxFileSize' => '10240',				// Integer: If set this is the max filesize in KB's for file operations in the backend. Can be overridden through $TCA per table field separately.
 		'forceCharset' => '-1',					// String: Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value. NOTICE: This option is deprecated since TYPO3 4.5, and will be removed in 4.7. Please use proper tools to set your installation to native UTF-8.
 		'installToolPassword' => '',			// String: This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
+		'pageTree' => array(
+			'preloadLimit' => 50,				// Integer: Count of pages that will be preloaded in pagetree. Big amount makes collapsing new branches faster but requires more SQL queries.
+		),
 		'defaultUserTSconfig' => 'options.enableBookmarks=1
 			options.enableShowPalettes=1
 			options.file_list.enableDisplayBigControlPanel=selectable
