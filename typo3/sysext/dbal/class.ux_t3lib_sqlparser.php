@@ -609,9 +609,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											$isLob = ($fieldType === 'B' || $fieldType === 'XL');
 										}
 										if ($isLob) {
-											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											$output .= '(dbms_lob.instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . t3lib_div::strtolower($compareValue) . ',1,1) > 0)';
 										} else {
-											$output .= '(instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											$output .= '(instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . t3lib_div::strtolower($compareValue) . ',1,1) > 0)';
 										}
 										break;
 									default:

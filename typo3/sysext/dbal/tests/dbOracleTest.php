@@ -318,7 +318,7 @@ class dbOracleTest extends BaseTestCase {
 						. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
+		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -448,7 +448,7 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
+		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -666,7 +666,7 @@ class dbOracleTest extends BaseTestCase {
 			'tt_content',
 			'tt_content.bodytext LIKE \'foo%\''
 		));
-		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("tt_content"."bodytext", \'foo\',1,1) > 0)';
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr(LOWER("tt_content"."bodytext"), \'foo\',1,1) > 0)';
 		$this->assertEquals($expected, $select);
 
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
@@ -674,7 +674,7 @@ class dbOracleTest extends BaseTestCase {
 			'fe_users',
 			'fe_users.usergroup LIKE \'2\''
 		));
-		$expected = 'SELECT * FROM "fe_users" WHERE (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
+		$expected = 'SELECT * FROM "fe_users" WHERE (instr(LOWER("fe_users"."usergroup"), \'2\',1,1) > 0)';
 		$this->assertEquals($expected, $select);
 	}
 
@@ -688,7 +688,7 @@ class dbOracleTest extends BaseTestCase {
 			'tt_content',
 			'tt_content.bodytext NOT LIKE \'foo%\''
 		));
-		$expected = 'SELECT * FROM "tt_content" WHERE NOT (dbms_lob.instr("tt_content"."bodytext", \'foo\',1,1) > 0)';
+		$expected = 'SELECT * FROM "tt_content" WHERE NOT (dbms_lob.instr(LOWER("tt_content"."bodytext"), \'foo\',1,1) > 0)';
 		$this->assertEquals($expected, $select);
 
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
@@ -696,7 +696,7 @@ class dbOracleTest extends BaseTestCase {
 			'fe_users',
 			'fe_users.usergroup NOT LIKE \'2\''
 		));
-		$expected = 'SELECT * FROM "fe_users" WHERE NOT (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
+		$expected = 'SELECT * FROM "fe_users" WHERE NOT (instr(LOWER("fe_users"."usergroup"), \'2\',1,1) > 0)';
 		$this->assertEquals($expected, $select);
 	}
 
@@ -722,13 +722,13 @@ class dbOracleTest extends BaseTestCase {
 		$expected .= ' AND "tt_content"."hidden" = 0 AND ("tt_content"."starttime" <= 1264487640)';
 		$expected .= ' AND ("tt_content"."endtime" = 0 OR "tt_content"."endtime" > 1264487640)';
 		$expected .= ' AND ("tt_content"."fe_group" = \'\' OR "tt_content"."fe_group" IS NULL OR "tt_content"."fe_group" = \'0\'';
-		$expected .= ' OR ((instr("tt_content"."fe_group", \',0,\',1,1) > 0)';
-		$expected .= ' OR (instr("tt_content"."fe_group", \'0,\',1,1) > 0)';
-		$expected .= ' OR (instr("tt_content"."fe_group", \',0\',1,1) > 0)';
+		$expected .= ' OR ((instr(LOWER("tt_content"."fe_group"), \',0,\',1,1) > 0)';
+		$expected .= ' OR (instr(LOWER("tt_content"."fe_group"), \'0,\',1,1) > 0)';
+		$expected .= ' OR (instr(LOWER("tt_content"."fe_group"), \',0\',1,1) > 0)';
 		$expected .= ' OR "tt_content"."fe_group" = \'0\')';
-		$expected .= ' OR ((instr("tt_content"."fe_group", \',-1,\',1,1) > 0)';
-		$expected .= ' OR (instr("tt_content"."fe_group", \'-1,\',1,1) > 0)';
-		$expected .= ' OR (instr("tt_content"."fe_group", \',-1\',1,1) > 0)';
+		$expected .= ' OR ((instr(LOWER("tt_content"."fe_group"), \',-1,\',1,1) > 0)';
+		$expected .= ' OR (instr(LOWER("tt_content"."fe_group"), \'-1,\',1,1) > 0)';
+		$expected .= ' OR (instr(LOWER("tt_content"."fe_group"), \',-1\',1,1) > 0)';
 		$expected .= ' OR "tt_content"."fe_group" = \'-1\'))';
 		$this->assertEquals($expected, $select);
 	}
@@ -1137,7 +1137,7 @@ class dbOracleTest extends BaseTestCase {
 			'tt_content',
 			'bodytext LIKE BINARY \'test\''
 		));
-		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("bodytext", \'test\',1,1) > 0)';
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr(LOWER("bodytext"), \'test\',1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 }
