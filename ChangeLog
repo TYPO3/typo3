@@ -1,5 +1,6 @@
 2011-01-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #17222: in case of render outside the BE set default value
 	* Fixed bug #17222: fitToParent calculates wrong height
 
 2011-01-24  Xavier Perseguers  <typo3@perseguers.ch>
