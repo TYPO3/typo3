@@ -333,10 +333,31 @@ class t3lib_search_livesearch {
 	 * @param array $fieldsToSearchWithin User right based visible fields where we can search within.
 	 * @return string
 	 */
-	protected function makeQuerySearchByTable($tableName, $fieldsToSearchWithin) {
+	protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin) {
 			// free text search
 		$queryLikeStatement = ' LIKE \'%' . $this->getQueryString($tableName) . '%\'';
-		$queryPart = ' AND (' . implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
+		$integerFieldsToSearchWithin = array();
+		$queryEqualStatement = '';
+
+		if (is_numeric($this->getQueryString($tableName))) {
+			$queryEqualStatement = ' = \'' . $this->getQueryString($tableName) . '\'';
+		}
+		$uidPos = array_search('uid', $fieldsToSearchWithin);
+		if ($uidPos) {
+			$integerFieldsToSearchWithin[] = 'uid';
+			unset($fieldsToSearchWithin[$uidPos]);
+		}
+		$pidPos = array_search('pid', $fieldsToSearchWithin);
+		if ($pidPos) {
+			$integerFieldsToSearchWithin[] = 'pid';
+			unset($fieldsToSearchWithin[$pidPos]);
+		}
+
+		$queryPart = ' AND (';
+		if (count($integerFieldsToSearchWithin) && $queryEqualStatement !== '') {
+			$queryPart .= implode($queryEqualStatement . ' OR ', $integerFieldsToSearchWithin) . $queryEqualStatement . ' OR ';
+		}
+		$queryPart .= implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
 		$queryPart .= t3lib_BEfunc::deleteClause($tableName);
 		$queryPart .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
 
