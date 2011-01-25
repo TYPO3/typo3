@@ -1,3 +1,7 @@
+2011-01-25  Jeff Segars  <jeff@webempoweredchurch>
+
+	* Fixed bug #17216: Admin panel becomes too wide
+
 2011-01-25  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Synchronized external repositories of version (tag 4.5.0rc2) and workspaces (tag 4.5.0rc2)

@@ -148,12 +148,10 @@
 #TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-itemRow td.typo3-adminPanel-section-content-title {
 	padding-right: 9px;
 	padding-top: 5px;
-	width: 1%;
 }
 
 #TSFE_ADMIN_PANEL_FORM td.typo3-adminPanel-section-content {
 	padding-right: 11px;
-	width: 99%;
 }
 
 #TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog {
@@ -181,7 +179,6 @@
 	background-color: #f0f0f0;
 	text-align: left;
 	vertical-align: top;
-	white-space: nowrap;
 }
 
 #TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog .typo3-adminPanel-tsLogTime {
