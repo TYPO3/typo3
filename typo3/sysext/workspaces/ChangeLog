@@ -1,3 +1,7 @@
+2011-01-25  Sonja Scholz <ss@cabag.ch>
+
+	* Fixed bug #10636: workspace module not usable in IE6 (Thanks to Markus Antecki)
+
 2011-01-25  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Raised version to 4.5.0rc2

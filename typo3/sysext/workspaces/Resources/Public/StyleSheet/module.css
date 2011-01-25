@@ -73,7 +73,7 @@ div.x-grid3-row img.x-action-col-icon {
 	display:none;
 }
 
-div.x-grid3-row:hover img.x-action-col-icon {
+div.x-grid3-row-over img.x-action-col-icon {
 	display:inline-block;
 }
 
