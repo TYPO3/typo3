@@ -469,7 +469,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 		if ($actionName !== NULL
 			&& $this->useCacheHash === TRUE
-			&& !Tx_Extbase_Utility_Extension::isActionCacheable($extensionName, $controllerArguments['controller'], $pluginName, $actionName)) {
+			&& !Tx_Extbase_Utility_Extension::isActionCacheable($extensionName, $pluginName, $controllerArguments['controller'], $actionName)) {
 				$this->setUseCacheHash(FALSE);
 		}
 
