@@ -169,7 +169,22 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 			$tokens = array();
 		}
 
-		$this->tokens = $tokens;
+		return $tokens;
+	}
+
+	/**
+	 * It might be that two (or more) scripts are executed at the same time,
+	 * which would lead to a race condition, where both (all) scripts retrieve
+	 * the same tokens from the session, so the script that is executed
+	 * last will overwrite the tokens generated in the first scripts.
+	 * So before writing all tokens back to the session we need to get the
+	 * current tokens from the session again.
+	 *
+	 */
+	protected function updateTokens() {
+		$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
+		$tokens = $this->retrieveTokens();
+		$this->tokens = array_merge($this->tokens, $tokens);
 	}
 
 	/**
@@ -179,7 +194,47 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * @return void
 	 */
 	public function persistTokens() {
+		$lockObject = $this->acquireLock();
+
+		$this->updateTokens();
 		$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
+
+		$this->releaseLock($lockObject);
+	}
+
+	/**
+	 * Tries to acquire a lock to not allow a race condition.
+	 *
+	 * @return t3lib_lock|FALSE The lock object or FALSE
+	 */
+	protected function acquireLock() {
+		$identifier = 'persistTokens' . $this->backendUser->id;
+		try {
+			$lockObject = t3lib_div::makeInstance('t3lib_lock', $identifier, 'simple');
+			$lockObject->setEnableLogging(FALSE);
+			$success = $lockObject->acquire();
+		} catch (Exception $e) {
+			t3lib_div::sysLog('Locking: Failed to acquire lock: '.$e->getMessage(), 't3lib_formprotection_BackendFormProtection', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			$success = FALSE;	// If locking fails, return with false and continue without locking
+		}
+
+		return $success ? $lockObject : FALSE;
+	}
+
+	/**
+	 * Releases the lock if it was acquired before.
+	 *
+	 * @return boolean
+	 */
+	protected function releaseLock(&$lockObject) {
+		$success = FALSE;
+			// If lock object is set and was acquired, release it:
+		if (is_object($lockObject) && $lockObject instanceof t3lib_lock && $lockObject->getLockStatus()) {
+			$success = $lockObject->release();
+			$lockObject = NULL;
+		}
+
+		return $success;
 	}
 }
 

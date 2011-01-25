@@ -60,7 +60,7 @@ abstract class t3lib_formprotection_Abstract {
 	 * checking.
 	 */
 	public function __construct() {
-		$this->retrieveTokens();
+		$this->tokens = $this->retrieveTokens();
 	}
 
 	/**

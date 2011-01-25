@@ -54,6 +54,8 @@ class t3lib_lock {
 
 	protected $loops = 150; // Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
 	protected $step = 200; // Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
+	protected $syslogFacility = 'cms';
+	protected $isLoggingEnabled = TRUE;
 
 
 	/**
@@ -269,6 +271,24 @@ class t3lib_lock {
 	}
 
 	/**
+	 * Sets the facility (extension name) for the syslog entry.
+	 *
+	 * @param string $syslogFacility
+	 */
+	public function setSyslogFacility($syslogFacility) {
+		$this->syslogFacility = $syslogFacility;
+	}
+
+	/**
+	 * Enable/ disable logging
+	 *
+	 * @param boolean $isLoggingEnabled
+	 */
+	public function setEnableLogging($isLoggingEnabled) {
+		$this->isLoggingEnabled = $isLoggingEnabled;
+	}
+
+	/**
 	 * Adds a common log entry for this locking API using t3lib_div::sysLog().
 	 * Example: 25-02-08 17:58 - cms: Locking [simple::0aeafd2a67a6bb8b9543fb9ea25ecbe2]: Acquired
 	 *
@@ -277,7 +297,9 @@ class t3lib_lock {
 	 * @return	void
 	 */
 	public function sysLog($message, $severity = 0) {
-		t3lib_div::sysLog('Locking [' . $this->method . '::' . $this->id . ']: ' . trim($message), 'cms', $severity);
+		if ($this->isLoggingEnabled) {
+			t3lib_div::sysLog('Locking [' . $this->method . '::' . $this->id . ']: ' . trim($message), $this->syslogFacility, $severity);
+		}
 	}
 }
 
