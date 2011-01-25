@@ -55,6 +55,7 @@ p.t3-help-short.tipIsLinked {
 }
 
 .t3-help-teaser,
+.t3-help-teaser label,
 .t3-help-teaser-icon {
 	cursor: help;
 }
