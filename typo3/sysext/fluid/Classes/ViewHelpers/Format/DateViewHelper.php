@@ -34,7 +34,7 @@
  * </output>
  *
  * <code title="Custom date format">
- * <f:format.date format="H:i">{dateObject}</f:format.date>
+ * <f:format.date format="%H:%M">{dateObject}</f:format.date>
  * </code>
  * <output>
  * 01:23
@@ -42,7 +42,7 @@
  * </output>
  *
  * <code title="strtotime string">
- * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
+ * <f:format.date format="%d.%m.%Y - %H:%M:%S">+1 week 2 days 4 hours 2 seconds</f:format.date>
  * </code>
  * <output>
  * 13.12.1980 - 21:03:42
@@ -50,7 +50,7 @@
  * </output>
  *
  * <code title="output date from unix timestamp">
- * <f:format.date format="d.m.Y - H:i:s">@{someTimestamp}</f:format.date>
+ * <f:format.date format="%d.%m.%Y - %H:%M:%S">@{someTimestamp}</f:format.date>
  * </code>
  * <output>
  * 13.12.1980 - 21:03:42
@@ -82,13 +82,14 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * Render the supplied DateTime object as a formatted date.
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
-	 * @param string $format Format String which is taken to format the Date/Time
+	 * @param string $format Format String which is taken to format the date/time. Note: This expects a format string that is accepted by phps strftime() function
 	 * @return string Formatted date
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
+	 * @see http://www.php.net/strftime
 	 */
-	public function render($date = NULL, $format = 'Y-m-d') {
+	public function render($date = NULL, $format = '%Y-%m-%d') {
 		if ($date === NULL) {
 			$date = $this->renderChildren();
 			if ($date === NULL) {
@@ -102,7 +103,12 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelpe
 				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by DateTime constructor.', 1241722579);
 			}
 		}
-		return $date->format($format);
+		// fallback to dateTime format for compatibility reasons. To be removed in 1.5
+		if (strpos($format, '%') === FALSE) {
+			t3lib_div::deprecationLog('ViewHelper format.date: The format "' . $format . '" is in dateTime format. This is deprecated since Fluid version 1.3. Please use strftime() format instead"');
+			return $date->format($format);
+		}
+		return strftime($format, $date->format('U'));
 	}
 }
 ?>
