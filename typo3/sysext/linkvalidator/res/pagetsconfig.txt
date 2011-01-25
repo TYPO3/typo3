@@ -6,7 +6,7 @@ mod.linkvalidator {
 	}
 	linktypes = db,file,external
 	checkhidden = 0
-	showUpdateButton = 1
+	showCheckLinkTab = 1
 	mail {
 		fromname = Linkvalidator
 		fromemail = Linkvalidator@example.com

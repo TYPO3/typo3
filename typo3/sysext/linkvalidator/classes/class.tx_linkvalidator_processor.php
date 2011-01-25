@@ -117,8 +117,13 @@ class tx_linkvalidator_Processor {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')');
-
+		$checlLinkTypeCondition = '';
+		if(count($checkOptions) > 0) {
+			$checkKeys = array_keys($checkOptions);
+			$checlLinkTypeCondition = ' and link_type in (\'' . implode('\',\'',$checkKeys) . '\')';
+		}
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', '(record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) ' . $checlLinkTypeCondition);
+		
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
 			if($table == 'pages'){

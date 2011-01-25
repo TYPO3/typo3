@@ -9,7 +9,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="title">Check Links</label>
 			<label index="menu.introduction">Introduction</label>
 			<label index="menu.checkLinks">Check Links for validity</label>
 			<label index="menu.overview">Overview of links on website</label>
@@ -22,13 +21,12 @@
 			<label index="overview.branch.links">External links:</label>
 			<label index="overview.attention.header">Attention:</label>
 			<label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
-			<label index="first.steps">Choose the level of pages to check and press "Refresh display" to show the results.</label>
-			<label index="first.steps.info.update.button">You can update the stored results by pressing "Check links". Note that this process can take some time.</label>
-			<label index="first.steps.info.scheduler">Alternatively you can also configure the %sTYPO3 Scheduler%s to update the stored results regularly.</label>
-			<label index="first.steps.info.scheduler.admin">Alternatively your administrator can also configure the TYPO3 Scheduler to update the stored results regularly.</label>
 			<label index="label_refresh">Refresh display</label>
 			<label index="label_update">Check links</label>
-			<label index="overviews.statistics.header">Statistics of broken Links</label>
+			<label index="report.statistics.header">Show these types of broken links</label>
+			<label index="checklinks.statistics.header">Check these types of broken links</label>
+			<label index="report.func.title">Show this level</label>
+			<label index="checklinks.func.title">Check this level</label>
 			<label index="overviews.nbtotal">Broken links total:</label>
 			<label index="hooks.db">Internal Links:</label>
 			<label index="hooks.file">File Links:</label>
@@ -65,6 +63,8 @@
 			<label index="list.report.couldnotresolvehost">Could not resolve host. The given remote host was not resolved.</label>
 			<label index="list.report.errornetworkdata">Failure with receiving network data.</label>
 			<label index="list.msg.ok">Ok</label>
+			<label index="Report">Report</label>
+			<label index="CheckLink">Check Links</label>
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links.title">No broken links to show!</label>
 			<label index="list.no.broken.links">There are no broken links to be displayed.</label>

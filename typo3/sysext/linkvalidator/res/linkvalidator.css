@@ -1,19 +1,37 @@
 @charset "UTF-8";
 
-#linkvalidator_firstSteps {
-	margin-bottom: 10px;
-}
-	
 .linkvalidator_funcmenu {
 	margin-bottom: 25px;
+	margin-left: 25px;
+	margin-top: 0;
+	float: left;
 }
-
+.linkvalidator_checkoptions div {
+	float: left;
+}
+#linkvalidator-main .linkvalidator_funcmenu h4 {
+	clear: both;
+	padding: 0;
+}
+.linkvalidator_checkoptions h4 {
+	clear: both;
+}
+.linkvalidator_button {
+	clear: both;
+}
 .linkvalidator_funcmenu input {
 	margin-left: 5px;
 }
 
 .linkvalidator_checkoptions {
 	margin-bottom: 10px;
+	float:left;
+	display: block;
+	margin-top: 0px;
+	width: 225px;
+}
+#ext-gen19{
+overflow: auto;
 }
 
 .linkvalidator_checkoptions .typo3-message {
@@ -69,4 +87,11 @@
 #linkvalidator_statsTable td:first-child,
 #linkvalidator_brokenLinksTable td:first-child {
 	border-left: none;
+}
+
+#linkvalidator-main h4 {
+	padding-top: 10px;
+}
+#linkvalidator-main .linkvalidator_checkoptions h4 {
+	padding-top: 0px;
 }
