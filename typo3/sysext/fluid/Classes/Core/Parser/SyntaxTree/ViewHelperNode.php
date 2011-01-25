@@ -290,9 +290,15 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	protected function evaluateComparator($comparator, $leftSide, $rightSide) {
 		switch ($comparator) {
 			case '==':
+				if (is_object($leftSide) && is_object($rightSide)) {
+					return ($leftSide === $rightSide);
+				}
 				return ($leftSide == $rightSide);
 				break;
 			case '!=':
+				if (is_object($leftSide) && is_object($rightSide)) {
+					return ($leftSide !== $rightSide);
+				}
 				return ($leftSide != $rightSide);
 				break;
 			case '%':
