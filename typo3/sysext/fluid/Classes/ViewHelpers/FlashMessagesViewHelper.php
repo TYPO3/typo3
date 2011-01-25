@@ -35,13 +35,28 @@
  * An ul-list of flash messages.
  * </output>
  *
- * <code title="Output with css class">
+ * <code title="Output with custom css class">
  * <f:flashMessages class="specialClass" />
  * </code>
  * <output>
  * <ul class="specialClass">
  *  ...
  * </ul>
+ * </output>
+ *
+ * <code title="TYPO3 core style">
+ * <f:flashMessages renderMode="div" />
+ * </code>
+ * <output>
+ * <div class="typo3-messages">
+ *   <div class="typo3-message message-ok">
+ *     <div class="message-header">Some Message Header</div>
+ *     <div class="message-body">Some message body</div>
+ *   </div>
+ *   <div class="typo3-message message-notice">
+ *     <div class="message-body">Some notice message without header</div>
+ *   </div>
+ * </div>
  * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
