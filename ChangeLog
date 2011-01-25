@@ -1,3 +1,7 @@
+2011-01-25  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17280: The FlashUploader does not disappear anymore
+
 2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed issue #17284: Formprotection persistToken method is called too often, causing unnecessary DB-load (Thanks to Helmut Hummel)

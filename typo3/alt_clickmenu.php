@@ -965,7 +965,7 @@ class clickMenu {
 			return $this->linkItem(
 				$this->label($type),
 				$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
-				$editOnClick . 'top.nav.refresh();return hideCM();'
+				$editOnClick . 'return hideCM();'
 				);
 		} else {
 			return $this->FILE_launch($path, $script, $type, $image, true);
