@@ -949,7 +949,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if (TYPO3_MODE === 'BE') {
 			$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
 			$token = $formprotection->generateToken('extDirect');
-			$formprotection->persistTokens();
 		}
 
 			// Note: we need to iterate thru the object, because the addProvider method

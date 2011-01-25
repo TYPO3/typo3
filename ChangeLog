@@ -1,3 +1,7 @@
+2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed issue #17284: Formprotection persistToken method is called too often, causing unnecessary DB-load (Thanks to Helmut Hummel)
+
 2011-01-25  Jeff Segars  <jeff@webempoweredchurch>
 
 	* Fixed bug #17216: Admin panel becomes too wide

@@ -430,7 +430,6 @@ class template {
 				t3lib_BEfunc::getUrlToken('tceAction') .
 				'&prErr=1&uPT=1';
 
-		t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 		return $commandUrl;
 	}
 
@@ -927,7 +926,7 @@ $str.=$this->docBodyTagBegin().
 
 <!-- Wrapping DIV-section for whole page END -->
 </div>':'') . $this->endOfPageJsBlock ;
-
+			t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 		}
 
 
@@ -1570,7 +1569,6 @@ $str.=$this->docBodyTagBegin().
 		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 		if (count($opt)>1)	{
-			t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 			return $af_content;
 		}
 	}

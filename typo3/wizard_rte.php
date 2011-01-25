@@ -339,6 +339,5 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_rte');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

@@ -694,6 +694,5 @@ $SOBE = t3lib_div::makeInstance('SC_mod_tools_dbint_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

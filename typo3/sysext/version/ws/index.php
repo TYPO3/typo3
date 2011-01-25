@@ -749,10 +749,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// $BE_USER->isInWebMount() to check mount points.
 		$mountpointList = $GLOBALS['BE_USER']->groupData['webmounts'];
 			// If there are DB mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' webmounts) 
+			// then only show the ones that are allowed there (and that are in the users' webmounts)
 		if (trim($wksp['db_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' db_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['db_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
@@ -803,10 +803,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// $BE_USER->isInWebMount() to check mount points.
 		$mountpointList = implode(',', $GLOBALS['BE_USER']->groupData['filemounts']);
 			// If there are file mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' file mounts) 
+			// then only show the ones that are allowed there (and that are in the users' file mounts)
 		if (trim($wksp['file_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' file_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['file_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
@@ -1090,7 +1090,5 @@ $SOBE->execute();
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
-t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
 
 ?>

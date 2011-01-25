@@ -46,7 +46,6 @@ class AjaxLogin {
 		if ($GLOBALS['BE_USER']->user['uid']) {
 			$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
 			$token = $formprotection->generateToken('extDirect');
-			$formprotection->persistTokens();
 
 			$json = array(
 				'success' => TRUE,

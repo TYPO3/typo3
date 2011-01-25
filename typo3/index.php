@@ -399,7 +399,6 @@ class SC_index {
 			} else {
 				$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
 				$token = $formprotection->generateToken('extDirect');
-				$formprotection->persistTokens();
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
 					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {
 						if (parent.opener.TYPO3.loginRefresh) {

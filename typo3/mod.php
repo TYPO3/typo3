@@ -66,6 +66,4 @@ if ($isDispatched === FALSE) {
 	die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module');
 }
 
-t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
-
 ?>
