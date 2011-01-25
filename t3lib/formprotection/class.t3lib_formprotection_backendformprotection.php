@@ -127,7 +127,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * Only allow construction if we have a backend session
 	 */
 	public function __construct() {
-		if (!isset($GLOBALS['BE_USER'])) {
+		if (!$this->isAuthorizedBackendSession()) {
 			throw new t3lib_error_Exception(
 				'A back-end form protection may only be instantiated if there' .
 				' is an active back-end session.',
@@ -182,11 +182,9 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 *
 	 */
 	protected function updateTokens() {
-		if ($this->backendUser->user) {
-			$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
-			$tokens = $this->retrieveTokens();
-			$this->tokens = array_merge($this->tokens, $tokens);
-		}
+		$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
+		$tokens = $this->retrieveTokens();
+		$this->tokens = array_merge($this->tokens, $tokens);
 	}
 
 	/**
@@ -212,6 +210,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	protected function acquireLock() {
 		$identifier = 'persistTokens' . $this->backendUser->id;
 		try {
+			/** @var t3lib_lock $lockObject */
 			$lockObject = t3lib_div::makeInstance('t3lib_lock', $identifier, 'simple');
 			$lockObject->setEnableLogging(FALSE);
 			$success = $lockObject->acquire();
@@ -237,6 +236,15 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Checks if a user is logged in and the session is active.
+	 *
+	 * @return boolean
+	 */
+	protected function isAuthorizedBackendSession() {
+		return (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof t3lib_beUserAuth && isset($GLOBALS['BE_USER']->user['uid']));
 	}
 }
 

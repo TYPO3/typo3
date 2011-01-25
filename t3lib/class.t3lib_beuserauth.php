@@ -402,9 +402,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 */
 	public function logoff() {
 		if (isset($GLOBALS['BE_USER'])) {
-			t3lib_formProtection_Factory::get(
-				't3lib_formprotection_BackendFormProtection'
-			)->clean();
+			t3lib_formProtection_Factory::get()->clean();
 		}
 		parent::logoff();
 	}

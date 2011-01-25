@@ -397,7 +397,7 @@ class SC_index {
 			if (!$this->loginRefresh)	{
 				t3lib_utility_Http::redirect($this->redirectToURL);
 			} else {
-				$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+				$formprotection = t3lib_formprotection_Factory::get();
 				$token = $formprotection->generateToken('extDirect');
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
 					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {

@@ -947,7 +947,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	public function addExtDirectCode() {
 		$token = '';
 		if (TYPO3_MODE === 'BE') {
-			$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+			$formprotection = t3lib_formprotection_Factory::get();
 			$token = $formprotection->generateToken('extDirect');
 		}
 

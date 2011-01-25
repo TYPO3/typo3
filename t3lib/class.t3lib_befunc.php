@@ -3332,7 +3332,7 @@ final class t3lib_BEfunc {
 	 * @return string a URL GET variable including ampersand
 	 */
 	public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken') {
-		$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+		$formprotection = t3lib_formprotection_Factory::get();
 		return '&' . $tokenName . '=' . $formprotection->generateToken($formName);
 	}
 

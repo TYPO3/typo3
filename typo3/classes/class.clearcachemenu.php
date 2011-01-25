@@ -115,7 +115,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 			}
 		}
 
-		t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
+		t3lib_formprotection_Factory::get()->persistTokens();
 	}
 
 	/**

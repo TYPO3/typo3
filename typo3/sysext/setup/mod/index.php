@@ -139,9 +139,7 @@ class SC_mod_user_setup_index {
 	 * Instanciate the form protection before a simulated user is initialized.
 	 */
 	public function __construct() {
-		$this->formProtection = t3lib_formProtection_Factory::get(
-			't3lib_formprotection_BackendFormProtection'
-		);
+		$this->formProtection = t3lib_formProtection_Factory::get();
 	}
 
 	/**

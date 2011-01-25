@@ -126,6 +126,7 @@ $t3libClasses = array(
 	't3lib_formprotection_abstract' => PATH_t3lib . 'formprotection/class.t3lib_formprotection_abstract.php',
 	't3lib_formprotection_backendformprotection' => PATH_t3lib . 'formprotection/class.t3lib_formprotection_backendformprotection.php',
 	't3lib_formprotection_installtoolformprotection' => PATH_t3lib . 'formprotection/class.t3lib_formprotection_installtoolformprotection.php',
+	't3lib_formprotection_disabledformprotection' => PATH_t3lib . 'formprotection/class.t3lib_formprotection_disabledformprotection.php',
 	't3lib_formprotection_invalidtokenexception' => PATH_t3lib . 'formprotection/class.t3lib_formprotection_invalidtokenexception.php',
 	't3lib_localrecordlistgettablehook' => PATH_t3lib . 'interfaces/interface.t3lib_localrecordlistgettablehook.php',
 	't3lib_mail_maileradapter' => PATH_t3lib . 'interfaces/interface.t3lib_mail_maileradapter.php',

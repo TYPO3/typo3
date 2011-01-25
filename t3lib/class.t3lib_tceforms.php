@@ -4982,7 +4982,7 @@ class t3lib_TCEforms {
 	 * @return string a complete input field
 	 */
 	public static function getHiddenTokenField($formName = 'securityToken', $tokenName = 'formToken') {
-		$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+		$formprotection = t3lib_formprotection_Factory::get();
 		return '<input type="hidden" name="' .$tokenName . '" value="' . $formprotection->generateToken($formName) . '" />';
 	}
 

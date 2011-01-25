@@ -1491,7 +1491,7 @@ $SOBE = t3lib_div::makeInstance('SC_alt_doc');
 // Preprocessing, storing data if submitted to
 $SOBE->preInit();
 
-$formprotection = t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection');
+$formprotection = t3lib_formprotection_Factory::get();
 
 if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or the doSave variable is sent)
 	if ($formprotection->validateToken(t3lib_div::_GP('formToken'), 'editRecord')) {
