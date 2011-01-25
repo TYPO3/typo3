@@ -175,9 +175,20 @@ class SC_view_help {
 		$this->field = array_shift($identifierParts);
 			// There may be extra parts for FlexForms
 		if (count($identifierParts) > 0) {
-			$flexFormField = array_pop($identifierParts);
-			$extraIdentifierInformation = $identifierParts;
-				// Assemble a different main key and switch field to use flexform field name
+				// There's at least one extra part
+			$extraIdentifierInformation = array();
+			$extraIdentifierInformation[] = array_shift($identifierParts);
+				// Load the TCA details of the table
+			t3lib_div::loadTCA($this->table);
+				// If the ds_pointerField contains a comma, it means the choice of FlexForm DS
+				// is determined by 2 parameters. In this case we have an extra identifier part
+			if (strpos($TCA[$this->table]['columns'][$this->field]['config']['ds_pointerField'], ',') !== FALSE) {
+				$extraIdentifierInformation[] = array_shift($identifierParts);
+			}
+				// The remaining parts make up the FlexForm field name itself
+				// (reassembled with dots)
+			$flexFormField = implode('.', $identifierParts);
+				// Assemble a different main key and switch field to use FlexForm field name
 			$this->mainKey .= '.' . $this->field;
 			foreach ($extraIdentifierInformation as $extraKey) {
 				$this->mainKey .= '.' . $extraKey;

@@ -1,3 +1,7 @@
+2011-01-25  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #17265: CSH in Flexforms broken when label indices contain more than one dot
+
 2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Re-added feature #17313: Since using new flags from sprites (#15668), the sys_language hasn't a flag-selector by icon (Thanks to Jo Hasenau)

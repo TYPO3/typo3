@@ -403,30 +403,47 @@ class language {
 					// Traverse all keys
 				if (is_array($LOCAL_LANG['default'])) {
 					foreach ($LOCAL_LANG['default'] as $lkey => $lVal) {
+						$type = '';
+						$fieldName = '';
 
-							// exploding by '.':
-							// 0 => fieldname,
-							// 1 => type from (alttitle, description, details, syntax, image_descr,image,seeAlso),
-							// 2 => special instruction, see switch construct
-						$kParts = explode('.', $lkey);
+							// Exploding by '.':
+							// 0-n => fieldname,
+							// n+1 => type from (alttitle, description, details, syntax, image_descr,image,seeAlso),
+							// n+2 => special instruction, if any
+						$keyParts = explode('.', $lkey);
+						$keyPartsCount = count($keyParts);
+							// Check if last part is special instruction
+							// Only "+" is currently supported
+						$specialInstruction = ($keyParts[$keyPartsCount - 1] == '+') ? TRUE : FALSE;
+						if ($specialInstruction) {
+							array_pop($keyParts);
+						}
+
+							// If there are more than 2 parts, get the type from the last part
+							// and merge back the other parts with a dot (.)
+							// Otherwise just get type and field name straightaway
+						if ($keyPartsCount > 2) {
+							$type = array_pop($keyParts);
+							$fieldName = implode('.', $keyParts);
+						} else {
+							$fieldName = $keyParts[0];
+							$type = $keyParts[1];
+						}
 
 							// Detecting 'hidden' labels, converting to normal fieldname
-						if ($kParts[0] == '_') {
-							$kParts[0] = '';
+						if ($fieldName == '_') {
+							$fieldName = '';
 						}
-						if (substr($kParts[0], 0, 1) == '_') {
-							$kParts[0] = substr($kParts[0], 1);
+						if (substr($fieldName, 0, 1) == '_') {
+							$fieldName = substr($fieldName, 1);
 						}
 
-							// Add label:
-						switch ((string)$kParts[2]) {
-								// adding
-							case '+':
-								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]] .= LF . $lVal;
-								break;
-								// Substituting:
-							default:
-								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]] = $lVal;
+							// Append label
+						if ($specialInstruction) {
+							$TCA_DESCR[$table]['columns'][$fieldName][$type] .= LF . $lVal;
+						} else {
+								// Substitute label
+							$TCA_DESCR[$table]['columns'][$fieldName][$type] = $lVal;
 						}
 					}
 				}
