@@ -1,3 +1,7 @@
+2011-01-25  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17281: "Select files" in FlashUploader works only on the second click in Firefox / position: value of ExtJS button changes on click (Thanks to Sascha Korth and Christopher Stelmaszyk)
+
 2011-01-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17282: Workspaces module get placed on "top" of all Web> modules if sysext "info" is uninstalled (positioning relative to uninstalled sysext not working as documented)
