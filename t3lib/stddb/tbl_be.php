@@ -791,7 +791,7 @@ $TCA['sys_language'] = array(
 				'items' => array(
 					array('', 0, ''),
 				),
-				'selicon_cols' => 8,
+				'selicon_cols' => 16,
 				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,

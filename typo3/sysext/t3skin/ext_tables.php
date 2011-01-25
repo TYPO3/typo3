@@ -134,7 +134,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 		'za', 'zm', 'zw'
 	);
 	foreach ($languageKeys as $languageKey) {
-		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($languageKey, $languageKey, '');
+		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($languageKey, $languageKey, 'EXT:t3skin/images/flags/'. $languageKey . '.png');
 	}
 	unset($languageKeys, $languageKey);
 
