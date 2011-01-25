@@ -1,3 +1,7 @@
+2011-01-25  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #17302: Admin Panel CSS is loaded in the Backend
+
 2011-01-25  Ernesto Baschny  <ernesto.baschny@typo3.org>
 
 	* Release of TYPO3 4.5.0rc2
@@ -13,7 +17,7 @@
 	* Fixed issue #17289: Form protection tokens get lost because of a race condition when persisting tokens (Thanks to Helmut Hummel)
 	* Fixed issue #17284: Formprotection persistToken method is called too often, causing unnecessary DB-load (Thanks to Helmut Hummel)
 
-2011-01-25  Jeff Segars  <jeff@webempoweredchurch>
+2011-01-25  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #17216: Admin panel becomes too wide
 
