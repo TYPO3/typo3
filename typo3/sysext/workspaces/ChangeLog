@@ -1,5 +1,6 @@
 2011-01-25  Tolleiv Nietsch <typo3@tolleiv.de>
 
+	* Fixed bug #12406: Not possible to publish change of IRRE ordering
 	* Fixed bug #12464: Slider element is not always visible during the dragging process..
 
 2011-01-24  Steffen Kamper  <steffen@typo3.org>
