@@ -64,6 +64,8 @@ TYPO3.workspaceGrid = Ext.extend(Ext.grid.GridPanel, {
 			loadMask : true,
 			height: 630,
 			stripeRows: true,
+				// below the grid we need 40px space for the legend
+			heightOffset: 40,
 			plugins : [
 				TYPO3.Workspaces.RowExpander
 				,TYPO3.Workspaces.Configuration.GridFilters

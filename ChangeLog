@@ -1,3 +1,7 @@
+2011-01-25  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Synchronized external repositories of version (tag 4.5.0rc2) and workspaces (tag 4.5.0rc2)
+
 2011-01-25  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17281: "Select files" in FlashUploader works only on the second click in Firefox / position: value of ExtJS button changes on click (Thanks to Sascha Korth and Christopher Stelmaszyk)
