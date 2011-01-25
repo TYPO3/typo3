@@ -705,17 +705,24 @@ final class t3lib_extMgm {
 					case 'after':
 					case 'before':
 						$pointer = 0;
+						$found = FALSE;
 						foreach ($mods as $k => $m) {
 							if (!strcmp($m, $modRef)) {
 								$pointer = strtolower($place) == 'after' ? $k + 1 : $k;
+								$found = TRUE;
 							}
 						}
-						array_splice(
-							$mods, // The modules array
-							$pointer, // To insert one position from the end of the list
-							0, // Don't remove any items, just insert
-							$sub // Module to insert
-						);
+						if ($found) {
+							array_splice(
+								$mods, // The modules array
+								$pointer, // To insert one position from the end of the list
+								0, // Don't remove any items, just insert
+								$sub // Module to insert
+							);
+						} else {
+								// If requested module is not found: Add at the end
+							array_push($mods, $sub);
+						}
 					break;
 					default:
 						if (strtolower($place) == 'top') {

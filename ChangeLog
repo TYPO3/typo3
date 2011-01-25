@@ -1,5 +1,6 @@
 2011-01-24  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed bug #17282: Workspaces module get placed on "top" of all Web> modules if sysext "info" is uninstalled (positioning relative to uninstalled sysext not working as documented)
 	* Fixed issue #17260: Installation of version/workspaces cannot be skipped in migration wizard (Thanks to Francois Suter)
 	* Fixed bug #17215: TCEFORM.tt_content.colPos.removeItems not working correctly on colPos with new backend layouts (Thanks to Jo Hasenau)
 
