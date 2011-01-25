@@ -145,10 +145,11 @@ class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtectio
 		if (isset($_SESSION['installToolFormTokens'])
 			&& is_array($_SESSION['installToolFormTokens'])
 		) {
-			$this->tokens = $_SESSION['installToolFormTokens'];
+			$tokens = $_SESSION['installToolFormTokens'];
 		} else {
-			$this->tokens = array();
+			$tokens = array();
 		}
+		return $tokens;
 	}
 
 	/**
