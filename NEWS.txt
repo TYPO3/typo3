@@ -6,9 +6,15 @@ CHANGES & IMPROVEMENTS between TYPO3 4.4 and 4.5
 Changes in 4.5 pre-releases
 ===========================
 
-	* All additions to alpha3 and beta1 have been documented here:
+	* All additions to alpha3 until rc2 have been documented here:
 	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450alpha3
 	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450beta1
+	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450beta2
+	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450beta3
+	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450beta4
+	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450rc1
+	  http://forge.typo3.org/projects/typo3v45-projects/wiki/TYPO3_450rc2
+	
 
 	This information will be merged in this NEWS.txt below before the
 	final release.
