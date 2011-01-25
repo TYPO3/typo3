@@ -1,3 +1,7 @@
+2011-01-25  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17221: Install tool is unable to delete database tables
+
 2011-01-24  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0

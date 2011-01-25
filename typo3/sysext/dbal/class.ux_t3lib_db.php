@@ -2931,10 +2931,10 @@ class ux_t3lib_DB extends t3lib_DB {
 					// Compiling query:
 					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
-					if ($this->lastParsedAndMappedQueryArray['type'] == 'INSERT') {
-						return mysql_query($compiledQuery, $this->link);
-					}
-					return mysql_query($compiledQuery[0], $this->link);
+					//if ($this->lastParsedAndMappedQueryArray['type'] == 'INSERT') {
+					//	return mysql_query($compiledQuery, $this->link);
+					//}
+					return mysql_query($compiledQuery, $this->link);
 					break;
 				case 'adodb':
 					// Compiling query:
