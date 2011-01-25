@@ -28,8 +28,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 
 		var fileTree = new Ext.tree.TreePanel ({
 			itemId: 'extfiletree',
-			autoScroll: true,
-			//containerScroll: true,
+			cls: 'extfiletree',
 			margins: '0 0 0 0',
 			cmargins: '0 0 0 0',
 
@@ -67,7 +66,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 							} else {
 								this.layout.center.panel.jslintButton.disable();
 							}
-							console.log(node.attributes);
+
 						}, this);
 					}
 					if (node.attributes.fileType === 'image') {
@@ -121,15 +120,16 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				}]
 			}, {
 
-				 region: 'center',
+				region: 'center',
 
-				 layout: 'fit',
-				 margins: '0 0 0 0',
-				 cmargins: '0 0 0 0',
-				 border: false,
-				 items: [hlEditor],
-				 tbar: [{
-				 	iconCls: 'x-btn-filebrowser',
+				layout: 'fit',
+				margins: '0 0 0 0',
+				cmargins: '0 0 0 0',
+				border: false,
+				cls: 'file-editor',
+				items: [hlEditor],
+				tbar: [{
+					iconCls: 'x-btn-filebrowser',
 					tooltip: TYPO3.lang.cmd_openInNewWindow,
 					ref: '../openWindowButton',
 					scope: this,
@@ -171,7 +171,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					}
 				}, {
 					iconCls: 'x-btn-save',
-					tooltip: TYPO3.lang.cmd_save,
+					tooltip: TYPO3.settings.EM.fileSaveAllowed ? TYPO3.lang.cmd_save : TYPO3.lang.ext_details_saving_disabled,
 					ref: '../saveButton',
 					disabled: true,
 					scope: this,
@@ -423,7 +423,7 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	/** @private */
 	resizeCodeEditor: function(component, width, height, origWidth, origHeight) {
 		var el = Ext.fly(this.codeMirrorEditor.frame);
-		el.setSize(width , height);
+		el.setSize(width - 50, height); // subtract width of line numbers
 		el.next().setHeight(height);
 		this.doLayout();
 	},
@@ -468,12 +468,14 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	},
 
 	changeAction: function(changed) {
-		if (!changed) {
-			this.ownerCt.saveButton.disable();
-			this.contentChanged = false;
-		} else {
-			this.ownerCt.saveButton.enable();
-			this.contentChanged = true;
+		if (TYPO3.settings.EM.fileSaveAllowed) {
+			if (!changed) {
+				this.ownerCt.saveButton.disable();
+				this.contentChanged = false;
+			} else {
+				this.ownerCt.saveButton.enable();
+				this.contentChanged = true;
+			}
 		}
 	},
 
@@ -482,8 +484,8 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	},
 
 	setValue: function(text) {
-		//console.log(this.codeMirrorEditor);
 		this.codeMirrorEditor.setCode(text);
+		this.resizeCodeEditor();
 	},
 
 	setValueAtCursor: function(text) {

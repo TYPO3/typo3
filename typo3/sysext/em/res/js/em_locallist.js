@@ -244,7 +244,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							}
 						},
 						{
-							title: TYPO3.lang.details_maintainance,
+							title: TYPO3.lang.details_maintenance,
 							//disabled: record.data.installed === 0,
 							html: TYPO3.EM.App.loadingIndicor,
 							listeners: {
@@ -265,6 +265,23 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 										TYPO3.EM.ExtDirect.cleanEmConf(record.data.extkey, function(response) {
 											this.waitBox.hide();
 											TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.ext_details_update_em_conf, response.result, 5);
+										}, this);
+									});
+								}
+								var deletelink = Ext.select('a.deleteLink');
+								if (deletelink.elements.length) {
+									var link = deletelink.elements[0];
+									link.removeAttribute('onclick');
+									Ext.get(link).on('click', function() {
+										this.waitBox = Ext.Msg.wait(TYPO3.lang.extDelete_from_server, record.data.extkey);
+										TYPO3.EM.ExtDirect.deleteExtension(record.data.extkey, function(response) {
+											this.waitBox.hide();
+											if (response.success) {
+												TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.msg_extkexDeletedSuccess, response.result, 5);
+												Ext.StoreMgr.get('localstore').remove(record);
+											} else {
+												TYPO3.Flashmessage.display(TYPO3.Severity.error, response.error, response.result, 5);
+											}
 										}, this);
 									});
 								}
@@ -364,7 +381,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					if (filtertext) {
 							//filter by search string
 						var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
-						var isMatched = record.data.extkey.match(re) || record.data.title.match(re) ||  record.data.description.match(re);
+						var isMatched = record.data.extkey.match(re) || record.data.title.match(re);
 						if (!isMatched) {
 							return false;
 						}
@@ -381,6 +398,21 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 				}
 
 				return true;
+			},
+
+			highlightSearch: function(value) {
+				var control = Ext.getCmp('localSearchField');
+				if (control) {
+					var filtertext = control.getRawValue();
+					if (filtertext) {
+						var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
+						var result = re.exec(value) || [];
+						if (result.length) {
+							return value.replace(result[0], '<span class="filteringList-highlight">' + result[0] + '</span>');
+						}
+					}
+				}
+				return value;
 			}
 		});
 
@@ -388,8 +420,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 			store: this.localstore,
 			filterFunction: this.filterRecords,
 			id: 'localSearchField',
-			width: 200,
-			charCountTrigger: 1
+			width: 200
 		});
 
 		var cols = [

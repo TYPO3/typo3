@@ -39,27 +39,34 @@ Ext.ns('TYPO3.EM', 'TYPO3.EM.GridColumns', 'TYPO3.EM.ExtDirect', 'TYPO3.EMSOAP.E
 TYPO3.EM.Filters = new Ext.ux.grid.GridFilters({
 	encode: true,
 	local: true,
-	filters: [{
-		type: 'string',
-		dataIndex: 'title'
+	filters: [
+		{
+			type: 'string',
+			dataIndex: 'title'
+			}, {
+			type: 'string',
+			dataIndex: 'extkey'
+			}, {
+			type: 'string',
+			dataIndex: 'author'
+			}, {
+			type: 'string',
+			dataIndex: 'category'
+			}, {
+			type: 'list',
+			dataIndex: 'state',
+			options: ['alpha', 'beta', 'stable', 'experimental', 'test', 'obsolete', 'excludeFromUpdates'],
+			phpMode: true
+			}, {
+			type: 'boolean',
+			dataIndex: 'installed'
 		}, {
-		type: 'string',
-		dataIndex: 'extkey'
-		}, {
-		type: 'string',
-		dataIndex: 'author'
-		}, {
-		type: 'string',
-		dataIndex: 'category'
-		}, {
-		type: 'list',
-		dataIndex: 'state',
-		options: ['alpha', 'beta', 'stable', 'experimental', 'test', 'obsolete', 'excludeFromUpdates'],
-		phpMode: true
-		}, {
-		type: 'boolean',
-		dataIndex: 'installed'
-	}],
+			type: 'list',
+			dataIndex: 'type',
+			options: [TYPO3.lang.type_system, TYPO3.lang.type_global, TYPO3.lang.type_local],
+			phpMode: true
+		}
+	],
 	getRecordFilter: function(){
 		var f = [];
 		this.filters.each(function(filter){
@@ -205,7 +212,7 @@ TYPO3.EM.GridColumns.ImportExtension = {
 			getClass: function(value, meta, record) {
 				if (record.data.exists) {
 					if (record.data.versionislower) {
-						this.items[0].tooltip = TYPO3.lang.menu_update_extensions;
+						this.items[0].tooltip = String.format(TYPO3.lang.menu_update_extension, record.data.existingVersion, record.data.version);
 						return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update';
 					} else {
 						return '';
@@ -217,9 +224,9 @@ TYPO3.EM.GridColumns.ImportExtension = {
 			},
 			handler: function(grid, rowIndex, colIndex) {
 				var record = grid.store.getAt(rowIndex).data;
-				var action = record.installed ? TYPO3.lang.ext_details_remove_ext : TYPO3.lang.menu_install_extensions;
+				var action = TYPO3.lang.menu_import_extensions;
 				if (record.exists && record.versionislower) {
-					action = TYPO3.lang.menu_install_extensions;
+					action = TYPO3.lang.menu_update_extensions;
 				}
 				var link = TYPO3.settings.EM.scriptLink
 						+ '&nodoc=1&view=info&CMD[silentMode]=1&CMD[standAlone]=1&ter_connect=1&CMD[importExt]='
@@ -276,6 +283,7 @@ TYPO3.EM.GridColumns.ExtensionTitle = {
 		if (description) {
 			metaData.attr = 'ext:qtip="' + Ext.util.Format.htmlEncode(description) + '"';
 		}
+		value = store.highlightSearch(value);
 		return record.data.icon + ' ' + value + ' (v' + record.data.version + ')';
 	}
 };
@@ -286,7 +294,10 @@ TYPO3.EM.GridColumns.ExtensionKey = {
 	sortable: true,
 	filterable: true,
 	hideable: true,
-	dataIndex: 'extkey'
+	dataIndex: 'extkey',
+	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+		return store.highlightSearch(value);
+	}
 };
 
 TYPO3.EM.GridColumns.ExtensionCategory = {
@@ -352,6 +363,7 @@ TYPO3.EM.GridColumns.ExtensionType = {
 	sortable:true,
 	dataIndex:'type',
 	hideable: true,
+	filterable: true,
 	hidden: true,
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		if (record.data.doubleInstallShort && record.data.doubleInstallShort.length > 1) {
@@ -371,12 +383,12 @@ TYPO3.EM.GridColumns.ExtensionState = {
 	resizable: false,
 	fixed: true,
 	hideable: true,
+	filterable: true,
 	dataIndex:'state',
 	renderer: function(value, metaData, record, rowIndex, colIndex, store){
 		metaData.css += 'state-' + value + ' ';
 		return value;
-	},
-	filterable: true
+	}
 };
 
 TYPO3.EM.GridColumns.ExtensionStateValue = {

@@ -293,7 +293,7 @@ class tx_em_Connection_ExtDirectServer {
 		$install->INSTALL = $parameter['TYPO3_INSTALL'];
 		$install->checkDBupdates($extKey, $list[$extKey]);
 
-
+		$html = '';
 		if ($noSave) {
 			$html = $install->updatesForm($extKey, $list[$extKey], 1);
 		} else {
@@ -327,6 +327,41 @@ class tx_em_Connection_ExtDirectServer {
 			'success' => TRUE,
 			'extkey' => $extKey,
 			'result' => $result
+		);
+	}
+
+	/**
+	 * Delete extension
+	 *
+	 * @param  $extKey
+	 * @return array
+	 */
+	public function deleteExtension($extKey) {
+
+		/** @var $extensionList tx_em_Extensions_List */
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		list($list,) = $extensionList->getInstalledExtensions();
+		$type = $list[$extKey]['type'];
+		$absPath = tx_em_Tools::getExtPath($extKey, $type);
+
+		/** @var $extensionDetails tx_em_Install */
+		$install = t3lib_div::makeInstance('tx_em_Install');
+		$install->setSilentMode(TRUE);
+
+		$res = $install->removeExtDirectory($absPath);
+		$error = '';
+		$success = TRUE;
+
+		if ($res) {
+			$res = nl2br($res);
+			$error = sprintf($GLOBALS['LANG']->getLL('extDelete_remove_dir_failed'), $absPath);
+			$success = FALSE;
+		}
+		return array(
+			'success' => $success,
+			'extkey' => $extKey,
+			'result' => $res,
+			'error' => $error
 		);
 	}
 
@@ -367,22 +402,44 @@ class tx_em_Connection_ExtDirectServer {
 			}
 		}
 
-
+		$unknownType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_unknownType');
+		$imageType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_imageType');
+		$textType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_textType');
+		$extType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_extType');
 		foreach ($files as $key => $file) {
-			$fileExt = strtolower(substr($file, strrpos($file, '.') + 1));
-			if (in_array($fileExt, $imageTypes) || in_array($fileExt, $editTypes)) {
+			$fileExt = '';
+			$type = '';
+			$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('');
+			if (strrpos($file, '.') !== FALSE) {
+				$fileExt = strtolower(substr($file, strrpos($file, '.') + 1));
+			}
+
+			if ($fileExt && in_array($fileExt, $imageTypes) || in_array($fileExt, $editTypes)) {
 				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass($fileExt);
 				$type = in_array($fileExt, $imageTypes) ? 'image' : 'text';
-			} else {
-				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('');
+			}
 
+			if (t3lib_div::strtolower($file) === 'changelog') {
+				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('txt');
+				$type = 'text';
+			}
+
+			switch($type) {
+				CASE 'image':
+					$label = $imageType;
+				break;
+				CASE 'text':
+					$label = $textType;
+				break;
+				default:
+					$label = $fileExt ? sprintf($extType, $fileExt) : $unknownType;
 			}
 
 			$fileArray[] = array(
 				'id' => $node . '/' . $file,
 				'text' => htmlspecialchars($file),
 				'leaf' => true,
-				'qtip' => $fileExt . ' - file',
+				'qtip' => $label,
 				'iconCls' => $cls,
 				'fileType' => $type,
 				'ext' => $fileExt
@@ -417,15 +474,23 @@ class tx_em_Connection_ExtDirectServer {
 	public function saveExtFile($file, $content) {
 		$path = PATH_site . $file;
 		$error = '';
-		if (@file_exists($path)) {
-			//TODO: save only if saving was enabled
-			$done = t3lib_div::writeFile($path, $content);
+		$fileSaveAllowed = $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0;
+		$fileExists = @file_exists($path);
+		$fileSaveable = is_writable($path);
+
+		if ($fileExists && $fileSaveable && $fileSaveAllowed) {
+			$success = t3lib_div::writeFile($path, $content);
 		} else {
-			$done = FALSE;
-			$error = 'File does not exist!';
+			$success = FALSE;
+			$error = $fileSaveAllowed
+					? ($fileSaveable
+							? $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_fileNotExists', TRUE)
+							: $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_fileWriteProtected', TRUE)
+					)
+					: $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_saving_disabled', TRUE);
 		}
 		return array(
-			'success' => $done,
+			'success' => $success,
 			'path' => $path,
 			'file' => basename($path),
 			'content' => $content,
@@ -583,10 +648,14 @@ class tx_em_Connection_ExtDirectServer {
 			}
 
 			// Delete
-			$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_delete') . '</td></tr>';
-			$lines[] = '<tr class="bgColor4"><td colspan="2">' . $install->extDelete($extKey, $list[$extKey], '') . '</td></tr>';
-
+			if (!t3lib_extMgm::isLoaded($extKey)) {
+					// check ext scope
+				if (tx_em_Tools::deleteAsType($list[$extKey]['type']) && t3lib_div::inList('G,L', $list[$extKey]['type'])) {
+					$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
+							$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_delete') . '</td></tr>';
+					$lines[] = '<tr class="bgColor4"><td colspan="2">' . $install->extDelete($extKey, $list[$extKey], '') . '</td></tr>';
+				}
+			}
 			// EM_CONF
 			$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
 					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_update_em_conf') . '</td></tr>';
@@ -737,11 +806,13 @@ class tx_em_Connection_ExtDirectServer {
 			$list['results'][$key]['exists'] = 0;
 			$list['results'][$key]['installed'] = 0;
 			$list['results'][$key]['versionislower'] = 0;
+			$list['results'][$key]['existingVersion'] = '';
 			if (isset($localList[$value['extkey']])) {
 				$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']);
 				$list['results'][$key]['exists'] = 1;
 				$list['results'][$key]['installed'] = $localList[$value['extkey']]['installed'];
 				$list['results'][$key]['versionislower'] = $isUpdatable;
+				$list['results'][$key]['existingVersion'] =  $localList[$value['extkey']]['version'];
 				if ($isUpdatable) {
 					$updateKeys[] = $key;
 				}

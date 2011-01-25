@@ -171,6 +171,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 					}
 					TYPO3.EM.LanguagesSelectionModel.selectRecords(a);
 					langExtStore.load();
+					store.sort('label', 'ASC');
 				},
 				scope: this
 			}

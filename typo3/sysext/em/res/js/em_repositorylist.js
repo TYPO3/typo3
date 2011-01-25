@@ -93,6 +93,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				{name:'versions', type: 'int'},
 				{name:'installed', type: 'int'},
 				{name:'versionislower', type: 'bool'},
+				{name:'existingVersion'},
 				{name:'exists', type: 'int'},
 				{name:'relevance', type: 'int'}
 			],
@@ -140,6 +141,20 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					}
 				},
 				scope: this
+			},
+			highlightSearch: function(value) {
+				var control = Ext.getCmp('rsearchField');
+				if (control) {
+					var filtertext = control.getRawValue();
+					if (filtertext) {
+						var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
+						var result = re.exec(value) || [];
+						if (result.length) {
+							return value.replace(result[0], '<span class="filteringList-highlight">' + result[0] + '</span>');
+						}
+					}
+				}
+				return value;
 			}
 
 		});
@@ -158,6 +173,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			id: 'rsearchField',
 			store: this.repositoryListStore,
 			width: 260,
+			specialKeyOnly: true,
 			emptyText: TYPO3.lang.msg_startTyping
 		});
 

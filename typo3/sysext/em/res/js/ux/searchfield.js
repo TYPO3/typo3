@@ -7,8 +7,8 @@
 Ext.ns('Ext.ux.form');
 
 Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
-	charCountTrigger: 0,
 	enableKeyEvents: true,
+	specialKeyOnly: false,
 
 	initComponent : function(){
 
@@ -18,14 +18,25 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
 				this.onTrigger2Click();
 			}
 		}, this);
-		if (this.charCountTrigger > 0) {
+		if (!this.specialKeyOnly) {
 			this.on('keyup', function(f, e){
 				var value = this.getRawValue();
-				if (value.length > this.charCountTrigger) {
-					this.onTrigger2Click();
-				}
+				this.onTrigger2Click();
 			}, this);
 		}
+	},
+	onRender : function(ct, position){
+		this.doc = Ext.isIE ? Ext.getBody() : Ext.getDoc();
+		Ext.form.TriggerField.superclass.onRender.call(this, ct, position);
+
+		this.wrap = this.el.wrap({cls: 'x-form-field-wrap x-form-field-trigger-wrap'});
+		this.trigger = this.wrap.createChild(this.triggerConfig ||
+				{tag: "img", src: Ext.BLANK_IMAGE_URL, alt: "", cls: "x-form-trigger " + this.triggerClass});
+		this.initTrigger();
+		if(!this.width){
+			this.wrap.setWidth(this.el.getWidth()+this.trigger.getWidth());
+		}
+		this.resizeEl = this.positionEl = this.wrap;
 	},
 
 	validationEvent:false,
@@ -70,5 +81,13 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
 		}
 		this.hasSearch = true;
 		this.triggers[0].show();
+	},
+
+	refreshTrigger: function() {
+		if (this.getRawValue().length > 0) {
+			this.triggers[0].show();
+		} else {
+			this.triggers[0].hide();
+		}
 	}
 });

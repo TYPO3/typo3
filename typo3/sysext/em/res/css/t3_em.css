@@ -30,6 +30,11 @@ strong {
 	overflow: auto !important;
 }
 
+.x-grid-panel1 .x-panel-body,
+.extfiletree .x-panel-body {
+    overflow: auto !important;
+}
+
 
 /* extension states */
 .state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
@@ -154,10 +159,15 @@ img.installExtension, img.removeExtension {
 }
 
 #em-local-extensions .x-grid3-row-selected,
-#em-extlanguagegrid .x-grid3-row-selected
-{
-	background-color: #cfffda;
+#em-extlanguagegrid .x-grid3-row-selected {
+	background-color: #d8ecd0;
 }
+
+#em-local-extensions .x-grid3-row-selected.x-grid3-row-over,
+#em-extlanguagegrid .x-grid3-row-selected.x-grid3-row-over {
+	background-color: #abd99a;
+}
+
 
 .em-extlist-extinfo label,
 .em-info label {
@@ -197,4 +207,9 @@ a.email {
 
 .paddingActionIcon img {
 	margin-right: 5px;
+}
+
+.filteringList-highlight {
+	background-color: #f48e0c;
+    color: #fff;
 }

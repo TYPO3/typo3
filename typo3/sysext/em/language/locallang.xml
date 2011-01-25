@@ -41,6 +41,7 @@
 			<label index="menu_install_extensions">Install extensions</label>
 			<label index="menu_import_extensions">Import extensions</label>
 			<label index="menu_update_extensions">Update extensions</label>
+			<label index="menu_update_extension">Update extension from version {0} to version {1}</label>
 			<label index="menu_translation_handling">Translation handling</label>
 			<label index="menu_language_packges">Language Packages</label>
 			<label index="menu_settings">Settings</label>
@@ -63,7 +64,7 @@
 			<label index="details_info">Information</label>
 			<label index="details_edit">Edit files</label>
 			<label index="details_backup_delete">Backup/Delete</label>
-			<label index="details_maintainance">Maintainance</label>
+			<label index="details_maintenance">Maintenance</label>
 			<label index="details_dump_db">Dump Database</label>
 			<label index="details_upload">Upload to TER</label>
 			<label index="details_update">UPDATE!</label>
@@ -288,7 +289,11 @@
 			<label index="ext_details_saving_failed_changes_lost">Saving failed, the content was not correctly written to disk. Changes have been lost!</label>
 			<label index="ext_details_file_saved">File saved.</label>
 			<label index="ext_details_file_save_button">Save file</label>
-			<label index="ext_details_saving_disabled">[SAVING IS DISABLED - It can be enabled with the $TYPO3_CONF_VARS['EXT']['noEdit'] flag]</label>
+			<label index="ext_details_file_unknownType">Unknown file type</label>
+			<label index="ext_details_file_imageType">Image</label>
+			<label index="ext_details_file_textType">Text</label>
+			<label index="ext_details_file_extType">%s - file</label>
+			<label index="ext_details_saving_disabled">SAVING IS DISABLED - It can be enabled with the $TYPO3_CONF_VARS['EXT']['noEdit'] flag</label>
 			<label index="ext_details_cancel_button">Cancel</label>
 			<label index="ext_details_edit_file">Edit file:</label>
 			<label index="ext_details_filesize_exceeded_kb">File size exceeded %s KBytes</label>
@@ -519,7 +524,7 @@
 			<label index="checkDependencies_import_now">Import now (opens a new window)</label>
 			<label index="checkDependencies_ignore_ext_requirement">Ignore this extension requirement</label>
 			<label index="checkDependencies_ext_not_installed">Extension "%s" (%s) was not installed. Please install it first.</label>
-			<label index="checkDependencies_install_now">Install now (opens a new window)</label>
+			<label index="checkDependencies_install_now">Install now (opens ac new window)</label>
 			<label index="checkDependencies_ext_too_low">The running version of extension "%s" (%s) is lower than required (%s).</label>
 			<label index="checkDependencies_ext_too_high">The running version of extension "%s" (%s) is higher than allowed (%s).</label>
 			<label index="checkDependencies_conflict_ignored">Conflict with %s ignored as requested.</label>
@@ -628,12 +633,15 @@
 			<label index="msg_character">Character</label>
 			<label index="msg_developerinformation">Developer Information</label>
 			<label index="msg_fileSaved">File "{0}" was saved.</label>
+			<label index="msg_fileNotExists">File does not exist!</label>
+			<label index="msg_fileWriteProtected">File is write protected!</label>
 			<label index="msg_extUpToDate">Extension is up to date.</label>
 			<label index="msg_extNotInstalled">Extension "%s" is not installed.</label>
 			<label index="msg_extNoConfiguration">This extension has no configuration.</label>
 			<label index="msg_loginFailed">login failed!</label>
 			<label index="msg_noUserLoginData">No user login data!</label>
 			<label index="msg_ok">OK</label>
+			<label index="msg_localVersion">Installed version is v{0}</label>
 			<label index="msg_userNotExists">User does not exist!</label>
 			<label index="msg_extkexExists">Extension key already exists.</label>
 			<label index="msg_extkexNotExists">Extension key does not exist.</label>

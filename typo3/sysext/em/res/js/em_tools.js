@@ -41,15 +41,10 @@ TYPO3.EM.Tools = function() {
 			if (reload === true) {
 				TYPO3.EM.Filters.clearFilters();
 				localStore.showAction = extKey;
+				var search = Ext.getCmp('localSearchField');
+				search.setValue(extKey);
+				search.refreshTrigger();
 				localStore.load();
-			} else {
-				// find row and expand
-				/*var row = localStore.find('extkey', extKey);
-				 var grid = Ext.getCmp('em-local-extensions');
-
-				 grid.expander.expandRow(row);
-				 grid.getView().focusRow(row);
-				 grid.getSelectionModel().selectRow(row);*/
 			}
 		},
 
@@ -79,7 +74,6 @@ TYPO3.EM.Tools = function() {
 
 		refreshMenu: function(record, installAction) {
 			if (installAction == 'import') {
-				console.log(record);
 				TYPO3.EM.Tools.displayLocalExtension(record.extkey, true);
 			}
 			if (top.TYPO3ModuleMenu && installAction == 'install') {

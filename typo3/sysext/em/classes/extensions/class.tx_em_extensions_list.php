@@ -636,7 +636,7 @@ EXTENSION KEYS:
 		global $LANG;
 		$extList = $this->getInstalledExtensions();
 
-		$content = '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-to-update">>' .
+		$content = '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-to-update">' .
 				'<tr class="t3-row-header">' .
 				'<td></td>' .
 				'<td>' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_name') . '</td>' .

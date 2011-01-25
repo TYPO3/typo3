@@ -185,6 +185,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $lookUpStr; // Search string when listing local extensions
 
 
+	protected $noDocHeader = 0;
+
 	/*********************************
 	 *
 	 * Standard module initialization
@@ -250,7 +252,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->settings = t3lib_div::makeInstance('tx_em_Settings');
 		$this->install = t3lib_div::makeInstance('tx_em_Install', $this);
 
-		if (t3lib_div::_GP('silentMode')) {
+		if (t3lib_div::_GP('silentMode') || $this->noDocHeader) {
 			$this->CMD['silentMode'] = 1;
 			$this->noDocHeader = 1;
 		}
@@ -1470,6 +1472,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				if (t3lib_extMgm::isLocalconfWritable()) {
 					// Check dependencies:
 					$depStatus = $this->install->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list);
+
 					if (!$this->CMD['remove'] && !$depStatus['returnCode']) {
 						$this->content .= $depStatus['html'];
 						$newExtList = -1;
@@ -1532,7 +1535,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							}
 						} elseif ($this->CMD['remove']) {
 							$updates .= $this->install->checkClearCache($list[$extKey]);
-							if ($updates) {
+
+							if ($updates && !$this->noDocHeader) {
 								$updates = '
 								<form action="' . $this->script . '" method="post">' . $updates . '
 								<br /><input type="submit" name="write" value="' .
@@ -1541,7 +1545,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 								<input type="hidden" name="_clrCmd" value="' . $this->CMD['clrCmd'] . '" />
 								<input type="hidden" name="standAlone" value="' . $this->CMD['standAlone'] . '" />
 								<input type="hidden" name="silentMode" value="' . $this->CMD['silentMode'] . '" />
-
+								' . ($this->noDocHeader ? '<input type="hidden" name="nodoc" value="1" />' : '') . '
 								</form>';
 								$labelDBUpdate = $GLOBALS['LANG']->csConvObj->conv_case(
 									$GLOBALS['LANG']->charSet,
@@ -1557,7 +1561,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 								);
 							}
 						}
-						if (!$updates || t3lib_div::_GP('_do_install')) {
+						if (!$updates || t3lib_div::_GP('_do_install') || ($this->noDocHeader && $this->CMD['remove'])) {
 							$this->install->writeNewExtensionList($newExtList);
 							$action = $this->CMD['load'] ? 'installed' : 'removed';
 							$GLOBALS['BE_USER']->writelog(5, 1, 0, 0, 'Extension list has been changed, extension %s has been %s', array($extKey, $action));
@@ -1582,6 +1586,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							} else {
 								$vA = array('CMD' => array('showExt' => $extKey));
 							}
+
 							if ($this->CMD['standAlone'] || t3lib_div::_GP('standAlone')) {
 								$this->content .= sprintf($GLOBALS['LANG']->getLL('ext_details_ext_installed_removed'),
 									($this->CMD['load'] ?
@@ -1772,7 +1777,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 						if (t3lib_extMgm::isLoaded($extKey)) {
 							$updates = $this->install->updatesForm($extKey, $list[$extKey]);
-							debug(array($extKey, $list[$extKey]));
 							if ($updates) {
 								$this->content .= $this->doc->spacer(10);
 								$this->content .= $this->doc->section(
@@ -2501,7 +2505,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return string
 	 */
 	protected function getSubmitAndOpenerCloseLink() {
-		if (!$this->CMD['standAlone'] && ($this->CMD['standAlone'] || t3lib_div::_GP('standAlone'))) {
+		if (!$this->CMD['standAlone'] && !$this->noDocHeader && ($this->CMD['standAlone'] || t3lib_div::_GP('standAlone'))) {
 			$link = '<a href="javascript:opener.top.list.iframe.document.forms[0].submit();window.close();">' .
 				$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 			return $link;

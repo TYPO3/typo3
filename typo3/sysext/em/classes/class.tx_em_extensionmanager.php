@@ -179,6 +179,7 @@ class tx_em_ExtensionManager {
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
 			'allowRepositoryUpdate' => $allowRepositoryUpdate,
 			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
+			'fileSaveAllowed' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0
 		);
 		$settings = array_merge($settings, $additionalSettings);
 

@@ -276,7 +276,7 @@ class tx_em_Install {
 											} else {
 												$content = $GLOBALS['LANG']->getLL('ext_import_imported') .
 														'<br /><br />';
-												if ($this->silentMode) {
+												if ($this->silentMode || t3lib_div::_GP('nodoc')) {
 													$content .= '<a id="closewindow" href="javascript:parent.TYPO3.EM.Tools.closeImportWindow();">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
 												} else {
 													$content .= '<a href="javascript:opener.top.list.iframe.document.forms[0].submit();window.close();">' .
@@ -548,6 +548,10 @@ class tx_em_Install {
 			}
 			$content .= '<br /><br /><input type="submit" value="' . $GLOBALS['LANG']->getLL('checkDependencies_try_again') . '" />';
 
+			if (t3lib_div::_GP('nodoc')) {
+				$content .= '<input type="hidden" name="nodoc" value="1" />';
+			}
+
 			return array(
 				'returnCode' => FALSE,
 				'html' => '<form action="' . $this->parentObject->script . '" method="post" name="depform">' . $content . '</form>');
@@ -608,7 +612,7 @@ class tx_em_Install {
 					'CMD[doDelete]' => 1,
 					'CMD[absPath]' => rawurlencode($absPath)
 				)) . "';}";
-				$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
+				$content .= '<a class="t3-link deleteLink" href="#" onclick="' . htmlspecialchars($onClick) .
 						' return false;"><strong>' . $deleteFromServer . '</strong> ' .
 						sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 							$this->api->typeLabels[$extInfo['type']],
@@ -1239,6 +1243,7 @@ class tx_em_Install {
 					t3lib_FlashMessage::INFO
 				);
 			}
+
 			$form = '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
 					<tr>
@@ -1246,6 +1251,7 @@ class tx_em_Install {
 							<form action="' . htmlspecialchars($script) . '" method="post">' .
 					$addFields .
 					($this->silentMode ? '' : $flashMessage->render()) .
+					(t3lib_div::_GP('nodoc') ? '<input type="hidden" name="nodoc" value="1" />' : '') .
 					'<br /><input type="submit" id="configuration-submit-' . $extKey . '" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
 							</form>
 						</td>
@@ -1253,12 +1259,8 @@ class tx_em_Install {
 				</table>';
 		}
 
-		#if ($output) {
-		return $form;
-		#} else {
-		#	$this->content.=$this->doc->section('', $form);
-		#}
 
+		return $form;
 
 	}
 

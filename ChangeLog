@@ -18,6 +18,7 @@
 
 2011-01-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Merge of extension manager for RC1
 	* Fixed bug #17275: Pagetree preloads huge amount of pages with initial load / refresh
 	* Follow-up to #17222: in case of render outside the BE set default value
 	* Fixed bug #17222: fitToParent calculates wrong height
