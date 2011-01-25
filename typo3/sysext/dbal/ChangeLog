@@ -1,3 +1,7 @@
+2011-01-25  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17221: Install tool is unable to delete database tables
+
 2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed use of undefined variable $where in method exec_INSERTquery() with MySQL handler
