@@ -1,5 +1,6 @@
 2011-01-24  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17260: Installation of version/workspaces cannot be skipped in migration wizard (Thanks to Francois Suter)
 	* Fixed bug #17215: TCEFORM.tt_content.colPos.removeItems not working correctly on colPos with new backend layouts (Thanks to Jo Hasenau)
 
 2011-01-24  Steffen Kamper  <steffen@typo3.org>

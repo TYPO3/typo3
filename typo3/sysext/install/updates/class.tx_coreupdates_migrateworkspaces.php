@@ -53,50 +53,86 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 		$reason = '';
 			// TYPO3 version 4.5 and above
 		if ($this->versionNumber >= 4005000) {
-
-			$this->includeTCA();
-
-			if(!t3lib_extMgm::isLoaded('version') || !t3lib_extMgm::isLoaded('workspaces')) {
+				// If neither version nor workspaces is installed, we're not doing a migration
+				// Present the user with the choice of activating versioning and workspaces
+			if (!t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')) {
 				$result = TRUE;
-				$reason .= ' The extensions "version" and "workspaces" need to be
-					present to use the entire versioning and workflow featureset of TYPO3.';
-			}
+					// Override the default description
+				$description = 'Activates the usage of workspaces in your installation. Workspaces let you edit elements
+					without the changes being visible on the live web site right away. Modified elements can then go
+					through a validation process and eventually be published.<br /><br />';
+				$description .= 'This wizard will install system extensions "version" and "workspaces" (and may
+					install "fluid" and "extbase" too, as they are used by the "workspaces" extension).';
+			} else {
 
-			$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
-				// sys_workspace table might not exists if version extension was never installed
-			if (!in_array('sys_workspace', $tables) || !in_array('sys_workspace_stage', $tables)) {
-				$result = TRUE;
-				$reason .= ' The database tables for the workspace functionality are missing.';
-			} elseif ($this->isOldStyleAdminFieldUsed() || $this->isOldStyleWorkspace()) {
-				$wsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', '');
-				$result |= $wsCount > 0;
-				$reason .= ' The existing workspaces will be checked for compatibility with the new features.';
-			}
+				$this->includeTCA();
 
-			$draftWorkspaceTestResult = $this->isDraftWorkspaceUsed();
-			if ($draftWorkspaceTestResult) {
-				$reason .= ' The old style draft workspace is used.
-					Related records will be moved into a full featured workspace.';
-				$result = TRUE;
-			}
+				if (!t3lib_extMgm::isLoaded('version') || !t3lib_extMgm::isLoaded('workspaces')) {
+					$result = TRUE;
+					$reason .= ' Both extensions "version" and "workspaces" need to be
+						present to use the entire versioning and workflow featureset of TYPO3.';
+				}
 
-			$description .= '<br /><strong>Why do you need this wizard?</strong><br />' . $reason;
+				$tables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
+					// sys_workspace table might not exists if version extension was never installed
+				if (!in_array('sys_workspace', $tables) || !in_array('sys_workspace_stage', $tables)) {
+					$result = TRUE;
+					$reason .= ' The database tables for the workspace functionality are missing.';
+				} elseif ($this->isOldStyleAdminFieldUsed() || $this->isOldStyleWorkspace()) {
+					$wsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_workspace', '');
+					$result |= $wsCount > 0;
+					$reason .= ' The existing workspaces will be checked for compatibility with the new features.';
+				}
+
+				$draftWorkspaceTestResult = $this->isDraftWorkspaceUsed();
+				if ($draftWorkspaceTestResult) {
+					$reason .= ' The old style draft workspace is used.
+						Related records will be moved into a full featured workspace.';
+					$result = TRUE;
+				}
+
+				$description .= '<br /><strong>Why do you need this wizard?</strong><br />' . $reason;
+			}
 		}
 
 		return $result;
 	}
 
 	/**
-	 * If there's any user-input which we'd love to process, this method allows to specify what
-	 * kind of input we need.
-	 *
-	 * Since we don't need input this is left empty. It's still here to avoid that this is inherited.
+	 * This method requests input from the user about the upgrade process, if needed
 	 *
 	 * @param string $inputPrefix
 	 * @return void
 	 */
 	public function getUserInput($inputPrefix) {
-		return;
+		$content = '';
+
+		if (!t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')) {
+				// We need feedback only if versioning is not activated at all
+				// In such a case we want to leave the user with the choice of not activating the stuff at all
+			$content = '
+				<fieldset>
+					<ol>
+			';
+
+			$content .= '
+				<li class="labelAfter">
+					<input type="checkbox" id="versioning" name="' . $inputPrefix . '[versioning]" value="1" checked="checked" />
+					<label for="versioning">Activate workspaces?</label>
+				</li>
+			';
+
+			$content .= '
+					</ol>
+				</fieldset>
+			';
+
+		} else {
+				// No feedback needed, just include the update flag as a hidden field
+			$content = '<input type="hidden" id="versioning" name="' . $inputPrefix . '[versioning]" value="1" />';
+		}
+
+		return $content;
 	}
 
 	/**
@@ -110,8 +146,12 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 		$result = TRUE;
 
 			// TYPO3 version below 4.5
-		if ($this->versionNumber < 4005000)	{
+		if ($this->versionNumber < 4005000) {
 			return FALSE;
+		}
+			// Wizard skipped by the user
+		if (empty($this->pObj->INSTALL['update']['migrateWorkspaces']['versioning'])) {
+			return TRUE;
 		}
 
 			// There's no TCA available yet
