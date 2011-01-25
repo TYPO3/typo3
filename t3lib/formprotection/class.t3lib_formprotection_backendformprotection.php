@@ -182,9 +182,11 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 *
 	 */
 	protected function updateTokens() {
-		$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
-		$tokens = $this->retrieveTokens();
-		$this->tokens = array_merge($this->tokens, $tokens);
+		if ($this->backendUser->user) {
+			$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
+			$tokens = $this->retrieveTokens();
+			$this->tokens = array_merge($this->tokens, $tokens);
+		}
 	}
 
 	/**

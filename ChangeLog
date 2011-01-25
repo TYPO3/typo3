@@ -4,6 +4,7 @@
 
 2011-01-25  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #17289: resolved endless loop with login/logout
 	* Fixed bug #17280: The FlashUploader does not disappear anymore
 
 2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
