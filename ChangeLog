@@ -8,6 +8,7 @@
 
 2011-01-25  Steffen Kamper  <steffen@typo3.org>
 
+	* Merge of linkvalidator for RC3
 	* Fixed bug #17286: sys_language -> flag selections ends at letter q (Thanks to Jo Hasenau)
 	* Follow-up to #17289: resolved endless loop with login/logout
 	* Fixed bug #17280: The FlashUploader does not disappear anymore
