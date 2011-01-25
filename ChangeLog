@@ -1,3 +1,7 @@
+2011-01-25  Ernesto Baschny  <ernesto.baschny@typo3.org>
+
+	* Release of TYPO3 4.5.0rc2
+
 2011-01-25  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17280: The FlashUploader does not disappear anymore
