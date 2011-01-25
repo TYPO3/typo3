@@ -684,6 +684,26 @@ TYPO3.Components.PageTree.Actions = {
 	},
 
 	/**
+	 * Opens a configured url inside the content frame
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Object} contextItem
+	 * @return {void}
+	 */
+	openCustomUrlInContentFrame: function(node, tree, contextItem) {
+		console.log(contextItem);
+		if (!contextItem.customAttributes || !contextItem.customAttributes.contentUrl) {
+			return;
+		}
+
+		node.select();
+		TYPO3.Backend.ContentContainer.setUrl(
+			contextItem.customAttributes.contentUrl.replace('###ID###', node.attributes.nodeData.id)
+		);
+	},
+
+	/**
 	 * Updates the title of a node
 	 *
 	 * @param {Ext.tree.TreeNode} node

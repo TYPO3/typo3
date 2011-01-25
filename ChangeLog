@@ -4,6 +4,7 @@
 
 2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17312: Pagetree - Provide a default contextmenu action to open custom urls (Thanks to Stefan Galinksi)
 	* Re-added feature #17313: Since using new flags from sprites (#15668), the sys_language hasn't a flag-selector by icon (Thanks to Jo Hasenau)
 	* Fixed bug #17305: Login/ Logout was not possible after introducing the locking in #17289 (Thanks to Helmut Hummel)
 

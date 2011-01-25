@@ -79,7 +79,8 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 
 					this.pageTree.commandProvider[item.callbackAction](
 						item.parentMenu.node,
-						item.parentMenu.pageTree
+						item.parentMenu.pageTree,
+						item
 					);
 				}
 			}
@@ -165,7 +166,8 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 						'text': contextMenuConfiguration[singleAction]['label'],
 						'icon': contextMenuConfiguration[singleAction]['icon'],
 						'iconCls': contextMenuConfiguration[singleAction]['class'],
-						'callbackAction': contextMenuConfiguration[singleAction]['callbackAction']
+						'callbackAction': contextMenuConfiguration[singleAction]['callbackAction'],
+						'customAttributes': contextMenuConfiguration[singleAction]['customAttributes']
 					};
 
 					component.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(

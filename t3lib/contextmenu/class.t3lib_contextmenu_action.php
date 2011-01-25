@@ -83,6 +83,13 @@ class t3lib_contextmenu_Action {
 	protected $childActions = NULL;
 
 	/**
+	 * Custom Action Attributes
+	 *
+	 * @var array
+	 */
+	protected $customAttributes = array();
+
+	/**
 	 * Returns the label
 	 *
 	 * @return string
@@ -225,6 +232,25 @@ class t3lib_contextmenu_Action {
 	}
 
 	/**
+	 * Sets the custom attributes
+	 *
+	 * @param array $customAttributes
+	 * @return void
+	 */
+	public function setCustomAttributes(array $customAttributes) {
+		$this->customAttributes = $customAttributes;
+	}
+
+	/**
+	 * Returns the custom attributes
+	 * 
+	 * @return array
+	 */
+	public function getCustomAttributes() {
+		return $this->customAttributes;
+	}
+
+	/**
 	 * Returns the action as an array
 	 *
 	 * @return array
@@ -237,6 +263,7 @@ class t3lib_contextmenu_Action {
 			'class' => $this->getClass(),
 			'callbackAction' => $this->getCallbackAction(),
 			'type' => $this->getType(),
+			'customAttributes' => $this->getCustomAttributes()
 		);
 
 		$arrayRepresentation['childActions'] = '';

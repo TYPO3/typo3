@@ -216,6 +216,10 @@ abstract class t3lib_contextmenu_AbstractDataProvider {
 				} else {
 					$action->setType('action');
 					$action->setCallbackAction($actionConfiguration['callbackAction']);
+
+					if (is_array($actionConfiguration['customAttributes.'])) {
+						$action->setCustomAttributes($actionConfiguration['customAttributes.']);
+					}
 				}
 
 				$action->setLabel($label);
