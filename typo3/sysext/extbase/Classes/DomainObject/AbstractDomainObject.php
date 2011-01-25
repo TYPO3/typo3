@@ -91,7 +91,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 *
 	 * @return void
 	 */
-	final public function setPid($pid) {
+	public function setPid($pid) {
 		if ($pid === NULL) {
 			$this->pid = NULL;
 		} else {
@@ -104,7 +104,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 *
 	 * @return int The pid or NULL if none set yet.
 	 */
-	final public function getPid() {
+	public function getPid() {
 		if ($this->pid === NULL) {
 			return NULL;
 		} else {
