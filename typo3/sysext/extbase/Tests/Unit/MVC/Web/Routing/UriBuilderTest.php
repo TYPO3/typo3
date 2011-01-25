@@ -195,6 +195,8 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$this->assertTrue($this->uriBuilder->getUseCacheHash());
 		$this->uriBuilder->uriFor('someNonCacheableAction', array(), 'SomeController', 'SomeExtension');
 		$this->assertFalse($this->uriBuilder->getUseCacheHash());
+
+		t3lib_div::purgeInstances();
 	}
 
 	/**

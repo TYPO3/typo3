@@ -123,6 +123,7 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 	public function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		t3lib_div::purgeInstances();
 	}
 
 	/**
