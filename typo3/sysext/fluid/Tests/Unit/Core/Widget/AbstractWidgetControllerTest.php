@@ -25,7 +25,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -39,19 +40,23 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function processRequestSetsWidgetConfiguration() {
-		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext', array('getWidgetConfiguration'));
+		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
 
-		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array('getWidgetContext', 'getControllerObjectName', 'getControllerActionName'), array(), '', FALSE);
+		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 
-		$response = $this->getMock('Tx_Fluid_MVC_ResponseInterface');
+		$response = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
 
-		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('initializeUriBuilder', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'resolveView', 'callActionMethod'), array(), '', FALSE);
+		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
+
+		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 
 		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$objectManager->expects($this->any())->method('create')->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')->will($this->returnValue($mockUriBuilder));
 		$abstractWidgetController->_set('objectManager', $objectManager);
 
 		$abstractWidgetController->processRequest($request, $response);

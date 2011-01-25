@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('dummy'), array(), '', FALSE);
@@ -38,7 +38,7 @@ class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase
 	public function initializeResetsUnderlyingTagBuilder() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('reset'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('reset');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$this->viewHelper->initialize();
 	}
@@ -51,7 +51,7 @@ class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase
 	public function oneTagAttributeIsRenderedCorrectly() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('foo' => 'bar'));
@@ -67,7 +67,7 @@ class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase
 	public function additionalTagAttributesAreRenderedCorrectly() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('additionalAttributes' => array('foo' => 'bar')));
@@ -89,7 +89,7 @@ class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase
 		$mockTagBuilder->expects($this->at(5))->method('addAttribute')->with('title', 'titleAttribute');
 		$mockTagBuilder->expects($this->at(6))->method('addAttribute')->with('accesskey', 'accesskeyAttribute');
 		$mockTagBuilder->expects($this->at(7))->method('addAttribute')->with('tabindex', 'tabindexAttribute');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(
 			array(

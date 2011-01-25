@@ -36,7 +36,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CountViewHelperTest extends Tx_Fluid_ViewH
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_CountViewHelper();
+		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_CountViewHelper', array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -48,6 +48,17 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CountViewHelperTest extends Tx_Fluid_ViewH
 	public function renderReturnsNumberOfElementsInAnArray() {
 		$expectedResult = 3;
 		$actualResult = $this->viewHelper->render(array('foo', 'bar', 'Baz'));
+		$this->assertSame($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderReturnsCountOfChildNodesIfNoSubjectIsSpecified() {
+		$expectedResult = 2;
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(array('foo', 'bar')));
+		$actualResult = $this->viewHelper->render();
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
@@ -77,6 +88,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CountViewHelperTest extends Tx_Fluid_ViewH
 	 */
 	public function renderReturnsZeroIfGivenArrayIsNull() {
 		$expectedResult = 0;
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$actualResult = $this->viewHelper->render(NULL);
 		$this->assertSame($expectedResult, $actualResult);
 	}

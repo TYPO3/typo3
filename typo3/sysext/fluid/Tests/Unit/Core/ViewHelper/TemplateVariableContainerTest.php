@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -60,7 +60,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 		$this->assertSame($this->variableContainer->get('variable'), $object);
 		$this->assertSame($this->variableContainer['variable'], $object);
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -71,7 +71,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 		$this->assertTrue($this->variableContainer->exists('variable'));
 		$this->assertTrue(isset($this->variableContainer['variable']));
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -81,7 +81,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 		$this->variableContainer->add("variable", $object);
 		$this->assertEquals($this->variableContainer->getAllIdentifiers(), array('variable'), 'Added key is not visible in getAllIdentifiers');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
@@ -109,7 +109,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 	public function gettingNonexistentValueThrowsException() {
 		$this->variableContainer->get('nonexistent');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
@@ -118,7 +118,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 	public function deletingNonexistentValueThrowsException() {
 		$this->variableContainer->remove('nonexistent');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException

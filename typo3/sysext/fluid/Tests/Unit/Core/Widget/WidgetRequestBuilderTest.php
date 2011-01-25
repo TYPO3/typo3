@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_Core_Widget_WidgetRequestBuilder
@@ -53,14 +53,28 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	protected $mockWidgetContext;
 
 	/**
-	 * @var Tx_Fluid_Utility_Environment
+	 * @var array
 	 */
-	protected $mockEnvironment;
+	protected $serverBackup;
+
+	/**
+	 * @var array
+	 */
+	protected $getBackup;
+
+	/**
+	 * @var array
+	 */
+	protected $postBackup;
 
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setUp() {
+		$this->serverBackup = $_SERVER;
+		$this->getBackup = $_GET;
+		$this->postBackup = $_POST;
 		$this->widgetRequestBuilder = $this->getAccessibleMock('Tx_Fluid_Core_Widget_WidgetRequestBuilder', array('setArgumentsFromRawRequestData'));
 
 		$this->mockWidgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
@@ -75,17 +89,35 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 		$this->mockAjaxWidgetContextHolder = $this->getMock('Tx_Fluid_Core_Widget_AjaxWidgetContextHolder');
 		$this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
 		$this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
+	}
 
-		$this->mockEnvironment = $this->getMock('Tx_Fluid_Utility_Environment');
-		$this->widgetRequestBuilder->_set('environment', $this->mockEnvironment);
+	/**
+	 * @return void
+	 */
+	public function tearDown() {
+		$_SERVER = $this->serverBackup;
+		$_GET = $this->getBackup;
+		$_POST = $this->postBackup;
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function buildInjectsEnvironmentInRequest() {
-		$this->mockWidgetRequest->expects($this->once())->method('injectEnvironment')->with($this->mockEnvironment);
+	public function buildSetsRequestUri() {
+		$requestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$this->mockWidgetRequest->expects($this->once())->method('setRequestURI')->with($requestUri);
+
+		$this->widgetRequestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function buildSetsBaseUri() {
+		$baseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$this->mockWidgetRequest->expects($this->once())->method('setBaseURI')->with($baseUri);
 
 		$this->widgetRequestBuilder->build();
 	}
@@ -93,9 +125,10 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function buildSetsRequestMethodFromEnvironment() {
-		$this->mockEnvironment->expects($this->once())->method('getRequestMethod')->will($this->returnValue('POST'));
+	public function buildSetsRequestMethod() {
+		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$this->mockWidgetRequest->expects($this->once())->method('setMethod')->with('POST');
 
 		$this->widgetRequestBuilder->build();
@@ -103,10 +136,26 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function buildCallsSetArgumentsFromRawRequestData() {
-		$this->widgetRequestBuilder->expects($this->once())->method('setArgumentsFromRawRequestData')->with($this->mockWidgetRequest);
+	public function buildSetsPostArgumentsFromRequest() {
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_GET = array('get' => 'foo');
+		$_POST = array('post' => 'bar');
+		$this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_POST);
+
+		$this->widgetRequestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function buildSetsGetArgumentsFromRequest() {
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$_GET = array('get' => 'foo');
+		$_POST = array('post' => 'bar');
+		$this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_GET);
 
 		$this->widgetRequestBuilder->build();
 	}
@@ -114,10 +163,11 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsControllerActionNameFromGetArguments() {
-		$this->mockEnvironment->expects($this->once())->method('getRawGetArguments')->will($this->returnValue(array('action' => 'myaction', 'f3-fluid-widget-id' => '')));
-		$this->mockWidgetRequest->expects($this->once())->method('setControllerActionName')->with('myaction');
+		$_GET = array('action' => 'myAction');
+		$this->mockWidgetRequest->expects($this->once())->method('setControllerActionName')->with('myAction');
 
 		$this->widgetRequestBuilder->build();
 	}
@@ -125,9 +175,10 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsWidgetContext() {
-		$this->mockEnvironment->expects($this->once())->method('getRawGetArguments')->will($this->returnValue(array('f3-fluid-widget-id' => '123')));
+		$_GET = array('fluid-widget-id' => '123');
 		$this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->with('123')->will($this->returnValue($this->mockWidgetContext));
 		$this->mockWidgetRequest->expects($this->once())->method('setWidgetContext')->with($this->mockWidgetContext);
 

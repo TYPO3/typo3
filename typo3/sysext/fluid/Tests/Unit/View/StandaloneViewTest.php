@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_View_StandaloneView
@@ -125,6 +125,13 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_BaseTestCas
 
 		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $this->mockObjectManager);
 		t3lib_div::addInstance('tslib_cObj', $this->mockContentObject);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tearDown() {
+		t3lib_div::purgeInstances();
 	}
 
 	/**

@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestHandlerTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestHandlerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_Core_Widget_WidgetRequestHandler
@@ -33,35 +33,40 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestHandlerTest extends Tx_Extbas
 	protected $widgetRequestHandler;
 
 	/**
-	 * @var Tx_Fluid_Utility_Environment
+	 * @var array
 	 */
-	protected $mockEnvironment;
-	
+	protected $getBackup;
+
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setUp() {
-		$this->mockEnvironment = $this->getMock('Tx_Fluid_Utility_Environment');
-
+		$this->getBackup = $_GET;
 		$this->widgetRequestHandler = $this->getAccessibleMock('Tx_Fluid_Core_Widget_WidgetRequestHandler', array('dummy'), array(), '', FALSE);
-		$this->widgetRequestHandler->_set('environment', $this->mockEnvironment);
+	}
+
+	public function tearDown() {
+		$_GET = $this->getBackup;
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canHandleRequestReturnsTrueIfCorrectGetParameterIsSet() {
-		$this->mockEnvironment->expects($this->once())->method('getRawGetArguments')->will($this->returnValue(array('f3-fluid-widget-id' => '123')));
+		$_GET['fluid-widget-id'] = 123;
 		$this->assertTrue($this->widgetRequestHandler->canHandleRequest());
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canHandleRequestReturnsFalsefGetParameterIsNotSet() {
-		$this->mockEnvironment->expects($this->once())->method('getRawGetArguments')->will($this->returnValue(array('some-other-id' => '123')));
+		$_GET['some-other-id'] = 123;
 		$this->assertFalse($this->widgetRequestHandler->canHandleRequest());
 	}
 
@@ -70,7 +75,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestHandlerTest extends Tx_Extbas
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function priorityIsHigherThanDefaultRequestHandler() {
-		$defaultWebRequestHandler = $this->getMock('Tx_Extbase_MVC_Web_RequestHandler', array('dummy'), array(), '', FALSE);
+		$defaultWebRequestHandler = $this->getMock('Tx_Extbase_MVC_Web_AbstractRequestHandler', array('handleRequest'), array(), '', FALSE);
 		$this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
 	}
 }
