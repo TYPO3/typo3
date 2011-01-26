@@ -1,3 +1,7 @@
+2011-01-26  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #3523: Rewrite of workspace manual started
+
 2011-01-26 Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Raised version to 4.5.0
