@@ -1,3 +1,7 @@
+2011-01-26  Ernesto Baschny  <ernesto.baschny@typo3.org>
+
+	* Release of TYPO3 4.5.0rc3
+
 2011-01-25  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17265: CSH in Flexforms broken when label indices contain more than one dot
