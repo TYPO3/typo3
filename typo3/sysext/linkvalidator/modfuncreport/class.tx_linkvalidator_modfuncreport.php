@@ -605,7 +605,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
 						$option =  '<input type="checkbox" id="' . $prefix . 'SET[' . $type . ']" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type]  ? ' checked="checked"' : '') .
-							'/>'.'<label for="SET[' . $type . ']">' . htmlspecialchars( $translation ) . '</label>';
+							'/>'.'<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars( $translation ) . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}

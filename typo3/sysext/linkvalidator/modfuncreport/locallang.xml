@@ -21,8 +21,8 @@
 			<label index="overview.branch.links">External links:</label>
 			<label index="overview.attention.header">Attention:</label>
 			<label index="overview.attention.text">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</label>
-			<label index="label_refresh">Refresh display</label>
-			<label index="label_update">Check links</label>
+			<label index="Report">Report</label>
+			<label index="CheckLink">Check Links</label>
 			<label index="report.statistics.header">Show these types of broken links</label>
 			<label index="checklinks.statistics.header">Check these types of broken links</label>
 			<label index="report.func.title">Show this level</label>
@@ -32,6 +32,8 @@
 			<label index="hooks.file">File Links:</label>
 			<label index="hooks.external">External Links:</label>
 			<label index="hooks.linkhandler">Linkhandler Links:</label>
+			<label index="label_refresh">Refresh display</label>
+			<label index="label_update">Check links</label>
 			<label index="list.header">Listing of broken links</label>
 			<label index="list.tableHead.path">Path</label>
 			<label index="list.tableHead.element">Element</label>
@@ -63,8 +65,6 @@
 			<label index="list.report.couldnotresolvehost">Could not resolve host. The given remote host was not resolved.</label>
 			<label index="list.report.errornetworkdata">Failure with receiving network data.</label>
 			<label index="list.msg.ok">Ok</label>
-			<label index="Report">Report</label>
-			<label index="CheckLink">Check Links</label>
 			<label index="list.msg.lastRun">%1$s %2$s</label>
 			<label index="list.no.broken.links.title">No broken links to show!</label>
 			<label index="list.no.broken.links">There are no broken links to be displayed.</label>

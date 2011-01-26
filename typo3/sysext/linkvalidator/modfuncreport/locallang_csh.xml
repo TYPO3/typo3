@@ -7,7 +7,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="checkboxes.description">Click the following checkboxes to display or to hide the corresponding broken links.</label>
+			<label index="checkboxes.description">Click the following checkboxes to consider or to ignore the corresponding broken links.</label>
 			<label index="tablehead_path.description">Path to the content element, which contains the broken link.</label>
 			<label index="tablehead_element.description">Type of the element containing the broken link, its headline and the field in which the broken link is located.</label>
 			<label index="tablehead_headlink.description">The linking text.</label>
