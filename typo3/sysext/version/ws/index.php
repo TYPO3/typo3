@@ -1091,6 +1091,4 @@ $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
 
-t3lib_formprotection_Factory::get('t3lib_formprotection_BackendFormProtection')->persistTokens();
-
 ?>
