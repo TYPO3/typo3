@@ -227,7 +227,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
 		$securityMessage = $GLOBALS['LANG']->getLL('security_warning_extensions') .
 				'<br /><br />' . sprintf($GLOBALS['LANG']->getLL('security_descr'),
-			'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
+			'<a href="' . TYPO3_URL_SECURITY . '" target="_blank">', '</a>'
 		);
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',

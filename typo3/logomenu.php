@@ -66,36 +66,36 @@ class SC_logomenu extends t3lib_topmenubase {
 				$menuItems = array(
 					array(
 						'title' => 'About TYPO3',
-						'xurl' => 'http://typo3.com/',
+						'xurl' => TYPO3_URL_GENERAL,
 						'subitems' => array(
 							array(
 								'title' => 'License',
-								'xurl' => 'http://typo3.com/License.1625.0.html',
+								'xurl' => TYPO3_URL_LICENSE,
 							),
 							array(
 								'title' => 'Support',
 								'subitems' => array(
 									array(
 										'title' => 'Mailing lists',
-										'xurl' => 'http://lists.netfielders.de/cgi-bin/mailman/listinfo',
+										'xurl' => TYPO3_URL_MAILINGLISTS,
 									),
 									array(
 										'title' => 'Documentation',
-										'xurl' => 'http://typo3.org/documentation/',
+										'xurl' => TYPO3_URL_DOCUMENTATION,
 									),
 									array(
 										'title' => 'Find consultancy',
-										'xurl' => 'http://typo3.com/Consultancies.1248.0.html',
+										'xurl' => TYPO3_URL_CONSULTANCY,
 									),
 								)
 							),
 							array(
 								'title' => 'Contribute',
-								'xurl' => 'http://typo3.org/community/participate/'
+								'xurl' => TYPO3_URL_CONTRIBUTE
 							),
 							array(
 								'title' => 'Donate',
-								'xurl' => 'http://typo3.com/Donations.1261.0.html',
+								'xurl' => TYPO3_URL_DONATE,
 								'icon' => '1'
 							)
 						)

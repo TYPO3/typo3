@@ -97,7 +97,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=377&cHash=e00ac666f3
  */
 class tslib_gifBuilder extends t3lib_stdGraphic {
 
@@ -386,7 +385,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	void
 	 * @access private
 	 * @see gifBuild()
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=378&cHash=3c2ae4a1ab
 	 */
 	function make()	{
 			// Get trivial data
@@ -511,7 +509,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						case 'ELLIPSE':
 							$this->makeEllipse($this->im, $conf, $this->workArea);
 						break;
-					}					
+					}
 				}
 			}
 		}
@@ -683,8 +681,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	array		Returns an array with file information if an image was returned. Otherwise false.
 	 * @access private
 	 * @see tslib_cObj::getImgResource()
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=315&cHash=63b593a934
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=282&cHash=831a95115d
 	 */
 	function getResource($file,$fileArray)	{
 		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext']))	{

@@ -33,7 +33,7 @@ Ext.ux.TYPO3.donate = Ext.extend(Ext.util.Observable, {
 	isUnloading: false,
 	logoutButton: null,
 	ajaxRequestDefault: null,
-	donateUrl: 'http://typo3.org/donate/',
+	donateUrl: TYPO3.configuration.donateUrl,
 
 	constructor: function(config) {
 		this.ajaxRequestDefault = {

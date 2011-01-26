@@ -488,18 +488,18 @@ class SC_index {
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
 			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
 		} else {
-			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), '<a href="http://typo3.com/1316.0.html" target="_blank">', '</a>');
+			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
 		}
 
 			// Compile full copyright notice:
-		$copyrightNotice = '<a href="http://typo3.com/" target="_blank">'.
+		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">'.
 					'<img src="' . $loginImageSmall . '" alt="' . $GLOBALS['LANG']->getLL('typo3.logo') . '" align="left" />' .
 					$GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars($GLOBALS['TYPO_VERSION']):'') .
 					'</a>. ' .
 					$GLOBALS['LANG']->getLL('copyright') . ' &copy; ' . TYPO3_copyright_year . ' Kasper Sk&#229;rh&#248;j. ' . $GLOBALS['LANG']->getLL('extension.copyright') . ' ' .
-					sprintf($GLOBALS['LANG']->getLL('details.link'), '<a href="http://typo3.com/" target="_blank">http://typo3.com/</a>') . '<br /> ' .
+					sprintf($GLOBALS['LANG']->getLL('details.link'), '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>') . '<br /> ' .
 					$warrantyNote . ' ' .
-					sprintf($GLOBALS['LANG']->getLL('free.software'), '<a href="http://typo3.com/1316.0.html" target="_blank">', '</a> ') .
+					sprintf($GLOBALS['LANG']->getLL('free.software'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a> ') .
 					$GLOBALS['LANG']->getLL('keep.notice');
 
 			// Return notice:

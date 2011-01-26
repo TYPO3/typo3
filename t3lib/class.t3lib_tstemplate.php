@@ -1086,7 +1086,6 @@ class t3lib_TStemplate {
 	 * @param	integer		The number of items for which to generated individual TypoScript arrays
 	 * @return	array		The individualized TypoScript array.
 	 * @see tslib_cObj::IMGTEXT(), tslib_menu::procesItemStates()
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=289&cHash=6604390b37
 	 */
 	function splitConfArray($conf, $splitCount) {
 

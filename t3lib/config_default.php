@@ -645,6 +645,22 @@ $typo_db_host = '';				// The database host
 $typo_db_tables_script = '';	// The filename of the tables.php script in typo3conf/ folder IF the default t3lib/stddb/tables.php should NOT be used for some reason. It's recommended to use the default and modify it through the extTableDef-script, see below.
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
 
+// TYPO3 links
+define('TYPO3_URL_GENERAL', 'http://typo3.com/');
+define('TYPO3_URL_ORG', 'http://typo3.org/');
+define('TYPO3_URL_LICENSE', 'http://typo3.org/license');
+define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/');
+define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
+define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
+define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/');
+define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'http://typo3.org/documentation/document-library/references/doc_core_tsconfig/current/view/');
+define('TYPO3_URL_CONSULTANCY', 'http://typo3.com/Consultancies.1248.0.html');
+define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/community/participate/');
+define('TYPO3_URL_DONATE', 'http://typo3.com/Donations.1261.0.html');
+define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');
+define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/packages/');
+define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/1275.0.html');
+
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
 if (!@is_file(PATH_typo3conf . 'localconf.php')) {
 	throw new Exception('localconf.php is not found!');

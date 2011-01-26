@@ -110,7 +110,6 @@ class t3lib_matchCondition extends t3lib_matchCondition_frontend {
 	 * @param	string		The condition to match against its criterias.
 	 * @return	boolean		Returns true or false based on the evaluation.
 	 * @see t3lib_tsparser::parse()
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=292&cHash=c6c7d43d2f
 	 */
 	function evalConditionStr($string) {
 		return parent::evaluateCondition($string);
@@ -144,7 +143,6 @@ class t3lib_matchCondition extends t3lib_matchCondition_frontend {
 	 * @param	string		User agent string from browser, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	string		A code. See link.
 	 * @access private
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=296&cHash=a8ae66c7d6
 	 */
 	function whichDevice($useragent) {
 		return parent::getDeviceType($useragent);

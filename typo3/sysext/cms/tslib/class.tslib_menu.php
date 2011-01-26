@@ -1698,7 +1698,6 @@ class tslib_menu {
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=387&cHash=73a3116ab8
  */
 class tslib_tmenu extends tslib_menu {
 
@@ -1897,7 +1896,6 @@ class tslib_tmenu extends tslib_menu {
 	 *
 	 * @param	string		Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
 	 * @return	string		The resulting HTML of the image, if any.
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=388&cHash=a7486044cd
 	 */
 	function getBeforeAfter($pref)	{
 		$res = '';
@@ -2067,7 +2065,6 @@ class tslib_tmenu extends tslib_menu {
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=384&cHash=93a7644cba
  */
 class tslib_gmenu extends tslib_menu {
 
@@ -2613,7 +2610,6 @@ class tslib_gmenu extends tslib_menu {
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=389&cHash=fcf18c5d9f
  */
 class tslib_imgmenu extends tslib_menu {
 
@@ -2868,7 +2864,6 @@ class tslib_imgmenu extends tslib_menu {
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=391&cHash=563435abbc
  */
 class tslib_jsmenu extends tslib_menu {
 

@@ -489,7 +489,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		$pageRenderer->addInlineComment('	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
 	TYPO3 is copyright ' . TYPO3_copyright_year . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
-	Information and contribution at http://typo3.com/ and http://typo3.org/
+	Information and contribution at ' . TYPO3_URL_GENERAL . ' and ' . TYPO3_URL_ORG . '
 ');
 
 		if ($GLOBALS['TSFE']->baseUrl) {

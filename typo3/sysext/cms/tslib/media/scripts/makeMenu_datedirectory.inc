@@ -32,7 +32,6 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Olaf.Schuemann@erz.be.ch
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=358&cHash=5400c1c06a
  * @see makeMenu_keywords_updated.inc
  */
 

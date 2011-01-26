@@ -4464,7 +4464,7 @@ final class t3lib_BEfunc {
 			);
 		} else {
 			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:no.warranty'),
-				'<a href="http://typo3.com/1316.0.html" target="_blank">', '</a>'
+				'<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>'
 			);
 		}
 		$cNotice = '<a href="http://typo3.com/" target="_blank">' .
@@ -4477,11 +4477,11 @@ final class t3lib_BEfunc {
 				htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:extension.copyright') . ' ' .
 				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:details.link'),
-					'<a href="http://typo3.com/" target="_blank">http://typo3.com/</a>'
+					'<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>'
 				) . ' ' .
 				strip_tags($warrantyNote, '<a>') . ' ' .
 				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:free.software'),
-					'<a href="http://typo3.com/1316.0.html" target="_blank">', '</a> '
+					'<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a> '
 				) .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:keep.notice');
 

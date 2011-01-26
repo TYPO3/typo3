@@ -46,7 +46,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see tslib_fe::includeTCA(), typo3/init.php, t3lib/stddb/load_ext_tables.php
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=262&cHash=4f12caa011
  */
 
 

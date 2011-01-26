@@ -64,7 +64,6 @@ class tx_feedit_editpanel {
 	 * @param	string		The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
 	 * @param	array		Alternative data array to use. Default is $this->data
 	 * @return	string		The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=375&cHash=7d8915d508
 	 */
 	public function editPanel($content, array $conf, $currentRecord='', array $dataArr=array(), $table='', $allow='', $newUID=0, array $hiddenFields=array()) {
 			// Special content is about to be shown, so the cache must be disabled.

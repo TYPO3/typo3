@@ -78,7 +78,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=385&cHash=648519dd66
  * @see diff.xmenu_layers.txt
  */
 class tslib_tmenu_layers extends tslib_tmenu {

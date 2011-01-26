@@ -710,7 +710,6 @@
 	 * 2) Using hook which enables features like those provided from "simulatestatic" or "realurl" extension (AKA "Speaking URLs")
 	 *
 	 * @return	void
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
 	 */
 	function checkAlternativeIdMethods()	{
 		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
@@ -2497,7 +2496,6 @@
 	 *
 	 * @return	void
 	 * @see tslib_feTCE
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=342&cHash=fdf55adb3b
 	 */
 	function fe_tce()	{
 		$fe_tce = t3lib_div::makeInstance('tslib_feTCE');

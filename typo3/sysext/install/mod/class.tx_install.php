@@ -4273,7 +4273,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				<a href="http://www.freetype.org/">http://www.freetype.org/</a>
 				<br />
 				Generally, TYPO3 packages are listed at
-				<a href="http://typo3.org/download/packages/">http://typo3.org/download/packages/</a>
+				<a href="' . TYPO3_URL_DOWNLOAD . '">' . TYPO3_URL_DOWNLOAD . '</a>
 			</p>
 		';
 	}
@@ -4297,7 +4297,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			subsequently includes the localconf.php file in which you can then
 			override values.
 			<br />
-			See this page for <a href="http://typo3.org/1275.0.html">more
+			See this page for <a href="' . TYPO3_URL_SYSTEMREQUIREMENTS . '">more
 			information about system requirements.</a>
 		</p>';
 	}
@@ -8082,16 +8082,16 @@ $out="
 			<p>
 				<strong>TYPO3 CMS.</strong> Copyright &copy; 1998-' . date('Y') . '
 				Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective
-				owners. Go to <a href="http://typo3.com/">http://typo3.com/</a>
+				owners. Go to <a href="' . TYPO3_URL_GENERAL . '">' . TYPO3_URL_GENERAL . '</a>
 				for details. TYPO3 comes with ABSOLUTELY NO WARRANTY;
-				<a href="http://typo3.com/1316.0.html">click</a> for details.
+				<a href="' . TYPO3_URL_LICENSE . '">click</a> for details.
 				This is free software, and you are welcome to redistribute it
-				under certain conditions; <a href="http://typo3.com/1316.0.html">click</a>
+				under certain conditions; <a href="' . TYPO3_URL_LICENSE . '">click</a>
 				for details. Obstructing the appearance of this notice is prohibited by law.
 			</p>
 			<p>
-				<a href="http://typo3.org/donate"><strong>Donate</strong></a> |
-				<a href="http://typo3.org">TYPO3.org</a>
+				<a href="' . TYPO3_URL_DONATE . '"><strong>Donate</strong></a> |
+				<a href="' . TYPO3_URL_ORG . '">TYPO3.org</a>
 			</p>
 		';
 

@@ -98,7 +98,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=396&cHash=d267c36546
  */
 class user_feAdmin	{
 
@@ -145,7 +144,6 @@ class user_feAdmin	{
 	 * @param	string		Empty string, ignore.
 	 * @param	array		TypoScript properties following the USER_INT object which uses this library
 	 * @return	string		HTML content
-	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=396&cHash=d267c36546
 	 */
 	function init($content,$conf)	{
 		$this->conf = $conf;
@@ -986,7 +984,7 @@ class user_feAdmin	{
 			if (!is_array($this->dataArr)) {
 				$this->dataArr = array();
 			}
-			
+
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			if ($this->conf['create.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
