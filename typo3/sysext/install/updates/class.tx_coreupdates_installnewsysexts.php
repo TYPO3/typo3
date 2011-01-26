@@ -48,7 +48,7 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 		$result = FALSE;
 		$description = '
 			<p>
-				Install the following system extensions that are new in TYPO3
+				Install the following system extensions that are new since TYPO3
 				4.3:
 			</p>
 		';
