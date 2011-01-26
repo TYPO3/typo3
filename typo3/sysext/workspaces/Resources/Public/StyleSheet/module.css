@@ -45,6 +45,10 @@ div.typo3-dyntabmenu-divs {
 .x-toolbar {
 	background:none !important;
 }
+/* fixes positioning of toolbar in IE6 */
+* html .x-panel-tbar {
+	border: 1px none;
+}
 .x-grid3 {
 	background: none !important;
 }
