@@ -48,7 +48,8 @@ class FakeDbConnection {
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
 
-		include_once(t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php');
+		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
+		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php');
 
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;

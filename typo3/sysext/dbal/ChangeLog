@@ -1,5 +1,6 @@
 2011-01-26  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed unit tests
 	* Set version to 1.2.1
 
 2011-01-25  Xavier Perseguers  <typo3@perseguers.ch>
