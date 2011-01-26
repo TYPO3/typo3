@@ -6,6 +6,7 @@
 
 	* Follow-up to #17321: Add missing PHPdoc
 	* Fixed bug #17202: Cursor not changing to help over some labels
+	* Fixed bug #17279: Old Contextmenu: Partly broken - Mount as TreeRoot / Hide / Unhide / Delete (Thanks to Stefan Galinski)
 
 2011-01-26  Sebastian Kurfuerst  <sebastian@typo3.org>
 
