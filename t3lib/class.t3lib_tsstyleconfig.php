@@ -152,6 +152,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 	 * @param  string  $script
 	 * @param  string $addFields
 	 * @param  string $extKey
+	 * @param  bool  Adds opening <form> tag to the ouput, if TRUE
 	 * @return  string the form
 	 */
 	function ext_getForm($cat, $theConstants, $script = "", $addFields = "", $extKey = "", $addFormTag = TRUE) {
