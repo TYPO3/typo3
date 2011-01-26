@@ -8,6 +8,7 @@
 
 2011-01-26  Steffen Kamper  <steffen@typo3.org>
 
+	* Added manual to workspace extension
 	* Merge of extension manager for 4.5.0
 	* Fixed bug #17319: Incorrect/missing array entries in t3lib_cs regarding Galician and Georgian
 
