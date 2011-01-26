@@ -1,5 +1,6 @@
 2011-01-26  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #17327: Alter table in install tool does not work
 	* Fixed unit tests
 	* Set version to 1.2.1
 
