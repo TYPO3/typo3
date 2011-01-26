@@ -1,5 +1,6 @@
 2011-01-25  Michael Miousse  <michael.miousse@infoglobe.ca>
-	* Added Feature #12447 Clearly separate Checks from Report in module	
+
+	* Added Feature #12447: Clearly separate Checks from Report in the module (thanks to Patrick Gaumond, Philipp Gampe, Steffen Kamper and Christopher Stelmaszyk)
 
 2011-01-21  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
