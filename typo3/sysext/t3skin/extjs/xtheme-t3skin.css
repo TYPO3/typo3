@@ -803,7 +803,6 @@ ul.x-tab-strip-bottom{
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
 	color: #434343;
-	position: relative;
 }
 
 .x-btn-icon {
@@ -821,11 +820,6 @@ ul.x-tab-strip-bottom{
 	background-image: linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
 	border-color: #737f91;
 	color: #1e1e1e;
-}
-
-.x-btn-click {
-	top: 1px;
-	left: 1px;
 }
 
 .x-btn-disabled *{
