@@ -1,6 +1,24 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0:
+==================
+included in TYPO3 4.5.0 LTS.
+
+Here, only smaller bugs and inconsistencies have been fixed. For a description of bigger features, see below to the versions where they were introduced.
+
+Full Changes for 1.3.0:
+=======================
+
+[+TASK] Fluid (ViewHelpers): fixed typo in doc comment examples of emailViewhelper
+[+BUGFIX] Fluid (Tests): Fixed CropViewHelper unit test
+[+BUGFIX] Fixed comparison of Objects
+	Objects in comparison expressions were compared lazily
+	with == before this change. Now, they are compared with
+	===, which is the expected behavior on objects.
+[+TASK] Fluid (ViewHelpers): Extended inline documentation of FlashMessages ViewHelper
+[+BUGFIX] Fluid (Tests): Fixed Fluid unit tests!
+
 Changes for 1.3.0 RC1:
 ======================
 included in TYPO3 4.5.0 RC1.
