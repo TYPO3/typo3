@@ -1,3 +1,7 @@
+2011-01-26 Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0
+
 2011-01-26  Marco Bresch <typo3@starfinanz.de>
 
 	* Fixed bug #12534: Positioning of toolbar in IE6 (Thanks to Markus Antecki)
