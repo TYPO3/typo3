@@ -1,6 +1,7 @@
 2011-01-26  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Follow-up to #17321: Add missing PHPdoc
+	* Fixed bug #17202: Cursor not changing to help over some labels
 
 2011-01-26  Sebastian Kurfuerst  <sebastian@typo3.org>
 
