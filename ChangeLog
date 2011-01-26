@@ -4,6 +4,7 @@
 
 2011-01-26  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17333: Rename "Update Wizard" into "Upgrade Wizard"
 	* Merged Linkvalidator 1.0.0
 
 2011-01-26  Steffen Gebert  <steffen@steffen-gebert.de>

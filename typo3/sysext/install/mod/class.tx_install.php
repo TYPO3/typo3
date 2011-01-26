@@ -234,7 +234,7 @@ class tx_install extends t3lib_install {
 	var $menuitems = array(
 		'config' => 'Basic Configuration',
 		'database' => 'Database Analyser',
-		'update' => 'Update Wizard',
+		'update' => 'Upgrade Wizard',
 		'images' => 'Image Processing',
 		'extConfig' => 'All Configuration',
 		'cleanup' => 'Clean up',
@@ -826,7 +826,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							fields in the database.
 						</p>
 						<p>
-							<strong>3: Update Wizard</strong>
+							<strong>3: Upgrade Wizard</strong>
 							<br />
 							Here you will find update methods taking care of
 							changes to the TYPO3 core which are not backwards
@@ -6788,7 +6788,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				
 			break;
 		}
-		$this->message('Update Wizard', $title, $content);
+		$this->message('Upgrade Wizard', $title, $content);
 	}
 
 	/**
