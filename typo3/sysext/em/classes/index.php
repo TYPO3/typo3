@@ -227,7 +227,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
 		$securityMessage = $GLOBALS['LANG']->getLL('security_warning_extensions') .
 				'<br /><br />' . sprintf($GLOBALS['LANG']->getLL('security_descr'),
-			'<a href="' . TYPO3_URL_SECURITY . '" target="_blank">', '</a>'
+			'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
 		);
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
@@ -1565,14 +1565,15 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							}
 						} elseif ($this->CMD['remove']) {
 							$updates .= $this->install->checkClearCache($list[$extKey]);
-
-							if ($updates && !$this->noDocHeader) {
+							if ($updates) {
 								$updates = '
 								<form action="' . $this->script . '" method="post">' . $updates . '
 								<br /><input type="submit" name="write" value="' .
 										$GLOBALS['LANG']->getLL('ext_details_remove_ext') . '" />
 								<input type="hidden" name="_do_install" value="1" />
 								<input type="hidden" name="_clrCmd" value="' . $this->CMD['clrCmd'] . '" />
+								<input type="hidden" name="CMD[showExt]" value="' . $this->CMD['showExt'] . '" />
+								<input type="hidden" name="CMD[remove]" value="' . $this->CMD['remove'] . '" />
 								<input type="hidden" name="standAlone" value="' . $this->CMD['standAlone'] . '" />
 								<input type="hidden" name="silentMode" value="' . $this->CMD['silentMode'] . '" />
 								' . ($this->noDocHeader ? '<input type="hidden" name="nodoc" value="1" />' : '') . '

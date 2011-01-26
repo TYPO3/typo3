@@ -137,7 +137,7 @@ class tx_em_Parser_ExtensionXmlPullParser extends tx_em_Parser_ExtensionXmlAbstr
 				$this->uploadcomment = $this->getElementValue($elementName);
 				break;
 			case 'dependencies':
-				$this->dependencies = $this->getElementValue($elementName);
+				$this->dependencies = $this->convertDependencies($this->getElementValue($elementName));
 				break;
 			case 'authorname':
 				$this->authorname = $this->getElementValue($elementName);

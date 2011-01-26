@@ -78,7 +78,9 @@ TYPO3.EM.Layouts = {
 	remoteExtensionInfo: function() {
 		return new Ext.XTemplate(
 			'<div class="em-info">',
-				'<p><label>' + TYPO3.lang.extInfoArray_title + ':</label>{title}</p>',
+				'<p><label>' + TYPO3.lang.extInfoArray_title + ':,' +
+						'</label><a href="http://typo3.org/extensions/repository/view/{extkey}/current/" target="_blank" title="'
+		 				+ TYPO3.lang.cmd_viewOnline + '">{title}</a></p>',
 				'<p><label>' + TYPO3.lang.listRowHeader_ext_key + '</label>{extkey}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_category + ':</label>{[TYPO3.EM.App.getCategoryLabel(values.category)]}</p>',
 				'<p><label>' + TYPO3.lang.extInfoArray_version + ':</label>{version}</p>',

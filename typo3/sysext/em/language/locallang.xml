@@ -611,6 +611,7 @@
 			<label index="cmd_redo">Redo</label>
 			<label index="cmd_indent">Indent</label>
 			<label index="cmd_jslint">JS Lint</label>
+			<label index="cmd_viewOnline">View online</label>
 			<label index="msg_terupload">Extension "{0}" was uploaded to the TER.</label>
 			<label index="msg_uploaded">Extension "{0}" was uploaded.</label>
 			<label index="msg_error">Error</label>

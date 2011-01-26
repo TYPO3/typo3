@@ -85,8 +85,10 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
 
 	refreshTrigger: function() {
 		if (this.getRawValue().length > 0) {
+			this.hasSearch = true;
 			this.triggers[0].show();
 		} else {
+			this.hasSearch = false;
 			this.triggers[0].hide();
 		}
 	}

@@ -746,10 +746,14 @@ class tx_em_Connection_ExtDirectServer {
 		$limit = htmlspecialchars($parameters->start . ', ' . $parameters->limit);
 		$orderBy = htmlspecialchars($parameters->sort);
 		$orderDir = htmlspecialchars($parameters->dir);
+		if ($orderBy == '') {
+			$orderBy = 'relevance';
+			$orderDir = 'ASC';
+		}
 		if ($orderBy === 'statevalue') {
 			$orderBy = 'cache_extensions.state ' . $orderDir;
 		} elseif ($orderBy === 'relevance') {
-			$orderBy = 'cache_extensions.relevance ' . $orderDir . ', cache_extensions.title ' . $orderDir;
+			$orderBy = 'relevance ' . $orderDir . ', cache_extensions.title ' . $orderDir;
 		} else {
 			$orderBy = 'cache_extensions.' . $orderBy . ' ' . $orderDir;
 		}

@@ -426,6 +426,24 @@ abstract class tx_em_Parser_ExtensionXmlAbstractParser extends tx_em_Parser_XmlA
 	protected function throwException($message = "", $code = 0) {
 		throw new tx_em_ExtensionXmlException(get_class($this) . ': ' . $message, $code);
 	}
+
+	/**
+	 * Convert dependencies from TER format to EM_CONF format
+	 *
+	 * @param  string  $dependencies  serialized dependency array
+	 * @return void
+	 */
+	protected function convertDependencies($dependencies) {
+		$newDependencies = array();
+		$dependenciesArray = unserialize($dependencies);
+		debug($dependenciesArray, '$dependenciesArray');
+		if (is_array($dependenciesArray)) {
+			foreach ($dependenciesArray as $version) {
+				$newDependencies[$version['kind']][$version['extensionKey']] = $version['versionRange'];
+			}
+		}
+		return serialize($newDependencies);
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/parser/class.tx_em_parser_extensionxmlabstractparser.php'])) {

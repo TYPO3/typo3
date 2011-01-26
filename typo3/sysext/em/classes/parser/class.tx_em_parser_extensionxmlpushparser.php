@@ -186,7 +186,7 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 					$this->uploadcomment = $data;
 					break;
 				case 'dependencies':
-					$this->dependencies = $data;
+					$this->dependencies = $this->convertDependencies($data);
 					break;
 				case 'authorname':
 					$this->authorname = $data;

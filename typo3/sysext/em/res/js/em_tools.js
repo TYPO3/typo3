@@ -74,6 +74,7 @@ TYPO3.EM.Tools = function() {
 
 		refreshMenu: function(record, installAction) {
 			if (installAction == 'import') {
+				Ext.StoreMgr.get('repositoryliststore').getById(record.extkey).set('exists', 1);
 				TYPO3.EM.Tools.displayLocalExtension(record.extkey, true);
 			}
 			if (top.TYPO3ModuleMenu && installAction == 'install') {
