@@ -1,6 +1,31 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.3.0:
+==================
+included in TYPO3 4.5.0 LTS.
+
+This release fixes an important bug in the persistence layer, which caused related objects not to be updated.
+
+Full Changes for 1.3.0:
+=======================
+
+[+BUGFIX] Extbase (Tests): reset added t3lib_div instances in UriBuilder & Extension tests
+[+BUGFIX] Extbase (Persistence): Fixed updating of related objects. Thanks to Björn Steinbrück and Bastian Waidelich for digging into this issue. Resolves #9270, #9182, #10211.
+	This is the second attempt after having reverted the first one in r3920. The patch includes some clean-up. Important additional changes:
+	* The objects within an ObjectStorage are now added to the queue. This is necessary to persist changes made to those contained objects without having changed the composition of objects.
+	* Moved the _memorizeCleanState() from the AbstractEntity to the AbstractDomainObject. In theory ValueObjects are immutable, but we need this as sometimes ValueObjects are stored in two steps (1. to get a UID, 2. to persist its properties). Maybe we have to recheck this for 1.4.
+	* Fixed some possible problems with detecting an ObjectStorage (namely SplObjectStorage->getUid()).
+[+TASK] Extbase (Persistence): Added two properties to describe a weird PHP behavior if calling current() on an ObjectStorage.
+[+BUGFIX] Extbase (MVC): Fixed argument order of Tx_Extbase_Utility_Extension::isActionCacheable() call in UriBuilder
+[+TASK] Extbase (DomainObject): Added setPid() and getPid() to the DomainObjectInterface and removed the "final" keyword.
+[~TASK] Extbase: Moved isActionCacheable() from UriBuilder to Utility/Extension helper class
+	Moved the protected method to a public static functions in Tx_Extbase_Utility_Extension
+	and added respective unit tests.
+	Note: We're not happy with all the public static functions in Utility/Extension.php
+	but that's currently the place for those helper functions.
+[+TASK] Extbase (Utility): implemented validation of arguments passed to sql statements in Tx_Extbase_Utility_Cache. (resolves #11978)
+
 Changes for 1.3.0 RC1:
 ======================
 included in TYPO3 4.5.0 RC1.

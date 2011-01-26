@@ -22,7 +22,7 @@
 
 /**
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * var Tx_Fluid_ViewHelpers_Format_CropViewHelper
@@ -34,11 +34,19 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extba
 	 */
 	protected $mockContentObject;
 
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $mockConfigurationManager;
+
 	public function setUp() {
 		parent::setUp();
 
 		$this->mockContentObject = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CropViewHelper', array('renderChildren'), array($this->mockContentObject));
+		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$this->mockConfigurationManager->expects($this->any())->method('getContentObject')->will($this->returnValue($this->mockContentObject));
+		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CropViewHelper', array('renderChildren'));
+		$this->viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Some Content'));
 	}
 

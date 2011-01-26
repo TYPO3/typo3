@@ -50,7 +50,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 	public function renderCorrectlySetsTagName() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
 
 		$this->viewHelper->initialize();
@@ -68,7 +68,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('someName');
 		$mockTagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
 			'name' => 'someName',

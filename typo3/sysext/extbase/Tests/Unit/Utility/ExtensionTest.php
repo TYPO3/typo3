@@ -123,6 +123,7 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 	public function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		t3lib_div::purgeInstances();
 	}
 
 	/**
@@ -493,6 +494,42 @@ plugin.tx_myextension {
 		$actualResult = Tx_Extbase_Utility_Extension::getPluginNameByAction('CurrentExtension', 'ControllerName', 'otherAction');
 		$expectedResult = 'CurrentPlugin';
 		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function isActionCacheableReturnsTrueByDefault() {
+		$mockConfiguration = array();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($mockConfiguration));
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
+		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
+		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
+
+		$actualResult = Tx_Extbase_Utility_Extension::isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
+		$this->assertTrue($actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function isActionCacheableReturnsFalseIfActionIsNotCacheable() {
+		$mockConfiguration = array(
+			'controllerConfiguration' => array(
+				'SomeController' => array(
+					'nonCacheableActions' => array('someAction')
+				)
+			)
+		);
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($mockConfiguration));
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
+		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
+		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
+
+		$actualResult = Tx_Extbase_Utility_Extension::isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
+		$this->assertFalse($actualResult);
 	}
 
 	/**

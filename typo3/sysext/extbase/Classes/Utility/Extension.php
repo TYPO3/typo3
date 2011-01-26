@@ -507,6 +507,29 @@ tt_content.' . $pluginSignature . ' {
 	}
 
 	/**
+	 * Checks if the given action is cacheable or not.
+	 *
+	 * @param string $extensionName Name of the target extension, without underscores
+	 * @param string $pluginName Name of the target plugin
+	 * @param string $controllerName Name of the target controller
+	 * @param string $actionName Name of the action to be called
+	 * @return boolean TRUE if the specified plugin action is cacheable, otherwise FALSE
+	 */
+	static public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+
+		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
+			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])
+			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
+			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
+				return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
 	 * Determines the target page of the specified plugin.
 	 * If plugin.tx_$pluginSignature.view.defaultPid is set, this value is used as target page id
 	 * If defaultPid is set to "auto", a the target pid is determined by loading the tt_content record that contains this plugin

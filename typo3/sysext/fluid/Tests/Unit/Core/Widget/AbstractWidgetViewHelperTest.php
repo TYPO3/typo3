@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_Core_Widget_AbstractWidgetViewHelper
@@ -67,15 +67,17 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
 
 		$this->widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
-		$this->viewHelper->injectWidgetContext($this->widgetContext);
 
 		$this->objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->objectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Widget_WidgetContext')->will($this->returnValue($this->widgetContext));
 		$this->viewHelper->injectObjectManager($this->objectManager);
 
+		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
+
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
+		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->_set('controllerContext', $this->controllerContext);
 
-		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
 	}
 
 	/**
@@ -167,9 +169,9 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 		// Initial Setup
 		$widgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
-		$response = $this->getMock('Tx_Fluid_MVC_Web_Response');
+		$response = $this->getMock('Tx_Extbase_MVC_Web_Response');
 		$this->objectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Widget_WidgetRequest')->will($this->returnValue($widgetRequest));
-		$this->objectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_MVC_Web_Response')->will($this->returnValue($response));
+		$this->objectManager->expects($this->at(1))->method('create')->with('Tx_Extbase_MVC_Web_Response')->will($this->returnValue($response));
 
 		// Widget Context is set
 		$widgetRequest->expects($this->once())->method('setWidgetContext')->with($this->widgetContext);

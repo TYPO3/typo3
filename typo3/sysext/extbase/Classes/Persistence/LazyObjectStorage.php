@@ -36,6 +36,16 @@
 class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage implements Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
+	 * This field is only needed to make debugging easier:
+	 * If you call current() on a class that implements Iterator, PHP will return the first field of the object
+	 * instead of calling the current() method of the interface.
+	 * We use this unusual behavior of PHP to return the warning below in this case.
+	 *
+	 * @var string
+	 */
+	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_LazyObjectStorage. To retrieve the first result, you can use the getFirst() method.';
+
+	/**
 	 * @var Tx_Extbase_Persistence_DataMapper
 	 */
 	protected $dataMapper;

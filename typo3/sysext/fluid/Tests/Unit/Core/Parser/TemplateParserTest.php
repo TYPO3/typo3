@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php');
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test
@@ -169,9 +169,12 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Base
 		$mockState->expects($this->once())->method('pushNodeToStack')->with($mockRootNode);
 		$mockState->expects($this->once())->method('countNodeStack')->will($this->returnValue(1));
 
+		$mockTemplateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Parser_ParsingState')->will($this->returnValue($mockState));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($mockRootNode));
+		$mockObjectManager->expects($this->at(2))->method('create')->with('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer')->will($this->returnValue($mockTemplateVariableContainer));
 
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('dummy'));
 		$templateParser->injectObjectManager($mockObjectManager);
@@ -190,9 +193,12 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Base
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('countNodeStack')->will($this->returnValue(2));
 
+		$mockTemplateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Parser_ParsingState')->will($this->returnValue($mockState));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($mockRootNode));
+		$mockObjectManager->expects($this->at(2))->method('create')->with('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer')->will($this->returnValue($mockTemplateVariableContainer));
 
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('dummy'));
 		$templateParser->injectObjectManager($mockObjectManager);
@@ -206,11 +212,16 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Base
 	 */
 	public function buildObjectTreeDelegatesHandlingOfTemplateElements() {
 		$mockRootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
+
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('countNodeStack')->will($this->returnValue(1));
+
+		$mockTemplateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Parser_ParsingState')->will($this->returnValue($mockState));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($mockRootNode));
+		$mockObjectManager->expects($this->at(2))->method('create')->with('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer')->will($this->returnValue($mockTemplateVariableContainer));
 
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('textHandler', 'openingViewHelperTagHandler', 'closingViewHelperTagHandler', 'textAndShorthandSyntaxHandler'));
 		$templateParser->injectObjectManager($mockObjectManager);

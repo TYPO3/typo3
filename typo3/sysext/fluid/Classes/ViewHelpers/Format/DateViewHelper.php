@@ -41,6 +41,14 @@
  * (depending on the current time)
  * </output>
  *
+ * <code title="Localized dates using strftime date format">
+ * <f:format.date format="%d. %B %Y">{dateObject}</f:format.date>
+ * </code>
+ * <output>
+ * 13. Dezember 1980
+ * (depending on the current date and defined locale. In the example you see the 1980-12-13 in a german locale)
+ * </output>
+ *
  * <code title="strtotime string">
  * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
  * </code>

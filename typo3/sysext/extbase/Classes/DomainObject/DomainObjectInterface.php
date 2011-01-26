@@ -44,6 +44,20 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	public function getUid();
 
 	/**
+	 * Setter for the pid.
+	 *
+	 * @return void
+	 */
+	public function setPid($pid);
+
+	/**
+	 * Getter for the pid.
+	 *
+	 * @return int The pid or NULL if none set yet.
+	 */
+	public function getPid();
+
+	/**
 	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
 	 *
 	 * @return boolean

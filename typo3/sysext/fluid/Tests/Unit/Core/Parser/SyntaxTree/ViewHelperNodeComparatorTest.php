@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
@@ -275,6 +275,52 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('11 <= -2.1'));
 
 		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function objectsAreComparedStrictly() {
+		$object1 = new stdClass();
+		$object2 = new stdClass();
+
+		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+
+		$object1Node = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', array('evaluate'));
+		$object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
+
+		$object2Node = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', array('evaluate'));
+		$object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
+
+		$rootNode->addChildNode($object1Node);
+		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('=='));
+		$rootNode->addChildNode($object2Node);
+
+		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function objectsAreComparedStrictlyInUnequalComparison() {
+		$object1 = new stdClass();
+		$object2 = new stdClass();
+
+		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+
+		$object1Node = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', array('evaluate'));
+		$object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
+
+		$object2Node = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', array('evaluate'));
+		$object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
+
+		$rootNode->addChildNode($object1Node);
+		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('!='));
+		$rootNode->addChildNode($object2Node);
+
+		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
 	}
 }
 

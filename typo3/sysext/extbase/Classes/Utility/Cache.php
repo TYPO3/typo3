@@ -67,7 +67,10 @@ class Tx_Extbase_Utility_Cache {
 				$pageCache->flush();
 			}
 		} elseif ($pageIds !== NULL) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN (' . implode(',', $pageIds) . ')');
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				'cache_pages',
+				'page_id IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds)) . ')'
+			);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pages');
 		}
@@ -91,7 +94,10 @@ class Tx_Extbase_Utility_Cache {
 				$pageSectionCache->flush();
 			}
 		} elseif ($pageIds !== NULL) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN (' . implode(',', $pageIds) . ')');
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				'cache_pagesection',
+				'page_id IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds)) . ')'
+			);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pagesection');
 		}
