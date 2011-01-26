@@ -35,6 +35,7 @@
 2011-01-25  Steffen Kamper  <steffen@typo3.org>
 
 	* Merge of extension manager for RC3
+	* Fixed bug #17321: In new em, t3lib_tsstyleconfig adds another formtag
 	* Fixed bug #17300: CSRF token invalid error when using the clickmenu in record list to delete a record. (Thanks to Helmut Hummel)
 	* Fixed bug #17299: Unable to set new Install Tool Password (Thanks to Helmut Hummel)
 	* Merge of linkvalidator for RC3
