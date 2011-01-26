@@ -631,10 +631,10 @@ class tx_cms_layout extends recordList {
 							// If not, a new header without any buttons will be generated.
 							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} else if ($head[$columnKey]) {
-								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
-							} else {
+							} else if ($columnConfig['colPos']) {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
+							} else {
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
 							}
 
 							$grid .= '</td>';
