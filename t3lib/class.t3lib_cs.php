@@ -262,8 +262,8 @@ class t3lib_cs {
 		'fi' => 'west_european', // Finish
 		'fo' => 'west_european', // Faroese
 		'fr' => 'west_european', // French
-		'ga' => 'west_european', // Galician
-		'ge' => 'unicode', // Georgian
+		'ga' => 'west_european', // Irish
+		'gl' => 'west_european', // Galician
 		'gr' => 'greek',
 		'he' => 'hebrew', // Hebrew (since 1998)
 		'hi' => 'unicode', // Hindi
@@ -273,6 +273,7 @@ class t3lib_cs {
 		'is' => 'west_european', // Icelandic
 		'it' => 'west_european', // Italian
 		'ja' => 'japanese',
+		'ka' => 'unicode', // Georgian
 		'kl' => 'west_european', // Greenlandic
 		'km' => 'unicode', // Khmer
 		'ko' => 'korean',
@@ -535,6 +536,8 @@ class t3lib_cs {
 		'jp' => 'ja',
 		'qc' => 'fr_CA',
 		'vn' => 'vi',
+		'ge' => 'ka',
+		'ga' => 'gl',
 	);
 
 	/**
