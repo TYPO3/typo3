@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "linkvalidator".
 #
-# Auto generated 26-01-2011 09:05
+# Auto generated 26-01-2011 20:08
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

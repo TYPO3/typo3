@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "info".
 #
-# Auto generated 22-01-2011 20:10
+# Auto generated 26-01-2011 20:08
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:7:{s:12:"ext_icon.gif";s:4:"8c52";s:14:"ext_tables.php";s:4:"d1b4";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"a6eb";s:14:"mod1/index.php";s:4:"811d";s:13:"mod1/info.gif";s:4:"8a42";s:12:"mod1/log.gif";s:4:"70bb";}',
+	'_md5_values_when_last_written' => 'a:7:{s:12:"ext_icon.gif";s:4:"8c52";s:14:"ext_tables.php";s:4:"d1b4";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"a6eb";s:14:"mod1/index.php";s:4:"83a6";s:13:"mod1/info.gif";s:4:"8a42";s:12:"mod1/log.gif";s:4:"70bb";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
