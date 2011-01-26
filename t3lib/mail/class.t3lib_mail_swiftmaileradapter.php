@@ -79,7 +79,11 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			return TRUE;
 		}
 		$this->message->setSubject($subject);
-		$this->message->setTo($to);
+			// handle recipients
+		$toAddresses = $this->parseAddresses($to);
+		if (count($toAddresses) > 0) {
+			$this->message->setTo($toAddresses);
+		}
 			// handle additional headers
 		$headers = t3lib_div::trimExplode(LF, $additionalHeaders, TRUE);
 		$this->messageHeaders = $this->message->getHeaders();

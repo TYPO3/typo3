@@ -1,3 +1,7 @@
+2011-01-26  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17336: Swift Mailer Adapter does not parse To: addresses 
+
 2011-01-26  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17319: Incorrect/missing array entries in t3lib_cs regarding Galician and Georgian
