@@ -45,6 +45,10 @@ div.typo3-dyntabmenu-divs {
 .x-toolbar {
 	background:none !important;
 }
+/* fixes positioning of toolbar in IE6 */
+* html .x-panel-tbar {
+	border: 1px none;
+}
 .x-grid3 {
 	background: none !important;
 }
@@ -73,7 +77,7 @@ div.x-grid3-row img.x-action-col-icon {
 	display:none;
 }
 
-div.x-grid3-row:hover img.x-action-col-icon {
+div.x-grid3-row-over img.x-action-col-icon {
 	display:inline-block;
 }
 

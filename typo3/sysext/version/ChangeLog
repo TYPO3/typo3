@@ -1,3 +1,8 @@
+2011-01-26  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Reapplied #17284: Formprotection persistToken method is called too often, causing unnecessary DB-load - included in 4.5.0 (Thanks to Helmut Hummel / Ernesto Baschny)
+	* Raised version to 4.5.0
+
 2011-01-25  Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Raised version to 4.5.0rc2
