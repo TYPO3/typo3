@@ -54,6 +54,7 @@
 
 2011-01-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17321: In new em, t3lib_tsstyleconfig adds another formtag
 	* Merge of extension manager for RC2
 	* Fixed bug #17275: Pagetree preloads huge amount of pages with initial load / refresh
 	* Follow-up to #17222: in case of render outside the BE set default value
