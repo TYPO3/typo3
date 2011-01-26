@@ -1,6 +1,8 @@
 2011-01-21  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)
+	* Cleaned emconf for the release of TYPO3 4.5
+	* Release linkvalidator 1.0.0
 
 2011-01-25  Michael Miousse  <michael.miousse@infoglobe.ca>
 
