@@ -50,7 +50,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 */
 	public function viewHelperRespectsCustomFormat() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
-		$actualResult = $viewHelper->render(new DateTime('1980-02-01'), '%d.%m.%Y');
+		$actualResult = $viewHelper->render(new DateTime('1980-02-01'), 'd.m.Y');
 		$this->assertEquals('01.02.1980', $actualResult);
 	}
 
@@ -71,7 +71,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
-		$this->markTestSkipped('This test crashes in the current version of PhpUnit..');
 		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
 		$viewHelper->render('foo');
 	}
@@ -96,16 +95,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 		$viewHelper->expects($this->never())->method('renderChildren');
 		$actualResult = $viewHelper->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
-	}
-
-	/**
-	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function viewHelperRespectsCustomDateTimeFormat() {
-		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
-		$actualResult = $viewHelper->render(new DateTime('1980-02-01'), 'd.m.Y');
-		$this->assertEquals('01.02.1980', $actualResult);
 	}
 }
 ?>
