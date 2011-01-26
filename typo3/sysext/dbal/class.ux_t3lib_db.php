@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 40828 2010-12-05 14:55:53Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 42596 2011-01-25 20:02:07Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -2931,10 +2931,10 @@ class ux_t3lib_DB extends t3lib_DB {
 					// Compiling query:
 					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
-					if ($this->lastParsedAndMappedQueryArray['type'] == 'INSERT') {
-						return mysql_query($compiledQuery, $this->link);
-					}
-					return mysql_query($compiledQuery[0], $this->link);
+					//if ($this->lastParsedAndMappedQueryArray['type'] == 'INSERT') {
+					//	return mysql_query($compiledQuery, $this->link);
+					//}
+					return mysql_query($compiledQuery, $this->link);
 					break;
 				case 'adodb':
 					// Compiling query:
