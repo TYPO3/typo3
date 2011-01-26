@@ -22,6 +22,7 @@
 	* Fixed bug #17279: Old Contextmenu: Partly broken - Mount as TreeRoot / Hide / Unhide / Delete (Thanks to Stefan Galinski)
 	* Fixed bug #17326: Update language packages in Extenson Managr: Button misaligned
 	* Fixed bug #17343: Wording in Upgrade wizard: Install New System Extensions (Thanks to Peter Kraume)
+	* Fixed bug #17341: No values for Pages in "DB check -> Record Statistics" (Thanks to Sven Juergens)
 
 2011-01-26  Sebastian Kurfuerst  <sebastian@typo3.org>
 

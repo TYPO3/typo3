@@ -466,12 +466,12 @@ class SC_mod_tools_dbint_index {
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/hidden_page.gif','width="18" height="16"') . ' hspace="4" align="top">';
 			$codeArr[$i][]=$GLOBALS['LANG']->getLL('hidden_pages');
-			$codeArr[$i][]=$admin->recStat['hidden'];
+			$codeArr[$i][] = $admin->recStats['hidden'];
 			$i++;
 		}
 		$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/deleted_page.gif','width="18" height="16"') . ' hspace="4" align="top">';
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('deleted_pages');
-		$codeArr[$i][]=$admin->recStat['deleted'];
+		$codeArr[$i][] = count($admin->recStats['deleted']['pages']);
 
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), false, true);
 
@@ -484,7 +484,7 @@ class SC_mod_tools_dbint_index {
 				if ($setup[1]!='--div--')	{
 					$codeArr[$n][] = '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/' . ($PAGES_TYPES[$setup[1]]['icon'] ? $PAGES_TYPES[$setup[1]]['icon'] : $PAGES_TYPES['default']['icon']), 'width="18" height="16"') . ' hspace="4" align="top">';
 					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
-					$codeArr[$n][] = intval($admin->recStat[doktype][$setup[1]]);
+					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
 				}
 			}
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), false, true);
