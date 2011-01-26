@@ -1,4 +1,4 @@
-2011-01-21  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+2011-01-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)
 	* Cleaned emconf for the release of TYPO3 4.5
