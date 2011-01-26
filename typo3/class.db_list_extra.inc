@@ -692,8 +692,9 @@ class localRecordList extends recordList {
 
 					$localizationMarkerClass = '';
 					if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
-					&& $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0) {
-							// it's a translated record
+					&& $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0
+					&& $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0) {
+							// it's a translated record with a language parent
 						$localizationMarkerClass = ' localization';
 					}
 				} elseif ($fCol == 'pid') {
@@ -1580,7 +1581,7 @@ class localRecordList extends recordList {
 			}
 
 			if ($lNew)	$out[1].= $lNew;
-		} else {
+		} else if ($row['l18n_parent']) {
 			$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 		}
 
