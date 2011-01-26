@@ -4,6 +4,7 @@
 
 2011-01-25  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed issue #17320: Not installing extensions in Upgrade Wizard should also get rid of the wizard
 	* Fixed issue #16712: Cleanup: centralize TYPO3 urls (Thanks to Steffen Kamper)
 	* Fixed issue #16142: Records should not be indented if there is no parent record (Thanks to Georg Ringer)
 	* Fixed issue #17316: Flag sprites was not updated after renaming canada.gif back to ca.gif and "multi-language" was missing

@@ -45,7 +45,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether an update is needed (true) or not (false)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = false;
+		$result = FALSE;
 		$description = '
 			<p>
 				Install the following system extensions as their functionality
@@ -107,8 +107,11 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 
 		foreach($this->newSystemExtensions as $ext) {
 			if (!t3lib_extMgm::isLoaded($ext)) {
-				$result = true;
+				$result = TRUE;
 			}
+		}
+		if ($this->isWizardDone()) {
+			$result = FALSE;
 		}
 		return $result;
 	}
@@ -179,7 +182,6 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether it worked (true) or not (false)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = FALSE;
 
 			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
@@ -188,10 +190,12 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
 			);
 			$this->installExtensions($extArray);
-			$result = TRUE;
 		}
 
-		return $result;
+			// Never show this wizard again
+		$this->markWizardAsDone();
+
+		return TRUE;
 	}
 
 	/**

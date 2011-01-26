@@ -220,5 +220,38 @@ abstract class Tx_Install_Updates_Base {
 		}
 	}
 
+	/**
+	 * Marks some wizard as being "seen" so that it not shown again.
+	 *
+	 * Writes the info in localconf.php
+	 *
+	 * @return void
+	 */
+	protected function markWizardAsDone() {
+		/** @var t3lib_install $install */
+		$install = t3lib_div::makeInstance('t3lib_install');
+		$install->allowUpdateLocalConf = 1;
+		$install->updateIdentity = 'TYPO3 Upgrade Wizard';
+		// Get lines from localconf file
+		$lines = $install->writeToLocalconf_control();
+		$wizardClassName = get_class($this);
+		$install->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'INSTALL\'][\'wizardDone\'][\'' . $wizardClassName . '\']', 1);
+		$install->writeToLocalconf_control($lines);
+	}
+
+	/**
+	 * Checks if this wizard has been "done" before
+	 *
+	 * @return boolean TRUE if wizard has been done before, FALSE otherwise
+	 */
+	protected function isWizardDone() {
+		$wizardClassName = get_class($this);
+		$done = FALSE;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName]) &&
+			$GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName]) {
+			$done = TRUE;
+		}
+		return $done;
+	}
 }
 ?>

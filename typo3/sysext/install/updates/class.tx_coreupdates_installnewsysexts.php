@@ -45,7 +45,7 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether an update is needed (true) or not (false)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = false;
+		$result = FALSE;
 		$description = '
 			<p>
 				Install the following system extensions that are new in TYPO3
@@ -72,13 +72,16 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 					</li>
 				';
 
-				$result = true;
+				$result = TRUE;
 			}
 		}
 
 		$description .= '
 			</ul>
 		';
+		if ($this->isWizardDone()) {
+			$result = FALSE;
+		}
 
 		return $result;
 	}
@@ -134,7 +137,6 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether it worked (true) or not (false)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = FALSE;
 
 			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installNewSystemExtensions']['sysext'])) {
@@ -143,10 +145,12 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 				array_keys($this->pObj->INSTALL['update']['installNewSystemExtensions']['sysext'])
 			);
 			$this->installExtensions($extArray);
-			$result = TRUE;
 		}
 
-		return $result;
+			// Never show this wizard again
+		$this->markWizardAsDone();
+
+		return TRUE;
 	}
 
 
