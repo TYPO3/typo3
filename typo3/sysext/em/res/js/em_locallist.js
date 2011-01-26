@@ -162,6 +162,9 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							scope: this,
 							readConfigForm: function() {
 								var button = Ext.get('configuration-submit-' + record.data.extkey);
+								if (!button) {
+									var button = Ext.get('update-submit-' + record.data.extkey);
+								}
 								var select = Ext.select('.mod-menu-template-select');
 								Ext.apply(this.form,{
 									api: {
@@ -329,7 +332,11 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					{name:'required'},
 					{name:'doubleInstall'},
 					{name:'doubleInstallShort'},
-					{name:'updateModule'}
+					{name:'updateModule'},
+					{name:'doNotLoadInFE'},
+					{name:'depends'},
+					{name:'conflicts'},
+					{name:'suggests'}
 				]
 			}),
 
@@ -588,17 +595,25 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 
 	showExtInfoInWindow: function(index) {
 		var record = this.store.getAt(index);
+		var id = 'window-extinfo-' + record.data.extkey;
 		var tabs = this.rowExpander.createExpandingRowPanelItems(record,index);
+
 		Ext.apply(tabs, {
 			height: 'auto'
 		});
-		var w = new Ext.Window({
-			title: TYPO3.EM.Tools.renderExtensionTitle(record),
-			width: 720,
-			height: 400,
-			layout: 'fit',
-			items : tabs
-		}).show();
+
+		if (Ext.WindowMgr.get(id)) {
+			Ext.WindowMgr.bringToFront(id);
+		} else {
+			new Ext.Window({
+				title: TYPO3.EM.Tools.renderExtensionTitle(record),
+				width: 720,
+				height: 400,
+				layout: 'fit',
+				items : tabs,
+				id: id
+			}).show();
+		}
 	},
 
 	filterRecords: function() {

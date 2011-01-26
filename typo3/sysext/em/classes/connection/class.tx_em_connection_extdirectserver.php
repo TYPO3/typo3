@@ -747,11 +747,11 @@ class tx_em_Connection_ExtDirectServer {
 		$orderBy = htmlspecialchars($parameters->sort);
 		$orderDir = htmlspecialchars($parameters->dir);
 		if ($orderBy === 'statevalue') {
-			$orderBy = 'state ' . $orderDir;
+			$orderBy = 'cache_extensions.state ' . $orderDir;
 		} elseif ($orderBy === 'relevance') {
-			$orderBy = 'relevance ' . $orderDir . ', title ' . $orderDir;
+			$orderBy = 'cache_extensions.relevance ' . $orderDir . ', cache_extensions.title ' . $orderDir;
 		} else {
-			$orderBy .= ' ' . $orderDir;
+			$orderBy = 'cache_extensions.' . $orderBy . ' ' . $orderDir;
 		}
 		$installedOnly = $parameters->installedOnly;
 
@@ -761,12 +761,17 @@ class tx_em_Connection_ExtDirectServer {
 			$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
 			'cache_extensions'
 		);
-		$addFields = '(
-			(CASE WHEN cache_extensions.extkey =  "' . $search . '" THEN 100 ELSE 0 END) +
-			(CASE WHEN cache_extensions.title = "' . $search . '" THEN 60 ELSE 0 END) +
-			(CASE WHEN cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' THEN 30 ELSE 0 END) +
-			(CASE WHEN cache_extensions.title LIKE \'%' . $quotedSearch . '%\' THEN 10 ELSE 0 END)
-		) AS relevance';
+		$addFields = '
+			(CASE WHEN cache_extensions.extkey =  "' . $search . '" THEN 100 ELSE 5 END) +
+			(CASE WHEN cache_extensions.title = "' . $search . '" THEN 80 ELSE 5 END) +
+			(CASE WHEN cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' THEN 60 ELSE 5 END) +
+			(CASE WHEN cache_extensions.title LIKE \'%' . $quotedSearch . '%\' THEN 40 ELSE 5 END)
+		 AS relevance';
+
+		if (t3lib_extMgm::isLoaded('dbal')) {
+			// as dbal can't use the sum, make it more easy for dbal
+			$addFields = 'CASE WHEN cache_extensions.extkey =  \'' . $search . '\' THEN 100 ELSE 10 END AS relevance';
+		}
 		$where = ' AND (cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' OR cache_extensions.title LIKE \'%' . $quotedSearch . '%\')';
 
 	    	// check for filter

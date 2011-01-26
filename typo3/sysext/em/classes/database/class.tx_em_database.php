@@ -92,23 +92,19 @@ final class tx_em_Database {
 	public function getExtensionListFromRepository($repository, $addFields = '', $andWhere = '', $order = '', $limit = '') {
 		$ret = array();
 		$temp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'count(*) count',
+			'count(*) AS count',
 			'cache_extensions',
 			'repository=' . intval($repository) . $andWhere,
 			'extkey'
 		);
 		$ret['count'] = count($temp);
-		$subQuery =  $GLOBALS['TYPO3_DB']->SELECTsubquery(
-			'*, MAX(intversion) AS maxintversion',
-			'cache_extensions',
-			''
-		) . ' GROUP BY extkey';
+
 		$ret['results'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'cache_extensions2.*, count(*) AS versions, cache_extensions2.maxintversion AS maxintversion' .
+			'cache_extensions.*, count(*) AS versions, cache_extensions.intversion AS maxintversion' .
 			($addFields === '' ? '' : ',' . $addFields),
-			'cache_extensions INNER JOIN (' . $subQuery . ') AS cache_extensions2 ON cache_extensions.extkey = cache_extensions2.extkey',
-			'cache_extensions.repository=' . intval($repository) . $andWhere,
-			'cache_extensions.extkey',
+			'cache_extensions JOIN cache_extensions AS ce ON cache_extensions.extkey = ce.extkey',
+			'cache_extensions.lastversion=1 AND cache_extensions.repository=' . intval($repository) . $andWhere,
+			'ce.extkey',
 			$order,
 			$limit
 		);

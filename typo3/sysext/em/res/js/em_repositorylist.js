@@ -388,13 +388,20 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 	},
 
 	showExtInfoInWindow: function(index) {
-		record = this.store.getAt(index);
-		var w = new Ext.Window({
-			title: TYPO3.EM.Tools.renderExtensionTitle(record),
-			width: 600,
-			height: 250,
-			items : this.expander.createExpandingRowPanelItems(record,index)
-		}).show();
+		var record = this.store.getAt(index);
+		var id = 'window-extinfo-' + record.data.extkey;
+		if (Ext.WindowMgr.get(id)) {
+			Ext.WindowMgr.bringToFront(id);
+		} else {
+			new Ext.Window({
+				title: TYPO3.EM.Tools.renderExtensionTitle(record),
+				layout: 'fit',
+				width: 600,
+				height: 280,
+				items : this.expander.createExpandingRowPanelItems(record,index),
+				id: id
+			}).show();
+		}
 	}
 });
 

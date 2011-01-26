@@ -186,8 +186,29 @@ class tx_em_Install {
 										foreach ($writeFiles as $theFile => $fileData) {
 											t3lib_div::writeFile($extDirPath . $theFile, $fileData['content']);
 											if (!@is_file($extDirPath . $theFile)) {
-												$content .= sprintf($GLOBALS['LANG']->getLL('ext_import_file_not_created'),
-														$extDirPath . $theFile) . '<br />';
+												if (!$this->silentMode) {
+													$flashMessage = t3lib_div::makeInstance(
+														't3lib_FlashMessage',
+														sprintf($GLOBALS['LANG']->getLL('ext_import_file_not_created'),
+														$extDirPath . $theFile),
+														'',
+														t3lib_FlashMessage::ERROR
+													);
+													$content .= $flashMessage->render();
+												} else {
+													if (!$this->silentMode) {
+														$flashMessage = t3lib_div::makeInstance(
+															't3lib_FlashMessage',
+															sprintf($GLOBALS['LANG']->getLL('ext_import_file_not_created'), $extDirPath . $theFile),
+															'',
+															t3lib_FlashMessage::ERROR
+														);
+														$content .= $flashMessage->render();
+													} else {
+														$content .= sprintf($GLOBALS['LANG']->getLL('ext_import_file_not_created'),
+																$extDirPath . $theFile) . '<br />';
+													}
+												}
 											} elseif (md5(t3lib_div::getUrl($extDirPath . $theFile)) != $fileData['content_md5']) {
 												$content .= sprintf($GLOBALS['LANG']->getLL('ext_import_file_corrupted'),
 														$extDirPath . $theFile) . '<br />';
@@ -286,27 +307,98 @@ class tx_em_Install {
 											}
 										}
 									} else {
-										$content = $res;
+										if (!$this->silentMode) {
+											$flashMessage = t3lib_div::makeInstance(
+												't3lib_FlashMessage',
+												$res,
+												'',
+												t3lib_FlashMessage::ERROR
+											);
+											$content = $flashMessage->render();
+										} else {
+											$content = $res;
+										}
 									}
 								} else {
-									$content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_path_different'), $extDirPath);
+									if (!$this->silentMode) {
+										$flashMessage = t3lib_div::makeInstance(
+											't3lib_FlashMessage',
+											sprintf($GLOBALS['LANG']->getLL('ext_import_ext_path_different'), $extDirPath),
+											'',
+											t3lib_FlashMessage::ERROR
+										);
+										$content = $flashMessage->render();
+									} else {
+										$content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_path_different'), $extDirPath);
+									}
 								}
 							} else {
-								$content = $res;
+								if (!$this->silentMode) {
+									$flashMessage = t3lib_div::makeInstance(
+										't3lib_FlashMessage',
+										$res,
+										'',
+										t3lib_FlashMessage::ERROR
+									);
+									$content = $flashMessage->render();
+								} else {
+									$content = $res;
+								}
 							}
 						}
 					} else {
-						$content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_only_here'),
-							tx_em_Tools::typePath($EM_CONF['lockType']), $EM_CONF['lockType']);
+						if (!$this->silentMode) {
+							$flashMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								sprintf($GLOBALS['LANG']->getLL('ext_import_ext_only_here'),
+									$this->typePaths[$EM_CONF['lockType']], $EM_CONF['lockType']),
+								'',
+								t3lib_FlashMessage::ERROR
+							);
+							$content = $flashMessage->render();
+						} else {
+							$content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_only_here'),
+								tx_em_Tools::typePath($EM_CONF['lockType']), $EM_CONF['lockType']);
+						}
 					}
 				} else {
-					$content = $GLOBALS['LANG']->getLL('ext_import_no_ext_key_files');
+					if (!$this->silentMode) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('ext_import_no_ext_key_files'),
+							'',
+							t3lib_FlashMessage::ERROR
+						);
+						$content = $flashMessage->render();
+					} else {
+						$content = $GLOBALS['LANG']->getLL('ext_import_no_ext_key_files');
+					}
 				}
 			} else {
-				$content = sprintf($GLOBALS['LANG']->getLL('ext_import_data_transfer'), $fetchData);
+				if (!$this->silentMode) {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						sprintf($GLOBALS['LANG']->getLL('ext_import_data_transfer'), $fetchData),
+						'',
+						t3lib_FlashMessage::ERROR
+					);
+					$content = $flashMessage->render();
+				} else {
+					$content = sprintf($GLOBALS['LANG']->getLL('ext_import_data_transfer'), $fetchData);
+				}
 			}
 		} else {
-			$content = sprintf($GLOBALS['LANG']->getLL('ext_import_no_install_here'), tx_em_Tools::typePath($loc));
+			if (!$this->silentMode) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					sprintf($GLOBALS['LANG']->getLL('ext_import_no_install_here'), $this->typePaths[$loc]),
+					'',
+					t3lib_FlashMessage::ERROR
+				);
+				$content = $flashMessage->render();
+			} else {
+				$content = sprintf($GLOBALS['LANG']->getLL('ext_import_no_install_here'), tx_em_Tools::typePath($loc));
+			}
 		}
 
 		return $content;
@@ -1231,7 +1323,7 @@ class tx_em_Install {
 			$form .= '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
 					<tr>
-						<td>' . $tsStyleConfig->ext_getForm($MOD_SETTINGS['constant_editor_cat'], $theConstants, $script, $addFields, $extKey) . '</form></td>
+						<td>' . $tsStyleConfig->ext_getForm($MOD_SETTINGS['constant_editor_cat'], $theConstants, $script, $addFields, $extKey, !$this->silentMode) . '</form></td>
 					</tr>
 				</table>';
 		} else {

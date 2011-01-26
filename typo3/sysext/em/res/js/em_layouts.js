@@ -49,8 +49,10 @@ TYPO3.EM.Layouts = {
 						'<label>' + TYPO3.lang.extInfoArray_state + ':</label> {state}<br />',
 						'<label>' + TYPO3.lang.extInfoArray_shy + ':</label> {shyword}<br />',
 						'<label>' + TYPO3.lang.extInfoArray_internal + ':</label> {internal}<br />',
+						'<label>' + TYPO3.lang.ext_details_doNotLoadInFE + ':</label> {[this.loadInFe(values)]}<br />',
 						'<label>' + TYPO3.lang.extInfoArray_depends_on + ':</label> {depends}<br />',
 						'<label>' + TYPO3.lang.extInfoArray_conflicts_with + ':</label> {conflicts}<br />',
+						'<label>' + TYPO3.lang.extInfoArray_suggests + ':</label> {suggests}<br />',
 					'</div>',
 					'<div class="em-extlist-extinfo-right">',
 						'<h3>' + TYPO3.lang.show_links + '</h3>',
@@ -64,7 +66,12 @@ TYPO3.EM.Layouts = {
 						'</tpl>',
 					'</div>',
 				'</div>',
-			'</div>'
+			'</div>',
+			{
+				loadInFe: function(values) {
+					return values.doNotLoadInFE ? TYPO3.lang.no : TYPO3.lang.yes;
+				}
+			}
 		);
 	},
 

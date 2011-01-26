@@ -284,7 +284,7 @@ final class tx_em_Tools {
 			}
 			$emConf['constraints']['depends']['typo3'] = implode('-', $versionRange);
 		}
-
+#debug($emConf);
 		unset($emConf['private']);
 		unset($emConf['download_password']);
 		unset($emConf['TYPO3_version']);

@@ -322,6 +322,7 @@
 			<label index="ext_details_no_update_object">No update object</label>
 			<label index="ext_details_updateScript">Update script</label>
 			<label index="ext_details_checkUpdateScript">Check update script</label>
+			<label index="ext_details_doNotLoadInFE">Load extension in Frontend</label>
 			<label index="reqInstExt_install_import">Install/Import:</label>
 			<label index="reqInstExt_ext_key">Extension Key:</label>
 			<label index="reqInstExt_import_install_selected">Import and Install selected</label>
@@ -524,7 +525,7 @@
 			<label index="checkDependencies_import_now">Import now (opens a new window)</label>
 			<label index="checkDependencies_ignore_ext_requirement">Ignore this extension requirement</label>
 			<label index="checkDependencies_ext_not_installed">Extension "%s" (%s) was not installed. Please install it first.</label>
-			<label index="checkDependencies_install_now">Install now (opens ac new window)</label>
+			<label index="checkDependencies_install_now">Install now (opens a new window)</label>
 			<label index="checkDependencies_ext_too_low">The running version of extension "%s" (%s) is lower than required (%s).</label>
 			<label index="checkDependencies_ext_too_high">The running version of extension "%s" (%s) is higher than allowed (%s).</label>
 			<label index="checkDependencies_conflict_ignored">Conflict with %s ignored as requested.</label>

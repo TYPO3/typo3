@@ -141,6 +141,8 @@ class tx_em_ExtensionManager {
 
 			// Localization
 		$labels = tx_em_Tools::getArrayFromLocallang(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
+		$labels['yes'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
+		$labels['no'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 		$this->pageRenderer->addInlineLanguageLabelArray($labels);
 
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);

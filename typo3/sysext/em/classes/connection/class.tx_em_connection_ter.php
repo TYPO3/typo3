@@ -210,6 +210,7 @@ class tx_em_Connection_Ter {
 	 * @return	string		Content stream
 	 */
 	function makeUploadDataFromarray($uploadArray) {
+		$content = '';
 		if (is_array($uploadArray)) {
 			$serialized = serialize($uploadArray);
 			$md5 = md5($serialized);
@@ -320,6 +321,8 @@ class tx_em_Connection_Ter {
 				'priority' => utf8_encode($uArr['EM_CONF']['priority']),
 				'clearCacheOnLoad' => (boolean) intval($uArr['EM_CONF']['clearCacheOnLoad']),
 				'lockType' => utf8_encode($uArr['EM_CONF']['lockType']),
+				'doNotLoadInFEe' => utf8_encode($uArr['EM_CONF']['doNotLoadInFE']),
+				'docPath' => utf8_encode($uArr['EM_CONF']['docPath']),
 			),
 			'infoData' => array(
 				'codeLines' => intval($uArr['misc']['codelines']),

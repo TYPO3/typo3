@@ -1365,7 +1365,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					if (!is_uploaded_file($_FILES['upload_ext_file']['tmp_name'])) {
 						t3lib_div::sysLog('Possible file upload attack: ' . $_FILES['upload_ext_file']['tmp_name'], 'Extension Manager', 3);
 
-						return $GLOBALS['LANG']->getLL('ext_import_file_not_uploaded');
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('ext_import_file_not_uploaded'),
+							'',
+							t3lib_FlashMessage::ERROR
+						);
+						return $flashMessage->render();
 					}
 
 					$uploadedTempFile = t3lib_div::upload_to_tempfile($_FILES['upload_ext_file']['tmp_name']);
@@ -1373,7 +1379,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$fileContent = t3lib_div::getUrl($uploadedTempFile);
 
 				if (!$fileContent) {
-					return $GLOBALS['LANG']->getLL('ext_import_file_empty');
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$GLOBALS['LANG']->getLL('ext_import_file_empty'),
+						'',
+						t3lib_FlashMessage::ERROR
+					);
+					return $flashMessage->render();
 				}
 
 				// Decode file data:
@@ -1397,13 +1409,31 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							} // ... else go on, install...
 						} // ... else go on, install...
 					} else {
-						return $GLOBALS['LANG']->getLL('ext_import_no_key');
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('ext_import_no_key'),
+							'',
+							t3lib_FlashMessage::ERROR
+						);
+						return $flashMessage->render();
 					}
 				} else {
-					return sprintf($GLOBALS['LANG']->getLL('ext_import_wrong_file_format'), $fetchData);
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						sprintf($GLOBALS['LANG']->getLL('ext_import_wrong_file_format'), $fetchData),
+						'',
+						t3lib_FlashMessage::ERROR
+					);
+					return $flashMessage->render();
 				}
 			} else {
-				return $GLOBALS['LANG']->getLL('ext_import_no_file');
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('ext_import_no_file'),
+					'',
+					t3lib_FlashMessage::ERROR
+				);
+				return $flashMessage->render();
 			}
 		} else {
 			$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', true, true);
@@ -2510,7 +2540,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 			return $link;
 		} else {
-			return '<a id="closewindow" href="javascript:parent.TYPO3.EM.Tools.closeImportWindow();">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
+			return '<a id="closewindow" href="javascript:if (parent.TYPO3.EM) {parent.TYPO3.EM.Tools.closeImportWindow();} else {window.close();}">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
 		}
 	}
 

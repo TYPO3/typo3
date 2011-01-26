@@ -234,6 +234,9 @@ class tx_em_Extensions_List {
 					t3lib_iconWorks::getSpriteIcon('actions-system-extension-download') . '</a>';
 
 				$list[$key]['doc'] = '';
+				if ($list[$key]['docPath']) {
+					$manual = $path . $extKey . '/' . $list[$key]['docPath'] . '/manual.sxw';
+				}
 				if (@is_file($manual)) {
 					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '" target="_blank">'
 						. t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>';
@@ -243,11 +246,84 @@ class tx_em_Extensions_List {
 				$list[$key]['categoryShort'] = $list[$key]['category'];
 				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
 				$list[$key]['required'] = t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'], $extKey);
+
+				$constraints = $this->humanizeConstraints($list[$key]['constraints']);
+				$list[$key]['depends'] = $constraints['depends'];
+				$list[$key]['conflicts'] = $constraints['conflicts'];
+				$list[$key]['suggests'] = $constraints['suggests'];
+
+
 				unset($list[$key]['_md5_values_when_last_written']);
 			}
 		}
 	}
 
+	/**
+	 * Make constraints readable
+	 *
+	 * @param  array $constraints
+	 * @return array
+	 */
+	public function humanizeConstraints($constraints) {
+		$depends = $conflicts = $suggests = array();
+		$result = array(
+			'depends' => '',
+			'conflicts' => '',
+			'suggests' => ''
+		);
+
+		if (is_array($constraints) && count($constraints)) {
+			if (is_array($constraints['depends']) && count($constraints['depends'])) {
+				foreach ($constraints['depends'] as $key => $value) {
+					if ($value) {
+						$tmp = t3lib_div::trimExplode('-', $value, TRUE);
+						if (trim($tmp[1]) && trim($tmp[1]) !== '0.0.0') {
+							$value = $tmp[0] . ' - ' . $tmp[1];
+						} else {
+							$value = $tmp[0];
+						}
+					}
+					$depends[] = $key . ($value ? ' (' . $value . ')' : '');
+				}
+			}
+			if (is_array($constraints['conflicts']) && count($constraints['conflicts'])) {
+				foreach ($constraints['conflicts'] as $key => $value) {
+					if ($value) {
+						$tmp = t3lib_div::trimExplode('-', $value, TRUE);
+						if (trim($tmp[1]) && trim($tmp[1]) !== '0.0.0') {
+							$value = $tmp[0] . ' - ' . $tmp[1];
+						} else {
+							$value = $tmp[0];
+						}
+					}
+					$conflicts[] = $key . ($value ? ' (' . $value . ')' : '');
+				}
+			}
+			if (is_array($constraints['suggests']) && count($constraints['suggests'])) {
+				foreach ($constraints['suggests'] as $key => $value) {
+					if ($value) {
+						$tmp = t3lib_div::trimExplode('-', $value, TRUE);
+						if (trim($tmp[1]) && trim($tmp[1]) !== '0.0.0') {
+							$value = $tmp[0] . ' - ' . $tmp[1];
+						} else {
+							$value = $tmp[0];
+						}
+					}
+					$suggests[] = $key . ($value ? ' (' . $value . ')' : '');
+				}
+			}
+			if (count($depends)) {
+				$result['depends'] = htmlspecialchars(implode(', ', $depends));
+			}
+			if (count($conflicts)) {
+				$result['conflicts'] = htmlspecialchars(implode(', ', $conflicts));
+			}
+			if (count($suggests)) {
+				$result['suggests'] = htmlspecialchars(implode(', ', $suggests));
+			}
+		}
+		return $result;
+	}
 
 	/**
 	 * Listing of loaded (installed) extensions
