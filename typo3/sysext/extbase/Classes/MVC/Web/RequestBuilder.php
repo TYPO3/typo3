@@ -111,14 +111,11 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		}
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
-
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$controllerConfiguration = $frameworkConfiguration['controllerConfiguration'];
-		$this->defaultControllerName = current(array_keys($controllerConfiguration));
-		$this->defaultActionName = current($controllerConfiguration[$this->defaultControllerName]['actions']);
+		$this->defaultControllerName = current(array_keys($configuration['controllerConfiguration']));
+		$this->defaultActionName = current($configuration['controllerConfiguration'][$this->defaultControllerName]['actions']);
 
 		$allowedControllerActions = array();
-		foreach ($controllerConfiguration as $controllerName => $controllerActions) {
+		foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
 			$allowedControllerActions[$controllerName] = $controllerActions['actions'];
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
