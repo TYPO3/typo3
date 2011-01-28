@@ -2086,6 +2086,7 @@ class tslib_cObj {
 	 */
 	public function stdWrap_setContentToCurrent($content = '', $conf = array()) {
 		$this->data[$this->currentValKey] = $content;
+		return $content;
 	}
 
 	/**
@@ -2098,6 +2099,7 @@ class tslib_cObj {
 	 */
 	public function stdWrap_setCurrent($content = '', $conf = array()) {
 		$this->data[$this->currentValKey] = $conf['setCurrent'];
+		return $content;
 	}
 
 	/**
