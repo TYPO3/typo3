@@ -42,7 +42,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$content = '';
+		$content = $mmFile = '';
 		$flexParams = isset($conf['flexParams.'])
 			? $this->cObj->stdWrap($conf['flexParams'], $conf['flexParams.'])
 			: $conf['flexParams'];
@@ -61,6 +61,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 		}
 
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
+		$fileinfo = NULL;
 		if ($mode === 'file') {
 				// render FILE
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
@@ -91,7 +92,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 				// default renderType is swf
 			$renderType = 'swf';
 			$handler = array_keys($conf['fileExtHandler.']);
-			if (in_array($fileinfo['fileext'], $handler)) {
+			if (is_array($fileinfo) && in_array($fileinfo['fileext'], $handler)) {
 				$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
 			}
 		}
@@ -137,12 +138,12 @@ class tslib_content_Media extends tslib_content_Abstract {
 		} else {
 			$height = isset($conf['height.'])
 				? intval($this->cObj->stdWrap($conf['height'], $conf['height.']))
-				: intval($conf['width']);
+				: intval($conf['height']);
 			$conf['height'] = $height ? $height : $typeConf['defaultHeight'];
 		}
 
 		if (is_array($conf['parameter.']['mmMediaOptions'])) {
-			$params = array();
+			$params = $parts = array();
 			foreach ($conf['parameter.']['mmMediaOptions'] as $key => $value) {
 				if ($key == 'mmMediaCustomParameterContainer') {
 					foreach ($value as $val) {
@@ -191,7 +192,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 			if ($url == '' && !$conf['allowEmptyUrl']) {
 				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', TRUE) . '</p>';
 			}
-			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+			$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
 			$conf[$conf['type'] . '.']['player'] = strpos($url, '://') === FALSE ? 'http://' . $url : $url;
 			$conf['installUrl'] = 'null';
 			$conf['flashvars'] = array_merge((array) $conf['flashvars'], $conf['predefined']);
@@ -199,8 +200,8 @@ class tslib_content_Media extends tslib_content_Abstract {
 
 		switch ($renderType) {
 			case 'swf' :
-				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
-				$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
 				unset($conf['mimeConf.']);
 				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
 				$content = $this->cObj->SWFOBJECT($conf);
