@@ -99,6 +99,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 			'###MESSAGE###'       => $this->message,
 			'###BASEURL###'       => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
 			'###TYPO3_mainDir###' => TYPO3_mainDir,
+			'###TYPO3_copyright_year###' => TYPO3_copyright_year,
 		);
 
 		$content = t3lib_div::getUrl(PATH_site . $this->htmlTemplate);

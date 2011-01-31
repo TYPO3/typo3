@@ -1,3 +1,7 @@
+2011-01-31  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17402: Error page should use TYPO3_copyright_year constant (Thanks to Johannes Feustel)
+
 2011-01-28  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #17372: stdWrap .current and .setContentToCurrent do not return content
