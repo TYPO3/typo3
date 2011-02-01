@@ -4689,6 +4689,8 @@ class tslib_cObj {
 				$uTagName = strtoupper($conf['remapTag.'][$uTagName] ? $conf['remapTag.'][$uTagName] : $uTagName);
 			} else {
 				$uTagName = strtoupper($nonWrappedTag);
+					// The line will be wrapped: $uTagName should not be an empty tag
+				$emptyTag = 0;
 				$str_content = $lParts[$k];
 				$nWrapped = 1;
 				$attrib = array();
