@@ -1,3 +1,7 @@
+2011-02-01  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17373: Standalone images in RTE-enabled field not rendered in frontend
+
 2011-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17140: htmlArea RTE: In WebKit, RTE inserts incorrect link if text is double-clicked
