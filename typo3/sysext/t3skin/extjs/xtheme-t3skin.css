@@ -1504,11 +1504,11 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-date-middle .x-btn .x-btn-text {
-	color:#fff;
+	color:#000;
 }
 
 .x-date-middle .x-btn-mc em.x-btn-arrow {
-	background-image:url(images/toolbar/btn-arrow-light.gif);
+	background-image:url(images/toolbar/btn-arrow.gif);
 }
 
 .x-date-right a {

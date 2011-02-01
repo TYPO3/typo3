@@ -1,5 +1,6 @@
 2011-02-01  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17411: DatePicker middle selector not readable
 	* Fixed bug #17371: Typo in MEDIA renders wrong height
 
 2011-01-31  Ernesto Baschny  <ernst@cron-it.de>
