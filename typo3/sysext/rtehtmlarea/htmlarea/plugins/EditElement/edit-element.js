@@ -316,7 +316,11 @@ HTMLArea.EditElement = HTMLArea.Plugin.extend({
 	buildLanguageFieldsetConfig: function (element) {
 		var itemsConfig = [];
 		var languagePlugin = this.getPluginInstance('Language');
-		if (this.removedProperties.indexOf('language') == -1) {
+		var languageConfigurationUrl;
+		if (this.editorConfiguration.buttons && this.editorConfiguration.buttons.language && this.editorConfiguration.buttons.language.dataUrl) {
+			languageConfigurationUrl = this.editorConfiguration.buttons.language.dataUrl;
+		}
+		if (languagePlugin && languageConfigurationUrl && this.removedProperties.indexOf('language') == -1) {
 			var selectedLanguage = !Ext.isEmpty(element) ? languagePlugin.getLanguageAttribute(element) : 'none';
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
@@ -332,7 +336,7 @@ HTMLArea.EditElement = HTMLArea.Plugin.extend({
 				autoLoad: true,
 				root: 'options',
 				fields: [ { name: 'text'}, { name: 'value'} ],
-				url: this.getDropDownConfiguration('Language').dataUrl,
+				url: languageConfigurationUrl,
 				listeners: {
 					load: initLanguageStore
 				}

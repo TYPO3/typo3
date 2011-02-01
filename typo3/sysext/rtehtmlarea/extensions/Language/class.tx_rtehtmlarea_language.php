@@ -71,31 +71,29 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$button = 'language';
 		$registerRTEinJavascriptString = '';
-		if (in_array($button, $this->toolbar)) {
-			if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button . '.'])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
-			}
-			if ($this->htmlAreaRTE->is_FE()) {
-				$first = $GLOBALS['TSFE']->getLLL('No language mark',$this->LOCAL_LANG);
-			} else {
-				$first = $GLOBALS['LANG']->getLL('No language mark');
-			}
-			$languages = array('none' => $first);
-			$languages = array_flip(array_merge($languages, $this->getLanguages()));
-			$languagesJSArray = array();
-			foreach ($languages as $key => $value) {
-				$languagesJSArray[] = array('text' => $key, 'value' => $value);
-			}
-			if ($this->htmlAreaRTE->is_FE()) {
-				$GLOBALS['TSFE']->csConvObj->convArray($languagesJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-			} else {
-				$GLOBALS['LANG']->csConvObj->convArray($languagesJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
-			}
-			$languagesJSArray = json_encode(array('options' => $languagesJSArray));
+		if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button . '.'])) {
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
+		RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 		}
+		if ($this->htmlAreaRTE->is_FE()) {
+			$first = $GLOBALS['TSFE']->getLLL('No language mark',$this->LOCAL_LANG);
+		} else {
+			$first = $GLOBALS['LANG']->getLL('No language mark');
+		}
+		$languages = array('none' => $first);
+		$languages = array_flip(array_merge($languages, $this->getLanguages()));
+		$languagesJSArray = array();
+		foreach ($languages as $key => $value) {
+			$languagesJSArray[] = array('text' => $key, 'value' => $value);
+		}
+		if ($this->htmlAreaRTE->is_FE()) {
+			$GLOBALS['TSFE']->csConvObj->convArray($languagesJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
+		} else {
+			$GLOBALS['LANG']->csConvObj->convArray($languagesJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
+		}
+		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
+		$registerRTEinJavascriptString .= '
+	RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
 		return $registerRTEinJavascriptString;
 	}
 	/**
@@ -107,45 +105,47 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 	 * @return	array		An array of names of languages
 	 */
 	function getLanguages() {
-		$where = '1=1';
-		$table = 'static_languages';
-		$lang = tx_staticinfotables_div::getCurrentLanguage();
 		$nameArray = array();
-		$titleFields = tx_staticinfotables_div::getTCAlabelField($table, TRUE, $lang);
-		$prefixedTitleFields = array();
-		foreach ($titleFields as $titleField) {
-			$prefixedTitleFields[] = $table.'.'.$titleField;
-		}
-		$labelFields = implode(',', $prefixedTitleFields);
-			// Restrict to certain languages
-		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
-			$languageList = implode("','", t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
-			$where .= ' AND '. $table . '.lg_iso_2 IN (' . $languageList . ')';
-		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			$table.'.lg_iso_2,'.$table.'.lg_country_iso_2,'.$labelFields,
-			$table,
-			$where.' AND lg_constructed = 0 '.
-			($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : t3lib_BEfunc::BEenableFields($table) .  t3lib_BEfunc::deleteClause($table))
-			);
-		$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
-		$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$code = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'-'.strtoupper($row['lg_country_iso_2']):'');
+		if (t3lib_extMgm::isLoaded('static_info_tables')) {
+			$where = '1=1';
+			$table = 'static_languages';
+			$lang = tx_staticinfotables_div::getCurrentLanguage();
+			$titleFields = tx_staticinfotables_div::getTCAlabelField($table, TRUE, $lang);
+			$prefixedTitleFields = array();
 			foreach ($titleFields as $titleField) {
-				if ($row[$titleField]) {
-					$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ' . $row[$titleField]) : ($postfixLabelWithCode ? ($row[$titleField] . ' - ' . $code) : $row[$titleField]);
-					break;
+				$prefixedTitleFields[] = $table.'.'.$titleField;
+			}
+			$labelFields = implode(',', $prefixedTitleFields);
+				// Restrict to certain languages
+			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
+				$languageList = implode("','", t3lib_div::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
+				$where .= ' AND '. $table . '.lg_iso_2 IN (' . $languageList . ')';
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$table.'.lg_iso_2,'.$table.'.lg_country_iso_2,'.$labelFields,
+				$table,
+				$where.' AND lg_constructed = 0 '.
+				($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : t3lib_BEfunc::BEenableFields($table) .  t3lib_BEfunc::deleteClause($table))
+				);
+			$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? false : true;
+			$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? false : true;
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$code = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'-'.strtoupper($row['lg_country_iso_2']):'');
+				foreach ($titleFields as $titleField) {
+					if ($row[$titleField]) {
+						$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ' . $row[$titleField]) : ($postfixLabelWithCode ? ($row[$titleField] . ' - ' . $code) : $row[$titleField]);
+						break;
+					}
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($this->htmlAreaRTE->is_FE()) {
+				$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $this->htmlAreaRTE->OutputCharset);
+			} else {
+				$GLOBALS['LANG']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $GLOBALS['LANG']->charSet);
+			}
+			uasort($nameArray, 'strcoll');
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if ($this->htmlAreaRTE->is_FE()) {
-			$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $this->htmlAreaRTE->OutputCharset);
-		} else {
-			$GLOBALS['LANG']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $GLOBALS['LANG']->charSet);
-		}
-		uasort($nameArray, 'strcoll');
 		return $nameArray;
 	}
 
