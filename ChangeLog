@@ -1,3 +1,7 @@
+2011-02-01  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17411: DatePicker middle selector not readable
+
 2011-01-31  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17402: Error page should use TYPO3_copyright_year constant (Thanks to Johannes Feustel)
