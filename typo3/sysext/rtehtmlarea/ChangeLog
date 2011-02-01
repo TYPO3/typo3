@@ -1,6 +1,7 @@
 2011-02-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17349: htmlArea RTE: JS error when using "Edit element"
+	* Updated htmlArea RTE version to 2.1.6
 
 2011-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
