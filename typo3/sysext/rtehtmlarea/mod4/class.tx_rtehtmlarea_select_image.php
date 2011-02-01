@@ -507,7 +507,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
-				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
+				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
 				'.(in_array('class', $removedProperties)?'':'
 				if(classesImage) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$LANG->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
@@ -851,11 +851,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$tree = $foldertree->getBrowsableTree();
 				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
 				$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
-				$this->content.= '<table border=0 cellpadding=0 cellspacing=0>
+				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td valign=top>'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
+					<td style="vertical-align: top;">'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
 					<td>&nbsp;</td>
-					<td valign=top>'.$files.'</td>
+					<td style="vertical-align: top;">'.$files.'</td>
 				</tr>
 				</table>
 				<br />'.$thumbNailCheck;
@@ -872,11 +872,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$tree = $foldertree->getBrowsableTree();
 				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
 				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], implode(',', $this->allowedFileTypes));
-				$this->content.= '<table border=0 cellpadding=0 cellspacing=0>
+				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td valign=top>'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
+					<td style="vertical-align: top;">'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
 					<td>&nbsp;</td>
-					<td valign=top>'.$files.'</td>
+					<td style="vertical-align: top;">'.$files.'</td>
 				</tr>
 				</table>';
 				break;

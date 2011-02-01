@@ -397,7 +397,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
-				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
+				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
 				'.(in_array('class', $this->removedProperties)?'':'
 				if(classesImage) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$LANG->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
