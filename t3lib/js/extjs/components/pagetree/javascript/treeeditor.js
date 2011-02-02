@@ -76,6 +76,12 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 			fn: function(node, newValue, oldValue) {
 				this.editNode.ownerTree.commandProvider.saveTitle(node, this.updatedValue, oldValue, this);
 			}
+		},
+
+		startEdit: {
+			fn: function(element, value) {
+				this.field.selectText();
+			}
 		}
 	},
 
