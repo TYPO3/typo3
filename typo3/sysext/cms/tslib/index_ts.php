@@ -527,8 +527,7 @@ $TSFE->storeSessionData();
 $TYPO3_MISC['microtime_end'] = microtime(true);
 $TSFE->setParseTime();
 if ($TSFE->isOutputting() && (!empty($TSFE->TYPO3_CONF_VARS['FE']['debug']) || !empty($TSFE->config['config']['debug']))) {
-	echo '
-<!-- Parsetime: '.$TSFE->scriptParseTime.' ms-->';
+	$TSFE->content .=  LF . '<!-- Parsetime: ' . $TSFE->scriptParseTime . 'ms -->';
 }
 $TSFE->statistics();
 
