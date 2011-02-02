@@ -1,3 +1,7 @@
+2011-02-02  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17406: Pagetree Editor remains with empty value
+
 2011-02-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17087: BE user password not changable via setup module with "saltedpasswords" (Thanks to Marcus Krause)

@@ -66,6 +66,7 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 		beforecomplete: function(node) {
 			this.updatedValue = this.getValue();
 			if (this.updatedValue === '') {
+				this.cancelEdit();
 				return false;
 			}
 			this.setValue(this.editNode.attributes.prefix + Ext.util.Format.htmlEncode(this.updatedValue) + this.editNode.attributes.suffix);
