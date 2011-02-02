@@ -780,7 +780,7 @@ $query . '<table class="typo3-adminPanel">' .
 		if (($perms & 2)) {
 			$params = '&edit[pages][' . $id . ']=edit';
 			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_document.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
-					'<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir . 'gfx/edit2.gif', 'width="11" height="12"') . 'hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageProperties') . '" alt="" /></a>';
+					'<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12"') . 'hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageProperties') . '" alt="" /></a>';
 
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
