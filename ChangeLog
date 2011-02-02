@@ -1,5 +1,6 @@
 2011-02-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17087: BE user password not changable via setup module with "saltedpasswords" (Thanks to Marcus Krause)
 	* Fixed bug #17428: Parsetime comment is inserted BEFORE !doctype and html tag (Thanks to Georg Ringer)
 
 2011-02-02  Jigal van Hemert  <jigal@xs4all.nl>

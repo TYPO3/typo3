@@ -15,9 +15,11 @@ $TCA['be_users']['columns']['password']['config']['max'] = 60;
 
 if (tx_saltedpasswords_div::isUsageEnabled('BE')) {
 	$TCA['be_users']['columns']['password']['config']['eval'] = 'trim,required,tx_saltedpasswords_eval_be,password';
+
+		// Prevent md5 hashing on client side via JS
+	$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password']['eval'] = '';
+	$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password2']['eval'] = '';
 }
 
-$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password']['eval'] = 'tx_saltedpasswords_eval_be';
-$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password2']['eval'] = '';
 
 ?>
