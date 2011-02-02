@@ -1,3 +1,7 @@
+2011-02-02  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #17087: BE user password not changable via setup module with "saltedpasswords" (Thanks to Marcus Krause)
+
 2011-02-01  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17373: Standalone images in RTE-enabled field not rendered in frontend
