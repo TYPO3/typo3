@@ -64,23 +64,6 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	activeTree: null,
 
 	/**
-	 * Listeners
-	 *
-	 * The afterlayout wizard relayoutes the navigation container to fix some nasty
-	 * scrollbar issues.
-	 *
-	 * @type {Object}
-	 */
-	listeners: {
-		afterlayout: {
-			fn: function() {
-				this.ownerCt.doLayout();
-			},
-			buffer: 250
-		}
-	},
-
-	/**
 	 * Initializes the application
 	 *
 	 * Set's the necessary language labels, configuration options and sprite icons by an
@@ -187,6 +170,11 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			if (TYPO3.Components.PageTree.Configuration.indicator !== '') {
 				this.addIndicatorItems();
 			}
+			this.doLayout();
+
+			this.ownerCt.on('resize', function() {
+				this.doLayout();
+			});
 		}, this);
 
 		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
@@ -269,11 +257,15 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}
 
 			component.listeners.afterrender = {
+				scope: this,
 				fn: this.afterTopPanelItemAdded
 			}
 		}
 
-		return Ext.getCmp(this.id + '-indicatorBar').add(component);
+		var indicator = Ext.getCmp(this.id + '-indicatorBar').add(component);
+		this.doLayout();
+
+		return indicator;
 	},
 
 	/**
@@ -285,6 +277,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	afterTopPanelItemAdded: function(component) {
 		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
 		topPanelItems.setHeight(topPanelItems.getHeight() + component.getHeight() + 3);
+		this.doLayout();
 	},
 
 	/**
@@ -297,6 +290,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
 		topPanelItems.setHeight(topPanelItems.getHeight() - component.getHeight() - 3);
 		Ext.getCmp(this.id + '-indicatorBar').remove(component);
+		this.doLayout();
 	},
 
 	/**

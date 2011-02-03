@@ -215,6 +215,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 			'</span>',
 			false
 		);
+		this.app.doLayout();
 
 		++this.amountOfDrops;
 		(function() {
@@ -289,6 +290,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		this.setHeight(35);
 		this.updateText(TYPO3.Components.PageTree.LLL.dropToRemove, false);
 		this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCan);
+		this.app.doLayout();
 	},
 
 	/**
@@ -306,6 +308,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		}
 		this.setHeight(35);
 		this.updateText(TYPO3.Components.PageTree.LLL.dropZoneElementRestored);
+		this.app.doLayout();
 
 		(function() {
 			if (this.textClickHandler) {

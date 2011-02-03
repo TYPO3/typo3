@@ -107,7 +107,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 
 	/**
 	 * Main applicaton
-	 * 
+	 *
 	 * @cfg {TYPO3.Components.PageTree.App}
 	 */
 	app: null,
@@ -435,6 +435,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	stopDd: function() {
 		if (this.deletionDropZoneId) {
 			Ext.getCmp(this.deletionDropZoneId).hide();
+			this.app.doLayout();
 		}
 	},
 
@@ -453,6 +454,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 			(nodeHasChildNodes && TYPO3.Components.PageTree.Configuration.canDeleteRecursivly)
 		)) {
 			Ext.getCmp(this.deletionDropZoneId).show();
+			this.app.doLayout();
 		}
 		this.initDDProxyElement();
 	},
