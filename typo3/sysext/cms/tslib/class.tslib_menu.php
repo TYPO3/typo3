@@ -1927,10 +1927,14 @@ class tslib_tmenu extends tslib_menu {
 				$res=$this->I['A1'].$res.$this->I['A2'];
 			}
 		}
-		$pref = isset($this->I['val'][$pref.'.'])
-			? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref.'.'])
+		$processedPref = isset($this->I['val'][$pref . '.'])
+			? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref . '.'])
 			: $this->I['val'][$pref];
-		return $this->tmpl->wrap($res.$pref, $this->I['val'][$pref.'Wrap']);
+		if (isset($this->I['val'][$pref . 'Wrap'])) {
+			return $this->tmpl->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
+		} else {
+			 return $res . $processedPref;
+		}
 	}
 
 	/**
