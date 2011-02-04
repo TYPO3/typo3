@@ -634,7 +634,7 @@ EXTENSION KEYS:
 				$fileP = tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
 				$cells[] = '<td nowrap="nowrap">' .
 						(tx_em_Tools::typePath($extInfo['type']) && @is_file($fileP) ?
-								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath . '../' .
+								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath .
 									tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
 										t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>' : '') .
 						'</td>';

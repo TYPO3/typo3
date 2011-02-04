@@ -213,3 +213,21 @@ a.email {
 	background-color: #f48e0c;
     color: #fff;
 }
+
+
+#localSearchField, #rsearchField {
+	height: 21px !important;
+	padding: 0 20px;
+}
+
+.ux-searchfield-trigger1 {
+	right: 0 !important;
+    position: absolute !important;
+    top: 3px !important;
+}
+
+.ux-searchfield-trigger2 {
+	left: 4px !important;
+    position: absolute !important;
+    top: 3px !important;
+}

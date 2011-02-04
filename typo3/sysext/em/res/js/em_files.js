@@ -13,6 +13,10 @@ Ext.ns('TYPO3.EM');
 TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 	recordData: null,
 	isWindow: false,
+	loaderUrl: null,
+	rootIcon: 'sysext/t3skin/icons/module_tools_em.png',
+	rootText: TYPO3.lang.ext_details_ext_files,
+	baseParams: null,
 
 	initComponent:function() {
 
@@ -33,14 +37,14 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 			cmargins: '0 0 0 0',
 
 			root: {
-				text: TYPO3.lang.ext_details_ext_files,
+				text: this.rootText,
 				itemId: 'fileroot',
 				expanded: true,
-				icon: 'sysext/t3skin/icons/module_tools_em.png'
+				icon: this.rootIcon
 			},
 			loader: {
-				directFn: TYPO3.EM.ExtDirect.getExtFileTree,
-				baseParams: {
+				directFn: this.loaderUrl || TYPO3.EM.ExtDirect.getExtFileTree,
+				baseParams: this.baseParams ? this.baseParams : {
 					extkey: this.recordData.extkey,
 					typeShort: this.recordData.typeShort,
 					baseNode: this.recordData.nodePath
@@ -133,7 +137,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					tooltip: TYPO3.lang.cmd_openInNewWindow,
 					ref: '../openWindowButton',
 					scope: this,
-					hidden: this.isWindow,
+					hidden: this.isWindow || this.noWindowOpen,
 					handler: function() {
 
 						var newEditor = new Ext.Window({

@@ -143,7 +143,7 @@ class tx_em_ExtensionManager {
 		$labels = tx_em_Tools::getArrayFromLocallang(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
 		$labels['yes'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 		$labels['no'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
-		$this->pageRenderer->addInlineLanguageLabelArray($labels);
+
 
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 		if (!isset($globalSettings)) {
@@ -184,9 +184,6 @@ class tx_em_ExtensionManager {
 			'fileSaveAllowed' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0
 		);
 		$settings = array_merge($settings, $additionalSettings);
-
-		$this->pageRenderer->addInlineSettingArray('EM', $settings);
-
 
 		// Add JS
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
@@ -236,6 +233,23 @@ class tx_em_ExtensionManager {
 			<!-- dummy form to make configuration js happy -->
 			<form name="tsStyleConfigForm" action="" method="post"></form>
 		';
+
+			//hook for the extension manager gui
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['em/classes/class.tx_em_extensionamager.php']['renderHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['em/classes/class.tx_em_extensionamager.php']['renderHook'] as $classRef) {
+				$hookObj = t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObj, 'render')) {
+					$hookObj->render(
+						$this->pageRenderer, $settings, $labels, $content
+					);
+				}
+			}
+		}
+
+			// render settings and labels
+		$this->pageRenderer->addInlineSettingArray('EM', $settings);
+		$this->pageRenderer->addInlineLanguageLabelArray($labels);
+
 		return $content;
 	}
 

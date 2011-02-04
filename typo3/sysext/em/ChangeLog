@@ -1,0 +1,11 @@
+2011-02-04  Steffen Kamper  <steffen@typo3.org>
+
+	* CSS for filetree folder icons removed (use standard), filter with typo3 icons
+	* Render settings and labels after the hook for easy additions
+	* Implemented Hook to allow extensions to plug in the gui
+
+2011-02-03  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17450 path to Documentation for sysextensions is wrong (Thanks to Simon Schaufelberger)
+	* Fixed double form tag in configuration forms (Thanks to Helmut Hummel)
+

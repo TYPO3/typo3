@@ -48,6 +48,7 @@ Ext.onReady(function() {
 	var EM = new TYPO3.EM.App.init();
 });
 
+TYPO3.EM.AdditionalApplicationItems = [];
 
 TYPO3.EM.App = {
 	refreshLocalList: false,
@@ -77,6 +78,10 @@ TYPO3.EM.App = {
 		];
 		if (TYPO3.settings.EM.displayMyExtensions == 1) {
 			items.push(TYPO3.EM.UserTab)
+		}
+
+		if (TYPO3.EM.AdditionalApplicationItems.length) {
+			items.push(TYPO3.EM.AdditionalApplicationItems);
 		}
 
 		this.appPanel = new Ext.TabPanel( {
