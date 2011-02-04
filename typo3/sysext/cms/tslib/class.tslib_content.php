@@ -834,6 +834,7 @@ class tslib_cObj {
 			'SEARCHRESULT' => 'SearchResult',
 			'PHP_SCRIPT' => 'PhpScript',
 			'PHP_SCRIPT_INT' => 'PhpScriptInternal',
+			'PHP_SCRIPT_EXT' => 'PhpScriptExternal',
 			'TEMPLATE' => 'Template',
 			'FLUIDTEMPLATE' => 'FluidTemplate',
 			'MULTIMEDIA' => 'Multimedia',

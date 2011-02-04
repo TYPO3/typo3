@@ -1,3 +1,7 @@
+2011-02-04  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17351: PHP_SCRIPT_EXT/INT in 4.5 doesn't work (Thanks to Jo Hasenau)
+
 2011-02-04  Francois Suter  <francois.suter@typo3.org>
 
 	* Cleanup #17482: Remove all mentions of $LANG_GENERAL_LABELS

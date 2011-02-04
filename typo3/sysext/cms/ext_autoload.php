@@ -65,6 +65,7 @@ return array(
 	'tslib_content_media' => PATH_tslib . 'content/class.tslib_content_media.php',
 	'tslib_content_multimedia' => PATH_tslib . 'content/class.tslib_content_multimedia.php',
 	'tslib_content_offsettable' => PATH_tslib . 'content/class.tslib_content_offsettable.php',
+	'tslib_content_phpscriptexternal' => PATH_tslib . 'content/class.tslib_content_phpscriptexternal.php',
 	'tslib_content_phpscriptinternal' => PATH_tslib . 'content/class.tslib_content_phpscriptinternal.php',
 	'tslib_content_phpscript' => PATH_tslib . 'content/class.tslib_content_phpscript.php',
 	'tslib_content_quicktimeobject' => PATH_tslib . 'content/class.tslib_content_quicktimeobject.php',
