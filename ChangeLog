@@ -1,3 +1,7 @@
+2011-02-04  Steffen Kamper  <steffen@typo3.org>
+
+	* Merged em revision 4071
+
 2011-02-04  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #17360: beforeWrap/afterWrap properties of TMENUITEM not working anymore (Thanks to Jo Hasenau)

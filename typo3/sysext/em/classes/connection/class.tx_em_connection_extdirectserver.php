@@ -240,6 +240,8 @@ class tx_em_Connection_ExtDirectServer {
 		list($list,) = $extensionList->getInstalledExtensions();
 		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
+		$install->setSilentMode(TRUE);
+
 		$form = $install->updatesForm($extKey, $list[$extKey], 1, '', '', FALSE, TRUE);
 		if (!$form) {
 			return '<p>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNoConfiguration') . '</p>';
@@ -290,6 +292,7 @@ class tx_em_Connection_ExtDirectServer {
 
 		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
+		$install->setSilentMode(TRUE);
 		$install->INSTALL = $parameter['TYPO3_INSTALL'];
 		$install->checkDBupdates($extKey, $list[$extKey]);
 
@@ -396,8 +399,7 @@ class tx_em_Connection_ExtDirectServer {
 					'id' => $node . '/' . $dir,
 					'text' => htmlspecialchars($dir),
 					'leaf' => false,
-					'qtip' => '',
-					'iconCls' => 't3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-folder-temp'
+					'qtip' => ''
 				);
 			}
 		}
