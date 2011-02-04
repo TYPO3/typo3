@@ -2247,7 +2247,7 @@
 	 * @see getCompressedTCarray()
 	 */
 	function includeTCA($TCAloaded=1)	{
-		global $TCA, $PAGES_TYPES, $LANG_GENERAL_LABELS, $TBE_MODULES;
+		global $TCA, $PAGES_TYPES, $TBE_MODULES;
 		if (!$this->TCAloaded)	{
 			$TCA = Array();
 			include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');

@@ -928,7 +928,6 @@ define('TYPO3_EXCEPTION_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_except
 	// Those which are/can be set in "stddb/tables.php" files:
 unset($PAGES_TYPES);
 unset($ICON_TYPES);
-unset($LANG_GENERAL_LABELS);
 unset($TCA);
 unset($TBE_MODULES);
 unset($TBE_STYLES);

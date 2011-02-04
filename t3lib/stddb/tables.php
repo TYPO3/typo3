@@ -27,7 +27,7 @@
 /**
  * Contains the initialization of global TYPO3 variables among which $TCA is the most significant.
  *
- * The list in order of apperance is: $PAGES_TYPES, $ICON_TYPES, $LANG_GENERAL_LABELS, $TCA, $TBE_MODULES, $TBE_STYLES, $FILEICONS
+ * The list in order of apperance is: $PAGES_TYPES, $ICON_TYPES, $TCA, $TBE_MODULES, $TBE_STYLES, $FILEICONS
  * These variables are first of all used in the backend but to some degree in the frontend as well. (See references)
  * See the document "Inside TYPO3" for a description of each variable in addition to the comment associated with each.
  *
@@ -96,23 +96,6 @@ $PAGES_TYPES = array(
  * @deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon instead
  */
 $ICON_TYPES = array();
-
-
-/**
- * Commonly used language labels which can be used in the $TCA array and elsewhere.
- * Obsolete - just use the values of each entry directly.
- * @todo turn into an object with magic getters and setter so we can make use of the deprecation logging
- * @deprecated since TYPO3 3.6
- */
-$LANG_GENERAL_LABELS = array(
-	'endtime' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
-	'hidden' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-	'starttime' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
-	'fe_group' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
-	'hide_at_login' => 'LLL:EXT:lang/locallang_general.php:LGL.hide_at_login',
-	'any_login' => 'LLL:EXT:lang/locallang_general.php:LGL.any_login',
-	'usergroups' => 'LLL:EXT:lang/locallang_general.php:LGL.usergroups',
-);
 
 
 /**

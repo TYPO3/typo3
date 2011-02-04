@@ -1,3 +1,7 @@
+2011-02-04  Francois Suter  <francois.suter@typo3.org>
+
+	* Cleanup #17482: Remove all mentions of $LANG_GENERAL_LABELS
+
 2011-02-03  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17407: Pagetree cause endless loop in ExtJS events
