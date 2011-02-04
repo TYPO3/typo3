@@ -1,6 +1,7 @@
 2011-02-04  Francois Suter  <francois.suter@typo3.org>
 
 	* Cleanup #17482: Remove all mentions of $LANG_GENERAL_LABELS
+	* Fixed bug #17360: beforeWrap/afterWrap properties of TMENUITEM not working anymore (Thanks to Jo Hasenau)
 
 2011-02-03  Steffen Kamper  <steffen@typo3.org>
 
