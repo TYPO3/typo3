@@ -320,7 +320,13 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 */
 	protected function getLayoutNameInTemplate(Tx_Fluid_Core_Parser_ParsedTemplateInterface $parsedTemplate) {
 		if ($this->isLayoutDefinedInTemplate($parsedTemplate)) {
-			return $parsedTemplate->getVariableContainer()->get('layoutName');
+			$layoutNameNode = $parsedTemplate->getVariableContainer()->get('layoutName');
+
+			$layoutName = $layoutNameNode->evaluate($this->baseRenderingContext);
+			if (!empty($layoutName)) {
+				return $layoutName;
+			}
+			throw new Tx_Fluid_View_Exception('The layoutName could not be evaluated to a string', 1296805368);
 		}
 		return NULL;
 	}

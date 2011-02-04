@@ -52,12 +52,12 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 */
 	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		if (isset($viewHelperArguments['name'])) {
-			$layoutName = $viewHelperArguments['name']->getText();
+			$layoutNameNode = $viewHelperArguments['name'];
 		} else {
-			$layoutName = 'default';
+			$layoutNameNode = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('default');
 		}
 
-		$variableContainer->add('layoutName', $layoutName);
+		$variableContainer->add('layoutName', $layoutNameNode);
 	}
 
 	/**
