@@ -1,3 +1,7 @@
+2011-02-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #17374: implode() issues in Install Tool
+
 2011-02-05  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #17351: PHP_SCRIPT_EXT/INT in 4.5 doesn't work (Thanks to Jo Hasenau)
