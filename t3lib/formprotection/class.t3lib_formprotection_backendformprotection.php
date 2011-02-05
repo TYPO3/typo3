@@ -139,6 +139,19 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	}
 
 	/**
+	 * Overrule the method in the absract class, because we can drop the
+	 * whole locking procedure, which is done in persistTokens, if we
+	 * simply want to delete all tokens.
+	 *
+	 * @see t3lib/formprotection/t3lib_formprotection_Abstract::clean()
+	 */
+	public function clean() {
+		$this->tokens = array();
+		$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
+		$this->resetPersistingRequiredStatus();
+	}
+
+	/**
 	 * Creates or displayes an error message telling the user that the submitted
 	 * form token is invalid.
 	 *
@@ -184,7 +197,10 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	protected function updateTokens() {
 		$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
 		$tokens = $this->retrieveTokens();
-		$this->tokens = array_merge($this->tokens, $tokens);
+		$this->tokens = array_merge($tokens, $this->addedTokens);
+		foreach ($this->droppedTokenIds as $tokenId) {
+			unset($this->tokens[$tokenId]);
+		}
 	}
 
 	/**
@@ -194,12 +210,15 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * @return void
 	 */
 	public function persistTokens() {
-		$lockObject = $this->acquireLock();
+		if ($this->isPersistingRequired()) {
+			$lockObject = $this->acquireLock();
 
-		$this->updateTokens();
-		$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
+			$this->updateTokens();
+			$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
+			$this->resetPersistingRequiredStatus();
 
-		$this->releaseLock($lockObject);
+			$this->releaseLock($lockObject);
+		}
 	}
 
 	/**
