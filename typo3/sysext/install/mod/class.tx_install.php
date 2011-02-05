@@ -1033,6 +1033,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 						$dbArr = $this->getDatabaseList();
 						$dbIncluded = 0;
+						$step3DatabaseOptions = array();
 						foreach ($dbArr as $dbname) {
 								// Define the markers content for database options
 							$step3DatabaseOptionMarkers = array(
@@ -1121,7 +1122,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								array_unshift($sFiles,'Default TYPO3 Tables');
 							}
 
-							$opt='';
+							$step4DatabaseTypeOptions = array();
 							foreach ($sFiles as $f) {
 								if ($f=='Default TYPO3 Tables')	$key='CURRENT_TABLES+STATIC';
 								else $key=htmlspecialchars($f);
@@ -2743,7 +2744,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						</p>
 					';
 				}
-				$this->message($ext, 'GIF / PNG issues', implode($msg, chr(10)), 1);
+				$this->message($ext, 'GIF / PNG issues', implode(chr(10), $msg), 1);
 			}
 			if (!$this->isTTF()) {
 				$this->message($ext, 'FreeType is apparently not installed', '
@@ -2969,6 +2970,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				// Get the subpart for each ImageMagick version
 			$rowsSubPart = t3lib_parsehtml::getSubpart($theCode, '###ROWS###');
 
+			$rows = array();
 			foreach ($this->config_array['im_versions'] as $p => $v) {
 				$ka = array();
 				reset($v);
@@ -3271,8 +3273,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Get the subpart for each database table
 					$databaseItemSubpart = t3lib_parsehtml::getSubpart($databaseAvailableSubpart, '###DATABASEITEM###');
 					$dbArr = $this->getDatabaseList();
-					$options='';
 					$dbIncluded=0;
+					$databaseItems = array();
 					foreach ($dbArr as $dbname) {
 							// Define the markers content
 						$databaseItemMarkers = array(
@@ -3441,6 +3443,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$regularModeMarkers['strongGdLibPng'] = (string) current($gdLibPngLabels);
 						$regularModeMarkers['defaultGdLibPng'] = (integer) $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
 
+						$gdLibPngOptions = array();
 						foreach ($gdLibPngLabels as $k => $v) {
 							list($cleanV) = explode('|', $fA['gdlib_png'][$k]);
 							$gdLibPngMarker['value'] = htmlspecialchars($fA['gdlib_png'][$k]);
@@ -3572,6 +3575,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$regularModeMarkers['defaultImPathLzw'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
 								$regularModeMarkers['ImPathLzw'] = (string) current($imPathLzw);
 
+								$imPathLzwOptions = array();
 								foreach ($labelImPathLzw as $k => $v) {
 									list($cleanV) = explode('|', $fA['im_path_lzw'][$k]);
 										// Define the markers content
@@ -5192,7 +5196,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$imCommandsMarkers = array(
 					'message' => 'ImageMagick commands executed:',
 					'rows' => t3lib_div::intInRange(count($commands), 2, 10),
-					'commands' => htmlspecialchars(implode($commands, chr(10)))
+					'commands' => htmlspecialchars(implode(chr(10), $commands))
 				);
 					// Fill the markers in the subpart
 				$imCommandsSubpart = t3lib_parsehtml::substituteMarkerArray(
@@ -5229,7 +5233,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					// Define the markers content
 				$commandsMarkers = array(
 					'rows' => t3lib_div::intInRange(count($commands), 2, 10),
-					'commands' => htmlspecialchars(implode($commands, chr(10)))
+					'commands' => htmlspecialchars(implode(chr(10), $commands))
 				);
 					// Fill the markers in the subpart
 				$commandsSubpart = t3lib_parsehtml::substituteMarkerArray(
@@ -5320,6 +5324,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		);
 		$c = 0;
 
+		$items = array();
 		foreach ($menuitems as $k => $v) {
 				// Define the markers content
 			$markers = array(
@@ -5825,8 +5830,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								// not been created at this point. This applies to the "pages.*"
 								// fields defined in sysext/cms/ext_tables.sql for example.
 							$fileContent = implode(
-								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE '),
-								chr(10)
+								chr(10),
+								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE ')
 							);
 							$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
 							$FDdb = $this->getFieldDefinitions_database();
@@ -6269,7 +6274,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'sys_products_orders_mm_tt_products' => 'relations between tt_products and sys_products_orders'
 					);
 
-					$checkBoxes=array();
 					$countEntries=array();
 					reset($tableListArr);
 						// Get the template file
@@ -6280,7 +6284,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$groupSubpart = t3lib_parsehtml::getSubpart($tableListSubpart, '###GROUP###');
 						// Get the subpart for a single table
 					$singleTableSubpart = t3lib_parsehtml::getSubpart($tableListSubpart, '###SINGLETABLE###');
-					$group = array();
 					$checkBoxes = array();
 					foreach ($tableListArr as $table) {
 						if ($table!='--div--') {
@@ -6503,6 +6506,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} else {
 					// update methods might need to get custom data
 					$updatesAvailableSubpart = t3lib_parsehtml::getSubpart($getUserInputSubpart, '###UPDATESAVAILABLE###');
+					$updateItems = array();
 					foreach ($this->INSTALL['update'] as $identifier => $tmp) {
 						$updateMarkers = array();
 
@@ -6581,6 +6585,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if (method_exists($tmpObj,'performUpdate')) {
 							$customOutput = '';
 							$dbQueries = array();
+							$databaseQueries = array();
 							if ($tmpObj->performUpdate($dbQueries, $customOutput)) {
 								$performUpdateMarkers['updateStatus'] = 'Update successful!';
 							} else {
