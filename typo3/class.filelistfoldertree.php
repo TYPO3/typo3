@@ -419,8 +419,8 @@ class filelistFolderTree extends t3lib_folderTree {
 
 				}
 
-				if($webpath == 'web') {
-					$icon = 'apps-filetree-folder-default';
+				if ($exp) {
+					$icon = 'apps-filetree-folder-opened';
 				} else {
 					$icon = 'apps-filetree-folder-default';
 				}
