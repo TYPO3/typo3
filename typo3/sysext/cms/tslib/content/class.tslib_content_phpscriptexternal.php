@@ -2,8 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Xavier Perseguers <typo3@perseguers.ch>
- *  (c) 2010-2011 Steffen Kamper <steffen@typo3.org>
+ *  (c) 2011 Jo Hasenau <info@cybercraft.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,16 +26,15 @@
  ***************************************************************/
 
 /**
- * Contains PHP_SCRIPT_INT class object.
+ * Contains PHP_SCRIPT_EXT class object.
  *
- * $Id: class.tslib_content.php 7905 2010-06-13 14:42:33Z ohader $
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
+ * $Id$
+ * @author Jo Hasenau <info@cybercraft.de>
  */
-class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
+class tslib_content_PhpScriptExternal extends tslib_content_Abstract {
 
 	/**
-	 * Rendering the cObject, PHP_SCRIPT_INT and PHP_SCRIPT_EXT
+	 * Rendering the cObject, PHP_SCRIPT__EXT
 	 *
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
@@ -49,12 +47,12 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		$content = '';
 		if ($incFile && $GLOBALS['TSFE']->checkFileInclude($incFile)) {
-			$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+			$substKey = 'EXT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 			$content .= '<!--' . $substKey . '-->';
-			$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
+			$GLOBALS['TSFE']->config['EXTincScript'][$substKey] = array (
 				'file' => $incFile, 'conf' => $conf, 'type' => 'SCRIPT'
 			);
-			$GLOBALS['TSFE']->config['INTincScript'][$substKey]['cObj'] = serialize($this->cObj);
+			$GLOBALS['TSFE']->config['EXTincScript'][$substKey]['data'] = $this->cObj->data;
 		}
 
 		if (isset($conf['stdWrap.'])) {
@@ -67,8 +65,8 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptinternal.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptinternal.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptexternal.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_phpscriptexternal.php']);
 }
 
 ?>
