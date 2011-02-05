@@ -56,6 +56,20 @@ abstract class t3lib_formprotection_Abstract {
 	protected $tokens = array();
 
 	/**
+	 * Tokens that have been added during this request.
+	 *
+	 * @var array<array>
+	 */
+	protected $addedTokens = array();
+
+	/**
+	 * Token ids of tokens that have been dropped during this request.
+	 *
+	 * @var array
+	 */
+	protected $droppedTokenIds = array();
+
+	/**
 	 * Constructor. Makes sure existing tokens are read and available for
 	 * checking.
 	 */
@@ -123,6 +137,7 @@ abstract class t3lib_formprotection_Abstract {
 			'action' => $action,
 			'formInstanceName' => $formInstanceName,
 		);
+		$this->addedTokens[$tokenId] = $this->tokens[$tokenId];
 		$this->preventOverflow();
 
 		return $tokenId;
@@ -219,7 +234,28 @@ abstract class t3lib_formprotection_Abstract {
 	protected function dropToken($tokenId) {
 		if (isset($this->tokens[$tokenId])) {
 			unset($this->tokens[$tokenId]);
+			$this->droppedTokenIds[] = $tokenId;
 		}
+	}
+
+	/**
+	 * Persisting of tokens is only required, if tokens are
+	 * deleted or added during this request.
+	 *
+	 * @return boolean
+	 */
+	protected function isPersistingRequired() {
+		return !empty($this->droppedTokenIds) || !empty($this->addedTokens);
+	}
+
+	/**
+	 * Reset the arrays of added or deleted tokens.
+	 *
+	 * @return void
+	 */
+	protected function resetPersistingRequiredStatus() {
+		$this->droppedTokenIds = array();
+		$this->addedTokens = array();
 	}
 
 	/**

@@ -83,7 +83,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 				'    parent::createValidationErrorMessage();' .
 				'  }' .
 				'  public function retrieveTokens() {' .
-				'    return parent::retrieveTokens();' .
+				'    return $this->tokens = parent::retrieveTokens();' .
 				'  }' .
 				'}'
 			);

@@ -51,9 +51,10 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 			't3lib_beUserAuth',
 			array('getSessionData', 'setAndSaveSessionData')
 		);
+		$GLOBALS['BE_USER']->user['uid'] = 1;
 
 		$className = $this->createAccessibleProxyClass();
-		$this->fixture = new $className;
+		$this->fixture = $this->getMock($className, array('acquireLock', 'releaseLock'));
 	}
 
 	public function tearDown() {
@@ -83,6 +84,9 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				'class ' . $className . ' extends t3lib_formprotection_BackendFormProtection {' .
 				'  public function createValidationErrorMessage() {' .
 				'    parent::createValidationErrorMessage();' .
+				'  }' .
+				'  public function updateTokens() {' .
+				'    return parent::updateTokens();' .
 				'  }' .
 				'  public function retrieveTokens() {' .
 				'    return parent::retrieveTokens();' .
@@ -176,8 +180,9 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$GLOBALS['BE_USER']->expects($this->once())->method('getSessionData')
-			->with('formTokens')->will($this->returnValue(array(
+		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
+			->with('formTokens')
+			->will($this->returnValue(array(
 				$tokenId => array(
 					'formName' => $formName,
 					'action' => $action,
@@ -185,9 +190,40 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				),
 			)));
 
-		$this->fixture->retrieveTokens();
+		$this->fixture->updateTokens();
 
 		$this->assertTrue(
+			$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function tokensStayDroppedAfterPersistingTokens() {
+		$tokenId = '51a655b55c54d54e5454c5f521f6552a';
+		$formName = 'foo';
+		$action = 'edit';
+		$formInstanceName = '42';
+
+		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
+			->will($this->returnValue(array(
+				$tokenId => array(
+					'formName' => $formName,
+					'action' => $action,
+					'formInstanceName' => $formInstanceName,
+				),
+			)));
+
+		$className = $this->createAccessibleProxyClass();
+
+		$this->fixture->updateTokens();
+
+		$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName);
+
+		$this->fixture->persistTokens();
+
+		$this->assertFalse(
 			$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName)
 		);
 	}
