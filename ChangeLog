@@ -4,6 +4,7 @@
 
 2011-02-05  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17413: ExtJs Theme - use grey folder items for tree by default
 	* Fixed bug #17057: StateProvider values not respected
 	* Fixed bug #17493: Filelist misses open folder icon
 	* Fixed bug #17490: After introducing the locking in #17289 no CSRF token will ever be deleted (Thanks to Helmut Hummel)
