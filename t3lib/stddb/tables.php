@@ -578,6 +578,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-filetree-folder-locked',
 	'apps-filetree-folder-media',
 	'apps-filetree-folder-news',
+	'apps-filetree-folder-opened',
 	'apps-filetree-folder-recycler',
 	'apps-filetree-folder-temp',
 	'apps-filetree-folder-user',
@@ -678,8 +679,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-x-sys_news',
 	'mimetypes-x-sys_workspace',
 	'mimetypes-x_belayout',
-	'places-folder-closed',
-	'places-folder-opened',
 	'status-dialog-error',
 	'status-dialog-information',
 	'status-dialog-notification',
@@ -764,6 +763,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
+
 
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
