@@ -6,6 +6,7 @@
 2011-02-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17374: implode() issues in Install Tool
+	* Fixed bug #12998: Icons for Word documents missing (Thanks to Tobias Schäfer)
 
 2011-02-04  Steffen Kamper  <steffen@typo3.org>
 
