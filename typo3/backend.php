@@ -102,14 +102,7 @@ class TYPO3backend {
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 
-		$this->pageRenderer->addExtOnReadyCode(
-			'TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
-			if (typeof console === "undefined") {
-				console = TYPO3.Backend.DebugConsole;
-			}
-			TYPO3.ContextHelpWindow.init();',
-			TRUE
-		);
+
 		$this->pageRenderer->addJsInlineCode(
 			'consoleOverrideWithDebugPanel',
 			'//already done'
@@ -264,12 +257,19 @@ class TYPO3backend {
 			//save states in BE_USER->uc
 		$extOnReadyCode = '
 			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
-				key: "BackendComponents.States"
+				key: "BackendComponents.States",
+				autoRead: false
 			}));
 		';
 		if ($states) {
-		    $extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . $states . ');';
+			$extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . json_encode($states) . ');';
 		}
+		$extOnReadyCode .= '
+			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
+			if (typeof console === "undefined") {
+				console = TYPO3.Backend.DebugConsole;
+			}
+			TYPO3.ContextHelpWindow.init();';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
 
 
