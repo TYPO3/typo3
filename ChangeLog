@@ -1,3 +1,7 @@
+2011-02-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17464: ExtDirectCode is added twice
+
 2011-02-06  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #12998: Icons for Word documents missing (Thanks to Tobias Schäfer)
