@@ -1,3 +1,7 @@
+2011-02-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17464: ExtDirectCode is added twice
+
 2011-02-05  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17413: ExtJs Theme - use grey folder items for tree by default

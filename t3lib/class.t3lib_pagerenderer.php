@@ -111,7 +111,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $addExtJS = FALSE;
 	protected $addExtCore = FALSE;
 	protected $extJSadapter = 'ext/ext-base.js';
-
+	protected $extDirectCodeAdded = FALSE;
 
 	protected $enableExtJsDebug = FALSE;
 	protected $enableExtCoreDebug = FALSE;
@@ -138,7 +138,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		// SVG library
 	protected $addSvg = FALSE;
 	protected $enableSvgDebug = FALSE;
-
 
 		// used by BE modules
 	public $backPath;
@@ -945,6 +944,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addExtDirectCode() {
+		if ($this->extDirectCodeAdded) {
+			return;
+		}
+		$this->extDirectCodeAdded = TRUE;
 		$token = '';
 		if (TYPO3_MODE === 'BE') {
 			$formprotection = t3lib_formprotection_Factory::get();
