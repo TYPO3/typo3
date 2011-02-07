@@ -1,3 +1,7 @@
+2011-02-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* htmlArea RTE: Updated Manual
+
 2011-02-07 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17502: ExtDirect Exception: "Error parsing json response: null"
