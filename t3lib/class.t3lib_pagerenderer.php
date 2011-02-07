@@ -1005,18 +1005,32 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					);
 				} else {
 					var backtrace = "";
-					if (event.where) {
+					if (event.code === "parse") {
+						extDirectDebug(
+							"<p>" + event.xhr.responseText + "<\/p>",
+							event.type,
+							"ExtDirect - Exception"
+						);
+					} else if (event.code === "router") {
+						TYPO3.Flashmessage.display(
+							TYPO3.Severity.error,
+							event.code,
+							event.message,
+							30
+						);
+					} else if (event.where) {
 						backtrace = "<p style=\"margin-top: 20px;\">" +
 							"<strong>Backtrace:<\/strong><br \/>" +
 							event.where.replace(/#/g, "<br \/>#") +
 							"<\/p>";
+						extDirectDebug(
+							"<p>" + event.message + "<\/p>" + backtrace,
+							event.method,
+							"ExtDirect - Exception"
+						);
 					}
 
-					extDirectDebug(
-						"<p>" + event.message + "<\/p>" + backtrace,
-						event.method,
-						"ExtDirect - Exception"
-					);
+
 				}
 			});
 
