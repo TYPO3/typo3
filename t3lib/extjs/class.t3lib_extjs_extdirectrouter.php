@@ -51,6 +51,7 @@ class t3lib_extjs_ExtDirectRouter {
 		$namespace = t3lib_div::_GET('namespace');
 		$response = array();
 		$request = NULL;
+		$isValidRequest = TRUE;
 
 		if (!empty($postParameters['extAction'])) {
 			$isForm = TRUE;
@@ -71,44 +72,46 @@ class t3lib_extjs_ExtDirectRouter {
 				'type' => 'exception',
 				'message' => 'Something went wrong with an ExtDirect call!'
 			);
+			$isValidRequest = FALSE;
 		}
 
 		if (!is_array($request)) {
 			$request = array($request);
 		}
-		
-		$validToken = FALSE;
-		$firstCall = TRUE;
-		foreach ($request as $index => $singleRequest) {
-			$response[$index] = array(
-				'tid' => $singleRequest->tid,
-				'action' => $singleRequest->action,
-				'method' => $singleRequest->method
-			);
 
-			$token = array_pop($singleRequest->data);
-			if ($firstCall) {
-				$firstCall = FALSE;
-				$formprotection = t3lib_formprotection_Factory::get();
-				$validToken = $formprotection->validateToken($token, 'extDirect');
-			}
+		if ($isValidRequest) {
+			$validToken = FALSE;
+			$firstCall = TRUE;
+			foreach ($request as $index => $singleRequest) {
+				$response[$index] = array(
+					'tid' => $singleRequest->tid,
+					'action' => $singleRequest->action,
+					'method' => $singleRequest->method
+				);
 
-			try {
-				if (!$validToken) {
-					throw new t3lib_formprotection_InvalidTokenException('ExtDirect: Invalid Security Token!');
+				$token = array_pop($singleRequest->data);
+				if ($firstCall) {
+					$firstCall = FALSE;
+					$formprotection = t3lib_formprotection_Factory::get();
+					$validToken = $formprotection->validateToken($token, 'extDirect');
 				}
 
-				$response[$index]['type'] = 'rpc';
-				$response[$index]['result'] = $this->processRpc($singleRequest, $namespace);
-				$response[$index]['debug'] = $GLOBALS['error']->toString();
+				try {
+					if (!$validToken) {
+						throw new t3lib_formprotection_InvalidTokenException('ExtDirect: Invalid Security Token!');
+					}
 
-			} catch (Exception $exception) {
-				$response[$index]['type'] = 'exception';
-				$response[$index]['message'] = $exception->getMessage();
-				$response[$index]['where'] = $exception->getTraceAsString();
+					$response[$index]['type'] = 'rpc';
+					$response[$index]['result'] = $this->processRpc($singleRequest, $namespace);
+					$response[$index]['debug'] = $GLOBALS['error']->toString();
+
+				} catch (Exception $exception) {
+					$response[$index]['type'] = 'exception';
+					$response[$index]['message'] = $exception->getMessage();
+					$response[$index]['where'] = $exception->getTraceAsString();
+				}
 			}
 		}
-
 		if ($isForm && $isUpload) {
 			$ajaxObj->setContentFormat('plain');
 			$response = json_encode($response);
