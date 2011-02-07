@@ -1,3 +1,7 @@
+2011-02-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* htmlArea RTE: Updated Manual
+
 2011-02-07 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17502: ExtDirect Exception: "Error parsing json response: null"
@@ -59,7 +63,7 @@
 	* Fixed bug #17373: Standalone images in RTE-enabled field not rendered in frontend
 	* Fixed bug #17349: htmlArea RTE: JS error when using "Edit element"
 	* Updated htmlArea RTE version to 2.2.0
-	* Fixed bug #17438: htmlArea RTE: non-xhtml markup in image dialogue
+	* Fixed bug #17438: htmlArea RTE: non-xhtml markup in image dialogue (Thanks to Georg Ringer)
 
 2011-02-01  Steffen Kamper  <steffen@typo3.org>
 
