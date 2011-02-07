@@ -70,7 +70,8 @@ class t3lib_extjs_ExtDirectRouter {
 		} else {
 			$response[] = array(
 				'type' => 'exception',
-				'message' => 'Something went wrong with an ExtDirect call!'
+				'message' => 'Something went wrong with an ExtDirect call!',
+				'code' => 'router',
 			);
 			$isValidRequest = FALSE;
 		}
