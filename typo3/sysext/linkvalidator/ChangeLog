@@ -1,3 +1,7 @@
+2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12517: Replace exec_SELECTgetRows with exec_SELECTgetSingleRow whenever a single record is expected (thanks to Jo Hasenau)
+
 2011-01-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)

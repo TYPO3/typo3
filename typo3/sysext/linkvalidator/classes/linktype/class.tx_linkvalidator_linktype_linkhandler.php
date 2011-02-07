@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -63,14 +63,14 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 		if (count($parts) == 3) {
 			$tableName = htmlspecialchars($parts[1]);
 			$rowid = intval($parts[2]);
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
 				$tableName,
 				'uid = ' . intval($rowid)
 			);
 
-			if ($rows[0]) {
-				if ($rows[0]['deleted'] == '1') {
+			if ($row) {
+				if ($row['deleted'] == '1') {
 					$errorParams['errorType'] = DELETED;
 					$errorParams['tablename'] = $tableName;
 					$errorParams['uid'] = $rowid;
@@ -106,7 +106,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing. 
+	 * Generate the localized error message from the error params saved from the parsing.
 	 *
 	 * @param   array    all parameters needed for the rendering of the error message
 	 * @return  string    validation error message
