@@ -131,7 +131,7 @@ class t3lib_DB {
 
 
 		// Debug:
-	var $debugOutput = FALSE; // Set "TRUE" if you want database errors outputted.
+	var $debugOutput = FALSE; // Set "TRUE" or "1" if you want database errors outputted. Set to "2" if you also want successfull database actions outputted.
 	var $debug_lastBuiltQuery = ''; // Internally: Set to last built query (not necessarily executed...)
 	var $store_lastBuiltQuery = FALSE; // Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 	var $explainOutput = 0; // Set this to 1 to get queries explained (devIPmask must match). Set the value to 2 to the same but disregarding the devIPmask. There is an alternative option to enable explain output in the admin panel under "TypoScript", which will produce much nicer output, but only works in FE.
@@ -1432,7 +1432,7 @@ class t3lib_DB {
 	function debug($func, $query = '') {
 
 		$error = $this->sql_error();
-		if ($error || $this->debugOutput == 2) {
+		if ($error || (int)$this->debugOutput === 2) {
 			debug(
 				array(
 					'caller' => 't3lib_DB::' . $func,

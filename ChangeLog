@@ -1,3 +1,7 @@
+2011-02-07  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17478: Wrong behaviour of "$TYPO3_CONF_VARS['SYS']['sqlDebug'] = TRUE" (since #15425)
+
 2011-02-06  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17464: ExtDirectCode is added twice
