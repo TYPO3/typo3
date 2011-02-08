@@ -1310,7 +1310,9 @@ class tx_em_Install {
 						t3lib_BEfunc::getFuncMenu(0, 'SET[constant_editor_cat]', $MOD_SETTINGS['constant_editor_cat'], $MOD_MENU['constant_editor_cat'], '', '&CMD[showExt]=' . $extKey);
 					// add class to select
 				$menu = str_replace('<select', '<select class="mod-menu-template-select"', $menu);
-				$menu = str_replace('jumpToUrl', 'abc', $menu);
+				if ($this->silentMode) {
+					$menu = str_replace('jumpToUrl', 'abc', $menu);
+				}
 
 				if ($this->parentObject instanceof SC_mod_tools_em_index) {
 					$this->parentObject->content .= $this->parentObject->doc->section('', '<span class="nobr">' . $menu . '</span>');

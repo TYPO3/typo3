@@ -35,12 +35,14 @@ Ext.ns('TYPO3.EM', 'TYPO3.EM.ExtDirect');
 Ext.onReady(function() {
 		//save states in BE_USER->uc
 	Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
-		key: 'moduleData.tools_em.States'
+		key: 'moduleData.tools_em.States',
+		autoRead: false
 	}));
 
 	if (Ext.isObject(TYPO3.settings.EM.States)) {
 		Ext.state.Manager.getProvider().initState(TYPO3.settings.EM.States);
 	}
+
 	Ext.QuickTips.init();
 	TYPO3.EM.ImportWindow = null;
 

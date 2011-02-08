@@ -1,5 +1,6 @@
 2011-02-08  Steffen Kamper  <steffen@typo3.org>
 
+	* Merged em from rev 4093
 	* Fixed bug #15771: Docheader (save, save+view, save+close etc) missing
 	* Follow-up to #17500: Improve error handling in ExtDirect router (Thanks to Helmut Hummel)
 

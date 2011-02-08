@@ -444,6 +444,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			}
 		} elseif ($this->CMD['importExtInfo']) { // Gets detailed information of an extension from online rep.
 			$this->importExtInfo($this->CMD['importExtInfo'], $this->CMD['extVersion']);
+		} elseif ($this->CMD['downloadExtFile']) {
+			tx_em_Tools::sendFile($this->CMD['downloadExtFile']);
 		} else { // No command - we show what the menu setting tells us:
 			if (t3lib_div::inList('loaded_list,installed_list,import', $this->MOD_SETTINGS['function'])) {
 				$menu .= '&nbsp;' . $GLOBALS['LANG']->getLL('group_by') . '&nbsp;' . t3lib_BEfunc::getFuncMenu(0, 'SET[listOrder]', $this->MOD_SETTINGS['listOrder'], $this->MOD_MENU['listOrder']) .
@@ -903,7 +905,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function alterSettings() {
-
+		$content = '';
 		// Prepare the HTML output:
 		$content .= '
 			<form action="' . $this->script . '" method="post" name="altersettings">
@@ -1103,6 +1105,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	function fetchMetaData($metaType) {
 		global $TYPO3_CONF_VARS;
 
+		$content = '';
 		switch ($metaType) {
 			case 'mirrors':
 				$mfile = t3lib_div::tempnam('mirrors');
@@ -1883,6 +1886,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							$content = $this->install->extDelete($extKey, $list[$extKey], $this->CMD);
 							$this->content .= $this->doc->section(
 								$GLOBALS['LANG']->getLL('ext_details_delete'),
+								$GLOBALS['LANG']->getLL('ext_details_delete'),
 								$content, 0, 1
 							);
 						} else {
@@ -2182,6 +2186,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 */
 	function extUpdateEMCONF($extKey, $extInfo) {
 		$absPath = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
+		$content = '';
+
 		if ($this->CMD['doUpdateEMCONF']) {
 			return $this->extensionDetails->updateLocalEM_CONF($extKey, $extInfo);
 		} else {

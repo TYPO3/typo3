@@ -1022,6 +1022,21 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * @static
+	 * @param  $path
+	 * @return void
+	 */
+	public static function sendFile($path) {
+		$path = PATH_site . $path;
+		if (is_file($path) && is_readable($path)) {
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename=' . basename($path));
+			readfile($path);
+			exit;
+		}
+	}
+
+	/**
 	 * Wrapping input string in a link tag with link to email address
 	 *
 	 * @param	string		Input string, being wrapped in <a> tags

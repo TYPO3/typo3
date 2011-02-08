@@ -181,7 +181,8 @@ class tx_em_ExtensionManager {
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
 			'allowRepositoryUpdate' => $allowRepositoryUpdate,
 			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
-			'fileSaveAllowed' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0
+			'fileSaveAllowed' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0,
+			'debug' => $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] > 0,
 		);
 		$settings = array_merge($settings, $additionalSettings);
 
@@ -194,6 +195,7 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addJsFile($this->resPath . 'js/overrides/ext_overrides.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/custom_plugins.js');
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/TreeState.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/RowPanelExpander.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/searchfield.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/fileuploadfield.js');
