@@ -46,7 +46,8 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 			tag: 'iframe',
 			frameborder: '0',
 			src: this.src,
-			name: this.name
+			name: this.name,
+			style: 'float:left;' // this is needed to prevent offset of 2.5 pixel, see #15771
 		}
 		Ext.apply(this, {
 
