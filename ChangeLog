@@ -1,3 +1,7 @@
+2011-02-08  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17507: Extension using stdWrap hooks are broken due to stdWrap refactoring (Thank also to Jo Hasenau)
+
 2011-02-07  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* htmlArea RTE: Updated Manual

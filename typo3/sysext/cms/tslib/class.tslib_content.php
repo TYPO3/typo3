@@ -2035,7 +2035,7 @@ class tslib_cObj {
 					}
 
 					// hand over the whole $conf array to the stdWrapHookObjects
-					if ($conf[$functionName] == 'stdWrapHookObject') {
+					if ($functionType === 'hook') {
 						$singleConf = $conf;
 					}
 					// check if key is still containing something, since it might have been changed by next level stdWrap before
