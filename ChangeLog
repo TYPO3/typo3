@@ -1,3 +1,7 @@
+2011-02-08  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #17500: Improve error handling in ExtDirect router (Thanks to Helmut Hummel)
+
 2011-02-08  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #17507: Extension using stdWrap hooks are broken due to stdWrap refactoring (Thank also to Jo Hasenau)
