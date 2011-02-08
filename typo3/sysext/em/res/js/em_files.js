@@ -17,6 +17,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 	rootIcon: 'sysext/t3skin/icons/module_tools_em.png',
 	rootText: TYPO3.lang.ext_details_ext_files,
 	baseParams: null,
+	treeId: null,
 
 	initComponent:function() {
 
@@ -35,6 +36,10 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 			cls: 'extfiletree',
 			margins: '0 0 0 0',
 			cmargins: '0 0 0 0',
+			id: this.treeId ? this.treeId : Ext.id(),
+			stateful: this.treeId ? true : false,
+			stateEvents: [],
+			plugins: new Ext.ux.state.TreePanel(),
 
 			root: {
 				text: this.rootText,
@@ -61,6 +66,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 							hlEditor.editFile = node.attributes.id;
 							this.layout.center.panel.reloadButton.enable();
 							this.layout.center.panel.fileLabel.setText('File: ' + hlEditor.editFile);
+							this.layout.center.panel.fileLabel.removeClass('fileChanged');
 							this.layout.center.panel.saveButton.disable();
 							this.layout.center.panel.undoButton.enable();
 							this.layout.center.panel.redoButton.enable();
@@ -87,6 +93,11 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 								renderTo: document.body
 							}]
 						}).show();
+					}
+					if (node.isLeaf()) {
+						this.layout.west.panel.downloadFileButton.enable();
+					} else {
+						this.layout.west.panel.downloadFileButton.disable();
 					}
 				},
 				scope: this
@@ -116,11 +127,20 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				}, {
 					iconCls: 'x-btn-upload',
 					tooltip: TYPO3.lang.cmd_upload,
+					ref: '../uploadFileButton',
 					hidden: true
 				}, {
-					iconCls: 'x-btn-download',
+					iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-download',
 					tooltip: TYPO3.lang.cmd_download,
-					hidden: true
+					ref: '../downloadFileButton',
+					disabled: true,
+					handler: function() {
+						var node = fileTree.getSelectionModel().getSelectedNode();
+						if (node.isLeaf()) {
+							this.downloadFile(node.attributes.id);
+						}
+					},
+					scope: this
 				}]
 			}, {
 
@@ -190,6 +210,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 									TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.cmd_save, String.format(TYPO3.lang.msg_fileSaved, response.file), 5);
 									this.layout.center.panel.saveButton.disable();
 									this.layout.center.panel.reloadButton.enable();
+									this.layout.center.panel.fileLabel.removeClass('fileChanged');
 								} else {
 									TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.cmd_save, response.error, 5);
 								}
@@ -277,7 +298,58 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 
 	onRender: function() {
 		TYPO3.EM.ExtFilelist.superclass.onRender.apply(this, arguments);
-	}
+	},
+
+	downloadFile: function(path) {
+
+			// create hidden target iframe
+			var id = Ext.id();
+			var frame = document.createElement('iframe');
+			frame.id = id;
+			frame.name = id;
+			frame.className = 'x-hidden';
+			if (Ext.isIE) {
+				frame.src = Ext.SSL_SECURE_URL;
+			}
+
+			document.body.appendChild(frame);
+
+			if (Ext.isIE) {
+				document.frames[id].name = id;
+			}
+
+			var form = Ext.DomHelper.append(document.body, {
+						tag: 'form',
+						method: 'post',
+						action: 'mod.php?M=tools_em',
+						target: id
+					});
+
+			document.body.appendChild(form);
+
+			var hidden;
+
+			// append path to form
+			hidden = document.createElement('input');
+			hidden.type = 'hidden';
+			hidden.name = 'CMD[downloadExtFile]';
+			hidden.value = path;
+			form.appendChild(hidden);
+
+			var callback = function() {
+				Ext.EventManager.removeListener(frame, 'load', callback, this);
+				setTimeout(function() {
+					document.body.removeChild(form);
+				}, 100);
+				setTimeout(function() {
+					document.body.removeChild(frame);
+				}, 110);
+			};
+
+			Ext.EventManager.on(frame, 'load', callback, this);
+
+			form.submit();
+		}
 
 
 
@@ -475,9 +547,11 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 		if (TYPO3.settings.EM.fileSaveAllowed) {
 			if (!changed) {
 				this.ownerCt.saveButton.disable();
+				this.ownerCt.fileLabel.removeClass('fileChanged');
 				this.contentChanged = false;
 			} else {
 				this.ownerCt.saveButton.enable();
+				this.ownerCt.fileLabel.addClass('fileChanged');
 				this.contentChanged = true;
 			}
 		}

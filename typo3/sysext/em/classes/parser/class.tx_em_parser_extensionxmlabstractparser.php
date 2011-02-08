@@ -436,7 +436,6 @@ abstract class tx_em_Parser_ExtensionXmlAbstractParser extends tx_em_Parser_XmlA
 	protected function convertDependencies($dependencies) {
 		$newDependencies = array();
 		$dependenciesArray = unserialize($dependencies);
-		debug($dependenciesArray, '$dependenciesArray');
 		if (is_array($dependenciesArray)) {
 			foreach ($dependenciesArray as $version) {
 				$newDependencies[$version['kind']][$version['extensionKey']] = $version['versionRange'];

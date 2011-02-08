@@ -187,6 +187,8 @@ class tx_em_Extensions_List {
 			$directLink = 'mod.php?M=tools_em';
 			$emConf = tx_em_Tools::includeEMCONF($path . $extKey . '/ext_emconf.php', $extKey);
 			$manual = $path . $extKey . '/doc/manual.sxw';
+			$manualRelPath = $relPath . $extKey . '/doc/manual.sxw';
+
 			if ($type === '') {
 				$type = tx_em_Tools::getExtTypeFromPath($path);
 			}
@@ -236,9 +238,11 @@ class tx_em_Extensions_List {
 				$list[$key]['doc'] = '';
 				if ($list[$key]['docPath']) {
 					$manual = $path . $extKey . '/' . $list[$key]['docPath'] . '/manual.sxw';
+					$manualRelPath = $relPath . $extKey . '/' .  $list[$key]['docPath'] . '/manual.sxw';
 				}
+
 				if (@is_file($manual)) {
-					$list[$key]['doc'] = '<a href="' . htmlspecialchars($relPath . $extKey . '/doc/manual.sxw') . '" target="_blank">'
+					$list[$key]['doc'] = '<a href="' . htmlspecialchars($manualRelPath) . '" target="_blank">'
 						. t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>';
 				}
 				$list[$key]['icon'] = @is_file($path . $extKey . '/ext_icon.gif') ? '<img src="' . $relPath . $extKey . '/ext_icon.gif" alt="" height="16" />' : '<img src="clear.gif" alt="" width="16" height="16" />';
@@ -631,11 +635,15 @@ EXTENSION KEYS:
 						'</a></td>';
 
 				// Manual download
-				$fileP = tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
+				$manual = tx_em_Tools::typePath($extInfo['type']) . $extKey . '/doc/manual.sxw';
+				$manualRelPath = t3lib_div::resolveBackPath($this->parentObject->doc->backPath . tx_em_Tools::typeRelPath($extInfo['type'])) . $extKey . '/doc/manual.sxw';
+				if ($extInfo['EM_CONF']['docPath']) {
+					$manual = tx_em_Tools::typePath($extInfo['type']) . $extKey . '/' . $extInfo['EM_CONF']['docPath'] . '/manual.sxw';
+					$manualRelPath = t3lib_div::resolveBackPath($this->parentObject->doc->backPath . tx_em_Tools::typeRelPath($extInfo['type'])) . $extKey . '/' . $extInfo['EM_CONF']['docPath'] . '/manual.sxw';
+				}
 				$cells[] = '<td nowrap="nowrap">' .
-						(tx_em_Tools::typePath($extInfo['type']) && @is_file($fileP) ?
-								'<a href="' . htmlspecialchars(t3lib_div::resolveBackPath($this->parentObject->doc->backPath .
-									tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/doc/manual.sxw')) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
+						(tx_em_Tools::typePath($extInfo['type']) && @is_file($manual) ?
+								'<a href="' . htmlspecialchars($manualRelPath) . '" target="_blank" title="' . $GLOBALS['LANG']->getLL('listRow_local_manual') . '">' .
 										t3lib_iconWorks::getSpriteIcon('actions-system-extension-documentation') . '</a>' : '') .
 						'</td>';
 

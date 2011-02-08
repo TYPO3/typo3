@@ -263,11 +263,13 @@ class tx_em_Tools_XmlHandler {
 	function getReviewState($extKey, $version) {
 		$where = 'extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($extKey, 'cache_extensions') . ' AND version=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($version, 'cache_extensions');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('reviewstate', 'cache_extensions', $where);
+		$reviewState = 0;
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			return $row['reviewstate'];
+			$reviewState = $row['reviewstate'];
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return 0;
+
+		return $reviewState;
 	}
 
 
@@ -364,8 +366,7 @@ class tx_em_Tools_XmlHandler {
 
 		$fp = gzopen($filename, 'rb');
 		if (!$fp) {
-			$content .= 'Error opening XML extension file "' . $filename . '"';
-			return $content;
+			return 'Error opening XML extension file "' . $filename . '"';
 		}
 		$string = gzread($fp, 0xffff); // Read 64KB
 
@@ -386,6 +387,7 @@ class tx_em_Tools_XmlHandler {
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_extensions');
 
 		$extcount = 0;
+		$content = '';
 		@ini_set('pcre.backtrack_limit', 500000);
 		do {
 			if (preg_match('/.*(<extension\s+extensionkey="[^"]+">.*<\/extension>)/suU', $string, $match)) {

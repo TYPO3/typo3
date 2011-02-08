@@ -1,4 +1,9 @@
 /* Global overwrite */
+
+.x-menu-list-item a {
+	display: block !important;
+}
+
 strong {
 	font-weight: bold;
 }
@@ -223,11 +228,17 @@ a.email {
 .ux-searchfield-trigger1 {
 	right: 0 !important;
     position: absolute !important;
-    top: 3px !important;
+    top: 5px !important;
+	border: none !important;
 }
 
 .ux-searchfield-trigger2 {
 	left: 4px !important;
     position: absolute !important;
     top: 3px !important;
+	border: none !important;
+}
+
+.fileChanged {
+	color: red;
 }

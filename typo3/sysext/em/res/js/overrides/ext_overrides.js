@@ -202,6 +202,52 @@ Ext.override(Ext.grid.GridPanel, {
 		if (colIndex >= 0) {
 			this.colModel.removeColumn(colIndex);
 		}
+	},
+	applyState : function(state) {
+		var cm = this.colModel,
+				cs = state.columns,
+				store = this.store,
+				s,
+				c,
+				colIndex;
+
+		if (cs) {
+			for (var i = 0, len = cs.length; i < len; i++) {
+				s = cs[i];
+				c = cm.getColumnById(s.id);
+				if (c) {
+					colIndex = cm.getIndexById(s.id);
+					cm.setState(colIndex, {
+						hidden: s.hidden || false,
+						width: s.width,
+						sortable: s.sortable,
+						hideable: cm.config[colIndex].hideable
+					});
+					if (colIndex != i) {
+						cm.moveColumn(colIndex, i);
+					}
+				}
+			}
+		}
+		if (store) {
+			s = state.sort;
+			if (s) {
+				store[store.remoteSort ? 'setDefaultSort' : 'sort'](s.field, s.direction);
+			}
+			s = state.group;
+			if (store.groupBy) {
+				if (s) {
+					store.groupBy(s);
+				} else {
+					store.clearGrouping();
+				}
+			}
+
+		}
+		var o = Ext.apply({}, state);
+		delete o.columns;
+		delete o.sort;
+		Ext.grid.GridPanel.superclass.applyState.call(this, o);
 	}
 });
 

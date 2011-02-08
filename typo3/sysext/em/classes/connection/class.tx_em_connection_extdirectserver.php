@@ -378,11 +378,11 @@ class tx_em_Connection_ExtDirectServer {
 		$ext = array();
 		$extKey = $parameter->extkey;
 		$type = $parameter->typeShort;
-		$node = strpos($parameter->node, '/') !== FALSE ? $parameter->node : $parameter->baseNode;
+		$node = substr($parameter->node, 0, 6) !== 'xnode-' ? $parameter->node : $parameter->baseNode;
 
 		$path = PATH_site . $node;
 		$fileArray = array();
-
+//debug($node)
 		$dirs = t3lib_div::get_dirs($path);
 		$files = t3lib_div::getFilesInDir($path, '', FALSE, '', '');
 
@@ -396,7 +396,7 @@ class tx_em_Connection_ExtDirectServer {
 		foreach ($dirs as $dir) {
 			if ($dir{0} !== '.') {
 				$fileArray[] = array(
-					'id' => $node . '/' . $dir,
+					'id' => ($node == '' ? '' : $node . '/') . $dir,
 					'text' => htmlspecialchars($dir),
 					'leaf' => false,
 					'qtip' => ''
@@ -460,7 +460,6 @@ class tx_em_Connection_ExtDirectServer {
 	public function readExtFile($path) {
 		$path = PATH_site . $path;
 		if (@file_exists($path)) {
-			//TODO: charset conversion
 			return t3lib_div::getURL($path);
 		}
 		return '';
@@ -490,6 +489,10 @@ class tx_em_Connection_ExtDirectServer {
 							: $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_fileWriteProtected', TRUE)
 					)
 					: $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_saving_disabled', TRUE);
+		}
+
+		if ($success) {
+			$GLOBALS['BE_USER']->writelog(9, 0, 0, 0, sprintf('File "%s" has been modified', $file));
 		}
 		return array(
 			'success' => $success,
@@ -533,6 +536,7 @@ class tx_em_Connection_ExtDirectServer {
 		$parameter['user']['fe_u'] = $parameter['fe_u'];
 		$parameter['user']['fe_p'] = $parameter['fe_p'];
 		$parameter['upload']['mode'] = $parameter['newversion'];
+		$parameter['upload']['comment'] = $parameter['uploadcomment'];
 
 		/** @var $extensionList tx_em_Extensions_List */
 		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
@@ -763,23 +767,32 @@ class tx_em_Connection_ExtDirectServer {
 
 		$where = $addFields = '';
 
-		$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
-			$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
-			'cache_extensions'
-		);
-		$addFields = '
-			(CASE WHEN cache_extensions.extkey =  "' . $search . '" THEN 100 ELSE 5 END) +
-			(CASE WHEN cache_extensions.title = "' . $search . '" THEN 80 ELSE 5 END) +
-			(CASE WHEN cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' THEN 60 ELSE 5 END) +
-			(CASE WHEN cache_extensions.title LIKE \'%' . $quotedSearch . '%\' THEN 40 ELSE 5 END)
-		 AS relevance';
+		if ($search === '' && !$installedOnly) {
+			return array(
+				'length' => 0,
+				'data' => array(),
+			);
+		} elseif ($search === '*') {
 
-		if (t3lib_extMgm::isLoaded('dbal')) {
-			// as dbal can't use the sum, make it more easy for dbal
-			$addFields = 'CASE WHEN cache_extensions.extkey =  \'' . $search . '\' THEN 100 ELSE 10 END AS relevance';
+		} else {
+			$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+				$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
+				'cache_extensions'
+			);
+			$addFields = '
+				(CASE WHEN cache_extensions.extkey =  "' . $search . '" THEN 100 ELSE 5 END) +
+				(CASE WHEN cache_extensions.title = "' . $search . '" THEN 80 ELSE 5 END) +
+				(CASE WHEN cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' THEN 60 ELSE 5 END) +
+				(CASE WHEN cache_extensions.title LIKE \'%' . $quotedSearch . '%\' THEN 40 ELSE 5 END)
+			 AS relevance';
+
+			if (t3lib_extMgm::isLoaded('dbal')) {
+				// as dbal can't use the sum, make it more easy for dbal
+				$addFields = 'CASE WHEN cache_extensions.extkey =  \'' . $search . '\' THEN 100 ELSE 10 END AS relevance';
+			}
+			$where = ' AND (cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' OR cache_extensions.title LIKE \'%' . $quotedSearch . '%\')';
+
 		}
-		$where = ' AND (cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' OR cache_extensions.title LIKE \'%' . $quotedSearch . '%\')';
-
 	    	// check for filter
 		$where .= $this->makeFilterQuery(get_object_vars($parameters));
 
@@ -844,7 +857,6 @@ class tx_em_Connection_ExtDirectServer {
 		return array(
 			'length' => $list['count'],
 			'data' => $list['results'],
-			'where' => $where
 		);
 
 	}

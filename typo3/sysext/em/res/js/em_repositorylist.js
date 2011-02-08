@@ -118,6 +118,10 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			},
 			listeners: {
 				beforeload: function(store, records){
+					var control = Ext.getCmp('rsearchField');
+					if (control.getValue == '') {
+						return false;
+					}
 					store.setBaseParam('rep', Ext.getCmp('repCombo').getValue());
 					store.setBaseParam('installedOnly', this.showInstalledOnly);
 					if (!this.showInstalledOnly) {
@@ -138,6 +142,11 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 						this.doClearFilters.show();
 					} else {
 						this.doClearFilters.hide();
+					}
+					if (records.length === 0) {
+
+					} else {
+
 					}
 				},
 				scope: this
@@ -216,7 +225,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				' ',
 				{
 					text: TYPO3.lang.cmd_filter,
-					qTip: TYPO3.lang.help_remoteFilter,
+					tooltip: TYPO3.lang.help_remoteFilter,
 					scale: 'small',
 					iconAlign: 'right',
 					ref: '../filterMenuButton',

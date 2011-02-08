@@ -699,8 +699,8 @@
 			<label index="msg_item">Item</label>
 			<label index="cmd_ClearAllFilters">Clear all Filters</label>
 			<label index="cmd_RetrieveUpdate">Retrieve / Update</label>
-			<label index="help_localFilter">Enter something to search for and press Enter. Title, description, and extension key are searched.</label>
-			<label index="help_remoteFilter">Enter something to search for and press Enter. To list all extensions, use "*"</label>
+			<label index="help_localFilter">Enter something to search for. Title and extension key are used for search.</label>
+			<label index="help_remoteFilter">Enter something to search for and press Enter. For complete extension list use "*"</label>
 			<label index="help_loadFileInEditor">Click on a file to load in editor</label>
 			<label index="extTemplate_showOldModules">Show old modules: Enable this option to have old modules like "Loaded Extensions, Installed extensions ..." available in upper left select box of the Extension Manager</label>
 			<label index="extTemplate_selectedLanguages">Language selection: The language setting is saved here as a global setting. You should not change it at this place but instead use the Extension Manager tab for "Translation handling" to add and remove languages for your installation</label>

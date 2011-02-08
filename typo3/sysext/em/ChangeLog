@@ -1,3 +1,35 @@
+2011-02-07  Steffen Kamper  <steffen@typo3.org>
+
+	* CGL spaces=>tabs, raised ext version to 4.5.1, cleaned em_conf
+	* fix docPath in link generation for documentation
+	* remote list should show installed extensions without search word
+	* log saving of ext files in be-log
+	* Mark filename red when file content changed
+
+2011-02-07  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #11487 Edit Files - Download not implemented
+	* Adjusted tooltips for filter
+	* Fixed bug #15019: Extension Manager does not free the DB result with sql_free_result
+	* Fixed bug #17363: Legacy extension manager does not allow to change category of configuration anymore
+	* StateProvider for file tree adjusted
+
+2011-02-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Prevent single click in translations while fetching languages
+	* StateProvider for file tree added
+	* Fixed bug #11862 Updating translations fails
+	* Fixed bug #12799 Problem with Planer Task
+	* Fixed bug #12812 State destroys the columns menu in repository list
+
+2011-02-05  Steffen Kamper  <steffen@typo3.org>
+
+	* CSS - fixed links in grid header menus
+	* Fixed bug #12556 Upload comment not uploaded
+	* CSS: remove border from filter trigger icons, cancel item displaced
+	* remote list: do not deliver all data with empty search
+	* CGL cleanups
+
 2011-02-04  Steffen Kamper  <steffen@typo3.org>
 
 	* CSS for filetree folder icons removed (use standard), filter with typo3 icons
