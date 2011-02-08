@@ -258,11 +258,11 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 	 * Resolves the path and file name of the layout file, based on
 	 * $this->getLayoutRootPath() and request format and returns the file contents
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string contents of the layout file if it was found
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 */
-	protected function getLayoutSource($layoutName = 'default') {
+	protected function getLayoutSource($layoutName = 'Default') {
 		$layoutRootPath = $this->getLayoutRootPath();
 		if (!is_dir($layoutRootPath)) {
 			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('Layout root path "' . $layoutRootPath . '" does not exist.', 1288092521);

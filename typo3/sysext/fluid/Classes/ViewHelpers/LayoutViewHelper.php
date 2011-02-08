@@ -38,7 +38,7 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 * @api
 	 */
 	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of layout to use. If none given, "default" is used.', TRUE);
+		$this->registerArgument('name', 'string', 'Name of layout to use. If none given, "Default" is used.', TRUE);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 		if (isset($viewHelperArguments['name'])) {
 			$layoutNameNode = $viewHelperArguments['name'];
 		} else {
-			$layoutNameNode = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('default');
+			$layoutNameNode = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('Default');
 		}
 
 		$variableContainer->add('layoutName', $layoutNameNode);

@@ -217,21 +217,27 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string Path and filename of layout file
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function getLayoutSource($layoutName = 'default') {
+	protected function getLayoutSource($layoutName = 'Default') {
 		if ($this->layoutPathAndFilename !== NULL) {
 			 $layoutPathAndFilename = $this->layoutPathAndFilename;
 		} else {
 			$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
 			$found = FALSE;
 			foreach ($paths as &$layoutPathAndFilename) {
-				$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
+				$fallbackPath = str_replace('@layout', $layoutName, $layoutPathAndFilename);
+				$layoutPathAndFilename = str_replace('@layout', ucfirst($layoutName), $layoutPathAndFilename);
 				if (file_exists($layoutPathAndFilename)) {
 					$found = TRUE;
+					break;
+				} elseif (file_exists($fallbackPath)) {
+					t3lib_div::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6 Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
+					$found = TRUE;
+					$layoutPathAndFilename = $fallbackPath;
 					break;
 				}
 			}

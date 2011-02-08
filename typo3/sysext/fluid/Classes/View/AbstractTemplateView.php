@@ -269,11 +269,11 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string Path and filename of layout file
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 */
-	abstract protected function getLayoutSource($layoutName = 'default');
+	abstract protected function getLayoutSource($layoutName = 'Default');
 
 	/**
 	 * Figures out which partial to use.
