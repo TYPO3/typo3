@@ -109,7 +109,7 @@ class t3lib_extjs_ExtDirectRouter {
 				} catch (Exception $exception) {
 					$response[$index]['type'] = 'exception';
 					$response[$index]['message'] = $exception->getMessage();
-					$response[$index]['where'] = $exception->getTraceAsString();
+					$response[$index]['code'] = 'router';
 				}
 			}
 		}
