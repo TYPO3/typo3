@@ -38,7 +38,9 @@ var SqlParser = Editor.Parser = (function() {
     "or", "in", "not", "xor", "like", "using", "on", "order", "group", "by",
     "asc", "desc", "limit", "offset", "union", "all", "as", "distinct", "set",
     "commit", "rollback", "replace", "view", "database", "separator", "if",
-    "exists", "null", "truncate", "status", "show", "lock", "unique", "having"
+    "exists", "null", "truncate", "status", "show", "lock", "unique", "having",
+    "drop", "procedure", "begin", "end", "delimiter", "call", "else", "leave", 
+    "declare", "temporary", "then"
   ]);
 
   var types = wordRegexp([
@@ -55,6 +57,8 @@ var SqlParser = Editor.Parser = (function() {
   ]);
 
   var operatorChars = /[*+\-<>=&|:\/]/;
+
+  var CFG = {};
 
   var tokenizeSql = (function() {
     function normal(source, setState) {
@@ -74,6 +78,10 @@ var SqlParser = Editor.Parser = (function() {
       else if (ch == "," || ch == ";") {
         return "sql-separator"
       }
+      else if (ch == '#') {
+        while (!source.endOfLine()) source.next();
+        return "sql-comment";
+      }
       else if (ch == '-') {
         if (source.peek() == "-") {
           while (!source.endOfLine()) source.next();
@@ -91,8 +99,16 @@ var SqlParser = Editor.Parser = (function() {
           return "sql-operator";
       }
       else if (operatorChars.test(ch)) {
-        source.nextWhileMatches(operatorChars);
-        return "sql-operator";
+
+        if(ch == "/" && source.peek() == "*"){
+          setState(inBlock("sql-comment", "*/"));
+          return null;
+        }
+        else{
+          source.nextWhileMatches(operatorChars);
+          return "sql-operator";
+        }
+        
       }
       else if (/\d/.test(ch)) {
         source.nextWhileMatches(/\d/);
@@ -144,9 +160,24 @@ var SqlParser = Editor.Parser = (function() {
             setState(normal);
             break;
           }
-          escaped = !escaped && ch == "\\";
+          escaped = CFG.extension == 'T-SQL' ?
+                                  !escaped && quote == ch && source.equals(quote) :
+                                  !escaped && ch == "\\";
+        }        
+        return quote == "`" ? "sql-quoted-word" : "sql-literal";
+      };
+    }
+
+    function inBlock(style, terminator) {
+      return function(source, setState) {
+        while (!source.endOfLine()) {
+          if (source.lookAhead(terminator, true)) {
+            setState(normal);
+            break;
+          }
+          source.next();
         }
-        return quote == "`" ? "sql-word" : "sql-literal";
+        return style;
       };
     }
 
@@ -224,5 +255,13 @@ var SqlParser = Editor.Parser = (function() {
     return iter;
   }
 
-  return {make: parseSql, electricChars: ")"};
+  function configure (parserConfig) {
+    for (var p in parserConfig) {
+      if (parserConfig.hasOwnProperty(p)) {
+        CFG[p] = parserConfig[p];
+      }
+    }
+  }
+
+  return {make: parseSql, electricChars: ")", configure: configure};
 })();

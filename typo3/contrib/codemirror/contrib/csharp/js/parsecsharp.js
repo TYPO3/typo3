@@ -283,6 +283,7 @@ var JSParser = Editor.Parser = (function() {
     // For loops.
     function forspec1(type){
       if (type == "var") cont(vardef1, forspec2);
+      else if (type == "keyword d") cont(vardef1, forspec2);
       else if (type == ";") pass(forspec2);
       else if (type == "variable") cont(formaybein);
       else pass(forspec2);

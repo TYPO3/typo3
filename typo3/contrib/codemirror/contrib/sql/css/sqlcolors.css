@@ -38,6 +38,10 @@ span.sql-word {
   color: black;
 }
 
+span.sql-quoted-word {
+  color: #680;
+}
+
 span.sql-function {
   color: darkorange;
 }
@@ -53,5 +57,3 @@ span.sql-separator {
 span.sql-number {
   color: darkcyan;
 }
-
-
