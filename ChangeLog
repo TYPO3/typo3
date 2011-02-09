@@ -1,3 +1,7 @@
+2011-02-09  Steffen Kamper  <steffen@typo3.org>
+
+	* Raised CodeMirror to version 0.9.3
+
 2011-02-08  Steffen Kamper  <steffen@typo3.org>
 
 	* Merged em from rev 4093
