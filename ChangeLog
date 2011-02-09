@@ -1,5 +1,6 @@
 2011-02-09  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17501: User setup - pressing return creates installtool file
 	* Raised CodeMirror to version 0.9.3
 
 2011-02-08  Steffen Kamper  <steffen@typo3.org>

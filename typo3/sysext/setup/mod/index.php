@@ -118,6 +118,7 @@ class SC_mod_user_setup_index {
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
 	protected $tempDataIsCleared = FALSE;
+	protected $settingsAreResetToDefault = FALSE;
 	protected $installToolFileExists = FALSE;
 	protected $installToolFileKeep = FALSE;
 
@@ -188,6 +189,7 @@ class SC_mod_user_setup_index {
 			if ($d['setValuesToDefault']) {
 					// If every value should be default
 				$BE_USER->resetUC();
+				$this->settingsAreResetToDefault = TRUE;
 			} elseif ($d['clearSessionVars']) {
 				foreach ($BE_USER->uc as $key => $value) {
 					if (!isset($columns[$key])) {
@@ -419,7 +421,7 @@ class SC_mod_user_setup_index {
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
 
 			// show if setup was saved
-		if ($this->setupIsUpdated) {
+		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$LANG->getLL('setupWasUpdated'),
@@ -433,6 +435,15 @@ class SC_mod_user_setup_index {
 				't3lib_FlashMessage',
 				$LANG->getLL('tempDataClearedFlashMessage'),
 				$LANG->getLL('tempDataCleared')
+			);
+			$this->content .= $flashMessage->render();
+		}
+			// Show if temporary data was cleared
+		if ($this->settingsAreResetToDefault) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('settingsAreReset'),
+				$LANG->getLL('resetConfiguration')
 			);
 			$this->content .= $flashMessage->render();
 		}
@@ -470,8 +481,12 @@ class SC_mod_user_setup_index {
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="hidden" name="formToken" value="' . $formToken . '" />
 			<input type="submit" name="data[save]" value="'.$LANG->getLL('save').'" />
-			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('resetConfiguration').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />
-			<input type="submit" name="data[clearSessionVars]" value="' . $LANG->getLL('clearSessionVars') . '"  onclick="return confirm(\'' . $LANG->getLL('clearSessionVarsQuestion') . '\');" />'
+			<input type="button" value="' . $LANG->getLL('resetConfiguration') .
+					'" onclick="if(confirm(\''.$LANG->getLL('setToStandardQuestion').'\')) {document.getElementById(\'setValuesToDefault\').value=1;this.form.submit();}" />
+			<input type="button" value="' . $LANG->getLL('clearSessionVars') .
+					'"  onclick="if(confirm(\'' . $LANG->getLL('clearSessionVarsQuestion') . '\')){document.getElementById(\'clearSessionVars\').value=1;this.form.submit();}" />
+			<input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
+			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />'
 		);
 
 			// Notice
@@ -592,6 +607,7 @@ class SC_mod_user_setup_index {
 		$fieldArray = $this->getFieldsFromShowItem();
 
 		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
+		$tabLabel = '';
 
 		foreach ($fieldArray as $fieldName) {
 			$more = '';
@@ -808,7 +824,7 @@ class SC_mod_user_setup_index {
 		if (empty($GLOBALS['BE_USER']->uc['startModule']))	{
 			$GLOBALS['BE_USER']->uc['startModule'] = $GLOBALS['BE_USER']->uc_default['startModule'];
 		}
-		$startModuleSelect .= '<option value=""></option>';
+		$startModuleSelect = '<option value=""></option>';
 		foreach ($pObj->loadModules->modules as $mainMod => $modData) {
 			if (isset($modData['sub']) && is_array($modData['sub'])) {
 				$startModuleSelect .= '<option disabled="disabled">'.$GLOBALS['LANG']->moduleLabels['tabs'][$mainMod.'_tab'].'</option>';
@@ -842,11 +858,16 @@ class SC_mod_user_setup_index {
 		}
 
 		if ($parent->getInstallToolFileExists()) {
-			return '<input type="submit" name="deleteInstallToolEnableFile"' .
+			return '<input type="button" name="deleteInstallToolEnableFile"' .
 					($parent->getInstallToolFileKeep() ? ' disabled="disabled"' : '') .
-					' value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
+					' value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" onclick="document.getElementById(\'deleteInstallToolEnableFile\').value=1;this.form.submit();" />
+					<input type="hidden" name="deleteInstallToolEnableFile" value="0" id="deleteInstallToolEnableFile" />
+					';
+
 		} else {
-			return '<input type="submit" name="createInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" />';
+			return '<input type="button" name="createInstallToolEnableFile" value="' .
+					$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" onclick="document.getElementById(\'createInstallToolEnableFile\').value=1;this.form.submit();" />
+					<input type="hidden" name="createInstallToolEnableFile" value="0" id="createInstallToolEnableFile" />';
 		}
 	}
 
