@@ -128,7 +128,9 @@ var CSSParser = Editor.Parser = (function() {
         if (content == "\n")
           token.indentation = indentCSS(inBraces, inRule, basecolumn);
 
-        if (content == "{")
+        if (content == "{" && inDecl == "@media")
+          inDecl = false;
+        else if (content == "{")
           inBraces = true;
         else if (content == "}")
           inBraces = inRule = inDecl = false;
@@ -136,8 +138,8 @@ var CSSParser = Editor.Parser = (function() {
           inRule = inDecl = false;
         else if (inBraces && style != "css-comment" && style != "whitespace")
           inRule = true;
-        else if (!inBraces && style == "css-at" && content != "@media")
-          inDecl = true;
+        else if (!inBraces && style == "css-at")
+          inDecl = content;
 
         return token;
       },

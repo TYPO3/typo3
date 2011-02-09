@@ -92,7 +92,7 @@ var stringStream = function(source){
         else if (str.slice(0, left) == cased(current.slice(pos))) {
           accum += current; current = "";
           try {current = source.next();}
-          catch (e) {break;}
+          catch (e) {if (e != StopIteration) throw e; break;}
           pos = 0;
           str = str.slice(left);
         }
@@ -108,6 +108,20 @@ var stringStream = function(source){
       }
 
       return found;
+    },
+    // Wont't match past end of line.
+    lookAheadRegex: function(regex, consume) {
+      if (regex.source.charAt(0) != "^")
+        throw new Error("Regexps passed to lookAheadRegex must start with ^");
+
+      // Fetch the rest of the line
+      while (current.indexOf("\n", pos) == -1) {
+        try {current += source.next();}
+        catch (e) {if (e != StopIteration) throw e; break;}
+      }
+      var matched = current.slice(pos).match(regex);
+      if (matched && consume) pos += matched[0].length;
+      return matched;
     },
 
     // Utils built on top of the above

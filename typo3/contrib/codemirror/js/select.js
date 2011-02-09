@@ -97,6 +97,21 @@ var select = {};
     if (currentSelection) currentSelection.changed = true;
   };
 
+  // Find the 'leaf' node (BR or text) after the given one.
+  function baseNodeAfter(node) {
+    var next = node.nextSibling;
+    if (next) {
+      while (next.firstChild) next = next.firstChild;
+      if (next.nodeType == 3 || isBR(next)) return next;
+      else return baseNodeAfter(next);
+    }
+    else {
+      var parent = node.parentNode;
+      while (parent && !parent.nextSibling) parent = parent.parentNode;
+      return parent && baseNodeAfter(parent);
+    }
+  }
+
   // This is called by the code in editor.js whenever it is replacing
   // a text node. The function sees whether the given oldNode is part
   // of the current selection, and updates this selection if it is.
@@ -121,6 +136,9 @@ var select = {};
           point.offset += (offset || 0);
         }
       }
+      else if (select.ie_selection && point.offset == 0 && point.node == baseNodeAfter(from)) {
+        currentSelection.changed = true;
+      }
     }
     replace(currentSelection.start);
     replace(currentSelection.end);
@@ -144,8 +162,13 @@ var select = {};
   // Most functions are defined in two ways, one for the IE selection
   // model, one for the W3C one.
   if (select.ie_selection) {
+    function selRange() {
+      var sel = document.selection;
+      return sel && (sel.createRange || sel.createTextRange)();
+    }
+
     function selectionNode(start) {
-      var range = document.selection.createRange();
+      var range = selRange();
       range.collapse(start);
 
       function nodeAfter(node) {
@@ -232,9 +255,9 @@ var select = {};
     };
 
     select.offsetInNode = function(node) {
-      var sel = document.selection;
-      if (!sel) return 0;
-      var range = sel.createRange(), range2 = range.duplicate();
+      var range = selRange();
+      if (!range) return 0;
+      var range2 = range.duplicate();
       try {range2.moveToElementText(node);} catch(e){return 0;}
       range.setEndPoint("StartToStart", range2);
       return range.text.length;
@@ -244,10 +267,9 @@ var select = {};
     // after. Note that this returns false for 'no cursor', and null
     // for 'start of document'.
     select.selectionTopNode = function(container, start) {
-      var selection = document.selection;
-      if (!selection) return false;
-
-      var range = selection.createRange(), range2 = range.duplicate();
+      var range = selRange();
+      if (!range) return false;
+      var range2 = range.duplicate();
       range.collapse(start);
       var around = range.parentElement();
       if (around && isAncestor(container, around)) {
@@ -296,8 +318,12 @@ var select = {};
       }
       
       if (start == 0) {
-        var test1 = selection.createRange(), test2 = test1.duplicate();
-        test2.moveToElementText(container);
+        var test1 = selRange(), test2 = test1.duplicate();
+        try {
+          test2.moveToElementText(container);
+        } catch(exception) {
+          return null;
+        }
         if (test1.compareEndPoints("StartToStart", test2) == 0)
           return null;
       }
@@ -315,14 +341,13 @@ var select = {};
     };
 
     select.somethingSelected = function() {
-      var sel = document.selection;
-      return sel && (sel.createRange().text != "");
+      var range = selRange();
+      return range && (range.text != "");
     };
 
     function insertAtCursor(html) {
-      var selection = document.selection;
-      if (selection) {
-        var range = selection.createRange();
+      var range = selRange();
+      if (range) {
         range.pasteHTML(html);
         range.collapse(false);
         range.select();
@@ -343,14 +368,14 @@ var select = {};
     // currently is, and the offset into the line. Returns null as
     // node if cursor is on first line.
     select.cursorPos = function(container, start) {
-      var selection = document.selection;
-      if (!selection) return null;
+      var range = selRange();
+      if (!range) return null;
 
       var topNode = select.selectionTopNode(container, start);
       while (topNode && !isBR(topNode))
         topNode = topNode.previousSibling;
 
-      var range = selection.createRange(), range2 = range.duplicate();
+      var range2 = range.duplicate();
       range.collapse(start);
       if (topNode) {
         range2.moveToElementText(topNode);
@@ -565,7 +590,7 @@ var select = {};
       return range.toString().length;
     };
 
-    function insertNodeAtCursor(node) {
+    select.insertNodeAtCursor = function(node) {
       var range = selectionRange();
       if (!range) return;
 
@@ -593,11 +618,11 @@ var select = {};
     }
 
     select.insertNewlineAtCursor = function() {
-      insertNodeAtCursor(document.createElement("BR"));
+      select.insertNodeAtCursor(document.createElement("BR"));
     };
 
     select.insertTabAtCursor = function() {
-      insertNodeAtCursor(document.createTextNode(fourSpaces));
+      select.insertNodeAtCursor(document.createTextNode(fourSpaces));
     };
 
     select.cursorPos = function(container, start) {
