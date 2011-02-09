@@ -118,6 +118,7 @@
 			<label index="tempDataCleared">Temporary data cleared</label>
 			<label index="tempDataClearedFlashMessage">The temporary data has been cleared.</label>
 			<label index="tempDataClearedLog">Temporary data cleared</label>
+			<label index="settingsAreReset">The user settings have been reset to default values and temporary data has been cleared.</label>
 			<label index="debugInWindow">Display debug messages in a new browser window</label>
 		</languageKey>
 	</data>
