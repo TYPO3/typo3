@@ -4276,16 +4276,21 @@ class tslib_cObj {
 		$chars = intval($options[0]);
 		$afterstring = trim($options[1]);
 		$crop2space = trim($options[2]);
-		if ($chars)	{
-			if (strlen($content)>abs($chars))	{
-				if ($chars<0)	{
-					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$chars);
-					$trunc_at = strpos($content, ' ');
-					$content = ($trunc_at&&$crop2space) ? $afterstring.substr($content,$trunc_at) : $afterstring.$content;
+		if ($chars) {
+			if ($GLOBALS['TSFE']->csConvObj->strlen($GLOBALS['TSFE']->renderCharset, $content) > abs($chars)) {
+				$truncatePosition = FALSE;
+				if ($chars < 0) {
+					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset, $content, $chars);
+					if ($crop2space) {
+						$truncatePosition = strpos($content, ' ');
+					}
+					$content = ($truncatePosition) ? $afterstring . substr($content, $truncatePosition) : $afterstring . $content;
 				} else {
-					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,0,$chars);
-					$trunc_at = strrpos($content, ' ');
-					$content = ($trunc_at&&$crop2space) ? substr($content, 0, $trunc_at).$afterstring : $content.$afterstring;
+					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset, $content, 0, $chars);
+					if ($crop2space) {
+						$truncatePosition = strrpos($content, ' ');
+					}
+					$content = ($truncatePosition) ? substr($content, 0, $truncatePosition) . $afterstring : $content . $afterstring;
 				}
 			}
 		}

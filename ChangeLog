@@ -1,3 +1,7 @@
+2011-02-10  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12230: Function tslib_cObj::crop() is not fully multibyte safe (Thanks to Vladimir Podkovanov)
+
 2011-02-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #17374: implode() issues in Install Tool
