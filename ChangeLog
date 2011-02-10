@@ -1,5 +1,6 @@
 2011-02-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #12230: Add unit test to test tslib_cObj::crop() for multibyte compatibility
 	* Fixed bug #12230: Function tslib_cObj::crop() is not fully multibyte safe (Thanks to Vladimir Podkovanov)
 
 2011-02-09  Steffen Kamper  <steffen@typo3.org>
