@@ -375,6 +375,17 @@ class tslib_contentTest extends tx_phpunit_testcase {
 
 
 	//////////////////////////////
+	// Tests concerning crop
+	//////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function cropIsMultibyteSafe() {
+		$this->assertEquals('бла', $this->cObj->crop('бла', '3|...'));
+	}
+
+	//////////////////////////////
 	// Tests concerning cropHTML
 	//////////////////////////////
 
