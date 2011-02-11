@@ -75,30 +75,10 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode']) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = 0;
 }
 
-	// Integrating with DAM
-	// DAM browser may be enabled here only for DAM version lower than 1.1
-	// If DAM 1.1+ is installed, the setting must be unset, DAM own EM setting should be used
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = 0;
-if (t3lib_extMgm::isLoaded('dam')) {
-	$saveExtKey = $_EXTKEY;
-	$_EXTKEY = 'dam';
-	require(t3lib_extMgm::extPath('dam') . 'ext_emconf.php');
-	$_EXTKEY = $saveExtKey;
-	if (t3lib_div::int_from_ver($EM_CONF['dam']['version']) < 1001000) {
-			// Register DAM element browser rendering
-		$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser'] = $_EXTCONF['enableDAMBrowser'] ? $_EXTCONF['enableDAMBrowser'] : 0;
-		if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDAMBrowser']) {
-			$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod4/class.tx_rtehtmlarea_dam_browse_media.php:&tx_rtehtmlarea_dam_browse_media';
-			$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'][] = 'EXT:'.$_EXTKEY.'/mod3/class.tx_rtehtmlarea_dam_browse_links.php:&tx_rtehtmlarea_dam_browse_links';
-		}
-	}
-}
-
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
     $TYPO3_CONF_VARS['EXTCONF']['lorem_ipsum']['RTE_insert'][] = 'tx_rtehtmlarea_base->loremIpsumInsert';
 }
-
 	// Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 	// Editor Mode configuration

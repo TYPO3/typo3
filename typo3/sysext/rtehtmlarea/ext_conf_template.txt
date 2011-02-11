@@ -31,9 +31,6 @@ allowStyleAttribute = 1
   # cat=basic/enable/140; type=boolean; label=Enable links accessibility icons: If set, accessibility icons will be added in front of links.
 enableAccessibilityIcons = 0
 
-  # cat=basic/enable/130; type=boolean; label=Enable the DAM media browser: If set and if the DAM extension is installed, the DAM media browser will be used. DEPRECATED for DAM 1.1+. Use DAM EM setting instead.
-enableDAMBrowser = 0
-
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
 forceCommandMode = 0
 
