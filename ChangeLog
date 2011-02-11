@@ -4,6 +4,7 @@
 
 2011-02-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #16534: Exception message for missing memcache wrong
 	* Fixed bug #15721: Memcache::delete() without timeout param causes loss of memcache server in pool (Thanks to Michiel Ross)
 	* Follow-up to #16591: Make getClassName() non recursive (Thanks to Pierre Dudoret)
 
