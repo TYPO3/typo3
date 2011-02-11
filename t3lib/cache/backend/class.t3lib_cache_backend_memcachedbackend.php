@@ -324,7 +324,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 */
 	public function remove($entryIdentifier) {
 		$this->removeIdentifierFromAllTags($entryIdentifier);
-		return $this->memcache->delete($this->identifierPrefix . $entryIdentifier);
+		return $this->memcache->delete($this->identifierPrefix . $entryIdentifier, 0);
 	}
 
 	/**
@@ -474,13 +474,13 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 							$identifiers
 						);
 					} else {
-						$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag);
+						$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag, 0);
 					}
 				}
 			}
 
 				// Clear reverse tag index for this identifier
-			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
+			$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier, 0);
 		}
 	}
 
