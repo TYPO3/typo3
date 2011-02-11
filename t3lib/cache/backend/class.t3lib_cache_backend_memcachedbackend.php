@@ -109,7 +109,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	public function __construct($options = array()) {
 		if (!extension_loaded('memcache')) {
 			throw new t3lib_cache_Exception(
-				'The PHP extension "memcached" must be installed and loaded in ' .
+				'The PHP extension "memcache" must be installed and loaded in ' .
 				'order to use the Memcached backend.',
 				1213987706
 			);
