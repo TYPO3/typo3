@@ -2297,37 +2297,23 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * @return	boolean		true if the plugin was successfully registered
 	 */
 	registerPlugin: function (pluginName) {
-		var plugin = null;
-		if (Ext.isString(pluginName)) {
-			/*******************************************************************************
-			 * USE OF PLUGIN NAME OUTSIDE HTMLArea NAMESPACE IS DEPRECATED AS OF TYPO3 4.4 *
-			 *******************************************************************************/
-			try {
-				plugin = eval(pluginName);
-			} catch (e) {
-				try {
-					plugin = eval('HTMLArea.' + pluginName);
-				} catch (error) {
-					HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Cannot register invalid plugin: ' + error);
-					return false;
-				}
+		var plugin = HTMLArea[pluginName],
+			isRegistered = false;
+		if (Ext.isFunction(plugin)) {
+			var pluginInstance = new plugin(this, pluginName);
+			if (pluginInstance) {
+				var pluginInformation = pluginInstance.getPluginInformation();
+				pluginInformation.instance = pluginInstance;
+				this.plugins[pluginName] = pluginInformation;
+				isRegistered = true;
 			}
 		}
-		if (!Ext.isFunction(plugin)) {
-			HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Cannot register undefined plugin.');
-			return false;
-		}
-		var pluginInstance = new plugin(this, pluginName);
-		if (pluginInstance) {
-			var pluginInformation = pluginInstance.getPluginInformation();
-			pluginInformation.instance = pluginInstance;
-			this.plugins[pluginName] = pluginInformation;
+		if (isRegistered) {
 			HTMLArea._appendToLog('[HTMLArea.Editor::registerPlugin]: Plugin ' + pluginName + ' was successfully registered.');
-			return true;
 		} else {
-			HTMLArea._appendToLog("ERROR [HTMLArea.Editor::registerPlugin]: Can't register plugin " + pluginName + '.');
-			return false;
+			HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Could not register plugin ' + pluginName + '.');
 		}
+		return isRegistered;
 	},
 	/*
 	 * Generate registered plugins
