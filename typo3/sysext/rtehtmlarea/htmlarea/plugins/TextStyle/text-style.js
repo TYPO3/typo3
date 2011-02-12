@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,13 +32,7 @@
 /*
  * Creation of the class of TextStyle plugins
  */
-HTMLArea.TextStyle = HTMLArea.Plugin.extend({
-	/*
-	 * Let the base class do some initialization work
-	 */
-	constructor: function (editor, pluginName) {
-		this.base(editor, pluginName);
-	},
+HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -88,7 +82,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',

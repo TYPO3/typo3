@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,19 +32,11 @@
 /*
  * Creation of the class of InlineElements plugins
  */
-HTMLArea.InlineElements = HTMLArea.Plugin.extend({
-	/*
-	 * Let the base class do some initialization work
-	 */
-	constructor : function(editor, pluginName) {
-		this.base(editor, pluginName);
-	},
-	
+HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the base constructor
 	 */
-	configurePlugin : function (editor) {
-
+	configurePlugin: function (editor) {
 			// Setting the array of allowed attributes on inline elements
 		if (this.editor.plugins.TextStyle && this.editor.plugins.TextStyle.instance) {
 			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
@@ -58,18 +50,17 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 		if (this.editorConfiguration.buttons.textstyle) {
 			this.tags = this.editorConfiguration.buttons.textstyle.tags;
 		}
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.0",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: this.localize("Technische Universitat Ilmenau"),
-			sponsorUrl	: "http://www.tu-ilmenau.de/",
-			license		: "GPL"
+			version		: '2.1',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: this.localize('Technische Universitat Ilmenau'),
+			sponsorUrl	: 'http://www.tu-ilmenau.de/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		

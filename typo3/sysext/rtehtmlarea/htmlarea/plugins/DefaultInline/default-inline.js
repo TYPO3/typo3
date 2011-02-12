@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,28 +29,22 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-HTMLArea.DefaultInline = HTMLArea.Plugin.extend({
-		
-	constructor : function(editor, pluginName) {
-		this.base(editor, pluginName);
-	},
-	
+HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
-		
+	configurePlugin: function (editor) {
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
-			license		: "GPL"
+			version		: '1.2',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*

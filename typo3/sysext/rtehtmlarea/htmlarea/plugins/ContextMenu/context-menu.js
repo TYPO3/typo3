@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  Copyright (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,10 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
-	constructor : function(editor, pluginName) {
-		this.base(editor, pluginName);
-	},
+HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -54,7 +51,7 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.1',
+			version		: '3.2',
 			developer	: 'Mihai Bazon & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'dynarch.com & Stanislas Rolland',

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2010-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,12 +29,7 @@
  *
  * TYPO3 SVN ID: $Id: text-indicator.js 6539 2009-11-25 14:49:14Z stucki $
  */
-HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
-		
-	constructor : function(editor, pluginName) {
-		this.base(editor, pluginName);
-	},
-	
+HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -43,13 +38,13 @@ HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '1.1',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		

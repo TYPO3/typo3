@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,16 +33,11 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-HTMLArea.TableOperations = HTMLArea.Plugin.extend({
-		
-	constructor : function(editor, pluginName) {
-		this.base(editor, pluginName);
-	},
-	
+HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
+	configurePlugin: function (editor) {
 		
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
@@ -71,18 +66,17 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		}
 		this.tableParts = ["tfoot", "thead", "tbody"];
 		this.convertAlignment = { "not set" : "none", "left" : "JustifyLeft", "center" : "JustifyCenter", "right" : "JustifyRight", "justify" : "JustifyFull" };
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "5.1",
-			developer	: "Mihai Bazon & Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
-			sponsor		: this.localize("Technische Universitat Ilmenau") + " & Zapatec Inc.",
-			sponsorUrl	: "http://www.tu-ilmenau.de/",
-			license		: "GPL"
+			version		: '5.2',
+			developer	: 'Mihai Bazon & Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Mihai Bazon & Stanislas Rolland',
+			sponsor		: this.localize('Technische Universitat Ilmenau') + ' & Zapatec Inc.',
+			sponsorUrl	: 'http://www.tu-ilmenau.de/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*

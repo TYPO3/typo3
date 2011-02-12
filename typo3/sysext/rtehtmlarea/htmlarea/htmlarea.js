@@ -4015,131 +4015,36 @@ HTMLArea.initEditor = function(editorNumber) {
 		}
 	}
 };
-
-/**
- *	Base, version 1.0.2
- *	Copyright 2006, Dean Edwards
- *	License: http://creativecommons.org/licenses/LGPL/2.1/
- */
-
-HTMLArea.Base = function() {
-	if (arguments.length) {
-		if (this == window) { // cast an object to this class
-			HTMLArea.Base.prototype.extend.call(arguments[0], arguments.callee.prototype);
-		} else {
-			this.extend(arguments[0]);
-		}
-	}
-};
-
-HTMLArea.Base.version = "1.0.2";
-
-HTMLArea.Base.prototype = {
-	extend: function(source, value) {
-		var extend = HTMLArea.Base.prototype.extend;
-		if (arguments.length == 2) {
-			var ancestor = this[source];
-			// overriding?
-			if ((ancestor instanceof Function) && (value instanceof Function) &&
-				ancestor.valueOf() != value.valueOf() && /\bbase\b/.test(value)) {
-				var method = value;
-			//	var _prototype = this.constructor.prototype;
-			//	var fromPrototype = !Base._prototyping && _prototype[source] == ancestor;
-				value = function() {
-					var previous = this.base;
-				//	this.base = fromPrototype ? _prototype[source] : ancestor;
-					this.base = ancestor;
-					var returnValue = method.apply(this, arguments);
-					this.base = previous;
-					return returnValue;
-				};
-				// point to the underlying method
-				value.valueOf = function() {
-					return method;
-				};
-				value.toString = function() {
-					return String(method);
-				};
-			}
-			return this[source] = value;
-		} else if (source) {
-			var _prototype = {toSource: null};
-			// do the "toString" and other methods manually
-			var _protected = ["toString", "valueOf"];
-			// if we are prototyping then include the constructor
-			if (HTMLArea.Base._prototyping) _protected[2] = "constructor";
-			for (var i = 0; (name = _protected[i]); i++) {
-				if (source[name] != _prototype[name]) {
-					extend.call(this, name, source[name]);
-				}
-			}
-			// copy each of the source object's properties to this object
-			for (var name in source) {
-				if (!_prototype[name]) {
-					extend.call(this, name, source[name]);
-				}
-			}
-		}
-		return this;
-	},
-
-	base: function() {
-		// call this method from any other method to invoke that method's ancestor
-	}
-};
-
-HTMLArea.Base.extend = function(_instance, _static) {
-	var extend = HTMLArea.Base.prototype.extend;
-	if (!_instance) _instance = {};
-	// build the prototype
-	HTMLArea.Base._prototyping = true;
-	var _prototype = new this;
-	extend.call(_prototype, _instance);
-	var constructor = _prototype.constructor;
-	_prototype.constructor = this;
-	delete HTMLArea.Base._prototyping;
-	// create the wrapper for the constructor function
-	var klass = function() {
-		if (!HTMLArea.Base._prototyping) constructor.apply(this, arguments);
-		this.constructor = klass;
-	};
-	klass.prototype = _prototype;
-	// build the class interface
-	klass.extend = this.extend;
-	klass.implement = this.implement;
-	klass.toString = function() {
-		return String(constructor);
-	};
-	extend.call(klass, _static);
-	// single instance
-	var object = constructor ? klass : _prototype;
-	// class initialisation
-	//if (object.init instanceof Function) object.init();
-	return object;
-};
-
-HTMLArea.Base.implement = function(_interface) {
-	if (_interface instanceof Function) _interface = _interface.prototype;
-	this.prototype.extend(_interface);
-};
-
 /**
  * HTMLArea.plugin class
  *
  * Every plugin should be a subclass of this class
  *
  */
-HTMLArea.Plugin = HTMLArea.Base.extend({
-
+HTMLArea.Plugin = function (editor, pluginName) {
+};
+/**
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
+ *********************************************** 
+ * Extends class HTMLArea.Plugin
+ *
+ * Defined for backward compatibility only
+ * Use Ext.extend(SubClassName, config) directly
+ */
+HTMLArea.Plugin.extend = function (config) {
+	return Ext.extend(HTMLArea.Plugin, config);
+};
+HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	/**
-	 * HTMLArea.plugin constructor
+	 * HTMLArea.Plugin constructor
 	 *
 	 * @param	object		editor: instance of RTE
 	 * @param	string		pluginName: name of the plugin
 	 *
 	 * @return	boolean		true if the plugin was configured
 	 */
-	constructor : function(editor, pluginName) {
+	constructor: function (editor, pluginName) {
 		this.editor = editor;
 		this.editorNumber = editor.editorId;
 		this.editorId = editor.editorId;
@@ -4150,9 +4055,20 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		} catch(e) {
 			this.I18N = new Object();
 		}
-		return this.configurePlugin(editor);
+		this.configurePlugin(editor);
+		/**
+		 ***********************************************
+		 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
+		 *********************************************** 
+		 * Extends class HTMLArea[pluginName]
+		 *
+		 * Defined for backward compatibility only
+		 * Use Ext.extend(SubClassName, config) directly
+		 */
+		HTMLArea[pluginName].extend = function (config) {
+			return Ext.extend(HTMLArea[pluginName], config);
+		};
 	},
-
 	/**
 	 * Configures the plugin
 	 * This function is invoked by the class constructor.
@@ -4165,10 +4081,22 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean		true if the plugin was configured
 	 */
-	configurePlugin : function(editor) {
+	configurePlugin: function (editor) {
 		return false;
 	},
-
+	/**
+	 ***********************************************
+	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
+	 *********************************************** 
+	 * Invove the base class constructor
+	 *
+	 * Defined for backward compatibility only
+	 * Note: this.base will exclusively refer to the HTMLArea.Plugin class constructor
+	 */
+	base: function (editor, pluginName) {
+		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.');
+		HTMLArea.Plugin.prototype.constructor.call(this, editor, pluginName);
+	},
 	/**
 	 * Registers the plugin "About" information
 	 *
@@ -4183,7 +4111,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean		true if the information was registered
 	 */
-	registerPluginInformation : function(pluginInformation) {
+	registerPluginInformation: function(pluginInformation) {
 		if (typeof(pluginInformation) !== "object") {
 			this.appendToLog("registerPluginInformation", "Plugin information was not provided");
 			return false;
