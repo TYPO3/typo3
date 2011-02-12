@@ -121,18 +121,6 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';';
-
-				// Deprecated toggleborders button configuration
-			if (in_array('toggleborders',$this->toolbar) && $this->thisConfig['keepToggleBordersInToolbar']) {
-				if (!is_array($this->thisConfig['buttons.']['toggleborders.'])) {
-					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.toggleborders = new Object();
-			RTEarea['.$RTEcounter.'].buttons.toggleborders.keepInToolbar = true;';
-				} elseif (!$this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) {
-					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.toggleborders.keepInToolbar = true;';
-				}
-			}
 		}
 		return $registerRTEinJavascriptString;
 	}

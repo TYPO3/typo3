@@ -74,8 +74,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlarea_api {
 			$spellCheckerMode = 'normal';
 		}
 			// Set the use of personal dictionary
-			// $this->thisConfig['enablePersonalDicts'] is DEPRECATED as of 4.3.0
-		$enablePersonalDicts = ($this->thisConfig['buttons.'][$button.'.']['enablePersonalDictionaries'] || $this->thisConfig['enablePersonalDicts']) ? ((isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
+		$enablePersonalDicts = $this->thisConfig['buttons.'][$button.'.']['enablePersonalDictionaries'] ? ((isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) ? true : false) : false;
 		if (t3lib_utility_PhpOptions::isSafeModeEnabled() || $this->htmlAreaRTE->is_FE()) {
 			$enablePersonalDicts = false;
 		}

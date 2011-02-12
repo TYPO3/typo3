@@ -3,6 +3,7 @@
 	* Fixed issue #17552: htmlArea RTE: Delete deprecated class HTMLArea.Dialog
 	* Fixed issue #17554: htmlArea RTE: Delete deprecated DAM integration extension variable
 	* Fixed issue #17555: htmlArea RTE: Delete deprecated Aspell-related extension configuration variables
+	* Fixed issue #17557: htmlArea RTE: Delete deprecated Page TSConfig properties
 
 2011-02-11  Christian Kuhn  <lolli@schwarzbu.ch>
 

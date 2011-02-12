@@ -53,39 +53,8 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlarea_api {
 		}
 		return $available;
 	}
-
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @param	integer		Relative id of the RTE editing area in the form
-	 *
-	 * @return string		JS configuration for registered plugins
-	 *
-	 * The returned string will be a set of JS instructions defining the configuration that will be provided to the plugin(s)
-	 * Each of the instructions should be of the form:
-	 * 	RTEarea['.$RTEcounter.']["buttons"]["button-id"]["property"] = "value";
-	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
-
-		$registerRTEinJavascriptString = '';
-			// Deprecated inserttag button configuration
-		if (in_array('inserttag', $this->toolbar) && trim($this->thisConfig['hideTags'])) {
-			if (!is_array($this->thisConfig['buttons.']['inserttag.'])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.inserttag = new Object();
-			RTEarea['.$RTEcounter.'].buttons.inserttag.denyTags = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
-			} elseif (!$this->thisConfig['buttons.']['inserttag.']['denyTags']) {
-				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.inserttag.denyTags = "'.implode(',', t3lib_div::trimExplode(',', $this->thisConfig['hideTags'], 1)).'";';
-			}
-		}
-		return $registerRTEinJavascriptString;
-	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/QuickTag/class.tx_rtehtmlarea_quicktag.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/QuickTag/class.tx_rtehtmlarea_quicktag.php']);
 }
-
 ?>
