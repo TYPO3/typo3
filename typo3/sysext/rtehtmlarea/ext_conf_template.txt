@@ -10,12 +10,6 @@ noSpellCheckLanguages = ja,km,ko,lo,th,zh,b5,gb
   # cat=basic; type=string; label=Aspell path: The server path where Aspell is installed.
 AspellDirectory = /usr/bin/aspell
 
-  # cat=basic; type=string; label=Default Aspell dictionary: The default dictionary to be used by the htmlArea SpellChecker plugin. DEPRECATED. Use Page TSConfig properties defaultContentLanguage and buttons.spellcheck.dictionaries.[language-iso-code].defaultValue.
-defaultDictionary = en
-
-  # cat=basic; type=string; label=List of Aspell dictionaries: The list of dictionaries available to the htmlArea SpellChecker plugin. DEPRECATED. Use Page TSConfig properties buttons.spellcheck.dictionaries.items and restrictToItems.
-dictionaryList  = en
-
   # cat=basic/enable/100; type=options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.),Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.),Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)]; label=Default configuration settings
 defaultConfiguration = Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)
 
