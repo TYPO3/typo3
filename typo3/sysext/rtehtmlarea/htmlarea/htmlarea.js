@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004 interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,16 +38,6 @@ if (typeof(HTMLArea) == 'undefined') {
 	// Establish HTMLArea name space
 Ext.namespace('HTMLArea.CSS', 'HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
 Ext.apply(HTMLArea, {
-	/*************************************************************************
-	 * THESE BROWSER IDENTIFICATION CONSTANTS ARE DEPRECATED AS OF TYPO3 4.4 *
-	 *************************************************************************/
-		// Browser identification
-	is_gecko	: Ext.isGecko || Ext.isOpera || Ext.isWebKit,
-	is_ff2		: Ext.isGecko2,
-	is_ie		: Ext.isIE,
-	is_safari	: Ext.isWebKit,
-	is_chrome	: Ext.isChrome,
-	is_opera	: Ext.isOpera,
 	/***************************************************
 	 * COMPILED REGULAR EXPRESSIONS                    *
 	 ***************************************************/

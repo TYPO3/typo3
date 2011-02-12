@@ -4,6 +4,7 @@
 	* Fixed issue #17554: htmlArea RTE: Delete deprecated DAM integration extension variable
 	* Fixed issue #17555: htmlArea RTE: Delete deprecated Aspell-related extension configuration variables
 	* Fixed issue #17557: htmlArea RTE: Delete deprecated Page TSConfig properties
+	* Fixed issue #17558: htmlArea RTE: Delete deprecated browser identification js variables
 
 2011-02-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
