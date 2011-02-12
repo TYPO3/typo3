@@ -5,6 +5,7 @@
 	* Fixed issue #17555: htmlArea RTE: Delete deprecated Aspell-related extension configuration variables
 	* Fixed issue #17557: htmlArea RTE: Delete deprecated Page TSConfig properties
 	* Fixed issue #17558: htmlArea RTE: Delete deprecated browser identification js variables
+	* Fixed issue #17559: htmlArea RTE: Delete deprecated code/functions from main js script
 
 2011-02-07  Stanislas Rolland  <typo3@sjbr.ca>
 

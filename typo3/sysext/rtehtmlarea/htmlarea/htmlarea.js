@@ -1245,25 +1245,6 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (this.inhibitKeyboardInput(event)) {
 			return false;
 		}
-		/*****************************************************
-		 * onKeyPress DEPRECATED AS OF TYPO3 4.4             *
-		 *****************************************************/
-		if (this.getEditor().hasPluginWithOnKeyPressHandler) {
-			var letBubble = true;
-			Ext.iterate(this.getEditor().plugins, function (pluginId) {
-				var plugin = this.getEditor().getPlugin(pluginId);
-				if (Ext.isFunction(plugin.onKeyPress)) {
-					if (!plugin.onKeyPress(event.browserEvent)) {
-						event.stopEvent();
-						letBubble = false;
-					}
-				}
-				return letBubble;
-			}, this);
-			if (!letBubble) {
-				return letBubble;
-			}
-		}
 		this.fireEvent('HTMLAreaEventWordCountChange', 100);
 		if (!event.altKey && !event.ctrlKey) {
 				// Detect URL in non-IE browsers
@@ -2356,11 +2337,6 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		Ext.iterate(this.plugins, function (pluginId) {
 			var plugin = this.getPlugin(pluginId);
 			plugin.onGenerate();
-				// onKeyPress deprecated as of TYPO3 4.4
-			if (Ext.isFunction(plugin.onKeyPress)) {
-				this.hasPluginWithOnKeyPressHandler = true;
-				HTMLArea._appendToLog('[HTMLArea.Editor::generatePlugins]: Deprecated use of onKeyPress function by plugin ' + pluginId + '. Use keyMap instead.');
-			}
 		}, this);
 		HTMLArea._appendToLog('[HTMLArea.Editor::generatePlugins]: All plugins successfully generated.');
 	},
@@ -2636,49 +2612,6 @@ HTMLArea.util.TYPO3 = function () {
 		}
 	}
 }();
-/*
- * Load a stylesheet file
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
- ***********************************************
- */
-HTMLArea.loadStyle = function(style, plugin, url) {
-	if (typeof(url) == "undefined") {
-		var url = HTMLArea.editorUrl || '';
-		if (typeof(plugin) != "undefined") { url += "plugins/" + plugin + "/"; }
-		url += style;
-		if (/^\//.test(style)) { url = style; }
-	}
-	var head = document.getElementsByTagName("head")[0];
-	var link = document.createElement("link");
-	link.rel = "stylesheet";
-	link.href = url;
-	head.appendChild(link);
-};
-
-/*
- * Get the url of some popup
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.popupURL = function(file) {
-	var url = "";
-	if(file.match(/^plugin:\/\/(.*?)\/(.*)/)) {
-		var pluginId = RegExp.$1;
-		var popup = RegExp.$2;
-		if(!/\.html$/.test(popup)) popup += ".html";
-		if (this.config.pathToPluginDirectory[pluginId]) {
-			url = this.config.pathToPluginDirectory[pluginId] + "popups/" + popup;
-		} else {
-			url = HTMLArea.editorUrl + "plugins/" + pluginId + "/popups/" + popup;
-		}
-	} else {
-		url = HTMLArea.editorUrl + this.config.popupURL + file;
-	}
-	return url;
-};
-
 /***************************************************
  *  EDITOR UTILITIES
  ***************************************************/
@@ -2699,33 +2632,6 @@ HTMLArea.Editor.prototype.forceRedraw = function() {
 	this.htmlArea.doLayout();
 };
 
-/*
- * Focus the editor iframe window or the textarea.
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.focusEditor = function() {
-	this.focus();
-	return this.document;
-};
-
-/*
- * Check if any plugin has an opened window
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.hasOpenedWindow = function () {
-	for (var plugin in this.plugins) {
-		if (this.plugins.hasOwnProperty(plugin)) {
-			if (HTMLArea.Dialog[plugin.name] && HTMLArea.Dialog[plugin.name].hasOpenedWindow && HTMLArea.Dialog[plugin.name].hasOpenedWindow()) {
-				return true;
-			}
-		}
-	}
-	return false
-};
 HTMLArea.Editor.prototype.updateToolbar = function(noStatus) {
 	this.toolbar.update(noStatus);
 };
@@ -4547,20 +4453,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	onUpdateToolbar: Ext.emptyFn,
 	/**
-	 ***********************************************
-	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
-	 ***********************************************
-	 * Register the key handler to the editor keyMap in onGenerate function
-	 * The keyPress event handler
-	 * This function may be defined by the plugin subclass.
-	 * If defined, the function is invoked whenever a key is pressed.
-	 *
-	 * @param	event		keyEvent: the event that was triggered when a key was pressed
-	 *
-	 * @return	boolean
-	 */
-	onKeyPress: null,
-	/**
 	 * The onMode event handler
 	 * This function may be redefined by the plugin subclass.
 	 * The function is invoked whenever the editor changes mode.
@@ -4582,21 +4474,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean
 	 */
 	onGenerate: Ext.emptyFn,
-	/**
-	 * Make function reference in order to avoid memory leakage in IE
-	 ***********************************************
-	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
-	 ***********************************************
-	 *
-	 * @param	string		functionName: the name of the plugin function to be invoked
-	 *
-	 * @return	function	function definition invoking the specified function of the plugin
-	 */
-	makeFunctionReference: function (functionName) {
-		var self = this;
-		return (function(arg1, arg2, arg3) {
-			return (self[functionName](arg1, arg2, arg3));});
-	},
 	/**
 	 * Localize a string
 	 *
@@ -4648,47 +4525,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	postData: function (url, data, callback) {
 	 	this.appendToLog('postData', 'Posting to ' + url + '.');
 	 	return this.editor.ajax.postData(url, data, callback, this);
-	},
-	/**
-	 ***********************************************
-	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
-	 ***********************************************
-	 * Open a dialog window or bring focus to it if is already opened
-	 *
-	 * @param	string		buttonId: buttonId requesting the opening of the dialog
-	 * @param	string		url: name, without extension, of the html file to be loaded into the dialog window
-	 * @param	string		action: name of the plugin function to be invoked when the dialog ends
-	 * @param	object		arguments: object of variable type to be passed to the dialog
-	 * @param	object		dimensions: object giving the width and height of the dialog window
-	 * @param	string		showScrollbars: specifies by "yes" or "no" whether or not the dialog window should have scrollbars
-	 * @param	object		dialogOpener: reference to the opener window
-	 *
-	 * @return	object		the dialogue object
-	 */
-	openDialog : function (buttonId, url, action, arguments, dimensions, showScrollbars, dialogOpener) {
-		if (this.dialog && this.dialog.hasOpenedWindow() && this.dialog.buttonId === buttonId) {
-			this.dialog.focus();
-			return this.dialog;
-		} else {
-			var actionFunctionReference = action;
-			if (typeof(action) === "string") {
-				if (typeof(this[action]) === "function") {
-					var actionFunctionReference = this.makeFunctionReference(action);
-				} else {
-					this.appendToLog("openDialog", "Function " + action + " was not defined when opening dialog for " + buttonId);
-				}
-			}
-			return new HTMLArea.Dialog(
-					this,
-					buttonId,
-					url,
-					actionFunctionReference,
-					arguments,
-					this.getWindowDimensions(dimensions, buttonId),
-					(showScrollbars?showScrollbars:"no"),
-					dialogOpener
-				);
-		}
 	},
 	/*
 	 * Open a window with container iframe
@@ -4778,19 +4614,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			}
 		}
 		return dialogueWindowDimensions;
-	},
-	/**
-	 ***********************************************
-	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
-	 ***********************************************
-	 * Make url from the name of a popup of the plugin
-	 *
-	 * @param	string		popupName: name, without extension, of the html file to be loaded into the dialog window
-	 *
-	 * @return	string		the url
-	 */
-	makeUrlFromPopupName: function(popupName) {
-		return (popupName ? this.editor.popupURL("plugin://" + this.name + "/" + popupName) : this.editor.popupURL("blank.html"));
 	},
 	/**
 	 * Make url from module path
