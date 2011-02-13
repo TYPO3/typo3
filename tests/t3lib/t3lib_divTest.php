@@ -2177,6 +2177,64 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 
+	/////////////////////////////////////
+	// Tests concerning resolveBackPath
+	/////////////////////////////////////
+
+	/**
+	 * @see resolveBackPathWithDataProvider
+	 * 
+	 * @return array<array>
+	 */
+	public function resolveBackPathDataProvider() {
+		return array(
+			'empty path' => array('', ''),
+			'this directory' => array('./', './'),
+			'relative directory without ..' => array('dir1/dir2/dir3/', 'dir1/dir2/dir3/'),
+			'relative path without ..' => array('dir1/dir2/script.php', 'dir1/dir2/script.php'),
+			'absolute directory without ..' => array('/dir1/dir2/dir3/', '/dir1/dir2/dir3/'),
+			'absolute path without ..' => array('/dir1/dir2/script.php', '/dir1/dir2/script.php'),
+			'only one directory upwards without trailing slash' => array('..', '..'),
+			'only one directory upwards with trailing slash' => array('../', '../'),
+			'one level with trailing ..' => array('dir1/..', ''),
+			'one level with trailing ../' => array('dir1/../', ''),
+			'two levels with trailing ..' => array('dir1/dir2/..', 'dir1'),
+			'two levels with trailing ../' => array('dir1/dir2/../', 'dir1/'),
+			'leading ../ without trailing /' => array('../dir1', '../dir1'),
+			'leading ../ with trailing /' => array('../dir1/', '../dir1/'),
+			'leading ../ and inside path' => array('../dir1/dir2/../dir3/', '../dir1/dir3/'),
+			'one times ../ in relative directory' => array('dir1/../dir2/', 'dir2/'),
+			'one times ../ in absolute directory' => array('/dir1/../dir2/', '/dir2/'),
+			'one times ../ in relative path' => array('dir1/../dir2/script.php', 'dir2/script.php'),
+			'one times ../ in absolute path' => array('/dir1/../dir2/script.php', '/dir2/script.php'),
+			'consecutive ../' => array('dir1/dir2/dir3/../../../dir4', 'dir4'),
+			'distrubuted ../ with trailing /' => array('dir1/../dir2/dir3/../', 'dir2/'),
+			'distributed ../ without trailing /' => array('dir1/../dir2/dir3/..', 'dir2'),
+			'multiple distributed and consecutive ../ together' => array('dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'),
+			'multiple distributed and consecutive ../ together' => array('dir1/dir2/dir3/dir4/../../dir5/dir6/dir7/../dir8/', 'dir1/dir2/dir5/dir6/dir8/'),
+			'dirname with leading ..' => array('dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'),
+			'dirname with trailing ..' => array('dir1/dir2../dir3/', 'dir1/dir2../dir3/'),
+			'more times upwards than downwards in directory' => array('dir1/../../', '../'),
+			'more times upwards than downwards in path' => array('dir1/../../script.php', '../script.php'),
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider resolveBackPathDataProvider
+	 *
+	 * @param string $input the input for resolveBackPath
+	 * @param $expectedValue the expected return value from resolveBackPath
+	 */
+	public function resolveBackPathWithDataProvider($input, $expectedValue) {
+		$this->assertEquals(
+			$expectedValue,
+			t3lib_div::resolveBackPath($input)
+		);
+	}
+
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Tests concerning makeInstance, setSingletonInstance, addInstance, purgeInstances
 	/////////////////////////////////////////////////////////////////////////////////////

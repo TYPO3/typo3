@@ -1,3 +1,7 @@
+2011-02-13  Steffen Gebert  <steffen.gebert@typo3.org>
+
+	* Added Test #17495: Add Unit Tests for t3lib_div::resolveBackPath()
+
 2011-02-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17553: css_styled_content ext_tables.php links to wrong static file for TYPO3 4.4
