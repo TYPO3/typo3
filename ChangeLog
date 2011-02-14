@@ -1,3 +1,7 @@
+2011-02-14  Georg Ringer <typo3@ringerge.org>
+
+	* Fixed bug #16890: tcaTree in flexforms still breaks
+
 2011-02-14  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #17541: cookies are not required in CLI mode / cookieSecure blocks cli
