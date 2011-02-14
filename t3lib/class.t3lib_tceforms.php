@@ -4156,7 +4156,7 @@ class t3lib_TCEforms {
 	 */
 	protected function getIconHtml($icon, $alt = '', $title = '') {
 		$iconArray = $this->getIcon($icon);
-		if (is_file(t3lib_div::resolveBackPath(PATH_typo3 . $iconArray[0]))) {
+		if (is_file(t3lib_div::resolveBackPath(PATH_typo3 . PATH_typo3_mod . $iconArray[0]))) {
 			return '<img src="' . $iconArray[0] . '" alt="' . $alt . '" ' . ($title ? 'title="' . $title . '"' : '') . ' />';
 		} else {
 			return t3lib_iconWorks::getSpriteIcon($icon, array('alt'=> $alt, 'title'=> $title));

@@ -1,3 +1,7 @@
+2011-02-14  Steffen Gebert  <steffen.gebert@typo3.org>
+
+	* Fixed bug #17564: Red question marks in QuickEdit instead of icons (Thanks to Jürgen Ettmueller)
+
 2011-02-14  Georg Ringer <typo3@ringerge.org>
 
 	* Fixed bug #16890: tcaTree in flexforms still breaks
