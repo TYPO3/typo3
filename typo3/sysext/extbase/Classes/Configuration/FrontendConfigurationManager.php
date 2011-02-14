@@ -34,6 +34,20 @@
 class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
+	 * @var Tx_Extbase_Service_FlexFormService
+	 */
+	protected $flexFormService;
+
+	/**
+	 * @param Tx_Extbase_Service_FlexFormService $flexFormService
+	 * @return void
+	 */
+	public function injectFlexFormService(Tx_Extbase_Service_FlexFormService $flexFormService) {
+		$this->flexFormService = $flexFormService;
+	}
+
+
+	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
 	 * @return array the raw TypoScript setup
@@ -155,7 +169,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 */
 	protected function overrideConfigurationFromFlexform(array $frameworkConfiguration) {
 		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
-			$flexformConfiguration = $this->convertFlexformContentToArray($this->contentObject->data['pi_flexform']);
+			$flexformConfiguration = $this->flexFormService->convertFlexFormContentToArray($this->contentObject->data['pi_flexform']);
 
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'settings');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'persistence');
@@ -175,87 +189,22 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 *
 	 * @param string $flexFormContent FlexForm xml string
 	 * @return array the processed array
+	 * @deprecated since Extbase 1.4; will be removed in Extbase 1.6
 	 */
 	protected function convertFlexformContentToArray($flexFormContent) {
-		$settings = array();
-		$languagePointer = 'lDEF';
-		$valuePointer = 'vDEF';
-
-		$flexFormArray = t3lib_div::xml2array($flexFormContent);
-		$flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : array();
-		foreach(array_values($flexFormArray) as $languages) {
-			if (!is_array($languages[$languagePointer])) {
-				continue;
-			}
-
-			foreach($languages[$languagePointer] as $valueKey => $valueDefinition) {
-				if (strpos($valueKey, '.') === false) {
-					$settings[$valueKey] = $this->walkFlexformNode($valueDefinition, $valuePointer);
-				} else {
-					$valueKeyParts = explode('.', $valueKey);
-					$currentNode =& $settings;
-					foreach ($valueKeyParts as $valueKeyPart) {
-						$currentNode =& $currentNode[$valueKeyPart];
-					}
-					if (is_array($valueDefinition)) {
-						if (array_key_exists($valuePointer, $valueDefinition)) {
-							$currentNode = $valueDefinition[$valuePointer];
-						} else {
-							$currentNode = $this->walkFlexformNode($valueDefinition, $valuePointer);
-						}
-					} else {
-						$currentNode = $valueDefinition;
-					}
-				}
-			}
-		}
-		return $settings;
+		t3lib_div::logDeprecatedFunction();
+		return $this->flexFormService->convertFlexFormContentToArray($flexFormContent);
 	}
 
 	/**
 	 * Parses a flexform node recursively and takes care of sections etc
 	 * @param array $nodeArray The flexform node to parse
 	 * @param string $valuePointer The valuePointer to use for value retrieval
+	 * @deprecated since Extbase 1.4; will be removed in Extbase 1.6
 	 */
 	protected function walkFlexformNode($nodeArray, $valuePointer = 'vDEF') {
-		if (is_array($nodeArray)) {
-			$return = array();
-
-			foreach ($nodeArray as $nodeKey => $nodeValue) {
-				if ($nodeKey === $valuePointer) {
-					return $nodeValue;	
-				}
-
-				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
-					return $this->walkFlexformNode($nodeValue, $valuePointer);
-				}
-
-				if (substr($nodeKey, 0, 1) === '_') {
-					continue;
-				}
-
-				if (strpos($nodeKey, '.')) {
-					$nodeKeyParts = explode('.', $nodeKey);
-					$currentNode =& $return;
-					for ($i = 0; $i < count($nodeKeyParts) - 1; $i++) {
-						$currentNode =& $currentNode[$nodeKeyParts[$i]];
-					}
-					$newNode = array(next($nodeKeyParts) => $nodeValue);
-					$currentNode = $this->walkFlexformNode($newNode, $valuePointer);
-				} else if (is_array($nodeValue)) {
-					if (array_key_exists($valuePointer, $nodeValue)) {
-						$return[$nodeKey] = $nodeValue[$valuePointer];
-					} else {
-						$return[$nodeKey] = $this->walkFlexformNode($nodeValue, $valuePointer);
-					}
-				} else {
-					$return[$nodeKey] = $nodeValue;
-				}
-			}
-			return $return;
-		}
-
-		return $nodeArray;
+		t3lib_div::logDeprecatedFunction();
+		return $this->flexFormService->walkFlexFormNode($nodeArray, $valuePointer);
 	}
 
 	/**

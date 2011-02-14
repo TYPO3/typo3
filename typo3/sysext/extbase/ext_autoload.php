@@ -200,6 +200,7 @@ return array(
 	'tx_extbase_security_exception_invalidargumentforhashgeneration' => $extensionClassesPath . 'Security/Exception/InvalidArgumentForHashGeneration.php',
 	'tx_extbase_security_exception_invalidargumentforrequesthashgeneration' => $extensionClassesPath . 'Security/Exception/InvalidArgumentForRequestHashGeneration.php',
 	'tx_extbase_security_exception_syntacticallywrongrequesthash' => $extensionClassesPath . 'Security/Exception/SyntacticallyWrongRequestHash.php',
+	'tx_extbase_service_flexformservice' => $extensionClassesPath . 'Service/FlexFormService.php',
 	'tx_extbase_utility_arrays' => $extensionClassesPath . 'Utility/Arrays.php',
 	'tx_extbase_utility_cache' => $extensionClassesPath . 'Utility/Cache.php',
 	'tx_extbase_utility_classloader' => $extensionClassesPath . 'Utility/ClassLoader.php',
