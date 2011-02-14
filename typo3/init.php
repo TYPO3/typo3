@@ -422,6 +422,9 @@ $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 $BE_USER->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
 $BE_USER->auth_timeout_field = intval($TYPO3_CONF_VARS['BE']['sessionTimeout']);
 $BE_USER->OS = TYPO3_OS;
+if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+	$BE_USER->dontSetCookie = TRUE;
+}
 $BE_USER->start();			// Object is initialized
 $BE_USER->checkCLIuser();
 $BE_USER->backendCheckLogin();	// Checking if there's a user logged in
