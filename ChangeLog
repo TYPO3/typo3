@@ -1,3 +1,7 @@
+2011-02-14  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #17541: cookies are not required in CLI mode / cookieSecure blocks cli
+
 2011-02-13  Steffen Gebert  <steffen.gebert@typo3.org>
 
 	* Added Test #17495: Add Unit Tests for t3lib_div::resolveBackPath()
