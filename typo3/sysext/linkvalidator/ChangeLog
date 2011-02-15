@@ -1,6 +1,7 @@
 2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked
+	* Fixed bug #12650:	tx_linkvalidator_tasks_validator: exec() is too long
 	
 2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
