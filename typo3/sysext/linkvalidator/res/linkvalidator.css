@@ -90,3 +90,7 @@
 #linkvalidator_brokenLinksTable td:first-child {
 	border-left: none;
 }
+
+input#updateLinkList:disabled, input#refreshLinkList:disabled {
+	color: graytext;
+}

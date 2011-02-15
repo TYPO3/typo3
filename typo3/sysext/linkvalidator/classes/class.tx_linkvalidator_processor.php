@@ -121,81 +121,82 @@ class tx_linkvalidator_Processor {
 		if(count($checkOptions) > 0) {
 			$checkKeys = array_keys($checkOptions);
 			$checlLinkTypeCondition = ' and link_type in (\'' . implode('\',\'',$checkKeys) . '\')';
-		}
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', '(record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) ' . $checlLinkTypeCondition);
-		
-			// let's traverse all configured tables
-		foreach ($this->searchFields as $table => $fields) {
-			if($table == 'pages'){
-				$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', '(record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) ' . $checlLinkTypeCondition);
+
+				// let's traverse all configured tables
+			foreach ($this->searchFields as $table => $fields) {
+				if($table == 'pages'){
+					$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
+				}
+				else{
+					$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
+				}
+				if (!$considerHidden) {
+					$where .= t3lib_BEfunc::BEenableFields($table);
+				}
+					// if table is not configured, we assume the ext is not installed and therefore no need to check it
+				if (!is_array($GLOBALS['TCA'][$table])) continue;
+
+					// re-init selectFields for table
+				$selectFields = 'uid, pid';
+				$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
+
+					// TODO: only select rows that have content in at least one of the relevant fields (via OR)
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
+					// Get record rows of table
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Analyse each record
+					$this->analyzeRecord($results, $table, $fields, $row);
+				}
 			}
-			else{
-				$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
-			}
-			if (!$considerHidden) {
-				$where .= t3lib_BEfunc::BEenableFields($table);
-			}
-				// if table is not configured, we assume the ext is not installed and therefore no need to check it
-			if (!is_array($GLOBALS['TCA'][$table])) continue;
 
-				// re-init selectFields for table
-			$selectFields = 'uid, pid';
-			$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
-			
-				// TODO: only select rows that have content in at least one of the relevant fields (via OR)
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
-				// Get record rows of table
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				// Analyse each record
-				$this->analyzeRecord($results, $table, $fields, $row);
-			}
-		}
+			foreach ($this->hookObjectsArr as $key => $hookObj) {
+				if ((is_array($results[$key])) && empty($checkOptions) || (is_array($results[$key]) && $checkOptions[$key])) {
+						//  check'em!
+					foreach ($results[$key] as $entryKey => $entryValue) {
+						$table = $entryValue['table'];
+						$record = array();
+						$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
+						$record['record_pid'] = $entryValue['row']['pid'];
+						$record['record_uid'] = $entryValue['uid'];
+						$record['table_name'] = $table;
+						$record['link_title'] = $entryValue['link_title'];
+						$record['field'] = $entryValue['field'];
+						$record['last_check'] = time();
 
-		foreach ($this->hookObjectsArr as $key => $hookObj) {
-			if ((is_array($results[$key])) && empty($checkOptions) || (is_array($results[$key]) && $checkOptions[$key])) {
-					//  check'em!
-				foreach ($results[$key] as $entryKey => $entryValue) {
-					$table = $entryValue['table'];
-					$record = array();
-					$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
-					$record['record_pid'] = $entryValue['row']['pid'];
-					$record['record_uid'] = $entryValue['uid'];
-					$record['table_name'] = $table;
-					$record['link_title'] = $entryValue['link_title'];
-					$record['field'] = $entryValue['field'];
-					$record['last_check'] = time();
+						$this->recordReference = $entryValue['substr']['recordRef'];
 
-					$this->recordReference = $entryValue['substr']['recordRef'];
+						$this->pageWithAnchor = $entryValue['pageAndAnchor'];
 
-					$this->pageWithAnchor = $entryValue['pageAndAnchor'];
-					
-					if (!empty($this->pageWithAnchor)) {
-							// page with anchor, e.g. 18#1580
-						$url = $this->pageWithAnchor;
-					} else {
-						$url = $entryValue['substr']['tokenValue'];
-					}
+						if (!empty($this->pageWithAnchor)) {
+								// page with anchor, e.g. 18#1580
+							$url = $this->pageWithAnchor;
+						} else {
+							$url = $entryValue['substr']['tokenValue'];
+						}
 
-					$this->linkCounts[$table]++;
-					$checkURL = $hookObj->checkLink($url, $entryValue, $this);
-						// broken link found!
-					if (!$checkURL) {
-						$response = array();
-						$response['valid'] = FALSE;
-						$response['errorParams'] = $hookObj->getErrorParams();
-						$this->brokenLinkCounts[$table]++;
-						$record['link_type'] = $key;
-						$record['url'] = $url;
-						$record['url_response'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
-					} elseif (t3lib_div::_GP('showalllinks')) {
-						$response = array();
-						$response['valid'] = TRUE;
-						$this->brokenLinkCounts[$table]++;
-						$record['url'] = $url;
-						$record['link_type'] = $key;
-						$record['url_response'] = serialize($response);
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
+						$this->linkCounts[$table]++;
+						$checkURL = $hookObj->checkLink($url, $entryValue, $this);
+							// broken link found!
+						if (!$checkURL) {
+							$response = array();
+							$response['valid'] = FALSE;
+							$response['errorParams'] = $hookObj->getErrorParams();
+							$this->brokenLinkCounts[$table]++;
+							$record['link_type'] = $key;
+							$record['url'] = $url;
+							$record['url_response'] = serialize($response);
+							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
+						} elseif (t3lib_div::_GP('showalllinks')) {
+							$response = array();
+							$response['valid'] = TRUE;
+							$this->brokenLinkCounts[$table]++;
+							$record['url'] = $url;
+							$record['link_type'] = $key;
+							$record['url_response'] = serialize($response);
+							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
+						}
 					}
 				}
 			}
@@ -213,7 +214,7 @@ class tx_linkvalidator_Processor {
 	 * @return	void
 	 */
 	public function analyzeRecord(&$results, $table, $fields, $record) {
-		
+
 			// array to store urls from relevant field contents
 		$urls = array();
 
@@ -223,20 +224,20 @@ class tx_linkvalidator_Processor {
 
 			// flag whether row contains a broken link in some field or not
 		$rowContainsBrokenLink = FALSE;
-		
+
 			// put together content of all relevant fields
 		$haystack = '';
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-		
+
 		$idRecord = $record['uid'];
-		
+
 			// get all references
 		foreach ($fields as $field) {
 			$haystack .= $record[$field] . ' --- ';
 			$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-			
+
 			$valueField = $record[$field];
-			
+
 				// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
 			if ($conf['softref'] && strlen($valueField)) {
 					// Explode the list of softreferences/parameters
@@ -345,7 +346,7 @@ class tx_linkvalidator_Processor {
 		}
 		return $markerArray;
 	}
-	
+
 	/**
 	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
 	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
@@ -387,7 +388,7 @@ class tx_linkvalidator_Processor {
 		}
 		return $theList;
 	}
-	
+
 
 }
 
