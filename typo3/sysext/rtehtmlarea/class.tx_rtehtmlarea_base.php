@@ -61,6 +61,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					'system' => array(
 						'disallowed' => array(
 							'iOS',
+							'android',
 						),
 					),
 				),
@@ -68,6 +69,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			'opera' => array (
 				array (
 					'version' => 9.62,
+					'system' => array(
+						'disallowed' => array(
+							'iOS',
+							'android',
+						),
+					),
 				),
 			)
 		);
