@@ -1,3 +1,7 @@
+2011-02-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17587: htmlArea RTE: RTE should not be enabled on Android
+
 2011-02-14  Steffen Gebert  <steffen.gebert@typo3.org>
 
 	* Fixed bug #17564: Red question marks in QuickEdit instead of icons (Thanks to Jürgen Ettmueller)
