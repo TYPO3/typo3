@@ -2,6 +2,7 @@
 
 	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked
 	* Fixed bug #12650:	tx_linkvalidator_tasks_validator: exec() is too long
+	* Fixed bug #12454: Use setting "defaultMailFromName" and "defaultMailFromAddress"
 	
 2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 

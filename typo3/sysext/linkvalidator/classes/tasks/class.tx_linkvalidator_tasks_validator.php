@@ -406,12 +406,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
-
+		
 		/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		if(empty($modTS['mail.']['fromemail'])) {
+			$modTS['mail.']['fromemail'] = t3lib_utility_Mail::getSystemFromAddress();
+		}
+		if(empty($modTS['mail.']['fromname'])) {
+			$modTS['mail.']['fromname'] = t3lib_utility_Mail::getSystemFromName();
+		}
 		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
-		} else {
+		}  else {
 			throw new Exception(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
 				'1295476760'
