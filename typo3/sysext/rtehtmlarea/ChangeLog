@@ -1,3 +1,7 @@
+2011-02-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17587: htmlArea RTE: RTE should not be enabled on Android
+
 2011-01-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17160: htmlArea RTE: Link editing problems in Internet Explorer

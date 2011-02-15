@@ -81,7 +81,24 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'opera' => array (
 				1 => array (
-					'version' => 9.62
+					'version' => 9.62,
+					'system' => 'mac'
+				),
+				2 => array (
+					'version' => 9.62,
+					'system' => 'winNT'
+				),
+				3 => array (
+					'version' => 9.62,
+					'system' => 'linux'
+				),
+				4 => array (
+					'version' => 9.62,
+					'system' => 'win98'
+				),
+				5 => array (
+					'version' => 9.62,
+					'system' => 'win95'
 				)
 			)
 		);
@@ -1414,6 +1431,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			} elseif (strstr($userAgent,'iPod')) {
 				$browserInfo['system'] = 'iPod';
 			}
+		}
+		if (strstr($userAgent,'Android')) {
+			$browserInfo['system'] = 'android';
 		}
 		return $browserInfo;
 	}
