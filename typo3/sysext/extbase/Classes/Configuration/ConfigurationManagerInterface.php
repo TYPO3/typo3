@@ -56,9 +56,11 @@ interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_S
 	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
 	 *
 	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
+	 * @param string $extensionName if specified, the configuration for the given extension will be returned.
+	 * @param string $pluginName if specified, the configuration for the given plugin will be returned.
 	 * @return array The configuration
 	 */
-	public function getConfiguration($configurationType);
+	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL);
 
 	/**
 	 * Sets the specified raw configuration coming from the outside.
