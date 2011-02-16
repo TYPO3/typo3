@@ -1,6 +1,7 @@
 2011-02-16  Francois Suter  <francois.suter@typo3.org>
 
 	* Cleanup #17513: Improve sys_note CSH file
+	* Fixed bug #17385: Restore proper behavior of LOAD_REGISTER (Thanks to Jo Hasenau)
 
 2011-02-15  Stanislas Rolland  <typo3@sjbr.ca>
 
