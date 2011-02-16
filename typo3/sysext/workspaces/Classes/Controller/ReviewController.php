@@ -110,6 +110,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('showGrid', true);
 		$this->view->assign('showAllWorkspaceTab', false);
 		$this->view->assign('workspaceList', $wsList);
+		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
 	}
 
