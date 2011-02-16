@@ -1104,7 +1104,7 @@ class tslib_cObj {
 	 * @return	string		Output
 	 */
 	function FORM($conf, $formData = '') {
-		return $this->getContentObject('FORM')->render($conf);
+		return $this->getContentObject('FORM')->render($conf, $formData);
 	}
 
 	/**
