@@ -1,3 +1,7 @@
+2011-02-16  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Cleanup #17606: Remove deprecated option TTFLocaleConv
+
 2011-02-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17422: cObj->FORM() wasn't processing the $formData parameter (Thanks to Hubertus Golf)
