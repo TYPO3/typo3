@@ -37,12 +37,11 @@ abstract class tx_Workspaces_ExtDirect_AbstractHandler {
 	 * @return integer The current workspace ID
 	 */
 	protected function getCurrentWorkspace() {
+		$workspaceId = $GLOBALS['BE_USER']->workspace;
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$workspaceId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
-		} else {
-			$workspaceId = $GLOBALS['BE_USER']->workspace;
+			$activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
+			$workspaceId = $activeId !== NULL ? $activeId : $workspaceId;
 		}
-
 		return $workspaceId;
 	}
 
