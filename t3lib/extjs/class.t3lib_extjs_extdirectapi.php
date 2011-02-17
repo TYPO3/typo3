@@ -65,75 +65,42 @@ class t3lib_extjs_ExtDirectApi {
 		$ajaxObj->setContent(array());
 	}
 
-			// enable caching
-		$expireDate = date('r', $GLOBALS['EXEC_TIME'] + 3600 * 24 * 30);
-		header('Expires: ' . $expireDate);
-		header('Cache-control: public');
-		header('Pragma:');
-
+	/**
+	 * Get the API for a given nameapace
+	 *
+	 * @throws InvalidArgumentException
+	 * @param  array $filterNamespaces
+	 * @return string
+	 */
+	public function getApiPhp(array $filterNamespaces) {
+		$javascriptNamespaces = $this->getExtDirectApi($filterNamespaces);
 			// return the generated javascript API configuration
 		if (count($javascriptNamespaces)) {
-			$setup = '
-				if (typeof Ext.app.ExtDirectAPI !== "object") {
+			return '
+				if (!Ext.isObject(Ext.app.ExtDirectAPI)) {
 					Ext.app.ExtDirectAPI = {};
 				}
-
-				if (typeof Object.extend !== "function") {
-					Object.extend = function(destination, source) {
-						for (var property in source) {
-							destination[property] = source[property];
-						}
-						return destination;
-					};
-				}
+				Ext.apply(Ext.app.ExtDirectAPI, ' .
+					json_encode($javascriptNamespaces) . ');
 			';
-
-			$ajaxObj->setContent($javascriptNamespaces);
-			$ajaxObj->setContentFormat('javascript');
-			$ajaxObj->setJavascriptCallbackWrap(
-				$setup . 'Ext.app.ExtDirectAPI = Object.extend(Ext.app.ExtDirectAPI, |);'
-			);
 		} else {
-			if ($filterNamespace) {
-					// namespace error
-				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.namespaceError'),
-										__CLASS__, $filterNamespace
-				);
-			}
-			else {
-					// no namespace given
-				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.noNamespace'),
-										__CLASS__
-				);
-			}
-				// make js multiline message
-			$msg = t3lib_div::trimExplode(LF, str_replace('"', '\"', $errorMessage), TRUE);
-			$errorMessage = '';
-			foreach ($msg as $line) {
-				$errorMessage .= '"' . $line . '" + ' . LF;
-			}
-			$errorMessage = substr(trim($errorMessage), 0, -1);
-				//generate the javascript
-			$ajaxObj->setContentFormat('javascript');
-			$ajaxObj->setJavascriptCallbackWrap('
-				errorMessage = ' . $errorMessage . ';
-				if (typeof console === "object") {
-					console.log(errorMessage);
-				} else {
-					alert(errorMessage);
-				}
-			');
+			$errorMessage = $this->getNamespaceError($filterNamespaces);
+			throw new InvalidArgumentException(
+				$errorMessage,
+				1297645190
+			);
 		}
 	}
+
 
 	/**
 	 * Generates the API that is configured inside the ExtDirect configuration
 	 * array "$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']".
 	 *
-	 * @param string $filerNamespace namespace that should be loaded like TYPO3.Backend
+	 * @param array $filerNamespace namespace that should be loaded like array('TYPO3.Backend')
 	 * @return array javascript API configuration
 	 */
-	protected function generateAPI($filterNamespace) {
+	protected function generateAPI(array $filterNamespaces) {
 		$javascriptNamespaces = array();
 		if (is_array($this->settings)) {
 			foreach ($this->settings as $javascriptName => $className) {
@@ -142,7 +109,7 @@ class t3lib_extjs_ExtDirectApi {
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
 
 					// only items inside the wanted namespace
-				if (strpos($javascriptNamespace, $filterNamespace) !== 0) {
+				if (!$this->findNamespace($javascriptNamespace, $filterNamespaces)) {
 					continue;
 				}
 
@@ -191,6 +158,90 @@ class t3lib_extjs_ExtDirectApi {
 		$url .= rawurlencode($namespace);
 
 		return $url;
+	}
+
+	/**
+	 * Generates the API or reads it from cache
+	 *
+	 * @param  array $filterNamespaces
+	 * @param bool $checkGetParam
+	 * @return string $javascriptNamespaces
+	 */
+	protected function getExtDirectApi(array $filterNamespaces) {
+			// Check GET-parameter no_cache and extCache setting
+		$noCache = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && (
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
+		);
+		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $noCache;
+
+			// look up into the cache
+		$cacheIdentifier = 'ExtDirectApi';
+		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . t3lib_div::getIndpEnv('TYPO3_SSL') .
+			 serialize($this->settings) . TYPO3_MODE . t3lib_div::getIndpEnv('HTTP_HOST'));
+
+			// with no_cache always generate the javascript content
+		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
+
+			// generate the javascript content if it wasn't found inside the cache and cache it!
+		if (!$cacheContent) {
+			$javascriptNamespaces = $this->generateAPI($filterNamespaces);
+			if (count($javascriptNamespaces)) {
+				t3lib_pageSelect::storeHash(
+					$cacheHash,
+					serialize($javascriptNamespaces),
+					$cacheIdentifier
+				);
+			}
+		} else {
+			$javascriptNamespaces = unserialize($cacheContent);
+		}
+
+		return $javascriptNamespaces;
+	}
+
+	/**
+	 * Generates the error message
+	 *
+	 * @param  array $filterNamespaces
+	 * @return string $errorMessage
+	 */
+	protected function getNamespaceError(array $filterNamespaces) {
+		if (count($filterNamespaces)) {
+				// namespace error
+			$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.namespaceError'),
+									__CLASS__, implode(',', $filterNamespaces)
+			);
+		}
+		else {
+				// no namespace given
+			$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.noNamespace'),
+									__CLASS__
+			);
+		}
+
+		return $errorMessage;
+	}
+
+	/**
+	 * Looks if the given namespace is present in $filterNamespaces
+	 *
+	 * @param  string $namespace
+	 * @param array $filterNamespaces
+	 * @return bool
+	 */
+	protected function findNamespace($namespace, array $filterNamespaces) {
+		if ($filterNamespaces === array('TYPO3')) {
+			return TRUE;
+		}
+		$found = FALSE;
+		foreach ($filterNamespaces as $filter) {
+			if (t3lib_div::isFirstPartOfStr($filter, $namespace)) {
+				$found = TRUE;
+				break;
+			}
+		}
+		return $found;
 	}
 }
 
