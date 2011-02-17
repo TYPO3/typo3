@@ -1,3 +1,7 @@
+2011-02-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17616: htmlArea RTE: Link dialogue doesn't open when anchor class is set with double quotes
+
 2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug #17355: Dependencies in sysext 'version' and 'workspaces'

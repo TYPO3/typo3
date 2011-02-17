@@ -1,3 +1,7 @@
+2011-02-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17616: htmlArea RTE: Link dialogue doesn't open when anchor class is set with double quotes
+
 2011-02-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17587: htmlArea RTE: RTE should not be enabled on Android
