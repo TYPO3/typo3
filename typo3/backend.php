@@ -342,16 +342,6 @@ class TYPO3backend {
 			foreach ($jsFiles as $jsFile) {
 				$this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
 			}
-
-			if (is_array($info['extDirectNamespaces']) && count($info['extDirectNamespaces'])) {
-				foreach ($info['extDirectNamespaces'] as $namespace) {
-					$this->pageRenderer->addJsFile(
-						'ajax.php?ajaxID=ExtDirect::getAPI&namespace=' . $namespace . '&' . TYPO3_version,
-						NULL,
-						FALSE
-					);
-				}
-			}
 		}
 	}
 
@@ -517,10 +507,6 @@ class TYPO3backend {
 				'helpDescription',
 				'helpDescriptionPages',
 				'helpDescriptionContent',
-			),
-			'extDirect' => array(
-				'timeoutHeader',
-				'timeoutMessage',
 			),
 			'viewPort' => array(
 				'tooltipModuleMenuSplit',
