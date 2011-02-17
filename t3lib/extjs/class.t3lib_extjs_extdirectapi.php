@@ -62,36 +62,8 @@ class t3lib_extjs_ExtDirectApi {
 	 * @return void
 	 */
 	public function getAPI($ajaxParams, TYPO3AJAX $ajaxObj) {
-		$filterNamespace = t3lib_div::_GET('namespace');
-
-			// Check GET-parameter no_cache and extCache setting
-		$extCache = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && (
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
-		);
-		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $extCache;
-
-			// look up into the cache
-		$cacheIdentifier = 'ExtDirectApi';
-		$cacheHash = md5($cacheIdentifier . $filterNamespace . t3lib_div::getIndpEnv('TYPO3_SSL') .
-			 serialize($this->settings) . TYPO3_MODE . t3lib_div::getIndpEnv('HTTP_HOST'));
-
-			// with no_cache always generate the javascript content
-		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
-
-			// generate the javascript content if it wasn't found inside the cache and cache it!
-		if (!$cacheContent) {
-			$javascriptNamespaces = $this->generateAPI($filterNamespace);
-			if (!empty($javascriptNamespaces)) {
-				t3lib_pageSelect::storeHash(
-					$cacheHash,
-					serialize($javascriptNamespaces),
-					$cacheIdentifier
-				);
-			}
-		} else {
-			$javascriptNamespaces = unserialize($cacheContent);
-		}
+		$ajaxObj->setContent(array());
+	}
 
 			// enable caching
 		$expireDate = date('r', $GLOBALS['EXEC_TIME'] + 3600 * 24 * 30);

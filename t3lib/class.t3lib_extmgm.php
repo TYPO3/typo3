@@ -844,15 +844,13 @@ final class t3lib_extMgm {
 	 *
 	 * @param string $module
 	 * @param string $componentId
-	 * @param array $extDirectNamespaces
 	 * @return void
 	 */
-	public static function addNavigationComponent($module, $componentId, $extDirectNamespaces = array()) {
+	public static function addNavigationComponent($module, $componentId) {
 		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = array(
 			'componentId' => $componentId,
 			'extKey' => $GLOBALS['_EXTKEY'],
 			'isCoreComponent' => FALSE,
-			'extDirectNamespaces' => $extDirectNamespaces
 		);
 	}
 
@@ -861,11 +859,10 @@ final class t3lib_extMgm {
 	 *
 	 * @param string $module
 	 * @param string $componentId
-	 * @param array $extDirectNamespaces
 	 * @return void
 	 */
-	public static function addCoreNavigationComponent($module, $componentId, $extDirectNamespaces = array()) {
-		self::addNavigationComponent($module, $componentId, $extDirectNamespaces);
+	public static function addCoreNavigationComponent($module, $componentId) {
+		self::addNavigationComponent($module, $componentId);
 		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module]['isCoreComponent'] = TRUE;
 	}
 

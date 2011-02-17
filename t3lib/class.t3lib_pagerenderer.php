@@ -941,14 +941,36 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds the ExtDirect code
 	 *
+	 * @param array $filterNamespaces  limit the output to defined namespaces. If empty, all namespaces are generated
 	 * @return void
 	 */
-	public function addExtDirectCode() {
+	public function addExtDirectCode(array $filterNamespaces = array()) {
 		if ($this->extDirectCodeAdded) {
 			return;
 		}
 		$this->extDirectCodeAdded = TRUE;
-		$token = '';
+
+		if (count($filterNamespaces) === 0) {
+			$filterNamespaces = array('TYPO3');
+		}
+
+			// for ExtDirect we need flash message support
+		$this->addJsFile(t3lib_div::resolveBackPath($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js'));
+
+			// add language labels for ExtDirect
+		if (TYPO3_MODE === 'FE') {
+			$this->addInlineLanguageLabelArray(array(
+				'extDirect_timeoutHeader' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutHeader'),
+				'extDirect_timeoutMessage' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutMessage'),
+			));
+		} else {
+			$this->addInlineLanguageLabelArray(array(
+				'extDirect_timeoutHeader' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutHeader'),
+				'extDirect_timeoutMessage' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutMessage'),
+			));
+		}
+
+		$token = $api = '';
 		if (TYPO3_MODE === 'BE') {
 			$formprotection = t3lib_formprotection_Factory::get();
 			$token = $formprotection->generateToken('extDirect');
@@ -999,8 +1021,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
 					TYPO3.Flashmessage.display(
 						TYPO3.Severity.error,
-						TYPO3.LLL.extDirect.timeoutHeader,
-						TYPO3.LLL.extDirect.timeoutMessage,
+						TYPO3.lang.extDirect_timeoutHeader,
+						TYPO3.lang.extDirect_timeoutMessage,
 						30
 					);
 				} else {

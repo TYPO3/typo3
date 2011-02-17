@@ -167,6 +167,7 @@ $t3libClasses = array(
 	't3lib_spritemanager_spritebuildinghandler' => PATH_t3lib . 'spritemanager/class.t3lib_spritemanager_spritebuildinghandler.php',
 	't3lib_spritemanager_abstracthandler' => PATH_t3lib . 'spritemanager/class.t3lib_spritemanager_abstracthandler.php',
 	't3lib_extjs_extdirectdebug' => PATH_t3lib . 'extjs/class.t3lib_extjs_extdirectdebug.php',
+	't3lib_extjs_extdirectapi' => PATH_t3lib . 'extjs/class.t3lib_extjs_extdirectapi.php',
 	't3lib_tree_abstracttree' => PATH_t3lib . 'tree/class.t3lib_tree_abstracttree.php',
 	't3lib_tree_abstractdataprovider' => PATH_t3lib . 'tree/class.t3lib_tree_abstractdataprovider.php',
 	't3lib_tree_abstractstateprovider' => PATH_t3lib . 'tree/class.t3lib_tree_abstractstateprovider.php',
