@@ -1,6 +1,7 @@
 2011-02-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #12621: Documentation for new options concerning stageNotificationEmail
+	* Fixed bug #12693: Naming of Documentation folder
 
 2011-02-16  Tolleiv Nietsch  <typo3@tolleiv.de>
 
