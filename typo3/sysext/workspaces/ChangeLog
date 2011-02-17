@@ -1,3 +1,7 @@
+2011-02-17  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #12621: Documentation for new options concerning stageNotificationEmail
+
 2011-02-16 Tolleiv Nietsch <typo3@tolleiv.de>
 
 	* Fixed bug #13003: singleIndex rows not showing up due to browser security violations
