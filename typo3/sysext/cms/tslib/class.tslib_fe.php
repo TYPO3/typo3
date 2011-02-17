@@ -4370,7 +4370,7 @@ if (version == "n3") {
 		if ($returnTitle)	{
 			if ($ws===-1)	{
 				return 'Default Draft Workspace';
-			} else {
+			} elseif (t3lib_extMgm::isLoaded('workspaces')) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title', 'sys_workspace', 'uid='.intval($ws));
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					return $row['title'];

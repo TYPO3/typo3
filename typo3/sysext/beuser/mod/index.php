@@ -1048,18 +1048,20 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		}
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
-		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
-		if (count($workspaces))	{
-			foreach ($workspaces as $rec)	{
-				if ($this->checkWorkspace($rec))	{
-					$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+		if (t3lib_extMgm::isLoaded('workspaces')) {
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+			if (count($workspaces))	{
+				foreach ($workspaces as $rec)	{
+					if ($this->checkWorkspace($rec))	{
+						$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
 
-						// Check if all mount points are accessible, otherwise show error:
-					if (trim($rec['db_mountpoints'])!=='')	{
-						$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
-						foreach ($mountPoints as $mpId)	{
-							if (!$this->isInWebMount($mpId,'1=1'))	{
-								$options[$rec['uid']].= '<br> \- ' . $GLOBALS['LANG']->getLL('notAccessible', true) . ' ' . $mpId;
+							// Check if all mount points are accessible, otherwise show error:
+						if (trim($rec['db_mountpoints'])!=='')	{
+							$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
+							foreach ($mountPoints as $mpId)	{
+								if (!$this->isInWebMount($mpId,'1=1'))	{
+									$options[$rec['uid']].= '<br> \- ' . $GLOBALS['LANG']->getLL('notAccessible', true) . ' ' . $mpId;
+								}
 							}
 						}
 					}

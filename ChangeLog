@@ -1,3 +1,7 @@
+2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #17355: Dependencies in sysext 'version' and 'workspaces'
+
 2011-02-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #17422: cObj->FORM() wasn't processing the $formData parameter (Thanks to Hubertus Golf)
