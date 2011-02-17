@@ -1,3 +1,7 @@
+2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #17355: Dependencies in sysext 'version' and 'workspaces'
+
 2011-02-16  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Cleanup #17606: Remove deprecated option TTFLocaleConv

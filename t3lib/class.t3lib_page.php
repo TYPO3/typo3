@@ -1414,7 +1414,7 @@ class t3lib_pageSelect {
 	 * @return	boolean	<code>true</code> if has access
 	 */
 	function checkWorkspaceAccess($wsid) {
-		if (!$GLOBALS['BE_USER']) {
+		if (!$GLOBALS['BE_USER'] || !t3lib_extMgm::isLoaded('workspaces')) {
 			return FALSE;
 		}
 		if (isset($this->workspaceCache[$wsid])) {
