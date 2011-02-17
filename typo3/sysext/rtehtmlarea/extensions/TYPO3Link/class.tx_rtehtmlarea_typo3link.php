@@ -108,9 +108,9 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 			if (is_array($conf) && $conf['class']) {
 				$JSClassesAnchorArray .= (($classesAnchorIndex++)?',':'') . ' { ' . $linebreak;
 				$index = 0;
-				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . $conf['class'] . '"' . $linebreak;
+				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . str_replace('"', '', str_replace('\'', '', $conf['class'])) . '"' . $linebreak;
 				if ($conf['type']) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . $conf['type'] . '"' . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . $linebreak;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
 					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->htmlAreaRTE->siteURL . t3lib_div::resolveBackPath(TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image']))))) . '"' . $linebreak;
