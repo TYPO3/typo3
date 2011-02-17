@@ -1589,9 +1589,45 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\'' . addslashes(serialize($extensi
 			$extLoadInContext = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
 		}
 
-		$extensionList = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] . ',' . $extLoadInContext;
+		$extensionList = self::getRequiredExtensionList() . ',' . $extLoadInContext;
+		$ignoredExtensionList = self::getIgnoredExtensionList();
+
+			// Remove the extensions to be ignored:
+		if ($ignoredExtensionList && (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) === FALSE) {
+			$extensions = array_diff(
+				explode(',', $extensionList),
+				explode(',', $ignoredExtensionList)
+			);
+			$extensionList = implode(',', $extensions);
+		}
 
 		return $extensionList;
+	}
+
+	/**
+	 * Gets the list of required extensions.
+	 *
+	 * @return string
+	 */
+	public static function getRequiredExtensionList() {
+		$requiredExtensionList = t3lib_div::uniqueList(
+			REQUIRED_EXTENSIONS . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']
+		);
+
+		return $requiredExtensionList;
+	}
+
+	/**
+	 * Gets the list of extensions to be ignored (not to be loaded).
+	 *
+	 * @return string
+	 */
+	public static function getIgnoredExtensionList() {
+		$ignoredExtensionList = t3lib_div::uniqueList(
+			$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt']
+		);
+
+		return $ignoredExtensionList;
 	}
 }
 
