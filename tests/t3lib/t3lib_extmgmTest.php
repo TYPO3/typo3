@@ -41,6 +41,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 
 	public function setUp() {
 		$this->globals = array(
+			'TYPO3_CONF_VARS' => serialize($GLOBALS['TYPO3_CONF_VARS']),
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
 			'TCA' => serialize($GLOBALS['TCA']),
 		);
@@ -471,6 +472,31 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 			'1.2.3',
 			t3lib_extMgm::getExtensionVersion($extensionKey)
 		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEnabledExtensionListConsidersRequiredExtensions() {
+		$testrequiRedExtension = uniqid('test');
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $testrequiRedExtension;
+
+		$extensions = explode(',', t3lib_extMgm::getEnabledExtensionList());
+		$this->assertTrue(in_array($testrequiRedExtension, $extensions));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEnabledExtensionListConsidersRequiredAndIgnoredExtensions() {
+		$testRequiredExtension = uniqid('test');
+		$testIgnoredExtension = uniqid('test');
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $testRequiredExtension . ',' . $testIgnoredExtension;
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt'] = $testIgnoredExtension;
+
+		$extensions = explode(',', t3lib_extMgm::getEnabledExtensionList());
+		$this->assertTrue(in_array($testRequiredExtension, $extensions));
+		$this->assertFalse(in_array($testIgnoredExtension, $extensions));
 	}
 }
 ?>

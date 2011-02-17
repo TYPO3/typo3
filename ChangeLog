@@ -1,6 +1,7 @@
 2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug #17355: Dependencies in sysext 'version' and 'workspaces'
+	* Fixed bug #17244: Error Message while Updating 4.4.6 > 4.5
 
 2011-02-16  Jigal van Hemert  <jigal@xs4all.nl>
 

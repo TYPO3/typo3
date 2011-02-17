@@ -22,6 +22,9 @@ define('FILE_DENY_PATTERN_DEFAULT', '\.(php[3-6]?|phpsh|phtml)(\..*)?$|^\.htacce
 //Security related constant: Comma separated list of file extensions that should be registered as php script file extensions
 define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
 
+// Defines a list that are basically required by a TYPO3 system.
+define('REQUIRED_EXTENSIONS', 'cms,lang,sv,em,recordlist');
+
 $TYPO3_CONF_VARS = array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
 		'image_processing' => TRUE,				// Boolean: Enables image processing features. Disabling this means NO image processing with either GD or IM!
@@ -170,7 +173,8 @@ $TYPO3_CONF_VARS = array(
 		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
 		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
 
-		'requiredExt' => 'cms,lang,sv,em,recordlist',		// String (exclude). List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
+		'requiredExt' => '',		// String. List of additional extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
+		'ignoredExt' => '',			// String. List of extensions to be ignored (not loaded), e.g. "em" can be disabled this way.
 		'excludeForPackaging' => '(CVS|\..*|.*~|.*\.bak)',		// String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
 		'extCache' => 1,						// <p>Integer (0, 1, 2, 3)</p><dl><dt>0</dt><dd>ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time</dd><dt>1</dt><dd>scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP accelerators)</dd><dt>2</dt><dd>scripts cached and prefix includes a hash based on the 'extList' string</dd><dt>3</dt><dd>scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)</dd></dl>
 		'extList' => 'filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler',						// String (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
