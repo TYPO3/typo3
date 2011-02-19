@@ -3766,11 +3766,6 @@ HTMLArea.util.Color = function () {
 	}
 }();
 /*
- * Interim backward compatibility
- */
-HTMLArea._makeColor = HTMLArea.util.Color.colorToRgb;
-HTMLArea._colorToRgb = HTMLArea.util.Color.colorToHex;
-/*
  * Intercept Ext.ColorPalette.prototype.select
  */
 Ext.ColorPalette.prototype.select = Ext.ColorPalette.prototype.select.createInterceptor(HTMLArea.util.Color.checkIfColorInPalette);
