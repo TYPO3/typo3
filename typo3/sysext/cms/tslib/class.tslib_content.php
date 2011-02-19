@@ -6429,21 +6429,6 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Formats a number to GB, Mb or Kb or just bytes
-	 *
-	 * @param	integer		Number of bytes to format.
-	 * @param	string		Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
-	 * @return	string
-	 * @see t3lib_div::formatSize(), stdWrap()
-	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use t3lib_div::formatSize() instead
-	 */
-	function bytes($sizeInBytes, $labels) {
-		t3lib_div::logDeprecatedFunction();
-
-		return t3lib_div::formatSize($sizeInBytes, $labels);
-	}
-
-	/**
 	 * Returns the 'age' of the tstamp $seconds
 	 *
 	 * @param	integer		Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs"

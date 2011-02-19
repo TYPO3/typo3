@@ -1,5 +1,6 @@
 2011-02-19  Christian Kuhn  <lolli@schwarzbuch>
 
+	* Fixed bug #17647: Method bytes() in tslib_cObj is deprecated and should be removed (Thanks to Peter Beernink)
 	* Fixed bug #17645: Remove deprecated function formatSize() from t3lib_basicFileFunctions (Thanks to Peter Beernink)
 	* Fixed bug #17644: Remove deprecated function getCountCacheTables() in SC_mod_web_ts_index (Thanks to Peter Beernink)
 
