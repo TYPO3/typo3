@@ -1,3 +1,7 @@
+2011-02-19  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #17656: Unit test fails because of invalid clear.gif (Thanks to Alexander Stehlik)
+
 2011-02-17  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17592: ExtDirect API calls are splitted in single requests and slows down page loading
