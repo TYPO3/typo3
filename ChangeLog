@@ -3,6 +3,7 @@
 	* Added feature #17658: htmlArea RTE: Write troubleshooting messages to JavaScript console
 	* Fixed issue #17659: htmlArea RTE: Delete deprecated plugin information variables
 	* Fixed issue #17660: htmlArea RTE: Delete deprecated color conversion function aliases
+	* Follow-up to issue #17559: htmlArea RTE: Delete deprecated code/functions from main js script
 
 2011-02-17  Steffen Kamper  <steffen@typo3.org>
 

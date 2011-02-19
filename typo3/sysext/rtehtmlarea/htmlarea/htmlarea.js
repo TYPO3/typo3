@@ -2337,7 +2337,6 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * Generate registered plugins
 	 */
 	generatePlugins: function () {
-		this.hasPluginWithOnKeyPressHandler = false;
 		Ext.iterate(this.plugins, function (pluginId) {
 			var plugin = this.getPlugin(pluginId);
 			plugin.onGenerate();
