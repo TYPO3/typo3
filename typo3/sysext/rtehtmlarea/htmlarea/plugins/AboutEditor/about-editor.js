@@ -213,8 +213,8 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 		Ext.iterate(this.editor.plugins, function (pluginId, plugin) {
 			pluginsInfo.push([
 				plugin.name + ' ' + plugin.version,
-				'<a href="' + plugin.developer_url + '" target="_blank">' + plugin.developer + '</a>',
-				'<a href="' + plugin.sponsor_url + '" target="_blank">' + plugin.sponsor + '</a>'
+				'<a href="' + plugin.developerUrl + '" target="_blank">' + plugin.developer + '</a>',
+				'<a href="' + plugin.sponsorUrl + '" target="_blank">' + plugin.sponsor + '</a>'
 			]);
 		}, this);
 		return pluginsInfo;

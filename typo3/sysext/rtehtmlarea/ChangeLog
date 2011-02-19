@@ -1,6 +1,7 @@
 2011-02-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #17658: htmlArea RTE: Write troubleshooting messages to JavaScript console
+	* Fixed issue #17659: htmlArea RTE: Delete deprecated plugin information variables
 
 2011-02-17  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -4126,10 +4126,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 		} else {
 			this.pluginInformation = pluginInformation;
 			this.pluginInformation.name = this.name;
-				/* Ensure backwards compatibility */
-			this.pluginInformation.developer_url = this.pluginInformation.developerUrl;
-			this.pluginInformation.c_owner = this.pluginInformation.copyrightOwner;
-			this.pluginInformation.sponsor_url = this.pluginInformation.sponsorUrl;
 			return true;
 		}
 	},
