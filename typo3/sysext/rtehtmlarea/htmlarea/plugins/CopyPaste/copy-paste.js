@@ -464,7 +464,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				}
 			});
 			if (!InstallTrigger) {
-				this.appendToLog('mozillaClipboardAccessException', 'Firefox InstallTrigger was not defined.');
+				this.appendToLog('mozillaClipboardAccessException', 'Firefox InstallTrigger was not defined.', 'warn');
 			}
 		}
 	},
@@ -490,7 +490,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 							title: self.localize('Allow-Clipboard-Helper-Add-On-Title'),
 							msg: self.localize('Moz-Extension-Failure')
 						});
-						self.appendToLog('installAllowClipboardHelperExtension', 'Mozilla install return code was: ' + returnCode + '.');
+						self.appendToLog('installAllowClipboardHelperExtension', 'Mozilla install return code was: ' + returnCode + '.', 'warn');
 					}
 					return false;
 				}
@@ -502,7 +502,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 					title: this.localize('Allow-Clipboard-Helper-Add-On-Title'),
 					msg: this.localize('Mozilla-Org-Install-Not-Enabled')
 				});
-				this.appendToLog('installAllowClipboardHelperExtension', 'Mozilla install was not enabled.');
+				this.appendToLog('installAllowClipboardHelperExtension', 'Mozilla install was not enabled.', 'warn');
 			}
 		}
 	}

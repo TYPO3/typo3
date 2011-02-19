@@ -421,8 +421,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
 				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
 				<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" rows="0" cols="0" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
-				</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
-				';
+				</div>' . LF;
 		}
 
 			// Return form item:
@@ -761,7 +760,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				RTEarea[0].editorSkin = "' . dirname($this->editorCSS) . '/";
 				RTEarea[0].editedContentCSS = "' . t3lib_div::createVersionNumberedFilename($this->editedContentCSS)  . '";
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
-				RTEarea[0].enableDebugMode = ' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
 				RTEarea.init = function() {
 					if (typeof(HTMLArea) == "undefined" || !Ext.isReady) {
 						window.setTimeout("RTEarea.init();", 40);

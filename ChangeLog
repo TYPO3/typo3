@@ -1,3 +1,7 @@
+2011-02-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #17658: htmlArea RTE: Write troubleshooting messages to JavaScript console
+
 2011-02-17  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17592: ExtDirect API calls are splitted in single requests and slows down page loading

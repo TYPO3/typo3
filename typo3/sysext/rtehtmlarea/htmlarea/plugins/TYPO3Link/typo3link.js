@@ -89,10 +89,9 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 					try {
 						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
 							eval(response.responseText);
-							this.appendToLog('ongenerate', 'Javascript file successfully evaluated: ' + this.classesAnchorUrl);
 						}
 					} catch(e) {
-						this.appendToLog('ongenerate', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl);
+						this.appendToLog('ongenerate', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl, 'error');
 					}
 				}
 			});
@@ -118,11 +117,10 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 					try {
 						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
 							eval(response.responseText);
-							this.appendToLog('onButtonPress', 'Javascript file successfully evaluated: ' + this.classesAnchorUrl);
 						}
 						this.onButtonPress(editor, id, target);
 					} catch(e) {
-						this.appendToLog('onButtonPress', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl);
+						this.appendToLog('onButtonPress', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl, 'error');
 					}
 				}
 			});

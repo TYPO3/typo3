@@ -140,7 +140,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 					try {
 						styleSheet.insertRule(rule, styleSheet.cssRules.length);
 					} catch (e) {
-						this.appendToLog("onGenerate", "Error inserting css rule: " + rule + " Error text: " + e);
+						this.appendToLog('onGenerate', 'Error inserting css rule: ' + rule + ' Error text: ' + e, 'warn');
 					}
 				} else {
 					styleSheet.addRule(selector, style);

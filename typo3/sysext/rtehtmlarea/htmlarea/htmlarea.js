@@ -54,21 +54,6 @@ Ext.apply(HTMLArea, {
 	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
 	/***************************************************
-	 * TROUBLESHOOTING                                 *
-	 ***************************************************/
-	_appendToLog: function(str){
-		if (HTMLArea.enableDebugMode) {
-			var log = document.getElementById('HTMLAreaLog');
-			if(log) {
-				log.appendChild(document.createTextNode(str));
-				log.appendChild(document.createElement('br'));
-			}
-		}
-	},
-	appendToLog: function (editorId, objectName, functionName, text) {
-		HTMLArea._appendToLog(editorId + '[' + objectName + '::' + functionName + ']: ' + text);
-	},
-	/***************************************************
 	 * LOCALIZATION                                    *
 	 ***************************************************/
 	localize: function (label) {
@@ -88,9 +73,36 @@ Ext.apply(HTMLArea, {
 			HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
 		}
 		HTMLArea.isReady = true;
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + HTMLArea.editedContentCSS);
+		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HTMLArea.editorUrl, 'info');
+		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HTMLArea.editorCSS, 'info');
+		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HTMLArea.editedContentCSS, 'info');
+	},
+	/*
+	 * Write message to JavaScript console
+	 *
+	 * @param	string		editorId: the id of the editor issuing the message
+	 * @param	string		objectName: the name of the object issuing the message
+	 * @param	string		functionName: the name of the function issuing the message
+	 * @param	string		text: the text of the message
+	 * @param	string		type: the type of message: 'log', 'info', 'warn' or 'error'
+	 *
+	 * @return	void
+	 */
+	appendToLog: function (editorId, objectName, functionName, text, type) {
+		var str = 'RTE[' + editorId + '][' + objectName + '::' + functionName + ']: ' + text;
+		if (typeof(type) === 'undefined') {
+			var type = 'info';
+		}
+		if (typeof(console) !== 'undefined' && typeof(console) === 'object') {
+				// If console is TYPO3.Backend.DebugConsole, write only error messages
+			if (Ext.isFunction(console.addTab)) {
+				if (type === 'error') {
+					console[type](str);
+				}
+			} else {
+				console[type](str);
+			}
+		}
 	}
 });
 /***************************************************
@@ -110,6 +122,8 @@ HTMLArea.Config = function (editorId) {
 	this.editedContentStyle = HTMLArea.editedContentCSS;
 		// content style
 	this.pageStyle = "";
+		// Maximum attempts at accessing the stylesheets
+	this.styleSheetsMaximumAttempts = 20;
 		// Remove tags (must be a regular expression)
 	this.htmlRemoveTags = /none/i;
 		// Remove tags and their contents (must be a regular expression)
@@ -192,7 +206,7 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 	registerButton: function (config) {
 		config.itemId = config.id;
 		if (Ext.type(this.buttonsConfig[config.id])) {
-			HTMLArea._appendToLog('[HTMLArea.Config::registerButton]: A toolbar item with the same Id: ' + config.id + ' already exists and will be overidden.');
+			HTMLArea.appendToLog('', 'HTMLArea.Config', 'registerButton', 'A toolbar item with the same Id: ' + config.id + ' already exists and will be overidden.', 'warn');
 		}
 			// Apply defaults
 		config = Ext.applyIf(config, this.configDefaults['all']);
@@ -236,14 +250,13 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 	 */
 	registerHotKey: function (hotKeyConfiguration) {
 		if (Ext.isDefined(this.hotKeyList[hotKeyConfiguration.id])) {
-			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with the same key ' + hotKeyConfiguration.id + ' already exists and will be overidden.');
+			HTMLArea.appendToLog('', 'HTMLArea.Config', 'registerHotKey', 'A hotkey with the same key ' + hotKeyConfiguration.id + ' already exists and will be overidden.', 'warn');
 		}
 		if (Ext.isDefined(hotKeyConfiguration.cmd) && !Ext.isEmpty(hotKeyConfiguration.cmd) && Ext.isDefined(this.buttonsConfig[hotKeyConfiguration.cmd])) {
 			this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
-			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with key ' + hotKeyConfiguration.id + ' was registered for toolbar item ' + hotKeyConfiguration.cmd + '.');
 			return true;
 		} else {
-			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with key ' + hotKeyConfiguration.id + ' could not be registered because toolbar item with id ' + hotKeyConfiguration.cmd + ' was not registered.');
+			HTMLArea.appendToLog('', 'HTMLArea.Config', 'registerHotKey', 'A hotkey with key ' + hotKeyConfiguration.id + ' could not be registered because toolbar item with id ' + hotKeyConfiguration.cmd + ' was not registered.', 'warn');
 			return false;
 		}
 	},
@@ -933,7 +946,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				base.href = this.config.baseURL;
 				head.appendChild(base);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Iframe baseURL set to: ' + base.href);
+			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Iframe baseURL set to: ' + base.href, 'info');
 		}
 		var link0 = this.document.getElementsByTagName('link')[0];
 		if (!link0) {
@@ -943,7 +956,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				// Therefore, for versions before 3.6.8, we prepend the url with the base, if the url is not absolute
 			link0.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
 			head.appendChild(link0);
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Skin CSS set to: ' + link0.href);
+			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Skin CSS set to: ' + link0.href, 'info');
 		}
 		if (this.config.defaultPageStyle) {
 			var link = this.document.getElementsByTagName('link')[1];
@@ -953,7 +966,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.defaultPageStyle)) ? this.config.baseURL : '') + this.config.defaultPageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Override CSS set to: ' + link.href);
+			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Override CSS set to: ' + link.href, 'info');
 		}
 		if (this.config.pageStyle) {
 			var link = this.document.getElementsByTagName('link')[2];
@@ -963,14 +976,20 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.pageStyle)) ? this.config.baseURL : '') + this.config.pageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Content CSS set to: ' + link.href);
+			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
 		}
-		HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Editor iframe document head successfully built.');
 	},
 	/*
 	 * Fire event 'HTMLAreaEventIframeReady' when the iframe style sheets become accessible
+	 *
+	 * @param	int	count: number of attempts at accessing the stylesheets
+	 *
+	 * @return	void
 	 */
-	getStyleSheets: function () {
+	getStyleSheets: function (count) {
+		if (typeof(count) === 'undefined') {
+			var count = 0;
+		}
 		var stylesAreLoaded = true;
 		var errorText = '';
 		var rules;
@@ -1014,13 +1033,14 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			}
 		}
 		if (!stylesAreLoaded) {
-			this.getStyleSheets.defer(100, this);
-			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets not yet loaded (' + errorText + '). Retrying...');
 			if (/Security/i.test(errorText)) {
-				HTMLArea._appendToLog('ERROR [HTMLArea.Iframe::getStyleSheets]: A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.');
+				this.getEditor().appendToLog('HTMLArea.Iframe', 'getStyleSheets', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+			} else if (count > this.config.styleSheetsMaximumAttempts) {
+				this.getEditor().appendToLog('HTMLArea.Iframe', 'getStyleSheets', 'Stylesheets not loaded after ' + count + ' attempts. (' + errorText + ').', 'error');
+			} else {
+				this.getStyleSheets.defer(100, this, [count++]);
 			}
 		} else {
-			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets successfully accessed.');
 				// Style the document body
 			Ext.get(this.document.body).addClass('htmlarea-content-body');
 				// Start listening to things happening in the iframe
@@ -2194,7 +2214,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}, this);
 		this.ready = true;
 		this.fireEvent('HTMLAreaEventEditorReady');
-		HTMLArea._appendToLog('[HTMLArea.Editor::onFrameworkReady]: Editor ready.');
+		this.appendToLog('HTMLArea.Editor', 'onFrameworkReady', 'Editor ready.', 'info');
 	},
 	/*
 	 * Set editor mode
@@ -2216,7 +2236,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				try {
 					this.document.body.innerHTML = this.getHTML();
 				} catch(e) {
-					HTMLArea._appendToLog('[HTMLArea.Editor::setMode]: The HTML document is not well-formed.');
+					this.appendToLog('HTMLArea.Editor', 'setMode', 'The HTML document is not well-formed.', 'warn');
 					TYPO3.Dialog.ErrorDialog({
 						title: 'htmlArea RTE',
 						msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
@@ -2299,7 +2319,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	registerPlugin: function (pluginName) {
 		var plugin = HTMLArea[pluginName],
 			isRegistered = false;
-		if (Ext.isFunction(plugin)) {
+		if (typeof(plugin) !== 'undefined' && Ext.isFunction(plugin)) {
 			var pluginInstance = new plugin(this, pluginName);
 			if (pluginInstance) {
 				var pluginInformation = pluginInstance.getPluginInformation();
@@ -2308,10 +2328,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				isRegistered = true;
 			}
 		}
-		if (isRegistered) {
-			HTMLArea._appendToLog('[HTMLArea.Editor::registerPlugin]: Plugin ' + pluginName + ' was successfully registered.');
-		} else {
-			HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Could not register plugin ' + pluginName + '.');
+		if (!isRegistered) {
+			this.appendToLog('HTMLArea.Editor', 'registerPlugin', 'Could not register plugin ' + pluginName + '.', 'warn');
 		}
 		return isRegistered;
 	},
@@ -2324,7 +2342,6 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			var plugin = this.getPlugin(pluginId);
 			plugin.onGenerate();
 		}, this);
-		HTMLArea._appendToLog('[HTMLArea.Editor::generatePlugins]: All plugins successfully generated.');
 	},
 	/*
 	 * Get the instance of the specified plugin, if it exists
@@ -2381,11 +2398,12 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 *
 	 * @param	string		functionName: the name of the editor function writing to the log
 	 * @param	string		text: the text of the message
+	 * @param	string		type: the type of message
 	 *
 	 * @return	void
 	 */
-	appendToLog: function (objectName, functionName, text) {
-		HTMLArea.appendToLog(this.editorId, objectName, functionName, text);
+	appendToLog: function (objectName, functionName, text, type) {
+		HTMLArea.appendToLog(this.editorId, objectName, functionName, text, type);
 	},
 	/*
 	 * Iframe unload handler: Update the textarea for submission and cleanup
@@ -2431,7 +2449,6 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 	getJavascriptFile: function (url, callback, scope) {
 		var success = false;
 		var self = this;
-		this.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Requesting script ' + url);
 		Ext.Ajax.request({
 			method: 'GET',
 			url: url,
@@ -2441,7 +2458,7 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			},
 			failure: function (response) {
 				self.editor.inhibitKeyboardInput = false;
-				self.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status);
+				self.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status, 'error');
 			},
 			scope: scope
 		});
@@ -2466,7 +2483,6 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(value);
 		});
 		params += this.editor.config.RTEtsConfigParams;
-		this.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Posting to ' + url + '. Data: ' + params);
 		Ext.Ajax.request({
 			method: 'POST',
 			headers: {
@@ -2475,17 +2491,15 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			url: url,
 			params: params,
 			callback: Ext.isFunction(callback) ? callback: function (options, success, response) {
-				if (success) {
-					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
-				} else {
-					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status);
+				if (!success) {
+					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
 				}
 			},
 			success: function (response) {
 				success = true;
 			},
 			failure: function (response) {
-				self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Unable to post ' + url + ' . Server reported ' + response.status);
+				self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Unable to post ' + url + ' . Server reported ' + response.status, 'error');
 			},
 			scope: scope
 		});
@@ -2872,7 +2886,7 @@ HTMLArea.Editor.prototype.execCommand = function(cmdID, UI, param) {
 			try {
 				this.document.execCommand(cmdID, UI, param);
 			} catch(e) {
-				HTMLArea._appendToLog('[HTMLArea.Editor::execCommand]: ' + e + 'by execCommand(' + cmdID + ')');
+				this.appendToLog('HTMLArea.Editor', 'execCommand', e + ' by execCommand(' + cmdID + ')', 'error');
 			}
 	}
 	this.toolbar.update();
@@ -2974,16 +2988,12 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 	try {
 		return editor.iframe.htmlRenderer.render(root, outputRoot);
 	} catch(e) {
-		HTMLArea._appendToLog('[HTMLArea::getHTML]: The HTML document is not well-formed.');
-		if (!HTMLArea.enableDebugMode) {
-			TYPO3.Dialog.ErrorDialog({
-				title: 'htmlArea RTE',
-				msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
-			});
-			return editor.document.body.innerHTML;
-		} else {
-			return editor.iframe.htmlRenderer.render(root, outputRoot);
-		}
+		editor.appendToLog('HTMLArea', 'getHTML', 'The HTML document is not well-formed.', 'warn');
+		TYPO3.Dialog.ErrorDialog({
+			title: 'htmlArea RTE',
+			msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
+		});
+		return editor.document.body.innerHTML;
 	}
 };
 HTMLArea.getPrevNode = function(node) {
@@ -3415,10 +3425,9 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 					try {
 						if (typeof(HTMLArea.classesLabels) === 'undefined') {
 							eval(response.responseText);
-							this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Javascript file successfully evaluated: ' + this.editor.config.classesUrl);
 						}
 					} catch(e) {
-						this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Error evaluating contents of Javascript file: ' + this.editor.config.classesUrl);
+						this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Error evaluating contents of Javascript file: ' + this.editor.config.classesUrl, 'error');
 					}
 				}
 				this.parse();
@@ -3440,7 +3449,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 					this.attemptTimeout = this.parse.defer(200, this);
 					this.parseAttemptsCounter++;
 				} else {
-					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error);
+					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error, 'error');
 					this.fireEvent('HTMLAreaEventCssParsingComplete');
 				}
 			} else {
@@ -4004,7 +4013,6 @@ HTMLArea.initEditor = function(editorNumber) {
 				HTMLArea.initEditor.defer(150, null, [editorNumber]);
 			} else {
 					// Create an editor for the textarea
-				HTMLArea._appendToLog("[HTMLArea::initEditor]: Initializing editor with editor Id: " + editorNumber + ".");
 				var editor = new HTMLArea.Editor(Ext.apply(new HTMLArea.Config(editorNumber), RTEarea[editorNumber]));
 				editor.generate();
 				return false;
@@ -4094,7 +4102,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * Note: this.base will exclusively refer to the HTMLArea.Plugin class constructor
 	 */
 	base: function (editor, pluginName) {
-		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.');
+		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
 		HTMLArea.Plugin.prototype.constructor.call(this, editor, pluginName);
 	},
 	/**
@@ -4112,8 +4120,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean		true if the information was registered
 	 */
 	registerPluginInformation: function(pluginInformation) {
-		if (typeof(pluginInformation) !== "object") {
-			this.appendToLog("registerPluginInformation", "Plugin information was not provided");
+		if (typeof(pluginInformation) !== 'object') {
+			this.appendToLog('registerPluginInformation', 'Plugin information was not provided', 'warn');
 			return false;
 		} else {
 			this.pluginInformation = pluginInformation;
@@ -4237,7 +4245,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 					return true;
 				}
 			} else {
-				this.appendToLog("registerButton", "Function " + buttonConfiguration.action + " was not defined when registering button " + buttonConfiguration.id);
+				this.appendToLog('registerButton', 'Function ' + buttonConfiguration.action + ' was not defined when registering button ' + buttonConfiguration.id, 'error');
 			}
 		}
 		return false;
@@ -4266,7 +4274,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 				}
 				return this.editorConfiguration.registerButton(dropDownConfiguration);
 			} else {
-				this.appendToLog('registerDropDown', 'Function ' + dropDownConfiguration.action + ' was not defined when registering drop-down ' + dropDownConfiguration.id);
+				this.appendToLog('registerDropDown', 'Function ' + dropDownConfiguration.action + ' was not defined when registering drop-down ' + dropDownConfiguration.id, 'error');
 			}
 		}
 		return false;
@@ -4424,7 +4432,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean		true on success of the request submission
 	 */
 	getJavascriptFile: function (url, callback) {
-		this.appendToLog('getJavascriptFile', 'Requesting script ' + url);
 		return this.editor.ajax.getJavascriptFile(url, callback, this);
 	},
 	/**
@@ -4437,7 +4444,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean		true on success
 	 */
 	postData: function (url, data, callback) {
-	 	this.appendToLog('postData', 'Posting to ' + url + '.');
 	 	return this.editor.ajax.postData(url, data, callback, this);
 	},
 	/*
@@ -4545,11 +4551,12 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @param	string		functionName: the name of the plugin function writing to the log
 	 * @param	string		text: the text of the message
+	 * @param	string		type: the typeof of message: 'log', 'info', 'warn' or 'error'
 	 *
 	 * @return	void
 	 */
-	appendToLog: function (functionName, text) {
-		this.editor.appendToLog(this.name, functionName, text);
+	appendToLog: function (functionName, text, type) {
+		this.editor.appendToLog(this.name, functionName, text, type);
 	},
 	/*
 	 * Add a config element to config array if not empty

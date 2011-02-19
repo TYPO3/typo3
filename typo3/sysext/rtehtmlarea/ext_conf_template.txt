@@ -28,8 +28,5 @@ enableAccessibilityIcons = 0
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell. If set, PHP safe mode should NOT be enabled.
 forceCommandMode = 0
 
-  # cat=basic/enable/190; type=boolean; label=Enable troubleshooting mode: If set, a troubleshooting log will be displayed below the editing area.
-enableDebugMode = 0
-
   # cat=basic/enable/180; type=boolean; label=Enable compressed scripts: If set, the compressed version of the editor scripts will be used.
 enableCompressedScripts = 1

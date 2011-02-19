@@ -1204,11 +1204,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						try {
 							if (typeof(HTMLArea.classesAlternating) === 'undefined' || typeof(HTMLArea.classesCounting) === 'undefined') {
 								eval(response.responseText);
-								this.appendToLog('reStyleTable', 'Javascript file successfully evaluated: ' + this.classesUrl);
 							}
 							this.reStyleTable(table);
 						} catch(e) {
-							this.appendToLog('reStyleTable', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+							this.appendToLog('reStyleTable', 'Error evaluating contents of Javascript file: ' + this.classesUrl, 'error');
 						}
 					}
 				});
@@ -1257,11 +1256,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						try {
 							if (typeof(HTMLArea.classesAlternating) === 'undefined') {
 								eval(response.responseText);
-								this.appendToLog('removeAlternatingClasses', 'Javascript file successfully evaluated: ' + this.classesUrl);
 							}
 							this.removeAlternatingClasses(table, removeClass);
 						} catch(e) {
-							this.appendToLog('removeAlternatingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+							this.appendToLog('removeAlternatingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl, 'error');
 						}
 					}
 				});
@@ -1378,11 +1376,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						try {
 							if (typeof(HTMLArea.classesCounting) === 'undefined') {
 								eval(response.responseText);
-								this.appendToLog('removeCountingClasses', 'Javascript file successfully evaluated: ' + this.classesUrl);
 							}
 							this.removeCountingClasses(table, removeClass);
 						} catch(e) {
-							this.appendToLog('removeCountingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+							this.appendToLog('removeCountingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl, 'error');
 						}
 					}
 				});

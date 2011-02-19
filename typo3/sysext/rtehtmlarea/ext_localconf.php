@@ -67,13 +67,8 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea') . 'hooks/clearrtecache/ext_loc
 	// Add Status Report about Conflicting Extensions
 require_once(t3lib_extMgm::extPath('rtehtmlarea') . 'hooks/statusreport/ext_localconf.php');
 
-	// Troubleshooting and script compression
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = isset($_EXTCONF['enableDebugMode']) ? $_EXTCONF['enableDebugMode'] : 0;
+	// Script compression
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = (isset($_EXTCONF['enableCompressedScripts']) && !$_EXTCONF['enableCompressedScripts']) ? 0 : 1;
-	// Disable script compression when in troubleshooting mode
-if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode']) {
-	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = 0;
-}
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {

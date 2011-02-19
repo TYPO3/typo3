@@ -200,7 +200,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			this.applyInlineElement(editor, element);
 			return false;
 		} else {
-			this.appendToLog("onButtonPress", "No element corresponding to button: " + buttonId);
+			this.appendToLog('onButtonPress', 'No element corresponding to button: ' + buttonId, 'warn');
 		}
 	},
 	

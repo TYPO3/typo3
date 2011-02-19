@@ -89,7 +89,7 @@ HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 			editor._doc.execCommand(buttonId, false, null);
 		}
 		catch(e) {
-			this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
+			this.appendToLog('onButtonPress', e + '\n\nby execCommand(' + buttonId + ');', 'error');
 		}
 		return false;
 	},

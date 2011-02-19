@@ -101,9 +101,8 @@ HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 					if (success) {
 						editor.setHTML(response.responseText);
 						editor.selectRange(editor.moveToBookmark(bookmark));
-						this.appendToLog('clean', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
 					} else {
-						this.appendToLog('clean', 'Post request to ' + url + ' failed. Server reported ' + response.status);
+						this.appendToLog('clean', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
 					}
 					this.editor.inhibitKeyboardInput = false;
 				}
