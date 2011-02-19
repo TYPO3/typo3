@@ -1,5 +1,6 @@
 2011-02-19  Christian Kuhn  <lolli@schwarzbuch>
 
+	* Fixed bug #17645: Remove deprecated function formatSize() from t3lib_basicFileFunctions (Thanks to Peter Beernink)
 	* Fixed bug #17644: Remove deprecated function getCountCacheTables() in SC_mod_web_ts_index (Thanks to Peter Beernink)
 
 2011-02-18  Stanislas Rolland  <typo3@sjbr.ca>
