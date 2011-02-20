@@ -344,29 +344,37 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * SET STYLES
 			 * =======================================
 			 */
-
-			$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
-			$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
-			$RTEWidth  = $RTEWidth + ($this->TCEform->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
-			$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
-			$RTEWidthOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth'])) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride']);
-			if ($RTEWidthOverride) {
-				if (strstr($RTEWidthOverride, '%')) {
-					if ($this->client['browser'] != 'msie') {
-						$RTEWidth = (intval($RTEWidthOverride) > 0) ? $RTEWidthOverride : '100%';
+				// Check if wizard_rte called this for fullscreen edtition
+			if (basename(PATH_thisScript) == 'wizard_rte.php') {
+				$this->fullScreen = TRUE;
+				$RTEWidth = '100%';
+				$RTEHeight = '100%';
+				$RTEPaddingRight = '0';
+				$editorWrapWidth = '100%';
+			} else {
+				$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
+				$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
+				$RTEWidth  = $RTEWidth + ($this->TCEform->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
+				$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
+				$RTEWidthOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth'])) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride']);
+				if ($RTEWidthOverride) {
+					if (strstr($RTEWidthOverride, '%')) {
+						if ($this->client['browser'] != 'msie') {
+							$RTEWidth = (intval($RTEWidthOverride) > 0) ? $RTEWidthOverride : '100%';
+						}
+					} else {
+						$RTEWidth = (intval($RTEWidthOverride) > 0) ? intval($RTEWidthOverride) : $RTEWidth;
 					}
-				} else {
-					$RTEWidth = (intval($RTEWidthOverride) > 0) ? intval($RTEWidthOverride) : $RTEWidth;
 				}
+				$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth :  $RTEWidth . 'px';
+				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
+				$RTEHeightOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight'])) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride']);
+				$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
+				$RTEPaddingRight = '2px';
+				$editorWrapWidth = '99%';
 			}
-			$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth :  $RTEWidth . 'px';
-			$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
-			$RTEHeightOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight'])) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride']);
-			$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
-			$editorWrapWidth = '99%';
 			$editorWrapHeight = '100%';
-			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'; border: 1px solid black; padding: 2px 2px 2px 2px;';
-
+			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:' . $RTEWidth . '; border: 1px solid black; padding: 2px ' . $RTEPaddingRight . ' 2px 2px;';
 			/* =======================================
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
@@ -407,13 +415,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
 					$value = $plugin->transformContent($value);
 				}
-			}
-				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
-			if (basename(PATH_thisScript) == 'wizard_rte.php') {
-				$this->fullScreen = true;
-				$editorWrapWidth = '100%';
-				$editorWrapHeight = '100%';
-				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
 			}
 				// Draw the textarea
 			$visibility = 'hidden';
