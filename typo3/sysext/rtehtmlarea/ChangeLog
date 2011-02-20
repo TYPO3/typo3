@@ -1,3 +1,7 @@
+2011-02-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17676: htmlArea RTE: Some combo stores are loaded twice
+
 2011-02-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #17658: htmlArea RTE: Write troubleshooting messages to JavaScript console
