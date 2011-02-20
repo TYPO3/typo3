@@ -1,3 +1,7 @@
+2011-02-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #13097: tx_version_tcemain->processCmdmap - &$commandIsProcessed is not set to TRUE (Thanks to Andreas Kiessling)
+
 2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug #12615: Dependencies in sysext 'version' and 'workspaces'

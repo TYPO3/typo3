@@ -91,7 +91,7 @@ class tx_version_tcemain {
 
 			// custom command "version"
 		if ($command == 'version') {
-			$commandWasProcessed = TRUE;
+			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
 			switch ($action) {
 
