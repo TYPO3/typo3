@@ -153,11 +153,8 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				}
 				return true;
 			}, this);
-				// Load the language dropdown
-			select.getStore().load({
-				callback: function () { this.getButton('Language').setValue('none'); },
-				scope: this
-			});
+				// Monitor the combo's store being loaded
+			select.mon(select.getStore(), 'load', function () { this.updateValue(select); }, this);
 		}
 	},
 	/*

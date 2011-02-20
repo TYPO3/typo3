@@ -1,3 +1,7 @@
+2011-02-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17676: htmlArea RTE: Some combo stores are loaded twice
+
 2011-02-19  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17656: Unit test fails because of invalid clear.gif (Thanks to Alexander Stehlik)

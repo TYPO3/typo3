@@ -127,13 +127,11 @@ HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 	 * This funcion is invoked by the editor when it is being generated
 	 */
 	onGenerate: function () {
-			// Load the dropdowns
+			// Monitor the dropdowns stores being loaded
 		Ext.each(this.dropDownList, function (dropDown) {
-			if (this.getButton(dropDown[0])) {
-				this.getButton(dropDown[0]).getStore().load({
-					callback: function () { this.getButton(dropDown[0]).setValue('none'); },
-					scope: this
-				})
+			var select = this.getButton(dropDown[0]);
+			if (select) {
+				select.mon(select.getStore(), 'load', function () { select.setValue('none'); });
 			}
 		}, this);
 	},
