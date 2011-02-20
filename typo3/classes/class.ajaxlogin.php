@@ -101,8 +101,10 @@ class AjaxLogin {
 		if(is_object($GLOBALS['BE_USER'])) {
 			$ajaxObj->setContentFormat('json');
 			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
-			 	$ajaxObj->addContent('login', array('timed_out' => FALSE, 'locked' => TRUE));
+			 	$ajaxObj->addContent('login', array('will_time_out' => FALSE, 'locked' => TRUE));
 				$ajaxObj->setContentFormat('json');
+			} else if (!isset($GLOBALS['BE_USER']->user['uid'])) {
+				$ajaxObj->addContent('login', array('timed_out' => TRUE));
 			} else {
 				$GLOBALS['BE_USER']->fetchUserSession(TRUE);
 				$ses_tstamp = $GLOBALS['BE_USER']->user['ses_tstamp'];
@@ -111,9 +113,9 @@ class AjaxLogin {
 				// if 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
 				// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
 				if ($GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120) {
-					$ajaxObj->addContent('login', array('timed_out' => TRUE));
+					$ajaxObj->addContent('login', array('will_time_out' => TRUE));
 				} else {
-					$ajaxObj->addContent('login', array('timed_out' => FALSE));
+					$ajaxObj->addContent('login', array('will_time_out' => FALSE));
 				}
 			}
 		} else {
