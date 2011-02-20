@@ -581,6 +581,12 @@ class tx_version_tcemain_CommandMap {
 		if (isset($elementProperties['comment'])) {
 			$commonSetStageProperties['comment'] = $elementProperties['comment'];
 		}
+		if (isset($elementProperties['action'])) {
+			$commonSetStageProperties['action'] = $elementProperties['action'];
+		}
+		if (isset($elementProperties['notificationAlternativeRecipients'])) {
+			$commonSetStageProperties['notificationAlternativeRecipients'] = $elementProperties['notificationAlternativeRecipients'];
+		}
 
 		return $commonSetStageProperties;
 	}
