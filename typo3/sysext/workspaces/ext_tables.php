@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 	// avoid that this block is loaded in the frontend or within the upgrade-wizards
-if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) { 
+if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	/**
 	* Registers a Backend Module
 	*/
@@ -71,6 +71,7 @@ $TCA['sys_workspace_stage'] = array(
 		'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
+		'hideTable' => TRUE,
 		'delete' => 'deleted',
 		'iconfile' => 'sys_workspace.png',
 		'typeicon_classes' => array(

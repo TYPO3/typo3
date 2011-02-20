@@ -1,3 +1,7 @@
+2011-02-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #13098:Hide sys_workspace_stage in list view (Thanks to Andreas Kiessling)
+
 2011-02-20  Steffen Kamper  <steffen@typo3.org>
 
 	* Changes according to changed ExtDirect inclusion (#17592)
