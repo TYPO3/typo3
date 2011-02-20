@@ -82,7 +82,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlarea_api {
 			}
 			if (is_array($RTEProperties['classesAnchor.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.classesAnchorUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'classesAnchor_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSClassesAnchorArray()) . '";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.classesAnchorUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'classesAnchor_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSClassesAnchorArray(), TRUE) . '";';
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.additionalAttributes = "external' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? (',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes']) : '') . '";';
