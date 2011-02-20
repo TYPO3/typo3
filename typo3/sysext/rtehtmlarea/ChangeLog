@@ -1,3 +1,7 @@
+2011-02-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to issue #17677: htmlArea RTE: Classes configuration is loaded twice
+
 2011-02-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17676: htmlArea RTE: Some combo stores are loaded twice

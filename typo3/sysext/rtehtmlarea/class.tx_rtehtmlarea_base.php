@@ -366,7 +366,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$editorWrapWidth = '99%';
 			$editorWrapHeight = '100%';
 			$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:' . $RTEHeight . 'px; width:'.$RTEWidth.'; border: 1px solid black; padding: 2px 2px 2px 2px;';
-
+				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
+			if (basename(PATH_thisScript) == 'wizard_rte.php') {
+				$this->fullScreen = true;
+				$editorWrapWidth = '100%';
+				$editorWrapHeight = '100%';
+				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
+			}
 			/* =======================================
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
@@ -406,13 +412,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
 					$value = $plugin->transformContent($value);
 				}
-			}
-				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
-			if (basename(PATH_thisScript) == 'wizard_rte.php') {
-				$this->fullScreen = true;
-				$editorWrapWidth = '100%';
-				$editorWrapHeight = '100%';
-				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
 			}
 				// Draw the textarea
 			$visibility = 'hidden';
