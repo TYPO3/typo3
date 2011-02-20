@@ -1,6 +1,7 @@
 2011-02-20  Tolleiv Nietsch  <typo3@tolleiv.de>
 
-	* Fixed bug #13094,Cannot push IRRE records to next stage (Thanks to Andreas Kiessling)
+	* Fixed bug #13096: class tx_version_tcemain_CommandMap contains calls to protected methods from tx_version_tcemain (Thanks to Andreas Kiessling)
+	* Fixed bug #13094: Cannot push IRRE records to next stage (Thanks to Andreas Kiessling)
 	* Fixed bug #13097: tx_version_tcemain->processCmdmap - &$commandIsProcessed is not set to TRUE (Thanks to Andreas Kiessling)
 
 2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
