@@ -139,8 +139,9 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->pageRenderer->enableExtJsDebug();
 
 			// Load  JavaScript:
-		$this->pageRenderer->addExtDirectCode();
-		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces&' . TYPO3_version, NULL, FALSE);
+		$this->pageRenderer->addExtDirectCode(array(
+			'TYPO3.Workspaces'
+		));
 
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.grid.RowExpander.js');

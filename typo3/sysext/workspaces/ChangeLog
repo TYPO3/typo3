@@ -1,3 +1,7 @@
+2011-02-20  Steffen Kamper  <steffen@typo3.org>
+
+	* Changes according to changed ExtDirect incluseion (#17592)
+
 2011-02-17  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #12621: Documentation for new options concerning stageNotificationEmail
