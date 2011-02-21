@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010-2011 Xavier Perseguers <typo3@perseguers.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -98,8 +98,8 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 
 		$this->init();
 
-		if (t3lib_div::GPvar('dbal')) {
-			$this->updateMapping(t3lib_div::GPvar('dbal'), $instObj);
+		if (t3lib_div::_GP('dbal')) {
+			$this->updateMapping(t3lib_div::_GP('dbal'), $instObj);
 		}
 
 		// Search all table and field names which should be remapped
