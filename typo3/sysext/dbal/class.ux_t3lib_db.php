@@ -1633,20 +1633,6 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
-	 * Use quoteFieldNames instead!
-	 *
-	 * @param	string		List of fields to be selected from DB
-	 * @return	string		Quoted list of fields to be selected from DB
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
-	 */
-	public function quoteSelectFields($select_fields) {
-		t3lib_div::logDeprecatedFunction();
-
-		$this->quoteFieldNames($select_fields);
-	}
-
-	/**
-	 * Quotes field (and table) names with the quote character suitable for the DB being used
 	 *
 	 * @param	string		List of fields to be used in query to DB
 	 * @return	string		Quoted list of fields to be in query to DB
@@ -2491,21 +2477,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 **********/
 
 	/**
-	 * Executes query (on DEFAULT handler!)
-	 * DEPRECATED - use exec_* functions from this class instead!
-	 *
-	 * @param	string		Database name
-	 * @param	string		Query to execute
-	 * @return	pointer		Result pointer
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6
-	 */
-	public function sql($db, $query) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->sql_query($query);
-	}
-
-	/**
 	 * Executes a query
 	 * EXPERIMENTAL - This method will make its best to handle the query correctly
 	 * but if it cannot, it will simply pass the query to DEFAULT handler.
@@ -2554,7 +2525,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Opening the _DEFAULT connection handler to the database.
-	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (tslib_fe->connectToMySQL())
+	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (tslib_fe->connectToDB())
 	 * You wouldn't need to use this at any time - let TYPO3 core handle this.
 	 *
 	 * @param	string		Database host IP/domain
