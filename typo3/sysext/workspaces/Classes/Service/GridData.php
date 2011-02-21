@@ -191,7 +191,7 @@ class tx_Workspaces_Service_GridData {
 			try {
 				$GLOBALS['typo3CacheFactory']->create(
 					'workspaces_cache',
-					't3lib_cache_frontend_StringFrontend',
+					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['frontend'],
 					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['backend'],
 					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['options']);
 			} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
