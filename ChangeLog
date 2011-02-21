@@ -1,5 +1,6 @@
 2011-02-21  Steffen Kamper  <steffen@typo3.org
 
+	* Fixed bug #17383: Open forms cannot be saved after "Relogin" (Security Token errors) (Thanks to Helmut Hummel)
 	* Fixed bug #17684 Admin Panel renders invalid markup (Thanks to Markus Klein)
 
 2011-02-20  Steffen Kamper  <steffen@typo3.org

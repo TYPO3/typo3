@@ -986,7 +986,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// does this only with multiple arguments
 		$this->addExtOnReadyCode('
 			(function() {
-				TYPO3.ExtDirectToken = "' . $token . '";
+				TYPO3.ExtDirectToken = "' . $token . '-extDirect";
 				for (var api in Ext.app.ExtDirectAPI) {
 					var provider = Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
 					provider.on("beforecall", function(provider, transaction, meta) {

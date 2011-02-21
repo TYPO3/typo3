@@ -398,7 +398,8 @@ class SC_index {
 				t3lib_utility_Http::redirect($this->redirectToURL);
 			} else {
 				$formprotection = t3lib_formprotection_Factory::get();
-				$token = $formprotection->generateToken('extDirect');
+				$accessToken = $formprotection->generateToken('refreshTokens');
+				$formprotection->persistTokens();
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
 					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {
 						if (parent.opener.TYPO3.loginRefresh) {
@@ -406,7 +407,7 @@ class SC_index {
 						} else {
 							parent.opener.busy.loginRefreshed();
 						}
-						parent.opener.TYPO3.ExtDirectToken = "' . $token . '";
+						parent.opener.TYPO3.loginRefresh.refreshTokens("' . $accessToken . '");
 						parent.close();
 					}
 				');
