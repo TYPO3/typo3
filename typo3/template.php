@@ -821,11 +821,6 @@ class template {
 		$this->docStyle();
 
 	   if ($this->extDirectStateProvider) {
-			$this->pageRenderer->addJsFile(
-				$this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.ExtDirectStateProvider&' . TYPO3_version,
-				NULL,
-				FALSE
-			);
 			$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ExtDirect.StateProvider.js');
 		}
 
