@@ -845,12 +845,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber].showTagFreeClasses = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea[editornumber].useHTTPS = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';
-			RTEarea[editornumber].dialogueWindows = new Object();
-			RTEarea[editornumber].dialogueWindows.defaultPositionFromTop = ' . (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])? intval($this->thisConfig['dialogueWindows.']['defaultPositionFromTop']) : '100') . ';
-			RTEarea[editornumber].dialogueWindows.defaultPositionFromLeft = ' . (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft'])? intval($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft']) : '100') . ';
-			RTEarea[editornumber].dialogueWindows.doNotResize = ' . (trim($this->thisConfig['dialogueWindows.']['doNotResize'])?'true':'false') . ';
-			RTEarea[editornumber].dialogueWindows.doNotCenter = ' . (trim($this->thisConfig['dialogueWindows.']['doNotCenter'])?'true':'false') . ';';
-
+			RTEarea[editornumber].dialogueWindows = new Object();';
+		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])) {
+			$configureRTEInJavascriptString .= '
+			RTEarea[editornumber].dialogueWindows.positionFromTop = ' . intval($this->thisConfig['dialogueWindows.']['defaultPositionFromTop']) . ';';
+		}
+		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft'])) {
+			$configureRTEInJavascriptString .= '
+			RTEarea[editornumber].dialogueWindows.positionFromLeft = ' . intval($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft']) . ';';
+		}
 			// The following properties apply only to the backend
 		if (!$this->is_FE()) {
 			$configureRTEInJavascriptString .= '
