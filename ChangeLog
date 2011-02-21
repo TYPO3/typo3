@@ -1,3 +1,7 @@
+2011-02-21  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #17592: ExtDirect API calls are splitted in single requests and slows down page loading
+
 2011-02-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #17677: htmlArea RTE: Classes configuration is loaded twice
