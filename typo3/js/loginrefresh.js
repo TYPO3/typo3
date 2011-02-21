@@ -64,10 +64,14 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 								Ext.MessageBox.hide();
 							}
 						}
-						if (result.login.timed_out && Ext.getCmp("loginformWindow")) {
+						if ((result.login.timed_out || result.login.will_time_out) && Ext.getCmp("loginformWindow")) {
 							Ext.getCmp("login_username").value = TYPO3.configuration.username;
 							this.stopTimer();
-							this.progressWindow.show();
+							if (result.login.timed_out) {
+								this.showLoginForm();
+							} else {
+								this.progressWindow.show();
+							}
 						}
 					},
 					failure: function() {
@@ -203,27 +207,8 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				duration: 30000,
 				increment: 32,
 				text: String.format(TYPO3.LLL.core.refresh_login_countdown, '30'),
-				fn: function(win){
-					if (TYPO3.configuration.showRefreshLoginPopup) {
-						//log off for sure
-						Ext.Ajax.request({
-							url: "ajax.php",
-							params: {
-								"ajaxID": "BackendLogin::logout"
-							},
-							method: "GET",
-							scope: this,
-							success: function(response, opts) {
-								TYPO3.loginRefresh.showLoginPopup();
-							},
-							failure: function(response, opts) {
-								alert("something went wrong");
-							}
-						});
-					} else {
-						Ext.getCmp("loginRefreshWindow").hide();
-						Ext.getCmp("loginformWindow").show();
-					}
+				fn: function() {
+					TYPO3.loginRefresh.showLoginForm();
 				}
 			});
 
@@ -240,6 +225,29 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		this.loginRefreshWindow.on('close', function(){
 			TYPO3.loginRefresh.startTimer();
 		});
+	},
+
+	showLoginForm: function() {
+		if (TYPO3.configuration.showRefreshLoginPopup) {
+			//log off for sure
+			Ext.Ajax.request({
+				url: "ajax.php",
+				params: {
+				"ajaxID": "BackendLogin::logout"
+			},
+			method: "GET",
+			scope: this,
+			success: function(response, opts) {
+				TYPO3.loginRefresh.showLoginPopup();
+			},
+			failure: function(response, opts) {
+				alert("something went wrong");
+			}
+			});
+		} else {
+			Ext.getCmp("loginRefreshWindow").hide();
+			Ext.getCmp("loginformWindow").show();
+		}
 	},
 
 	showLoginPopup: function() {

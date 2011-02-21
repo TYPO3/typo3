@@ -1,3 +1,7 @@
+2011-02-21  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17498: The refresh login dialogue is shown even if the session already timed out (Thanks to Helmut Hummel)
+	
 2011-02-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #17677: htmlArea RTE: Classes configuration is loaded twice
