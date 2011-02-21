@@ -152,6 +152,20 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	}
 
 	/**
+	 * Override the abstract class to be able to strip out
+	 * the token id from the POST variable.
+	 *
+	 * @see t3lib/formprotection/t3lib_formprotection_Abstract::validateToken()
+	 */
+	public function validateToken(
+		$token, $formName, $action = '', $formInstanceName = ''
+	) {
+		list($tokenId, $_) = explode('-', (string)$token);
+
+		return parent::validateToken($tokenId, $formName, $action, $formInstanceName);
+	}
+
+	/**
 	 * Creates or displayes an error message telling the user that the submitted
 	 * form token is invalid.
 	 *

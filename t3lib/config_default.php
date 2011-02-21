@@ -511,6 +511,7 @@ $TYPO3_CONF_VARS = array(
 			'BackendLogin::refreshLogin'		=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->refreshLogin',
 			'BackendLogin::isTimedOut'		 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->isTimedOut',
 			'BackendLogin::getChallenge'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->getChallenge',
+			'BackendLogin::refreshTokens'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->refreshTokens',
 			'DonateWindow::disable'				=> 'typo3/classes/class.donatewindow.php:DonateWindow->disable',
 			'DonateWindow::postpone'			=> 'typo3/classes/class.donatewindow.php:DonateWindow->postpone',
 			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_extjs_ExtDirectApi->getAPI',

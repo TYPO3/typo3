@@ -3333,7 +3333,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken') {
 		$formprotection = t3lib_formprotection_Factory::get();
-		return '&' . $tokenName . '=' . $formprotection->generateToken($formName);
+		return '&' . $tokenName . '=' . $formprotection->generateToken($formName) . '-' . $formName;
 	}
 
 	/*******************************************

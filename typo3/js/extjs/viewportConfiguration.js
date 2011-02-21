@@ -89,7 +89,8 @@ TYPO3.Viewport.configuration = {
 							id: 'typo3-navigationIframe',
 							border: false,
 							hidden: true,
-							xtype: 'iframePanel'
+							xtype: 'iframePanel',
+							name: 'navigation'
 						}
 					]
 				},
