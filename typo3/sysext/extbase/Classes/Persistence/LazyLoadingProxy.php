@@ -36,7 +36,7 @@
 class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $dataMapper;
 
