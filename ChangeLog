@@ -1,4 +1,8 @@
-2011-02-21  Steffen Kamper  <steffen@typo3.org>
+2011-02-21  Steffen Kamper  <steffen@typo3.org
+
+	* Fixed bug #17684 Admin Panel renders invalid markup (Thanks to Markus Klein)
+
+2011-02-20  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #17592: ExtDirect API calls are splitted in single requests and slows down page loading
 

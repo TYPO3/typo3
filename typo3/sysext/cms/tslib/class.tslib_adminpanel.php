@@ -321,12 +321,12 @@ class tslib_AdminPanel {
 				'<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' .
 					'<span class="typo3-adminPanel-header-title">' . $row . '</span>' .
 					$this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button"></span>', 'typo3-adminPanel-header-buttonWrapper') .
-					'<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /><div></td>' .
+					'<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' .
 			'</tr>';
 
 		if ($moduleContent) {
 			$footer = '<tr class="typo3-adminPanel-fRow">' .
-					'<td colspan="2" id="typo3-adminPanel-header">' .
+					'<td colspan="2" id="typo3-adminPanel-footer">' .
 						($this->extNeedUpdate ? ' <input class="typo3-adminPanel-update" type="submit" value="' . $this->extGetLL('update') . '" />' : '') . '</td>' .
 				'</tr>';
 		} else {
@@ -720,9 +720,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 * @see extGetHead()
 	 */
 	protected function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
-		return '<a href="javascript:void(0)" onclick="' .
+		return '<div class="typo3-adminPanel-label"><a href="javascript:void(0)" onclick="' .
 			htmlspecialchars('document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']\'].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;') .
-			'"' . ($className ? ' class="' . $className . '"' : '') . '><div class="typo3-adminPanel-label">' . $sectionTitle . '</div></a>';
+			'"' . ($className ? ' class="' . $className . '"' : '') . '>' . $sectionTitle . '</a></div>';
 	}
 
 	/**
