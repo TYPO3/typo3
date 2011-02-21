@@ -24,6 +24,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework']) {
 		// Initialize the caching framework. The caching framework is asking it self if it is initialized already before initializing.
 	t3lib_cache::initializeCachingFramework();
 
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['frontend'] = 't3lib_cache_frontend_VariableFrontend';
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['backend'] = 't3lib_cache_backend_DbBackend';
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['options'] = array(
 		'cacheTable' => 'sys_workspace_cache',
