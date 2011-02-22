@@ -461,8 +461,8 @@ class SC_index {
 						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
-			} else {	// If there is only ONE interface value set:
-
+			} elseif (!$this->redirect_url) {
+					// If there is only ONE interface value set and no redirect_url is present:
 				$this->interfaceSelector_hidden='<input type="hidden" name="interface" value="'.trim($TYPO3_CONF_VARS['BE']['interfaces']).'" />';
 			}
 		}
