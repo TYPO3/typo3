@@ -5985,6 +5985,10 @@ final class t3lib_div {
 			$cmdLine = $path.' '.implode(' ', $paramsArr);
 		}
 
+		if (TYPO3_OS == 'WIN' && version_compare(phpversion(), '5.3.0', '<')) {
+			$cmdLine = '"' . $cmdLine . '"';
+		}
+		
 		return $cmdLine;
 	}
 
