@@ -1,5 +1,6 @@
 2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
-
+	* Cleaned emconf for the release of TYPO3 4.5.1
+	* Release linkvalidator 1.0.1
 	* Fixed Bug #12649: Split up analyzeRecord()
 	
 2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
