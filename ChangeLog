@@ -1,4 +1,8 @@
-2011-02-22  Steffen Kamper  <steffen@typo3.org
+2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
+
+	* Fixed bug #16891: Bug: shopic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
+
+2011-02-22  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17672: CSH - each label fires one request
 	* Follow-up to #17383: Open forms cannot be saved after "Relogin" (Security Token errors)
@@ -8,7 +12,7 @@
 
 	* Fixed bug #17701: Generated t3x might be corrupted
 
-2011-02-21  Steffen Kamper  <steffen@typo3.org
+2011-02-21  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17383: Open forms cannot be saved after "Relogin" (Security Token errors) (Thanks to Helmut Hummel)
 	* Fixed bug #17684 Admin Panel renders invalid markup (Thanks to Markus Klein)
