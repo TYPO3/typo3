@@ -1,6 +1,7 @@
 2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
 
-	* Fixed bug #16891: Bug: shopic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
+	* Fixed bug #16891: showpic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
+	* Fixed bug #16902: Fatal error in tslib_content_text (Thanks to Jo Hasenau)
 
 2011-02-22  Steffen Kamper  <steffen@typo3.org>
 
