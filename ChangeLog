@@ -1,3 +1,7 @@
+2011-02-22  Stefan Galinski  <stefan.galinski@gmail.com>
+
+	* Fixed bug #17483: GifBuilder - meaningfulTempFilePrefix can cause invalid image urls
+
 2011-02-22  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17670: Remove deprecated functions scheduled for removal in 4.6
