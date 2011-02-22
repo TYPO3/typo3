@@ -4,7 +4,6 @@
 
 
 $t3libClasses = array(
-	'gzip_encode' => PATH_t3lib . 'class.gzip_encode.php',
 	't3lib_admin' => PATH_t3lib . 'class.t3lib_admin.php',
 	't3lib_ajax' => PATH_t3lib . 'class.t3lib_ajax.php',
 	't3lib_arraybrowser' => PATH_t3lib . 'class.t3lib_arraybrowser.php',

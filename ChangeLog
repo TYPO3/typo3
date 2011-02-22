@@ -1,5 +1,6 @@
 2011-02-22  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17662: Remove deprecated class gzip_encode
 	* Fixed bug #17661: Remove deprecated methods from t3lib_div
 
 2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
