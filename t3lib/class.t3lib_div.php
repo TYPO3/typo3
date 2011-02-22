@@ -274,7 +274,6 @@ final class t3lib_div {
 	/**
 	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
 	 * Strips slashes from all output, both strings and arrays.
-	 * This function substitutes t3lib_div::GPvar()
 	 * To enhancement security in your scripts, please consider using t3lib_div::_GET or t3lib_div::_POST if you already know by which method your data is arriving to the scripts!
 	 * Usage: 537
 	 *
@@ -404,48 +403,6 @@ final class t3lib_div {
 			$_GET = $inputGet;
 			$GLOBALS['HTTP_GET_VARS'] = $inputGet;
 		}
-	}
-
-	/**
-	 * Returns the  value of incoming data from globals variable $_POST or $_GET, with priority to $_POST (that is equalent to 'GP' order).
-	 * Strips slashes of string-outputs, but not arrays UNLESS $strip is set. If $strip is set all output will have escaped characters unescaped.
-	 * Usage: 2
-	 *
-	 * @param	string		GET/POST var to return
-	 * @param	boolean		If set, values are stripped of return values that are *arrays!* - string/integer values returned are always strip-slashed()
-	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
-	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
-	 * @see _GP()
-	 */
-	public static function GPvar($var, $strip = 0) {
-		self::logDeprecatedFunction();
-
-		if (empty($var)) {
-			return;
-		}
-		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
-		if (isset($value) && is_string($value)) {
-			$value = stripslashes($value);
-		} // Originally check '&& get_magic_quotes_gpc() ' but the values of $_GET are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
-		if ($strip && isset($value) && is_array($value)) {
-			self::stripSlashesOnArray($value);
-		}
-		return $value;
-	}
-
-	/**
-	 * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
-	 * Usage: 1
-	 *
-	 * @param	string		Key (variable name) from GET or POST vars
-	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
-	 * @deprecated since TYPO3 3.7, will be removed in TYPO3 4.6 - Use t3lib_div::_GPmerged instead
-	 * @see _GP()
-	 */
-	public static function GParrayMerged($var) {
-		self::logDeprecatedFunction();
-
-		return self::_GPmerged($var);
 	}
 
 	/**
@@ -584,52 +541,6 @@ final class t3lib_div {
 	 *************************/
 
 	/**
-	 * Truncates string.
-	 * Returns a new string of max. $chars length.
-	 * If the string is longer, it will be truncated and appended with '...'.
-	 * Usage: 39
-	 *
-	 * @param	string		string to truncate
-	 * @param	integer		must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
-	 * @param	string		String to append to the output if it is truncated, default is '...'
-	 * @return	string		new string
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6 - Works ONLY for single-byte charsets! Use t3lib_div::fixed_lgd_cs() instead
-	 * @see fixed_lgd_pre()
-	 */
-	public static function fixed_lgd($string, $origChars, $preStr = '...') {
-		self::logDeprecatedFunction();
-
-		$chars = abs($origChars);
-		if ($chars >= 4) {
-			if (strlen($string) > $chars) {
-				return $origChars < 0 ?
-						$preStr . trim(substr($string, -($chars - 3))) :
-						trim(substr($string, 0, $chars - 3)) . $preStr;
-			}
-		}
-		return $string;
-	}
-
-	/**
-	 * Truncates string.
-	 * Returns a new string of max. $chars length.
-	 * If the string is longer, it will be truncated and prepended with '...'.
-	 * This works like fixed_lgd(), but is truncated in the start of the string instead of the end
-	 * Usage: 6
-	 *
-	 * @param	string		string to truncate
-	 * @param	integer		must be an integer of at least 4
-	 * @return	string		new string
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6 - Use t3lib_div::fixed_lgd_cs() instead (with negative input value for $chars)
-	 * @see fixed_lgd()
-	 */
-	public static function fixed_lgd_pre($string, $chars) {
-		self::logDeprecatedFunction();
-
-		return strrev(self::fixed_lgd(strrev($string), $chars));
-	}
-
-	/**
 	 * Truncates a string with appended/prepended "..." and takes current character set into consideration.
 	 * Usage: 75
 	 *
@@ -652,27 +563,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Breaks up the text for emails
-	 * Usage: 1
-	 *
-	 * @param	string		The string to break up
-	 * @param	string		The string to implode the broken lines with (default/typically \n)
-	 * @param	integer		The line length
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6 - Use PHP function wordwrap()
-	 * @return	string
-	 */
-	public static function breakTextForEmail($str, $implChar = LF, $charWidth = 76) {
-		self::logDeprecatedFunction();
-
-		$lines = explode(LF, $str);
-		$outArr = array();
-		foreach ($lines as $lStr) {
-			$outArr[] = self::breakLinesForEmail($lStr, $implChar, $charWidth);
-		}
-		return implode(LF, $outArr);
-	}
-
-	/**
 	 * Breaks up a single line of text for emails
 	 * Usage: 5
 	 *
@@ -680,7 +570,6 @@ final class t3lib_div {
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
 	 * @param	integer		The line length
 	 * @return	string
-	 * @see breakTextForEmail()
 	 */
 	public static function breakLinesForEmail($str, $implChar = LF, $charWidth = 76) {
 		$lines = array();
@@ -1289,56 +1178,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * strtoupper which converts danish (and other characters) characters as well
-	 * Usage: 0
-	 *
-	 * @param	string		String to process
-	 * @return	string
-	 * @deprecated since TYPO3 3.5, will be removed in TYPO3 4.6 - Use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
-	 * @ignore
-	 */
-	public static function danish_strtoupper($string) {
-		self::logDeprecatedFunction();
-
-		$value = strtoupper($string);
-		return strtr($value, array(
-			chr(225) => chr(193),
-			chr(233) => chr(201),
-			chr(250) => chr(218),
-			chr(237) => chr(205),
-			chr(226) => chr(196),
-			chr(234) => chr(203),
-			chr(251) => chr(220),
-			chr(244) => chr(214),
-			chr(238) => chr(207),
-			chr(230) => chr(198),
-			chr(248) => chr(216),
-			chr(229) => chr(197),
-			chr(228) => chr(196),
-			chr(246) => chr(214),
-			chr(252) => chr(220),
-		));
-	}
-
-	/**
-	 * Change umlaut characters to plain ASCII with normally two character target
-	 * Only known characters will be converted, so don't expect a result for any character.
-	 *
-	 * ä => ae, Ö => Oe
-	 *
-	 * @param	string		String to convert.
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6 - Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
-	 * @return	string
-	 */
-	public static function convUmlauts($str) {
-		self::logDeprecatedFunction();
-
-		$pattern = array(chr(228), chr(196), chr(246), chr(214), chr(252), chr(220), chr(223), chr(229), chr(197), chr(248), chr(216), chr(230), chr(198));
-		$replace = array('ae', 'Ae', 'oe', 'Oe', 'ue', 'Ue', 'ss', 'aa', 'AA', 'oe', 'OE', 'ae', 'AE');
-		return str_replace($pattern, $replace, $str);
-	}
-
-	/**
 	 * Tests if the input can be interpreted as integer.
 	 *
 	 * @param mixed Any input variable to test
@@ -1911,21 +1750,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Remove duplicate values from an array
-	 * Usage: 0
-	 *
-	 * @param	array		Array of values to make unique
-	 * @return	array
-	 * @ignore
-	 * @deprecated since TYPO3 3.5, will be removed in TYPO3 4.6 - Use the PHP function array_unique instead
-	 */
-	public static function uniqueArray(array $valueArray) {
-		self::logDeprecatedFunction();
-
-		return array_unique($valueArray);
-	}
-
-	/**
 	 * Removes the value $cmpValue from the $array if found there. Returns the modified array
 	 * Usage: 3
 	 *
@@ -2236,20 +2060,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Creates recursively a JSON literal from a multidimensional associative array.
-	 * Uses native function of PHP >= 5.2.0
-	 *
-	 * @param	array		$jsonArray: The array to be transformed to JSON
-	 * @return	string		JSON string
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6 - use PHP native function json_encode() instead, will be removed in TYPO3 4.5
-	 */
-	public static function array2json(array $jsonArray) {
-		self::logDeprecatedFunction();
-
-		return json_encode($jsonArray);
-	}
-
-	/**
 	 * Removes dots "." from end of a key identifier of TypoScript styled array.
 	 * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
 	 *
@@ -2388,22 +2198,6 @@ final class t3lib_div {
 			}
 		}
 		return implode(' ', $list);
-	}
-
-	/**
-	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
-	 *
-	 * @param	array		See implodeAttributes()
-	 * @param	boolean		See implodeAttributes()
-	 * @param	boolean		See implodeAttributes()
-	 * @return	string		See implodeAttributes()
-	 * @deprecated since TYPO3 3.7, will be removed in TYPO3 4.6 - Name was changed into implodeAttributes
-	 * @see implodeAttributes()
-	 */
-	public static function implodeParams(array $arr, $xhtmlSafe = FALSE, $dontOmitBlankAttribs = FALSE) {
-		self::logDeprecatedFunction();
-
-		return self::implodeAttributes($arr, $xhtmlSafe, $dontOmitBlankAttribs);
 	}
 
 	/**
@@ -5283,21 +5077,6 @@ final class t3lib_div {
 		}
 
 		return $instance;
-	}
-
-	/**
-	 * Return classname for new instance
-	 * Takes the class-extensions API of TYPO3 into account
-	 * Usage: 17
-	 *
-	 * @param	string		Base Class name to evaluate
-	 * @return	string		Final class name to instantiate with "new [classname]"
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6 - Use t3lib_div::makeInstance('myClass', $arg1, $arg2,  ..., $argN)
-	 */
-	public static function makeInstanceClassName($className) {
-		self::logDeprecatedFunction();
-
-		return (class_exists($className) && class_exists('ux_' . $className, FALSE) ? self::makeInstanceClassName('ux_' . $className) : $className);
 	}
 
 	/**

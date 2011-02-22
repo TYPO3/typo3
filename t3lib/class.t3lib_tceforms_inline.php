@@ -2433,21 +2433,6 @@ class t3lib_TCEforms_inline {
 
 
 	/**
-	 * Creates recursively a JSON literal from a mulidimensional associative array.
-	 * Uses Services_JSON (http://mike.teczno.com/JSON/doc/)
-	 *
-	 * @param	array		$jsonArray: The array (or part of) to be transformed to JSON
-	 * @return	string		If $level>0: part of JSON literal; if $level==0: whole JSON literal wrapped with <script> tags
-	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json, will be removed in TYPO3 4.6
-	 */
-	function getJSON($jsonArray) {
-		t3lib_div::logDeprecatedFunction();
-
-		return json_encode($jsonArray);
-	}
-
-
-	/**
 	 * Checks if a uid of a child table is in the inline view settings.
 	 *
 	 * @param	string		$table: Name of the child table
