@@ -1,3 +1,7 @@
+2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17695: htmlArea RTE: Removing format may remove content
+
 2011-02-22  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #17653: t3editor: wrong size calculation in Chrome for the code completion window (Thanks to Stephan Petzl)
