@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>CSH for linkvalidator labels</description>
+		<description>CSH for Linkvalidator Labels</description>
 		<type>CSH</type>
 		<csh_table>linkvalidator</csh_table>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="checkboxes.description">Click the following checkboxes to consider or to ignore the corresponding broken links.</label>
-			<label index="tablehead_path.description">Path to the content element, which contains the broken link.</label>
-			<label index="tablehead_element.description">Type of the element containing the broken link, its headline and the field in which the broken link is located.</label>
-			<label index="tablehead_headlink.description">The linking text.</label>
-			<label index="tablehead_linktarget.description">URL to which the broken link is pointing.</label>
-			<label index="tablehead_linkmessage.description">Status of that link.</label>
-			<label index="tablehead_lastcheck.description">Date and time of the last update of the information in each table row.</label>
-			<label index="task_page.alttitle">Start page of the task</label>
-			<label index="task_page.description">UID of the start page for this task.</label>
-			<label index="task_depth.alttitle">Depth of the task</label>
-			<label index="task_depth.description">Level of pages the task should check.</label>
-			<label index="task_configuration.alttitle">Special TSconfig code</label>
-			<label index="task_configuration.description">TSconfig Code which defines settings for linkvalidator to be used for this task.</label>
-			<label index="task_email.alttitle">Email address</label>
-			<label index="task_email.description">Email address to which an email report is sent.</label>
-			<label index="task_emailonbrokenlinkonly.alttitle">Mailing option</label>
-			<label index="task_emailonbrokenlinkonly.description">Only send an email, if new broken links were found.</label>
-			<label index="task_emailfile.alttitle">Email template file</label>
-			<label index="task_emailfile.description">Define a template to be used for the email.</label>
+			<label index="checkboxes.description">Click the following Checkboxes to consider or to ignore the corresponding broken Links.</label>
+			<label index="tablehead_path.description">Path to the Content Element, which contains the broken Link.</label>
+			<label index="tablehead_element.description">Type of the Element containing the broken Link, its Headline and the Field in which the broken Link is located.</label>
+			<label index="tablehead_headlink.description">The linking Text.</label>
+			<label index="tablehead_linktarget.description">URL to which the broken Link is pointing.</label>
+			<label index="tablehead_linkmessage.description">Status of that Link.</label>
+			<label index="tablehead_lastcheck.description">Date and Time of the last Update of the Information in each Table Row.</label>
+			<label index="task_page.alttitle">Start Page of the Task</label>
+			<label index="task_page.description">UID of the Start Page for this Task.</label>
+			<label index="task_depth.alttitle">Depth of the Task</label>
+			<label index="task_depth.description">Level of Pages the Task should check.</label>
+			<label index="task_configuration.alttitle">Special TSconfig Code</label>
+			<label index="task_configuration.description">TSconfig Code which defines Settings for Linkvalidator to be used for this Task.</label>
+			<label index="task_email.alttitle">Email Address</label>
+			<label index="task_email.description">Email Address to which an Email Report is sent.</label>
+			<label index="task_emailonbrokenlinkonly.alttitle">Mailing Option</label>
+			<label index="task_emailonbrokenlinkonly.description">Only send an Email, if new broken Links were found.</label>
+			<label index="task_emailfile.alttitle">Email Template File</label>
+			<label index="task_emailfile.description">Define a Template to be used for the Email.</label>
 		</languageKey>
 	</data>
 </T3locallang>

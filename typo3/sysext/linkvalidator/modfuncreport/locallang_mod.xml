@@ -10,8 +10,8 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">Check Links</label>
-			<label index="mlang_labels_tabdescr">Checks the links in your website for validity.</label>
-			<label index="mlang_labels_tablabel">Validates links</label>
+			<label index="mlang_labels_tabdescr">Checks the Links in your Website for Validity.</label>
+			<label index="mlang_labels_tablabel">Validates Links</label>
 		</languageKey>
 	</data>
 </T3locallang>

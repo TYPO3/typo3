@@ -66,7 +66,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @var string
 	 */
 	protected $templateMail;
-	
+
 	/**
 	 * specific TSconfig for this task.
 	 *
@@ -108,7 +108,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @var string
 	 */
 	protected $email;
-	
+
 	/**
 	 * Only send an email, if new broken links were found.
 	 *
@@ -124,7 +124,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getEmail() {
 		return $this->email;
 	}
-	
+
 	/**
 	 * Set the value of the private property email.
 	 *
@@ -134,7 +134,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setEmail($email) {
 		$this->email=$email;
 	}
-	
+
 	/**
 	 * Get the value of the protected property emailOnBrokenLinkOnly.
 	 *
@@ -143,7 +143,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getEmailOnBrokenLinkOnly() {
 		return $this->emailOnBrokenLinkOnly;
 	}
-	
+
 	/**
 	 * Set the value of the private property emailOnBrokenLinkOnly.
 	 *
@@ -153,7 +153,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setEmailOnBrokenLinkOnly($emailOnBrokenLinkOnly) {
 		$this->emailOnBrokenLinkOnly = $emailOnBrokenLinkOnly;
 	}
-	
+
 	/**
 	 * Get the value of the protected property page.
 	 *
@@ -162,7 +162,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getPage() {
 		return $this->page;
 	}
-	
+
 	/**
 	 * Set the value of the private property page.
 	 *
@@ -172,7 +172,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setPage($page) {
 		$this->page =$page;
 	}
-	
+
 	/**
 	 * Get the value of the protected property depth.
 	 *
@@ -181,7 +181,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getDepth() {
 		return $this->depth;
 	}
-	
+
 	/**
 	 * Set the value of the private property depth.
 	 *
@@ -191,7 +191,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setDepth($depth) {
 		$this->depth = $depth;
 	}
-	
+
 	/**
 	 * Get the value of the protected property emailTemplateFile.
 	 *
@@ -200,7 +200,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getEmailTemplateFile() {
 		return $this->emailTemplateFile;
 	}
-	
+
 	/**
 	 * Set the value of the private property emailTemplateFile.
 	 *
@@ -210,7 +210,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setEmailTemplateFile($emailTemplateFile) {
 		$this->emailTemplateFile = $emailTemplateFile;
 	}
-	
+
 	/**
 	 * Get the value of the protected property configuration.
 	 *
@@ -219,7 +219,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function getConfiguration() {
 		return $this->configuration;
 	}
-	
+
 	/**
 	 * Set the value of the private property configuration.
 	 *
@@ -229,8 +229,8 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function setConfiguration($configuration) {
 		$this->configuration = $configuration;
 	}
-	
-	
+
+
 	/**
 	 * Function executed from the Scheduler.
 	 *
@@ -253,82 +253,10 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$pageSections = '';
 		$this->dif = FALSE;
 		$pageList = t3lib_div::trimExplode(',', $this->page, 1);
+		$modTS = $this->loadModTSconfig($this->page);
 		if (is_array($pageList)) {
 			foreach ($pageList as $page) {
-				$modTS = t3lib_BEfunc::getModTSconfig($page, 'mod.linkvalidator');
-				$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
-				$parseObj->parse($this->configuration);
-				if(count($parseObj->errors) > 0){
-					$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidTSconfig') . '<br />';
-					foreach($parseObj->errors as $errorInfo){
-						$parseErrorMessage .= $errorInfo[0] . '<br />';
-					}
-					throw new Exception(
-						$parseErrorMessage,
-						'1295476989'
-					);
-				}
-				$TSconfig = $parseObj->setup;
-				$modTS = $modTS['properties'];
-				$overrideTs = $TSconfig['mod.']['tx_linkvalidator.'];
-				if (is_array($overrideTs)) {
-					$modTS = t3lib_div::array_merge_recursive_overrule($modTS, $overrideTs);
-				}
-
-					// get the searchFields from TCA
-				foreach ($GLOBALS['TCA'] as $tableName => $table) {
-					if (!empty($table['columns'])) {
-						foreach ($table['columns'] as $columnName => $column) {
-							if ($column['config']['type'] == 'text' || $column['config']['type'] == 'input') {
-								if (!empty($column['config']['softref']) && (stripos($column['config']['softref'], "typolink")
-										!== FALSE || stripos($column['config']['softref'], "url") !== FALSE)) {
-
-									$searchFields[$tableName][] = $columnName;
-								}
-							}
-						}
-					}
-				}
-
-					// get the searchFields from TypoScript
-				foreach ($modTS['searchFields.'] as $table => $fieldList) {
-					$fields = t3lib_div::trimExplode(',', $fieldList);
-					foreach ($fields as $field) {
-						if (is_array($searchFields[$table])) {
-							if (array_search($field, $searchFields[$table]) === FALSE) {
-								$searchFields[$table][] = $field;
-							}
-						}
-					}
-				}
-				$linkTypes = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
-				if (is_array($linkTypes)) {
-					if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-							&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
-							if (in_array($type, $linkTypes)) {
-								$array[$type] = 1;
-							}
-						}
-					}
-				}
-				$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
-				$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1');
-				$pageIds .= $page;
-				$processor->init($searchFields, $pageIds);
-				if (!empty($this->email)) {
-					$oldLinkCounts = $processor->getLinkCounts($page);
-					$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
-				}
-
-				$processor->getLinkStatistics($array, $modTS['checkhidden']);
-
-				if (!empty($this->email)) {
-					$linkCounts = $processor->getLinkCounts($page);
-					$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
-					$pageSections .= $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
-				}
-
+				$pageSections .= $this->checkPageLinks($page);
 			}
 		}
 		if ($this->totalBrokenLink != $this->oldTotalBrokenLink) {
@@ -343,6 +271,121 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		return $successfullyExecuted;
 	}
 
+	/**
+	 * Validate all links for a page based on the task configuration.
+	 *
+	 * @param	integer $page: uid of the page to parse.
+	 * @return	string	$pageSections: Content of page section.
+	 */
+	protected function checkPageLinks($page) {
+		$pageSections = '';
+		$modTS = $this->loadModTSconfig($page);
+		$searchFields = $this->getSearchField($modTS);
+		$linkTypes = $this->getLinkTypes($modTS);
+		$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
+		$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1');
+		$pageIds .= $page;
+		$processor->init($searchFields, $pageIds);
+		if (!empty($this->email)) {
+			$oldLinkCounts = $processor->getLinkCounts($page);
+			$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
+		}
+
+		$processor->getLinkStatistics($array, $modTS['checkhidden']);
+
+		if (!empty($this->email)) {
+			$linkCounts = $processor->getLinkCounts($page);
+			$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
+			$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
+		}
+		return $pageSections;
+	}
+
+	/**
+	 * Get the linkvalidator modTSconfig for a page.
+	 *
+	 * @param	integer $page: uid of the page.
+	 * @return	array	$modTS: mod.linkvalidator TSconfig array.
+	 */
+	protected function loadModTSconfig($page) {
+		$modTS = t3lib_BEfunc::getModTSconfig($page, 'mod.linkvalidator');
+		$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
+		$parseObj->parse($this->configuration);
+		if(count($parseObj->errors) > 0){
+			$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidTSconfig') . '<br />';
+			foreach($parseObj->errors as $errorInfo){
+				$parseErrorMessage .= $errorInfo[0] . '<br />';
+			}
+			throw new Exception(
+				$parseErrorMessage,
+				'1295476989'
+			);
+		}
+		$TSconfig = $parseObj->setup;
+		$modTS = $modTS['properties'];
+		$overrideTs = $TSconfig['mod.']['tx_linkvalidator.'];
+		if (is_array($overrideTs)) {
+			$modTS = t3lib_div::array_merge_recursive_overrule($modTS, $overrideTs);
+		}
+		return $modTS;
+	}
+
+	/**
+	 * Get the list of fields to parse in modTSconfig.
+	 *
+	 * @param	array	$modTS: mod.linkvalidator TSconfig array.
+	 * @return	array	$searchFields: list of fields.
+	 */
+	protected function getSearchField($modTS) {
+			// get the searchFields from TCA
+		foreach ($GLOBALS['TCA'] as $tableName => $table) {
+			if (!empty($table['columns'])) {
+				foreach ($table['columns'] as $columnName => $column) {
+					if ($column['config']['type'] == 'text' || $column['config']['type'] == 'input') {
+						if (!empty($column['config']['softref']) && (stripos($column['config']['softref'], "typolink")
+								!== FALSE || stripos($column['config']['softref'], "url") !== FALSE)) {
+
+							$searchFields[$tableName][] = $columnName;
+						}
+					}
+				}
+			}
+		}
+
+			// get the searchFields from TypoScript
+		foreach ($modTS['searchFields.'] as $table => $fieldList) {
+			$fields = t3lib_div::trimExplode(',', $fieldList);
+			foreach ($fields as $field) {
+				if (is_array($searchFields[$table])) {
+					if (array_search($field, $searchFields[$table]) === FALSE) {
+						$searchFields[$table][] = $field;
+					}
+				}
+			}
+		}
+		return $searchFields;
+	}
+
+	/**
+	 * Get the list of linkTypes to parse in modTSconfig.
+	 *
+	 * @param	array	$modTS: mod.linkvalidator TSconfig array.
+	 * @return	array	$linkTypes: list of link types.
+	 */
+	protected function getLinkTypes($modTS) {
+		$types = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
+		if (is_array($linkTypes)) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
+					&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
+					if (in_array($type, $linkTypes)) {
+						$linkTypes[$type] = 1;
+					}
+				}
+			}
+		}
+		return $linkTypes;
+	}
 
 	/**
 	 * Build and send warning email when new broken links were found.
@@ -363,12 +406,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
-
+		
 		/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		if(empty($modTS['mail.']['fromemail'])) {
+			$modTS['mail.']['fromemail'] = t3lib_utility_Mail::getSystemFromAddress();
+		}
+		if(empty($modTS['mail.']['fromname'])) {
+			$modTS['mail.']['fromname'] = t3lib_utility_Mail::getSystemFromName();
+		}
 		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
-		} else {
+		}  else {
 			throw new Exception(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
 				'1295476760'

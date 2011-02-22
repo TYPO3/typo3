@@ -8,8 +8,6 @@ mod.linkvalidator {
 	checkhidden = 0
 	showCheckLinkTab = 1
 	mail {
-		fromname = Linkvalidator
-		fromemail = Linkvalidator@example.com
 		replytoname =
 		replytoemail =
 		subject = TYPO3 Linkvalidator report

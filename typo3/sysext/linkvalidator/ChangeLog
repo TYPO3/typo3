@@ -1,3 +1,18 @@
+2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
+
+	* Fixed Bug #12649: Split up analyzeRecord()
+	
+2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked
+	* Fixed bug #12650:	tx_linkvalidator_tasks_validator: exec() is too long
+	* Fixed bug #12454: Use setting "defaultMailFromName" and "defaultMailFromAddress"
+	
+2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12517: Replace exec_SELECTgetRows with exec_SELECTgetSingleRow whenever a single record is expected (thanks to Jo Hasenau)
+	* Fixed bug #12549: Unify capitalization of language labels
+
 2011-01-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)
