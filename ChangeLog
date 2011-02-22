@@ -28,6 +28,7 @@
 
 2011-02-22  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17708 wrong link in adminpanel: edit page properties (Thanks to Bjoern Pedersen)
 	* Fixed bug #17715: Wrong variable name used in recycler (Thanks to Peter Beernink)
 	* Fixed bug #17412: PHP Warning in class.t3lib_matchcondition_abstract.php (Thanks to Sven Jürgens)
 	* Fixed bug #17672: CSH - each label fires one request

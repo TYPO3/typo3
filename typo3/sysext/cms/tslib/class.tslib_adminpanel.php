@@ -779,7 +779,7 @@ $query . '<table class="typo3-adminPanel">' .
 		}
 		if (($perms & 2)) {
 			$params = '&edit[pages][' . $id . ']=edit';
-			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_document.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 					'<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12"') . 'hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageProperties') . '" alt="" /></a>';
 
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
@@ -791,7 +791,7 @@ $query . '<table class="typo3-adminPanel">' .
 				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay',$row);
 				if (is_array($row)) {
 					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
-					$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_document.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+					$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 							'<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/edit3.gif', 'width="11" height="12"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageOverlay') . '" alt="" /></a>';
 				}
 			}
