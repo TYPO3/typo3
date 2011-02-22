@@ -143,7 +143,7 @@ TYPO3.Components.PageTree.Actions = {
 			node.attributes.nodeData,
 			function(response) {
 				var succeeded = this.evaluateResponse(response);
-				if (callback !== null) {
+				if (Ext.isFunction(callback)) {
 					callback(node, tree, succeeded);
 				}
 
