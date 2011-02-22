@@ -1,3 +1,7 @@
+2011-02-22  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #16656: ImageMagick does not work with quotes in exec() path on Windows
+
 2011-02-22  Stefan Galinski  <stefan.galinski@gmail.com>
 
 	* Fixed bug #17483: GifBuilder - meaningfulTempFilePrefix can cause invalid image urls

@@ -46,6 +46,9 @@ final class t3lib_utility_Command {
 	 * @return null|array
 	 */
 	public static function exec($command, &$output = NULL, &$returnValue = 0) {
+		if (TYPO3_OS == 'WIN' && version_compare(phpversion(), '5.3.0', '<')) {
+			$command = '"' . $command . '"';
+		}
 		$lastLine = exec($command, $output, $returnValue);
 		return $lastLine;
 	}
