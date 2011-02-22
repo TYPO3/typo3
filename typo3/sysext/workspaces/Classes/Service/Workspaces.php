@@ -503,6 +503,27 @@ class tx_Workspaces_Service_Workspaces {
 		}
 		return $viewUrl;
 	}
+
+	/**
+	 * Determine whether this page for the current
+	 *
+	 * @param  $pageUid
+	 * @param  $workspaceUid
+	 * @return void
+	 */
+	public function canCreatePreviewLink($pageUid, $workspaceUid) {
+		$result = TRUE;
+		if ($pageUid > 0 && $workspaceUid > 0) {
+			$pageRecord = t3lib_BEfunc::getRecord('pages', $pageUid);
+			t3lib_BEfunc::workspaceOL('pages', $pageRecord, $workspaceUid);
+			if (!t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])) {
+				$result = FALSE;
+			}
+		} else {
+			$result = FALSE;
+		}
+		return $result;
+	}
 }
 
 
