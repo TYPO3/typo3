@@ -290,8 +290,8 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 	 *
 	 * Mailbox headers are a comma separated list of 'name <email@example.org' combinations or plain email addresses (or a mix
 	 * of these).
-	 * The resulting array has key-value pairs where the key is either a number (no name in the mailbox header) or a display
-	 * name and the value is the email address.
+	 * The resulting array has key-value pairs where the key is either a number (no display name in the mailbox header) and the
+	 * value is the email address, or the key is the email address and the value is the display name.
 	 *
 	 * @param string $rawAddresses Comma separated list of email addresses (optionally with display name)
 	 * @return array Parsed list of addresses.

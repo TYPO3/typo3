@@ -1,3 +1,7 @@
+2011-02-22  Jigal van Hemert  <jigal@xs4all.nl>
+
+	* Fixed bug #17518: Content type "mailform" no longer accepts list of addresses for "Recipient List" (also fixed function description in t3lib_mail_SwiftMailerAdapter)	
+
 2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
 
 	* Fixed bug #16891: showpic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
