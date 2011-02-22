@@ -1,3 +1,7 @@
+2011-02-22  Steffen Kamper  <steffen@typo3.org
+
+	* Fixed bug #17699: ExtDirect API use relative url for ajax.php
+
 2011-02-22  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #17701: Generated t3x might be corrupted

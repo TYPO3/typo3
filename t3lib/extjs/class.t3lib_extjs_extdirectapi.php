@@ -153,7 +153,10 @@ class t3lib_extjs_ExtDirectApi {
 		if (TYPO3_MODE === 'FE') {
 			$url = t3lib_div::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=');
 		} else {
-			$url = t3lib_div::locationHeaderUrl('ajax.php?ajaxID=ExtDirect::route&namespace=');
+			$url = t3lib_div::locationHeaderUrl(
+				t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir .
+				'ajax.php?ajaxID=ExtDirect::route&namespace='
+			);
 		}
 		$url .= rawurlencode($namespace);
 
