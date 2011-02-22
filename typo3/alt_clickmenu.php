@@ -637,19 +637,6 @@ class clickMenu {
 	}
 
 	/**
-	 * Adding CM element for edit page header
-	 *
-	 * @param	integer		page uid to edit (PID)
-	 * @return	array		Item array, element in $menuItems
-	 * @internal
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6 - Use DB_editPageProperties instead
-	 */
-	function DB_editPageHeader($uid)	{
-		t3lib_div::logDeprecatedFunction();
-		return $this->DB_editPageProperties($uid);
-	}
-
-	/**
 	 * Adding CM element for edit page properties
 	 *
 	 * @param	integer		page uid to edit (PID)

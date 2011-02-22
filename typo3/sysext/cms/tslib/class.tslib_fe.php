@@ -468,19 +468,6 @@
 	}
 
 	/**
-	 * Connect to MySQL database
-	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
-	 *
-	 * @return	void
-	 * @deprecated since TYPO3 3.8, this function will be removed in TYPO3 4.6, use connectToDB() instead!
-	 */
-	function connectToMySQL()	{
-		t3lib_div::logDeprecatedFunction();
-
-		$this->connectToDB();
-	}
-
-	/**
 	 * Connect to SQL database
 	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
 	 *
@@ -4248,6 +4235,7 @@ if (version == "n3") {
 	 * @return	void
 	 * @see t3lib_timeTrack::debug_typo3PrintError()
 	 * @see	t3lib_message_ErrorPageMessage
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function printError($label,$header='Error!') {
 		t3lib_div::logDeprecatedFunction();
@@ -4532,7 +4520,7 @@ if (version == "n3") {
 	 * @param	string		$key is the key in the array, for num-key let the value be empty
 	 * @param	string		$content is the content if you want any
 	 * @return	void
-	 * @see setJS(), tslib_pibase::pi_setClassStyle()
+	 * @see setJS()
 	 */
 	function setCSS($key,$content)	{
 		if ($key)	{
@@ -4542,20 +4530,6 @@ if (version == "n3") {
 				break;
 			}
 		}
-	}
-
-	/**
-	 * Seeds the random number engine.
-	 *
-	 * @return	void
-	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.6, the random number generator is seeded automatically since PHP 4.2.0
-	 */
-	function make_seed() {
-		t3lib_div::logDeprecatedFunction();
-
-		list($usec, $sec) = explode(' ', microtime());
-		$seedV = (float)$sec + ((float)$usec * 100000);
-		srand($seedV);
 	}
 
 	/**

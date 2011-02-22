@@ -1340,20 +1340,6 @@ class tx_indexedsearch_indexer {
 	}
 
 	/**
-	 * Processing words in the array from split*Content -functions
-	 * This function is only a wrapper because the function has been removed (see above).
-	 *
-	 * @param	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
-	 * @return	array		Content input array modified so each key is not a unique array of words
-	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.6.
-	 */
-	function procesWordsInArrays($contentArr)	{
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->processWordsInArrays($contentArr);
-	}
-
-	/**
 	 * Extracts the sample description text from the content array.
 	 *
 	 * @param	array		Content array
@@ -2138,24 +2124,6 @@ class tx_indexedsearch_indexer {
 		return hexdec(substr(md5($str),0,7));
 	}
 
-	/**
-	 * Calculates the cHash value of input GET array (for constructing cHash values if needed)
-	 *
-	 * @param	array		Array of GET parameters to encode
-	 * @return	void
-	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.6, use directly t3lib_div::calculateCHash()
-	 */
-	function makeCHash($paramArray)	{
-		t3lib_div::logDeprecatedFunction();
-
-		$addQueryParams = t3lib_div::implodeArrayForUrl('', $paramArray);
-
-		$pA = t3lib_div::cHashParams($addQueryParams);
-
-		return t3lib_div::shortMD5(serialize($pA));
-	}
-
-
 
 
 
@@ -2216,21 +2184,6 @@ class tx_indexedsearch_indexer {
 	 * tslib_fe hooks:
 	 *
 	 **************************/
-
-	/**
-	 * Frontend hook: If the page is not being re-generated this is our chance to force it to be (because re-generation of the page is required in order to have the indexer called!)
-	 *
-	 * @param	array		Parameters from frontend
-	 * @param	object		TSFE object (reference under PHP5)
-	 * @return	void
-	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.6, the method was extracted to hooks/class.tx_indexedsearch_tslib_fe_hook.php
-	 */
-	function fe_headerNoCache(&$params, $ref)	{
-		t3lib_div::logDeprecatedFunction();
-
-		require_once t3lib_extMgm::extPath('indexed_search') . 'hooks/class.tx_indexedsearch_tslib_fe_hook.php';
-		t3lib_div::makeInstance('tx_indexedsearch_tslib_fe_hook')->headerNoCache($params, $ref);
-	}
 
 	/**
 	 * Makes sure that keywords are space-separated. This is impotant for their

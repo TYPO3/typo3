@@ -23,22 +23,6 @@
  * @package	RemoveXSS
  */
 final class RemoveXSS {
-	/**
-	 * Removes potential XSS code from an input string.
-	 * Wrapper for RemoveXSS::process().
-	 *
-	 * Using an external class by Travis Puderbaugh <kallahar@quickwired.com>
-	 *
-	 * @param	string		Input string
-	 * @param	string		replaceString for inserting in keywords (which destroyes the tags)
-	 * @return	string		Input string with potential XSS code removed
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6 - use static call RemoveXSS::process() instead
-	 */
-	public function RemoveXSS($val, $replaceString = '<x>') {
-		t3lib_div::logDeprecatedFunction();
-
-		return self::process($val, $replaceString);
-	}
 
 	/**
 	 * Removes potential XSS code from an input string.

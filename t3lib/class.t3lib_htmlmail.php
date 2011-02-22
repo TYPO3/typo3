@@ -1465,37 +1465,6 @@ class t3lib_htmlmail {
 		}
 		return $attributes;
 	}
-
-
-	/**
-	 * Implementation of quoted-printable encode.
-	 * This function was a duplicate of t3lib_div::quoted_printable, thus it's going to be removed.
-	 * Deprecated since TYPO3 4.0
-	 *
-	 * @param	string		Content to encode
-	 * @return	string		The QP encoded string
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
-	 */
-	public function quoted_printable($string) {
-		t3lib_div::logDeprecatedFunction();
-
-		return t3lib_div::quoted_printable($string, 76);
-	}
-
-
-	/**
-	 * Converts a name field
-	 * Deprecated since TYPO3 4.0
-	 *
-	 * @param	string		$name: the name
-	 * @return	string		the name
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
-	 */
-	public function convertName($name) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $name;
-	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php'])) {

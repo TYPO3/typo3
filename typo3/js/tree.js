@@ -301,7 +301,6 @@ var PageTreeFilter = Class.create({
 
 // Call this function, refresh_nav(), from another script in the backend if you want
 // to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
-//		See t3lib_BEfunc::getSetUpdateSignal()
 // please use the function in the "Tree" object for future implementations
 function refresh_nav() {
 	window.setTimeout('Tree.refresh();',0);

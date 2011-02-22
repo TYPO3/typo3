@@ -121,17 +121,6 @@ class t3lib_TimeTrackNull {
 	}
 
 	/**
-	 * Returns microtime input to milliseconds
-	 *
-	 * does nothing
-	 *
-	 * @param	string		PHP microtime string
-	 * @return	integer
-	 */
-	public function convertMicrotime($microtime) {
-	}
-
-	/**
 	 * Gets a microtime value as milliseconds value.
 	 *
 	 * @param	float		$microtime: The microtime value - if not set the current time is used

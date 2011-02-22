@@ -686,19 +686,6 @@ class SC_index {
 	}
 
 	/**
-	 * Outputs an empty string. This function is obsolete and kept for the
-	 * compatibility only.
-	 *
-	 * @param	string	$unused	Unused
-	 * @return	string		HTML output
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6 - all the functionality was put in $this->startForm() and $this->addFields_hidden
-	 */
-	function getHiddenFields($unused = '') {
-		t3lib_div::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
 	 * Creates JavaScript for the login form
 	 *
 	 * @return	string		JavaScript code

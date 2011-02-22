@@ -935,18 +935,6 @@ class t3lib_TStemplate {
 	}
 
 	/**
-	 * Searching TypoScript code text (for constants, config (Setup) and editorcfg) for include instructions and does the inclusion if needed.
-	 *
-	 * @return	void
-	 * @deprecated since TYPO3 4.4 - Method name misspelled. Use "processIncludes" instead! This function will be removed in TYPO3 4.6.
-	 * @see t3lib_TSparser, processIncludes()
-	 */
-	public function procesIncludes() {
-		t3lib_div::logDeprecatedFunction();
-		$this->processIncludes();
-	}
-
-	/**
 	 * Searching TypoScript code text (for constants, config (Setup) and editorcfg)
 	 * for include instructions and does the inclusion of external TypoScript files
 	 * if needed.
@@ -1258,25 +1246,6 @@ class t3lib_TStemplate {
 			}
 		}
 		return $outFile;
-	}
-
-	/**
-	 * CheckFile runs through the $menuArr and checks every file-reference in $name
-	 * (Not used anywhere)
-	 *
-	 * @param	string		Property name in the menu array
-	 * @param	array		Menu array to traverse
-	 * @return	array		Modified menu array
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
-	 * @internal
-	 */
-	function checkFile($name, $menuArr) {
-		t3lib_div::logDeprecatedFunction();
-
-		foreach ($menuArr as $aKey => $value) {
-			$menuArr[$aKey][$name] = $this->getFileName($menuArr[$aKey][$name]);
-		}
-		return $menuArr;
 	}
 
 	/**

@@ -1986,21 +1986,6 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
-	 * Returns an icon, which has its title attribute set to a massive amount of information about the element.
-	 *
-	 * @param	array		Array where values are human readable output of field values (not htmlspecialchars()'ed though). The values are imploded by a linebreak.
-	 * @return	string		HTML img tag if applicable.
-	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6
-	 */
-	function infoGif($infoArr) {
-		t3lib_div::logDeprecatedFunction();
-
-		if (count($infoArr) && $this->tt_contentConfig['showInfo']) {
-			return t3lib_iconWorks::getSpriteIcon('actions-document-info', array('title' => htmlspecialchars(implode(LF, $infoArr))));
-		}
-	}
-
-	/**
 	 * Creates onclick-attribute content for a new content element
 	 *
 	 * @param	integer		Page id where to create the element.

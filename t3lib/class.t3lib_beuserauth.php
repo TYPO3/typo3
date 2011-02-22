@@ -146,28 +146,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...
-	 * This function works ONLY with the "beuser_tracking" extension and is deprecated since it does nothing useful.
-	 *
-	 * @param	boolean		Activate insertion of the URL.
-	 * @return	void
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
-	 */
-	function trackBeUser($flag) {
-		t3lib_div::logDeprecatedFunction();
-
-		if ($flag && t3lib_extMgm::isLoaded('beuser_tracking')) {
-			$insertFields = array(
-				'userid' => intval($this->user['uid']),
-				'tstamp' => $GLOBALS['EXEC_TIME'],
-				'script' => t3lib_div::getIndpEnv('REQUEST_URI')
-			);
-
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_trackbeuser', $insertFields);
-		}
-	}
-
-	/**
 	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (true/false)
 	 *
 	 * @return	boolean		True, if IP address validates OK (or no check is done at all)

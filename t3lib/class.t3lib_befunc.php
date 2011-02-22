@@ -334,39 +334,6 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Returns a WHERE clause which will make an AND search for the words in the $searchWords array in any of the fields in array $fields.
-	 * Usage: 0
-	 *
-	 * @param	array		Array of search words
-	 * @param	array		Array of fields
-	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
-	 * @return	string		WHERE clause for search
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->searchQuery() directly!
-	 */
-	public static function searchQuery($searchWords, $fields, $table = '') {
-		t3lib_div::logDeprecatedFunction();
-
-		return $GLOBALS['TYPO3_DB']->searchQuery($searchWords, $fields, $table);
-	}
-
-	/**
-	 * Returns a WHERE clause that can find a value ($value) in a list field ($field)
-	 * For instance a record in the database might contain a list of numbers, "34,234,5" (with no spaces between). This query would be able to select that record based on the value "34", "234" or "5" regardless of their positioni in the list (left, middle or right).
-	 * Is nice to look up list-relations to records or files in TYPO3 database tables.
-	 * Usage: 0
-	 *
-	 * @param	string		Table field name
-	 * @param	string		Value to find in list
-	 * @return	string		WHERE clause for a query
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->listQuery() directly!
-	 */
-	public static function listQuery($field, $value) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $GLOBALS['TYPO3_DB']->listQuery($field, $value, '');
-	}
-
-	/**
 	 * Makes an backwards explode on the $str and returns an array with ($table, $uid).
 	 * Example: tt_content_45 => array('tt_content', 45)
 	 * Usage: 1
@@ -471,79 +438,6 @@ final class t3lib_BEfunc {
 			);
 		}
 		return $recordLocalization;
-	}
-
-
-	/*******************************************
-	 *
-	 * SQL-related, DEPRECATED functions
-	 * (use t3lib_DB functions instead)
-	 *
-	 *******************************************/
-
-
-	/**
-	 * Returns a SELECT query, selecting fields ($select) from two/three tables joined
-	 * $local_table and $mm_table is mandatory. $foreign_table is optional.
-	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
-	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $TCA in Inside TYPO3 for more details.
-	 *
-	 * @param	string		Field list for SELECT
-	 * @param	string		Tablename, local table
-	 * @param	string		Tablename, relation table
-	 * @param	string		Tablename, foreign table
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
-	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
-	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
-	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return	string		Full SQL query
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
-	 * @see t3lib_DB::exec_SELECT_mm_query()
-	 */
-	public static function mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		t3lib_div::logDeprecatedFunction();
-
-		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
-			$select,
-				$local_table . ',' . $mm_table . ($foreign_table ? ',' . $foreign_table : ''),
-				$local_table . '.uid=' . $mm_table . '.uid_local' . ($foreign_table ? ' AND ' . $foreign_table . '.uid=' . $mm_table . '.uid_foreign' : '') . ' ' .
-						$whereClause, // whereClauseMightContainGroupOrderBy
-			$groupBy,
-			$orderBy,
-			$limit
-		);
-		return $query;
-	}
-
-	/**
-	 * Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
-	 * DEPRECATED - $GLOBALS['TYPO3_DB']->INSERTquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_INSERTquery()
-	 *
-	 * @param	string		Table name
-	 * @param	array		Field values as key=>value pairs.
-	 * @return	string		Full SQL query for INSERT
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_INSERTquery() directly!
-	 */
-	public static function DBcompileInsert($table, $fields_values) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values);
-	}
-
-	/**
-	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
-	 * DEPRECATED - $GLOBALS['TYPO3_DB']->UPDATEquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery()
-	 *
-	 * @param	string		Database tablename
-	 * @param	string		WHERE clause, eg. "uid=1"
-	 * @param	array		Field values as key=>value pairs.
-	 * @return	string		Full SQL query for UPDATE
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery() directly!
-	 */
-	public static function DBcompileUpdate($table, $where, $fields_values) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
 	}
 
 
@@ -1785,26 +1679,6 @@ final class t3lib_BEfunc {
 				($date == 'date' ? self::date($tstamp) : self::datetime($tstamp)) .
 						' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) . ')'
 				: '';
-	}
-
-	/**
-	 * Returns either title = '' or alt = '' attribute. This depends on the client browser and whether it supports title = '' or not (which is the default)
-	 * If no $content is given only the attribute name is returned.
-	 * The returned attribute with content will have a leading space char.
-	 * Warning: Be careful to submit empty $content var - that will return just the attribute name!
-	 * Usage: 0
-	 *
-	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
-	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
-	 * @return	string
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6 - The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
-	 */
-	public static function titleAttrib($content = '', $hsc = 0) {
-		t3lib_div::logDeprecatedFunction();
-
-		global $CLIENT;
-		$attrib = ($CLIENT['BROWSER'] == 'net' && $CLIENT['VERSION'] < 5) || $CLIENT['BROWSER'] == 'konqu' ? 'alt' : 'title';
-		return strcmp($content, '') ? ' ' . $attrib . '="' . ($hsc ? htmlspecialchars($content) : $content) . '"' : $attrib;
 	}
 
 	/**
@@ -3083,31 +2957,6 @@ final class t3lib_BEfunc {
 		}
 		return $itemArray;
 	}
-
-	/**
-	 * Call to update the page tree frame (or something else..?) after
-	 * t3lib_BEfunc::getSetUpdateSignal('updatePageTree') -> will set the page tree to be updated.
-	 * t3lib_BEfunc::getSetUpdateSignal() -> will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
-	 * please use the setUpdateSignal function instead now, as it allows you to add more parameters
-	 * Usage: 11
-	 *
-	 * @param	string		Whether to set or clear the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set.
-	 * @return	string		HTML code (<script> section)
-	 * @see	t3lib_BEfunc::getUpdateSignalCode()
-	 * @see	t3lib_BEfunc::setUpdateSignal()
-	 * @deprecated	since TYPO3 4.2, this function will be removed in TYPO3 4.6, use the setUpdateSignal function instead, as it allows you to add more parameters
-	 */
-	public static function getSetUpdateSignal($set = '') {
-		t3lib_div::logDeprecatedFunction();
-
-			// kept for backwards compatibility if $set is empty, use "getUpdateSignalCode()" instead
-		if ($set) {
-			return self::setUpdateSignal($set);
-		} else {
-			return self::getUpdateSignalCode();
-		}
-	}
-
 
 	/**
 	 * Call to update the page tree frame (or something else..?) after
@@ -4719,41 +4568,6 @@ final class t3lib_BEfunc {
 			}
 		}
 		return $paramArr;
-	}
-
-	/**
-	 * Returns "list of backend modules". Most likely this will be obsolete soon / removed. Don't use.
-	 * Usage: 0
-	 *
-	 * @param	array		Module names in array. Must be "addslashes()"ed
-	 * @param	string		Perms clause for SQL query
-	 * @param	string		Backpath
-	 * @param	string		The URL/script to jump to (used in A tag)
-	 * @return	array		Two keys, rows and list
-	 * @internal
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
-	 * @obsolete
-	 */
-	public static function getListOfBackendModules($name, $perms_clause, $backPath = '', $script = 'index.php') {
-		t3lib_div::logDeprecatedFunction();
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'doktype!=255 AND module IN (\'' . implode('\',\'', $name) . '\') AND' . $perms_clause . self::deleteClause('pages'));
-		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-			return FALSE;
-		}
-
-		$out = '';
-		$theRows = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$theRows[] = $row;
-			$out .= '<span class="nobr"><a href="' . htmlspecialchars($script . '?id=' . $row['uid']) . '">' .
-					t3lib_iconWorks::getSpriteIconForRecord('pages', $row, array('title' => htmlspecialchars(self::getRecordPath($row['uid'], $perms_clause, 20)))) .
-					htmlspecialchars($row['title']) .
-					'</a></span><br />';
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-		return array('rows' => $theRows, 'list' => $out);
 	}
 
 	/**

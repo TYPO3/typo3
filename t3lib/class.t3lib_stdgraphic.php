@@ -2894,36 +2894,6 @@ class t3lib_stdGraphic {
 		return $result;
 	}
 
-
-	/**
-	 * Writes the input GDlib image pointer to file. Now just a wrapper to ImageWrite.
-	 *
-	 * @param	pointer		The GDlib image resource pointer
-	 * @param	string		The filename to write to
-	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
-	 * @see imageWrite()
-	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.6.
-	 */
-	function imageGif($destImg, $theImage) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->imageWrite($destImg, $theImage);
-	}
-
-	/**
-	 * This function has been renamed and only exists for providing backwards compatibility.
-	 * Please use $this->imageCreateFromFile() instead.
-	 *
-	 * @param	string		Image filename
-	 * @return	pointer		Image Resource pointer
-	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.6.
-	 */
-	function imageCreateFromGif($sourceImg) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->imageCreateFromFile($sourceImg);
-	}
-
 	/**
 	 * Creates a new GDlib image resource based on the input image filename.
 	 * If it fails creating a image from the input file a blank gray image with the dimensions of the input image will be created instead.
@@ -2960,24 +2930,6 @@ class t3lib_stdGraphic {
 		$Bcolor = ImageColorAllocate($im, 128, 128, 128);
 		ImageFilledRectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
 		return $im;
-	}
-
-
-	/**
-	 * Creates a new GD image resource.
-	 * Wrapper for imagecreate(truecolor) depended if GD2 is used.
-	 * This function however got obsolete, as PHP now recommends to use
-	 * imagecreatetruecolor() only.
-	 *
-	 * @param	integer		Width of image
-	 * @param	integer		Height of image
-	 * @return	pointer		Image Resource pointer
-	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6.
-	 */
-	function imagecreate($w, $h) {
-		t3lib_div::logDeprecatedFunction();
-
-		return imagecreatetruecolor($w, $h);
 	}
 
 	/**

@@ -6517,20 +6517,6 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Checking syntax of input email address
-	 *
-	 * @param	string		Input string to evaluate
-	 * @return	boolean		Returns TRUE if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
-	 * @see t3lib_div::validEmail()
-	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use t3lib_div::validEmail() instead
-	 */
-	function checkEmail($email) {
-		t3lib_div::logDeprecatedFunction();
-
-		return t3lib_div::validEmail($email);
-	}
-
-	/**
 	 * Clears TypoScript properties listed in $propList from the input TypoScript array.
 	 *
 	 * @param	array		TypoScript array of values/properties
@@ -7218,20 +7204,6 @@ class tslib_cObj {
 		}
 			// Return list:
 		return $theList;
-	}
-
-	/**
-	 * Returns a part for a WHERE clause (without preceeding operator) which will select records based on the presence of a certain string in a string-list inside the record.
-	 * Example: If you have a record with a field, "usergroup" and that field might contain a list like "1,2,3" (with no spaces between the values) then you can select all records having eg. "2" in this list by calling this function. This is regardless of whether the number "2" is in the start, end or middle of the list - or the only value at all.
-	 *
-	 * @param	string		The field name to look in
-	 * @param	string		The value to look for.
-	 * @return	string
-	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use $GLOBALS['TYPO3_DB']->listQuery() directly!
-	 */
-	function whereSelectFromList($field, $value) {
-		t3lib_div::logDeprecatedFunction();
-		return $GLOBALS['TYPO3_DB']->listQuery($field, $value, '');
 	}
 
 	/**

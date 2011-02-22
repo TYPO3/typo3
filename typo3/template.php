@@ -126,19 +126,6 @@ if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
 
 
 /**
- * Deprecated fontwrap function. Is just transparent now.
- *
- * @param	string		Input string
- * @return	string		Output string (in the old days this was wrapped in <font> tags)
- * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
- */
-function fw($str) {
-	t3lib_div::logDeprecatedFunction();
-	return $str;
-}
-
-
-/**
  * TYPO3 Backend Template Class
  *
  * This class contains functions for starting and ending the HTML of backend modules
@@ -1088,18 +1075,6 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
-	 * Originally it printed a kind of divider.
-	 * Deprecated. Just remove function calls to it or call the divider() function instead.
-	 *
-	 * @return	void
-	 * @internal
-	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
-	 */
-	function middle()	{
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
 	 * If a form-tag is defined in ->form then and end-tag for that <form> element is outputted
 	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to false)
 	 *
@@ -1883,22 +1858,6 @@ $str.=$this->docBodyTagBegin().
 	function getDynTabMenuId($identString) {
 		$id = 'DTM-'.t3lib_div::shortMD5($identString);
 		return $id;
-	}
-
-	/**
-	 * Returns dynamic tab menu header JS code.
-	 * This is now incorporated automatically when the function template::getDynTabMenu is called
-	 * (as long as it is called before $this->startPage())
-	 * The return value is not needed anymore
-	 *
-	 * @deprecated since TYPO3 4.5, as the getDynTabMenu() function includes the function automatically since TYPO3 4.3
-	 * @return	string		JavaScript section for the HTML header. (return value is deprecated since TYPO3 4.3, will be removed in TYPO3 4.5)
-	 */
-	function getDynTabMenuJScode()	{
-		t3lib_div::logDeprecatedFunction();
-		$this->loadJavascriptLib('js/tabmenu.js');
-		// return value deprecated since TYPO3 4.3
-		return '';
 	}
 
 	/**
