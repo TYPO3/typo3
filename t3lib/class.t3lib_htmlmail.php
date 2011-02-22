@@ -265,8 +265,10 @@ class t3lib_htmlmail {
 		if (!$host || $host == '127.0.0.1' || $host == 'localhost' || $host == 'localhost.localdomain') {
 			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
 		}
-		$this->messageid = md5(microtime()) . '@' . $host;
 
+		$idLeft = time() . '.' . uniqid();
+		$idRight = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'swift.generated';
+		$this->messageid = $idLeft . '@' . $idRight;
 
 			// Default line break for Unix systems.
 		$this->linebreak = LF;
