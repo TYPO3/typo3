@@ -9,7 +9,7 @@
 
 2011-02-22  Jigal van Hemert  <jigal@xs4all.nl>
 
-	* Fixed bug #17518: Content type "mailform" no longer accepts list of addresses for "Recipient List" (also fixed function description in t3lib_mail_SwiftMailerAdapter)	
+	* Fixed bug #17518: Content type "mailform" no longer accepts list of addresses for "Recipient List" (also fixed function description in t3lib_mail_SwiftMailerAdapter)
 
 2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
 
@@ -18,6 +18,7 @@
 
 2011-02-22  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug 17412: PHP Warning in class.t3lib_matchcondition_abstract.php (Thanks to Sven Jürgens)
 	* Fixed bug #17672: CSH - each label fires one request
 	* Follow-up to #17383: Open forms cannot be saved after "Relogin" (Security Token errors)
 	* Fixed bug #17699: ExtDirect API use relative url for ajax.php

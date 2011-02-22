@@ -106,7 +106,7 @@ final class t3lib_utility_Client {
 			// Microsoft Documentation about Platform tokens: http://msdn.microsoft.com/en-us/library/ms537503(VS.85).aspx
 			// 'system' is deprecated, use 'all_systems' (array) in future!
 		$browserInfo['system'] = '';
-		$browserInfo['all_systems'] = '';
+		$browserInfo['all_systems'] = array();
 		if (strstr($userAgent, 'Win')) {
 				// windows
 			if (strstr($userAgent, 'Windows NT 6.1')) {
