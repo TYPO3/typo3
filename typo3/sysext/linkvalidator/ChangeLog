@@ -1,3 +1,7 @@
+2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
+
+	* Fixed Bug #12649: Split up analyzeRecord()
+	
 2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked

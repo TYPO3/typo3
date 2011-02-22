@@ -255,73 +255,95 @@ class tx_linkvalidator_Processor {
 						if (!empty($resultArray['elements'])) {
 
 							if ($spKey == 'typolink_tag') {
-								$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-
-								for ($i = 1; $i < count($linkTags); $i += 2) {
-									$referencedRecordType = '';
-									foreach($resultArray['elements'] as $element) {
-											$type = '';
-											$r = $element['subst'];
-
-											if (!empty($r['tokenID'])) {
-												if (substr_count($linkTags[$i], $r['tokenID'])) {
-														// Type of referenced record
-													if (strpos($r['recordRef'], 'pages') !== FALSE) {
-														$currentR = $r;
-															// contains number of the page
-														$referencedRecordType = $r['tokenValue'];
-														$wasPage = TRUE;
-													}
-														// append number of content element to the page saved in the last loop
-													elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && ($wasPage === TRUE)) {
-														$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
-														$wasPage = FALSE;
-													} else {
-														$currentR = $r;
-													}
-													$title = strip_tags($linkTags[$i]);
-												}
-											}
-									}
-									foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
-										$type = $hookObj->fetchType($currentR, $type, $keyArr);
-									}
-
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["row"] = $record;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["link_title"] = $title;
-									$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
-
-								}
+								$this->analyseTypoLinks($resultArray, $results, $htmlParser);
 							} else {
-
-								foreach ($resultArray['elements'] as $element) {
-									$r = $element['subst'];
-									$title = '';
-									$type = '';
-
-									if (!empty($r)) {
-											// Parse string for special TYPO3 <link> tag:
-
-										foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
-											$type = $hookObj->fetchType($r, $type, $keyArr);
-										}
-										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
-										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
-										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
-										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
-										$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
-
-									}
-								}
+								$this->analyseLinks($resultArray, $results);
 							}
 						}
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Find all supported broken links for a specific link lsit.
+	 *
+	 * @param	array		$resultArray: findRef parsed records  
+	 * @param	array		$results: array of broken links
+	 * @return	void
+	 */
+	private function analyseLinks($resultArray, &$results) {	
+		foreach ($resultArray['elements'] as $element) {
+			$r = $element['subst'];
+			$title = '';
+			$type = '';
+
+			if (!empty($r)) {
+					// Parse string for special TYPO3 <link> tag:
+
+				foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+					$type = $hookObj->fetchType($r, $type, $keyArr);
+				}
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
+
+			}
+		}
+	}
+	
+	/**
+	 * Find all supported broken links for a specific typoLink.
+	 *
+	 * @param	array			$resultArray: findRef parsed records 
+	 * @param	array			$results: array of broken links
+	 * @param	t3lib_parsehtml	$htmlParser: instance of htmlparser
+	 * @return	void
+	 */
+	private function analyseTypoLinks($resultArray, &$results, $htmlParser) {
+		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
+
+		for ($i = 1; $i < count($linkTags); $i += 2) {
+			$referencedRecordType = '';
+			foreach($resultArray['elements'] as $element) {
+					$type = '';
+					$r = $element['subst'];
+
+					if (!empty($r['tokenID'])) {
+						if (substr_count($linkTags[$i], $r['tokenID'])) {
+								// Type of referenced record
+							if (strpos($r['recordRef'], 'pages') !== FALSE) {
+								$currentR = $r;
+									// contains number of the page
+								$referencedRecordType = $r['tokenValue'];
+								$wasPage = TRUE;
+							}
+								// append number of content element to the page saved in the last loop
+							elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && ($wasPage === TRUE)) {
+								$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
+								$wasPage = FALSE;
+							} else {
+								$currentR = $r;
+							}
+							$title = strip_tags($linkTags[$i]);
+						}
+					}
+			}
+			foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+				$type = $hookObj->fetchType($currentR, $type, $keyArr);
+			}
+
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["row"] = $record;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["link_title"] = $title;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
+
 		}
 	}
 
