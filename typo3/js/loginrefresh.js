@@ -422,7 +422,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				TYPO3.Flashmessage.display(
 						TYPO3.Severity.error,
 						'Refresh tokens',
-						'Refreshing tokens after relogin faild. Please reload the backend.',
+						'Refreshing tokens after relogin failed. Please reload the backend.',
 						30
 					);
 			}
