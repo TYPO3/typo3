@@ -233,14 +233,14 @@ class t3lib_formmail {
 				$this->temporaryFiles[] = $theFile;
 			}
 
-			$this->recipient = $valueList['recipient'];
+			$this->recipient = $this->parseAddresses($valueList['recipient']);
 			$this->mailMessage->setSubject($this->subject)
 					->setFrom(array($this->fromAddress => $this->fromName))
 					->setTo($this->recipient)
 					->setPriority($this->priority);
 			$this->mailMessage->getHeaders()->addTextHeader('Organization', $this->organisation);
 			if ($valueList['recipient_copy']) {
-				$this->mailMessage->addCc(trim($valueList['recipient_copy']));
+				$this->mailMessage->addCc($this->parseAddresses($valueList['recipient_copy']));
 			}
 			if ($this->characterSet) {
 				$this->mailMessage->setCharset($this->characterSet);
@@ -273,6 +273,34 @@ class t3lib_formmail {
 		return $string;
 	}
 	
+	/**
+	 * Parses mailbox headers and turns them into an array.
+	 *
+	 * Mailbox headers are a comma separated list of 'name <email@example.org' combinations or plain email addresses (or a mix
+	 * of these).
+	 * The resulting array has key-value pairs where the key is either a number (no display name in the mailbox header) and the
+	 * value is the email address, or the key is the email address and the value is the display name.
+	 *
+	 * @param string $rawAddresses Comma separated list of email addresses (optionally with display name)
+	 * @return array Parsed list of addresses.
+	 */
+	protected function parseAddresses($rawAddresses = '') {
+			/** @var $addressParser t3lib_mail_Rfc822AddressesParser */
+		$addressParser = t3lib_div::makeInstance('t3lib_mail_Rfc822AddressesParser', $rawAddresses);
+		$addresses = $addressParser->parseAddressList();
+		$addressList = array();
+		foreach ($addresses as $address) {
+			if ($address->personal) {
+				// item with name found ( name <email@example.org> )
+				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
+			} else {
+				// item without name found ( email@example.org )
+				$addressList[] = $address->mailbox . '@' . $address->host;
+			}
+		}
+		return $addressList;
+	}
+
 	/**
 	 * Sends the actual mail and handles autorespond message
 	 *
