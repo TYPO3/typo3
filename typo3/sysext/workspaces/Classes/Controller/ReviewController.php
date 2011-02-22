@@ -65,6 +65,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
 		$this->view->assign('activeWorkspaceTitle', tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
+		$this->view->assign('showPreviewLink', $wsService->canCreatePreviewLink( t3lib_div::_GP('id'), $activeWorkspace));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
 	}
 
@@ -85,6 +86,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
 			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+			$this->view->assign('showPreviewLink', FALSE);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 				// set flag for javascript
 			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
