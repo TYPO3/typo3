@@ -3210,7 +3210,7 @@ class tslib_cObj {
 				$md5_value = t3lib_div::hmac(
 					implode(
 						'|',
-						array($imageFile, $parametersEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
+						array($imageFile, $parametersEncoded)
 					)
 				);
 

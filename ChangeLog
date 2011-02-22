@@ -1,3 +1,7 @@
+2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
+
+	* Fixed bug #16891: showpic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
+
 2011-02-21  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #17498: The refresh login dialogue is shown even if the session already timed out (Thanks to Helmut Hummel)

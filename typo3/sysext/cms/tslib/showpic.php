@@ -149,23 +149,25 @@ class SC_tslib_showpic {
 	function init()	{
 			// Loading internal vars with the GET/POST parameters from outside:
 		$this->file = t3lib_div::_GP('file');
-		$this->parametersEncoded = implode(t3lib_div::_GP('parameters'));
+		$parametersArray = t3lib_div::_GP('parameters');
 		$this->frame = t3lib_div::_GP('frame');
 		$this->md5 = t3lib_div::_GP('md5');
 
 		// ***********************
 		// Check parameters
 		// ***********************
-			// If no file-param is given, we must exit
-		if (!$this->file)	{
-			die('Parameter Error: No file given.');
+			// If no file-param or parameters are given, we must exit
+		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
+			die('Parameter Error: No file or no parameters given.');
 		}
+
+		$this->parametersEncoded = implode($parametersArray);
 
 			// Chech md5-checksum: If this md5-value does not match the one submitted, then we fail... (this is a kind of security that somebody don't just hit the script with a lot of different parameters
 		$md5_value = t3lib_div::hmac(
 			implode(
 				'|',
-				array($this->file, $this->parametersEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
+				array($this->file, $this->parametersEncoded)
 			)
 		);
 
