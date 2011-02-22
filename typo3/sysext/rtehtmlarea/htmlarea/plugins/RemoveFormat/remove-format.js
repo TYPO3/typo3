@@ -114,7 +114,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 
 				if (param["formatting"] == true) {
 						// Remove font, b, strong, i, em, u, strike, span and other inline tags
-					html = html.replace(/<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|tt|u[^a-zA-Z]|var)[^>]*>/gi, "");
+					html = html.replace(/<\/?(abbr|acronym|b|big|cite|code|em|font|i|q|s|samp|small|span|strike|strong|sub|sup|tt|u|var)(>|[^>a-zA-Z][^>]*>)/gi, '');
 						// Keep tags, strip attributes
 					html = html.replace(/[ \t\n\r]+(style|class|align|cellpadding|cellspacing|frame|bgcolor)=\"[^>\"]*\"/gi, "");
 				}
