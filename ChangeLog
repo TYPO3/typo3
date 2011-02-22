@@ -1,3 +1,7 @@
+2011-02-22  Stefan Galinski  <stefan.galinski@gmail.com>
+
+	* Fixed bug #17483: GifBuilder - meaningfulTempFilePrefix can cause invalid image urls
+
 2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17695: htmlArea RTE: Removing format may remove content
