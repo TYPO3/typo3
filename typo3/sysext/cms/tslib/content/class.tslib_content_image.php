@@ -42,7 +42,7 @@ class tslib_content_Image extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		if (isset($conf['if.']) && $this->cObj->checkIf($conf['if.'])) {
+		if ($this->cObj->checkIf($conf['if.'])) {
 			$theValue = $this->cObj->cImage($conf['file'], $conf);
 			if (isset($conf['stdWrap.'])) {
 				$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);

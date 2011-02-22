@@ -30,6 +30,7 @@
 
 2011-02-22  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #16902 Bug: Fatal error in tslib_content_text (was: No FE output)
 	* Fixed bug #14224: Redirect URL for backend login is lost when entering wrong information (Thanks to Reinhard Führicht)
 	* Fixed bug #17708 wrong link in adminpanel: edit page properties (Thanks to Bjoern Pedersen)
 	* Fixed bug #17715: Wrong variable name used in recycler (Thanks to Peter Beernink)
