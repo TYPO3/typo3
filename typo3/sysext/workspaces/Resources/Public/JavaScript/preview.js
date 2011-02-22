@@ -25,8 +25,22 @@
  ***************************************************************/
 
 Ext.onReady(function() {
+
+	Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+		key: 'moduleData.Workspaces.States',
+		autoRead: false
+	}));
+
+	if (Ext.isObject(TYPO3.settings.Workspaces.States)) {
+		Ext.state.Manager.getProvider().initState(TYPO3.settings.Workspaces.States);
+	}
+
+
 	var iconClsChecked = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
 	var iconClsEmpty = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
+	var viewMode = 0;
+
+
 	var viewport = new Ext.Viewport({
 		layout: 'border',
 		items: [{
@@ -39,10 +53,12 @@ Ext.onReady(function() {
 				id: 'controls',
 				width: 600,
 				items: [
-						{
+					{
+						xtype: 'panel',
+						width: 460,
+						items: [{
 							xtype: 'panel',
 							id: 'slider',
-							width: 460,
 							layout: 'hbox',
 							items: [
 								{
@@ -95,61 +111,50 @@ Ext.onReady(function() {
 									}
 								}
 							]
-						},
-						{
-							xtype: 'toolbar',
-							id: 'visual-mode-toolbar',
-							items: [{
-								iconCls: 'x-btn-icon t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view',
-								id: 'visual-mode-options',
-								menu: {
-									id: 'visual-mode-selector',
-									items: [{
-										text: TYPO3.LLL.Workspaces.modeSlider,
-										id: 'visual-mode-selector-slider',
-										iconCls: iconClsChecked,
-										handler: function(){
-											Ext.getCmp('visualPanel-hbox').hide();
-											Ext.getCmp('visualPanel-vbox').hide();
-											Ext.getCmp('visualPanel').show();
-											Ext.getCmp('slider').show();
-											Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "))
-											Ext.getCmp('visual-mode-selector-slider').setIconClass(iconClsChecked);
-											Ext.getCmp('visual-mode-selector-hbox').setIconClass(iconClsEmpty);
-											Ext.getCmp('visual-mode-selector-vbox').setIconClass(iconClsEmpty);
-										}
-									},{
-										text: TYPO3.LLL.Workspaces.modeVbox,
-										id: 'visual-mode-selector-vbox',
-										iconCls: iconClsEmpty,
-										handler: function() {
-											Ext.getCmp('visualPanel-hbox').hide();
-											Ext.getCmp('visualPanel-vbox').show();
-											Ext.getCmp('visualPanel').hide();
-											Ext.getCmp('slider').hide();
-											Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "))
-											Ext.getCmp('visual-mode-selector-slider').setIconClass(iconClsEmpty);
-											Ext.getCmp('visual-mode-selector-vbox').setIconClass(iconClsChecked)
-											Ext.getCmp('visual-mode-selector-hbox').setIconClass(iconClsEmpty);
-										}
-									},{
-										text: TYPO3.LLL.Workspaces.modeHbox,
-										id: 'visual-mode-selector-hbox',
-										iconCls: iconClsEmpty,
-										handler: function(){
-											Ext.getCmp('visualPanel-hbox').show();
-											Ext.getCmp('visualPanel-vbox').hide();
-											Ext.getCmp('visualPanel').hide();
-											Ext.getCmp('slider').hide();
-											Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "))
-											Ext.getCmp('visual-mode-selector-slider').setIconClass(iconClsEmpty);
-											Ext.getCmp('visual-mode-selector-vbox').setIconClass(iconClsEmpty);
-											Ext.getCmp('visual-mode-selector-hbox').setIconClass(iconClsChecked);
-										}
-									}]
-								}
-							}]
 						}]
+					},
+					{
+						id: 'visual-mode-toolbar',
+						items: [{
+							xtype: 'button',
+							iconCls: 'x-btn-icon t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view',
+							id: 'visual-mode-options',
+							menu: {
+								id: 'visual-mode-selector',
+								stateful: true,
+								stateId: 'WorkspacePreviewModeSelect',
+								stateEvents: ['itemclick'],
+								items: [{
+									text: TYPO3.LLL.Workspaces.modeSlider,
+									id: 'visual-mode-selector-slider',
+									checked: false,
+									group: 'mode',
+									checkHandler: modeChange
+								},{
+									text: TYPO3.LLL.Workspaces.modeVbox,
+									id: 'visual-mode-selector-vbox',
+									checked: false,
+									group: 'mode',
+									checkHandler: modeChange
+
+								},{
+									text: TYPO3.LLL.Workspaces.modeHbox,
+									id: 'visual-mode-selector-hbox',
+									checked: false,
+									group: 'mode',
+									checkHandler: modeChange
+								}],
+								getState:function() {
+									return {viewMode: viewMode};
+								},
+								applyState: function(state) {
+									viewMode = state.viewMode;
+									modeChange(null, true, viewMode);
+								}
+							}
+						}]
+					}
+				]
 			}],
 			items: [{
 				title: TYPO3.LLL.Workspaces.visualPreview,
@@ -267,5 +272,57 @@ Ext.onReady(function() {
 				}]
 			}]
 		}]
+
+
 	});
+
+	function modeChange(item, checked, mode) {
+		if (checked) {
+			var id ,
+				ids = ['visual-mode-selector-slider', 'visual-mode-selector-hbox', 'visual-mode-selector-vbox'],
+				panelHbox = Ext.getCmp('visualPanel-hbox'),
+				panelVbox = Ext.getCmp('visualPanel-vbox'),
+				panelSlider = Ext.getCmp('visualPanel'),
+				slider = Ext.getCmp('slider'),
+				itemSlider = Ext.getCmp('visual-mode-selector-slider'),
+				itemHbox = Ext.getCmp('visual-mode-selector-hbox'),
+				itemVbox = Ext.getCmp('visual-mode-selector-vbox');
+
+			if (item) {
+				mode = ids.indexOf(item.id);
+			}
+
+			Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "));
+
+			if (mode === 0) {
+				panelHbox.hide();
+				panelVbox.hide();
+				panelSlider.show();
+				slider.show();
+				viewMode = 0;
+				itemSlider.setIconClass(iconClsChecked);
+				itemHbox.setIconClass(iconClsEmpty);
+				itemVbox.setIconClass(iconClsEmpty);
+			} else if (mode === 1) {
+				panelHbox.show();
+				panelVbox.hide();
+				panelSlider.hide();
+				slider.hide();
+				viewMode = 1;
+				itemSlider.setIconClass(iconClsEmpty);
+				itemHbox.setIconClass(iconClsChecked);
+				itemVbox.setIconClass(iconClsEmpty);
+			} else if (mode === 2) {
+				panelHbox.hide();
+				panelVbox.show();
+				panelSlider.hide();
+				slider.hide();
+				viewMode = 2;
+				itemSlider.setIconClass(iconClsEmpty);
+				itemHbox.setIconClass(iconClsEmpty);
+				itemVbox.setIconClass(iconClsChecked);
+			}
+
+		}
+	}
 });

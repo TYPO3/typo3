@@ -37,7 +37,15 @@ TYPO3.Workspaces.App = {
 };
 
 Ext.onReady(function() {
-	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+		key: 'moduleData.Workspaces.States',
+		autoRead: false
+	}));
+
+	if (Ext.isObject(TYPO3.settings.Workspaces.States)) {
+		Ext.state.Manager.getProvider().initState(TYPO3.settings.Workspaces.States);
+	}
+
 	// Quicktips initialisieren
 	Ext.QuickTips.init();
 
