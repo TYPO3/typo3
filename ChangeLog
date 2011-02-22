@@ -10,6 +10,7 @@
 
 2011-02-22  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Raised DBAL to version 1.2.2
 	* Fixed bug #17701: Generated t3x might be corrupted
 
 2011-02-21  Steffen Kamper  <steffen@typo3.org>

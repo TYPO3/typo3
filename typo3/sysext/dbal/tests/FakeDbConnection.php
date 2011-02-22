@@ -26,7 +26,7 @@
 /**
  * Fake ADOdb connection factory.
  *
- * $Id: FakeDbConnection.php 40716 2010-12-01 10:49:27Z xperseguers $
+ * $Id: FakeDbConnection.php 42648 2011-01-26 10:42:22Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -48,7 +48,8 @@ class FakeDbConnection {
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
 
-		include_once(t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php');
+		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
+		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php');
 
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;

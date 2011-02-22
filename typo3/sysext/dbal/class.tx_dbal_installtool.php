@@ -28,7 +28,7 @@
 /**
  * Hooks for TYPO3 Install Tool.
  *
- * $Id$
+ * $Id: class.tx_dbal_installtool.php 40828 2010-12-05 14:55:53Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

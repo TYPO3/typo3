@@ -1,5 +1,16 @@
+2011-02-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.2
+
+2011-02-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17399: Install Tool "COMPARE" fails to update mysql tables
+	* Fixed bug #17661: Remove deprecated methods from t3lib_div
+
 2011-01-26  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #17327: Alter table in install tool does not work
+	* Fixed unit tests
 	* Set version to 1.2.1
 
 2011-01-25  Xavier Perseguers  <typo3@perseguers.ch>

@@ -29,7 +29,7 @@
 /**
  * Cache engine helper for generated queries.
  *
- * $Id$
+ * $Id: class.tx_dbal_querycache.php 40828 2010-12-05 14:55:53Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @package TYPO3

@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  *
- * $Id$
+ * $Id: dbOracleTest.php 42648 2011-01-26 10:42:22Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -318,7 +318,7 @@ class dbOracleTest extends BaseTestCase {
 						. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
+		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), concat("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -448,7 +448,7 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
+		$expected .= ' AND (instr(LOWER("sys_refindex"."ref_string"), concat("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -1137,7 +1137,7 @@ class dbOracleTest extends BaseTestCase {
 			'tt_content',
 			'bodytext LIKE BINARY \'test\''
 		));
-		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr(LOWER("bodytext"), \'test\',1,1) > 0)';
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("bodytext", \'test\',1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 }

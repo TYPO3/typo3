@@ -29,7 +29,7 @@
  * Autoloader included from Install Tool that lets DBAL load itself
  * if it makes sense.
  *
- * $Id$
+ * $Id: class.tx_dbal_autoloader.php 40866 2010-12-06 14:26:13Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

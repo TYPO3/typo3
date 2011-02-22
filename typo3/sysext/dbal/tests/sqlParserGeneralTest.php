@@ -28,7 +28,7 @@ require_once('BaseTestCase.php');
 /**
  * Testcase for class ux_t3lib_sqlparser
  *
- * $Id$
+ * $Id: sqlParserGeneralTest.php 40716 2010-12-01 10:49:27Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

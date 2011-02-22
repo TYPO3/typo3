@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing PostgreSQL database handling.
  *
- * $Id$
+ * $Id: dbPostgresqlTest.php 40716 2010-12-01 10:49:27Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
