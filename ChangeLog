@@ -5,6 +5,7 @@
 2011-02-22  Stefan Galinski  <stefan.galinski@gmail.com>
 
 	* Fixed bug #17483: GifBuilder - meaningfulTempFilePrefix can cause invalid image urls
+	* Fixed bug #17531: htmlMail - Can't send mails on port based systems with Swiftmailer substitution
 
 2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
