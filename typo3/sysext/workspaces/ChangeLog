@@ -1,5 +1,6 @@
 2011-02-22  Tolleiv Nietsch  <typo3@tolleiv.de>
 
+	* Changes according to changed ExtDirect inclusion (#17592)
 	* Fixed bug #12855: Generate preview link visible in Live-Workspace and on non-content pages
 
 2011-02-21  Marco Bresch <typo3@starfinanz.de>
