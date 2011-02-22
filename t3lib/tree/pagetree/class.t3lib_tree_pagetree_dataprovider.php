@@ -269,6 +269,10 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				$subNode->setLabelIsEditable(FALSE);
 				$subNode->setType('pages_root');
 			} else {
+				if (in_array($mountPoint, $this->hiddenRecords)) {
+					continue;
+				}
+
 				$record = t3lib_BEfunc::getRecordWSOL('pages', $mountPoint, '*', '', TRUE);
 				if (!$record) {
 					continue;
