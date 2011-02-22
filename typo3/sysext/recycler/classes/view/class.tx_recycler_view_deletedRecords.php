@@ -55,14 +55,14 @@ class tx_recycler_view_deletedRecords {
 				$total += count($deletedRowsArray[$table]);
 
 				foreach($rows as $row) {
-					$feuser = t3lib_BEfunc::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', false);
+					$backendUser = t3lib_BEfunc::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', FALSE);
 					$jsonArray['rows'][] = array(
 						'uid'	=> $row['uid'],
 						'pid'	=> $row['pid'],
 						'table'	=> $table,
 						'crdate' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
 						'tstamp' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
-						'owner' => $feuser['username'],
+						'owner' => $backendUser['username'],
 						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
 						'tableTitle' => tx_recycler_helper::getUtf8String(
 							$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
