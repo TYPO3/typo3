@@ -1,3 +1,7 @@
+2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #17695: htmlArea RTE: Removing format may remove content
+
 2011-02-22  Steffen Ritter  <info@steffen-ritter.net>
 
 	* Fixed bug #16891: showpic.php causes a fatal error if parameters GET variable is not an array (Thanks to Helmut Hummel)
