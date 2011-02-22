@@ -321,7 +321,7 @@ If you're working on a server where you have both internal and external access, 
 ]]></default>
 		</property>
 		<property name="additionalHeaders" type="string">
-			<description><![CDATA[strings divided by &quot;|&quot;
+			<description><![CDATA[strings divided by "|"
       This is additional headers. You separate each header by a vertical line "|".  Normally TYPO3 does not send any headers with the Header()-function in PHP.
 
 Examples:
@@ -447,7 +447,7 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<description><![CDATA[Disables the "preview" notification box completely]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 		<property name="doctype" type="string">
 			<description><![CDATA[If set, then a document type declaration (and an XML prologue) will be generated. The value can either be a complete doctype or one of the following keywords:
 
@@ -973,7 +973,7 @@ compatibility mode >= 4.0:   hyphen "-"]]></description>
 ]]></default>
 		</property>
 		<property name="spamProtectEmailAddresses" type="string">
-			<description><![CDATA[&quot;ascii&quot; / -10 to 10
+			<description><![CDATA["ascii" / -10 to 10
 			If set, then all email addresses in typolinks will be encrypted so spam bots cannot detect them.
 
 If you set this value to a number, then the encryption is simply an
@@ -1394,7 +1394,7 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 	</type>
 	<type id="EDITPANEL">
 		<property name="allow" type="string">
@@ -1583,7 +1583,7 @@ The maximum filesize of documents to be read is set to 1024 kb internally!]]></d
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 		<property name="wrap" type="stdWrap">
 			<description><![CDATA[wrap/stdWrap
 ]]></description>
@@ -1888,7 +1888,7 @@ This sets the default to 200 px width, but excludes check-boxes and sets textare
 			<description><![CDATA[Wraps the input element and label of a radio button.]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 		<property name="recipient" type="stdWrap">
 			<description><![CDATA[(list of) string /stdWrap
 			Email recipient of the formmail content (generates the hiddenfield "recipient")]]></description>
@@ -2072,7 +2072,7 @@ NOTE: Is set automatically and should not be overridden under normal conditions!
 			<default><![CDATA[white]]></default>
 		</property>
 		<property name="format" type="string">
-			<description><![CDATA[&quot;gif&quot; / &quot;jpg&quot;
+			<description><![CDATA["gif" / "jpg"
 			Output type.
 "jpg"/"jpeg" = jpg-image]]></description>
 			<default><![CDATA[gif]]></default>
@@ -2240,8 +2240,8 @@ file  {
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>	
-	</type>			
+		</property>
+	</type>
 	<type id="EFFECT" extends="GifBuilderObj">
 		<property name="value" type="string">
 			<description><![CDATA[.value = [Varnavn] = [value] | [Varnavn] = [value]
@@ -2797,7 +2797,7 @@ For these options to make sense, they should only be used when "config.sys_langu
 ]]></default>
 		</property>
 		<property name="special" type="HMENU_SPECIAL">
-			<description><![CDATA[&quot;directory&quot; / &quot;list&quot; / &quot;updated&quot; / &quot;browse&quot; / &quot;rootline&quot; / &quot;keywords&quot; / "language"
+			<description><![CDATA["directory" / "list" / "updated" / "browse" / "rootline" / "keywords" / "language"
 			(See tsref for details:
 			<a href="http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403">
 			http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403</a> )]]></description>
@@ -6306,7 +6306,7 @@ includeJS {
 }]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>	
+		</property>
 		<property name="includeJSlibs" type="array">
 			<description><![CDATA[Adds JS library files to head of page.
 
@@ -6333,7 +6333,7 @@ includeJSlibs.twitter.external = 1
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>			
+		</property>
 		<property name="includeJSFooterlibs" type="array">
 			<description><![CDATA[	Same as includeJSlibs above, except that this block gets included at the bottom of the page (just before the closing body tag).
 ]]></description>
@@ -6390,7 +6390,7 @@ TYPO3.settings = {"TS":{"setting1":"Hello","setting2":"GoOnTop"}};
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 		<property name="insertClassesFromRTE" type="boolean">
 			<description><![CDATA[If set, the classes for the Rich Text Editor configured in Page TSconfig is inserted in as the first thing in the Style-section right after the setting of the stylesheet.
 
@@ -6451,7 +6451,7 @@ javascriptLibs {
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>				
+		</property>
 		<property name="jsInline" type="CARRAY">
 			<description><![CDATA[Use cObjects for creating inline JavaScript
 
@@ -6809,7 +6809,7 @@ Use this to eg. import another label from a database field or such.]]></descript
 ]]></default>
 		</property>
 	</type>
-	<type id="filelink.jumpurl">	
+	<type id="filelink.jumpurl">
 		<property name="secure" type="boolean">
 			<description><![CDATA[If set, then the file pointed to by jumpurl is NOT redirected to, but rather it's read from the file and returned with a correct header. This option adds a hash and locationData to the url and there MUST be access to the record in order to download the file. If the fileposition on the server is furthermore secured by a .htaccess file preventing ANY access, you've got secure download here!
 
@@ -6822,7 +6822,7 @@ jumpurl.secure = 1
 jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>	
+		</property>
 		<property name="secure.mimetypes" type="string">
 			<description><![CDATA[.secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
 
@@ -6833,7 +6833,7 @@ jumpurl.secure = 1
 jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>	
+		</property>
 		<property name="parameter" type="stdWrap">
 			<description><![CDATA[string/stdWrap
 			By default the jumpurl link will use the current pid and typeNum. 
@@ -6842,7 +6842,7 @@ For options see typolink.parameter
 			]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>					
+		</property>
 	</type>
 	<type id="if">
 		<property name="directReturn" type="boolean">
@@ -6949,7 +6949,7 @@ instead.]]></description>
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>				
+		</property>
 		<property name="effects" type="string">
 			<description><![CDATA[Example:
 gamma=1,3 | sharpen=80 | solarize=70]]></description>
@@ -7133,7 +7133,7 @@ Usage:
 			]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 	</type>
 	<type id="mask">
 		<property name="bgImg" type="imgResource">
@@ -7191,7 +7191,7 @@ class="board"]]></description>
 			<default><![CDATA[_top]]></default>
 		</property>
 		<property name="keep" type="stringList">
-			<description><![CDATA[list: &quot;scheme&quot;,&quot;path&quot;,&quot;query&quot;
+			<description><![CDATA[list: "scheme","path","query"
 As default the link-text will be the full domain-name of the link.
 
 Examples:
@@ -7497,7 +7497,7 @@ page.60 {
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>		
+		</property>
 		<property name="orderBy" type="string">
 			<description><![CDATA[without "order by"! Eg. "sorting, title"]]></description>
 			<default><![CDATA[

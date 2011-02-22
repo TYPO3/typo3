@@ -1,6 +1,7 @@
 2011-02-22  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #17653: t3editor: wrong size calculation in Chrome for the code completion window (Thanks to Stephan Petzl)
+	* Fixed bug #17654: t3editor: some code completion descriptions have &quot; entities instead of real quotes (thanks to Christian Kartnig)
 
 2011-02-22  Jigal van Hemert  <jigal@xs4all.nl>
 
