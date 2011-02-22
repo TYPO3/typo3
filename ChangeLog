@@ -1,5 +1,6 @@
 2011-02-22  Steffen Kamper  <steffen@typo3.org
 
+	* Fixed bug #17672: CSH - each label fires one request
 	* Follow-up to #17383: Open forms cannot be saved after "Relogin" (Security Token errors)
 	* Fixed bug #17699: ExtDirect API use relative url for ajax.php
 

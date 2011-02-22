@@ -68,11 +68,15 @@ TYPO3.ContextHelp = function() {
 					title: ''
 				});
 					// Load content
-				TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
-					cshHelp.add(response);
-					updateTip(response);
-						// Need to re-position because the height may have increased
-					tip.show();
+				TYPO3.CSH.ExtDirect.getTableContextHelp(table, function(response, options) {
+					Ext.iterate(response, function(key, value){
+						cshHelp.add(value);
+						if (key === field) {
+							updateTip(value);
+								// Need to re-position because the height may have increased
+							tip.show();
+						}
+					});
 				}, this);
 
 				// No table was given, use directly title and description
