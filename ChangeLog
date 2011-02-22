@@ -6,7 +6,7 @@
 
 	* Fixed bug #17483: GifBuilder - meaningfulTempFilePrefix can cause invalid image urls
 	* Fixed bug #17531: htmlMail - Can't send mails on port based systems with Swiftmailer substitution
-	* Fixed bug #17452: options.hideRecords.pages is irgnored in page tree 
+	* Fixed bug #17452: options.hideRecords.pages is ignored in page tree (Thanks to Andreas Kiessling)
 
 2011-02-22  Christian Kuhn  <lolli@schwarzbu.ch>
 
