@@ -422,14 +422,9 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			codeCompleteBox.scrollTop = 0;
 
 			// init styles
-
 			codeCompleteBox.style.overflowY = 'scroll';
-			if (Prototype.Browser.Gecko) {
-				codeCompleteBox.style.height = (options.ccWords * ($("cc_word_0").offsetHeight)) + 'px';
-			} else {
-				codeCompleteBox.style.height = (options.ccWords * ($("cc_word_0").offsetHeight)) + 4 + 'px';
-				codeCompleteBox.style.width = codeCompleteBox.offsetWidth + 20 + 'px';
-			}
+			codeCompleteBox.style.height = (options.ccWords * ($("cc_word_0").offsetHeight)) + 'px';
+			
 
 			var leftpos = (Position.cumulativeOffset($$('.t3e_iframe_wrap')[index])[0] + Position.cumulativeOffset(cursorNode)[0] + cursorNode.offsetWidth) + 'px';
 			var toppos = (Position.cumulativeOffset(cursorNode)[1] + cursorNode.offsetHeight - Element.cumulativeScrollOffset(cursorNode)[1]) + 'px';
