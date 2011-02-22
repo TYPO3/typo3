@@ -1,3 +1,7 @@
+2011-02-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17701: Generated t3x might be corrupted
+
 2011-02-21  Steffen Kamper  <steffen@typo3.org
 
 	* Fixed bug #17383: Open forms cannot be saved after "Relogin" (Security Token errors) (Thanks to Helmut Hummel)

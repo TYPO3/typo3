@@ -2222,6 +2222,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$backUpData = $this->terConnection->makeUploadDataFromarray($uArr);
 			$filename = 'T3X_' . $extKey . '-' . str_replace('.', '_', $extInfo['EM_CONF']['version']) . '-z-' . date('YmdHi') . '.t3x';
 			if (intval($this->CMD['doBackup']) == 1) {
+				t3lib_div::cleanOutputBuffers();
 				header('Content-Type: application/octet-stream');
 				header('Content-Disposition: attachment; filename=' . $filename);
 				echo $backUpData;
