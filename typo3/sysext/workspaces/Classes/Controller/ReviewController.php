@@ -125,6 +125,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 	protected function initializeAction() {
 		parent::initializeAction();
 
+		$this->template->setExtDirectStateProvider();
+
 		if (tx_Workspaces_Service_Workspaces::isOldStyleWorkspaceUsed()) {
 			$message = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
@@ -138,7 +140,10 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
-		$this->pageRenderer->enableExtJsDebug();
+
+		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
+		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
+
 
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode(array(

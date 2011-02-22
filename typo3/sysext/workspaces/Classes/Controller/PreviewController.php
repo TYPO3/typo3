@@ -42,16 +42,22 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	protected function initializeAction() {
 		parent::initializeAction();
 
+		$this->template->setExtDirectStateProvider();
+
 		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath . 'StyleSheet/preview.css';
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
-		$this->pageRenderer->enableExtJsDebug();
+
 
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode(array(
-			'TYPO3.Workspaces'
+			'TYPO3.Workspaces',
+			'TYPO3.ExtDirectStateProvider'
 		));
+
+		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
+		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
@@ -177,7 +183,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			'ContextHelpWindows' => array(
 				'width' => 600,
 				'height' => 400
-			)
+			),
 		);
 
 		$t3LLLcore = array(
@@ -217,7 +223,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			$GLOBALS['LANG']->csConvObj->convArray($t3LLLcore, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 
-		$js .= '
+		$js = '
 		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 		TYPO3.LLL = {
 			core : ' . json_encode($t3LLLcore) . '

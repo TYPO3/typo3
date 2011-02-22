@@ -8,7 +8,8 @@
 
 	function resize(height) {
 			// poor way to avoid that we require any scrollbars within the frames
-		var finalHeight = height * 1.1;
+		var currentHeight = isNaN(Ext.getCmp('wsContainer').getHeight()) ? 0 : Ext.getCmp('wsContainer').getHeight();
+		var finalHeight = Math.max(currentHeight, height * 1.1);
 		Ext.getCmp('visualPanel').setHeight(finalHeight);
 		Ext.getCmp('wsContainer').setHeight(finalHeight);
 		Ext.getCmp('wsPanel').setHeight(finalHeight);
