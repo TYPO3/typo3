@@ -1,6 +1,7 @@
 2011-02-23  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Fixed bug #17719: Move donation popup to about module (thanks to Steffen Kamper)
+	* Follow-up to bug #17719: Removed unused files
 
 2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>
 
