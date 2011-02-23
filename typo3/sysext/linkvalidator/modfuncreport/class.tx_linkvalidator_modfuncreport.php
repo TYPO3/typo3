@@ -113,8 +113,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 * @var string
 	 */
 	protected $checkOptHtml;
-	
-	
+
+
 	/**
 	 * Html for the Statistics table with the checkboxes of the link types and the numbers of broken links for Check links tab.
 	 *
@@ -178,11 +178,11 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$this->initialize();
 			// Setting up the context sensitive menu:
 		$this->resPath = $this->doc->backPath . t3lib_extMgm::extRelPath('linkvalidator') . 'res/';
+		/** @var t3lib_pageRenderer $pageRenderer */
 		$this->pageRenderer = $this->doc->getPageRenderer();
 
 			// Localization
-		$labels = tx_em_Tools::getArrayFromLocallang(t3lib_extMgm::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
-		$this->pageRenderer->addInlineLanguageLabelArray($labels);
+		$this->pageRenderer->addInlineLanguageLabelFile(t3lib_extMgm::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
 
 			// Add JS
 		$this->pageRenderer->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
