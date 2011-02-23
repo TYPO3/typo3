@@ -145,9 +145,7 @@ class tx_em_Connection_ExtDirectServer {
 		$list = $this->getExtensionList();
 		$extList = $list['data'];
 
-		$temp = $this->getSettings();
-		$selectedLanguages = unserialize($temp['selectedLanguages']);
-
+		$selectedLanguages = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages']);
 
 		$keys = array();
 		$i = 0;
@@ -375,19 +373,16 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function getExtFileTree($parameter) {
-		$ext = array();
-		$extKey = $parameter->extkey;
 		$type = $parameter->typeShort;
 		$node = substr($parameter->node, 0, 6) !== 'xnode-' ? $parameter->node : $parameter->baseNode;
 
 		$path = PATH_site . $node;
 		$fileArray = array();
-//debug($node)
+
 		$dirs = t3lib_div::get_dirs($path);
 		$files = t3lib_div::getFilesInDir($path, '', FALSE, '', '');
 
-		$editTypes = explode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']);
-		$imageTypes = array('gif', 'jpg', 'png');
+
 
 		if (!is_array($dirs) && !is_array($files)) {
 			return array();
@@ -404,52 +399,24 @@ class tx_em_Connection_ExtDirectServer {
 			}
 		}
 
-		$unknownType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_unknownType');
-		$imageType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_imageType');
-		$textType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_textType');
-		$extType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_extType');
+
 		foreach ($files as $key => $file) {
-			$fileExt = '';
-			$type = '';
-			$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('');
-			if (strrpos($file, '.') !== FALSE) {
-				$fileExt = strtolower(substr($file, strrpos($file, '.') + 1));
-			}
-
-			if ($fileExt && in_array($fileExt, $imageTypes) || in_array($fileExt, $editTypes)) {
-				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass($fileExt);
-				$type = in_array($fileExt, $imageTypes) ? 'image' : 'text';
-			}
-
-			if (t3lib_div::strtolower($file) === 'changelog') {
-				$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('txt');
-				$type = 'text';
-			}
-
-			switch($type) {
-				CASE 'image':
-					$label = $imageType;
-				break;
-				CASE 'text':
-					$label = $textType;
-				break;
-				default:
-					$label = $fileExt ? sprintf($extType, $fileExt) : $unknownType;
-			}
+			$fileInfo = $this->getFileInfo($file);
 
 			$fileArray[] = array(
 				'id' => $node . '/' . $file,
-				'text' => htmlspecialchars($file),
+				'text' => $fileInfo[0],
 				'leaf' => true,
-				'qtip' => $label,
-				'iconCls' => $cls,
-				'fileType' => $type,
-				'ext' => $fileExt
+				'qtip' => $fileInfo[1],
+				'iconCls' => $fileInfo[4],
+				'fileType' => $fileInfo[3],
+				'ext' => $fileInfo[2]
 			);
 		}
 
 		return $fileArray;
 	}
+
 
 	/**
 	 * Read extension file and send content
@@ -503,6 +470,128 @@ class tx_em_Connection_ExtDirectServer {
 		);
 	}
 
+	/**
+	 * Create a new file
+	 *
+	 * @param  string $folder
+	 * @param  string $file
+	 * @param  boolean $isFolder
+	 * @return array result
+	 */
+	public function createNewFile($folder, $file, $isFolder) {
+		$result = tx_em_Tools::createNewFile($folder, $file, $isFolder);
+
+		$node = array();
+
+		if ($result[0] === TRUE) {
+			if ($isFolder) {
+				$node = array(
+					'id' => htmlspecialchars(substr($result[1], strlen(PATH_site))),
+					'text' => htmlspecialchars(basename($result[1])),
+					'leaf' => FALSE,
+					'qtip' => ''
+				);
+			} else {
+				$fileInfo = $this->getFileInfo($result[1]);
+				$node = array(
+					'id' => substr($fileInfo[0], strlen(PATH_site)),
+					'text' => basename($fileInfo[0]),
+					'leaf' => !$isFolder,
+					'qtip' => $fileInfo[1],
+					'iconCls' => $fileInfo[4],
+					'fileType' => $fileInfo[3],
+					'ext' => $fileInfo[2]
+				);
+			}
+		}
+		return array(
+			'success' => $result[0],
+			'created' => $result[1],
+			'node' => $node,
+			'error' => $result[2]
+		);
+	}
+
+	/**
+	 * Rename a file/folder
+	 *
+	 * @param  string $file
+	 * @param  string $newName
+	 * @param  boolean $isFolder
+	 * @return array result
+	 */
+	public function renameFile($file, $newName, $isFolder) {
+		$src = basename($file);
+		$newFile = substr($file, 0, -1 * strlen($src)) . $newName;
+
+		$success = tx_em_Tools::renameFile($file, $newFile);
+
+		return array(
+			'success' => $success,
+			'oldFile' => $file,
+			'newFile' => $newFile,
+			'newFilename' => basename($newFile),
+		);
+	}
+
+
+	/**
+	 * Moves a file to new destination
+	 *
+	 * @param  string $file
+	 * @param  string $destination
+	 * @param  boolean $isFolder
+	 * @return array
+	 */
+	public function moveFile($file, $destination, $isFolder) {
+		return array(
+			'success' => TRUE,
+			'file' => $file,
+			'destination' => $destination,
+			'isFolder' => $isFolder
+		);
+	}
+
+	/**
+	 * Deletes a file/folder
+	 *
+	 * @param  string $file
+	 * @param  boolean $isFolder
+	 * @return array
+	 */
+	public function deleteFile($file, $isFolder) {
+
+		$file = str_replace('//', '/', PATH_site . $file);
+		$command['delete'][] = array(
+			'data' => $file
+		);
+		$result = $this->fileOperation($command);
+
+		return array(
+			'success' => TRUE,
+			'file' => $file,
+			'isFolder' => $isFolder,
+			'command' => $command,
+			'result' => $result
+		);
+	}
+
+	/**
+	 * Shows a diff of content changes of a file
+	 *
+	 * @param  string $file
+	 * @param  string $content
+	 * @return array
+	 */
+	public function makeDiff($original, $content) {
+		$diff = t3lib_div::makeInstance('t3lib_diff');
+		$result = $diff->makeDiffDisplay($original, $content);
+		//debug(array($original, $content, $result));
+		return array(
+			'success' => TRUE,
+			'diff' => '<pre>' . $result . '</pre>'
+		);
+	}
 
 	/**
 	 * Load upload form for extension upload to TER
@@ -667,24 +756,16 @@ class tx_em_Connection_ExtDirectServer {
 					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_update_em_conf') . '</td></tr>';
 
 
-			$lines[] = '<tr class="bgColor4"><td colspan="2">' .
-			$sure = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_sure');
 			$updateEMConf = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_file');
-
-			$onClick = "if (confirm('$sure')) {window.location.href='" . t3lib_div::linkThisScript(array(
-				'CMD[showExt]' => $extKey,
-				'CMD[doUpdateEMCONF]' => 1
-			)) . "';}";
-
 			$lines[] = '<tr class="bgColor4"><td colspan="2">' .
-					'<a class="t3-link emconfLink" href="#" onclick="' . htmlspecialchars($onClick) .
-					' return false;"><strong>' . $updateEMConf . '</strong> ' .
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_changes') . '<br />
+						' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_reset') .
+					'<br /><br />' .
+					'<a class="t3-link emconfLink" href="#"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extDelete_from_location'),
 						$api->typeLabels[$list[$extKey]['type']],
 						substr(tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']['type']), strlen(PATH_site))
 					) . '</a>'
-					.  '<br /><br />' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_changes') . '<br />
-						' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extUpdateEMCONF_info_reset')
 					. '</td></tr>';
 
 
@@ -1436,6 +1517,96 @@ class tx_em_Connection_ExtDirectServer {
 		}
 
 		return $selectedRepository;
+	}
+
+	/**
+	 * Gets file info for ExtJs tree node
+	 *
+	 * @param  $file
+	 * @return array
+	 */
+	protected function getFileInfo($file) {
+		$unknownType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_unknownType');
+		$imageType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_imageType');
+		$textType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_textType');
+		$extType = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_file_extType');
+
+		$editTypes = explode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']);
+		$imageTypes = array('gif', 'jpg', 'png');
+
+		$fileExt = '';
+		$type = '';
+		$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('');
+		if (strrpos($file, '.') !== FALSE) {
+			$fileExt = strtolower(substr($file, strrpos($file, '.') + 1));
+		}
+
+		if ($fileExt && in_array($fileExt, $imageTypes) || in_array($fileExt, $editTypes)) {
+			$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass($fileExt);
+			$type = in_array($fileExt, $imageTypes) ? 'image' : 'text';
+		}
+
+		if (t3lib_div::strtolower($file) === 'changelog') {
+			$cls = t3lib_iconWorks::mapFileExtensionToSpriteIconClass('txt');
+			$type = 'text';
+		}
+
+		switch($type) {
+			CASE 'image':
+				$label = $imageType;
+			break;
+			CASE 'text':
+				$label = $textType;
+			break;
+			default:
+				$label = $fileExt ? sprintf($extType, $fileExt) : $unknownType;
+		}
+
+		return array(
+			htmlspecialchars($file),
+			$label,
+			htmlspecialchars($fileExt),
+			$type,
+			$cls
+		);
+
+	}
+
+
+	/**
+	 * File operations like delete, copy, move
+	 * @param  $file commandMap, @see
+	 * @return
+	 */
+	protected function fileOperation($file) {
+		$mount = array(0 => array(
+			'name' => 'root',
+			'path' => PATH_site,
+			'type' => ''
+		));
+		$files = array(0 => array(
+			'webspace' => array('allow' => '*', 'deny' => ''),
+			'ftpspace' => array('allow' => '*', 'deny' => '')
+		));
+		$fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
+		$fileProcessor->init($mount, $files);
+		$fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
+		$fileProcessor->dontCheckForUnique = 0;
+
+			// Checking referer / executing:
+		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+		if ($httpHost != $refInfo['host']
+			&& $this->vC != $GLOBALS['BE_USER']->veriCode()
+			&& !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
+			&& $GLOBALS['CLIENT']['BROWSER'] != 'flash') {
+			$fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+		} else {
+			$fileProcessor->start($file);
+			$fileData = $fileProcessor->processData();
+		}
+
+		return $fileData;
 	}
 
 }

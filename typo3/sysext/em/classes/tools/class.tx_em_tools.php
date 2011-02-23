@@ -284,7 +284,7 @@ final class tx_em_Tools {
 			}
 			$emConf['constraints']['depends']['typo3'] = implode('-', $versionRange);
 		}
-#debug($emConf);
+
 		unset($emConf['private']);
 		unset($emConf['download_password']);
 		unset($emConf['TYPO3_version']);
@@ -616,18 +616,6 @@ final class tx_em_Tools {
 		} else {
 			return '../../../';
 		}
-	}
-
-	/**
-	 * Reads locallang file into array (for possible include in header)
-	 *
-	 * @param $file
-	 */
-	public static function getArrayFromLocallang($file, $key = 'default') {
-		$content = t3lib_div::getURL($file);
-		$array = t3lib_div::xml2array($content);
-		return $array['data'][$key];
-
 	}
 
 	/**
@@ -1022,19 +1010,105 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * Sends content of file for download
+	 *
 	 * @static
 	 * @param  $path
 	 * @return void
 	 */
 	public static function sendFile($path) {
-		$path = PATH_site . $path;
-		if (is_file($path) && is_readable($path)) {
+		$path = t3lib_div::resolveBackPath(PATH_site . $path);
+
+		if (is_file($path) && is_readable($path) && t3lib_div::isAllowedAbsPath($path)) {
 			header('Content-Type: application/octet-stream');
 			header('Content-Disposition: attachment; filename=' . basename($path));
 			readfile($path);
 			exit;
 		}
 	}
+
+	/**
+	 * Rename a file / folder
+	 * @static
+	 * @param  $file
+	 * @param  $newName
+	 * @return bool
+	 */
+	public static function renameFile($file, $newName) {
+		if($file[0] == '/') {
+			$file = substr($file, 1);
+		}
+		if($newName[0] == '/') {
+			$newName = substr($newName, 1);
+		}
+
+		$file = t3lib_div::resolveBackPath(PATH_site . $file);
+		$newName = t3lib_div::resolveBackPath(PATH_site . $newName);
+		if (is_writable($file) && t3lib_div::isAllowedAbsPath($file) && t3lib_div::isAllowedAbsPath($newName)) {
+			return rename($file, $newName);
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Creates a new file
+	 *
+	 * Returns an array with
+	 * 0: boolean success
+	 * 1: string absolute path of written file/folder
+	 * 2: error code
+	 *
+	 * The error code returns
+	 * 0: no error
+	 * -1: not writable
+	 * -2: not allowed path
+	 * -3: already exists
+	 * -4: not able to create
+	 *
+	 * @static
+	 * @param  $folder
+	 * @param  $file
+	 * @param  $isFolder
+	 * @return array
+	 */
+	public static function createNewFile($folder, $file, $isFolder) {
+		$success = FALSE;
+		$error = 0;
+
+		if (substr($folder, -1) !== '/') {
+			$folder .= '/';
+		}
+
+
+		$newFile = t3lib_div::resolveBackPath(PATH_site . $folder . $file);
+
+		if (!is_writable(dirname($newFile))) {
+			$error = -1;
+		} elseif (!t3lib_div::isAllowedAbsPath($newFile)) {
+			$error = -2;
+		} elseif (file_exists($newFile)) {
+			$error = -3;
+		} else {
+			if ($isFolder) {
+				$success = t3lib_div::mkdir($newFile);
+			} else {
+				$success = t3lib_div::writeFile($newFile, '');
+			}
+
+			if (!$success) {
+				$error = -4;
+			}
+		}
+
+		return array(
+			$success,
+			$newFile,
+			$error
+		);
+	}
+
 
 	/**
 	 * Wrapping input string in a link tag with link to email address

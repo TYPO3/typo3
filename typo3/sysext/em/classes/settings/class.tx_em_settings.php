@@ -42,11 +42,12 @@ class tx_em_Settings implements t3lib_Singleton {
 
 
 	/**
-	 * Develop commands
+	 * Settings array
 	 *
-	 * @var string
+	 * @var array
 	 */
 	protected $settings;
+
 
 	/**
 	 * Constructor
@@ -97,6 +98,7 @@ class tx_em_Settings implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function readSettings() {
+		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 		$this->MOD_MENU = array(
 			'function' => array(
 				'loaded_list' => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
@@ -156,6 +158,7 @@ class tx_em_Settings implements t3lib_Singleton {
 			'mainTab' => '0',
 		);
 		$this->settings = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), 'tools_em');
+		$this->settings = array_merge($this->settings, $globalSettings);
 	}
 
 	/**

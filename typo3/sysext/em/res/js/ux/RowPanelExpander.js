@@ -340,3 +340,31 @@ Ext.ux.grid.RowPanelExpander = Ext.extend(Ext.util.Observable, {
 });
 
 Ext.preg('rowexpander', Ext.ux.grid.RowPanelExpander);
+
+Ext.ux.plugins.FitWidthToParent = Ext.extend(Object, {
+	constructor : function(parent) {
+		this.parent = parent;
+	},
+	init : function(c) {
+		c.on('render', function(c) {
+			c.fitToElement = Ext.get(this.parent
+					|| c.getPositionEl().dom.parentNode);
+			if (!c.doLayout) {
+				this.fitSizeToParent();
+				Ext.EventManager.onWindowResize(this.fitSizeToParent, this);
+			}
+		}, this, {
+			single : true
+		});
+		if (c.doLayout) {
+			c.monitorResize = true;
+			c.doLayout = c.doLayout.createInterceptor(this.fitSizeToParent);
+		}
+	},
+
+	fitSizeToParent : function() {
+		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
+		this.setWidth(size.width - pos[0]);
+
+	}
+});

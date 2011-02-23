@@ -1,4 +1,45 @@
-2011-02-07  Steffen Kamper  <steffen@typo3.org>
+2011-02-23  Steffen Kamper  <steffen@typo3.org>
+
+	* cleaned em_conf
+	* corrected initial settings with no saved extension configuration
+	* file editor - disable functions until they are proofed completely
+
+2011-02-20  Steffen Kamper  <steffen@typo3.org>
+
+	* move interface to correct place
+
+2011-02-19  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed file creation / node creation
+	* Fixed bug #13180 Hardcoded Labels for Extension State and in menu "Filters"
+	* Fixed bug #13183 Saving Settings uses hardcoded labels
+	* Fixed bug #13179 Order in "Udate EM_CONF" is not ideal
+	* Fixed bug #13181 Unreplaced variable in headline when editing a repository
+	* Fixed bug #13182 Updating a repository gives wrong flash message
+	* Fixed bug #13178 GUI partly hidden with 1024x768 pixels and less
+	* Fixed bug #13177 Button "Refresh" in Extension > Details > Files misses tooltip
+	* Many fixes for FileEditor
+	* Use interface for renderHook
+	* Fixed bug #13164 EM GUI does not use translations
+
+2011-02-11  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed file saving, file diff, prepared file creation/moveing
+
+2011-02-10  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17538: EM gets instantiated before XCLASS definition (Thanks to Jesper Paardekooper)
+
+2011-02-09  Steffen Kamper  <steffen@typo3.org>
+
+	* Prompt for save with new file load
+	* Small fixes for init configuration in fileeditor
+	* Prevent file actions before a file is loaded
+	* Simplified codemirror configuration
+	* Use mixed parser for php files for correct parsing
+	* Fixed change of parser in file editor
+
+2011-02-08  Steffen Kamper  <steffen@typo3.org>
 
 	* CGL spaces=>tabs, raised ext version to 4.5.1, cleaned em_conf
 	* fix docPath in link generation for documentation

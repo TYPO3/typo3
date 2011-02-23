@@ -96,6 +96,9 @@ TYPO3.EM.App = {
 			stateId: 'mainTab',
 			stateEvents:['tabchange'],
 			autoScroll: true,
+			tabPosition: 'top',
+			enableTabScroll: true,
+			autoWidth: true,
 			defaults: {
 				layout: 'fit'
 			},

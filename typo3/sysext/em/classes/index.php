@@ -266,7 +266,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Setting internal static:
 
-		$this->requiredExt = t3lib_div::trimExplode(',', $TYPO3_CONF_VARS['EXT']['requiredExt'], 1);
+		$this->requiredExt = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), TRUE);
 
 		// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -366,7 +366,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->MOD_MENU = $this->settings->MOD_MENU;
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 
-		if (!isset($globalSettings['showOldModules'])) {
+		if (!is_array($globalSettings)) {
 				// no settings saved yet, set default values
 			$globalSettings['showOldModules'] = 1;
 			$globalSettings['inlineToWindow'] = 1;
@@ -2197,14 +2197,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				'CMD[showExt]' => $extKey,
 				'CMD[doUpdateEMCONF]' => 1
 			)) . "';}";
+			$content .= $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_changes') . '<br />'
+				. $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_reset') . '<br /><br />';
 			$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 					' return false;"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 						$this->typeLabels[$extInfo['type']],
 						substr($absPath, strlen(PATH_site))
 					) . '</a>';
-			$content .= '<br /><br />' . $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_changes') . '<br />
-						' . $GLOBALS['LANG']->getLL('extUpdateEMCONF_info_reset');
 			return $content;
 		}
 	}
@@ -2222,7 +2222,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$backUpData = $this->terConnection->makeUploadDataFromarray($uArr);
 			$filename = 'T3X_' . $extKey . '-' . str_replace('.', '_', $extInfo['EM_CONF']['version']) . '-z-' . date('YmdHi') . '.t3x';
 			if (intval($this->CMD['doBackup']) == 1) {
-				t3lib_div::cleanOutputBuffers();
 				header('Content-Type: application/octet-stream');
 				header('Content-Disposition: attachment; filename=' . $filename);
 				echo $backUpData;
@@ -2568,6 +2567,16 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	}
 }
 
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']);
+}
+
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php']);
+}
+
+
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
 $SOBE->init();
@@ -2579,11 +2588,4 @@ $SOBE->checkExtObj();
 $SOBE->main();
 $SOBE->printContent();
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']);
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php']);
-}
 ?>

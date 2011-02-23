@@ -49,7 +49,8 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					plain: true,
 					activeTab: 0,
 					defaults: {
-						autoHeight: true
+						autoHeight: true,
+						autoWidth: true
 					},
 					record: record,
 					items:[
@@ -85,6 +86,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				{name:'downloadcounter', type: 'int'},
 				{name:'statevalue'},
 				{name:'state'},
+				{name:'stateCls'},
 				{name:'icon'},
 				{name:'description'},
 				{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'},

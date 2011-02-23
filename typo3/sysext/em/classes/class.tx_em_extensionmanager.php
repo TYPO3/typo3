@@ -140,16 +140,18 @@ class tx_em_ExtensionManager {
 
 
 			// Localization
-		$labels = tx_em_Tools::getArrayFromLocallang(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
+		$labels = array();
+		$this->pageRenderer->addInlineLanguageLabelFile(t3lib_extMgm::extPath('em', 'language/locallang.xml'));
 		$labels['yes'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 		$labels['no'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
-
+		$this->pageRenderer->addInlineLanguageLabelArray($labels);
 
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
-		if (!isset($globalSettings)) {
+		if (!is_array($globalSettings)) {
 			$globalSettings = array(
 				'displayMyExtensions' => 0,
-				'selectedLanguages' => array()
+				'selectedLanguages' => array(),
+				'inlineToWindow' => 1,
 			);
 		}
 		$settings = $this->parentObject->MOD_SETTINGS;
@@ -166,6 +168,15 @@ class tx_em_ExtensionManager {
 
 		$allowRepositoryUpdate = !intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.hideRepositoryUpdate'));
 
+		/* file operations */
+		$fileAllowMove = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowMove'));
+		$fileAllowDelete = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowDelete'));
+		$fileAllowRename = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowRename'));
+		$fileAllowUpload = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowUpload'));
+		$fileAllowCreate = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowCreate'));
+		$fileAllowDownload = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowDownload'));
+
+
 			// add the settings
 		$additionalSettings = array(
 			'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
@@ -181,8 +192,16 @@ class tx_em_ExtensionManager {
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
 			'allowRepositoryUpdate' => $allowRepositoryUpdate,
 			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
-			'fileSaveAllowed' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0,
 			'debug' => $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] > 0,
+			//TODO: some are disabled until feater-proofed
+			'fileAllowSave' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0,
+			'fileAllowMove' => 0, //$fileAllowMove,
+			'fileAllowDelete' => 0, //$fileAllowDelete,
+			'fileAllowRename' => 0, //$fileAllowRename,
+			'fileAllowUpload' => 0, //$fileAllowUpload,
+			'fileAllowCreate' => 0, //$fileAllowCreate,
+			'fileAllowDownload' => $fileAllowDownload,
+
 		);
 		$settings = array_merge($settings, $additionalSettings);
 
@@ -195,6 +214,7 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addJsFile($this->resPath . 'js/overrides/ext_overrides.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/custom_plugins.js');
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/notifications.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/TreeState.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/RowPanelExpander.js');
 		$this->pageRenderer->addJsFile($this->resPath . 'js/ux/searchfield.js');
@@ -239,12 +259,13 @@ class tx_em_ExtensionManager {
 			//hook for the extension manager gui
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['em/classes/class.tx_em_extensionamager.php']['renderHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['em/classes/class.tx_em_extensionamager.php']['renderHook'] as $classRef) {
-				$hookObj = t3lib_div::getUserObj($classRef);
-				if (method_exists($hookObj, 'render')) {
-					$hookObj->render(
-						$this->pageRenderer, $settings, $labels, $content
-					);
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if(!($hookObject instanceof tx_em_renderHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tx_em_renderHook', 1298121373);
 				}
+				$hookObject->render(
+					$this->pageRenderer, $settings, $content
+				);
 			}
 		}
 

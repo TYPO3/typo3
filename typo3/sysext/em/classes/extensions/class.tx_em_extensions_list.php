@@ -197,6 +197,8 @@ class tx_em_Extensions_List {
 				$key = count($list);
 				$loaded = t3lib_extMgm::isLoaded($extKey);
 
+
+
 				$exist = $this->findIndex($extKey, $list);
 				if ($exist !== FALSE) {
 					$key = $exist;
@@ -212,6 +214,8 @@ class tx_em_Extensions_List {
 				$list[$key]['doubleInstall'] = $list[$key]['doubleInstall'] ? $list[$key]['doubleInstall'] . '/' . $this->types[$type] : $this->types[$type];
 				$list[$key]['doubleInstallShort'] .= $type;
 
+				$list[$key] = t3lib_div::array_merge_recursive_overrule($list[$key], $emConf);
+
 				if (@is_file($path . $extKey . '/class.ext_update.php')) {
 					$list[$key]['updateModule'] = TRUE;
 				} else {
@@ -220,9 +224,11 @@ class tx_em_Extensions_List {
 				$list[$key]['type'] = $this->types[$type];
 				$list[$key]['typeShort'] = $type;
 				$list[$key]['installed'] = $loaded ? 1 : 0;
-				// FIXME: raises PHP warning
-				// "Core: Error handler (BE): PHP Warning: htmlspecialchars() expects parameter 1 to be string, array given in [...]/typo3/mod/tools/em/classes/class.tx_em_extensions_list.php line 185
-				$list[$key] = t3lib_div::array_merge_recursive_overrule($list[$key], $emConf);
+
+
+				$state = htmlspecialchars($emConf['state']);
+				$list[$key]['state'] = $this->states[$state];
+				$list[$key]['stateCls'] = 'state-' . $state;
 				$list[$key]['title'] = htmlspecialchars($list[$key]['title']);
 				$list[$key]['description'] = htmlspecialchars($list[$key]['description']);
 				$list[$key]['author'] = htmlspecialchars($list[$key]['author']);
@@ -249,7 +255,7 @@ class tx_em_Extensions_List {
 
 				$list[$key]['categoryShort'] = $list[$key]['category'];
 				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
-				$list[$key]['required'] = t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'], $extKey);
+				$list[$key]['required'] = t3lib_div::inList(t3lib_extMgm::getRequiredExtensionList(), $extKey);
 
 				$constraints = $this->humanizeConstraints($list[$key]['constraints']);
 				$list[$key]['depends'] = $constraints['depends'];
@@ -932,7 +938,7 @@ EXTENSION KEYS:
 	 * @see removeExtFromList(), addExtToList()
 	 */
 	function removeRequiredExtFromListArr($listArr) {
-		$requiredExtensions = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'], 1);
+		$requiredExtensions = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), 1);
 		foreach ($listArr as $k => $ext) {
 			if (in_array($ext, $requiredExtensions) || !strcmp($ext, '_CACHEFILE')) {
 				unset($listArr[$k]);

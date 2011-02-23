@@ -4,6 +4,7 @@ $emClassesPath = $extensionPath . '/classes/';
 $emInterfacesPath = $extensionPath . '/interfaces/';
 return array(
 	'tx_em_index_checkdatabaseupdateshook' => $emInterfacesPath . 'interface.tx_em_index_checkdatabaseupdateshook.php',
+	'tx_em_renderhook' => $emInterfacesPath . 'interface.tx_em_renderhook.php',
 
 	'sc_mod_tools_em_index' => $emClassesPath . 'index.php',
 	'tx_em_api' => $emClassesPath . 'class.tx_em_api.php',
