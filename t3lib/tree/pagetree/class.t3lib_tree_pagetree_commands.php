@@ -290,9 +290,6 @@ final class t3lib_tree_pagetree_Commands {
 		$subNode->setCls($record['_CSSCLASS']);
 		$subNode->setType('pages');
 
-		$qtip = t3lib_BEfunc::titleAttribForPages($record, '', FALSE);
-		$subNode->setQTip(str_replace(' - ', '<br />', htmlspecialchars($qtip)));
-
 		$subNode->setId($record['uid']);
 		$subNode->setMountPoint($mountPoint);
 		$subNode->setWorkspaceId(($record['_ORIG_uid'] ? $record['_ORIG_uid'] : $record['uid']));
@@ -317,14 +314,32 @@ final class t3lib_tree_pagetree_Commands {
 			$suffix = ($domain !== '' ? ' [' . $domain . ']' : '');
 		}
 
-		$prefix = ($addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
+		$qtip = str_replace(' - ', '<br />', htmlspecialchars(
+			t3lib_BEfunc::titleAttribForPages($record, '', FALSE))
+		);
+
+		$prefix = '';
+		$lockInfo = t3lib_BEfunc::isRecordLocked('pages', $record['uid']);
+		if (is_array($lockInfo)) {
+			$qtip .= '<br />' . htmlspecialchars($lockInfo['msg']);
+			$prefix .= t3lib_iconWorks::getSpriteIcon(
+				'status-warning-in-use',
+				array(
+					'class' => 'typo3-pagetree-status'
+				)
+			);
+		}
+
+		$prefix .= htmlspecialchars($addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
 		$subNode->setEditableText($text);
 		$subNode->setText(
 			htmlspecialchars($visibleText),
 			$field,
-			htmlspecialchars($prefix),
+			$prefix,
 			htmlspecialchars($suffix)
 		);
+
+		$subNode->setQTip($qtip);
 
 		if ($record['uid'] !== 0) {
 			$spriteIconCode = t3lib_iconWorks::getSpriteIconForRecord('pages', $record);
