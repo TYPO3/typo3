@@ -8,6 +8,22 @@ $Id$
 	text-align: center;
 }
 
+#typo3-mod-help-about-index-php-outer #donation-description {
+	background-image: url("../../images/general/donate_teaser.png");
+	background-repeat: no-repeat;
+}
+
+#typo3-mod-help-about-index-php-outer .donation-button {
+	overflow: auto;
+}
+#typo3-mod-help-about-index-php-outer .donation-button input {
+	float: right;
+	background-image: url("../../images/icons/status/dialog-ok.png");
+	background-repeat: no-repeat;
+	background-position: 2px;
+}
+
+
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
 	background: #ffffff;
 	border: 1px solid #adadad;

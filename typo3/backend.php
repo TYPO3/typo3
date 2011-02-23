@@ -31,7 +31,6 @@ require_once('interfaces/interface.backend_toolbaritem.php');
 
 require('classes/class.typo3logo.php');
 require('classes/class.modulemenu.php');
-require_once('classes/class.donatewindow.php');
 
 	// core toolbar items
 require('classes/class.workspaceselector.php');
@@ -188,10 +187,6 @@ class TYPO3backend {
 	 */
 	public function render()	{
 		$this->executeHook('renderPreProcess');
-
-		if (t3lib_div::makeInstance('DonateWindow')->isDonateWindowAllowed()) {
-			$this->pageRenderer->addJsFile('js/donate.js');
-		}
 
 			// prepare the scaffolding, at this point extension may still add javascript and css
 		$logo         = t3lib_div::makeInstance('TYPO3Logo');
@@ -413,11 +408,6 @@ class TYPO3backend {
 			'tabs_closeAll' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.closeAll'),
 			'tabs_closeOther' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.closeOther'),
 			'tabs_close' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.close'),
-			'donateWindow_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.title'),
-			'donateWindow_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.message'),
-			'donateWindow_button_donate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_donate'),
-			'donateWindow_button_disable' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_disable'),
-			'donateWindow_button_postpone' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_postpone'),
 		);
 		$t3LLLfileUpload = array(
 			'windowTitle' => $GLOBALS['LANG']->getLL('fileUpload_windowTitle'),

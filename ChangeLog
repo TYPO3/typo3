@@ -1,3 +1,7 @@
+2011-02-23  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #17719: Move donation popup to about module (thanks to Steffen Kamper)
+
 2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>
 
 	* Fixed bug #17511: tx_install_session::write doesn't fix permissions

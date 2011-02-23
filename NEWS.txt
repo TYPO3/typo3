@@ -138,9 +138,9 @@ Backend
 	  Also the syntax highlighting engine is now extracted from the system extension
 	  so it can be used in other places of the TYPO3 Core as well.
 
-	* A donation notice will be shown to administrators in the TYPO3 Backend
-	  on login after using TYPO3 for more than three months. This behaviour
-	  can be disabled completely - see $TYPO3_CONF_VARS[BE][allowDonateWindow].
+	* The donation notice shown in a modal window in the TYPO3 Backend was moved
+	  to the about module in TYPO3 4.4.7. It just renders a static section there.
+	  Thus, the accordant setting $TYPO3_CONF_VARS[BE][allowDonateWindow] is obsolete.
 
 	* Most Icons used in the TYPO3 Backend are now rendered through so-called
 	  sprites. Instead of loading many image tags with single icons and therefore

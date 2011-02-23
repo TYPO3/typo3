@@ -111,6 +111,15 @@ class SC_mod_help_about_index {
 				</div>
 
 				<div class="typo3-mod-help-about-index-php-inner">
+					<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:donation_header', TRUE) . '</h2>
+					<p id="donation-description">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:donation_message') . '</p>
+					<div class="donation-button">
+						<input type="button" id="donation-button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:donation_button') . '"
+						onclick="window.open(\'http://typo3.org/donate/\');" />
+					</div>
+				</div>
+
+				<div class="typo3-mod-help-about-index-php-inner">
 					<h2>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:community_credits', true).'</h2>
 					<p>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:information_detail').'</p>
 				</div>
