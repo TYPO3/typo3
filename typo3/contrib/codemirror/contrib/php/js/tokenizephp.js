@@ -955,7 +955,7 @@ var tokenizePHP = (function() {
       "SplFixedArray", "SplHeap", "SplMaxHeap", "SplMinHeap", "SplPriorityQueue",
       "SplQueue", "SplStack", "SQLite3", "SQLite3Result", "SQLite3Stmt", "SQLiteDatabase",
       "SQLiteException", "SQLiteResult", "SQLiteUnbuffered", "Svn", "SvnNode", "SvnWc",
-      "SvnWcSchedule", "XSLTProcessor", "ZipArchive",
+      "SvnWcSchedule", "XSLTProcessor", "ZipArchive"
     ].forEach(function(element, index, array) {
       result[element] = token("t_string", "php-predefined-class");
     });
