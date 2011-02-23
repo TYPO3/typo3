@@ -1,3 +1,7 @@
+2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #17511: tx_install_session::write doesn't fix permissions
+
 2011-02-23  Thorsten Kahler  <thorsten.kahler@dkd.de>
 
 	* Fixed bug #17501: User setup - pressing return creates installtool file (Thanks to Steffen Kamper)
