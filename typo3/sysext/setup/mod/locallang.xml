@@ -106,6 +106,7 @@
 			<label index="enableInstallTool.label">Install Tool Access</label>
 			<label index="enableInstallTool.createFile">Create Install Tool Enable File</label>
 			<label index="enableInstallTool.deleteFile">Delete Install Tool Enable File</label>
+			<label index="dataResetted">User settings was resetted to default and temporary data has been cleared.</label>
 		</languageKey>
 	</data>
 </T3locallang>

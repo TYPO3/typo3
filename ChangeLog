@@ -1,3 +1,7 @@
+2011-02-23  Thorsten Kahler  <thorsten.kahler@dkd.de>
+
+	* Fixed bug #17501: User setup - pressing return creates installtool file (Thanks to Steffen Kamper)
+
 2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17695: htmlArea RTE: Removing format may remove content
