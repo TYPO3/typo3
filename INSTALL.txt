@@ -1,0 +1,204 @@
+**************************
+* UNIX ARCHIVES OF TYPO3 *
+**************************
+
+INTRODUCTION
+============
+
+As you have downloaded this package you seem to know already about TYPO3.
+If you don't, visit http://typo3.org/ where you can find many useful
+information.
+
+This short guide lists the important steps to install this package.
+
+By default TYPO3 installs into the folder:
+   http://[your.site.name]/<this_site_name>/
+
+Read the additional instructions to install TYPO3 in the root folder:
+   http://[your.site.name]/
+
+
+IMPORTANT NOTE
+==============
+
+Please be aware of the fact that the file transfer protocol (FTP) does not
+support Symlinks. You cannot unpack these archives locally and copy them
+to your server using FTP, even if the target server actually is a Unix
+server.
+
+So if you don't have shell access, try to use a terminal emulator instead.
+(PHPshell to give you an example - Google knows all of them!)
+
+If this doesn't work you'll have to stick back to the ZIP version :-(
+
+
+NEWBIE INFORMATION ABOUT THE TYPO3 FILESYSTEM STRUCTURE
+=======================================================
+
+A Unix TYPO3 installation consists of two parts:
+     1) The "source" package
+     2) The "dummy" package
+
+The dummy package contains the skeleton directory structure for a TYPO3
+installation and a symlink ('typo3_src') to the location of the source
+package which contains all the PHP files, images, JavaScript files, etc.
+that TYPO3 needs to run.
+
+In other words: You can have several TYPO3 installations with just one
+source package. A typical directory structure looks like this:
+
+/var/www/typo3_src-3.8.1/   # the untared 3.8.0 source package
+/var/www/typo3_src-4.1/     # the untared 4.1 source package
+/var/www/installation1/     # the untared dummy package of a TYPO3
+                            # installation running on TYPO3 3.8.1
+    /typo3_src  --> ../typo3_src-3.8.1/   # a symlink to the 3.8.1 source
+    /typo3conf/
+    /typo3temp/
+    /fileadmin/
+    /.../
+/var/www/installation2/     # the untared dummy package of a TYPO3
+                            # installation running on TYPO3 4.1
+    /typo3_src  --> ../typo3_src-4.1/     # a symlink to the 4.1 source
+    /typo3conf/
+    /typo3temp/
+    /fileadmin/
+    /.../
+
+As you see, the two TYPO3-installations (possibly with different domains)
+can use the same TYPO3 source package. You can even change the source
+package simply be changing the symlink inside the installation directory.
+
+
+STEP BY STEP
+============
+
+1 Get the TYPO3 source package and the TYPO3 dummy package.
+
+2 Copy the archives to the web root of your server.
+  (Debian default is /var/www/, SuSE default is /srv/www/)
+
+3 Unpack the archives:
+  $ tar xzf typo3_src-<version>.tar.gz
+  $ tar xfz dummy-<version>.tar.gz
+
+4 Rename the dummy-<version> directory to fit your needs and make sure it
+  is accessible by your webserver (for example by creating a virtual
+  host). We assume you rename the directory to cms:
+  $ mv dummy-<version> cms
+
+5 Set permissions (as root): There are at least two options.
+  These steps will make four directories writable for the webserver:
+  - cms/fileadmin/
+  - cms/typo3conf/
+  - cms/typo3temp/
+  - cms/uploads/
+
+	5.a (recommended)
+	    Run these commands as root in the cms/ directory:
+	    # chgrp -R <wwwserver> fileadmin typo3conf typo3temp uploads
+	    # chmod -R g+w,o-rwx fileadmin typo3conf typo3temp uploads
+
+	    ... where <wwwserver> is the name of the group your webserver
+	    is running as
+
+	5.b (insecure but easy to apply)
+	    I repeat: This is insecure!
+	    Do not use this method if you are working on a shared server!
+
+	    Simply run this command:
+	    $ chmod -R a+w fileadmin typo3conf typo3temp uploads
+
+6 Check the symlink cms/typo3_src and make sure it points to the source
+  directory.
+  (See above: "Newbie information about the TYPO3 filesystem structure")
+
+7 In your browser, visit
+  http://[your.site.name]/cms/
+
+8 Follow the instructions in the 1-2-3 install tool
+
+9 From this point, you can access the backend through
+  http://[your.site.name]/cms/typo3/
+  with the username "admin" and password "password".
+
+That's it :-)
+
+
+INSTALLING TYPO3 IN THE WEBROOT FOLDER
+======================================
+
+1 Follow the steps 1-6 above.
+
+2 Move the files in the cms/ folder up one level.
+
+  $ cd cms
+  $ mv * ../
+  $ cd ../
+
+3 Update the symlink
+
+  $ rm typo3_src
+  $ ln -s ./typo3_src-<version> typo3_src
+
+4 Now TYPO3 runs in http://[your.site.name]/
+
+That's it :-)
+
+
+WHAT SHOULD YOU DO IF YOU HAVE A PROBLEM?
+=========================================
+
+TYPO3 is a powerful and complex professional application. When you start
+out there will be many things you don´t understand, or that don't seem to
+make sense. There is a widely used mailing list (more information on
+typo3.com & typo3.org) where many experienced users and developers
+lurk... they are always willing to help, provided you followed these steps
+BEFORE you ask your question:
+
+1 - Read all available documentation carefully
+
+2 - Read the webserver error logfiles
+    (for example /var/log/apache/error.log)
+
+3 - Read all available documentation again
+
+4 - Search the mailing list archive carefully
+
+5 - If you still can't figure it out - ask the list...:
+      - Newsgroup:     news://news.netfielders.de/
+      - Mailing lists: http://lists.netfielders.de/
+
+    When posting to one of the lists, see the following guidelines...
+      - Be polite
+	 Always include the version of used TYPO3 and server environment
+	 (phpinfo())... note that this is available within the TYPO3
+	 Install Tool
+      - Be as specific and clear as possible - questions like "my TYPO3
+	 installation does not work - what can I do???" will be ignored.
+	 Although English may not be your first language, if those reading
+	 your posting can't understand it, you won't get the help you need
+      - If you are really having a tough time getting something working,
+	 stay cool and don't criticise or flame. Problems are normally
+	 caused by lack of research into the documentation, or
+	 misunderstanding, not because of bugs. Be logical about your
+	 troubleshooting, and you'll get there
+
+6 - If you have identified a genuine new bug, report it at
+    http://bugs.typo3.org/ ...do not post to the list about it
+
+Please be aware that if you ask questions that are answered in the
+available documentation, you may not get a reply, or any help from the
+developers or any experienced users!
+
+We are aware that there is still some work to be done on the
+documentation, and the platform for user support... please forgive us for
+not having all these gaps filled. If you feel that some information is
+missing, hard to find or just plain wrong, or you have a suggestion on
+improving TYPO3 or the "support services", please let us know so that we
+can do what is necessary. You could also volunteer to help with the work!
+
+(c) Nigel Jackson, Ingmar Schlecht
+    Unix related additions made by Michael Stucki and some Wiki users:
+    http://wiki.typo3.org/index.php/Tgz-INSTALL.txt
+
+-- Michael Stucki <michael@typo3.org>  Tue, 06 Mar 2007  01:22:12 +0100
