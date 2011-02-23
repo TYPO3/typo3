@@ -73,7 +73,6 @@ class t3lib_formmail {
 	/** @var t3lib_mail_Message */
 	protected $mailMessage;
 	protected $recipient;
-	protected $returnPath;
 	protected $plainContent = '';
 
 	/** @var array Files to clean up at the end (attachments) */
@@ -104,12 +103,6 @@ class t3lib_formmail {
 	function start($valueList, $base64 = false) {
 
 		$this->mailMessage = t3lib_div::makeInstance('t3lib_mail_Message');
-
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath']) {
-			$this->returnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
-			$this->mailMessage->setReturnPath($this->returnPath);
-		}
-		$this->mailMessage->getHeaders()->addTextHeader('X-Mailer', 'TYPO3');
 
 		if ($GLOBALS['TSFE']->config['config']['formMailCharset']) {
 				// Respect formMailCharset if it was set
@@ -328,9 +321,6 @@ class t3lib_formmail {
 					->setSubject($theParts[0])
 					->setFrom($this->recipient)
 					->setBody($theParts[1]);
-			if ($this->returnPath) {
-				$autoRespondMail->setReturnPath($this->returnPath);
-			}
 			$autoRespondMail->send();
 		}
 		return $this->mailMessage->isSent();
