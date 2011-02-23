@@ -9,6 +9,15 @@ $Id$
 	width: 500px;
 }
 
+#typo3-mod-help-about-index-php-outer #donation-description {
+	padding-left: 60px;
+	margin: 10px 0;
+}
+
+#typo3-mod-help-about-index-php-outer .donation-button input {
+	padding-left: 20px;
+}
+
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
 	margin: 10px auto 20px;
 	padding: 10px;

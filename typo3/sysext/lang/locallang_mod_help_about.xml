@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="title">About TYPO3</label>
 			<label index="typo3_logo">TYPO3 logo</label>
 			<label index="information">TYPO3 Information</label>
 			<label index="welcome">TYPO3 Professional Web Content Management System</label>
@@ -21,6 +22,9 @@
 			<label index="mlang_labels_tablabel">About TYPO3</label>
 			<label index="mlang_labels_tabdescr">Displays the basic facts about the TYPO3 application, version and licensing terms.</label>
 			<label index="mlang_tabs_tab">About TYPO3</label>
+			<label index="donation_header">TYPO3 Donation</label>
+			<label index="donation_message">It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</label>
+			<label index="donation_button">Donate now</label>
 		</languageKey>
 	</data>
 </T3locallang>
