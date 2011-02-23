@@ -50,6 +50,13 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	rootVisible: false,
 
 	/**
+	 * Tree Editor Instance (Inline Edit)
+	 *
+	 * @type {TYPO3.Components.PageTree.TreeEditor}
+	 */
+	treeEditor: null,
+
+	/**
 	 * Enable the drag and drop feature
 	 *
 	 * @cfg {Boolean}
@@ -365,7 +372,19 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 * @return {void}
 	 */
 	enableInlineEditor: function() {
-		(new TYPO3.Components.PageTree.TreeEditor(this));
+		this.treeEditor = new TYPO3.Components.PageTree.TreeEditor(this);
+	},
+
+	/**
+	 * Triggers the editing of the node if the tree editor is available
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	triggerEdit: function(node) {
+		if (this.treeEditor) {
+			this.treeEditor.triggerEdit(node);
+		}
 	},
 
 	/**
@@ -443,7 +462,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 * Enables the deletion drop zone if configured. Also it creates the
 	 * shown dd proxy element.
 	 *
-	 * @param {TYPO3.Components.PageTree.Tree} treePane
+	 * @param {TYPO3.Components.PageTree.Tree} treePanel
 	 * @param {Ext.tree.TreeNode} node
 	 * @return {void}
 	 */

@@ -1,5 +1,9 @@
+2011-02-23  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17702: Directly open "inline edit" of page title after creating a new page with drag and drop in the pagetree (Thanks to Stefan Galinski)
+
 2011-02-23  Ernesto Baschny  <ernst@cron-it.de>
- 
+
 	* Fixed bug #17314: Swift_RfcComplianceException is always thrown in t3lib_formmail when forceReturnPath=1 is set
 
 2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>

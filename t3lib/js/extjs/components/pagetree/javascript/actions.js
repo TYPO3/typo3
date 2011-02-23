@@ -74,9 +74,10 @@ TYPO3.Components.PageTree.Actions = {
 	 * @param {Ext.tree.TreeNode} node
 	 * @param {Boolean} isExpanded
 	 * @param {Object} updatedNode
+	 * @param {Function} callback
 	 * @return {Ext.tree.TreeNode}
 	 */
-	updateNode: function(node, isExpanded, updatedNode) {
+	updateNode: function(node, isExpanded, updatedNode, callback) {
 		if (!updatedNode) {
 			return null;
 		}
@@ -84,17 +85,31 @@ TYPO3.Components.PageTree.Actions = {
 		updatedNode.uiProvider = node.ownerTree.uiProvider;
 		var newTreeNode = new Ext.tree.TreeNode(updatedNode);
 
+		var refreshCallback = this.restoreNodeStateAfterRefresh;
+		if (callback) {
+			refreshCallback = refreshCallback.createSequence(callback);
+		}
+
 		node.parentNode.replaceChild(newTreeNode, node);
-		newTreeNode.ownerTree.refreshNode(newTreeNode, function() {
-			newTreeNode.parentNode.expand(false, false);
-			if (isExpanded) {
-				newTreeNode.expand(false, false);
-			} else {
-				newTreeNode.collapse(false, false);
-			}
-		});
+		newTreeNode.ownerTree.refreshNode(newTreeNode, refreshCallback);
 
 		return newTreeNode;
+	},
+
+	/**
+	 * Restores the node state
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @param {Boolean} isExpanded
+	 * @return {void}
+	 */
+	restoreNodeStateAfterRefresh: function(node, isExpanded) {
+		node.parentNode.expand(false, false);
+		if (isExpanded) {
+			node.expand(false, false);
+		} else {
+			node.collapse(false, false);
+		}
 	},
 
 	/**
@@ -551,7 +566,9 @@ TYPO3.Components.PageTree.Actions = {
 			tree.t3ContextInfo.serverNodeType,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					this.updateNode(node, node.isExpanded(), response);
+					this.updateNode(node, node.isExpanded(), response, function(node) {
+						tree.triggerEdit(node);
+					});
 				}
 				this.releaseCutAndCopyModes(tree);
 			},
@@ -572,7 +589,9 @@ TYPO3.Components.PageTree.Actions = {
 			tree.t3ContextInfo.serverNodeType,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					node = this.updateNode(node, true, response);
+					this.updateNode(node, true, response, function(node) {
+						tree.triggerEdit(node);
+					});
 				}
 				this.releaseCutAndCopyModes(tree);
 			},
@@ -593,7 +612,9 @@ TYPO3.Components.PageTree.Actions = {
 			node.previousSibling.attributes.nodeData.id,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					this.updateNode(node, true, response);
+					this.updateNode(node, true, response, function(node) {
+						tree.triggerEdit(node);
+					});
 				}
 				this.releaseCutAndCopyModes(tree);
 			},
@@ -614,7 +635,9 @@ TYPO3.Components.PageTree.Actions = {
 			node.parentNode.attributes.nodeData.id,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					this.updateNode(node, true, response);
+					this.updateNode(node, true, response, function(node) {
+						tree.triggerEdit(node);
+					});
 				}
 				this.releaseCutAndCopyModes(tree);
 			},
