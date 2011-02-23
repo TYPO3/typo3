@@ -1,3 +1,7 @@
+2011-02-23  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #17719: Move donation popup to about module (thanks to Steffen Kamper)
+
 2011-02-23  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17520: Pagetree - Locked records are not indicated anymore (Thanks to Stefan Galinski)
