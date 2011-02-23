@@ -117,6 +117,7 @@ class SC_mod_user_setup_index {
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
 	protected $tempDataIsCleared = FALSE;
+	protected $dataIsResetted = FALSE;
 
 
 	/******************************
@@ -157,6 +158,7 @@ class SC_mod_user_setup_index {
 			if ($d['setValuesToDefault']) {
 					// If every value should be default
 				$BE_USER->resetUC();
+				$this->dataIsResetted = TRUE;
 			} elseif ($d['clearSessionVars']) {
 				foreach ($BE_USER->uc as $key => $value) {
 					if (!isset($columns[$key])) {
@@ -372,7 +374,7 @@ class SC_mod_user_setup_index {
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
 
 			// show if setup was saved
-		if ($this->setupIsUpdated) {
+		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->dataIsResetted) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$LANG->getLL('setupWasUpdated'),
@@ -386,6 +388,15 @@ class SC_mod_user_setup_index {
 				't3lib_FlashMessage',
 				$LANG->getLL('tempDataClearedFlashMessage'),
 				$LANG->getLL('tempDataCleared')
+			);
+			$this->content .= $flashMessage->render();
+		}
+			// Show if temporary data was cleared
+		if ($this->dataIsResetted) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('dataResetted'),
+				$LANG->getLL('resetConfiguration')
 			);
 			$this->content .= $flashMessage->render();
 		}
@@ -776,9 +787,16 @@ class SC_mod_user_setup_index {
 		}
 
 		if ($installToolEnableFileExists) {
-			return '<input type="submit" name="deleteInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
+			return '<input type="button" name="_deleteInstallToolEnableFile" value="' .
+				$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') .
+				'" onclick="document.getElementById(\'deleteInstallToolEnableFile\').value=1;this.form.submit();" />' .
+				'<input type="hidden" name="deleteInstallToolEnableFile" value="0" id="deleteInstallToolEnableFile" />';
 		} else {
-			return '<input type="submit" name="createInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" />';
+			return '<input type="button" name="_createInstallToolEnableFile" value="' .
+				$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') .
+				'" onclick="document.getElementById(\'createInstallToolEnableFile\').value=1;this.form.submit();"' .
+				'" />' .
+				'<input type="hidden" name="createInstallToolEnableFile" value="0" id="createInstallToolEnableFile" />';
 		}
 	}
 
@@ -895,10 +913,10 @@ class SC_mod_user_setup_index {
 		}
 		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $this->doc->backPath, '|', false, 'margin-bottom:0px;');
 	}
-	
+
 	/**
 	 * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
-	 * 
+	 *
 	 * @param	void
 	 * @return	array	array with fieldnames visible in form
 	 */
