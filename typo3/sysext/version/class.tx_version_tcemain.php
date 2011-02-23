@@ -91,7 +91,7 @@ class tx_version_tcemain {
 
 			// custom command "version"
 		if ($command == 'version') {
-			$commandWasProcessed = TRUE;
+			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
 			switch ($action) {
 
@@ -1159,7 +1159,7 @@ class tx_version_tcemain {
 	 * @param integer $offlineId As above but offline
 	 * @return array Element data. Key is table name, values are array with first element as online UID, second - offline UID
 	 */
-	protected function findPageElementsForVersionSwap($table, $id, $offlineId) {
+	public function findPageElementsForVersionSwap($table, $id, $offlineId) {
 		global	$TCA;
 
 		$rec = t3lib_BEfunc::getRecord($table, $offlineId, 't3ver_wsid');
@@ -1208,7 +1208,7 @@ class tx_version_tcemain {
 	 * @param array $elementList List of found elements. Key is table name, value is array of element UIDs
 	 * @return void
 	 */
-	protected function findPageElementsForVersionStageChange(array $pageIdList, $workspaceId, array &$elementList) {
+	public function findPageElementsForVersionStageChange(array $pageIdList, $workspaceId, array &$elementList) {
 		global $TCA;
 
 		if ($workspaceId != 0) {
@@ -1248,7 +1248,7 @@ class tx_version_tcemain {
 	 * @param array $elementList List of found element UIDs. Key is table name, value is list of UIDs
 	 * @return void
 	 */
-	protected function findPageIdsForVersionStateChange($table, array $idList, $workspaceId, array &$pageIdList, array &$elementList) {
+	public function findPageIdsForVersionStateChange($table, array $idList, $workspaceId, array &$pageIdList, array &$elementList) {
 		if ($workspaceId != 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid',
 				$table . ' A,' . $table . ' B',
@@ -1283,7 +1283,7 @@ class tx_version_tcemain {
 	 * @param	array	$idList	List of page UIDs, possibly versioned
 	 * @return	void
 	 */
-	protected function findRealPageIds(array &$idList) {
+	public function findRealPageIds(array &$idList) {
 		foreach ($idList as $key => $id) {
 			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_oid');
 			if ($rec['t3ver_oid'] > 0) {

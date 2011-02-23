@@ -167,8 +167,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$this->MOD_MENU['display'][-1] = $GLOBALS['LANG']->getLL('defaultDraft');
 		}
 
-			// Add workspaces:
-		if ($GLOBALS['BE_USER']->workspace===0)	{	// Spend time on this only in online workspace because it might take time:
+			// Add workspaces (only if the live workspace is currently active):
+		if (t3lib_extMgm::isLoaded('workspaces') && $GLOBALS['BE_USER']->workspace ===0 ) {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
 			foreach($workspaces as $rec)	{
 				if ($GLOBALS['BE_USER']->checkWorkspace($rec))	{

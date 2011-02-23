@@ -65,6 +65,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
 		$this->view->assign('activeWorkspaceTitle', tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
+		$this->view->assign('showPreviewLink', $wsService->canCreatePreviewLink( t3lib_div::_GP('id'), $activeWorkspace));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
 	}
 
@@ -85,6 +86,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
 			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+			$this->view->assign('showPreviewLink', FALSE);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 				// set flag for javascript
 			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
@@ -110,6 +112,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('showGrid', true);
 		$this->view->assign('showAllWorkspaceTab', false);
 		$this->view->assign('workspaceList', $wsList);
+		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
 	}
 
@@ -121,6 +124,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
+
+		$this->template->setExtDirectStateProvider();
 
 		if (tx_Workspaces_Service_Workspaces::isOldStyleWorkspaceUsed()) {
 			$message = t3lib_div::makeInstance(
@@ -135,11 +140,15 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
-		$this->pageRenderer->enableExtJsDebug();
+
+		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
+		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
+
 
 			// Load  JavaScript:
-		$this->pageRenderer->addExtDirectCode();
-		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Workspaces&' . TYPO3_version, NULL, FALSE);
+		$this->pageRenderer->addExtDirectCode(array(
+			'TYPO3.Workspaces'
+		));
 
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.grid.RowExpander.js');
