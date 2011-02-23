@@ -5593,44 +5593,68 @@ class t3lib_TCEforms	{
 				browserWin = window.open(url,"Typo3WinBrowser","height=650,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
 				browserWin.focus();
 			}
-			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues)	{	//
+			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues) {
 				var formObj = setFormValue_getFObj(fName)
-				if (formObj && value!="--div--")	{
-					fObj = formObj[fName+"_list"];
+				if (formObj && value != "--div--") {
+						// Check if the form object has a "_list" element or not
+						// The "_list" element exists for multiple selection select types
+					var isMultiple = true;
+					if (formObj[fName + "_list"]) {
+						fObj = formObj[fName + "_list"];
+					} else {
+						fObj = formObj[fName];
+						var isMultiple = false;
+					}
 					var len = fObj.length;
-						// Clear elements if exclusive values are found
-					if (exclusiveValues)	{
-						var m = new RegExp("(^|,)"+value+"($|,)");
-						if (exclusiveValues.match(m))	{
-								// the new value is exclusive
-							for (a=len-1;a>=0;a--)	fObj[a] = null;
-							len = 0;
-						} else if (len == 1)	{
-							m = new RegExp("(^|,)"+fObj.options[0].value+"($|,)");
-							if (exclusiveValues.match(m))	{
-									// the old value is exclusive
-								fObj[0] = null;
-								len = 0;
-							}
-						}
-					}
-						// Inserting element
-					var setOK = 1;
-					if (!formObj[fName+"_mul"] || formObj[fName+"_mul"].value==0)	{
-						for (a=0;a<len;a++)	{
-							if (fObj.options[a].value==value)	{
-								setOK = 0;
-							}
-						}
-					}
-					if (setOK)	{
-						fObj.length++;
-						fObj.options[len].value = value;
-						fObj.options[len].text = unescape(label);
 
-							// Traversing list and set the hidden-field
-						setHiddenFromList(fObj,formObj[fName]);
-						'.$this->TBE_EDITOR_fieldChanged_func.'
+					if (isMultiple) {
+							// Clear elements if exclusive values are found
+						if (exclusiveValues){
+							var m = new RegExp("(^|,)" + value + "($|,)");
+							if (exclusiveValues.match(m)) {
+									// the new value is exclusive
+								for (a = len-1; a >= 0; a--) {
+									fObj[a] = null;
+								}
+								len = 0;
+							} else if (len == 1)	{
+								m = new RegExp("(^|,)"+fObj.options[0].value+"($|,)");
+								if (exclusiveValues.match(m))	{
+										// the old value is exclusive
+									fObj[0] = null;
+									len = 0;
+								}
+							}
+						}
+							// Inserting element
+						var setOK = 1;
+						if (!formObj[fName + "_mul"] || formObj[fName + "_mul"].value == 0) {
+							for (a = 0; a < len; a++)	{
+								if (fObj.options[a].value == value) {
+									setOK = 0;
+								}
+							}
+						}
+						if (setOK) {
+							fObj.length++;
+							fObj.options[len].value = value;
+							fObj.options[len].text = unescape(label);
+
+								// Traversing list and set the hidden-field
+							setHiddenFromList(fObj, formObj[fName]);
+							'.$this->TBE_EDITOR_fieldChanged_func.'
+						}
+					} else {
+							// The incoming value consists of the table name, an underscore and the uid
+							// For a single selection field we need only the uid, so we extract it
+						var uidValue = value;
+						var pattern = /_(\d+)$/;
+						var result = value.match(pattern);
+						if (result != null) {
+							uidValue = result[1];
+						}
+							// Change the selected value
+						fObj.value = uidValue;
 					}
 				}
 			}
@@ -5774,13 +5798,14 @@ class t3lib_TCEforms	{
 					'.$this->TBE_EDITOR_fieldChanged_func.'
 				}
 			}
-			function setFormValue_getFObj(fName)	{	//
-				var formObj = '.$formObj.';
-				if (formObj)	{
-					if (formObj[fName] && formObj[fName+"_list"] && formObj[fName+"_list"].type=="select-multiple")	{
+			function setFormValue_getFObj(fName) {
+				var formObj = ' . $formObj . ';
+				if (formObj) {
+						// Take the form object if it is either of type select-one or of type-multiple and it has a "_list" element
+					if (formObj[fName] && ((formObj[fName].type == "select-one") || (formObj[fName + "_list"] && formObj[fName + "_list"].type == "select-multiple"))) {
 						return formObj;
 					} else {
-						alert("Formfields missing:\n fName: "+formObj[fName]+"\n fName_list:"+formObj[fName+"_list"]+"\n type:"+formObj[fName+"_list"].type+"\n fName:"+fName);
+						alert("Formfields missing:\n fName: " + formObj[fName] + "\n fName_list:" + formObj[fName + "_list"] + "\n type:" + formObj[fName+"_list"].type + "\n fName:" + fName);
 					}
 				}
 				return "";
