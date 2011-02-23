@@ -1,5 +1,6 @@
 2011-02-23  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Updated ext_emconf.php for several changed sysext's
 	* Merged Linkvalidator 1.0.1 to be included in 4.5.1 (Thanks to Michael Miousse and Christopher Stelmaszyk). Includes these fixes:
 	* Fixed Bug #f12649: Linkvalidator: Split up analyzeRecord()
 	* Fixed bug #f12652: Linkvalidator: If none of the link types are marked to be checked, all of them are checked
