@@ -1,3 +1,7 @@
+2011-02-23  Francois Suter  <francois.suter@typo3.org>
+
+	* Fixed bug #16636: Suggest wizard does not work with drop-down select fields
+
 2011-02-22  Jigal van Hemert  <jigal@xs4all.nl>
 
 	* Fixed bug #16656: ImageMagick does not work with quotes in exec() path on Windows
