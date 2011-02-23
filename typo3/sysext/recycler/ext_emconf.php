@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "recycler".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 23-02-2011 11:00
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:34:{s:9:"ChangeLog";s:4:"7b94";s:12:"ext_icon.gif";s:4:"1426";s:17:"ext_localconf.php";s:4:"cee4";s:14:"ext_tables.php";s:4:"1a0d";s:16:"locallang_db.xml";s:4:"a06e";s:56:"classes/controller/class.tx_recycler_controller_ajax.php";s:4:"2189";s:43:"classes/helper/class.tx_recycler_helper.php";s:4:"c622";s:56:"classes/model/class.tx_recycler_model_deletedRecords.php";s:4:"5c5d";s:48:"classes/model/class.tx_recycler_model_tables.php";s:4:"283a";s:54:"classes/view/class.tx_recycler_view_deletedRecords.php";s:4:"08aa";s:14:"doc/manual.sxw";s:4:"3528";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"e060";s:14:"mod1/index.php";s:4:"e8b7";s:18:"mod1/locallang.xml";s:4:"7f2d";s:22:"mod1/locallang_mod.xml";s:4:"3a26";s:22:"mod1/mod_template.html";s:4:"7c59";s:19:"mod1/moduleicon.gif";s:4:"7ba2";s:23:"res/css/customExtJs.css";s:4:"32f9";s:20:"res/icons/accept.png";s:4:"e36c";s:24:"res/icons/arrow_redo.png";s:4:"5e7c";s:40:"res/icons/arrow_rotate_anticlockwise.png";s:4:"d471";s:17:"res/icons/bin.png";s:4:"62fd";s:24:"res/icons/bin_closed.png";s:4:"3ed7";s:23:"res/icons/bin_empty.png";s:4:"3979";s:27:"res/icons/database_save.png";s:4:"33b7";s:20:"res/icons/delete.gif";s:4:"1a79";s:26:"res/icons/filter_clear.png";s:4:"fb1a";s:28:"res/icons/filter_refresh.png";s:4:"1d4b";s:21:"res/icons/loading.gif";s:4:"8ae1";s:22:"res/icons/recycler.gif";s:4:"26d8";s:23:"res/icons/recycler2.gif";s:4:"cf3b";s:26:"res/icons/x_toolbar_bg.gif";s:4:"b312";s:21:"res/js/t3_recycler.js";s:4:"f1b4";}',
+	'_md5_values_when_last_written' => 'a:34:{s:9:"ChangeLog";s:4:"7b94";s:12:"ext_icon.gif";s:4:"1426";s:17:"ext_localconf.php";s:4:"cee4";s:14:"ext_tables.php";s:4:"1a0d";s:16:"locallang_db.xml";s:4:"a06e";s:56:"classes/controller/class.tx_recycler_controller_ajax.php";s:4:"2189";s:43:"classes/helper/class.tx_recycler_helper.php";s:4:"c622";s:56:"classes/model/class.tx_recycler_model_deletedRecords.php";s:4:"5c5d";s:48:"classes/model/class.tx_recycler_model_tables.php";s:4:"283a";s:54:"classes/view/class.tx_recycler_view_deletedRecords.php";s:4:"e611";s:14:"doc/manual.sxw";s:4:"3528";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"e060";s:14:"mod1/index.php";s:4:"e8b7";s:18:"mod1/locallang.xml";s:4:"7f2d";s:22:"mod1/locallang_mod.xml";s:4:"3a26";s:22:"mod1/mod_template.html";s:4:"7c59";s:19:"mod1/moduleicon.gif";s:4:"7ba2";s:23:"res/css/customExtJs.css";s:4:"32f9";s:20:"res/icons/accept.png";s:4:"e36c";s:24:"res/icons/arrow_redo.png";s:4:"5e7c";s:40:"res/icons/arrow_rotate_anticlockwise.png";s:4:"d471";s:17:"res/icons/bin.png";s:4:"62fd";s:24:"res/icons/bin_closed.png";s:4:"3ed7";s:23:"res/icons/bin_empty.png";s:4:"3979";s:27:"res/icons/database_save.png";s:4:"33b7";s:20:"res/icons/delete.gif";s:4:"1a79";s:26:"res/icons/filter_clear.png";s:4:"fb1a";s:28:"res/icons/filter_refresh.png";s:4:"1d4b";s:21:"res/icons/loading.gif";s:4:"8ae1";s:22:"res/icons/recycler.gif";s:4:"26d8";s:23:"res/icons/recycler2.gif";s:4:"cf3b";s:26:"res/icons/x_toolbar_bg.gif";s:4:"b312";s:21:"res/js/t3_recycler.js";s:4:"f1b4";}',
 	'suggests' => array(
 	),
 );
