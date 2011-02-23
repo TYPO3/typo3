@@ -1,3 +1,7 @@
+2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #17511: tx_install_session::write doesn't fix permissions
+
 2011-02-23  Francois Suter  <francois.suter@typo3.org>
 
 	* Fixed bug #16636: Suggest wizard does not work with drop-down select fields

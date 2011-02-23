@@ -138,7 +138,7 @@ class tx_install_session {
 	 */
 	private function getSessionSavePath() {
 		return sprintf(
-			$this->typo3tempPath . '/' . $this->sessionPath,
+			$this->typo3tempPath . $this->sessionPath,
 			md5(
 				'session:' .
 					$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']
@@ -344,13 +344,7 @@ class tx_install_session {
 	 */
 	public function write($id, $sessionData) {
 		$sessionFile = $this->getSessionFile($id);
-		if ($fp = @fopen($sessionFile, 'w')) {
-			$return = fwrite($fp, $sessionData);
-			fclose($fp);
-			return $return;
-		} else {
-			return FALSE;
-		}
+		return t3lib_div::writeFile($sessionFile, $sessionData);
 	}
 
 	/**
