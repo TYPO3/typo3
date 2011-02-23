@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -118,25 +118,25 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page, $softRefEntry, $reference) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'uid, title, deleted, hidden, starttime, endtime',
 			'pages',
 			'uid = ' . intval($page)
 		);
 		$this->responsePage = TRUE;
 
-		if ($rows[0]) {
-			if ($rows[0]['deleted'] == '1') {
+		if ($row) {
+			if ($row['deleted'] == '1') {
 				$this->errorParams['errorType']['page'] = DELETED;
-				$this->errorParams['page']['title'] = $rows[0]['title'];
-				$this->errorParams['page']['uid'] = $rows[0]['uid'];
+				$this->errorParams['page']['title'] = $row['title'];
+				$this->errorParams['page']['uid'] = $row['uid'];
 				$this->responsePage = FALSE;
-			} elseif ($rows[0]['hidden'] == '1'
-				|| $GLOBALS['EXEC_TIME'] < intval($rows[0]['starttime'])
-				|| ($rows[0]['endtime'] && intval($rows[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
+			} elseif ($row['hidden'] == '1'
+				|| $GLOBALS['EXEC_TIME'] < intval($row['starttime'])
+				|| ($row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME'])) {
 				$this->errorParams['errorType']['page'] = HIDDEN;
-				$this->errorParams['page']['title'] = $rows[0]['title'];
-				$this->errorParams['page']['uid'] = $rows[0]['uid'];
+				$this->errorParams['page']['title'] = $row['title'];
+				$this->errorParams['page']['uid'] = $row['uid'];
 				$this->responsePage = FALSE;
 			}
 		} else {
@@ -159,7 +159,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 */
 	protected function checkContent($page, $anchor, $softRefEntry, $reference) {
 			// Get page ID on which the content element in fact is located
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'uid, pid, header, deleted, hidden, starttime, endtime',
 			'tt_content',
 			'uid = ' . intval($anchor)
@@ -167,9 +167,9 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 		$this->responseContent = TRUE;
 
 			// this content element exists
-		if ($res[0]) {
+		if ($res) {
 				// page ID on which this CE is in fact located.
-			$correctPageID = $res[0]['pid'];
+			$correctPageID = $res['pid'];
 
 				// check if the element is on the linked page
 				// (the element might have been moved to another page)
@@ -182,17 +182,17 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 
 			} else {
 					// the element is located on the page to which the link is pointing
-				if ($res[0]['deleted'] == '1') {
+				if ($res['deleted'] == '1') {
 					$this->errorParams['errorType']['content'] = DELETED;
-					$this->errorParams['content']['title'] = $res[0]['header'];
-					$this->errorParams['content']['uid'] = $res[0]['uid'];
+					$this->errorParams['content']['title'] = $res['header'];
+					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
-				} elseif ($res[0]['hidden'] == '1'
-					|| $GLOBALS['EXEC_TIME'] < intval($res[0]['starttime'])
-					|| ($res[0]['endtime'] && intval($res[0]['endtime']) < $GLOBALS['EXEC_TIME'])) {
+				} elseif ($res['hidden'] == '1'
+					|| $GLOBALS['EXEC_TIME'] < intval($res['starttime'])
+					|| ($res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME'])) {
 					$this->errorParams['errorType']['content'] = HIDDEN;
-					$this->errorParams['content']['title'] = $res[0]['header'];
-					$this->errorParams['content']['uid'] = $res[0]['uid'];
+					$this->errorParams['content']['title'] = $res['header'];
+					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
 				}
 			}
@@ -208,7 +208,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing. 
+	 * Generate the localized error message from the error params saved from the parsing.
 	 *
 	 * @param   array    all parameters needed for the rendering of the error message
 	 * @return  string    validation error message
@@ -229,7 +229,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
 					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
 					break;
-            
+
 				default:
 					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
 					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
@@ -269,7 +269,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 		} elseif ($errorPage) {
 			$response = $errorPage;
 		} elseif ($errorContent) {
-			$response = $errorContent; 
+			$response = $errorContent;
 		}
 
 		return $response;

@@ -125,11 +125,13 @@ Note: Linkvalidator uses a database table to store information about the broken 
 mail.fromname
 string
 Set the from name of the report mail sent by the cron script. 
-Linkvalidator
+Install Tool
+defaultMailFromName
 mail.fromemail
 string
 Set the from email of the report mail sent by the cron script. 
-Linkvalidator@example.com
+Install Tool
+defaultMailFromAddress
 mail.replytoname
 string
 Set the replyto name of the report mail sent by the cron script. 
