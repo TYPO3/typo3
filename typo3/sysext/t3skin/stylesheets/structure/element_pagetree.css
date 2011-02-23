@@ -45,6 +45,12 @@ $Id: $
 	padding-top: 15px;
 }
 
+.x-tree-node a .typo3-pagetree-status,
+.x-dd-drag-ghost a .typo3-pagetree-status {
+	padding: 0;
+	margin: 0 3px 0 0;
+}
+
 /**
  *
  * section drag and drop
