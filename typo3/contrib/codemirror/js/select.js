@@ -164,7 +164,9 @@ var select = {};
   if (select.ie_selection) {
     function selRange() {
       var sel = document.selection;
-      return sel && (sel.createRange || sel.createTextRange)();
+      if (!sel) return null;
+      if (sel.createRange) return sel.createRange();
+      else return sel.createTextRange();
     }
 
     function selectionNode(start) {

@@ -99,7 +99,8 @@ var CodeMirror = (function(){
     if (typeof options.stylesheet == "string")
       options.stylesheet = [options.stylesheet];
 
-    var html = ["<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head>"];
+    var sp = " spellcheck=\"" + (options.disableSpellcheck ? "false" : "true") + "\"";
+    var html = ["<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html" + sp + "><head>"];
     // Hack to work around a bunch of IE8-specific problems.
     html.push("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE7\"/>");
     var queryStr = options.noScriptCaching ? "?nocache=" + new Date().getTime().toString(16) : "";
@@ -110,8 +111,7 @@ var CodeMirror = (function(){
       if (!/^https?:/.test(file)) file = options.path + file;
       html.push("<script type=\"text/javascript\" src=\"" + file + queryStr + "\"><" + "/script>");
     });
-    html.push("</head><body style=\"border-width: 0;\" class=\"editbox\" spellcheck=\"" +
-              (options.disableSpellcheck ? "false" : "true") + "\"></body></html>");
+    html.push("</head><body style=\"border-width: 0;\" class=\"editbox\"" + sp + "></body></html>");
     return html.join("");
   }
 
@@ -532,7 +532,7 @@ var CodeMirror = (function(){
         area.form.submit();
         area.form.submit = wrapSubmit;
       }
-      area.form.submit = wrapSubmit;
+      try {area.form.submit = wrapSubmit;} catch(e){}
     }
 
     function insert(frame) {
@@ -550,7 +550,7 @@ var CodeMirror = (function(){
       area.parentNode.removeChild(mirror.wrapping);
       area.style.display = "";
       if (area.form) {
-        area.form.submit = realSubmit;
+        try {area.form.submit = realSubmit;} catch(e) {}
         if (typeof area.form.removeEventListener == "function")
           area.form.removeEventListener("submit", updateField, false);
         else
