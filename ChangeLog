@@ -13,6 +13,7 @@
 
 2011-02-23  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed bug #17574: defaultMailFromName not used when defaultMailFromAddress is used in mailform (Thanks to Jigal van Hemert)
 	* Fixed bug #17314: Swift_RfcComplianceException is always thrown in t3lib_formmail when forceReturnPath=1 is set
 	* Updated ext_emconf.php for several changed sysext's
 	* Merged Linkvalidator 1.0.1 to be included in 4.5.1 (Thanks to Michael Miousse and Christopher Stelmaszyk). Includes these fixes:
