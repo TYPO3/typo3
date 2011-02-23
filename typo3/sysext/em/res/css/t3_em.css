@@ -220,7 +220,7 @@ a.email {
 }
 
 
-#localSearchField, #rsearchField {
+#localSearchField, #rsearchField, #myExtSearchField {
 	height: 21px !important;
 	padding: 0 20px;
 }
