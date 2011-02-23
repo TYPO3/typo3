@@ -10,3 +10,7 @@
 	white-space: nowrap;
 	overflow: auto;
 }
+/* overwrite codemirror css */
+span.syntax-error {
+	background-color: #FFDFE6 !important;
+}

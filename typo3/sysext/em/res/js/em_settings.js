@@ -309,9 +309,9 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 
 	saveFormHandler: function() {
 		this.getForm().submit({
-			waitMsg : 'Saving Settings...',
+			waitMsg : TYPO3.lang.action_saving_settings,
 			success: function(form, action) {
-				TYPO3.Flashmessage.display(TYPO3.Severity.information,'Settings', 'Settings were saved ', 5);
+				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.menu_settings, TYPO3.lang.settingsSaved, 5);
 				TYPO3.settings.EM.hasCredentials = (action.result.data.fe_u !== '' && action.result.data.fe_p !== '');
 					// enable/disable user extension tab
 				if (TYPO3.settings.EM.hasCredentials) {
@@ -499,8 +499,8 @@ TYPO3.EM.EditRepository = Ext.extend(Ext.Window, {
 			waitMsg : type === 0 ? TYPO3.lang.repository_saving : TYPO3.lang.repository_creating,
 			success: function(form, action) {
 				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.repository, type == 0
-						? String.format(TYPO3.lang.repository_created, action.result.params.title)
-						: String.format(TYPO3.lang.repository_created, action.result.params.title)
+						? String.format(TYPO3.lang.repository_saved, action.result.params.title)
+						: String.format(TYPO3.lang.repository_saved, action.result.params.title)
 						, 5);
 				Ext.StoreMgr.get('repositoriessettings').load();
 				this.close();

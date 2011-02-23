@@ -304,7 +304,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 
 		buttonPanel.hide();
 		progressBar.show();
-	    languagegrid.disable();
+		languagegrid.disable();
 
 
 		if (button.id === 'lang-checkbutton') {

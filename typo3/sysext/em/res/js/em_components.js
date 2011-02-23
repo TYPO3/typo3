@@ -39,6 +39,7 @@ Ext.ns('TYPO3.EM', 'TYPO3.EM.GridColumns', 'TYPO3.EM.ExtDirect', 'TYPO3.EMSOAP.E
 TYPO3.EM.Filters = new Ext.ux.grid.GridFilters({
 	encode: true,
 	local: true,
+	menuFilterText: TYPO3.lang.cmd_filter,
 	filters: [
 		{
 			type: 'string',
@@ -55,7 +56,15 @@ TYPO3.EM.Filters = new Ext.ux.grid.GridFilters({
 			}, {
 			type: 'list',
 			dataIndex: 'state',
-			options: ['alpha', 'beta', 'stable', 'experimental', 'test', 'obsolete', 'excludeFromUpdates'],
+			options: [
+				TYPO3.lang.state_alpha,
+				TYPO3.lang.state_beta,
+				TYPO3.lang.state_stable,
+				TYPO3.lang.state_experimental,
+				TYPO3.lang.state_test,
+				TYPO3.lang.state_obsolete,
+				TYPO3.lang.state_exclude_from_updates
+			],
 			phpMode: true
 			}, {
 			type: 'boolean',
@@ -100,7 +109,16 @@ TYPO3.EM.RemoteFilters = new Ext.ux.grid.GridFilters({
 		}, {
 		type: 'list',
 		dataIndex: 'statevalue',
-		options: [[0, 'alpha'], [1, 'beta'], [2, 'stable'], [3, 'experimental'], [4, 'test'], [5, 'obsolete'], [6, 'excludeFromUpdates'], [999, 'n/a']],
+		options: [
+			[0, TYPO3.lang.state_alpha],
+			[1, TYPO3.lang.state_beta],
+			[2, TYPO3.lang.state_stable],
+			[3, TYPO3.lang.state_experimental],
+			[4, TYPO3.lang.state_test],
+			[5, TYPO3.lang.state_obsolete],
+			[6, TYPO3.lang.state_exclude_from_updates],
+			[999, TYPO3.lang.translation_n_a]
+		],
 		phpMode: true
 		}, {
 		type: 'list',
@@ -386,7 +404,7 @@ TYPO3.EM.GridColumns.ExtensionState = {
 	filterable: true,
 	dataIndex:'state',
 	renderer: function(value, metaData, record, rowIndex, colIndex, store){
-		metaData.css += 'state-' + value + ' ';
+		metaData.css += record.data.stateCls + ' ';
 		return value;
 	}
 };
@@ -401,7 +419,7 @@ TYPO3.EM.GridColumns.ExtensionStateValue = {
 	hideable: true,
 	dataIndex:'statevalue',
 	renderer: function(value, metaData, record, rowIndex, colIndex, store){
-		metaData.css += 'state-' + record.data.state + ' ';
+		metaData.css += record.data.stateCls + ' ';
 		return record.data.state;
 	},
 	filterable: true
