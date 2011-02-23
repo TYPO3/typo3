@@ -127,11 +127,9 @@ class t3lib_formmail {
 					? $valueList['from_name']
 					: (($valueList['name']) ? $valueList['name'] : '');
 			$this->fromName = $this->sanitizeHeaderString($this->fromName);
-			$this->fromName = preg_match('/\s|,/', $this->fromName) >= 1 ? '"' . $this->fromName . '"' : $this->fromName;
 
 			$this->replyToName = ($valueList['replyto_name']) ? $valueList['replyto_name'] : $this->fromName;
 			$this->replyToName = $this->sanitizeHeaderString($this->replyToName);
-			$this->replyToName = preg_match('/\s|,/', $this->replyToName) >= 1 ? '"' . $this->replyToName . '"' : $this->replyToName;
 
 			$this->organisation = ($valueList['organisation']) ? $valueList['organisation'] : '';
 			$this->organisation = $this->sanitizeHeaderString($this->organisation);
@@ -139,14 +137,12 @@ class t3lib_formmail {
 			$this->fromAddress = ($valueList['from_email']) ? $valueList['from_email'] : (
 				($valueList['email']) ? $valueList['email'] : ''
 			);
-			$this->fromAddress = t3lib_div::validEmail($this->fromAddress)
-					? $this->fromAddress
-					: t3lib_utility_Mail::getSystemFromAddress();
+			if (!t3lib_div::validEmail($this->fromAddress)) {
+				$this->fromAddress = t3lib_utility_Mail::getSystemFromAddress();
+				$this->fromName = t3lib_utility_Mail::getSystemFromName();
+			}
 
 			$this->replyToAddress = ($valueList['replyto_email']) ? $valueList['replyto_email'] : $this->fromAddress;
-			$this->replyToAddress = t3lib_div::validEmail($this->replyToAddress)
-					? $this->replyToAddress
-					: t3lib_utility_Mail::getSystemFromAddress();
 
 			$this->priority = ($valueList['priority']) ? t3lib_div::intInRange($valueList['priority'], 1, 5) : 3;
 
@@ -226,11 +222,14 @@ class t3lib_formmail {
 				$this->temporaryFiles[] = $theFile;
 			}
 
+			$from = $this->fromName ? array($this->fromAddress => $this->fromName) : array($this->fromAddress);
 			$this->recipient = $this->parseAddresses($valueList['recipient']);
 			$this->mailMessage->setSubject($this->subject)
-					->setFrom(array($this->fromAddress => $this->fromName))
+					->setFrom($from)
 					->setTo($this->recipient)
 					->setPriority($this->priority);
+			$replyTo = $this->replyToName ? array($this->replyToAddress => $this->replyToName) : array($this->replyToAddress);
+			$this->mailMessage->addReplyTo($replyTo);
 			$this->mailMessage->getHeaders()->addTextHeader('Organization', $this->organisation);
 			if ($valueList['recipient_copy']) {
 				$this->mailMessage->addCc($this->parseAddresses($valueList['recipient_copy']));
