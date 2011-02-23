@@ -1,5 +1,6 @@
 2011-02-23  Tolleiv Nietsch  <typo3@tolleiv.de>
 
+	* Fixed bug #17511: tx_install_session::write doesn't fix permissions
 	* Synchronized external repositories of version (tag 4.5.1) and workspaces (tag 4.5.1)
 
 2011-02-23  Francois Suter  <francois.suter@typo3.org>
