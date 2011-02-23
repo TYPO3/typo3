@@ -9,6 +9,7 @@
 
 2011-02-23  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed regression in linkvalidator
 	* Follow-up in em - little css correction
 	* Update codemirror to recent version 0.9.4
 	* Merge of extension manager for 4.5.0 - see ChangeLog in em for details
