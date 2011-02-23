@@ -800,7 +800,7 @@ var Editor = (function(){
         var start = select.selectionTopNode(this.container, true),
             end = select.selectionTopNode(this.container, false);
         if (start === false || end === false) return;
-        this.indentRegion(start, end, direction);
+        this.indentRegion(start, end, direction, true);
       }
     },
 
@@ -1022,7 +1022,7 @@ var Editor = (function(){
 
         // Ask the lexical context for the correct indentation, and
         // compute how much this differs from the current indentation.
-        if (direction != null && this.options.tabMode == "shift")
+        if (direction != null && this.options.tabMode != "indent")
           newIndent = direction ? curIndent + indentUnit : Math.max(0, curIndent - indentUnit)
         else if (start)
           newIndent = start.indentation(nextChars, curIndent, direction, firstText);
@@ -1087,7 +1087,7 @@ var Editor = (function(){
     // re-indented, when nothing is selected, the line with the cursor
     // is re-indented.
     handleTab: function(direction) {
-      if (this.options.tabMode == "spaces")
+      if (this.options.tabMode == "spaces" && !select.somethingSelected())
         select.insertTabAtCursor();
       else
         this.reindentSelection(direction);
@@ -1284,7 +1284,7 @@ var Editor = (function(){
 
     // Indent all lines whose start falls inside of the current
     // selection.
-    indentRegion: function(start, end, direction) {
+    indentRegion: function(start, end, direction, selectAfter) {
       var current = (start = startOfLine(start)), before = start && startOfLine(start.previousSibling);
       if (!isBR(end)) end = endOfLine(end, this.container);
       this.addDirtyNode(start);
@@ -1296,7 +1296,8 @@ var Editor = (function(){
         before = current;
         current = next;
       } while (current != end);
-      select.setCursorPos(this.container, {node: start, offset: 0}, {node: end, offset: 0});
+      if (selectAfter)
+        select.setCursorPos(this.container, {node: start, offset: 0}, {node: end, offset: 0});
     },
 
     // Find the node that the cursor is in, mark it as dirty, and make
