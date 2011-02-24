@@ -101,9 +101,10 @@ class tx_em_Translations {
 			}
 			t3lib_div::writeFile($file, $l10n[0]);
 				// this prevent first update having errors
-			t3lib_div::rmdir(PATH_typo3conf . $path, TRUE);
+			t3lib_div::rmdir(PATH_typo3conf . $path . $extKey, TRUE);
+
 			if (tx_em_Tools::unzip($file, PATH_typo3conf . $path)) {
-				return true;
+				return TRUE;
 			} else {
 				return $GLOBALS['LANG']->getLL('translation_unpacking_failed');
 			}
@@ -127,7 +128,7 @@ class tx_em_Translations {
 			'CSH' => $docHeaderButtons['csh'],
 			'FUNC_MENU' => $this->parentObject->getFuncMenu(),
 		);
-
+		$content = '';
 
 		$incoming = t3lib_div::_POST('SET');
 		if (isset($incoming['selectedLanguages']) && is_array($incoming['selectedLanguages'])) {
