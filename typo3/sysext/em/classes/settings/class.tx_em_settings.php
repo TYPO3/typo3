@@ -99,6 +99,13 @@ class tx_em_Settings implements t3lib_Singleton {
 	 */
 	protected function readSettings() {
 		$globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
+		if (!is_array($globalSettings)) {
+			$globalSettings = array(
+				'displayMyExtensions' => 0,
+				'selectedLanguages' => array(),
+				'inlineToWindow' => 1,
+			);
+		}
 		$this->MOD_MENU = array(
 			'function' => array(
 				'loaded_list' => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
