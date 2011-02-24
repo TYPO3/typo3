@@ -633,6 +633,20 @@ final class tx_em_Tools {
 	}
 
 	/**
+	 * Reads locallang file into array (for possible include in header)
+	 *
+	 * @param $file
+	 * @return array
+	 * @deprecated  since TYPO3 4.5.1, will be removed in TYPO3 4.7 - use pageRenderer->addInlineLanguageLabelFile() instead
+	 */
+	public static function getArrayFromLocallang($file, $key = 'default') {
+		$content = t3lib_div::getURL($file);
+		$array = t3lib_div::xml2array($content);
+
+		return $array['data'][$key];
+	}
+
+	/**
 	 * Include a locallang file and return the $LOCAL_LANG array serialized.
 	 *
 	 * @param	string		Absolute path to locallang file to include.

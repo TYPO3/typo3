@@ -1,5 +1,6 @@
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug EM rev 4188: Reimplemented removed function in em_tools and deprecate it
 	* Renewed fix #17701: Generated t3x are corrupted in 4.5.1-dev and trunk
 
 2011-02-23  Ernesto Baschny  <ernesto.baschny@typo3.org>
