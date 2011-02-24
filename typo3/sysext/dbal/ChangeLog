@@ -1,3 +1,7 @@
+2011-02-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated manual with hint suggested by Jigal regarding table2handlerKeys
+
 2011-02-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #17399: Install Tool "COMPARE" fails to update mysql tables 
