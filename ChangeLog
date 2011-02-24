@@ -1,5 +1,6 @@
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17735: Class 'tx_em_XmlException' not found when Retrieve / Update
 	* Fixed bug #17692: Updating translations does not work anymore
 	* Fixed bug #17758: EM: After update repository the info labels are not updated
 	* Fixed bug #13309 Text on "Settings" tab needs more space
