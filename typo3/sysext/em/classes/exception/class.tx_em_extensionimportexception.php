@@ -23,14 +23,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Module: Extension manager - Extension.xml exception
+ * Module: Extension manager - Extension import exception
  *
- * $Id: class.tx_em_mirrorxml_exception.php 1883 2010-02-19 13:45:32Z mkrause $
+ * $Id: class.tx_em_extensionimport_exception.php 1883 2010-02-19 13:45:32Z mkrause $
  */
 
-
 /**
- * Exception for extension.xml handling.
+ * Exception for extension import handling.
+ *
+ * TODO: this is currently unused
  *
  * @author      Marcus Krause <marcus#exp2010@t3sec.info>
  * @author      Steffen Kamper <info@sk-typo3.de>
@@ -39,7 +40,7 @@
  * @package     TYPO3
  * @subpackage  EM
  */
-class tx_em_MirrorXmlException extends tx_em_XmlException {
+class tx_em_ExtensionImportException extends Exception {
 
 }
 ?>
