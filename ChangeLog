@@ -1,5 +1,6 @@
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17692: Updating translations does not work anymore
 	* Fixed bug #17758: EM: After update repository the info labels are not updated
 	* Fixed bug #13309 Text on "Settings" tab needs more space
 	* Fixed bug #13310: PHP Warning "array_merge(): Argument #2 is not an array" in class.tx_em_settings.php
