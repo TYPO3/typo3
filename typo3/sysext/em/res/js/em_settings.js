@@ -174,16 +174,18 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 							title: TYPO3.lang.repositories,
 							collapsible: false,
 							defaultType: 'textfield',
-							height: 246,
+							height: 300,
 							items :[
 								this.repSettingsCombo,
 							{
 								title: TYPO3.lang.repository_details,
 								xtype: 'panel',
+								layout: 'fit',
 								id: 'repDescriptionDisplay',
 								record: null,
 								labelWidth: 0,
 								width: 420,
+								height: 245,
 								html: '',
 								bodyStyle: 'padding: 10px;',
 								buttons: [{
