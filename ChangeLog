@@ -1,3 +1,7 @@
+2011-02-25  Stefan Galinski  <stefan.galinski@gmail.com>
+
+	* Fixed bug #17431: "Show Page" in contextmenu results in new browser window (Thanks to Simon Schaufelberger)
+
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16788: Flexform inputfields remain empty (Thanks to Andreas Kiessling)
