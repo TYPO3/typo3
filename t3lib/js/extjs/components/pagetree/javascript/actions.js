@@ -269,10 +269,12 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	viewPage: function(node) {
+		var frontendWindow = window.open('', 'newTYPO3frontendWindow');
 		TYPO3.Components.PageTree.Commands.getViewLink(
 			node.attributes.nodeData,
 			function(result) {
-				openUrlInWindow(result, 'typo3ContextMenuView');
+				frontendWindow.location = result;
+				frontendWindow.focus();
 			}
 		);
 	},
