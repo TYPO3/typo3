@@ -255,9 +255,9 @@ class tx_linkvalidator_Processor {
 						if (!empty($resultArray['elements'])) {
 
 							if ($spKey == 'typolink_tag') {
-								$this->analyseTypoLinks($resultArray, $results, $htmlParser);
+								$this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
 							} else {
-								$this->analyseLinks($resultArray, $results);
+								$this->analyseLinks($resultArray, $results, $record, $field, $table);
 							}
 						}
 					}
@@ -265,20 +265,20 @@ class tx_linkvalidator_Processor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Find all supported broken links for a specific link lsit.
 	 *
-	 * @param	array		$resultArray: findRef parsed records  
+	 * @param	array		$resultArray: findRef parsed records
 	 * @param	array		$results: array of broken links
 	 * @return	void
 	 */
-	private function analyseLinks($resultArray, &$results) {	
+	private function analyseLinks($resultArray, &$results, $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
 			$r = $element['subst'];
 			$title = '';
 			$type = '';
-
+ 			$idRecord = $record['uid'];
 			if (!empty($r)) {
 					// Parse string for special TYPO3 <link> tag:
 
@@ -294,18 +294,18 @@ class tx_linkvalidator_Processor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Find all supported broken links for a specific typoLink.
 	 *
-	 * @param	array			$resultArray: findRef parsed records 
+	 * @param	array			$resultArray: findRef parsed records
 	 * @param	array			$results: array of broken links
 	 * @param	t3lib_parsehtml	$htmlParser: instance of htmlparser
 	 * @return	void
 	 */
-	private function analyseTypoLinks($resultArray, &$results, $htmlParser) {
+	private function analyseTypoLinks($resultArray, &$results, $htmlParser, $record, $field, $table) {
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
-
+		$idRecord = $record['uid'];
 		for ($i = 1; $i < count($linkTags); $i += 2) {
 			$referencedRecordType = '';
 			foreach($resultArray['elements'] as $element) {
