@@ -1,3 +1,7 @@
+2011-02-24 Michael Miousse <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13340 Regression 4.5.1: pid and uid database fields are always 0
+
 2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
 
 	* Fixed Bug #12649: Split up analyzeRecord()
