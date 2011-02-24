@@ -382,7 +382,12 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 
 	repositoryUpdate: function() {
 		var m = Ext.MessageBox.wait(TYPO3.lang.msg_longwait, TYPO3.lang.repository_update);
-		TYPO3.EM.ExtDirect.repositoryUpdate(1, function(response) {
+		var index = TYPO3.EM.RepositoryCombo.getValue();
+		if (!index) {
+			return;
+		}
+		var record = this.repositoryStore.getAt(index - 1);
+		TYPO3.EM.ExtDirect.repositoryUpdate(index, function(response) {
 			if (!response.success) {
 				if (response.rep == 0) {
 					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error, response.errormsg, 15);
@@ -391,11 +396,12 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				}
 			} else {
 				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.repository_updated, String.format(TYPO3.lang.repository_extensions_count, response.data.count), 10);
-				this.repositoryListStore.load();
+				record.set('count', response.data.count);
+				record.set('updated', response.data.updated);
+				Ext.getCmp('repListInfo').update(TYPO3.EM.Layouts.repositoryInfo().applyTemplate(record.data));
 			}
 			m.hide();
 		}, this);
-
 	},
 
 	showExtInfoInWindow: function(index) {

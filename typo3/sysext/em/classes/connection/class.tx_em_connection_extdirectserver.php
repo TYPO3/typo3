@@ -1107,16 +1107,17 @@ class tx_em_Connection_ExtDirectServer {
 		/** @var $objRepositoryUtility tx_em_Repository_Utility */
 		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 		$count = $objRepositoryUtility->updateExtList();
-
+		$time = $GLOBALS['EXEC_TIME'];
 
 		if ($count) {
 			$objRepository->setExtensionCount($count);
-			$objRepository->setLastUpdate(time());
+			$objRepository->setLastUpdate($time);
 			tx_em_Database::updateRepository($objRepository);
 			return array(
 				'success' => TRUE,
 				'data' => array(
-					'count' => $count
+					'count' => $count,
+					'updated' => date('d/m/Y H:i', $time)
 				),
 				'rep' =>  intval($repositoryId)
 			);
