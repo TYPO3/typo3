@@ -1,5 +1,6 @@
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #13309 Text on "Settings" tab needs more space
 	* Fixed bug #13310: PHP Warning "array_merge(): Argument #2 is not an array" in class.tx_em_settings.php
 	* Renewed fix #17701: Generated t3x are corrupted in 4.5.1-dev and trunk
 
