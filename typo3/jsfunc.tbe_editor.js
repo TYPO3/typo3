@@ -195,15 +195,16 @@ var TBE_EDITOR = {
 		if (type) {
 			if (type == 'required') {
 				form = document[TBE_EDITOR.formname][elementName];
-					// Check if we are within a deleted inline element
-				var testNode = $(form.parentNode);
-				while(testNode) {
-					if (testNode.hasClassName && testNode.hasClassName('inlineIsDeletedRecord')) {
-						return result;
-					}
-					testNode = $(testNode.parentNode);
-				}
 				if (form) {
+						// Check if we are within a deleted inline element
+					var testNode = $(form.parentNode);
+					while(testNode) {
+						if (testNode.hasClassName && testNode.hasClassName('inlineIsDeletedRecord')) {
+							return result;
+						}
+						testNode = $(testNode.parentNode);
+					}
+
 					var value = form.value;
 					if (!value || elementData.additional && elementData.additional.isPositiveNumber && (isNaN(value) || Number(value) <= 0)) {
 						result = 0;
