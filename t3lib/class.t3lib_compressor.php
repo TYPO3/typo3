@@ -132,9 +132,11 @@ class t3lib_Compressor {
 	 */
 	private function getFilenameFromMainDir($filename) {
 			// if the file exists in the typo3/ folder or the BACK_PATH is empty, just return the $filename
-		$file = str_replace($GLOBALS['BACK_PATH'], '', $filename);
-		if (is_file(PATH_typo3 . $file) || empty($GLOBALS['BACK_PATH'])) {
-			return $file;
+		if (substr($filename, 0, strlen($GLOBALS['BACK_PATH'])) === $GLOBALS['BACK_PATH']) {
+			$file = str_replace($GLOBALS['BACK_PATH'], '', $filename);
+			if (is_file(PATH_typo3 . $file) || empty($GLOBALS['BACK_PATH'])) {
+				return $file;
+			}
 		}
 
 			// build the file path relatively to the PATH_site
