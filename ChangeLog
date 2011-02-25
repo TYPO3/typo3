@@ -1,5 +1,6 @@
-2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
+2011-02-25  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17769: Em use wrong property for db updates
 	* Removed double applied patch in tx_em_tools
 
 2011-02-25  Ernesto Baschny  <ernst@cron-it.de>

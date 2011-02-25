@@ -291,7 +291,7 @@ class tx_em_Connection_ExtDirectServer {
 		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		$install->setSilentMode(TRUE);
-		$install->INSTALL = $parameter['TYPO3_INSTALL'];
+		$install->install->INSTALL = $parameter['TYPO3_INSTALL'];
 		$install->checkDBupdates($extKey, $list[$extKey]);
 
 		$html = '';

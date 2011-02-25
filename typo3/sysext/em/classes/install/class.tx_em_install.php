@@ -53,9 +53,12 @@ class tx_em_Install {
 	 *
 	 * @var t3lib_install
 	 */
-	protected $install;
+	public $install;
 
 
+	/**
+	 * @var integer
+	 */
 	protected $systemInstall = 0; // If "1" then installs in the sysext directory is allowed. Default: 0
 
 	/**
