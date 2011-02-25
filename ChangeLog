@@ -1,3 +1,7 @@
+2011-02-26  Ernesto Baschny  <ernesto.baschny@typo3.org>
+
+	* Release of TYPO3 4.5.2
+
 2011-02-25  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17772: Repository update deletes description of repository
