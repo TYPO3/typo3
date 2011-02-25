@@ -380,6 +380,22 @@ class tx_install_session {
 		return TRUE;
 	}
 
+	/**
+	 * Writes the session data at the end, to overcome a PHP APC bug.
+	 *
+	 * Writes the session data in a proper context that is not affected by the APC bug:
+	 * http://pecl.php.net/bugs/bug.php?id=16721.
+	 *
+	 * This behaviour was introduced in #17511, where self::write() made use of t3lib_div
+	 * which due to the APC bug throws a "Fatal error: Class 't3lib_div' not found"
+	 * (and the session data is not saved). Calling session_write_close() at this point
+	 * seems to be the most easy solution, acording to PHP author.
+	 *
+	 * @return void
+	 */
+	public function __destruct() {
+		session_write_close();
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/install/mod/class.tx_install_session.php'])) {

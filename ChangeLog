@@ -1,3 +1,7 @@
+2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17732: Install Tool doing Fatal error when APC PHP module is loaded (no session is stored)
+
 2011-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #17761: htmlArea RTE: Defer access to stylesheets
