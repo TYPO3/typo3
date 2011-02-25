@@ -1,3 +1,7 @@
+2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #17732: Install Tool doing Fatal error when APC PHP module is loaded (no session is stored)
+
 2011-02-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16788: Flexform inputfields remain empty (Thanks to Andreas Kiessling)
