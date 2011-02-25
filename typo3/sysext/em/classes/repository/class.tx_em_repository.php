@@ -124,6 +124,7 @@ class tx_em_Repository {
 			$this->fixMainRepository();
 		} else {
 			$this->setTitle($row['title']);
+			$this->setDescription($row['description']);
 			$this->setId($row['uid']);
 			$this->setPriority(1);
 			$this->setMirrorListUrl($row['mirror_url']);
