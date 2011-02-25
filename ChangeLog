@@ -5,6 +5,7 @@
 
 2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Fixed bug #17728: PHP warning in page module (e.g. in TemplaVoila) with active open_basedir 
 	* Fixed bug #17732: Install Tool doing Fatal error when APC PHP module is loaded (no session is stored)
 
 2011-02-25  Stefan Galinski  <stefan.galinski@gmail.com>
