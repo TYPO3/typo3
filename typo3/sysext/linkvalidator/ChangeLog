@@ -1,7 +1,21 @@
+2011-02-24  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Cleaned emconf for the release of TYPO3 4.5.2
+	* Release linkvalidator 1.0.2
+
+2011-02-24  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13340: Regression in TYPO3 4.5.1: pid and uid database fields are always 0
+
+2011-02-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #13318: Regression in linkvalidator
+
 2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12649: Split up analyzeRecord()
 	* Cleaned emconf for the release of TYPO3 4.5.1
 	* Release linkvalidator 1.0.1
-	* Fixed Bug #12649: Split up analyzeRecord()
 	
 2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
 

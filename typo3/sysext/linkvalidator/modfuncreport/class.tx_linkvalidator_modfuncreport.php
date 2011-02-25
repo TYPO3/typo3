@@ -184,6 +184,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			// Localization
 		$this->pageRenderer->addInlineLanguageLabelFile(t3lib_extMgm::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
 
+
 	$this->pageRenderer->addJsInlineCode('linkvalidator','function toggleActionButton(prefix) {
 			var buttonDisable = true;
 			Ext.select(\'.\' + prefix ,false).each(function(checkBox,i){

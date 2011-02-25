@@ -6,6 +6,7 @@
 
 2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
 
+	* Merged Linkvalidator 1.0.2 to be included in 4.5.2 (Thanks to Michael Miousse and Christopher Stelmaszyk)
 	* Fixed bug #17728: PHP warning in page module (e.g. in TemplaVoila) with active open_basedir 
 	* Fixed bug #17732: Install Tool doing Fatal error when APC PHP module is loaded (no session is stored)
 
