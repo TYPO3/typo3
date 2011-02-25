@@ -1,3 +1,7 @@
+2011-02-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #17761: htmlArea RTE: Defer access to stylesheets
+
 2011-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #17695: htmlArea RTE: Removing format may remove content

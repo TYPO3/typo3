@@ -216,6 +216,11 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			tags: this.tags,
 			editor: this.editor
 		});
+			// Disable the combo while initialization completes
+		var dropDown = this.getButton('BlockStyle');
+		if (dropDown) {
+			dropDown.setDisabled(true);
+		}
 			// Monitor css parsing being completed
 		this.editor.iframe.mon(this.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
 		this.blockStyles.initiateParsing();
@@ -226,16 +231,16 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	onCssParsingComplete: function () {
 		if (this.blockStyles.isReady) {
 			this.cssArray = this.blockStyles.getClasses();
-		}
-		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
-			this.updateValue('BlockStyle');
+			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
+				this.updateValue('BlockStyle');
+			}
 		}
 	},
 	/*
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.blockStyles.isReady) {
 			this.updateValue(button.itemId);
 		}
 	},

@@ -222,6 +222,11 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			tags: this.tags,
 			editor: this.editor
 		});
+			// Disable the combo while initialization completes
+		var dropDown = this.getButton('TextStyle');
+		if (dropDown) {
+			dropDown.setDisabled(true);
+		}
 			// Monitor css parsing being completed
 		this.editor.iframe.mon(this.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
 		this.textStyles.initiateParsing();
@@ -232,16 +237,16 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	onCssParsingComplete: function () {
 		if (this.textStyles.isReady) {
 			this.cssArray = this.textStyles.getClasses();
-		}
-		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
-			this.updateToolbar('TextStyle');
+			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
+				this.updateToolbar('TextStyle');
+			}
 		}
 	},
 	/*
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.textStyles.isReady) {
 			this.updateToolbar(button.itemId);
 		}
 	},

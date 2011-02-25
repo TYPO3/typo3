@@ -927,7 +927,18 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			this.getEditor()._doc = this.document;
 			this.getEditor()._iframe = iframe;
 			this.createHead();
-			this.getStyleSheets();
+				// Style the document body
+			Ext.get(this.document.body).addClass('htmlarea-content-body');
+				// Start listening to things happening in the iframe
+				// For some unknown reason, this is too early for Opera
+			if (!Ext.isOpera) {
+				this.startListening();
+			}
+				// Hide the iframe
+			this.hide();
+				// Set iframe ready
+			this.ready = true;
+			this.fireEvent('HTMLAreaEventIframeReady');
 		}
 	},
 	/*
@@ -977,82 +988,6 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				head.appendChild(link);
 			}
 			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
-		}
-	},
-	/*
-	 * Fire event 'HTMLAreaEventIframeReady' when the iframe style sheets become accessible
-	 *
-	 * @param	int	count: number of attempts at accessing the stylesheets
-	 *
-	 * @return	void
-	 */
-	getStyleSheets: function (count) {
-		if (typeof(count) === 'undefined') {
-			var count = 0;
-		}
-		var stylesAreLoaded = true;
-		var errorText = '';
-		var rules;
-		if (Ext.isOpera) {
-			if (this.document.readyState != 'complete') {
-				stylesAreLoaded = false;
-				errorText = 'Document.readyState not complete';
-			}
-		} else {
-				// Test if the styleSheets array is at all accessible
-			if (Ext.isIE) {
-				try { 
-					rules = this.document.styleSheets[0].rules;
-				} catch(e) {
-					stylesAreLoaded = false;
-					errorText = e;
-				}
-			} else {
-				try { 
-					this.document.styleSheets && this.document.styleSheets[0] && this.document.styleSheets[0].rules;
-				} catch(e) {
-					stylesAreLoaded = false;
-					errorText = e;
-				}
-			}
-				// Then test if all stylesheets are accessible
-			if (stylesAreLoaded) {
-				if (this.document.styleSheets.length) {
-					Ext.each(this.document.styleSheets, function (styleSheet) {
-						if (Ext.isIE) {
-							try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-							try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-						} else {
-							try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-						}
-					});
-				} else {
-					stylesAreLoaded = false;
-					errorText = 'Empty stylesheets array';
-				}
-			}
-		}
-		if (!stylesAreLoaded) {
-			if (/Security/i.test(errorText)) {
-				this.getEditor().appendToLog('HTMLArea.Iframe', 'getStyleSheets', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
-			} else if (count > this.config.styleSheetsMaximumAttempts) {
-				this.getEditor().appendToLog('HTMLArea.Iframe', 'getStyleSheets', 'Stylesheets not loaded after ' + count + ' attempts. (' + errorText + ').', 'error');
-			} else {
-				this.getStyleSheets.defer(100, this, [count++]);
-			}
-		} else {
-				// Style the document body
-			Ext.get(this.document.body).addClass('htmlarea-content-body');
-				// Start listening to things happening in the iframe
-				// For some unknown reason, this is too early for Opera
-			if (!Ext.isOpera) {
-				this.startListening();
-			}
-				// Hide the iframe
-			this.hide();
-				// Set iframe ready
-			this.ready = true;
-			this.fireEvent('HTMLAreaEventIframeReady');
 		}
 	},
 	/*
@@ -3364,7 +3299,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	constructor: function (config) {
 		HTMLArea.CSS.Parser.superclass.constructor.call(this, {});
 		var configDefaults = {
-			parseAttemptsMaximumNumber: 17,
+			parseAttemptsMaximumNumber: 20,
 			prefixLabelWithClassName: false,
 			postfixLabelWithClassName: false,
 			showTagFreeClasses: false,
@@ -3372,6 +3307,9 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			editor: null
 		};
 		Ext.apply(this, config, configDefaults);
+		if (this.editor.config.styleSheetsMaximumAttempts) {
+			this.parseAttemptsMaximumNumber = this.editor.config.styleSheetsMaximumAttempts;
+		}
 		this.addEvents(
 			/*
 			 * @event HTMLAreaEventCssParsingComplete
@@ -3444,9 +3382,12 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 		if (this.editor.document) {
 			this.parseStyleSheets();
 			if (!this.cssLoaded) {
-				if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
-					this.attemptTimeout = this.parse.defer(200, this);
+				if (/Security/i.test(this.error)) {
+					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+					this.fireEvent('HTMLAreaEventCssParsingComplete');
+				} else if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
 					this.parseAttemptsCounter++;
+					this.attemptTimeout = this.parse.defer(200, this);
 				} else {
 					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error, 'error');
 					this.fireEvent('HTMLAreaEventCssParsingComplete');
@@ -3468,28 +3409,58 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	parseStyleSheets: function () {
 		this.cssLoaded = true;
 		this.error = null;
-		for (var i = 0; i < this.editor.document.styleSheets.length; i++) {
-			if (!Ext.isIE) {
-				try {
-					this.parseRules(this.editor.document.styleSheets[i].cssRules);
-				} catch (e) {
-					this.error = e;
+			// Test if the styleSheets array is at all accessible
+		if (Ext.isOpera) {
+			if (this.editor.document.readyState !== 'complete') {
+				this.cssLoaded = false;
+				this.error = 'Document.readyState not complete';
+			}
+		} else {
+			if (Ext.isIE) {
+				try { 
+					var rules = this.editor.document.styleSheets[0].rules;
+					var imports = this.editor.document.styleSheets[0].imports;
+					if ((!rules || !rules.length) && (!imports || !imports.length)) {
+						this.cssLoaded = false;
+						this.error = 'Empty rules and imports arrays';
+					}
+				} catch(e) {
 					this.cssLoaded = false;
-					this.parsedClasses = {};
+					this.error = e;
 				}
 			} else {
-				try{
-					if (this.editor.document.styleSheets[i].imports) {
-						this.parseIeRules(this.editor.document.styleSheets[i].imports);
-					}
-					if (this.editor.document.styleSheets[i].rules) {
-						this.parseRules(this.editor.document.styleSheets[i].rules);
-					}
-				} catch (e) {
-					this.error = e;
+				try { 
+					this.editor.document.styleSheets && this.editor.document.styleSheets[0] && this.editor.document.styleSheets[0].rules;
+				} catch(e) {
 					this.cssLoaded = false;
-					this.parsedClasses = {};
+					this.error = e;
 				}
+			}
+		}
+		if (this.cssLoaded) {
+			if (this.editor.document.styleSheets.length) {
+				Ext.each(this.editor.document.styleSheets, function (styleSheet) {
+					try { 
+						if (Ext.isIE) {
+							if (styleSheet.imports) {
+								this.parseIeRules(styleSheet.imports);
+							}
+							if (styleSheet.rules) {
+								this.parseRules(styleSheet.rules);
+							}
+						} else {
+							this.parseRules(styleSheet.cssRules);
+						}
+					} catch (e) {
+						this.error = e;
+						this.cssLoaded = false;
+						this.parsedClasses = {};
+						return false;
+					}
+				}, this);
+			} else {
+				this.cssLoaded = false;
+				this.error = 'Empty stylesheets array';
 			}
 		}
 	},
