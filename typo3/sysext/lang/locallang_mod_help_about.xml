@@ -25,6 +25,8 @@
 			<label index="donation_header">TYPO3 Donation</label>
 			<label index="donation_message">It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</label>
 			<label index="donation_button">Donate now</label>
+			<label index="external_libraries">External Libraries</label>
+			<label index="external_thanks">TYPO3 core uses and thanks these external Open Source projects:</label>
 		</languageKey>
 	</data>
 </T3locallang>

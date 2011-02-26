@@ -1,3 +1,7 @@
+2011-02-26  Steffen Kamper  <steffen@typo3.org>
+
+	* Added Feature #17723: Refreshment of about module
+
 2011-02-26  Steffen Gebert  <steffen.gebert@typo3.org>
 
 	* Fixed bug #17775: Compression Level Upgrade Wizard refers to old .htaccess path (Thanks to Markus Klein)
