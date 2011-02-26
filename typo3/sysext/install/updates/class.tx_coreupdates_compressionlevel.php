@@ -42,7 +42,7 @@ class tx_coreupdates_compressionlevel extends Tx_Install_Updates_Base {
 	public function checkForUpdate(&$description) {
 		$description = '<p><strong>TYPO3_CONF_VARS[BE][compressionLevel] is enabled.</strong><br />
 		In TYPO3 4.4, compressionLevel was expanded to include automatic gzip compression of JavaScript and CSS stylessheet files.
-		<strong>To prevent the TYPO3 backend from being unusable, you must include the relevant lines from misc/advanced.htaccess.</strong></p>';
+		<strong>To prevent the TYPO3 backend from being unusable, you must include the relevant lines from _.htaccess.</strong></p>';
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) > 0) {
 			return TRUE;
 		}
@@ -56,7 +56,7 @@ class tx_coreupdates_compressionlevel extends Tx_Install_Updates_Base {
 	 * @return	string		HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		$content = '<p><strong>This configuration cannot be fixed automatically and requires a manual update.</strong> Please include the following lines from misc/advanced.htaccess on top of your .htacess file.
+		$content = '<p><strong>This configuration cannot be fixed automatically and requires a manual update.</strong> Please include the following lines from _.htaccess on top of your .htacess file.
 					<br /><br />
 					<pre>
 &lt;FilesMatch "\.js\.gzip$"&gt;
