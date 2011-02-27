@@ -1,3 +1,7 @@
+2011-02-27  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #17735: Class 'tx_em_XmlException' not found when Retrieve / Update
+
 2011-02-26  Steffen Gebert  <steffen.gebert@typo3.org>
 
 	* Fixed bug #17775: Compression Level Upgrade Wizard refers to old .htaccess path (Thanks to Markus Klein)
@@ -15,7 +19,7 @@
 2011-02-25  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Merged Linkvalidator 1.0.2 to be included in 4.5.2 (Thanks to Michael Miousse and Christopher Stelmaszyk)
-	* Fixed bug #17728: PHP warning in page module (e.g. in TemplaVoila) with active open_basedir 
+	* Fixed bug #17728: PHP warning in page module (e.g. in TemplaVoila) with active open_basedir
 	* Fixed bug #17732: Install Tool doing Fatal error when APC PHP module is loaded (no session is stored)
 
 2011-02-25  Stefan Galinski  <stefan.galinski@gmail.com>
