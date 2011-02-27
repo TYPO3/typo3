@@ -1,3 +1,7 @@
+2011-02-27  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #17735: Class 'tx_em_XmlException' not found when Retrieve / Update
+
 2011-02-26  Steffen Kamper  <steffen@typo3.org>
 
 	* Added Feature #17723: Refreshment of about module
