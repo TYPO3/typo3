@@ -1,3 +1,7 @@
+2011-02-27  Steffen Gebert  <steffen.gebert@typo3.org>
+
+	* Fixed bug #17776: Backend layout wizard uses invalid stylesheet path (Thanks to Markus Klein)
+
 2011-02-27  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #17787: Filtering in repository state does not work
