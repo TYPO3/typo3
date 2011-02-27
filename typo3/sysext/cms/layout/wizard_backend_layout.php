@@ -204,7 +204,6 @@ class SC_wizard_backend_layout {
 
 
 		$this->doc->styleSheetFile_post = TYPO3_MOD_PATH . 'res/grideditor.css';
-		$this->doc->styleSheetFile2 = 'sysext/t3skin/stylesheets/extjs/xtheme-t3skin.css';
 	}
 
 	/**
