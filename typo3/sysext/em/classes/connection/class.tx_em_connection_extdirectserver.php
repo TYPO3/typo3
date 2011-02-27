@@ -905,6 +905,7 @@ class tx_em_Connection_ExtDirectServer {
 			$extPath = t3lib_div::strtolower($value['extkey']);
 			$list['results'][$key]['statevalue'] = $value['state'];
 			$list['results'][$key]['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
+			$list['results'][$key]['stateCls'] = 'state-' . $list['results'][$key]['state'];
 			$list['results'][$key]['version'] = tx_em_Tools::versionFromInt($value['maxintversion']);
 			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $list['results'][$key]['version'] . '.gif" />';
 

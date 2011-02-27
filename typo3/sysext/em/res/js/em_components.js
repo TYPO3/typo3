@@ -420,7 +420,31 @@ TYPO3.EM.GridColumns.ExtensionStateValue = {
 	dataIndex:'statevalue',
 	renderer: function(value, metaData, record, rowIndex, colIndex, store){
 		metaData.css += record.data.stateCls + ' ';
-		return record.data.state;
+		var label = TYPO3.lang.translation_n_a;
+		switch (parseInt(value, 10)) {
+			case 0:
+				label = TYPO3.lang.state_alpha;
+			break;
+			case 1:
+				label = TYPO3.lang.state_beta;
+			break;
+			case 2:
+				label = TYPO3.lang.state_stable;
+			break;
+			case 3:
+				label = TYPO3.lang.state_experimental;
+			break;
+			case 4:
+				label = TYPO3.lang.state_test;
+			break;
+			case 5:
+				label = TYPO3.lang.state_obsolete;
+			break;
+			case 6:
+				label = TYPO3.lang.state_exclude_from_updates;
+			break;
+		}
+		return label;
 	},
 	filterable: true
 };
