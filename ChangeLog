@@ -1,5 +1,6 @@
 2011-02-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #17786: Filtering repository list fields are not prefixed with tablename
 	* Follow-up to #17735: Class 'tx_em_XmlException' not found when Retrieve / Update
 
 2011-02-26  Steffen Kamper  <steffen@typo3.org>
