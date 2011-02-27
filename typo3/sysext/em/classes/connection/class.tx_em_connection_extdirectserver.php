@@ -1460,10 +1460,10 @@ class tx_em_Connection_ExtDirectServer {
 				switch ($value['data']['type']) {
 					case 'list':
 						if ($value['field'] === 'statevalue') {
-							$where .= ' AND state IN(' . htmlspecialchars($value['data']['value']) . ')';
+							$where .= ' AND cache_extensions.state IN(' . htmlspecialchars($value['data']['value']) . ')';
 						}
-						if ($value['field'] === 'categoryvalue') {
-							$where .= ' AND category IN(' . htmlspecialchars($value['data']['value']) . ')';
+						if ($value['field'] === 'category') {
+							$where .= ' AND cache_extensions.category IN(' . htmlspecialchars($value['data']['value']) . ')';
 						}
 					break;
 					default:
@@ -1471,7 +1471,7 @@ class tx_em_Connection_ExtDirectServer {
 							$GLOBALS['TYPO3_DB']->quoteStr($value['data']['value'], 'cache_extensions'),
 							'cache_extensions'
 						);
-						$where .= ' AND ' . htmlspecialchars($value['field']) . ' LIKE "%' . $quotedSearch . '%"';
+						$where .= ' AND cache_extensions.' . htmlspecialchars($value['field']) . ' LIKE "%' . $quotedSearch . '%"';
 				}
 			}
 		}
