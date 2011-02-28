@@ -1861,6 +1861,20 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
+	 * Returns dynamic tab menu header JS code.
+	 * This is now incorporated automatically when the function template::getDynTabMenu is called
+	 * (as long as it is called before $this->startPage())
+	 * The return value is not needed anymore
+	 *
+	 * @deprecated since TYPO3 4.5, as the getDynTabMenu() function includes the function automatically since TYPO3 4.3
+	 * @return	void
+	 */
+	function getDynTabMenuJScode() {
+		t3lib_div::logDeprecatedFunction();
+		$this->loadJavascriptLib('js/tabmenu.js');
+	}
+
+	/**
 	 * Creates the version selector for the page id inputted.
 	 * Requires the core version management extension, "version" to be loaded.
 	 *

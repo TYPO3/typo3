@@ -1,3 +1,7 @@
+2011-02-28  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #17670: Add typo3/template.php getDynTabMenuJScode() again and remove deprecated return value only
+
 2011-02-27  Steffen Gebert  <steffen.gebert@typo3.org>
 
 	* Fixed bug #17776: Backend layout wizard uses invalid stylesheet path (Thanks to Markus Klein)
