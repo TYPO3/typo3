@@ -150,7 +150,6 @@ class t3lib_stdGraphic {
 	var $imagecopyresized_fix = 0; // If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
 	var $gifExtension = 'gif'; // This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	var $gdlibExtensions = ''; // File formats supported by gdlib. This variable get's filled in "init" method
-	var $truecolor = TRUE; // Internal variable which get's used to determine wheter GDlib should use function truecolor pendants, @deprecated as of TYPO3 4.4, as this variables is now always set (GDlib2 always has this method, and PHP recommends to only use imagecreatetruecolor() over imagecreate())
 	var $png_truecolor = FALSE; // Set to true if generated png's should be truecolor by default
 	var $truecolorColors = 0xffffff; // 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
 	var $enable_typo3temp_db_tracking = 0; // If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
@@ -513,9 +512,6 @@ class t3lib_stdGraphic {
 			imagecopyresized($im_base, $im, 0, 0, 0, 0, imagesx($im), imagesy($im), imagesx($im), imagesy($im)); // Copy the source image onto that
 			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h); // Then copy the $cpImg onto that (the actual operation!)
 			$im = $im_base; // Set pointer
-			if (!$this->truecolor) {
-				$this->makeEffect($im, array('value' => 'colors=' . t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256))); // Reduce to "reduceColors" colors - make SURE that IM is working then!
-			}
 		} else {
 			imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
 		}
@@ -552,11 +548,6 @@ class t3lib_stdGraphic {
 			$cols = $this->convertColor($conf['fontColor']);
 				// NiceText is calculated
 			if (!$conf['niceText']) {
-					// Font Color is reserved:
-				if (!$this->truecolor) {
-					$reduce = t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256);
-					$this->reduceColors($im, $reduce - 49, $reduce - 50); // If "reduce-49" colors (or more) are used reduce them to "reduce-50"
-				}
 				$Fcolor = ImageColorAllocate($im, $cols[0], $cols[1], $cols[2]);
 					// antiAliasing is setup:
 				$Fcolor = ($conf['antiAlias']) ? $Fcolor : -$Fcolor;
@@ -1534,10 +1525,6 @@ class t3lib_stdGraphic {
 		$conf['offset'] = $cords[0] . ',' . $cords[1];
 		$cords = $this->objPosition($conf, $workArea, array($cords[2], $cords[3]));
 		$cols = $this->convertColor($conf['color']);
-		if (!$this->truecolor) {
-			$reduce = t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256);
-			$this->reduceColors($im, $reduce - 1, $reduce - 2); // If "reduce-1" colors (or more) are used reduce them to "reduce-2"
-		}
 
 		$opacity = 0;
 		if (isset($conf['opacity'])) {
@@ -1907,24 +1894,6 @@ class t3lib_stdGraphic {
 				$cols['blue'] = t3lib_div::intInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
-		}
-	}
-
-	/**
-	 * Reduce colors in image dependend on the actual amount of colors (Only works if we are not in truecolor mode)
-	 * This function is not needed anymore, as truecolor is now always on.
-	 *
-	 * @param	integer		GDlib Image Pointer
-	 * @param	integer		The max number of colors in the image before a reduction will happen; basically this means that IF the GD image current has the same amount or more colors than $limit define, THEN a reduction is performed.
-	 * @param	integer		Number of colors to reduce the image to.
-	 * @return	void
-	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6.
-	 */
-	function reduceColors(&$im, $limit, $cols) {
-		t3lib_div::logDeprecatedFunction();
-
-		if (!$this->truecolor && ImageColorsTotal($im) >= $limit) {
-			$this->makeEffect($im, array('value' => 'colors=' . $cols));
 		}
 	}
 

@@ -183,17 +183,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 					: explode('|', trim($this->setup['transparentColor']));
 			}
 
- 				// Transparency does not properly work when, GIFs or 8-bit PNGs are generated or reduceColors is set -- disable truecolor flag so they get generated "natively" in 8-bit.
- 				// not working with reduceColors and truecolor images
 			if(isset($this->setup['transparentBackground.'])) {
 				$this->setup['transparentBackground'] = $this->cOjb->stdWrap($this->setup['transparentBackground'], $this->setup['transparentBackground.']);
 			}
 			if(isset($this->setup['reduceColors.'])) {
 				$this->setup['reduceColors'] = $this->cOjb->stdWrap($this->setup['reduceColors'], $this->setup['reduceColors.']);
 			}
- 			if (($this->setup['transparentBackground'] || is_array($this->setup['transparentColor_array'])) && ($this->gifExtension=='gif' || !$this->png_truecolor || $this->setup['reduceColors']))	{
- 				$this->truecolor = false;
- 			}
 
 				// Set default dimensions
 			if (isset($this->setup['XY.'])) {
