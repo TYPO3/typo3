@@ -136,13 +136,6 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	public $writeAttemptLog = FALSE;
 
 	/**
-	 * This is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-	 *
-	 * @var	string
-	 */
-	public $auth_include = '';
-
-	/**
 	 * Array of page related information (uid, title, depth).
 	 *
 	 * @var	array

@@ -127,8 +127,6 @@ class t3lib_userAuth {
 	var $formfield_status = ''; // formfield with status: *'login', 'logout'. If empty login is not verified.
 	var $security_level = 'normal'; // sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_include = ''; // this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-
 	var $auth_timeout_field = 0; // Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0; // Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	var $gc_time = 0; // GarbageCollection. Purge all server session data older than $gc_time seconds. 0 = default to $this->timeout or use 86400 seconds (1 day) if $this->lifetime is 0
@@ -292,10 +290,6 @@ class t3lib_userAuth {
 			}
 		}
 
-			// If any redirection (inclusion of file) then it will happen in this function
-		if (!$this->userid && $this->auth_url) { // if no userid AND an include-document for login is given
-			$this->redirect();
-		}
 			// Set all posible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
@@ -1335,20 +1329,6 @@ class t3lib_userAuth {
 			'ses_tstamp < ' . intval($GLOBALS['EXEC_TIME'] - ($this->gc_time)) .
 			' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
 		);
-	}
-
-	/**
-	 * Redirect to somewhere (obsolete).
-	 *
-	 * @return	void
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
-	 * @obsolete
-	 * @ignore
-	 */
-	function redirect() {
-		t3lib_div::logDeprecatedFunction();
-		include ($this->auth_include);
-		exit;
 	}
 
 	/**

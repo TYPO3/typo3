@@ -91,8 +91,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $writeStdLog = 1; // Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 1; // If the writelog() functions is called if a login-attempt has be tried without success
 
-	var $auth_include = ''; // this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-
 	var $auth_timeout_field = 6000; // if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0; // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $challengeStoredInCookie = TRUE;

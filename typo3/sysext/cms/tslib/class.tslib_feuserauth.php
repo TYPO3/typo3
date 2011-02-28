@@ -100,8 +100,6 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-
 	var $auth_timeout_field = 6000;				// Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 
 	var $lifetime = 0;				// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
