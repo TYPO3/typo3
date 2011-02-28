@@ -1,5 +1,6 @@
 2011-02-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #17664: Remove deprecated class t3lib_matchcondition
 	* Fixed bug #17663: Remove deprecated reduceColors() from t3lib_stdGraphic
 	* Follow-up to #17670: Add typo3/template.php getDynTabMenuJScode() again and remove deprecated return value only
 

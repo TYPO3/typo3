@@ -87,7 +87,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see	t3lib_tsparser.php, t3lib_matchcondition.php
+ * @see	t3lib_tsparser, t3lib_matchcondition_abstract
  */
 class t3lib_TStemplate {
 

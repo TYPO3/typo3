@@ -228,46 +228,6 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Tests whether the browserInfo hook is called.
-	 *
-	 * @return	void
-	 * @test
-	 */
-	public function deprecatedBrowserInfoHookIsCalled() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = FALSE;
-
-		$classRef = uniqid('tx_browserInfoHook');
-		$browserInfoHookMock = $this->getMock($classRef, array('browserInfo'));
-		$browserInfoHookMock->expects($this->atLeastOnce())->method('browserInfo');
-
-		$GLOBALS['T3_VAR']['getUserObj'][$classRef] = $browserInfoHookMock;
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'][$classRef] = $classRef;
-
-		$this->matchCondition->__construct();
-		$this->matchCondition->match('[browser = msie] && [version = 7] && [system = winNT]');
-	}
-
-	/**
-	 * Tests whether the whichDevice hook is called.
-	 *
-	 * @return	void
-	 * @test
-	 */
-	public function deprecatedWhichDeviceHookIsCalled() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = FALSE;
-
-		$classRef = uniqid('tx_whichDeviceHook');
-		$whichDeviceHookMock = $this->getMock($classRef, array('whichDevice'));
-		$whichDeviceHookMock->expects($this->atLeastOnce())->method('whichDevice');
-
-		$GLOBALS['T3_VAR']['getUserObj'][$classRef] = $whichDeviceHookMock;
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'][$classRef] = $classRef;
-
-		$this->matchCondition->__construct();
-		$this->matchCondition->match('[device = robot]');
-	}
-
-	/**
 	 * Tests whether the language comparison matches.
 	 * @test
 	 */
@@ -364,6 +324,15 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
 		$this->assertFalse($this->matchCondition->match('[loginUser = *]'));
 		$this->assertFalse($this->matchCondition->match('[loginUser = 13]'));
+	}
+
+	/**
+	 * Tests whether user is not logged in
+	 * @test
+	 */
+	public function loginUserConditionMatchIfUserIsNotLoggedIn() {
+		$GLOBALS['TSFE']->loginUser = FALSE;
+		$this->assertTrue($this->matchCondition->match('[loginUser = ]'));
 	}
 
 	/**

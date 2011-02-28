@@ -65,7 +65,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_tstemplate, t3lib_matchcondition, t3lib_BEfunc::getPagesTSconfig(), t3lib_userAuthGroup::fetchGroupData(), t3lib_TStemplate::generateConfig()
+ * @see t3lib_tstemplate, t3lib_BEfunc::getPagesTSconfig(), t3lib_userAuthGroup::fetchGroupData(), t3lib_TStemplate::generateConfig()
  */
 class t3lib_TSparser {
 	var $strict = 1; // If set, then key names cannot contain characters other than [:alnum:]_\.-
@@ -118,7 +118,7 @@ class t3lib_TSparser {
 	 * Start parsing the input TypoScript text piece. The result is stored in $this->setup
 	 *
 	 * @param	string		The TypoScript text
-	 * @param	object		If is object (instance of t3lib_matchcondition), then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
+	 * @param	object		If is object, then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
 	 * @return	void
 	 */
 	function parse($string, $matchObj = '') {

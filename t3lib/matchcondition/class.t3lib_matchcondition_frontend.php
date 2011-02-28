@@ -36,40 +36,6 @@
  * @subpackage t3lib
  */
 class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
-	/**
-	 * @var	array
-	 */
-	protected $deprecatedHooks = array();
-
-	/**
-	 * Constructor for this class
-	 *
-	 * @return	void
-	 */
-	public function __construct() {
-		$this->initializeDeprecatedHooks();
-	}
-
-	/**
-	 * Initializes deprectated hooks that existed in t3lib_matchCondition until TYPO3 4.3.
-	 *
-	 * @return	void
-	 */
-	protected function initializeDeprecatedHooks() {
-			// Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass']:
-		$matchConditionHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'];
-		if (is_array($matchConditionHooks)) {
-			t3lib_div::deprecationLog(
-				'The hook $TYPO3_CONF_VARS[SC_OPTIONS][t3lib/class.t3lib_matchcondition.php][matchConditionClass] ' .
-				'is deprecated since TYPO3 4.3. Use the new hooks getBrowserInfo and getDeviceType in ' .
-				't3lib_utility_Client instead.'
-			);
-
-			foreach ($matchConditionHooks as $hookClass) {
-				$this->deprecatedHooks[] = t3lib_div::getUserObj($hookClass, '');
-			}
-		}
-	}
 
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
@@ -124,56 +90,6 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 		}
 
 		return FALSE;
-	}
-
-	/**
-	 * Generates an array with abstracted browser information
-	 *
-	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-	 * @return	array		Contains keys "browser", "version", "system"
-	 */
-	protected function getBrowserInfo($userAgent) {
-			// Exceute deprecated hooks:
-			// @deprecated since TYPO3 4.3
-		foreach ($this->deprecatedHooks as $hookObj) {
-			if (method_exists($hookObj, 'browserInfo')) {
-				$result = $hookObj->browserInfo($userAgent);
-				if (strlen($result)) {
-					return $result;
-				}
-			}
-		}
-
-		return parent::getBrowserInfo($userAgent);
-	}
-
-	/**
-	 * Gets a code for a browsing device based on the input useragent string.
-	 *
-	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-	 * @return	string		Code for the specific device type
-	 */
-	protected function getDeviceType($userAgent) {
-			// Exceute deprecated hooks:
-			// @deprecated since TYPO3 4.3
-		foreach ($this->deprecatedHooks as $hookObj) {
-			if (method_exists($hookObj, 'whichDevice')) {
-				$result = $hookObj->whichDevice($userAgent);
-				if (strlen($result)) {
-					return $result;
-				}
-			}
-		}
-
-			// deprecated, see above
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'] as $_classRef) {
-				$_procObj = t3lib_div::getUserObj($_classRef);
-				return $_procObj->whichDevice_ext($userAgent);
-			}
-		}
-
-		return parent::getDeviceType($userAgent);
 	}
 
 	/**
