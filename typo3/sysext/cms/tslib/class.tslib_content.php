@@ -5762,6 +5762,11 @@ class tslib_cObj {
 									$absoluteUrlScheme !== parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME)) {
 								$targetDomain = $currentDomain;
 							}
+
+								// If go for an absolute link, add site_path if it's not taken care about by absRefPrefix
+							if (!$GLOBALS['TSFE']->config['config']['absRefPrefix'] && $targetDomain !== '') {
+								$targetDomain = $currentDomain . rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_PATH'), '/');
+							}
 						}
 
 							// If target page has a different domain and the current domain's linking scheme (e.g. simulateStaticDocuments/RealURL/...) should not be used
