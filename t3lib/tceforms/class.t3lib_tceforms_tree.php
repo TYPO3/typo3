@@ -177,6 +177,8 @@ class t3lib_TCEforms_Tree {
 					}
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
+				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false')  . ',
+				tcaSelectRecursive: false,
 				tcaExclusiveKeys: "' . (
 		$PA['fieldConf']['config']['exclusiveKeys']
 				? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
