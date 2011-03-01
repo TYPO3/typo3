@@ -178,9 +178,10 @@ class t3lib_TCEforms_Tree {
 					}
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
-				tcaExclusiveKeys: "' . (
-		$PA['fieldConf']['config']['exclusiveKeys']
-				? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
+				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false')  . ',
+				tcaSelectRecursive: false,
+				tcaExclusiveKeys: "' .
+				($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 				ucId: "' . md5($table . '|' . $field) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel
 			});' . LF .

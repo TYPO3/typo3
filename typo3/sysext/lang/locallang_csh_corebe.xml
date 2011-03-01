@@ -97,6 +97,7 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 			<label index="tcatree.findItem">Find Item</label>
 			<label index="tcatree.filter.startsWith">starts with</label>
 			<label index="tcatree.filter.contains">contains</label>
+			<label index="tcatree.enableRecursiveSelection">enable recursive selection</label>
 			<label index="list_module.alttitle">The Web&gt;List module</label>
 			<label index="list_module.description">Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</label>
 			<label index="list_module.details">The list module is like the file manager in an Operating System; it provides basic access to all &quot;elements&quot; available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
