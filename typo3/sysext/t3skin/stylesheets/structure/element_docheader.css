@@ -95,11 +95,6 @@ div#typo3-inner-docbody {
 	padding: 10px;
 }
 
-/* Fix for IE 6 */
-* html div#typo3-inner-docbody {
-	width: 95%;
-}
-
 /* Fix for IE 7 */
 * + html div#typo3-inner-docbody {
 	width: 95%;
