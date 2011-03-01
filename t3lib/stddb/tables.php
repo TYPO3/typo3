@@ -631,6 +631,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-pagetree-page-shortcut-root',
 	'apps-pagetree-root',
 	'apps-pagetree-spacer',
+	'apps-tcatree-select-recursive',
 	'apps-toolbar-menu-actions',
 	'apps-toolbar-menu-cache',
 	'apps-toolbar-menu-opendocs',
@@ -652,6 +653,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-text-js',
 	'mimetypes-text-php',
 	'mimetypes-text-text',
+	'mimetypes-word',
 	'mimetypes-x-content-divider',
 	'mimetypes-x-content-domain',
 	'mimetypes-x-content-form',
@@ -763,6 +765,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
+
 
 
 
