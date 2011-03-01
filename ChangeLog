@@ -728,7 +728,7 @@
 
 2011-01-17  Francois Suter  <francois.suter@typo3.org>
 
-	* Fixed bug #17094: Scheduler: Docheader icons should not be underlined
+	* Fixed bug #17094: Scheduler: docheader icons should not be underlined
 
 2011-01-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
@@ -737,7 +737,7 @@
 	* Fixed bug #17048: Remove option "Use condensed mode in backend" in User Settings
 	* Fixed bug #15112: Remove option "Show help text when applicable" in User Settings
 	* Fixed bug #17093: User settings reference nonexistent field edit_showFieldHelp
-	* Fixed bug #17071: JavaScript errors, used .class instead of .className
+	* Fixed bug #17071: JavaScript errors, use .className instead of .class
 	* Fixed bug #17066: Wrong PHPDoc comment for t3lib_div::writeFileToTypo3tempDir
 	* Fixed bug #17085: Update ext_emconf.php of t3skin
 
@@ -996,17 +996,17 @@
 	* Added feature #16580: render-postProcess Hook in t3lib_PageRenderer::render() (Thanks to Morton Jonuschat)
 	* Fixed bug #13245: Render Access Lists settings in be_groups configuration as checkboxes (Thanks to Simon Schaufelberger)
 
-2010-12-30  Christian Kuuhn  <lolli@schwarzbu.ch>
+2010-12-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15034: Login to backend fails with IPv6 Address as HTTP_HOST (Thanks to Roland Schenke)
 	* Fixed bug #10480: Add missing header in auto_respond_msg (Thanks to Christian Buelter)
 
-2010-12-29  Christian Kuuhn  <lolli@schwarzbu.ch>
+2010-12-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16849: [Unit tests] fixPermissions* tests rely on availability of posix_getegid() (Thanks to Steffen Gebert)
 	* Fixed bug #11286: Caching of pagesections uses superfluos serialize() call (Thanks to Rupert Germann)
 
-2010-12-28  Christian Kuuhn  <lolli@schwarzbu.ch>
+2010-12-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16840: Remove misc/ directory and deprecate t3lib_superadmin
 
@@ -1070,7 +1070,7 @@
 2010-12-27  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed bug #16476: tcaTree should work in flexforms, too
-	* Follow-up to #16218: Bug/Feature: TCE-Forms does not use sprite icons -- this leads to inconsistency
+	* Follow-up to #16218: Bug/Feature: TCEforms does not use sprite icons - this leads to inconsistency
 
 2010-12-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
@@ -1334,7 +1334,7 @@
 2010-12-01  Steffen Ritter  <typo3@steffen-ritter.net>
 
 	* Fixed Bug #16613: CleanUp alt_db_navframe.php to work with new workspaces module
-	* Fixed Bug #16218: TCE-Forms does not use sprite icons -- this leads to inconsistency
+	* Fixed Bug #16218: TCEforms does not use sprite icons - this leads to inconsistency
 	* Fixed Bug #16635: TCA Tree does not save collapse/expand state
 	* Follow up #16234: ExtDirect Dataprovider for user settings
 
@@ -1685,7 +1685,7 @@
 	* Added feature #16027: Let typolink honour secure filelink configuration
 	* Added feature #16437: Introduce a form protection API (Thanks to the Security Team: Oliver Klee, Helmut Hummel)
 	* Added feature #16439: Use the form protection API to implement the CSRF protection in user setup and install tool (Thanks to the Security Team: Oliver Klee, Helmut Hummel)
-	* Added feature #11103: Improve advanced_htaccess and make it more compatible (Thanks to Christopher Stelmaszyk)
+	* Added feature #11103: Improve advanced.htaccess and make it more compatible (Thanks to Christopher Stelmaszyk)
 	* Added feature #11916: New TYPO3_DB method for queries that expect just a single result row: exec_SELECTgetSingleRow (Thanks to Jo Hasenau)
 	* Fixed bug #16444: Bugfix:dbal installs itself automatically whenever the install tool is called (Thanks to Susanne Moog)
 	* Fixed bug #16456: When dbal is activated, styles.content.get (and others) doesn't work anymore (empty result)
@@ -7238,8 +7238,8 @@
 
 2009-05-04  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Added feature #11016: Implement RSA authentication for BE and FE -- part 1 (add rsaauth system extension)
-	* Added feature #11016: Implement RSA authentication for BE and FE -- part 2 (fix hard-coded stuff in the TYPO3 login procedure)
+	* Added feature #11016: Implement RSA authentication for BE and FE - part 1 (add rsaauth system extension)
+	* Added feature #11016: Implement RSA authentication for BE and FE - part 2 (fix hard-coded stuff in the TYPO3 login procedure)
 
 2009-05-03  Oliver Hader  <oliver@typo3.org>
 
@@ -7644,7 +7644,7 @@
 2009-03-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #10610: htmlArea RTE: Two errors in class.tx_rtehtmlarea_acronym.php (Thanks to Ursula Renziehausen).
-	* Fixed bug #6947: RTEfullScreenWidth by default please !
+	* Fixed bug #6947: RTEfullScreenWidth by default
 
 2009-03-05  Benjamin Mack  <benni@typo3.org>
 
@@ -10219,7 +10219,7 @@
 
 2008-02-11  Benjamin Mack  <mack@xnos.org>
 
-	* Fixed Follow up for bug #6825: TCEforms: Icon for empty palettes should not be displayed -- palettes fields were not shown
+	* Fixed Follow up for bug #6825: TCEforms: Icon for empty palettes should not be displayed - palettes fields were not shown
 	* Fixed bug #7463: missing descriptions in backend user editor (Thanks to Steffen Kamper, followup to Issue #6921)
 
 2008-02-11  Stanislas Rolland  <stanislas.rolland@fructifor.ca>
@@ -10855,7 +10855,7 @@
 2007-11-29  Benjamin Mack  <mack@xnos.org>
 
 	* (feature) #6833: Possibility to add inline JS to page (Thanks to Steffen Kamper)
-	* (minor) Fixed #6825: TCEforms -- Icon for empty palettes are not displayed anymore
+	* (minor) Fixed #6825: TCEforms - Icon for empty palettes are not displayed anymore
 
 2007-11-27  Ingo Renner  <ingo@typo3.org>
 
