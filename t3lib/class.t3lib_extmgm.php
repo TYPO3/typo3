@@ -303,7 +303,7 @@ final class t3lib_extMgm {
 	public static function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
 		t3lib_div::loadTCA($table);
 		$str = trim($str);
-
+		$palettesChanged = array();
 		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
 			foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
 				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList, $type)) {
@@ -315,6 +315,10 @@ final class t3lib_extMgm {
 								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
 										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
 									self::addFieldsToPalette($table, $palette, $str, $position);
+										// save that palette in case other types use it
+									$palettesChanged[] = $palette;
+									$fieldExists = TRUE;
+								} elseif (in_array($palette, $palettesChanged)) {
 									$fieldExists = TRUE;
 								}
 							}
