@@ -116,12 +116,6 @@ class t3lib_spritemanager_SpriteGenerator {
 	protected $ommitSpriteNameInIconName = FALSE;
 
 	/**
-	 * @var boolean
-	 * @deprecated IE6 support will be dropped within 4.6 - then gifcopies are superflous
-	 */
-	protected $generateGIFCopy = TRUE;
-
-	/**
 	 * namespace of css classes
 	 *
 	 * @var string
@@ -249,18 +243,6 @@ class t3lib_spritemanager_SpriteGenerator {
 	}
 
 	/**
-	 * Setter to enable/disable generating a GIF-Copy of the sprite
-	 *
-	 * @param boolean $value
-	 * @deprecated IE6 support will be dropped within 4.6 - then gifcopies are superflous
-	 * @return t3lib_spritemanager_SpriteGenerator	an instance of $this, to enable chaining.
-	 */
-	public function setGenerateGifCopy($value) {
-		$this->generateGIFCopy = is_bool($value) ? $value : TRUE;
-		return $this;
-	}
-
-	/**
 	 * Setter for timestamp inclusion: imageFiles will be included with ?timestamp
 	 *
 	 * @param boolean $value
@@ -272,7 +254,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	}
 
 	/**
-	 * Teads all png,gif,jpg files from the passed folder name (including 1 subfolder level)
+	 * Reads all png,gif,jpg files from the passed folder name (including 1 subfolder level)
 	 * extracts size information and stores data in internal array,
 	 * afterwards triggers sprite generation.
 	 *
@@ -317,9 +299,7 @@ class t3lib_spritemanager_SpriteGenerator {
 
 		return array(
 			'spriteImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
-			'spriteGifImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.gif',
 			'cssFile' => PATH_site . $this->cssFolder . $this->spriteName . '.css',
-			'cssGif' => PATH_site . $this->cssFolder . $this->spriteName . '-ie6.css',
 			'iconNames' => $iconNames
 		);
 	}
@@ -331,7 +311,6 @@ class t3lib_spritemanager_SpriteGenerator {
 	 */
 	protected function generateCSS() {
 		$cssData = '';
-		$cssIe6 = '';
 
 		if ($this->includeTimestampInCSS) {
 			$timestamp = '?' . time();
@@ -353,13 +332,6 @@ class t3lib_spritemanager_SpriteGenerator {
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
 			$cssData .= t3lib_parsehtml::substituteMarkerArray($this->templateSprite, $markerArray);
-		}
-
-		if ($this->generateGIFCopy) {
-			$markerArray['###SPRITEURL###'] = str_replace('.png', '.gif', $markerArray['###SPRITEURL###']);
-			foreach ($this->spriteBases as $base) {
-				$cssIe6 .= t3lib_parsehtml::substituteMarkerArray($this->templateSprite, $markerArray);
-			}
 		}
 
 		foreach ($this->iconsData as $key => $data) {
@@ -384,9 +356,6 @@ class t3lib_spritemanager_SpriteGenerator {
 		}
 
 		t3lib_div::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '.css', $cssData);
-		if ($this->generateGIFCopy) {
-			t3lib_div::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '-ie6.css', $cssIe6);
-		}
 	}
 
 	/**
@@ -423,12 +392,10 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @return void
 	 */
 	protected function generateGraphic() {
-		$iconParameters = array();
 		$tempSprite = t3lib_div::tempnam($this->spriteName);
 
 		$filePath = array(
 			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
-			'gifFile' => NULL
 		);
 			// create black true color image with given size
 		$newSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
@@ -444,28 +411,8 @@ class t3lib_spritemanager_SpriteGenerator {
 		}
 		imagepng($newSprite, $tempSprite . '.png');
 
-		if ($this->generateGIFCopy) {
-			$filePath['gifFile'] = PATH_site . $this->spriteFolder . $this->spriteName . '.gif';
-			$gifSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
-				// make it transparent
-			imagefill($gifSprite, 0, 0, imagecolorallocate($gifSprite, 127, 127, 127));
-			foreach ($this->iconsData as $icon) {
-				$function = 'imagecreatefrom' . strtolower($icon['fileExtension']);
-				if (function_exists($function)) {
-					$currentIcon = $function($icon['fileName']);
-					imagecopy($gifSprite, $currentIcon, $icon['left'], $icon['top'], 0, 0, $icon['width'], $icon['height']);
-				}
-			}
-			imagecolortransparent($gifSprite, imagecolorallocate($gifSprite, 127, 127, 127));
-			imagegif($gifSprite, $tempSprite . '.gif');
-		}
-
 		t3lib_div::upload_copy_move($tempSprite . '.png', $filePath['mainFile']);
 		t3lib_div::unlink_tempfile($tempSprite . '.png');
-		if ($this->generateGIFCopy) {
-			t3lib_div::upload_copy_move($tempSprite . '.gif', $filePath['gifFile']);
-			t3lib_div::unlink_tempfile($tempSprite . '.gif');
-		}
 	}
 
 	/**
