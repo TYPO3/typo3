@@ -25,11 +25,6 @@ div.typo3-tstemplate-ceditor-colorblock {
 	display: inline;
 }
 
-/* IE 6 Fix */
-* + html div.typo3-tstemplate-ceditor-colorblock {
-	display: inline;
-}
-
 /* IE 7 Fix */
 dl.typo3-tstemplate-ceditor-constant {
 	margin: 0px 0px 20px 10px;
