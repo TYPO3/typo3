@@ -172,6 +172,9 @@ If you click the folder title in the Folder Tree you will see the sub-module loa
 			<trans-unit id="tcatree.filter.contains" xml:space="preserve">
 				<source>contains</source>
 			</trans-unit>
+			<trans-unit id="tcatree.enableRecursiveSelection" xml:space="preserve">
+				<source>enable recursive selection</source>
+			</trans-unit>
 			<trans-unit id="list_module.alttitle" xml:space="preserve">
 				<source>The Web&gt;List module</source>
 			</trans-unit>
