@@ -125,7 +125,8 @@ TYPO3.EM.Layouts = {
 	repositoryInfo: function() {
 		return new Ext.XTemplate(
 			'<span class="typo3-message message-notice" style="padding-right: 50px;" ',
-			'qtip="{updated:this.updatedFormat}\n' + TYPO3.lang.extensions_repository_short + ' {count}">',
+			'qtip="{updated:this.updatedFormat}\n',
+			TYPO3.lang.extensions_repository_short + ' {count}">',
 			'{updated:this.updatedFormat}&nbsp;&nbsp;',
 			TYPO3.lang.extensions_repository_short + ' {count}</span>',
 			{
