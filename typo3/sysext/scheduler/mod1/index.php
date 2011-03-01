@@ -1000,27 +1000,27 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					'tr'     => array('<tr class="t3-row-header">', '</tr>'),
 					'defCol' => array('<td>', '</td>'),
 					'1'      => array('<td style="width: 36px;">', '</td>'),
-					'3'		 => array('<td colspan="2">', '</td>'),
+					'3'      => array('<td colspan="2">', '</td>'),
 				),
 				'defRow' => array(
 					'tr'     => array('<tr class="db_list_normal">', '</tr>'),
 					'defCol' => array('<td>', '</td>'),
-					'1'		 => array('<td class="right">', '</td>'),
-					'2'		 => array('<td class="right">', '</td>'),
+					'1'      => array('<td class="right">', '</td>'),
+					'2'      => array('<td class="right">', '</td>'),
 				)
 			);
 			$disabledTaskRow = array (
 				'tr'     => array('<tr class="db_list_normal disabled">', '</tr>'),
 				'defCol' => array('<td>', '</td>'),
-				'1'		 => array('<td class="right">', '</td>'),
-				'2'		 => array('<td class="right">', '</td>'),
+				'1'      => array('<td class="right">', '</td>'),
+				'2'      => array('<td class="right">', '</td>'),
 			);
 			$rowWithSpan = array (
 				'tr'     => array('<tr class="db_list_normal">', '</tr>'),
 				'defCol' => array('<td>', '</td>'),
-				'1'		 => array('<td class="right">', '</td>'),
-				'2'		 => array('<td class="right">', '</td>'),
-				'3'		 => array('<td colspan="6">', '</td>'),
+				'1'      => array('<td class="right">', '</td>'),
+				'2'      => array('<td class="right">', '</td>'),
+				'3'      => array('<td colspan="6">', '</td>'),
 			);
 			$table = array();
 			$tr = 0;
