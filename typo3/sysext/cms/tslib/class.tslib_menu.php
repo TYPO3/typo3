@@ -221,7 +221,7 @@ class tslib_menu {
 			case 'xhtml_strict':
 			case 'xhtml_11':
 			case 'xhtml_2':
-            case 'html5':
+			case 'html5':
 				$this->nameAttribute = 'id';
 				break;
 			default:
@@ -521,7 +521,7 @@ class tslib_menu {
 
 								//Add versioning overlay for current page (to respect workspaces)
 							if (is_array($row)) {
-							    $this->sys_page->versionOL('pages', $row, true);
+								$this->sys_page->versionOL('pages', $row, true);
 							}
 
 								// Add external MP params, then the row:
@@ -1626,7 +1626,7 @@ class tslib_menu {
 	function getBannedUids() {
 		$banUidArray = array();
 
-		if (trim($this->conf['excludeUidList']))        {
+		if (trim($this->conf['excludeUidList'])) {
 			$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $this->conf['excludeUidList']);
 			$banUidArray = t3lib_div::intExplode(',', $banUidList);
 		}
