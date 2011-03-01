@@ -254,6 +254,44 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		);
 	}
 
+	/**
+	 * Test wheter replacing other TCA fields works as promissed
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 */
+	public function canAddFieldsToTCATypeAndReplaceExistingOnes() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		$typesBefore = $GLOBALS['TCA'][$table]['types'];
+
+		t3lib_extMgm::addToAllTCAtypes($table, 'fieldZ', '', 'replace:fieldX');
+
+		$this->assertEquals(
+			$typesBefore,
+			$GLOBALS['TCA'][$table]['types'],
+			'It\'s wrong that the "types" array changes here - the replaced field is only on palettes'
+		);
+
+			// unchanged because the palette is not used
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+			// unchanged because the palette is not used
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']
+		);
+
+		$this->assertEquals(
+			'fieldZ, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']
+		);
+
+		$this->assertEquals(
+			'fieldZ, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
+		);
+	}
+
+
 
 	///////////////////////////////////////////////////
 	// Tests concerning addFieldsToAllPalettesOfField
