@@ -689,6 +689,8 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	singleClick: function(node, tree) {
+		tree.currentSelectedNode = node;
+
 		var separator = '?';
 		if (currentSubScript.indexOf('?') !== -1) {
 			separator = '&';
