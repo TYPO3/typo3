@@ -5,7 +5,7 @@
 *
 *  Copyright notice
 *
-*  (c) 2008-2010 Benjamin Mack <www.xnos.org>
+*  (c) 2008-2011 Benjamin Mack <benni@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 backend provided by
