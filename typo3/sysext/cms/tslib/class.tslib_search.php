@@ -250,7 +250,7 @@ class tslib_search {
 				preg_match('/^[^ '.$this->quotemeta($specchars).']*/',$sword,$reg);
 				$word = rtrim(trim($reg[0]), $delchars);		// Delete $delchars at end of string
 				$value[] = $word;
-				$sword = trim(preg_replace('/^'.$this->quotemeta($reg[0]).'/','',$sword));
+				$sword = trim(preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword));
 			}
 		}
 
