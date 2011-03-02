@@ -41,7 +41,7 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 	 *
 	 * @type {Boolean}
 	 */
-	ignoreNoChange: true,
+	ignoreNoChange: false,
 
 	/**
 	 * Edit delay
@@ -74,13 +74,25 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 
 		complete: {
 			fn: function(node, newValue, oldValue) {
-				this.editNode.ownerTree.commandProvider.saveTitle(node, this.updatedValue, oldValue, this);
+				if (newValue === oldValue) {
+					this.fireEvent('canceledit', this);
+					return false;
+				}
+
+				this.editNode.getOwnerTree().commandProvider.saveTitle(node, this.updatedValue, oldValue, this);
 			}
 		},
 
 		startEdit: {
 			fn: function(element, value) {
 				this.field.selectText();
+			}
+		},
+
+		canceledit: function() {
+			var tree = this.editNode.getOwnerTree();
+			if (tree.currentSelectedNode) {
+				tree.currentSelectedNode.select();
 			}
 		}
 	},
