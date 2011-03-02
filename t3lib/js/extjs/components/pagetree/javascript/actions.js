@@ -247,8 +247,7 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	collapseBranch: function(node) {
-		node.collapseChildNodes(true);
-		node.collapse();
+		node.collapse(true);
 	},
 
 	/**
@@ -258,8 +257,7 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	expandBranch: function(node) {
-		node.expand();
-		node.expandChildNodes(true);
+		node.expand(true);
 	},
 
 	/**
