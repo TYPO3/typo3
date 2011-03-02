@@ -716,10 +716,10 @@ class localRecordList extends recordList {
 				} elseif ($fCol == '_LOCALIZATION_b') {
 					// Do nothing, has been done above.
 				} else {
-					$tmpProc = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid']);
+					$tmpProc = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], 1, $row);
 					$theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
 					if ($this->csvOutput) {
-						$row[$fCol] = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);
+						$row[$fCol] = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid'], 1, $row);
 					}
 				}
 			}
