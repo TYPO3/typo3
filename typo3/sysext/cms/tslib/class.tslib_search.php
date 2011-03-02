@@ -224,7 +224,7 @@ class tslib_search {
 	 */
 	function split($origSword, $specchars='+-', $delchars='+.,-')	{
 		$sword = $origSword;
-		$specs = '['.$this->quotemeta($specchars).']';
+		$specs = '[' . preg_quote($specchars, '/') . ']';
 
 			// As long as $sword is true (that means $sword MUST be reduced little by little until its empty inside the loop!)
 		while ($sword)	{
@@ -232,7 +232,7 @@ class tslib_search {
 				$sword = preg_replace('/^"/','',$sword);		// Removes first double-quote
 				preg_match('/^[^"]*/',$sword,$reg);  // Removes everything till next double-quote
 				$value[] = $reg[0];  // reg[0] is the value, should not be trimmed
-				$sword = preg_replace('/^'.$this->quotemeta($reg[0]).'/','',$sword);
+				$sword = preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
 				$sword = trim(preg_replace('/^"/','',$sword));		// Removes last double-quote
 			} elseif (preg_match('/^'.$specs.'/',$sword,$reg)) {
 				$value[] = $reg[0];
@@ -247,10 +247,10 @@ class tslib_search {
 				$sword = implode(' ',$a_sword);	// re-build $sword
 			} else {
 					// There are no double-quotes around the value. Looking for next (space) or special char.
-				preg_match('/^[^ '.$this->quotemeta($specchars).']*/',$sword,$reg);
+				preg_match('/^[^ ' . preg_quote($specchars, '/') . ']*/', $sword, $reg);
 				$word = rtrim(trim($reg[0]), $delchars);		// Delete $delchars at end of string
 				$value[] = $word;
-				$sword = trim(preg_replace('/^'.$this->quotemeta($reg[0]).'/','',$sword));
+				$sword = trim(preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword));
 			}
 		}
 
@@ -261,10 +261,13 @@ class tslib_search {
 	 * Local version of quotemeta. This is the same as the PHP function
 	 * but the vertical line, |, and minus, -, is also escaped with a slash.
 	 *
+	 * @deprecated This function is deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Please, use preg_quote() instead.
 	 * @param	string		String to pass through quotemeta()
 	 * @return	string		Return value
 	 */
-	function quotemeta($str)	{
+	function quotemeta($str) {
+		t3lib_div::logDeprecatedFunction();
+
 		$str = str_replace('|','\|',quotemeta($str));
 		#$str = str_replace('-','\-',$str);		// Breaks "-" which should NOT have a slash before it inside of [ ] in a regex.
 		return $str;
