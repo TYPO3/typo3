@@ -475,6 +475,17 @@ $TCA['tt_content'] = array(
 							'xmlOutput' => 0,
 						),
 					),
+					't3editor' => array(
+						'enableByTypeConfig' => 1,
+						'type' => 'userFunc',
+						'userFunc' => 'EXT:t3editor/classes/class.tx_t3editor_tceforms_wizard.php:tx_t3editor_tceforms_wizard->main',
+						'title' => 't3editor',
+						'icon' => 'wizard_table.gif',
+						'script' => 'wizard_table.php',
+						'params' => array(
+							'format' => 'html',
+						),
+					),
 				),
 				'softref' => 'typolink_tag,images,email[subst],url',
 			),
@@ -1911,7 +1922,7 @@ $TCA['tt_content'] = array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					header;LLL:EXT:cms/locallang_ttc.xml:header.ALT.html_formlabel,
-					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.html_formlabel;;nowrap,
+					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.html_formlabel;;nowrap:wizards[t3editor],
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
