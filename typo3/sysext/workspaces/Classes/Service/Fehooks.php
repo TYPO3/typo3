@@ -41,7 +41,7 @@ class tx_Workspaces_Service_Fehooks {
 			return;
 		}
 
-		echo $GLOBALS['TSFE']->cObj->cObjGetSingle(
+		$content = $GLOBALS['TSFE']->cObj->cObjGetSingle(
 			'FLUIDTEMPLATE',
 			array(
 				'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
@@ -51,5 +51,6 @@ class tx_Workspaces_Service_Fehooks {
 				)
 			)
 		);
+		$GLOBALS['TSFE']->content = str_ireplace('</body>', $content . '</body>', $GLOBALS['TSFE']->content);
 	}
 }
