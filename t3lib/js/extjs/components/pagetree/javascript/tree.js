@@ -57,6 +57,13 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	treeEditor: null,
 
 	/**
+	 * Currently Selected Node
+	 *
+	 * @type {Ext.tree.TreeNode}
+	 */
+	currentSelectedNode: null,
+
+	/**
 	 * Enable the drag and drop feature
 	 *
 	 * @cfg {Boolean}
