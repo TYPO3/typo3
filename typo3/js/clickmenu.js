@@ -2,7 +2,7 @@
  * Javascript functions regarding the clickmenu
  * relies on the javascript library "prototype"
  *
- * (c) 2007-2010 Benjamin Mack <www.xnos.org>
+ * (c) 2007-2011 Benjamin Mack <www.xnos.org>
  * All rights reserved
  *
  * This script is part of TYPO3 by
