@@ -50,6 +50,8 @@ class t3lib_tree_Tca_DataProviderFactory {
 		}
 
 		if ($tcaConfiguration['internal_type'] == 'db') {
+			$unselectableUids = array();
+
 			/**
 			 * @var $dataProvider t3lib_tree_Tca_DatabaseTreeDataProvider
 			 */
@@ -58,6 +60,10 @@ class t3lib_tree_Tca_DataProviderFactory {
 			if (isset($tcaConfiguration['foreign_table'])) {
 				$tableName = $tcaConfiguration['foreign_table'];
 				$dataProvider->setTableName($tableName);
+
+				if ($tableName == $table) {
+					$unselectableUids[] = $currentValue['uid'];
+				}
 
 				t3lib_div::loadTCA($tableName);
 			} else {
@@ -107,6 +113,8 @@ class t3lib_tree_Tca_DataProviderFactory {
 						1288215889
 					);
 				}
+
+				$dataProvider->setItemUnselectableList($unselectableUids);
 			} else {
 				throw new InvalidArgumentException(
 					'TCA Tree configuration is invalid: "treeConfig" array is missing',
