@@ -72,6 +72,11 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	protected $itemWhiteList = array();
 
 	/**
+	 * Contains all ids which are not allowed to be selected
+	 */
+	protected $itemUnselectableList = array();
+
+	/**
 	 * Sets the id of the tree
 	 *
 	 * @param string $treeId
@@ -222,6 +227,25 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	 */
 	public function getItemWhiteList() {
 		return $this->itemWhiteList;
+	}
+
+	/**
+	 * Setter for $itemUnselectableList
+	 *
+	 * @param array $itemUnselectableList
+	 * @return void
+	 */
+	public function setItemUnselectableList(array $itemUnselectableList) {
+		$this->itemUnselectableList = $itemUnselectableList;
+	}
+
+	/**
+	 * Getter for $itemUnselectableList
+	 *
+	 * @return array
+	 */
+	public function getItemUnselectableList() {
+		return $this->itemUnselectableList;
 	}
 }
 
