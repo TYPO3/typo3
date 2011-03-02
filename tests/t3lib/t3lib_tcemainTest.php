@@ -29,6 +29,7 @@
  * @subpackage t3lib
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * @author Tolleiv Nietsch <info@tolleiv.de>
  */
 class t3lib_tcemainTest extends tx_phpunit_testcase {
 
@@ -48,6 +49,13 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
+	 * a backup of the global database
+	 *
+	 * @var t3lib_DB
+	 */
+	protected $databaseBackup = NULL;
+
+	/**
 	 * @var t3lib_TCEmain
 	 */
 	private $fixture;
@@ -58,6 +66,8 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	private $backEndUser;
 
 	public function setUp() {
+		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
+
 		$this->backEndUser = $this->getMock('t3lib_beUserAuth');
 
 		$this->fixture = new t3lib_TCEmain();
@@ -65,8 +75,12 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
+		t3lib_div::purgeInstances();
+
+		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
+
 		unset(
-			$this->fixture->BE_USER, $this->fixture, $this->backEndUser
+			$this->fixture->BE_USER, $this->fixture, $this->backEndUser, $this->databaseBackup
 		);
 	}
 
@@ -235,6 +249,79 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 
 		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+	}
+
+
+	/////////////////////////////////////
+	// Tests concerning process_datamap
+	/////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse() {
+		$fixture = $this->getMock('t3lib_TCEmain', array('newlog'));
+
+		$this->backEndUser->workspace = 1;
+		$this->backEndUser->workspaceRec = array('freeze' => TRUE);
+
+		$fixture->BE_USER = $this->backEndUser;
+
+		$this->assertFalse(
+			$fixture->process_datamap()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB');
+
+		$fixture = $this->getMock(
+			't3lib_TCEmain',
+			array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess')
+		);
+		$fixture->bypassWorkspaceRestrictions = FALSE;
+		$fixture->datamap = array(
+			'pages' => array(
+				'1' => array(
+					'header' => 'demo',
+				),
+			),
+		);
+
+		$fixture->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(TRUE));
+		$fixture->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(FALSE));
+		$fixture->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(TRUE));
+
+		$backEndUser = $this->getMock('t3lib_beUserAuth');
+		$backEndUser->workspace = 1;
+		$backEndUser->workspaceRec = array('freeze' => FALSE);
+		$backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(TRUE));
+		$backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(TRUE));
+		$backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(TRUE));
+
+		$fixture->BE_USER = $backEndUser;
+
+		$createdTceMain = $this->getMock('t3lib_TCEmain', array());
+		$createdTceMain->expects($this->once())->method('start')->with(
+			array(),
+			array('pages' => array(
+				1 => array(
+					'version' => array(
+						'action' => 'new',
+						'treeLevels' => -1,
+						'label' => 'Auto-created for WS #1',
+					)
+				)
+			))
+		);
+		$createdTceMain->expects($this->never())->method('process_datamap');
+		$createdTceMain->expects($this->once())->method('process_cmdmap');
+		t3lib_div::addInstance('t3lib_TCEmain', $createdTceMain);
+
+		$fixture->process_datamap();
 	}
 }
 ?>
