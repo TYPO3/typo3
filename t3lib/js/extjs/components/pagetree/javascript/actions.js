@@ -381,7 +381,7 @@ TYPO3.Components.PageTree.Actions = {
 		TYPO3.Backend.ContentContainer.setUrl(
 			'sysext/impexp/app/index.php?tx_impexp[action]=export&' +
 				'id=0&tx_impexp[pagetree][id]=' + node.attributes.nodeData.id +
-				'&tx_impexp[pagetree][levels]=' + node.attributes.nodeData.id +
+				'&tx_impexp[pagetree][levels]=0' +
 				'&tx_impexp[pagetree][tables][]=_ALL'
 		);
 	},
