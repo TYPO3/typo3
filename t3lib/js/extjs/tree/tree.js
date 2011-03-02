@@ -51,7 +51,7 @@ TYPO3.Components.Tree.StandardTree = function(config) {
 			clearOnLoad: false
 		}),
 		root: new Ext.tree.AsyncTreeNode({
-			text: 'TYPO3 StandardTree',
+			text: TYPO3.lang.tcatree,
 			id: 'root',
 			expanded: true,
 			children: TYPO3.Components.Tree.StandardTreeItemData[config.id]
@@ -117,7 +117,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 			menu: {
 				items: [
 					{
-						text: 'starts with',
+						text: TYPO3.lang['tcatree.filter.startsWith'],
 						checked: true,
 						group: 'searchStartsWith',
 						handler: function(item) {
@@ -127,7 +127,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 						scope: scope
 					},
 					{
-						text: 'contains',
+						text: TYPO3.lang['tcatree.filter.contains'],
 						checked: false,
 						group: 'searchStartsWith',
 						handler: function(item) {
@@ -141,7 +141,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		},
 		new Ext.form.TextField({
 			width: 150,
-			emptyText:'Find item',
+			emptyText: TYPO3.lang['tcatree.findItem'],
 			enableKeyEvents: true,
 			itemId: 'filterText',
 			listeners:{
@@ -162,14 +162,14 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		'->',
 		{
 			iconCls: 'icon-expand-all',
-			tooltip: 'Expand All',
+			tooltip: TYPO3.lang['tcatree.expandAll'],
 			handler: function() {
 					this.root.expand(true);
 			},
 			scope: scope
 		}, {
 			iconCls: 'icon-collapse-all',
-			tooltip: 'Collapse All',
+			tooltip: TYPO3.lang['tcatree.collapseAll'],
 			handler: function() {
 				this.root.collapse(true);
 			},
