@@ -35,13 +35,13 @@ class tx_cms_BackendLayout {
 	 */
 	public function colPosListItemProcFunc(&$params) {
 		if ($params['row']['pid'] > 0) {
-			$params['items'] = $this->addColPosListLayoutItems($params['row']['pid'], $params['items']);
+			$params['items'] = $this->getColPosListItemsParsed($params['row']['pid'], $params['row']);
 		} else {
 			// negative uid_pid values indicate that the element has been inserted after an existing element
 			// so there is no pid to get the backendLayout for and we have to get that first
 			$existingElement = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . -(intval($params['row']['pid'])));
 			if ($existingElement['pid'] > 0) {
-				$params['items'] = $this->addColPosListLayoutItems($existingElement['pid'], $params['items']);
+				$params['items'] = $this->getColPosListItemsParsed($existingElement['pid'], $params['row']);
 			}
 		}
 	}
@@ -58,6 +58,13 @@ class tx_cms_BackendLayout {
 
 		if ($layout && $layout['__items']) {
 			$items = $layout['__items'];
+			if (count($items)) {
+				foreach ($items as $key => $valueArray) {
+					if($valueArray['1'] === '') {
+						unset($items[$key]);
+					}
+				}
+			};
 		}
 
 		return $items;
@@ -69,22 +76,46 @@ class tx_cms_BackendLayout {
 	 * @param  int  $id
 	 * @return  array  $tcaItems
 	 */
-	public function getColPosListItemsParsed($id) {
-		$tsConfig  = t3lib_BEfunc::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
+	public function getColPosListItemsParsed($id, $caller) {
+
+		$pageData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $id);
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
-
 		$tceForms = t3lib_div::makeInstance('t3lib_TCEForms');
-
 		$tcaItems = $tcaConfig['items'];
-		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}
 
-		foreach (t3lib_div::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
+			// Labels should only be processed when we are in the actual grid view
+			// while we are editing an item, or while moving it in the list view
+			// but not while listing items
+		if (is_array($caller) && (($caller['checkItemsArray'] && !$caller['uid']) || (!$caller['checkItemsArray'] && $caller['uid']))) {
+
+				// we have to take care of items that have been removed via removeItems
+				// and items that have been restricted by colPos_list settings
+				// each of them can be set in 2 different places
+				// addItems will be ignored, since the grid can't show these additional columns anyway
+			$removeItems = t3lib_Befunc::getModTSconfig($id, 'TCEFORM.tt_content.colPos.removeItems');
+			$removeItems = t3lib_div::trimExplode(',', $removeItems['value']);
+			$removeTypeItems = t3lib_Befunc::getModTSconfig($id, 'TCEFORM.tt_content.colPos.types.' . $pageData['doktype'] . '.removeItems');
+			$removeTypeItems = t3lib_div::trimExplode(',', $removeTypeItems['value']);
+			$webLayout_colPosList = t3lib_Befunc::getModTSconfig($id, 'mod.web_layout.tt_content.colPos_list');
+
+			if ($webLayout_colPosList) {
+				$colPosList = $webLayout_colPosList;
+			} else {
+				$colPosList = t3lib_Befunc::getModTSconfig($id, 'mod.SHARED.colPos_list');
+			}
+			if ($colPosList['value'] !== '') {
+				$colPosArray = t3lib_div::trimExplode(',', $colPosList['value']);
+			}
+
 			foreach ($tcaItems as $key => $item) {
-				if ($item[1] == $removeId) {
+				if ((is_array($removeItems) && in_array($item[1], $removeItems)) || (is_array($removeItems) && in_array($item[1], $removeTypeItems))) {
+					unset($tcaItems[$key]);
+				}
+				if (isset($colPosArray[0]) && !in_array($item[1], $colPosArray)) {
 					unset($tcaItems[$key]);
 				}
 			}

@@ -633,6 +633,8 @@ class tx_cms_layout extends recordList {
 								$grid .= $head[$columnKey] . $content[$columnKey];
 							} else if ($columnConfig['colPos']) {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
+							} else if ($columnConfig['name'] !== '') {
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->sL($columnConfig['name']), '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
 							}
