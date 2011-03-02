@@ -4,7 +4,7 @@
  *
  * For proper use see file_list.php or the doc_core_api manual
  *
- * (c) 2009-2010 Benjamin Mack
+ * (c) 2009-2011 Benjamin Mack <benni@typo3.org>
  * All rights reserved
  *
  * This script is part of TYPO3 by
