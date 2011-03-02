@@ -1960,12 +1960,21 @@ final class t3lib_BEfunc {
 	 * @param	string		items-array value to match
 	 * @return	string		Label for item entry
 	 */
-	public static function getLabelFromItemlist($table, $col, $key) {
+	public static function getLabelFromItemlist($table, $col, $key, $row = array()) {
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
 
-			// Check, if there is an "items" array:
+		$row['checkItemsArray'] = 1;
+
+		if (isset($GLOBALS['TCA'][$table]['columns'][$col]['config']['itemsProcFunc'])) {
+			$GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] = t3lib_TCEforms::procItems($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'],
+				$GLOBALS['TCA'][$table]['columns'][$col]['config']['itemsProcFunc'],
+				$GLOBALS['TCA'][$table]['columns'][$col]['config'], $table, $row, $col);
+		}
+
+			  // Check, if there is an "items" array:
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col]) && is_array($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'])) {
+
 				// Traverse the items-array...
 			foreach ($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] as $k => $v) {
 					// ... and return the first found label where the value was equal to $key
@@ -2116,7 +2125,8 @@ final class t3lib_BEfunc {
 	 * @param	boolean		If t3lib_BEfunc::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return	string
 	 */
-	public static function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
+	public static function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE, $row = array()) {
+
 		if ($col == 'uid') {
 				// no need to load TCA as uid is not in TCA-array
 			return $value;
@@ -2142,7 +2152,7 @@ final class t3lib_BEfunc {
 			$l = '';
 			switch ((string) $theColConf['type']) {
 				case 'radio':
-					$l = self::getLabelFromItemlist($table, $col, $value);
+					$l = self::getLabelFromItemlist($table, $col, $value, $row);
 					$l = $GLOBALS['LANG']->sL($l);
 					break;
 				case 'select':
@@ -2187,7 +2197,7 @@ final class t3lib_BEfunc {
 							$l = 'N/A';
 						}
 					} else {
-						$l = self::getLabelFromItemlist($table, $col, $value);
+						$l = self::getLabelFromItemlist($table, $col, $value, $row);
 						$l = $GLOBALS['LANG']->sL($l);
 						if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
 							if ($noRecordLookup) {
@@ -2220,10 +2230,10 @@ final class t3lib_BEfunc {
 					if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
 						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 					} else {
-						$lA = Array();
+						$lA = array();
 						foreach ($theColConf['items'] as $key => $val) {
 							if ($value & pow(2, $key)) {
-								$lA[] = $GLOBALS['LANG']->sL($val[0]);
+								$lA[] = $GLOBALS['LANG']->sL(self::getLabelFromItemlist($table, $col, $val[0], $row));
 							}
 						}
 						$l = implode(', ', $lA);
@@ -2307,8 +2317,8 @@ final class t3lib_BEfunc {
 	 * @return	string
 	 * @see getProcessedValue()
 	 */
-	public static function getProcessedValueExtra($table, $fN, $fV, $fixed_lgd_chars = 0, $uid = 0, $forceResult = TRUE) {
-		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult);
+	public static function getProcessedValueExtra($table, $fN, $fV, $fixed_lgd_chars = 0, $uid = 0, $forceResult = TRUE, $row = array()) {
+		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult, $row);
 		if (!isset($fVnew)) {
 			if (is_array($GLOBALS['TCA'][$table])) {
 				if ($fN == $GLOBALS['TCA'][$table]['ctrl']['tstamp'] || $fN == $GLOBALS['TCA'][$table]['ctrl']['crdate']) {
