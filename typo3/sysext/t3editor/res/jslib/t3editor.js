@@ -163,6 +163,9 @@ T3editor.prototype = {
 		},
 
 		saveFunction: function(event) {
+			if (!T3editor.ajaxSavetype || T3editor.ajaxSavetype == '') {
+				return;
+			}
 			this.modalOverlay.show();
 			this.updateTextarea(event);
 
