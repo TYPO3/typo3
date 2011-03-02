@@ -6,7 +6,7 @@
  *
  * Copyright notice
  *
- * (c) 2007-2010 Oliver Hader <oh@inpublica.de>
+ * (c) 2007-2011 Oliver Hader <oh@inpublica.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
