@@ -166,7 +166,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the flash messages
 	 *
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
 	 * @return void
 	 */
 	public function setFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
@@ -177,9 +177,10 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the flash messages
 	 *
 	 * @return Tx_Extbase_MVC_Controller_FlashMessages
-	 * @deprecated
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
 	 */
 	public function getFlashMessages() {
+		t3lib_div::logDeprecatedFunction();
 		return $this->flashMessageContainer;
 	}
 
