@@ -836,7 +836,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-lock'
 );
 
-$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection');
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array('deleted', 'hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection');
+
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
 	'hidden'           => 'status-overlay-hidden',
 	'fe_group'         => 'status-overlay-access-restricted',
