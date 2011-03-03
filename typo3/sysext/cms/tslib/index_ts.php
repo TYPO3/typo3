@@ -538,12 +538,6 @@ $TSFE->statistics();
 $TSFE->jumpurl();
 
 
-// *************
-// Preview info
-// *************
-$TSFE->previewInfo();
-
-
 // ******************
 // Publishing static
 // ******************
