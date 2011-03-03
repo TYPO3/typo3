@@ -4398,10 +4398,13 @@ final class t3lib_BEfunc {
 					'</a>');
 			}
 
-				// Check if fileDenyPattern was changed which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT) {
+				// Check if parts of fileDenyPattern were removed which is dangerous on Apache
+			$defaultParts = t3lib_div::trimExplode('|', FILE_DENY_PATTERN_DEFAULT, TRUE);
+			$givenParts = t3lib_div::trimExplode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], TRUE);
+			$result = array_intersect($defaultParts, $givenParts);
+			if ($defaultParts !== $result) {
 				$warnings['file_deny_pattern'] = sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_pattern'),
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_pattern_partsNotPresent'),
 						'<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />');
 			}
 
