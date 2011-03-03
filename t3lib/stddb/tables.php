@@ -768,6 +768,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
+	'deleted',
 	'hidden',
 	'starttime',
 	'endtime',
