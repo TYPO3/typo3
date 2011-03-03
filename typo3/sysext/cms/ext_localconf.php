@@ -204,4 +204,7 @@ if (TYPO3_MODE === 'FE') {
 $GLOBALS ['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 $GLOBALS ['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
 
+	//register hook to show preview info
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['cms'] = 'EXT:cms/tslib/hooks/class.tx_cms_fehooks.php:tx_cms_fehooks->hook_eofe';
+
 ?>
