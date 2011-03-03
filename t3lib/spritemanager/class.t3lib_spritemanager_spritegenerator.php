@@ -358,6 +358,7 @@ class t3lib_spritemanager_SpriteGenerator {
 		if ($this->generateGIFCopy) {
 			$markerArray['###SPRITEURL###'] = str_replace('.png', '.gif', $markerArray['###SPRITEURL###']);
 			foreach ($this->spriteBases as $base) {
+				$markerArray['###SPRITENAME###'] = $base;
 				$cssIe6 .= t3lib_parsehtml::substituteMarkerArray($this->templateSprite, $markerArray);
 			}
 		}

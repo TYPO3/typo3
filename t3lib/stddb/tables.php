@@ -652,6 +652,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-text-js',
 	'mimetypes-text-php',
 	'mimetypes-text-text',
+	'mimetypes-word',
 	'mimetypes-x-content-divider',
 	'mimetypes-x-content-domain',
 	'mimetypes-x-content-form',
