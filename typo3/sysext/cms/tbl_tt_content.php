@@ -35,6 +35,12 @@
 
 
 
+if (!function_exists('user_sortPluginList')) {
+	function user_sortPluginList(array &$parameters) {
+			usort($parameters['items'], create_function('$item1,$item2', 'return strcasecmp($GLOBALS[\'LANG\']->sL($item1[0]),$GLOBALS[\'LANG\']->sL($item2[0]));'));
+	}
+}
+
 $TCA['tt_content'] = array(
 	'ctrl' => $TCA['tt_content']['ctrl'],
 	'interface' => array(
@@ -1288,6 +1294,7 @@ $TCA['tt_content'] = array(
 						'',
 					),
 				),
+				'itemsProcFunc' => 'user_sortPluginList',
 				'default' => '',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'iconsInOptionTags' => 1,
