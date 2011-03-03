@@ -28,8 +28,9 @@
 
 
 /**
- * Base testcase for the Extbase extension.
- * @deprecated use Tx_Extbase_Tests_Unit_BaseTestCase instead
+ * Was the base testcase for the Extbase extension.
+ * Use Tx_Extbase_Tests_Unit_BaseTestCase instead.
+ * @deprecated since Extbase 1.3; will be removed in Extbase 1.5
  */
 abstract class Tx_Extbase_BaseTestCase extends Tx_Extbase_Tests_Unit_BaseTestCase {
 

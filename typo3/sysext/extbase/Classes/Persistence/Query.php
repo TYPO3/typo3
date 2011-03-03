@@ -230,8 +230,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * Executes the number of matching objects for the query
 	 *
 	 * @return integer The number of matching objects
-	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use Query::execute()::count() instead
 	 * @api
+	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.5.0; use Query::execute()::count() instead
 	 */
 	public function count() {
 		t3lib_div::logDeprecatedFunction();
@@ -433,7 +433,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *
 	 * @param int $uid The uid to match against
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.3.0; use equals() instead
+	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use equals() instead
 	 */
 	public function withUid($operand) {
 		t3lib_div::logDeprecatedFunction();
