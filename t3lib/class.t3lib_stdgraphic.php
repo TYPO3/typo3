@@ -2671,6 +2671,11 @@ class t3lib_stdGraphic {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 			setlocale(LC_CTYPE, $currentLocale);
 		}
+			// if escapeshellarg didn't change anything and if there is no whitespace in the original string
+			// keep the original for (partial) safe_mode compatibility
+		if (trim($escapedInputName, '"\'') === $inputName && !preg_match('/[[:space:]]/', $inputName)) {
+			$escapedInputName = $inputName;
+		}
 		return $escapedInputName;
 	}
 
