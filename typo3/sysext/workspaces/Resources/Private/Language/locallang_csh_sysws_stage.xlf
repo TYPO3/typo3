@@ -19,6 +19,18 @@
         <source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
         <target approved="yes">Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</target>
       </trans-unit>
+      <trans-unit id="notification_mode.description">
+        <source>You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</source>
+        <target approved="yes">You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</target>
+      </trans-unit>
+      <trans-unit id="notification_defaults.description">
+        <source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
+        <target approved="yes">Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</target>
+      </trans-unit>
+      <trans-unit id="allow_notificaton_settings.description">
+        <source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
+        <target approved="yes">Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

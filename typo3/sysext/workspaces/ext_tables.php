@@ -79,6 +79,7 @@ $TCA['sys_workspace_stage'] = array(
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
+		'dividers2tabs' => TRUE
 	)
 );
 	// todo move icons to Core sprite or keep them here and remove the todo note ;)

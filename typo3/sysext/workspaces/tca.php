@@ -180,10 +180,85 @@ $TCA['sys_workspace'] = array(
 				),
 				'default' => 0
 		),
+		'edit_notification_mode' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_notification_mode',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+				),
+			)
+		),
+		'edit_notification_defaults' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_notification_defaults',
+			'displayCond' => 'FIELD:edit_notification_mode:IN:0,1',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'prepend_tname' => 1,
+				'size' => '3',
+				'maxitems' => '100',
+				'autoSizeMax' => 20,
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
+			)
+		),
+		'edit_allow_notificaton_settings' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_allow_notificaton_settings',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			)
+		),
+		'publish_notification_mode' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_notification_mode',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+				),
+			)
+		),
+		'publish_notification_defaults' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_notification_defaults',
+			'displayCond' => 'FIELD:publish_notification_mode:IN:0,1',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'prepend_tname' => 1,
+				'size' => '3',
+				'maxitems' => '100',
+				'autoSizeMax' => 20,
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
+			)
+		),
+		'publish_allow_notificaton_settings' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_allow_notificaton_settings',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			)
+		),
 	),
 	'types' => array(
 		'0' => array('showitem' => 'title,description,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,stagechg_notification,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:tabs.notification_settings,stagechg_notification,edit_notification_mode,edit_notification_defaults,edit_allow_notificaton_settings,publish_notification_mode,publish_notification_defaults,publish_allow_notificaton_settings,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_filemounts.tabs.staging,custom_stages,
@@ -247,9 +322,48 @@ $TCA['sys_workspace_stage'] = array(
 				'type' => 'passthrough',
 			)
 		),
+		'notification_mode' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.notification_mode',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+				),
+			)
+		),
+		'notification_defaults' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.notification_defaults',
+			'displayCond' => 'FIELD:notification_mode:IN:0,1',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'prepend_tname' => 1,
+				'size' => '3',
+				'maxitems' => '100',
+				'autoSizeMax' => 20,
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
+			)
+		),
+		'allow_notificaton_settings' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.allow_notificaton_settings',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			)
+		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'title,responsible_persons,default_mailcomment'
+		'0' => array('showitem' => '
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.general,title,responsible_persons,
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,notification_mode,notification_defaults,allow_notificaton_settings,default_mailcomment'
 		)
 	)
 );

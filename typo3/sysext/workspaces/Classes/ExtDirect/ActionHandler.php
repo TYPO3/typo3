@@ -221,9 +221,10 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 *
 	 * @param array list of recipients
 	 * @param string given user string of additional recipients
+	 * @param integer stage id
 	 * @return array
 	 */
-	public function getRecipientList(array $uidOfRecipients, $additionalRecipients) {
+	public function getRecipientList(array $uidOfRecipients, $additionalRecipients, $stageId) {
 		$finalRecipients = array();
 
 		$recipients = array();
@@ -231,6 +232,19 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 			$beUserRecord = t3lib_befunc::getRecord('be_users',intval($userUid));
 			if(is_array($beUserRecord) && $beUserRecord['email'] != '') {
 				$recipients[] = $beUserRecord['email'];
+			}
+		}
+
+			// the notification mode can be configured in the workspace stage record
+		$notification_mode = $this->getStageService()->getNotificationMode($stageId);
+		if (intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL || intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL_STRICT) {
+				// get the default recipients from the stage configuration
+				// the default recipients needs to be added in some cases of the notification_mode
+			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, true);
+			foreach ($default_recipients as $default_recipient_uid => $default_recipient_record) {
+				if (!in_array($default_recipient_record['email'],$recipients)) {
+					$recipients[] = $default_recipient_record['email'];
+				}
 			}
 		}
 
@@ -277,7 +291,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$table = $parameters->affects->table;
 		$uid = $parameters->affects->uid;
 		$t3ver_oid = $parameters->affects->t3ver_oid;
-		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional);
+		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 
 		if ($setStageId == Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID) {
 			$cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
@@ -324,7 +338,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$comments = $parameters->comments;
 		$table = $parameters->affects->table;
 		$uid = $parameters->affects->uid;
-		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional);
+		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 
 		$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 		$cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
@@ -369,7 +383,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$setStageId = $parameters->affects->nextStage;
 		$comments = $parameters->comments;
 		$elements = $parameters->affects->elements;
-		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional);
+		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 
 		foreach($elements as $key=>$element) {
 			if ($setStageId == Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID) {
@@ -403,41 +417,68 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 * @return array
 	 */
 	protected function getSentToStageWindow($nextStageId) {
+		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getStageService()->getWorkspaceId());
+		$showNotificationFields = FALSE;
 		$stageTitle = $this->getStageService()->getStageTitle($nextStageId);
 		$result = array(
-			'title' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:actionSendToStage'),
+			'title' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage'),
 			'items' => array(
 				array(
 					'xtype' => 'panel',
 					'bodyStyle' => 'margin-bottom: 7px; border: none;',
-					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $stageTitle,
-				),
-				array(
-					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.sendMailTo'),
-					'xtype' => 'checkboxgroup',
-					'itemCls' => 'x-check-group-alt',
-					'columns' => 1,
-					'style' => 'max-height: 200px',
-					'autoScroll' => TRUE,
-					'items' => array(
-						$this->getReceipientsOfStage($nextStageId)
-					)
-				),
-				array(
-					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.additionalRecipients'),
-					'name' => 'additional',
-					'xtype' => 'textarea',
-					'width' => 250,
-				),
-				array(
-					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.comments'),
+					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $stageTitle,
+				)
+			)
+		);
+
+		switch ($nextStageId) {
+			case Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID:
+			case Tx_Workspaces_Service_Stages::STAGE_PUBLISH_ID:
+				if (!empty($workspaceRec['publish_allow_notificaton_settings'])) {
+					$showNotificationFields = TRUE;
+				}
+				break;
+			case Tx_Workspaces_Service_Stages::STAGE_EDIT_ID:
+				if (!empty($workspaceRec['edit_allow_notificaton_settings'])) {
+					$showNotificationFields = TRUE;
+				}
+				break;
+			default:
+				$allow_notificaton_settings = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($nextStageId, 'allow_notificaton_settings');
+				if (!empty($allow_notificaton_settings)) {
+					$showNotificationFields = TRUE;
+				}
+				break;
+		}
+
+		if ($showNotificationFields == TRUE) {
+			$result['items'][] = array(
+						'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.sendMailTo'),
+						'xtype' => 'checkboxgroup',
+						'itemCls' => 'x-check-group-alt',
+						'columns' => 1,
+						'style' => 'max-height: 200px',
+						'autoScroll' => true,
+						'items' => array(
+							$this->getReceipientsOfStage($nextStageId)
+						)
+					);
+
+			$result['items'][] = array(
+						'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.additionalRecipients'),
+						'name' => 'additional',
+						'xtype' => 'textarea',
+						'width' => 250,
+					);
+		}
+
+		$result['items'][] = array(
+					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.comments'),
 					'name' => 'comments',
 					'xtype' => 'textarea',
 					'width' => 250,
 					'value' => $this->getDefaultCommentOfStage($nextStageId),
-				),
-			)
-		);
+				);
 
 		return $result;
 	}
@@ -452,14 +493,38 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$result = array();
 
 		$recipients = $this->getStageService()->getResponsibleBeUser($stage);
+		$default_recipients = $this->getStageService()->getResponsibleBeUser($stage, true);
 
 		foreach ($recipients as $id => $user) {
 			if (t3lib_div::validEmail($user['email'])) {
+				$checked = FALSE;
+				$disabled = FALSE;
 				$name = $user['realName'] ? $user['realName'] : $user['username'];
+
+					// the notification mode can be configured in the workspace stage record
+				$notification_mode = $this->getStageService()->getNotificationMode($stage);
+				if (intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_SOMEONE) {
+						// all responsible users are checked per default, as in versions before
+					$checked = TRUE;
+				} elseif (intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL) {
+						// the default users are checked only
+					if (!empty($default_recipients[$id])) {
+						$checked = TRUE;
+						$disabled = TRUE;
+					} else {
+						$checked = FALSE;
+					}
+				} elseif (intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL_STRICT) {
+						// all responsible users are checked
+					$checked = TRUE;
+					$disabled = TRUE;
+				}
+
 				$result[] = array(
 					'boxLabel' => sprintf('%s (%s)', $name, $user['email']),
 					'name' => 'receipients-' . $id,
-					'checked' => TRUE,
+					'checked' => $checked,
+					'disabled' => $disabled,
 				);
 			}
 		}

@@ -31,6 +31,62 @@
         <source>Workspace Stage</source>
         <target approved="yes">Workspace Stage</target>
       </trans-unit>
+      <trans-unit id="tabs.notification_settings">
+        <source>Notification settings</source>
+        <target approved="yes">Notification settings</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.edit_notification_mode">
+        <source>Edit stage: Recipient suggestion checkboxes</source>
+        <target approved="yes">Edit stage: Recipient suggestion checkboxes</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.notification_mode.0">
+        <source>All are selected per default (can be changed)</source>
+        <target approved="yes">All are selected per default (can be changed)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.notification_mode.1">
+        <source>Some are selected per default (defaults cannot be unchecked)</source>
+        <target approved="yes">Some are selected per default (defaults cannot be unchecked)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.notification_mode.2">
+        <source>All are selected per default (cannot be changed)</source>
+        <target approved="yes">All are selected per default (cannot be changed)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.edit_notification_defaults">
+        <source>Edit stage: default notification mail recipients</source>
+        <target approved="yes">Edit stage: default notification mail recipients</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.edit_allow_notificaton_settings">
+        <source>Allow notification settings during stage change back to edit stage</source>
+        <target approved="yes">Allow notification settings during stage change back to edit stage</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_notification_mode">
+        <source>Ready to publish stage: Recipient suggestion checkboxes</source>
+        <target approved="yes">Ready to publish stage: Recipient suggestion checkboxes</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_notification_defaults">
+        <source>Ready to publish stage: default notification mail recipients</source>
+        <target approved="yes">Ready to publish stage: default notification mail recipients</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_allow_notificaton_settings">
+        <source>Allow notification settings during stage change to ready to publish</source>
+        <target approved="yes">Allow notification settings during stage change to ready to publish</target>
+      </trans-unit>
+      <trans-unit id="tabs.general">
+        <source>General</source>
+        <target approved="yes">General</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_mode">
+        <source>Recipient suggestion checkboxes</source>
+        <target approved="yes">Recipient suggestion checkboxes</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults">
+        <source>Default notification mail recipients</source>
+        <target approved="yes">Default notification mail recipients</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings">
+        <source>Allow notification settings during stage change</source>
+        <target approved="yes">Allow notification settings during stage change</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

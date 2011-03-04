@@ -38,6 +38,9 @@ class Tx_Workspaces_Service_Stages {
 		// ready to publish stage
 	const STAGE_PUBLISH_ID = -10;
 	const STAGE_EDIT_ID = 0;
+	const MODE_NOTIFY_SOMEONE = 0;
+	const MODE_NOTIFY_ALL = 1;
+	const MODE_NOTIFY_ALL_STRICT = 2;
 
 	/**
 	 * Current workspace ID
@@ -380,23 +383,39 @@ class Tx_Workspaces_Service_Stages {
 	 * Get array of all responsilbe be_users for a stage
 	 *
 	 * @param	int	stage id
+	 * @param	boolean if field notification_defaults should be selected instead of responsible users
 	 * @return	array be_users with e-mail and name
 	 */
-	public function getResponsibleBeUser($stageId) {
+	public function getResponsibleBeUser($stageId, $selectDefaultUserField = false) {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
 		$recipientArray = array();
 
 		switch ($stageId) {
 			case self::STAGE_PUBLISH_EXECUTE_ID:
 			case self::STAGE_PUBLISH_ID:
-				$userList = $this->getResponsibleUser($workspaceRec['adminusers']);
+				if ($selectDefaultUserField == false) {
+					$userList = $this->getResponsibleUser($workspaceRec['adminusers']);
+				} else {
+					$notification_default_user = $workspaceRec['publish_notification_defaults'];
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
 				break;
 			case self::STAGE_EDIT_ID:
-				$userList = $this->getResponsibleUser($workspaceRec['members']);
+				if ($selectDefaultUserField == false) {
+					$userList = $this->getResponsibleUser($workspaceRec['members']);
+				} else {
+					$notification_default_user = $workspaceRec['edit_notification_defaults'];
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
 				break;
 			default:
-				$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
-				$userList = $this->getResponsibleUser($responsible_persons);
+				if ($selectDefaultUserField == false) {
+					$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
+					$userList = $this->getResponsibleUser($responsible_persons);
+				} else {
+					$notification_default_user = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'notification_defaults');
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
 				break;
 		}
 
@@ -668,6 +687,42 @@ class Tx_Workspaces_Service_Stages {
 		}
 
 		return $isValid;
+	}
+
+	/**
+	 * Returns the notification mode from stage configuration
+	 *
+	 * Return values:
+	 * 0 = notify someone / old way / default setting
+	 * 1 = notify all responsible users (some users checked per default and you're not allowed to uncheck them)
+	 * 2 = notify all responsible users (all users are checked and nothing can be changed during stage change)
+	 *
+	 * @param integer stage id to return the notification mode for
+	 * @return integer
+	 */
+	public function getNotificationMode($stageId) {
+		if (!t3lib_div::testInt($stageId)) {
+			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+		}
+
+		switch ($stageId) {
+			case self::STAGE_PUBLISH_EXECUTE_ID:
+			case self::STAGE_PUBLISH_ID:
+					$workspaceRecord = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+					return $workspaceRecord['publish_notification_mode'];
+				break;
+			case self::STAGE_EDIT_ID:
+					$workspaceRecord = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+					return $workspaceRecord['edit_notification_mode'];
+				break;
+			default:
+				$workspaceStage = t3lib_BEfunc::getRecord(self::TABLE_STAGE, $stageId);
+
+				if (is_array($workspaceStage) && isset($workspaceStage['notification_mode'])) {
+					return $workspaceStage['notification_mode'];
+				}
+				break;
+		}
 	}
 }
 
