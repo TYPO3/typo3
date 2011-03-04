@@ -360,38 +360,44 @@ class SC_move_el {
 
 						// Headerline for the parent page: Icon, record title:
 					$hline = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageinfo, array('title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($pageinfo, 'pages'))));
-					$hline.= t3lib_BEfunc::getRecordTitle('pages',$pageinfo,TRUE);
+					$hline .= t3lib_BEfunc::getRecordTitle('pages', $pageinfo, TRUE);
 
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id,'mod.SHARED');		// SHARED page-TSconfig settings.
-					$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']),'') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
-					$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
-
+					$colPosArray = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $this->page_id, $this);
+					foreach ($colPosArray as $colPos) {
+						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
+					}
+					$colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $colPosList)));		// Removing duplicates, if any
+						  
 						// Adding parent page-header and the content element columns from position-map:
-					$code=$hline.'<br />';
-					$code.=$posMap->printContentElementColumns($this->page_id,$this->moveUid,$colPosList,1,$this->R_URI);
+					$code = $hline . '<br />';
+					$code .= $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);
 
 						// Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
-					$code.= '<br />';
-					$code.= '<br />';
+					$code .= '<br />';
+					$code .= '<br />';
 					if ($pageinfo['pid'])	{
-						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'],$this->perms_clause);
+						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo))	{
-							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
-								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
-									t3lib_iconWorks::getSpriteIcon('actions-view-go-up') .
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
-									'</a><br />';
+							if ($BE_USER->isInWebMount($pidPageInfo['pid'], $this->perms_clause))	{
+								$code .= '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
+										'uid' => intval($pageinfo['pid']),
+										'moveUid' => $this->moveUid)
+									)) . '">'
+									. t3lib_iconWorks::getSpriteIcon('actions-view-go-up')
+									. t3lib_BEfunc::getRecordTitle('pages', $pidPageInfo, TRUE)
+									. '</a><br />';
 							} else {
-								$code.= t3lib_iconWorks::getSpriteIconForRecord('pages', $pidPageInfo).
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
-									'<br />';
+								$code.= t3lib_iconWorks::getSpriteIconForRecord('pages', $pidPageInfo)
+									. t3lib_BEfunc::getRecordTitle('pages', $pidPageInfo, TRUE)
+									. '<br />';
 							}
 						}
 					}
 
 						// Create the position tree (for pages):
-					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
+					$code.= $posMap->positionTree($this->page_id, $pageinfo, $this->perms_clause, $this->R_URI);
 				}
 			}
 
