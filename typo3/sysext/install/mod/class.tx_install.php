@@ -5111,34 +5111,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'referenceInformation' => t3lib_div::formatSize($verifyImg['filesize']) . ', ' . $verifyImg[0] . 'x' . $verifyImg[1] . ' pixels'
 			);
 
-				// Display a warning if the generated image is more than 2KB larger than its reference...
-			if (($destImg['filesize']!=$verifyImg['filesize']) && (intval($destImg['filesize']) && ($destImg['filesize']-$verifyImg['filesize']) > 2048)) {
-					// Get the subpart for the different filesize message
-				$differentFileSizeSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###DIFFERENTFILESIZE###');
-					// Define the markers content
-				$differentFileSizeMarkers = array(
-					'message' => 'File size is very different from reference',
-					'yourServerFileSize' => $destImg['filesize'],
-					'referenceFileSize' => $verifyImg['filesize']
-				);
-					// Fill the markers in the subpart
-				$differentFileSizeSubpart = t3lib_parsehtml::substituteMarkerArray(
-					$differentFileSizeSubpart,
-					$differentFileSizeMarkers,
-					'###|###',
-					TRUE,
-					FALSE
-				);
-
-				$errorLevels[]=2;
-			}
-				// Substitute the subpart for different filesize message
-			$imageSubpart = t3lib_parsehtml::substituteSubpart(
-				$imageSubpart,
-				'###DIFFERENTFILESIZE###',
-				$differentFileSizeSubpart
-			);
-
 			if ($destImg[0]!=$verifyImg[0] || $destImg[1]!=$verifyImg[1]) {
 					// Get the subpart for the different pixel dimensions message
 				$differentPixelDimensionsSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###DIFFERENTPIXELDIMENSIONS###');
