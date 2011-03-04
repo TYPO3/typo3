@@ -51,7 +51,8 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 		'metacafe',
 		'myvideo',
 		'liveleak',
-		'veoh'
+		'veoh',
+		'myspace'
 	);
 
 	/**
@@ -267,6 +268,19 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 		$videoId = $matches[1];
 
 		return 'http://www.veoh.com/static/swf/webplayer/WebPlayer.swf?version=AFrontend.5.5.2.1001&permalinkId=' . $videoId;
+	}
+	
+	/**
+	 * Parse myspace url
+	 *
+	 * @param string $url
+	 * @return string processed url
+	 */
+	protected function process_myspace($url) {
+		preg_match('/^.*\/video\/.*\/(\d+)(#|$)/', $url, $matches);
+		$videoId = $matches[1];
+
+		return 'http://mediaservices.myspace.com/services/media/embed.aspx/m=' . $videoId;
 	}
 
 }
