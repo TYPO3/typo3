@@ -48,7 +48,9 @@ var WorkspaceMenu = Class.create({
 			}
 			TYPO3BackendToolbarManager.refreshAll();
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
-			Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
+			if(Ext.get('goToWsModule')) {
+				Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
+			}
 
 			// observe all clicks on workspace links in the menu
 			$$('#workspace-selector-menu li a.ws').each(function(element) {
