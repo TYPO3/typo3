@@ -403,18 +403,18 @@ class t3lib_positionMap {
 				'',
 				'sorting'
 			);
-			$lines[$kk] = array();
-			$lines[$kk][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
+			$lines[$vv] = array();
+			$lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				t3lib_BEfunc::workspaceOL('tt_content', $row);
 				if (is_array($row)) {
-					$lines[$kk][] = $this->wrapRecordHeader($this->getRecordHeader($row), $row);
-					$lines[$kk][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
+					$lines[$vv][] = $this->wrapRecordHeader($this->getRecordHeader($row), $row);
+					$lines[$vv][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
-		return $this->printRecordMap($lines, $colPosArray);
+		return $this->printRecordMap($lines, $colPosArray, $pid);
 	}
 
 	/**
@@ -422,35 +422,109 @@ class t3lib_positionMap {
 	 *
 	 * @param	array		Array with arrays of lines for each column
 	 * @param	array		Column position array
+	 * @param	integer		The id of the page
 	 * @return	string		HTML
 	 */
-	function printRecordMap($lines, $colPosArray) {
+	function printRecordMap($lines, $colPosArray, $pid = 0) {
+
 		$row1 = '';
 		$row2 = '';
 		$count = t3lib_div::intInRange(count($colPosArray), 1);
 
-			// Traverse the columns here:
-		foreach ($colPosArray as $kk => $vv) {
-			$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><span class="uppercase"><strong>' .
-					 $this->wrapColumnHeader($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'colPos', $vv), 1), $vv) .
-					 '</strong></span></td>';
-			$row2 .= '<td valign="top" nowrap="nowrap">' .
-					 implode('<br />', $lines[$kk]) .
-					 '</td>';
+		$backendLayout = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $pid, $this);
+
+		if (isset($backendLayout['__config']['backend_layout.'])) {
+
+			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" id="typo3-ttContentList">';
+
+			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
+			$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
+
+			$table .= '<colgroup>';
+			for ($i = 0; $i < $colCount; $i++) {
+				$table .= '<col style="width:' . (100 / $colCount) . '%"></col>';
+			}
+			$table .= '</colgroup>';
+
+			$tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $pid, $this);
+
+			// cycle through rows
+			for ($row = 1; $row <= $rowCount; $row++) {
+				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
+				if (!isset($rowConfig)) {
+					continue;
+				}
+
+				$table .= '<tr>';
+
+				for ($col = 1; $col <= $colCount; $col++) {
+					$columnConfig = $rowConfig['columns.'][$col . '.'];
+					if (!isset($columnConfig)) {
+						continue;
+					}
+
+					// which tt_content colPos should be displayed inside this cell
+					$columnKey = intval($columnConfig['colPos']);
+					$head = '';
+
+					$params = array();
+					$params['pid'] = $pid;
+
+					foreach ($tcaItems as $item) {
+						if ($item[1] == $columnKey) {
+							$head = $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'colPos', $columnKey, $params), 1);
+						}
+					}
+
+					// render the grid cell
+					$table .= '<td valign="top"' .
+							(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
+							(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
+							' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+							(!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
+							((isset($columnConfig['colPos']) && ! $head) ? ' t3-gridCell-restricted' : '') .
+							(isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') .
+							(isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
+
+					$table .= '<div class="t3-page-colHeader t3-row-header">';
+
+					if (isset($columnConfig['colPos']) && $head) {
+						$table .= $this->wrapColumnHeader($head, '', '') . '</div>' . implode('<br />', $lines[$columnKey]);
+					} else if ($columnConfig['colPos']) {
+						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('noAccess'), '', '') . '</div>';
+					} else if ($columnConfig['name']) {
+						$table .= $this->wrapColumnHeader($columnConfig['name'], '', '') . '</div>';
+					} else {
+						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '') . '</div>';
+					}
+					$table .= '</td>';
+				}
+				$table .= '</tr>';
+			}
+			$table .= '</table></div>';
+		} else {
+		    // Traverse the columns here:
+			foreach ($colPosArray as $kk => $vv) {
+				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' .
+						$this->wrapColumnHeader($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), 1), $vv) .
+						'</div></td>';
+				$row2 .= '<td valign="top" nowrap="nowrap">' .
+						implode('<br />', $lines[$vv]) .
+						'</td>';
+			}
+
+			$table = '
+
+			<!--
+				Map of records in columns:
+			-->
+			<table border="0" cellpadding="0" cellspacing="1" id="typo3-ttContentList">
+				<tr>' . $row1 . '</tr>
+				<tr>' . $row2 . '</tr>
+			</table>
+
+			';
 		}
-
-		$table = '
-
-		<!--
-			Map of records in columns:
-		-->
-		<table border="0" cellpadding="0" cellspacing="1" id="typo3-ttContentList">
-			<tr class="bgColor5">' . $row1 . '</tr>
-			<tr>' . $row2 . '</tr>
-		</table>
-
-		';
-
 		return $this->JSimgFunc('2') . $table;
 	}
 
