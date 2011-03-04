@@ -109,7 +109,11 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$liveRecord[$fieldName],0,1);
 					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$versionRecord[$fieldName],0,1);
 
+						// Get the field's label. If not available, use the field name
 					$fieldTitle = $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($parameter->table, $fieldName));
+					if (empty($fieldTitle)) {
+						$fieldTitle = $fieldName;
+					}
 
 					if ($TCA[$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $TCA[$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
 						$versionThumb = t3lib_BEfunc::thumbCode($versionRecord, $parameter->table, $fieldName, '');
