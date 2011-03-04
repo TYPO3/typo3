@@ -1682,7 +1682,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					$fI = t3lib_div::split_fileref($editFile);
 					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions, ($fI['fileext'] ? $fI['fileext'] : $fI['filebody']))) {
 						if (filesize($editFile) < ($this->kbMax * 1024)) {
-							$outCode = '<form action="' . $this->script . ' method="post" name="editfileform">';
+							$outCode = '<form action="' . $this->script . '" method="post" name="editfileform">';
 							$info = '';
 							$submittedContent = t3lib_div::_POST('edit');
 							$saveFlag = 0;
