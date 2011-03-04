@@ -50,17 +50,11 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
-		$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
-		$ttlHours = ($ttlHours ? $ttlHours : 24*2) * 3600;
-		$linkParams = array(
-			'ADMCMD_prev'	=> t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $ttlHours, $this->getCurrentWorkspace()),
-			'id'			=> $uid
-		);
-		return t3lib_BEfunc::getViewDomain($uid) . '/index.php?' . t3lib_div::implodeArrayForUrl('', $linkParams);
+		return $this->getWorkspaceService()->generateWorkspacePreviewLink($uid);
 	}
 
 	/**
-	 * Swaps a sisngle record.
+	 * Swaps a single record.
 	 *
 	 * @param string $table
 	 * @param integer $t3ver_oid

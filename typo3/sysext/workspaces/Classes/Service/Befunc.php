@@ -32,8 +32,6 @@
  */
 class tx_Workspaces_Service_Befunc {
 
-	protected static $pageCache = array();
-
 	/**
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
 	 * only if we're in a workspace and if the frontend-preview is disabled.
@@ -48,28 +46,7 @@ class tx_Workspaces_Service_Befunc {
 	 * @return void
 	 */
 	public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
-
-			// In case a $pageUid is submitted we need to make sure it points to a live-page
-		if ($pageUid >  0) {
-			$pageUid = $this->getLivePageUid($pageUid);
-		}
-
-		if ($GLOBALS['BE_USER']->workspace !== 0) {
-			$ctrl = t3lib_div::makeInstance('Tx_Workspaces_Controller_PreviewController', FALSE);
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
-			$uriBuilder = $objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-			/**
-			 *  This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
-			 *  has /index.php as fixed value here and dealing with the backPath is very error-prone
-			 *
-			 *  @todo make sure this would work in local extension installation too
-			 */
-			$backPath = '/' . TYPO3_mainDir;
-				// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
-			$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-			$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
-		}
+		$viewScript = $this->getWorkspaceService()->generateWorkspaceSplittedPreviewLink($pageUid);
 	}
 
 	/**
@@ -77,19 +54,22 @@ class tx_Workspaces_Service_Befunc {
 	 * the results are cached at run-time to avoid too many database-queries
 	 *
 	 * @throws InvalidArgumentException
-	 * @param  $uid
-	 * @return void
+	 * @param integer $uid
+	 * @return integer
+	 * @deprecated since TYPO3 4.6 - use tx_Workspaces_Service_Workspaces::getLivePageUid() instead
 	 */
 	protected function getLivePageUid($uid) {
-		if (!isset(self::$pageCache[$uid])) {
-			$rec = t3lib_beFunc::getRecord('pages', $uid);
-			if (is_array($rec)) {
-				self::$pageCache[$uid] = $rec['t3ver_oid'] ? $rec['t3ver_oid'] : $uid;
-			} else {
-				throw new InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
-			}
-		}
-		return self::$pageCache[$uid];
+		t3lib_div::deprecationLog(__METHOD__ . ' is deprected since TYPO3 4.6 - use tx_Workspaces_Service_Workspaces::getLivePageUid() instead');
+		return $this->getWorkspaceService()->getLivePageUid($uid);
+	}
+
+	/**
+	 * Gets an instance of the workspaces service.
+	 *
+	 * @return tx_Workspaces_Service_Workspaces
+	 */
+	protected function getWorkspaceService() {
+		return t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 	}
 }
 

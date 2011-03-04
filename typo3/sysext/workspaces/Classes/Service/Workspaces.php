@@ -30,7 +30,12 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_Workspaces {
+class tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
+	/**
+	 * @var array
+	 */
+	protected $pageCache = array();
+
 	const TABLE_WORKSPACE = 'sys_workspace';
 	const SELECT_ALL_WORKSPACES = -98;
 	const LIVE_WORKSPACE_ID = 0;
@@ -62,6 +67,19 @@ class tx_Workspaces_Service_Workspaces {
 		return $availableWorkspaces;
 	}
 
+	/**
+	 * Gets the current workspace ID.
+	 *
+	 * @return integer The current workspace ID
+	 */
+	public function getCurrentWorkspace() {
+		$workspaceId = $GLOBALS['BE_USER']->workspace;
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			$activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
+			$workspaceId = $activeId !== NULL ? $activeId : $workspaceId;
+		}
+		return $workspaceId;
+	}
 
 	/**
 	 * Find the title for the requested workspace.
@@ -540,6 +558,79 @@ class tx_Workspaces_Service_Workspaces {
 			$result = FALSE;
 		}
 		return $result;
+	}
+
+	/**
+	 * Generates a workspace preview link.
+	 *
+	 * @param integer $uid The ID of the record to be linked
+	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
+	 */
+	public function generateWorkspacePreviewLink($uid) {
+		$timeToLiveHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
+		$timeToLiveHours = ($timeToLiveHours ? $timeToLiveHours : 24*2) * 3600;
+		$linkParams = array(
+			'ADMCMD_prev'	=> t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours, $this->getCurrentWorkspace()),
+			'id'			=> $uid
+		);
+		return t3lib_BEfunc::getViewDomain($uid) . '/index.php?' . t3lib_div::implodeArrayForUrl('', $linkParams);
+	}
+
+	/**
+	 * Generates a workspace splitted preview link.
+	 *
+	 * @param integer $uid The ID of the record to be linked
+	 * @param boolean $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
+	 * @return string the preview link without the trailing '/'
+	 */
+	public function generateWorkspaceSplittedPreviewLink($uid, $addDomain = FALSE) {
+			// In case a $pageUid is submitted we need to make sure it points to a live-page
+		if ($uid >  0) {
+			$uid = $this->getLivePageUid($uid);
+		}
+
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
+		$uriBuilder = $objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		/**
+		 *  This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
+		 *  has /index.php as fixed value here and dealing with the backPath is very error-prone
+		 *
+		 *  @todo make sure this would work in local extension installation too
+		 */
+		$backPath = '/' . TYPO3_mainDir;
+		$redirect = $backPath . 'index.php?redirect_url=';
+			// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
+		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
+		$viewScript = $backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))
+												->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
+
+		if ($addDomain === TRUE) {
+			return t3lib_BEfunc::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
+		} else {
+			return $viewScript;
+		}
+	}
+
+	/**
+	 * Find the Live-Uid for a given page,
+	 * the results are cached at run-time to avoid too many database-queries
+	 *
+	 * @throws InvalidArgumentException
+	 * @param integer $uid
+	 * @return integer
+	 */
+	public function getLivePageUid($uid) {
+		if (!isset($this->pageCache[$uid])) {
+			$pageRecord = t3lib_beFunc::getRecord('pages', $uid);
+			if (is_array($pageRecord)) {
+				$this->pageCache[$uid] = ($pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid);
+			} else {
+				throw new InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
+			}
+		}
+
+		return $this->pageCache[$uid];
 	}
 }
 

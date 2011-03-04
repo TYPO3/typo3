@@ -37,12 +37,7 @@ abstract class tx_Workspaces_ExtDirect_AbstractHandler {
 	 * @return integer The current workspace ID
 	 */
 	protected function getCurrentWorkspace() {
-		$workspaceId = $GLOBALS['BE_USER']->workspace;
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
-			$workspaceId = $activeId !== NULL ? $activeId : $workspaceId;
-		}
-		return $workspaceId;
+		return $this->getWorkspaceService()->getCurrentWorkspace();
 	}
 
 	/**
@@ -65,6 +60,15 @@ abstract class tx_Workspaces_ExtDirect_AbstractHandler {
 		);
 
 		return $response;
+	}
+
+	/**
+	 * Gets an instance of the workspaces service.
+	 *
+	 * @return tx_Workspaces_Service_Workspaces
+	 */
+	protected function getWorkspaceService() {
+		return t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 	}
 }
 

@@ -75,12 +75,27 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * The preview itself consists of three frames, so there are
 	 * only the frames-urls we've to generate here
 	 *
+	 * @param integer $previewWS
+	 *
 	 * @return void
 	 */
-	public function indexAction() {
+	public function indexAction($previewWS = null) {
 		// @todo language doesn't always come throught the L parameter
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$language = intval(t3lib_div::_GP('L'));
+
+		/** @var $wsService tx_Workspaces_Service_Workspaces */
+		$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$wsList = $wsService->getAvailableWorkspaces();
+		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
+
+		if (!is_null($previewWS)) {
+			if (in_array($previewWS, array_keys($wsList)) && $activeWorkspace != $previewWS) {
+				$activeWorkspace = $previewWS;
+				$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
+				t3lib_BEfunc::setUpdateSignal('updatePageTree');
+			}
+		}
 
 		$controller = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', TRUE);
 		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
