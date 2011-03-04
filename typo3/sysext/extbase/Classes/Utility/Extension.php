@@ -209,13 +209,20 @@ tt_content.' . $pluginSignature . ' {
 			'labels' => '',
 			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
 		);
-		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
 
 		if ((strlen($mainModuleName) > 0) && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
 			$mainModuleName = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($mainModuleName);
 		} else {
 			$mainModuleName = (strlen($mainModuleName) > 0) ? $mainModuleName : 'web';
 		}
+
+			// add mandatory parameter to use new pagetree
+		if ($mainModuleName === 'web') {
+			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
+		}
+
+		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+
 		$moduleSignature = $mainModuleName;
 
 		if ((strlen($subModuleName) > 0)) {
