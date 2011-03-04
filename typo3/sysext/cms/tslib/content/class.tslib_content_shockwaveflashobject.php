@@ -141,8 +141,8 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$layout = isset($conf['layout.'])
 			? $this->cObj->stdWrap($conf['layout'], $conf['layout.'])
 			: $conf['layout'];
-		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
-		$layout = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
+		$content = str_replace('###ID###', $replaceElementIdString, $layout);
+		$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $content);
 
 		$width = isset($conf['width.'])
 			? $this->cObj->stdWrap($conf['width'], $conf['width.'])
@@ -162,13 +162,8 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
 		 		"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
 
-		$content = $layout . '
-			<script type="text/javascript">
-				' . $flashvars . '
-				' . $params . '
-				' . $attributes . '
-				' . $embed . '
-			</script>';
+		$script = $flashvars . $params . $attributes . $embed;
+		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $script);
 
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
