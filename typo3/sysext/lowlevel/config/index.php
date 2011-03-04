@@ -269,8 +269,22 @@ class SC_mod_tools_config_index {
 				$length = strpos($line, '[');
 				$var = substr($line, 0, $length);
 				$changedLine = '$GLOBALS[\'' . substr($line, 1, $length - 1) . '\']' . substr($line, $length);
-					// insert line  in extTables.php
+					// load current extTables.php
 				$extTables = t3lib_div::getURL(PATH_typo3conf . TYPO3_extTableDef_script);
+				if ($var === '$TCA') {
+						// check if we are editing the TCA
+					preg_match_all('/\[\'([^\']+)\'\]/', $line, $parts);
+					if ($parts[1][1] !== 'ctrl') {
+							// anything else than ctrl section requires to load TCA
+						$loadTCA = 't3lib_div::loadTCA(\'' . $parts[1][0] . '\');';
+						if (strpos($extTables, $loadTCA) === FALSE) {
+								// check if the loadTCA statement is not already present in the file
+							$changedLine = $loadTCA . LF . $changedLine;
+						}
+					}
+				}
+		
+					// insert line in extTables.php
 				$extTables = '<?php' . preg_replace('/<\?php|\?>/is', '', $extTables) . $changedLine . LF . '?>';
 				$success = t3lib_div::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
@@ -278,7 +292,7 @@ class SC_mod_tools_config_index {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',
-						sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script,  '<br />', '<strong>' . $changedLine . '</strong>'),
+						sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script,  '<br />', '<strong>' . $nl2br($changedLine) . '</strong>'),
 						t3lib_FlashMessage::OK
 					);
 				} else {
