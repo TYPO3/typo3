@@ -254,6 +254,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="warning.install_password">The Install Tool is still using the default password &quot;joh316&quot;. Update this within the %sAbout section%s of the Install Tool.</label>
 			<label index="warning.backend_admin">The default backend user "admin" with password &quot;password&quot; is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</label>
 			<label index="warning.file_deny_pattern">The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</label>
+			<label index="warning.file_deny_pattern_partsNotPresent">Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</label>
 			<label index="warning.file_deny_htaccess">The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</label>
 			<label index="warning.install_enabled">The Install Tool is permanently enabled. Delete the file &quot;%s&quot; when you have finished setting up TYPO3.</label>
 			<label index="warning.install_enabled_cmd">Click to remove the file now!</label>
