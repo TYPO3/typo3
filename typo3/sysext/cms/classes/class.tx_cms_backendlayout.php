@@ -149,7 +149,7 @@ class tx_cms_BackendLayout {
 						if (isset($row['columns.']) && is_array($row['columns.'])) {
 							foreach ($row['columns.'] as $column) {
 								$backendLayout['__items'][] = array(
-									$column['name'],
+									strstr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
 									$column['colPos'],
 									NULL
 								);
