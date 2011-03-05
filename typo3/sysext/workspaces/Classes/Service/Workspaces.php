@@ -361,31 +361,48 @@ class tx_Workspaces_Service_Workspaces {
 			}
 			$pageList = implode(',', $newList);
 		}
+
 		unset($searchObj);
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
-			if ($pageList) {
-					// Remove the "subbranch" if a page was moved away
-				$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . $wsid . t3lib_BEfunc::deleteClause($table), '', 'uid', '', 't3ver_move_id');
-				$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
+				// Remove the "subbranch" if a page was moved away
+			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid, pid, t3ver_move_id',
+				'pages',
+				't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . intval($wsid) . t3lib_BEfunc::deleteClause('pages'),
+				'',
+				'uid',
+				'',
+				't3ver_move_id'
+			);
+			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
 
-					// move all pages away
-				$newList = array_diff($pageIds, array_keys($movedAwayPages));
+				// move all pages away
+			$newList = array_diff($pageIds, array_keys($movedAwayPages));
 
-					// move back in if still connected to the "remaining" pages
-				do {
-					$changed = FALSE;
-					foreach ($movedAwayPages as $uid => $rec) {
-						if (in_array($rec['pid'], $newList) && !in_array($uid, $newList)) {
-							$newList[] = $uid;
-							$changed = TRUE;
-						}
+				// keep current page in the list
+			$newList[] = $pageId;
+				// move back in if still connected to the "remaining" pages
+			do {
+				$changed = FALSE;
+				foreach ($movedAwayPages as $uid => $rec) {
+					if (in_array($rec['pid'], $newList) && !in_array($uid, $newList)) {
+						$newList[] = $uid;
+						$changed = TRUE;
 					}
-				} while ($changed);
+				}
+			} while ($changed);
+			$pageList = implode(',', $newList);
 
-				$pageList = implode(',', $newList);
-			}
 				// In case moving pages is enabled we need to replace all move-to pointer with their origin
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', 'uid IN (' . $pageList . ')' . t3lib_BEfunc::deleteClause($table), '', 'uid', '', 'uid');
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid, t3ver_move_id',
+				'pages',
+				'uid IN (' . $pageList . ')' . t3lib_BEfunc::deleteClause('pages'),
+				'',
+				'uid',
+				'',
+				'uid'
+			);
 
 			$newList = array();
 			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
