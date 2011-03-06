@@ -279,6 +279,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$count = $this->databaseHandle->sql_num_rows($result);
 		} else {
 			$statementParts['fields'] = array('COUNT(*)');
+			if (isset($statementParts['keywords']['distinct'])) {
+				unset($statementParts['keywords']['distinct']);
+				$statementParts['fields'] = array('COUNT(DISTINCT ' . reset($statementParts['tables']) . '.uid)');
+			}
 			$statement = $this->buildQuery($statementParts, $parameters);
 			$this->replacePlaceholders($statement, $parameters);
 			$result = $this->databaseHandle->sql_query($statement);
