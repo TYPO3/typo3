@@ -352,7 +352,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query->setOrderings($this->defaultOrderings);
 		}
 		if ($this->defaultQuerySettings !== NULL) {
-			$query->setQuerySettings($this->defaultQuerySettings);
+			$query->setQuerySettings(clone $this->defaultQuerySettings);
 		}
 		return $query;
 	}
