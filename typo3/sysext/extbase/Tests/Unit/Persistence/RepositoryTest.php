@@ -194,6 +194,25 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	/**
 	 * @test
 	 */
+	public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings() {
+		$mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory');
+		$mockQuery = new Tx_Extbase_Persistence_Query('foo');
+
+		$mockDefaultQuerySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
+		$this->repository->injectQueryFactory($mockQueryFactory);
+		$this->repository->setDefaultQuerySettings($mockDefaultQuerySettings);
+
+		$mockQueryFactory->expects($this->once())->method('create')->will($this->returnValue($mockQuery));
+		$this->repository->createQuery();
+
+		$instanceQuerySettings = $mockQuery->getQuerySettings();
+		$this->assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
+		$this->assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
+	}
+
+	/**
+	 * @test
+	 */
 	public function findAllCreatesQueryAndReturnsResultOfExecuteCall() {
 		$expectedResult = $this->getMock('Tx_Extbase_Persistence_QueryResultInterface');
 		$this->mockQuery->expects($this->once())->method('execute')->with()->will($this->returnValue($expectedResult));
