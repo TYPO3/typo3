@@ -198,7 +198,7 @@ TYPO3.ModuleMenu.App = {
 
 	showModule: function(mod, params) {
 		params = params || '';
-		this.selecteModule = mod;
+		this.selectedModule = mod;
 
 		params = this.includeId(mod, params);
 		var record = this.getRecordFromName(mod);
