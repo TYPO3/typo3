@@ -226,7 +226,10 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 						$objects = array();
 						if (is_array($propertyValue)) {
 							foreach ($propertyValue as $value) {
-								$objects[] = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
+								$transformedObject = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
+								if ($transformedObject !== NULL) {
+									$objects[] = $transformedObject;
+								}
 							}
 						}
 
