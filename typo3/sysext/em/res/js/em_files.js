@@ -269,7 +269,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					}
 				}, {
 					iconCls: 'x-btn-save',
-					tooltip: TYPO3.settings.EM.fileAlloweSave ? TYPO3.lang.cmd_save : TYPO3.lang.ext_details_saving_disabled,
+					tooltip: TYPO3.settings.EM.fileAllowSave ? TYPO3.lang.cmd_save : TYPO3.lang.ext_details_saving_disabled,
 					ref: '../saveButton',
 					disabled: true,
 					scope: this,
@@ -761,7 +761,7 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 	},
 
 	changeAction: function(changed) {
-		if (TYPO3.settings.EM.fileAlloweSave && this.fileLoaded) {
+		if (TYPO3.settings.EM.fileAllowSave && this.fileLoaded) {
 			if (!changed) {
 				this.ownerCt.saveButton.disable();
 				this.ownerCt.diffButton.disable();
