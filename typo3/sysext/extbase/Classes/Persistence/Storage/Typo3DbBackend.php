@@ -768,16 +768,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addAdditionalWhereClause(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings, $tableName, &$sql) {
-		if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettings) {
-			if ($querySettings->getRespectEnableFields()) {
-				$this->addEnableFieldsStatement($tableName, $sql);
-			}
-			if ($querySettings->getRespectSysLanguage()) {
-				$this->addSysLanguageStatement($tableName, $sql);
-			}
-			if ($querySettings->getRespectStoragePage()) {
-				$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
-			}
+		if ($querySettings->getRespectEnableFields()) {
+			$this->addEnableFieldsStatement($tableName, $sql);
+		}
+		if ($querySettings->getRespectSysLanguage()) {
+			$this->addSysLanguageStatement($tableName, $sql);
+		}
+		if ($querySettings->getRespectStoragePage()) {
+			$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
 		}
 	}
 
