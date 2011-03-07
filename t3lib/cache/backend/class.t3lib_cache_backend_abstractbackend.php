@@ -37,6 +37,7 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 
 	const DATETIME_EXPIRYTIME_UNLIMITED = '9999-12-31T23:59:59+0000';
 	const UNLIMITED_LIFETIME = 0;
+	const MAX_SUPPORTED_LAYOUT = 2; // should get incremented if a new db layout gets added
 
 	/**
 	 * Reference to the cache which uses this backend
@@ -56,6 +57,13 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 * @var integer
 	 */
 	protected $defaultLifetime = 3600;
+
+	/**
+	 * Database layout version, defaults to lowest value for backwards compatibility
+	 *
+	 * @var integer
+	 */
+	protected $dbLayoutVersion = 1;
 
 	/**
 	 * Constructs this backend
@@ -104,6 +112,23 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 		}
 
 		$this->defaultLifetime = $defaultLifetime;
+	}
+
+	/**
+	 * sets the storage layout version
+	 *
+	 *
+	 * @param the option value
+	 * @internal
+	 */
+	protected function setDbLayoutVersion($dbLayoutVersion) {
+		if (!is_int($dbLayoutVersion) || $dbLayoutVersion < 0 || $defaultLifetime > self::MAX_SUPPORTED_LAYOUT ) {
+			throw new InvalidArgumentException(
+				'The db layout version must be a positive integer smaller than ' . self::MAX_SUPPORTED_LAYOUT . '.',
+				1299511986
+			);
+		}
+		$this->dbLayoutVersion = $dbLayoutVersion;
 	}
 
 	/**
