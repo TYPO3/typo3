@@ -110,10 +110,8 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $controllerContext;
 
 	/**
-	 * The flash messages. DEPRECATED. Use $this->flashMessageContainer instead.
-	 *
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
-	 * @deprecated
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
 	 */
 	protected $flashMessages;
 
@@ -180,12 +178,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Injects the flash messages container
 	 *
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
 	 * @return void
 	 */
 	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-		$this->flashMessages = $flashMessageContainer; // deprecated, but should still work.
+			// @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+		$this->flashMessages = $flashMessageContainer;
 	}
 
 	/**

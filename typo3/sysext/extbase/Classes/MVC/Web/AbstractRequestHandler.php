@@ -48,8 +48,14 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 
 	/**
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
 	 */
 	protected $flashMessages;
+
+	/**
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 */
+	protected $flashMessageContainer;
 
 	/**
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
@@ -60,11 +66,13 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
 	 * @return void
 	 */
-	public function injectFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
-		$this->flashMessages = $flashMessages;
+	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+			// @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+		$this->flashMessages = $flashMessageContainer;
 	}
 
 	/**

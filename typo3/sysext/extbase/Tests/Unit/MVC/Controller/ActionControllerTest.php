@@ -536,7 +536,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
-		$mockController->_set('flashMessages', $mockFlashMessages);
+		$mockController->_set('flashMessageContainer', $mockFlashMessages);
 		$mockController->_set('argumentsMappingResults', $mockArgumentsMappingResults);
 
 		$mockRequest->expects($this->once())->method('setErrors')->with(array($mockError));
