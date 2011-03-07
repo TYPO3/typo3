@@ -251,7 +251,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	public function unserialize($serializedString) {
 		$arrayRepresentation = unserialize($serializedString);
 		if ($arrayRepresentation['serializeClassName'] !== get_class($this)) {
-			throw new t3lib_exception('Deserialized object type is not identical!');
+			throw new t3lib_exception('Deserialized object type is not identical!', 1294586646);
 		}
 		$this->dataFromArray($arrayRepresentation);
 	}

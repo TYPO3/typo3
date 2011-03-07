@@ -147,7 +147,7 @@ class t3lib_extjs_ExtDirectRouter {
 			// theoretically this can never happen, because of an javascript error on
 			// the client side due the missing namespace/endpoint
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-			throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName);
+			throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
 		}
 
 		$endpointObject = t3lib_div::getUserObj(

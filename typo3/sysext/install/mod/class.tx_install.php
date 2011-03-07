@@ -308,7 +308,8 @@ class tx_install extends t3lib_install {
 			if (count($missingPhpModules) > 0) {
 				throw new RuntimeException('TYPO3 Installation Error: The following PHP module(s) is/are missing: <em>' .
 						implode(', ', $missingPhpModules) .
-						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.'
+						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.',
+					1294587482
 				);
 			}
 		}
@@ -8424,7 +8425,7 @@ $out="
 	 */
 	public function addErrorMessage($messageText) {
 		if ($messageText == '') {
-			throw new InvalidArgumentException('$messageText must not be empty.');
+			throw new InvalidArgumentException('$messageText must not be empty.', 1294587483);
 		}
 
 		$this->errorMessages[] = $messageText;

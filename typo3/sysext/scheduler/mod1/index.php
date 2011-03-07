@@ -1470,7 +1470,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			}
 				// If the timestamp is still false, throw an exception
 			if ($timestamp === false) {
-				throw new Exception;
+				throw new InvalidArgumentException('"' . $string . '" seems not to be a correct date.', 1294587694);
 			}
 		}
 		return $timestamp;

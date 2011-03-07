@@ -94,7 +94,7 @@ class t3lib_mail_MboxTransport implements Swift_Transport {
 			// Write the mbox file
 		$file = @fopen($this->debugFile, 'a');
 		if (!$file) {
-			throw new Exception(
+			throw new RuntimeException(
 				sprintf('Could not write to file "%s" when sending an email to debug transport', $this->debugFile),
 				1291064151
 			);

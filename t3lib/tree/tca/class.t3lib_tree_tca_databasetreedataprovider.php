@@ -291,7 +291,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 		if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] != $this->getTableName()) {
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet',
-				'1290944650'
+				1290944650
 			);
 		}
 

@@ -235,7 +235,7 @@ final class t3lib_extMgm {
 	 */
 	public static function getExtensionVersion($key) {
 		if (!is_string($key) || empty($key)) {
-			throw new InvalidArgumentException('Extension key must be a non-empty string.');
+			throw new InvalidArgumentException('Extension key must be a non-empty string.', 1294586096);
 		}
 		if (!self::isLoaded($key)) {
 			return '';

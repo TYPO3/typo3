@@ -170,7 +170,7 @@ class SC_tslib_showpic {
 		// ***********************
 			// If no file-param or parameters are given, we must exit
 		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
-			throw new UnexpectedValueException('Parameter Error: No file or no parameters given.');
+			throw new UnexpectedValueException('Parameter Error: No file or no parameters given.', 1299514081);
 		}
 
 		$this->parametersEncoded = implode($parametersArray);
@@ -184,7 +184,7 @@ class SC_tslib_showpic {
 		);
 
 		if ($md5_value!=$this->md5) {
-			throw new UnexpectedValueException('Parameter Error: Wrong parameters sent.');
+			throw new UnexpectedValueException('Parameter Error: Wrong parameters sent.', 1299514082);
 		}
 
 		$parameters = unserialize(base64_decode($this->parametersEncoded));
@@ -199,10 +199,10 @@ class SC_tslib_showpic {
 
 		$test_file=PATH_site.$this->file;
 		if (!t3lib_div::validPathStr($test_file))	{
-			throw new UnexpectedValueException('Parameter Error: No valid filepath');
+			throw new UnexpectedValueException('Parameter Error: No valid filepath', 1299514083);
 		}
 		if (!@is_file($test_file))	{
-			throw new UnexpectedValueException('The given file was not found');
+			throw new UnexpectedValueException('The given file was not found', 1299514084);
 		}
 	}
 
