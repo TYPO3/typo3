@@ -130,7 +130,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 			case 'mbox':
 				$mboxFile = $mailSettings['transport_mbox_file'];
 				if ($mboxFile == '') {
-					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"');
+					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"', 1294586645);
 				}
 					// Create our transport
 				$this->transport = t3lib_div::makeInstance('t3lib_mail_mboxtransport', $mboxFile);

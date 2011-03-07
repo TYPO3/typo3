@@ -46,7 +46,7 @@ if (t3lib_extMgm::isLoaded('recordlist')) {
 } else {
 	$title = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:extension.not.installed'), 'list');
 	$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:link.to.dblist.correctly');
-	throw new RuntimeException($title . ': ' . $message);
+	throw new RuntimeException($title . ': ' . $message, 1294586840);
 }
 
 ?>

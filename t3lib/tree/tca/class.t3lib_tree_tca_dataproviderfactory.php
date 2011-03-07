@@ -63,7 +63,7 @@ class t3lib_tree_Tca_DataProviderFactory {
 			} else {
 				throw new InvalidArgumentException(
 					'TCA Tree configuration is invalid: "foreign_table" not set',
-					'1288215888'
+					1288215888
 				);
 			}
 
@@ -104,13 +104,13 @@ class t3lib_tree_Tca_DataProviderFactory {
 				} else {
 					throw new InvalidArgumentException(
 						'TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set',
-						'1288215889'
+						1288215889
 					);
 				}
 			} else {
 				throw new InvalidArgumentException(
 					'TCA Tree configuration is invalid: "treeConfig" array is missing',
-					'1288215890'
+					1288215890
 				);
 			}
 
@@ -118,14 +118,14 @@ class t3lib_tree_Tca_DataProviderFactory {
 			// Not implemented yet
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet',
-				'1288215891'
+				1288215891
 			);
 		} else {
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for "internal_type=' .
 				$tcaConfiguration['internal_type'] .
 				'" not implemented yet',
-				'1288215892'
+				1288215892
 			);
 		}
 

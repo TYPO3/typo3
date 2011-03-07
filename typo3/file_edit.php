@@ -113,7 +113,7 @@ class SC_file_edit {
 		if (!$this->target || !$key) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
-			throw new RuntimeException($title . ': ' . $message);
+			throw new RuntimeException($title . ': ' . $message, 1294586841);
 		}
 			// Finding the icon
 		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{

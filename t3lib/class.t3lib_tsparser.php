@@ -713,15 +713,15 @@ class t3lib_TSparser {
 
 						// some file checks
 					if (empty($realFileName)) {
-						throw new Exception(sprintf('"%s" is not a valid file location.', $fileName));
+						throw new UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
 					}
 
 					if (!is_writable($realFileName)) {
-						throw new Exception(sprintf('"%s" is not writable.', $fileName));
+						throw new RuntimeException(sprintf('"%s" is not writable.', $fileName), 1294586442);
 					}
 
 					if (in_array($realFileName, $extractedFileNames)) {
-						throw new Exception(sprintf('Recursive/multiple inclusion of file "%s"', $realFileName));
+						throw new RuntimeException(sprintf('Recursive/multiple inclusion of file "%s"', $realFileName), 1294586443);
 					}
 					$extractedFileNames[] = $realFileName;
 
@@ -729,7 +729,7 @@ class t3lib_TSparser {
 					$fileContentString = self::extractIncludes($fileContentString, ++$cycle_counter, $extractedFileNames);
 
 					if (!t3lib_div::writeFile($realFileName, $fileContentString)) {
-						throw new Exception(sprintf('Could not write file "%s"', $realFileName));
+						throw new RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
 					}
 
 						// insert reference to the file in the rest content

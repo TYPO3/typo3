@@ -236,7 +236,7 @@ class SC_wizard_table {
 			// First, check the references by selecting the record:
 		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 		if (!is_array($row)) {
-			throw new RuntimeException('Wizard Error: No reference to record');
+			throw new RuntimeException('Wizard Error: No reference to record', 1294587125);
 		}
 
 			// This will get the content of the form configuration code field to us - possibly cleaned up, saved to database etc. if the form has been submitted in the meantime.

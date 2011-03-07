@@ -63,7 +63,7 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 }
 
 if ($isDispatched === FALSE) {
-	die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module');
+	throw new UnexpectedValueException('No module "' . htmlspecialchars($temp_M) . '" could be found.', 1294585070);
 }
 
 ?>

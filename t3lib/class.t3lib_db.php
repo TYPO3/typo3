@@ -694,7 +694,7 @@ class t3lib_DB {
 	public function listQuery($field, $value, $table) {
 		$value = (string) $value;
 		if (strpos(',', $value) !== FALSE) {
-			throw new InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !');
+			throw new InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !', 1294585862);
 		}
 		$pattern = $this->quoteStr($value, $table);
 		$where = 'FIND_IN_SET(\'' . $pattern . '\',' . $field . ')';

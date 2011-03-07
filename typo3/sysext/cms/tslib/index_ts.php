@@ -161,7 +161,9 @@ $TT->pull();
 // *******************************
 // Checking environment
 // *******************************
-if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
+if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
+	throw new Exception('You cannot set the GLOBALS-array from outside the script.', 1294585200);
+}
 if (!get_magic_quotes_gpc())	{
 	$TT->push('Add slashes to GET/POST arrays','');
 	t3lib_div::addSlashesOnArray($_GET);

@@ -4888,7 +4888,7 @@ final class t3lib_div {
 		) {
 			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
 			if ($errorMode == 2) {
-				throw new Exception($errorMsg);
+				throw new InvalidArgumentException($errorMsg, 1294585864);
 			} elseif (!$errorMode) {
 				debug($errorMsg, 't3lib_div::callUserFunction');
 			}
@@ -4927,17 +4927,17 @@ final class t3lib_div {
 						array(&$params, &$ref)
 					);
 				} else {
-					$errorMsg = "<strong>ERROR:</strong> No method name '" . $parts[1] . "' in class " . $parts[0];
+					$errorMsg = "No method name '" . $parts[1] . "' in class " . $parts[0];
 					if ($errorMode == 2) {
-						throw new Exception($errorMsg);
+						throw new InvalidArgumentException($errorMsg, 1294585865);
 					} elseif (!$errorMode) {
 						debug($errorMsg, 't3lib_div::callUserFunction');
 					}
 				}
 			} else {
-				$errorMsg = "<strong>ERROR:</strong> No class named: " . $parts[0];
+				$errorMsg = 'No class named ' . $parts[0];
 				if ($errorMode == 2) {
-					throw new Exception($errorMsg);
+					throw new InvalidArgumentException($errorMsg, 1294585866);
 				} elseif (!$errorMode) {
 					debug($errorMsg, 't3lib_div::callUserFunction');
 				}
@@ -4946,9 +4946,9 @@ final class t3lib_div {
 			if (function_exists($funcRef)) {
 				$content = call_user_func_array($funcRef, array(&$params, &$ref));
 			} else {
-				$errorMsg = "<strong>ERROR:</strong> No function named: " . $funcRef;
+				$errorMsg = 'No function named: ' . $funcRef;
 				if ($errorMode == 2) {
-					throw new Exception($errorMsg);
+					throw new InvalidArgumentException($errorMsg, 1294585867);
 				} elseif (!$errorMode) {
 					debug($errorMsg, 't3lib_div::callUserFunction');
 				}
