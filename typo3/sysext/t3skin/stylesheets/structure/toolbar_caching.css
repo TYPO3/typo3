@@ -8,21 +8,6 @@ $Id$
 	width: 30px;
 }
 
-#clear-cache-actions-menu ul {
-	margin: 0px;
-	padding: 2px 0px 0px;
-	position: absolute;
-	width: 180px;
-}
-
-#clear-cache-actions-menu li {
-	float: none;
-	min-height: 19px;
-	padding-left: 2px;
-	padding-top: 2px;
-	vertical-align: middle;
-}
-
 * html #clear-cache-actions-menu li {
 	height: 19px;
 }
@@ -30,13 +15,6 @@ $Id$
 #clear-cache-actions-menu li img {
 	float: left;
 	padding-right: 6px;
-}
-
-#clear-cache-actions-menu li a {
-	display: block;
-	padding-bottom: 2px;
-	padding-left: 3px;
-	vertical-align: middle;
 }
 
 #clear-cache-actions-menu li a span.t3-icon {

@@ -4,13 +4,6 @@ Clear-Cache menu inside the toolbar
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-#clear-cache-actions-menu ul {
-	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-top: none;
-	list-style: none;
-}
-
 #clear-cache-actions-menu li {
 	text-align: left;
 }
