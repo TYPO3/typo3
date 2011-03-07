@@ -354,6 +354,9 @@ TYPO3.EM.GridColumns.ExtensionAuthor = {
 		} else {
 			return t;
 		}
+	},
+	groupRenderer: function(value) {
+		return value;
 	}
 };
 
