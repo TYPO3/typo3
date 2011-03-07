@@ -922,7 +922,7 @@
 						$message = 'No pages are found on the rootlevel!';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 						header('HTTP/1.0 503 Service Temporarily Unavailable');
-						throw new RuntimeException($message);
+						throw new RuntimeException($message, 1294587207);
 					}
 				}
 			}
@@ -1014,7 +1014,7 @@
 					$message = 'The requested page does not exist!';
 					header('HTTP/1.0 404 Page Not Found');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					throw new RuntimeException($message, 1294587208);
 				}
 			}
 		}
@@ -1027,7 +1027,7 @@
 				$message = 'The requested page does not exist!';
 				header('HTTP/1.0 404 Page Not Found');
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				throw new RuntimeException($message);
+				throw new RuntimeException($message, 1294587209);
 			}
 		}
 
@@ -1063,7 +1063,7 @@
 					$message = 'The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog(str_replace('<br /><br />','',$message), 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					throw new RuntimeException($message, 1294587210);
 				}
 			}
 			$this->fePreview = 1;
@@ -1078,7 +1078,7 @@
 					$message = 'The requested page was not accessible!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					throw new RuntimeException($message, 1294587211);
 				}
 			} else {
 				$el = reset($this->rootLine);
@@ -1142,7 +1142,7 @@
 				$message = 'Page shortcuts were looping in uids '.implode(',',$pageLog).'...!';
 				header('HTTP/1.0 500 Internal Server Error');
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				throw new RuntimeException($message);
+				throw new RuntimeException($message, 1294587212);
 			}
 		}
 			// Return resulting page:
@@ -1456,7 +1456,7 @@
 
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
-			throw new RuntimeException('The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : ''));
+			throw new RuntimeException('The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : ''), 1294587213);
 		} elseif (t3lib_div::isFirstPartOfStr($code,'USER_FUNCTION:')) {
 			$funcRef = trim(substr($code,14));
 			$params = array(
@@ -1473,7 +1473,7 @@
 				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
 				echo $fileContent;
 			} else {
-				throw new RuntimeException('Configuration Error: 404 page "' . $readFile.'" could not be found.');
+				throw new RuntimeException('Configuration Error: 404 page "' . $readFile.'" could not be found.', 1294587214);
 			}
 		} elseif (t3lib_div::isFirstPartOfStr($code,'REDIRECT:')) {
 			t3lib_utility_Http::redirect(substr($code, 9));
@@ -1494,7 +1494,7 @@
 					$reason = 'Page cannot be found.';
 				}
 				$reason.= LF . LF . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
-				throw new RuntimeException('Reason: ' . nl2br(htmlspecialchars($reason)));
+				throw new RuntimeException(nl2br(htmlspecialchars($reason)), 1294587215);
 			}
 
 				// Prepare headers
@@ -1556,7 +1556,7 @@
 				echo $content;	// Output the content
 			}
 		} else {
-			throw new RuntimeException($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
+			throw new RuntimeException($reason ? htmlspecialchars($reason) : 'Page cannot be found.', 1294587216);
 		}
 		exit();
 	}
@@ -1707,9 +1707,9 @@
 
 							// Return preview keyword configuration:
 						return $previewConfig;
-					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
-				} else die('POST requests are incompatible with keyword preview.');
-			} else die('ADMCMD command could not be executed! (No keyword configuration found)');
+					} else throw new Exception(htmlspecialchars('Request URL did not match "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=' . $inputCode . '"', 1294585190));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
+				} else throw new Exception('POST requests are incompatible with keyword preview.', 1294585191);
+			} else throw new Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
 		}
 	}
 
@@ -1721,14 +1721,10 @@
 	 * @return	void
 	 * @see ADMCMD_preview(), index_ts.php
 	 */
-	function ADMCMD_preview_postInit($previewConfig){
-		if (is_array($previewConfig))	{
-
-				// Clear cookies:
-			unset($_COOKIE['be_typo_user']);
-			$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
-
-		} else die('Error in preview configuration.');
+	function ADMCMD_preview_postInit(array $previewConfig){
+			// Clear cookies:
+		unset($_COOKIE['be_typo_user']);
+		$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
 	}
 
 
@@ -2051,7 +2047,7 @@
 						$message = 'The page is not configured! [type= '.$this->type.']['.$this->sPre.']';
 						header('HTTP/1.0 503 Service Temporarily Unavailable');
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-						throw new RuntimeException($message);
+						throw new RuntimeException($message, 1294587217);
 					}
 				} else {
 					$this->config['config'] = array();
@@ -2110,7 +2106,7 @@
 					$message = 'No TypoScript template found!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					throw new RuntimeException($message, 1294587218);
 				}
 			}
 		}
@@ -2384,7 +2380,7 @@
 
 			// Setting locale
 		if ($this->config['config']['locale_all'])	{
-			# Change by René Fritz, 22/10 2002
+			# Change by Ren√© Fritz, 22/10 2002
 			# there's a problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a comma as decimal point
 			# this does not work in php 4.2.3
 			#setlocale('LC_ALL',$this->config['config']['locale_all']);
@@ -2634,10 +2630,10 @@
 								header('Content-Disposition: attachment; filename="'.basename($absoluteFileName) . '"');
 								readfile($absoluteFileName);
 								exit;
-							} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
-						} else die('jumpurl Secure: The requested file was not allowed to be accessed through jumpUrl (path or file not allowed)!');
-					} else die('jumpurl Secure: locationData, '.$locationData.', was not accessible.');
-				} else die('jumpurl Secure: Calculated juHash did not match the submitted juHash.');
+							} else throw new Exception('jumpurl Secure: "' . $this->jumpurl . '" was not a valid file!', 1294585193);
+						} else throw new Exception('jumpurl Secure: The requested file was not allowed to be accessed through jumpUrl (path or file not allowed)!', 1294585194);
+					} else throw new Exception('jumpurl Secure: locationData, ' . $locationData . ', was not accessible.', 1294585195);
+				} else throw new Exception('jumpurl Secure: Calculated juHash did not match the submitted juHash.', 1294585196);
 			} else {
 				$TSConf = $this->getPagesTSconfig();
 				if ($TSConf['TSFE.']['jumpUrl_transferSession'])	{

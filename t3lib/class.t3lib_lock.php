@@ -83,7 +83,7 @@ class t3lib_lock {
 		if (in_array($method, array('disable', 'simple', 'flock', 'semaphore'))) {
 			$this->method = $method;
 		} else {
-			throw new Exception('No such method "' . $method . '"');
+			throw new ArgumentException('No such method "' . $method . '"', 1294586097);
 		}
 
 		$success = FALSE;
@@ -159,14 +159,14 @@ class t3lib_lock {
 				}
 
 				if (!$isAcquired) {
-					throw new Exception('Lock file could not be created');
+					throw new RuntimeException('Lock file could not be created', 1294586098);
 				}
 
 				t3lib_div::fixPermissions($this->resource);
 			break;
 			case 'flock':
 				if (($this->filepointer = fopen($this->resource, 'w+')) == FALSE) {
-					throw new Exception('Lock file could not be opened');
+					throw new RuntimeException('Lock file could not be opened', 1294586099);
 				}
 
 				if (flock($this->filepointer, LOCK_EX | LOCK_NB) == TRUE) { // Lock without blocking
@@ -174,7 +174,7 @@ class t3lib_lock {
 				} elseif (flock($this->filepointer, LOCK_EX) == TRUE) { // Lock with blocking (waiting for similar locks to become released)
 					$noWait = FALSE;
 				} else {
-					throw new Exception('Could not lock file "' . $this->resource . '"');
+					throw new RuntimeException('Could not lock file "' . $this->resource . '"', 1294586100);
 				}
 			break;
 			case 'semaphore':

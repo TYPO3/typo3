@@ -1133,7 +1133,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $compressedJavaScript ? $compressedJavaScript : $output);
 			if ($failure)  {
-				die($failure);
+				throw new RuntimeException($failure, 1294585668);
 			}
 		}
 		if ($concatenate && $fileExtension == 'js') {
@@ -1165,12 +1165,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if (!file_exists($destination)) {
 					$failure = t3lib_div::writeFileToTypo3tempDir($destination, $contents);
 					if ($failure)  {
-						die($failure);
+						throw new RuntimeException($failure, 1294585669);
 					}
 				} else {
 					$success = file_put_contents($destination, $contents, FILE_APPEND);
 					if (!$success)  {
-						die('Could not append script' + $fileName);
+						throw new RuntimeException('Could not append script: ' . $fileName, 1294585670);
 					}
 				}
 			}
