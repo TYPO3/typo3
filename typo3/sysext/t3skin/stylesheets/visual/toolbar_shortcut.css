@@ -4,13 +4,6 @@ Shortcuts menu in the toolbar
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-#shortcut-menu .toolbar-item-menu {
-	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-top: none;
-	list-style: none;
-}
-
 #shortcut-menu .shortcut-list tr.shortcut td {
 	line-height: 16px;
 }
