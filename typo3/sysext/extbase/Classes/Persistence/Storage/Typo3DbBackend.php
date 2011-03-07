@@ -45,7 +45,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $databaseHandle;
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $dataMapper;
 

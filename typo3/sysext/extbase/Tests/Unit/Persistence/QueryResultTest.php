@@ -40,7 +40,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	protected $mockPersistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $mockDataMapper;
 

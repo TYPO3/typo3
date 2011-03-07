@@ -46,7 +46,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_LazyObjectStorage. To retrieve the first result, you can use the getFirst() method.';
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $dataMapper;
 

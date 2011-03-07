@@ -47,7 +47,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $dataMapper;
 

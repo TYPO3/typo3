@@ -51,7 +51,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 	protected $backend;
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
 	 */
 	protected $dataMapper;
 
