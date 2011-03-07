@@ -45,8 +45,10 @@ CREATE TABLE cachingframework_cache_pages (
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   content mediumblob,
   lifetime int(11) unsigned DEFAULT '0' NOT NULL,
+  expires int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (id),
-  KEY cache_id (identifier)
+  KEY cache_id (identifier),
+  KEY expires (expires,identifier)
 ) ENGINE=InnoDB;
 
 
@@ -72,8 +74,10 @@ CREATE TABLE cachingframework_cache_pagesection (
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   content mediumblob,
   lifetime int(11) unsigned DEFAULT '0' NOT NULL,
+  expires int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (id),
-  KEY cache_id (identifier)
+  KEY cache_id (identifier),
+  KEY expires (expires,identifier)
 ) ENGINE=InnoDB;
 
 

@@ -131,6 +131,7 @@ $TYPO3_CONF_VARS = array(
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_hash',
 						'tagsTable' => 'cachingframework_cache_hash_tags',
+						'dbLayoutVersion' => 2,
 					)
 				),
 				'cache_pages' => array(
@@ -139,6 +140,7 @@ $TYPO3_CONF_VARS = array(
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_pages',
 						'tagsTable' => 'cachingframework_cache_pages_tags',
+						'dbLayoutVersion' => 2,
 					)
 				),
 				'cache_pagesection' => array(
@@ -147,6 +149,7 @@ $TYPO3_CONF_VARS = array(
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_pagesection',
 						'tagsTable' => 'cachingframework_cache_pagesection_tags',
+						'dbLayoutVersion' => 2,
 					)
 				)
 			)
