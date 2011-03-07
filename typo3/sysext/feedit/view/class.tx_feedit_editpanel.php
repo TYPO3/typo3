@@ -353,6 +353,7 @@ class tx_feedit_editpanel {
 	 */
 	protected function editContent($formTag, $formName, $theCmd, $newUID, array $dataArray, $table, $currentRecord, $blackLine) {
 		$tceforms = t3lib_div::makeInstance('t3lib_TCEforms_FE');
+		$tceforms->initDefaultBEMode();
 		$tceforms->prependFormFieldNames = 'TSFE_EDIT[data]';
 		$tceforms->prependFormFieldNames_file = 'TSFE_EDIT_file';
 		$tceforms->doSaveFieldName = 'TSFE_EDIT[doSave]';
