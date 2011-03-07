@@ -3,6 +3,9 @@ config.tx_extbase {
 		Tx_Extbase_Persistence_Storage_BackendInterface {
 			className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
 		}
+		Tx_Extbase_Persistence_QuerySettingsInterface {
+			className = Tx_Extbase_Persistence_Typo3QuerySettings
+		}
 	}
 	mvc {
 		requestHandlers {
