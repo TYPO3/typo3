@@ -32,6 +32,16 @@
  */
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
+	/**
+	 *
+	 * @const LIFETIME_MAX
+	 *
+	 * the highest possible expiry time storable in a mysql timestamp field
+	 * see e.g. http://bugs.mysql.com/bug.php?id=9191 for source of limit
+	 * It is shorter than what t3lib_cache_backend_AbstractBackend::calculateExpiryTime would return.
+	 */
+	const LIFETIME_MAX = 2147483647;
+
 	protected $cacheTable;
 	protected $tagsTable;
 
@@ -51,6 +61,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	protected $notExpiredStatement;
 	protected $tableList;
 	protected $tableJoin;
+	protected $expiredPartsInitialized=0;
 
 	/**
 	 * Constructs this backend
@@ -86,10 +97,33 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$this->identifierField = $this->cacheTable . '.identifier';
 		$this->creationField = $this->cacheTable . '.crdate';
 		$this->lifetimeField = $this->cacheTable . '.lifetime';
+		$this->expiredField = $this->cacheTable . '.expires';
 		$this->tableList = $this->cacheTable . ', ' . $this->tagsTable;
 		$this->tableJoin = $this->identifierField . ' = ' . $this->tagsTable . '.identifier';
-		$this->notExpiredStatement = '(' . $this->creationField . ' + ' . $this->lifetimeField .
+		$this->initializeExpiredParts();
+
+	}
+
+	/**
+	 * Set query part for expired/not expired
+	 */
+	protected function initializeExpiredParts() {
+		/* check that EXEC_TIME is set,if not defer to later */
+		if (!isset($GLOBALS['EXEC_TIME'])) {
+			return;
+		}
+		switch ($this->dbLayoutVersion) {
+			case 2:
+				$this->notExpiredStatement = '(' . $this->expiredField . ' >= ' . $GLOBALS['EXEC_TIME'] . ')';
+				$this->expiredStatement = '(' . $this->expiredField . ' < ' . $GLOBALS['EXEC_TIME'] . ')';
+				break;
+			default:
+				$this->notExpiredStatement = '(' . $this->creationField . ' + ' . $this->lifetimeField .
 									 ' >= ' . $GLOBALS['EXEC_TIME'] . ' OR ' . $this->lifetimeField . ' = 0)';
+				$this->expiredStatement =  '(' . $this->creationField . ' + ' . $this->lifetimeField .
+									 ' < ' . $GLOBALS['EXEC_TIME'] . ' AND ' . $this->lifetimeField . ' != 0)';
+		}
+		$this->expiredPartsInitialized=1;
 	}
 
 	/**
@@ -102,7 +136,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws t3lib_cache_exception_InvalidData if the data to be stored is not a string.
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
@@ -119,9 +152,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			);
 		}
 
-		if (is_null($lifetime)) {
-			$lifetime = $this->defaultLifetime;
-		}
 
 		$this->remove($entryIdentifier);
 
@@ -129,15 +159,14 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			$data = gzcompress($data, $this->compressionLevel);
 		}
 
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
-			$this->cacheTable,
-			array(
-				 'identifier' => $entryIdentifier,
-				 'crdate' => $GLOBALS['EXEC_TIME'],
-				 'content' => $data,
-				 'lifetime' => $lifetime
-			)
-		);
+		switch ($this->dbLayoutVersion) {
+			case 2:
+				$this->performInsertVersion2($entryIdentifier, $data,  $lifetime );
+				break;
+			default:
+				$this->performInsertVersion1($entryIdentifier, $data,  $lifetime );
+				break;
+		}
 
 		if (count($tags)) {
 			$fields = array();
@@ -161,6 +190,62 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
+	 * Perform the insert for db layout version 1.
+	 *
+	 * @param string An identifier for this specific cache entry
+	 * @param string The data to be stored
+	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @return void
+	 */
+	private function performInsertVersion1($entryIdentifier, $data, $lifetime = NULL ) {
+
+		if (is_null($lifetime)) {
+			$lifetime = $this->defaultLifetime;
+		}
+
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			$this->cacheTable,
+			array(
+				 'identifier' => $entryIdentifier,
+				 'crdate' => $GLOBALS['EXEC_TIME'],
+				 'content' => $data,
+				 'lifetime' => $lifetime
+			)
+		);
+
+	}
+
+	/** Perform the insert for db layout version 2.
+	 *
+	 * @param string An identifier for this specific cache entry
+	 * @param string The data to be stored
+	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @return void
+	 */
+	private function performInsertVersion2($entryIdentifier, $data, $lifetime = NULL ) {
+
+		if ($lifetime === self::UNLIMITED_LIFETIME || ($lifetime === NULL && $this->defaultLifetime === self::UNLIMITED_LIFETIME)) {
+			$expire = self::LIFETIME_MAX;
+		} else {
+			if (is_null($lifetime)) {
+				$lifetime = $this->defaultLifetime;
+			}
+			$expire = $GLOBALS['EXEC_TIME'] + $lifetime;
+		}
+
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			$this->cacheTable,
+			array(
+				 'identifier' => $entryIdentifier,
+				 'crdate' => $GLOBALS['EXEC_TIME'],
+				 'content' => $data,
+				 'lifetime' => $lifetime,
+				 'expires' => $expire
+			)
+		);
+	}
+
+	/**
 	 * Loads data from a cache file.
 	 *
 	 * @param string An identifier which describes the cache entry to load
@@ -170,11 +255,15 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function get($entryIdentifier) {
 		$cacheEntry = false;
 
+		if (!$this->expiredPartInitialized) {
+			$this->initializeExpiredParts();
+		}
+
 		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
 			$this->cacheTable,
-			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
-			. 'AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
+			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . 
+			' AND ' . $this->notExpiredStatement
 		);
 
 		if (is_array($cacheEntry)) {
@@ -198,11 +287,15 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function has($entryIdentifier) {
 		$hasEntry = FALSE;
 
+		if (!$this->expiredPartInitialized) {
+			$this->initializeExpiredParts();
+		}
+
 		$cacheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'*',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) .
-			' AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
+			' AND ' . $this->notExpiredStatement
 		);
 		if ($cacheEntries >= 1) {
 			$hasEntry = TRUE;
@@ -357,11 +450,16 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
-			// Get identifiers of expired cache entries
+
+		if (!$this->expiredPartInitialized) {
+			$this->initializeExpiredParts();
+		}
+
+		// Get identifiers of expired cache entries
 		$tagsEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'identifier',
 			$this->cacheTable,
-			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
+			$this->expiredStatement
 		);
 
 		$tagsEntryIdentifiers = array();
@@ -384,7 +482,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			// Delete expired cache rows
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
-			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
+			$this->expiredStatement
 		);
 	}
 
