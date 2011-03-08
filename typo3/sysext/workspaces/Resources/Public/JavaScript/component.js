@@ -58,6 +58,19 @@ Ext.override(Ext.XTemplate, {
 	}
 });
 
+Ext.override(Ext.grid.GroupingView, {
+	constructId : function(value, field, idx) {
+		var cfg = this.cm.config[idx],
+			groupRenderer = cfg.groupRenderer || cfg.renderer,
+			val = (this.groupMode == 'value') ? value : this.getGroup(value, {data:{}}, groupRenderer, 0, idx, this.ds);
+
+		var id = this.getPrefix(field) + val;
+		id = id.replace(/[^a-zA-Z0-9_]/g, '');
+		return id;
+	}
+});
+
+
 TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 	'<div class="t3-workspaces-foldoutWrapper">',
 	'<tpl for=".">',
