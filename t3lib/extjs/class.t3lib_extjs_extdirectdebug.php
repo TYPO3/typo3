@@ -39,6 +39,20 @@ class t3lib_extjs_ExtDirectDebug {
 	 */
 	protected $debugMessages = array();
 
+
+	/**
+	 * destructor
+	 *
+	 * Currently empty, but automatically registered and called during
+	 * ExtDirect shutdown.
+	 *
+	 * @see http://bugs.typo3.org/view.php?id=17891
+	 */
+	public function __destruct() {
+	
+	}
+
+
 	/**
 	 * Adds a new message of any data type to the internal debug message array.
 	 *
