@@ -42,6 +42,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+
+
+	/**
 	 * Injects the reflection service
 	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService
@@ -57,6 +64,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
 	}
 
 	/**
@@ -103,7 +118,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 			}
 		}
 
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $recordType, $subclasses);
+		$dataMap = $this->objectManager->create('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
