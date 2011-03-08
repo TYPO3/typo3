@@ -405,50 +405,52 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			return TRUE;
 		} elseif ($this->useRecycler != 2) { // if $this->useRecycler==2 then we cannot delete for real!!
 			if (@is_file($theFile)) { // If we are deleting a file...
-				if ($this->actionPerms['deleteFile']) {
-					if ($this->checkPathAgainstMounts($theFile)) {
-						if (@unlink($theFile)) {
-							$this->writelog(4, 0, 1, 'File "%s" deleted', Array($theFile));
-							return TRUE;
-						} else {
-							$this->writelog(4, 1, 110, 'Could not delete file "%s". Write-permission problem?', Array($theFile));
-						}
-					} else {
-						$this->writelog(4, 1, 111, 'Target was not within your mountpoints! T="%s"', Array($theFile));
-					}
-				} else {
+				if (!$this->actionPerms['deleteFile']) {
 					$this->writelog(4, 1, 112, 'You are not allowed to delete files', '');
+					return FALSE;
+				}
+				if (!$this->checkPathAgainstMounts($theFile)) {
+					$this->writelog(4, 1, 111, 'Target was not within your mountpoints! T="%s"', Array($theFile));
+					return FALSE;
+				}
+				if (@unlink($theFile)) {
+					$this->writelog(4, 0, 1, 'File "%s" deleted', Array($theFile));
+					return TRUE;
+				} else {
+					$this->writelog(4, 1, 110, 'Could not delete file "%s". Write-permission problem?', Array($theFile));
 				}
 				// FINISHED deleting file
 
 			} elseif (@is_dir($theFile)) { // if we're deleting a folder
-				if ($this->actionPerms['deleteFolder']) {
-					$theFile = $this->is_directory($theFile);
-					if ($theFile) {
-						if ($this->checkPathAgainstMounts($theFile)) { // I choose not to append '/' to $theFile here as this will prevent us from deleting mounts!! (which makes sense to me...)
-							if ($this->actionPerms['deleteFolderRecursively']) {
-								if (t3lib_div::rmdir($theFile, TRUE)) {
-									$this->writelog(4, 0, 2, 'Directory "%s" deleted recursively!', Array($theFile));
-									return TRUE;
-								} else {
-									$this->writelog(4, 2, 119, 'Directory "%s" WAS NOT deleted recursively! Write-permission problem?', Array($theFile));
-								}
-							} else {
-								if (@rmdir($theFile)) {
-									$this->writelog(4, 0, 3, 'Directory "%s" deleted', Array($theFile));
-									return TRUE;
-								} else {
-									$this->writelog(4, 1, 120, 'Could not delete directory! Write-permission problem? Is directory "%s" empty? (You are not allowed to delete directories recursively).', Array($theFile));
-								}
-							}
-						} else {
-							$this->writelog(4, 1, 121, 'Target was not within your mountpoints! T="%s"', Array($theFile));
-						}
+				if (!$this->actionPerms['deleteFolder']) {
+					$this->writelog(4, 1, 123, 'You are not allowed to delete directories', '');
+					return FALSE;
+				}
+
+				$theFile = $this->is_directory($theFile);
+				if (!$theFile) {
+					$this->writelog(4, 2, 122, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
+					return FALSE;
+				}
+				if (!$this->checkPathAgainstMounts($theFile)) {
+					$this->writelog(4, 1, 121, 'Target was not within your mountpoints! T="%s"', Array($theFile));
+					return FALSE;
+				}
+					// I choose not to append '/' to $theFile here as this will prevent us from deleting mounts!! (which makes sense to me...)
+				if ($this->actionPerms['deleteFolderRecursively']) {
+					if (t3lib_div::rmdir($theFile, TRUE)) {
+						$this->writelog(4, 0, 2, 'Directory "%s" deleted recursively!', Array($theFile));
+						return TRUE;
 					} else {
-						$this->writelog(4, 2, 122, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
+						$this->writelog(4, 2, 119, 'Directory "%s" WAS NOT deleted recursively! Write-permission problem?', Array($theFile));
 					}
 				} else {
-					$this->writelog(4, 1, 123, 'You are not allowed to delete directories', '');
+					if (@rmdir($theFile)) {
+						$this->writelog(4, 0, 3, 'Directory "%s" deleted', Array($theFile));
+						return TRUE;
+					} else {
+						$this->writelog(4, 1, 120, 'Could not delete directory! Write-permission problem? Is directory "%s" empty? (You are not allowed to delete directories recursively).', Array($theFile));
+					}
 				}
 				// FINISHED copying directory
 
@@ -486,91 +488,94 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 
 			// Processing of file or directory.
 		if (@is_file($theFile)) { // If we are copying a file...
-			if ($this->actionPerms['copyFile']) {
-				if (filesize($theFile) < ($this->maxCopyFileSize * 1024)) {
-					$fI = t3lib_div::split_fileref($theFile);
-					if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
-						$theDestFile = $this->getUniqueName($fI['file'], $theDest);
-						$fI = t3lib_div::split_fileref($theDestFile);
-					} else {
-						$theDestFile = $theDest . '/' . $fI['file'];
-					}
-					if ($theDestFile && !file_exists($theDestFile)) {
-						if ($this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
-							if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
-								if ($this->PHPFileFunctions) {
-									copy($theFile, $theDestFile);
-								} else {
-									$cmd = 'cp "' . $theFile . '" "' . $theDestFile . '"';
-									t3lib_utility_Command::exec($cmd);
-								}
-								t3lib_div::fixPermissions($theDestFile);
-								clearstatcache();
-								if (@is_file($theDestFile)) {
-									$this->writelog(2, 0, 1, 'File "%s" copied to "%s"', Array($theFile, $theDestFile));
-									return $theDestFile;
-								} else {
-									$this->writelog(2, 2, 109, 'File "%s" WAS NOT copied to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
-								}
-							} else	{
-								$this->writelog(2, 1, 110, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
-							}
-						} else {
-							$this->writelog(2, 1, 111, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theDest . '/'));
-						}
-					} else {
-						$this->writelog(2, 1, 112, 'File "%s" already exists!', Array($theDestFile));
-					}
-				} else {
-					$this->writelog(2, 1, 113, 'File "%s" exceeds the size-limit of %s bytes', Array($theFile, $this->maxCopyFileSize * 1024));
-				}
-			} else {
+			if (!$this->actionPerms['copyFile']) {
 				$this->writelog(2, 1, 114, 'You are not allowed to copy files', '');
+				return FALSE;
+			}
+			if (filesize($theFile) >= ($this->maxCopyFileSize * 1024)) {
+				$this->writelog(2, 1, 113, 'File "%s" exceeds the size-limit of %s bytes', Array($theFile, $this->maxCopyFileSize * 1024));
+				return FALSE;
+			}
+			$fI = t3lib_div::split_fileref($theFile);
+			if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
+				$theDestFile = $this->getUniqueName($fI['file'], $theDest);
+				$fI = t3lib_div::split_fileref($theDestFile);
+			} else {
+				$theDestFile = $theDest . '/' . $fI['file'];
+			}
+			if (!$theDestFile || file_exists($theDestFile)) {
+				$this->writelog(2, 1, 112, 'File "%s" already exists!', Array($theDestFile));
+				return FALSE;
+			}
+			if (!$this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
+				$this->writelog(2, 1, 111, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theDest . '/'));
+				return FALSE;
+			}
+			if (!$this->checkPathAgainstMounts($theDestFile) || !$this->checkPathAgainstMounts($theFile)) {
+				$this->writelog(2, 1, 110, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
+				return FALSE;
+			}
+			if ($this->PHPFileFunctions) {
+				copy($theFile, $theDestFile);
+			} else {
+				$cmd = 'cp "' . $theFile . '" "' . $theDestFile . '"';
+				t3lib_utility_Command::exec($cmd);
+			}
+			t3lib_div::fixPermissions($theDestFile);
+			clearstatcache();
+			if (@is_file($theDestFile)) {
+				$this->writelog(2, 0, 1, 'File "%s" copied to "%s"', Array($theFile, $theDestFile));
+				return $theDestFile;
+			} else {
+				$this->writelog(2, 2, 109, 'File "%s" WAS NOT copied to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
+				return FALSE;
 			}
 			// FINISHED copying file
 
 		} elseif (@is_dir($theFile) && !$this->dont_use_exec_commands) { // if we're copying a folder
-			if ($this->actionPerms['copyFolder']) {
-				$theFile = $this->is_directory($theFile);
-				if ($theFile) {
-					$fI = t3lib_div::split_fileref($theFile);
-					if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
-						$theDestFile = $this->getUniqueName($fI['file'], $theDest);
-						$fI = t3lib_div::split_fileref($theDestFile);
-					} else {
-						$theDestFile = $theDest . '/' . $fI['file'];
-					}
-					if ($theDestFile && !file_exists($theDestFile)) {
-						if (!t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) { // Check if the one folder is inside the other or on the same level... to target/dest is the same?
-							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile) == $this->is_webPath($theFile)) { // no copy of folders between spaces
-								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
-									// No way to do this under windows!
-									$cmd = 'cp -R "' . $theFile . '" "' . $theDestFile . '"';
-									t3lib_utility_Command::exec($cmd);
-									clearstatcache();
-									if (@is_dir($theDestFile)) {
-										$this->writelog(2, 0, 2, 'Directory "%s" copied to "%s"', Array($theFile, $theDestFile));
-										return $theDestFile;
-									} else {
-										$this->writelog(2, 2, 119, 'Directory "%s" WAS NOT copied to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
-									}
-								} else {
-									$this->writelog(2, 1, 120, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
-								}
-							} else {
-								$this->writelog(2, 1, 121, 'You don\'t have full access to the destination directory "%s"!', Array($theDest . '/'));
-							}
-						} else {
-							$this->writelog(2, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', Array($theDestFile . '/', $theFile . '/'));
-						}
-					} else {
-						$this->writelog(2, 1, 123, 'Target "%s" already exists!', Array($theDestFile));
-					}
-				} else {
-					$this->writelog(2, 2, 124, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
-				}
-			} else {
+			if (!$this->actionPerms['copyFolder']) {
 				$this->writelog(2, 1, 125, 'You are not allowed to copy directories', '');
+				return FALSE;
+			}
+			$theFile = $this->is_directory($theFile);
+			if (!$theFile) {
+				$this->writelog(2, 2, 124, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
+				return FALSE;
+			}
+			$fI = t3lib_div::split_fileref($theFile);
+			if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
+				$theDestFile = $this->getUniqueName($fI['file'], $theDest);
+				$fI = t3lib_div::split_fileref($theDestFile);
+			} else {
+				$theDestFile = $theDest . '/' . $fI['file'];
+			}
+			if (!$theDestFile || file_exists($theDestFile)) {
+				$this->writelog(2, 1, 123, 'Target "%s" already exists!', Array($theDestFile));
+				return FALSE;
+			}
+			if (!t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) {
+				$this->writelog(2, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', Array($theDestFile . '/', $theFile . '/'));
+				return FALSE;
+			}
+				// Check if the one folder is inside the other or on the same level... to target/dest is the same?
+			if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile) == $this->is_webPath($theFile)) { // no copy of folders between spaces
+				$this->writelog(2, 1, 121, 'You don\'t have full access to the destination directory "%s"!', Array($theDest . '/'));
+				return FALSE;
+			}
+			if (!$this->checkPathAgainstMounts($theDestFile) || !$this->checkPathAgainstMounts($theFile)) {
+				$this->writelog(2, 1, 120, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
+				return FALSE;
+			}
+			// No way to do this under windows!
+			$cmd = 'cp -R "' . $theFile . '" "' . $theDestFile . '"';
+			t3lib_utility_Command::($cmd);
+			clearstatcache();
+			if (@is_dir($theDestFile)) {
+				$this->writelog(2, 0, 2, 'Directory "%s" copied to "%s"', Array($theFile, $theDestFile));
+				return $theDestFile;
+			} else {
+				$this->writelog(2, 2, 119, 'Directory "%s" WAS NOT copied to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
+				return FALSE;
 			}
 			// FINISHED copying directory
 
@@ -605,94 +610,96 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 
 			// Processing of file or directory:
 		if (@is_file($theFile)) { // If we are moving a file...
-			if ($this->actionPerms['moveFile']) {
-				if (filesize($theFile) < ($this->maxMoveFileSize * 1024)) {
-					$fI = t3lib_div::split_fileref($theFile);
-					if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
-						$theDestFile = $this->getUniqueName($fI['file'], $theDest);
-						$fI = t3lib_div::split_fileref($theDestFile);
-					} else {
-						$theDestFile = $theDest . '/' . $fI['file'];
-					}
-					if ($theDestFile && !file_exists($theDestFile)) {
-						if ($this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
-							if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
-								if ($this->PHPFileFunctions) {
-									@rename($theFile, $theDestFile);
-								} else {
-									$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
-									t3lib_utility_Command::exec($cmd);
-								}
-								clearstatcache();
-								if (@is_file($theDestFile)) {
-									$this->writelog(3, 0, 1, 'File "%s" moved to "%s"', Array($theFile, $theDestFile));
-									return $theDestFile;
-								} else {
-									$this->writelog(3, 2, 109, 'File "%s" WAS NOT moved to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
-								}
-							} else {
-								$this->writelog(3, 1, 110, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
-							}
-						} else {
-							$this->writelog(3, 1, 111, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theDest . '/'));
-						}
-					} else {
-						$this->writelog(3, 1, 112, 'File "%s" already exists!', Array($theDestFile));
-					}
-				} else {
-					$this->writelog(3, 1, 113, 'File "%s" exceeds the size-limit of %s bytes', Array($theFile, $this->maxMoveFileSize * 1024));
-				}
-			} else {
+			if (!$this->actionPerms['moveFile']) {
 				$this->writelog(3, 1, 114, 'You are not allowed to move files', '');
+				return FALSE;
+			}
+			if (filesize($theFile) >= ($this->maxMoveFileSize * 1024)) {
+				$this->writelog(3, 1, 113, 'File "%s" exceeds the size-limit of %s bytes', Array($theFile, $this->maxMoveFileSize * 1024));
+				return FALSE;
+			}
+			$fI = t3lib_div::split_fileref($theFile);
+			if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
+				$theDestFile = $this->getUniqueName($fI['file'], $theDest);
+				$fI = t3lib_div::split_fileref($theDestFile);
+			} else {
+				$theDestFile = $theDest . '/' . $fI['file'];
+			}
+			if (!$theDestFile || file_exists($theDestFile)) {
+				$this->writelog(3, 1, 112, 'File "%s" already exists!', Array($theDestFile));
+				return FALSE;
+			}
+			if (!$this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
+				$this->writelog(3, 1, 111, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theDest . '/'));
+				return FALSE;
+			}
+			if (!$this->checkPathAgainstMounts($theDestFile) || !$this->checkPathAgainstMounts($theFile)) {
+				$this->writelog(3, 1, 110, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
+				return FALSE;
+			}
+			if ($this->PHPFileFunctions) {
+				@rename($theFile, $theDestFile);
+			} else {
+				$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+				t3lib_utility_Command::exec($cmd);
+			}
+			clearstatcache();
+			if (@is_file($theDestFile)) {
+				$this->writelog(3, 0, 1, 'File "%s" moved to "%s"', Array($theFile, $theDestFile));
+				return $theDestFile;
+			} else {
+				$this->writelog(3, 2, 109, 'File "%s" WAS NOT moved to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
+				return FALSE;
 			}
 			// FINISHED moving file
 
 		} elseif (@is_dir($theFile)) { // if we're moving a folder
-			if ($this->actionPerms['moveFolder']) {
-				$theFile = $this->is_directory($theFile);
-				if ($theFile) {
-					$fI = t3lib_div::split_fileref($theFile);
-					if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
-						$theDestFile = $this->getUniqueName($fI['file'], $theDest);
-						$fI = t3lib_div::split_fileref($theDestFile);
-					} else {
-						$theDestFile = $theDest . '/' . $fI['file'];
-					}
-					if ($theDestFile && !file_exists($theDestFile)) {
-						if (!t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) { // Check if the one folder is inside the other or on the same level... to target/dest is the same?
-							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile) == $this->is_webPath($theFile)) { // // no moving of folders between spaces
-								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
-									if ($this->PHPFileFunctions) {
-										@rename($theFile, $theDestFile);
-									} else {
-										$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
-										$errArr = array();
-										t3lib_utility_Command::exec($cmd, $errArr);
-									}
-									clearstatcache();
-									if (@is_dir($theDestFile)) {
-										$this->writelog(3, 0, 2, 'Directory "%s" moved to "%s"', Array($theFile, $theDestFile));
-										return $theDestFile;
-									} else {
-										$this->writelog(3, 2, 119, 'Directory "%s" WAS NOT moved to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
-									}
-								} else {
-									$this->writelog(3, 1, 120, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
-								}
-							} else {
-								$this->writelog(3, 1, 121, 'You don\'t have full access to the destination directory "%s"!', Array($theDest . '/'));
-							}
-						} else {
-							$this->writelog(3, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', Array($theDestFile . '/', $theFile . '/'));
-						}
-					} else {
-						$this->writelog(3, 1, 123, 'Target "%s" already exists!', Array($theDestFile));
-					}
-				} else {
-					$this->writelog(3, 2, 124, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
-				}
-			} else {
+			if (!$this->actionPerms['moveFolder']) {
 				$this->writelog(3, 1, 125, 'You are not allowed to move directories', '');
+				return FALSE;
+			}
+			$theFile = $this->is_directory($theFile);
+			if (!$theFile) {
+				$this->writelog(3, 2, 124, 'Target seemed not to be a directory! (Shouldn\'t happen here!)', '');
+				return FALSE;
+			}
+			$fI = t3lib_div::split_fileref($theFile);
+			if ($altName) { // If altName is set, we're allowed to create a new filename if the file already existed
+				$theDestFile = $this->getUniqueName($fI['file'], $theDest);
+				$fI = t3lib_div::split_fileref($theDestFile);
+			} else {
+				$theDestFile = $theDest . '/' . $fI['file'];
+			}
+			if (!$theDestFile || file_exists($theDestFile)) {
+				$this->writelog(3, 1, 123, 'Target "%s" already exists!', Array($theDestFile));
+				return FALSE;
+			}
+			if (t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) { // Check if the one folder is inside the other or on the same level... to target/dest is the same?
+				$this->writelog(3, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', Array($theDestFile . '/', $theFile . '/'));
+				return FALSE;
+			}
+			if (!$this->checkIfFullAccess($theDest) && $this->is_webPath($theDestFile) != $this->is_webPath($theFile)) { // // no moving of folders between spaces
+				$this->writelog(3, 1, 121, 'You don\'t have full access to the destination directory "%s"!', Array($theDest . '/'));
+				return FALSE;
+			}
+			if (!$this->checkPathAgainstMounts($theDestFile) || !$this->checkPathAgainstMounts($theFile)) {
+				$this->writelog(3, 1, 120, 'Target or destination was not within your mountpoints! T="%s", D="%s"', Array($theFile, $theDestFile));
+				return FALSE;
+			}
+			if ($this->PHPFileFunctions) {
+				@rename($theFile, $theDestFile);
+			} else {
+				$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+				$errArr = array();
+				t3lib_utility_Command::exec($cmd, $errArr);
+			}
+			clearstatcache();
+			if (@is_dir($theDestFile)) {
+				$this->writelog(3, 0, 2, 'Directory "%s" moved to "%s"', Array($theFile, $theDestFile));
+				return $theDestFile;
+			} else {
+				$this->writelog(3, 2, 119, 'Directory "%s" WAS NOT moved to "%s"! Write-permission problem?', Array($theFile, $theDestFile));
+				return FALSE;
 			}
 			// FINISHED moving directory
 
@@ -713,59 +720,68 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		}
 
 		$theNewName = $this->cleanFileName($cmds['data']);
-		if ($theNewName) {
-			if ($this->checkFileNameLen($theNewName)) {
-				$theTarget = $cmds['target'];
-				$type = filetype($theTarget);
-				if ($type == 'file' || $type == 'dir') { // $type MUST BE file or dir
-					$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
-					if ($fileInfo['file'] != $theNewName) { // The name should be different from the current. And the filetype must be allowed
-						$theRenameName = $fileInfo['path'] . $theNewName;
-						if ($this->checkPathAgainstMounts($fileInfo['path'])) {
-							if (!file_exists($theRenameName)) {
-								if ($type == 'file') {
-									if ($this->actionPerms['renameFile']) {
-										$fI = t3lib_div::split_fileref($theRenameName);
-										if ($this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
-											if (@rename($theTarget, $theRenameName)) {
-												$this->writelog(5, 0, 1, 'File renamed from "%s" to "%s"', Array($fileInfo['file'], $theNewName));
-												return $theRenameName;
-											} else {
-												$this->writelog(5, 1, 100, 'File "%s" was not renamed! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
-											}
-										} else {
-											$this->writelog(5, 1, 101, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
-										}
-									} else {
-										$this->writelog(5, 1, 102, 'You are not allowed to rename files!', '');
-									}
-								} elseif ($type == 'dir') {
-									if ($this->actionPerms['renameFolder']) {
-										if (@rename($theTarget, $theRenameName)) {
-											$this->writelog(5, 0, 2, 'Directory renamed from "%s" to "%s"', Array($fileInfo['file'], $theNewName));
-											return $theRenameName;
-										} else {
-											$this->writelog(5, 1, 110, 'Directory "%s" was not renamed! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
-										}
-									} else {
-										$this->writelog(5, 1, 111, 'You are not allowed to rename directories!', '');
-									}
-								}
-							} else {
-								$this->writelog(5, 1, 120, 'Destination "%s" existed already!', Array($theRenameName));
-							}
-						} else {
-							$this->writelog(5, 1, 121, 'Destination path "%s" was not within your mountpoints!', Array($fileInfo['path']));
-						}
-					} else {
-						$this->writelog(5, 1, 122, 'Old and new name is the same (%s)', Array($theNewName));
-					}
-				} else {
-					$this->writelog(5, 2, 123, 'Target "%s" was neither a directory nor a file!', Array($theTarget));
+		if (!$theNewName) {
+			return FALSE;
+		}
+		if (!$this->checkFileNameLen($theNewName)) {
+			$this->writelog(5, 1, 124, 'New name "%s" was too long (max %s characters)', Array($theNewName, $this->maxInputNameLen));
+			return FALSE;
+		}
+		$theTarget = $cmds['target'];
+		$type = filetype($theTarget);
+		if ($type != 'file' && $type != 'dir') { // $type MUST BE file or dir
+			$this->writelog(5, 2, 123, 'Target "%s" was neither a directory nor a file!', Array($theTarget));
+			return FALSE;
+		}
+		$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
+		if ($fileInfo['file'] == $theNewName) { // The name should be different from the current. And the filetype must be allowed
+			$this->writelog(5, 1, 122, 'Old and new name is the same (%s)', Array($theNewName));
+			return FALSE;
+		}
+		$theRenameName = $fileInfo['path'] . $theNewName;
+		if (!$this->checkPathAgainstMounts($fileInfo['path'])) {
+			$this->writelog(5, 1, 121, 'Destination path "%s" was not within your mountpoints!', Array($fileInfo['path']));
+			return FALSE;
+		}
+		if (file_exists($theRenameName)) {
+			$this->writelog(5, 1, 120, 'Destination "%s" existed already!', Array($theRenameName));
+			return FALSE;
+		}
+		switch ($type) {
+			case 'file':
+				if (!$this->actionPerms['renameFile']) {
+					$this->writelog(5, 1, 102, 'You are not allowed to rename files!', '');
+					return FALSE;
 				}
-			} else {
-				$this->writelog(5, 1, 124, 'New name "%s" was too long (max %s characters)', Array($theNewName, $this->maxInputNameLen));
-			}
+				$fI = t3lib_div::split_fileref($theRenameName);
+				if (!$this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
+					$this->writelog(5, 1, 101, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
+					return FALSE;
+				}
+				if (@rename($theTarget, $theRenameName)) {
+					$this->writelog(5, 0, 1, 'File renamed from "%s" to "%s"', Array($fileInfo['file'], $theNewName));
+					return $theRenameName;
+				} else {
+					$this->writelog(5, 1, 100, 'File "%s" was not renamed! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
+					return FALSE;
+				}
+
+				break;
+
+			case 'dir':
+				if (!$this->actionPerms['renameFolder']) {
+					$this->writelog(5, 1, 111, 'You are not allowed to rename directories!', '');
+					return FALSE;
+				}
+				if (@rename($theTarget, $theRenameName)) {
+					$this->writelog(5, 0, 2, 'Directory renamed from "%s" to "%s"', Array($fileInfo['file'], $theNewName));
+					return $theRenameName;
+				} else {
+					$this->writelog(5, 1, 110, 'Directory "%s" was not renamed! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
+					return FALSE;
+				}
+
+				break;
 		}
 	}
 
@@ -781,35 +797,37 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		}
 
 		$theFolder = $this->cleanFileName($cmds['data']);
-		if (isset($theFolder) && trim($theFolder) != '') {
-			if ($this->checkFileNameLen($theFolder)) {
-				$theTarget = $this->is_directory($cmds['target']); // Check the target dir
-				if ($theTarget) {
-					if ($this->actionPerms['newFolder']) {
-						$theNewFolder = $theTarget . '/' . $theFolder;
-						if ($this->checkPathAgainstMounts($theNewFolder)) {
-							if (!file_exists($theNewFolder)) {
-								if (t3lib_div::mkdir($theNewFolder)) {
-									$this->writelog(6, 0, 1, 'Directory "%s" created in "%s"', Array($theFolder, $theTarget . '/'));
-									return $theNewFolder;
-								} else {
-									$this->writelog(6, 1, 100, 'Directory "%s" not created. Write-permission problem in "%s"?', Array($theFolder, $theTarget . '/'));
-								}
-							} else {
-								$this->writelog(6, 1, 101, 'File or directory "%s" existed already!', Array($theNewFolder));
-							}
-						} else {
-							$this->writelog(6, 1, 102, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
-						}
-					} else {
-						$this->writelog(6, 1, 103, 'You are not allowed to create directories!', '');
-					}
-				} else {
-					$this->writelog(6, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
-				}
-			} else {
-				$this->writelog(6, 1, 105, 'New name "%s" was too long (max %s characters)', Array($theFolder, $this->maxInputNameLen));
-			}
+		if (!isset($theFolder) || trim($theFolder) == '') {
+			return FALSE;
+		}
+		if (!$this->checkFileNameLen($theFolder)) {
+			$this->writelog(6, 1, 105, 'New name "%s" was too long (max %s characters)', Array($theFolder, $this->maxInputNameLen));
+			return FALSE;
+		}
+		$theTarget = $this->is_directory($cmds['target']); // Check the target dir
+		if (!$theTarget) {
+			$this->writelog(6, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
+			return FALSE;
+		}
+		if (!$this->actionPerms['newFolder']) {
+			$this->writelog(6, 1, 103, 'You are not allowed to create directories!', '');
+			return FALSE;
+		}
+		$theNewFolder = $theTarget . '/' . $theFolder;
+		if (!$this->checkPathAgainstMounts($theNewFolder)) {
+			$this->writelog(6, 1, 102, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
+			return FALSE;
+		}
+		if (file_exists($theNewFolder)) {
+			$this->writelog(6, 1, 101, 'File or directory "%s" existed already!', Array($theNewFolder));
+			return FALSE;
+		}
+		if (t3lib_div::mkdir($theNewFolder)) {
+			$this->writelog(6, 0, 1, 'Directory "%s" created in "%s"', Array($theFolder, $theTarget . '/'));
+			return $theNewFolder;
+		} else {
+			$this->writelog(6, 1, 100, 'Directory "%s" not created. Write-permission problem in "%s"?', Array($theFolder, $theTarget . '/'));
+			return FALSE;
 		}
 	}
 
@@ -825,46 +843,48 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			return FALSE;
 		}
 		$newName = $this->cleanFileName($cmds['data']);
-		if ($newName) {
-			if ($this->checkFileNameLen($newName)) {
-				$theTarget = $this->is_directory($cmds['target']); // Check the target dir
-				$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
-				if ($theTarget) {
-					if ($this->actionPerms['newFile']) {
-						$theNewFile = $theTarget . '/' . $newName;
-						if ($this->checkPathAgainstMounts($theNewFile)) {
-							if (!file_exists($theNewFile)) {
-								$fI = t3lib_div::split_fileref($theNewFile);
-								if ($this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
-									if (t3lib_div::inList($extList, $fI['fileext'])) {
-										if (t3lib_div::writeFile($theNewFile, '')) {
-											clearstatcache();
-											$this->writelog(8, 0, 1, 'File created: "%s"', Array($fI['file']));
-											return $theNewFile;
-										} else {
-											$this->writelog(8, 1, 100, 'File "%s" was not created! Write-permission problem in "%s"?', Array($fI['file'], $theTarget));
-										}
-									} else {
-										$this->writelog(8, 1, 107, 'File extension "%s" is not a textfile format! (%s)', Array($fI['fileext'], $extList));
-									}
-								} else {
-									$this->writelog(8, 1, 106, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
-								}
-							} else {
-								$this->writelog(8, 1, 101, 'File "%s" existed already!', Array($theNewFile));
-							}
-						} else {
-							$this->writelog(8, 1, 102, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
-						}
-					} else {
-						$this->writelog(8, 1, 103, 'You are not allowed to create files!', '');
-					}
-				} else {
-					$this->writelog(8, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
-				}
-			} else {
-				$this->writelog(8, 1, 105, 'New name "%s" was too long (max %s characters)', Array($newName, $this->maxInputNameLen));
-			}
+		if (!$newName) {
+			return FALSE;
+		}
+		if (!$this->checkFileNameLen($newName)) {
+			$this->writelog(8, 1, 105, 'New name "%s" was too long (max %s characters)', Array($newName, $this->maxInputNameLen));
+			return FALSE;
+		}
+		$theTarget = $this->is_directory($cmds['target']); // Check the target dir
+		$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
+		if (!$theTarget) {
+			$this->writelog(8, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
+			return FALSE;
+		}
+		if (!$this->actionPerms['newFile']) {
+			$this->writelog(8, 1, 103, 'You are not allowed to create files!', '');
+			return FALSE;
+		}
+		$theNewFile = $theTarget . '/' . $newName;
+		if (!$this->checkPathAgainstMounts($theNewFile)) {
+			$this->writelog(8, 1, 102, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
+			return FALSE;
+		}
+		if (file_exists($theNewFile)) {
+			$this->writelog(8, 1, 101, 'File "%s" existed already!', Array($theNewFile));
+			return FALSE;
+		}
+		$fI = t3lib_div::split_fileref($theNewFile);
+		if (!$this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
+			$this->writelog(8, 1, 106, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
+			return FALSE;
+		}
+		if (!t3lib_div::inList($extList, $fI['fileext'])) {
+			$this->writelog(8, 1, 107, 'File extension "%s" is not a textfile format! (%s)', Array($fI['fileext'], $extList));
+			return FALSE;
+		}
+		if (t3lib_div::writeFile($theNewFile, '')) {
+			clearstatcache();
+			$this->writelog(8, 0, 1, 'File created: "%s"', Array($fI['file']));
+			return $theNewFile;
+		} else {
+			$this->writelog(8, 1, 100, 'File "%s" was not created! Write-permission problem in "%s"?', Array($fI['file'], $theTarget));
+			return FALSE;
 		}
 	}
 
@@ -882,35 +902,36 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		$content = $cmds['data'];
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
 		$type = filetype($theTarget);
-		if ($type == 'file') { // $type MUST BE file
-			$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
-			$fI = $fileInfo;
-			if ($this->checkPathAgainstMounts($fileInfo['path'])) {
-				if ($this->actionPerms['editFile']) {
-					$fI = t3lib_div::split_fileref($theTarget);
-					if ($this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
-						if (t3lib_div::inList($extList, $fileInfo['fileext'])) {
-							if (t3lib_div::writeFile($theTarget, $content)) {
-								clearstatcache();
-								$this->writelog(9, 0, 1, 'File saved to "%s", bytes: %s, MD5: %s ', Array($fileInfo['file'], @filesize($theTarget), md5($content)));
-								return TRUE;
-							} else {
-								$this->writelog(9, 1, 100, 'File "%s" was not saved! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
-							}
-						} else {
-							$this->writelog(9, 1, 102, 'File extension "%s" is not a textfile format! (%s)', Array($fI['fileext'], $extList));
-						}
-					} else {
-						$this->writelog(9, 1, 103, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
-					}
-				} else {
-					$this->writelog(9, 1, 104, 'You are not allowed to edit files!', '');
-				}
-			} else {
-				$this->writelog(9, 1, 121, 'Destination path "%s" was not within your mountpoints!', Array($fileInfo['path']));
-			}
-		} else {
+		if ($type != 'file') { // $type MUST BE file
 			$this->writelog(9, 2, 123, 'Target "%s" was not a file!', Array($theTarget));
+			return FALSE;
+		}
+		$fileInfo = t3lib_div::split_fileref($theTarget); // Fetches info about path, name, extention of $theTarget
+		$fI = $fileInfo;
+		if (!$this->checkPathAgainstMounts($fileInfo['path'])) {
+			$this->writelog(9, 1, 121, 'Destination path "%s" was not within your mountpoints!', Array($fileInfo['path']));
+			return FALSE;
+		}
+		if (!$this->actionPerms['editFile']) {
+			$this->writelog(9, 1, 104, 'You are not allowed to edit files!', '');
+			return FALSE;
+		}
+		$fI = t3lib_div::split_fileref($theTarget);
+		if (!$this->checkIfAllowed($fI['fileext'], $fileInfo['path'], $fI['file'])) {
+			$this->writelog(9, 1, 103, 'Extension of file name "%s" was not allowed!', Array($fI['file']));
+			return FALSE;
+		}
+		if (!t3lib_div::inList($extList, $fileInfo['fileext'])) {
+			$this->writelog(9, 1, 102, 'File extension "%s" is not a textfile format! (%s)', Array($fI['fileext'], $extList));
+			return FALSE;
+		}
+		if (t3lib_div::writeFile($theTarget, $content)) {
+			clearstatcache();
+			$this->writelog(9, 0, 1, 'File saved to "%s", bytes: %s, MD5: %s ', Array($fileInfo['file'], @filesize($theTarget), md5($content)));
+			return TRUE;
+		} else {
+			$this->writelog(9, 1, 100, 'File "%s" was not saved! Write-permission problem in "%s"?', Array($theTarget, $fileInfo['path']));
+			return FALSE;
 		}
 	}
 
@@ -925,48 +946,49 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			return FALSE;
 		}
 		$id = $cmds['data'];
-		if ($_FILES['upload_' . $id]['name']) {
-			$theFile = $_FILES['upload_' . $id]['tmp_name']; // filename of the uploaded file
-			$theFileSize = $_FILES['upload_' . $id]['size']; // filesize of the uploaded file
-			$theName = $this->cleanFileName(stripslashes($_FILES['upload_' . $id]['name']), (isset($cmds['charset']) ? $cmds['charset'] : '')); // The original filename
-			if (is_uploaded_file($theFile) && $theName) { // Check the file
-				if ($this->actionPerms['uploadFile']) {
-					if ($theFileSize < ($this->maxUploadFileSize * 1024)) {
-						$fI = t3lib_div::split_fileref($theName);
-						$theTarget = $this->is_directory($cmds['target']); // Check the target dir
-						if ($theTarget && $this->checkPathAgainstMounts($theTarget . '/')) {
-							if ($this->checkIfAllowed($fI['fileext'], $theTarget, $fI['file'])) {
-								$theNewFile = $this->getUniqueName($theName, $theTarget, $this->dontCheckForUnique);
-								if ($theNewFile) {
-									t3lib_div::upload_copy_move($theFile, $theNewFile);
-									clearstatcache();
-									if (@is_file($theNewFile)) {
-										$this->internalUploadMap[$id] = $theNewFile;
-										$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', Array($theName, $theNewFile, $id));
-										return $theNewFile;
-									} else {
-										$this->writelog(1, 1, 100, 'Uploaded file could not be moved! Write-permission problem in "%s"?', Array($theTarget . '/'));
-									}
-								} else {
-									$this->writelog(1, 1, 101, 'No unique filename available in "%s"!', Array($theTarget . '/'));
-								}
-							} else {
-								$this->writelog(1, 1, 102, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theTarget . '/'));
-							}
-						} else {
-							$this->writelog(1, 1, 103, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
-						}
-					} else {
-						$this->writelog(1, 1, 104, 'The uploaded file exceeds the size-limit of %s bytes', Array($this->maxUploadFileSize * 1024));
-					}
-				} else {
-					$this->writelog(1, 1, 105, 'You are not allowed to upload files!', '');
-				}
-			} else {
-				$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
-			}
-		} else {
+		if (!$_FILES['upload_' . $id]['name']) {
 			$this->writelog(1, 2, 108, 'No file was uploaded!', '');
+			return FALSE;
+		}
+		$theFile = $_FILES['upload_' . $id]['tmp_name']; // filename of the uploaded file
+		$theFileSize = $_FILES['upload_' . $id]['size']; // filesize of the uploaded file
+		$theName = $this->cleanFileName(stripslashes($_FILES['upload_' . $id]['name']), (isset($cmds['charset']) ? $cmds['charset'] : '')); // The original filename
+		if (!is_uploaded_file($theFile) || !$theName) { // Check the file
+			$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
+			return FALSE;
+		}
+		if (!$this->actionPerms['uploadFile']) {
+			$this->writelog(1, 1, 105, 'You are not allowed to upload files!', '');
+			return FALSE;
+		}
+		if ($theFileSize >= ($this->maxUploadFileSize * 1024)) {
+			$this->writelog(1, 1, 104, 'The uploaded file exceeds the size-limit of %s bytes', Array($this->maxUploadFileSize * 1024));
+			return FALSE;
+		}
+		$fI = t3lib_div::split_fileref($theName);
+		$theTarget = $this->is_directory($cmds['target']); // Check the target dir
+		if (!$theTarget || !$this->checkPathAgainstMounts($theTarget . '/')) {
+			$this->writelog(1, 1, 103, 'Destination path "%s" was not within your mountpoints!', Array($theTarget . '/'));
+			return FALSE;
+		}
+		if (!$this->checkIfAllowed($fI['fileext'], $theTarget, $fI['file'])) {
+			$this->writelog(1, 1, 102, 'Extension of file name "%s" is not allowed in "%s"!', Array($fI['file'], $theTarget . '/'));
+			return FALSE;
+		}
+		$theNewFile = $this->getUniqueName($theName, $theTarget, $this->dontCheckForUnique);
+		if (!$theNewFile) {
+			$this->writelog(1, 1, 101, 'No unique filename available in "%s"!', Array($theTarget . '/'));
+			return FALSE;
+		}
+		t3lib_div::upload_copy_move($theFile, $theNewFile);
+		clearstatcache();
+		if (@is_file($theNewFile)) {
+			$this->internalUploadMap[$id] = $theNewFile;
+			$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', Array($theName, $theNewFile, $id));
+			return $theNewFile;
+		} else {
+			$this->writelog(1, 1, 100, 'Uploaded file could not be moved! Write-permission problem in "%s"?', Array($theTarget . '/'));
+			return FALSE;
 		}
 	}
 
@@ -983,39 +1005,40 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		}
 
 		$theFile = $cmds['data'];
-		if (@is_file($theFile)) {
-			$fI = t3lib_div::split_fileref($theFile);
-			if (!isset($cmds['target'])) {
-				$cmds['target'] = $fI['path'];
-			}
-			$theDest = $this->is_directory($cmds['target']); // Clean up destination directory
-			if ($theDest) {
-				if ($this->actionPerms['unzipFile']) {
-					if ($fI['fileext'] == 'zip') {
-						if ($this->checkIfFullAccess($theDest)) {
-							if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
-								// No way to do this under windows.
-								$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
-								t3lib_utility_Command::exec($cmd);
-								$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', Array($theFile, $theDest));
-								return TRUE;
-							} else {
-								$this->writelog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', Array($theFile, $theDest));
-							}
-						} else {
-							$this->writelog(7, 1, 101, 'You don\'t have full access to the destination directory "%s"!', Array($theDest));
-						}
-					} else {
-						$this->writelog(7, 1, 102, 'File extension is not "zip"', '');
-					}
-				} else {
-					$this->writelog(7, 1, 103, 'You are not allowed to unzip files', '');
-				}
-			} else {
-				$this->writelog(7, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
-			}
-		} else {
+		if (!@is_file($theFile)) {
 			$this->writelog(7, 2, 105, 'The file "%s" did not exist!', Array($theFile));
+			return FALSE;
+		}
+		$fI = t3lib_div::split_fileref($theFile);
+		if (!isset($cmds['target'])) {
+			$cmds['target'] = $fI['path'];
+		}
+		$theDest = $this->is_directory($cmds['target']); // Clean up destination directory
+		if (!$theDest) {
+			$this->writelog(7, 2, 104, 'Destination "%s" was not a directory', Array($cmds['target']));
+			return FALSE;
+		}
+		if (!$this->actionPerms['unzipFile']) {
+			$this->writelog(7, 1, 103, 'You are not allowed to unzip files', '');
+			return FALSE;
+		}
+		if ($fI['fileext'] != 'zip') {
+			$this->writelog(7, 1, 102, 'File extension is not "zip"', '');
+			return FALSE;
+		}
+		if (!$this->checkIfFullAccess($theDest)) {
+			$this->writelog(7, 1, 101, 'You don\'t have full access to the destination directory "%s"!', Array($theDest));
+			return FALSE;
+		}
+		if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
+			// No way to do this under windows.
+			$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
+			t3lib_utility_Command::exec($cmd);
+			$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', Array($theFile, $theDest));
+			return TRUE;
+		} else {
+			$this->writelog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', Array($theFile, $theDest));
+			return FALSE;
 		}
 	}
 }
