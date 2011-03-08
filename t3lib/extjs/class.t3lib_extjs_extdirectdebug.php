@@ -39,6 +39,13 @@ class t3lib_extjs_ExtDirectDebug {
 	 */
 	protected $debugMessages = array();
 
+
+	/**
+	 * destructor
+	*/
+	public function __destruct() { }
+
+
 	/**
 	 * Adds a new message of any data type to the internal debug message array.
 	 *
