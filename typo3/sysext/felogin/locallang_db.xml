@@ -50,7 +50,7 @@
 			<label index="tt_content.pi_flexform.redirectMode.I.6">Defined by Referrer</label>
 			<label index="tt_content.pi_flexform.redirectMode.I.7">Defined by Domain Entries</label>
 			<label index="tt_content.pi_flexform.redirectFirstMethod">Use First Supported Mode from Selection</label>
-			<label index="tt_content.pi_flexform.redirectDisable">Enable Redirect</label>
+			<label index="tt_content.pi_flexform.redirectDisable">Disable Redirect</label>
 			<label index="tt_content.pi_flexform.redirectPageLogin">After Successful Login Redirect to Page</label>
 			<label index="tt_content.pi_flexform.redirectPageLoginError">After Failed Login Redirect to Page</label>
 			<label index="tt_content.pi_flexform.redirectPageLogout">After Logout Redirect to Page</label>
