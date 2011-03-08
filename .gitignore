@@ -1,0 +1,8 @@
+.session
+.webprj
+.project*
+*.project
+.cache
+.settings
+.buildpath
+.TemporaryItems
