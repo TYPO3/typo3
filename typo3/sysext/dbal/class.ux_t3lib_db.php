@@ -1994,6 +1994,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		$handlerKey = $handlerKey ? $handlerKey : $this->lastHandlerKey;
 		$useNameQuote = isset($this->handlerCfg[$handlerKey]['config']['useNameQuote']) ? $this->handlerCfg[$handlerKey]['config']['useNameQuote'] : FALSE;
 		if ($useNameQuote) {
+			// Sometimes DataDictionary is not properly instantiated
+			if (!is_object($this->handlerInstance[$handlerKey]->DataDictionary)) {
+				$this->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($this->handlerInstance[$handlerKey]);
+			}
 			return $this->handlerInstance[$handlerKey]->DataDictionary->NameQuote($name);
 		} else {
 			$quote = $useBackticks ? '`' : $this->handlerInstance[$handlerKey]->nameQuote;
