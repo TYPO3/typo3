@@ -124,18 +124,6 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 
-			// Load  JavaScript:
-		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EM',
-			NULL,
-			FALSE
-		);
-		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath .
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.EMSOAP',
-			NULL,
-			FALSE
-		);
-
 		$this->pageRenderer->addExtDirectCode();
 
 
@@ -188,7 +176,6 @@ class tx_em_ExtensionManager {
 			'codemirrorJsPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/js/',
 			'codemirrorContribPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/contrib/',
 			'selectedLanguages' => t3lib_div::trimExplode(',', $globalSettings['selectedLanguages'], TRUE),
-			'state' => $GLOBALS['BE_USER']->uc['moduleData']['tools_em']['States'],
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
 			'allowRepositoryUpdate' => $allowRepositoryUpdate,
 			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
