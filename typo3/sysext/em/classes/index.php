@@ -2440,7 +2440,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		global $LANG;
 		$content = '';
 
-		if (is_file(PATH_site . 'typo3temp/extensions.xml.gz')) {
+		$count = intval(tx_em_Database::getExtensionCountFromRepository());
+		if ($count > 0) {
 			$content = $this->extensionList->showExtensionsToUpdate()
 					. t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'], '', '', 'id="checkDisplayInstalled"')
 					. '&nbsp;<label for="checkDisplayInstalled">' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle') . '</label><br />'
