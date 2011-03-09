@@ -579,7 +579,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 * @param	string		$prefix: prefix
 	 * @return string	Combined username
 	 */
-	private function fixUsername($username, $prefix) {
+	protected function fixUsername($username, $prefix) {
 		return trim($prefix) . trim($username);
 	}
 
