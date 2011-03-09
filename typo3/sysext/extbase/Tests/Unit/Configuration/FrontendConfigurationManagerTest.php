@@ -206,7 +206,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 	/**
 	 * @test
 	 */
-	public function overrideSwitchableControllerActionsFromFlexformReturnsUnchangedFrameworkConfigurationIfNoFlexformConfigurationIsFound() {
+	public function overrideSwitchableControllerActionsFromFlexFormReturnsUnchangedFrameworkConfigurationIfNoFlexFormConfigurationIsFound() {
 		$frameworkConfiguration = array(
 			'pluginName' => 'Pi1',
 			'extensionName' => 'SomeExtension',
@@ -222,15 +222,15 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				)
 			)
 		);
-		$flexformConfiguration = array();
-		$actualResult = $this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexform', $frameworkConfiguration, $flexformConfiguration);
+		$flexFormConfiguration = array();
+		$actualResult = $this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexForm', $frameworkConfiguration, $flexFormConfiguration);
 		$this->assertSame($frameworkConfiguration, $actualResult);
 	}
 
 	/**
 	 * @test
 	 */
-	public function overrideSwitchableControllerActionsFromFlexformMergesNonCacheableActions() {
+	public function overrideSwitchableControllerActionsFromFlexFormMergesNonCacheableActions() {
 		$frameworkConfiguration = array(
 			'pluginName' => 'Pi1',
 			'extensionName' => 'SomeExtension',
@@ -244,7 +244,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				)
 			)
 		);
-		$flexformConfiguration = array(
+		$flexFormConfiguration = array(
 			'switchableControllerActions' => 'Controller1  -> action2;Controller2->action3;  Controller2->action1'
 		);
 		$expectedResult = array(
@@ -260,7 +260,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				)
 			)
 		);
-		$actualResult = $this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexform', $frameworkConfiguration, $flexformConfiguration);
+		$actualResult = $this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexForm', $frameworkConfiguration, $flexFormConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -268,7 +268,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 	 * @test
 	 * @expectedException Tx_Extbase_Configuration_Exception_ParseError
 	 */
-	public function overrideSwitchableControllerActionsThrowsExceptionIfFlexformConfigurationIsInvalid() {
+	public function overrideSwitchableControllerActionsThrowsExceptionIfFlexFormConfigurationIsInvalid() {
 		$frameworkConfiguration = array(
 			'pluginName' => 'Pi1',
 			'extensionName' => 'SomeExtension',
@@ -282,10 +282,10 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				)
 			)
 		);
-		$flexformConfiguration = array(
+		$flexFormConfiguration = array(
 			'switchableControllerActions' => 'Controller1->;Controller2->action3;Controller2->action1'
 		);
-		$this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexform', $frameworkConfiguration, $flexformConfiguration);
+		$this->frontendConfigurationManager->_call('overrideSwitchableControllerActionsFromFlexForm', $frameworkConfiguration, $flexFormConfiguration);
 	}
 
 	/**
@@ -297,11 +297,11 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				'framework' => 'configuration'
 			),
 		);
-		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('overrideStoragePidIfStartingPointIsSet', 'overrideConfigurationFromPlugin', 'overrideConfigurationFromFlexform'));
+		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('overrideStoragePidIfStartingPointIsSet', 'overrideConfigurationFromPlugin', 'overrideConfigurationFromFlexForm'));
 		$frontendConfigurationManager->expects($this->at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will($this->returnValue(array('overridden' => 'storagePid')));
 		$frontendConfigurationManager->expects($this->at(1))->method('overrideConfigurationFromPlugin')->with(array('overridden' => 'storagePid'))->will($this->returnValue(array('overridden' => 'pluginConfiguration')));
-		$frontendConfigurationManager->expects($this->at(2))->method('overrideConfigurationFromFlexform')->with(array('overridden' => 'pluginConfiguration'))->will($this->returnValue(array('overridden' => 'flexformConfiguration')));
-		$expectedResult = array('overridden' => 'flexformConfiguration');
+		$frontendConfigurationManager->expects($this->at(2))->method('overrideConfigurationFromFlexForm')->with(array('overridden' => 'pluginConfiguration'))->will($this->returnValue(array('overridden' => 'flexFormConfiguration')));
+		$expectedResult = array('overridden' => 'flexFormConfiguration');
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}

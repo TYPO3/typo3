@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Utilities to process FlexForms
+ * Utilities to process flexForms
  *
  * @package Extbase
  * @subpackage Service
@@ -31,15 +31,15 @@
 class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
 
 	/**
-	 * Parses the FlexForm content and converts it to an array
+	 * Parses the flexForm content and converts it to an array
 	 * The resulting array will be multi-dimensional, as a value "bla.blubb"
 	 * results in two levels, and a value "bla.blubb.bla" results in three levels.
 	 *
-	 * Note: multi-language FlexForms are not supported yet
+	 * Note: multi-language flexForms are not supported yet
 	 *
-	 * @param string $flexFormContent FlexForm xml string
-	 * @param string $languagePointer language pointer used in the FlexForm
-	 * @param string $valuePointer value pointer used in the FlexForm
+	 * @param string $flexFormContent flexForm xml string
+	 * @param string $languagePointer language pointer used in the flexForm
+	 * @param string $valuePointer value pointer used in the flexForm
 	 * @return array the processed array
 	 */
 	public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF') {
@@ -79,9 +79,9 @@ class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Parses a flexform node recursively and takes care of sections etc
+	 * Parses a flexForm node recursively and takes care of sections etc
 	 *
-	 * @param array $nodeArray The flexform node to parse
+	 * @param array $nodeArray The flexForm node to parse
 	 * @param string $valuePointer The valuePointer to use for value retrieval
 	 * @return array
 	 */
