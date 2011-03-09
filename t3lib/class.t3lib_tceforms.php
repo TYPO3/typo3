@@ -4036,6 +4036,12 @@ class t3lib_TCEforms {
 							$TSconfig[$field] = $TSconfig[$field]['wizards.'][$wid . '.'];
 							$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($fieldValue), $fieldValue, $TSconfig, $field);
 
+								// Process items by a user function:
+							if (!empty($wConf['itemsProcFunc'])) {
+								$funcConfig = (!empty($wConf['itemsProcFunc.']) ? $wConf['itemsProcFunc.'] : array());
+								$selItems = $this->procItems($selItems, $funcConfig, $wConf, $table, $row, $field);
+							}
+
 							$opt = array();
 							$opt[] = '<option>' . $iTitle . '</option>';
 							foreach ($selItems as $p) {
