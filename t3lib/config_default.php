@@ -431,6 +431,7 @@ $TYPO3_CONF_VARS = array(
 								300 {
 									name = expandBranch
 									label = LLL:EXT:lang/locallang_core.xml:cm.expandBranch
+									spriteIcon = actions-pagetree-expand
 									displayCondition =
 									callbackAction = expandBranch
 								}
@@ -439,6 +440,7 @@ $TYPO3_CONF_VARS = array(
 								400 {
 									name = collapseBranch
 									label = LLL:EXT:lang/locallang_core.xml:cm.collapseBranch
+									spriteIcon = actions-pagetree-collapse
 									displayCondition =
 									callbackAction = collapseBranch
 								}
