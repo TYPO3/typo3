@@ -586,6 +586,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-filetree-root',
 	'apps-pagetree-backend-user',
 	'apps-pagetree-backend-user-hideinmenu',
+	'apps-pagetree-collapse',
 	'apps-pagetree-drag-copy-above',
 	'apps-pagetree-drag-copy-below',
 	'apps-pagetree-drag-move-above',
@@ -595,6 +596,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-pagetree-drag-new-between',
 	'apps-pagetree-drag-new-inside',
 	'apps-pagetree-drag-place-denied',
+	'apps-pagetree-expand',
 	'apps-pagetree-folder-contains-approve',
 	'apps-pagetree-folder-contains-board',
 	'apps-pagetree-folder-contains-fe_users',
@@ -764,6 +766,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
+
 
 
 
