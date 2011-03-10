@@ -227,6 +227,17 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
+	 * Executes the number of matching objects for the query
+	 *
+	 * @return integer The number of matching objects
+	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.5.0; use Query::execute()::count() instead
+	 */
+	public function count() {
+		t3lib_div::logDeprecatedFunction();
+		return $this->persistenceManager->getObjectCountByQuery($this);
+	}
+
+	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
 	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
@@ -414,6 +425,22 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function logicalNot($constraint) {
 		return $this->qomFactory->not($constraint);
+	}
+
+	/**
+	 * Matches against the (internal) uid.
+	 *
+	 * @param int $uid The uid to match against
+	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
+	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use equals() instead
+	 */
+	public function withUid($operand) {
+		t3lib_div::logDeprecatedFunction();
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue('uid', $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
+			$operand
+			);
 	}
 
 	/**
