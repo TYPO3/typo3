@@ -430,6 +430,7 @@ $TYPO3_CONF_VARS = array(
 								300 {
 									name = expandBranch
 									label = LLL:EXT:lang/locallang_core.xml:cm.expandBranch
+									spriteIcon = actions-system-tree-expand
 									displayCondition =
 									callbackAction = expandBranch
 								}
@@ -438,6 +439,7 @@ $TYPO3_CONF_VARS = array(
 								400 {
 									name = collapseBranch
 									label = LLL:EXT:lang/locallang_core.xml:cm.collapseBranch
+									spriteIcon = actions-system-tree-collapse
 									displayCondition =
 									callbackAction = collapseBranch
 								}

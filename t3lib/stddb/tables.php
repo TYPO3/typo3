@@ -542,6 +542,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-system-pagemodule-open',
 	'actions-system-refresh',
 	'actions-system-shortcut-new',
+	'actions-system-tree-collapse',
+	'actions-system-tree-expand',
 	'actions-system-tree-search-open',
 	'actions-system-typoscript-documentation',
 	'actions-system-typoscript-documentation-open',
@@ -762,6 +764,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
 
 
 
