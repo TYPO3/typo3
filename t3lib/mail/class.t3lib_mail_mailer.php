@@ -99,7 +99,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				if ($port === '') {
 					$port = '25';
 				}
-				$useEncryption = ($mailSettings['transport_smtp_encrypt'] ? TRUE : FALSE);
+				$useEncryption = ($mailSettings['transport_smtp_encrypt'] ? $mailSettings['transport_smtp_encrypt'] : NULL);
 
 					// Create our transport
 				$this->transport = Swift_SmtpTransport::newInstance($host, $port, $useEncryption);
