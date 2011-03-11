@@ -1,3 +1,6 @@
+test
+
+
 2011-02-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #17665: Remove deprecated method redirect() from t3lib_userAuth
