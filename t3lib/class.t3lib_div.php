@@ -3037,7 +3037,7 @@ final class t3lib_div {
 				return FALSE;
 			}
 			$method = ($includeHeader == 2) ? 'HEAD' : 'GET';
-			$msg = $method . ' ' . $parsedURL['path'] .
+			$msg = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/') .
 					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
 					' HTTP/1.0' . CRLF . 'Host: ' .
 					$parsedURL['host'] . "\r\nConnection: close\r\n";
