@@ -1050,7 +1050,7 @@ class t3lib_TCEforms {
 		$evalList = t3lib_div::trimExplode(',', $config['eval'], 1);
 		$classAndStyleAttributes = $this->formWidthAsArray($size);
 
-		$fieldAppendix = '';
+		$fieldAppendix = $item = '';
 		$cssClasses = array($classAndStyleAttributes['class']);
 		$cssStyle = $classAndStyleAttributes['style'];
 
@@ -1384,7 +1384,7 @@ class t3lib_TCEforms {
 	function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -1460,7 +1460,7 @@ class t3lib_TCEforms {
 	function getSingleField_typeRadio($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -1614,7 +1614,9 @@ class t3lib_TCEforms {
 		$size = intval($config['size']);
 		$selectedStyle = ''; // Style set on <select/>
 
-		$disabled = '';
+		$item = $disabled = '';
+		$onChangeIcon = ''; // TODO: icon is used but never assigned
+
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 			$onlySelectedIconShown = 1;
@@ -1773,8 +1775,7 @@ class t3lib_TCEforms {
 	 * @return	string		The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
-	function getSingleField_typeSelect_checkbox(
-		$table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+	function getSingleField_typeSelect_checkbox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
 
 		if (empty($selItems)) {
 			return '';
@@ -1783,7 +1784,7 @@ class t3lib_TCEforms {
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -1931,7 +1932,7 @@ class t3lib_TCEforms {
 			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -2039,7 +2040,7 @@ class t3lib_TCEforms {
 	 */
 	function getSingleField_typeSelect_multiple($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -2172,7 +2173,7 @@ class t3lib_TCEforms {
 		$allowed = trim($config['allowed']);
 		$disallowed = trim($config['disallowed']);
 
-		$disabled = '';
+		$item = $disabled = '';
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
@@ -2192,7 +2193,7 @@ class t3lib_TCEforms {
 			case 'file': // If the element is of the internal type "file":
 
 					// Creating string showing allowed types:
-				$tempFT = t3lib_div::trimExplode(',', $allowed, 1);
+				$tempFT = t3lib_div::trimExplode(',', $allowed, TRUE);
 				if (!count($tempFT)) {
 					$info .= '*';
 				}
@@ -2202,7 +2203,7 @@ class t3lib_TCEforms {
 					}
 				}
 					// Creating string, showing disallowed types:
-				$tempFT_dis = t3lib_div::trimExplode(',', $disallowed, 1);
+				$tempFT_dis = t3lib_div::trimExplode(',', $disallowed, TRUE);
 				if (count($tempFT_dis)) {
 					$info .= '<br />';
 				}
@@ -2213,7 +2214,7 @@ class t3lib_TCEforms {
 				}
 
 					// Making the array of file items:
-				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
+				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], TRUE);
 
 					// Showing thumbnails:
 				$thumbsnail = '';
@@ -2471,6 +2472,7 @@ class t3lib_TCEforms {
 
 			// Data Structure:
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'], $row, $table);
+		$item = '';
 
 			// Manipulate Flexform DS via TSConfig and group access lists
 		if (is_array($dataStructArray)) {
@@ -3584,7 +3586,7 @@ class t3lib_TCEforms {
 			$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 			$diffres = $t3lib_diff_Obj->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
 
-			$item .= '<div class="typo3-TCEforms-diffBox">' .
+			$item = '<div class="typo3-TCEforms-diffBox">' .
 					 '<div class="typo3-TCEforms-diffBox-header">' . htmlspecialchars($this->getLL('l_changeInOrig')) . ':</div>' .
 					 $diffres .
 					 '</div>';
@@ -4314,7 +4316,7 @@ class t3lib_TCEforms {
 	 */
 	function getSingleHiddenField($table, $field, $row) {
 		global $TCA;
-		$out = '';
+		$item = '';
 		t3lib_div::loadTCA($table);
 		if ($TCA[$table]['columns'][$field]) {
 
@@ -4322,9 +4324,8 @@ class t3lib_TCEforms {
 			$itemName = $this->prependFormFieldNames . '[' . $table . '][' . $uid . '][' . $field . ']';
 			$itemValue = $row[$field];
 			$item .= '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars($itemValue) . '" />';
-			$out = $item;
 		}
-		return $out;
+		return $item;
 	}
 
 	/**
@@ -5428,6 +5429,7 @@ class t3lib_TCEforms {
 	function JSbottom($formname = 'forms[0]', $update = FALSE) {
 		$jsFile = array();
 		$elements = array();
+		$out = '';
 
 			// required:
 		foreach ($this->requiredFields as $itemImgName => $itemName) {
