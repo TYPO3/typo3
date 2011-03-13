@@ -749,6 +749,7 @@ class t3lib_queryGenerator {
 	 * @return	[type]		...
 	 */
 	function makeOptionList($fN, $conf, $table) {
+		$out = '';
 		$fieldSetup = $this->fields[$fN];
 		if ($fieldSetup['type'] == 'files') {
 			if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
@@ -1004,7 +1005,7 @@ class t3lib_queryGenerator {
 			$out .= '<option value="OR"' . ($op == 'OR' ? ' selected' : '') . '>' . $this->lang['OR'] . '</option>';
 			$out .= '</select>';
 		} else {
-			$out .= '<input type="hidden" value="' . $op . '" name="' . $name . '[operator]">';
+			$out = '<input type="hidden" value="' . $op . '" name="' . $name . '[operator]">';
 			$out .= '<img src="clear.gif" height="1" width="47">';
 
 		}
@@ -1215,6 +1216,7 @@ class t3lib_queryGenerator {
 	 * @return	[type]		...
 	 */
 	function getQuerySingle($conf, $first) {
+		$qs = '';
 		$prefix = $this->enablePrefix ? $this->table . '.' : '';
 		if (!$first) {
 				// Is it OK to insert the AND operator if none is set?
@@ -1522,6 +1524,7 @@ class t3lib_queryGenerator {
 	 * @return	[type]		...
 	 */
 	function JSbottom($formname) {
+		$out = '';
 		if ($this->extJSCODE) {
 			$out .= '
 			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . '../t3lib/jsfunc.evalfield.js"></script>
@@ -1532,8 +1535,8 @@ class t3lib_queryGenerator {
 				TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
 				' . $this->extJSCODE . '
 			</script>';
-			return $out;
 		}
+		return $out;
 	}
 
 	/**
