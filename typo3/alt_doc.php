@@ -1062,19 +1062,19 @@ class SC_alt_doc {
 	 * Make selector box for creating new translation for a record or switching to edit the record in an existing language.
 	 * Displays only languages which are available for the current page.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		uid for which to create a new language
-	 * @param	integer		pid of the record
-	 * @return	string		<select> HTML element (if there were items for the box anyways...)
+	 * @param string $table Table name
+	 * @param integer $uid uid for which to create a new language
+	 * @param integer $pid pid of the record
+	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 */
-	function languageSwitch($table, $uid, $pid=NULL)	{
+	function languageSwitch($table, $uid, $pid=NULL) {
 		$content = '';
 
 		$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 		$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 
 			// table editable and activated for languages?
-		if ($GLOBALS['BE_USER']->check('tables_modify',$table) && $languageField && $transOrigPointerField && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])	{
+		if ($GLOBALS['BE_USER']->check('tables_modify',$table) && $languageField && $transOrigPointerField && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
 
 			if(is_null($pid)) {
 				$row = t3lib_befunc::getRecord($table, $uid, 'pid');
@@ -1093,39 +1093,41 @@ class SC_alt_doc {
 					// get record in current language
 				$rowCurrent = t3lib_befunc::getLiveVersionOfRecord($table, $uid, $fetchFields);
 				if (!is_array($rowCurrent)) {
-				$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
+					$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
 				}
 
 				$currentLanguage = $rowCurrent[$languageField];
 
-				if ($currentLanguage>-1)	{	// Disabled for records with [all] language!
+				if ($currentLanguage > -1) {	// Disabled for records with [all] language!
 						// get record in default language if needed
-					if ($currentLanguage) {
+					if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
 						$rowsByLang[0] = t3lib_befunc::getLiveVersionOfRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						if (!is_array($rowsByLang[0])) {
-						$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+							$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						}
 					} else {
-						$rowsByLang[0] = $rowCurrent;
+						$rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
 					}
 
-						// get record in other languages to see what's already available
-					$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						$fetchFields,
-						$table,
-						'pid='.intval($pid).
-							' AND '.$languageField.'>0'.
-							' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
-							t3lib_BEfunc::deleteClause($table).
-							t3lib_BEfunc::versioningPlaceholderClause($table)
-					);
-					foreach ($translations as $row)	{
-						$rowsByLang[$row[$languageField]] = $row;
+					if ($rowCurrent[$transOrigPointerField] || $currentLanguage === '0') {
+							// get record in other languages to see what's already available
+						$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							$fetchFields,
+							$table,
+							'pid='.intval($pid).
+								' AND '.$languageField.'>0'.
+								' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
+								t3lib_BEfunc::deleteClause($table).
+								t3lib_BEfunc::versioningPlaceholderClause($table)
+						);
+						foreach ($translations as $row) {
+							$rowsByLang[$row[$languageField]] = $row;
+						}
 					}
 
 					$langSelItems=array();
 					foreach ($langRows as $lang) {
-						if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid']))	{
+						if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid'])) {
 
 							$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' ['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.new',1).']';
 
@@ -1144,15 +1146,15 @@ class SC_alt_doc {
 							}
 
 							$langSelItems[$lang['uid']]='
-									<option value="'.htmlspecialchars($href).'"'.($currentLanguage==$lang['uid']?' selected="selected"':'').'>'.htmlspecialchars($lang['title'].$newTranslation).'</option>';
+								<option value="'.htmlspecialchars($href).'"'.($currentLanguage==$lang['uid']?' selected="selected"':'').'>'.htmlspecialchars($lang['title'].$newTranslation).'</option>';
 						}
 					}
 
 						// If any languages are left, make selector:
-					if (count($langSelItems)>1)		{
+					if (count($langSelItems)>1) {
 						$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
 						$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language',1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
-								'.implode('',$langSelItems).'
+							'.implode('',$langSelItems).'
 							</select>';
 					}
 				}
