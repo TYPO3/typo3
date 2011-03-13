@@ -1096,34 +1096,36 @@ class SC_alt_doc {
 					// get record in current language
 				$rowCurrent = t3lib_befunc::getLiveVersionOfRecord($table, $uid, $fetchFields);
 				if (!is_array($rowCurrent)) {
-				$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
+					$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
 				}
 
 				$currentLanguage = $rowCurrent[$languageField];
 
 				if ($currentLanguage>-1)	{	// Disabled for records with [all] language!
 						// get record in default language if needed
-					if ($currentLanguage) {
+					if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
 						$rowsByLang[0] = t3lib_befunc::getLiveVersionOfRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						if (!is_array($rowsByLang[0])) {
-						$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+							$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						}
 					} else {
-						$rowsByLang[0] = $rowCurrent;
+						$rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
 					}
 
-						// get record in other languages to see what's already available
-					$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						$fetchFields,
-						$table,
-						'pid='.intval($pid).
-							' AND '.$languageField.'>0'.
-							' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
-							t3lib_BEfunc::deleteClause($table).
-							t3lib_BEfunc::versioningPlaceholderClause($table)
-					);
-					foreach ($translations as $row)	{
-						$rowsByLang[$row[$languageField]] = $row;
+					if ($rowCurrent[$transOrigPointerField] || $currentLanguage === '0') {
+							// get record in other languages to see what's already available
+						$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							$fetchFields,
+							$table,
+							'pid='.intval($pid).
+								' AND '.$languageField.'>0'.
+								' AND '.$transOrigPointerField.'='.intval($rowsByLang[0]['uid']).
+								t3lib_BEfunc::deleteClause($table).
+								t3lib_BEfunc::versioningPlaceholderClause($table)
+						);
+						foreach ($translations as $row)	{
+							$rowsByLang[$row[$languageField]] = $row;
+						}
 					}
 
 					$langSelItems=array();
