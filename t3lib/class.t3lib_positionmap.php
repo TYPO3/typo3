@@ -120,6 +120,7 @@ class t3lib_positionMap {
 	function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
 		global $LANG, $BE_USER;
 
+		$code = '';
 			// Make page tree object:
 		$t3lib_pageTree = t3lib_div::makeInstance('localPageTree');
 		$t3lib_pageTree->init(' AND ' . $perms_clause);
@@ -234,7 +235,7 @@ class t3lib_positionMap {
 	 * @return	string		<script> section
 	 */
 	function JSimgFunc($prefix = '') {
-		$code .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$code = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 
 			var img_newrecord_marker=new Image();
 			img_newrecord_marker.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord' . $prefix . '_marker.gif', '', 1) . '";
