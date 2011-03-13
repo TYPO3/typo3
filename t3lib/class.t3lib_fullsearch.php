@@ -361,6 +361,7 @@ class t3lib_fullsearch {
 	function queryMaker() {
 		global $TCA;
 
+		$output = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'])) {
 			$this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'];
 		}
@@ -412,7 +413,7 @@ class t3lib_fullsearch {
 
 				$res = @$GLOBALS['TYPO3_DB']->sql_query($qExplain);
 				if ($GLOBALS['TYPO3_DB']->sql_error()) {
-					$out .= '<BR><strong>Error:</strong><BR><font color="red"><strong>' . $GLOBALS['TYPO3_DB']->sql_error() . '</strong></font>';
+					$out = '<BR><strong>Error:</strong><BR><font color="red"><strong>' . $GLOBALS['TYPO3_DB']->sql_error() . '</strong></font>';
 					$output .= $GLOBALS['SOBE']->doc->section('SQL error', $out, 0, 1);
 				} else {
 					$cPR = $this->getQueryResultCode($mQ, $res, $qGen->table);
@@ -434,7 +435,7 @@ class t3lib_fullsearch {
 	 */
 	function getQueryResultCode($mQ, $res, $table) {
 		global $TCA;
-		$output = '';
+		$out = '';
 		$cPR = array();
 		switch ($mQ) {
 			case 'count':
@@ -586,6 +587,7 @@ class t3lib_fullsearch {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$swords = $SET['sword'];
 
+		$out = '';
 		$limit = 200;
 		$showAlways = 0;
 		if ($swords) {
