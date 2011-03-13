@@ -2192,6 +2192,22 @@ class t3lib_TCEforms {
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 
+		$PA['itemFormElID_file'] = $PA['itemFormElID'] . '_files';
+
+			// whether the list controls should be disabled
+		$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
+
+			// if maxitems==1 then automatically replace the current item (in list and file selector)
+		if ($maxitems === 1) {
+			$this->additionalJS_post[] = "TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin['" . $PA['itemFormElName'] . "'] = {
+					itemFormElID_file: '" . $PA['itemFormElID_file'] . "'
+				}";
+			$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "setFormValueManipulate('" . $PA['itemFormElName'] . "', 'Remove'); " . $PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+		} elseif ($noList) {
+				// if the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
+			$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "setFormValueManipulate('" . $PA['itemFormElName'] . "', 'RemoveFirstIfFull', '" . $maxitems . "'); " . $PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+		}
+
 			// Acting according to either "file" or "db" type:
 		switch ((string) $config['internal_type']) {
 			case 'file_reference':
@@ -2242,7 +2258,6 @@ class t3lib_TCEforms {
 				}
 
 					// Creating the element:
-				$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
@@ -2260,7 +2275,7 @@ class t3lib_TCEforms {
 				if (!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
-						$item .= '<input type="file" name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" />';
+						$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file" name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
 					}
 				}
 			break;
@@ -2270,7 +2285,6 @@ class t3lib_TCEforms {
 				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
 
 					// Creating the element:
-				$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
@@ -2354,7 +2368,6 @@ class t3lib_TCEforms {
 				}
 
 					// Creating the element:
-				$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
@@ -5688,6 +5701,21 @@ class t3lib_TCEforms {
 					}
 					var len = fObj.length;
 
+						// clear field before adding value, if configured so (maxitems==1)
+					if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName] != "undefined") {
+						clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName];
+						setFormValueManipulate(fName, "Remove");
+
+							// Clear the upload field
+						var filesContainer = document.getElementById(clearSettings.itemFormElID_file);
+						if(filesContainer) {
+							filesContainer.innerHTML = filesContainer.innerHTML;
+						}
+
+							// update len after removing value
+						len = fObj.length;
+					}
+
 					if (isMultiple) {
 							// Clear elements if exclusive values are found
 						if (exclusiveValues) {
@@ -5746,7 +5774,7 @@ class t3lib_TCEforms {
 					fObjHid.value+=fObjSel.options[a].value+",";
 				}
 			}
-			function setFormValueManipulate(fName,type)	{	//
+			function setFormValueManipulate(fName, type, maxLength) {
 				var formObj = setFormValue_getFObj(fName);
 				if (formObj)	{
 					var localArray_V = new Array();
@@ -5755,6 +5783,22 @@ class t3lib_TCEforms {
 					var fObjSel = formObj[fName+"_list"];
 					var l=fObjSel.length;
 					var c=0;
+
+					if (type == "RemoveFirstIfFull") {
+						if (maxLength == 1) {
+							for (a = 1; a < l; a++) {
+								if (fObjSel.options[a].selected != 1) {
+									localArray_V[c] = fObjSel.options[a].value;
+									localArray_L[c] = fObjSel.options[a].text;
+									localArray_S[c] = 0;
+									c++;
+								}
+							}
+						} else {
+							return;
+						}
+					}
+
 					if ((type=="Remove" && fObjSel.size > 1) || type=="Top" || type=="Bottom")	{
 						if (type=="Top")	{
 							for (a=0;a<l;a++)	{
