@@ -3789,6 +3789,7 @@ class t3lib_TCEforms {
 		$fName = '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 		$md5ID = 'ID' . t3lib_div::shortmd5($itemName);
 		$listFlag = '_list';
+		$fieldConfig = $PA['fieldConf']['config'];
 
 		$prefixOfFormElName = 'data[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 		if (t3lib_div::isFirstPartOfStr($PA['itemFormElName'], $prefixOfFormElName)) {
@@ -3829,10 +3830,12 @@ class t3lib_TCEforms {
 						case 'script':
 						case 'popup':
 						case 'colorbox':
-							if (!$wConf['notNewRecords'] || t3lib_utility_Math::canBeInterpretedAsInteger($row['uid'])) {
+						case 'slider':
+							if (!$wConf['notNewRecords'] || t3lib_div::testInt($row['uid'])) {
 
 									// Setting &P array contents:
 								$params = array();
+								$params['fieldConfig'] = $fieldConfig;
 								$params['params'] = $wConf['params'];
 								$params['exampleImg'] = $wConf['exampleImg'];
 								$params['table'] = $table;
@@ -3899,6 +3902,17 @@ class t3lib_TCEforms {
 											$params['row'] = $row;
 											$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'], $params, $this);
 										break;
+										case 'slider':
+											$params['item'] = &$item; // Reference set!
+											$params['icon'] = $icon;
+											$params['iTitle'] = $iTitle;
+											$params['wConf'] = $wConf;
+											$params['row'] = $row;
+											$wizard = t3lib_div::makeInstance('t3lib_TCEforms_ValueSlider');
+											$outArr[] = call_user_func_array(
+												array(&$wizard, 'renderWizard'),
+												array(&$params, &$this)
+											);
 									}
 								}
 

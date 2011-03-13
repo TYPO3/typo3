@@ -60,6 +60,7 @@ $t3libClasses = array(
 	't3lib_parsehtml' => PATH_t3lib . 'class.t3lib_parsehtml.php',
 	't3lib_parsehtml_proc' => PATH_t3lib . 'class.t3lib_parsehtml_proc.php',
 	't3lib_tceforms_flexforms' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_flexforms.php',
+	't3lib_tceforms_valueslider' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_valueslider.php',
 	't3lib_positionmap' => PATH_t3lib . 'class.t3lib_positionmap.php',
 	't3lib_querygenerator' => PATH_t3lib . 'class.t3lib_querygenerator.php',
 	't3lib_readmail' => PATH_t3lib . 'class.t3lib_readmail.php',
