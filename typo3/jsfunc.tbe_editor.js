@@ -75,6 +75,8 @@ var TBE_EDITOR = {
 		clear: new Image()
 	},
 
+	clearBeforeSettingFormValueFromBrowseWin: [],
+
 	// Handling of data structures:
 	addElements: function(elements) {
 		TBE_EDITOR.recentUpdatedElements = elements;
