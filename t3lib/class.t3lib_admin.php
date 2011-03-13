@@ -674,6 +674,7 @@ class t3lib_admin {
 	 */
 	function testDBRefs($theArray) {
 		global $TCA;
+		$result = '';
 		foreach ($theArray as $table => $dbArr) {
 			if ($TCA[$table]) {
 				$idlist = array_keys($dbArr);

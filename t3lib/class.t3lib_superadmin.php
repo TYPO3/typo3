@@ -480,6 +480,7 @@ class t3lib_superadmin {
 	 * @see initProcess()
 	 */
 	function processSiteDir($path, $dir) {
+		$out = '';
 		if (@is_dir($path)) {
 			$localconf = $path . '/typo3conf/localconf.php';
 			if (@is_file($localconf)) {
@@ -1307,6 +1308,7 @@ class t3lib_superadmin {
 		$pass = trim(t3lib_div::_POST('NEWPASS'));
 		$passMD5 = t3lib_div::_POST('NEWPASS_md5');
 
+		$content = '';
 		$updatedFlag = 0;
 		if (($pass || $passMD5) && is_array($whichFields)) {
 			$pass = $passMD5 ? $passMD5 : md5($pass);
