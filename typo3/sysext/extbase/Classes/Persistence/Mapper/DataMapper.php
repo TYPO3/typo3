@@ -88,6 +88,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $objectManager;
 
 	/**
+	 * @var Tx_Extbase_Object_Container_Container
+	 */
+	protected $objectContainer;
+
+	/**
 	 * Injects the identity map
 	 *
 	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
@@ -152,6 +157,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Object_Container_Container $objectContainer
+	 * @return void
+	 */
+	public function injectObjectContainer(Tx_Extbase_Object_Container_Container $objectContainer) {
+		$this->objectContainer = $objectContainer;
 	}
 
 	/**
@@ -221,7 +234,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
 		// and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
 		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($className))) throw new Tx_Extbase_Object_Exception_CannotReconstituteObject('Cannot create empty instance of the class "' . $className . '" because it does not implement the Tx_Extbase_DomainObject_DomainObjectInterface.', 1234386924);
-		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
+		$object = $this->objectContainer->getEmptyObject($className);
 		return $object;
 	}
 

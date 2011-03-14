@@ -96,6 +96,21 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	}
 
 	/**
+	 * Create an instance of $className without calling its constructor
+	 *
+	 * @param string $className
+	 * @return object
+	 */
+	public function getEmptyObject($className) {
+		$className = $this->getImplementationClassName($className);
+		$classInfo = $this->getClassInfo($className);
+		// get an object and avoid calling __construct()
+		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
+		$this->injectDependencies($object, $classInfo);
+		return $object;
+	}
+
+	/**
 	 * Internal implementation for getting a class.
 	 *
 	 * @param string $className

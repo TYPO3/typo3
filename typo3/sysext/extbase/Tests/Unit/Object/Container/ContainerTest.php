@@ -160,6 +160,14 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	/**
 	 * @test
 	 */
+	public function getEmptyObjectReturnsInstanceOfSimpleClass() {
+		$object = $this->container->getEmptyObject('t3lib_object_tests_c');
+		$this->assertType('t3lib_object_tests_c', $object);
+	}
+
+	/**
+	 * @test
+	 */
 	public function test_canGetChildClass() {
 		$object = $this->container->getInstance('t3lib_object_tests_b_child');
 		$this->assertType('t3lib_object_tests_b_child', $object);
