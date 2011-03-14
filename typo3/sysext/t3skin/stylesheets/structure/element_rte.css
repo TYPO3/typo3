@@ -30,21 +30,35 @@ table#typo3-linkTarget {
 table#typo3-linkPages tr td.c-wCell,
 table#typo3-linkFiles tr td.c-wCell,
 table#typo3-EBrecords tr td.c-wCell,
-table#typo3-EBfiles tr td.c-wCell {
+table#typo3-EBfiles tr td.c-wCell,
+table#typo3-uplFiles tr td.c-wCell,
+table#typo3-crFolder tr td.c-wCell {
 	padding: 0 10px;
+}
+
+table#typo3-uplFiles tr td.c-hCell,
+table#typo3-crFolder tr td.c-hCell {
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 table#typo3-linkPages h3,
 table#typo3-linkFiles h3,
 table#typo3-EBrecords h3,
-table#typo3-EBfiles h3 {
+table#typo3-EBfiles h3,
+table#typo3-uplFiles h3,
+table#typo3-crFolder h3 {
 	padding: 0 0 0 5px;
+}
+
+table#typo3-uplFiles #c-override {
+	padding: 5px 0;
 }
 
 table#typo3-linkPages,
 table#typo3-linkFiles,
 table#typo3-EBrecords,
-table#typo3-EBfiles {
+table#typo3-uplFiles {
 }
 
 body#typo3-browse-links-php img,
