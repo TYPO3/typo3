@@ -22,6 +22,11 @@ table#typo3-RTElinkMenu tr td {
 	white-space: nowrap;
 }
 
+form#typo3-uplFilesForm,
+form#typo3-crFolderForm {
+	border-top: 1px solid #adadad;
+}
+
 table#typo3-linkPages tr td.c-wCell,
 table#typo3-linkFiles tr td.c-wCell,
 table#typo3-EBrecords tr td.c-wCell,
