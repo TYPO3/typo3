@@ -632,7 +632,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 				// Convert raw string to a nice ASCII-only string without spaces
 			$meaningfulPrefix = $GLOBALS['TSFE']->csConvObj->specCharsToASCII($GLOBALS['TSFE']->renderCharset, $meaningfulPrefix);
-			$meaningfulPrefix = str_replace(' ', '_', $meaningfulPrefix);
+			$meaningfulPrefix = preg_replace('/[^a-z0-9_]/i', '_', $meaningfulPrefix);
+			$meaningfulPrefix = preg_replace('/_{2,}/', '_', $meaningfulPrefix);
+			$meaningfulPrefix = trim($meaningfulPrefix, '_');
 			$meaningfulPrefix = substr($meaningfulPrefix, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';
 		}
 
