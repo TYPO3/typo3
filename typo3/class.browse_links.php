@@ -1691,10 +1691,6 @@ class browse_links {
 			$_MOD_MENU = array('displayThumbs' => '');
 			$_MCONF['name']='file_list';
 			$_MOD_SETTINGS = t3lib_BEfunc::getModuleData($_MOD_MENU, t3lib_div::_GP('SET'), $_MCONF['name']);
-			$addParams = '&act='.$this->act.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
-			$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],$this->thisScript,$addParams,'id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1).'</label>';
-		} else {
-			$thumbNailCheck='';
 		}
 		$noThumbs = $noThumbs ? $noThumbs : !$_MOD_SETTINGS['displayThumbs'];
 
@@ -1725,7 +1721,6 @@ class browse_links {
 				</tr>
 			</table>
 			';
-		$content.= $thumbNailCheck;
 
 			// Adding create folder + upload forms if applicable:
 		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
@@ -2176,15 +2171,18 @@ class browse_links {
 				// Create headline (showing number of files):
 			$filesCount = count($files);
 			$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):', $filesCount));
+			$out .= '<div id="filelist">';
 			$out.=$this->getBulkSelector($filesCount);
 
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 
 				// Create the header of current folder:
 			if($folderName) {
-				$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-				$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($folderName),$titleLen));
-				$out.=$picon.'<br />';
+				$picon = '<div id="currentFolderHeader">';
+				$picon .= '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" /> ';
+				$picon .= htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($folderName), $titleLen));
+				$picon .= '</div>';
+				$out .= $picon;
 			}
 
 				// Init graphic object for reading file dimensions:
@@ -2254,7 +2252,7 @@ class browse_links {
 						</tr>';
 					$lines[]='
 						<tr>
-							<td colspan="4">'.$ATag_alt.$clickIcon.$ATag_e.'</td>
+							<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
 						</tr>';
 				} else {
 					$lines[]='
@@ -2284,6 +2282,7 @@ class browse_links {
 				</table>';
 		}
 			// Return accumulated content for filelisting:
+		$out .= '</div>';
 		return $out;
 	}
 
@@ -2720,19 +2719,21 @@ class browse_links {
 
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
-		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle',1).':');
-		$code.='
+		$code='
 
 			<!--
 				Form, for uploading files:
 			-->
-			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">
-				<table border="0" cellpadding="0" cellspacing="3" id="typo3-uplFiles">
+			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform" id="typo3-uplFilesForm" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
-						<td><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
+						<td>'.$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle',1).':').'</td>
 					</tr>
 					<tr>
-						<td>';
+						<td class="c-wCell c-hCell"><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
+					</tr>
+					<tr>
+						<td class="c-wCell c-hCell">';
 
 			// Traverse the number of upload fields (default is 3):
 		for ($a=1;$a<=$count;$a++)	{
@@ -2743,13 +2744,13 @@ class browse_links {
 
 			// Make footer of upload form, including the submit button:
 		$redirectValue = $this->thisScript.'?act='.$this->act.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
-		$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($redirectValue).'" />'.
-				'<input type="submit" name="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />';
+		$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($redirectValue).'" />';
 
 		$code.='
 			<div id="c-override">
-				<input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> <label for="overwriteExistingFiles">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles',1).'</label>
+				 <label><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles',1) . '</label>
 			</div>
+			<input type="submit" name="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />
 		';
 
 
@@ -2779,19 +2780,21 @@ class browse_links {
 		}
 			// Create header, showing upload path:
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
-		$code=$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':');
-		$code.='
+		$code='
 
 			<!--
 				Form, for creating new folders:
 			-->
-			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform2">
-				<table border="0" cellpadding="0" cellspacing="3" id="typo3-crFolder">
+			<form action="'.$BACK_PATH.'tce_file.php" method="post" name="editform2" id="typo3-crFolderForm">
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-crFolder">
 					<tr>
-						<td><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
+						<td>'.$this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle').':').'</td>
 					</tr>
 					<tr>
-						<td>';
+						<td class="c-wCell c-hCell"><strong>'.$GLOBALS['LANG']->getLL('path',1).':</strong> '.htmlspecialchars($header).'</td>
+					</tr>
+					<tr>
+						<td class="c-wCell c-hCell">';
 
 			// Create the new-folder name field:
 		$a=1;
@@ -2822,6 +2825,9 @@ class browse_links {
 			$labelToggleSelection = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.php:toggleSelection',1);
 			$labelImportSelection = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.php:importSelection',1);
 
+			// Getting flag for showing/not showing thumbnails:
+			$noThumbsInEB = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
+
 			$out = $this->doc->spacer(15).'<div>' .
 					'<a href="#" onclick="BrowseLinks.Selector.toggle()">' .
 						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/clip_select.gif','width="12" height="12"').' title="'.$labelToggleSelection.'" alt="" /> ' .
@@ -2829,7 +2835,25 @@ class browse_links {
 					'<a href="#" onclick="BrowseLinks.Selector.handle()">' .
 						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/import.gif','width="12" height="12"').' title="'.$labelImportSelection.'" alt="" /> ' .
 						$labelImportSelection.'</a>' .
-				'</div>'.$this->doc->spacer(15);
+				'</div>';
+
+			$thumbNailCheck = '';
+			if (!$noThumbsInEB)	{
+				$path=$this->expandFolder;
+				if (!$path || !@is_dir($path))	{
+						// The closest TEMP-path is found
+					$path = $this->fileProcessor->findTempFolder().'/';
+				}
+					// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
+				$_MOD_MENU = array('displayThumbs' => '');
+				$_MCONF['name']='file_list';
+				$_MOD_SETTINGS = t3lib_BEfunc::getModuleData($_MOD_MENU, t3lib_div::_GP('SET'), $_MCONF['name']);
+				$addParams = '&act='.$this->act.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
+				$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],$this->thisScript,$addParams,'id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1).'</label>';
+				$out.=$this->doc->spacer(5).$thumbNailCheck.$this->doc->spacer(15);
+			} else {
+				$out.=$this->doc->spacer(15);
+			}
 		}
 		return $out;
 	}
