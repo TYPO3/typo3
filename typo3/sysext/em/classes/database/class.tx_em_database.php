@@ -312,7 +312,7 @@ final class tx_em_Database {
 		// Traverse the selected rows and dump each row as a line in the file:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$values = array();
-			foreach ($fieldStructure as $field) {
+			foreach ($fieldStructure as $field => $structure) {
 				$values[] = isset($row[$field]) ? "'" . str_replace($search, $replace, $row[$field]) . "'" : 'NULL';
 			}
 			$lines[] = 'INSERT INTO ' . $table . ' VALUES (' . implode(', ', $values) . ');';
