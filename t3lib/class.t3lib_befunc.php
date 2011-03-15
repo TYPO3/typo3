@@ -1105,7 +1105,13 @@ final class t3lib_BEfunc {
 						if ($WSOL) {
 							self::workspaceOL($tName, $dataStructRec);
 						}
-						$dataStructArray = t3lib_div::xml2array($dataStructRec[$fName]);
+						if (is_file(PATH_site . $dataStructRec[$fName])) {
+								// The value is a pointer to a file
+							$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl(PATH_site . $dataStructRec[$fName]));
+						} else {
+								// No file pointer, handle as being XML (default behaviour)
+							$dataStructArray = t3lib_div::xml2array($dataStructRec[$fName]);
+						}
 					} else {
 						$dataStructArray = 'No tablename (' . $tName . ') or fieldname (' . $fName . ') was found an valid!';
 					}
