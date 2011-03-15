@@ -748,7 +748,7 @@ class t3lib_TStemplate {
 	 * @return	void		Row is passed by reference.
 	 */
 	function versionOL(&$row) {
-		if (is_object($GLOBALS['TSFE'])) { // Frontend:
+		if (TYPO3_MODE === 'FE') { // Frontend:
 			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
 		} else { // Backend:
 			t3lib_BEfunc::workspaceOL('sys_template', $row);
