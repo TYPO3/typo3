@@ -580,6 +580,9 @@ class t3lib_TCEmain {
 			// Keep versionized(!) relations here locally:
 		$registerDBList = array();
 
+		$this->registerElementsToBeDeleted();
+		$this->datamap = $this->unsetElementsToBeDeleted($this->datamap);
+
 			// Editing frozen:
 		if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
 			$this->newlog('All editing in this workspace has been frozen!', 1);
@@ -935,6 +938,8 @@ class t3lib_TCEmain {
 				$hookObj->processDatamap_afterAllOperations($this);
 			}
 		}
+
+		$this->resetElementsToBeDeleted();
 	}
 
 	/**
@@ -2933,10 +2938,17 @@ class t3lib_TCEmain {
 	 * @param	array		Override array - must NOT contain any fields not in the table!
 	 * @return	integer		Returns the new ID of the record (if applicable)
 	 */
-	function copyRecord_raw($table, $uid, $pid, $overrideArray = array()) {
+	function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
 		global $TCA;
 
 		$uid = intval($uid);
+
+		// Stop any actions if the record is marked to be deleted:
+		// (this can occur if IRRE elements are versionized and child elements are removed)
+		if ($this->isElementToBeDeleted($table, $uid)) {
+			return NULL;
+		}
+
 			// Only copy if the table is defined in TCA, a uid is given and the record wasn't copied before:
 		if ($TCA[$table] && $uid && !$this->isRecordCopied($table, $uid)) {
 			t3lib_div::loadTCA($table);
@@ -2960,7 +2972,7 @@ class t3lib_TCEmain {
 							$conf = $TCA[$table]['columns'][$field]['config'];
 							if (is_array($conf)) {
 									// Processing based on the TCA config field type (files, references, flexforms...)
-								$value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $pid);
+								$value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $pid, 0, $workspaceOptions);
 							}
 
 								// Add value to array.
@@ -3064,7 +3076,7 @@ class t3lib_TCEmain {
 	 * @access private
 	 * @see copyRecord()
 	 */
-	function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0) {
+	function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = array()) {
 		global $TCA;
 
 			// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
@@ -3132,13 +3144,17 @@ class t3lib_TCEmain {
 							);
 								// If workspace version does not exist, create a new one:
 							if ($workspaceVersion === FALSE) {
-								$newId = $this->versionizeRecord($v['table'], $v['id'], 'Auto-created for WS #' . $this->BE_USER->workspace);
+								$newId = $this->versionizeRecord(
+									$v['table'], $v['id'],
+									(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
+									(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
+								);
 								// If workspace version already exists, use it:
 							} else {
 								$newId = $workspaceVersion['uid'];
 							}
 						} else {
-							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid);
+							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid, array(), $workspaceOptions);
 						}
 					}
 
@@ -4459,6 +4475,12 @@ class t3lib_TCEmain {
 
 		$id = intval($id);
 
+		// Stop any actions if the record is marked to be deleted:
+		// (this can occur if IRRE elements are versionized and child elements are removed)
+		if ($this->isElementToBeDeleted($table, $id)) {
+			return NULL;
+		}
+
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'] && $id > 0) {
 			if ($this->doesRecordExist($table, $id, 'show')) {
 				if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree)) {
@@ -4513,7 +4535,12 @@ class t3lib_TCEmain {
 									if ($workspaceCheck) {
 
 											// Create raw-copy and return result:
-										return $this->copyRecord_raw($table, $id, -1, $overrideArray);
+										$workspaceOptions = array();
+										if ($delete) {
+											$workspaceOptions['delete'] = $delete;
+											$workspaceOptions['label'] = $label;
+										}
+										return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
 									} else {
 										$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
 									}
@@ -7074,6 +7101,96 @@ class t3lib_TCEmain {
 				$this->remapStackChildIds[$idValue] = TRUE;
 			}
 		}
+	}
+
+	/**
+	 * Gets an instance of the memory registry.
+	 *
+	 * @return t3lib_utility_registry_MemoryRegistry
+	 */
+	protected function getMemoryRegistry() {
+		return t3lib_div::makeInstance('t3lib_utility_registry_MemoryRegistry');
+	}
+
+	/**
+	 * Determines whether an element was registered to be deleted in the registry.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @return boolean
+	 * @see registerElementsToBeDeleted
+	 * @see resetElementsToBeDeleted
+	 * @see copyRecord_raw
+	 * @see versionizeRecord
+	 */
+	protected function isElementToBeDeleted($table, $id) {
+		$elementsToBeDeleted = $this->getMemoryRegistry()->get('core', 't3lib_TCEmain::elementsToBeDeleted', array());
+		return (isset($elementsToBeDeleted[$table][$id]));
+	}
+
+	/**
+	 * Registers elements to be deleted in the registry.
+	 *
+	 * @return void
+	 * @see process_datamap
+	 */
+	protected function registerElementsToBeDeleted() {
+		$elementsToBeDeleted = $this->getMemoryRegistry()->get('core', 't3lib_TCEmain::elementsToBeDeleted', array());
+		$this->getMemoryRegistry()->set(
+			'core', 't3lib_TCEmain::elementsToBeDeleted',
+			array_merge($elementsToBeDeleted, $this->getCommandMapElements('delete'))
+		);
+	}
+
+	/**
+	 * Resets the elements to be deleted in the registry.
+	 *
+	 * @return void
+	 * @see process_datamap
+	 */
+	protected function resetElementsToBeDeleted() {
+		$this->getMemoryRegistry()->remove('core', 't3lib_TCEmain::elementsToBeDeleted');
+	}
+
+	/**
+	 * Unsets elements (e.g. of the data map) that shall be deleted.
+	 * This avoids to modify records that will be deleted later on.
+	 *
+	 * @param array $elements Elements to be modified
+	 * @return array
+	 */
+	protected function unsetElementsToBeDeleted(array $elements) {
+		$elements = t3lib_div::arrayDiffAssocRecursive($elements, $this->getCommandMapElements('delete'));
+
+		foreach ($elements as $key => $value) {
+			if (empty($value)) {
+				unset($elements[$key]);
+			}
+		}
+
+		return $elements;
+	}
+
+	/**
+	 * Gets elements of the command map that match a particular command.
+	 *
+	 * @param string $needle The command to be matched
+	 * @return array
+	 */
+	protected function getCommandMapElements($needle) {
+		$elements = array();
+
+		foreach ($this->cmdmap as $tableName => $idArray) {
+			foreach ($idArray as $id => $commandArray) {
+				foreach ($commandArray as $command => $value) {
+					if ($value && $command == $needle) {
+						$elements[$tableName][$id] = TRUE;
+					}
+				}
+			}
+		}
+
+		return $elements;
 	}
 }
 
