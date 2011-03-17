@@ -173,7 +173,6 @@ class tx_version_tcemain {
 			// by someone else before
 		if (!$recordWasDeleted) {
 			$recordWasDeleted = TRUE;
-			$id = $record['uid'];
 
 				// For Live version, try if there is a workspace version because if so, rather "delete" that instead
 				// Look, if record is an offline version, then delete directly:
@@ -223,8 +222,20 @@ class tx_version_tcemain {
 				$tcemainObj->deleteEl($table, $id);
 			} else {
 				// Otherwise, try to delete by versioning:
+				$copyMappingArray = $tcemainObj->copyMappingArray;
 				$tcemainObj->versionizeRecord($table, $id, 'DELETED!', TRUE);
-				$tcemainObj->deleteL10nOverlayRecords($table, $id);
+
+				// Determine newly created versions:
+				$versionizedElements = t3lib_div::arrayDiffAssocRecursive(
+					$tcemainObj->copyMappingArray,
+					$copyMappingArray
+				);
+				// Delete localization overlays:
+				foreach ($versionizedElements as $versionizedTableName => $versionizedOriginalIds) {
+					foreach ($versionizedOriginalIds as $versionizedOriginalId => $_) {
+						$tcemainObj->deleteL10nOverlayRecords($versionizedTableName, $versionizedOriginalId);
+					}
+				}
 			}
 		}
 	}

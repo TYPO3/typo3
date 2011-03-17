@@ -52,6 +52,11 @@ class t3lib_utility_Dependency_Element {
 	protected $data;
 
 	/**
+	 * @var array
+	 */
+	protected $record;
+
+	/**
 	 * @var t3lib_utility_Dependency
 	 */
 	protected $dependency;
@@ -312,5 +317,25 @@ class t3lib_utility_Dependency_Element {
 	 */
 	public static function getIdentifier($table, $id) {
 		return $table . ':' . $id;
+	}
+
+	/**
+	 * Gets the database record of this element.
+	 *
+	 * @return array
+	 */
+	public function getRecord() {
+		if (!isset($this->record)) {
+			$this->record = array();
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				$this->getTable(),
+				'uid=' . $this->getId()
+			);
+			if (is_array($rows)) {
+				$this->record = $rows[0];
+			}
+		}
+		return $this->record;
 	}
 }
