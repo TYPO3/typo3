@@ -1228,6 +1228,19 @@
 		if(!is_array($groupList)) {
 			$groupList = explode(',', $groupList);
 		}
+
+			// If the actual page has no fe_group, check the rootline for
+			// inherited fe_group due to extendToSubpage-property
+		if ($row['fe_group'] == '') {
+			$rootLine = $this->sys_page->getRootLine($row['uid']);
+			foreach ($rootLine as $pageConf) {
+				if ($pageConf['fe_group'] != '' && $pageConf['extendToSubpages'] == 1) {
+					$row['fe_group'] = $pageConf['fe_group'];
+					break;
+				}
+			}
+		}
+
 		$pageGroupList = explode(',', $row['fe_group'] ? $row['fe_group'] : 0);
 		return count(array_intersect($groupList, $pageGroupList)) > 0;
 	}
