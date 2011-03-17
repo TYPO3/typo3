@@ -42,8 +42,7 @@ TYPO3.TCEFORMS = {
 		dateFields.each(function(element) {
 			var index = element.dom.id.match(/tceforms-datefield-/) ? 0 : 1;
 			var format = TYPO3.settings.datePickerUSmode ? TYPO3.settings.dateFormatUS : TYPO3.settings.dateFormat;
-
-			var datepicker = element.next('span');
+			var datepicker = element.next('span'), menu;
 
 			// check for daterange
 			var lowerMatch = element.dom.className.match(/lower-(\d+)\b/);
@@ -51,35 +50,60 @@ TYPO3.TCEFORMS = {
 			var upperMatch = element.dom.className.match(/upper-(\d+)\b/);
 			maxDate = Ext.isArray(upperMatch) ? new Date(upperMatch[1] * 1000) : null;
 
-			var menu = new Ext.menu.DateMenu({
-				id:			'p' + element.dom.id,
-				format:		format[index],
-				value:		Date.parseDate(element.dom.value, format[index]),
-				minDate:	minDate,
-				maxDate:	maxDate,
-				handler: 	function(picker, date){
-					var relElement = Ext.getDom(picker.ownerCt.id.substring(1));
-					relElement.value = date.format(format[index]);
-					if (Ext.isFunction(relElement.onchange)) {
-						relElement.onchange.call(relElement);
-					}
-				},
-				listeners:	{
-					beforeshow:	function(obj) {
-						var relElement = Ext.getDom(obj.picker.ownerCt.id.substring(1));
-						if (relElement.value) {
-							obj.picker.setValue(Date.parseDate(relElement.value, format[index]));
+			if (index === 0) {
+				menu = new Ext.menu.DateMenu({
+					id: 'p' + element.dom.id,
+					format: format[index],
+					value: Date.parseDate(element.dom.value, format[index]),
+					minDate: minDate,
+					maxDate: maxDate,
+					handler: function(picker, date){
+						var relElement = Ext.getDom(picker.ownerCt.id.substring(1));
+						relElement.value = date.format(format[index]);
+						if (Ext.isFunction(relElement.onchange)) {
+							relElement.onchange.call(relElement);
+						}
+					},
+					listeners: {
+						beforeshow: function(obj) {
+							var relElement = Ext.getDom(obj.picker.ownerCt.id.substring(1));
+							if (relElement.value) {
+								obj.picker.setValue(Date.parseDate(relElement.value, format[index]));
+							}
 						}
 					}
-				}
-			});
+				});
+			} else {
+				menu = new Ext.ux.menu.DateTimeMenu({
+					id: 'p' + element.dom.id,
+					format: format[index],
+					value: Date.parseDate(element.dom.value, format[index]),
+					minDate: minDate,
+					maxDate: maxDate,
+					listeners: {
+						beforeshow: function(obj) {
+							var relElement = Ext.getDom(obj.picker.ownerCt.id.substring(1));
+							if (relElement.value) {
+								obj.picker.setValue(Date.parseDate(relElement.value, format[index]));
+							}
+						},
+						select: function(picker) {
+							var relElement = Ext.getDom(picker.ownerCt.id.substring(1));
+							relElement.value = picker.getValue().format(format[index]);
+							if (Ext.isFunction(relElement.onchange)) {
+								relElement.onchange.call(relElement);
+							}
+						}
+					}
+				});
+			}
 
 			datepicker.on('click', function(){
 				menu.show(datepicker);
 			});
 		});
 	},
-	
+
 	convertTextareasResizable: function() {
 		var textAreas = Ext.select("textarea[id^=tceforms-textarea-]");
 		textAreas.each(function(element) {
@@ -100,6 +124,6 @@ TYPO3.TCEFORMS = {
 			}
 		});
 	}
-	
+
 }
 Ext.onReady(TYPO3.TCEFORMS.init, TYPO3.TCEFORMS);

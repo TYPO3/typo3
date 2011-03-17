@@ -5487,6 +5487,7 @@ class t3lib_TCEforms {
 			);
 			$pageRenderer->addInlineSettingArray('', $typo3Settings);
 
+			$this->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
 			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
 
 				// if IRRE fields were processed, add the JavaScript functions:
