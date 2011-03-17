@@ -65,8 +65,13 @@ class t3lib_TCEforms_Tree {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems, $noMatchLabel) {
-		$valueArray = explode(',', $PA['itemFormElValue']);
+		$valueArray = array();
 		$selectedNodes = array();
+
+                if($PA['itemFormElValue'] != 0) {
+                    $valueArray = explode(',', $PA['itemFormElValue']);
+                }
+
 		if (count($valueArray)) {
 			foreach ($valueArray as $selectedValue) {
 				$temp = explode('|', $selectedValue);
