@@ -31,6 +31,7 @@
 class tx_version_tcemain_CommandMap {
 	const SCOPE_WorkspacesSwap = 'SCOPE_WorkspacesSwap';
 	const SCOPE_WorkspacesSetStage = 'SCOPE_WorkspacesSetStage';
+	const SCOPE_WorkspacesClear = 'SCOPE_WorkspacesClear';
 
 	const KEY_ScopeErrorMessage = 'KEY_ScopeErrorMessage';
 	const KEY_ScopeErrorCode = 'KEY_ScopeErrorCode';
@@ -200,6 +201,7 @@ class tx_version_tcemain_CommandMap {
 	public function process() {
 		$this->resolveWorkspacesSwapDependencies();
 		$this->resolveWorkspacesSetStageDependencies();
+		$this->resolveWorkspacesClearDependencies();
 		return $this;
 	}
 
@@ -335,6 +337,30 @@ class tx_version_tcemain_CommandMap {
 	}
 
 	/**
+	 * Resolves workspaces related dependencies for clearing/flushing of the command map.
+	 * Workspaces records that have children or (relative) parents which are versionized
+	 * but not cleared/flushed with this request, are removed from the command map.
+	 *
+	 * @return void
+	 */
+	protected function resolveWorkspacesClearDependencies() {
+		$scope = self::SCOPE_WorkspacesClear;
+		$dependency = $this->getDependencyUtility($scope);
+
+		foreach ($this->commandMap as $table => $liveIdCollection) {
+			foreach ($liveIdCollection as $liveId => $commandCollection) {
+				foreach ($commandCollection as $command => $properties) {
+					if ($command === 'version' && isset($properties['action']) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
+						$dependency->addElement($table, $liveId, array('properties' => $properties));
+					}
+				}
+			}
+		}
+
+		$this->applyWorkspacesDependencies($dependency, $scope);
+	}
+
+	/**
 	 * Explodes id-lists in the command map for staging actions.
 	 *
 	 * @throws RuntimeException
@@ -440,10 +466,14 @@ class tx_version_tcemain_CommandMap {
 	protected function update(t3lib_utility_Dependency_Element $intersectingElement, array $elements, $scope) {
 		$orderedCommandMap = array();
 
-		$commonProperties = $this->processCallback(
-			$this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback),
-			array($intersectingElement)
-		);
+		$commonProperties = array();
+
+		if ($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback)) {
+			$commonProperties = $this->processCallback(
+				$this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback),
+				array($intersectingElement)
+			);
+		}
 
 		/** @var $dependentElement t3lib_utility_Dependency_Element */
 		foreach ($elements as $element) {
@@ -454,13 +484,17 @@ class tx_version_tcemain_CommandMap {
 			);
 
 			$this->remove($table, $id, 'version');
-			$orderedCommandMap[$table][$id]['version'] = array_merge(
-				$commonProperties,
-				$this->processCallback(
-					$this->getScopeData($scope, self::KEY_GetElementPropertiesCallback),
-					array($element)
-				)
-			);
+			$orderedCommandMap[$table][$id]['version'] = $commonProperties;
+
+			if ($this->getScopeData($scope, self::KEY_GetElementPropertiesCallback)) {
+				$orderedCommandMap[$table][$id]['version'] = array_merge(
+					$commonProperties,
+					$this->processCallback(
+						$this->getScopeData($scope, self::KEY_GetElementPropertiesCallback),
+						array($element)
+					)
+				);
+			}
 		}
 
 		// Ensure that ordered command map is on top of the command map:
@@ -536,6 +570,23 @@ class tx_version_tcemain_CommandMap {
 	}
 
 	/**
+	 * Callback to get common properties of dependent elements for clearing.
+	 *
+	 * @param t3lib_utility_Dependency_Element $element
+	 * @return array
+	 */
+	protected function getCommonClearPropertiesCallback(t3lib_utility_Dependency_Element $element) {
+		$commonSwapProperties = array();
+
+		$elementProperties = $element->getDataValue('properties');
+		if (isset($elementProperties['action'])) {
+			$commonSwapProperties['action'] = $elementProperties['action'];
+		}
+
+		return $commonSwapProperties;
+	}
+
+	/**
 	 * Callback to get common properties of dependent elements for swapping/publishing.
 	 *
 	 * @param t3lib_utility_Dependency_Element $element
@@ -584,7 +635,6 @@ class tx_version_tcemain_CommandMap {
 
 		return $commonSetStageProperties;
 	}
-
 
 	/**
 	 * Gets an instance of the depency resolver utility.
@@ -660,6 +710,58 @@ class tx_version_tcemain_CommandMap {
 	}
 
 	/**
+	 * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
+	 * Only elements that are a delete placeholder are considered.
+	 *
+	 * @param array $callerArguments
+	 * @param array $targetArgument
+	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param string $eventName
+	 * @return string Skip response (if required)
+	 */
+	public function createClearDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
+		$response = $this->createNewDependentElementChildReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
+
+		if (empty($response)) {
+			/** @var $reference t3lib_utility_Dependency_Reference */
+			$reference = $callerArguments['reference'];
+
+			$record = $reference->getElement()->getRecord();
+			if ($record['t3ver_state'] != 2) {
+				$response = t3lib_utility_Dependency_Element::RESPONSE_Skip;
+			}
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Callback to determine whether a new parent reference shall be considered in the dependency resolver utility.
+	 * Only elements that are a delete placeholder are considered.
+	 *
+	 * @param array $callerArguments
+	 * @param array $targetArgument
+	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param string $eventName
+	 * @return string Skip response (if required)
+	 */
+	public function createClearDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
+		$response = $this->createNewDependentElementParentReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
+
+		if (empty($response)) {
+			/** @var $reference t3lib_utility_Dependency_Reference */
+			$reference = $callerArguments['reference'];
+
+			$record = $reference->getElement()->getRecord();
+			if ($record['t3ver_state'] != 2) {
+				$response = t3lib_utility_Dependency_Element::RESPONSE_Skip;
+			}
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Callback to add additional data to new elements created in the dependency resolver utility.
 	 *
 	 * @param t3lib_utility_Dependency_Element $caller
@@ -724,6 +826,18 @@ class tx_version_tcemain_CommandMap {
 				self::KEY_ElementConstructCallback => NULL,
 				self::KEY_ElementCreateChildReferenceCallback => 'createNewDependentElementChildReferenceCallback',
 				self::KEY_ElementCreateParentReferenceCallback => 'createNewDependentElementParentReferenceCallback',
+				self::KEY_PurgeWithErrorMessageGetIdCallback => 'getElementIdCallback',
+				self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
+				self::KEY_TransformDependentElementsToUseLiveId => FALSE,
+			),
+			self::SCOPE_WorkspacesClear => array(
+				self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be flushed independently, because it is related to other new or modified records.',
+				self::KEY_ScopeErrorCode => 1300467990,
+				self::KEY_GetElementPropertiesCallback => NULL,
+				self::KEY_GetCommonPropertiesCallback => 'getCommonClearPropertiesCallback',
+				self::KEY_ElementConstructCallback => NULL,
+				self::KEY_ElementCreateChildReferenceCallback => 'createClearDependentElementChildReferenceCallback',
+				self::KEY_ElementCreateParentReferenceCallback => 'createClearDependentElementParentReferenceCallback',
 				self::KEY_PurgeWithErrorMessageGetIdCallback => 'getElementIdCallback',
 				self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
 				self::KEY_TransformDependentElementsToUseLiveId => FALSE,
