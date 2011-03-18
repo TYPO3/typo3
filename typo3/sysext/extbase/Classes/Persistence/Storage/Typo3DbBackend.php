@@ -76,6 +76,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_CacheService
+	 */
+	protected $cacheService;
+
+	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
 	 */
 	public function __construct() {
@@ -98,6 +103,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_CacheService $cacheService
+	 * @return void
+	 */
+	public function injectCacheService(Tx_Extbase_Service_CacheService $cacheService) {
+		$this->cacheService = $cacheService;
 	}
 
 	/**
@@ -1042,7 +1055,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 
 		// TODO check if we can hand this over to the Dispatcher to clear the page only once, this will save around 10% time while inserting and updating
-		Tx_Extbase_Utility_Cache::clearPageCache($pageIdsToClear);
+		$this->cacheService->clearPageCache($pageIdsToClear);
 	}
 }
 

@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id$
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Service_CacheService instead
  */
 class Tx_Extbase_Utility_Cache {
 
@@ -41,66 +41,10 @@ class Tx_Extbase_Utility_Cache {
 	 * @return void
 	 */
 	static public function clearPageCache($pageIdsToClear = NULL) {
-		if ($pageIdsToClear !== NULL && !is_array($pageIdsToClear)) {
-			$pageIdsToClear = array(intval($pageIdsToClear));
-		}
-
-		self::flushPageCache($pageIdsToClear);
-		self::flushPageSectionCache($pageIdsToClear);
-	}
-
-	/**
-	 * Flushes cache_pages or cachinframework_cache_pages.
-	 *
-	 * @param array $pageIdsToClear pageIds to clear the cache for
-	 * @return void
-	 */
-	static protected function flushPageCache($pageIds = NULL) {
-		if (TYPO3_UseCachingFramework) {
-			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-
-			if ($pageIds !== NULL) {
-				foreach ($pageIds as $pageId) {
-					$pageCache->flushByTag('pageId_' . $pageId);
-				}
-			} else {
-				$pageCache->flush();
-			}
-		} elseif ($pageIds !== NULL) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				'cache_pages',
-				'page_id IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds)) . ')'
-			);
-		} else {
-			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pages');
-		}
-	}
-
-	/**
-	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
-	 *
-	 * @param array $pageIdsToClear pageIds to clear the cache for
-	 * @return void
-	 */
-	static protected function flushPageSectionCache($pageIds = NULL) {
-		if (TYPO3_UseCachingFramework) {
-			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-
-			if ($pageIds !== NULL) {
-				foreach ($pageIds as $pageId) {
-					$pageSectionCache->flushByTag('pageId_' . $pageId);
-				}
-			} else {
-				$pageSectionCache->flush();
-			}
-		} elseif ($pageIds !== NULL) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				'cache_pagesection',
-				'page_id IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds)) . ')'
-			);
-		} else {
-			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pagesection');
-		}
+		t3lib_div::logDeprecatedFunction();
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$cacheService = $objectManager->get('Tx_Extbase_Service_CacheService');
+		$cacheService->clearPageCache($pageIdsToClear);
 	}
 }
 ?>

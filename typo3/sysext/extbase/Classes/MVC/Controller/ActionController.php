@@ -41,6 +41,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $reflectionService;
 
 	/**
+	 * @var Tx_Extbase_Service_CacheService
+	 */
+	protected $cacheService;
+
+	/**
 	 * The current view, as resolved by resolveView()
 	 *
 	 * @var Tx_Extbase_MVC_View_ViewInterface
@@ -91,13 +96,19 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $errorMethodName = 'errorAction';
 
 	/**
-	 * Injects the reflection service
-	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService
 	 * @return void
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_CacheService $cacheService
+	 * @return void
+	 */
+	public function injectCacheService(Tx_Extbase_Service_CacheService $cacheService) {
+		$this->cacheService = $cacheService;
 	}
 
 	/**
@@ -457,7 +468,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
 			if (isset($GLOBALS['TSFE'])) {
 				$pageUid = $GLOBALS['TSFE']->id;
-				Tx_Extbase_Utility_Cache::clearPageCache(array($pageUid));
+				$this->cacheService->clearPageCache(array($pageUid));
 			}
 		}
 	}

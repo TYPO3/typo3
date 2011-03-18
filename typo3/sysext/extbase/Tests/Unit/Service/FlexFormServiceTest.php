@@ -30,7 +30,7 @@
  * @subpackage extbase
  */
 
-class Tx_Extbase_Tests_Unit_Service_FlexFormServiceTest extends tx_phpunit_testcase {
+class Tx_Extbase_Tests_Unit_Service_FlexFormServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Extbase_Service_FlexFormService
