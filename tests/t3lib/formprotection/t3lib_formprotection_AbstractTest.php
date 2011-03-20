@@ -57,13 +57,13 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function constructionRetrievesTokens() {
+	public function constructionRetrievesToken() {
 		$className = uniqid('t3lib_formProtection');
 		eval(
 			'class ' . $className . ' extends t3lib_formProtection_Testing {' .
-				'public $tokensHaveBeenRetrieved = FALSE; ' .
-				'protected function retrieveTokens() {' .
-				'$this->tokensHaveBeenRetrieved = TRUE;' .
+				'public $tokenHasBeenRetrieved = FALSE; ' .
+				'protected function retrieveSessionToken() {' .
+				'$this->tokenHasBeenRetrieved = TRUE;' .
 				'}' .
 			'}'
 		);
@@ -71,7 +71,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$fixture = new $className();
 
 		$this->assertTrue(
-			$fixture->tokensHaveBeenRetrieved
+			$fixture->tokenHasBeenRetrieved
 		);
 	}
 
@@ -92,11 +92,11 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function cleanPersistsTokens() {
+	public function cleanPersistsToken() {
 		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('persistTokens')
+			't3lib_formProtection_Testing', array('persistSessionToken')
 		);
-		$fixture->expects($this->once())->method('persistTokens');
+		$fixture->expects($this->once())->method('persistSessionToken');
 
 		$fixture->clean();
 	}
@@ -143,7 +143,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	 */
 	public function generateTokenReturns32CharacterHexToken() {
 		$this->assertRegexp(
-			'/^[0-9a-f]{32}$/',
+			'/^[0-9a-f]{40}$/',
 			$this->fixture->generateToken('foo')
 		);
 	}
@@ -151,63 +151,10 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function generateTokenCalledTwoTimesWithSameParametersReturnsDifferentTokens() {
-		$this->assertNotEquals(
+	public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens() {
+		$this->assertEquals(
 			$this->fixture->generateToken('foo', 'edit', 'bar'),
 			$this->fixture->generateToken('foo', 'edit', 'bar')
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function generatingTooManyTokensInvalidatesOldestToken() {
-		$this->fixture->setMaximumNumberOfTokens(2);
-
-		$formName = 'foo';
-
-		$token1 = $this->fixture->generateToken($formName);
-		$token2 = $this->fixture->generateToken($formName);
-		$token3 = $this->fixture->generateToken($formName);
-
-		$this->assertFalse(
-			$this->fixture->validateToken($token1, $formName)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function generatingTooManyTokensNotInvalidatesNewestToken() {
-		$this->fixture->setMaximumNumberOfTokens(2);
-
-		$formName = 'foo';
-		$formInstanceName = 'bar';
-
-		$token1 = $this->fixture->generateToken($formName);
-		$token2 = $this->fixture->generateToken($formName);
-		$token3 = $this->fixture->generateToken($formName);
-
-		$this->assertTrue(
-			$this->fixture->validateToken($token3, $formName)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function generatingTooManyTokensNotInvalidatesTokenInTheMiddle() {
-		$this->fixture->setMaximumNumberOfTokens(2);
-
-		$formName = 'foo';
-		$formInstanceName = 'bar';
-
-		$token1 = $this->fixture->generateToken($formName);
-		$token2 = $this->fixture->generateToken($formName);
-		$token3 = $this->fixture->generateToken($formName);
-
-		$this->assertTrue(
-			$this->fixture->validateToken($token2, $formName)
 		);
 	}
 
@@ -264,24 +211,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function validateTokenWithValidDataDropsToken() {
-		$formName = 'foo';
-
-		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('dropToken')
-		);
-
-		$tokenId = $fixture->generateToken($formName);
-		$fixture->expects($this->once())->method('dropToken')
-			->with($tokenId);
-
-		$fixture->validateToken($tokenId, $formName);
-	}
-
-	/**
-	 * @test
-	 */
-	public function validateTokenWithValidDataCalledTwoTimesReturnsFalseOnSecondCall() {
+	public function validateTokenWithValidDataCalledTwoTimesReturnsTrueOnSecondCall() {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
@@ -290,7 +220,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 
 		$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName);
 
-		$this->assertFalse(
+		$this->assertTrue(
 			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
 		);
 	}
@@ -359,52 +289,6 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$this->assertFalse(
 			$this->fixture->validateToken(
 				$tokenId, $formName, $action, 'beer'
-			)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function validateTokenWithTwoTokensForSameFormNameAndActionAndFormInstanceNameReturnsTrueForBoth() {
-		$formName = 'foo';
-		$action = 'edit';
-		$formInstanceName = 'bar';
-
-		$tokenId1 = $this->fixture->generateToken($formName, $action, $formInstanceName);
-		$tokenId2 = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$tokenId1, $formName, $action, $formInstanceName
-			)
-		);
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$tokenId2, $formName, $action, $formInstanceName
-			)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function validateTokenWithTwoTokensForSameFormNameAndActionAndFormInstanceNameCalledInReverseOrderReturnsTrueForBoth() {
-		$formName = 'foo';
-		$action = 'edit';
-		$formInstanceName = 'bar';
-
-		$tokenId1 = $this->fixture->generateToken($formName, $action, $formInstanceName);
-		$tokenId2 = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$tokenId2, $formName, $action, $formInstanceName
-			)
-		);
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$tokenId1, $formName, $action, $formInstanceName
 			)
 		);
 	}
