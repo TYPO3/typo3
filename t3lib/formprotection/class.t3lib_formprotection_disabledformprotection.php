@@ -75,14 +75,14 @@ class t3lib_formprotection_DisabledFormProtection extends t3lib_formprotection_A
 	/**
 	 * Dummy implementation
 	 */
-	protected function retrieveTokens() {
+	protected function retrieveSessionToken() {
 		// Do nothing.
 	}
 
 	/**
 	 * Dummy implementation
 	 */
-	public function persistTokens() {
+	public function persistSessionToken() {
 		// Do nothing.
 	}
 }
