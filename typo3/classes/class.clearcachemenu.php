@@ -114,8 +114,6 @@ class ClearCacheMenu implements backend_toolbarItem {
 				$hookObject->manipulateCacheActions($this->cacheActions, $this->optionValues);
 			}
 		}
-
-		t3lib_formprotection_Factory::get()->persistTokens();
 	}
 
 	/**

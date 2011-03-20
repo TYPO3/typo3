@@ -928,8 +928,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 			}
 		}
-
-		$this->formProtection->persistTokens();
 	}
 
 	/**

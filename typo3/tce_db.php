@@ -251,18 +251,7 @@ $formprotection = t3lib_formprotection_Factory::get();
 if ($formprotection->validateToken(t3lib_div::_GP('formToken'), 'tceAction')) {
 	$SOBE->initClipboard();
 	$SOBE->main();
-
-		// This is done for the clear cache menu, so that it gets a new token
-		// making it possible to clear cache several times.
-	if (t3lib_div::_GP('ajaxCall')) {
-		$token = array();
-		$token['value'] = $formprotection->generateToken('tceAction');
-		$token['name'] = 'formToken';
-			// This will be used by clearcachemenu.js to replace the token for the next call
-		echo t3lib_BEfunc::getUrlToken('tceAction');
-	}
 }
-$formprotection->persistTokens();
 $SOBE->finish();
 
 ?>
