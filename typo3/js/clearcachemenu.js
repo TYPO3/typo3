@@ -98,10 +98,6 @@ var ClearCacheMenu = Class.create({
 				'method': 'get',
 				'onComplete': function(result) {
 					spinner.replace(oldIcon);
-						// replace used token with new one
-					if (result.responseText.length > 0) {
-						link.href = link.href.substr(0, link.href.length - result.responseText.length) + result.responseText
-					}
 				}.bind(this)
 			});
 		}
