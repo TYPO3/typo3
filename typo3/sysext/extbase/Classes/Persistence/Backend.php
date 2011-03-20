@@ -431,7 +431,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage The object storage to be persisted.
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
 	 * @param string $propertyName The name of the property holding the object storage.
-	 * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects. 
+	 * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
 	 * @return void
 	 */
 	protected function persistObjectStorage(Tx_Extbase_Persistence_ObjectStorage $objectStorage, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, array &$row) {
@@ -748,19 +748,30 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return void
 	 */
 	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
-		$className = get_class($object);
-		$dataMap = $this->dataMapper->getDataMap($className);
-		if ($object->_isNew() && ($dataMap->getCreationDateColumnName() !== NULL)) {
-			$row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
-		}
-		if ($dataMap->getModificationDateColumnName() !== NULL) {
-			$row[$dataMap->getModificationDateColumnName()] = $GLOBALS['EXEC_TIME'];
-		}
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
+		$this->addCommonDateFieldsToRow($object, $row);
 		if ($dataMap->getRecordTypeColumnName() !== NULL && $dataMap->getRecordType() !== NULL) {
 			$row[$dataMap->getRecordTypeColumnName()] = $dataMap->getRecordType();
 		}
 		if ($object->_isNew() && !isset($row['pid'])) {
 			$row['pid'] = $this->determineStoragePageIdForNewRecord($object);
+		}
+	}
+
+	/**
+	 * Adjustes the common date fields of the given row to the current time
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param array $row The row to be updated
+	 * @return void
+	 */
+	protected function addCommonDateFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
+		if ($object->_isNew() && $dataMap->getCreationDateColumnName() !== NULL) {
+			$row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
+		}
+		if ($dataMap->getModificationDateColumnName() !== NULL) {
+			$row[$dataMap->getModificationDateColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
 	}
 
@@ -789,13 +800,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$tableName = $dataMap->getTableName();
 		if (($markAsDeleted === TRUE) && ($dataMap->getDeletedFlagColumnName() !== NULL)) {
 			$deletedColumnName = $dataMap->getDeletedFlagColumnName();
+			$row = array(
+				'uid' => $object->getUid(),
+				$deletedColumnName => 1
+			);
+			$this->addCommonDateFieldsToRow($object, $row);
 			$res = $this->storageBackend->updateRow(
 				$tableName,
-				array(
-					'uid' => $object->getUid(),
-					$deletedColumnName => 1
-					)
-				);
+				$row
+			);
 		} else {
 			$res = $this->storageBackend->removeRow(
 				$tableName,
