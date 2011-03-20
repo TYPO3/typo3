@@ -687,8 +687,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$className = $this->dataMapper->getType($className, $propertyName);
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$relationTableName = $columnMap->getRelationTableName();
-			$sql['unions'][$relationTableName] = 'LEFT JOIN ' . $relationTableName . ' ON ' . $tableName . '.uid=' . $relationTableName . '.uid_local';
-			$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $relationTableName . '.uid_foreign=' . $childTableName . '.uid';
+			$sql['unions'][$relationTableName] = 'LEFT JOIN ' . $relationTableName . ' ON ' . $tableName . '.uid=' . $relationTableName . '.' . $columnMap->getParentKeyFieldName();
+			$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $relationTableName . '.'.  $columnMap->getChildKeyFieldName() . '=' . $childTableName . '.uid';
 			$className = $this->dataMapper->getType($className, $propertyName);
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
