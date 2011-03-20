@@ -77,11 +77,12 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 		if (!class_exists($className)) {
 			eval(
 				'class ' . $className . ' extends t3lib_formprotection_InstallToolFormProtection {' .
+				'  public $sessionToken;' .
 				'  public function createValidationErrorMessage() {' .
 				'    parent::createValidationErrorMessage();' .
 				'  }' .
-				'  public function retrieveTokens() {' .
-				'    return $this->tokens = parent::retrieveTokens();' .
+				'  public function retrieveSessionToken() {' .
+				'    parent::retrieveSessionToken();' .
 				'  }' .
 				'}'
 			);
@@ -114,26 +115,20 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 	/**
 	 * @test
 	 */
-	public function tokensFromSessionDataAreAvailableForValidateToken() {
-		$tokenId = '51a655b55c54d54e5454c5f521f6552a';
+	public function tokenFromSessionDataIsAvailableForValidateToken() {
+		$sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$_SESSION['installToolFormTokens'] = array(
-			$tokenId => array(
-				'formName' => $formName,
-				'action' => $action,
-				'formInstanceName' => $formInstanceName,
-			),
-		);
+		$tokenId = t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
 
-		$this->fixture->retrieveTokens();
+		$_SESSION['installToolFormToken'] = $sessionToken;
+
+		$this->fixture->retrieveSessionToken();
 
 		$this->assertTrue(
-			$this->fixture->validateToken(
-				$tokenId, $formName, $action,  $formInstanceName
-			)
+			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
 		);
 	}
 
@@ -141,25 +136,15 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 	 * @test
 	 */
 	public function persistTokensWritesTokensToSession() {
-		$formName = 'foo';
-		$action = 'edit';
-		$formInstanceName = '42';
+		$_SESSION['installToolFormToken'] = 'foo';
 
-		$tokenId = $this->fixture->generateToken(
-			$formName, $action, $formInstanceName
-		);
+		$this->fixture->sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
 
-		$this->fixture->persistTokens();
+		$this->fixture->persistSessionToken();
 
 		$this->assertEquals(
-			array(
-				$tokenId => array(
-						'formName' => $formName,
-						'action' => $action,
-						'formInstanceName' => $formInstanceName,
-					),
-			),
-			$_SESSION['installToolFormTokens']
+			'881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd',
+			$_SESSION['installToolFormToken']
 		);
 	}
 
