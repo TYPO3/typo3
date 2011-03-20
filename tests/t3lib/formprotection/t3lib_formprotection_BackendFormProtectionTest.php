@@ -83,11 +83,11 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				'  public function createValidationErrorMessage() {' .
 				'    parent::createValidationErrorMessage();' .
 				'  }' .
-				'  public function updateTokens() {' .
-				'    return parent::updateTokens();' .
+				'  public function retrieveSessionToken() {' .
+				'    return parent::retrieveSessionToken();' .
 				'  }' .
-				'  public function retrieveTokens() {' .
-				'    return parent::retrieveTokens();' .
+				'  public function setSessionToken($sessionToken) {' .
+				'    $this->sessionToken = $sessionToken;' .
 				'  }' .
 				'}'
 			);
@@ -162,93 +162,57 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	/**
 	 * @test
 	 */
-	public function retrieveTokensReadsTokensFromSessionData() {
+	public function retrieveTokenReadsTokenFromSessionData() {
 		$GLOBALS['BE_USER']->expects($this->once())->method('getSessionData')
-			->with('formTokens')->will($this->returnValue(array()));
+			->with('formSessionToken')->will($this->returnValue(array()));
 
-		$this->fixture->retrieveTokens();
+		$this->fixture->retrieveSessionToken();
 	}
 
 	/**
 	 * @test
 	 */
-	public function tokensFromSessionDataAreAvailableForValidateToken() {
-		$tokenId = '51a655b55c54d54e5454c5f521f6552a';
+	public function tokenFromSessionDataIsAvailableForValidateToken() {
+		$sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
-			->with('formTokens')
-			->will($this->returnValue(array(
-				$tokenId => array(
-					'formName' => $formName,
-					'action' => $action,
-					'formInstanceName' => $formInstanceName,
-				),
-			)));
+		$tokenId = t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
 
-		$this->fixture->updateTokens();
+		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
+			->with('formSessionToken')
+			->will($this->returnValue($sessionToken));
+
+		$this->fixture->retrieveSessionToken();
 
 		$this->assertTrue(
-			$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName)
+			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
 		);
+	}
+
+	/**
+	 * @expectedException UnexpectedValueException
+	 * @test
+	 */
+	public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty() {
+		$this->fixture->injectRegistry(
+			$this->getMock('t3lib_Registry')
+		);
+		$this->fixture->setSessionTokenFromRegistry();
 	}
 
 	/**
 	 * @test
 	 */
-	public function tokensStayDroppedAfterPersistingTokens() {
-		$tokenId = '51a655b55c54d54e5454c5f521f6552a';
-		$formName = 'foo';
-		$action = 'edit';
-		$formInstanceName = '42';
-
-		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
-			->will($this->returnValue(array(
-				$tokenId => array(
-					'formName' => $formName,
-					'action' => $action,
-					'formInstanceName' => $formInstanceName,
-				),
-			)));
-
-		$className = $this->createAccessibleProxyClass();
-
-		$this->fixture->updateTokens();
-
-		$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName);
-
-		$this->fixture->persistTokens();
-
-		$this->assertFalse(
-			$this->fixture->validateToken($tokenId, $formName, $action,  $formInstanceName)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function persistTokensWritesTokensToSession() {
-		$formName = 'foo';
-		$action = 'edit';
-		$formInstanceName = '42';
-
-		$tokenId = $this->fixture->generateToken(
-			$formName, $action, $formInstanceName
-		);
-		$allTokens = array(
-			$tokenId => array(
-					'formName' => $formName,
-					'action' => $action,
-					'formInstanceName' => $formInstanceName,
-				),
-		);
+	public function persistSessionTokenWritesTokenToSession() {
+		$sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
+		$this->fixture->setSessionToken($sessionToken);
 
 		$GLOBALS['BE_USER']->expects($this->once())
-			->method('setAndSaveSessionData')->with('formTokens', $allTokens);
+			->method('setAndSaveSessionData')->with('formSessionToken', $sessionToken);
 
-		$this->fixture->persistTokens();
+		$this->fixture->persistSessionToken();
 	}
 
 

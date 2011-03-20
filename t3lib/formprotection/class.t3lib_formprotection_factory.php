@@ -33,17 +33,13 @@
  * Usage for the back-end form protection:
  *
  * <pre>
- * $formProtection = t3lib_formprotection_Factory::get(
- *	 't3lib_formProtection_BackEnd'
- * );
+ * $formProtection = t3lib_formprotection_Factory::get();
  * </pre>
  *
  * Usage for the install tool form protection:
  *
  * <pre>
- * $formProtection = t3lib_formprotection_Factory::get(
- *	 'tx_install_formprotection'
- * );
+ * $formProtection = t3lib_formprotection_Factory::get();
  * $formProtection->injectInstallTool($this);
  * </pre>
  *
@@ -52,6 +48,7 @@
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
+ * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 final class t3lib_formprotection_Factory {
 	/**
@@ -71,7 +68,8 @@ final class t3lib_formprotection_Factory {
 	 * Gets a form protection instance for the requested class $className.
 	 *
 	 * If there already is an existing instance of the requested $className, the
-	 * existing instance will be returned.
+	 * existing instance will be returned. If no $className is provided, the factory
+	 * detects the scope and returns the appropriate form protection object.
 	 *
 	 * @param string $className
 	 *		the name of the class for which to return an instance, must be
@@ -90,7 +88,7 @@ final class t3lib_formprotection_Factory {
 	}
 
 	/**
-	 * Returns the classname depending on TYPO3_MODE and
+	 * Returns the class name depending on TYPO3_MODE and
 	 * active backend session.
 	 *
 	 * @return string
@@ -128,7 +126,7 @@ final class t3lib_formprotection_Factory {
 		return (isset($GLOBALS['BE_USER']) &&
 			$GLOBALS['BE_USER'] instanceof t3lib_beUserAuth &&
 			isset($GLOBALS['BE_USER']->user['uid']) &&
-			!(TYPO3_MODE == 'FE')
+			!(TYPO3_MODE === 'FE')
 		);
 	}
 
@@ -141,12 +139,12 @@ final class t3lib_formprotection_Factory {
 		return (is_object($GLOBALS['TSFE']) &&
 			$GLOBALS['TSFE']->fe_user instanceof tslib_feUserAuth &&
 			isset($GLOBALS['TSFE']->fe_user->user['uid']) &&
-			(TYPO3_MODE == 'FE')
+			(TYPO3_MODE === 'FE')
 		);
 	}
 
 	/**
-	 * Creates an instace for the requested class $className
+	 * Creates an instance for the requested class $className
 	 * and stores it internally.
 	 *
 	 * @param string $className
@@ -182,6 +180,7 @@ final class t3lib_formprotection_Factory {
 	 *
 	 * Note: This function is intended for testing purposes only.
 	 *
+	 * @access private
 	 * @param string $className
 	 *		the name of the class for which to set an instance, must be
 	 *		"t3lib_formProtection_BackEnd" or "t3lib_formprotection_InstallToolFormProtection"
