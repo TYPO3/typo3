@@ -37,24 +37,6 @@
  */
 class t3lib_formProtection_Testing extends t3lib_formprotection_Abstract {
 	/**
-	 * the maximum number of tokens that can exist at the same time
-	 *
-	 * @var integer
-	 */
-	protected $maximumNumberOfTokens = 100;
-
-	/**
-	 * Sets the maximum number of tokens that can exist at the same time.
-	 *
-	 * @param integer $number maximum number of tokens, must be > 0
-	 *
-	 * @return void
-	 */
-	public function setMaximumNumberOfTokens($number) {
-		$this->maximumNumberOfTokens = $number;
-	}
-
-	/**
 	 * Creates or displayes an error message telling the user that the submitted
 	 * form token is invalid.
 	 *
@@ -68,7 +50,9 @@ class t3lib_formProtection_Testing extends t3lib_formprotection_Abstract {
 	 * @return array the saved tokens as a two-dimensional array, will be empty
 	 *               if no tokens have been saved
 	 */
-	protected function retrieveTokens() {}
+	protected function retrieveSessionToken() {
+		$this->sessionToken = $this->generateSessionToken();
+	}
 
 	/**
 	 * Saves the tokens so that they can be used by a later incarnation of this
@@ -76,21 +60,7 @@ class t3lib_formProtection_Testing extends t3lib_formprotection_Abstract {
 	 *
 	 * @return void
 	 */
-	public function persistTokens() {}
-
-	/**
-	 * Drops the token with the ID $tokenId and persists all tokens.
-	 *
-	 * If there is no token with that ID, this function is a no-op.
-	 *
-	 * @param string $tokenId
-	 *        the 32-character ID of an existing token, must not be empty
-	 *
-	 * @return void
-	 */
-	public function dropToken($tokenId) {
-		parent::dropToken($tokenId);
-	}
+	public function persistSessionToken() {}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/formprotection/class.t3lib_formprotection_testing.php'])) {
