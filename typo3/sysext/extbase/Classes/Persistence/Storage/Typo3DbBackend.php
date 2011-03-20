@@ -274,7 +274,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$count = current(current($rows));
 		}
 		$this->databaseHandle->sql_free_result($result);
-		return $count;
+		return (int)$count;
 	}
 
 	/**
