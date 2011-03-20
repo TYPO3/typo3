@@ -256,7 +256,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param string $actionName Name of the action to forward to
 	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
 	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
-	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
+	 * @param array $arguments Arguments to pass to the target action
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
 	 * @api
@@ -279,7 +279,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param string $actionName Name of the action to forward to
 	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
 	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
-	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments Arguments to pass to the target action
+	 * @param array $arguments Arguments to pass to the target action
 	 * @param integer $pageUid Target page uid. If NULL, the current page uid is used
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
