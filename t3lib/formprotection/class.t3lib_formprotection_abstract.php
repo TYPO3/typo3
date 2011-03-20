@@ -35,75 +35,49 @@
  * @subpackage t3lib
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 abstract class t3lib_formprotection_Abstract {
 	/**
-	 * the maximum number of tokens that can exist at the same time
+	 * The session token which is used to be hashed during token generation.
 	 *
-	 * @var integer
+	 * @var string
 	 */
-	protected $maximumNumberOfTokens = 0;
+	protected $sessionToken;
 
 	/**
-	 * Valid tokens sorted from oldest to newest.
-	 *
-	 * [tokenId] => array(formName, formInstanceName)
-	 *
-	 * @var array<array>
-	 */
-	protected $tokens = array();
-
-	/**
-	 * Tokens that have been added during this request.
-	 *
-	 * @var array<array>
-	 */
-	protected $addedTokens = array();
-
-	/**
-	 * Token ids of tokens that have been dropped during this request.
-	 *
-	 * @var array
-	 */
-	protected $droppedTokenIds = array();
-
-	/**
-	 * Constructor. Makes sure existing tokens are read and available for
-	 * checking.
+	 * Constructor. Makes sure the session token is read and
+	 * available for checking.
 	 */
 	public function __construct() {
-		$this->tokens = $this->retrieveTokens();
+		$this->retrieveSessionToken();
 	}
 
 	/**
 	 * Frees as much memory as possible.
 	 */
 	public function __destruct() {
-		$this->tokens = array();
+		unset($this->sessionToken);
 	}
 
 	/**
-	 * Deletes all existing tokens and persists the (empty) token table.
+	 * Deletes the session token and persists the (empty) token.
 	 *
 	 * This function is intended to be called when a user logs on or off.
 	 *
 	 * @return void
 	 */
 	public function clean() {
-		$this->tokens = array();
-		$this->persistTokens();
+		unset($this->sessionToken);
+		$this->persistSessionToken();
 	}
 
 	/**
-	 * Generates and stores a token for a form.
+	 * Generates a token for a form by hashing the given parameters
+	 * with the secret session token.
 	 *
 	 * Calling this function two times with the same parameters will create
-	 * two valid, different tokens.
-	 *
-	 * Generating more tokens than $maximumNumberOfEntries will cause the oldest
-	 * tokens to get dropped.
-	 *
-	 * Note: This function does not persist the tokens.
+	 * the same valid token during one user session.
 	 *
 	 * @param string $formName
 	 *		the name of the form, for example a table name like "tt_content",
@@ -126,17 +100,12 @@ abstract class t3lib_formprotection_Abstract {
 			throw new InvalidArgumentException('$formName must not be empty.', 1294586643);
 		}
 
-		do {
-			$tokenId = bin2hex(t3lib_div::generateRandomBytes(16));
-		} while (isset($this->tokens[$tokenId]));
-
-		$this->tokens[$tokenId] = array(
-			'formName' => $formName,
-			'action' => $action,
-			'formInstanceName' => $formInstanceName,
+		$tokenId = t3lib_div::hmac(
+			$formName .
+			$action .
+			$formInstanceName .
+			$this->sessionToken
 		);
-		$this->addedTokens[$tokenId] = $this->tokens[$tokenId];
-		$this->preventOverflow();
 
 		return $tokenId;
 	}
@@ -145,40 +114,33 @@ abstract class t3lib_formprotection_Abstract {
 	 * Checks whether the token $tokenId is valid in the form $formName with
 	 * $formInstanceName.
 	 *
-	 * A token is valid if $tokenId, $formName and $formInstanceName match and
-	 * the token has not been used yet.
-	 *
-	 * Calling this function will mark the token $tokenId as invalud (if it
-	 * exists).
-	 *
-	 * So calling this function with the same parameters two times will return
-	 * FALSE the second time.
-	 *
 	 * @param string $tokenId
-	 *		a form token to check, may also be empty or utterly misformed
+	 *		a form token to check, may also be empty or utterly malformed
 	 * @param string $formName
 	 *		the name of the form to check, for example "tt_content",
-	 *		may also be empty or utterly misformed
+	 *		may also be empty or utterly malformed
 	 * @param string $action
 	 *		the action of the form to check, for example "edit",
-	 *		may also be empty or utterly misformed
+	 *		may also be empty or utterly malformed
 	 * @param string $formInstanceName
 	 *		the instance name of the form to check, for example "42" or "foo"
-	 *		or "31,42", may also be empty or utterly misformed
+	 *		or "31,42", may also be empty or utterly malformed
 	 *
 	 * @return boolean
 	 *		 TRUE if $tokenId, $formName, $action and $formInstanceName match
-	 *		 and the token has not been used yet, FALSE otherwise
 	 */
 	public function validateToken(
 		$tokenId, $formName, $action = '', $formInstanceName = ''
 	) {
-		if (isset($this->tokens[$tokenId])) {
-			$token = $this->tokens[$tokenId];
-			$isValid = ($token['formName'] == $formName)
-					   && ($token['action'] == $action)
-					   && ($token['formInstanceName'] == $formInstanceName);
-			$this->dropToken($tokenId);
+		$validTokenId = t3lib_div::hmac(
+			(string)$formName .
+			(string)$action .
+			(string)$formInstanceName .
+			$this->sessionToken
+		);
+
+		if ((string)$tokenId === $validTokenId) {
+			$isValid = TRUE;
 		} else {
 			$isValid = FALSE;
 		}
@@ -191,7 +153,16 @@ abstract class t3lib_formprotection_Abstract {
 	}
 
 	/**
-	 * Creates or displayes an error message telling the user that the submitted
+	 * Generates the random token which is used in the hash for the form tokens.
+	 *
+	 * @return string
+	 */
+	protected function generateSessionToken() {
+		return bin2hex(t3lib_div::generateRandomBytes(32));
+	}
+
+	/**
+	 * Creates or displays an error message telling the user that the submitted
 	 * form token is invalid.
 	 *
 	 * This function may also be empty if the validation error should be handled
@@ -202,81 +173,21 @@ abstract class t3lib_formprotection_Abstract {
 	abstract protected function createValidationErrorMessage();
 
 	/**
-	 * Retrieves all saved tokens.
+	 * Retrieves the session token.
 	 *
-	 * @return array<arrray>
-	 *		 the saved tokens, will be empty if no tokens have been saved
+	 * @return string
+	 *		 the saved session token, will be empty if no token has been saved
 	 */
-	abstract protected function retrieveTokens();
+	abstract protected function retrieveSessionToken();
 
 	/**
-	 * Saves the tokens so that they can be used by a later incarnation of this
-	 * class.
+	 * Saves the session token so that it can be used by a later incarnation
+	 * of this class.
 	 *
+	 * @access private
 	 * @return void
 	 */
-	abstract public function persistTokens();
-
-	/**
-	 * Drops the token with the ID $tokenId.
-	 *
-	 * If there is no token with that ID, this function is a no-op.
-	 *
-	 * Note: This function does not persist the tokens.
-	 *
-	 * @param string $tokenId
-	 *		the 32-character ID of an existing token, must not be empty
-	 *
-	 * @return void
-	 */
-	protected function dropToken($tokenId) {
-		if (isset($this->tokens[$tokenId])) {
-			unset($this->tokens[$tokenId]);
-			$this->droppedTokenIds[] = $tokenId;
-		}
-	}
-
-	/**
-	 * Persisting of tokens is only required, if tokens are
-	 * deleted or added during this request.
-	 *
-	 * @return boolean
-	 */
-	protected function isPersistingRequired() {
-		return !empty($this->droppedTokenIds) || !empty($this->addedTokens);
-	}
-
-	/**
-	 * Reset the arrays of added or deleted tokens.
-	 *
-	 * @return void
-	 */
-	protected function resetPersistingRequiredStatus() {
-		$this->droppedTokenIds = array();
-		$this->addedTokens = array();
-	}
-
-	/**
-	 * Checks whether the number of current tokens still is at most
-	 * $this->maximumNumberOfTokens.
-	 *
-	 * If there are more tokens, the oldest tokens are removed until the number
-	 * of tokens is low enough.
-	 *
-	 * Note: This function does not persist the tokens.
-	 *
-	 * @return void
-	 */
-	protected function preventOverflow() {
-		if (empty($this->tokens)) {
-			return;
-		}
-
-		while (count($this->tokens) > $this->maximumNumberOfTokens) {
-			reset($this->tokens);
-			$this->dropToken(key($this->tokens));
-		}
-	}
+	abstract public function persistSessionToken();
 }
 
 ?>

@@ -3,6 +3,7 @@
  * Copyright notice
  *
  * (c) 2010-2011 Oliver Klee <typo3-coding@oliverklee.de>
+ * (c) 2010-2011 Helmut Hummel <helmut.hummel@typo3.org>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,9 +36,8 @@
  * matter; you only need it to get the form token for verifying it.
  *
  * <pre>
- * $formToken = t3lib_formprotection_Factory::get(
- *	 t3lib_formprotection_Factory::TYPE_BACK_END
- * )->generateToken(
+ * $formToken = t3lib_formprotection_Factory::get()
+ * 	->generateToken(
  *	 'BE user setup', 'edit'
  * );
  * $this->content .= '<input type="hidden" name="formToken" value="' .
@@ -53,35 +53,20 @@
  * For editing a tt_content record, the call could look like this:
  *
  * <pre>
- * $formToken = t3lib_formprotection_Factory::get(
- *	 t3lib_formprotection_Factory::TYPE_BACK_END
- * )->getFormProtection()->generateToken(
+ * $formToken = t3lib_formprotection_Factory::get()
+ * 	->getFormProtection()->generateToken(
  *	'tt_content', 'edit', $uid
  * );
  * </pre>
- *
- * At the end of the form, you need to persist the tokens. This makes sure that
- * generated tokens get saved, and also that removed tokens stay removed:
- *
- * <pre>
- * t3lib_formprotection_Factory::get(
- *	 t3lib_formprotection_Factory::TYPE_BACK_END
- * )->persistTokens();
- * </pre>
- *
- * In BE lists, it might be necessary to generate hundreds of tokens. So the
- * tokens do not get automatically persisted after creation for performance
- * reasons.
  *
  *
  * When processing the data that has been submitted by the form, you can check
  * that the form token is valid like this:
  *
  * <pre>
- * if ($dataHasBeenSubmitted && t3lib_formprotection_Factory::get(
- *		 t3lib_formprotection_Factory::TYPE_BACK_END
- *	 )->validateToken(
- *		 (string) t3lib_div::_POST('formToken'),
+ * if ($dataHasBeenSubmitted && t3lib_formprotection_Factory::get()
+ * 	->validateToken(
+ *		 t3lib_div::_POST('formToken'),
  *		 'BE user setup', 'edit
  *	 )
  * ) {
@@ -92,27 +77,14 @@
  * }
  * </pre>
  *
- * Note that validateToken invalidates the token with the token ID. So calling
- * validate with the same parameters two times in a row will always return FALSE
- * for the second call.
- *
- * It is important that the tokens get validated <em>before</em> the tokens are
- * persisted. This makes sure that the tokens that get invalidated by
- * validateToken cannot be used again.
  *
  * @package TYPO3
  * @subpackage t3lib
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Abstract {
-	/**
-	 * the maximum number of tokens that can exist at the same time
-	 *
-	 * @var integer
-	 */
-	protected $maximumNumberOfTokens = 20000;
-
 	/**
 	 * Keeps the instance of the user which existed during creation
 	 * of the object.
@@ -120,6 +92,14 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 * @var t3lib_beUserAuth
 	 */
 	protected $backendUser;
+
+	/**
+	 * Instance of the registry, which is used to permanently persist
+	 * the session token so that it can be restored during re-login.
+	 *
+	 * @var t3lib_Registry
+	 */
+	protected $registry;
 
 	/**
 	 * Only allow construction if we have a backend session
@@ -137,34 +117,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	}
 
 	/**
-	 * Overrule the method in the absract class, because we can drop the
-	 * whole locking procedure, which is done in persistTokens, if we
-	 * simply want to delete all tokens.
-	 *
-	 * @see t3lib/formprotection/t3lib_formprotection_Abstract::clean()
-	 */
-	public function clean() {
-		$this->tokens = array();
-		$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
-		$this->resetPersistingRequiredStatus();
-	}
-
-	/**
-	 * Override the abstract class to be able to strip out
-	 * the token id from the POST variable.
-	 *
-	 * @see t3lib/formprotection/t3lib_formprotection_Abstract::validateToken()
-	 */
-	public function validateToken(
-		$token, $formName, $action = '', $formInstanceName = ''
-	) {
-		list($tokenId, $_) = explode('-', (string)$token);
-
-		return parent::validateToken($tokenId, $formName, $action, $formInstanceName);
-	}
-
-	/**
-	 * Creates or displayes an error message telling the user that the submitted
+	 * Creates or displays an error message telling the user that the submitted
 	 * form token is invalid.
 	 *
 	 * @return void
@@ -183,35 +136,16 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	}
 
 	/**
-	 * Retrieves all saved tokens.
+	 * Retrieves the saved session token or generates a new one.
 	 *
 	 * @return array<array>
 	 *		 the saved tokens as, will be empty if no tokens have been saved
 	 */
-	protected function retrieveTokens() {
-		$tokens = $this->backendUser->getSessionData('formTokens');
-		if (!is_array($tokens)) {
-			$tokens = array();
-		}
-
-		return $tokens;
-	}
-
-	/**
-	 * It might be that two (or more) scripts are executed at the same time,
-	 * which would lead to a race condition, where both (all) scripts retrieve
-	 * the same tokens from the session, so the script that is executed
-	 * last will overwrite the tokens generated in the first scripts.
-	 * So before writing all tokens back to the session we need to get the
-	 * current tokens from the session again.
-	 *
-	 */
-	protected function updateTokens() {
-		$this->backendUser->user = $this->backendUser->fetchUserSession(TRUE);
-		$tokens = $this->retrieveTokens();
-		$this->tokens = array_merge($tokens, $this->addedTokens);
-		foreach ($this->droppedTokenIds as $tokenId) {
-			unset($this->tokens[$tokenId]);
+	protected function retrieveSessionToken() {
+		$this->sessionToken = $this->backendUser->getSessionData('formSessionToken');
+		if (empty($this->sessionToken)) {
+			$this->sessionToken = $this->generateSessionToken();
+			$this->persistSessionToken();
 		}
 	}
 
@@ -221,52 +155,70 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 	 *
 	 * @return void
 	 */
-	public function persistTokens() {
-		if ($this->isPersistingRequired()) {
-			$lockObject = $this->acquireLock();
-
-			$this->updateTokens();
-			$this->backendUser->setAndSaveSessionData('formTokens', $this->tokens);
-			$this->resetPersistingRequiredStatus();
-
-			$this->releaseLock($lockObject);
-		}
+	public function persistSessionToken() {
+		$this->backendUser->setAndSaveSessionData('formSessionToken', $this->sessionToken);
 	}
 
 	/**
-	 * Tries to acquire a lock to not allow a race condition.
+	 * Sets the session token for the user from the registry
+	 * and returns it additionally.
 	 *
-	 * @return t3lib_lock|FALSE The lock object or FALSE
+	 * @access private
+	 * @return string
 	 */
-	protected function acquireLock() {
-		$identifier = 'persistTokens' . $this->backendUser->id;
-		try {
-			/** @var t3lib_lock $lockObject */
-			$lockObject = t3lib_div::makeInstance('t3lib_lock', $identifier, 'simple');
-			$lockObject->setEnableLogging(FALSE);
-			$success = $lockObject->acquire();
-		} catch (Exception $e) {
-			t3lib_div::sysLog('Locking: Failed to acquire lock: '.$e->getMessage(), 't3lib_formprotection_BackendFormProtection', t3lib_div::SYSLOG_SEVERITY_ERROR);
-			$success = FALSE;	// If locking fails, return with false and continue without locking
+	public function setSessionTokenFromRegistry() {
+		$this->sessionToken = $this->getRegistry()
+				->get('core', 'formSessionToken:' . $this->backendUser->user['uid']);
+		if (empty($this->sessionToken)) {
+			throw new UnexpectedValueException('Failed to restore the session token from the registry.', 1301827270);
 		}
-
-		return $success ? $lockObject : FALSE;
+		return $this->sessionToken;
 	}
 
 	/**
-	 * Releases the lock if it was acquired before.
+	 * Stores the session token in the registry to have it
+	 * available during re-login of the user.
 	 *
-	 * @return boolean
+	 * @access private
+	 * @return void
 	 */
-	protected function releaseLock(&$lockObject) {
-		$success = FALSE;
-			// If lock object is set and was acquired, release it:
-		if (is_object($lockObject) && $lockObject instanceof t3lib_lock && $lockObject->getLockStatus()) {
-			$success = $lockObject->release();
-			$lockObject = NULL;
-		}
+	public function storeSessionTokenInRegistry() {
+		$this->getRegistry()
+				->set('core', 'formSessionToken:' . $this->backendUser->user['uid'], $this->sessionToken);
+	}
 
-		return $success;
+	/**
+	 * Removes the session token for the user from the registry.
+	 *
+	 * @access private
+	 * @return string
+	 */
+	public function removeSessionTokenFromRegistry() {
+		return $this->getRegistry()
+				->remove('core', 'formSessionToken:' . $this->backendUser->user['uid']);
+	}
+
+	/**
+	 * Returns the instance of the registry.
+	 *
+	 * @return t3lib_Registry
+	 */
+	protected function getRegistry() {
+		if (!$this->registry instanceof t3lib_Registry) {
+			$this->registry = t3lib_div::makeInstance('t3lib_Registry');
+		}
+		return $this->registry;
+	}
+
+	/**
+	 * Inject the registry. Currently only used in unit tests.
+	 *
+	 * @access private
+	 * @param  t3lib_Registry $registry
+	 * @return void
+	 */
+	public function injectRegistry(t3lib_Registry $registry) {
+		$this->registry = $registry;
 	}
 
 	/**
