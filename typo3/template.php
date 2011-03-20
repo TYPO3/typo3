@@ -906,7 +906,6 @@ $str.=$this->docBodyTagBegin().
 
 <!-- Wrapping DIV-section for whole page END -->
 </div>':'') . $this->endOfPageJsBlock ;
-			t3lib_formprotection_Factory::get()->persistTokens();
 		}
 
 

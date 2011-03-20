@@ -145,6 +145,8 @@ class SC_mod_user_setup_index {
 
 	/**
 	 * Getter for the form protection instance.
+	 *
+	 * @return t3lib_formprotection_BackendFormProtection
 	 */
 	public function getFormProtection() {
 		return $this->formProtection;
@@ -1033,6 +1035,4 @@ $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
-$SOBE->getFormProtection()->persistTokens();
 ?>

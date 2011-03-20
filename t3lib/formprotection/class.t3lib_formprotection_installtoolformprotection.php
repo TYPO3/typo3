@@ -47,20 +47,12 @@
  * possible. For different forms (e.g. the password change and editing a the
  * configuration), those values should be different.
  *
- * At the end of the form, you need to persist the tokens. This makes sure that
- * generated tokens get saved, and also that removed tokens stay removed:
- *
- * <pre>
- * $this->formProtection()->persistTokens();
- * </pre>
- *
- *
  * When processing the data that has been submitted by the form, you can check
  * that the form token is valid like this:
  *
  * <pre>
  * if ($dataHasBeenSubmitted && $this->formProtection()->validateToken(
- *	 (string) $_POST['formToken'],
+ *	 $_POST['formToken'],
  *	 'installToolPassword',
  *	 'change'
  * ) {
@@ -71,13 +63,6 @@
  * }
  * </pre>
  *
- * Note that validateToken invalidates the token with the token ID. So calling
- * validate with the same parameters two times in a row will always return FALSE
- * for the second call.
- *
- * It is important that the tokens get validated <em>before</em> the tokens are
- * persisted. This makes sure that the tokens that get invalidated by
- * validateToken cannot be used again.
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -85,13 +70,6 @@
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtection_Abstract {
-	/**
-	 * the maximum number of tokens that can exist at the same time
-	 *
-	 * @var integer
-	 */
-	protected $maximumNumberOfTokens = 100;
-
 	/**
 	 * an instance of the install tool used for displaying messages
 	 *
@@ -134,20 +112,19 @@ class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtectio
 	}
 
 	/**
-	 * Retrieves all saved tokens.
+	 * Retrieves or generates the session token.
 	 *
-	 * @return array<array>
-	 *		 the saved tokens, will be empty if no tokens have been saved
+	 * @return void
 	 */
-	protected function retrieveTokens() {
-		if (isset($_SESSION['installToolFormTokens'])
-			&& is_array($_SESSION['installToolFormTokens'])
+	protected function retrieveSessionToken() {
+		if (isset($_SESSION['installToolFormToken'])
+			&& !empty($_SESSION['installToolFormToken'])
 		) {
-			$tokens = $_SESSION['installToolFormTokens'];
+			$this->sessionToken = $_SESSION['installToolFormToken'];
 		} else {
-			$tokens = array();
+			$this->sessionToken = $this->generateSessionToken();
+			$this->persistSessionToken();
 		}
-		return $tokens;
 	}
 
 	/**
@@ -156,8 +133,8 @@ class t3lib_formprotection_InstallToolFormProtection extends t3lib_formProtectio
 	 *
 	 * @return void
 	 */
-	public function persistTokens() {
-		$_SESSION['installToolFormTokens'] = $this->tokens;
+	public function persistSessionToken() {
+		$_SESSION['installToolFormToken'] = $this->sessionToken;
 	}
 }
 
