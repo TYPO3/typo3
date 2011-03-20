@@ -1033,6 +1033,4 @@ $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
-$SOBE->getFormProtection()->persistTokens();
 ?>

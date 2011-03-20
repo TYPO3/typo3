@@ -68,6 +68,7 @@ class SC_logout {
 		global $BE_USER;
 
 		$BE_USER->writelog(255,2,0,1,'User %s logged out from TYPO3 Backend',Array($BE_USER->user['username']));	// Logout written to log
+		t3lib_formProtection_Factory::get()->removeSessionTokenFromRegistry();
 		$BE_USER->logoff();
 		$redirect = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect'));
 		$redirectUrl = $redirect ? $redirect : 'index.php';
