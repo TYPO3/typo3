@@ -1662,7 +1662,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 			// include extCore
-		if ($this->addExtCore) {
+		if ($this->addExtCore && !$this->addExtJS) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
 														   $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
 					'" type="text/javascript"></script>' . LF;
