@@ -71,6 +71,26 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 
 	/**
 	 * @test
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function setValueUsesNullAsIs() {
+		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('transformValue'), array('dummy', 'ArrayObject'));
+		$argument->expects($this->never())->method('transformValue');
+		$argument->setValue(NULL);
+	}
+
+	/**
+	 * @test
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	*/
+	public function setValueUsesMatchingInstanceAsIs() {
+		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('transformValue'), array('dummy', 'ArrayObject'));
+		$argument->expects($this->never())->method('transformValue');
+		$argument->setValue(new ArrayObject());
+	}
+
+	/**
+	 * @test
 	 */
 	public function setValueTriesToConvertAnUidIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
 		$object = new StdClass();
