@@ -52,7 +52,7 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	 * @var array
 	 */
 	private $constructorArguments;
-	
+
 	/**
 	 * All setter injections in the format
 	 * 	array (<nameOfMethod> => <classNameToInject> )
@@ -62,17 +62,35 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	private $injectMethods;
 
 	/**
+	 * Indicates if the class is a singleton or not.
+	 *
+	 * @var boolean
+	 */
+	private $isSingleton = false;
+
+	/**
+	 * Indicates if the class has the method initializeObject
+	 *
+	 * @var boolean
+	 */
+	private $isInitializeable = false;
+
+	/**
 	 * 
 	 * @param string $className
 	 * @param array $constructorArguments
 	 * @param array $injectMethods
+	 * @param boolean $isSingleton
+	 * @param boolean $isInitializeable
 	 */
-	public function __construct($className, array $constructorArguments, array $injectMethods) {
+	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = false, $isInitializeable = false) {
 		$this->className = $className;
 		$this->constructorArguments = $constructorArguments;
 		$this->injectMethods = $injectMethods;
+		$this->isSingleton = $isSingleton;
+		$this->isInitializeable = $isInitializeable;
 	}
-	
+
 	/**
 	 * @return the $className
 	 */
@@ -88,12 +106,32 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 	/**
+	 * Returns an array with the inject methods.
+	 *
 	 * @return the $injectMethods
 	 */
 	public function getInjectMethods() {
 		return $this->injectMethods;
 	}
-	
+
+	/**
+	 * Returns if the class is a singleton or not.
+	 *
+	 * @return boolean
+	 */
+	public function getIsSingleton() {
+		return $this->isSingleton;
+	}
+
+	/**
+	 * Returns if the class is initializeable with initializeObject.
+	 *
+	 * @return boolean
+	 */
+	public function getIsInitializeable() {
+		return $this->isInitializeable;
+	}
+
 	/**
 	 * @return the $injectMethods
 	 */

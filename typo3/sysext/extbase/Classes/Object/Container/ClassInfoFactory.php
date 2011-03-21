@@ -46,7 +46,9 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 		}
 		$constructorArguments = $this->getConstructorArguments($reflectedClass);
 		$injectMethods = $this->getInjectMethods($reflectedClass);
-		return new Tx_Extbase_Object_Container_ClassInfo($className, $constructorArguments, $injectMethods);
+		$isSingleton = $this->getIsSingleton($className);
+		$isInitializeable = $this->getIsInitializeable($className);
+		return new Tx_Extbase_Object_Container_ClassInfo($className, $constructorArguments, $injectMethods, $isSingleton, $isInitializeable);
 	}
 
 	/**
@@ -106,5 +108,26 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * This method is used to determin if a class is a singleton or not.
+	 *
+	 * @param string $classname
+	 * @return boolean
+	 */
+	private function getIsSingleton($classname) {
+		return in_array('t3lib_Singleton', class_implements($classname));
+	}
+
+	/**
+	 * This method is used to determine of the object is initializeable with the
+	 * method initializeObject.
+	 *
+	 * @param string $classname
+	 * @return boolean
+	 */
+	private function getIsInitializeable($classname) {
+		return method_exists($classname, 'initializeObject');
 	}
 }
