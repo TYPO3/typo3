@@ -1661,8 +1661,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
 
-			// include extCore
-		if ($this->addExtCore) {
+			// include extCore, but only if ExtJS is not included
+		if ($this->addExtCore && !$this->addExtJS) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
 														   $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
 					'" type="text/javascript"></script>' . LF;
