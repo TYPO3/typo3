@@ -674,7 +674,8 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				$modules = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] : '';
 				$pageRenderer->loadScriptaculous($modules);
 			}
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore']) {
+			/* Only load ExtCore if ExtJS is not requested */
+			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore'] && !($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
 				$pageRenderer->loadExtCore();
 				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore.']['debug']) {
 					$pageRenderer->enableExtCoreDebug();
