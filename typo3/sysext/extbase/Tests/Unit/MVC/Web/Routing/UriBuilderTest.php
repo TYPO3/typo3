@@ -178,7 +178,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	/**
 	 * @test
 	 */
-	public function uriForDisablesCacheHashForNonCacheableActions() {
+	public function uriForDoesNotDisableCacheHashForNonCacheableActions() {
 		$mockConfiguration = array(
 			'controllerConfiguration' => array(
 				'SomeController' => array(
@@ -192,9 +192,8 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
 		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
 
-		$this->assertTrue($this->uriBuilder->getUseCacheHash());
 		$this->uriBuilder->uriFor('someNonCacheableAction', array(), 'SomeController', 'SomeExtension');
-		$this->assertFalse($this->uriBuilder->getUseCacheHash());
+		$this->assertTrue($this->uriBuilder->getUseCacheHash());
 
 		t3lib_div::purgeInstances();
 	}
