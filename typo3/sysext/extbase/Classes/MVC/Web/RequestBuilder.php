@@ -82,6 +82,11 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $extensionService;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
@@ -96,6 +101,14 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -128,7 +141,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 */
 	public function build() {
 		$this->loadDefaultValues();
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($this->extensionName, $this->pluginName);
+		$pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
 		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {

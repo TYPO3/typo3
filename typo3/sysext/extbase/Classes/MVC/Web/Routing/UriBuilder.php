@@ -28,6 +28,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $extensionService;
+
+	/**
 	 * An instance of tslib_cObj
 	 *
 	 * @var tslib_cObj
@@ -111,6 +116,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -448,13 +461,13 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			$extensionName = $this->request->getControllerExtensionName();
 		}
 		if ($pluginName === NULL && TYPO3_MODE === 'FE') {
-			$pluginName = Tx_Extbase_Utility_Extension::getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action']);
+			$pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action']);
 		}
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
 		if ($this->targetPageUid === NULL && TYPO3_MODE === 'FE') {
-			$this->targetPageUid = Tx_Extbase_Utility_Extension::getTargetPidByPlugin($extensionName, $pluginName);
+			$this->targetPageUid = $this->extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 		}
 		if ($this->format !== '') {
 			$controllerArguments['format'] = $this->format;
@@ -462,7 +475,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($this->argumentPrefix !== NULL) {
 			$prefixedControllerArguments = array($this->argumentPrefix => $controllerArguments);
 		} else {
-			$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
+			$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);

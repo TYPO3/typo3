@@ -28,12 +28,28 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $ID:$
  */
 class Tx_Extbase_Utility_Extension {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
+
+	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected static $extensionService = NULL;
+
+	/**
+	 * @return void
+	 */
+	static protected function getExtensionService() {
+		if (self::$extensionService === NULL) {
+			require_once t3lib_extMgm::extPath('extbase', 'Classes/Service/ExtensionService.php');
+			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			self::$extensionService = $objectManager->get('Tx_Extbase_Service_ExtensionService');
+		}
+		return self::$extensionService;
+	}
 
 	/**
 	 * Add auto-generated TypoScript to configure the Extbase Dispatcher.
@@ -211,7 +227,7 @@ tt_content.' . $pluginSignature . ' {
 		);
 
 		if ((strlen($mainModuleName) > 0) && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
-			$mainModuleName = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($mainModuleName);
+			$mainModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($mainModuleName);
 		} else {
 			$mainModuleName = (strlen($mainModuleName) > 0) ? $mainModuleName : 'web';
 		}
@@ -226,7 +242,7 @@ tt_content.' . $pluginSignature . ' {
 		$moduleSignature = $mainModuleName;
 
 		if ((strlen($subModuleName) > 0)) {
-			$subModuleName = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($subModuleName);
+			$subModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($subModuleName);
 			$moduleSignature .= '_' . $subModuleName;
 		}
 
@@ -259,6 +275,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
 	static public function convertCamelCaseToLowerCaseUnderscored($string) {
+		t3lib_div::logDeprecatedFunction();
 		return t3lib_div::camelCaseToLowerCaseUnderscored($string);
 	}
 
@@ -272,6 +289,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
 	static public function convertUnderscoredToLowerCamelCase($string) {
+		t3lib_div::logDeprecatedFunction();
 		return t3lib_div::underscoredToLowerCamelCase($string);
 	}
 
@@ -285,6 +303,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
 	 */
 	static public function convertLowerUnderscoreToUpperCamelCase($string) {
+		t3lib_div::logDeprecatedFunction();
 		return t3lib_div::underscoredToUpperCamelCase($string);
 	}
 
@@ -295,8 +314,10 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	string	$extensionPath	full path of the extension
 	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
 	 * @return	string	HTML string which should be outputted
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
 	 */
 	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
+		t3lib_div::logDeprecatedFunction();
 		$classNameToFileMapping = array();
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionKey)));
 		$errors = self::buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
@@ -328,6 +349,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	array	$classNameToFileMapping class name to file mapping
 	 * @param	string	$globalPrefix	Global prefix which is prepended to all code.
 	 * @return	string	The full PHP string
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
 	 */
 	protected function generateAutoloadPHPFileData($classNameToFileMapping, $globalPrefix = '') {
 		$output = '<?php' . PHP_EOL;
@@ -352,6 +374,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	string	$excludeRegularExpression	Exclude regular expression, to exclude certain files from being processed
 	 * @param	string	$valueWrap	Wrap for the file name
 	 * @return void
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
 	 */
 	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 //		if (file_exists($path . 'Classes/')) {
@@ -373,6 +396,7 @@ tt_content.' . $pluginSignature . ' {
 	 *
 	 * @param	string	$filePath	File path (absolute)
 	 * @return	array	Class names
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
 	 */
 	static protected function extractClassNames($filePath) {
 		$fileContent = php_strip_whitespace($filePath);
@@ -420,6 +444,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	array	$wantedToken	the tokens to be found
 	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
 	 * @return	mixed
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
 	 */
 	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
@@ -454,17 +479,12 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $extensionName name of the extension to retrieve the namespace for
 	 * @param string $pluginName name of the plugin to retrieve the namespace for
 	 * @return string plugin namespace
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNamespace($extensionName, $pluginName) {
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
-		$defaultPluginNamespace = 'tx_' . $pluginSignature;
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
-			return $defaultPluginNamespace;
-		}
-		return $frameworkConfiguration['view']['pluginNamespace'];
+		t3lib_div::logDeprecatedFunction();
+		$extensionService = self::getExtensionService();
+		return $extensionService->getPluginNamespace($extensionName, $pluginName);
 	}
 
 	/**
@@ -478,39 +498,12 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $controllerName name of the target controller (UpperCamelCase)
 	 * @param string $actionName name of the target action (lowerCamelCase)
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			// check, whether the current plugin is configured to handle the action
-		if ($extensionName === $frameworkConfiguration['extensionName']) {
-			if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
-				&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
-				return $frameworkConfiguration['pluginName'];
-			}
-		}
-		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'])) {
-			return NULL;
-		}
-		$pluginNames = array();
-		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] as $pluginName => $pluginConfiguration) {
-			if (!is_array($pluginConfiguration['controllers'])) {
-				continue;
-			}
-			foreach($pluginConfiguration['controllers'] as $pluginControllerName => $pluginControllerActions) {
-				if (strtolower($pluginControllerName) !== strtolower($controllerName)) {
-					continue;
-				}
-				if (in_array($actionName, $pluginControllerActions['actions'])) {
-					$pluginNames[] = $pluginName;
-				}
-			}
-		}
-		if (count($pluginNames) > 1) {
-			throw new Tx_Extbase_Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument' , 1280825466);
-		}
-		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
+		t3lib_div::logDeprecatedFunction();
+		$extensionService = self::getExtensionService();
+		return $extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
 	}
 
 	/**
@@ -521,19 +514,12 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $controllerName Name of the target controller
 	 * @param string $actionName Name of the action to be called
 	 * @return boolean TRUE if the specified plugin action is cacheable, otherwise FALSE
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-
-		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
-			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])
-			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
-			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
-				return FALSE;
-		}
-		return TRUE;
+		t3lib_div::logDeprecatedFunction();
+		$extensionService = self::getExtensionService();
+		return $extensionService->isActionCacheable($extensionName, $pluginName, $controllerName, $actionName);
 	}
 
 	/**
@@ -546,30 +532,12 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $extensionName name of the extension to retrieve the target PID for
 	 * @param string $pluginName name of the plugin to retrieve the target PID for
 	 * @return integer uid of the target page or NULL if target page could not be determined
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getTargetPidByPlugin($extensionName, $pluginName) {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
-			return NULL;
-		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
-		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'pid',
-				'tt_content',
-				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
-				'',
-				'',
-				2
-			);
-			if (count($pages) > 1) {
-				throw new Tx_Extbase_Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id' , 1280773643);
-			}
-			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
-		}
-		return (integer)$frameworkConfiguration['view']['defaultPid'];
+		t3lib_div::logDeprecatedFunction();
+		$extensionService = self::getExtensionService();
+		return $extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 	}
 }
 

@@ -37,18 +37,12 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 	protected $typo3ConfVars = array();
 
 	/**
-	 * @var t3lib_DB
-	 */
-	protected $typo3DbBackup;
-
-	/**
-	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE']
+	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE']
 	 */
 	protected $tsfeBackup;
 
 	public function setUp() {
 		$this->typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'];
-		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('fullQuoteStr', 'exec_SELECTgetRows'));
 		$this->tsfeBackup = $GLOBALS['TSFE'];
 		if (!isset($GLOBALS['TSFE']->tmpl)) {
@@ -83,47 +77,11 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 				'pluginName' => 'ThirdPlugin',
 			),
 		);
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'] = array(
-			'ExtensionName' => array(
-				'plugins' => array(
-					'SomePlugin' => array(
-						'controllers' => array(
-							'ControllerName' => array(
-								'actions' => array('index', 'otherAction')
-							),
-						),
-					),
-					'ThirdPlugin' => array(
-						'controllers' => array(
-							'ControllerName' => array(
-								'actions' => array('otherAction', 'thirdAction')
-							),
-						),
-					),
-				),
-			),
-			'SomeOtherExtensionName' => array(
-				'plugins' => array(
-					'SecondPlugin' => array(
-						'controllers' => array(
-							'ControllerName' => array(
-								'actions' => array('index', 'otherAction')
-							),
-							'SecondControllerName' => array(
-								'actions' => array('someAction', 'someOtherAction'),
-								'nonCacheableActions' => array('someOtherAction')
-							)
-						),
-					),
-				),
-			),
-		);
 	}
 
 	public function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
-		t3lib_div::purgeInstances();
 	}
 
 	/**
@@ -391,247 +349,6 @@ plugin.tx_myextension {
 			'pluginType' => 'list_type'
 		);
 		$this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
-	}
-
-	/**
-	 * DataProvider for getPluginNamespaceByPluginSignatureTests()
-	 *
-	 * @return array
-	 */
-	public function getPluginNamespaceDataProvider() {
-		return array(
-			array('SomeExtension', 'SomePlugin', 'tx_someextension_someplugin'),
-			array('NonExistingExtension', 'SomePlugin', 'tx_nonexistingextension_someplugin'),
-			array('Invalid', '', 'tx_invalid_'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getPluginNamespaceDataProvider
-	 */
-	public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult) {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array()));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$actualResult = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
-		$this->assertEquals($expectedResult, $actualResult, 'Failing for extension: "' . $extensionName . '", plugin: "' . $pluginName . '"');
-	}
-
-	/**
-	 * @test
-	 */
-	public function pluginNamespaceCanBeOverridden() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$expectedResult = 'overridden_plugin_namespace';
-		$actualResult = Tx_Extbase_Utility_Extension::getPluginNamespace('SomeExtension', 'SomePlugin');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * DataProvider for getPluginNameByActionTests()
-	 *
-	 * @return array
-	 */
-	public function getPluginNameByActionDataProvider() {
-		return array(
-			array('ExtensionName', 'ControllerName', 'someNonExistingAction', NULL),
-			array('ExtensionName', 'ControllerName', 'index', 'SomePlugin'),
-			array('ExtensionName', 'ControllerName', 'thirdAction', 'ThirdPlugin'),
-			array('eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'thirdAction', NULL),
-			array('eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'ThIrDaCtIoN', NULL),
-			array('SomeOtherExtensionName', 'ControllerName', 'otherAction', 'SecondPlugin'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getPluginNameByActionDataProvider
-	 */
-	public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult) {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$actualResult = Tx_Extbase_Utility_Extension::getPluginNameByAction($extensionName, $controllerName, $actionName);
-		$this->assertEquals($expectedResult, $actualResult, 'Failing for $extensionName: "' . $extensionName . '", $controllerName: "' . $controllerName . '", $actionName: "' . $actionName . '" - ');
-	}
-
-	/**
-	 * @test
-	 * @expectedException Tx_Extbase_Exception
-	 */
-	public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		Tx_Extbase_Utility_Extension::getPluginNameByAction('ExtensionName', 'ControllerName', 'otherAction');
-	}
-
-	/**
-	 * @test
-	 */
-	public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => array('ControllerName' => array('actions' => array('otherAction'))))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$actualResult = Tx_Extbase_Utility_Extension::getPluginNameByAction('CurrentExtension', 'ControllerName', 'otherAction');
-		$expectedResult = 'CurrentPlugin';
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isActionCacheableReturnsTrueByDefault() {
-		$mockConfiguration = array();
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($mockConfiguration));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$actualResult = Tx_Extbase_Utility_Extension::isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
-		$this->assertTrue($actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isActionCacheableReturnsFalseIfActionIsNotCacheable() {
-		$mockConfiguration = array(
-			'controllerConfiguration' => array(
-				'SomeController' => array(
-					'nonCacheableActions' => array('someAction')
-				)
-			)
-		);
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($mockConfiguration));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$actualResult = Tx_Extbase_Utility_Extension::isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
-		$this->assertFalse($actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(NULL));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'PluginName'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPidByPluginSignatureReturnsNullIfDefaultPidIsZero() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 0))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'PluginName'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPidByPluginSignatureReturnsTheConfiguredDefaultPid() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 123))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$expectedResult = 123;
-		$actualResult = Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'SomePlugin');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$pluginSignature = 'extensionname_someplugin';
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
-		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->with('tt_content')->will($this->returnValue(' AND enable_fields'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($pluginSignature, 'tt_content')->will($this->returnValue('"pluginSignature"'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with(
-			'pid',
-			'tt_content',
-			'list_type="pluginSignature" AND CType="list" AND enable_fields',
-			'',
-			''
-		)->will($this->returnValue(array(array('pid' => '321'))));
-		$expectedResult = 321;
-		$actualResult = Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'SomePlugin');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
-		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array()));
-		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'SomePlugin'));
-	}
-
-	/**
-	 * @test
-	 * @expectedException Tx_Extbase_Exception
-	 */
-	public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound() {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
-		$mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_Configuration_ConfigurationManagerInterface')->will($this->returnValue($mockConfigurationManager));
-		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $mockObjectManager);
-
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
-		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array(array('pid' => 123), array('pid' => 124))));
-		Tx_Extbase_Utility_Extension::getTargetPidByPlugin('ExtensionName', 'SomePlugin');
 	}
 
 }

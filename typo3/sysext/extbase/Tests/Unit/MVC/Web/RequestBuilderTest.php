@@ -48,6 +48,11 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	protected $mockObjectManager;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $mockExtensionService;
+
+	/**
 	 * @var Tx_Extbase_MVC_Web_Request
 	 */
 	protected $mockRequest;
@@ -90,6 +95,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->mockExtensionService = $this->getMock('Tx_Extbase_Service_ExtensionService');
 
 		$this->getBackup = $_GET;
 		$this->postBackup = $_POST;
@@ -105,6 +111,10 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 		$this->mockObjectManager->expects($this->any())->method('create')->with('Tx_Extbase_MVC_Web_Request')->will($this->returnValue($this->mockRequest));
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
+
+		$pluginNamespace = 'tx_' . strtolower($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']);
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
 	}
 
 	public function tearDown() {
@@ -211,6 +221,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
 		$this->requestBuilder->build();
 	}
 
@@ -222,6 +233,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		unset($this->configuration['controllerConfiguration']);
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
 		$this->requestBuilder->build();
 	}
 
@@ -233,6 +245,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->configuration['controllerConfiguration']['TheFirstController'] = array();
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
 		$this->requestBuilder->build();
 	}
 
