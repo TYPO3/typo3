@@ -2701,6 +2701,9 @@ class t3lib_TCEmain {
 			}
 		}
 
+		if ($this->isOuterMostInstance()) {
+			$this->resetNestedElementCalls();
+		}
 	}
 
 
@@ -3101,37 +3104,60 @@ class t3lib_TCEmain {
 		$value = $this->copyRecord_procFilesRefs($conf, $uid, $value);
 		$inlineSubType = $this->getInlineFieldType($conf);
 
+			// Get the localization mode for the current (parent) record (keep|select):
+		$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $field);
+
 			// Register if there are references to take care of or MM is used on an inline field (no change to value):
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-			$localizeReferences = (isset($conf['foreign_table']) && t3lib_BEfunc::isTableLocalizable($conf['foreign_table']) && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization']);
-			if ($conf['MM'] || $language > 0 && $localizeReferences) {
-				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/** @var $dbAnalysis t3lib_loadDBGroup */
-				$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
-				if (!$conf['MM']) {
-						// Localize referenced records of select fields:
-					foreach ($dbAnalysis->itemArray as $index => $item) {
-							// Since select fields can reference many records, check whether there's already a localization:
-						$recordLocalization = t3lib_BEfunc::getRecordLocalization($item['table'], $item['id'], $language);
-						if (!$recordLocalization) {
-							$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
-						} else {
-							$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
-						}
+
+			$mmTable = (isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '');
+			$localizeForeignTable = (isset($conf['foreign_table']) && t3lib_BEfunc::isTableLocalizable($conf['foreign_table']));
+			$localizeReferences = ($localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization']);
+			$localizeChildren = ($localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']);
+
+			/** @var $dbAnalysis t3lib_loadDBGroup */
+			$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
+
+				// Localize referenced records of select fields:
+			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
+				foreach ($dbAnalysis->itemArray as $index => $item) {
+						// Since select fields can reference many records, check whether there's already a localization:
+					$recordLocalization = t3lib_BEfunc::getRecordLocalization($item['table'], $item['id'], $language);
+					if ($recordLocalization) {
+						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
+						$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
 					}
 				}
 				$value = implode(',', $dbAnalysis->getValueArray($prependName));
+
+				// If IRRE MM references are not followed on localization, use at least the existing ones:
+			} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
+				foreach ($dbAnalysis->itemArray as $index => $item) {
+						// Since select fields can reference many records, check whether there's already a localization:
+					$recordLocalization = t3lib_BEfunc::getRecordLocalization($item['table'], $item['id'], $language);
+					if ($recordLocalization) {
+						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
+						unset($dbAnalysis->itemArray[$index]);
+					}
+				}
+				$value = implode(',', $dbAnalysis->getValueArray($prependName));
+
+				// Just ensure that the references are correct by using the existing ones:
+			} elseif ($mmTable) {
+				$value = implode(',', $dbAnalysis->getValueArray($prependName));
 			}
+
 			if ($value) { // Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
 				$this->registerDBList[$table][$uid][$field] = $value;
 			}
 
 			// If another inline subtype is used (comma-separated-values or the foreign_field property):
 		} elseif ($inlineSubType !== FALSE) {
-				// Get the localization mode for the current (parent) record (keep|select|all):
-			$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $field);
 				// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
 			if ($language > 0 && $localizationMode == 'keep') {
 				$value = ($inlineSubType == 'field' ? 0 : '');
@@ -3759,7 +3785,8 @@ class t3lib_TCEmain {
 		$newId = FALSE;
 		$uid = intval($uid);
 
-		if ($GLOBALS['TCA'][$table] && $uid) {
+		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
+			$this->registerNestedElementCall($table, $uid, 'localize');
 			t3lib_div::loadTCA($table);
 
 			if (($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
@@ -3907,19 +3934,20 @@ class t3lib_TCEmain {
 
 					if ($inlineSubType !== FALSE) {
 						$removeArray = array();
+						$mmTable = ($inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '');
 							// Fetch children from original language parent:
 						/** @var $dbAnalysisOriginal t3lib_loadDBGroup */
 						$dbAnalysisOriginal = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, '', $transOrigRecord['uid'], $table, $config);
+						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
 						$elementsOriginal = array();
 						foreach ($dbAnalysisOriginal->itemArray as $item) {
 							$elementsOriginal[$item['id']] = $item;
 						}
 						unset($dbAnalysisOriginal);
 							// Fetch children from current localized parent:
-							// @var $dbAnalysisCurrent t3lib_loadDBGroup
+						/** @var $dbAnalysisCurrent t3lib_loadDBGroup */
 						$dbAnalysisCurrent = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, '', $id, $table, $config);
+						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
 							// Perform synchronization: Possibly removal of already localized records:
 						if ($type == 'synchronize') {
 							foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
@@ -3963,6 +3991,9 @@ class t3lib_TCEmain {
 							$updateFields = array($field => $value);
 						} elseif ($inlineSubType == 'field') {
 							$dbAnalysisCurrent->writeForeignField($config, $id);
+							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
+						} elseif ($inlineSubType == 'mm') {
+							$dbAnalysisCurrent->writeMM($config['MM'], $id);
 							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
 						}
 							// Update field referencing to child records of localized parent record:
@@ -6434,18 +6465,20 @@ class t3lib_TCEmain {
 	 * @return	mixed		string: inline subtype (field|mm|list), boolean: FALSE
 	 */
 	function getInlineFieldType($conf) {
-		if ($conf['type'] == 'inline' && $conf['foreign_table']) {
-			if ($conf['foreign_field']) {
-				return 'field';
-			} // the reference to the parent is stored in a pointer field in the child record
-			elseif ($conf['MM'])
-			{
-				return 'mm';
-			} // regular MM intermediate table is used to store data
-			else
-			{
-				return 'list';
-			} // an item list (separated by comma) is stored (like select type is doing)
+		if ($conf['type'] == 'inline') {
+			if ($conf['foreign_table']) {
+				if ($conf['foreign_field']) {
+					return 'field';
+				} // the reference to the parent is stored in a pointer field in the child record
+				elseif ($conf['MM'])
+				{
+					return 'mm';
+				} // regular MM intermediate table is used to store data
+				else
+				{
+					return 'list';
+				} // an item list (separated by comma) is stored (like select type is doing)
+			}
 		}
 		return FALSE;
 	}
@@ -7149,6 +7182,46 @@ class t3lib_TCEmain {
 		}
 
 		return $GLOBALS['typo3CacheManager']->getCache($cacheIdentifier);
+	}
+
+	/**
+	 * Determines nested element calls.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @param string $identifier Name of the action to be checked
+	 * @return boolean
+	 */
+	protected function isNestedElementCallRegistered($table, $id, $identifier) {
+		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		return isset($nestedElementCalls[$identifier][$table][$id]);
+	}
+
+	/**
+	 * Registers nested elements calls.
+	 * This is used to track nested calls (e.g. for following m:n relations).
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @param string $identifier Name of the action to be tracked
+	 * @return void
+	 */
+	protected function registerNestedElementCall($table, $id, $identifier) {
+		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		$nestedElementCalls[$identifier][$table][$id] = TRUE;
+		$this->getMemoryCache()->set(
+			'nestedElementCalls',
+			$nestedElementCalls
+		);
+	}
+
+	/**
+	 * Resets the nested element calls.
+	 *
+	 * @return void
+	 */
+	protected function resetNestedElementCalls() {
+		$this->getMemoryCache()->remove('nestedElementCalls');
 	}
 
 	/**
