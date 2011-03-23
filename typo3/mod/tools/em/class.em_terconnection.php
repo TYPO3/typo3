@@ -311,7 +311,12 @@ class SC_mod_tools_em_terconnection {
 		}
 
 		$soap = t3lib_div::makeInstance('em_soap');
-		$soap->init(array('wsdl'=>$this->wsdlURL,'soapoptions'=> array('trace'=>1,'exceptions'=>0)));
+		$soapInitStatus = $soap->init(
+			array('wsdl'=>$this->wsdlURL,'soapoptions'=> array('trace'=>1,'exceptions'=>0))
+		);
+		if (!$soapInitStatus)
+			return array('resultCode' => (-1)); // SOAP module not installed
+
 		$response = $soap->call('uploadExtension', array('accountData' => $accountData, 'extensionData' => $extensionData, 'filesData' => $filesData));
 
 		if($response===false) {

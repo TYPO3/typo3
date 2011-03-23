@@ -5850,6 +5850,12 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 			);
 			$response['resultMessages'][] = $this->updateLocalEM_CONF($em['extKey'],$em['extInfo']);
 		}
+		elseif ((-1) == $response['resultCode']) {
+			$response['resultMessages'] = array(
+				$GLOBALS['LANG']->getLL('terCommunication_nosoap_1'),
+				$GLOBALS['LANG']->getLL('terCommunication_nosoap_2')
+			);
+		}
 
 		$msg = '<ul><li>'.implode('</li><li>',$response['resultMessages']).'</li></ul>';
 		return $msg;
