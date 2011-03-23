@@ -2688,6 +2688,9 @@ class t3lib_TCEmain {
 			}
 		}
 
+		if ($this->isOuterMost()) {
+			$this->resetNestedElementCalls();
+		}
 	}
 
 
@@ -3098,7 +3101,8 @@ class t3lib_TCEmain {
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
-				if (!$conf['MM']) {
+				// Follow MM references concerning localization:
+				if ($language > 0 && $localizeReferences) {
 						// Localize referenced records of select fields:
 					foreach ($dbAnalysis->itemArray as $index => $item) {
 							// Since select fields can reference many records, check whether there's already a localization:
@@ -3752,7 +3756,8 @@ class t3lib_TCEmain {
 		$newId = FALSE;
 		$uid = intval($uid);
 
-		if ($TCA[$table] && $uid) {
+		if ($TCA[$table] && $uid && $this->isNestedElementCall($table, $uid, 'localize') === FALSE) {
+			$this->registerNestedElementCall($table, $uid, 'localize');
 			t3lib_div::loadTCA($table);
 
 			if (($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable']) || $table === 'pages') {
@@ -3894,19 +3899,20 @@ class t3lib_TCEmain {
 
 					if ($inlineSubType !== FALSE) {
 						$removeArray = array();
+						$mmTable = ($inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '');
 							// Fetch children from original language parent:
 						/** @var $dbAnalysisOriginal t3lib_loadDBGroup */
 						$dbAnalysisOriginal = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, '', $transOrigRecord['uid'], $table, $config);
+						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
 						$elementsOriginal = array();
 						foreach ($dbAnalysisOriginal->itemArray as $item) {
 							$elementsOriginal[$item['id']] = $item;
 						}
 						unset($dbAnalysisOriginal);
 							// Fetch children from current localized parent:
-							// @var $dbAnalysisCurrent t3lib_loadDBGroup
+						/** @var $dbAnalysisCurrent t3lib_loadDBGroup */
 						$dbAnalysisCurrent = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, '', $id, $table, $config);
+						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
 							// Perform synchronization: Possibly removal of already localized records:
 						if ($type == 'synchronize') {
 							foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
@@ -3950,6 +3956,8 @@ class t3lib_TCEmain {
 							$updateFields = array($field => $value);
 						} elseif ($inlineSubType == 'field') {
 							$dbAnalysisCurrent->writeForeignField($config, $id);
+							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
+						} elseif ($inlineSubType = 'mm') {
 							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
 						}
 							// Update field referencing to child records of localized parent record:
@@ -7139,6 +7147,46 @@ class t3lib_TCEmain {
 	 */
 	protected function getMemoryRegistry() {
 		return t3lib_div::makeInstance('t3lib_utility_registry_MemoryRegistry');
+	}
+
+	/**
+	 * Determines nested element calls.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @param string $identifier Name of the action to be checked
+	 * @return boolean
+	 */
+	protected function isNestedElementCall($table, $id, $identifier) {
+		$nestedElementCalls = $this->getMemoryRegistry()->get('core', 't3lib_TCEmain::nestedElementCalls', array());
+		return isset($nestedElementCalls[$identifier][$table][$id]);
+	}
+
+	/**
+	 * Registers nested elements calls.
+	 * This is used to track nested calls (e.g. for following m:n relations).
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $id Uid of the record
+	 * @param string $identifier Name of the action to be tracked
+	 * @return void
+	 */
+	protected function registerNestedElementCall($table, $id, $identifier) {
+		$nestedElementCalls = $this->getMemoryRegistry()->get('core', 't3lib_TCEmain::nestedElementCalls', array());
+		$nestedElementCalls[$identifier][$table][$id] = TRUE;
+		$this->getMemoryRegistry()->set(
+			'core', 't3lib_TCEmain::nestedElementCall',
+			$nestedElementCalls
+		);
+	}
+
+	/**
+	 * Resets the nested element calls.
+	 *
+	 * @return void
+	 */
+	protected function resetNestedElementCalls() {
+		$this->getMemoryRegistry()->remove('core', 't3lib_TCEmain::nestedElementCalls');
 	}
 
 	/**
