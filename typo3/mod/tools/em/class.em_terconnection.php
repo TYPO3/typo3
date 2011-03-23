@@ -33,6 +33,9 @@ if (!defined('SOAP_1_2'))	{
 }
 require_once('class.em_soap.php');
 
+// Constant to return in case no SOAP module installed
+define('TX_NO_SOAP_INSTALLED', -1);
+
 /**
  * TER2 connection handling class for the TYPO3 Extension Manager.
  *
@@ -311,7 +314,12 @@ class SC_mod_tools_em_terconnection {
 		}
 
 		$soap = t3lib_div::makeInstance('em_soap');
-		$soap->init(array('wsdl'=>$this->wsdlURL,'soapoptions'=> array('trace'=>1,'exceptions'=>0)));
+		$soapInitStatus = $soap->init(
+			array('wsdl'=>$this->wsdlURL,'soapoptions'=> array('trace'=>1,'exceptions'=>0))
+		);
+		if (!$soapInitStatus)
+			return array('resultCode' => TX_NO_SOAP_INSTALLED); // SOAP module not installed
+
 		$response = $soap->call('uploadExtension', array('accountData' => $accountData, 'extensionData' => $extensionData, 'filesData' => $filesData));
 
 		if($response===false) {

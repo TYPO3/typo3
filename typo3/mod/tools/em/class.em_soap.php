@@ -118,6 +118,8 @@ class em_soap {
 			default:
 				$this->client = false;
 		}
+
+		return ($this->client !== false);
 	}
 
 	/**
