@@ -1025,9 +1025,11 @@
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
 					$message = 'The requested page does not exist!';
-					header('HTTP/1.0 404 Page Not Found');
+					header(t3lib_utility_Http::HTTP_STATUS_404);
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+					$messagePage->output();
+					exit;
 				}
 			}
 		}
@@ -1038,9 +1040,11 @@
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
 				$message = 'The requested page does not exist!';
-				header('HTTP/1.0 404 Page Not Found');
+				header(t3lib_utility_Http::HTTP_STATUS_404);
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				throw new RuntimeException($message);
+				$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+				$messagePage->output();
+				exit;
 			}
 		}
 
@@ -1469,7 +1473,10 @@
 
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
-			throw new RuntimeException('The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : ''));
+			$message = 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : '');
+			$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+			$messagePage->output();
+			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'USER_FUNCTION:')) {
 			$funcRef = trim(substr($code,14));
 			$params = array(
@@ -1569,7 +1576,9 @@
 				echo $content;	// Output the content
 			}
 		} else {
-			throw new RuntimeException($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
+			$message = ($reason ? 'Reason: ' . htmlspecialchars($reason) : 'Page cannot be found.');
+			$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+			$messagePage->output();
 		}
 		exit();
 	}
