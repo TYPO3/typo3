@@ -1025,9 +1025,11 @@
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
 					$message = 'The requested page does not exist!';
-					header('HTTP/1.0 404 Page Not Found');
+					header(t3lib_utility_Http::HTTP_STATUS_404);
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message);
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+					$messagePage->output();
+					exit;
 				}
 			}
 		}
@@ -1038,9 +1040,11 @@
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
 				$message = 'The requested page does not exist!';
-				header('HTTP/1.0 404 Page Not Found');
+				header(t3lib_utility_Http::HTTP_STATUS_404);
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				throw new RuntimeException($message);
+				$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+				$messagePage->output();
+				exit;
 			}
 		}
 
@@ -1569,7 +1573,10 @@
 				echo $content;	// Output the content
 			}
 		} else {
-			throw new RuntimeException($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
+			header(t3lib_utility_Http::HTTP_STATUS_404);
+			$message = $reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.';
+			$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+			$messagePage->output();
 		}
 		exit();
 	}
