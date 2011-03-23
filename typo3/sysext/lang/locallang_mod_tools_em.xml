@@ -483,6 +483,8 @@
 			<label index="tsStyleConfigForm_additional_config">This extension provides additional configuration options which become available once it is installed.</label>
 			<label index="dumpStaticTables_table_not_found">Fatal error: Table for dump not found in database...</label>
 			<label index="terCommunication_ext_version">The extension is now available in version %s.</label>
+			<label index="terCommunication_nosoap_1">SOAP module for PHP not installed.</label>
+			<label index="terCommunication_nosoap_2">Please, install pearsoap, nusoap or PHP SOAP module.</label>
 			<label index="display_nle">Include not loaded extensions into listing</label>
 			<label index="display_files">Display the list of changed files</label>
 			<label index="header_upd_ext">There are new versions of the following extensions in the TER</label>
