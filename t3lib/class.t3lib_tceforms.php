@@ -27,7 +27,6 @@
 /**
  * Contains TYPO3 Core Form generator - AKA "TCEforms"
  *
- * $Id$
  * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
  * XHTML compliant
  *

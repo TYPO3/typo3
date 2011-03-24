@@ -2,8 +2,6 @@
 *
 *  Evaluation of TYPO3 form field content
 *
-* $Id$
-*
 *
 *
 *  Copyright notice

@@ -2,8 +2,6 @@
 *
 *  Universal validate-form
 *
-* $Id$
-*
 *  Copyright notice
 *
 *  (c) 1998-2011 Kasper Skaarhoj

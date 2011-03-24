@@ -27,7 +27,6 @@
 /**
  * This document provides a class that loads the modules for the TYPO3 interface.
  *
- * $Id$
  * Modifications by René Fritz, 2001
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *

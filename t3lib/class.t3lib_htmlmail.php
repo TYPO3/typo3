@@ -27,8 +27,6 @@
 /**
  * HTML mail class
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

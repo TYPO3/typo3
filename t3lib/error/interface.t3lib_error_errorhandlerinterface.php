@@ -30,7 +30,6 @@
  *
  * @package TYPO3
  * @subpackage t3lib_error
- * @version $Id$
  */
 interface t3lib_error_ErrorHandlerInterface {
 

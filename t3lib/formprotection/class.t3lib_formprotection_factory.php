@@ -47,8 +47,6 @@
  * $formProtection->injectInstallTool($this);
  * </pre>
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

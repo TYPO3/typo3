@@ -27,8 +27,6 @@
 /**
  * TYPO3 SQL parser
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

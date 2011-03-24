@@ -28,8 +28,6 @@
 /**
  * Class to handle debug
  *
- * $Id: $
- *
  *
  * @author	 Steffen Kamper <steffen@typo3.org>
  * @package TYPO3

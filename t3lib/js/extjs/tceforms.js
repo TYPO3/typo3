@@ -1,8 +1,6 @@
 /***************************************************************
  * extJS for TCEforms
  *
- * $Id$
- *
  * Copyright notice
  *
  * (c) 2009-2011 Steffen Kamper <info@sk-typo3.de>

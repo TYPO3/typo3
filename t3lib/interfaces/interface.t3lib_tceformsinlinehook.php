@@ -28,8 +28,6 @@
 /**
  * Interface for classes which hook into t3lib_TCEforms_inline.
  *
- * $Id$
- *
  * @author		Oliver Hader <oh@inpublica.de>
  * @package	 TYPO3
  * @subpackage	t3lib

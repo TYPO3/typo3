@@ -27,7 +27,6 @@
 /**
  * Contains class for loading database groups
  *
- * $Id$
  * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

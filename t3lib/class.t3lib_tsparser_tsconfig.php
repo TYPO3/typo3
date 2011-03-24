@@ -28,8 +28,6 @@
 /**
  * A TS-Config parsing class which performs condition evaluation
  *
- * $Id$
- *
  * @author	Kraft Bernhard <kraftb@kraftb.at>
  */
 /**

@@ -27,7 +27,6 @@
 /**
  * Contains the TYPO3 Core Engine
  *
- * $Id$
  * Revised for TYPO3 3.9 October 2005 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

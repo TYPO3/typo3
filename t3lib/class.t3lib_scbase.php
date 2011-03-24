@@ -27,7 +27,6 @@
 /**
  * Contains the parent class for 'ScriptClasses' in backend modules.
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

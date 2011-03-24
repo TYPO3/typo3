@@ -1,8 +1,6 @@
 /***************************************************************
  * Admin Panel drag and drop
  *
- * $Id$
- *
  * Copyright notice
  *
  * (c) 2010-2011 Dmitry Dulepov <dmitry@typo3.org>

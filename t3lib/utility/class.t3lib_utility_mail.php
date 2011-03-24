@@ -28,8 +28,6 @@
 /**
  * Class to handle mail specific functionality
  *
- * $Id: class.t3lib_utility_mail.php 6536 2009-11-25 14:07:18Z stucki $
- *
  *
  * @author	 Tolleiv Nietsch <nietsch@aoemedia.de>
  * @package TYPO3
