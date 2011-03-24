@@ -65,6 +65,8 @@ class t3lib_TCEforms_Tree {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems, $noMatchLabel) {
+                globals $TCA;
+                
 		$valueArray = array();
 		$selectedNodes = array();
 
@@ -146,8 +148,19 @@ class t3lib_TCEforms_Tree {
 
 		$onChange = '';
 		if ($PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) {
-			$onChange = substr($PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'], 0, -1);
+			$onChange = $PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
+
+                // Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
+                if (
+                    ($TCA[$table]['ctrl']['type'] && !strcmp($field, $TCA[$table]['ctrl']['type'])) ||
+                    ($TCA[$table]['ctrl']['requestUpdate'] && t3lib_div::inList($TCA[$table]['ctrl']['requestUpdate'], $field))) {
+                    if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
+                        $onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
+                    } else {
+                        $onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
+                    }
+                };
 
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
