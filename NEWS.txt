@@ -1,7 +1,3 @@
-*******************************************************************************
-$Id$
-*******************************************************************************
-
 This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
 (c) 1999-2011 by Kasper Skaarhoj.
@@ -98,7 +94,7 @@ team.
   setups.
 * The default "draft workspace" is now obsolete and will be migrated to a real
   workspace by an Upgrade Wizard.
-* Inline Relational Record Editing (IRRE) finally works in Workspaces. 
+* Inline Relational Record Editing (IRRE) finally works in Workspaces.
 * There is a new Scheduler task for the automatic publication of workspaces.
   This replaces the non-working CLI script "typo3/mod/user/ws/cli/ws_cli.phpsh"
   (which was removed).
@@ -310,7 +306,7 @@ allows settings for example like this:
  mod.SHARED.colPos_list = 0
  [page|layout = 1]
  mod.SHARED.colPos_list = 1,0
- [global] 
+ [global]
 
 -------------------------------------------------------------------------------
 Skin / Backend UI
@@ -565,18 +561,18 @@ using alt_doc.php, tce_db.php or tce_file.php need to provide a token in the
 URL or the form. This can be done by using the following code:
 
 *alt_doc.php*
- t3lib_TCEforms::getHiddenTokenField('editRecord'); 
- // or 
+ t3lib_TCEforms::getHiddenTokenField('editRecord');
+ // or
  t3lib_BEfunc::getUrlToken('editRecord');
 
 *tce_db.php*
- t3lib_TCEforms::getHiddenTokenField('tceAction'); 
- // or 
+ t3lib_TCEforms::getHiddenTokenField('tceAction');
+ // or
  t3lib_BEfunc::getUrlToken('tceAction');
 
 *tce_file.php*
- t3lib_TCEforms::getHiddenTokenField('tceFileAction'); 
- // or 
+ t3lib_TCEforms::getHiddenTokenField('tceFileAction');
+ // or
  t3lib_BEfunc::getUrlToken('tceFileAction');
 
 A new task (scheduler) for bulk update of passwords for use with

@@ -31,7 +31,6 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
- * @version $Id$
  */
 abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_Backend {
 

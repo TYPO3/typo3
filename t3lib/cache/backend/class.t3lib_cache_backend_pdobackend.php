@@ -30,7 +30,6 @@
  * @api
  * @scope prototype
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @version $Id$
  */
 class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend {
 
