@@ -31,7 +31,6 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
- * @version $Id$
  */
 class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBackend {
 
