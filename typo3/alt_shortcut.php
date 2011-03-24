@@ -30,7 +30,6 @@
  * Provides links to registered shortcuts
  * If the 'cms' extension is loaded you will also have a field for entering page id/alias which will be found/edited
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant output
  *

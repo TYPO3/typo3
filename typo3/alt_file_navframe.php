@@ -27,7 +27,6 @@
 /**
  * Folder tree in the File main module.
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant
  *

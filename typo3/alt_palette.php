@@ -27,7 +27,6 @@
 /**
  * Displays the secondary-options palette for the TCEFORMs wherever they are shown.
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *

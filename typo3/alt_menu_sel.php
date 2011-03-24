@@ -29,7 +29,6 @@
  * The selector-box menu is an alternative to the vertical default menu.
  * If configured to appear it will be displayed in the top-frame.
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant
  *

@@ -28,7 +28,6 @@
  * Top logo frame
  * Displays the logo in the top frame (upper left corner)
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant content
  *
