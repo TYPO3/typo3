@@ -197,7 +197,7 @@ abstract class Tx_Install_Updates_Base {
 	public function getExtensionManagerConnection() {
 			// Create an instance of language, if necessary.
 			// Needed in order to make the em_index work
-		if (!isset($GLOBALS['LANG'])) {
+		if (!is_object($GLOBALS['LANG'])) {
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
