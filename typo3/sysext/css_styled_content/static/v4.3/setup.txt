@@ -120,7 +120,7 @@ lib.parseFunc_RTE {
 			addChr10BetweenParagraphs=1
 		}
 		div.stripNL = 1
-		div.callRecursive = 1 
+		div.callRecursive = 1
 	}
 	nonTypoTagStdWrap.encapsLines {
 		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6
@@ -304,7 +304,7 @@ tt_content.stdWrap {
 
 					stdWrap {
 						prioriCalc = intval
-						wrap = margin-bottom:|px; 
+						wrap = margin-bottom:|px;
 						required = 1
 						ifEmpty.value =
 					}
@@ -316,7 +316,7 @@ tt_content.stdWrap {
 			30 = TEXT
 			30.value = >|</div>
 		}
-		
+
 		1 =< tt_content.stdWrap.innerWrap.cObject.default
 		1.15.value = csc-frame csc-frame-invisible
 
@@ -340,7 +340,7 @@ tt_content.stdWrap {
 
 		21 =< tt_content.stdWrap.innerWrap.cObject.default
 		21.15.value = csc-frame csc-frame-frame2
-		
+
 		66 = COA
 		66 {
 			10 = TEXT
@@ -348,7 +348,7 @@ tt_content.stdWrap {
 				value = <a id="c{field:uid}"></a>
 				insertData = 1
 			}
-			
+
 			20 = COA
 			20 {
 				10 = TEXT
@@ -371,12 +371,12 @@ tt_content.stdWrap {
 					wrap2 = <div style="|"></div>
 				}
 			}
-			
+
 			30 = TEXT
 			30 {
 				value = |
 			}
-			
+
 			40 < .20
 			40 {
 				10 {
@@ -387,13 +387,13 @@ tt_content.stdWrap {
 				stdWrap.wrap = margin-bottom:|px;
 			}
 		}
-		
+
 	}
-	
+
 	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/pi1/locallang.xml:label.toTop}</a></p>
 	innerWrap2.insertData = 1
 	innerWrap2.fieldRequired = linkToTop
-	
+
 	prepend = TEXT
 	prepend.dataWrap = <a id="c{field:_LOCALIZED_UID}"></a>
 	prepend.if.isTrue.field = _LOCALIZED_UID
@@ -647,7 +647,7 @@ tt_content.image.20 {
 					}
 					value = ul
 				}
-				
+
 				# Multiple images and no caption at all => "ul"
 				30 = TEXT
 				30 {
@@ -761,7 +761,7 @@ tt_content.bullets {
 			1.current = 1
 			1.parseFunc =< lib.parseFunc
 			1.wrap = <li class="odd">|</li>
-	
+
 			2.current = 1
 			2.parseFunc =< lib.parseFunc
 			2.wrap = <li class="even">|</li>
@@ -770,7 +770,7 @@ tt_content.bullets {
 	 	editIcons = tt_content: bodytext, [layout]
 	 	editIcons.beforeLastTag = 1
 	 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
-	
+
 	 	prefixComment = 2 | Bullet list:
 	}
 }
@@ -956,22 +956,22 @@ tt_content.swfobject {
 
 	20 = SWFOBJECT
 	20 {
-		file = 
-		width = 
+		file =
+		width =
 		height =
-		
+
 		flexParams.field = pi_flexform
-		
+
 		alternativeContent.field = bodytext
-		
+
 		layout = ###SWFOBJECT###
-		
+
 		video {
 			player = {$styles.content.media.videoPlayer}
-			
+
 			defaultWidth  = {$styles.content.media.defaultVideoWidth}
 			defaultHeight  = {$styles.content.media.defaultVideoHeight}
-			
+
 			default {
 				params.quality = high
 				params.menu = false
@@ -979,16 +979,16 @@ tt_content.swfobject {
 				params.allowFullScreen = true
 			}
 			mapping {
-				
+
 			}
 		}
-		
+
 		audio {
 			player = {$styles.content.media.audioPlayer}
-			
+
 			defaultWidth = {$styles.content.media.defaultAudioWidth}
 			defaultHeight = {$styles.content.media.defaultAudioHeight}
-			
+
 			default {
 				params.quality = high
 				params.allowScriptAccess = sameDomain
@@ -998,14 +998,14 @@ tt_content.swfobject {
 				flashvars.file = soundFile
 			}
 		}
-		
+
 	}
 	20.stdWrap {
 		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
 
 		prefixComment = 2 | SWFobject element:
-	}	
+	}
 }
 
 # *****************
@@ -1017,22 +1017,22 @@ tt_content.qtobject {
 
 	20 = QTOBJECT
 	20 {
-		file = 
-		width = 
+		file =
+		width =
 		height =
-		
-		flexParams.field = pi_flexform 
-		
+
+		flexParams.field = pi_flexform
+
 		alternativeContent.field = bodytext
-		
+
 		layout = ###QTOBJECT###
-		
+
 		video {
 			player = {$styles.content.media.videoPlayer}
-			
+
 			defaultWidth  = {$styles.content.media.defaultVideoWidth}
 			defaultHeight  = {$styles.content.media.defaultVideoHeight}
-			
+
 			default {
 				params.quality = high
 				params.menu = false
@@ -1040,16 +1040,16 @@ tt_content.qtobject {
 				params.allowFullScreen = true
 			}
 			mapping {
-				
+
 			}
 		}
-		
+
 		audio {
 			player = {$styles.content.media.audioPlayer}
-			
+
 			defaultWidth = {$styles.content.media.defaultAudioWidth}
 			defaultHeight = {$styles.content.media.defaultAudioHeight}
-			
+
 			default {
 				params.quality = high
 				params.allowScriptAccess = sameDomain
@@ -1065,7 +1065,7 @@ tt_content.qtobject {
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
 
 		prefixComment = 2 | QTobject element:
-	}	
+	}
 }
 
 # *****************
@@ -1077,16 +1077,16 @@ tt_content.media {
 
 	20 = MEDIA
 	20 {
-		
+
 		flexParams.field = pi_flexform
 		alternativeContent < tt_content.text.20
 		alternativeContent.field = bodytext
-		
+
 		type = video
 		renderType = auto
 		allowEmptyUrl = 0
 		forcePlayer = 1
-		
+
 		fileExtHandler {
 			default = MEDIA
 			avi = MEDIA
@@ -1101,17 +1101,17 @@ tt_content.media {
 			swf = SWF
 			mov = QT
 		}
-		
+
 		mimeConf.swfobject < tt_content.swfobject.20
 		mimeConf.qtobject < tt_content.qtobject.20
-		
+
 	}
 	20.stdWrap {
 		editIcons = tt_content: pi_flexform, bodytext
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
 
 		prefixComment = 2 | Media element:
-	}	
+	}
 }
 
 # ******************
@@ -1143,7 +1143,7 @@ tt_content.mailform.20 {
 	recipient.field = subheader
 	data.field = bodytext
 	locationData = 1
-	
+
 	params.radio = class="csc-mailform-radio"
 	params.check = class="csc-mailform-check"
 	params.submit = class="csc-mailform-submit"
@@ -1416,7 +1416,7 @@ tt_content.menu {
 			special = directory
 			wrap = <ul class="csc-menu csc-menu-1">|</ul>
 		}
-	
+
 		# "Sitemap - liststyle"
 		2 = HMENU
 		2 {
@@ -1445,7 +1445,7 @@ tt_content.menu {
 			6 < .1
 			7 < .1
 		}
-	
+
 		# "Section index (pagecontent w/Index checked - liststyle)"
 		3 < styles.content.get
 		3 {
@@ -1464,7 +1464,7 @@ tt_content.menu {
 				typolink.section.field = uid
 			}
 		}
-	
+
 		# "Menu of subpages to these pages (with abstract)"
 		4 < .1
 		4 {
@@ -1494,7 +1494,7 @@ tt_content.menu {
 				}
 			}
 		}
-	
+
 		# "Recently updated pages"
 		5 < .default
 		5 {
@@ -1505,7 +1505,7 @@ tt_content.menu {
 				excludeNoSearchPages = 1
 			}
 		}
-	
+
 		# "Related pages (based on keywords)"
 		6 < .default
 		6 {
@@ -1515,7 +1515,7 @@ tt_content.menu {
 				excludeNoSearchPages = 1
 			}
 		}
-	
+
 		# "Menu of subpages to these pages + sections - liststyle"
 		7 < .1
 		7 {
@@ -1553,24 +1553,11 @@ tt_content.shortcut {
 	20.0 {
 		source.field = records
 		tables = {$content.shortcut.tables}
-		# THESE are OLD plugins. Modern plugins registers themselves automatically!
-		conf.tt_content = < tt_content
-		conf.tt_address = < tt_address
-		conf.tt_links = < tt_links
-		conf.tt_guest = < tt_guest
-		conf.tt_board = < tt_board
-		conf.tt_calender = < tt_calender
-		conf.tt_rating < tt_rating
-		conf.tt_products = < tt_products
-		conf.tt_news = < tt_news
-		conf.tt_poll = < plugin.tt_poll
 	}
 	20.1= RECORDS
 	20.1 {
 		source.field = records
 		tables = {$content.shortcut.tables}
-		conf.tt_poll = < plugin.tt_poll
-		conf.tt_poll.code = RESULT,SUBMITTEDVOTE
 	}
 
 	20.stdWrap {
@@ -1593,48 +1580,7 @@ tt_content.list {
 	20 = CASE
 	20.key.field = list_type
 	20 {
-		# LIST element references (NOT copy of objects!)
-		# THESE are OLD plugins. Modern plugins registers themselves automatically!
-		3 = CASE
-		3.key.field = layout
-		3.0 = < plugin.tt_guest
 
-		4 = CASE
-		4.key.field = layout
-		4.0 = < plugin.tt_board_list
-		4.1 = < plugin.tt_board_tree
-
-		2 = CASE
-		2.key.field = layout
-		2.0 = < plugin.tt_board_tree
-
-		5 = CASE
-		5.key.field = layout
-		5.0 = < plugin.tt_products
-
-		7 = CASE
-		7.key.field = layout
-		7.0 = < plugin.tt_calender
-
-		8 = CASE
-		8.key.field = layout
-		8.0 = < plugin.tt_rating
-
-		9 = CASE
-		9.key.field = layout
-		9.0 = < plugin.tt_news
-
-		11 = CASE
-		11.key.field = layout
-		11.0 = < plugin.tipafriend
-
-		20 = CASE
-		20.key.field = layout
-		20.0 = < plugin.feadmin.fe_users
-
-		21 = CASE
-		21.key.field = layout
-		21.0 = < plugin.feadmin.dmailsubscription
 	}
 
 	20.stdWrap {
@@ -1775,7 +1721,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; display: block; }
 	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
 	DIV.csc-textpic DIV.csc-textpic-single-image IMG { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
-	
+
 	/* No margins around the whole image-block */
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-firstcol { margin-left: 0px !important; }
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-lastcol { margin-right: 0px !important; }
@@ -1826,7 +1772,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Hide from IE5-mac. Only IE-win sees this. \*/
 	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
 	/* End hide from IE5/mac */
-	
+
 	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
 
 	/* Browser fixes: */
