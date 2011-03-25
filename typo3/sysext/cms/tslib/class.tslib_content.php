@@ -3682,17 +3682,29 @@ class tslib_cObj {
 					$cropPosition = $absChars - $strLen;
 						// The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
 					$patternMatchEntityAsSingleChar = '(&[^&\s;]{2,8};|.)';
-					if ($crop2space) {
-						$cropRegEx = $chars < 0
-							? '#(?<=\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui'
-							: '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\s)#ui';
+
+					$cropRegEx = $chars < 0
+						? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}$#ui'
+						: '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}#ui';
+					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
+						$tempContentPlusOneCharacter = $croppedMatch[0];
 					} else {
-						$cropRegEx = $chars < 0
-							? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui'
-							: '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#ui';
+						$tempContentPlusOneCharacter = FALSE;
 					}
+
+					$cropRegEx = $chars < 0
+						? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui'
+						: '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#ui';
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContent = $croppedMatch[0];
+						if (($crop2space) && ($tempContentPlusOneCharacter !== FALSE)) {
+							$cropRegEx = $chars < 0
+								? '#(?<=\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui'
+								: '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\s)#ui';
+							if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
+								$tempContent = $croppedMatch[0];
+							}
+						}
 					}
 					$splittedContent[$offset] = $GLOBALS['TSFE']->csConvObj->utf8_decode($tempContent, $GLOBALS['TSFE']->renderCharset);
 					break;

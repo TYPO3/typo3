@@ -421,8 +421,14 @@ class tslib_contentTest extends tx_phpunit_testcase {
 				$charset . ' plain text; -58|...' => array(
 					'-58|...', $plainText, '...h' . chr(248) . 'j implemented the original version of the crop function.', $charset
 				),
+				$charset . ' plain text; 4|...|1' => array(
+					'4|...|1', $plainText, 'Kasp...', $charset
+				),
 				$charset . ' plain text; 20|...|1' => array(
 					'20|...|1', $plainText, 'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...', $charset
+				),
+				$charset . ' plain text; -5|...|1' => array(
+					'-5|...|1', $plainText, '...tion.', $charset
 				),
 				$charset . ' plain text; -49|...|1' => array(
 					'-49|...|1', $plainText, '...the original version of the crop function.', $charset
@@ -444,6 +450,9 @@ class tslib_contentTest extends tx_phpunit_testcase {
 				),
 				$charset . ' text with markup; -58|...' => array(
 					'-58|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.', $charset
+				),
+				$charset . ' text with markup 4|...|1' => array(
+					'4|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasp...</a></strong>', $charset
 				),
 				$charset . ' text with markup; 11|...|1' => array(
 					'11|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>', $charset
@@ -492,6 +501,9 @@ class tslib_contentTest extends tx_phpunit_testcase {
 				),
 				$charset . ' text with entities -59|...' => array(
 					'-59|...', $textWithEntities, '...h&oslash;j implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities 4|...|1' => array(
+					'4|...|1', $textWithEntities, 'Kasp...', $charset
 				),
 				$charset . ' text with entities 9|...|1' => array(
 					'9|...|1', $textWithEntities, 'Kasper...', $charset
