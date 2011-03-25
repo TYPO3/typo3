@@ -172,7 +172,7 @@ helloWorld.value = this item will be returned
   </type>
 	<type id="COA_INT" extends="COBJ_ARRAY">
 		<property name="includeLibs" type="stdWrap">
-			<description><![CDATA[list of resources/stdWrap 
+			<description><![CDATA[list of resources/stdWrap
 (This property is used only if the object is COA_INT!, See introduction.)
 This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
 This is possible to do because any include-files will be known before the scripts are included. That's not the case with the regular PHP_SCRIPT cObject.]]></description>
@@ -726,7 +726,7 @@ If renderCharset and metaCharset are different the output content is automatical
 ]]></default>
 		</property>
 		<property name="namespaces" type="array">
-			<description><![CDATA[array of strings 
+			<description><![CDATA[array of strings
 			This property enables you to add xml namespaces (xmlns) to the html tag. The configuration
 
 namespaces.dc = http://purl.org/dc/elements/1.1/
@@ -1529,7 +1529,7 @@ overrideEdit {
 		<property name="processScript" type="string">
 			<description><![CDATA[Include-script to be used for processing of incoming data to the table. The script is included from a function in the class tslib_fetce
 This is the really important option, because whether or not you are going to utilize the "cleaning"/"authorization" features of the properties above depend on how you write your script to process data and put it in the database.
-A very good example is to look at "media/scripts/guest_submit.inc", included from static_template "plugin.tt_guest" (Used for the default guestbook feature)]]></description>
+A very good example is to look at "media/scripts/guest_submit.inc"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1833,7 +1833,7 @@ NOTE: May be overridden by the property override feature of the formdata (see ab
 		</property>
 		<property name="method" type="string">
 			<description><![CDATA[form-method
-			
+
 			Example:
 GET]]></description>
 			<default><![CDATA[POST]]></default>
@@ -1878,7 +1878,7 @@ This sets the default to 200 px width, but excludes check-boxes and sets textare
 		<property name="radioWrap.accessibilityWrap" type="wrap">
 			<description><![CDATA[Defines how radio buttons are wrapped when accessibility mode is turned on (see below “accessibility” property)
 			default:
-			
+
 			<fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
 			]]></description>
 			<default><![CDATA[<fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
@@ -2847,7 +2847,7 @@ Fields with zero value is not selected anyway.]]></description>
 ]]></default>
 		</property>
 		<property name="maxAge" type="string">
-			<description><![CDATA[Seconds+calc. 
+			<description><![CDATA[Seconds+calc.
 			Pages with update-dates older than currenttime minus this number of seconds will not be shown in the menu no matter what. Default is "not used". You may use +-*/ for calculations.
 			]]></description>
 			<default><![CDATA[
@@ -2901,7 +2901,7 @@ Page level 1 > Page level 2 > Page level 3 > Page level 4 >
 		</property>
 		<property name="targets" type="string">
 			<description><![CDATA[.targets.[0-x]  targets
-			
+
 			This...
 
 page.2 = HMENU
@@ -2920,7 +2920,7 @@ page.2.1.NO {
 Page level 1 > Page level 2 > Page level 3 > Page level 4 >
 
 (The menu starts at level 1 and does NOT link to the current page (-2 is the level before). Further all pages on level 3 will have "page" as target and all other "_top")
-			
+
 			]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3413,7 +3413,7 @@ The ->OptionSplit function is run on the whole GIFBUILDER-configuration before t
 		</property>
 		<property name="applyTotalH" type="string">
 			<description><![CDATA[objNumsList (offset)
-			
+
 			This adds the total height of the previously generated menuitems to the offset of the GifBuilderObj's mentioned in this list.
 
 Example:
@@ -3482,7 +3482,7 @@ NOTE: Does not work with JSMENU's]]></description>
 		</property>
 		<property name="max" type="string">
 			<description><![CDATA[x,y (calcInt)"
-			
+
 			Forces the menu as a whole to these maximum dimensions]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3508,7 +3508,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 		</property>
 		<property name="removeObjectsOfDummy" type="string">
 			<description><![CDATA[objNumsList
-			
+
 			If the menu is forced to a certain minimum dimension, this is a list of objects in the gifbuilder-object that is removed for this last item. This is important to do if the menuitems has elements that should only be applied if the item is actually a menuitem!!]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3530,7 +3530,7 @@ Example:
 		</property>
 		<property name="target" type="string">
 			<description><![CDATA[target
-			
+
 			Target of the menulinks]]></description>
 			<default><![CDATA[self]]></default>
 		</property>
@@ -3595,14 +3595,14 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 		</property>
 		<property name="ATagTitle" type="stdWrap">
 			<description><![CDATA[string /stdWrap
-			
+
 			which defines the title attribute of the a-tag. (See TMENUITEM also)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="additionalParams" type="string">
 			<description><![CDATA[string /stdWrap
-			
+
 			Define parameters that are added to the end of the URL. This must be code ready to insert after the last parameter.
 
 For details, see typolink->additionalParams]]></description>
@@ -3616,7 +3616,7 @@ For details, see typolink->additionalParams]]></description>
 		</property>
 		<property name="allWrap" type="stdWrap">
 			<description><![CDATA[wrap /stdWrap
-			
+
 			Wraps the whole item]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3633,7 +3633,7 @@ For details, see typolink->additionalParams]]></description>
 		</property>
 		<property name="imgParams" type="string">
 			<description><![CDATA[params
-			
+
 			Parameters for the <img>-tag]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3718,7 +3718,7 @@ Note: Using <TBODY> in this tables seems to break Netscape 4+]]></description>
 		</property>
 		<property name="foldSpeed" type="int">
 			<description><![CDATA[int, range 1-100
-			
+
 			How many steps in an animation? Choose 1 for no animation.]]></description>
 			<default><![CDATA[1]]></default>
 		</property>
@@ -3740,7 +3740,7 @@ NOTE: Does not work with JSMENU's]]></description>
 		</property>
 		<property name="menuBackColor" type="string">
 			<description><![CDATA[HTML-color
-			
+
 			Background color behind menu. If not set, transparent (which will not work very well in case .foldSpeed is set to something else than 1. But see for yourself)]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3751,7 +3751,7 @@ NOTE: Does not work with JSMENU's]]></description>
 		</property>
 		<property name="menuOffset" type="string">
 			<description><![CDATA[x,y
-			
+
 			Offset of the menu main layer on the page. From upperleft corner]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3864,14 +3864,14 @@ If set, the freezed element will always stay, even if the submenu is hidden.]]><
 		</property>
 		<property name="hideMenuTimer" type="int">
 			<description><![CDATA[int+
-			
+
 			This is the number of milliseconds to wait before the submenu will disappear if hideMenuWhenNotOver  is set]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="hideMenuWhenNotOver" type="int">
 			<description><![CDATA[int+
-			
+
 			If set (> 1) then the menu will hide it self whenever a user moves the cursor away from the menu. The value of this parameter determines the width (pixels) of the zone around the element until the mousepointer is considered to be far enough away to hide the layer.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -3909,7 +3909,7 @@ Used with either lockPosition=y or yPosOffset defined.]]></description>
 		</property>
 		<property name="lockPosition" type="string">
 			<description><![CDATA["x" / "y" / ""
-			
+
 			If this is set to "x" or "y" the menu on the layers is locked and does not follow the mouse-cursor (which it does if this is not set).
 "x" or "y" defines respectively that the summed width (x) or height (y) is added to the x or y offset of the menu. That means that you should set this value to "x" if you have a horizontal GMENU_LAYERS and to "y" if you have a verical menu.]]></description>
 			<default><![CDATA[
@@ -6269,7 +6269,7 @@ includeCSS {
   file2 = stylesheet_uploaded_to_template*.css
   file2.title = High contrast
   file2.media = print
-  
+
   ie6Style = fileadmin/css/style3.css
   ie6Style.allWrap = <!--[if lte IE 7]>|<![endif]-->
 
@@ -6408,7 +6408,7 @@ javascriptLibs {
 
      # include prototype
    Prototype = 1
-   
+
      # include Scriptaculous
    Scriptaculous = 1
 
@@ -6438,7 +6438,7 @@ javascriptLibs {
 
      # includes ExtJS debug file (uncompressed)
    ExtJs.debug = 1
-   
+
 		#load SVG library
 		SVG = 1
 
@@ -6446,7 +6446,7 @@ javascriptLibs {
 		SVG.debug = 1
 
 		#force render with flash
-		SVG.forceFlash = 1   
+		SVG.forceFlash = 1
 }
 ]]></description>
 			<default><![CDATA[
@@ -6756,7 +6756,7 @@ Example:
 .secure = 1
 .secure.mimeTypes = pdf=application/pdf, doc=application/msword
 
-.parameter = [string/stdWrap]; By default the jumpurl link will use the current pid and typeNum. 
+.parameter = [string/stdWrap]; By default the jumpurl link will use the current pid and typeNum.
 If you need alternative values (e.g. for logging) you can specify them here.
 For options see typolink.parameter]]></description>
 			<default><![CDATA[
@@ -6836,7 +6836,7 @@ jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></descr
 		</property>
 		<property name="parameter" type="stdWrap">
 			<description><![CDATA[string/stdWrap
-			By default the jumpurl link will use the current pid and typeNum. 
+			By default the jumpurl link will use the current pid and typeNum.
 If you need alternative values (e.g. for logging) you can specify them here.
 For options see typolink.parameter
 			]]></description>
@@ -6942,8 +6942,8 @@ instead.]]></description>
 ]]></default>
 		</property>
 		<property name="linkParams" type="typolink">
-			<description><![CDATA[Allows the manipulation of the generated typolink if JSwindow is not used. 
-			
+			<description><![CDATA[Allows the manipulation of the generated typolink if JSwindow is not used.
+
 			Example:
 			linkParams.ATagParams.dataWrap =  class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"
 ]]></description>
@@ -7474,7 +7474,7 @@ Special keyword: "total" is substituted with count(*)]]></description>
 Each value is properly escaped and quoted to prevent SQL injection problems. This provides a way to safely use external data
 (e.g. database fields, GET/POST parameters) in a query.
 <markername>.value (value) sets the value directly
-<markername>.commaSeparatedList (bool) If set the value is interpreted as a comma separated list of values. Each value in 
+<markername>.commaSeparatedList (bool) If set the value is interpreted as a comma separated list of values. Each value in
 the list is individually escaped and quoted.
 (stdWrap properties ...) All stdWrap properties can be used for each markername
 
@@ -7672,7 +7672,7 @@ PHP: $content=chr(intval($conf["char"]);]]></description>
 			<description><![CDATA[Crops the content to a certain length
 Syntax: +/- (chars) = from left / from right | [string] | [boolean: keep whole words]
 
-Examples: 
+Examples:
 20 | ...    => max 20 characters. If more, the value will be truncated to first 20 chars and prepended with "..."
 -20 | ... => max 20 characters. If more, the value will be truncated to last 20 chars and appended with "..."
 20 | ... | 1 => max 20 characters. If more, the value will be truncated to last 20 chars and appended with "...". If the division is in the middle of a word, the remains of that word is removed.
@@ -8214,7 +8214,7 @@ Uses "renderCharset" for the operation.]]></description>
 		<property name="value" type="stdWrap">
 			<description><![CDATA[XML/stdWrap
 			SVG raw XML. When src is defined the file will be loaded and value is ignored.
-			
+
 Example:
 10 = SVG
 10 {
