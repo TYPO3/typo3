@@ -28,8 +28,6 @@
 /**
  * Class to handle php environment specific options / functions
  *
- * $Id$
- *
  * @author	 Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage t3lib

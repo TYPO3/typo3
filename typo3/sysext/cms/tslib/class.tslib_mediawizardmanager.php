@@ -27,8 +27,6 @@
 
 /**
  * Manager to register and call registered media wizard providers
- *
- * $Id: $
 
  * @author	Ernesto Baschny <ernst@cron-it.de>
  * @static

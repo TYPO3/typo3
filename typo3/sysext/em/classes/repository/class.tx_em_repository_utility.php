@@ -27,8 +27,6 @@
  *
  * Module: Extension manager - Central repository utility functions
  *
- * $Id: class.tx_em_repository_utility.php 2082 2010-03-21 17:19:42Z steffenk $
- *
  * @author  Marcus Krause <marcus#exp2010@t3sec.info>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

@@ -28,7 +28,6 @@
  * Date directory
  * Can be used with the HMENU cObject, special property set to "userdefined".
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Olaf.Schuemann@erz.be.ch

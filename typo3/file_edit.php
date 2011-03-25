@@ -27,7 +27,6 @@
 /**
  * Web>File: Editing documents
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant (except textarea field)
  *

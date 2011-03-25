@@ -26,8 +26,6 @@
  ***************************************************************/
 /**
  * Functions for parsing HTML, specially for TYPO3 processing in relation to TCEmain and Rich Text Editor (RTE)
- *
- * $Id$
  * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
  * XHTML compatible.
  *

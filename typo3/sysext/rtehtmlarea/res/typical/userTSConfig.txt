@@ -4,8 +4,6 @@
 # Sets User TSConfig with most commonly used features representing a good start for typical sites.
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 ## Default User TSConfig for the Usual default RTE configuration
 

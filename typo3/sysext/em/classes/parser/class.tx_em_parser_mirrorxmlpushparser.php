@@ -27,8 +27,6 @@
  *
  * Module: Extension manager - mirrors.xml push-parser
  *
- * $Id$
- *
  * @author  Marcus Krause <marcus#exp2010@t3sec.info>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

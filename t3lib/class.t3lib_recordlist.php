@@ -27,7 +27,6 @@
 /**
  * Library with a single function addElement that returns tablerows based on some input.
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *

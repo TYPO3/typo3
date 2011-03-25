@@ -27,8 +27,6 @@
 /**
  * Dynamic configuation of the system-related tables, typ. sys_* series
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 

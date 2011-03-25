@@ -28,7 +28,6 @@
  * Generating gif/png-files from TypoScript
  * Used by the menu-objects and imgResource in TypoScript.
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -712,7 +711,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			/** @var $basicFileFunctions t3lib_basicFileFunctions */
 			$basicFileFunctions = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-			
+
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
 			$meaningfulPrefix = substr($meaningfulPrefix, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';

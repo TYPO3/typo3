@@ -27,8 +27,6 @@
  *
  * Module: Extension manager - Mirror list importer
  *
- * $Id: class.tx_em_import_mirrorlistimporter.php 1982 2010-03-09 06:29:55Z mkrause $
- *
  * @author  Marcus Krause <marcus#exp2010@t3sec.info>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

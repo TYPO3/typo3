@@ -25,9 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * extending class to class t3lib_basicFileFunctions
+ * Extending class to class t3lib_basicFileFunctions
  *
- * $Id$
  * Revised for TYPO3 3.6 May/2004 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

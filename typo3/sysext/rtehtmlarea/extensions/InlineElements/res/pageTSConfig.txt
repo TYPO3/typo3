@@ -2,8 +2,6 @@
 # Additonal proc options in Page TSconfig for Inline Elements extension
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## DO NOT REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA

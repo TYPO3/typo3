@@ -27,8 +27,6 @@
 /**
  * Contains the class for the Install Tool
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmar@typo3.org>
  */
@@ -162,8 +160,6 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_im
 
 /**
  * Install Tool module
- *
- * $Id$
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmar@typo3.org>

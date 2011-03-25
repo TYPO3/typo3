@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Paste as Plain Text Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id: plain-text.js 8945 2010-10-04 03:00:03Z stan $
  */
 HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	/*

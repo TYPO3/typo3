@@ -28,8 +28,6 @@
  * Dynamic configuation of the tt_content table
  * This gets it's own file because it's so huge and central to typical TYPO3 use.
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 

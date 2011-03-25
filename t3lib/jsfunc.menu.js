@@ -2,8 +2,6 @@
 *
 *  JavaScript menu
 *
-* $Id$
-*
 *
 *
 *  Copyright notice

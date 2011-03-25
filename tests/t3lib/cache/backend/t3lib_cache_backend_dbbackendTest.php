@@ -28,7 +28,6 @@
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 

@@ -25,7 +25,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/* $Id: class.tx_em_Connection_Soap.php 1978 2010-03-09 03:18:50Z mkrause $ */
 
 /**
  * Enter description here...

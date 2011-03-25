@@ -27,8 +27,6 @@
  *
  * Module: Extension manager - Extension list importer
  *
- * $Id: class.tx_em_import_extensionlistimporter.php 2016 2010-03-14 04:01:47Z mkrause $
- *
  * @author  Marcus Krause <marcus#exp2010@t3sec.info>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

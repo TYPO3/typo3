@@ -25,7 +25,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/* $Id: class.tx_em_translations.php 2018 2010-03-14 12:25:58Z steffenk $ */
 
 /**
  * Class for handling translations

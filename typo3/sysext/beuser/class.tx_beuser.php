@@ -27,8 +27,6 @@
 /**
  * Class, adding SU link to context menu
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

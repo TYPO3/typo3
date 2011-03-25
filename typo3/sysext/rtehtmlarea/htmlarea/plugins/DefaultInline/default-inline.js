@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Default Inline Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 	/*

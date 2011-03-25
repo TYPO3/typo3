@@ -24,8 +24,6 @@
 
 /**
  * Hook into the backend module "Reports" checking whether there are extensions installed that conflicting with htmlArea RTE
- *
- * @version $Id: class.tx_rtehtmlarea_statusreport_conflictscheck.php $
  */
 class tx_rtehtmlarea_statusReport_conflictsCheck implements tx_reports_StatusProvider {
 	/**

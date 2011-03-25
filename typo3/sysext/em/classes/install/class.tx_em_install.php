@@ -27,8 +27,6 @@
 /**
  * Module: Extension manager, (un-)install extensions
  *
- * $Id: class.tx_em_install.php 2073 2010-03-19 10:42:38Z steffenk $
- *
  * @author	Steffen Kamper <info@sk-typo3.de>
  */
 

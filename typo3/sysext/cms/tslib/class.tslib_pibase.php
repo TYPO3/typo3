@@ -27,7 +27,6 @@
 /**
  * This script contains the parent class, 'pibase', providing an API with the most basic methods for frontend plugins
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

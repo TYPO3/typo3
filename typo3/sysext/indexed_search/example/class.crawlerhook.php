@@ -27,8 +27,6 @@
 /**
  * Index search crawler hook example
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

@@ -27,8 +27,6 @@
 /**
  * Contains abstract class "tx_saltedpasswords_abstract_salts"
  * to be used in classes that provide salted hashing.
- *
- * $Id$
  */
 
 

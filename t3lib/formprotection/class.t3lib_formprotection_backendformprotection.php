@@ -100,8 +100,6 @@
  * persisted. This makes sure that the tokens that get invalidated by
  * validateToken cannot be used again.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

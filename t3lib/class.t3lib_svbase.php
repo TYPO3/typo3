@@ -27,7 +27,6 @@
 /**
  * Parent class for "Services" classes
  *
- * $Id$
  * TODO: temp files are not removed
  *
  * @author	René Fritz <r.fritz@colorcube.de>

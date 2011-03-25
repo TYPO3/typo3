@@ -29,8 +29,6 @@
 /**
  * Command Line Interface module dispatcher
  *
- * $Id$
- *
  * @author      Kasper Skaarhoj <kasperYYYY@typo3.com>
  *
  * This script takes a "cliKey" as first argument and uses that to look up the path of the script to include in the end.

@@ -27,7 +27,6 @@
 /**
  * Contains a class for formmail
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -264,7 +263,7 @@ class t3lib_formmail {
 		}
 		return $string;
 	}
-	
+
 	/**
 	 * Parses mailbox headers and turns them into an array.
 	 *

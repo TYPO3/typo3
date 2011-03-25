@@ -1190,4 +1190,3 @@ tt_content.default {
 }
 
 
-# TYPO3 SVN ID: $Id$

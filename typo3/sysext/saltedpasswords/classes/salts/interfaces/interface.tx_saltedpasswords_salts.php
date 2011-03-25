@@ -28,8 +28,6 @@
 /**
  * Contains interface "tx_saltedpasswords_salts" to be used in
  * classes that provide salted hashing.
- *
- * $Id$
  */
 
 

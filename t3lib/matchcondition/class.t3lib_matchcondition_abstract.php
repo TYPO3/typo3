@@ -27,8 +27,6 @@
 /**
  * Matching TypoScript conditions
  *
- * $Id$
- *
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
  *

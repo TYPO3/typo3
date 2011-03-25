@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Text Style Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 /*
  * Creation of the class of TextStyle plugins

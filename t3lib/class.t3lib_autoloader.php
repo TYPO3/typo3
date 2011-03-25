@@ -27,8 +27,6 @@
 /**
  * Contains TYPO3 autoloader
  *
- * $Id$
- *
  * @author	Dmitry Dulepov	<dmitry@typo3.org>
  * @author	Martin Kutschker <masi@typo3.org>
  * @author	Oliver Hader <oliver@typo3.org>

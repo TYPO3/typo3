@@ -40,8 +40,6 @@
  * or extend this information, please make an extension which does so.
  * Thus you preserve backwards compatibility.
  *
- *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

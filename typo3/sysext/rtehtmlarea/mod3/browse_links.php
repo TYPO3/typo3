@@ -32,8 +32,6 @@
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */

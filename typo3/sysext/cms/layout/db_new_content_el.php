@@ -28,7 +28,6 @@
  * New content elements wizard
  * (Part of the 'cms' extension)
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compatible.
  *

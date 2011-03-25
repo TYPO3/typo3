@@ -32,8 +32,6 @@ require_once(t3lib_extMgm::extPath('install', 'requirements.php'));
  * @author		Ingo Renner <ingo@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_install
- *
- * $Id$
  */
 class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 

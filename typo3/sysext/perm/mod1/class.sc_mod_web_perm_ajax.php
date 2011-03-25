@@ -55,7 +55,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
  * (user and group)) via new TYPO3AJAX facility
  *
  * @author		Andreas Kundoch <typo3@mehrwert.de>
- * @version		$Id$
  * @package		TYPO3
  * @subpackage	core
  * @license		GPL

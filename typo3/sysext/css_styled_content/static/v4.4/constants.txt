@@ -134,5 +134,4 @@ styles.content.media {
 PAGE_TARGET =
 
 
-# TYPO3 SVN ID: $Id: constants.txt 8782 2010-09-13 08:34:33Z psychomieze $
 

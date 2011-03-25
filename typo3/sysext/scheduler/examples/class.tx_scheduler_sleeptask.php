@@ -29,8 +29,6 @@
  * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 class tx_scheduler_SleepTask extends tx_scheduler_Task {
 

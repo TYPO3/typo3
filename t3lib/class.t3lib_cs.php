@@ -24,8 +24,6 @@
 /**
  * Class for conversion between charsets.
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  */

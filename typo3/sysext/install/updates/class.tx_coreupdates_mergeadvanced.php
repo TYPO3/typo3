@@ -29,7 +29,6 @@
  * Contains the update class for merging advanced and normal pagetype.
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @version $Id$
  */
 class tx_coreupdates_mergeadvanced extends Tx_Install_Updates_Base {
 	protected $title = 'Update Pages with Pagetype "Advanced"';

@@ -32,8 +32,6 @@
  * @author		Ingo Renner <ingo@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_reports
- *
- * $Id$
  */
 interface tx_reports_StatusProvider {
 

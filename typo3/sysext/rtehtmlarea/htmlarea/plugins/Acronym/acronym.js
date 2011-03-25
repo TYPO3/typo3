@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Acronym plugin for htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 	/*

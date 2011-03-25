@@ -29,8 +29,6 @@
 /**
  * class to render the menu for the cache clearing actions
  *
- * $Id$
- *
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core

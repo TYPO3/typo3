@@ -30,7 +30,6 @@
  * A contract for a cache backend which is capable of storing, retrieving and
  * including PHP source code.
  *
- * @version $Id$
  * @api
  * @author Robert Lemke <robert@typo3.org>
  */

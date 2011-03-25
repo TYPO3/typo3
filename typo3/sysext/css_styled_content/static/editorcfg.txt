@@ -205,4 +205,3 @@ Normal line again.		</PRE>
 
 // Commented out since it needs update - or a vision... ?
 
-# TYPO3 SVN ID: $Id$

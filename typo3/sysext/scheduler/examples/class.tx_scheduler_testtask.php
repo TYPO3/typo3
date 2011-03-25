@@ -28,8 +28,6 @@
  * @author		Markus Friedrich <markus.friedrich@dkd.de>
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 class tx_scheduler_TestTask extends tx_scheduler_Task {
 

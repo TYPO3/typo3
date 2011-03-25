@@ -27,8 +27,6 @@
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
- * $Id$
- *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Benjamin Mack <benni@typo3.org>
  */

@@ -28,8 +28,6 @@
 ***************************************************************/
 /*
  * Block Style Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	/*

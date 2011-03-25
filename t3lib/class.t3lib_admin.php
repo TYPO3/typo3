@@ -28,7 +28,6 @@
  * Contains a class for evaluation of database integrity according to $TCA
  * Most of these functions are considered obsolete!
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *

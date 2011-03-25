@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * SelectFont Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 	/*

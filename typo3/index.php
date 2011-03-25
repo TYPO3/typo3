@@ -27,7 +27,6 @@
 /**
  * Login-screen of TYPO3.
  *
- * $Id$
  * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
  * XHTML compliant
  *

@@ -27,7 +27,6 @@
 /**
  * Contains class with layout/output function for TYPO3 Backend Scripts
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML-trans compliant
  *

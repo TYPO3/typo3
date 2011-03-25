@@ -30,8 +30,6 @@
 ***************************************************************/
 /*
  * Table Operations Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	/*

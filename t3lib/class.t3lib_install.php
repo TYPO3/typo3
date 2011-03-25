@@ -27,8 +27,6 @@
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

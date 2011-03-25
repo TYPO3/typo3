@@ -31,8 +31,6 @@
  * This will use the setting in TYPO3_CONF_VARS to choose the correct transport
  * for it to work out-of-the-box.
  *
- * $Id$
- *
  * @author Ernesto Baschny <ernst@cron-it.de>
  * @package TYPO3
  * @subpackage t3lib

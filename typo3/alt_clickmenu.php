@@ -35,7 +35,6 @@
  *
  * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant
  *

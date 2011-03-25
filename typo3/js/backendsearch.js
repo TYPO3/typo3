@@ -26,8 +26,6 @@
 
 /**
  * class to handle the backend search
- *
- * $Id$
  */
 var BackendSearch = Class.create({
 

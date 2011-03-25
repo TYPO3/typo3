@@ -28,7 +28,6 @@
  * Front End session user. Login and session data
  * Included from index_ts.php
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

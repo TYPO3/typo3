@@ -29,7 +29,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * TYPO3 SVN ID: $Id$
  */
 
 /***************************************************

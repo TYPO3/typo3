@@ -30,7 +30,6 @@
  * THIS IS AN EXAMPLE designed to work with the official TYPO3 testsite, section "Another site in the ..."
  * You will have to program a similar menu for your own case.
  *
- * $Id: example_languageMenu.php 5165 2009-03-09 18:28:59Z ohader $
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

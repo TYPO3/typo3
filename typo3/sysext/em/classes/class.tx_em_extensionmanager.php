@@ -27,8 +27,6 @@
 /**
  * Module: Extension manager, developer module
  *
- * $Id: class.em_extensionmanager.php 2106 2010-03-24 00:56:22Z steffenk $
- *
  * @author	Steffen Kamper <info@sk-typo3.de>
  */
 

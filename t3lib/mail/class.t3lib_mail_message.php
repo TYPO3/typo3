@@ -31,8 +31,6 @@ require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions
  *
- * $Id$
- *
  * @author	Ernesto Baschny <ernst@cron-it.de>
  * @package TYPO3
  * @subpackage t3lib

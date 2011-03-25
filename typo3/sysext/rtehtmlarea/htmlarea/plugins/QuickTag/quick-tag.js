@@ -29,8 +29,6 @@
 ***************************************************************/
 /*
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 	/*

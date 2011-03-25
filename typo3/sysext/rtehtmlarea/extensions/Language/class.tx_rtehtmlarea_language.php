@@ -26,8 +26,6 @@
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
- * TYPO3 SVN ID: $Id$
- *
  */
 class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 

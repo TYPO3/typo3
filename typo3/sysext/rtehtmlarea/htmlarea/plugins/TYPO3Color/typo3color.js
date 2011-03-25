@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * TYPO3 Color Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	/*

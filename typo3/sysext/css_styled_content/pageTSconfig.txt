@@ -3,8 +3,6 @@
 #
 # Removes obsolete type values and fields from "Content Element" table "tt_content"
 # Configures processing for the Rich Text Editor according to the rendering principles.
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 TCEFORM.tt_content {

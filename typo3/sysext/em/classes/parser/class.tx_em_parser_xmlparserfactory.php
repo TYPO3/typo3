@@ -27,8 +27,6 @@
  *
  * Module: Extension manager - XML parser factory
  *
- * $Id: class.tx_em_parser_xmlparserfactory.php 1911 2010-02-21 14:50:40Z mkrause $
- *
  * @author  Marcus Krause <marcus#exp2010@t3sec.info>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

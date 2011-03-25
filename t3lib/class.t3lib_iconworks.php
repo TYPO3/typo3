@@ -27,7 +27,6 @@
 /**
  * Contains class for icon generation in the backend
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *

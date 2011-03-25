@@ -107,5 +107,4 @@ styles.content.searchresult {
 PAGE_TARGET = page
 
 
-# TYPO3 SVN ID: $Id$
 

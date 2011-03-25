@@ -30,8 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)jbr.ca>
- *
- * $Id$  *
  */
 
 error_reporting (E_ALL ^ E_NOTICE);

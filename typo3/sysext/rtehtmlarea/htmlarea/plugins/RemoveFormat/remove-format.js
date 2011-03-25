@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Remove Format Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 	/*

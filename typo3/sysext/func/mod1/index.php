@@ -28,7 +28,6 @@
  * Module: Advanced functions
  * Advanced Functions related to pages
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *

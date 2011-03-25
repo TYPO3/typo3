@@ -27,7 +27,6 @@
 /**
  * Contains class for creating WAP pages for TYPO3
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

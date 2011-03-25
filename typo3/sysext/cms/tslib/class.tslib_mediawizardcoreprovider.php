@@ -28,8 +28,6 @@
  * Contains an implementation of the mediaWizardProvider supporting some
  * well known providers.
  *
- * $Id: $
-
  * @author	Aishwara M.B.<aishu.moorthy@gmail.com>
  * @author	Steffen Kamper <info@sk-typo3.de>
  * @author	Ernesto Baschny <ernst@cron-it.de>

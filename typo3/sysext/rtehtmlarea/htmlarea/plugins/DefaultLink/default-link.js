@@ -28,8 +28,6 @@
 ***************************************************************/
 /*
  * Default Link Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	/*

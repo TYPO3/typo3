@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Copy Paste for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	/*

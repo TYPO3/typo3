@@ -27,8 +27,6 @@
 /**
  * Contains functions for manipulating flex form data
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

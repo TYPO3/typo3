@@ -27,8 +27,6 @@
 ***************************************************************/
 /**
  * Contains authentication service class for salted hashed passwords.
- *
- * $Id$
  */
 
 

@@ -28,7 +28,6 @@
  * @author	Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 

@@ -28,7 +28,6 @@
  * Module: About
  * This document shows some standard-information for TYPO3 CMS: About-text, version number and so on.
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *

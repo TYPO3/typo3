@@ -28,7 +28,6 @@
  * Demonstrates how to manipulate menu generation so that a click on a menu item will trigger two (or more) frames to load an URL
  * Used in the "testsite" package
  *
- * $Id: example_keepRollover.php 5165 2009-03-09 18:28:59Z ohader $
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * TYPO3Link plugin for htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	/*
