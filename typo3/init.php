@@ -59,17 +59,13 @@
 // *******************************
 // Checking PHP version
 // *******************************
-if (version_compare(phpversion(), '5.2', '<'))	die ('TYPO3 requires PHP 5.2.0 or higher.');
+if (version_compare(phpversion(), '5.3', '<'))	die ('TYPO3 requires PHP 5.3.0 or higher.');
 
 
 // *******************************
 // Set error reporting
 // *******************************
-if (defined('E_DEPRECATED')) {
-	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-} else {
-	error_reporting(E_ALL ^ E_NOTICE);
-}
+error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 // *******************************
 // Prevent any unwanted output that may corrupt AJAX/compression. Note: this does

@@ -38,11 +38,7 @@
 // Insert some security here, if you don't trust the Install Tool Password:
 // **************************************************************************
 
-if (defined('E_DEPRECATED')) {
-	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-} else {
-	error_reporting(E_ALL ^ E_NOTICE);
-}
+error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 $PATH_thisScript = str_replace('//', '/', str_replace('\\', '/',
 	(PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi') &&
