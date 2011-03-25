@@ -28,8 +28,6 @@
 /**
  * View class for the admin panel in frontend editing.
  *
- * $Id$
- *
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>
  * @author Dmitry Dulepov <dmitry@typo3.org>

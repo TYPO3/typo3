@@ -26,8 +26,6 @@
 
 /**
  * class to handle the clear cache menu
- *
- * $Id$
  */
 var ClearCacheMenu = Class.create({
 

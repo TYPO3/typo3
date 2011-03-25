@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * Language Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 	/*

@@ -27,7 +27,6 @@
 /**
  * Dummy document - displays nothing but background color.
  *
- * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant content
  *

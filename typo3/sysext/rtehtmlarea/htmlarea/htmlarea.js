@@ -30,8 +30,6 @@
 ***************************************************************/
 /*
  * Main script of TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 	// Avoid re-initialization on AJax call when HTMLArea object was already initialized
 if (typeof(HTMLArea) == 'undefined') {

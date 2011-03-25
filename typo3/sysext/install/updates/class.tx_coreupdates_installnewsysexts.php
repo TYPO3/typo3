@@ -29,8 +29,6 @@
 /**
  * Contains the update class for adding the system extension "simulate static".
  *
- * $Id$
- *
  * @author  Benjamin Mack <benni@typo3.org>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */

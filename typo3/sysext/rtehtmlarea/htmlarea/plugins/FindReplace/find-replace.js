@@ -29,8 +29,6 @@
 ***************************************************************/
 /*
  * Find and Replace Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	/*

@@ -27,8 +27,6 @@
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
- * $Id$
- *
  * @author		René Fritz <r.fritz@colorcube.de>
  */
 

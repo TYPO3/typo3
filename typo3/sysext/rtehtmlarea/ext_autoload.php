@@ -1,8 +1,6 @@
 <?php
 /*
  * Register necessary class names with autoloader
- *
- * $Id: ext_autoload.php $
  */
 $rtehtmlareaExtensionPath = t3lib_extMgm::extPath('rtehtmlarea');
 return array(

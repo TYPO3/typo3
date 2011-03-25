@@ -29,8 +29,6 @@
  * @author		Markus Friedrich <markus.friedrich@dkd.de>
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
 	$hasTask = true;

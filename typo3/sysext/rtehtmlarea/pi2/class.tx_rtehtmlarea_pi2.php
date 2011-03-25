@@ -28,8 +28,6 @@
  * Front end RTE based on htmlArea
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
- * $Id$  *
  */
 class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 

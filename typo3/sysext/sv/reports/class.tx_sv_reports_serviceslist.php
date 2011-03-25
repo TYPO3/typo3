@@ -30,8 +30,6 @@
  * @author	Francois Suter <francois@typo3.org>
  * @package TYPO3
  * @subpackage sv
- *
- * $Id$
  */
 class tx_sv_reports_ServicesList implements tx_reports_Report {
 

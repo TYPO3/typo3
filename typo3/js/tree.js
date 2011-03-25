@@ -20,8 +20,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of this script
 *
-*  TYPO3 SVN ID: $Id$
-*
 ***************************************************************/
 
 

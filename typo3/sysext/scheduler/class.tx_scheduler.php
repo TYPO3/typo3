@@ -31,8 +31,6 @@
  *
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 
 class tx_scheduler implements t3lib_Singleton {

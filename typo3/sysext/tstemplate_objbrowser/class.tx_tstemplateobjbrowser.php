@@ -26,8 +26,6 @@
 ***************************************************************/
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * $Id$
  */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');

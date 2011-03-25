@@ -1455,4 +1455,3 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 )
 
 
-# TYPO3 SVN ID: $Id$

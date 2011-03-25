@@ -27,8 +27,6 @@
 /**
  * Module: Workspace publisher
  *
- * $Id$
- *
  * @author	Dmitry Dulepov <typo3@accio.lv>
  */
 /**

@@ -24,8 +24,6 @@
 ***************************************************************/
 /**
  * Module: Extension manager - connection exception
- *
- * $Id: class.tx_em_connection_exception.php 1876 2010-02-18 23:23:13Z mkrause $
  */
 
 /**

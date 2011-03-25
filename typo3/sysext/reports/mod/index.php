@@ -34,8 +34,6 @@ $BE_USER->modAccess($MCONF, 1);
  * @author		Ingo Renner <ingo@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_reports
- *
- * $Id$
  */
 class tx_reports_Module extends t3lib_SCbase {
 

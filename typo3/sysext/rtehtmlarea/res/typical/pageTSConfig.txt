@@ -4,8 +4,6 @@
 # Sets Page TSConfig with most commonly used features representing a good start for typical sites.
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Define labels and styles to be applied to class selectors in the interface of the RTE

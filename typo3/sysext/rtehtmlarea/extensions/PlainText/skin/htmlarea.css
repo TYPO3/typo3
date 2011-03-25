@@ -1,5 +1,4 @@
 /* Selectors for the PlainText extension of htmlArea RTE */
-/* TYPO3 SVN ID: $Id: htmlarea.css 8281 2010-07-26 23:18:50Z stan $ */
 .htmlarea-action-paste-toggle {
 	background-image: url('images/paste-toggle.gif') !important;
 	background-position: 0 0 !important;

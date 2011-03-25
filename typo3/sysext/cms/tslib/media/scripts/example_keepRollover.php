@@ -28,7 +28,6 @@
  * Demonstrates how to manipulate menu generation so that a click on a menu item will trigger two (or more) frames to load an URL
  * Used in the "testsite" package
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

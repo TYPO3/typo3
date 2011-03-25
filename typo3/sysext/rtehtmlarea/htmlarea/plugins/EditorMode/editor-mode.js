@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * EditorMode Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.EditorMode = Ext.extend(HTMLArea.Plugin, {
 	/*

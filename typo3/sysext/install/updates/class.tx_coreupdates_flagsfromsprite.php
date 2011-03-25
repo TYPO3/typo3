@@ -29,7 +29,6 @@
  * Contains the update class for transitioning from ".gif" flags to sprites
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
- * @version $Id$
  */
 class tx_coreupdates_flagsfromsprite extends Tx_Install_Updates_Base {
 	protected $title = 'Update Graphics, Using Sprites for sys_language Records';

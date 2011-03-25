@@ -27,7 +27,6 @@
 /**
  * Colorpicker wizard
  *
- * $Id $
  * Revised for TYPO3 3.7 May/2004 by Kasper Skårhøj
  *
  * @author	Mathias Schreiber <schreiber@wmdb.de>

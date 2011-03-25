@@ -29,8 +29,6 @@
  * Class that does the simulatestatic feature (Speaking URLs)
  * Was extracted for TYPO3 4.3 from the core
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Benjamin Mack <benni . typo3 . o)rg>
  */

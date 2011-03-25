@@ -9,4 +9,3 @@ All language labels (except module name and short description in the $conf-files
 - kasper
 
 (5/12 2001, reviewed 2003/2)
-TYPO3 SVN ID: $Id$

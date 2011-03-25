@@ -30,7 +30,6 @@
  * Migrates workspaces from TYPO3 versions below 4.5.
  *
  * @author Tolleiv Nietsch <info@tolleiv.de>
- * @version $Id$
  */
 class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	protected $title = 'Versioning and Workspaces';

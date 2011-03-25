@@ -1,5 +1,4 @@
 /* Selectors for the CopyPaste extension of htmlArea RTE */
-/* TYPO3 SVN ID: $Id htmlarea.css $ */
 .htmlarea-action-copy { 
 	background-image: url('images/copy.gif') !important;
 }

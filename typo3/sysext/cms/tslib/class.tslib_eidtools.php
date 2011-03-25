@@ -33,8 +33,6 @@
  * initialize parts of the FE environment as needed,
  * eg. Frontend User session, Database connection etc.
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

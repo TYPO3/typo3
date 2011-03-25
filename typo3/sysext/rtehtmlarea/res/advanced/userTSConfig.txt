@@ -4,8 +4,6 @@
 # Sets default User TSConfig with minimal features for advanced admin users.
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Enable the RTE by default for all users

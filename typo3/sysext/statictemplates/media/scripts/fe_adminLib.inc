@@ -27,7 +27,6 @@
 /**
  * FE admin lib
  *
- * $Id: fe_adminLib.inc 6454 2009-11-17 16:51:32Z steffenk $
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -986,7 +985,7 @@ class user_feAdmin	{
 			if (!is_array($this->dataArr)) {
 				$this->dataArr = array();
 			}
-			
+
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			if ($this->conf['create.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);

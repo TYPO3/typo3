@@ -27,7 +27,6 @@
 /**
  * Contains classes for Content Rendering based on TypoScript Template configuration
  *
- * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

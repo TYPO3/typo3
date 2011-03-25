@@ -27,7 +27,6 @@
 /**
  * Contains the TYPO3 Backend Language class
  *
- * $Id$
  * Revised for TYPO3 3.6.0
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

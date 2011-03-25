@@ -1,5 +1,4 @@
 <?php
-# TYPO3 SVN ID: $Id$
 
 if (!is_object($this)) die ('Error: No parent object present.');
 

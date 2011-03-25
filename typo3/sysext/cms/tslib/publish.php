@@ -28,7 +28,6 @@
  * Publishing pages to static
  *
  * Is included from index_ts.php
- * $Id$
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3

@@ -27,8 +27,6 @@
 
 /**
  * Displays warnings and information about the database character set
- *
- * @version $Id$
  */
 class tx_coreupdates_charsetDefaults extends Tx_Install_Updates_Base {
 	protected $title = 'Database Character Set';

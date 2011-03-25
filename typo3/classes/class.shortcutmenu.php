@@ -38,8 +38,6 @@ if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 /**
  * class to render the shortcut menu
  *
- * $Id$
- *
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core

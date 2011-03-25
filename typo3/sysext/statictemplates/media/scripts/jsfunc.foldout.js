@@ -2,8 +2,6 @@
 *
 *  JavaScript DHTML foldout menu
 *
-* $Id: jsfunc.foldout.js 5165 2009-03-09 18:28:59Z ohader $
-*
 *
 *
 *  Copyright notice

@@ -29,7 +29,6 @@
  *
  * Creates graphical postit notes with text on them.
  *
- * $Id: postit.inc 5165 2009-03-09 18:28:59Z ohader $
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *

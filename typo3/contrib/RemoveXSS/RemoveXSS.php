@@ -16,8 +16,6 @@
  * This code is public domain, you are free to do whatever you want with it,
  * including adding it to your own project which can be under any license.
  *
- * $Id$
- *
  * @author	Travis Puderbaugh <kallahar@quickwired.com>
  * @author	Jigal van Hemert <jigal@xs4all.nl>
  * @package	RemoveXSS

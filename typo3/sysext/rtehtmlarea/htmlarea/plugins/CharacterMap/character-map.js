@@ -30,8 +30,6 @@
 ***************************************************************/
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	/*

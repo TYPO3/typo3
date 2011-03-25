@@ -25,7 +25,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/* $Id: class.tx_em_extensions_list.php 2084 2010-03-22 01:46:37Z steffenk $ */
 
 /**
  * This class handles extension listings

@@ -4,8 +4,6 @@
 # Sets Page TSConfig for the use of images.
 # Note that all these settings are already included in the "Demo" default configuration
 # However, this will update the "Minimal" and "Typical" default configurations
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Default RTE configuration
