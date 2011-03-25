@@ -30,7 +30,6 @@
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase {
 
