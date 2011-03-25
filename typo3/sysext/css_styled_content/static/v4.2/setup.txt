@@ -120,7 +120,7 @@ lib.parseFunc_RTE {
 			addChr10BetweenParagraphs=1
 		}
 		div.stripNL = 1
-		div.callRecursive = 1 
+		div.callRecursive = 1
 	}
 	nonTypoTagStdWrap.encapsLines {
 		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6
@@ -594,7 +594,7 @@ tt_content.bullets {
 			1.current = 1
 			1.parseFunc =< lib.parseFunc
 			1.wrap = <li class="odd">|</li>
-	
+
 			2.current = 1
 			2.parseFunc =< lib.parseFunc
 			2.wrap = <li class="even">|</li>
@@ -603,7 +603,7 @@ tt_content.bullets {
 	 	editIcons = tt_content: bodytext, [layout]
 	 	editIcons.beforeLastTag = 1
 	 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
-	
+
 	 	prefixComment = 2 | Bullet list:
 	}
 }
@@ -809,7 +809,7 @@ tt_content.mailform.20 {
 	recipient.field = subheader
 	data.field = bodytext
 	locationData = 1
-	
+
 	params.radio = class="csc-mailform-radio"
 	params.check = class="csc-mailform-check"
 	params.submit = class="csc-mailform-submit"
@@ -1193,23 +1193,11 @@ tt_content.shortcut {
 		source.field = records
 		tables = {$content.shortcut.tables}
 		# THESE are OLD plugins. Modern plugins registers themselves automatically!
-		conf.tt_content = < tt_content
-		conf.tt_address = < tt_address
-		conf.tt_links = < tt_links
-		conf.tt_guest = < tt_guest
-		conf.tt_board = < tt_board
-		conf.tt_calender = < tt_calender
-		conf.tt_rating < tt_rating
-		conf.tt_products = < tt_products
-		conf.tt_news = < tt_news
-		conf.tt_poll = < plugin.tt_poll
 	}
 	20.1= RECORDS
 	20.1 {
 		source.field = records
 		tables = {$content.shortcut.tables}
-		conf.tt_poll = < plugin.tt_poll
-		conf.tt_poll.code = RESULT,SUBMITTEDVOTE
 	}
 
 	20.stdWrap {
@@ -1231,50 +1219,6 @@ tt_content.list {
 
 	20 = CASE
 	20.key.field = list_type
-	20 {
-		# LIST element references (NOT copy of objects!)
-		# THESE are OLD plugins. Modern plugins registers themselves automatically!
-		3 = CASE
-		3.key.field = layout
-		3.0 = < plugin.tt_guest
-
-		4 = CASE
-		4.key.field = layout
-		4.0 = < plugin.tt_board_list
-		4.1 = < plugin.tt_board_tree
-
-		2 = CASE
-		2.key.field = layout
-		2.0 = < plugin.tt_board_tree
-
-		5 = CASE
-		5.key.field = layout
-		5.0 = < plugin.tt_products
-
-		7 = CASE
-		7.key.field = layout
-		7.0 = < plugin.tt_calender
-
-		8 = CASE
-		8.key.field = layout
-		8.0 = < plugin.tt_rating
-
-		9 = CASE
-		9.key.field = layout
-		9.0 = < plugin.tt_news
-
-		11 = CASE
-		11.key.field = layout
-		11.0 = < plugin.tipafriend
-
-		20 = CASE
-		20.key.field = layout
-		20.0 = < plugin.feadmin.fe_users
-
-		21 = CASE
-		21.key.field = layout
-		21.0 = < plugin.feadmin.dmailsubscription
-	}
 
 	20.stdWrap {
 		editIcons = tt_content: list_type, layout, select_key, pages [recursive]
@@ -1463,7 +1407,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Hide from IE5-mac. Only IE-win sees this. \*/
 	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
 	/* End hide from IE5/mac */
-	
+
 	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
 
 	/* Browser fixes: */
