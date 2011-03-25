@@ -1433,11 +1433,6 @@ final class t3lib_div {
 	 * @return	boolean		Returns true if the $email address (input string) is valid
 	 */
 	public static function validEmail($email) {
-			// enforce maximum length to prevent libpcre recursion crash bug #52929 in PHP
-			// fixed in PHP 5.2+ later than Sept 2010; length restriction per SMTP RFC 2821
-		if (strlen($email) > 320) {
-			return FALSE;
-		}
 		return (filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE);
 	}
 
@@ -1535,7 +1530,7 @@ final class t3lib_div {
 					// CAPICOM not installed
 				}
 			}
-			if ($output === '' && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+			if ($output === '') {
 				if (function_exists('mcrypt_create_iv')) {
 					$output = mcrypt_create_iv($count, MCRYPT_DEV_URANDOM);
 				} elseif (function_exists('openssl_random_pseudo_bytes')) {
@@ -3378,22 +3373,7 @@ final class t3lib_div {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public static function getMaximumPathLength() {
-		$maximumPathLength = 0;
-
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-				// rough assumptions
-			if (TYPO3_OS == 'WIN') {
-					// WIN is usually 255, Vista 260, although NTFS can hold about 2k
-				$maximumPathLength = 255;
-			} else {
-				$maximumPathLength = 2048;
-			}
-		} else {
-				// precise information is available since PHP 5.3
-			$maximumPathLength = PHP_MAXPATHLEN;
-		}
-
-		return $maximumPathLength;
+		return PHP_MAXPATHLEN;
 	}
 
 
