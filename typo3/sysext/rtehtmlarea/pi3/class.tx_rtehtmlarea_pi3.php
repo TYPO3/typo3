@@ -28,8 +28,6 @@
  * Render custom attribute clickenlarge
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
- * $Id$  *
  */
 class tx_rtehtmlarea_pi3 extends tslib_pibase {
 

@@ -29,8 +29,6 @@
 ***************************************************************/
 /*
  * Spell Checker Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 	/*

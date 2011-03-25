@@ -8,8 +8,6 @@
  *  - Auto-indenting of new lines
  *
  * License: GNU General Public License
- *
- * TYPO3 SVN ID: $Id$
  */
 
 function checkBrowser()	{

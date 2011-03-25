@@ -29,8 +29,6 @@
 ***************************************************************/
 /*
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 
 HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {

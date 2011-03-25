@@ -27,7 +27,6 @@
 /**
  * Class for TYPO3 backend user authentication in the TSFE frontend
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *

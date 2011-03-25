@@ -31,8 +31,6 @@
  * For documentation on how to use this class, please see the documentation of
  * the corresponding subclasses, e.g. t3lib_formprotection_BackendFormProtection.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

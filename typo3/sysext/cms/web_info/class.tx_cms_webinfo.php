@@ -27,7 +27,6 @@
 /**
  * Contains a class with functions for page related statistics added to the backend Info module
  *
- * $Id$
  * Revised for TYPO3 3.6 5/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

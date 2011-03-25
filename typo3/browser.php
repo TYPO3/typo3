@@ -27,7 +27,6 @@
 /**
  * This is the frameset to the file/record browser window
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML-frames compatible.
  *

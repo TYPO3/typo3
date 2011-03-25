@@ -26,8 +26,6 @@
 /**
  * Module: Extension manager
  *
- * $Id: class.tx_em_tools_unzip.php 1977 2010-03-09 03:13:20Z mkrause $
- *
  * @author	Vincent Blavet <vincent@phpconcept.net>
  * @author	Karsten Dambekalns <karsten@typo3.org>
  */

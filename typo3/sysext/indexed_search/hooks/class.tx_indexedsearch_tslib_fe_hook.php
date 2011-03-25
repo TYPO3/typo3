@@ -25,8 +25,6 @@
 /**
  * Hooks for tslib_fe (TSFE).
  *
- * $Id$
- *
  * @author		Oliver Hader <oliver@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_indexedsearch

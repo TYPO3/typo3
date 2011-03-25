@@ -2,8 +2,6 @@
 *
 *  JavaScript DHTML foldout menu
 *
-* $Id$
-*
 *
 *
 *  Copyright notice

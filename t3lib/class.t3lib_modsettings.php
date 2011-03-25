@@ -30,8 +30,6 @@
  *
  * inspired by t3lib_fullsearch
  *
- * $Id$
- *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
 /**

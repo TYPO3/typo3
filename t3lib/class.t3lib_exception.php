@@ -28,7 +28,6 @@
  *
  * @package TYPO3
  * @subpackage t3lib_error
- * @version $Id$
  */
 class t3lib_exception extends Exception {
 

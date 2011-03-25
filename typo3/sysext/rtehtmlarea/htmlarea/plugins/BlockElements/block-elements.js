@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * BlockElements Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 	/*

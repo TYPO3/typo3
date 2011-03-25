@@ -27,7 +27,6 @@
 /**
  * Contains class for creating a position map.
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant (should be)
  *

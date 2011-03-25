@@ -27,7 +27,6 @@
 /**
  * Wizard to edit records from group/select lists in TCEforms
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

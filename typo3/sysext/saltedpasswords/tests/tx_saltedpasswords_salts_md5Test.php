@@ -27,8 +27,6 @@
 /**
  * Contains testcases for "tx_saltedpasswords_salts_md5"
  * that provides MD5 salted hashing.
- *
- * $Id$
  */
 
 /**

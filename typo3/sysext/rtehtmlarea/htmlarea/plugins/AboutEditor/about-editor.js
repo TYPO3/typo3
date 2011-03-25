@@ -28,8 +28,6 @@
 ***************************************************************/
 /*
  * About Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 	/*

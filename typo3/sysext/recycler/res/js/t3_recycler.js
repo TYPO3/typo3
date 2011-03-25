@@ -30,7 +30,6 @@
  * @author  Steffen Kamper <steffen@typo3.org>
  * @package	TYPO3
  * @subpackage	tx_recycler
- * @version $Id$
  */
 
 Ext.ns('Recycler');

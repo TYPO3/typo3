@@ -24,8 +24,6 @@
 ***************************************************************/
 /**
  * Module: Extension manager - Extension import exception
- *
- * $Id: class.tx_em_extensionimport_exception.php 1883 2010-02-19 13:45:32Z mkrause $
  */
 
 /**

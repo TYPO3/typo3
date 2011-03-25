@@ -23,8 +23,6 @@
 ***************************************************************/
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * $Id$
  */
 
 require_once(t3lib_extMgm::extPath('sv') . 'class.tx_sv_auth.php');

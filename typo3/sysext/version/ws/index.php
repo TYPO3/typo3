@@ -27,8 +27,6 @@
 /**
  * Module: Workspace manager
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Dmitry Dulepov <typo3@accio.lv>
  */

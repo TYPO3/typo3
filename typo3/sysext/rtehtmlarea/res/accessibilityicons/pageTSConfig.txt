@@ -1,8 +1,6 @@
 # ***************************************************************************************
 # Default Page TSconfig for enabling the use of accessibility icons on links
 #
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Anchor classes configuration for use by the anchor accessibility feature (htmlArea RTE only)

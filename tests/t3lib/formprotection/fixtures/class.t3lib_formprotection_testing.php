@@ -28,8 +28,6 @@
  * This is a testing subclass of the abstract t3lib_formprotection_Abstract
  * class.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

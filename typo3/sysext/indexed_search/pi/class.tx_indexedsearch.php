@@ -27,8 +27,6 @@
 /**
  * Index search frontend
  *
- * $Id$
- *
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *

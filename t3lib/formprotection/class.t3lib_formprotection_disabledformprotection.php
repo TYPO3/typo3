@@ -28,8 +28,6 @@
  * This class is a dummy implementation of the form protection,
  * which is used when no authentication is used.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

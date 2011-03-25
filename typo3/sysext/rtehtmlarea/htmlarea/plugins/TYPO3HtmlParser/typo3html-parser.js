@@ -25,8 +25,6 @@
 ***************************************************************/
 /**
  * TYPO3HtmlParser Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 	/*

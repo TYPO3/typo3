@@ -32,7 +32,6 @@ require_once 'backend/class.t3lib_cache_backend_mockbackend.php';
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 

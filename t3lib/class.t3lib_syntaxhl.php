@@ -27,8 +27,6 @@
 /**
  * Contains a class for various syntax highlighting.
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

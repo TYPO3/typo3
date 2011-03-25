@@ -30,7 +30,6 @@
  * @package TYPO3
  * @subpackage t3lib_formprotection
  * @api
- * @version $Id$
  */
 class t3lib_formprotection_InvalidTokenException extends UnexpectedValueException {
 

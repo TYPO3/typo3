@@ -1,6 +1,4 @@
 #
-# TYPO3 SVN ID: $Id$
-#
 
 #
 # Table structure for table 'be_groups'

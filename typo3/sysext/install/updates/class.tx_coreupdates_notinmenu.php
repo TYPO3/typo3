@@ -30,7 +30,6 @@
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  * @author Steffen Kamper <info@sk-typo3.de>
- * @version $Id$
  */
 class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 	protected $title = 'Update Pages with Doktype "Not in menu"';

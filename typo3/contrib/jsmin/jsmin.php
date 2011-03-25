@@ -43,8 +43,6 @@
  * @license http://opensource.org/licenses/mit-license.php MIT License
  * @version 1.1.0 (2007-06-01)
  * @link http://code.google.com/p/jsmin-php/
- *
- * TYPO3 SVN ID: $Id$
  */
 
 class JSMin {

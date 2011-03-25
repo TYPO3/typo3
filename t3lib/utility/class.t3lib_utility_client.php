@@ -28,8 +28,6 @@
 /**
  * Class to handle and determine browser specific information.
  *
- * $Id$
- *
  * @author	Oliver Hader <oliver@typo3.org>
  */
 final class t3lib_utility_Client {

@@ -29,8 +29,6 @@
  *
  * This class handles all Ajax calls coming from ExtJS
  *
- * $Id: class.tx_em_Connection_ExtDirectServer.php 2083 2010-03-22 00:48:31Z steffenk $
- *
  * @author	Steffen Kamper <info@sk-typo3.de>
  */
 

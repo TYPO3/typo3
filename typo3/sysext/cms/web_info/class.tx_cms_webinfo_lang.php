@@ -27,8 +27,6 @@
 /**
  * Contains a class with functions for page related overview of translations.
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

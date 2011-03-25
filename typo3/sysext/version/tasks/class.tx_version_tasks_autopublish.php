@@ -29,8 +29,6 @@
  * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_version
- *
- * $Id: class.tx_scheduler_sleeptask.php 7905 2010-06-13 14:42:33Z ohader $
  */
 class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
 

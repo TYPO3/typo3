@@ -27,8 +27,6 @@
 /**
  * Web > Functions module plugin for cleaning up.
  *
- * $Id$
- *
  * XHTML compliant
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */

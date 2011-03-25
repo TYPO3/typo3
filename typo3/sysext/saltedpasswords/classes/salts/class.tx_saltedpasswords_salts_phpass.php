@@ -35,8 +35,6 @@
  * Based on the Portable PHP password hashing framework
  * original license: Public Domain
  * @see http://www.openwall.com/phpass/
- *
- * $Id$
  */
 
 

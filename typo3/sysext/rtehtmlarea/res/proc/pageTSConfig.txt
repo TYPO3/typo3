@@ -12,8 +12,6 @@
 # For documentation of RTE settings in TCA, see: http://typo3.org/documentation/document-library/core-documentation/doc_core_api/4.1.0/view/4/3/#id3665895
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 	## Default RTE processing rules

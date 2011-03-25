@@ -27,8 +27,6 @@
 /**
  * Logo menu
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

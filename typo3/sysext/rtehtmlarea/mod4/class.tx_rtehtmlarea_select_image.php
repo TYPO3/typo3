@@ -30,8 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
- * $Id$  *
  */
 require_once(PATH_typo3.'class.browse_links.php');
 

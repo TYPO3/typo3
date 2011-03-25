@@ -26,8 +26,6 @@
 ***************************************************************/
 /*
  * TextIndicator Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id: text-indicator.js 6539 2009-11-25 14:49:14Z stucki $
  */
 HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 	/*

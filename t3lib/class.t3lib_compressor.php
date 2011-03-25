@@ -32,7 +32,6 @@
  * @author	Steffen Gebert <steffen@steffen-gebert.de>
  * @package TYPO3
  * @subpackage t3lib
- * $Id$
  */
 class t3lib_Compressor {
 

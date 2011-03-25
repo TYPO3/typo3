@@ -27,8 +27,6 @@
 /**
  * Contains testcases for "tx_saltedpasswords_salts_phpass"
  * that provides PHPass salted hashing.
- *
- * $Id$
  */
 
 /**

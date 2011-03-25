@@ -28,8 +28,6 @@
  * Content parsing for htmlArea RTE
  *
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
- * $Id$  *
  */
 
 class tx_rtehtmlarea_parse_html {

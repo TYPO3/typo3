@@ -128,4 +128,3 @@ Possible solution:
 
 
 ----------------------
-TYPO3 SVN ID: $Id$

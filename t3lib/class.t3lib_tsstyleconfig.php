@@ -27,8 +27,6 @@
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

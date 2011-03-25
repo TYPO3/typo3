@@ -27,8 +27,6 @@
 /**
  * Contains testcases for "tx_saltedpasswords_div"
  * that provides various helper functions.
- *
- * $Id$
  */
 
 /**

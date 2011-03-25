@@ -47,8 +47,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
  * This class displays the Info/Modify screen of the Web > Template module
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- *
- * $Id$
  */
 class tx_tstemplateinfo extends t3lib_extobjbase {
 

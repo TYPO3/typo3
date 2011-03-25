@@ -32,7 +32,6 @@
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
- * @version $Id$
  */
 class t3lib_PdoHelper {
 

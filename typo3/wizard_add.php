@@ -27,7 +27,6 @@
 /**
  * Wizard to add new records to a group/select TCEform formfield
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

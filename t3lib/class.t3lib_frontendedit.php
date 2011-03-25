@@ -28,8 +28,6 @@
 /**
  * Controller class for frontend editing.
  *
- * $Id$
- *
  * @author	Jeff Segars <jeff@webempoweredchurch.org>
  * @author	David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3

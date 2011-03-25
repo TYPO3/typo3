@@ -28,7 +28,6 @@
 /**
  * Class for the record history display script (show_rechis.php)
  *
- * $Id$
  * XHTML Compliant
  *
  * @author	Sebastian Kurfürst <sebastian@garbage-group.de>

@@ -32,8 +32,6 @@
  *
  * @package TYPO3
  * @subpackage tx_install
- *
- * @version $Id$
  */
 class tx_install_session {
 

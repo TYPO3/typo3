@@ -1,8 +1,6 @@
 <?php
 /*
  * Register necessary class names with autoloader
- *
- * $Id$
  */
 
 $extPath = t3lib_extMgm::extPath('install');

@@ -25,8 +25,6 @@
 ***************************************************************/
 /**
  * Default Clean Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 	/*

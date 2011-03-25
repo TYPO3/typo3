@@ -27,7 +27,6 @@
 /**
  * Class for displaying an array as a tree
  *
- * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *

@@ -26,8 +26,6 @@
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
- * TYPO3 SVN ID: $Id: class.tx_rtehtmlarea_plaintext.php 7838 2010-06-08 16:10:41Z stan $
- *
  */
 class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 	protected $extensionKey = 'rtehtmlarea';		// The key of the extension that is extending htmlArea RTE

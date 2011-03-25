@@ -25,8 +25,6 @@
 /**
  * Testcase for the t3lib_formprotection_BackendFormProtection class.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

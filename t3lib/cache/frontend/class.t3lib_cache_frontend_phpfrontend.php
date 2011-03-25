@@ -32,7 +32,6 @@
  * @subpackage t3lib_cache
  * @api
  * @scope prototype
- * @version $Id$
  */
 class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFrontend {
 	/**

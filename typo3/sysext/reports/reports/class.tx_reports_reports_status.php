@@ -29,8 +29,6 @@
  * @author	Ingo Renner <ingo@typo3.org>
  * @package	TYPO3
  * @subpackage	reports
- *
- * $Id$
  */
 class tx_reports_reports_Status implements tx_reports_Report {
 

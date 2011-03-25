@@ -28,8 +28,6 @@
 /**
  * Module: Extension manager
  *
- * $Id: index.php 2083 2010-03-22 00:48:31Z steffenk $
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <karsten@typo3.org>
  * @author	Steffen Kamper <info@sk-typo3.de>

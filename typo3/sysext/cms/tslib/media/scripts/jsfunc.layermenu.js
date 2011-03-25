@@ -2,8 +2,6 @@
 *
 *  JavaScript DHTML layer menu
 *
-* $Id$
-*
 *
 *
 *  Copyright notice

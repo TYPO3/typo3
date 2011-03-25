@@ -30,7 +30,6 @@
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 

@@ -28,8 +28,6 @@
 ***************************************************************/
 /*
  * Undo Redo Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 	/*

@@ -1,5 +1,4 @@
 /* Selectors for the Table Operations extension of htmlArea RTE */
-/* TYPO3 SVN ID: $Id$ */
 .htmlarea-action-cell-delete {
 	background-image: url('images/cell-delete.gif') !important;
 }

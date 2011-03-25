@@ -27,8 +27,6 @@ require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install.php');
 /**
  * Testcase for the t3lib_formprotection_InstallToolFormProtection class.
  *
- * $Id$
- *
  * @package TYPO3
  * @subpackage t3lib
  *

@@ -25,8 +25,6 @@
 ***************************************************************/
 /*
  * User Elements Plugin for TYPO3 htmlArea RTE
- *
- * TYPO3 SVN ID: $Id$
  */
 HTMLArea.UserElements = Ext.extend(HTMLArea.Plugin, {
 	/*

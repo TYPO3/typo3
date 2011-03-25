@@ -33,8 +33,6 @@
  *
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 abstract class tx_scheduler_Task {
 

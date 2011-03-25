@@ -27,8 +27,6 @@
 /**
  * Contains base class for TYPO3 cli scripts
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

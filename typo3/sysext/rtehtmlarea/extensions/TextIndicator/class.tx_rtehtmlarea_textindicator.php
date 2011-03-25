@@ -26,8 +26,6 @@
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
- * TYPO3 SVN ID: $Id: class.tx_rtehtmlarea_textindicator.php 5489 2009-05-23 15:26:20Z ohader $
- *
  */
 class tx_rtehtmlarea_textindicator extends tx_rtehtmlarea_api {
 	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE

@@ -31,7 +31,6 @@
  *
  * @package TYPO3
  * @subpackage tests
- * @version $Id$
  */
 class t3lib_cache_backend_MockBackend extends t3lib_cache_backend_NullBackend {
 

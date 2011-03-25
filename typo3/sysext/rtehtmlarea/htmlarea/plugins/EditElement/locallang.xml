@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<!-- TYPO3 SVN ID: $Id: locallang.xml 6940 2010-02-21 15:56:10Z stan $ -->
 <T3locallang>
 	<meta type="array">
 		<description>Labels for Edit Element plugin of htmlArea RTE</description>

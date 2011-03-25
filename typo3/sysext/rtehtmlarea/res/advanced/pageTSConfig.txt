@@ -4,8 +4,6 @@
 # Sets default Page TSConfig with minimal features for advanced users.
 #
 # @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
-#
-# TYPO3 SVN ID: $Id$
 # ***************************************************************************************
 
 RTE.default {

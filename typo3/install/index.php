@@ -27,8 +27,6 @@
 /**
  * Starter-script for install screen
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core

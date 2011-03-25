@@ -24,8 +24,6 @@
 ***************************************************************/
 /**
  * Module: Extension manager - Extension.xml exception
- *
- * $Id: class.tx_em_extensionxml_exception.php 1870 2010-02-18 12:55:17Z mkrause $
  */
 
 

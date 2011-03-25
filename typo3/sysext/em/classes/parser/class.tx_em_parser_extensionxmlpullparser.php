@@ -24,8 +24,6 @@
  ***************************************************************/
 /**
  * Module: Extension manager - Extension.xml pull-parser
- *
- * $Id: class.tx_em_parser_extensionxmlpullparser.php 1913 2010-02-21 15:47:37Z mkrause $
  */
 
 /**

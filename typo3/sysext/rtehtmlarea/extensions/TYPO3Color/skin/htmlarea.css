@@ -1,5 +1,4 @@
 /* Selectors for the TYPO3Color plugin of htmlArea RTE */
-/* TYPO3 SVN ID: $Id$ */
 .htmlarea-action-color-background {
 	background-image: url('images/hilitecolor.gif') !important;
 }

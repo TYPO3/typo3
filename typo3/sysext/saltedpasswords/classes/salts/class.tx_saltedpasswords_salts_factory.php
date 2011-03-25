@@ -27,8 +27,6 @@
 /**
  * Contains class "tx_saltedpasswords_salts_factory"
  * that provides a salted hashing method factory.
- *
- * $Id$
  */
 
 

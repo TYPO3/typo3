@@ -25,8 +25,6 @@
  * It relies on ExtJS core being loaded
  *
  * @author	Francois Suter <francois@typo3.org>
- *
- * $Id$
  */
 
 /**

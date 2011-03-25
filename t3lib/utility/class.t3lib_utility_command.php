@@ -28,8 +28,6 @@
 /**
  * Class to handle system commands.
  *
- * $Id: class.t3lib_utility_command.php $
- *
  * @author	Steffen Kamper <steffen@typo3.org>
  */
 final class t3lib_utility_Command {

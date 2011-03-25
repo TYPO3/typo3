@@ -28,8 +28,6 @@
  * Configuration of the htmlArea RTE extension
  *
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
- * $Id$  *
  */
 
 if (!defined ("TYPO3_MODE")) 	die ('Access denied.');

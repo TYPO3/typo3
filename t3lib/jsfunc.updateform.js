@@ -2,8 +2,6 @@
 *
 *  Universal formupdate-function
 *
-* $Id$
-*
 *
 *
 *  Copyright notice

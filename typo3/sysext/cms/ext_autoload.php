@@ -1,8 +1,6 @@
 <?php
 /*
  * Register necessary class names with autoloader
- *
- * $Id: ext_autoload.php 6536 2009-11-25 14:07:18Z stucki $
  */
 return array(
 	'tslib_adminpanel' => PATH_tslib . 'class.tslib_adminpanel.php',

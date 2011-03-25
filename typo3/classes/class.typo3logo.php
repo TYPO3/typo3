@@ -29,8 +29,6 @@
 /**
  * class to render the TYPO3 logo in the backend
  *
- * $Id$
- *
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core

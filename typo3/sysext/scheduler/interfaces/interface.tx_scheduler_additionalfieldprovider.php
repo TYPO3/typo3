@@ -29,8 +29,6 @@
  * @author		Ingo Renner <ingo@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_scheduler
- *
- * $Id$
  */
 interface tx_scheduler_AdditionalFieldProvider {
 

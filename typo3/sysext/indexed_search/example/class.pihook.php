@@ -27,8 +27,6 @@
 /**
  * Index search frontend example hook
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**

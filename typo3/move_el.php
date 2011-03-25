@@ -28,7 +28,6 @@
  * Move element wizard:
  * Moving pages or content elements (tt_content) around in the system via a page tree navigation.
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compatible.
  *
@@ -369,7 +368,7 @@ class SC_move_el {
 						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
 					}
 					$colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $colPosList)));		// Removing duplicates, if any
-						  
+
 						// Adding parent page-header and the content element columns from position-map:
 					$code = $hline . '<br />';
 					$code .= $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);

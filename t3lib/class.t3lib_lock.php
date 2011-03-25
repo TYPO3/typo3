@@ -27,8 +27,6 @@
 /**
  * Class for providing locking features in TYPO3
  *
- * $Id$
- *
  * @author	Michael Stucki <michael@typo3.org>
  */
 

@@ -27,7 +27,6 @@
 /**
  * Shows information about a database or file item
  *
- * $Id$
  * Revised for TYPO3 3.7 May/2004 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

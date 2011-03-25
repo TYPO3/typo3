@@ -27,7 +27,6 @@
 /**
  * Wizard to help make forms (fx. for tt_content elements) of type 'form'.
  *
- * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *

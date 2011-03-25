@@ -30,7 +30,6 @@ require_once(t3lib_extMgm::extPath('recycler', 'classes/model/class.tx_recycler_
  * @author	Julian Kleinhans <typo3@kj187.de>
  * @package	TYPO3
  * @subpackage	tx_recycler
- * @version $Id$
  */
 class tx_recycler_model_tables {
 	/**
