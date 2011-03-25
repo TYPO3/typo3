@@ -28,7 +28,6 @@
 /**
  * Contains PHP_SCRIPT_EXT class object.
  *
- * $Id$
  * @author Jo Hasenau <info@cybercraft.de>
  */
 class tslib_content_PhpScriptExternal extends tslib_content_Abstract {
