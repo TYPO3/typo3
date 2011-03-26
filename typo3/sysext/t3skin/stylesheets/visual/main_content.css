@@ -267,7 +267,7 @@ input elements
 input,
 textarea,
 select,
-submit {
+button {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	line-height: 16px;
