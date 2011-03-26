@@ -650,7 +650,7 @@ $typo_db_extTableDef_script = '';	// The filename of an additional script in typ
 define('TYPO3_URL_GENERAL', 'http://typo3.com/');
 define('TYPO3_URL_ORG', 'http://typo3.org/');
 define('TYPO3_URL_LICENSE', 'http://typo3.org/license');
-define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/');
+define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/v4/');
 define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
 define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
 define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/');
