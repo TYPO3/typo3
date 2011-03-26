@@ -79,6 +79,10 @@ body {
 	font-weight: bold;
 }
 
+.t3-message-page p {
+	margin-bottom: 1em;
+}
+
 #t3-footer {
 	border-top: 1px solid #5c5c5c;
 	font-size: 10px;
