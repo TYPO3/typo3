@@ -198,11 +198,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 			} else {
 					//wrong email
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
 				$markerArray['###BACKLINK_LOGIN###'] = '';
 			}
 		} else {
-			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
+			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
 			$markerArray['###BACKLINK_LOGIN###'] = '';
 		}
 
