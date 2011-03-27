@@ -55,12 +55,11 @@ We couldn't find a username for this email address and so cannot send the passwo
 			<label index="ll_forgot_validate_reset_password">Your new password
 Dear %s,
 
-This email was sent in response to your request to reset your password. Please click on the link below. 
+This email was sent in response to your request to reset your password. Please click on the link below.
 %s
 
 For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
 			</label>
-			<label index="ll_forgot_message">Please enter the email address by which you registered your user account. Then press &quot;Send password&quot; and your password will immediately be emailed to you. Make sure to spell your email address correctly.</label>
 			<label index="ll_forgot_message_emailSent">Your password has now been sent to the email address %s</label>
 			<label index="ll_forgot_reset_message">Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</label>
 			<label index="ll_forgot_reset_message_emailSent">An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</label>

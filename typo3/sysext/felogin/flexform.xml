@@ -362,16 +362,16 @@
 							</config>
 						</TCEforms>
 					</forgot_header>
-					<forgot_message>
+					<forgot_reset_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_message</label>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_reset_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
 								<rows>5</rows>
 							</config>
 						</TCEforms>
-					</forgot_message>
+					</forgot_reset_message>
 				</el>
 			</ROOT>
 		</s_messages>
