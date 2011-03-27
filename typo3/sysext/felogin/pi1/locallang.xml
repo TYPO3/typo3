@@ -55,7 +55,7 @@ We couldn't find a username for this email address and so cannot send the passwo
 			<label index="ll_forgot_validate_reset_password">Your new password
 Dear %s,
 
-This email was sent in response to your request to reset your password. Please click on the link below. 
+This email was sent in response to your request to reset your password. Please click on the link below.
 %s
 
 For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
