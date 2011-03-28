@@ -912,7 +912,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
 				// Initialize the dblist object:
-			$dblist = t3lib_div::makeInstance('localRecordList');
+			$dblist = t3lib_div::makeInstance('tx_sysaction_list');
 			$dblist->script = t3lib_div::getIndpEnv('REQUEST_URI');
 			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
@@ -929,7 +929,8 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$GLOBALS['BE_USER']->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
 				// Initialize the listing object, dblist, for rendering the list:
-			$this->pointer = t3lib_div::intInRange($this->taskObject->pointer,0,100000);
+			$this->pointer = t3lib_div::intInRange(t3lib_div::_GP('pointer'), 0, 100000);
+
 			$dblist->start($this->id,$this->table,$this->pointer,$this->taskObject->search_field,$this->taskObject->search_levels,$this->taskObject->showLimit);
 			$dblist->setDispFields();
 
