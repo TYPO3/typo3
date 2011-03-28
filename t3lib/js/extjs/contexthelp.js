@@ -100,6 +100,9 @@ TYPO3.ContextHelp = function() {
 		tip.body.dom.innerHTML = response.description;
 		tip.cshLink = response.id;
 		tip.moreInfo = response.moreInfo;
+		if (tip.moreInfo) {
+			tip.addClass('tipIsLinked');
+		}
 		tip.setTitle(response.title);
 		tip.doAutoWidth();
 	}

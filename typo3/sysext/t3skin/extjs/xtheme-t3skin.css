@@ -1669,6 +1669,10 @@ td.x-date-mp-sep {
 	height: 16px;
 }
 
+.x-tip.tipIsLinked {
+	cursor: pointer;
+}
+
 .x-menu {
 	border-color:#898989;
 	background-color: #ffffff;
