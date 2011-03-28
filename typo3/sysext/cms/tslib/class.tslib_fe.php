@@ -189,7 +189,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe {
+class tslib_fe {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -1433,7 +1433,7 @@
 	 */
 	function checkPageUnavailableHandler()	{
 		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
-		   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+		!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
 			$checkPageUnavailableHandler = FALSE;
@@ -2628,7 +2628,7 @@
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'))) {
 				unset($this->jumpurl);
- 			}
+			}
 		}
 	}
 
@@ -2780,7 +2780,7 @@
 
 			$temp_content = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>'.$title.'</title>
@@ -2911,7 +2911,7 @@
 		}
 	}
 
- 	/**
+	/**
 	 * Post processing page cache rows for both get and set.
 	 *
 	 * @param	array		Input "cache_pages" row, passed by reference!
@@ -3236,7 +3236,7 @@
 		}
 	}
 
- 	/**
+	/**
 	 * Processes the INTinclude-scripts and substitue in content.
 	 *
 	 * @param	array		$INTiS_config: $GLOBALS['TSFE']->config['INTincScript'] or part of it
@@ -3636,15 +3636,15 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function setParseTime()	{
-        // Compensates for the time consumed with Back end user initialization.
-        $microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
-        $microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
-        $microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
-        $microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+		// Compensates for the time consumed with Back end user initialization.
+		$microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
+		$microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
+		$microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
+		$microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
 
-        $this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
-                                - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
-    }
+		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
+								- ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+	}
 
 	/**
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
@@ -3748,6 +3748,98 @@ if (version == "n3") {
 	}
 
 	/**
+	 * get the (partially) anonymized IP address for the log file
+	 *
+	 *  @return string the IP to log
+	 */
+	function getLogIPAddress(){
+		$rawIP= t3lib_div::getIndpEnv('REMOTE_ADDR');
+		if (strpos($rawIP,':')) {
+			$result=stripIPv6($rawIP);
+		} else {
+			$result=stripIPv4($rawIP);
+		}
+		return $result;
+	}
+
+	/** strip parts from a IPv6 address
+	 *
+	 * @param string raw IPv6 address
+	 * @return string stripped address
+	 *
+	 * strategy:
+	 * 		convert to bit array and mask
+	 *
+	 * current limitations: no fine grained control, no mode for IPv4Masked addresses (::<ip-v4-string>)
+	 */
+
+	function stripIPv6($rawIP) {
+
+		$in6_addr = inet_pton($rawIP);
+		$splitIP = unpack('N*',$in6_addr  );
+
+		if(!empty($this->config['config']['stat_IP_anonymize']) ) {
+			switch (intval($this->config['config']['stat_IP_anonymize'])) {
+				/* fallthrough */
+				case 4:
+					$splitIP[0]='0';
+					/* fallthrough */
+				case 3:
+					$splitIP[1]='0';
+					/* fallthrough */
+				case 2:
+					$splitIP[2]='0';
+					/* fallthrough */
+				case 1:
+					$splitIP[3]='0';
+			}
+		$packedIP = pack('N4', $splitIP[1], $splitIP[2], $splitIP[3], $splitIP[4]);
+		}
+
+		$result = inet_ntop($packeIP);
+		return result;
+	}
+
+	/** strip parts from IPv4 addresses
+	 * @param string raw IPv4 address
+	 * @return string  stripped IP address
+	 */
+	function stripIPv4(string $rawIP) {
+		$splitIP=t3lib_div::trimExplode('.',$rawIP);
+		if(!empty($this->config['config']['stat_IP_anonymize']) ) {
+			switch (intval($this->config['config']['stat_IP_anonymize'])) {
+				/* fallthrough */
+				case 4:
+					$splitIP[0]='0';
+					/* fallthrough */
+				case 3:
+					$splitIP[1]='0';
+					/* fallthrough */
+				case 2:
+					$splitIP[2]='0';
+					/* fallthrough */
+				case 1:
+					$splitIP[3]='0';
+			}
+			return implode($splitIP,'.');
+		}
+	}
+
+	/**
+	 * get the (possibly) anonymized host name for the log file
+	 *
+	 * @return the host name to log
+	 */
+	function getLogHostName(){
+		$hostName= t3lib_div::getIndpEnv('REMOTE_HOST');
+		if(!empty($this->config['config']['stat_IP_anonymize'])) {
+			$hostName='';
+		}
+		return $hostName;
+	}
+
+
+	/**
 	 * Saves hit statistics
 	 *
 	 * @return	void
@@ -3787,7 +3879,7 @@ if (version == "n3") {
 						'page_id' => intval($this->id),							// id
 						'page_type' => intval($this->type),						// type
 						'jumpurl' => $jumpurl_msg,								// jumpurl message
-						'feuser_id' => $this->fe_user->user['uid'],				// fe_user id, integer
+						'feuser_id' => (empty($this->config['config']['stat_noUserLog']))? $this->fe_user->user['uid']:-1,				// fe_user id, integer
 						'cookie' => $this->fe_user->id,							// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 						'sureCookie' => hexdec(substr($this->fe_user->cookieId,0,8)),	// This is the cookie value IF the cookie WAS actually set. However the first hit where the cookie is set will thus NOT be logged here. So this lets you select for a session of at least two clicks...
 						'rl0' => $this->config['rootLine'][0]['uid'],			// RootLevel 0 uid
@@ -3797,8 +3889,8 @@ if (version == "n3") {
 						'client_os' => $GLOBALS['CLIENT']['SYSTEM'],			// Client Operating system (win, mac, unix)
 						'parsetime' => intval($this->scriptParseTime),			// Parsetime for the page.
 						'flags' => $flags,										// Flags: Is be user logged in? Is page cached?
-						'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),			// Remote IP address
-						'host' => t3lib_div::getIndpEnv('REMOTE_HOST'),			// Remote Host Address
+						'IP' => $this->getLogIPAddress(),						// Remote IP address
+						'host' => $this->getLogHostName(),						// Remote Host Address
 						'referer' => $refUrl,									// Referer URL
 						'browser' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),	// User Agent Info.
 						'tstamp' => $GLOBALS['EXEC_TIME']						// Time stamp
@@ -3823,11 +3915,11 @@ if (version == "n3") {
 					if (@is_file($this->config['stat_vars']['logFile'])) {
 							// Build a log line (format is derived from the NCSA extended/combined log format)
 							// Log part 1: Remote hostname / address
-						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && empty($this->config['config']['stat_apache_noHost'])) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
+						$LogLine = (!empty($this->getLogHostName) && empty($this->config['config']['stat_apache_noHost'])) ? $this->getLogHostName() : $this->getLogIPAddress();
 							// Log part 2: Fake the remote logname
 						$LogLine.= ' -';
 							// Log part 3: Remote username
-						$LogLine.= ' '.($this->loginUser ? $this->fe_user->user['username'] : '-');
+						$LogLine.= ' '.($this->loginUser  && empty($this->config['config']['stat_noUserLog'])? $this->fe_user->user['username'] : '-');
 							// Log part 4: Time
 						$LogLine.= ' '.date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']);
 							// Log part 5: First line of request (the request filename)
