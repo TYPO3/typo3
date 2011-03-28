@@ -61,6 +61,7 @@ class extDirect_DataProvider_ContextHelp {
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
 		}
 		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'])) {
+			$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
 			foreach ($GLOBALS['TCA_DESCR'][$table]['columns'] as $field => $data) {
 				$output[$field] = array(
 					'description' => NULL,
@@ -81,7 +82,8 @@ class extDirect_DataProvider_ContextHelp {
 
 					// add description
 				if ($data['description']) {
-					$output[$field]['description'] = $data['description'];
+					$output[$field]['description'] = $data['description'] .
+					($output[$field]['moreInfo'] ? $arrow : '');
 				}
 			}
 		}
