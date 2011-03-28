@@ -3711,6 +3711,47 @@ if (version == "n3") {
 	}
 
 	/**
+	 * get the (partially) anonymized IP address for the log file 
+	 *  
+	 *  @return the IP to log
+	 */
+	function getLogIPAddress(){
+		$rawIP= t3lib_div::getIndpEnv('REMOTE_ADDR');
+		$splitIP=t3lib_div::trimExplode('.',$rawIP);
+		if(!empty($this->config['config']['stat_IP_anonymize']) ) {
+			switch (intval($this->config['config']['stat_IP_anonymize'])) {
+				/* fallthrough */	
+				case 4: 
+					$splitIP[0]='0';
+				/* fallthrough */	
+				case 3: 
+					$splitIP[1]='0';
+				/* fallthrough */	
+				case 2: 
+					$splitIP[2]='0';
+				/* fallthrough */	
+				case 1: 
+					$splitIP[3]='0';
+			}
+		}
+		return implode($splitIP,'.');
+	}
+
+	/**
+	 * get the (possibly) anonymized host name for the log file 
+	 *
+	 * @return the host name to log
+	 */
+	function getLogHostName(){
+		$hostName= t3lib_div::getIndpEnv('REMOTE_HOST');
+		if(!empty($this->config['config']['stat_IP_anonymize'])) {
+			$hostName='';
+		}
+		return $hostName;
+	}
+	
+	
+	/**
 	 * Saves hit statistics
 	 *
 	 * @return	void
@@ -3750,7 +3791,7 @@ if (version == "n3") {
 						'page_id' => intval($this->id),							// id
 						'page_type' => intval($this->type),						// type
 						'jumpurl' => $jumpurl_msg,								// jumpurl message
-						'feuser_id' => $this->fe_user->user['uid'],				// fe_user id, integer
+						'feuser_id' => (empty($this->config['config']['stat_noUserLog']))? $this->fe_user->user['uid']:-1,				// fe_user id, integer
 						'cookie' => $this->fe_user->id,							// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 						'sureCookie' => hexdec(substr($this->fe_user->cookieId,0,8)),	// This is the cookie value IF the cookie WAS actually set. However the first hit where the cookie is set will thus NOT be logged here. So this lets you select for a session of at least two clicks...
 						'rl0' => $this->config['rootLine'][0]['uid'],			// RootLevel 0 uid
@@ -3760,8 +3801,8 @@ if (version == "n3") {
 						'client_os' => $GLOBALS['CLIENT']['SYSTEM'],			// Client Operating system (win, mac, unix)
 						'parsetime' => intval($this->scriptParseTime),			// Parsetime for the page.
 						'flags' => $flags,										// Flags: Is be user logged in? Is page cached?
-						'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),			// Remote IP address
-						'host' => t3lib_div::getIndpEnv('REMOTE_HOST'),			// Remote Host Address
+						'IP' => $this->getLogIPAddress(),						// Remote IP address
+						'host' => $this->getLogHostName(),						// Remote Host Address
 						'referer' => $refUrl,									// Referer URL
 						'browser' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),	// User Agent Info.
 						'tstamp' => $GLOBALS['EXEC_TIME']						// Time stamp
@@ -3786,11 +3827,11 @@ if (version == "n3") {
 					if (@is_file($this->config['stat_vars']['logFile'])) {
 							// Build a log line (format is derived from the NCSA extended/combined log format)
 							// Log part 1: Remote hostname / address
-						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && empty($this->config['config']['stat_apache_noHost'])) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
+						$LogLine = (!empty($this->getLogHostName) && empty($this->config['config']['stat_apache_noHost'])) ? $this->getLogHostName() : $this->getLogIPAddress();
 							// Log part 2: Fake the remote logname
 						$LogLine.= ' -';
 							// Log part 3: Remote username
-						$LogLine.= ' '.($this->loginUser ? $this->fe_user->user['username'] : '-');
+						$LogLine.= ' '.($this->loginUser  && empty($this->config['config']['stat_noUserLog'])? $this->fe_user->user['username'] : '-');
 							// Log part 4: Time
 						$LogLine.= ' '.date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']);
 							// Log part 5: First line of request (the request filename)
