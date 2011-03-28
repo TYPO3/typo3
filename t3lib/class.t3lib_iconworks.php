@@ -862,7 +862,12 @@ final class t3lib_iconWorks {
 					$recordType[5] = str_replace('###TYPE###', $row[$column], $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']);
 				}
 				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
-					$recordType[6] = t3lib_div::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], array('row' => $row), $ref);
+					$parameters = array('row' => $row);
+					$recordType[6] = t3lib_div::callUserFunction(
+						$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'],
+						$parameters,
+						$ref
+					);
 				}
 			} else {
 				foreach ($recordType AS $key => $type) {
