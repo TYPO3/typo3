@@ -33,7 +33,7 @@
 $TYPO3_AJAX = true;
 
 // include t3lib_div at this time to get the GET/POST methods it provides
-require_once('../t3lib/class.t3lib_div.php');
+require_once(dirname(__FILE__) . '/../t3lib/class.t3lib_div.php');
 
 // first get the ajaxID
 $ajaxID = (string)t3lib_div::_GP('ajaxID');
