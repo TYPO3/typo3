@@ -227,8 +227,7 @@ class t3lib_formmail {
 					->setFrom($from)
 					->setTo($this->recipient)
 					->setPriority($this->priority);
-			$replyTo = $this->replyToName ? array($this->replyToAddress => $this->replyToName) : array($this->replyToAddress);
-			$this->mailMessage->addReplyTo($replyTo);
+			$this->mailMessage->addReplyTo($this->replyToAddress, $this->replyToName);
 			$this->mailMessage->getHeaders()->addTextHeader('Organization', $this->organisation);
 			if ($valueList['recipient_copy']) {
 				$this->mailMessage->addCc($this->parseAddresses($valueList['recipient_copy']));
