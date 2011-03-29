@@ -524,7 +524,16 @@ TYPO3.EM.RepositoryListTab = {
 		region: 'center',
 		margins: '0 0 0 0'
 	}],
-	id: 'em-remote-extensions'
+	id: 'em-remote-extensions',
+	listeners: {
+		activate: function(panel) {
+			var rep = TYPO3.EM.RepositoryCombo.getValue();
+			if (rep && rep != TYPO3.settings.EM.selectedRepository) {
+				TYPO3.EM.RepositoryCombo.setValue(TYPO3.settings.EM.selectedRepository);
+			}
+		},
+		scope: this
+	}
 };
 
 TYPO3.EM.LanguageTab = {
@@ -547,7 +556,19 @@ TYPO3.EM.LanguageTab = {
 
 TYPO3.EM.SettingsTab = {
 	title: TYPO3.lang.menu_settings,
-	xtype: 'extsettings'
+	xtype: 'extsettings',
+	listeners: {
+		activate: function(panel) {
+			var combo = Ext.getCmp('repSettingsCombo');
+			if (combo) {
+				var rep = combo.getValue();
+				if (rep && rep != TYPO3.settings.EM.selectedRepository) {
+					combo.setValue(TYPO3.settings.EM.selectedRepository);
+				}
+			}
+		},
+		scope: this
+	}
 };
 
 TYPO3.EM.UserTab = {
