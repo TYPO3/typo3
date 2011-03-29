@@ -640,11 +640,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			$this->pointer = intval(t3lib_div::_GP('pointer'));
 			$offset = $this->listingLimit * $this->pointer;
+			$settings = $this->settings->getSettings();
+			$repositoryId = intval($settings['selectedRepository']);
 
 			if ($this->MOD_SETTINGS['display_own'] && strlen($this->fe_user['username'])) {
-				$this->xmlHandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username'], $this->MOD_SETTINGS['listOrder'], TRUE);
+				$this->xmlHandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username'], $this->MOD_SETTINGS['listOrder'], TRUE, 0, 500, FALSE, $repositoryId);
 			} else {
-				$this->xmlHandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], TRUE, FALSE, $offset, $this->listingLimit);
+				$this->xmlHandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], TRUE, FALSE, $offset, $this->listingLimit, FALSE, $repositoryId);
 			}
 			if (count($this->xmlHandler->extensionsXML)) {
 				list($list, $cat) = $this->extensionList->prepareImportExtList(TRUE);
@@ -741,9 +743,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					// Plugins which are NOT uploaded to repository but present on this server.
 					$content = '';
 					$lines = array();
+					$settings = $this->settings->getSettings();
+					$repositoryId = intval($settings['selectedRepository']);
 					if (count($this->inst_keys)) {
 						foreach ($this->inst_keys as $extKey => $value) {
-							$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
+							$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE, 0, 500, $repositoryId);
 							if ((strlen($this->listRemote_search) && !stristr($extKey, $this->listRemote_search)) || isset($this->xmlHandler->extensionsXML[$extKey])) {
 								continue;
 							}
@@ -1016,9 +1020,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if ($this->noDocHeader) {
 		   $content .= '<input type="hidden" name="nodoc" value="1" />';
 		   $addUrl = '&nodoc=1';
-	   }
+	   	}
+	   	$settings = $this->settings->getSettings();
+		$repositoryId = intval($settings['selectedRepository']);
 		// Fetch remote data:
-		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
+		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE, 0, 500, $repositoryId);
 		list($fetchData,) = $this->extensionList->prepareImportExtList(TRUE);
 
 		$versions = array_keys($fetchData[$extKey]['versions']);
@@ -1183,34 +1189,29 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	string		The URL for the selected or a random mirror
 	 */
 	function getMirrorURL() {
-		if (strlen($this->MOD_SETTINGS['rep_url'])) {
-			return $this->MOD_SETTINGS['rep_url'];
-		}
+		$settings = $this->settings->getSettings();
+		$repositoryId = $settings['selectedRepository'];
 
-		$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-		if (!is_array($mirrors)) {
-			$this->fetchMetaData('mirrors');
-			$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-			if (!is_array($mirrors)) {
-				return FALSE;
-			}
-		}
-		if ($this->MOD_SETTINGS['selectedMirror'] == '') {
-			$rand = array_rand($mirrors);
-			$url = 'http://' . $mirrors[$rand]['host'] . $mirrors[$rand]['path'];
-		}
-		else {
-			$selectedMirror = NULL;
+		/** @var $objRepository tx_em_Repository */
+		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $repositoryId);
+		/** @var $objRepositoryUtility tx_em_Repository_Utility */
+		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
+		$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
+
+		if (!isset($settings['selectedMirror'])) {
+			$randomMirror = array_rand($mirrors);
+			$mirrorUrl = 'http://' . $mirrors[$randomMirror]['host'] . $mirrors[$randomMirror]['path'];
+		} else {
+			$mirrorUrl = '';
 			foreach ($mirrors as $mirror) {
-				if ($mirror['host'] === $this->MOD_SETTINGS['selectedMirror']) {
-					$selectedMirror = $mirror;
+				if ($mirror['host'] === $settings['selectedMirror']) {
+					$mirrorUrl = 'http://' . $mirror['host'] . $mirror['path'];
 					break;
 				}
 			}
-			$url = 'http://' . $selectedMirror['host'] . $selectedMirror['path'];
 		}
 
-		return $url;
+		return $mirrorUrl;
 	}
 
 
@@ -1295,7 +1296,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (!$this->xmlHandler->countExtensions()) {
 			$this->fetchMetaData('extensions');
 		}
-		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE);
+		$settings = $this->settings->getSettings();
+		$repositoryId = intval($settings['selectedRepository']);
+		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, FALSE, 0, 500, $repositoryId);
 
 		// check if extension can be fetched
 		if (isset($this->xmlHandler->extensionsXML[$extKey])) {
@@ -1442,7 +1445,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				return $flashMessage->render();
 			}
 		} else {
-			$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
+			$settings = $this->settings->getSettings();
+			$repositoryId = intval($settings['selectedRepository']);
+			$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE, 0, 500, $repositoryId);
 
 			// Fetch extension from TER:
 			if (!strlen($version)) {
