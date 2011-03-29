@@ -314,6 +314,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			var info = TYPO3.EM.Layouts.repositoryInfo().applyTemplate(newValue.data);
             Ext.getCmp('repListInfo').update(info);
 			this.repositoryListStore.reload({ params: {repository: newValue.data.uid} });
+			TYPO3.settings.EM.selectedRepository = newValue.data.uid;
 		}, this);
 		this.repositoryStore.load({
 			callback: function() {

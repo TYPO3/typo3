@@ -827,6 +827,9 @@ class tx_em_Connection_ExtDirectServer {
 		$list = $this->getFlatExtensionList();
 		$localList = $list['data'];
 
+			// save selected repository
+		$this->saveSetting('selctedRepository', $repositoryId);
+
 		$search = htmlspecialchars($parameters->query);
 		$limit = htmlspecialchars($parameters->start . ', ' . $parameters->limit);
 		$orderBy = htmlspecialchars($parameters->sort);
