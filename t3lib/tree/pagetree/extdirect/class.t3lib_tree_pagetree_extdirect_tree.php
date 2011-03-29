@@ -34,6 +34,13 @@
  */
 class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree {
 	/**
+	 * Data Provider
+	 *
+	 * @var t3lib_tree_pagetree_DataProvider
+	 */
+	protected $dataProvider = NULL;
+
+	/**
 	 * Sets the data provider
 	 *
 	 * @return void
@@ -43,13 +50,6 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 		$dataProvider = t3lib_div::makeInstance('t3lib_tree_pagetree_DataProvider');
 		$this->setDataProvider($dataProvider);
 	}
-
-	/**
-	 * Data Provider
-	 *
-	 * @return t3lib_tree_pagetree_DataProvider
-	 */
-	protected $dataProvider = NULL;
 
 	/**
 	 * Returns the root node of the tree
