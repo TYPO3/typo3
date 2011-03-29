@@ -72,3 +72,4 @@ interface t3lib_tree_DraggableAndDropable {
 	public function copyNodeAfterDestinationNode($node, $destination);
 
 }
+?>
