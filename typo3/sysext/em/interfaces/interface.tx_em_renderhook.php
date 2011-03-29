@@ -36,3 +36,4 @@ interface tx_em_renderHook {
 	 */
 	public function render($pageRenderer, &$settings, &$content);
 }
+?>

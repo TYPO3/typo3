@@ -96,3 +96,4 @@ class t3lib_utility_Dependency_Factory {
 		);
 	}
 }
+?>
