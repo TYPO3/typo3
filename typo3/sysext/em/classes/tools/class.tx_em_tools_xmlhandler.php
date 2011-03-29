@@ -138,9 +138,10 @@ class tx_em_Tools_XmlHandler {
 	 * @param	integer		$offset		Offset to return result from (goes into LIMIT clause)
 	 * @param	integer		$limit		Maximum number of entries to return (goes into LIMIT clause)
 	 * @param	boolean		$exactMatch If set search is done for exact matches of extension keys only
+	 * @param	integer		$repository	If set search is done for the corresponding repository only
 	 * @return	void
 	 */
-	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $exactMatch = FALSE) {
+	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $exactMatch = FALSE, $repository = 0) {
 		$where = '1=1';
 		if ($search && $exactMatch) {
 			$where .= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
@@ -194,6 +195,10 @@ class tx_em_Tools_XmlHandler {
 			$this->stateArr[$idx] = $state;
 			$idx++;
 		}
+			// Include repository
+		if ($repository > 0) {
+			$where .= ' AND repository=' . intval($repository);
+		}
 
 		// Fetch count
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_extensions', $where);
@@ -229,10 +234,11 @@ class tx_em_Tools_XmlHandler {
 	 * @param	boolean		$allVer	If set returns all version of an extension, otherwise only the last
 	 * @param	integer		$offset	Offset to return result from (goes into LIMIT clause)
 	 * @param	integer		$limit	Maximum number of entries to return (goes into LIMIT clause)
+	 * @param	integer		$repository	If set search is done for the corresponding repository only
 	 * @return	void
 	 */
-	function searchExtensionsXMLExact($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500) {
-		$this->searchExtensionsXML($search, $owner, $order, $allExt, $allVer, $offset, $limit, TRUE);
+	function searchExtensionsXMLExact($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $repository = 0) {
+		$this->searchExtensionsXML($search, $owner, $order, $allExt, $allVer, $offset, $limit, TRUE, $repository);
 	}
 
 	function countExtensions() {

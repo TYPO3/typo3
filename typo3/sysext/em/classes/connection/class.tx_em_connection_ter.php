@@ -61,6 +61,7 @@ class tx_em_Connection_Ter {
 	 * @return	mixed		T3X data (array) or error message (string)
 	 */
 	function fetchExtension($extKey, $version, $expectedMD5, $mirrorURL) {
+		
 		$extPath = t3lib_div::strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $version . '.t3x';
 		$t3x = t3lib_div::getUrl($mirrorURL, 0, array(TYPO3_user_agent));
