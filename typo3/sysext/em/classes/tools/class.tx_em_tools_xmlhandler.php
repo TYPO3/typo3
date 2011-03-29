@@ -168,6 +168,9 @@ class tx_em_Tools_XmlHandler {
 			$this->stateArr[$idx] = $state;
 			$idx++;
 		}
+			// include repository
+		$settings = $this->emObj->settings->getSettings();
+		$where .= ' AND repository=' . intval($settings['selectedRepository']);
 
 		// Fetch count
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_extensions', $where);

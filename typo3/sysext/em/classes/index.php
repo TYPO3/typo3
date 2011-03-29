@@ -1186,27 +1186,29 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	string		The URL for the selected or a random mirror
 	 */
 	function getMirrorURL() {
-		if (strlen($this->MOD_SETTINGS['rep_url'])) {
-			return $this->MOD_SETTINGS['rep_url'];
-		}
+		$settings = $this->settings->getSettings();
+		$repositoryId = $settings['selectedRepository'];
 
-		$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-		if (!is_array($mirrors)) {
-			$this->fetchMetaData('mirrors');
-			$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-			if (!is_array($mirrors)) {
-				return false;
+		/** @var $objRepository  tx_em_Repository */
+		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $repositoryId);
+		/** @var $objRepositoryUtility  tx_em_Repository_Utility */
+		$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
+		$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
+
+
+		if ($settings['selectedMirror'] == '') {
+			$randomMirror = array_rand($mirrors);
+			$mirrorUrl = $mirrors[$randomMirror]['host'] . $mirrors[$randomMirror]['path'];
+		} else {
+			foreach($mirrors as $mirror) {
+				if ($mirror['host'] == $settings['selectedMirror']) {
+					$mirrorUrl = $mirror['host'] . $mirror['path'];
+					break;
+				}
 			}
 		}
-		if ($this->MOD_SETTINGS['selectedMirror'] == '') {
-			$rand = array_rand($mirrors);
-			$url = 'http://' . $mirrors[$rand]['host'] . $mirrors[$rand]['path'];
-		}
-		else {
-			$url = 'http://' . $mirrors[$this->MOD_SETTINGS['selectedMirror']]['host'] . $mirrors[$this->MOD_SETTINGS['selectedMirror']]['path'];
-		}
 
-		return $url;
+		return 'http://' . $mirrorUrl;
 	}
 
 
