@@ -57,3 +57,4 @@ interface t3lib_tree_ComparableNode {
 	 */
 	public function compareTo($other);
 }
+?>

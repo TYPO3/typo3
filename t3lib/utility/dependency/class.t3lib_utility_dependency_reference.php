@@ -77,3 +77,4 @@ class t3lib_utility_Dependency_Reference {
 		return $this->element . '.' . $this->field;
 	}
 }
+?>

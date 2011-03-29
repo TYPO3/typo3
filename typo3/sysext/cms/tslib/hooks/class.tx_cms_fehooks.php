@@ -62,3 +62,4 @@ class tx_cms_fehooks {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/hooks/class.tx_cms_fehooks.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/hooks/class.tx_cms_fehooks.php']);
 }
+?>

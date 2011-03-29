@@ -43,3 +43,4 @@ interface t3lib_tree_LabelEditable {
 	 */
 	public function setLabel($label);
 }
+?>

@@ -314,3 +314,4 @@ class t3lib_utility_Dependency_Element {
 		return $table . ':' . $id;
 	}
 }
+?>
