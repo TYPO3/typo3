@@ -566,7 +566,7 @@ class SC_db_new {
 			$row = '<tr>
 						<td nowrap="nowrap">' . $halfLine . '<br />' .
 						$firstLevel . '' . $iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong>' .
-						'</td><td>' . t3lib_BEfunc::wrapInHelp($table, '') . '</td>
+						'</td><td>&nbsp;<br />' . t3lib_BEfunc::wrapInHelp($key, '') . '</td>
 						</tr>';
 			$count = count($value['html']) - 1;
 			foreach ($value['html'] as $recordKey => $record) {
