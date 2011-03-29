@@ -3438,5 +3438,67 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			t3lib_div::hasValidClassPrefix('customPrefix_foo', array('customPrefix_'))
 		);
 	}
+
+	/**
+	 * @test
+	 * @dataProvider generateRandomBytesReturnsExpectedAmountOfBytesDataProvider
+	 * @param int $numberOfBytes Number of Bytes to generate
+	 */
+	public function generateRandomBytesReturnsExpectedAmountOfBytes($numberOfBytes) {
+		$this->assertEquals(
+			strlen(t3lib_div::generateRandomBytes($numberOfBytes)),
+			$numberOfBytes
+		);
+	}
+
+	public function generateRandomBytesReturnsExpectedAmountOfBytesDataProvider() {
+		return array(
+			array(1),
+			array(2),
+			array(3),
+			array(4),
+			array(7),
+			array(8),
+			array(31),
+			array(32),
+			array(100),
+			array(102),
+			array(4000),
+			array(4095),
+			array(4096),
+			array(4097),
+			array(8000),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider generateRandomBytesReturnsDifferentBytesDuringDifferentCallsDataProvider
+	 * @param int $numberOfBytes  Number of Bytes to generate
+	 */
+	public function generateRandomBytesReturnsDifferentBytesDuringDifferentCalls($numberOfBytes) {
+		$results = array();
+		$numberOfTests = 5;
+
+			// generate a few random numbers
+		for ($i = 0; $i < $numberOfTests; $i++) {
+			$results[$i] = t3lib_div::generateRandomBytes($numberOfBytes);
+		}
+
+			// array_unique would filter out duplicates
+		$this->assertEquals(
+			$results,
+			array_unique($results)
+		);
+	}
+
+	public function generateRandomBytesReturnsDifferentBytesDuringDifferentCallsDataProvider() {
+		return array(
+			array(32),
+			array(128),
+			array(4096)
+		);
+	}
+
 }
 ?>
