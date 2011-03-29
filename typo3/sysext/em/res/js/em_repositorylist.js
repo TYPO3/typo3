@@ -108,7 +108,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			},
 			baseParams: {
 				query: '',
-				repository: 1,
+				repository: TYPO3.settings.EM.selectedRepository,
 				start: 0,
 				limit: 50
 
