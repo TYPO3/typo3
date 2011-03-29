@@ -314,7 +314,10 @@ class SC_mod_user_setup_index {
 		$this->overrideConf = $GLOBALS['BE_USER']->getTSConfigProp('setup.override');
 			// Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
 		$this->tsFieldConf = $GLOBALS['BE_USER']->getTSConfigProp('setup.fields');
-
+			// id password is disabled, disable repeat of password too (password2)
+		if (isset($this->tsFieldConf['password.']) && ($this->tsFieldConf['password.']['disabled'])) {
+			$this->tsFieldConf['password2.']['disabled'] = 1;
+		}
 			// Create instance of object for output of data
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
