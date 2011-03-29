@@ -138,9 +138,10 @@ class tx_em_Tools_XmlHandler {
 	 * @param	integer		$offset		Offset to return result from (goes into LIMIT clause)
 	 * @param	integer		$limit		Maximum number of entries to return (goes into LIMIT clause)
 	 * @param	boolean		$exactMatch If set search is done for exact matches of extension keys only
+	 * @param	integer		$repository	If set search is done for the corresponding repository only
 	 * @return	void
 	 */
-	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $exactMatch = FALSE) {
+	function searchExtensionsXML($search, $owner = '', $order = '', $allExt = FALSE, $allVer = FALSE, $offset = 0, $limit = 500, $exactMatch = FALSE, $repository = 0) {
 		$where = '1=1';
 		if ($search && $exactMatch) {
 			$where .= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
@@ -193,6 +194,10 @@ class tx_em_Tools_XmlHandler {
 		foreach ($states as $state => $tmp) {
 			$this->stateArr[$idx] = $state;
 			$idx++;
+		}
+			// Include repository
+		if ($repository > 0) {
+			$where .= ' AND repository=' . intval($repository);
 		}
 
 		// Fetch count
