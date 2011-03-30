@@ -31,7 +31,7 @@ if (TYPO3_MODE == 'BE') {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = 'tx_extbase_utility_extbaserequirementscheck';
 
 t3lib_div::loadTCA('fe_users');
-if (!isset($TCA['fe_groups']['ctrl']['type'])) {
+if (!isset($TCA['fe_users']['ctrl']['type'])) {
 	$tempColumns = array(
 		'tx_extbase_type' => array(
 			'exclude' => 1,
