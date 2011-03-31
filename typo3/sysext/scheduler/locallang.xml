@@ -12,6 +12,8 @@
 			<label index="sleepTask.description">This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</label>
 			<label index="cachingFrameworkGarbageCollection.name">Caching framework garbage collection</label>
 			<label index="cachingFrameworkGarbageCollection.description">This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</label>
+			<label index="tableGarbageCollection.name">Table garbage collection</label>
+			<label index="tableGarbageCollection.description">Task to delete old entries from specific tables like sys_log.</label>
 		</languageKey>
 	</data>
 </T3locallang>
