@@ -146,7 +146,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			$this->PHPFileFunctions = $GLOBALS['TYPO3_CONF_VARS']['BE']['usePHPFileFunctions'];
 		}
 
-		$this->unzipPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'];
+		$this->unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
 
 		$maxFileSize = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']);
 		if ($maxFileSize > 0) {
@@ -994,7 +994,11 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 						if ($this->checkIfFullAccess($theDest)) {
 							if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
 								// No way to do this under windows.
-								$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
+								if (substr($this->unzipPath, -1) == '/') {
+									$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
+								} else {
+									$cmd = $this->unzipPath . ' -qq "' . $theFile . '" -d "' . $theDest . '"';
+								}
 								t3lib_utility_Command::exec($cmd);
 								$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', Array($theFile, $theDest));
 								return TRUE;
