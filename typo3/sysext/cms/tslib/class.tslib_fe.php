@@ -1010,10 +1010,11 @@
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
+					$title = 'Page Not Found';
 					$message = 'The requested page does not exist!';
 					header(t3lib_utility_Http::HTTP_STATUS_404);
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
 					$messagePage->output();
 					exit;
 				}
@@ -1025,10 +1026,11 @@
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
+				$title = 'Page Not Found';
 				$message = 'The requested page does not exist!';
 				header(t3lib_utility_Http::HTTP_STATUS_404);
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message);
+				$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
 				$messagePage->output();
 				exit;
 			}
@@ -1125,13 +1127,39 @@
 					}
 					$c++;
 				}
+				if (count($page) == 0) {
+					header(t3lib_utility_Http::HTTP_STATUS_404);
+					$title = 'Page Not Found';
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. '
+						. 'However, this page has no accessible subpages.';
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
+					$messagePage->output();
+					exit;
+				}
 			break;
 			case t3lib_pageSelect::SHORTCUT_MODE_PARENT_PAGE:
 				$parent = $this->sys_page->getPage($thisUid);
 				$page = $this->sys_page->getPage($parent['pid']);
+				if (count($page) == 0) {
+					header(t3lib_utility_Http::HTTP_STATUS_404);
+					$title = 'Page Not Found';
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. '
+						. 'However, the parent page is not accessible.';
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
+					$messagePage->output();
+					exit;
+				}
 			break;
 			default:
 				$page = $this->sys_page->getPage($idArray[0]);
+				if (count($page) == 0) {
+					header(t3lib_utility_Http::HTTP_STATUS_404);
+					$title = 'Page Not Found';
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
+					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
+					$messagePage->output();
+					exit;
+				}
 			break;
 		}
 
