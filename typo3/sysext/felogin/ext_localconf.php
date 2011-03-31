@@ -24,6 +24,21 @@ tt_content.login {
 
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','# Setting '.$_EXTKEY.' plugin TypoScript'.$addLine.'',43);
 
+t3lib_extMgm::addPageTSConfig('
+mod.wizards.newContentElement.wizardItems.forms {
+	elements {
+		login {
+			icon = gfx/c_wiz/login_form.gif
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_description
+			tt_content_defValues {
+				CType = login
+			}
+		}
+	}
+	show :=addToList(login)
+}
+');
 
 //activate support for kb_md5fepw
 if (t3lib_extMgm::isLoaded('kb_md5fepw') && (TYPO3_MODE == 'FE')) {
