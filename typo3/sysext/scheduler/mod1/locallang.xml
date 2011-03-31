@@ -17,6 +17,7 @@
 			<label index="hdg.schedulerUser">TYPO3 Scheduler backend user</label>
 			<label index="label.automatically">automatically</label>
 			<label index="label.cachingFrameworkGarbageCollection.selectBackends">Backend types</label>
+			<label index="label.recyclerCleanup.numberOfDays">Number of days until removing files</label>
 			<label index="label.checkAll">Check/uncheck all</label>
 			<label index="label.class">Class</label>
 			<label index="label.cron">Cron</label>
