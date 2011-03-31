@@ -61,6 +61,12 @@
 			<label index="task_sleepTime.description">Enter a number of seconds during which the task will just sleep.</label>
 			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle">Select backends</label>
 			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.description">If a cache uses one of the selected backends, the garbage collection will be called for this cache.</label>
+			<label index="task_tableGarbageCollection_numberOfDays.alttitle">Number of days</label>
+			<label index="task_tableGarbageCollection_numberOfDays.description">Delete rows from selected table that are older than given number of days.</label>
+			<label index="task_tableGarbageCollection_table.alttitle">Select table</label>
+			<label index="task_tableGarbageCollection_table.description">Select one of the registered tables to be cleaned up with this task.</label>
+			<label index="task_tableGarbageCollection_allTables.alttitle">Clean up all tables</label>
+			<label index="task_tableGarbageCollection_allTables.description">If selected, all configured tables are cleaned. The selection below is ignored.</label>
 		</languageKey>
 	</data>
 </T3locallang>
