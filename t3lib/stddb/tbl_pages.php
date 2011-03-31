@@ -910,6 +910,7 @@ $TCA['pages'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
