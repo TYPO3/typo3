@@ -1460,7 +1460,7 @@ class tslib_cObj {
 					$target = isset($conf['target.'])
 						? $this-stdWrap($conf['target'], $conf['target.'])
 						: $conf['target'];
-					if(!$target) {
+					if ($target) {
 						$target = sprintf(' target="%s"', $target);
 					} else {
 						$target = ' target="thePicture"';
