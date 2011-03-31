@@ -280,6 +280,28 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * Add a new content element item configuration to tt_content
+	 *
+	 * @static
+	 * @param array $contentElementConfig The configuration of the item
+	 * @param string $position The position of the item (one of before, after, replace, colon separated from the reference field)
+	 * @return void
+	 */
+	public static function addNewContentElementConfigToTca(array $contentElementConfig, $position = '') {
+		t3lib_div::loadTCA('tt_content');
+
+		if($position !== '') {
+			$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = t3lib_utility_Array::insertIntoArrayAtSpecifiedPosition(
+				$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'],
+				$contentElementConfig,
+				$position
+			);
+		} else {
+			$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][] = $contentElementConfig;
+		}
+	}
+
+	/**
 	 * Makes fields visible in the TCEforms, adding them to the end of (all) "types"-configurations
 	 *
 	 * Adds a string $str (comma list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $specificTypesList)

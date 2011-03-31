@@ -1277,60 +1277,6 @@ tt_content.search.30 {
 	}
 }
 
-
-# ******************
-# CType: login
-# ******************
-tt_content.login < tt_content.mailform
-tt_content.login.10 = < lib.stdheader
-tt_content.login.20 {
-	goodMess = {$styles.content.loginform.goodMess}
-	redirect >
-	recipient >
-	data >
-	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
-		10.type = *user=input
-		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.password
-		20.type = *pass=password
-		30.type = logintype=hidden
-		30.value = login
-		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.login
-	}
-	type.field = pages
-	type.listNum = 0
-	target = {$styles.content.loginform.target}
-	locationData = 0
-	hiddenFields.pid = TEXT
-	hiddenFields.pid {
-		value = {$styles.content.loginform.pid}
-		override.field = pages
-		override.listNum = 1
-	}
-
-	stdWrap.wrap = <div class="csc-loginform"> | </div>
-	stdWrap {
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.login
-
-		prefixComment = 2 | Login/Logout form:
-	}
-}
-[loginUser = *]
-tt_content.login.20 {
-	dataArray >
-	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
-		10.label.wrap = |&nbsp;<!--###USERNAME###-->
-		30.type = logintype=hidden
-		30.value = logout
-		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.logout
-	}
-}
-[global]
-
-
 # ******************
 # CType: splash
 # ******************

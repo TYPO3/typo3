@@ -109,11 +109,6 @@ $TCA['tt_content'] = array(
 						'i/tt_content_search.gif',
 					),
 					array(
-						'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
-						'login',
-						'i/tt_content_login.gif',
-					),
-					array(
 						'LLL:EXT:cms/locallang_ttc.xml:CType.div.special',
 						'--div--',
 					),
@@ -1853,19 +1848,6 @@ $TCA['tt_content'] = array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.searchform;searchform,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
 		),
-		'login' => 		array(
-			'showitem' =>
-					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.behaviour,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.loginform;loginform,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
-		),
 		'shortcut' => 	array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
@@ -2030,10 +2012,6 @@ $TCA['tt_content'] = array(
 		),
 		'searchform' => array(
 			'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xml:pages.ALT.searchform',
-			'canNotCollapse' => 1,
-		),
-		'loginform' => array(
-			'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xml:pages.ALT.loginform',
 			'canNotCollapse' => 1,
 		),
 		'menu' => array(
