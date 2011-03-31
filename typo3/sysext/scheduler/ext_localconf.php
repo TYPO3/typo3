@@ -37,4 +37,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_Ca
 		'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
 	);
 
+	// Add recycler directory cleanup task
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_RecyclerGarbageCollection'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.description',
+	'additionalFields' => 'tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider',
+);
+
 ?>
