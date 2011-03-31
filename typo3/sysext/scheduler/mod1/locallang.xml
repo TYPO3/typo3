@@ -41,6 +41,7 @@
 			<label index="label.serverTime">Server time</label>
 			<label index="label.sleepTime">Sleep time</label>
 			<label index="label.start">Start (HH:MM DD-MM-YYYY)</label>
+			<label index="label.sysLogGarbageCollection.numberOfDays">Delete entries older than given number of days</label>
 			<label index="label.type">Type</label>
 			<label index="label.type.recurring">Recurring</label>
 			<label index="label.type.single">Single</label>
