@@ -37,4 +37,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_Ca
 		'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
 	);
 
+	// Add sys_log table garbage collection task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_SysLogGarbageCollection'] = array(
+		'extension'        => $_EXTKEY,
+		'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:sysLogGarbageCollection.name',
+		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:sysLogGarbageCollection.description',
+		'additionalFields' => 'tx_scheduler_SysLogGarbageCollection_AdditionalFieldProvider',
+	);
+
 ?>
