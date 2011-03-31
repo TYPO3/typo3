@@ -105,9 +105,21 @@ final class tx_em_Tools {
 	 * @return boolean	True on success, false in failure
 	 */
 	public static function unzip($file, $path) {
-		if (strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'])) {
+		$unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
+		if (strlen($unzipPath)) {
+			if (substr($unzipPath, -1) !== '/' && is_dir($unzipPath)) {
+				// Make sure the path ends with a slash
+				$unzipPath.= '/';
+			}
+
 			chdir($path);
-			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path'] . ' -o ' . escapeshellarg($file);
+				// for compatiblity reasons, we have to accept the full path of the unzip command
+				// or the directory containing the unzip binary
+			if (substr($unzipPath, -1) === '/') {
+				$cmd = $unzipPath . 'unzip -o ' . escapeshellarg($file);
+			} else {
+				$cmd = $unzipPath . ' -o ' . escapeshellarg($file);
+			}
 			t3lib_utility_Command::exec($cmd, $list, $ret);
 			return ($ret === 0);
 		} else {
