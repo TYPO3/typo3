@@ -41,6 +41,9 @@
 			<label index="label.serverTime">Server time</label>
 			<label index="label.sleepTime">Sleep time</label>
 			<label index="label.start">Start (HH:MM DD-MM-YYYY)</label>
+			<label index="label.tableGarbageCollection.table">Table to clean up</label>
+			<label index="label.tableGarbageCollection.additionalInformationTable">Table</label>
+			<label index="label.tableGarbageCollection.numberOfDays">Delete entries older than given number of days</label>
 			<label index="label.type">Type</label>
 			<label index="label.type.recurring">Recurring</label>
 			<label index="label.type.single">Single</label>
