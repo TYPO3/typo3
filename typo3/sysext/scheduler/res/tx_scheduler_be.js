@@ -82,6 +82,42 @@ function actOnChangedTaskType(theSelector) {
 }
 
 /**
+ * This method reacts on field changes of all table field for
+ * table garbage collection task
+ *
+ * @param theCheckbox: The selected checkbox
+ * @return void
+ */
+function actOnChangeSchedulerTableGarbageCollectionAllTables(theCheckbox) {
+	if (theCheckbox.checked) {
+		Ext.fly('task_tableGarbageCollection_table').set({disabled: 'disabled'});
+		Ext.fly('task_tableGarbageCollection_numberOfDays').set({disabled: 'disabled'});
+	} else {
+		Ext.fly('task_tableGarbageCollection_table').dom.removeAttribute('disabled');
+		if (Ext.fly('task_tableGarbageCollection_numberOfDays').getValue() > 0) {
+			Ext.fly('task_tableGarbageCollection_numberOfDays').dom.removeAttribute('disabled');
+		}
+	}
+}
+
+/**
+ * This methods set the 'number of days' field to the default expire period
+ * of the selected table
+ *
+ * @param theSelector: select form item where the table selection was made
+ * @return void
+ */
+function actOnChangeSchedulerTableGarbageCollectionTable(theSelector) {
+	if (defaultNumberOfDays[theSelector.options[theSelector.selectedIndex].value] > 0) {
+		Ext.fly('task_tableGarbageCollection_numberOfDays').dom.removeAttribute('disabled');
+		Ext.fly('task_tableGarbageCollection_numberOfDays').set({value: defaultNumberOfDays[theSelector.options[theSelector.selectedIndex].value]});
+	} else {
+		Ext.fly('task_tableGarbageCollection_numberOfDays').set({disabled: 'disabled'});
+		Ext.fly('task_tableGarbageCollection_numberOfDays').set({value: 0});
+	}
+}
+
+/**
  * This method reacts on the checking of a toggle,
  * activating or not the check of all other checkboxes
  *

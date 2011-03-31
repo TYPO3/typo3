@@ -41,6 +41,11 @@
 			<label index="label.serverTime">Server time</label>
 			<label index="label.sleepTime">Sleep time</label>
 			<label index="label.start">Start (HH:MM DD-MM-YYYY)</label>
+			<label index="label.tableGarbageCollection.allTables">Clean all available tables</label>
+			<label index="label.tableGarbageCollection.table">Table to clean up</label>
+			<label index="label.tableGarbageCollection.additionalInformationTable">Table: %s</label>
+			<label index="label.tableGarbageCollection.additionalInformationAllTables">All tables</label>
+			<label index="label.tableGarbageCollection.numberOfDays">Delete entries older than given number of days</label>
 			<label index="label.type">Type</label>
 			<label index="label.type.recurring">Recurring</label>
 			<label index="label.type.single">Single</label>
@@ -76,6 +81,7 @@
 			<label index="msg.noStartDate">Please define a start date.</label>
 			<label index="msg.invalidStartDate">Start date is invalid.</label>
 			<label index="msg.invalidEndDate">End date is invalid.</label>
+			<label index="msg.invalidNumberOfDays">Number of days is invalid.</label>
 			<label index="msg.invalidTaskClass">Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</label>
 			<label index="msg.invalidTaskClassEdit">The current class (%s) could not be found. Change it below or consider deleting this task altogether.</label>
 			<label index="msg.schedulerSetupCheck">This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</label>
