@@ -51,7 +51,14 @@ Workspaces
 Other general improvements
 -------------------------------------------------------------------------------
 
-...
+* New scheduler task to delete old data from tables
+
+The scheduler task 'Table garbage collection' can be used to delete old data
+from growing tables like log tables on a regular basis. Additional tables that
+can be cleaned up must be regirstered in $TYPO3_CONF_VARS['SC_OPTIONS']
+['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']
+['tables'] with its table name and a field. After that they can
+be selected in the scheduler task.
 
 -------------------------------------------------------------------------------
 Backend

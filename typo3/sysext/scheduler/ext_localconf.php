@@ -31,10 +31,26 @@ if (!empty($extConf['showSampleTasks'])) {
 
 	// Add caching framework garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_CachingFrameworkGarbageCollection'] = array(
-		'extension'        => $_EXTKEY,
-		'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.name',
-		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
-		'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
-	);
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
+	'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
+);
+
+	// Add table garbage collection task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tableGarbageCollection.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tableGarbageCollection.description',
+	'additionalFields' => 'tx_scheduler_tableGarbageCollection_AdditionalFieldProvider',
+	'options'          => array(
+		'tables' => array(
+			array(
+				'table' => 'sys_log',
+				'timestampField' => 'tstamp',
+			),
+		),
+	),
+);
 
 ?>
