@@ -142,17 +142,8 @@ Contact me: | tv=check | 1
 				CType = search
 			}
 		}
-		login {
-			icon = gfx/c_wiz/login_form.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_description
-			tt_content_defValues {
-				CType = login
-			}
-		}
-
 	}
-	forms.show = mailform,search,login
+	forms.show = mailform,search
 
 	plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins
 	plugins.elements {

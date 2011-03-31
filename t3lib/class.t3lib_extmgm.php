@@ -280,6 +280,28 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * Helper function to add items to parts of the TCA
+	 *
+	 * @static
+	 * @param array $tcaArray The part of the TCA where to add the item to
+	 * @param array $contentElementConfig The configuration array part to add
+	 * @param string $position The position of the item (one of before, after, replace, colon separated from the reference field)
+	 * @return array The changed TCA part
+	 */
+	public static function addNewArrayItemToTca(array $tcaArray, array $contentElementConfig, $position = '') {
+		if($position !== '') {
+			$tcaArray = t3lib_utility_Array::insertIntoArrayAtSpecifiedPosition(
+				$tcaArray,
+				$contentElementConfig,
+				$position
+			);
+		} else {
+			$tcaArray[] = $contentElementConfig;
+		}
+		return $tcaArray;
+	}
+
+	/**
 	 * Makes fields visible in the TCEforms, adding them to the end of (all) "types"-configurations
 	 *
 	 * Adds a string $str (comma list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $specificTypesList)
