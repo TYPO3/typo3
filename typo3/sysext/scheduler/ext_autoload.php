@@ -19,5 +19,7 @@ return array(
 	'tx_scheduler_croncmdtest' => $extensionPath . 'tests/tx_scheduler_croncmdTest.php',
 	'tx_scheduler_cachingframeworkgarbagecollection' => $extensionPath . 'tasks/class.tx_scheduler_cachingframeworkgarbagecollection.php',
 	'tx_scheduler_cachingframeworkgarbagecollection_additionalfieldprovider' => $extensionPath . 'tasks/class.tx_scheduler_cachingframeworkgarbagecollection_additionalfieldprovider.php',
+	'tx_scheduler_recyclergarbagecollection' => $extensionPath . 'tasks/class.tx_scheduler_recyclergarbagecollection.php',
+	'tx_scheduler_recyclergarbagecollection_additionalfieldprovider' => $extensionPath . 'tasks/class.tx_scheduler_recyclergarbagecollection_additionalfieldprovider.php',
 );
 ?>
