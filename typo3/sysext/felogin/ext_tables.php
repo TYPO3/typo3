@@ -9,9 +9,16 @@ if(t3lib_div::int_from_ver(TYPO3_version) >= 4002000)
 else
 	t3lib_extMgm::addPiFlexFormValue('default','FILE:EXT:'.$_EXTKEY.'/flexform.xml');
 
+$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = t3lib_extMgm::addNewArrayItemToTca(
+	$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'],
+	array(
+		'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
+		'login',
+		'i/tt_content_login.gif',
+	),
+	'after:mailform'
+);
 
-
-	#replace login
 $TCA['tt_content']['types']['login']['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
 													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.plugin,
