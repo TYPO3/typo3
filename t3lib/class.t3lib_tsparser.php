@@ -726,7 +726,7 @@ class t3lib_TSparser {
 					$extractedFileNames[] = $realFileName;
 
 						// recursive call to detected nested commented include statements
-					$fileContentString = self::extractIncludes($fileContentString, ++$cycle_counter, $extractedFileNames);
+					$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
 
 					if (!t3lib_div::writeFile($realFileName, $fileContentString)) {
 						throw new Exception(sprintf('Could not write file "%s"', $realFileName));
