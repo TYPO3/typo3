@@ -142,7 +142,12 @@ class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
 							$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.4/';
 							$templateNeedsUpdate = true;
 						}
-					} elseif ($compatVersion === $currentVersion || $compatVersion > '4.5') {
+					} elseif ($compatVersion <= t3lib_div::int_from_ver('4.5')) {
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v4.5/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.5/';
+							$templateNeedsUpdate = true;
+						}
+					} elseif ($compatVersion === $currentVersion || $compatVersion > '4.6') {
 						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/') {
 							$includedTemplates[$j] = 'EXT:css_styled_content/static/';
 							$templateNeedsUpdate = true;
