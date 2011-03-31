@@ -309,6 +309,7 @@ class SC_index {
 		} else {
 			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
 		}
+		$content = '<h2>' . date('d.m.Y') . '</h2>';
 
 		$markers = array(
 			'LOGO'             => $logo,
