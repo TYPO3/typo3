@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -104,7 +104,7 @@ require_once(t3lib_extMgm::extPath('sv').'class.tx_sv_authbase.php');
  * See Inside TYPO3 for more information about the API of the class and internal variables.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -256,8 +256,25 @@ class t3lib_userAuth {
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
+
+			$cacheControlHeader = 'no-cache, must-revalidate';
+			$pragmaHeader = 'no-cache';
+
+				// Prevent error message in IE when using a https connection
+				// see http://forge.typo3.org/issues/24125
+			$clientInfo = t3lib_div::clientInfo();
+			if (($clientInfo['BROWSER'] === 'msie') && t3lib_div::getIndpEnv('TYPO3_SSL')) {
+
+						// Some IEs can not handle no-cache
+						// see http://support.microsoft.com/kb/323308/en-us
+					$cacheControlHeader = 'must-revalidate';
+
+						// IE needs "Pragma: private" if SSL connection
+					$pragmaHeader = 'private';
+			}
+
+			header('Cache-Control: ' . $cacheControlHeader);
+			header('Pragma: ' . $pragmaHeader);
 		}
 
 			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
