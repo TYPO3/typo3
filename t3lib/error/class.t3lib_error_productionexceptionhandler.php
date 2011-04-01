@@ -49,9 +49,8 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	 * @return void
 	 */
 	public function echoExceptionWeb(Exception $exception) {
-		if (!headers_sent()) {
-			header("HTTP/1.1 500 Internal Server Error");
-		}
+		$this->sendStatusHeader($exception);
+
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
 
 		if ($exception->getCode() > 0) {
@@ -61,8 +60,13 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			$moreInformationLink = '';
 		}
 
+		$title = 'Oops, an error occurred!';
+
+		if (method_exists($exception, 'getTitle') && strlen($exception->getTitle()) > 0) {
+			$title = $exception->getTitle();
+		}
 			// we use a nice-looking title for our visitors instead of the exception's class name
-		$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $exception->getMessage() . $moreInformationLink, 'Oops, an error occured!');
+		$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $exception->getMessage() . $moreInformationLink, $title);
 		$messageObj->output();
 	}
 
