@@ -52,9 +52,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function echoExceptionWeb(Exception $exception) {
-		if (!headers_sent()) {
-			header("HTTP/1.1 500 Internal Server Error");
-		}
+		$this->sendStatusHeaders($exception);
 
 		$filePathAndName = $exception->getFile();
 

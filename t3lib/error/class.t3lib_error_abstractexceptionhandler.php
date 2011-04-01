@@ -137,7 +137,25 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		}
 	}
 
-
+	/**
+	 * Sends the HTTP Status 500 code, if $exception is *not* a t3lib_error_http_StatusException
+	 * and headers are not sent, yet.
+	 *
+	 * @param Exception $exception
+	 * @return void
+	 */
+	protected function sendStatusHeaders(Exception $exception) {
+		if (method_exists($exception, 'getStatusHeaders')) {
+			$headers = $exception->getStatusHeaders();
+		} else {
+			$headers = array(t3lib_utility_Http::HTTP_STATUS_500);
+		}
+		if (!headers_sent()) {
+			foreach($headers as $header) {
+				header($header);
+			}
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php'])) {
