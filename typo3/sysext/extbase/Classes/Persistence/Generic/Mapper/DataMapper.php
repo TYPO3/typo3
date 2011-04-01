@@ -315,7 +315,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return Tx_Extbase_Persistence_LazyObjectStorage|Tx_Extbase_Persistence_QueryResultInterface The result
 	 */
 	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
-		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
 			if ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
@@ -340,10 +339,33 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
-	 * @return void
+	 * @return mixed
 	 */
 	protected function fetchRelatedEager(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
-		if ($fieldValue === '') return array();
+		return ($fieldValue === ''
+			? $this->getEmptyRelationValue($parentObject, $propertyName)
+			: $this->getNonEmptyRelationValue($parentObject, $propertyName, $fieldValue)
+		);
+	}
+
+	/**
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
+	 * @param $propertyName
+	 * @return array|NULL
+	 */
+	protected function getEmptyRelationValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
+		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+		$relatesToOne = ($columnMap->getTypeOfRelation() == Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+		return $relatesToOne ? NULL : array();
+	}
+
+	/**
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject
+	 * @param string $propertyName
+	 * @param string $fieldValue
+	 * @return Tx_Extbase_Persistence_QueryResultInterfaces
+	 */
+	protected function getNonEmptyRelationValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute();
 	}
