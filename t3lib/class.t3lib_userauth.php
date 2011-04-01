@@ -293,8 +293,25 @@ class t3lib_userAuth {
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
+
+				// Prevent error message in IE when using a https connection
+				// see http://forge.typo3.org/issues/24125
+			$clientInfo = t3lib_div::clientInfo();
+			if ($clientInfo['BROWSER'] === 'msie')  {
+					// IE can not handle no-cache (see http://support.microsoft.com/kb/323308/en-us)
+				header('Cache-Control: must-revalidate');
+			}
+			else {
+				header('Cache-Control: no-cache, must-revalidate');
+			}
+				
+			if (t3lib_div::getIndpEnv('TYPO3_SSL')) {
+					// IE needs "Pragma: private" if SSL connection
+				header('Pragma: private');
+			}
+			else {
+				header('Pragma: no-cache');
+			}
 		}
 
 			// Set $this->gc_time if not explicitely specified
