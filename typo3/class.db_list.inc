@@ -315,7 +315,7 @@ class recordList extends t3lib_recordList {
 			// Setting form-elements, if applicable:
 		$formElements=array('','');
 		if ($formFields)	{
-			$formElements=array('<form action="'.htmlspecialchars($this->listURL()).'" method="post">','</form>');
+			$formElements=array('<form action="'.htmlspecialchars($this->listURL('', -1, 'pointer')).'" method="post">','</form>');
 		}
 
 			// Make level selector:
@@ -726,7 +726,7 @@ class recordList extends t3lib_recordList {
 		if ($this->showLimit) {
 			$urlParameters['showLimit'] = $this->showLimit;
 		}
-		if ($this->firstElementNumber) {
+		if ((!$exclList || !t3lib_div::inList($exclList, 'pointer')) && $this->firstElementNumber) {
 			$urlParameters['pointer'] = $this->firstElementNumber;
 		}
 		if ((!$exclList || !t3lib_div::inList($exclList, 'sortField')) && $this->sortField) {
