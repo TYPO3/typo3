@@ -124,6 +124,7 @@ $t3libClasses = array(
 	't3lib_error_http_badrequestexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_badrequestexception.php',
 	't3lib_error_http_unauthorizedexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_unauthorizedexception.php',
 	't3lib_error_http_forbiddenexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_forbiddenexception.php',
+	't3lib_error_http_internalservererrorexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_internalservererrorexception.php',
 	't3lib_error_http_pagenotfoundexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_pagenotfoundexception.php',
 	't3lib_error_http_serviceunavailableexception' => PATH_t3lib . 'error/http/class.t3lib_error_http_serviceunavailableexception.php',
 	't3lib_browselinkshook' => PATH_t3lib . 'interfaces/interface.t3lib_browselinkshook.php',
