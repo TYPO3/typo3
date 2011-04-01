@@ -256,8 +256,25 @@ class t3lib_userAuth {
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
+
+			$cacheControlHeader = 'no-cache, must-revalidate';
+			$pragmaHeader = 'no-cache';
+
+				// Prevent error message in IE when using a https connection
+				// see http://forge.typo3.org/issues/24125
+			$clientInfo = t3lib_div::clientInfo();
+			if (($clientInfo['BROWSER'] === 'msie') && t3lib_div::getIndpEnv('TYPO3_SSL')) {
+
+						// Some IEs can not handle no-cache
+						// see http://support.microsoft.com/kb/323308/en-us
+					$cacheControlHeader = 'must-revalidate';
+
+						// IE needs "Pragma: private" if SSL connection
+					$pragmaHeader = 'private';
+			}
+
+			header('Cache-Control: ' . $cacheControlHeader);
+			header('Pragma: ' . $pragmaHeader);
 		}
 
 			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
