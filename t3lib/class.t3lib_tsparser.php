@@ -589,7 +589,11 @@ class t3lib_TSparser {
 									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
 									if (strcmp($filename, '')) { // Must exist and must not contain '..' and must be relative
 										if (t3lib_div::verifyFilenameAgainstDenyPattern($filename)) { // Check for allowed files
-											if (@is_file($filename) && filesize($filename) < 100000) { // Max. 100 KB include files!
+											$maxFileSize = intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['includeTypoScriptMaximumFileSize']);
+											if (!$maxFileSize) {
+												$maxFileSize = 100000;
+											}
+											if (@is_file($filename) && filesize($filename) <= $maxFileSize) { // Default max is 100 KB for include files!
 													// check for includes in included text
 												$includedFiles[] = $filename;
 												$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename), $cycle_counter + 1, $returnFiles);
@@ -600,8 +604,17 @@ class t3lib_TSparser {
 													$included_text = $included_text['typoscript'];
 												}
 												$newString .= $included_text . LF;
+											} else {
+												if (!@is_file($filename)) {
+													$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not was not found.\n###\n\n";
+													t3lib_div::sysLog('File "' . $filename . '" was not found.', 'Core', 2);
+												} else {
+													$newString .= "\n###\n### ERROR: File \"" . $filename . '" was not included since it is too large. $TYPO3_CONF_VARS[SYS][includeTypoScriptMaximumFileSize] is set to ' . $maxFileSize . " bytes.\n###\n\n";
+													t3lib_div::sysLog('File "' . $filename . '" was not included since it is too large. $TYPO3_CONF_VARS[SYS][includeTypoScriptMaximumFileSize] is set to ' . $maxFileSize, 'Core', 2);
+												}
 											}
 										} else {
+											$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not included since it is not allowed due to fileDenyPattern\n###\n\n";
 											t3lib_div::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', 2);
 										}
 									}
