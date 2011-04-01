@@ -488,8 +488,7 @@
 				} else {
 					$message = 'Cannot connect to the configured database "'.TYPO3_db.'"';
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					header('HTTP/1.0 503 Service Temporarily Unavailable');
-					throw new RuntimeException('Database Error: ' . $message, 1293617736);
+					throw new t3lib_error_http_ServiceTemporaryUnavailableException($message, 1301648782);
 				}
 			}
 		} else {
@@ -498,8 +497,7 @@
 			} else {
 				$message = 'The current username, password or host was not accepted when the connection to the database was attempted to be established!';
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				header('HTTP/1.0 503 Service Temporarily Unavailable');
-				throw new RuntimeException('Database Error: ' . $message, 1293617741);
+				throw new t3lib_error_http_ServiceTemporaryUnavailableException('Database Error: ' . $message, 1301648945);
 			}
 		}
 
@@ -920,8 +918,7 @@
 					} else {
 						$message = 'No pages are found on the rootlevel!';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-						header('HTTP/1.0 503 Service Temporarily Unavailable');
-						throw new RuntimeException($message, 1294587207);
+						throw new t3lib_error_http_ServiceTemporaryUnavailableException($message, 1301648975);
 					}
 				}
 			}
@@ -1010,13 +1007,9 @@
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
-					$title = 'Page Not Found';
 					$message = 'The requested page does not exist!';
-					header(t3lib_utility_Http::HTTP_STATUS_404);
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
-					$messagePage->output();
-					exit;
+					throw new t3lib_error_http_PageNotFoundException($message, 1301648780);
 				}
 			}
 		}
@@ -1026,13 +1019,9 @@
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
-				$title = 'Page Not Found';
 				$message = 'The requested page does not exist!';
-				header(t3lib_utility_Http::HTTP_STATUS_404);
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
-				$messagePage->output();
-				exit;
+				throw new t3lib_error_http_PageNotFoundException($message, 1301648781);
 			}
 		}
 
@@ -1066,9 +1055,8 @@
 					$this->pageUnavailableAndExit('The requested page didn\'t have a proper connection to the tree-root!');
 				} else {
 					$message = 'The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')';
-					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog(str_replace('<br /><br />','',$message), 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message, 1294587210);
+					throw new t3lib_error_http_ServiceTemporaryUnavailableException($message, 1301648167);
 				}
 			}
 			$this->fePreview = 1;
@@ -1081,9 +1069,8 @@
 					$this->pageUnavailableAndExit('The requested page was not accessible!');
 				} else {
 					$message = 'The requested page was not accessible!';
-					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message, 1294587211);
+					throw new t3lib_error_http_ServiceTemporaryUnavailableException($message, 1301648234);
 				}
 			} else {
 				$el = reset($this->rootLine);
@@ -1128,37 +1115,25 @@
 					$c++;
 				}
 				if (count($page) == 0) {
-					header(t3lib_utility_Http::HTTP_STATUS_404);
-					$title = 'Page Not Found';
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. '
 						. 'However, this page has no accessible subpages.';
-					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
-					$messagePage->output();
-					exit;
+					throw new t3lib_error_http_PageNotFoundException($message, 1301648328);
 				}
 			break;
 			case t3lib_pageSelect::SHORTCUT_MODE_PARENT_PAGE:
 				$parent = $this->sys_page->getPage($thisUid);
 				$page = $this->sys_page->getPage($parent['pid']);
 				if (count($page) == 0) {
-					header(t3lib_utility_Http::HTTP_STATUS_404);
-					$title = 'Page Not Found';
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. '
 						. 'However, the parent page is not accessible.';
-					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
-					$messagePage->output();
-					exit;
+					throw new t3lib_error_http_PageNotFoundException($message, 1301648358);
 				}
 			break;
 			default:
 				$page = $this->sys_page->getPage($idArray[0]);
 				if (count($page) == 0) {
-					header(t3lib_utility_Http::HTTP_STATUS_404);
-					$title = 'Page Not Found';
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-					$messagePage = t3lib_div::makeInstance('t3lib_message_ErrorpageMessage', $message, $title);
-					$messagePage->output();
-					exit;
+					throw new t3lib_error_http_PageNotFoundException($message, 1301648404);
 				}
 			break;
 		}
@@ -1171,7 +1146,6 @@
 			} else {
 				$pageLog[] = $page['uid'];
 				$message = 'Page shortcuts were looping in uids '.implode(',',$pageLog).'...!';
-				header('HTTP/1.0 500 Internal Server Error');
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 				throw new RuntimeException($message, 1294587212);
 			}
@@ -2082,10 +2056,11 @@
 					if ($this->checkPageUnavailableHandler())	{
 						$this->pageUnavailableAndExit('The page is not configured! [type= '.$this->type.']['.$this->sPre.']');
 					} else {
-						$message = 'The page is not configured! [type= '.$this->type.']['.$this->sPre.']';
-						header('HTTP/1.0 503 Service Temporarily Unavailable');
+						$message = 'The page is not configured! [type= '.$this->type.']['.$this->sPre.'].';
+						$explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' .
+							$this->type . ' configured.';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-						throw new RuntimeException($message, 1294587217);
+						throw new t3lib_error_http_ServiceUnavailableException($message . $explanation, 1294587217);
 					}
 				} else {
 					$this->config['config'] = array();
@@ -2142,9 +2117,8 @@
 					$this->pageUnavailableAndExit('No TypoScript template found!');
 				} else {
 					$message = 'No TypoScript template found!';
-					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new RuntimeException($message, 1294587218);
+					throw new t3lib_error_http_ServiceUnavailableException($message, 1294587218);
 				}
 			}
 		}
