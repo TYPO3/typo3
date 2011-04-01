@@ -49,9 +49,8 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	 * @return void
 	 */
 	public function echoExceptionWeb(Exception $exception) {
-		if (!headers_sent()) {
-			header("HTTP/1.1 500 Internal Server Error");
-		}
+		$this->sendStatusHeader($exception);
+
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
 
 		if ($exception->getCode() > 0) {
