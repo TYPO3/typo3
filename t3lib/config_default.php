@@ -182,6 +182,7 @@ $TYPO3_CONF_VARS = array(
 		),
 	),
 	'BE' => array(		// Backend Configuration.
+		'maxFileSizeForIncludeTyposcript' => 100000,	// Integer: Maximum file size in bytes for INCLUDE_TYPOSCRIPT
 		'unzip_path' => '',						// Path to "unzip".
 		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: <a href="http://unxutils.sourceforge.net/" target="_blank">unxutils.sourceforge.net</a>
 		'fileadminDir' => 'fileadmin/',			// Path to the fileadmin dir. This is relative to PATH_site. (Automatically mounted for admin-users if set)
