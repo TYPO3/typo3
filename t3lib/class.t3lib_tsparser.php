@@ -589,7 +589,11 @@ class t3lib_TSparser {
 									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
 									if (strcmp($filename, '')) { // Must exist and must not contain '..' and must be relative
 										if (t3lib_div::verifyFilenameAgainstDenyPattern($filename)) { // Check for allowed files
-											if (@is_file($filename) && filesize($filename) < 100000) { // Max. 100 KB include files!
+											$maxFileSize = intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileSizeForIncludeTyposcript']);
+											if (!$maxFileSize) {
+												$maxFileSize = 100000;
+											}
+											if (@is_file($filename) && filesize($filename) <= $maxFileSize) { // Default is max 100 KB include files! Can be changed by maxFileSizeForIncludeTyposcript.
 													// check for includes in included text
 												$includedFiles[] = $filename;
 												$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename), $cycle_counter + 1, $returnFiles);
