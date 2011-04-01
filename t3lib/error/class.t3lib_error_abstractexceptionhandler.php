@@ -137,7 +137,11 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		}
 	}
 
-
+	protected function sendStatusHeader(Exception $exception) {
+		if (!headers_sent() && !($exception instanceof t3lib_error_http_StatusException)) {
+				header(t3lib_utility_Http::HTTP_STATUS_500);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php'])) {
