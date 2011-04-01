@@ -132,6 +132,10 @@ class SC_db_list {
 		$this->imagemode = t3lib_div::_GP('imagemode');
 		$this->table = t3lib_div::_GP('table');
 		$this->search_field = t3lib_div::_GP('search_field');
+		if (!empty($this->search_field)) {
+			// reset pointer for search
+			$this->pointer=0;
+		}
 		$this->search_levels = t3lib_div::_GP('search_levels');
 		$this->showLimit = t3lib_div::_GP('showLimit');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
