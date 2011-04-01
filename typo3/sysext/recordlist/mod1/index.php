@@ -457,12 +457,14 @@ class SC_db_list {
 			}
 
 				// Search box:
-			$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
-			$this->body .= $this->doc->section(
-				$sectionTitle,
-				$dblist->getSearchBox(),
-				FALSE, TRUE, FALSE, TRUE
-			);
+			if (!$this->modTSconfig['properties']['disableSearchBox']) {
+				$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
+				$this->body .= $this->doc->section(
+					$sectionTitle,
+					$dblist->getSearchBox(),
+					FALSE, TRUE, FALSE, TRUE
+				);
+			}
 
 				// Display sys-notes, if any are found:
 			$this->body.=$dblist->showSysNotesForPage();
