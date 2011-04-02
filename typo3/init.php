@@ -440,7 +440,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 		// Status output:
 	if (!strcmp($_SERVER['argv'][1],'status'))	{
 		echo "Status of TYPO3 CLI script:\n\n";
-		echo "Username [uid]: ".$BE_USER->user['username']." [".$BE_USER->user['uid']."]\n";
+		echo "Username [uid]: ".$GLOBALS['BE_USER']->user['username']." [".$BE_USER->user['uid']."]\n";
 		echo "Database: ".TYPO3_db.LF;
 		echo "PATH_site: ".PATH_site.LF;
 		echo LF;

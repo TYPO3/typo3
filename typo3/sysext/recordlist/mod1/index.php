@@ -27,7 +27,7 @@
 /**
  * Module: Web>List
  *
- * Listing database records from the tables configured in $TCA as they are related to the current page or root.
+ * Listing database records from the tables configured in $GLOBALS['TCA'] as they are related to the current page or root.
  *
  * Notice: This module and Web>Page (db_layout.php) module has a special status since they
  * are NOT located in their actual module directories (fx. mod/web/list/) but in the
@@ -119,11 +119,10 @@ class SC_db_list {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER;
 
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
-		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 			// GPvars:
 		$this->id = t3lib_div::_GP('id');
@@ -189,7 +188,7 @@ class SC_db_list {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$CLIENT;
+		global $LANG,$BACK_PATH,$CLIENT;
 
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -226,8 +225,8 @@ class SC_db_list {
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
 		$dblist->script = t3lib_BEfunc::getModuleUrl('web_list', array(), '');
-		$dblist->calcPerms = $BE_USER->calcPerms($this->pageinfo);
-		$dblist->thumbs = $BE_USER->uc['thumbnailsByDefault'];
+		$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
+		$dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 		$dblist->returnUrl=$this->returnUrl;
 		$dblist->allFields = ($this->MOD_SETTINGS['bigControlPanel'] || $this->table) ? 1 : 0;
 		$dblist->localizationView = $this->MOD_SETTINGS['localization'];
@@ -264,7 +263,7 @@ class SC_db_list {
 
 			// This flag will prevent the clipboard panel in being shown.
 			// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-		$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$BE_USER->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
+		$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$GLOBALS['BE_USER']->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
 
 

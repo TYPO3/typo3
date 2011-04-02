@@ -87,8 +87,6 @@ class SC_wizard_edit {
 	 * @return	void
 	 */
 	function main()	{
-		global $TCA;
-
 		if ($this->doClose)	{
 			$this->closeWindow();
 		} else {
@@ -97,7 +95,7 @@ class SC_wizard_edit {
 			$table = $this->P['table'];
 			$field = $this->P['field'];
 			t3lib_div::loadTCA($table);
-			$config = $TCA[$table]['columns'][$field]['config'];
+			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$fTable = $this->P['currentValue']<0 ? $config['neg_foreign_table'] : $config['foreign_table'];
 
 				// Detecting the various allowed field type setups and acting accordingly.

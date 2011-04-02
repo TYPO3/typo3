@@ -121,7 +121,7 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG;
+		global $LANG;
 
 			// translate id to the workspace version:
 		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
@@ -303,22 +303,20 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function checkEditAccess($table,$uid)	{
-		global $BE_USER;
-
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
 		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
 		if (is_array($calcPRec))	{
 			if ($table=='pages')	{	// If pages:
-				$CALC_PERMS = $BE_USER->calcPerms($calcPRec);
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 				$hasAccess = $CALC_PERMS&2 ? TRUE : FALSE;
 			} else {
-				$CALC_PERMS = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',$calcPRec['pid']));	// Fetching pid-record first.
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$calcPRec['pid']));	// Fetching pid-record first.
 				$hasAccess = $CALC_PERMS&16 ? TRUE : FALSE;
 			}
 
 				// Check internals regarding access:
 			if ($hasAccess)	{
-				$hasAccess = $BE_USER->recordEditAccessInternals($table, $calcPRec);
+				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 			}
 		} else $hasAccess = FALSE;
 

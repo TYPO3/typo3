@@ -216,7 +216,7 @@ class tslib_feTCE	{
 	/**
 	 * Method available to the submit scripts for creating insert queries.
 	 * Automatically adds tstamp, crdate, cruser_id field/value pairs.
-	 * Will allow only field names which are either found in $TCA[...][columns] OR in the $this->extraList
+	 * Will allow only field names which are either found in $GLOBALS['TCA'][...][columns] OR in the $this->extraList
 	 * Executes an insert query!
 	 *
 	 * @param	string		The table name for which to create the insert statement

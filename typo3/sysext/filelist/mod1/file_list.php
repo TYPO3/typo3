@@ -158,7 +158,7 @@ class SC_file_list {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS,$FILEMOUNTS;
+		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS,$FILEMOUNTS;
 
 			// Initialize the template object
 		$this->doc = t3lib_div::makeInstance('template');
@@ -261,7 +261,7 @@ class SC_file_list {
 
 				// if user never opened the list module, set the value for displayThumbs
 			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
-				$this->MOD_SETTINGS['displayThumbs'] = $BE_USER->uc['thumbnailsByDefault'];
+				$this->MOD_SETTINGS['displayThumbs'] = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 			}
 			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
 
@@ -442,9 +442,7 @@ class SC_file_list {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	function getButtons()	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-
+	function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -453,7 +451,7 @@ class SC_file_list {
 		);
 
 			// Add shortcut
-		if ($BE_USER->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 		}
 
@@ -461,11 +459,11 @@ class SC_file_list {
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// upload button
-		$buttons['upload'] = '<a href="' . $BACK_PATH . 'file_upload.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload',1)).'">' .
+		$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload',1)).'">' .
 			t3lib_iconWorks::getSpriteIcon('actions-edit-upload') .
 		'</a>';
 
-		$buttons['new'] = '<a href="' . $BACK_PATH . 'file_newfolder.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new',1)).'">' .
+		$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new',1)).'">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 		'</a>';
 

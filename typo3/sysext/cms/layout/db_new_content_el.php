@@ -174,7 +174,7 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$BACK_PATH,$TBE_MODULES_EXT;
+		global $BACK_PATH,$TBE_MODULES_EXT;
 
 			// Setting class files to include:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
@@ -205,7 +205,7 @@ class SC_db_new_content_el {
 		$this->doc->getContextMenuCode();
 
 			// Getting the current page and receiving access information (used in main())
-		$perms_clause = $BE_USER->getPagePermsClause(1);
+		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
 		$this->access = is_array($this->pageinfo) ? 1 : 0;
 	}
@@ -557,7 +557,6 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function removeInvalidElements(&$wizardItems)	{
-		global $TCA;
 
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
@@ -589,9 +588,9 @@ class SC_db_new_content_el {
 
 					// Traverse field values:
 				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV)	{
-					if (is_array($TCA['tt_content']['columns'][$fN]))	{
+					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN]))	{
 							// Get information about if the field value is OK:
-						$config = &$TCA['tt_content']['columns'][$fN]['config'];
+						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']));
 						$isNotInKeepItems = (count($keepItems) && !in_array($fV, $keepItems));
 

@@ -277,7 +277,7 @@ class t3lib_DB {
 	 * Creates and executes a SELECT query, selecting fields ($select) from two/three tables joined
 	 * Use $mm_table together with $local_table or $foreign_table to select over two tables. Or use all three tables to select the full MM-relation.
 	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
-	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $TCA in Inside TYPO3 for more details.
+	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $GLOBALS['TCA'] in Inside TYPO3 for more details.
 	 *
 	 * Usage: 12 (spec. ext. sys_action, sys_messages, sys_todos)
 	 *

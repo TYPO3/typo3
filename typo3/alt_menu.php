@@ -117,12 +117,10 @@ class SC_alt_menu {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE;
+		$GLOBALS['TBE_TEMPLATE']->divClass='vertical-menu';
+		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
 
-		$TBE_TEMPLATE->divClass='vertical-menu';
-		$TBE_TEMPLATE->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
-
-		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('Vertical Backend Menu');
 		$backPath = $GLOBALS['BACK_PATH'];
 
 			// Printing the menu
@@ -132,7 +130,7 @@ class SC_alt_menu {
 			// clear cache commands for Admins and allowed users
 		if($GLOBALS['BE_USER']->isAdmin()
 		|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')
-		|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {	//  && $BE_USER->workspace===0 NOT used anyway because under a workspace developers might still like to clear cache!
+		|| $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {	//  && $GLOBALS['BE_USER']->workspace===0 NOT used anyway because under a workspace developers might still like to clear cache!
 			$functionsArray = $alt_menuObj->adminFunctions($backPath);
 
 			$this->content.='
@@ -180,12 +178,12 @@ class SC_alt_menu {
 		}
 
 			// superuser mode
-		if($BE_USER->user['ses_backuserid']) {
+		if($GLOBALS['BE_USER']->user['ses_backuserid']) {
 			$username = '<p id="username" class="typo3-red-background">[' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:switchtousershort') . ' ' .
-				htmlspecialchars($BE_USER->user['username']) . ']</p>';
+				htmlspecialchars($GLOBALS['BE_USER']->user['username']) . ']</p>';
 		} else {
-			$username = '<p id="username">[' . htmlspecialchars($BE_USER->user['username']) . ']</p>';
+			$username = '<p id="username">[' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . ']</p>';
 		}
 			// Printing buttons (logout button)
 		$this->content.='
@@ -198,7 +196,7 @@ class SC_alt_menu {
 </div>';
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**

@@ -230,11 +230,10 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER;
 
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
-		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->backPath = $GLOBALS['BACK_PATH'];
 
 			// GPvars:
@@ -284,47 +283,47 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
+		global $TYPO3_CONF_VARS;
 
 			// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'tt_board' => array(
-				0 => $LANG->getLL('m_tt_board_0'),
-				'expand' => $LANG->getLL('m_tt_board_expand')
+				0 => $GLOBALS['LANG']->getLL('m_tt_board_0'),
+				'expand' => $GLOBALS['LANG']->getLL('m_tt_board_expand')
 			),
 			'tt_address' => array(
-				0 => $LANG->getLL('m_tt_address_0'),
-				1 => $LANG->getLL('m_tt_address_1'),
-				2 => $LANG->getLL('m_tt_address_2')
+				0 => $GLOBALS['LANG']->getLL('m_tt_address_0'),
+				1 => $GLOBALS['LANG']->getLL('m_tt_address_1'),
+				2 => $GLOBALS['LANG']->getLL('m_tt_address_2')
 			),
 			'tt_links' => array(
-				0 => $LANG->getLL('m_default'),
-				1 => $LANG->getLL('m_tt_links_1'),
-				2 => $LANG->getLL('m_tt_links_2')
+				0 => $GLOBALS['LANG']->getLL('m_default'),
+				1 => $GLOBALS['LANG']->getLL('m_tt_links_1'),
+				2 => $GLOBALS['LANG']->getLL('m_tt_links_2')
 			),
 			'tt_calender' => array (
-				0 => $LANG->getLL('m_default'),
-				'date' => $LANG->getLL('m_tt_calender_date'),
-				'date_ext' => $LANG->getLL('m_tt_calender_date_ext'),
-				'todo' => $LANG->getLL('m_tt_calender_todo'),
-				'todo_ext' => $LANG->getLL('m_tt_calender_todo_ext')
+				0 => $GLOBALS['LANG']->getLL('m_default'),
+				'date' => $GLOBALS['LANG']->getLL('m_tt_calender_date'),
+				'date_ext' => $GLOBALS['LANG']->getLL('m_tt_calender_date_ext'),
+				'todo' => $GLOBALS['LANG']->getLL('m_tt_calender_todo'),
+				'todo_ext' => $GLOBALS['LANG']->getLL('m_tt_calender_todo_ext')
 			),
 			'tt_products' => array (
-				0 => $LANG->getLL('m_default'),
-				'ext' => $LANG->getLL('m_tt_products_ext')
+				0 => $GLOBALS['LANG']->getLL('m_default'),
+				'ext' => $GLOBALS['LANG']->getLL('m_tt_products_ext')
 			),
 			'tt_content_showHidden' => '',
 			'showPalettes' => '',
 			'showDescriptions' => '',
 			'disableRTE' => '',
 			'function' => array(
-				0 => $LANG->getLL('m_function_0'),
-				1 => $LANG->getLL('m_function_1'),
-				2 => $LANG->getLL('m_function_2'),
-				3 => $LANG->getLL('pageInformation'),
+				0 => $GLOBALS['LANG']->getLL('m_function_0'),
+				1 => $GLOBALS['LANG']->getLL('m_function_1'),
+				2 => $GLOBALS['LANG']->getLL('m_function_2'),
+				3 => $GLOBALS['LANG']->getLL('pageInformation'),
 			),
 			'language' => array(
-				0 => $LANG->getLL('m_default')
+				0 => $GLOBALS['LANG']->getLL('m_default')
 			)
 		);
 
@@ -342,7 +341,7 @@ class SC_db_layout {
 				}
 				if (is_array($tableSettings) && count($tableSettings) > 1) {
 					foreach ($tableSettings as $key => $settings) {
-						$this->MOD_MENU[$table][$key] = $LANG->sL($settings['MENU']);
+						$this->MOD_MENU[$table][$key] = $GLOBALS['LANG']->sL($settings['MENU']);
 					}
 				}
 			}
@@ -357,7 +356,7 @@ class SC_db_layout {
 		}
 
 			// Find if there are ANY languages at all (and if not, remove the language option from function menu).
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_language', ($BE_USER->isAdmin() ? '' : 'hidden=0'));
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_language', ($GLOBALS['BE_USER']->isAdmin() ? '' : 'hidden=0'));
 		if (!$count) {
 			unset($this->MOD_MENU['function']['2']);
 		}
@@ -408,7 +407,7 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
+		global $BACK_PATH;
 
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
@@ -416,12 +415,12 @@ class SC_db_layout {
 		if ($this->id && $access)	{
 
 				// Initialize permission settings:
-			$this->CALC_PERMS = $BE_USER->calcPerms($this->pageinfo);
+			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 			$this->EDIT_CONTENT = ($this->CALC_PERMS&16) ? 1 : 0;
 
 				// Start document template object:
 			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->backPath = $BACK_PATH;
+			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('templates/db_layout.html');
 
 				// JavaScript:
@@ -443,8 +442,8 @@ class SC_db_layout {
 			'.($this->popView ? t3lib_BEfunc::viewOnClick($this->id,$BACK_PATH,t3lib_BEfunc::BEgetRootLine($this->id)) : '').'
 
 				function deleteRecord(table,id,url)	{	//
-					if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
-						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $BE_USER->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . '&prErr=1&uPT=1";
+					if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')).'))	{
+						window.location.href = "'.$BACK_PATH.'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . '&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -607,7 +606,7 @@ class SC_db_layout {
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				// Renders the module page
 			$this->content = $this->doc->render(
-				$LANG->getLL('title'),
+				$GLOBALS['LANG']->getLL('title'),
 				$this->content
 			);
 
@@ -624,8 +623,8 @@ class SC_db_layout {
 
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$LANG->getLL('clickAPage_content'),
-				$LANG->getLL('clickAPage_header'),
+				$GLOBALS['LANG']->getLL('clickAPage_content'),
+				$GLOBALS['LANG']->getLL('clickAPage_header'),
 				t3lib_FlashMessage::INFO
 			);
 			$body = $flashMessage->render();
@@ -661,7 +660,7 @@ class SC_db_layout {
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				// Renders the module page
 			$this->content = $this->doc->render(
-				$LANG->getLL('title'),
+				$GLOBALS['LANG']->getLL('title'),
 				$this->content
 			);
 		}
@@ -673,7 +672,7 @@ class SC_db_layout {
 	 * @return	void
 	 */
 	function renderQuickEdit()	{
-		global $LANG,$BE_USER,$BACK_PATH;
+		global $LANG,$BACK_PATH;
 			// Alternative template
 		$this->doc->setModuleTemplate('templates/db_layout_quickedit.html');
 
@@ -709,7 +708,7 @@ class SC_db_layout {
 
 			// If the former record edited was the creation of a NEW record, this will look up the created records uid:
 		if ($this->new_unique_uid)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid='.intval($BE_USER->user['uid']).' AND NEWid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid='.intval($GLOBALS['BE_USER']->user['uid']).' AND NEWid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
 			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if (is_array($sys_log_row))	{
 				$edit_record=$sys_log_row['tablename'].':'.$sys_log_row['recuid'];
@@ -765,7 +764,7 @@ class SC_db_layout {
 				}
 				$inValue = 'tt_content:'.$cRow['uid'];
 				$is_selected+=intval($edit_record==$inValue);
-				$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$BE_USER->uc['titleLen'])).'</option>';
+				$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$GLOBALS['BE_USER']->uc['titleLen'])).'</option>';
 				$prev=-$cRow['uid'];
 			}
 		}
@@ -813,7 +812,7 @@ class SC_db_layout {
 			// Setting close url/return url for exiting this script:
 		$this->closeUrl = $this->local_linkThisScript(array('SET'=>array('function'=>1)));	// Goes to 'Columns' view if close is pressed (default)
 
-		if ($BE_USER->uc['condensedMode'])	{
+		if ($GLOBALS['BE_USER']->uc['condensedMode'])	{
 			$this->closeUrl = $BACK_PATH.'alt_db_navframe.php';
 		}
 		if ($this->returnUrl)	{
@@ -826,7 +825,7 @@ class SC_db_layout {
 		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(\'db_layout.php?id=' . $this->id . '&edit_record=\'+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
 
 			// Creating editing form:
-		if ($BE_USER->check('tables_modify',$this->eRParts[0]) && $edit_record && (($this->eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($this->eRParts[0]=='pages'&&($this->CALC_PERMS&1))))	{
+		if ($GLOBALS['BE_USER']->check('tables_modify',$this->eRParts[0]) && $edit_record && (($this->eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($this->eRParts[0]=='pages'&&($this->CALC_PERMS&1))))	{
 
 				// Splitting uid parts for special features, if new:
 			list($uidVal,$ex_pid,$ex_colPos) = explode('/',$this->eRParts[1]);
@@ -861,13 +860,13 @@ class SC_db_layout {
 				$rec['uid'] = $uidVal;
 
 					// Checking internals access:
-				$recordAccess = $BE_USER->recordEditAccessInternals($this->eRParts[0],$uidVal);
+				$recordAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($this->eRParts[0],$uidVal);
 			}
 
 			if (!$recordAccess)	{
 					// If no edit access, print error message:
 				$content.=$this->doc->section($LANG->getLL('noAccess'),$LANG->getLL('noAccess_msg').'<br /><br />'.
-							($BE_USER->errorMsg ? 'Reason: ' . $BE_USER->errorMsg . '<br /><br />' : ''), 0, 1);
+							($GLOBALS['BE_USER']->errorMsg ? 'Reason: ' . $GLOBALS['BE_USER']->errorMsg . '<br /><br />' : ''), 0, 1);
 			} elseif (is_array($rec))	{	// If the record is an array (which it will always be... :-)
 
 					// Create instance of TCEforms, setting defaults:
@@ -884,7 +883,7 @@ class SC_db_layout {
 				$tceforms->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
 
 
-				if ($BE_USER->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$tceforms->edit_showFieldHelp='text';
+				if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$tceforms->edit_showFieldHelp='text';
 
 					// Render form, wrap it:
 				$panel='';
@@ -935,13 +934,13 @@ class SC_db_layout {
 					t3lib_BEfunc::getFuncCheck($this->id,'SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'db_layout.php','','id="checkShowPalettes"').
 					'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
 
-		if (t3lib_extMgm::isLoaded('context_help') && $BE_USER->uc['edit_showFieldHelp']!='text') {
+		if (t3lib_extMgm::isLoaded('context_help') && $GLOBALS['BE_USER']->uc['edit_showFieldHelp']!='text') {
 			$h_func_b.= '<br />'.
 						t3lib_BEfunc::getFuncCheck($this->id,'SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'db_layout.php','','id="checkShowDescriptions"').
 						'<label for="checkShowDescriptions">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1).'</label>';
 		}
 
-		if ($BE_USER->isRTE())	{
+		if ($GLOBALS['BE_USER']->isRTE())	{
 			$h_func_b.= '<br />'.
 						t3lib_BEfunc::getFuncCheck($this->id,'SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'db_layout.php','','id="checkDisableRTE"').
 						'<label for="checkDisableRTE">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1).'</label>';
@@ -986,12 +985,13 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function renderListContent()	{
-		global $LANG,$BACK_PATH,$TCA;
+	function renderListContent() {
+		global $LANG,$BACK_PATH;
 
 			// Initialize list object (see "class.db_layout.inc"):
+		/** @var $dblist tx_cms_layout */
 		$dblist = t3lib_div::makeInstance('tx_cms_layout');
-		$dblist->backPath = $BACK_PATH;
+		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = $this->imagemode;
 		$dblist->no_noWrap = 1;
 		$dblist->descrTable = $this->descrTable;
@@ -1003,7 +1003,7 @@ class SC_db_layout {
 		$dblist->doEdit = $this->EDIT_CONTENT;
 		$dblist->ext_CALC_PERMS = $this->CALC_PERMS;
 
-		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
+		$dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
 		$dblist->id = $this->id;
 		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
 		$dblist->option_showBigButtons = ($this->modTSconfig['properties']['disableBigButtons'] === '0');
@@ -1065,7 +1065,7 @@ class SC_db_layout {
 						}
 
 							// Setting up the tt_content columns to show:
-						if (is_array($TCA['tt_content']['columns']['colPos']['config']['items']))	{
+						if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items']))	{
 							$colList = array();
 							$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed' , $this->id, $this );
 							foreach($tcaItems as $temp)	{
@@ -1204,8 +1204,8 @@ class SC_db_layout {
 	 * @param	string	Identifier for function of module
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons($function = '')	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+	protected function getButtons($function = '') {
+		global $LANG, $BACK_PATH;
 
 		$buttons = array(
 			'view' => '',
@@ -1233,7 +1233,7 @@ class SC_db_layout {
 				'</a>';
 
 			// Shortcut
-		if ($BE_USER->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 
