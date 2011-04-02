@@ -150,7 +150,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @return	mixed		On success an array with various information is returned, otherwise a string with an error message
 	 * @see t3lib_TCEmain, t3lib_transferData
 	 */
-	function evalWriteFile($pArr, $currentRecord) {
+	public static function evalWriteFile($pArr, $currentRecord) {
 
 			// Write file configuration:
 		if (is_array($pArr)) {

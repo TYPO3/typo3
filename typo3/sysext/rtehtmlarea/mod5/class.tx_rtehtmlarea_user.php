@@ -49,7 +49,7 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER, $LANG, $BACK_PATH;
+		global $LANG, $BACK_PATH;
 
 		$this->editorNo = t3lib_div::_GP('editorNo');
 
@@ -101,11 +101,11 @@ class tx_rtehtmlarea_user {
 
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 
-		$this->modData = $BE_USER->getModuleData('user.php','ses');
+		$this->modData = $GLOBALS['BE_USER']->getModuleData('user.php','ses');
 		if (t3lib_div::_GP('OC_key'))	{
 			$parts = explode('|',t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
-			$BE_USER->pushModuleData('user.php',$this->modData);
+			$GLOBALS['BE_USER']->pushModuleData('user.php',$this->modData);
 		}
 	}
 
@@ -166,12 +166,12 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function main_user($openKeys)	{
-		global $LANG, $BACK_PATH, $BE_USER;
+		global $LANG, $BACK_PATH;
 			// Starting content:
-		$content.=$this->doc->startPage($LANG->getLL('Insert Custom Element',1));
+		$content = $this->doc->startPage($LANG->getLL('Insert Custom Element',1));
 
 		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
-		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
 		if (is_array($thisConfig['userElements.']))	{

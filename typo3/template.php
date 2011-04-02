@@ -355,7 +355,7 @@ class template {
 	 * The link will load the top frame with the parameter "&item" which is the table,uid and listFr arguments imploded by "|": rawurlencode($table.'|'.$uid.'|'.$listFr)
 	 *
 	 * @param	string		String to be wrapped in link, typ. image tag.
-	 * @param	string		Table name/File path. If the icon is for a database record, enter the tablename from $TCA. If a file then enter the absolute filepath
+	 * @param	string		Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
 	 * @param	integer		If icon is for database record this is the UID for the record from $table
 	 * @param	boolean		Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
 	 * @param	string		Additional GET parameters for the link to alt_clickmenu.php
@@ -381,7 +381,7 @@ class template {
 	 * @return	string		HTML string with linked icon(s)
 	 */
 	function viewPageIcon($id,$backPath,$addParams='hspace="3"')	{
-		global $BE_USER;
+
 			// If access to Web>List for user, then link to that module.
 		$str = t3lib_BEfunc::getListViewLink(
 			array(
@@ -467,10 +467,9 @@ class template {
 	 * @return	string		HTML content
 	 */
 	function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	{
-		global $TCA;
 		if (is_array($row) && $row['uid'])	{
 			$iconImgTag=t3lib_iconWorks::getSpriteIconForRecord($table, $row , array('title' => htmlspecialchars($path)));
-			$title= strip_tags($row[$TCA[$table]['ctrl']['label']]);
+			$title= strip_tags($row[$GLOBALS['TCA'][$table]['ctrl']['label']]);
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
 			if ($table=='pages')	$path.=' - '.t3lib_BEfunc::titleAttribForPages($row,'',0);
 		} else {
@@ -1508,21 +1507,20 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<select> tag with content - a selector box for clearing the cache
 	 */
 	function clearCacheMenu($id,$addSaveOptions=0)	{
-		global $BE_USER;
 		$opt=array();
 		if ($addSaveOptions)	{
 			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
 			$opt[]='<option value="TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';
 			$opt[]='<option value="document.editform.closeDoc.value=-2; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'</option>';
-			if ($BE_USER->uc['allSaveFunctions'])	$opt[]='<option value="document.editform.closeDoc.value=-3; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseAllDocs',1).'</option>';
+			if ($GLOBALS['BE_USER']->uc['allSaveFunctions'])	$opt[]='<option value="document.editform.closeDoc.value=-3; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseAllDocs',1).'</option>';
 			$opt[]='<option value="document.editform.closeDoc.value=2; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'</option>';
 			$opt[]='<option value="document.editform.closeDoc.value=3; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeAllDocs',1).'</option>';
 			$opt[]='<option value=""></option>';
 		}
 		$opt[]='<option value="">[ '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_clearCache',1).' ]</option>';
 		if ($id) $opt[]='<option value="'.$id.'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_thisPage',1).'</option>';
-		if ($BE_USER->isAdmin() || $BE_USER->getTSConfigVal('options.clearCache.pages')) $opt[]='<option value="pages">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_pages',1).'</option>';
-		if ($BE_USER->isAdmin() || $BE_USER->getTSConfigVal('options.clearCache.all')) $opt[]='<option value="all">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all',1).'</option>';
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) $opt[]='<option value="pages">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_pages',1).'</option>';
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) $opt[]='<option value="all">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all',1).'</option>';
 
 		$onChange = 'if (!this.options[this.selectedIndex].value) {
 				this.selectedIndex=0;
@@ -1530,7 +1528,7 @@ $str.=$this->docBodyTagBegin().
 				eval(this.options[this.selectedIndex].value);
 			} else {
 				window.location.href=\'' . $this->backPath .
-						'tce_db.php?vC=' . $BE_USER->veriCode() .
+						'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
 						t3lib_BEfunc::getUrlToken('tceAction') .
 						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
 						'&cacheCmd=\'+this.options[this.selectedIndex].value;
@@ -2095,7 +2093,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string	Page info
 	 */
 	protected function getPageInfo($pageRecord) {
-		global $BE_USER;
+
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
@@ -2107,7 +2105,7 @@ $str.=$this->docBodyTagBegin().
 		} else {	// On root-level of page tree
 				// Make Icon
 			$iconImg = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
-			if($BE_USER->user['admin']) {
+			if($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;

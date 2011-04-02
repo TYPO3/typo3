@@ -125,29 +125,27 @@ class SC_alt_doc_nodoc {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
-
 		$msg=array();
 
 			// Add a message, telling that no documents were open...
-		$msg[]='<p>'.$LANG->getLL('noDocuments_msg',1).'</p><br />';
+		$msg[]='<p>'.$GLOBALS['LANG']->getLL('noDocuments_msg',1).'</p><br />';
 
 			// If another page module was specified, replace the default Page module with the new one
-		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
+		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
 			// Perform some acccess checks:
-		$a_wl = $BE_USER->check('modules','web_list');
-		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules',$pageModule);
+		$a_wl = $GLOBALS['BE_USER']->check('modules','web_list');
+		$a_wp = t3lib_extMgm::isLoaded('cms') && $GLOBALS['BE_USER']->check('modules',$pageModule);
 
 
 			// Finding module images: PAGE
-		$imgFile = $LANG->moduleLabels['tabs_images']['web_layout_tab'];
+		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_layout_tab'];
 		$imgInfo = @getimagesize($imgFile);
 		$img_web_layout = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$imgInfo[3].' alt="" />' : '';
 
 			// Finding module images: LIST
-		$imgFile = $LANG->moduleLabels['tabs_images']['web_list_tab'];
+		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_list_tab'];
 		$imgInfo = @getimagesize($imgFile);
 		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$imgInfo[3].' alt="" />' : '';
 
@@ -156,13 +154,13 @@ class SC_alt_doc_nodoc {
 		if ($a_wl || $a_wp)	{
 			$msg_2 = array();
 			if ($a_wp)	{	// Web>Page:
-				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\''.$pageModule.'\'); return false;">'.$LANG->getLL('noDocuments_pagemodule',1).$img_web_layout.'</a></strong>';
-				if ($a_wl)	$msg_2[]=$LANG->getLL('noDocuments_OR');
+				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\''.$pageModule.'\'); return false;">'.$GLOBALS['LANG']->getLL('noDocuments_pagemodule',1).$img_web_layout.'</a></strong>';
+				if ($a_wl)	$msg_2[]=$GLOBALS['LANG']->getLL('noDocuments_OR');
 			}
 			if ($a_wl)	{	// Web>List
-				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">'.$LANG->getLL('noDocuments_listmodule',1).$img_web_list.'</a></strong>';
+				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">'.$GLOBALS['LANG']->getLL('noDocuments_listmodule',1).$img_web_list.'</a></strong>';
 			}
-			$msg[]='<p>'.sprintf($LANG->getLL('noDocuments_msg2',1),implode(' ',$msg_2)).'</p><br />';
+			$msg[]='<p>'.sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2',1),implode(' ',$msg_2)).'</p><br />';
 		}
 
 			// Display the list of the most recently edited documents:
@@ -170,7 +168,7 @@ class SC_alt_doc_nodoc {
 		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg3', TRUE) . '</p><br />' . $modObj->renderMenu();
 
 			// Adding the content:
-		$this->content.=$this->doc->section($LANG->getLL('noDocuments'),implode(' ',$msg),0,1);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('noDocuments'),implode(' ',$msg),0,1);
 	}
 
 	/**

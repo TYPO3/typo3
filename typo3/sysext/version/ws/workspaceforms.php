@@ -475,12 +475,13 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 * @return	string		User record formatted for TCEForms
 	 */
 	function getOwnerUser($uid) {
+		/** @var $loadDB t3lib_loadDBGroup */
 		$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
-		// Make sure that `sys_workspace` is in $TCA
+		// Make sure that `sys_workspace` is in $GLOBALS['TCA']
 		t3lib_div::loadTCA('sys_workspace');
 		// shortcut to `config` of `adminusers` field -- shorter code and better PHP performance
 		$config = &$GLOBALS['TCA']['sys_workspace']['columns']['adminusers']['config'];
-		// Notice: $config['MM'] is not set in the current version of $TCA but
+		// Notice: $config['MM'] is not set in the current version of $GLOBALS['TCA'] but
 		// we still pass it to ensure compatibility with feature versions!
 		$loadDB->start($GLOBALS['BE_USER']->user['uid'], $config['allowed'], $config['MM'], $uid, 'sys_workspace', $config);
 		$loadDB->getFromDB();
@@ -501,6 +502,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function processData() {
+		/** @var $tce t3lib_TCEmain */
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
@@ -540,7 +542,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 
 	/**
-	 * Fixes various <code>$TCA</code> fields for better visual representation of workspace editor.
+	 * Fixes various <code>$GLOBALS['TCA']</code> fields for better visual representation of workspace editor.
 	 *
 	 * @return	void
 	 */
@@ -551,7 +553,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 
 	/**
-	 * "Fixes" <code>$TCA</code> to enable blinding for users/groups for non-admin users only.
+	 * "Fixes" <code>$GLOBALS['TCA']</code> to enable blinding for users/groups for non-admin users only.
 	 *
 	 * @param	string		$fieldName	Name of the field to change
 	 * @return	void
@@ -599,9 +601,9 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 class user_SC_mod_user_ws_workspaceForms {
 
 	/**
-	 * Callback function to blind user and group accounts. Used as <code>itemsProcFunc</code> in <code>$TCA</code>.
+	 * Callback function to blind user and group accounts. Used as <code>itemsProcFunc</code> in <code>$GLOBALS['TCA']</code>.
 	 *
-	 * @param	array		$conf	Configuration array. The following elements are set:<ul><li>items - initial set of items (empty in our case)</li><li>config - field config from <code>$TCA</code></li><li>TSconfig - this function name</li><li>table - table name</li><li>row - record row (???)</li><li>field - field name</li></ul>
+	 * @param	array		$conf	Configuration array. The following elements are set:<ul><li>items - initial set of items (empty in our case)</li><li>config - field config from <code>$GLOBALS['TCA']</code></li><li>TSconfig - this function name</li><li>table - table name</li><li>row - record row (???)</li><li>field - field name</li></ul>
 	 * @param	object		$tceforms	<code>t3lib_div::TCEforms</code> object
 	 * @return	void
 	 */

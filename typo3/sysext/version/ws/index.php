@@ -250,14 +250,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH, $BE_USER;
 
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/ws.html');
 
 			// JavaScript
@@ -288,7 +287,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->getContextMenuCode();
 
 			// Setting publish access permission for workspace:
-		$this->publishAccess = $BE_USER->workspacePublishAccess($BE_USER->workspace);
+		$this->publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace);
 
 			// Parent initialization:
 		parent::init();
@@ -300,16 +299,16 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG, $BE_USER, $BACK_PATH;
+		global $LANG;
 
 		// See if we need to switch workspace
 		$changeWorkspace = t3lib_div::_GET('changeWorkspace');
 		if ($changeWorkspace != '') {
-			$BE_USER->setWorkspace($changeWorkspace);
-			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . t3lib_BEfunc::getBackendScript() . '";');
+			$GLOBALS['BE_USER']->setWorkspace($changeWorkspace);
+			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $GLOBALS['BACK_PATH'] . t3lib_BEfunc::getBackendScript() . '";');
 		} else {
 				// Starting page:
-			$this->content.=$this->doc->header($LANG->getLL('title'));
+			$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content.=$this->doc->spacer(5);
 
 			// Get usernames and groupnames
@@ -744,13 +743,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// We need to fetch user's mount point list (including MPS mounted from groups).
 			// This list must not be affects by current user's workspace. It means we cannot use
-			// $BE_USER->isInWebMount() to check mount points.
+			// $GLOBALS['BE_USER']->isInWebMount() to check mount points.
 		$mountpointList = $GLOBALS['BE_USER']->groupData['webmounts'];
 			// If there are DB mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' webmounts) 
+			// then only show the ones that are allowed there (and that are in the users' webmounts)
 		if (trim($wksp['db_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' db_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['db_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
@@ -798,13 +797,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// We need to fetch user's mount point list (including MPS mounted from groups).
 			// This list must not be affects by current user's workspace. It means we cannot use
-			// $BE_USER->isInWebMount() to check mount points.
+			// $GLOBALS['BE_USER']->isInWebMount() to check mount points.
 		$mountpointList = implode(',', $GLOBALS['BE_USER']->groupData['filemounts']);
 			// If there are file mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' file mounts) 
+			// then only show the ones that are allowed there (and that are in the users' file mounts)
 		if (trim($wksp['file_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' file_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['file_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);

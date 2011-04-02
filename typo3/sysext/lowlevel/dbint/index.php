@@ -231,7 +231,6 @@ class SC_mod_tools_dbint_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG;
 
 			// Content creation
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
@@ -368,8 +367,6 @@ class SC_mod_tools_dbint_index {
 	 * @return	void
 	 */
 	function func_refindex()	{
-		global $TYPO3_DB,$TCA;
-
 		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
 			$testOnly = t3lib_div::_GP('_check')?TRUE:FALSE;
 
@@ -445,11 +442,10 @@ class SC_mod_tools_dbint_index {
 	 * @return	void
 	 */
 	function func_records()	{
-		global $LANG,$TCA,$BACK_PATH,$PAGES_TYPES;
-
+		/** @var $admin t3lib_admin */
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML = 0;
-		$admin->backPath = $BACK_PATH;
+		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$admin->genTree(0,'');
 
 		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('records'));
@@ -478,7 +474,7 @@ class SC_mod_tools_dbint_index {
 			// Doktype
 		$codeArr=array();
 		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
-		$doktype= $TCA['pages']['columns']['doktype']['config']['items'];
+		$doktype= $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 		if (is_array($doktype))	{
 			foreach ($doktype as $n => $setup) {
 				if ($setup[1]!='--div--')	{
@@ -515,14 +511,14 @@ class SC_mod_tools_dbint_index {
 		);
 
 		$countArr = $admin->countRecords($id_list);
-		if (is_array($TCA))	{
+		if (is_array($GLOBALS['TCA']))	{
 
-			foreach ($TCA as $t => $value) {
-				if ($TCA[$t]['ctrl']['hideTable']) {
+			foreach ($GLOBALS['TCA'] as $t => $value) {
+				if ($GLOBALS['TCA'][$t]['ctrl']['hideTable']) {
 					continue;
 				}
 				$codeArr[$t][]=t3lib_iconWorks::getSpriteIconForRecord($t, array());
-				$codeArr[$t][]=$LANG->sL($TCA[$t]['ctrl']['title']);
+				$codeArr[$t][]=$GLOBALS['LANG']->sL($GLOBALS['TCA'][$t]['ctrl']['title']);
 				$codeArr[$t][]=$t;
 
 				if ($countArr['all'][$t])	{

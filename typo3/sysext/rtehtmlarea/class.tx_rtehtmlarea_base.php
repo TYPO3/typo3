@@ -185,7 +185,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 												}
 											}
 										}
-									} else {		
+									} else {
 											// No system config: system is supported
 										$rteIsAvailable = TRUE;
 										break;
@@ -230,14 +230,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 
 	function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
-		global $BE_USER, $LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
+		global $LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
 
 		$this->TCEform = $parentObject;
 		$inline = $this->TCEform->inline;
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
-		$this->userUid = 'BE_' . $BE_USER->user['uid'];
+		$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
 
 			// Draw form element:
 		if ($this->debugMode)	{	// Draws regular text area (debug mode)
@@ -267,7 +267,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Find "thisConfig" for record/editor:
 			unset($this->RTEsetup);
-			$this->RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($this->tscPID));
+			$this->RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($this->tscPID));
 			$this->thisConfig = $thisConfig;
 
 				// Special configuration and default extras:
@@ -350,9 +350,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$RTEPaddingRight = '0';
 				$editorWrapWidth = '100%';
 			} else {
-				$RTEWidth = isset($BE_USER->userTS['options.']['RTESmallWidth']) ? $BE_USER->userTS['options.']['RTESmallWidth'] : '530';
-				$RTEHeight = isset($BE_USER->userTS['options.']['RTESmallHeight']) ? $BE_USER->userTS['options.']['RTESmallHeight'] : '380';
-				$RTEWidth  = $RTEWidth + ($this->TCEform->docLarge ? (isset($BE_USER->userTS['options.']['RTELargeWidthIncrement']) ? $BE_USER->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
+				$RTEWidth = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth'] : '530';
+				$RTEHeight = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight'] : '380';
+				$RTEWidth  = $RTEWidth + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
 				$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
 				$RTEWidthOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth'])) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride']);
 				if ($RTEWidthOverride) {
@@ -365,7 +365,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					}
 				}
 				$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth :  $RTEWidth . 'px';
-				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ?  (isset($BE_USER->userTS['options.']['RTELargeHeightIncrement']) ? $BE_USER->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
+				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ?  (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
 				$RTEHeightOverride = (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight'])) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride']);
 				$RTEHeight = ($RTEHeightOverride > 0) ? $RTEHeightOverride : $RTEHeight;
 				$RTEPaddingRight = '2px';
@@ -569,8 +569,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 
 	function setToolbar() {
-		global $BE_USER;
-
 		if ($this->client['browser'] == 'msie' || $this->client['browser'] == 'opera') {
 			$this->thisConfig['keepButtonGroupTogether'] = 0;
 		}
@@ -621,8 +619,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 
 			// Resticting to RTEkeyList for backend user
-		if(is_object($BE_USER)) {
-			$RTEkeyList = isset($BE_USER->userTS['options.']['RTEkeyList']) ? $BE_USER->userTS['options.']['RTEkeyList'] : '*';
+		if(is_object($GLOBALS['BE_USER'])) {
+			$RTEkeyList = isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']) ? $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] : '*';
 			if ($RTEkeyList != '*')	{ 	// If not all
 				$show = array_intersect($show, t3lib_div::trimExplode(',',$RTEkeyList,1));
 			}

@@ -160,7 +160,7 @@ class tx_recycler_helper {
 	 *						or false (boolean) if something went wrong
 	 */
 	public static function getTableTCA($tableName) {
-		$TCA = false;
+		$TCA = FALSE;
 		if (isset($GLOBALS['TCA'][$tableName])) {
 			$TCA = $GLOBALS['TCA'][$tableName];
 		}

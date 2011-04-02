@@ -390,7 +390,6 @@ class tx_Workspaces_Service_GridData {
 	 * @return integer
 	 */
 	public function calculateChangePercentage($table, array $diffRecordOne, array $diffRecordTwo) {
-		global $TCA;
 
 			// Initialize:
 		$changePercentage = 0;
@@ -406,15 +405,15 @@ class tx_Workspaces_Service_GridData {
 
 				// Traversing the first record and process all fields which are editable:
 			foreach ($diffRecordOne as $fieldName => $fieldValue) {
-				if ($TCA[$table]['columns'][$fieldName] && $TCA[$table]['columns'][$fieldName]['config']['type'] != 'passthrough' && !t3lib_div::inList('t3ver_label', $fieldName)) {
+				if ($GLOBALS['TCA'][$table]['columns'][$fieldName] && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] != 'passthrough' && !t3lib_div::inList('t3ver_label', $fieldName)) {
 
 					if (strcmp(trim($diffRecordOne[$fieldName]), trim($diffRecordTwo[$fieldName]))
-							&& $TCA[$table]['columns'][$fieldName]['config']['type'] == 'group'
-							&& $TCA[$table]['columns'][$fieldName]['config']['internal_type'] == 'file'
+							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] == 'group'
+							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['internal_type'] == 'file'
 					) {
 
 							// Initialize:
-						$uploadFolder = $TCA[$table]['columns'][$fieldName]['config']['uploadfolder'];
+						$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'];
 						$files1 = array_flip(t3lib_div::trimExplode(',', $diffRecordOne[$fieldName], 1));
 						$files2 = array_flip(t3lib_div::trimExplode(',', $diffRecordTwo[$fieldName], 1));
 

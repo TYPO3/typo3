@@ -104,20 +104,18 @@ class t3lib_transferData {
 	 * The function is also used to produce proper default data for new records
 	 * Ultimately the function will call renderRecord()
 	 *
-	 * @param	string		Table name, must be found in $TCA
+	 * @param	string		Table name, must be found in $GLOBALS['TCA']
 	 * @param	string		Comma list of id values. If $idList is "prev" then the value from $this->prevPageID is used. NOTICE: If $operation is "new", then negative ids are meant to point to a "previous" record and positive ids are PID values for new records. Otherwise (for existing records that is) it is straight forward table/id pairs.
 	 * @param	string		If "new", then a record with default data is returned. Further, the $id values are meant to be PID values (or if negative, pointing to a previous record). If NOT new, then the table/ids are just pointing to an existing record!
 	 * @return	void
 	 * @see renderRecord()
 	 */
 	function fetchRecord($table, $idList, $operation) {
-		global $TCA;
-
 		if ((string) $idList == 'prev') {
 			$idList = $this->prevPageID;
 		}
 
-		if ($TCA[$table]) {
+		if ($GLOBALS['TCA'][$table]) {
 			t3lib_div::loadTCA($table);
 
 				// For each ID value (integer) we
@@ -135,7 +133,7 @@ class t3lib_transferData {
 						$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 						if (is_array($TCAdefaultOverride[$table . '.'])) {
 							foreach ($TCAdefaultOverride[$table . '.'] as $theF => $theV) {
-								if (isset($TCA[$table]['columns'][$theF])) {
+								if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
 									$newRow[$theF] = $theV;
 								}
 							}
@@ -155,7 +153,7 @@ class t3lib_transferData {
 							$TCAPageTSOverride = $pageTS['TCAdefaults.'];
 							if (is_array($TCAPageTSOverride[$table . '.'])) {
 								foreach ($TCAPageTSOverride[$table . '.'] as $theF => $theV) {
-									if (isset($TCA[$table]['columns'][$theF])) {
+									if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
 										$newRow[$theF] = $theV;
 									}
 								}
@@ -165,21 +163,21 @@ class t3lib_transferData {
 							// Default values as submitted:
 						if (is_array($this->defVals[$table])) {
 							foreach ($this->defVals[$table] as $theF => $theV) {
-								if (isset($TCA[$table]['columns'][$theF])) {
+								if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
 									$newRow[$theF] = $theV;
 								}
 							}
 						}
 
 							// Fetch default values if a previous record exists
-						if ($id < 0 && $TCA[$table]['ctrl']['useColumnsForDefaultValues']) {
+						if ($id < 0 && $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
 								// Fetches the previous record:
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . abs($id) . t3lib_BEfunc::deleteClause($table));
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 									// Gets the list of fields to copy from the previous record.
-								$fArr = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['useColumnsForDefaultValues'], 1);
+								$fArr = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'], 1);
 								foreach ($fArr as $theF) {
-									if (isset($TCA[$table]['columns'][$theF])) {
+									if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
 										$newRow[$theF] = $row[$theF];
 									}
 								}
@@ -221,7 +219,6 @@ class t3lib_transferData {
 	 * @see fetchRecord()
 	 */
 	function renderRecord($table, $id, $pid, $row) {
-		global $TCA;
 
 			// Init:
 		$uniqueItemRef = $table . '_' . $id;
@@ -266,8 +263,6 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecordRaw($table, $id, $pid, $row, $TSconfig = '', $tscPID = 0) {
-		global $TCA;
-
 		if (!is_array($TSconfig)) {
 			$TSconfig = array();
 		}
@@ -278,7 +273,7 @@ class t3lib_transferData {
 			// Traverse the configured columns for the table (TCA):
 			// For each column configured, we will perform processing if needed based on the type (eg. for "group" and "select" types this is needed)
 		t3lib_div::loadTCA($table);
-		$copyOfColumns = $TCA[$table]['columns'];
+		$copyOfColumns = $GLOBALS['TCA'][$table]['columns'];
 		foreach ($copyOfColumns as $field => $fieldConfig) {
 				// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
 			if (isset($row[$field])) {
@@ -408,7 +403,6 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
-		global $TCA;
 
 			// Initialize:
 		$elements = t3lib_div::trimExplode(',', $data, 1); // Current data set.
@@ -436,14 +430,14 @@ class t3lib_transferData {
 			}
 
 				// Add "foreign table" stuff:
-			if ($TCA[$fieldConfig['config']['foreign_table']]) {
+			if ($GLOBALS['TCA'][$fieldConfig['config']['foreign_table']]) {
 				$dataAcc = $this->selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table);
 			}
 
 				// Always keep the native order for display in interface:
 			ksort($dataAcc);
 		} else { // Normal, <= 1 -> value without title on it
-			if ($TCA[$fieldConfig['config']['foreign_table']]) {
+			if ($GLOBALS['TCA'][$fieldConfig['config']['foreign_table']]) {
 					// Getting the data
 				$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
 
@@ -474,7 +468,6 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecord_flexProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
-		global $TCA;
 
 			// Convert the XML data to PHP array:
 		$currentValueArray = t3lib_div::xml2array($data);
@@ -554,7 +547,6 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecord_inlineProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
-		global $TCA;
 
 			// Initialize:
 		$elements = t3lib_div::trimExplode(',', $data); // Current data set.
@@ -698,22 +690,21 @@ class t3lib_transferData {
 	 * @see renderRecord_selectProc()
 	 */
 	function selectAddSpecial($dataAcc, $elements, $specialKey) {
-		global $TCA;
 
 			// Special select types:
 		switch ((string) $specialKey) {
-			case 'tables': // Listing all tables from $TCA:
-				$tNames = array_keys($TCA);
+			case 'tables': // Listing all tables from $GLOBALS['TCA']:
+				$tNames = array_keys($GLOBALS['TCA']);
 				foreach ($tNames as $tableName) {
 					foreach ($elements as $eKey => $value) {
 						if (!strcmp($tableName, $value)) {
-							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($TCA[$value]['ctrl']['title']));
+							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
 						}
 					}
 				}
 			break;
 			case 'pagetypes': // Listing all page types (doktype)
-				$theTypes = $TCA['pages']['columns']['doktype']['config']['items'];
+				$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 				if (is_array($theTypes)) {
 					foreach ($theTypes as $theTypesArrays) {
 						foreach ($elements as $eKey => $value) {
@@ -825,7 +816,6 @@ class t3lib_transferData {
 	 * @see renderRecord_selectProc()
 	 */
 	function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table) {
-		global $TCA;
 
 			// Init:
 		$recordList = array();
@@ -837,7 +827,7 @@ class t3lib_transferData {
 		}
 
 			// neg_foreign_table
-		if (is_array($TCA[$fieldConfig['config']['neg_foreign_table']])) {
+		if (is_array($GLOBALS['TCA'][$fieldConfig['config']['neg_foreign_table']])) {
 			$subres = t3lib_BEfunc::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
 			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 				$recordList[-$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['neg_foreign_table'], $subrow);

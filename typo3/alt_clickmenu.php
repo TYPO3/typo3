@@ -250,7 +250,6 @@ class clickMenu {
 	 * @return	string		HTML content
 	 */
 	function printDBClickMenu($table,$uid)	{
-		global $TCA, $BE_USER;
 
 			// Get record:
 		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
@@ -268,15 +267,15 @@ class clickMenu {
 			// used to hide cut,copy icons for l10n-records
 		$l10nOverlay = false;
 			// should only be performed for overlay-records within the same table
-		if (t3lib_BEfunc::isTableLocalizable($table) && !isset($TCA[$table]['ctrl']['transOrigPointerTable'])) {
-			$l10nOverlay = intval($this->rec[$TCA[$table]['ctrl']['transOrigPointerField']]) != 0;
+		if (t3lib_BEfunc::isTableLocalizable($table) && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+			$l10nOverlay = intval($this->rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) != 0;
 		}
 
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
 		if (is_array($this->rec) || $root)	{
 
 				// Get permissions
-			$lCP = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
+			$lCP = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
 
 				// View
 			if (!in_array('view',$this->disabledItems))	{
@@ -288,13 +287,13 @@ class clickMenu {
 			}
 
 				// Edit:
-			if(!$root && ($BE_USER->isPSet($lCP,$table,'edit')||$BE_USER->isPSet($lCP,$table,'editcontent')))	{
+			if(!$root && ($GLOBALS['BE_USER']->isPSet($lCP,$table,'edit') || $GLOBALS['BE_USER']->isPSet($lCP,$table,'editcontent')))	{
 				if (!in_array('edit',$this->disabledItems))		$menuItems['edit']=$this->DB_edit($table,$uid);
 				$this->editOK=1;
 			}
 
 				// New:
-			if (!in_array('new',$this->disabledItems) && $BE_USER->isPSet($lCP,$table,'new'))	$menuItems['new']=$this->DB_new($table,$uid);
+			if (!in_array('new',$this->disabledItems) && $GLOBALS['BE_USER']->isPSet($lCP,$table,'new'))	$menuItems['new']=$this->DB_new($table,$uid);
 
 				// Info:
 			if(!in_array('info',$this->disabledItems) && !$root)	$menuItems['info']=$this->DB_info($table,$uid);
@@ -311,8 +310,8 @@ class clickMenu {
 			if (!in_array('paste',$this->disabledItems) && $elFromAllTables)	{
 				$selItem = $this->clipObj->getSelectedRecord();
 				$elInfo=array(
-					t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'],$BE_USER->uc['titleLen']),
-					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen'])),
+					t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
+					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$GLOBALS['BE_USER']->uc['titleLen'])),
 					$this->clipObj->currentMode()
 				);
 				if ($table=='pages' && ($lCP & 8))	{
@@ -320,12 +319,12 @@ class clickMenu {
 				}
 
 				$elFromTable = count($this->clipObj->elFromTable($table));
-				if (!$root && !$DBmount && $elFromTable  && $TCA[$table]['ctrl']['sortby'])	$menuItems['pasteafter']=$this->DB_paste($table,-$uid,'after',$elInfo);
+				if (!$root && !$DBmount && $elFromTable  && $GLOBALS['TCA'][$table]['ctrl']['sortby'])	$menuItems['pasteafter']=$this->DB_paste($table,-$uid,'after',$elInfo);
 			}
 
 				// Delete:
-			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
-			if(!in_array('delete',$this->disabledItems) && !$root && !$DBmount && $BE_USER->isPSet($lCP,$table,'delete'))	{
+			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec), $GLOBALS['BE_USER']->uc['titleLen']));
+			if(!in_array('delete',$this->disabledItems) && !$root && !$DBmount && $GLOBALS['BE_USER']->isPSet($lCP,$table,'delete'))	{
 				$menuItems['spacer2']='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
 			}
@@ -361,7 +360,6 @@ class clickMenu {
 	 * @return	string		HTML content
 	 */
 	function printNewDBLevel($table,$uid)	{
-		global $TCA, $BE_USER;
 
 			// Setting internal record to the table/uid :
 		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
@@ -373,9 +371,9 @@ class clickMenu {
 
 			// If record was found, check permissions and get menu items.
 		if (is_array($this->rec) || $root)	{
-			$lCP = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
+			$lCP = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',($table=='pages'?$this->rec['uid']:$this->rec['pid'])));
 				// Edit:
-			if(!$root && ($BE_USER->isPSet($lCP,$table,'edit')||$BE_USER->isPSet($lCP,$table,'editcontent')))	{
+			if(!$root && ($GLOBALS['BE_USER']->isPSet($lCP,$table,'edit') || $GLOBALS['BE_USER']->isPSet($lCP,$table,'editcontent')))	{
 				$this->editOK=1;
 			}
 
@@ -538,9 +536,9 @@ class clickMenu {
 	 */
 	function DB_perms($table,$uid,$rec)	{
 		if (!t3lib_extMgm::isLoaded('perm')) {
-            return '';
-        }
-        $url = t3lib_extMgm::extRelPath('perm') . 'mod1/index.php?id=' . $uid . ($rec['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin() ? '&return_id=' . $uid . '&edit=1' : '');
+			return '';
+		}
+		$url = t3lib_extMgm::extRelPath('perm') . 'mod1/index.php?id=' . $uid . ($rec['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin() ? '&return_id=' . $uid . '&edit=1' : '');
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('status-status-locked')),
@@ -661,9 +659,9 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_edit($table,$uid)	{
-		global $BE_USER;
+
 			// If another module was specified, replace the default Page module with the new one
-		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
+		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
 		$editOnClick='';
@@ -673,11 +671,11 @@ class clickMenu {
 		if (
 				$this->iParts[0]=='pages' &&
 				$this->iParts[1] &&
-				$BE_USER->check('modules', $pageModule)
+				$GLOBALS['BE_USER']->check('modules', $pageModule)
 			)	{
 			$theIcon = 'actions-page-open';
 			$this->editPageIconSet=1;
-			if ($BE_USER->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms'))	{
+			if ($GLOBALS['BE_USER']->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms'))	{
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
 			} else {
 				$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
@@ -789,9 +787,9 @@ class clickMenu {
 					}
 				};
 
-			 	node.ownerTree.commandProvider.mountAsTreeRoot(useNode, node.ownerTree);
-			 }
-			 return hideCM();
+				node.ownerTree.commandProvider.mountAsTreeRoot(useNode, node.ownerTree);
+			}
+			return hideCM();
 			"
 		);
 	}
@@ -826,7 +824,7 @@ class clickMenu {
 		$loc = 'top.content.list_frame';
 		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'" .
 			"&data[" . $table . '][' . $uid . '][' . $flagField . ']=' .
-                ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
+				($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
 
 		return $this->linkItem(
 			$title,
@@ -1619,7 +1617,6 @@ class SC_alt_clickmenu {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$BACK_PATH;
 
 			// Setting GPvars:
 		$this->backPath = t3lib_div::_GP('backPath');
@@ -1634,7 +1631,7 @@ class SC_alt_clickmenu {
 		if (count($inputBP)==2 && $inputBP[1]==t3lib_div::shortMD5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
 			$this->backPath = $inputBP[0];
 		} else {
-			$this->backPath = $BACK_PATH;
+			$this->backPath = $GLOBALS['BACK_PATH'];
 		}
 
 			// Setting internal array of classes for extending the clickmenu:
@@ -1650,17 +1647,17 @@ class SC_alt_clickmenu {
 			// Initialize template object
 		if (!$this->ajax)	{
 			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->backPath = $BACK_PATH;
+			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 
 			// Setting mode for display and background image in the top frame
-		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
+		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
 		if ($this->dontDisplayTopFrameCM)	{
 			$this->doc->bodyTagId.= '-notop';
 		}
 
 			// Setting clickmenu timeout
-		$secs = t3lib_div::intInRange($BE_USER->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'),1,100,5);	// default is 5
+		$secs = t3lib_div::intInRange($GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'),1,100,5);	// default is 5
 
 			// Setting the JavaScript controlling the timer on the page
 		$listFrameDoc = $this->reloadListFrame!=2 ? 'top.content.list_frame' : 'top.content';

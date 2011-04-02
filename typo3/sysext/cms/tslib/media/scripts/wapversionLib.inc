@@ -280,13 +280,12 @@ class user_wapversion {
 	 * Selects all records from $table having the current page id as PID (records belonging to that page)
 	 * Used to select content elements from "tt_content"
 	 *
-	 * @param	string		A tablename found in $TCA
+	 * @param	string		A tablename found in $GLOBALS['TCA']
 	 * @return	pointer		A database resource pointer
 	 */
 	function getContentResult($table) {
-		global $TCA;
-		if ($TCA[$table])	{
-			$orderBy = $TCA[$table]['ctrl']['sortby'] ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
+		if ($GLOBALS['TCA'][$table])	{
+			$orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? 'ORDER BY '.$GLOBALS['TCA'][$table]['ctrl']['sortby'] : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid='.intval($GLOBALS['TSFE']->id).$this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
 		}

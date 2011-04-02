@@ -197,7 +197,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init() {
-		global $BE_USER, $LANG, $BACK_PATH, $TYPO3_CONF_VARS;
+		global $LANG, $BACK_PATH, $TYPO3_CONF_VARS;
 
 		/**
 		 * Extension Categories (static var)
@@ -321,7 +321,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Descriptions:
 		$this->descrTable = '_MOD_' . $this->MCONF['name'];
-		if ($BE_USER->uc['edit_showFieldHelp']) {
+		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
 			$LANG->loadSingleTableDescription($this->descrTable);
 		}
 

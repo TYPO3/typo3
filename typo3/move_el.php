@@ -251,8 +251,6 @@ class SC_move_el {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH;
-
 
 			// Setting internal vars:
 		$this->sys_language = intval(t3lib_div::_GP('sys_language'));
@@ -264,17 +262,17 @@ class SC_move_el {
 		$this->makeCopy = t3lib_div::_GP('makeCopy');
 
 			// Select-pages where clause for read-access:
-		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/move_el.html');
 		$this->doc->JScode='';
 
 			// Starting document content (header):
 		$this->content='';
-		$this->content.=$this->doc->header($LANG->getLL('movingElement'));
+		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('movingElement'));
 		$this->content.=$this->doc->spacer(5);
 	}
 
@@ -284,8 +282,6 @@ class SC_move_el {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG,$BACK_PATH,$BE_USER;
-
 		if ($this->page_id)	{
 
 				// Get record for element:
@@ -298,10 +294,10 @@ class SC_move_el {
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$onClick = 'window.location.href=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
 			$hline.= '<br /><input type="hidden" name="makeCopy" value="0" /><input type="checkbox" name="makeCopy" id="makeCopy" value="1"'.($this->makeCopy?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'" /> <label for="makeCopy">'.
-				$LANG->getLL('makeCopy',1).'</label>';
+				$GLOBALS['LANG']->getLL('makeCopy',1).'</label>';
 
 				// Add the header-content to the module content:
-			$this->content.=$this->doc->section($LANG->getLL('moveElement').':',$hline,0,1);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('moveElement').':',$hline,0,1);
 			$this->content.=$this->doc->spacer(20);
 
 				// Reset variable to pick up the module content in:
@@ -311,7 +307,7 @@ class SC_move_el {
 			if ((string)$this->table=='pages')	{
 					// Get page record (if accessible):
 				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id,$this->perms_clause);
-				if (is_array($pageinfo) && $BE_USER->isInWebMount($pageinfo['pid'],$this->perms_clause))	{
+				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'],$this->perms_clause))	{
 
 						// Initialize the position map:
 					$posMap = t3lib_div::makeInstance('ext_posMap_pages');
@@ -321,7 +317,7 @@ class SC_move_el {
 					if ($pageinfo['pid'])	{
 						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'],$this->perms_clause);
 						if (is_array($pidPageInfo))	{
-							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
+							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
 								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
 									t3lib_iconWorks::getSpriteIcon('actions-view-go-up') .
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
@@ -350,7 +346,7 @@ class SC_move_el {
 
 					// Checking if the parent page is readable:
 				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id,$this->perms_clause);
-				if (is_array($pageinfo) && $BE_USER->isInWebMount($pageinfo['pid'],$this->perms_clause))	{
+				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'],$this->perms_clause))	{
 
 						// Initialize the position map:
 					$posMap = t3lib_div::makeInstance('ext_posMap_tt_content');
@@ -379,7 +375,7 @@ class SC_move_el {
 					if ($pageinfo['pid'])	{
 						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo))	{
-							if ($BE_USER->isInWebMount($pidPageInfo['pid'], $this->perms_clause))	{
+							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause))	{
 								$code .= '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
 										'uid' => intval($pageinfo['pid']),
 										'moveUid' => $this->moveUid)
@@ -401,7 +397,7 @@ class SC_move_el {
 			}
 
 				// Add the $code content as a new section to the module:
-			$this->content.=$this->doc->section($LANG->getLL('selectPositionOfElement').':',$code,0,1);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('selectPositionOfElement').':',$code,0,1);
 		}
 
 			// Setting up the buttons and markers for docheader
@@ -410,7 +406,7 @@ class SC_move_el {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('movingElement'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('movingElement'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -431,8 +427,6 @@ class SC_move_el {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $LANG, $BACK_PATH;
-
 		$buttons = array(
 			'csh' => '',
 			'back' => ''
@@ -449,7 +443,7 @@ class SC_move_el {
 
 			if ($this->R_URI) {
 					// Back
-				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $LANG->getLL('goBack', TRUE) .'">' .
+				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) .'">' .
 						t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					'</a>';
 			}

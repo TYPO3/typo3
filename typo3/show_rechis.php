@@ -88,7 +88,6 @@ class SC_show_rechis {
 	 * @return	void
 	 */
 	function init()	{
-		global $LANG;
 
 			// Create internal template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -96,7 +95,7 @@ class SC_show_rechis {
 		$this->doc->setModuleTemplate('templates/show_rechis.html');
 
 			// Start the page header:
-		$this->content.=$this->doc->header($LANG->getLL('title'));
+		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content.=$this->doc->spacer(5);
 	}
 
@@ -106,7 +105,6 @@ class SC_show_rechis {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG;
 
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');
@@ -120,7 +118,7 @@ class SC_show_rechis {
 		$markers['CSH'] = $docHeaderButtons['csh'];
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 	}
 

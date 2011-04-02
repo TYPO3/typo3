@@ -152,10 +152,9 @@ class SC_db_new {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH;
 
 			// page-selection permission clause (reading)
-		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 			// this will hide records from display - it has nothing todo with user rights!!
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
@@ -170,7 +169,7 @@ class SC_db_new {
 
 			// Create instance of template class for output
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/db_new.html');
 		$this->doc->JScode='';
 
@@ -179,7 +178,7 @@ class SC_db_new {
 
 			// Creating content
 		$this->content='';
-		$this->content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
+		$this->content.=$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 
 			// Id a positive id is supplied, ask for the page record with permission information contained:
 		if ($this->id > 0)	{
@@ -192,17 +191,17 @@ class SC_db_new {
 
 			$this->pidInfo=t3lib_BEfunc::getRecord('pages',$this->pageinfo['pid']);
 				// Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
-			if ($BE_USER->doesUserHaveAccess($this->pageinfo,8))	{
+			if ($GLOBALS['BE_USER']->doesUserHaveAccess($this->pageinfo,8))	{
 				$this->newPagesInto=1;
 			}
-			if ($BE_USER->doesUserHaveAccess($this->pageinfo,16))	{
+			if ($GLOBALS['BE_USER']->doesUserHaveAccess($this->pageinfo,16))	{
 				$this->newContentInto=1;
 			}
 
-			if (($BE_USER->isAdmin()||is_array($this->pidInfo)) && $BE_USER->doesUserHaveAccess($this->pidInfo,8))	{
+			if (($GLOBALS['BE_USER']->isAdmin()||is_array($this->pidInfo)) && $GLOBALS['BE_USER']->doesUserHaveAccess($this->pidInfo,8))	{
 				$this->newPagesAfter=1;
 			}
-		} elseif ($BE_USER->isAdmin())	{
+		} elseif ($GLOBALS['BE_USER']->isAdmin())	{
 				// Admins can do it all
 			$this->newPagesInto=1;
 			$this->newContentInto=1;
@@ -221,10 +220,9 @@ class SC_db_new {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG;
 
 			// If there was a page - or if the user is admin (admins has access to the root) we proceed:
-		if ($this->pageinfo['uid'] || $BE_USER->isAdmin())	{
+		if ($this->pageinfo['uid'] || $GLOBALS['BE_USER']->isAdmin())	{
 				// Acquiring TSconfig for this module/current page:
 			$this->web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
 			$this->allowedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['allowedNewTables'],1);
@@ -274,7 +272,7 @@ class SC_db_new {
 			$markers['CONTENT'] = $this->content;
 
 				// Build the <body> for the module
-			$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
+			$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -287,8 +285,6 @@ class SC_db_new {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $LANG, $BACK_PATH;
-
 		$buttons = array(
 			'csh' => '',
 			'back' => '',
@@ -301,7 +297,7 @@ class SC_db_new {
 		if (!$this->pagesOnly)	{	// Regular new element:
 				// New page
 			if ($this->showNewRecLink('pages'))	{
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' .
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-page-new') .
 					'</a>';
 			}
@@ -346,12 +342,11 @@ class SC_db_new {
 	 *
 	 * @return	void
 	 */
-	function pagesOnly()	{
-		global $LANG;
-
+	function pagesOnly() {
+		/** @var $posMap t3lib_positionMap */
 		$posMap = t3lib_div::makeInstance('t3lib_positionMap');
 		$this->code.='
-			<h3>'.htmlspecialchars($LANG->getLL('selectPosition')).':</h3>
+			<h3>'.htmlspecialchars($GLOBALS['LANG']->getLL('selectPosition')).':</h3>
 		';
 		$this->code.= $posMap->positionTree($this->id,$this->pageinfo,$this->perms_clause,$this->R_URI);
 	}
@@ -669,7 +664,6 @@ class SC_db_new {
 	 * @return	boolean		Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
 	function isTableAllowedForThisPage($pid_row, $checkTable)	{
-		global $TCA, $PAGES_TYPES;
 		if (!is_array($pid_row))	{
 			if ($GLOBALS['BE_USER']->user['admin'])	{
 				return true;
@@ -683,8 +677,8 @@ class SC_db_new {
 		}
 			// Checking doktype:
 		$doktype = intval($pid_row['doktype']);
-		if (!$allowedTableList = $PAGES_TYPES[$doktype]['allowedTables'])	{
-			$allowedTableList = $PAGES_TYPES['default']['allowedTables'];
+		if (!$allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])	{
+			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
 		if (strstr($allowedTableList,'*') || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return true
 			return true;

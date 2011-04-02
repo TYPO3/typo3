@@ -93,8 +93,6 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function render() {
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('title'), $GLOBALS['LANG']->getLL('description'));
 		if ($this->isAccessibleForCurrentUser) {
 			$this->loadHeaderData();

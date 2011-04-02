@@ -80,12 +80,10 @@ class SC_mod_web_view_index {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER;
-
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->id = intval(t3lib_div::_GP('id'));
 
-		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 			// page/be_user TSconfig settings and blinding of menu-items
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
@@ -98,7 +96,6 @@ class SC_mod_web_view_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 			// Access check...
 			// The page will show only if there is a valid page and if this page may be viewed by the user
@@ -123,7 +120,7 @@ class SC_mod_web_view_index {
 			$addCmd .= '&MP=' . $mountPointInfo['MPvar'];
 		}
 
-		$this->url.= ($dName?(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$dName:$BACK_PATH.'..').'/index.php?id='.$this->id.($this->type?'&type='.$this->type:'').$addCmd;
+		$this->url.= ($dName?(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$dName:$GLOBALS['BACK_PATH'].'..').'/index.php?id='.$this->id.($this->type?'&type='.$this->type:'').$addCmd;
 	}
 
 	/**

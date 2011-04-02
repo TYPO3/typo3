@@ -122,7 +122,7 @@ final class tslib_eidtools {
 	 */
 	public static function initTCA() {
 		// Some badly made extensions attempt to manipulate TCA in a wrong way
-		// (inside ext_localconf.php). Therefore $TCA may become an array
+		// (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
 		// but in fact it is not loaded. The check below ensure that
 		// TCA is still loaded if such bad extensions are installed
 		if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
@@ -133,7 +133,7 @@ final class tslib_eidtools {
 
 	/**
 	 * Makes TCA for the extension available inside eID. Use this function if
-	 * you need not to include the whole $TCA. However, you still need to call
+	 * you need not to include the whole $GLOBALS['TCA']. However, you still need to call
 	 * t3lib_div::loadTCA() if you want to access column array!
 	 *
 	 * @param	string		$extensionKey	Extension key

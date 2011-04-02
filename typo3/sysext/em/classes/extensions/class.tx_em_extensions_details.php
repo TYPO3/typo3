@@ -762,8 +762,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function helpCol($key) {
-		global $BE_USER;
-		if ($BE_USER->uc['edit_showFieldHelp']) {
+		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
 			if (empty($key)) {
 				return '<td>&nbsp;</td>';
 			}

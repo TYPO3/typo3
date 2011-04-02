@@ -73,6 +73,7 @@ class tx_cms_BackendLayout {
 		$tsConfig  = t3lib_BEfunc::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
 
+		/** @var $tceForms t3lib_TCEForms */
 		$tceForms = t3lib_div::makeInstance('t3lib_TCEForms');
 
 		$tcaItems = $tcaConfig['items'];
@@ -136,6 +137,7 @@ class tx_cms_BackendLayout {
 			);
 
 			if ($backendLayout) {
+				/** @var $parser t3lib_TSparser */
 				$parser = t3lib_div::makeInstance('t3lib_TSparser');
 				$parser->parse($backendLayout['config']);
 

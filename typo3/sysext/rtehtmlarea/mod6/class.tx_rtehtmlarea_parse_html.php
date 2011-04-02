@@ -47,17 +47,15 @@ class tx_rtehtmlarea_parse_html {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$BACK_PATH,$MCONF;
-
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode='';
 
-		$this->modData = $BE_USER->getModuleData($MCONF['name'],'ses');
+		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'],'ses');
 		if (t3lib_div::_GP('OC_key'))	{
 			$parts = explode('|',t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
-			$BE_USER->pushModuleData($MCONF['name'],$this->modData);
+			$GLOBALS['BE_USER']->pushModuleData($GLOBALS['MCONF']['name'],$this->modData);
 		}
 	}
 
@@ -111,13 +109,13 @@ class tx_rtehtmlarea_parse_html {
 	 * @return	[type]		...
 	 */
 	function main_parse_html($openKeys)	{
-		global $BE_USER, $TYPO3_CONF_VARS;
+		global $TYPO3_CONF_VARS;
 
 		$editorNo = t3lib_div::_GP('editorNo');
 		$html = t3lib_div::_GP('content');
 
 		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
-		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
 		$HTMLParser = t3lib_div::makeInstance('t3lib_parsehtml');

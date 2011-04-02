@@ -51,7 +51,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		parent::init();
 	}
 
@@ -61,15 +60,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $LANG;
 		$this->MOD_MENU = array(
 			'function' => array(
-				'1' => $LANG->getLL('display')
+				'1' => $GLOBALS['LANG']->getLL('display')
 			)
 		);
 
 		if($GLOBALS['BE_USER']->user['admin'])	{
-			$this->MOD_MENU['function']['2'] = $LANG->getLL('rebuild');
+			$this->MOD_MENU['function']['2'] = $GLOBALS['LANG']->getLL('rebuild');
 		}
 
 		parent::menuConfig();
@@ -81,17 +79,15 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 		// Access check!
-		$access = $BE_USER->check('modules', 'help_txtsconfighelpM1');
+		$access = $GLOBALS['BE_USER']->check('modules', 'help_txtsconfighelpM1');
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
 
-		if ($access || $BE_USER->user['admin'])	{
+		if ($access || $GLOBALS['BE_USER']->user['admin'])	{
 
 			$this->doc->form = '<form action="" method="post">';
 
@@ -111,9 +107,9 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 				</script>
 			';
 
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50);
+			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50);
 
-			$this->content .= $this->doc->header($LANG->getLL('title'));
+			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
 
 			// Render content:
@@ -123,7 +119,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		} else {
-			$this->content .= $this->doc->header($LANG->getLL('title'));
+			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$markers['FUNC_MENU'] = '';
 		}
 			// Setting up the buttons and markers for docheader
@@ -135,7 +131,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			// Renders the module page
 		$this->content = $this->doc->render(
-			$LANG->getLL('title'),
+			$GLOBALS['LANG']->getLL('title'),
 			$this->content
 		);
 	}
@@ -155,8 +151,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -164,9 +158,9 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
-		if (($this->id && is_array($this->pageinfo)) || ($BE_USER->user['admin'] && !$this->id)) {
+		if (($this->id && is_array($this->pageinfo)) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
 				// Shortcut
-			if ($BE_USER->mayMakeShortcut()) {
+			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 		}
@@ -179,16 +173,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function moduleContent()	{
-		global $BACK_PATH, $TYPO3_LOADED_EXT, $LANG;
-
 		switch ((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
-				$content = '<div align="left"><strong>'.$LANG->getLL('referenceExplanation').'</strong></div>';
-				$content .= '<p>'.$LANG->getLL('referenceExplanationDetailed').'</p><br />';
-				$this->content .= $this->doc->section($LANG->getLL('displayReferences'),$content,0,1);
-				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'TSREF</a><br />';
-				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'USER TSCONFIG</a><br />';
-				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$BACK_PATH.'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'PAGE TSCONFIG</a><br />';
+				$content = '<div align="left"><strong>'.$GLOBALS['LANG']->getLL('referenceExplanation').'</strong></div>';
+				$content .= '<p>'.$GLOBALS['LANG']->getLL('referenceExplanationDetailed').'</p><br />';
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('displayReferences'),$content,0,1);
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$GLOBALS['BACK_PATH'].'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'TSREF</a><br />';
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$GLOBALS['BACK_PATH'].'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'USER TSCONFIG</a><br />';
+				$this->content .= '<a href="#" onclick="vHWin=window.open(\''.$GLOBALS['BACK_PATH'].'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open').'PAGE TSCONFIG</a><br />';
 			break;
 
 			case 2:
@@ -198,9 +190,9 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						$this->purgeSQLContents();
 
 							// get all loaded extension keys
-						$extArray = $TYPO3_LOADED_EXT;
+						$extArray = $GLOBALS['TYPO3_LOADED_EXT'];
 
-						$content = '<div align="left"><strong>'.$LANG->getLL('loadedTSfrom').'</strong></div><br />';
+						$content = '<div align="left"><strong>'.$GLOBALS['LANG']->getLL('loadedTSfrom').'</strong></div><br />';
 
 							// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
 						foreach ($extArray as $extName => $dummy)	{
@@ -218,7 +210,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 									$number = $this->loadExtensionManual($extName, $manual);
 
 										// print a status message with a link to the openoffice manual
-									$content .= $number.' '.$LANG->getLL('sections').' (<a href="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.t3lib_extMgm::extRelPath($extName).'doc/manual.sxw">manual</a>)</p>';
+									$content .= $number.' '.$GLOBALS['LANG']->getLL('sections').' (<a href="'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.t3lib_extMgm::extRelPath($extName).'doc/manual.sxw">manual</a>)</p>';
 								}
 							} else	{
 									// this should never happen!
@@ -226,7 +218,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 							}
 						}
 
-						$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content.'<br />',0,1);
+						$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('rebuildTS'),$content.'<br />',0,1);
 
 							// Issue warnings about duplicate or empty obj_strings, if any
 							// An obj_string should be unique. It should appear in only one extension manual and then only once
@@ -235,7 +227,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						$emptyWarnings = '';
 						foreach ($this->objStringsPerExtension as $obj_string => $extensions)	{
 							if (empty($obj_string))	{
-								$emptyWarnings = '<p class="typo3-red">'.$LANG->getLL('warning_manualsWithoutMarkers');
+								$emptyWarnings = '<p class="typo3-red">'.$GLOBALS['LANG']->getLL('warning_manualsWithoutMarkers');
 								foreach ($extensions as $extensionKey => $counter)	{
 									$emptyWarnings .= ' '.$extensionKey.' ('.$counter.')<br />';
 								}
@@ -252,18 +244,18 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						}
 						$warnings = $emptyWarnings;
 						if (!empty($duplicateWarnings))	{
-							$warnings .= '<p class="typo3-red">'.$LANG->getLL('warning_duplicateMarkers').'<br />'.$duplicateWarnings.'</p>';
+							$warnings .= '<p class="typo3-red">'.$GLOBALS['LANG']->getLL('warning_duplicateMarkers').'<br />'.$duplicateWarnings.'</p>';
 						}
 						if (!empty($warnings))	{
-							$this->content .= $this->doc->section($LANG->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
+							$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
 						}
 					}
 
-					$content = '<p>'.$LANG->getLL('rebuildExplanation').'</p><br />';
-					$content .= $LANG->getLL('rebuild').' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
-					$this->content .= $this->doc->section($LANG->getLL('rebuildTS'),$content,0,1);
+					$content = '<p>'.$GLOBALS['LANG']->getLL('rebuildExplanation').'</p><br />';
+					$content .= $GLOBALS['LANG']->getLL('rebuild').' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
+					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('rebuildTS'),$content,0,1);
 				} else {
-					$this->content .= '<p>'.$LANG->getLL('adminAccessOnly').'</p><br />';
+					$this->content .= '<p>'.$GLOBALS['LANG']->getLL('adminAccessOnly').'</p><br />';
 				}
 
 

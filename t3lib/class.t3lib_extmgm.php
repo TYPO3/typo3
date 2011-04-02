@@ -256,25 +256,24 @@ final class t3lib_extMgm {
 	 ***************************************/
 
 	/**
-	 * Adding fields to an existing table definition in $TCA
-	 * Adds an array with $TCA column-configuration to the $TCA-entry for that table.
+	 * Adding fields to an existing table definition in $GLOBALS['TCA']
+	 * Adds an array with $GLOBALS['TCA'] column-configuration to the $GLOBALS['TCA']-entry for that table.
 	 * This function adds the configuration needed for rendering of the field in TCEFORMS - but it does NOT add the field names to the types lists!
 	 * So to have the fields displayed you must also call fx. addToAllTCAtypes or manually add the fields to the types list.
 	 * FOR USE IN ext_tables.php FILES
 	 * Usage: 4
 	 *
-	 * @param	string		$table is the table name of a table already present in $TCA with a columns section
+	 * @param	string		$table is the table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param	array		$columnArray is the array with the additional columns (typical some fields an extension wants to add)
 	 * @param	boolean		If $addTofeInterface is true the list of fields are also added to the fe_admin_fieldList.
 	 * @return	void
 	 */
 	public static function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
-		global $TCA;
 		t3lib_div::loadTCA($table);
-		if (is_array($columnArray) && is_array($TCA[$table]) && is_array($TCA[$table]['columns'])) {
-			$TCA[$table]['columns'] = array_merge($TCA[$table]['columns'], $columnArray); // Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
+			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray); // Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			if ($addTofeInterface) {
-				$TCA[$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
+				$GLOBALS['TCA'][$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
 			}
 		}
 	}
@@ -609,7 +608,7 @@ final class t3lib_extMgm {
 	 * Generates an array of fields/items with additional information such as e.g. the name of the palette.
 	 *
 	 * @param	string		$itemList: List of fields/items to be splitted up
-	 *						 (this mostly reflects the data in $TCA[<table>]['types'][<type>]['showitem'])
+	 *						 (this mostly reflects the data in $GLOBALS['TCA'][<table>]['types'][<type>]['showitem'])
 	 * @return	array		An array with the names of the fields/items as keys and additional information
 	 */
 	protected static function explodeItemList($itemList) {
@@ -647,8 +646,8 @@ final class t3lib_extMgm {
 	 * @see		explodeItemList
 	 * @param	array		$items: The array of fields/items with optional additional information
 	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: false)
-	 * @return	string		The list of fields/items which gets used for $TCA[<table>]['types'][<type>]['showitem']
-	 *						 or $TCA[<table>]['palettes'][<palette>]['showitem'] in most cases
+	 * @return	string		The list of fields/items which gets used for $GLOBALS['TCA'][<table>]['types'][<type>]['showitem']
+	 *						 or $GLOBALS['TCA'][<table>]['palettes'][<palette>]['showitem'] in most cases
 	 */
 	protected static function generateItemList(array $items, $useRawData = FALSE) {
 		$itemParts = array();
@@ -679,9 +678,7 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function allowTableOnStandardPages($table) {
-		global $PAGES_TYPES;
-
-		$PAGES_TYPES['default']['allowedTables'] .= ',' . $table;
+		$GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
 	}
 
 	/**
@@ -696,13 +693,11 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addModule($main, $sub = '', $position = '', $path = '') {
-		global $TBE_MODULES;
-
-		if (isset($TBE_MODULES[$main]) && $sub) { // If there is already a main module by this name:
+		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) { // If there is already a main module by this name:
 
 				// Adding the submodule to the correct position:
 			list($place, $modRef) = t3lib_div::trimExplode(':', $position, 1);
-			$mods = t3lib_div::trimExplode(',', $TBE_MODULES[$main], 1);
+			$mods = t3lib_div::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], 1);
 			if (!in_array($sub, $mods)) {
 				switch (strtolower($place)) {
 					case 'after':
@@ -737,19 +732,19 @@ final class t3lib_extMgm {
 				}
 			}
 				// Re-inserting the submodule list:
-			$TBE_MODULES[$main] = implode(',', $mods);
+			$GLOBALS['TBE_MODULES'][$main] = implode(',', $mods);
 		} else { // Create new main modules with only one submodule, $sub (or none if $sub is blank)
-			$TBE_MODULES[$main] = $sub;
+			$GLOBALS['TBE_MODULES'][$main] = $sub;
 		}
 
 			// Adding path:
 		if ($path) {
-			$TBE_MODULES['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
+			$GLOBALS['TBE_MODULES']['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
 		}
 	}
 
 	/**
-	 * Adds a module path to TBE_MODULES for used with the module dispatcher, mod.php
+	 * Adds a module path to $GLOBALS['TBE_MODULES'] for used with the module dispatcher, mod.php
 	 * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
 	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through mod.php
 	 * FOR USE IN ext_tables.php FILES
@@ -760,9 +755,7 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addModulePath($name, $path) {
-		global $TBE_MODULES;
-
-		$TBE_MODULES['_PATHS'][$name] = $path;
+		$GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
 	}
 
 	/**
@@ -782,8 +775,7 @@ final class t3lib_extMgm {
 	 * @see t3lib_SCbase::mergeExternalItems()
 	 */
 	public static function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
-		global $TBE_MODULES_EXT;
-		$TBE_MODULES_EXT[$modname]['MOD_MENU'][$MM_key][$className] = array(
+		$GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(
 			'name' => $className,
 			'path' => $classPath,
 			'title' => $title,
@@ -792,7 +784,7 @@ final class t3lib_extMgm {
 	}
 
 	/**
-	 * Adds $content to the default Page TSconfig as set in $TYPO3_CONF_VARS[BE]['defaultPageTSconfig']
+	 * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 * Usage: 5
@@ -801,12 +793,11 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addPageTSConfig($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['BE']['defaultPageTSconfig'] .= "\n[GLOBAL]\n" . $content;
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= "\n[GLOBAL]\n" . $content;
 	}
 
 	/**
-	 * Adds $content to the default User TSconfig as set in $TYPO3_CONF_VARS[BE]['defaultUserTSconfig']
+	 * Adds $content to the default User TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 * Usage: 3
@@ -815,12 +806,11 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addUserTSConfig($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['BE']['defaultUserTSconfig'] .= "\n[GLOBAL]\n" . $content;
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= "\n[GLOBAL]\n" . $content;
 	}
 
 	/**
-	 * Adds a reference to a locallang file with TCA_DESCR labels
+	 * Adds a reference to a locallang file with $GLOBALS['TCA_DESCR'] labels
 	 * FOR USE IN ext_tables.php FILES
 	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 * Usage: 31
@@ -830,15 +820,14 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addLLrefForTCAdescr($tca_descr_key, $file_ref) {
-		global $TCA_DESCR;
 		if ($tca_descr_key) {
-			if (!is_array($TCA_DESCR[$tca_descr_key])) {
-				$TCA_DESCR[$tca_descr_key] = array();
+			if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key])) {
+				$GLOBALS['TCA_DESCR'][$tca_descr_key] = array();
 			}
-			if (!is_array($TCA_DESCR[$tca_descr_key]['refs'])) {
-				$TCA_DESCR[$tca_descr_key]['refs'] = array();
+			if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'])) {
+				$GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'] = array();
 			}
-			$TCA_DESCR[$tca_descr_key]['refs'][] = $file_ref;
+			$GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'][] = $file_ref;
 		}
 	}
 
@@ -889,8 +878,6 @@ final class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
-		global $T3_SERVICES, $TYPO3_CONF_VARS;
-
 			// even not available services will be included to make it possible to give the admin a feedback of non-available services.
 			// but maybe it's better to move non-available services to a different array??
 
@@ -901,37 +888,37 @@ final class t3lib_extMgm {
 
 			$info['priority'] = max(0, min(100, $info['priority']));
 
-			$T3_SERVICES[$serviceType][$serviceKey] = $info;
+			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = $info;
 
-			$T3_SERVICES[$serviceType][$serviceKey]['extKey'] = $extKey;
-			$T3_SERVICES[$serviceType][$serviceKey]['serviceKey'] = $serviceKey;
-			$T3_SERVICES[$serviceType][$serviceKey]['serviceType'] = $serviceType;
+			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['extKey'] = $extKey;
+			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceKey'] = $serviceKey;
+			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceType'] = $serviceType;
 
 
 				// mapping a service key to a service type
 				// all service keys begin with tx_ - service types don't
 				// this way a selection of a special service key as service type is easy
-			$T3_SERVICES[$serviceKey][$serviceKey] = &$T3_SERVICES[$serviceType][$serviceKey];
+			$GLOBALS['T3_SERVICES'][$serviceKey][$serviceKey] = &$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey];
 
 
-				// change the priority (and other values) from TYPO3_CONF_VARS
-				// $TYPO3_CONF_VARS['T3_SERVICES'][$serviceType][$serviceKey]['priority']
+				// change the priority (and other values) from $GLOBALS['TYPO3_CONF_VARS']
+				// $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]['priority']
 				// even the activation is possible (a unix service might be possible on windows for some reasons)
-			if (is_array($TYPO3_CONF_VARS['T3_SERVICES'][$serviceType][$serviceKey])) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey])) {
 
 					// no check is done here - there might be configuration values only the service type knows about, so we pass everything
-				$T3_SERVICES[$serviceType][$serviceKey] = array_merge($T3_SERVICES[$serviceType][$serviceKey], $TYPO3_CONF_VARS['T3_SERVICES'][$serviceType][$serviceKey]);
+				$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = array_merge($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey], $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]);
 			}
 
 
 				// OS check
 				// empty $os means 'not limited to one OS', therefore a check is not needed
-			if ($T3_SERVICES[$serviceType][$serviceKey]['available'] && $T3_SERVICES[$serviceType][$serviceKey]['os'] != '') {
+			if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] && $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
 
 					// TYPO3_OS is not yet defined
 				$os_type = stristr(PHP_OS, 'win') && !stristr(PHP_OS, 'darwin') ? 'WIN' : 'UNIX';
 
-				$os = t3lib_div::trimExplode(',', strtoupper($T3_SERVICES[$serviceType][$serviceKey]['os']));
+				$os = t3lib_div::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
 
 				if (!in_array($os_type, $os)) {
 					self::deactivateService($serviceType, $serviceKey);
@@ -939,10 +926,10 @@ final class t3lib_extMgm {
 			}
 
 				// convert subtype list to array for quicker access
-			$T3_SERVICES[$serviceType][$serviceKey]['serviceSubTypes'] = array();
+			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'] = array();
 			$serviceSubTypes = t3lib_div::trimExplode(',', $info['subtype']);
 			foreach ($serviceSubTypes as $subtype) {
-				$T3_SERVICES[$serviceType][$serviceKey]['serviceSubTypes'][$subtype] = $subtype;
+				$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'][$subtype] = $subtype;
 			}
 		}
 	}
@@ -957,8 +944,6 @@ final class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
-		global $T3_SERVICES, $TYPO3_CONF_VARS;
-
 		$serviceKey = FALSE;
 		$serviceInfo = FALSE;
 		$priority = 0;
@@ -968,8 +953,8 @@ final class t3lib_extMgm {
 			$excludeServiceKeys = t3lib_div::trimExplode(',', $excludeServiceKeys, 1);
 		}
 
-		if (is_array($T3_SERVICES[$serviceType])) {
-			foreach ($T3_SERVICES[$serviceType] as $key => $info) {
+		if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
+			foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
 
 				if (in_array($key, $excludeServiceKeys)) {
 					continue;
@@ -1012,7 +997,7 @@ final class t3lib_extMgm {
 		}
 
 		if ($serviceKey) {
-			$serviceInfo = $T3_SERVICES[$serviceType][$serviceKey];
+			$serviceInfo = $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey];
 		}
 		return $serviceInfo;
 	}
@@ -1026,10 +1011,8 @@ final class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
-		global $T3_SERVICES;
-
 			// ... maybe it's better to move non-available services to a different array??
-		$T3_SERVICES[$serviceType][$serviceKey]['available'] = FALSE;
+		$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] = FALSE;
 	}
 
 
@@ -1042,7 +1025,7 @@ final class t3lib_extMgm {
 
 	/**
 	 * Adds an entry to the list of plugins in content elements of type "Insert plugin"
-	 * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $TCA[tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)
+	 * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $GLOBALS['TCA'][tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)
 	 * If the value (array pos. 1) is already found in that items-array, the entry is substituted, otherwise the input array is added to the bottom.
 	 * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the TCEFORMS
 	 * FOR USE IN ext_tables.php FILES
@@ -1053,22 +1036,20 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addPlugin($itemArray, $type = 'list_type') {
-		global $TCA;
-
 		$_EXTKEY = $GLOBALS['_EXTKEY'];
 		if ($_EXTKEY && !$itemArray[2]) {
 			$itemArray[2] = self::extRelPath($_EXTKEY) . 'ext_icon.gif';
 		}
 
 		t3lib_div::loadTCA('tt_content');
-		if (is_array($TCA['tt_content']['columns']) && is_array($TCA['tt_content']['columns'][$type]['config']['items'])) {
-			foreach ($TCA['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
+		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
+			foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
 				if (!strcmp($v[1], $itemArray[1])) {
-					$TCA['tt_content']['columns'][$type]['config']['items'][$k] = $itemArray;
+					$GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$k] = $itemArray;
 					return;
 				}
 			}
-			$TCA['tt_content']['columns'][$type]['config']['items'][] = $itemArray;
+			$GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $itemArray;
 		}
 	}
 
@@ -1084,11 +1065,10 @@ final class t3lib_extMgm {
 	 * @see addPlugin()
 	 */
 	public static function addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch = 'list') {
-		global $TCA;
 		t3lib_div::loadTCA('tt_content');
 
-		if (is_array($TCA['tt_content']['columns']) && is_array($TCA['tt_content']['columns']['pi_flexform']['config']['ds'])) {
-			$TCA['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch . ',' . $CTypeToMatch] = $value;
+		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'])) {
+			$GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch . ',' . $CTypeToMatch] = $value;
 		}
 	}
 
@@ -1104,10 +1084,9 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addToInsertRecords($table, $content_table = 'tt_content', $content_field = 'records') {
-		global $TCA;
 		t3lib_div::loadTCA($content_table);
-		if (is_array($TCA[$content_table]['columns']) && isset($TCA[$content_table]['columns'][$content_field]['config']['allowed'])) {
-			$TCA[$content_table]['columns'][$content_field]['config']['allowed'] .= ',' . $table;
+		if (is_array($GLOBALS['TCA'][$content_table]['columns']) && isset($GLOBALS['TCA'][$content_table]['columns'][$content_field]['config']['allowed'])) {
+			$GLOBALS['TCA'][$content_table]['columns'][$content_field]['config']['allowed'] .= ',' . $table;
 		}
 	}
 
@@ -1123,7 +1102,7 @@ final class t3lib_extMgm {
 	 *		 "CType" - a new content element type
 	 *		 "header_layout" - an additional header type (added to the selection of layout1-5)
 	 *		 "includeLib" - just includes the library for manual use somewhere in TypoScript.
-	 *	 (Remember that your $type definition should correspond to the column/items array in $TCA[tt_content] where you added the selector item for the element! See addPlugin() function)
+	 *	 (Remember that your $type definition should correspond to the column/items array in $GLOBALS['TCA'][tt_content] where you added the selector item for the element! See addPlugin() function)
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 2
 	 *
@@ -1135,7 +1114,6 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addPItoST43($key, $classFile = '', $prefix = '', $type = 'list_type', $cached = 0) {
-		global $TYPO3_LOADED_EXT;
 		$classFile = $classFile ? $classFile : 'pi/class.tx_' . str_replace('_', '', $key) . $prefix . '.php';
 		$cN = self::getCN($key);
 
@@ -1143,7 +1121,7 @@ final class t3lib_extMgm {
 		$pluginContent = trim('
 plugin.' . $cN . $prefix . ' = USER' . ($cached ? '' : '_INT') . '
 plugin.' . $cN . $prefix . ' {
-  includeLibs = ' . $TYPO3_LOADED_EXT[$key]['siteRelPath'] . $classFile . '
+  includeLibs = ' . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $classFile . '
   userFunc = ' . $cN . $prefix . '->main
 }');
 		self::addTypoScript($key, 'setup', '
@@ -1190,7 +1168,7 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Call this method to add an entry in the static template list found in sys_templates
-	 * "static template files" are the modern equalent (provided from extensions) to the traditional records in "static_templates"
+	 * "static template files" are the modern equivalent (provided from extensions) to the traditional records in "static_templates"
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 3
 	 *
@@ -1201,17 +1179,16 @@ tt_content.' . $key . $prefix . ' {
 	 * @see addTypoScript()
 	 */
 	public static function addStaticFile($extKey, $path, $title) {
-		global $TCA;
 		t3lib_div::loadTCA('sys_template');
-		if ($extKey && $path && is_array($TCA['sys_template']['columns'])) {
+		if ($extKey && $path && is_array($GLOBALS['TCA']['sys_template']['columns'])) {
 			$value = str_replace(',', '', 'EXT:' . $extKey . '/' . $path);
 			$itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
-			$TCA['sys_template']['columns']['include_static_file']['config']['items'][] = $itemArray;
+			$GLOBALS['TCA']['sys_template']['columns']['include_static_file']['config']['items'][] = $itemArray;
 		}
 	}
 
 	/**
-	 * Adds $content to the default TypoScript setup code as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_setup']
+	 * Adds $content to the default TypoScript setup code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_setup']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 6
@@ -1220,12 +1197,11 @@ tt_content.' . $key . $prefix . ' {
 	 * @return	void
 	 */
 	public static function addTypoScriptSetup($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup'] .= "\n[GLOBAL]\n" . $content;
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= "\n[GLOBAL]\n" . $content;
 	}
 
 	/**
-	 * Adds $content to the default TypoScript constants code as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_constants']
+	 * Adds $content to the default TypoScript constants code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_constants']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 0
@@ -1234,12 +1210,11 @@ tt_content.' . $key . $prefix . ' {
 	 * @return	void
 	 */
 	public static function addTypoScriptConstants($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['FE']['defaultTypoScript_constants'] .= "\n[GLOBAL]\n" . $content;
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= "\n[GLOBAL]\n" . $content;
 	}
 
 	/**
-	 * Adds $content to the default TypoScript code for either setup, constants or editorcfg as set in $TYPO3_CONF_VARS[FE]['defaultTypoScript_*']
+	 * Adds $content to the default TypoScript code for either setup, constants or editorcfg as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_*']
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 7
@@ -1251,8 +1226,6 @@ tt_content.' . $key . $prefix . ' {
 	 * @return	void
 	 */
 	public static function addTypoScript($key, $type, $content, $afterStaticUid = 0) {
-		global $TYPO3_CONF_VARS;
-
 		if ($type == 'setup' || $type == 'editorcfg' || $type == 'constants') {
 			$content = '
 
@@ -1263,15 +1236,15 @@ tt_content.' . $key . $prefix . ' {
 
 ' . $content;
 			if ($afterStaticUid) {
-				$TYPO3_CONF_VARS['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
+				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
 					// If 'content (default)' is targeted, also add to other 'content rendering templates', eg. css_styled_content
-				if ($afterStaticUid == 43 && is_array($TYPO3_CONF_VARS['FE']['contentRenderingTemplates'])) {
-					foreach ($TYPO3_CONF_VARS['FE']['contentRenderingTemplates'] as $templateName) {
-						$TYPO3_CONF_VARS['FE']['defaultTypoScript_' . $type . '.'][$templateName] .= $content;
+				if ($afterStaticUid == 43 && is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] as $templateName) {
+						$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$templateName] .= $content;
 					}
 				}
 			} else {
-				$TYPO3_CONF_VARS['FE']['defaultTypoScript_' . $type] .= $content;
+				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
 			}
 		}
 	}

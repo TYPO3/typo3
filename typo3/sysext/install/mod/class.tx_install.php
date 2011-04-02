@@ -7490,8 +7490,6 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
-		global $TCA;
-
 		include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');
 
 			// Extension additions
@@ -7505,7 +7503,7 @@ $out="
 			include (PATH_typo3conf.TYPO3_extTableDef_script);
 		}
 
-		foreach ($TCA as $table => $conf) {
+		foreach ($GLOBALS['TCA'] as $table => $conf) {
 			t3lib_div::loadTCA($table);
 		}
 	}
