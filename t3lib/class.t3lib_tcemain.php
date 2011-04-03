@@ -1671,7 +1671,7 @@ class t3lib_TCEmain {
 							// Check various things before copying file:
 						if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) { // File and destination must exist
 
-								// Finding size. For safe_mode we have to rely on the size in the upload array if the file is uploaded.
+								// Finding size.
 							if (is_uploaded_file($theFile) && $theFile == $uploadedFileArray['tmp_name']) {
 								$fileSize = $uploadedFileArray['size'];
 							} else {

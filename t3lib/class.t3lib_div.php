@@ -2759,7 +2759,6 @@ final class t3lib_div {
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
 
-				// may fail (PHP 5.2.0+ and 5.1.5+) when open_basedir or safe_mode are enabled
 			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
 			if (is_array($requestHeaders)) {
@@ -2787,7 +2786,7 @@ final class t3lib_div {
 						// We hit a redirection but we couldn't follow it
 					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
 						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (either PHP configuration option safe_mode or open_basedir is in effect).';
+						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
 					} elseif ($includeHeader) {
 							// Set only for $includeHeader to work exactly like PHP variant
 						$report['http_code'] = $curlInfo['http_code'];
@@ -4215,7 +4214,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it under safe_mode.
+	 * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it.
 	 * Use this function to move uploaded files to where you can work on them.
 	 * REMEMBER to use t3lib_div::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
 	 * Usage: 6

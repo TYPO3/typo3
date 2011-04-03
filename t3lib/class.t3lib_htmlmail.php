@@ -720,9 +720,7 @@ class t3lib_htmlmail {
 		}
 		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
 
-			// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-		$returnPathPossible = (!t3lib_utility_PhpOptions::isSafeModeEnabled() && $this->forceReturnPath);
-		if ($returnPathPossible) {
+		if ($this->forceReturnPath) {
 			$mailWasSent = t3lib_utility_Mail::mail(
 				$recipient,
 				$this->subject,
@@ -745,7 +743,7 @@ class t3lib_htmlmail {
 			$theParts[0] = str_replace('###SUBJECT###', $this->subject, $theParts[0]);
 			$theParts[1] = str_replace("/", LF, $theParts[1]);
 			$theParts[1] = str_replace("###MESSAGE###", $this->getContent('plain'), $theParts[1]);
-			if ($returnPathPossible) {
+			if ($this->forceReturnPath) {
 				$mailWasSent = t3lib_utility_Mail::mail(
 					$this->from_email,
 					$theParts[0],

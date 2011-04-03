@@ -121,7 +121,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	var $useRecycler = 1; // 0 = no, 1 = if available, 2 = always
 
 		// Internal, static:
-	var $PHPFileFunctions = 0; // If set, all fileoperations are done by the default PHP-functions. This is necessary under windows! On UNIX the system commands by exec() can be used unless safe_mode is enabled
+	var $PHPFileFunctions = 0; // If set, all fileoperations are done by the default PHP-functions. This is necessary under windows! On UNIX the system commands by exec() can be used
 	var $dont_use_exec_commands = 0; // This is necessary under windows!
 
 		// Internal, dynamic:

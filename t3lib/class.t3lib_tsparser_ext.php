@@ -1760,7 +1760,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 		}
 		$fI = t3lib_div::split_fileref($theRealFileName);
 		if ($theRealFileName && (!$extList || t3lib_div::inList($extList, $fI['fileext']))) {
-			$tmp_upload_name = t3lib_div::upload_to_tempfile($tmp_name); // If there is an uploaded file, move it for the sake of safe_mode.
+			$tmp_upload_name = t3lib_div::upload_to_tempfile($tmp_name); // If there is an uploaded file, move it.
 
 				// Saving resource
 			$alternativeFileName = array();
