@@ -259,7 +259,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 								$recData['sys_template'][$saveId][$field] = $val;
 								break;
 							case 'resources':
-								$tmp_upload_name = t3lib_div::upload_to_tempfile($_FILES['resources']['tmp_name']);	// If there is an uploaded file, move it for the sake of safe_mode.
+									// If there is an uploaded file, move it.
+								$tmp_upload_name = t3lib_div::upload_to_tempfile($_FILES['resources']['tmp_name']);
 								if ($tmp_upload_name)	{
 									if ($tmp_upload_name!='none' && $_FILES['resources']['name'])	{
 										$alternativeFileName[$tmp_upload_name] = trim($_FILES['resources']['name']);

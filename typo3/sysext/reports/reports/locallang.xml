@@ -51,7 +51,7 @@
 			<label index="status_configuration_DeprecationLogEnabled">The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</label>
 			<label index="status_configuration_DeprecationLogFile">You can find the deprecation log file at %s.</label>
 			<label index="status_configuration_DeprecationLogSize">Your deprecation log file currently takes up %s.</label>
-			<label index="status_configuration_PhpSafeModeEnabled">PHP INI setting safe_mode "On" is discouraged since PHP 5.2 and deprecated since PHP 5.3 and should not be used anymore.</label>
+			<label index="status_configuration_PhpSafeModeEnabled">PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</label>
 			<label index="status_updateTaskTitle">System Status Update</label>
 			<label index="status_updateTaskDescription">Runs a system status check and sends notifications if problems have been found.</label>
 			<label index="status_updateTaskField_notificationEmail">Notification Email Address</label>

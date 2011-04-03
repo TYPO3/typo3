@@ -98,10 +98,6 @@ final class t3lib_utility_Mail {
 				}
 			}
 		} else {
-			if (t3lib_utility_PhpOptions::isSafeModeEnabled() && !is_null($additionalParameters)) {
-				$additionalParameters = null;
-			}
-
 			if (is_null($additionalParameters)) {
 				$success = @mail($to, $subject, $messageBody, $additionalHeaders);
 			} else {
