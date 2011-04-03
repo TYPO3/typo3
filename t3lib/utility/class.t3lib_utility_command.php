@@ -35,7 +35,7 @@ final class t3lib_utility_Command {
 
 	/**
 	 * Wrapper function for php exec function
-	 * Needs to be central to have better control and possible fix for safe_mode/low php version restrictions as occurred with IM/GM issues
+	 * Needs to be central to have better control and possible fix for issues
 	 *
 	 * @static
 	 * @param  string  $command

@@ -24,7 +24,7 @@ If BASE is absolute you should enter the absolute path on the server, eg. &quot;
 &lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
 If you have problems - especially with absolute mounts - try to mount something &quot;simple&quot; like a relative path in fileadmin. If that is working well, try the absolute path.
 
-Your PHP-configuration may also impose other restrictions on you if safe_mode or open_basedir is enabled. Then use relative paths.</label>
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</label>
 			<label index="_path.seeAlso">sys_filemounts:base,
 be_groups:file_mountpoints,
 sys_filemounts</label>
