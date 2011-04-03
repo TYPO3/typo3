@@ -58,6 +58,7 @@
 
 
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
+require_once ($BACK_PATH.'class.db_list.inc');
 require_once ($BACK_PATH.'class.db_list_extra.inc');
 $BE_USER->modAccess($MCONF,1);
 
