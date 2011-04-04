@@ -2728,7 +2728,13 @@ class t3lib_stdGraphic	{
 	 * @return string $inputName escaped as needed
 	 */
 	protected function wrapFileName($inputName) {
-		return escapeshellarg($inputName);
+		$escapedInputName = escapeshellarg($inputName);
+			// if escapeshellarg didn't change anything and if there is no whitespace in the original string
+			// keep the original for (partial) safe_mode compatibility
+		if (trim($escapedInputName, '"\'') === $inputName && !preg_match('/[[:space:]]/', $inputName)) {
+			$escapedInputName = $inputName;
+		}
+		return $escapedInputName;
 	}
 
 
