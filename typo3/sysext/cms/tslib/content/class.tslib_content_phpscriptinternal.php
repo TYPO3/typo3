@@ -41,10 +41,6 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		if (!is_array($conf) || empty($conf['scriptSuffix'])) {
-			throw new InvalidArgumentException('Expected parameter $conf[\'scriptSuffix\'] was not given.', 1295705938);
-		}
-
 		$file = isset($conf['file.'])
 			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
 			: $conf['file'];
