@@ -30,6 +30,7 @@
  *
  * @author Daniel Pötzinger
  * @author Sebastian Kurfürst
+ * @author Timo Schmidt
  */
 class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 
@@ -38,7 +39,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 *
 	 * @var Tx_Extbase_Object_Container_ClassInfoCache
 	 */
-	private $cache;
+	private $cache = NULL;
 
 	/**
 	 * registered alternative implementations of a class
@@ -53,7 +54,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 *
 	 * @var Tx_Extbase_Object_Container_ClassInfoFactory
 	 */
-	private $classInfoFactory;
+	private $classInfoFactory = NULL;
 
 	/**
 	 * holds references of singletons
@@ -77,9 +78,32 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * @param void
 	 * @return void
 	 */
-	public function __construct() {
-		$this->classInfoFactory = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoFactory');
-		$this->cache = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoCache');
+	public function __construct() { }
+
+	/**
+	 * Internal method to create the classInfoFactory, extracted to be mockable.
+	 *
+	 * @return Tx_Extbase_Object_Container_ClassInfoFactory
+	 */
+	protected function getClassInfoFactory() {
+		if($this->classInfoFactory == NULL) {
+			$this->classInfoFactory = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoFactory');
+		}
+
+		return $this->classInfoFactory;
+	}
+
+	/**
+	 * Internal method to create the classInfoCache, extracted to be mockable.
+	 *
+	 * @return Tx_Extbase_Object_Container_ClassInfoCache
+	 */
+	protected function getClassInfoCache() {
+		if($this->cache == NULL) {
+			$this->cache = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoCache');
+		}
+
+		return $this->cache;
 	}
 
 	/**
@@ -92,6 +116,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 */
 	public function getInstance($className, $givenConstructorArguments = array()) {
 		$this->prototypeObjectsWhichAreCurrentlyInstanciated = array();
+
 		return $this->getInstanceInternal($className, $givenConstructorArguments);
 	}
 
@@ -131,25 +156,25 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 			return $this->singletonInstances[$className];
 		}
 
-		$classIsSingleton = $this->isSingleton($className);
-		if (!$classIsSingleton) {
-			if (array_search($className, $this->prototypeObjectsWhichAreCurrentlyInstanciated) !== FALSE) {
-				throw new Tx_Extbase_Object_Exception_CannotBuildObject('Cyclic dependency in prototype object, for class "' . $className . '".', 1295611406);
-			}
-			$this->prototypeObjectsWhichAreCurrentlyInstanciated[] = $className;
-		}
-
 		$classInfo = $this->getClassInfo($className);
 
-		$instance = $this->instanciateObject($className, $classInfo, $givenConstructorArguments);
+		$classIsSingleton = $classInfo->getIsSingleton();
+		if (!$classIsSingleton) {
+			if (array_key_exists($className, $this->prototypeObjectsWhichAreCurrentlyInstanciated) !== FALSE) {
+				throw new Tx_Extbase_Object_Exception_CannotBuildObject('Cyclic dependency in prototype object, for class "' . $className . '".', 1295611406);
+			}
+			$this->prototypeObjectsWhichAreCurrentlyInstanciated[$className] = TRUE;
+		}
+
+		$instance = $this->instanciateObject($classInfo, $givenConstructorArguments);
 		$this->injectDependencies($instance, $classInfo);
 
-		if (method_exists($instance, 'initializeObject') && is_callable(array($instance, 'initializeObject'))) {
+		if ($classInfo->getIsInitializeable() && is_callable(array($instance, 'initializeObject'))) {
 			$instance->initializeObject();
 		}
 
 		if (!$classIsSingleton) {
-			array_pop($this->prototypeObjectsWhichAreCurrentlyInstanciated);
+			unset($this->prototypeObjectsWhichAreCurrentlyInstanciated[$className]);
 		}
 
 		return $instance;
@@ -160,19 +185,19 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * Additionally, directly registers all singletons in the singleton registry,
 	 * such that circular references of singletons are correctly instanciated.
 	 *
-	 * @param string $className
 	 * @param Tx_Extbase_Object_Container_ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
 	 * @return object the new instance
 	 */
-	protected function instanciateObject($className, Tx_Extbase_Object_Container_ClassInfo $classInfo, array $givenConstructorArguments) {
-		$classIsSingleton = $this->isSingleton($className);
+	protected function instanciateObject(Tx_Extbase_Object_Container_ClassInfo $classInfo, array $givenConstructorArguments) {
+		$className = $classInfo->getClassName();
+		$classIsSingleton = $classInfo->getIsSingleton();
 
 		if ($classIsSingleton && count($givenConstructorArguments) > 0) {
 			throw new Tx_Extbase_Object_Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
 		}
 
-		$constructorArguments = $this->getConstructorArguments($className, $classInfo->getConstructorArguments(), $givenConstructorArguments);
+		$constructorArguments = $this->getConstructorArguments($className, $classInfo, $givenConstructorArguments);
 		array_unshift($constructorArguments, $className);
 		$instance = call_user_func_array(array('t3lib_div', 'makeInstance'), $constructorArguments);
 
@@ -195,7 +220,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		foreach ($classInfo->getInjectMethods() as $injectMethodName => $classNameToInject) {
 
 			$instanceToInject = $this->getInstanceInternal($classNameToInject);
-			if ($this->isSingleton($instance) && !($instanceToInject instanceof t3lib_Singleton)) {
+			if ($classInfo->getIsSingleton() && !($instanceToInject instanceof t3lib_Singleton)) {
 				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 			}
 
@@ -229,12 +254,15 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * gets array of parameter that can be used to call a constructor
 	 *
 	 * @param string $className
-	 * @param array $constructorArgumentInformation
+	 * @param Tx_Extbase_Object_Container_ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
 	 * @return array
 	 */
-	private function getConstructorArguments($className, array $constructorArgumentInformation, array $givenConstructorArguments) {
+	private function getConstructorArguments($className, Tx_Extbase_Object_Container_ClassInfo $classInfo, array $givenConstructorArguments) {
 		$parameters=array();
+
+		$constructorArgumentInformation = $classInfo->getConstructorArguments();
+
 		foreach ($constructorArgumentInformation as $argumentInformation) {
 			$argumentName = $argumentInformation['name'];
 
@@ -243,7 +271,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 			if (isset($argumentInformation['dependency']) && !(count($givenConstructorArguments) && is_a($givenConstructorArguments[0], $argumentInformation['dependency']))) {
 				// Inject parameter
 				$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
-				if ($this->isSingleton($className) && !($parameter instanceof t3lib_Singleton)) {
+				if ($classInfo->getIsSingleton() && !($parameter instanceof t3lib_Singleton)) {
 					$this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
 				}
 			} elseif (count($givenConstructorArguments)) {
@@ -266,13 +294,6 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		return $parameters;
 	}
 
-	/**
-	 * @param string/object $object
-	 * @return boolean TRUE if the object is a singleton, FALSE if it is a prototype.
-	 */
-	protected function isSingleton($object) {
-		return in_array('t3lib_Singleton', class_implements($object));
-	}
 	/**
 	 * Returns the class name for a new instance, taking into account the
 	 * class-extension API.
@@ -301,9 +322,10 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	private function getClassInfo($className) {
 			// we also need to make sure that the cache is returning a vaild object
 			// in case something went wrong with unserialization etc..
-		if (!$this->cache->has($className) || !is_object($this->cache->get($className))) {
-			$this->cache->set($className, $this->classInfoFactory->buildClassInfoFromClassName($className));
+		if (!$this->getClassInfoCache()->has($className) || !is_object($this->getClassInfoCache()->get($className))) {
+			$this->getClassInfoCache()->set($className, $this->getClassInfoFactory()->buildClassInfoFromClassName($className));
 		}
-		return $this->cache->get($className);
+
+		return $this->getClassInfoCache()->get($className);
 	}
 }
