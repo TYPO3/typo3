@@ -431,5 +431,33 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 			$result
 		);
 	}
+
+	/**
+	 * Tests whether a overrideIconOverlay hook is called.
+	 * @test
+	 */
+	public function isOverrideIconOverlayHookCalled() {
+		$classReference = uniqid('user_overrideIconOverlayHook');
+
+		$hookMock = $this->getMock($classReference, array('overrideIconOverlay'), array());
+		$hookMock->expects($this->once())->method('overrideIconOverlay');
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
+		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = $hookMock;
+
+		t3lib_iconWorks::mapRecordOverlayToSpriteIconName('tt_content', array());
+	}
+
+	/**
+	 * Tests whether a faulty overrideIconOverlay hook (the hook object cannot be found) is not called.
+	 * @test
+	 */
+	public function isFaultyOverrideIconOverlayHookNotCalled() {
+		$classReference = uniqid('user_overrideIconOverlayHook');
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
+		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new stdClass();
+
+		t3lib_iconWorks::mapRecordOverlayToSpriteIconName('tt_content', array());
+	}
 }
 ?>
