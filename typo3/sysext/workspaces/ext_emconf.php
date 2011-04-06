@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Workspaces Management',
-	'description' => 'Adds workspaces functiinality with custom stages to TYPO3.',
+	'description' => 'Adds workspaces functionality with custom stages to TYPO3.',
 	'category' => 'be',
 	'author' => 'Workspaces Team',
 	'author_email' => '',
