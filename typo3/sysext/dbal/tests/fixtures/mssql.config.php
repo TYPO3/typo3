@@ -17,6 +17,7 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['handlerCfg'] = array(
 		'config' => array(
 			'driver' => 'mssql',
 			'useNameQuote' => FALSE,
+			'quoteClob' => FALSE,
 		),
 	),
 );
