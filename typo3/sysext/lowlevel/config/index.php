@@ -285,7 +285,8 @@ class SC_mod_tools_config_index {
 				}
 
 					// insert line in extTables.php
-				$extTables = '<?php' . preg_replace('/<\?php|\?>/is', '', $extTables) . $changedLine . LF . '?>';
+				$extTables = preg_replace('/<\?php|\?>/is', '', $extTables);
+				$extTables = '<?php' . (empty($extTables) ? LF : '') . $extTables . $changedLine . LF . '?>';
 				$success = t3lib_div::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
 						// show flash message
