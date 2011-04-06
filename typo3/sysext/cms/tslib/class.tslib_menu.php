@@ -599,12 +599,12 @@ class tslib_menu {
 							$kw = isset($this->conf['special.']['setKeywords.'])
 								? $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.'])
 								: $this->conf['special.']['setKeywords'];
-	 					} else {
-		 					$value_rec=$this->sys_page->getPage($value);	// The page record of the 'value'.
+						} else {
+							$value_rec=$this->sys_page->getPage($value);	// The page record of the 'value'.
 
 							$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
 							$kw = trim(tslib_cObj::keywords($value_rec[$kfieldSrc]));		// keywords.
-	 					}
+						}
 
 						$mode = $this->conf['special.']['mode'];	// *'auto', 'manual', 'tstamp'
 						switch($mode)	{
@@ -900,13 +900,14 @@ class tslib_menu {
 					$c++;
 				}
 			}
-				// Setting number of menu items
-			$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
 				//	Passing the menuArr through a user defined function:
 			if ($this->mconf['itemArrayProcFunc'])	{
 				if (!is_array($this->parentMenuArr)) {$this->parentMenuArr=array();}
 				$this->menuArr = $this->userProcess('itemArrayProcFunc',$this->menuArr);
 			}
+				// Setting number of menu items
+			$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
+
 			$this->hash = md5(serialize($this->menuArr).serialize($this->mconf).serialize($this->tmpl->rootLine).serialize($this->MP_array));
 
 				// Get the cache timeout:
@@ -1933,7 +1934,7 @@ class tslib_tmenu extends tslib_menu {
 		if (isset($this->I['val'][$pref . 'Wrap'])) {
 			return $this->tmpl->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
 		} else {
-			 return $res . $processedPref;
+			return $res . $processedPref;
 		}
 	}
 
