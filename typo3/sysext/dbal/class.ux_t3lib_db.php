@@ -177,7 +177,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				'database' => '', // Set by default (overridden)
 				'driver' => '', // ONLY "adodb" type; eg. "mysql"
 				'sequenceStart' => 1, // ONLY "adodb", first number in sequences/serials/...
-				'useNameQuote' => 0 // ONLY "adodb", whether to use NameQuote() method from ADOdb to quote names
+				'useNameQuote' => 0, // ONLY "adodb", whether to use NameQuote() method from ADOdb to quote names
+				'quoteClob' => FALSE // ONLY "adodb", whether CLOB content field should be quoted before being sent to the DB
 			)
 		),
 	);
@@ -987,13 +988,15 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			$blobfields = array();
 			$nArr = array();
+			$handlerKey = $this->handler_getFromTableList($table);
+			$quoteClob = isset($this->handlerCfg[$handlerKey]['config']['quoteClob']) ? $this->handlerCfg[$handlerKey]['config']['quoteClob'] : FALSE;
 			foreach ($fields_values as $k => $v) {
 				if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
 					// we skip the field in the regular INSERT statement, it is only in blobfields
 					$blobfields[$this->quoteFieldNames($k)] = $v;
 				} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
 					// we skip the field in the regular INSERT statement, it is only in clobfields
-					$clobfields[$this->quoteFieldNames($k)] = $v;
+					$clobfields[$this->quoteFieldNames($k)] = ($quoteClob ? $this->quoteStr($v, $table) : $v);
 				} else {
 					// Add slashes old-school:
 					// cast numerical values
@@ -1097,13 +1100,15 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 
 				$nArr = array();
+				$handlerKey = $this->handler_getFromTableList($table);
+				$quoteClob = isset($this->handlerCfg[$handlerKey]['config']['quoteClob']) ? $this->handlerCfg[$handlerKey]['config']['quoteClob'] : FALSE;
 				foreach ($fields_values as $k => $v) {
 					if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
 						// we skip the field in the regular UPDATE statement, it is only in blobfields
 						$blobfields[$this->quoteFieldNames($k)] = $v;
 					} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
 						// we skip the field in the regular UPDATE statement, it is only in clobfields
-						$clobfields[$this->quoteFieldNames($k)] = $v;
+						$clobfields[$this->quoteFieldNames($k)] = ($quoteClob ? $this->quoteStr($v, $table) : $v);
 					} else {
 						// Add slashes old-school:
 						// cast numeric values

@@ -137,7 +137,8 @@ class tx_dbal_installtool {
 						break;
 					case 'mssql':
 					case 'odbc_mssql':
-						$driverConfig = '\'useNameQuote\' => TRUE';
+						$driverConfig = '\'useNameQuote\' => TRUE,'
+								. '\'quoteClob\' => FALSE';
 						break;
 					case 'mysql':
 						return;
