@@ -1092,7 +1092,8 @@ class tx_version_tcemain {
 			if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state')) {
 					// Clear workspace ID:
 				$updateData = array(
-					't3ver_wsid' => 0
+					't3ver_wsid' => 0,
+					't3ver_tstamp' => $GLOBALS['EXEC_TIME'],
 				);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
 
