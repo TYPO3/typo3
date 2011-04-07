@@ -39,9 +39,12 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
+		$this->executeAdminCommand();
+
 		$statuses = array(
 			'Php'                 => $this->getPhpStatus(),
 			'PhpMemoryLimit'      => $this->getPhpMemoryLimitStatus(),
+			'PhpPeakMemory'       => $this->getPhpPeakMemoryStatus(),
 			'PhpRegisterGlobals'  => $this->getPhpRegisterGlobalsStatus(),
 			'Webserver'           => $this->getWebserverStatus(),
 		);
@@ -102,6 +105,62 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_phpMemory'), $memoryLimit, $message, $severity
+		);
+	}
+
+	/**
+	 * Executes commands like clearing the memory status flag
+	 *
+	 * @return	void
+	 */
+	protected function executeAdminCommand() {
+		$command = t3lib_div::_GET('adminCmd');
+
+		switch ($command) {
+			case 'clear_peak_memory_usage_flag':
+				$cacheHash = md5('reports-peakMemoryUsage');
+				$data = array();
+				$cacheIdentifier = 'reports-peakMemoryUsage';
+				t3lib_pageSelect::storeHash($cacheHash, serialize($data), $cacheIdentifier);
+				break;
+		}
+	}
+
+	/**
+	 * Checks if there was a request in the past which approached the memory limit
+	 *
+	 * @return tx_reports_reports_status_Status	A status of whether the memory limit was approached by one of the requests
+	 */
+	protected function getPhpPeakMemoryStatus() {
+		$cacheHash = md5('reports-peakMemoryUsage');
+		$peakMemoryUsage = unserialize(t3lib_pageSelect::getHash($cacheHash));
+		$memoryLimit = t3lib_div::getBytesFromSizeMeasurement(ini_get('memory_limit'));
+		$value = $GLOBALS['LANG']->getLL('status_ok');
+
+		$message = '';
+		$severity = tx_reports_reports_status_Status::OK;
+		$bytesUsed = $peakMemoryUsage['used'];
+		$percentageUsed = $memoryLimit ? number_format($bytesUsed / $memoryLimit * 100, 1) . '%' : '?';
+		$dateOfPeak = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $peakMemoryUsage['tstamp']);
+		$urlOfPeak = '<a href="' . htmlspecialchars($peakMemoryUsage['url']) . '">' . htmlspecialchars($peakMemoryUsage['url']) . '</a>';
+		$clearFlagUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=clear_peak_memory_usage_flag';
+
+		if ($peakMemoryUsage['used']) {
+			$message = sprintf(
+				$GLOBALS['LANG']->getLL('status_phpPeakMemoryTooHigh'),
+				t3lib_div::formatSize($peakMemoryUsage['used']),
+				$percentageUsed,
+				t3lib_div::formatSize($memoryLimit),
+				$dateOfPeak,
+				$urlOfPeak
+			);
+			$message .= ' <a href="' . $clearFlagUrl . '">' . $GLOBALS['LANG']->getLL('status_phpPeakMemoryClearFlag') . '</a>.';
+			$severity = tx_reports_reports_status_Status::WARNING;
+			$value = $percentageUsed;
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_phpPeakMemory'), $value, $message, $severity
 		);
 	}
 
