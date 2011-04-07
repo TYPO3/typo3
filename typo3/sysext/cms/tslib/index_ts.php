@@ -521,6 +521,10 @@ $TSFE->hook_eofe();
 // ********************
 $TT->pull();
 
+// ******************
+// Check memory usage
+// ******************
+t3lib_utility_Monitor::peakMemoryUsage();
 
 // ******************
 // beLoginLinkIPList
