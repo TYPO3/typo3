@@ -2202,7 +2202,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function sql_num_rows(&$res) {
 		if ($res === FALSE) {
-			return 0;
+			return FALSE;
 		}
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
@@ -2227,7 +2227,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	array		Associative array of result row.
 	 */
 	public function sql_fetch_assoc(&$res) {
-		$output = array();
+		$output = FALSE;
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : (is_resource($res) ? 'native' : FALSE);
 		switch ($handlerType) {
@@ -2290,6 +2290,8 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	array		Array with result rows.
 	 */
 	public function sql_fetch_row(&$res) {
+		$output = FALSE;
+
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		switch ($handlerType) {
 			case 'native':
