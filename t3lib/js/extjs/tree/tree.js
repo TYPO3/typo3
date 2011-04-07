@@ -189,6 +189,14 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 
 	this.suspendEvents();
 
+	var selected = [];
+	this.root.cascade(function(node) {
+		if (node.ui.isChecked()) {
+			selected.push(node.attributes.uid);
+		}
+	});
+	this.countSelectedNodes = selected.length;
+
 	if (this.tcaExclusiveKeys.length) {
 		if (checked === true && exclusiveKeys.indexOf(uid) > -1) {
 				// this key is exclusive, so uncheck all others
@@ -222,13 +230,7 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 	} else {
 		checkedNode.getUI().removeClass('complete');
 	}
-	var selected = [];
-	this.root.cascade(function(node) {
-		if (node.ui.isChecked()) {
-			selected.push(node.attributes.uid);
-		}
-	});
-	this.countSelectedNodes = selected.length;
+
 	Ext.fly('treeinput' + this.id).dom.value = selected.join(',');
 	eval(this.onChange);
 
