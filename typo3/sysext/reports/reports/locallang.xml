@@ -40,6 +40,9 @@
 			<label index="status_phpMemoryRequirement">Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</label>
 			<label index="status_phpMemoryEditLimit">Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</label>
 			<label index="status_phpMemoryContactAdmin">Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</label>
+			<label index="status_phpPeakMemory">PHP peak memory usage</label>
+			<label index="status_phpPeakMemoryTooHigh">During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</label>
+			<label index="status_phpPeakMemoryClearFlag">Clear this flag</label>
 			<label index="status_phpRegisterGlobals">PHP Register Globals</label>
 			<label index="status_phpRegisterGlobalsEnabled">%s is enabled. TYPO3 requires this configuration directive to be disabled.</label>
 			<label index="status_phpRegisterGlobalsSecurity">Your site may not be secure when %s is enabled.</label>

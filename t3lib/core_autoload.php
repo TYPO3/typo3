@@ -158,6 +158,7 @@ $t3libClasses = array(
 	't3lib_utility_dependency_reference' => PATH_t3lib . 'utility/dependency/class.t3lib_utility_dependency_reference.php',
 	't3lib_utility_http' => PATH_t3lib . 'utility/class.t3lib_utility_http.php',
 	't3lib_utility_mail' => PATH_t3lib . 'utility/class.t3lib_utility_mail.php',
+	't3lib_utility_monitor' => PATH_t3lib . 'utility/class.t3lib_utility_monitor.php',
 	't3lib_utility_phpoptions' => PATH_t3lib . 'utility/class.t3lib_utility_phpoptions.php',
 	't3lib_utility_debug' => PATH_t3lib . 'utility/class.t3lib_utility_debug.php',
 	't3lib_spritemanager' => PATH_t3lib . 'class.t3lib_spritemanager.php',
