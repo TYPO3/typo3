@@ -1912,8 +1912,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	protected function _quoteOrderBy(array $orderBy) {
 		foreach ($orderBy as $k => $v) {
+			if ($orderBy[$k]['table'] === '' && $v['field'] !== '' && ctype_digit($v['field'])) {
+				continue;
+			}
 			$orderBy[$k]['field'] = $this->quoteName($orderBy[$k]['field']);
-			if ($orderBy[$k]['table'] != '') {
+			if ($orderBy[$k]['table'] !== '') {
 				$orderBy[$k]['table'] = $this->quoteName($orderBy[$k]['table']);
 			}
 		}
