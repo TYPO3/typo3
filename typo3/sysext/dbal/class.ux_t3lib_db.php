@@ -202,7 +202,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * SQL parser
 	 *
-	 * @var tx_dbal_sqlengine
+	 * @var t3lib_sqlparser
 	 */
 	var $SQLparser;
 
@@ -227,7 +227,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = t3lib_div::makeInstance('tx_dbal_sqlengine');
+		$this->SQLparser = t3lib_div::makeInstance('t3lib_sqlparser');
 		$this->Installer = t3lib_div::makeInstance('t3lib_install');
 
 		if (TYPO3_UseCachingFramework) {
@@ -3386,7 +3386,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * Generic mapping of table/field names arrays (as parsed by tx_dbal_sqlengine)
+	 * Generic mapping of table/field names arrays (as parsed by t3lib_sqlparser)
 	 *
 	 * @param	array		Array with parsed SQL parts; Takes both fields, tables, where-parts, group and order-by. Passed by reference.
 	 * @param	string		Default table name to assume if no table is found in $sqlPartArray
@@ -3589,12 +3589,12 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * Will do table/field mapping on a general tx_dbal_sqlengine-compliant SQL query
+	 * Will do table/field mapping on a general t3lib_sqlparser-compliant SQL query
 	 * (May still not support all query types...)
 	 *
-	 * @param	array		Parsed QUERY as from tx_dbal_sqlengine::parseSQL(). NOTICE: Passed by reference!
+	 * @param	array		Parsed QUERY as from t3lib_sqlparser::parseSQL(). NOTICE: Passed by reference!
 	 * @return	void
-	 * @see tx_dbal_sqlengine::parseSQL()
+	 * @see t3lib_sqlparser::parseSQL()
 	 */
 	protected function map_genericQueryParsed(&$parsedQuery) {
 
