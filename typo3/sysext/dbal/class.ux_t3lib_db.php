@@ -831,7 +831,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
 				$groupBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileFieldList($queryParts['GROUPBY']) : '';
 				$orderBy = isset($queryParts['ORDERBY']) ? $this->SQLparser->compileFieldList($queryParts['ORDERBY']) : '';
-				$limit = isset($queryParts['LIMIT']) ? $this->SQLparser->compileWhereClause($queryParts['LIMIT']) : '';
+				$limit = isset($queryParts['LIMIT']) ? $queryParts['LIMIT'] : '';
 				return $this->exec_SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy, $limit);
 
 			case 'UPDATE':
