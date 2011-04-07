@@ -66,9 +66,9 @@ class t3lib_TCEforms_Tree {
 		$valueArray = array();
 		$selectedNodes = array();
 
-                if($PA['itemFormElValue'] != 0) {
-                    $valueArray = explode(',', $PA['itemFormElValue']);
-                }
+		if($PA['itemFormElValue'] != 0) {
+			$valueArray = explode(',', $PA['itemFormElValue']);
+		}
 
 		if (count($valueArray)) {
 			foreach ($valueArray as $selectedValue) {
