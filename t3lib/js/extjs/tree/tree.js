@@ -51,7 +51,7 @@ TYPO3.Components.Tree.StandardTree = function(config) {
 			clearOnLoad: false
 		}),
 		root: new Ext.tree.AsyncTreeNode({
-			text: TYPO3.lang.tcatree,
+			text: 'TYPO3 StandardTree',
 			id: 'root',
 			expanded: true,
 			children: TYPO3.Components.Tree.StandardTreeItemData[config.id]
@@ -117,7 +117,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 			menu: {
 				items: [
 					{
-						text: TYPO3.lang['tcatree.filter.startsWith'],
+						text: 'starts with',
 						checked: true,
 						group: 'searchStartsWith',
 						handler: function(item) {
@@ -127,7 +127,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 						scope: scope
 					},
 					{
-						text: TYPO3.lang['tcatree.filter.contains'],
+						text: 'contains',
 						checked: false,
 						group: 'searchStartsWith',
 						handler: function(item) {
@@ -141,7 +141,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		},
 		new Ext.form.TextField({
 			width: 150,
-			emptyText: TYPO3.lang['tcatree.findItem'],
+			emptyText:'Find item',
 			enableKeyEvents: true,
 			itemId: 'filterText',
 			listeners:{
@@ -162,14 +162,14 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		'->',
 		{
 			iconCls: 'icon-expand-all',
-			tooltip: TYPO3.lang['tcatree.expandAll'],
+			tooltip: 'Expand All',
 			handler: function() {
 					this.root.expand(true);
 			},
 			scope: scope
 		}, {
 			iconCls: 'icon-collapse-all',
-			tooltip: TYPO3.lang['tcatree.collapseAll'],
+			tooltip: 'Collapse All',
 			handler: function() {
 				this.root.collapse(true);
 			},
@@ -188,6 +188,14 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 		uid = '' + checkedNode.attributes.uid;
 
 	this.suspendEvents();
+
+	var selected = [];
+	this.root.cascade(function(node) {
+		if (node.ui.isChecked()) {
+			selected.push(node.attributes.uid);
+		}
+	});
+	this.countSelectedNodes = selected.length;
 
 	if (this.tcaExclusiveKeys.length) {
 		if (checked === true && exclusiveKeys.indexOf(uid) > -1) {
@@ -214,21 +222,14 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 	if (this.countSelectedNodes >= this.tcaMaxItems) {
 		checkedNode.attributes.checked = false;
 		checkedNode.getUI().toggleCheck(false);
-		this.resumeEvents();
-		return false;
+		checked = false;
 	}
 	if (checked) {
 		checkedNode.getUI().addClass('complete');
 	} else {
 		checkedNode.getUI().removeClass('complete');
 	}
-	var selected = [];
-	this.root.cascade(function(node) {
-		if (node.ui.isChecked()) {
-			selected.push(node.attributes.uid);
-		}
-	});
-	this.countSelectedNodes = selected.length;
+
 	Ext.fly('treeinput' + this.id).dom.value = selected.join(',');
 	eval(this.onChange);
 
