@@ -476,17 +476,17 @@ class SC_mod_tools_dbint_index {
 		$codeArr=array();
 		$codeArr['tableheader'] = array('', $GLOBALS['LANG']->getLL('count'));
 		$i++;
-		$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/pages.gif','width="18" height="16"') . ' hspace="4" align="top" alt="" />';
+		$codeArr[$i][] = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-default');
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('total_pages');
 		$codeArr[$i][]=count($admin->page_idArray);
 		$i++;
 		if (t3lib_extMgm::isLoaded('cms'))	{
-			$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/hidden_page.gif','width="18" height="16"') . ' hspace="4" align="top">';
+			$codeArr[$i][] = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-default', array(), array('status-overlay-hidden' => array()));
 			$codeArr[$i][]=$GLOBALS['LANG']->getLL('hidden_pages');
 			$codeArr[$i][]=$admin->recStat['hidden'];
 			$i++;
 		}
-		$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/deleted_page.gif','width="18" height="16"') . ' hspace="4" align="top">';
+		$codeArr[$i][] = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-default', array(), array('status-overlay-deleted' => array()));
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('deleted_pages');
 		$codeArr[$i][]=$admin->recStat['deleted'];
 
@@ -496,10 +496,12 @@ class SC_mod_tools_dbint_index {
 		$codeArr=array();
 		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
 		$doktype= $TCA['pages']['columns']['doktype']['config']['items'];
+		$typeicon_classes = array();
+		$typeicon_classes = $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'];
 		if (is_array($doktype))	{
 			foreach ($doktype as $n => $setup) {
 				if ($setup[1]!='--div--')	{
-					$codeArr[$n][] = '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/' . ($PAGES_TYPES[$setup[1]]['icon'] ? $PAGES_TYPES[$setup[1]]['icon'] : $PAGES_TYPES['default']['icon']), 'width="18" height="16"') . ' hspace="4" align="top">';
+					$codeArr[$n][] = t3lib_iconWorks::getSpriteIcon(($typeicon_classes[$setup[1]] ? $typeicon_classes[$setup[1]] : $typeicon_classes[1]));
 					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
 					$codeArr[$n][] = intval($admin->recStat[doktype][$setup[1]]);
 				}
