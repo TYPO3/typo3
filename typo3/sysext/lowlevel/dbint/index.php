@@ -521,8 +521,14 @@ class SC_mod_tools_dbint_index {
 				$codeArr[$t][] = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$t]['ctrl']['title']);
 				$codeArr[$t][]=$t;
 
+				if($t === 'pages' && $admin->lostPagesList !== '') {
+					$lostRecordCount = count(explode(',', $admin->lostPagesList));
+				} else {
+					$lostRecordCount = count($admin->lRecords[$t]);
+				}
+
 				if ($countArr['all'][$t])	{
-					$theNumberOfRe = intval($countArr['non_deleted'][$t]).'/'.(intval($countArr['all'][$t])-intval($countArr['non_deleted'][$t]));
+					$theNumberOfRe = intval($countArr['non_deleted'][$t]) . '/' . $lostRecordCount;
 				} else {
 					$theNumberOfRe ='';
 				}
