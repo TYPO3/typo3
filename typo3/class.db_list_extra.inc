@@ -231,7 +231,7 @@ class localRecordList extends recordList {
 								'</a>';
 
 					// Up one level
-				$buttons['level_up'] = '<a href="' . htmlspecialchars($this->listURL($this->pageRow['pid'])) . '" onclick="setHighlight(' . $this->pageRow['pid'] . ')" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE) . '">' .
+				$buttons['level_up'] = '<a href="' . htmlspecialchars($this->listURL($this->pageRow['pid'], '-1', 'firstElementNumber')) . '" onclick="setHighlight(' . $this->pageRow['pid'] . ')" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-view-go-up') .
 							'</a>';
 
@@ -1711,7 +1711,7 @@ class localRecordList extends recordList {
 		if ($field=='_PATH_')	$field=pid;
 
 			//	 Create the sort link:
-		$sortUrl = $this->listURL('',-1,'sortField,sortRev,table').'&table='.$table.'&sortField='.$field.'&sortRev='.($this->sortRev || ($this->sortField!=$field)?0:1);
+		$sortUrl = $this->listURL('', -1, 'sortField,sortRev,table,firstElementNumber') . '&table=' . $table . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || ($this->sortField != $field) ? 0 : 1);
 		$sortArrow = ($this->sortField==$field?'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/red'.($this->sortRev?'up':'down').'.gif','width="7" height="4"').' alt="" />':'');
 
 			// Return linked field:
