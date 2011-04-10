@@ -600,7 +600,7 @@ class tx_version_tcemain {
 				list($table, $id) = t3lib_div::revExplode('_', $userIdent, 2);
 			}
 			if ($table === 'be_users' || $noTablePrefix) {
-				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'uid,email,lang,realName')) {
+				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'uid,email,lang,realName', t3lib_BEfunc::BEenableFields('be_users'))) {
 					if (strlen(trim($userRecord['email']))) {
 						$emails[$id] = $userRecord;
 					}
