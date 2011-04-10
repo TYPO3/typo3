@@ -2629,6 +2629,16 @@ final class t3lib_BEfunc {
 	 */
 	public static function viewOnClick($id, $backPath = '', $rootLine = '', $anchor = '', $altUrl = '', $addGetVars = '', $switchFocus = TRUE) {
 
+			// Check if we are previewing some page's overlay
+			// If yes, we want to preview the original page and not the overlay
+			// (the rest of the TYPO3 core takes care of proper overlaying)
+		if (t3lib_extMgm::isLoaded('version') && !empty($GLOBALS['BE_USER']->workspace)) {
+			$record = self::getRecord('pages', $id);
+			if (!empty($record['t3ver_oid'])) {
+				$id = $record['t3ver_oid'];
+			}
+		}
+
 		$viewScriptPreviewDisabled = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
 		$viewScriptPreviewEnabled = '/index.php?id=';
 		if ($altUrl) {
