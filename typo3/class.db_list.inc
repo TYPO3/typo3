@@ -316,7 +316,7 @@ class recordList extends t3lib_recordList {
 			// Setting form-elements, if applicable:
 		$formElements=array('','');
 		if ($formFields)	{
-			$formElements=array('<form action="'.htmlspecialchars($this->listURL()).'" method="post">','</form>');
+			$formElements=array('<form action="'.htmlspecialchars($this->listURL('', -1, 'firstElementNumber')).'" method="post">','</form>');
 		}
 
 			// Make level selector:
@@ -592,9 +592,9 @@ class recordList extends t3lib_recordList {
 	 */
 	function linkWrapTable($table,$code)	{
 		if ($this->table!=$table)	{
-			return '<a href="'.htmlspecialchars($this->listURL('',$table)).'">'.$code.'</a>';
+			return '<a href="'.htmlspecialchars($this->listURL('',$table, 'firstElementNumber')).'">'.$code.'</a>';
 		} else {
-			return '<a href="'.htmlspecialchars($this->listURL('','','sortField,sortRev,table')).'">'.$code.'</a>';
+			return '<a href="'.htmlspecialchars($this->listURL('','','sortField,sortRev,table,firstElementNumber')).'">'.$code.'</a>';
 		}
 	}
 
@@ -657,7 +657,7 @@ class recordList extends t3lib_recordList {
 			default:
 					// Output the label now:
 				if ($table=='pages')	{
-					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'')).'" onclick="setHighlight('.$uid.')">'.$code.'</a>';
+					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'', 'firstElementNumber')).'" onclick="setHighlight('.$uid.')">'.$code.'</a>';
 				} else {
 					$code = $this->linkUrlMail($code,$origCode);
 				}
@@ -698,7 +698,7 @@ class recordList extends t3lib_recordList {
 	 *
 	 * @param	string		Alternative id value. Enter blank string for the current id ($this->id)
 	 * @param	string		Tablename to display. Enter "-1" for the current table.
-	 * @param	string		Commalist of fields NOT to include ("sortField" or "sortRev")
+	 * @param	string		Commalist of fields NOT to include ("sortField", "firstElementNumber" or "sortRev")
 	 * @return	string		URL
 	 */
 	function listURL($altId='',$table=-1,$exclList='')	{
@@ -710,7 +710,7 @@ class recordList extends t3lib_recordList {
 			($this->searchString?'&search_field='.rawurlencode($this->searchString):'').
 			($this->searchLevels?'&search_levels='.rawurlencode($this->searchLevels):'').
 			($this->showLimit?'&showLimit='.rawurlencode($this->showLimit):'').
-			($this->firstElementNumber?'&pointer='.rawurlencode($this->firstElementNumber):'').
+			((!$exclList || !t3lib_div::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber ? '&pointer=' . rawurlencode($this->firstElementNumber) : '') .
 			((!$exclList || !t3lib_div::inList($exclList,'sortField')) && $this->sortField?'&sortField='.rawurlencode($this->sortField):'').
 			((!$exclList || !t3lib_div::inList($exclList,'sortRev')) && $this->sortRev?'&sortRev='.rawurlencode($this->sortRev):'')
 			;
