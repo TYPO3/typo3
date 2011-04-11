@@ -385,8 +385,15 @@ class Tx_Extbase_MVC_Controller_Argument {
 			$transformedValue = $this->propertyMapper->map(array_keys($value), $value, $this->dataType);
 		}
 
-		if (!($transformedValue instanceof $this->dataType) && !($transformedValue === NULL && !$this->isRequired())) {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".', 1251730701);
+		if (!($transformedValue instanceof $this->dataType) && ($transformedValue !== NULL || $this->isRequired())) {
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue(
+				'The value must be of type "' . $this->dataType . '", but was of type "'
+					. (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".'
+						// add mappingResult errors to exception
+					. ($this->propertyMapper->getMappingResults()->hasErrors()
+						? '<p>' . implode('<br />', $this->propertyMapper->getMappingResults()->getErrors()) . '</p>'
+						: ''),
+				1251730701);
 		}
 		return $transformedValue;
 	}
