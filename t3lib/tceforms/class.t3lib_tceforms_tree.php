@@ -185,7 +185,8 @@ class t3lib_TCEforms_Tree {
 		$PA['fieldConf']['config']['exclusiveKeys']
 				? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 				ucId: "' . md5($table . '|' . $field) . '",
-				selModel: TYPO3.Components.Tree.EmptySelectionModel
+				selModel: TYPO3.Components.Tree.EmptySelectionModel,
+				disabled: ' . (bool) $PA['fieldConf']['config']['readOnly'] . '
 			});' . LF .
 			($autoSizeMax
 				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
