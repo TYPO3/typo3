@@ -615,6 +615,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Tests, if the given Value Object already exists in the storage backend and if so, it returns the uid.
 	 *
 	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
+	 * @return mixed The matching uid if an object was found, else FALSE
 	 */
 	protected function getUidOfAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
 		return $this->storageBackend->getUidOfAlreadyPersistedValueObject($object);
@@ -626,7 +627,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The related object
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
-	 * @return void
+	 * @param int $sortingPosition Defaults to NULL
+	 * @return int The uid of the inserted row
 	 */
 	protected function insertRelationInRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
@@ -665,7 +667,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-	 * @return void
+	 * @return bool
 	 */
 	protected function deleteAllRelationsFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
@@ -694,7 +696,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-	 * @return void
+	 * @return bool
 	 */
 	protected function deleteRelationFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
@@ -713,10 +715,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Updates a given object in the storage
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
-	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
-	 * @param string|NULL $parentPropertyName The name of the property
-	 * @param array $row The $row
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be updated
+	 * @param array $row Row to be stored
+	 * @return bool
 	 */
 	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
@@ -740,11 +741,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
-	 * Returns a table row to be inserted or updated in the database
+	 * Adds common databse fields to a row
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The appropriate data map representing a database table
-	 * @param array $properties The properties of the object
-	 * @return array A single row to be inserted in the database
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param array $row
+	 * @return void
 	 */
 	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
 		$className = get_class($object);
@@ -779,10 +780,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Deletes an object
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
-	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
-	 * @param string|NULL $parentPropertyName The name of the property
-	 * @param bool $markAsDeleted Shold we only mark the row as deleted instead of deleting (TRUE by default)?
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be removed from the storage
+	 * @param bool $markAsDeleted Wether to just flag the row deleted (default) or really delete it
 	 * @return void
 	 */
 	protected function removeObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $markAsDeleted = TRUE) {
