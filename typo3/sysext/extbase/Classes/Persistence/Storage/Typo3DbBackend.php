@@ -139,7 +139,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param string $tableName The database table name
 	 * @param array $row The row to be updated
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return void
+	 * @return bool
 	 */
 	public function updateRow($tableName, array $row, $isRelation = FALSE) {
 		if (!isset($row['uid'])) throw new InvalidArgumentException('The given row must contain a value for "uid".');
@@ -170,7 +170,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param string $tableName The database table name
 	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
-	 * @return void
+	 * @return bool
 	 */
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
 		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
@@ -340,7 +340,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Checks if a Value Object equal to the given Object exists in the data base
 	 *
 	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The Value Object
-	 * @return array The matching uid
+	 * @return mixed The matching uid if an object was found, else FALSE
 	 */
 	public function getUidOfAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
 		$fields = array();
