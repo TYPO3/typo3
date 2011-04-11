@@ -124,14 +124,14 @@ class Tx_Workspaces_Service_Stages {
 				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'*',
 					self::TABLE_STAGE,
-						'parentid=' . $this->getWorkspaceId() . ' AND parenttable="sys_workspace" AND deleted = 0',
+					'parentid=' . $this->getWorkspaceId() . ' AND parenttable=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE) . ' AND deleted=0',
 					'',
 					'sorting',
 					'',
 					'uid'
 				);
 				foreach($workspaceStageRecs as $stage) {
-					$stage['title'] =  $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stage['title'] . '"'; 
+					$stage['title'] =  $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stage['title'] . '"';
 					$stages[] = $stage;
 				}
 			}
