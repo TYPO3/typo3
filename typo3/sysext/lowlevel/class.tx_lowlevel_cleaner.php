@@ -106,11 +106,9 @@ class tx_lowlevel_cleaner extends t3lib_extobjbase {
 	 * @return	string		The content
 	 */
 	function main()	{
-		global $BE_USER;
-
 		$content = '';
 
-		if ($BE_USER->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$content.= $this->pObj->doc->spacer(5);
 			$content.= $this->createMenu().'<hr/>';
 			$content.= $this->moduleContent();

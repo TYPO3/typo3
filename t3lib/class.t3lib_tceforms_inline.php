@@ -1027,7 +1027,7 @@ class t3lib_TCEforms_inline {
 	 * @return	void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
-		global $SOBE, $BE_USER, $TYPO3_CONF_VARS;
+		global $SOBE;
 
 		require_once(PATH_typo3 . 'template.php');
 
@@ -1064,7 +1064,7 @@ class t3lib_TCEforms_inline {
 		$SOBE->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard'); // Start clipboard
 		$SOBE->tceforms->clipObj->initializeClipboard(); // Initialize - reads the clipboard content from the user session
 			// Setting external variables:
-		if ($BE_USER->uc['edit_showFieldHelp'] != 'text' && $SOBE->MOD_SETTINGS['showDescriptions']) {
+		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] != 'text' && $SOBE->MOD_SETTINGS['showDescriptions']) {
 			$SOBE->tceforms->edit_showFieldHelp = 'text';
 		}
 	}

@@ -65,14 +65,13 @@ class logFunctions_ext extends t3lib_BEDisplayLog {
 	 * @return	array
 	 */
 	function initArray()	{
-		global $LANG;
-		$codeArr=Array();
-		$codeArr[$i][]=$LANG->getLL('chLog_l_time');
-		$codeArr[$i][]=$LANG->getLL('chLog_l_user');
-		$codeArr[$i][]=$LANG->getLL('chLog_l_error');
-		$codeArr[$i][]=$LANG->getLL('chLog_l_action');
-		$codeArr[$i][]=$LANG->getLL('chLog_l_table');
-		$codeArr[$i][]=$LANG->getLL('chLog_l_details');
+		$codeArr = array();
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_time');
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_user');
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_error');
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_action');
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_table');
+		$codeArr[0][] = $GLOBALS['LANG']->getLL('chLog_l_details');
 		return $codeArr;
 	}
 }
@@ -96,27 +95,26 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 	 * @return	array		Menu items
 	 */
 	function modMenu()	{
-		global $LANG;
 
 		return array(
 			'log_users' => array(
-				0 => $LANG->getLL('chLog_users_0'),
-				'-1' => $LANG->getLL('chLog_users_-1')
+				0 => $GLOBALS['LANG']->getLL('chLog_users_0'),
+				'-1' => $GLOBALS['LANG']->getLL('chLog_users_-1')
 			),
 			'log_time' => array(
-				0 => $LANG->getLL('chLog_time_0'),
-				1 => $LANG->getLL('chLog_time_1'),
-				2 => $LANG->getLL('chLog_time_2'),
-				10 => $LANG->getLL('chLog_time_10'),
-				11 => $LANG->getLL('chLog_time_11'),
-				12 => $LANG->getLL('chLog_time_12'),
-				20 => $LANG->getLL('chLog_time_20')
+				0 => $GLOBALS['LANG']->getLL('chLog_time_0'),
+				1 => $GLOBALS['LANG']->getLL('chLog_time_1'),
+				2 => $GLOBALS['LANG']->getLL('chLog_time_2'),
+				10 => $GLOBALS['LANG']->getLL('chLog_time_10'),
+				11 => $GLOBALS['LANG']->getLL('chLog_time_11'),
+				12 => $GLOBALS['LANG']->getLL('chLog_time_12'),
+				20 => $GLOBALS['LANG']->getLL('chLog_time_20')
 			),
 			'depth' => array(
-				0 => $LANG->getLL('depth_0'),
-				1 => $LANG->getLL('depth_1'),
-				2 => $LANG->getLL('depth_2'),
-				3 => $LANG->getLL('depth_3')
+				0 => $GLOBALS['LANG']->getLL('depth_0'),
+				1 => $GLOBALS['LANG']->getLL('depth_1'),
+				2 => $GLOBALS['LANG']->getLL('depth_2'),
+				3 => $GLOBALS['LANG']->getLL('depth_3')
 			)
 		);
 	}
@@ -138,7 +136,6 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 	 * @return	string		HTML output
 	 */
 	function main()	{
-		global $SOBE,$LANG;
 
 		$this->localLang();
 
@@ -146,10 +143,33 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 
 		$theOutput='';
 		$menu='';
-		$menu.=  '&nbsp;'.$LANG->getLL('chLog_menuUsers').': '.t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[log_users]',$this->pObj->MOD_SETTINGS['log_users'],$this->pObj->MOD_MENU['log_users']);
-		$menu.=  '&nbsp;'.$LANG->getLL('chLog_menuDepth').': '.t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth']);
-		$menu.=  '&nbsp;'.$LANG->getLL('chLog_menuTime').': '.t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[log_time]',$this->pObj->MOD_SETTINGS['log_time'],$this->pObj->MOD_MENU['log_time']);
-		$theOutput.=$this->pObj->doc->section($LANG->getLL('chLog_title'),'<span class="nobr">'.$menu.'</span>',0,1);
+		$menu .= '&nbsp;' . $GLOBALS['LANG']->getLL('chLog_menuUsers') . ': ' .
+			t3lib_BEfunc::getFuncMenu(
+				$this->pObj->id,
+				'SET[log_users]',
+				$this->pObj->MOD_SETTINGS['log_users'],
+				$this->pObj->MOD_MENU['log_users']
+			);
+		$menu .= '&nbsp;' . $GLOBALS['LANG']->getLL('chLog_menuDepth') . ': ' .
+			t3lib_BEfunc::getFuncMenu(
+				$this->pObj->id,
+				'SET[depth]',
+				$this->pObj->MOD_SETTINGS['depth'],
+				$this->pObj->MOD_MENU['depth']
+			);
+		$menu .= '&nbsp;' . $GLOBALS['LANG']->getLL('chLog_menuTime') . ': ' .
+			t3lib_BEfunc::getFuncMenu(
+				$this->pObj->id,
+				'SET[log_time]',
+				$this->pObj->MOD_SETTINGS['log_time'],
+				$this->pObj->MOD_MENU['log_time']
+			);
+		$theOutput .= $this->pObj->doc->section(
+			$GLOBALS['LANG']->getLL('chLog_title'),
+			'<span class="nobr">' . $menu . '</span>',
+			0,
+			1
+		);
 
 			// Build query
 		$where_part='';

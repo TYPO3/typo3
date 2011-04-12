@@ -85,21 +85,19 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
-
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
-		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
-			$this->CALC_PERMS = $BE_USER->calcPerms($this->pageinfo);
-			if ($BE_USER->user['admin'] && !$this->id)	{
+		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
+			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
+			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
 
 			$this->doc = t3lib_div::makeInstance('template');
-			$this->doc->backPath = $BACK_PATH;
+			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('templates/info.html');
 			$this->doc->tableLayout = Array (
 				'0' => Array (
@@ -148,15 +146,15 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		} else {
 				// If no access or if ID == zero
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->backPath = $BACK_PATH;
+			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
-			$this->content = $this->doc->header($LANG->getLL('title'));
+			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
 			$this->content .= $this->doc->spacer(10);
 		}
 		// Renders the module page
 		$this->content = $this->doc->render(
-			$LANG->getLL('title'),
+			$GLOBALS['LANG']->getLL('title'),
 			$this->content
 		);
 	}
@@ -177,8 +175,6 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
-
 		$buttons = array(
 			'csh' => '',
 			'view' => '',
@@ -189,12 +185,17 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// View page
-		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
-				'</a>';
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(
+			t3lib_BEfunc::viewOnClick(
+				$this->pageinfo['uid'],
+				$GLOBALS['BACK_PATH'],
+				t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid'])
+			)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' .
+			t3lib_iconWorks::getSpriteIcon('actions-document-view') .
+			'</a>';
 
 			// Shortcut
-		if ($BE_USER->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 

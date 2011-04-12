@@ -70,8 +70,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 	}
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		global $tmpl,$tplRow,$theConstants,$rootLine;
+		global $tmpl,$tplRow;
 
 		// **************************
 		// Checking for more than one template an if, set a menu...

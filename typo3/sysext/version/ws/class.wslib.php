@@ -125,15 +125,13 @@ class wslib {
 	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The REAL pid of the online record is found as "realpid"
 	 */
 	function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)	{
-		global $TCA;
-
 		$wsid = intval($wsid);
 		$filter = intval($filter);
 		$output = array();
 
 			// Traversing all tables supporting versioning:
-		foreach($TCA as $table => $cfg)	{
-			if ($TCA[$table]['ctrl']['versioningWS'])	{
+		foreach($GLOBALS['TCA'] as $table => $cfg)	{
+			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])	{
 
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B

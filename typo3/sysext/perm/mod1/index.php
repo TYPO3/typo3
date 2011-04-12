@@ -260,7 +260,7 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function main() {
-		global $BE_USER, $LANG;
+		global $LANG;
 
 			// Access check...
 			// The page will show only if there is a valid page and if this page may be viewed by the user
@@ -268,13 +268,13 @@ class SC_mod_web_perm_index {
 		$access = is_array($this->pageinfo);
 
 			// Checking access:
-		if (($this->id && $access) || ($BE_USER->isAdmin() && !$this->id)) {
-			if ($BE_USER->isAdmin() && !$this->id)	{
+		if (($this->id && $access) || ($GLOBALS['BE_USER']->isAdmin() && !$this->id)) {
+			if ($GLOBALS['BE_USER']->isAdmin() && !$this->id) {
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
 
 				// This decides if the editform can and will be drawn:
-			$this->editingAllowed = ($this->pageinfo['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());
+			$this->editingAllowed = ($this->pageinfo['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin());
 			$this->edit = $this->edit && $this->editingAllowed;
 
 				// If $this->edit then these functions are called in the end of the page...
@@ -388,9 +388,9 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function doEdit() {
-		global $BE_USER,$LANG;
+		global $LANG;
 
-		if ($BE_USER->workspace != 0) {
+		if ($GLOBALS['BE_USER']->workspace != 0) {
 				// Adding section with the permission setting matrix:
 			$lockedMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
@@ -524,7 +524,7 @@ class SC_mod_web_perm_index {
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module_setting', $GLOBALS['BACK_PATH'], '<br /><br />');
 
 			// Adding help text:
-		if ($BE_USER->uc['helpText'])	{
+		if ($GLOBALS['BE_USER']->uc['helpText']) {
 			$this->content.=$this->doc->divider(20);
 			$legendText = '<strong>'.$LANG->getLL('1',1).'</strong>: '.$LANG->getLL('1_t',1);
 			$legendText.= '<br /><strong>'.$LANG->getLL('16',1).'</strong>: '.$LANG->getLL('16_t',1);
@@ -544,10 +544,10 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function notEdit() {
-		global $BE_USER,$LANG,$BACK_PATH;
+		global $LANG,$BACK_PATH;
 
 			// Get usernames and groupnames: The arrays we get in return contains only 1) users which are members of the groups of the current user, 2) groups that the current user is member of
-		$beGroupKeys = $BE_USER->userGroupsUID;
+		$beGroupKeys = $GLOBALS['BE_USER']->userGroupsUID;
 		$beUserArray = t3lib_BEfunc::getUserNames();
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$beUserArray = t3lib_BEfunc::blindUserNames($beUserArray,$beGroupKeys,0);
@@ -610,8 +610,8 @@ class SC_mod_web_perm_index {
 				<tr class="t3-row-header">
 					<td colspan="2">&nbsp;</td>
 					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center" nowrap="nowrap">' . $LANG->getLL('User', TRUE) . ': ' . htmlspecialchars($BE_USER->user['username']) . '</td>
-					' . (!$BE_USER->isAdmin() ? '<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center" nowrap="nowrap">' . $LANG->getLL('User', TRUE) . ': ' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>' : '') . '
 				</tr>';
 		}
@@ -641,7 +641,7 @@ class SC_mod_web_perm_index {
 			}
 
 				// Seeing if editing of permissions are allowed for that page:
-			$editPermsAllowed = ($data['row']['perms_userid'] == $BE_USER->user['uid'] || $BE_USER->isAdmin());
+			$editPermsAllowed = ($data['row']['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin());
 
 
 				// First column:
@@ -679,12 +679,12 @@ class SC_mod_web_perm_index {
 				$cells[]='
 					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
 
-				$bgCol = ($BE_USER->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol);
+				$bgCol = ($GLOBALS['BE_USER']->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol);
 
 				// FIXME $owner undefined
 				$cells[]='
-					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($BE_USER->calcPerms($data['row']), $pageId, 'user') : '').'</td>
-					'.(!$BE_USER->isAdmin()?'
+					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($GLOBALS['BE_USER']->calcPerms($data['row']), $pageId, 'user') : '').'</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '
 					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $LANG->getLL('EditLock_descr', TRUE))) : '').'</td>
 					':'');

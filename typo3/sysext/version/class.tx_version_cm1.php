@@ -63,13 +63,11 @@ class tx_version_cm1 {
 	 * @return	array		Modified menuItems array
 	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
-		global $BE_USER,$TCA,$LANG;
-
 		$localItems = Array();
-		if (!$backRef->cmLevel && $uid>0 && $BE_USER->check('modules','web_txversionM1'))	{
+		if (!$backRef->cmLevel && $uid>0 && $GLOBALS['BE_USER']->check('modules','web_txversionM1'))	{
 
 				// Returns directly, because the clicked item was not from the pages table
-			if (in_array('versioning', $backRef->disabledItems) || !$TCA[$table] || !$TCA[$table]['ctrl']['versioningWS']) {
+			if (in_array('versioning', $backRef->disabledItems) || !$GLOBALS['TCA'][$table] || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				return $menuItems;
 			}
 

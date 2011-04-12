@@ -441,7 +441,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		True or false whether access is granted or not.
 	 */
 	function checkAuthMode($table, $field, $value, $authMode) {
-		global $TCA;
 
 			// Admin users can do anything:
 		if ($this->isAdmin()) {
@@ -476,8 +475,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			break;
 			case 'individual':
 				t3lib_div::loadTCA($table);
-				if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field])) {
-					$items = $TCA[$table]['columns'][$field]['config']['items'];
+				if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
+					$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
 					if (is_array($items)) {
 						foreach ($items as $iCfg) {
 							if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
@@ -571,7 +570,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Checking if a user has editing access to a record from a $TCA table.
+	 * Checking if a user has editing access to a record from a $GLOBALS['TCA'] table.
 	 * The checks does not take page permissions and other "environmental" things into account. It only deal with record internals; If any values in the record fields disallows it.
 	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
 	 * It will check for workspace dependent access.
@@ -585,9 +584,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		True if OK, otherwise false
 	 */
 	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
-		global $TCA;
-
-		if (isset($TCA[$table])) {
+		if (isset($GLOBALS['TCA'][$table])) {
 			t3lib_div::loadTCA($table);
 
 				// Always return true for Admin users.
@@ -609,26 +606,28 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 
 				// Checking languages:
-			if ($TCA[$table]['ctrl']['languageField']) {
-				if (isset($idOrRow[$TCA[$table]['ctrl']['languageField']])) { // Language field must be found in input row - otherwise it does not make sense.
-					if (!$this->checkLanguageAccess($idOrRow[$TCA[$table]['ctrl']['languageField']])) {
+			if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
+				if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) { // Language field must be found in input row - otherwise it does not make sense.
+					if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 						$this->errorMsg = 'ERROR: Language was not allowed.';
 						return FALSE;
-					} elseif ($checkFullLanguageAccess && $idOrRow[$TCA[$table]['ctrl']['languageField']] == 0 && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+					} elseif ($checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0 && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 						$this->errorMsg = 'ERROR: Related/affected language was not allowed.';
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = 'ERROR: The "languageField" field named "' . $TCA[$table]['ctrl']['languageField'] . '" was not found in testing record!';
+					$this->errorMsg = 'ERROR: The "languageField" field named "' .
+						$GLOBALS['TCA'][$table]['ctrl']['languageField'] .
+						'" was not found in testing record!';
 					return FALSE;
 				}
-			} elseif (isset($TCA[$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 				return FALSE;
 			}
 
 				// Checking authMode fields:
-			if (is_array($TCA[$table]['columns'])) {
-				foreach ($TCA[$table]['columns'] as $fieldName => $fieldValue) {
+			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+				foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
 					if (isset($idOrRow[$fieldName])) {
 						if ($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode'] && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
 							if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
@@ -641,14 +640,16 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 
 				// Checking "editlock" feature (doesn't apply to new records)
-			if (!$newRecord && $TCA[$table]['ctrl']['editlock']) {
-				if (isset($idOrRow[$TCA[$table]['ctrl']['editlock']])) {
-					if ($idOrRow[$TCA[$table]['ctrl']['editlock']]) {
+			if (!$newRecord && $GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+				if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
+					if ($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
 						$this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = 'ERROR: The "editLock" field named "' . $TCA[$table]['ctrl']['editlock'] . '" was not found in testing record!';
+					$this->errorMsg = 'ERROR: The "editLock" field named "' .
+						$GLOBALS['TCA'][$table]['ctrl']['editlock'] .
+						'" was not found in testing record!';
 					return FALSE;
 				}
 			}

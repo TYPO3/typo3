@@ -118,7 +118,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 	 */
 	function wrapTitle($title,$v)	{
 		$title = htmlspecialchars($title);
-		
+
 		if ($this->ext_isLinkable($v))	{
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&contentTypo3Charset='.$GLOBALS['SOBE']->browser->contentTypo3Charset.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
@@ -324,10 +324,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	array		RTE configuration array
 	 */
 	protected function getRTEConfig()	{
-		global $BE_USER;
-
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
 		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 	}
@@ -597,7 +595,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	string		Modified content variable.
 	 */
 	function main_rte($wiz=0)	{
-		global $LANG, $BE_USER, $BACK_PATH;
+		global $LANG, $BACK_PATH;
 
 			// Starting content:
 		$content=$this->doc->startPage($LANG->getLL('Insert/Modify Link',1));
@@ -724,7 +722,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$files = $this->expandFolder($foldertree->specUIDmap[$specUid]);
 
 					// Create upload/create folder forms, if a path is given:
-				if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 					$path=$this->expandFolder;
 					if (!$path || !@is_dir($path))	{
 						$path = $this->fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
@@ -737,7 +735,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$uploadForm='';
 					}
 					$content.=$uploadForm;
-					if ($BE_USER->isAdmin() || $BE_USER->getTSConfigVal('options.createFoldersInEB')) {
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
 						$content.=$createFolder;
 					}
 				}

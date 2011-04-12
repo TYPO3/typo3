@@ -342,7 +342,7 @@ class wslib_gui {
 	 * @return	array		Table rows, see displayWorkspaceOverview()
 	 */
 	function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)	{
-		global $TCA, $LANG;
+		global $LANG;
 
 		// Initialize:
 		$fullColSpan = $this->showWorkspaceCol ? 10 : 9;
@@ -388,7 +388,7 @@ class wslib_gui {
 
 								// MAIN CELL / Online version display:
 								// Create the main cells which will span over the number of versions there is. If the table is "pages" then it will show the page tree icon and title (which was not shown by the code above)
-								$verLinkUrl = t3lib_extMgm::isLoaded('version') && $TCA[$table]['ctrl']['versioningWS'];
+								$verLinkUrl = t3lib_extMgm::isLoaded('version') && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'];
 								$origElement = $icon.
 								($verLinkUrl ? '<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table='.$table.'&uid='.$rec_on['uid']).'">' : '').
 												t3lib_BEfunc::getRecordTitle($table,$rec_on,TRUE).
@@ -664,7 +664,7 @@ class wslib_gui {
 	 * @return	array		Array with two keys (0/1) with HTML content / percentage integer (if -1, then it means N/A) indicating amount of change
 	 */
 	function createDiffView($table, $diff_1_record, $diff_2_record)	{
-		global $TCA, $LANG;
+		global $LANG;
 
 		// Initialize:
 		$pctChange = 'N/A';
@@ -680,8 +680,8 @@ class wslib_gui {
 			$tRows = array();
 			$tRows[] = '
 				<tr class="bgColor5 tableheader">
-					<td>' . $LANG->getLL('diffview_label_field_name') . '</td>
-					<td width="98%" nowrap="nowrap">' . $LANG->getLL('diffview_label_colored_diff_view') . '</td>
+					<td>' . $GLOBALS['LANG']->getLL('diffview_label_field_name') . '</td>
+					<td width="98%" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('diffview_label_colored_diff_view') . '</td>
 				</tr>
 			';
 
@@ -691,16 +691,16 @@ class wslib_gui {
 
 			// Traversing the first record and process all fields which are editable:
 			foreach($diff_1_record as $fN => $fV)	{
-				if ($TCA[$table]['columns'][$fN] && $TCA[$table]['columns'][$fN]['config']['type']!='passthrough' && !t3lib_div::inList('t3ver_label',$fN))	{
+				if ($GLOBALS['TCA'][$table]['columns'][$fN] && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type']!='passthrough' && !t3lib_div::inList('t3ver_label',$fN))	{
 
 					// Check if it is files:
 					$isFiles = FALSE;
 					if (strcmp(trim($diff_1_record[$fN]),trim($diff_2_record[$fN])) &&
-					$TCA[$table]['columns'][$fN]['config']['type']=='group' &&
-					$TCA[$table]['columns'][$fN]['config']['internal_type']=='file')	{
+					$GLOBALS['TCA'][$table]['columns'][$fN]['config']['type']=='group' &&
+					$GLOBALS['TCA'][$table]['columns'][$fN]['config']['internal_type']=='file')	{
 
 						// Initialize:
-						$uploadFolder = $TCA[$table]['columns'][$fN]['config']['uploadfolder'];
+						$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$fN]['config']['uploadfolder'];
 						$files1 = array_flip(t3lib_div::trimExplode(',', $diff_1_record[$fN],1));
 						$files2 = array_flip(t3lib_div::trimExplode(',', $diff_2_record[$fN],1));
 
@@ -965,23 +965,23 @@ class wslib_gui {
 	 * @return	string		HTML content.
 	 */
 	function subElements($uid,$treeLevel,$origId=0)	{
-		global $TCA, $LANG;
+		global $LANG;
 
 		if ($GLOBALS['BE_USER']->workspace===0 || !$this->expandSubElements)	{	// In online workspace we have a reduced view because otherwise it will bloat the listing:
 			return '<br />
 					<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' align="top" alt="" title="" />'.
 			($origId ?
 			'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.$uid.'&details='.rawurlencode('pages:'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-			'<span class="typo3-dimmed"><em>['.$LANG->getLL('label_subelementsdetails').']</em><span></a>' :
-			'<span class="typo3-dimmed"><em>['.$LANG->getLL('label_subelements').']</em><span>');
+			'<span class="typo3-dimmed"><em>['.$GLOBALS['LANG']->getLL('label_subelementsdetails').']</em><span></a>' :
+			'<span class="typo3-dimmed"><em>['.$GLOBALS['LANG']->getLL('label_subelements').']</em><span>');
 		} else {	// For an offline workspace, show sub elements:
 
 			$tCell = array();
 
 			// Find records that follow pages when swapping versions:
 			$recList = array();
-			foreach($TCA as $tN => $tCfg)	{
-				if ($tN!='pages' && ($treeLevel>0 || $TCA[$tN]['ctrl']['versioning_followPages']))	{
+			foreach($GLOBALS['TCA'] as $tN => $tCfg)	{
+				if ($tN!='pages' && ($treeLevel>0 || $GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages']))	{
 					$this->subElements_getNonPageRecords($tN, $uid, $recList);
 				}
 			}
@@ -1006,6 +1006,7 @@ class wslib_gui {
 			if ($treeLevel>0) {
 
 				// Drawing tree:
+				/** @var $tree t3lib_pageTree */
 				$tree = t3lib_div::makeInstance('t3lib_pageTree');
 				$tree->init('AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));
 				$tree->makeHTML = 2;		// 2=Also rendering depth-data into the result array
@@ -1027,7 +1028,7 @@ class wslib_gui {
 
 					// Find all records from page and collect in $recList:
 					$recList = array();
-					foreach($TCA as $tN => $tCfg)	{
+					foreach($GLOBALS['TCA'] as $tN => $tCfg)	{
 						if ($tN!=='pages')	{
 							$this->subElements_getNonPageRecords($tN, $data['row']['uid'], $recList);
 						}
@@ -1068,16 +1069,14 @@ class wslib_gui {
 	 * @return	void
 	 */
 	function subElements_getNonPageRecords($tN, $uid, &$recList)	{
-		global $TCA;
-
 		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			$tN,
 			'pid='.intval($uid).
-			($TCA[$tN]['ctrl']['versioningWS'] ? ' AND t3ver_state=0' : '').
+			($GLOBALS['TCA'][$tN]['ctrl']['versioningWS'] ? ' AND t3ver_state=0' : '').
 			t3lib_BEfunc::deleteClause($tN),
 			'',
-			$TCA[$tN]['ctrl']['sortby'] ? $TCA[$tN]['ctrl']['sortby'] : $GLOBALS['TYPO3_DB']->stripOrderBy($TCA[$tN]['ctrl']['default_sortby'])
+			$GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA'][$tN]['ctrl']['default_sortby'])
 		);
 
 		foreach($records as $rec)	{
@@ -1098,10 +1097,9 @@ class wslib_gui {
 	 * @return	void		(Content accumulated in $tCell!)
 	 */
 	function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)	{
-		global $TCA;
 
 		// Initialize:
-		$origUidFields = $TCA[$tN]['ctrl']['origUid'];
+		$origUidFields = $GLOBALS['TCA'][$tN]['ctrl']['origUid'];
 		$diffCode = '';
 
 		if ($origUidFields)	{	// If there is a field for this table with original uids we will use that to connect records:
