@@ -717,7 +717,6 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	openCustomUrlInContentFrame: function(node, tree, contextItem) {
-		console.log(contextItem);
 		if (!contextItem.customAttributes || !contextItem.customAttributes.contentUrl) {
 			return;
 		}
