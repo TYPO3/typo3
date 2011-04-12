@@ -66,6 +66,10 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		$logTitle = 'Core: Exception handler (' . $context . ')';
 		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | ' .
 					  get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
+		if ($context === 'WEB') {
+			$logMessage .= '. Requested URL: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		}
+
 		$backtrace = $exception->getTrace();
 
 			// write error message to the configured syslogs
