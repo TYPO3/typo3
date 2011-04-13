@@ -77,11 +77,12 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 	 * @return array $data
 	 */
 	public function getRowDetails($parameter) {
-		global $TCA,$BE_USER;
 		$diffReturnArray = array();
 		$liveReturnArray = array();
 
+		/** @var $t3lib_diff t3lib_diff */
 		$t3lib_diff = t3lib_div::makeInstance('t3lib_diff');
+		/** @var $stagesService Tx_Workspaces_Service_Stages */
 		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 
 		$liveRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->t3ver_oid);
@@ -93,16 +94,16 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 		$fieldsOfRecords = array_keys($liveRecord);
 
 		// get field list from TCA configuration, if available
-		if ($TCA[$parameter->table]) {
-			if ($TCA[$parameter->table]['interface']['showRecordFieldList']) {
-				$fieldsOfRecords = $TCA[$parameter->table]['interface']['showRecordFieldList'];
+		if ($GLOBALS['TCA'][$parameter->table]) {
+			if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
+				$fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
 				$fieldsOfRecords = t3lib_div::trimExplode(',',$fieldsOfRecords,1);
 			}
 		}
 
 		foreach ($fieldsOfRecords as $fieldName) {
 				// check for exclude fields
-			if ($GLOBALS['BE_USER']->isAdmin() || ($TCA[$parameter->table]['columns'][$fieldName]['exclude'] == 0) || t3lib_div::inList($BE_USER->groupData['non_exclude_fields'],$parameter->table.':'.$fieldName)) {
+			if ($GLOBALS['BE_USER']->isAdmin() || ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'],$parameter->table.':'.$fieldName)) {
 					// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName],$versionRecord[$fieldName]) !== 0) {
 						// Select the human readable values before diff
@@ -115,7 +116,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 						$fieldTitle = $fieldName;
 					}
 
-					if ($TCA[$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $TCA[$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
+					if ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
 						$versionThumb = t3lib_BEfunc::thumbCode($versionRecord, $parameter->table, $fieldName, '');
 						$liveThumb = t3lib_BEfunc::thumbCode($liveRecord, $parameter->table, $fieldName, '');
 
