@@ -91,10 +91,9 @@ class alt_menu_functions {
 	 * @return	string		The menu HTML
 	 */
 	function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	{
-		global $LANG, $TBE_TEMPLATE, $BE_USER;
 
 			// By default module sections are collapsable, only if they are explicitly turned off via TSconfig, they are not:
-		$tmpArr = $BE_USER->getTSConfig('options.moduleMenuCollapsable');
+		$tmpArr = $GLOBALS['BE_USER']->getTSConfig('options.moduleMenuCollapsable');
 		$collapsable = (isset($tmpArr['value']) && $tmpArr['value']==0) ? 0 : 1;
 		unset($tmpArr);
 
@@ -109,12 +108,12 @@ class alt_menu_functions {
 		$mJScmds=array();
 		$onBlur=$GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
 
-		$selectItems[] = '<option value="">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules',1).' ]</option>';
+		$selectItems[] = '<option value="">[ '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules',1).' ]</option>';
 		$mC=0;
 
 			// Get collapsed configuration
 		if ($collapsable == 1) {
-			$config = is_array ($BE_USER->uc['moduleData']['alt_menu.php']) ? $BE_USER->uc['moduleData']['alt_menu.php'] : array();
+			$config = is_array ($GLOBALS['BE_USER']->uc['moduleData']['alt_menu.php']) ? $GLOBALS['BE_USER']->uc['moduleData']['alt_menu.php'] : array();
 			$collapsedOverride = t3lib_div::_GP('collapsedOverride');
 			if (is_array ($collapsedOverride)) {
 				$config = array_merge ($config, $collapsedOverride);
@@ -128,8 +127,8 @@ class alt_menu_functions {
 				$config = $collapsedOverride;
 			}
 
-			$BE_USER->uc['moduleData']['alt_menu.php'] = $config;
-			$BE_USER->writeUC($BE_USER->uc);
+			$GLOBALS['BE_USER']->uc['moduleData']['alt_menu.php'] = $config;
+			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
 
 				// all items have to be expanded when expandAll is set
 			if($config['expandAll'] == 1) {
@@ -173,16 +172,16 @@ class alt_menu_functions {
 
 			$collection[$moduleKey] = array(
 				'moduleName' => $moduleName,
-				'title' => $LANG->moduleLabels['tabs'][$moduleKey],
+				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey],
 				'onclick' => 'top.goToModule(\''.$moduleName.'\');',
 			);
 
 				// Creating image icon
-			$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath));
+			$image = @getimagesize($this->mIconFile($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey],$backPath));
 			$imageCode='';
-			$descr3_title = $LANG->moduleLabels['tabs'][$moduleKey].' ';
+			$descr3_title = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey].' ';
 			if ($image)	{
-				$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath);
+				$Ifilename = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey],$backPath);
 				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]);
 				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' alt="" />';
 				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
@@ -191,7 +190,7 @@ class alt_menu_functions {
 			}
 
 				// Creating the various links:
-			$label = $LANG->moduleLabels['tabs'][$moduleKey];
+			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 			if ($link && $prefix)	$link=$prefix.rawurlencode($link);
 			if ($link && !$dontLink)	{
 				$label = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$label.'</a>';	//  && !$link_sub
@@ -204,7 +203,7 @@ class alt_menu_functions {
 				$mJScmds[] = "case '".$moduleName."': \n ".$JScmd." \n break;";
 			}
 
-			$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'\');">'.htmlspecialchars($LANG->moduleLabels['tabs'][$moduleKey]).'</option>';
+			$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'\');">'.htmlspecialchars($GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey]).'</option>';
 			$label='&nbsp;<strong>'.$label.'</strong>&nbsp;';
 
 
@@ -259,26 +258,26 @@ class alt_menu_functions {
 
 					$collection[$moduleKey]['subitems'][$subKey] = array(
 						'moduleName' => $moduleName.'_'.$subName,
-						'title' => $LANG->moduleLabels['tabs'][$subKey],
+						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$subKey],
 						'onclick' => 'top.goToModule(\''.$moduleName.'_'.$subName.'\');',
 					);
 
 						// Creating image icon
-					$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$subKey],$backPath));
+					$image = @getimagesize($this->mIconFile($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey],$backPath));
 					$imageCode='';
-					$descr3_title = $LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label'];
+					$descr3_title = $GLOBALS['LANG']->moduleLabels['tabs'][$subKey].': '.$GLOBALS['LANG']->moduleLabels['labels'][$subKey.'label'];
 					if ($image)	{
-						$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$subKey],$backPath);
+						$Ifilename = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey],$backPath);
 						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]);
-						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
+						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
 						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					} else {
 						$descr3_imageCode = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/dummy_module.gif','width="14" height="12"').' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					}
 
 						// Label for submodule:
-					$label = $LANG->moduleLabels['tabs'][$subKey];
-					$label_descr = ' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'"';
+					$label = $GLOBALS['LANG']->moduleLabels['tabs'][$subKey];
+					$label_descr = ' title="'.htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey.'label']).'"';
 					$flabel = htmlspecialchars($label);
 					$origLink = $link;
 					if ($link && $prefix)	$link=$prefix.rawurlencode($link);
@@ -290,7 +289,7 @@ class alt_menu_functions {
 						// If there is a script to link to (and linking is not disabled.
 					if ($link && !$dontLink)	{
 							// For condensed mode, send &cMR parameter to frameset script.
-						if ($addJS && $BE_USER->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
+						if ($addJS && $GLOBALS['BE_USER']->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
 
 							// Command for the selector box:
 						$JScmd = '
@@ -304,7 +303,7 @@ class alt_menu_functions {
 						}
 
 							// If there is a frameset script in place:
-						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
+						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
 
 								// use special nav script from sub module, otherwise from the main module
 							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'];
@@ -347,14 +346,14 @@ class alt_menu_functions {
 					$subCode.='
 							<tr class="c-subitem-row" id="'.$moduleCSSId.'">
 								<td></td>
-								<td align="center">'.(!$BE_USER->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
+								<td align="center">'.(!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
 								<td class="c-subitem-label">'.$flabel.'</td>
 							</tr>';
 
 						// For "About modules":
-					$moduleLabel = htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']);
+					$moduleLabel = htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey.'label']);
 					$moduleLabelHtml = !empty($moduleLabel) ? '<strong>' . $moduleLabel . '</strong><br />' : '';
-					$moduleDescription = $LANG->moduleLabels['labels'][$subKey.'descr'];
+					$moduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$subKey.'descr'];
 
 					$descrCode.='
 							<tr class="c-subitem-row">
@@ -414,7 +413,7 @@ class alt_menu_functions {
 									<input type="checkbox" name="expandAll" id="expandall" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
 								</form>
 						</td>
-						<td class="c-subitem-label"><label for="expandall">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</label></td>
+						<td class="c-subitem-label"><label for="expandall">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</label></td>
 					</tr>';
 			} else {
 				$collapseAllHTML = '';
@@ -452,7 +451,7 @@ class alt_menu_functions {
 		if ($descr==2)	{
 
 				// Add admin-functions for clearing caches:
-			if ($BE_USER->isAdmin())	{
+			if ($GLOBALS['BE_USER']->isAdmin())	{
 				$functionArray = $this->adminFunctions($backPath);
 				if (count($functionArray))	{
 					$selectItems[] = '<option value=""></option>';
@@ -464,7 +463,7 @@ class alt_menu_functions {
 
 				// Logout item:
 			$selectItems[] = '<option value=""></option>';
-			$selectItems[] = '<option value="'.htmlspecialchars("top.location='logout.php';").'">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).' ]</option>';
+			$selectItems[] = '<option value="'.htmlspecialchars("top.location='logout.php';").'">[ '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).' ]</option>';
 			$final = '
 				<select name="menuselector" onchange="eval(this.options[this.selectedIndex].value);">
 					'.implode('
@@ -498,8 +497,6 @@ class alt_menu_functions {
 	 * @return	string		Result url string
 	 */
 	function getNavFramePrefix($moduleInfo, $subModuleInfo=array()) {
-		global $BE_USER;
-
 		$prefix = '';
 		$navFrameScript = $subModuleInfo['navFrameScript'] ? $subModuleInfo['navFrameScript'] : $moduleInfo['navFrameScript'];
 		$navFrameScriptParam = isset($subModuleInfo['navFrameScriptParam']) ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
@@ -507,7 +504,7 @@ class alt_menu_functions {
 			$navFrameScript = t3lib_div::resolveBackPath($navFrameScript);
 			$navFrameScript = $this->wrapLinkWithAB($navFrameScript);
 
-			if ($BE_USER->uc['condensedMode'])	{
+			if ($GLOBALS['BE_USER']->uc['condensedMode'])	{
 				$prefix=$navFrameScript.$navFrameScriptParam.'&currentSubScript=';
 			} else {
 				$prefix='alt_mod_frameset.php?'.
@@ -556,10 +553,8 @@ class alt_menu_functions {
 	 * @return	string
 	 */
 	function topButtons()	{
-		global $LANG;
-
 		$label = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
-		$out.= '<form action="logout.php" target="_top"><input type="submit" value="'.$LANG->sL($label,1).'" /></form>';
+		$out = '<form action="logout.php" target="_top"><input type="submit" value="'.$GLOBALS['LANG']->sL($label,1).'" /></form>';
 		return $out;
 	}
 
@@ -569,8 +564,6 @@ class alt_menu_functions {
 	 * @return	string
 	 */
 	function adminButtons()	{
-		global $LANG;
-
 		$functionArray = $this->adminFunctions('');
 
 		$icons=array();
@@ -588,18 +581,16 @@ class alt_menu_functions {
 	 * @return	array
 	 */
 	function adminFunctions($backPath)	{
-		global $LANG,$BE_USER,$TYPO3_CONF_VARS;
-
 		$functions=array();
 
 			// Clearing of cache-files in typo3conf/ + menu
-		if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
-			$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
+		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'])	{
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
 			$functions[]=array(
 				'id' => 'temp_CACHED',
 				'title' => $title,
 				'href' => $backPath .
-						'tce_db.php?vC=' . $BE_USER->veriCode() .
+						'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
 						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
 						'&cacheCmd=temp_CACHED' .
 						t3lib_BEfunc::getUrlToken('tceAction'),
@@ -608,11 +599,11 @@ class alt_menu_functions {
 		}
 
 			// Clear all page cache
-		$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
 		$functions[]=array(
 			'id' => 'all',
 			'title' => $title,
-			'href' => $backPath . 'tce_db.php?vC=' . $BE_USER->veriCode() .
+			'href' => $backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
 					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
 					'&cacheCmd=all' .
 					t3lib_BEfunc::getUrlToken('tceAction'),

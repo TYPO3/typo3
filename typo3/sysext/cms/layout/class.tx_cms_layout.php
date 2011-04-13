@@ -253,7 +253,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the listing
 	 */
 	function getTable_pages($id) {
-		global $TCA;
 
 		// Initializing:
 		$out = '';
@@ -335,7 +334,7 @@ class tx_cms_layout extends recordList {
 
 			// Traverse fields (as set above) in order to create header values:
 			foreach ($this->fieldArray as $field) {
-				if ($editIdList && isset($TCA['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
+				if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
 					$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=' . $field . '&disHelp=1';
 					$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), rtrim(trim($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('pages', $field))), ':'));
 					$eI = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, '')) . '" title="' . htmlspecialchars($iTitle) . '">' .
@@ -346,7 +345,7 @@ class tx_cms_layout extends recordList {
 				}
 				switch ($field) {
 					case 'title':
-						$theData[$field] = '&nbsp;<strong>' . $GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label']) . '</strong>' . $eI;
+						$theData[$field] = '&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']) . '</strong>' . $eI;
 						break;
 					case 'uid':
 						$theData[$field] = '&nbsp;<strong>ID:</strong>';
@@ -354,8 +353,12 @@ class tx_cms_layout extends recordList {
 					default:
 						if (substr($field, 0, 6) == 'table_') {
 							$f2 = substr($field, 6);
-							if ($TCA[$f2]) {
-								$theData[$field] = '&nbsp;' . t3lib_iconWorks::getSpriteIconForRecord($f2, array(), array('title' => $GLOBALS['LANG']->sL($TCA[$f2]['ctrl']['title'], 1)));
+							if ($GLOBALS['TCA'][$f2]) {
+								$theData[$field] = '&nbsp;' . t3lib_iconWorks::getSpriteIconForRecord(
+									$f2,
+									array(),
+									array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], 1))
+								);
 							}
 						} elseif (substr($field, 0, 5) == 'HITS_') {
 							$fParts = explode(':', substr($field, 5));
@@ -369,7 +372,9 @@ class tx_cms_layout extends recordList {
 									break;
 							}
 						} else {
-							$theData[$field] = '&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label'], 1) . '</strong>' . $eI;
+							$theData[$field] = '&nbsp;&nbsp;<strong>' .
+								$GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], 1) .
+								'</strong>' . $eI;
 						}
 						break;
 				}
@@ -428,8 +433,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the listing
 	 */
 	function getTable_tt_content($id) {
-		global $TCA;
-
 		$this->initializeLanguages();
 
 		// Initialize:
@@ -442,11 +445,11 @@ class tx_cms_layout extends recordList {
 
 		// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels = array();
-		foreach ($TCA['tt_content']['columns']['CType']['config']['items'] as $val) {
+		foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
 			$this->CType_labels[$val[1]] = $GLOBALS['LANG']->sL($val[0]);
 		}
 		$this->itemLabels = array();
-		foreach ($TCA['tt_content']['columns'] as $name => $val) {
+		foreach ($GLOBALS['TCA']['tt_content']['columns'] as $name => $val) {
 			$this->itemLabels[$name] = $GLOBALS['LANG']->sL($val['label']);
 		}
 
@@ -934,8 +937,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the listing
 	 */
 	function getTable_sys_note($id) {
-		global $TCA;
-
 		if (!t3lib_extMgm::isLoaded('sys_note')) {
 			return '';
 		}
@@ -945,7 +946,7 @@ class tx_cms_layout extends recordList {
 		$tree = $this->getTreeObject($id, intval($GLOBALS['SOBE']->MOD_SETTINGS['pages_levels']), $perms_clause);
 
 		$this->itemLabels = array();
-		foreach ($TCA['sys_note']['columns'] as $name => $val) {
+		foreach ($GLOBALS['TCA']['sys_note']['columns'] as $name => $val) {
 			$this->itemLabels[$name] = $GLOBALS['LANG']->sL($val['label']);
 		}
 
@@ -1293,7 +1294,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML table
 	 */
 	function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
-		global $TCA;
 
 		// Initialize:
 		$out = '';
@@ -1381,17 +1381,17 @@ class tx_cms_layout extends recordList {
 	 * @see makeOrdinaryList()
 	 */
 	function dataFields($fieldArr, $table, $row, $out = array()) {
-		global $TCA;
 
 		// Check table validity:
-		if ($TCA[$table]) {
+		if ($GLOBALS['TCA'][$table]) {
 			t3lib_div::loadTCA($table);
-			$thumbsCol = $TCA[$table]['ctrl']['thumbnail'];
+			$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 
 			// Traverse fields:
 			foreach ($fieldArr as $fieldName) {
 
-				if ($TCA[$table]['columns'][$fieldName]) { // Each field has its own cell (if configured in TCA)
+				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
+					// Each field has its own cell (if configured in TCA)
 					if ($fieldName == $thumbsCol) { // If the column is a thumbnail column:
 						$out[$fieldName] = $this->thumbCode($row, $table, $fieldName);
 					} else { // ... otherwise just render the output:
@@ -1402,8 +1402,8 @@ class tx_cms_layout extends recordList {
 
 					// Traverse fields, separated by ";" (displayed in a single cell).
 					foreach ($theFields as $fName2) {
-						if ($TCA[$table]['columns'][$fName2]) {
-							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($TCA[$table]['columns'][$fName2]['label'], 1) . '</strong>' .
+						if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
+							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], 1) . '</strong>' .
 									'&nbsp;&nbsp;' .
 									htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']), 25)) .
 									'<br />';
@@ -1434,12 +1434,10 @@ class tx_cms_layout extends recordList {
 	 * @see makeOrdinaryList()
 	 */
 	function headerFields($fieldArr, $table, $out = array()) {
-		global $TCA;
-
 		t3lib_div::loadTCA($table);
 
 		foreach ($fieldArr as $fieldName) {
-			$ll = $GLOBALS['LANG']->sL($TCA[$table]['columns'][$fieldName]['label'], 1);
+			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
 			$out[$fieldName] = '<strong>' . ($ll ? $ll : '&nbsp;') . '</strong>';
 		}
 		return $out;
@@ -1497,7 +1495,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the item
 	 */
 	function pages_drawItem($row, $fieldArr) {
-		global $TCA;
 
 		// Initialization
 		$theIcon = $this->getIcon('pages', $row);
@@ -1532,7 +1529,7 @@ class tx_cms_layout extends recordList {
 				default:
 					if (substr($field, 0, 6) == 'table_') {
 						$f2 = substr($field, 6);
-						if ($TCA[$f2]) {
+						if ($GLOBALS['TCA'][$f2]) {
 							$c = $this->numberOfRecords($f2, $row['uid']);
 							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
 						}
@@ -1638,7 +1635,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML table with the record header.
 	 */
 	function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE) {
-		global $TCA;
 
 		// Load full table description:
 		t3lib_div::loadTCA('tt_content');
@@ -1699,8 +1695,10 @@ class tx_cms_layout extends recordList {
 						'</a>';
 
 				// Hide element:
-				$hiddenField = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'];
-				if ($hiddenField && $TCA['tt_content']['columns'][$hiddenField] && (!$TCA['tt_content']['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', 'tt_content:' . $hiddenField))) {
+				$hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
+				if ($hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]
+					&& (!$GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude']
+						|| $GLOBALS['BE_USER']->check('non_exclude_fields', 'tt_content:' . $hiddenField))) {
 					if ($row[$hiddenField]) {
 						$params = '&data[tt_content][' . ($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']) . '][' . $hiddenField . ']=0';
 						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('unHide', TRUE) . '">' .
@@ -1776,8 +1774,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML
 	 */
 	function tt_content_drawItem($row, $isRTE = FALSE) {
-		global $TCA;
-
 		$out = '';
 		$outHeader = '';
 
@@ -2324,11 +2320,14 @@ class tx_cms_layout extends recordList {
 	 * @return	boolean		Returns true, if disabled.
 	 */
 	function isDisabled($table, $row) {
-		global $TCA;
 		if (
-			($TCA[$table]['ctrl']['enablecolumns']['disabled'] && $row[$TCA[$table]['ctrl']['enablecolumns']['disabled']]) ||
-			($TCA[$table]['ctrl']['enablecolumns']['starttime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME']) ||
-			($TCA[$table]['ctrl']['enablecolumns']['endtime'] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] && $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])
+			($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']])
+			|| ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'])
+			|| ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']]
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])
 		) {
 			return true;
 		}
@@ -2370,10 +2369,9 @@ class tx_cms_layout extends recordList {
 	 * @return	void
 	 */
 	function cleanTableNames() {
-		global $TCA;
 
 		// Get all table names:
-		$tableNames = array_flip(array_keys($TCA));
+		$tableNames = array_flip(array_keys($GLOBALS['TCA']));
 
 		// Unset common names:
 		unset($tableNames['pages']);
@@ -2465,8 +2463,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the box.
 	 */
 	function getPageInfoBox($rec, $edit = 0) {
-		global $LANG;
-
 		// If editing of the page properties is allowed:
 		if ($edit) {
 			$params = '&edit[pages][' . $rec['uid'] . ']=edit';
@@ -2493,25 +2489,26 @@ class tx_cms_layout extends recordList {
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
 			$groupArray = explode(',', $GLOBALS['BE_USER']->user['usergroup_cached_list']);
 			$users = t3lib_BEfunc::blindUserNames($users, $groupArray);
-			$lines[] = array($LANG->getLL('pI_crUser') . ':', htmlspecialchars($users[$rec['cruser_id']]['username']) . ' (' . $users[$rec['cruser_id']]['realName'] . ')');
+			$lines[] = array($GLOBALS['LANG']->getLL('pI_crUser') . ':', htmlspecialchars($users[$rec['cruser_id']]['username']) .
+				' (' . $users[$rec['cruser_id']]['realName'] . ')');
 		}
 
 		// Created:
 		$lines[] = array(
-			$LANG->getLL('pI_crDate') . ':',
+			$GLOBALS['LANG']->getLL('pI_crDate') . ':',
 			t3lib_BEfunc::datetime($rec['crdate']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['crdate'], $this->agePrefixes) . ')',
 		);
 
 		// Last change:
 		$lines[] = array(
-			$LANG->getLL('pI_lastChange') . ':',
+			$GLOBALS['LANG']->getLL('pI_lastChange') . ':',
 			t3lib_BEfunc::datetime($rec['tstamp']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['tstamp'], $this->agePrefixes) . ')',
 		);
 
 		// Last change of content:
 		if ($rec['SYS_LASTCHANGED']) {
 			$lines[] = array(
-				$LANG->getLL('pI_lastChangeContent') . ':',
+				$GLOBALS['LANG']->getLL('pI_lastChangeContent') . ':',
 				t3lib_BEfunc::datetime($rec['SYS_LASTCHANGED']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['SYS_LASTCHANGED'], $this->agePrefixes) . ')',
 			);
 		}
@@ -2539,8 +2536,9 @@ class tx_cms_layout extends recordList {
 				$rrow2 = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
 				$lines[] = '';
-				$lines[] = array($LANG->getLL('pI_hitsPeriod') . ':', t3lib_BEfunc::date($rrow2[0]) . ' - ' . t3lib_BEfunc::date($rrow2[1]) . ' (' . t3lib_BEfunc::calcAge($rrow2[1] - $rrow2[0], $this->agePrefixes) . ')');
-				$lines[] = array($LANG->getLL('pI_hitsTotal') . ':', $rrow2[0]);
+				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsPeriod') . ':', t3lib_BEfunc::date($rrow2[0]) . ' - ' .
+					t3lib_BEfunc::date($rrow2[1]) . ' (' . t3lib_BEfunc::calcAge($rrow2[1] - $rrow2[0], $this->agePrefixes) . ')');
+				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsTotal') . ':', $rrow2[0]);
 
 
 				// Last 10 days
@@ -2567,7 +2565,7 @@ class tx_cms_layout extends recordList {
 						<tr>' . implode('', $headerH) . '</tr>
 						<tr>' . implode('', $contentH) . '</tr>
 					</table>';
-				$lines[] = array($LANG->getLL('pI_hits10days') . ':', $hitTable, 1);
+				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits10days') . ':', $hitTable, 1);
 
 
 				// Last 24 hours
@@ -2595,7 +2593,7 @@ class tx_cms_layout extends recordList {
 						<tr>' . implode('', $headerH) . '</tr>
 						<tr>' . implode('', $contentH) . '</tr>
 					</table>';
-				$lines[] = array($LANG->getLL('pI_hits24hours') . ':', $hitTable, 1);
+				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits24hours') . ':', $hitTable, 1);
 			}
 		}
 
@@ -2644,7 +2642,6 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML output.
 	 */
 	function getTableMenu($id) {
-		global $TCA;
 
 		// Initialize:
 		$this->activeTables = array();
@@ -2676,14 +2673,20 @@ class tx_cms_layout extends recordList {
 					// Add row to menu:
 					$out .= '
 					<td><a href="#' . $tName . '"></a>' .
-							t3lib_iconWorks::getSpriteIconForRecord($tName, Array(), array('title' => $GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'], 1))) .
-							'</td>';
+							t3lib_iconWorks::getSpriteIconForRecord(
+								$tName,
+								array(),
+								array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1))
+							) . '</td>';
 
 					// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
 					$this->activeTables[$tName] =
-							t3lib_iconWorks::getSpriteIconForRecord($tName, Array(), array('title' => $GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'], 1) . ': ' . $c . ' ' . $GLOBALS['LANG']->getLL('records', 1))) .
-									'&nbsp;' .
-									$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'], 1);
+							t3lib_iconWorks::getSpriteIconForRecord(
+								$tName,
+								array(),
+								array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1) . ': ' . $c . ' ' . $GLOBALS['LANG']->getLL('records', 1))
+							) .
+							'&nbsp;' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1);
 				}
 			}
 		}

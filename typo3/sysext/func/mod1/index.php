@@ -87,7 +87,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
+		global $LANG,$BACK_PATH;
 
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
@@ -179,7 +179,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		global $BACK_PATH;
 
 		$buttons = array(
 			'csh' => '',
@@ -199,7 +199,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				">' .	t3lib_iconWorks::getSpriteIcon('actions-document-view') . '</a>';
 
 				// Shortcut
-			if ($BE_USER->mayMakeShortcut())	{
+			if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 

@@ -4723,7 +4723,7 @@ final class t3lib_div {
 
 
 	/**
-	 * Loads the $TCA (Table Configuration Array) for the $table
+	 * Loads the $GLOBALS['TCA'] (Table Configuration Array) for the $table
 	 *
 	 * Requirements:
 	 * 1) must be configured table (the ctrl-section configured),
@@ -4735,12 +4735,12 @@ final class t3lib_div {
 	 *
 	 * Usage: 84
 	 *
-	 * @param	string		Table name for which to load the full TCA array part into the global $TCA
+	 * @param	string		Table name for which to load the full TCA array part into $GLOBALS['TCA']
 	 * @return	void
 	 */
 	public static function loadTCA($table) {
+			//needed for inclusion of the dynamic config files.
 		global $TCA;
-
 		if (isset($TCA[$table])) {
 			$tca = &$TCA[$table];
 			if (!$tca['columns']) {

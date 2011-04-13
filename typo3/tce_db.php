@@ -108,7 +108,6 @@ class SC_tce_db {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER;
 
 			// GPvars:
 		$this->flags = t3lib_div::_GP('flags');
@@ -130,17 +129,18 @@ class SC_tce_db {
 		$this->tce->generalComment = $this->generalComment;
 
 			// Configuring based on user prefs.
-		if ($BE_USER->uc['recursiveDelete'])	{
+		if ($GLOBALS['BE_USER']->uc['recursiveDelete']) {
 			$this->tce->deleteTree = 1;	// True if the delete Recursive flag is set.
 		}
-		if ($BE_USER->uc['copyLevels'])	{
-			$this->tce->copyTree = t3lib_div::intInRange($BE_USER->uc['copyLevels'],0,100);	// Set to number of page-levels to copy.
+		if ($GLOBALS['BE_USER']->uc['copyLevels']) {
+				// Set to number of page-levels to copy.
+			$this->tce->copyTree = t3lib_div::intInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
 		}
-		if ($BE_USER->uc['neverHideAtCopy'])	{
+		if ($GLOBALS['BE_USER']->uc['neverHideAtCopy']) {
 			$this->tce->neverHideAtCopy = 1;
 		}
 
-		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
+		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
@@ -184,7 +184,6 @@ class SC_tce_db {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$TYPO3_CONF_VARS;
 
 			// LOAD TCEmain with data and cmd arrays:
 		$this->tce->start($this->data,$this->cmd);
@@ -193,7 +192,7 @@ class SC_tce_db {
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 			$this->tce->log('',0,0,0,1,'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!',1,array($refInfo['host'],$httpHost));
 		} else {
 				// Register uploaded files

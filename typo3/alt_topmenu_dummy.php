@@ -80,10 +80,9 @@ class SC_alt_topmenu_dummy {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES,$TBE_TEMPLATE;
 
 			// Remember if noMenuMode is set to 'icons' or not because the hook will be ignored in this case.
-		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{ $iconMenuMode = true; }
+		if (!strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons'))	{ $iconMenuMode = true; }
 
 		$contentArray=array();
 
@@ -112,20 +111,20 @@ class SC_alt_topmenu_dummy {
 				// Loading the modules for this backend user:
 			$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 			$loadModules->observeWorkspaces = TRUE;
-			$loadModules->load($TBE_MODULES);
+			$loadModules->load($GLOBALS['TBE_MODULES']);
 
 				// Creating menu object:
 			$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
 				// Start page
-			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
-			$TBE_TEMPLATE->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
+			$GLOBALS['TBE_TEMPLATE']->bodyTagId.= '-iconmenu';
+			$GLOBALS['TBE_TEMPLATE']->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
 
-			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
+			$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('Top frame icon menu');
 
 			if ($iconMenuMode)	{
 				$contentArray[0][] = '<td class="c-menu">'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>';
-				if ($BE_USER->isAdmin())	{
+				if ($GLOBALS['BE_USER']->isAdmin())	{
 					$contentArray[1][] = '<td class="c-admin">'.$alt_menuObj->adminButtons().'</td>';
 				}
 				$contentArray[2][] = '<td class="c-logout">'.$alt_menuObj->topButtons().'</td>';
@@ -149,7 +148,7 @@ class SC_alt_topmenu_dummy {
 				</table>';
 
 				// End page:
-			$this->content.=$TBE_TEMPLATE->endPage();
+			$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 		} else {
 				// Make dummy content:
 			$this->dummyContent();

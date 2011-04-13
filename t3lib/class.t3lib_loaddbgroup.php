@@ -801,8 +801,6 @@ class t3lib_loadDBGroup {
 	 * @see t3lib_transferdata::renderRecord()
 	 */
 	function readyForInterface() {
-		global $TCA;
-
 		if (!is_array($this->itemArray)) {
 			return FALSE;
 		}
@@ -813,7 +811,7 @@ class t3lib_loadDBGroup {
 
 		foreach ($this->itemArray as $key => $val) {
 			$theRow = $this->results[$val['table']][$val['id']];
-			if ($theRow && is_array($TCA[$val['table']])) {
+			if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
 				$label = t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle($val['table'], $theRow)), $titleLen);
 				$label = ($label) ? $label : '[...]';
 				$output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));

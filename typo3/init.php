@@ -429,6 +429,8 @@ $FILEMOUNTS = $BE_USER->returnFilemounts();
 // *******************************
 // $GLOBALS['LANG'] initialisation
 // *******************************
+// $GLOBALS needed here ?? we still are in the global scope.
+
 $GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 $GLOBALS['LANG']->init($BE_USER->uc['lang']);
 

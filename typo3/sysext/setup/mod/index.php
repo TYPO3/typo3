@@ -156,13 +156,11 @@ class SC_mod_user_setup_index {
 	 * bottom of document.
 	 */
 	public function storeIncomingData() {
-		/* @var $BE_USER t3lib_beUserAuth */
-		global $BE_USER;
 
 			// First check if something is submittet in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
-		$beUserId = $BE_USER->user['uid'];
+		$beUserId = $GLOBALS['BE_USER']->user['uid'];
 		$storeRec = array();
 		$fieldList = $this->getFieldsFromShowItem();
 
@@ -172,28 +170,28 @@ class SC_mod_user_setup_index {
 			)
 		) {
 				// UC hashed before applying changes
-			$save_before = md5(serialize($BE_USER->uc));
+			$save_before = md5(serialize($GLOBALS['BE_USER']->uc));
 
 				// PUT SETTINGS into the ->uc array:
 
 				// reload left frame when switching BE language
-			if (isset($d['lang']) && ($d['lang'] != $BE_USER->uc['lang'])) {
+			if (isset($d['lang']) && ($d['lang'] != $GLOBALS['BE_USER']->uc['lang'])) {
 				$this->languageUpdate = true;
 			}
 
 				// reload pagetree if the title length is changed
-			if (isset($d['titleLen']) && ($d['titleLen'] !== $BE_USER->uc['titleLen'])) {
+			if (isset($d['titleLen']) && ($d['titleLen'] !== $GLOBALS['BE_USER']->uc['titleLen'])) {
 				$this->pagetreeNeedsRefresh = TRUE;
 			}
 
 			if ($d['setValuesToDefault']) {
 					// If every value should be default
-				$BE_USER->resetUC();
+				$GLOBALS['BE_USER']->resetUC();
 				$this->settingsAreResetToDefault = TRUE;
 			} elseif ($d['clearSessionVars']) {
-				foreach ($BE_USER->uc as $key => $value) {
+				foreach ($GLOBALS['BE_USER']->uc as $key => $value) {
 					if (!isset($columns[$key])) {
-						unset ($BE_USER->uc[$key]);
+						unset ($GLOBALS['BE_USER']->uc[$key]);
 					}
 				}
 				$this->tempDataIsCleared = TRUE;
@@ -206,16 +204,16 @@ class SC_mod_user_setup_index {
 					}
 					if ($config['table']) {
 						if ($config['table'] == 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
-							if (!isset($config['access']) || $this->checkAccess($config) && $BE_USER->user[$field] !== $d['be_users'][$field]) {
+							if (!isset($config['access']) || $this->checkAccess($config) && $GLOBALS['BE_USER']->user[$field] !== $d['be_users'][$field]) {
 								$storeRec['be_users'][$beUserId][$field] = $d['be_users'][$field];
-								$BE_USER->user[$field] = $d['be_users'][$field];
+								$GLOBALS['BE_USER']->user[$field] = $d['be_users'][$field];
 							}
 						}
 					}
 					if ($config['type'] == 'check') {
-						$BE_USER->uc[$field] = isset($d[$field]) ? 1 : 0;
+						$GLOBALS['BE_USER']->uc[$field] = isset($d[$field]) ? 1 : 0;
 					} else {
-						$BE_USER->uc[$field] = htmlspecialchars($d[$field]);
+						$GLOBALS['BE_USER']->uc[$field] = htmlspecialchars($d[$field]);
 					}
 				}
 
@@ -227,12 +225,12 @@ class SC_mod_user_setup_index {
 				$passwordIsConfirmed = ($this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2']);
 
 					// Update the real name:
-				if ($be_user_data['realName'] !== $BE_USER->user['realName']) {
-					$BE_USER->user['realName'] = $storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80);
+				if ($be_user_data['realName'] !== $GLOBALS['BE_USER']->user['realName']) {
+					$GLOBALS['BE_USER']->user['realName'] = $storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80);
 				}
 					// Update the email address:
-				if ($be_user_data['email'] !== $BE_USER->user['email']) {
-					$BE_USER->user['email'] = $storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80);
+				if ($be_user_data['email'] !== $GLOBALS['BE_USER']->user['email']) {
+					$GLOBALS['BE_USER']->user['email'] = $storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80);
 				}
 					// Update the password:
 				if ($passwordIsConfirmed) {
@@ -243,17 +241,18 @@ class SC_mod_user_setup_index {
 				$this->saveData = TRUE;
 			}
 
-			$BE_USER->overrideUC();	// Inserts the overriding values.
+				// Inserts the overriding values.
+			$GLOBALS['BE_USER']->overrideUC();
 
-			$save_after = md5(serialize($BE_USER->uc));
+			$save_after = md5(serialize($GLOBALS['BE_USER']->uc));
 			if ($save_before!=$save_after)	{	// If something in the uc-array of the user has changed, we save the array...
-				$BE_USER->writeUC($BE_USER->uc);
-				$BE_USER->writelog(254, 1, 0, 1, 'Personal settings changed', array());
+				$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+				$GLOBALS['BE_USER']->writelog(254, 1, 0, 1, 'Personal settings changed', array());
 				$this->setupIsUpdated = TRUE;
 			}
 				// If the temporary data has been cleared, lets make a log note about it
 			if ($this->tempDataIsCleared) {
-				$BE_USER->writelog(254, 1, 0, 1, $GLOBALS['LANG']->getLL('tempDataClearedLog'), array());
+				$GLOBALS['BE_USER']->writelog(254, 1, 0, 1, $GLOBALS['LANG']->getLL('tempDataClearedLog'), array());
 			}
 
 				// Persist data if something has changed:
@@ -261,7 +260,7 @@ class SC_mod_user_setup_index {
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
-				$tce->start($storeRec,Array(),$BE_USER);
+				$tce->start($storeRec, array(), $GLOBALS['BE_USER']);
 				$tce->admin = 1;	// This is so the user can actually update his user record.
 				$tce->bypassWorkspaceRestrictions = TRUE;	// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
 				$tce->process_datamap();
@@ -339,7 +338,7 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES;
+		global $LANG;
 
 			// file creation / delete
 		if ($this->isAdmin) {
@@ -419,9 +418,10 @@ class SC_mod_user_setup_index {
 			// Load available backend modules
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = true;
-		$this->loadModules->load($TBE_MODULES);
+		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 
-		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
+		$this->content .= $this->doc->header($LANG->getLL('UserSettings') . ' - '.$GLOBALS['BE_USER']->user['realName'] .
+			' ['.$GLOBALS['BE_USER']->user['username'] . ']');
 
 			// show if setup was saved
 		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
@@ -480,7 +480,7 @@ class SC_mod_user_setup_index {
 			// Submit and reset buttons
 		$this->content .= $this->doc->spacer(20);
 		$this->content .= $this->doc->section('',
-			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
+			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $GLOBALS['BACK_PATH']) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="hidden" name="formToken" value="' . $formToken . '" />
 			<input type="submit" name="data[save]" value="'.$LANG->getLL('save').'" />
@@ -881,7 +881,6 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	public function simulateUser()	{
-		global $BE_USER,$LANG,$BACK_PATH;
 
 		// *******************************************************************************
 		// If admin, allow simulation of another user
@@ -889,14 +888,14 @@ class SC_mod_user_setup_index {
 		$this->simUser = 0;
 		$this->simulateSelector = '';
 		unset($this->OLD_BE_USER);
-		if ($BE_USER->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$this->simUser = intval(t3lib_div::_GP('simUser'));
 
 				// Make user-selector:
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', t3lib_BEfunc::BEenableFields('be_users'));
 			$opt = array();
 			foreach ($users as $rr) {
-				if ($rr['uid'] != $BE_USER->user['uid']) {
+				if ($rr['uid'] != $GLOBALS['BE_USER']->user['uid']) {
 					$opt[] = '<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
 				}
 			}
@@ -906,8 +905,9 @@ class SC_mod_user_setup_index {
 		}
 
 		if ($this->simUser>0)	{	// This can only be set if the previous code was executed.
-			$this->OLD_BE_USER = $BE_USER;	// Save old user...
-			unset($BE_USER);	// Unset current
+				// Save old user...
+			$this->OLD_BE_USER = $GLOBALS['BE_USER'];
+			unset($GLOBALS['BE_USER']);	// Unset current
 
 			$BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
 			$BE_USER->OS = TYPO3_OS;
