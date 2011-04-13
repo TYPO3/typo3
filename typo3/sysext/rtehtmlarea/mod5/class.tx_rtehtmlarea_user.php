@@ -49,13 +49,11 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER, $LANG, $BACK_PATH;
-
 		$this->editorNo = t3lib_div::_GP('editorNo');
 
 		$this->siteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 		$this->doc->bodyTagAdditions = 'onload="Init();"';
 		$this->doc->form = '
@@ -81,7 +79,7 @@ class tx_rtehtmlarea_user {
 				if(editor.hasSelectedText()) {
 					editor.surroundHTML(wrap1,wrap2);
 				} else {
-					alert('.$LANG->JScharCode($LANG->getLL('noTextSelection')).');
+					alert(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('noTextSelection')) . ');
 				}
 				if(!noHide) plugin.close();
 			};
@@ -101,11 +99,11 @@ class tx_rtehtmlarea_user {
 
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 
-		$this->modData = $BE_USER->getModuleData('user.php','ses');
+		$this->modData = $GLOBALS['BE_USER']->getModuleData('user.php', 'ses');
 		if (t3lib_div::_GP('OC_key'))	{
 			$parts = explode('|',t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
-			$BE_USER->pushModuleData('user.php',$this->modData);
+			$GLOBALS['BE_USER']->pushModuleData('user.php', $this->modData);
 		}
 	}
 
@@ -166,12 +164,11 @@ class tx_rtehtmlarea_user {
 	 * @return	[type]		...
 	 */
 	function main_user($openKeys)	{
-		global $LANG, $BACK_PATH, $BE_USER;
 			// Starting content:
-		$content.=$this->doc->startPage($LANG->getLL('Insert Custom Element',1));
+		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Custom Element', 1));
 
 		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
-		$RTEsetup = $BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
 		if (is_array($thisConfig['userElements.']))	{
@@ -202,7 +199,7 @@ class tx_rtehtmlarea_user {
 											$mArray[$ks."."]=array(
 												'content' => '<img src="'.$this->siteUrl.$v['path'].$filename.'" />',
 												'_icon' => '<img src="'.$this->siteUrl.$v['path'].$filename.'" '.$iInfo[3].' />',
-												'description' => $LANG->getLL('filesize').': '.str_replace('&nbsp;',' ',t3lib_div::formatSize(@filesize(PATH_site.$v['path'].$filename))).', '.$LANG->getLL('pixels',1).': '.$iInfo[0].'x'.$iInfo[1]
+												'description' => $GLOBALS['LANG']->getLL('filesize') . ': ' . str_replace('&nbsp;', ' ', t3lib_div::formatSize(@filesize(PATH_site . $v['path'] . $filename))) . ', ' . $GLOBALS['LANG']->getLL('pixels', 1) . ': ' . $iInfo[0] . 'x' . $iInfo[1]
 											);
 											$c++;
 										}
@@ -222,11 +219,11 @@ class tx_rtehtmlarea_user {
 							if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
 								$title = trim($v[$k2i]);
 								if (!$title)	{
-									$title='['.$LANG->getLL('noTitle',1).']';
+									$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 								} else {
-									$title=$LANG->sL($title,1);
+									$title = $GLOBALS['LANG']->sL($title, 1);
 								}
-								$description = $LANG->sL($v[$k2i.'.']['description'],1).'<br />';
+								$description = $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], 1) . '<br />';
 								if (!$v[$k2i.'.']['dontInsertSiteUrl'])	$v[$k2i.'.']['content'] = str_replace('###_URL###',$this->siteUrl,$v[$k2i.'.']['content']);
 
 								$logo = $v[$k2i.'.']['_icon'] ? $v[$k2i.'.']['_icon'] : '';
@@ -235,18 +232,18 @@ class tx_rtehtmlarea_user {
 								switch((string)$v[$k2i.'.']['mode'])	{
 									case 'wrap':
 										$wrap = explode('|',$v[$k2i.'.']['content']);
-										$onClickEvent='wrapHTML(' . $LANG->JScharCode($wrap[0]) . ',' . $LANG->JScharCode($wrap[1]) . ',false);';
+										$onClickEvent = 'wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
 									break;
 									case 'processor':
 										$script = trim($v[$k2i.'.']['submitToScript']);
 										if (substr($script,0,4)!='http') $script = $this->siteUrl.$script;
 										if ($script)	{
-											$onClickEvent='processSelection(' . $LANG->JScharCode($script) . ');';
+											$onClickEvent='processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
 										}
 									break;
 									case 'insert':
 									default:
-										$onClickEvent='insertHTML(' . $LANG->JScharCode($v[$k2i . '.']['content']) . ');';
+										$onClickEvent='insertHTML(' . $GLOBALS['LANG']->JScharCode($v[$k2i . '.']['content']) . ');';
 									break;
 								}
 								$A=array('<a href="#" onClick="'.$onClickEvent.'return false;">','</a>');
@@ -270,12 +267,12 @@ class tx_rtehtmlarea_user {
 				$title = trim($thisConfig['userElements.'][$k]);
 				$openK = $k;
 				if (!$title)	{
-					$title='['.$LANG->getLL('noTitle',1).']';
+					$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 				} else {
-					$title=$LANG->sL($title,1);
+					$title = $GLOBALS['LANG']->sL($title, 1);
 				}
-				//$lines[]='<tr><td colspan="3" class="bgColor5"><a href="'.t3lib_div::linkThisScript(array('OC_key' => ($openKeys[$openK]?'C|':'O|').$openK, 'editorNo' => $this->editorNo)).'" title="'.$LANG->getLL('expand',1).'"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$LANG->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
-				$lines[]='<tr><td colspan="3" class="bgColor5"><a href="#" title="'.$LANG->getLL('expand',1).'" onClick="jumpToUrl(\'?OC_key=' .($openKeys[$openK]?'C|':'O|').$openK. '\');return false;"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$LANG->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
+				//$lines[]='<tr><td colspan="3" class="bgColor5"><a href="'.t3lib_div::linkThisScript(array('OC_key' => ($openKeys[$openK]?'C|':'O|').$openK, 'editorNo' => $this->editorNo)).'" title="'.$GLOBALS['LANG']->getLL('expand',1).'"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
+				$lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" onClick="jumpToUrl(\'?OC_key=' . ($openKeys[$openK] ? 'C|' : 'O|') . $openK .  '\');return false;"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/' . ($openKeys[$openK] ? 'minus' : 'plus') . 'bullet.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" /><strong>' . $title . '</strong></a></td></tr>';
 				$lines[]=$v;
 			}
 

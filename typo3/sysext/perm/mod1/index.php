@@ -229,13 +229,11 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function menuConfig() {
-		global $LANG;
-
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
 			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
-		$temp = $LANG->getLL('levels');
+		$temp = $GLOBALS['LANG']->getLL('levels');
 		$this->MOD_MENU = array(
 			'depth' => array(
 				1 => '1 '.$temp,
@@ -245,8 +243,8 @@ class SC_mod_web_perm_index {
 				10 => '10 '.$temp
 			),
 			'mode' => array(
-				0 => $LANG->getLL('user_overview'),
-				'perms' => $LANG->getLL('permissions')
+				0 => $GLOBALS['LANG']->getLL('user_overview'),
+				'perms' => $GLOBALS['LANG']->getLL('permissions')
 			)
 		);
 
@@ -260,21 +258,19 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function main() {
-		global $BE_USER, $LANG;
-
 			// Access check...
 			// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo);
 
 			// Checking access:
-		if (($this->id && $access) || ($BE_USER->isAdmin() && !$this->id)) {
-			if ($BE_USER->isAdmin() && !$this->id)	{
+		if (($this->id && $access) || ($GLOBALS['BE_USER']->isAdmin() && !$this->id)) {
+			if ($GLOBALS['BE_USER']->isAdmin() && !$this->id) {
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
 
 				// This decides if the editform can and will be drawn:
-			$this->editingAllowed = ($this->pageinfo['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());
+			$this->editingAllowed = ($this->pageinfo['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin());
 			$this->edit = $this->edit && $this->editingAllowed;
 
 				// If $this->edit then these functions are called in the end of the page...
@@ -287,7 +283,7 @@ class SC_mod_web_perm_index {
 			}
 
 				// Draw the HTML page header.
-			$this->content.=$this->doc->header($LANG->getLL('permissions') . ($this->edit ? ': '.$LANG->getLL('Edit') : ''));
+			$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('permissions') . ($this->edit ? ': ' . $GLOBALS['LANG']->getLL('Edit') : ''));
 			$this->content.=$this->doc->spacer(5);
 
 			$vContent = $this->doc->getVersionSelector($this->id,1);
@@ -312,11 +308,11 @@ class SC_mod_web_perm_index {
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 				// If no access or if ID == zero
-			$this->content =$this->doc->header($LANG->getLL('permissions'));
+			$this->content =$this->doc->header($GLOBALS['LANG']->getLL('permissions'));
 		}
 			// Renders the module page
 		$this->content = $this->doc->render(
-			$LANG->getLL('permissions'),
+			$GLOBALS['LANG']->getLL('permissions'),
 			$this->content
 		);
 	}
@@ -388,14 +384,12 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function doEdit() {
-		global $BE_USER,$LANG;
-
-		if ($BE_USER->workspace != 0) {
+		if ($GLOBALS['BE_USER']->workspace != 0) {
 				// Adding section with the permission setting matrix:
 			$lockedMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$LANG->getLL('WorkspaceWarningText'),
-				$LANG->getLL('WorkspaceWarning'),
+				$GLOBALS['LANG']->getLL('WorkspaceWarningText'),
+				$GLOBALS['LANG']->getLL('WorkspaceWarning'),
 				t3lib_FlashMessage::WARNING
 			);
 			t3lib_FlashMessageQueue::addMessage($lockedMessage);
@@ -436,7 +430,7 @@ class SC_mod_web_perm_index {
 				'.$options.'
 			</select>';
 
-		$this->content.=$this->doc->section($LANG->getLL('Owner').':',$selector);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Owner') . ':', $selector);
 
 
 			// Group selector:
@@ -467,21 +461,21 @@ class SC_mod_web_perm_index {
 			</select>';
 
 		$this->content.=$this->doc->divider(5);
-		$this->content.=$this->doc->section($LANG->getLL('Group').':',$selector);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Group') . ':', $selector);
 
 			// Permissions checkbox matrix:
 		$code='
 			<table border="0" cellspacing="2" cellpadding="0" id="typo3-permissionMatrix">
 				<tr>
 					<td></td>
-					<td class="bgColor2">'.str_replace(' ','<br />',$LANG->getLL('1',1)).'</td>
-					<td class="bgColor2">'.str_replace(' ','<br />',$LANG->getLL('16',1)).'</td>
-					<td class="bgColor2">'.str_replace(' ','<br />',$LANG->getLL('2',1)).'</td>
-					<td class="bgColor2">'.str_replace(' ','<br />',$LANG->getLL('4',1)).'</td>
-					<td class="bgColor2">'.str_replace(' ','<br />',$LANG->getLL('8',1)).'</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', 1)) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">'.$LANG->getLL('Owner',1).'</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Owner', 1) . '</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_user',1).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_user',5).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_user',2).'</td>
@@ -489,7 +483,7 @@ class SC_mod_web_perm_index {
 					<td class="bgColor-20">'.$this->printCheckBox('perms_user',4).'</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">'.$LANG->getLL('Group',1).'</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Group', 1) . '</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_group',1).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_group',5).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_group',2).'</td>
@@ -497,7 +491,7 @@ class SC_mod_web_perm_index {
 					<td class="bgColor-20">'.$this->printCheckBox('perms_group',4).'</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">'.$LANG->getLL('Everybody',1).'</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Everybody', 1) . '</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_everybody',1).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_everybody',5).'</td>
 					<td class="bgColor-20">'.$this->printCheckBox('perms_everybody',2).'</td>
@@ -511,29 +505,29 @@ class SC_mod_web_perm_index {
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_group]" value="'.$this->pageinfo['perms_group'].'" />
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_everybody]" value="'.$this->pageinfo['perms_everybody'].'" />
 			'.$this->getRecursiveSelect($this->id,$this->perms_clause).'
-			<input type="submit" name="submit" value="'.$LANG->getLL('Save',1).'" />'.
-			'<input type="submit" value="'.$LANG->getLL('Abort',1).'" onclick="'.htmlspecialchars('jumpToUrl(\'index.php?id='.$this->id.'\'); return false;').'" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />'.
+			'<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars('jumpToUrl(\'index.php?id=' . $this->id . '\'); return false;') . '" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
 		' . t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 			// Adding section with the permission setting matrix:
 		$this->content.=$this->doc->divider(5);
-		$this->content.=$this->doc->section($LANG->getLL('permissions').':',$code);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('permissions') . ':', $code);
 
 			// CSH for permissions setting
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module_setting', $GLOBALS['BACK_PATH'], '<br /><br />');
 
 			// Adding help text:
-		if ($BE_USER->uc['helpText'])	{
+		if ($GLOBALS['BE_USER']->uc['helpText']) {
 			$this->content.=$this->doc->divider(20);
-			$legendText = '<strong>'.$LANG->getLL('1',1).'</strong>: '.$LANG->getLL('1_t',1);
-			$legendText.= '<br /><strong>'.$LANG->getLL('16',1).'</strong>: '.$LANG->getLL('16_t',1);
-			$legendText.= '<br /><strong>'.$LANG->getLL('2',1).'</strong>: '.$LANG->getLL('2_t',1);
-			$legendText.= '<br /><strong>'.$LANG->getLL('4',1).'</strong>: '.$LANG->getLL('4_t',1);
-			$legendText.= '<br /><strong>'.$LANG->getLL('8',1).'</strong>: '.$LANG->getLL('8_t',1);
+			$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
 
-			$code=$legendText.'<br /><br />'.$LANG->getLL('def',1);
-			$this->content.=$this->doc->section($LANG->getLL('Legend',1).':',$code);
+			$code = $legendText . '<br /><br />' . $GLOBALS['LANG']->getLL('def', 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', 1) . ':', $code);
 		}
 	}
 
@@ -544,10 +538,8 @@ class SC_mod_web_perm_index {
 	 * @return	void
 	 */
 	public function notEdit() {
-		global $BE_USER,$LANG,$BACK_PATH;
-
 			// Get usernames and groupnames: The arrays we get in return contains only 1) users which are members of the groups of the current user, 2) groups that the current user is member of
-		$beGroupKeys = $BE_USER->userGroupsUID;
+		$beGroupKeys = $GLOBALS['BE_USER']->userGroupsUID;
 		$beUserArray = t3lib_BEfunc::getUserNames();
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$beUserArray = t3lib_BEfunc::blindUserNames($beUserArray,$beGroupKeys,0);
@@ -562,7 +554,7 @@ class SC_mod_web_perm_index {
 
 
 			// Selector for depth:
-		$code.=$LANG->getLL('Depth').': ';
+		$code = $GLOBALS['LANG']->getLL('Depth') . ': ';
 		$code.=t3lib_BEfunc::getFuncMenu($this->id,'SET[depth]',$this->MOD_SETTINGS['depth'],$this->MOD_MENU['depth']);
 		$this->content.=$this->doc->section('',$code);
 		$this->content.=$this->doc->spacer(5);
@@ -595,24 +587,24 @@ class SC_mod_web_perm_index {
 			$code.='
 				<tr class="t3-row-header">
 					<td colspan="2">&nbsp;</td>
-					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td>' . $LANG->getLL('Owner', TRUE) . '</td>
-					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $LANG->getLL('Group', TRUE) . '</td>
-					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $LANG->getLL('Everybody', TRUE) . '</td>
-					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
 				</tr>
 			';
 		} else {
 			$code.='
 				<tr class="t3-row-header">
 					<td colspan="2">&nbsp;</td>
-					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center" nowrap="nowrap">' . $LANG->getLL('User', TRUE) . ': ' . htmlspecialchars($BE_USER->user['username']) . '</td>
-					' . (!$BE_USER->isAdmin() ? '<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>' : '') . '
+					<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('User', TRUE) . ': ' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '<td><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>' : '') . '
 				</tr>';
 		}
 
@@ -641,7 +633,7 @@ class SC_mod_web_perm_index {
 			}
 
 				// Seeing if editing of permissions are allowed for that page:
-			$editPermsAllowed = ($data['row']['perms_userid'] == $BE_USER->user['uid'] || $BE_USER->isAdmin());
+			$editPermsAllowed = ($data['row']['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin());
 
 
 				// First column:
@@ -653,7 +645,7 @@ class SC_mod_web_perm_index {
 			if ($editPermsAllowed && $pageId) {
 				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId).'&return_id='.$this->id.'&edit=1';
 				$cells[]='
-					<td'.$bgCol.'><a href="'.htmlspecialchars($aHref).'" title="'.$LANG->getLL('ch_permissions',1).'">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a></td>';
+					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
 				$cells[]='
 					<td'.$bgCol.'></td>';
@@ -662,31 +654,31 @@ class SC_mod_web_perm_index {
 				// Rest of columns (depending on mode)
 			if ($this->MOD_SETTINGS['mode'] == 'perms') {
 				$cells[]='
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_user'], $pageId, 'user').' '.$userName : '').'</td>
 
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_group'], $pageId, 'group').' '.$groupName : '').'</td>
 
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? ' '.SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '').'</td>
 
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'1\');" title="'.$LANG->getLL('EditLock_descr',1).'">' .
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' .
 						t3lib_iconWorks::getSpriteIcon('status-warning-lock') . '</a></span>' : ( $pageId === 0 ? '' : '<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')).'</td>
 				';
 			} else {
 				$cells[]='
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
 
-				$bgCol = ($BE_USER->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol);
+				$bgCol = ($GLOBALS['BE_USER']->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol);
 
 				// FIXME $owner undefined
 				$cells[]='
-					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($BE_USER->calcPerms($data['row']), $pageId, 'user') : '').'</td>
-					'.(!$BE_USER->isAdmin()?'
-					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $LANG->getLL('EditLock_descr', TRUE))) : '').'</td>
+					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($GLOBALS['BE_USER']->calcPerms($data['row']), $pageId, 'user') : '').'</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $GLOBALS['LANG']->getLL('EditLock_descr', TRUE))) : '').'</td>
 					':'');
 				$bgCol = $lE_bgCol;
 			}
@@ -709,28 +701,28 @@ class SC_mod_web_perm_index {
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
 
 			// Creating legend table:
-		$legendText = '<strong>'.$LANG->getLL('1',1).'</strong>: '.$LANG->getLL('1_t',1);
-		$legendText.= '<br /><strong>'.$LANG->getLL('16',1).'</strong>: '.$LANG->getLL('16_t',1);
-		$legendText.= '<br /><strong>'.$LANG->getLL('2',1).'</strong>: '.$LANG->getLL('2_t',1);
-		$legendText.= '<br /><strong>'.$LANG->getLL('4',1).'</strong>: '.$LANG->getLL('4_t',1);
-		$legendText.= '<br /><strong>'.$LANG->getLL('8',1).'</strong>: '.$LANG->getLL('8_t',1);
+		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
 
 		$code='<table border="0" id="typo3-legendTable">
 			<tr>
 				<td valign="top">
-					<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
+					<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
 				</td>
 				<td valign="top" nowrap="nowrap">'.$legendText.'</td>
 			</tr>
 		</table>';
-		$code.='<div id="perm-legend">'.$LANG->getLL('def',1);
-		$code.='<br /><br />'.t3lib_iconWorks::getSpriteIcon('status-status-permission-granted').': '.$LANG->getLL('A_Granted', 1);
-		$code.='<br />'.t3lib_iconWorks::getSpriteIcon('status-status-permission-denied').': '.$LANG->getLL('A_Denied', 1);
+		$code.='<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def',1 );
+		$code.='<br /><br />' . t3lib_iconWorks::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', 1);
+		$code.='<br />' . t3lib_iconWorks::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', 1);
 		$code.='</div>';
 
 			// Adding section with legend code:
 		$this->content.=$this->doc->spacer(20);
-		$this->content.=$this->doc->section($LANG->getLL('Legend').':',$code,0,1);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('Legend') . ':', $code, 0, 1);
 	}
 
 

@@ -506,7 +506,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	public function createAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = null) {
-		global $TCA, $LANG;
+		global $LANG;
 
 		$shortcutCreated     = 'failed';
 		$shortcutName        = 'Shortcut'; // default name
@@ -547,7 +547,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					if($shortcut['type'] == 'other') {
 						$shortcutName = $page['title'];
 					} else {
-						$shortcutName = $shortcutNamePrepend.' '.$LANG->sL($TCA[$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
+						$shortcutName = $shortcutNamePrepend.' '.$GLOBALS['LANG']->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
 					}
 				}
 			} else {
@@ -682,8 +682,6 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	string		shortcut icon as img tag
 	 */
 	protected function getShortcutIcon($row, $shortcut) {
-		global $TCA;
-
 		switch($row['module_name']) {
 			case 'xMOD_alt_doc.php':
 				$table 				= $shortcut['table'];
@@ -703,19 +701,19 @@ class ShortcutMenu implements backend_toolbarItem {
 						$selectFields[] = 'doktype';
 					}
 
-					if(is_array($TCA[$table]['ctrl']['enablecolumns'])) {
-						$selectFields = array_merge($selectFields,$TCA[$table]['ctrl']['enablecolumns']);
+					if(is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+						$selectFields = array_merge($selectFields,$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
 					}
 
-					if($TCA[$table]['ctrl']['type']) {
-						$selectFields[] = $TCA[$table]['ctrl']['type'];
+					if($GLOBALS['TCA'][$table]['ctrl']['type']) {
+						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
 					}
 
-					if($TCA[$table]['ctrl']['typeicon_column']) {
-						$selectFields[] = $TCA[$table]['ctrl']['typeicon_column'];
+					if($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
+						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
 					}
 
-					if($TCA[$table]['ctrl']['versioningWS']) {
+					if($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						$selectFields[] = 't3ver_state';
 					}
 

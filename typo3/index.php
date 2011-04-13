@@ -177,7 +177,7 @@ class SC_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE, $TYPO3_CONF_VARS, $BE_USER;
+		global $TBE_TEMPLATE;
 
 			// Initialize template object:
 		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
@@ -198,7 +198,7 @@ class SC_index {
 		$this->makeInterfaceSelectorBox();
 
 			// Creating form based on whether there is a login or not:
-		if (!$BE_USER->user['uid'])	{
+		if (!$GLOBALS['BE_USER']->user['uid']) {
 			$TBE_TEMPLATE->form = $this->startForm();
 			$loginForm = $this->makeLoginForm();
 		} else {
@@ -210,7 +210,7 @@ class SC_index {
 		}
 
 			// Starting page:
-		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['sitename']), FALSE);
+		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']), FALSE);
 
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
@@ -354,14 +354,14 @@ class SC_index {
 	 * @return	void
 	 */
 	function checkRedirect()	{
-		global $BE_USER,$TBE_TEMPLATE;
+		global $TBE_TEMPLATE;
 
 			// Do redirect:
 			// If a user is logged in AND a) if either the login is just done (commandLI) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if ($BE_USER->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector))	{
+		if ($GLOBALS['BE_USER']->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector)) {
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$_COOKIE[$BE_USER->name]) {
+			if (!$_COOKIE[$GLOBALS['BE_USER']->name]) {
 				if ($this->commandLI=='setCookie') {
 						// we tried it a second time but still no cookie
 						// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.
@@ -372,14 +372,14 @@ class SC_index {
 				}
 			}
 
-			if (($redirectToURL = (string)$BE_USER->getTSConfigVal('auth.BE.redirectToURL'))) {
+			if (($redirectToURL = (string)$GLOBALS['BE_USER']->getTSConfigVal('auth.BE.redirectToURL'))) {
 				$this->redirectToURL = $redirectToURL;
 				$this->GPinterface = '';
 			}
 
 				// store interface
-			$BE_USER->uc['interfaceSetup'] = $this->GPinterface;
-			$BE_USER->writeUC();
+			$GLOBALS['BE_USER']->uc['interfaceSetup'] = $this->GPinterface;
+			$GLOBALS['BE_USER']->writeUC();
 
 				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{
@@ -411,7 +411,7 @@ class SC_index {
 					}
 				');
 			}
-		} elseif (!$BE_USER->user['uid'] && $this->commandLI) {
+		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->commandLI) {
 			sleep(5);	// Wrong password, wait for 5 seconds
 		}
 	}

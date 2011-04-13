@@ -73,13 +73,12 @@ class SC_mod_tools_log_index {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->lF = t3lib_div::makeInstance('t3lib_BEDisplayLog');
 
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/belog.html');
 
 			// Load necessary JavaScript
@@ -129,7 +128,6 @@ class SC_mod_tools_log_index {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS,$TYPO3_DB;
 
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
@@ -180,7 +178,13 @@ class SC_mod_tools_log_index {
 
 		// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {
-			$workspaces = $TYPO3_DB->exec_SELECTgetRows('uid,title','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid,title',
+				'sys_workspace',
+				'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'),
+				'',
+				'title'
+			);
 			if (count($workspaces))	{
 				foreach ($workspaces as $rec)	{
 					$this->MOD_MENU['workspaces'][$rec['uid']] = $rec['uid'].': '.$rec['title'];
@@ -238,8 +242,6 @@ class SC_mod_tools_log_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
 		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('adminLog'));
 		$this->content.=$this->doc->spacer(5);
 
@@ -346,7 +348,7 @@ class SC_mod_tools_log_index {
 			$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array,array(substr($this->MOD_SETTINGS['users'],3)),1);
 			if (is_array($this->be_user_Array))	{
 				foreach ($this->be_user_Array as $val) {
-					if ($val['uid']!=$BE_USER->user['uid'])	{
+					if ($val['uid'] != $GLOBALS['BE_USER']->user['uid']) {
 						$selectUsers[]=$val['uid'];
 					}
 				}
@@ -357,7 +359,8 @@ class SC_mod_tools_log_index {
 			$selectUsers[] = intval(substr($this->MOD_SETTINGS['users'],3));
 			$where_part.=' AND userid in ('.implode($selectUsers,',').')';
 		} elseif ($this->MOD_SETTINGS['users']==-1) {
-			$where_part.=' AND userid='.$BE_USER->user['uid'];	// Self user
+				// Self user
+			$where_part .= ' AND userid=' . $GLOBALS['BE_USER']->user['uid'];
 		}
 
 			// Workspace

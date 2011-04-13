@@ -5372,8 +5372,6 @@ class tslib_cObj {
 	 * @todo	It would be nice it this function basically looked up any type of value, db-relations etc.
 	 */
 	function TCAlookup($inputValue, $conf) {
-		global $TCA;
-
 		$table = $conf['table'];
 		$field = $conf['field'];
 		$delimiter = $conf['delimiter'] ? $conf['delimiter'] : ' ,';
@@ -5381,12 +5379,13 @@ class tslib_cObj {
 		$GLOBALS['TSFE']->includeTCA();
 		t3lib_div::loadTCA($table);
 
-		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]) && is_array($TCA[$table]['columns'][$field]['config']['items'])) {
+		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])
+			&& is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
 			$values = t3lib_div::trimExplode(',', $inputValue);
 			$output = array();
 			foreach ($values as $value) {
 					// Traverse the items-array...
-				foreach ($TCA[$table]['columns'][$field]['config']['items'] as $item) {
+				foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] as $item) {
 						// ... and return the first found label where the value was equal to $key
 					if (!strcmp($item[1], trim($value))) {
 						$output[] = $GLOBALS['TSFE']->sL($item[0]);
@@ -5590,7 +5589,9 @@ class tslib_cObj {
 						);
 						return $linktxt;
 					}
-				} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
+				} else {
+					// integer or alias (alias is without slashes or periods or commas, that is
+					// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
 					if ($conf['no_cache.']) {
 						$conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
 					}
@@ -6763,9 +6764,9 @@ class tslib_cObj {
 
 	/**
 	 * Returns an UPDATE/DELETE sql query which will "delete" the record.
-	 * If the $TCA config for the table tells us to NOT "physically" delete the record but rather set the "deleted" field to "1" then an UPDATE query is returned doing just that. Otherwise it truely is a DELETE query.
+	 * If the $GLOBALS['TCA'] config for the table tells us to NOT "physically" delete the record but rather set the "deleted" field to "1" then an UPDATE query is returned doing just that. Otherwise it truely is a DELETE query.
 	 *
-	 * @param	string		The table name, should be in $TCA
+	 * @param	string		The table name, should be in $GLOBALS['TCA']
 	 * @param	integer		The UID of the record from $table which we are going to delete
 	 * @param	boolean		If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return	string		The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
@@ -6795,11 +6796,11 @@ class tslib_cObj {
 
 	/**
 	 * Returns an UPDATE sql query.
-	 * If a "tstamp" field is configured for the $table tablename in $TCA then that field is automatically updated to the current time.
+	 * If a "tstamp" field is configured for the $table tablename in $GLOBALS['TCA'] then that field is automatically updated to the current time.
 	 * Notice: It is YOUR responsibility to make sure the data being updated is valid according the tablefield types etc. Also no logging is performed of the update. It's just a nice general usage API function for creating a quick query.
 	 * NOTICE: From TYPO3 3.6.0 this function ALWAYS adds slashes to values inserted in the query.
 	 *
-	 * @param	string		The table name, should be in $TCA
+	 * @param	string		The table name, should be in $GLOBALS['TCA']
 	 * @param	integer		The UID of the record from $table which we are going to update
 	 * @param	array		The data array where key/value pairs are fieldnames/values for the record to update.
 	 * @param	string		Comma list of fieldnames which are allowed to be updated. Only values from the data record for fields in this list will be updated!!
@@ -6836,12 +6837,12 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Returns an INSERT sql query which automatically added "system-fields" according to $TCA
-	 * Automatically fields for "tstamp", "crdate", "cruser_id", "fe_cruser_id" and "fe_crgroup_id" is updated if they are configured in the "ctrl" part of $TCA.
+	 * Returns an INSERT sql query which automatically added "system-fields" according to $GLOBALS['TCA']
+	 * Automatically fields for "tstamp", "crdate", "cruser_id", "fe_cruser_id" and "fe_crgroup_id" is updated if they are configured in the "ctrl" part of $GLOBALS['TCA'].
 	 * The "pid" field is overridden by the input $pid value if >= 0 (zero). "uid" can never be set as a field
 	 * NOTICE: From TYPO3 3.6.0 this function ALWAYS adds slashes to values inserted in the query.
 	 *
-	 * @param	string		The table name, should be in $TCA
+	 * @param	string		The table name, should be in $GLOBALS['TCA']
 	 * @param	integer		The PID value for the record to insert
 	 * @param	array		The data array where key/value pairs are fieldnames/values for the record to insert
 	 * @param	string		Comma list of fieldnames which are allowed to be inserted. Only values from the data record for fields in this list will be inserted!!
@@ -6901,7 +6902,7 @@ class tslib_cObj {
 	/**
 	 * Checks if a frontend user is allowed to edit a certain record
 	 *
-	 * @param	string		The table name, found in $TCA
+	 * @param	string		The table name, found in $GLOBALS['TCA']
 	 * @param	array		The record data array for the record in question
 	 * @param	array		The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param	string		Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
@@ -7211,7 +7212,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Executes a SELECT query for joining three tables according to the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
+	 * Executes a SELECT query for joining three tables according to the MM-relation standards used for tables configured in $GLOBALS['TCA']. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
 	 *
 	 * @param	string		List of fields to select
 	 * @param	string		The local table
@@ -7238,7 +7239,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Executes a SELECT query for joining two tables according to the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
+	 * Executes a SELECT query for joining two tables according to the MM-relation standards used for tables configured in $GLOBALS['TCA']. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
 	 * The two tables joined is the join table ($mm_table) and the foreign table ($foreign_table) - so the "local table" is not included but instead you can supply a list of UID integers from the local table to match in the join-table.
 	 *
 	 * @param	string		List of fields to select
@@ -7448,7 +7449,6 @@ class tslib_cObj {
 	 * @see getQuery()
 	 */
 	function getWhere($table, $conf, $returnQueryArray = FALSE) {
-		global $TCA;
 
 		// Init:
 		$query = '';
@@ -7494,8 +7494,8 @@ class tslib_cObj {
 		}
 
 		if ($conf['languageField']) {
-			if ($GLOBALS['TSFE']->sys_language_contentOL && $TCA[$table] && $TCA[$table]['ctrl']['languageField']
-				&& $TCA[$table]['ctrl']['transOrigPointerField']) {
+			if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField']
+				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 					// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
 					// OVERLAY the records with localized versions!
 				$sys_language_content = '0,-1';
@@ -7752,16 +7752,15 @@ class tslib_cObj {
 	 * @see editPanelPreviewBorder()
 	 */
 	function isDisabled($table, $row) {
-		global $TCA;
-		if (($TCA[$table]['ctrl']['enablecolumns']['disabled']
-			&& $row[$TCA[$table]['ctrl']['enablecolumns']['disabled']])
-			|| ($TCA[$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup
-			&& $row[$TCA[$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup)
-			|| ($TCA[$table]['ctrl']['enablecolumns']['starttime']
-			&& $row[$TCA[$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'])
-			|| ($TCA[$table]['ctrl']['enablecolumns']['endtime']
-			&& $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']]
-			&& $row[$TCA[$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])) {
+		if (($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']])
+			|| ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup)
+			|| ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'])
+			|| ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']]
+				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])) {
 
 			return TRUE;
 		}

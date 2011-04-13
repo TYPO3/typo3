@@ -191,7 +191,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $SOBE,$BE_USER,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BACK_PATH;
 		global $tmpl,$tplRow,$theConstants;
 
 		$POST = t3lib_div::_POST();
@@ -218,7 +218,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
 			$theOutput .= '<h4 style="margin-bottom:5px;">' . $GLOBALS['LANG']->getLL('currentTemplate') . ' <img ' .
-				t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>' .
+				t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>' .
 				$this->pObj->linkWrapTemplateTitle($tplRow["title"], ($bType == "setup" ? "config" : "constants")) . '</strong>' .
 				htmlspecialchars(trim($tplRow["sitetitle"]) ? ' - (' . $tplRow["sitetitle"] . ')' : '') . '</h4>';
 			if ($manyTemplatesMenu)	{

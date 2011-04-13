@@ -123,7 +123,7 @@ class tx_linkvalidator_Processor {
 			$checlLinkTypeCondition = ' and link_type in (\'' . implode('\',\'',$checkKeys) . '\')';
 		}
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', '(record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) ' . $checlLinkTypeCondition);
-		
+
 			// let's traverse all configured tables
 		foreach ($this->searchFields as $table => $fields) {
 			if($table == 'pages'){
@@ -141,7 +141,7 @@ class tx_linkvalidator_Processor {
 				// re-init selectFields for table
 			$selectFields = 'uid, pid';
 			$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
-			
+
 				// TODO: only select rows that have content in at least one of the relevant fields (via OR)
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
@@ -168,7 +168,7 @@ class tx_linkvalidator_Processor {
 					$this->recordReference = $entryValue['substr']['recordRef'];
 
 					$this->pageWithAnchor = $entryValue['pageAndAnchor'];
-					
+
 					if (!empty($this->pageWithAnchor)) {
 							// page with anchor, e.g. 18#1580
 						$url = $this->pageWithAnchor;
@@ -213,7 +213,7 @@ class tx_linkvalidator_Processor {
 	 * @return	void
 	 */
 	public function analyzeRecord(&$results, $table, $fields, $record) {
-		
+
 			// array to store urls from relevant field contents
 		$urls = array();
 
@@ -223,20 +223,20 @@ class tx_linkvalidator_Processor {
 
 			// flag whether row contains a broken link in some field or not
 		$rowContainsBrokenLink = FALSE;
-		
+
 			// put together content of all relevant fields
 		$haystack = '';
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-		
+
 		$idRecord = $record['uid'];
-		
+
 			// get all references
 		foreach ($fields as $field) {
 			$haystack .= $record[$field] . ' --- ';
 			$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-			
+
 			$valueField = $record[$field];
-			
+
 				// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
 			if ($conf['softref'] && strlen($valueField)) {
 					// Explode the list of softreferences/parameters
@@ -345,7 +345,7 @@ class tx_linkvalidator_Processor {
 		}
 		return $markerArray;
 	}
-	
+
 	/**
 	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
 	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
@@ -387,7 +387,7 @@ class tx_linkvalidator_Processor {
 		}
 		return $theList;
 	}
-	
+
 
 }
 

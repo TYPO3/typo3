@@ -2200,16 +2200,14 @@
 	 *******************************************/
 
 	/**
-	 * Get the compressed $TCA array for use in the front-end
-	 * A compressed $TCA array holds only the ctrl- and feInterface-part for each table. But the column-definitions are omitted in order to save some memory and be more efficient.
+	 * Get the compressed $GLOBALS['TCA'] array for use in the front-end
+	 * A compressed $GLOBALS['TCA'] array holds only the ctrl- and feInterface-part for each table. But the column-definitions are omitted in order to save some memory and be more efficient.
 	 * Operates on the global variable, $TCA
 	 *
 	 * @return	void
 	 * @see includeTCA()
 	 */
 	function getCompressedTCarray()	{
-		global $TCA;
-
 		$GLOBALS['TT']->push('Get Compressed TC array');
 		if (!$this->TCAloaded)	{
 				// Create hash string for storage / retrieval of cached content:
@@ -2221,24 +2219,24 @@
 
 			if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
 				// Try to fetch if cache is enabled
-				list($TCA, $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
+				list($GLOBALS['TCA'], $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
 			}
 
 				// If no result, create it:
-			if (!is_array($TCA))	{
+			if (!is_array($GLOBALS['TCA']))	{
 				$this->includeTCA(0);
 				$newTc = Array();
 				$this->TCAcachedExtras = array();	// Collects other information
 
-				foreach($TCA as $key => $val)		{
+				foreach($GLOBALS['TCA'] as $key => $val) {
 					$newTc[$key]['ctrl'] = $val['ctrl'];
 					$newTc[$key]['feInterface'] = $val['feInterface'];
 
 						// Collect information about localization exclusion of fields:
 					t3lib_div::loadTCA($key);
-					if (is_array($TCA[$key]['columns']))	{
+					if (is_array($GLOBALS['TCA'][$key]['columns'])) {
 						$this->TCAcachedExtras[$key]['l10n_mode'] = array();
-						foreach($TCA[$key]['columns'] as $fN => $fV)	{
+						foreach($GLOBALS['TCA'][$key]['columns'] as $fN => $fV) {
 							if ($fV['l10n_mode'])	{
 								$this->TCAcachedExtras[$key]['l10n_mode'][$fN] = $fV['l10n_mode'];
 							}
@@ -2246,7 +2244,7 @@
 					}
 				}
 
-				$TCA = $newTc;
+				$GLOBALS['TCA'] = $newTc;
 				// Store it in cache if cache is enabled
 				if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
 					$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT_TC');
@@ -2267,10 +2265,9 @@
 	 * @return	void
 	 * @see getCompressedTCarray()
 	 */
-	function includeTCA($TCAloaded=1)	{
-		global $TCA, $PAGES_TYPES, $TBE_MODULES;
+	function includeTCA($TCAloaded = 1) {
 		if (!$this->TCAloaded)	{
-			$TCA = Array();
+			$GLOBALS['TCA'] = array();
 			include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');
 				// Extension additions
 			if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'])	{

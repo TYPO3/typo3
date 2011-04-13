@@ -1027,45 +1027,43 @@ class t3lib_TCEforms_inline {
 	 * @return	void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
-		global $SOBE, $BE_USER, $TYPO3_CONF_VARS;
-
 		require_once(PATH_typo3 . 'template.php');
 
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 			// Create a new anonymous object:
-		$SOBE = new stdClass();
-		$SOBE->MOD_MENU = array(
+		$GLOBALS['SOBE'] = new stdClass();
+		$GLOBALS['SOBE']->MOD_MENU = array(
 			'showPalettes' => '',
 			'showDescriptions' => '',
 			'disableRTE' => ''
 		);
 			// Setting virtual document name
-		$SOBE->MCONF['name'] = 'xMOD_alt_doc.php';
+		$GLOBALS['SOBE']->MCONF['name'] = 'xMOD_alt_doc.php';
 			// CLEANSE SETTINGS
-		$SOBE->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
-			$SOBE->MOD_MENU,
+		$GLOBALS['SOBE']->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
+			$GLOBALS['SOBE']->MOD_MENU,
 			t3lib_div::_GP('SET'),
-			$SOBE->MCONF['name']
+			$GLOBALS['SOBE']->MCONF['name']
 		);
 			// Create an instance of the document template object
-		$SOBE->doc = t3lib_div::makeInstance('template');
-		$SOBE->doc->backPath = $GLOBALS['BACK_PATH'];
+		$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
+		$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 			// Initialize TCEforms (rendering the forms)
-		$SOBE->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
-		$SOBE->tceforms->inline = $this;
-		$SOBE->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
-		$SOBE->tceforms->initDefaultBEMode();
-		$SOBE->tceforms->palettesCollapsed = !$SOBE->MOD_SETTINGS['showPalettes'];
-		$SOBE->tceforms->disableRTE = $SOBE->MOD_SETTINGS['disableRTE'];
-		$SOBE->tceforms->enableClickMenu = TRUE;
-		$SOBE->tceforms->enableTabMenu = TRUE;
+		$GLOBALS['SOBE']->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
+		$GLOBALS['SOBE']->tceforms->inline = $this;
+		$GLOBALS['SOBE']->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
+		$GLOBALS['SOBE']->tceforms->initDefaultBEMode();
+		$GLOBALS['SOBE']->tceforms->palettesCollapsed = !$GLOBALS['SOBE']->MOD_SETTINGS['showPalettes'];
+		$GLOBALS['SOBE']->tceforms->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
+		$GLOBALS['SOBE']->tceforms->enableClickMenu = TRUE;
+		$GLOBALS['SOBE']->tceforms->enableTabMenu = TRUE;
 			// Clipboard is initialized:
-		$SOBE->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard'); // Start clipboard
-		$SOBE->tceforms->clipObj->initializeClipboard(); // Initialize - reads the clipboard content from the user session
+		$GLOBALS['SOBE']->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard'); // Start clipboard
+		$GLOBALS['SOBE']->tceforms->clipObj->initializeClipboard(); // Initialize - reads the clipboard content from the user session
 			// Setting external variables:
-		if ($BE_USER->uc['edit_showFieldHelp'] != 'text' && $SOBE->MOD_SETTINGS['showDescriptions']) {
-			$SOBE->tceforms->edit_showFieldHelp = 'text';
+		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] != 'text' && $GLOBALS['SOBE']->MOD_SETTINGS['showDescriptions']) {
+			$GLOBALS['SOBE']->tceforms->edit_showFieldHelp = 'text';
 		}
 	}
 

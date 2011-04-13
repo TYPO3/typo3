@@ -99,19 +99,18 @@ class SC_alt_intro {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
 		global $TBE_TEMPLATE;
 
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
-		$TBE_TEMPLATE->divClass = $TBE_TEMPLATE->bodyTagId;
+		$TBE_TEMPLATE->divClass = $GLOBALS['TBE_TEMPLATE']->bodyTagId;
 
 		$this->content = '
 			<div id="typo3-docheader">
 				<div id="typo3-docheader-row1">&nbsp;</div>
 			</div>
 			<div id="typo3-alt-intro-php-sub">
-			<h1>TYPO3 '.TYPO3_version.'<br />'.$LANG->getLL('introtext').'</h1>
+			<h1>TYPO3 ' . TYPO3_version . '<br />' . $GLOBALS['LANG']->getLL('introtext') . '</h1>
 
 			<p>'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
 
@@ -119,7 +118,7 @@ class SC_alt_intro {
 			'.t3lib_BEfunc::displayWarningMessages();
 
 		$this->content .= '
-			<h3>' . $LANG->getLL('introtext2') . '</h3>';
+			<h3>' . $GLOBALS['LANG']->getLL('introtext2') . '</h3>';
 
 
 			// Printing the description of the modules available
@@ -127,7 +126,7 @@ class SC_alt_intro {
 		$this->content.='<br />';
 
 			// end text: 'Features may vary depending on your website and permissions'
-		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
+		$this->content .= '<p class="c-features"><em>(' . $GLOBALS['LANG']->getLL('endText') . ')</em></p>';
 		$this->content .= '<br /></div>';
 
 			// Renders the module page

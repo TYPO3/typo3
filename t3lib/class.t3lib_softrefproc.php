@@ -663,7 +663,10 @@ class t3lib_softrefproc {
 					$finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
 					$finalTagParts['query'] = $splitLinkParam[1];
 				}
-			} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
+			} else {
+					// integer or alias (alias is without slashes or periods or commas, that is
+					// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
+
 				$finalTagParts['LINK_TYPE'] = 'page';
 
 				$link_params_parts = explode('#', $link_param);
