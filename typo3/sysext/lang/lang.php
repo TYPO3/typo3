@@ -120,7 +120,7 @@ class language {
 	 *
 	 * require (PATH_typo3 . 'sysext/lang/lang.php');
 	 * $LANG = t3lib_div::makeInstance('language');
-	 * $LANG->init($BE_USER->uc['lang']);
+	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
 	 *
 	 * @param	string		The language key (two character string from backend users profile)
 	 * @param	string		IGNORE. Not used.

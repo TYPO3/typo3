@@ -69,7 +69,7 @@ unset($MCONF);
 unset($MLANG);
 
 	// Merging locallang files/arrays:
-$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xml');
 $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_LANG);
@@ -174,11 +174,9 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$BACK_PATH,$TBE_MODULES_EXT;
-
 			// Setting class files to include:
-		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
-			$this->include_once = array_merge($this->include_once,$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
+			$this->include_once = array_merge($this->include_once, $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']);
 		}
 
 			// Setting internal vars:
@@ -196,7 +194,7 @@ class SC_db_new_content_el {
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode='';
 		$this->doc->form='<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
@@ -205,7 +203,7 @@ class SC_db_new_content_el {
 		$this->doc->getContextMenuCode();
 
 			// Getting the current page and receiving access information (used in main())
-		$perms_clause = $BE_USER->getPagePermsClause(1);
+		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
 		$this->access = is_array($this->pageinfo) ? 1 : 0;
 	}
@@ -216,15 +214,12 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG,$BACK_PATH;
-
-
 		if ($this->id && $this->access)	{
 
 				// Init position map object:
 			$posMap = t3lib_div::makeInstance('ext_posMap');
 			$posMap->cur_sys_language = $this->sys_language;
-			$posMap->backPath = $BACK_PATH;
+			$posMap->backPath = $GLOBALS['BACK_PATH'];
 
 			if ((string)$this->colPos!='')	{	// If a column is pre-set:
 				if ($this->uid_pid<0)	{
@@ -244,7 +239,7 @@ class SC_db_new_content_el {
 			// ***************************
 				// use a wrapper div
 			$this->content .= '<div id="user-setup-wrapper">';
-			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
+			$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
 
 				// Wizard
@@ -345,15 +340,15 @@ class SC_db_new_content_el {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = $LANG->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
+				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
 			} else {
-				$code = $LANG->getLL('sel1',1) . '<br /><br />';
+				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />';
 				foreach ($menuItems as $section) {
 					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
 				}
 			}
 
-			$this->content.= $this->doc->section(!$this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
+			$this->content.= $this->doc->section(!$this->onClickEvent ? $GLOBALS['LANG']->getLL('1_selectType') : '', $code, 0, 1);
 
 
 
@@ -365,7 +360,7 @@ class SC_db_new_content_el {
 				$this->content.= $this->doc->spacer(20);
 
 					// Select position
-				$code = $LANG->getLL('sel2',1).'<br /><br />';
+				$code = $GLOBALS['LANG']->getLL('sel2', 1) . '<br /><br />';
 
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');
@@ -374,14 +369,14 @@ class SC_db_new_content_el {
 
 					// Finally, add the content of the column selector to the content:
 				$code.= $posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
-				$this->content.= $this->doc->section($LANG->getLL('2_selectPosition'),$code,0,1);
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('2_selectPosition'), $code, 0, 1);
 			}
 
 				// Close wrapper div
 			$this->content .= '</div>';
 		} else {		// In case of no access:
 			$this->content = '';
-			$this->content.= $this->doc->header($LANG->getLL('newContentElement'));
+			$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('newContentElement'));
 			$this->content.= $this->doc->spacer(5);
 		}
 
@@ -391,7 +386,7 @@ class SC_db_new_content_el {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('newContentElement'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('newContentElement'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content .= $this->doc->sectionEnd();
 		$this->content.= $this->doc->endPage();
@@ -413,8 +408,6 @@ class SC_db_new_content_el {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $LANG, $BACK_PATH;
-
 		$buttons = array(
 			'csh' => '',
 			'back' => ''
@@ -427,7 +420,7 @@ class SC_db_new_content_el {
 
 				// Back
 			if ($this->R_URI)	{
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $LANG->getLL('goBack', TRUE) . '">' .
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					'</a>';
 			}
@@ -557,7 +550,6 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function removeInvalidElements(&$wizardItems)	{
-		global $TCA;
 
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
@@ -589,9 +581,9 @@ class SC_db_new_content_el {
 
 					// Traverse field values:
 				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV)	{
-					if (is_array($TCA['tt_content']['columns'][$fN]))	{
+					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 							// Get information about if the field value is OK:
-						$config = &$TCA['tt_content']['columns'][$fN]['config'];
+						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']));
 						$isNotInKeepItems = (count($keepItems) && !in_array($fV, $keepItems));
 

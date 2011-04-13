@@ -170,14 +170,12 @@ class t3lib_refindex {
 	 * Returns array of arrays with an index of all references found in record from table/uid
 	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be true (no workspace overlay anywhere!)
 	 *
-	 * @param	string		Table name from $TCA
+	 * @param	string		Table name from $GLOBALS['TCA']
 	 * @param	integer		Record UID
 	 * @return	array		Index Rows
 	 */
 	function generateRefIndexData($table, $uid) {
-		global $TCA;
-
-		if (isset($TCA[$table])) {
+		if (isset($GLOBALS['TCA'][$table])) {
 				// Get raw record from DB:
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . intval($uid));
 
@@ -188,7 +186,7 @@ class t3lib_refindex {
 				$this->words = array();
 
 					// Deleted:
-				$deleted = $TCA[$table]['ctrl']['delete'] ? ($record[$TCA[$table]['ctrl']['delete']] ? 1 : 0) : 0;
+				$deleted = (($GLOBALS['TCA'][$table]['ctrl']['delete'] && $record[$GLOBALS['TCA'][$table]['ctrl']['delete']]) ? 1 : 0);
 
 					// Get all relations from record:
 				$dbrels = $this->getRelations($table, $record);
@@ -236,7 +234,7 @@ class t3lib_refindex {
 
 					// Word indexing:
 				t3lib_div::loadTCA($table);
-				foreach ($TCA[$table]['columns'] as $field => $conf) {
+				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 					if (t3lib_div::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !t3lib_div::testInt($record[$field])) {
 						$this->words_strings[$field] = $record[$field];
 					}
@@ -374,7 +372,6 @@ class t3lib_refindex {
 	 * @see export_addRecord()
 	 */
 	function getRelations($table, $row, $onlyField = '') {
-		global $TCA;
 
 			// Load full table description
 		t3lib_div::loadTCA($table);
@@ -385,8 +382,9 @@ class t3lib_refindex {
 
 		$outRow = array();
 		foreach ($row as $field => $value) {
-			if (!in_array($field, $nonFields) && is_array($TCA[$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
-				$conf = $TCA[$table]['columns'][$field]['config'];
+			if (!in_array($field, $nonFields) && is_array($GLOBALS['TCA'][$table]['columns'][$field])
+				&& (!$onlyField || $onlyField === $field)) {
+				$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 
 					// Add files
 				if ($result = $this->getRelations_procFiles($value, $conf, $uid)) {
@@ -891,8 +889,6 @@ class t3lib_refindex {
 	 * @return	array		Header and body status content
 	 */
 	function updateIndex($testOnly, $cli_echo = FALSE) {
-		global $TCA, $TYPO3_DB;
-
 		$errors = array();
 		$tableNames = array();
 		$recCount = 0;
@@ -907,12 +903,12 @@ class t3lib_refindex {
 		}
 
 			// Traverse all tables:
-		foreach ($TCA as $tableName => $cfg) {
+		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 			$tableNames[] = $tableName;
 			$tableCount++;
 
 				// Traverse all records in tables, including deleted records:
-			$allRecs = $TYPO3_DB->exec_SELECTgetRows('uid', $tableName, '1=1'); //.t3lib_BEfunc::deleteClause($tableName)
+			$allRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tableName, '1=1'); //.t3lib_BEfunc::deleteClause($tableName)
 			$uidList = array(0);
 			foreach ($allRecs as $recdat) {
 				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
@@ -930,8 +926,9 @@ class t3lib_refindex {
 			}
 
 				// Searching lost indexes for this table:
-			$where = 'tablename=' . $TYPO3_DB->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
-			$lostIndexes = $TYPO3_DB->exec_SELECTgetRows('hash', 'sys_refindex', $where);
+			$where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') .
+				' AND recuid NOT IN (' . implode(',', $uidList) . ')';
+			$lostIndexes = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 			if (count($lostIndexes)) {
 				$Err = 'Table ' . $tableName . ' has ' . count($lostIndexes) . ' lost indexes which are now deleted';
 				$errors[] = $Err;
@@ -939,14 +936,16 @@ class t3lib_refindex {
 					echo $Err . LF;
 				}
 				if (!$testOnly) {
-					$TYPO3_DB->exec_DELETEquery('sys_refindex', $where);
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', $where);
 				}
 			}
 		}
 
 			// Searching lost indexes for non-existing tables:
-		$where = 'tablename NOT IN (' . implode(',', $TYPO3_DB->fullQuoteArray($tableNames, 'sys_refindex')) . ')';
-		$lostTables = $TYPO3_DB->exec_SELECTgetRows('hash', 'sys_refindex', $where);
+		$where = 'tablename NOT IN (' .
+				implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($tableNames, 'sys_refindex')) .
+				 ')';
+		$lostTables = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 		if (count($lostTables)) {
 			$Err = 'Index table hosted ' . count($lostTables) . ' indexes for non-existing tables, now removed';
 			$errors[] = $Err;
@@ -954,7 +953,7 @@ class t3lib_refindex {
 				echo $Err . LF;
 			}
 			if (!$testOnly) {
-				$TYPO3_DB->exec_DELETEquery('sys_refindex', $where);
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', $where);
 			}
 		}
 

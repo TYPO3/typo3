@@ -293,12 +293,11 @@ class t3lib_treeView {
 	 * Adds a fieldname to the internal array ->fieldArray
 	 *
 	 * @param	string		Field name to
-	 * @param	boolean		If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $TCA[$table]['columns'] or in the list ->defaultList
+	 * @param	boolean		If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
 	 * @return	void
 	 */
 	function addField($field, $noCheck = 0) {
-		global $TCA;
-		if ($noCheck || is_array($TCA[$this->table]['columns'][$field]) || t3lib_div::inList($this->defaultList, $field)) {
+		if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || t3lib_div::inList($this->defaultList, $field)) {
 			$this->fieldArray[] = $field;
 		}
 	}

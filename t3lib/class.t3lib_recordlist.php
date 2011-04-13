@@ -343,7 +343,6 @@ class t3lib_recordList {
 	 * @return	void
 	 */
 	function initializeLanguages() {
-		global $TCA, $LANG;
 
 			// Look up page overlays:
 		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

@@ -280,11 +280,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH;
-
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagId = 'imp-exp-mod';
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('impexp') . '/app/template.html');
 
@@ -308,7 +306,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		');
 		$this->doc->form = '<form action="'.htmlspecialchars($GLOBALS['MCONF']['_']).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'"><input type="hidden" name="id" value="'.$this->id.'" />';
 
-		$this->content.= $this->doc->header($LANG->getLL('title'));
+		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content.= $this->doc->spacer(5);
 
 			// Input data grabbed:
@@ -347,7 +345,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$markers['CONTENT'] = $this->content;
 
 		// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -421,8 +419,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void		Setting content in $this->content
 	 */
 	function exportData($inData)	{
-		global $TCA, $LANG;
-
 			// BUILDING EXPORT DATA:
 
 			// Processing of InData array values:
@@ -446,7 +442,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Create export object and configure it:
 		$this->export = t3lib_div::makeInstance('tx_impexp');
 		$this->export->init(0,'export');
-		$this->export->setCharset($LANG->charSet);
+		$this->export->setCharset($GLOBALS['LANG']->charSet);
 
 		$this->export->maxFileSize = $inData['maxFileSize']*1024;
 		$this->export->excludeMap = (array)$inData['exclude'];
@@ -609,9 +605,23 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 				if (t3lib_div::isAllowedAbsPath($savePath) && @is_dir(dirname($fullName)) && t3lib_div::isAllowedAbsPath($fullName))	{
 					t3lib_div::writeFile($fullName, $out);
-					$this->content.= $this->doc->section($LANG->getLL('exportdata_savedFile'),sprintf($LANG->getLL('exportdata_savedInSBytes',1), substr($savePath.$dlFile,strlen(PATH_site)), t3lib_div::formatSize(strlen($out))),0,1);
+					$this->content .= $this->doc->section(
+						$GLOBALS['LANG']->getLL('exportdata_savedFile'),
+						sprintf(
+							$GLOBALS['LANG']->getLL('exportdata_savedInSBytes', 1),
+							substr($savePath . $dlFile, strlen(PATH_site)),
+							t3lib_div::formatSize(strlen($out))),
+						0,
+						1
+					);
 				} else {
-					$this->content.= $this->doc->section($LANG->getLL('exportdata_problemsSavingFile'),sprintf($LANG->getLL('exportdata_badPathS',1),$fullName),0,1,2);
+					$this->content .= $this->doc->section(
+						$GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'),
+						sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', 1), $fullName),
+						0,
+						1,
+						2
+					);
 				}
 			}
 		}
@@ -625,7 +635,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$row = array();
 		$this->makeConfigurationForm($inData, $row);
 		$menuItems[] = array(
-			'label' => $LANG->getLL('tableselec_configuration'),
+			'label' => $GLOBALS['LANG']->getLL('tableselec_configuration'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
 					'.implode('
@@ -638,7 +648,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$row = array();
 		$this->makeSaveForm($inData, $row);
 		$menuItems[] = array(
-			'label' => $LANG->getLL('exportdata_filePreset'),
+			'label' => $GLOBALS['LANG']->getLL('exportdata_filePreset'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
 					'.implode('
@@ -651,7 +661,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$row = array();
 		$this->makeAdvancedOptionsForm($inData, $row);
 		$menuItems[] = array(
-			'label' => $LANG->getLL('exportdata_advancedOptions'),
+			'label' => $GLOBALS['LANG']->getLL('exportdata_advancedOptions'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
 					'.implode('
@@ -666,7 +676,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Print errors that might be:
 		$errors = $this->export->printErrorLog();
 		$menuItems[] = array(
-			'label' => $LANG->getLL('exportdata_messages'),
+			'label' => $GLOBALS['LANG']->getLL('exportdata_messages'),
 			'content' => $errors,
 			'stateIcon' => $errors ? 2 : 0
 		);
@@ -677,7 +687,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->content.= $this->doc->section('',$content,0,1);
 
 			// Output Overview:
-		$this->content.= $this->doc->section($LANG->getLL('execlistqu_structureToBeExported'),$overViewContent,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('execlistqu_structureToBeExported'), $overViewContent, 0, 1);
 
 	}
 
@@ -690,12 +700,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function addRecordsForPid($k, $tables, $maxNumber)	{
-		global $TCA;
-
 		if (is_array($tables))	{
-			foreach ($TCA as $table => $value) {
+			foreach ($GLOBALS['TCA'] as $table => $value) {
 				if ($table!='pages' && (in_array($table,$tables) || in_array('_ALL',$tables)))	{
-					if ($GLOBALS['BE_USER']->check('tables_select',$table) && !$TCA[$table]['ctrl']['is_static'])	{
+					if ($GLOBALS['BE_USER']->check('tables_select',$table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
 						$res = $this->exec_listQueryPid($table,$k,t3lib_div::intInRange($maxNumber,1));
 						while($subTrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$this->export->export_addRecord($table,$subTrow);
@@ -715,9 +723,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	pointer		SQL resource pointer
 	 */
 	function exec_listQueryPid($table,$pid,$limit)	{
-		global $TCA, $LANG;
-
-		$orderBy = $TCA[$table]['ctrl']['sortby'] ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
+		$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
+			? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
+			: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				$table,
@@ -731,7 +739,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Warning about hitting limit:
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == $limit)	{
-			$this->content.= $this->doc->section($LANG->getLL('execlistqu_maxNumberLimit'),sprintf($LANG->getLL('makeconfig_anSqlQueryReturned',1),$limit),0,1, 2);
+			$this->content .= $this->doc->section(
+				$GLOBALS['LANG']->getLL('execlistqu_maxNumberLimit'),
+				sprintf($GLOBALS['LANG']->getLL('makeconfig_anSqlQueryReturned', 1), $limit),
+				0,
+				1,
+				2
+			);
 		}
 
 		return $res;
@@ -1092,12 +1106,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void		Setting content in $this->content
 	 */
 	function importData($inData)	{
-		global $TCA,$LANG,$BE_USER;
+		global $LANG;
 
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
-		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
-			if ($BE_USER->user['admin'] && !$this->id)	{
+		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
+			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id)	{
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
 
@@ -1105,6 +1119,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				unset($inData['import_mode']);
 			}
 
+			/** @var $import tx_impexp */
 			$import = t3lib_div::makeInstance('tx_impexp');
 			$import->init(0,'import');
 			$import->update = $inData['do_update'];
@@ -1582,20 +1597,19 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function checkUpload()	{
-		global $FILEMOUNTS,$TYPO3_CONF_VARS,$BE_USER;
-
 		$file = t3lib_div::_GP('file');
 
 			// Initializing:
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
-		$this->fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = t3lib_div::_GP('overwriteExistingFiles') ? 1 : 0;
 
 			// Checking referer / executing:
 		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode()
+			&& !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));
 		} else {
 			$this->fileProcessor->start($file);
@@ -1634,15 +1648,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @return	string		HTML select element
 	 */
 	function tableSelector($prefix,$value,$excludeList='')	{
-		global $TCA, $LANG;
-
 		$optValues = array();
 
 		if (!t3lib_div::inList($excludeList,'_ALL'))	{
-			$optValues['_ALL'] = '['.$LANG->getLL('ALL_tables').']';
+			$optValues['_ALL'] = '[' . $GLOBALS['LANG']->getLL('ALL_tables').']';
 		}
 
-		foreach ($TCA as $table => $_) {
+		foreach ($GLOBALS['TCA'] as $table => $_) {
 			if ($GLOBALS['BE_USER']->check('tables_select',$table) && !t3lib_div::inList($excludeList,$table))	{
 				$optValues[$table] = $table;
 			}
