@@ -406,7 +406,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
-		
+
 		/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		if(empty($modTS['mail.']['fromemail'])) {

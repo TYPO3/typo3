@@ -265,15 +265,15 @@ class tx_linkvalidator_Processor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Find all supported broken links for a specific link lsit.
 	 *
-	 * @param	array		$resultArray: findRef parsed records  
+	 * @param	array		$resultArray: findRef parsed records
 	 * @param	array		$results: array of broken links
 	 * @return	void
 	 */
-	private function analyseLinks($resultArray, &$results, $record, $field, $table) {	
+	private function analyseLinks($resultArray, &$results, $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
 			$r = $element['subst'];
 			$title = '';
@@ -294,11 +294,11 @@ class tx_linkvalidator_Processor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Find all supported broken links for a specific typoLink.
 	 *
-	 * @param	array			$resultArray: findRef parsed records 
+	 * @param	array			$resultArray: findRef parsed records
 	 * @param	array			$results: array of broken links
 	 * @param	t3lib_parsehtml	$htmlParser: instance of htmlparser
 	 * @return	void
