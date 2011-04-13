@@ -1581,12 +1581,23 @@ class t3lib_TCEmain {
 
 			// If there is an upload folder defined:
 		if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {
+			if (strpos($tcaFieldConf['uploadfolder'], '###') !== FALSE) {
+				$record = t3lib_BEfunc::getRecord($table, $id, '*', '', FALSE);
+				$tcaFieldConf['uploadfolder'] = t3lib_parsehtml::substituteMarkerArray($tcaFieldConf['uploadfolder'], $record, '###REC_|###', TRUE);
+				$individualFolder = TRUE;
+			} else {
+				$individualFolder = FALSE;
+			}
+
 			if (!$this->bypassFileHandling) { // If filehandling should NOT be bypassed, do processing:
 					// For logging..
 				$propArr = $this->getRecordProperties($table, $id);
 
 					// Get destrination path:
 				$dest = $this->destPathFromUploadFolder($tcaFieldConf['uploadfolder']);
+				if ($individualFolder && !@is_dir($dest)) {
+					t3lib_div::mkdir($dest);
+				}
 
 					// If we are updating:
 				if ($status == 'update') {
