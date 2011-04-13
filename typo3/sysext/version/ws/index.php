@@ -73,13 +73,13 @@
 	// Initialize module:
 unset($MCONF);
 require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-$BE_USER->modAccess($MCONF,1);
+require ($GLOBALS['BACK_PATH'].'init.php');
+require ($GLOBALS['BACK_PATH'].'template.php');
+$GLOBALS['BE_USER']->modAccess($MCONF,1);
 
 	// Include libraries of various kinds used inside:
-$LANG->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
-$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once('class.wslib.php');
 require_once('class.wslib_gui.php');
 
@@ -128,8 +128,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global	$LANG;
-
 			// fetches the configuration of the version extension
 		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
 			// show draft workspace only if enabled in the version extensions config
@@ -140,30 +138,30 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Menu items:
 		$this->MOD_MENU = array(
 			'function' => array(
-				'publish' => $LANG->getLL('menuitem_review'),
-				'workspaces' => $LANG->getLL('menuitem_workspaces'),
+				'publish' => $GLOBALS['LANG']->getLL('menuitem_review'),
+				'workspaces' => $GLOBALS['LANG']->getLL('menuitem_workspaces'),
 			),
 			'filter' => array(
-				1 => $LANG->getLL('filter_drafts'),
-				2 => $LANG->getLL('filter_archive'),
-				0 => $LANG->getLL('filter_all'),
+				1 => $GLOBALS['LANG']->getLL('filter_drafts'),
+				2 => $GLOBALS['LANG']->getLL('filter_archive'),
+				0 => $GLOBALS['LANG']->getLL('filter_all'),
 			),
 			'display' => array(
-				0 => '['.$LANG->getLL('shortcut_onlineWS').']',
-				-98 => $LANG->getLL('label_offlineWSes'),
-				-99 => $LANG->getLL('label_allWSes')
+				0 => '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']',
+				-98 => $GLOBALS['LANG']->getLL('label_offlineWSes'),
+				-99 => $GLOBALS['LANG']->getLL('label_allWSes')
 			),
 			'diff' => array(
-				0 => $LANG->getLL('diff_no_diff'),
-				1 => $LANG->getLL('diff_show_inline'),
-				2 => $LANG->getLL('diff_show_popup'),
+				0 => $GLOBALS['LANG']->getLL('diff_no_diff'),
+				1 => $GLOBALS['LANG']->getLL('diff_show_inline'),
+				2 => $GLOBALS['LANG']->getLL('diff_show_popup'),
 			),
 			'expandSubElements' => '',
 		);
 
 			// check if draft workspace was enabled, and if the user has access to it
 		if ($this->showDraftWorkspace === TRUE && $GLOBALS['BE_USER']->checkWorkspace(array('uid' => -1))) {
-			$this->MOD_MENU['display'][-1] = '[' . $LANG->getLL('shortcut_offlineWS') . ']';
+			$this->MOD_MENU['display'][-1] = '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS') . ']';
 		}
 
 			// Add workspaces:
@@ -252,14 +250,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH, $BE_USER;
 
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/ws.html');
 
 			// JavaScript
@@ -290,7 +287,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->getContextMenuCode();
 
 			// Setting publish access permission for workspace:
-		$this->publishAccess = $BE_USER->workspacePublishAccess($BE_USER->workspace);
+		$this->publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace);
 
 			// Parent initialization:
 		parent::init();
@@ -302,16 +299,14 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG, $BE_USER, $BACK_PATH;
-
 		// See if we need to switch workspace
 		$changeWorkspace = t3lib_div::_GET('changeWorkspace');
 		if ($changeWorkspace != '') {
-			$BE_USER->setWorkspace($changeWorkspace);
-			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $BACK_PATH . t3lib_BEfunc::getBackendScript() . '";');
+			$GLOBALS['BE_USER']->setWorkspace($changeWorkspace);
+			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $GLOBALS['BACK_PATH'] . t3lib_BEfunc::getBackendScript() . '";');
 		} else {
 				// Starting page:
-			$this->content.=$this->doc->header($LANG->getLL('title'));
+			$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content.=$this->doc->spacer(5);
 
 			// Get usernames and groupnames
@@ -326,11 +321,11 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Build top menu:
 			$menuItems = array();
 			$menuItems[] = array(
-				'label' => $LANG->getLL('menuitem_review'),
+				'label' => $GLOBALS['LANG']->getLL('menuitem_review'),
 				'content' => $this->moduleContent_publish()
 			);
 			$menuItems[] = array(
-				'label' => $LANG->getLL('menuitem_workspaces'),
+				'label' => $GLOBALS['LANG']->getLL('menuitem_workspaces'),
 				'content' => $this->moduleContent_workspaceList()
 			);
 
@@ -346,7 +341,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage($LANG->getLL('title'));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -368,8 +363,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
-		global $LANG, $BACK_PATH;
-
 		$buttons = array(
 			'new_record' => '',
 		);
@@ -379,7 +372,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// workspace creation link
 		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4))	{
 			$buttons['new_record'] = '<a href="' . $newWkspUrl . '">' .
-						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/add_workspaces.gif') . ' alt="' . $LANG->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' .
+						'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/add_workspaces.gif') . ' alt="' . $GLOBALS['LANG']->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' .
 						'</a>';
 		}
 		return $buttons;
@@ -407,8 +400,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		HTML content
 	 */
 	function moduleContent_publish()	{
-		global	$LANG;
-
 			// Initialize:
 		$content = '';
 		$details = t3lib_div::_GP('details');
@@ -421,7 +412,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 		$menu.= t3lib_BEfunc::getFuncMenu(0,'SET[diff]',$this->MOD_SETTINGS['diff'],$this->MOD_MENU['diff']);
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			$menu.= t3lib_BEfunc::getFuncCheck(0,'SET[expandSubElements]',$this->MOD_SETTINGS['expandSubElements'],'','','id="checkExpandSubElements"').' <label for="checkExpandSubElements">'.$LANG->getLL('label_showsubelements').'</label> ';
+			$menu .= t3lib_BEfunc::getFuncCheck(0, 'SET[expandSubElements]', $this->MOD_SETTINGS['expandSubElements'], '', '', 'id="checkExpandSubElements"') . ' <label for="checkExpandSubElements">' . $GLOBALS['LANG']->getLL('label_showsubelements') . '</label> ';
 		}
 
 			// Create header:
@@ -429,16 +420,16 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$description = '';
 		switch($GLOBALS['BE_USER']->workspace)	{
 			case 0:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'['.$LANG->getLL('shortcut_onlineWS').']';
-				$description = $LANG->getLL('workspace_description_live');
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']';
+				$description = $GLOBALS['LANG']->getLL('workspace_description_live');
 			break;
 			case -1:
-				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"').'['.$LANG->getLL('shortcut_offlineWS').']';
-				$description = $LANG->getLL('workspace_description_draft');
+				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS') . ']';
+				$description = $GLOBALS['LANG']->getLL('workspace_description_draft');
 			break;
 			case -99:
-				$title = $this->doc->icons(3).'[' . $LANG->getLL('shortcut_noWSfound') . ']';
-				$description = $LANG->getLL('workspace_description_no_access');
+				$title = $this->doc->icons(3) . '[' . $GLOBALS['LANG']->getLL('shortcut_noWSfound') . ']';
+				$description = $GLOBALS['LANG']->getLL('workspace_description_no_access');
 			break;
 			default:
 				$title = t3lib_iconWorks::getIconImage('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, $this->doc->backPath, ' align="top"').
@@ -451,14 +442,14 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$actionLinks = '';
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			if ($this->publishAccess)	{
-				$confirmation = $LANG->JScharCode($LANG->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_publish_workspace_confirmation_1' :  'submit_publish_workspace_confirmation_2'));
-				$actionLinks.= '<input type="submit" name="_publish" value="' . $LANG->getLL('submit_publish_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=0\';return false"/>';
+				$confirmation = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_publish_workspace_confirmation_1' : 'submit_publish_workspace_confirmation_2'));
+				$actionLinks.= '<input type="submit" name="_publish" value="' . $GLOBALS['LANG']->getLL('submit_publish_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=0\';return false"/>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
-					$confirmation = $LANG->JScharCode($LANG->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_swap_workspace_confirmation_1' :  'submit_swap_workspace_confirmation_2'));
-					$actionLinks.= '<input type="submit" name="_swap" value="' . $LANG->getLL('submit_swap_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=1\';return false ;" />';
+					$confirmation = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL(($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1) ? 'submit_swap_workspace_confirmation_1' :  'submit_swap_workspace_confirmation_2'));
+					$actionLinks.= '<input type="submit" name="_swap" value="' . $GLOBALS['LANG']->getLL('submit_swap_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=1\';return false ;" />';
 				}
 			} else {
-				$actionLinks.= $this->doc->icons(1) . $LANG->getLL('no_publish_permission');
+				$actionLinks.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('no_publish_permission');
 			}
 
 				// Preview of workspace link
@@ -478,20 +469,20 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$content = '
 		<table border="0" cellpadding="0" cellspacing="0" id="t3-user-ws-wsinfotable" class="t3-table t3-table-info">
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_workspace') . '&nbsp;</th>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_workspace') . '&nbsp;</th>
 				<td nowrap="nowrap">' . $title . '</td>
 			</tr>
 			<tr>' . ($description ? '
-				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_description') . '&nbsp;</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_description') . '&nbsp;</td>
 				<td>' . $description . '</td>
 			</tr>' : '') . ($GLOBALS['BE_USER']->workspace!=-99 && !$details ? '
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_options') . '&nbsp;</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_options') . '&nbsp;</td>
 				<td>' . $menu . $actionLinks . '</td>
 			</tr>
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_status') . '&nbsp;</td>
-				<td>' . $LANG->getLL('label_access_level') . ' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_status') . '&nbsp;</td>
+				<td>' . $GLOBALS['LANG']->getLL('label_access_level') . ' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
 			</tr>' : '').'
 		</table>
 		<br />
@@ -584,8 +575,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated HTML code
 	 */
 	function workspaceList_displayUserWorkspaceList()	{
-		global	$BACK_PATH, $LANG;
-
 			// table header
 		$content = $this->workspaceList_displayUserWorkspaceListHeader();
 
@@ -607,7 +596,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$content .= '<td>' .
 						'<a href="javascript:expandCollapse(' . $rowNum . ')">' .
 						t3lib_iconWorks::getSpriteIcon('actions-view-table-expand', array(
-							'title' => $LANG->getLL('img_title_show_more'),
+							'title' => $GLOBALS['LANG']->getLL('img_title_show_more'),
 							'id' => 'spanw1_' . $rowNum
 						)) .
 						'</a></td>';
@@ -619,7 +608,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 				// row #1, column #3: current workspace indicator
 			$content .= '<td nowrap="nowrap" style="text-align: center">';	// Mozilla Firefox will attempt wrap due to `width="1"` on topmost column
-			$content .= (!$currentWksp ? '&nbsp;' : '<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/icon_ok.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="' . $LANG->getLL('img_title_current_workspace') . '" />');
+			$content .= (!$currentWksp ? '&nbsp;' : '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_ok.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="' . $GLOBALS['LANG']->getLL('img_title_current_workspace') . '" />');
 			$content .= '</td>';
 
 				// row #1, column #4 and 5: title and description
@@ -693,31 +682,29 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Formatted workspace information
 	 */
 	function workspaceList_formatWorkspaceData(&$wksp)	{
-		global $LANG;
-
 		$content = '<table cellspacing="0" cellpadding="0" width="100%" class="ver-wl-details-table">' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_file_mountpoints') . '</strong></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_file_mountpoints') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getFileMountPoints($wksp) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_db_mountpoints') . '</strong></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_db_mountpoints') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getWebMountPoints($wksp) . '</td></tr>';
 		if ($wksp['uid'] > 0) {
 			// Displaying information below makes sence only for custom workspaces
 			$content .=
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_frozen') . '</strong></td>' .
-				'<td class="ver-wl-details">' . $LANG->getLL($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no') . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_publish_date') . '</strong></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_frozen') . '</strong></td>' .
+				'<td class="ver-wl-details">' . $GLOBALS['LANG']->getLL($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no') . '</td></tr>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_publish_date') . '</strong></td>' .
 				'<td class="ver-wl-details">' . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['publish_time'])) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_unpublish_date') . '</strong></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_unpublish_date') . '</strong></td>' .
 				'<td class="ver-wl-details">' . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['unpublish_time'])) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_your_access') . '</strong></td>' .
-				'<td class="ver-wl-details">' . $LANG->getLL('workspace_list_access_' . $wksp['_ACCESS']) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_your_access') . '</strong></td>' .
+				'<td class="ver-wl-details">' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wksp['_ACCESS']) . '</td></tr>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
 		elseif ($GLOBALS['BE_USER']->isAdmin()) {
 			// show users for draft/live workspace only to admin users
-			$content .=	'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
-				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
+			$content .= '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users') . '</strong></td>'
+				. '<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
 		$content .= '</table>';
 
@@ -746,13 +733,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// We need to fetch user's mount point list (including MPS mounted from groups).
 			// This list must not be affects by current user's workspace. It means we cannot use
-			// $BE_USER->isInWebMount() to check mount points.
+			// $GLOBALS['BE_USER']->isInWebMount() to check mount points.
 		$mountpointList = $GLOBALS['BE_USER']->groupData['webmounts'];
 			// If there are DB mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' webmounts) 
+			// then only show the ones that are allowed there (and that are in the users' webmounts)
 		if (trim($wksp['db_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' db_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['db_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
@@ -800,13 +787,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// We need to fetch user's mount point list (including MPS mounted from groups).
 			// This list must not be affects by current user's workspace. It means we cannot use
-			// $BE_USER->isInWebMount() to check mount points.
+			// $GLOBALS['BE_USER']->isInWebMount() to check mount points.
 		$mountpointList = implode(',', $GLOBALS['BE_USER']->groupData['filemounts']);
 			// If there are file mountpoints in the workspace record,
-			// then only show the ones that are allowed there (and that are in the users' file mounts) 
+			// then only show the ones that are allowed there (and that are in the users' file mounts)
 		if (trim($wksp['file_mountpoints'])) {
 			$userMountpoints = explode(',', $mountpointList);
-				// now filter the users' to only keep the mountpoints 
+				// now filter the users' to only keep the mountpoints
 				// that are also in the workspaces' file_mountpoints
 			$workspaceMountpoints = explode(',', $wksp['file_mountpoints']);
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
@@ -842,15 +829,14 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated content
 	 */
 	function workspaceList_displayUserWorkspaceListHeader()	{
-		global	$LANG;
 		// TODO CSH lables?
 		return '<table border="0" cellpadding="0" cellspacing="0" class="workspace-overview">
 			<tr class="t3-row-header">
 				<td width="1">&nbsp;</td>
 				<td width="1">&nbsp;</td>
-				<td nowrap="nowrap">' . $LANG->getLL('workspace_list_label_current_workspace') . '</td>
-				<td nowrap="nowrap">' . $LANG->getLL('workspace_list_label_workspace_title') . '</td>
-				<td nowrap="nowrap">' . $LANG->getLL('workspace_list_label_workspace_description') . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_current_workspace') . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_title') . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_description') . '</td>
 			</tr>';
 	}
 
@@ -862,17 +848,15 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated content
 	 */
 	function workspaceList_getUserList(&$wksp) {
-		global	$LANG;
-
 		if ($wksp['uid'] > 0) {
 			// custom workspaces
-			$content = $this->workspaceList_getUserListWithAccess($wksp['adminusers'], $LANG->getLL('workspace_list_label_owners')); // owners
-			$content .= $this->workspaceList_getUserListWithAccess($wksp['members'], $LANG->getLL('workspace_list_label_members')); // members
-			$content .= $this->workspaceList_getUserListWithAccess($wksp['reviewers'], $LANG->getLL('workspace_list_label_reviewers')); // reviewers
+			$content = $this->workspaceList_getUserListWithAccess($wksp['adminusers'], $GLOBALS['LANG']->getLL('workspace_list_label_owners')); // owners
+			$content .= $this->workspaceList_getUserListWithAccess($wksp['members'], $GLOBALS['LANG']->getLL('workspace_list_label_members')); // members
+			$content .= $this->workspaceList_getUserListWithAccess($wksp['reviewers'], $GLOBALS['LANG']->getLL('workspace_list_label_reviewers')); // reviewers
 			if ($content != '')	{
 				$content = '<table cellpadding="0" cellspacing="1" width="100%" class="lrPadding workspace-overview">' . $content . '</table>';
 			} else {
-				$content = $LANG->getLL($wksp['uid'] > 0 ? 'workspace_list_access_admins_only' : 'workspace_list_access_anyone');
+				$content = $GLOBALS['LANG']->getLL($wksp['uid'] > 0 ? 'workspace_list_access_admins_only' : 'workspace_list_access_anyone');
 			}
 		}
 		else {
@@ -989,22 +973,20 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	string		Generated content
 	 */
 	function workspaceList_displayIcons($currentWorkspace, &$wksp)	{
-		global	$BACK_PATH, $LANG;
-
 		$content = '';
 			// `edit workspace` button
 		if ($this->workspaceList_hasEditAccess($wksp))	{
 				// User can modify workspace parameters, display corresponding link and icon
 			$editUrl = 'workspaceforms.php?action=edit&amp;wkspId=' . $wksp['uid'];
 
-			$content .= '<a href="' . $editUrl . '" title="'. $LANG->getLL('workspace_list_icon_title_edit_workspace') .'"/>' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-open') .
-			'</a>';
+			$content .= '<a href="' . $editUrl . '" title="' . $GLOBALS['LANG']->getLL('workspace_list_icon_title_edit_workspace') . '"/>'
+				. t3lib_iconWorks::getSpriteIcon('actions-document-open')
+				. '</a>';
 		} else {
 				// User can NOT modify workspace parameters, display space
 				// Get only withdth and height from skinning API
 			$content .= '<img src="clear.gif" ' .
-					t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"', 2) .
+					t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"', 2) .
 					' border="0" alt="" hspace="1" align="middle" />';
 		}
 			// `switch workspace` button
@@ -1012,7 +994,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// Workspace switching button
 			$content .= '<a href="' .
 					t3lib_div::getIndpEnv('SCRIPT_NAME') .
-					'?changeWorkspace=' . $wksp['uid'] . '" title="'. $LANG->getLL('workspace_list_icon_title_switch_workspace') . '"/>' .
+					'?changeWorkspace=' . $wksp['uid'] . '" title="'. $GLOBALS['LANG']->getLL('workspace_list_icon_title_switch_workspace') . '"/>' .
 					t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') .
 					'</a>';
 		} else {
@@ -1020,7 +1002,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				//
 				// Here get only width and height from skinning API
 			$content .= '<img src="clear.gif" ' .
-					t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/switch.png', 'width="18" height="16"', 2) .
+					t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/switch.png', 'width="18" height="16"', 2) .
 					' border="0" alt="" hspace="1" align="middle" alt="" />';
 		}
 		return $content;
@@ -1049,15 +1031,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * @return	array		Generated record (see <code>sys_workspaces</code> for structure)
 	 */
 	function workspaceList_createFakeWorkspaceRecord($uid)	{
-		global	$BE_USER, $LANG;
-
 		$record = array(
 			'uid' => $uid,
 			'pid' => 0,				// always 0!
 			'tstamp' => 0,			// does not really matter
 			'deleted' => 0,
-			'title' => ($uid == 0 ? '['.$LANG->getLL('shortcut_onlineWS').']' : '['.$LANG->getLL('shortcut_offlineWS').']'),
-			'description' => ($uid == 0 ? $LANG->getLL('shortcut_onlineWS') : $LANG->getLL('shortcut_offlineWS')),
+			'title' => ($uid == 0 ? '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']' : '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS').']'),
+			'description' => ($uid == 0 ? $GLOBALS['LANG']->getLL('shortcut_onlineWS') : $GLOBALS['LANG']->getLL('shortcut_offlineWS')),
 			'adminusers' => '',
 			'members' => '',
 			'reviewers' => '',
