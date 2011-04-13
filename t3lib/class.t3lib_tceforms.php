@@ -2214,6 +2214,8 @@ class t3lib_TCEforms {
 				$config['uploadfolder'] = '';
 				// Fall through
 			case 'file': // If the element is of the internal type "file":
+				$uploadFolder = $config['uploadfolder'];
+				$uploadFolder = t3lib_parsehtml::substituteMarkerArray($uploadFolder, $row, '###REC_|###', TRUE);
 
 					// Creating string showing allowed types:
 				$tempFT = t3lib_div::trimExplode(',', $allowed, TRUE);
@@ -2250,7 +2252,7 @@ class t3lib_TCEforms {
 						$rowCopy = array();
 						$rowCopy[$field] = $imgPath;
 
-						$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"') .
+						$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $uploadFolder, 0, ' align="middle"') .
 								  $imgPath .
 								  '</span>';
 					}
@@ -2274,7 +2276,7 @@ class t3lib_TCEforms {
 
 				if (!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
-					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
+					if ($this->edit_docModuleUpload && $uploadFolder) {
 						$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file" name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
 					}
 				}
