@@ -136,15 +136,13 @@ class t3lib_clipboard {
 	 * @return	void
 	 */
 	function initializeClipboard() {
-		global $BE_USER;
-
 		$this->backPath = $GLOBALS['BACK_PATH'];
 
 			// Get data
-		$clipData = $BE_USER->getModuleData('clipboard', $BE_USER->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
+		$clipData = $GLOBALS['BE_USER']->getModuleData('clipboard', $GLOBALS['BE_USER']->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
 
 			// NumberTabs
-		$clNP = $BE_USER->getTSConfigVal('options.clipboardNumberPads');
+		$clNP = $GLOBALS['BE_USER']->getTSConfigVal('options.clipboardNumberPads');
 		if (t3lib_div::testInt($clNP) && $clNP >= 0) {
 			$this->numberTabs = t3lib_div::intInRange($clNP, 0, 20);
 		}
@@ -288,8 +286,6 @@ class t3lib_clipboard {
 	 * @return	string		HTML output
 	 */
 	function printClipboard() {
-		global $TBE_TEMPLATE, $LANG;
-
 		$out = array();
 		$elCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
 
@@ -328,7 +324,7 @@ class t3lib_clipboard {
 		if ($elCount) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
 				$js = "
-			if(confirm(" . $GLOBALS['LANG']->JScharCode(sprintf($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ")){
+			if(confirm(" . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ")){
 				window.location.href='" . $this->deleteUrl(0, $this->fileMode ? 1 : 0) . "&redirect='+top.rawurlencode(window.location.href);
 			}
 					";
@@ -352,7 +348,7 @@ class t3lib_clipboard {
 				'</td>
 				<td>' .
 				'<a href="' . htmlspecialchars($rmall_url) . '#clip_head">' .
-				t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) .
+				t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) .
 				'</a></td>
 			</tr>';
 
@@ -811,8 +807,7 @@ class t3lib_clipboard {
 	 * @access private
 	 */
 	function saveClipboard() {
-		global $BE_USER;
-		$BE_USER->pushModuleData('clipboard', $this->clipData);
+		$GLOBALS['BE_USER']->pushModuleData('clipboard', $this->clipData);
 	}
 
 	/**

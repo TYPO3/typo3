@@ -62,7 +62,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		}
 	}
 	function displayExample($theOutput)	{
-		global $SOBE,$tmpl;
+		global $tmpl;
 		if ($tmpl->helpConfig["imagetag"] || $tmpl->helpConfig["description"] || $tmpl->helpConfig["header"])	{
 	//		$theOutput.=$this->pObj->doc->divider(20);
 			$theOutput.=$this->pObj->doc->spacer(30);
@@ -76,7 +76,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 	}
 
 	function main()	{
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $TYPO3_CONF_VARS;
 		global $tmpl,$tplRow,$theConstants;
 
 

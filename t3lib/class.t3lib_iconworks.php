@@ -177,13 +177,11 @@ final class t3lib_iconWorks {
 	 * @see getIconImage()
 	 */
 	public static function getIcon($table, $row = array(), $shaded = FALSE) {
-		global $TCA, $PAGES_TYPES, $ICON_TYPES;
-
 			// Flags:
 		$doNotRenderUserGroupNumber = TRUE; // If set, then the usergroup number will NOT be printed unto the icon. NOTICE. the icon is generated only if a default icon for groups is not found... So effectively this is ineffective...
 
 			// Shadow:
-		if ($TCA[$table]['ctrl']['versioningWS']) {
+		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			switch ((int) $row['t3ver_state']) {
 				case 1:
 					return 'gfx/i/shadow_hide.png';
@@ -207,15 +205,15 @@ final class t3lib_iconWorks {
 				$row['doktype'] = t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU;
 			} // Workaround to change the icon if "Hide in menu" was set
 
-			if (!$iconfile = $PAGES_TYPES[$row['doktype']]['icon']) {
-				$iconfile = $PAGES_TYPES['default']['icon'];
+			if (!$iconfile = $GLOBALS['PAGES_TYPES'][$row['doktype']]['icon']) {
+				$iconfile = $GLOBALS['PAGES_TYPES']['default']['icon'];
 			}
-			if ($row['module'] && $ICON_TYPES[$row['module']]['icon']) {
-				$iconfile = $ICON_TYPES[$row['module']]['icon'];
+			if ($row['module'] && $GLOBALS['ICON_TYPES'][$row['module']]['icon']) {
+				$iconfile = $GLOBALS['ICON_TYPES'][$row['module']]['icon'];
 			}
 		} else {
-			if (!$iconfile = $TCA[$table]['ctrl']['typeicons'][$row[$TCA[$table]['ctrl']['typeicon_column']]]) {
-				$iconfile = (($TCA[$table]['ctrl']['iconfile']) ? $TCA[$table]['ctrl']['iconfile'] : $table . '.gif');
+			if (!$iconfile = $GLOBALS['TCA'][$table]['ctrl']['typeicons'][$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]]) {
+				$iconfile = (($GLOBALS['TCA'][$table]['ctrl']['iconfile']) ? $GLOBALS['TCA'][$table]['ctrl']['iconfile'] : $table . '.gif');
 			}
 		}
 
@@ -242,8 +240,8 @@ final class t3lib_iconWorks {
 			// + $shaded which is also boolean!
 
 			// Icon state based on "enableFields":
-		if (is_array($TCA[$table]['ctrl']['enablecolumns'])) {
-			$enCols = $TCA[$table]['ctrl']['enablecolumns'];
+		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+			$enCols = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
 				// If "hidden" is enabled:
 			if ($enCols['disabled']) {
 				if ($row[$enCols['disabled']]) {
@@ -280,7 +278,7 @@ final class t3lib_iconWorks {
 		}
 
 			// If "deleted" flag is set (only when listing records which are also deleted!)
-		if ($col = $row[$TCA[$table]['ctrl']['delete']]) {
+		if ($col = $row[$GLOBALS['TCA'][$table]['ctrl']['delete']]) {
 			$deleted = TRUE;
 		}
 			// Detecting extendToSubpages (for pages only)

@@ -60,7 +60,7 @@ class TYPO3_tcefile {
 		// If existing files should be overridden.
 	protected $overwriteExistingFiles;
 		// VeriCode - a hash of server specific value and other things which
-		// identifies if a submission is OK. (see $BE_USER->veriCode())
+		// identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
 	protected $vC;
 	    // the page where the user should be redirected after everything is done
 	protected $redirect;

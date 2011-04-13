@@ -197,8 +197,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init() {
-		global $BE_USER, $LANG, $BACK_PATH, $TYPO3_CONF_VARS;
-
 		/**
 		 * Extension Categories (static var)
 		 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
@@ -268,13 +266,13 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/em_index.html');
 
 		// Initialize helper objects
 		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
-		$this->terConnection->wsdlURL = $TYPO3_CONF_VARS['EXT']['em_wsdlURL'];
+		$this->terConnection->wsdlURL = $GLOBALS['TYPO3_CONF_VARS']['EXT']['em_wsdlURL'];
 
 
 		$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
@@ -321,8 +319,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Descriptions:
 		$this->descrTable = '_MOD_' . $this->MCONF['name'];
-		if ($BE_USER->uc['edit_showFieldHelp']) {
-			$LANG->loadSingleTableDescription($this->descrTable);
+		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
+			$GLOBALS['LANG']->loadSingleTableDescription($this->descrTable);
 		}
 
 		// Setting username/password etc. for upload-user:
@@ -609,7 +607,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function extensionList_import() {
-		global $TYPO3_LOADED_EXT;
 		$content = '';
 
 		// Listing from online repository:
@@ -1101,8 +1098,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function fetchMetaData($metaType) {
-		global $TYPO3_CONF_VARS;
-
 		$content = '';
 		switch ($metaType) {
 			case 'mirrors':
@@ -1466,8 +1461,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void		Writes content to $this->content
 	 */
 	function showExtDetails($extKey) {
-		global $TYPO3_LOADED_EXT;
-
 		list($list,) = $this->extensionList->getInstalledExtensions();
 		$absPath = tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']);
 
@@ -1784,7 +1777,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					case 'info':
 						// Loaded / Not loaded:
 						if (!in_array($extKey, $this->requiredExt)) {
-							if ($TYPO3_LOADED_EXT[$extKey]) {
+							if ($GLOBALS['TYPO3_LOADED_EXT'][$extKey]) {
 								$content = '<strong>' . $GLOBALS['LANG']->getLL('ext_details_loaded_and_running') . '</strong><br />' .
 										'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
 									'CMD[showExt]' => $extKey,
@@ -2435,17 +2428,16 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	nothing
 	 */
 	function checkForUpdates() {
-		global $LANG;
 		$content = '';
 
 		$count = intval(tx_em_Database::getExtensionCountFromRepository());
 		if ($count > 0) {
 			$content = $this->extensionList->showExtensionsToUpdate()
 					. t3lib_BEfunc::getFuncCheck(0, 'SET[display_installed]', $this->MOD_SETTINGS['display_installed'], '', '', 'id="checkDisplayInstalled"')
-					. '&nbsp;<label for="checkDisplayInstalled">' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle') . '</label><br />'
+					. '&nbsp;<label for="checkDisplayInstalled">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_nle') . '</label><br />'
 					. t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'], '', '', 'id="checkDisplayFiles"')
-					. '&nbsp;<label for="checkDisplayFiles">' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files') . '</label>';
-			$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
+					. '&nbsp;<label for="checkDisplayFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files') . '</label>';
+			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
 
 			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 			$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
@@ -2461,7 +2453,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				'<a href="' . t3lib_div::linkThisScript(array(
 					'SET[function]' => 2
 				)) . '">', '</a>');
-		$this->content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_vers_ret'), $content, 0, 1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_vers_ret'), $content, 0, 1);
 	}
 
 

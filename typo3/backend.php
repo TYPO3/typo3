@@ -364,24 +364,22 @@ class TYPO3backend {
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
 	protected function getLoggedInUserLabel() {
-		global $BE_USER, $BACK_PATH;
-
-                $icon = t3lib_iconWorks::getSpriteIcon('status-user-'. ($BE_USER->isAdmin() ? 'admin' : 'backend'));
+		$icon = t3lib_iconWorks::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 
 		$label = $GLOBALS['BE_USER']->user['realName'] ?
-			$BE_USER->user['realName'] . ' (' . $BE_USER->user['username'] . ')' :
-			$BE_USER->user['username'];
+			$GLOBALS['BE_USER']->user['realName'] . ' (' . $GLOBALS['BE_USER']->user['username'] . ')' :
+			$GLOBALS['BE_USER']->user['username'];
 
 			// Link to user setup if it's loaded and user has access
 		$link = '';
-		if (t3lib_extMgm::isLoaded('setup') && $BE_USER->check('modules','user_setup')) {
+		if (t3lib_extMgm::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules','user_setup')) {
 			$link = '<a href="#" onclick="top.goToModule(\'user_setup\');this.blur();return false;">';
 		}
 
 		$username = '">'.$link.$icon.'<span>'.htmlspecialchars($label).'</span>'.($link?'</a>':'');
 
 			// superuser mode
-		if($BE_USER->user['ses_backuserid']) {
+		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
 			$username   = ' su-user">'.$icon.
 			'<span title="' . $GLOBALS['LANG']->getLL('switchtouser') . '">' .
 			$GLOBALS['LANG']->getLL('switchtousershort') . ' </span>' .
