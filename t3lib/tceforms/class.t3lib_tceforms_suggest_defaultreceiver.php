@@ -335,6 +335,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 			if (!t3lib_BEfunc::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 				$retValue = FALSE;
 			}
+		} elseif(isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool) $GLOBALS['TCA'][$table]['ctrl']['is_static']) {
+			$retValue = TRUE;
 		} else {
 			if (!is_array(t3lib_BEfunc::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1)))) {
 				$retValue = FALSE;
