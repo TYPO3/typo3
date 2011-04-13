@@ -25,7 +25,7 @@
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
  * SplObjectStorage introduced in PHP 5.3.
- * 
+ *
  * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
  *
  * @package Extbase
@@ -42,10 +42,10 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 *
 	 * @var string
 	 */
-	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_ObjectStorage. To retrieve the first result, you can use the getFirst() method.';
+	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
 	/**
-	 * An array holding the objects and the stored information. The key of the array items ist the 
+	 * An array holding the objects and the stored information. The key of the array items ist the
 	 * spl_object_hash of the given object.
 	 *
 	 * array(
@@ -65,7 +65,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @var bool
 	 */
 	protected $isModified = FALSE;
-		
+
 	/**
 	 * Rewind the iterator to the first storage element.
 	 *
@@ -85,7 +85,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Returns the index at which the iterator currently is. This is different from the SplObjectStorage 
+	 * Returns the index at which the iterator currently is. This is different from the SplObjectStorage
 	 * as the key in this implementation is the object hash.
 	 *
 	 * @return string The index corresponding to the position of the iterator.
@@ -123,7 +123,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Associate data to an object in the storage. offsetSet() is an alias of attach(). 
+	 * Associate data to an object in the storage. offsetSet() is an alias of attach().
 	 *
 	 * @param object $object The object to add.
 	 * @param mixed $information The data to associate with the object.
@@ -159,7 +159,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * Returns the data associated with an object in the storage.
 	 *
 	 * @param string $object The object to look for.
-	 * @return mixed The data previously associated with the object in the storage. 
+	 * @return mixed The data previously associated with the object in the storage.
 	 */
 	public function offsetGet($object) {
 		return $this->storage[spl_object_hash($object)]['inf'];
@@ -195,7 +195,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	public function detach($object) {
 		$this->offsetUnset($object);
 	}
-	
+
 	/**
 	 * Returns the data, or info, associated with the object pointed by the current iterator position.
 	 *
@@ -205,7 +205,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 		$item = current($this->storage);
 		return $item['inf'];
 	}
-	
+
 	public function setInfo($data) {
 		$this->isModified = TRUE;
 		$key = key($this->storage);
@@ -235,7 +235,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 			$this->detach($object);
 		}
 	}
-	
+
 	/**
 	 * Returns this object storage as an array
 	 *
@@ -256,7 +256,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	public function unserialize($serialized) {
 		throw new RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
 	}
-	
+
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
@@ -275,7 +275,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	public function _isDirty() {
 		return $this->isModified;
 	}
-	
+
 }
 
 ?>
