@@ -43,7 +43,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	 *
 	 * @var string
 	 */
-	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_LazyObjectStorage. To retrieve the first result, you can use the getFirst() method.';
+	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_LazyObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
 	/**
 	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
@@ -85,7 +85,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	public function isInitialized() {
 		return $this->isInitialized;
 	}
-	
+
 	/**
 	 * Constructs this proxy instance.
 	 *
@@ -110,7 +110,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	}
 
 	/**
-	 * This is a function lazy load implementation. 
+	 * This is a function lazy load implementation.
 	 *
 	 * @return void
 	 */
@@ -126,7 +126,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 			$this->parentObject->_memorizeCleanState($this->propertyName);
 		}
 	}
-		
+
 	// Delegation to the ObjectStorage methods below
 
 	/**
@@ -165,7 +165,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 			$numberOfElements = $this->dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
 		} else {
 			$this->initialize();
-			$numberOfElements = count($this->storage);			
+			$numberOfElements = count($this->storage);
 		}
 		if (is_null($numberOfElements)) {
 			throw new Tx_Extbase_Persistence_Exception('The number of elements could not be determined.', 1252514486);
@@ -260,7 +260,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->initialize();
 		return parent::valid();
 	}
-	
+
 	/**
 	 * @see Tx_Extbase_Persistence_ObjectStorage::toArray
 	 */
@@ -268,6 +268,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->initialize();
 		return parent::toArray();
 	}
-		
+
 }
 ?>
