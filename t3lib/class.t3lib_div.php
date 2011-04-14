@@ -4868,7 +4868,7 @@ final class t3lib_div {
 			// Check prefix is valid:
 		if ($checkPrefix &&
 				!self::isFirstPartOfStr(trim($funcRef), $checkPrefix) &&
-				!self::isFirstPartOfStr(trim($funcRef), 'tx_')
+				!self::isFirstPartOfStr(strtolower(trim($funcRef)), 'tx_')
 		) {
 			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
 			if ($errorMode == 2) {
