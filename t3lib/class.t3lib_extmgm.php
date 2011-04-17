@@ -442,6 +442,108 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * Add an item to a select field item list.
+	 *
+	 * Warning: Do not use this method for radio or check types, especially not
+	 * with $relativeToField and $relativePosition parameters. This would shift
+	 * existing database data 'off by one'.
+	 *
+	 * As an example, this can be used to add an item to tt_content CType select drop-down
+	 * after the existing 'mailform' field with these parameters:
+	 * - $table = 'tt_content'
+	 * - $field = 'CType'
+	 * - $item = array(
+	 * 		'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
+	 * 		'login',
+	 * 		'i/tt_content_login.gif',
+	 * 	),
+	 * - $relativeToField = mailform
+	 * - $relativePosition = after
+	 *
+	 * @throws InvalidArgumentException If given paramenters are not of correct type or out of bounds
+	 * @throws RuntimeException If reference to related position fields can not be found or if select field is not defined
+	 *
+	 * @param string $table Name of TCA table
+	 * @param string $field Name of TCA field
+	 * @param array $item New item to add
+	 * @param string $relativeToField Add item relative to existing field
+	 * @param string $relativePosition Valid keywords: 'before', 'after' or 'replace' to relativeToField field
+	 */
+	public static function addTCASelectItem($table, $field, array $item, $relativeToField = '', $relativePosition = '') {
+		if (!is_string($table)) {
+			throw new InvalidArgumentException(
+				'Given table is of type "' . gettype($table) . '" but a string is expected.',
+				1303236963
+			);
+		}
+		if (!is_string($field)) {
+			throw new InvalidArgumentException(
+				'Given field is of type "' . gettype($field) . '" but a string is expected.',
+				1303236964
+			);
+		}
+		if (!is_string($relativeToField)) {
+			throw new InvalidArgumentException(
+				'Given relative field is of type "' . gettype($relativeToField) . '" but a string is expected.',
+				1303236965
+			);
+		}
+		if (!is_string($relativePosition)) {
+			throw new InvalidArgumentException(
+				'Given relative position is of type "' . gettype($relativePosition) . '" but a string is expected.',
+				1303236966
+			);
+		}
+		if ($relativePosition !== '' && $relativePosition !== 'before' && $relativePosition !== 'after' && $relativePosition !== 'replace') {
+			throw new InvalidArgumentException(
+				'Relative position must be either empty or one of "before", "after", "replace".',
+				1303236967
+			);
+		}
+
+		t3lib_div::loadTCA($table);
+
+		if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
+			throw new RuntimeException(
+				'Given select field item list was not found.',
+				1303237468
+			);
+		}
+
+			// Make sure item keys are integers
+		$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = array_values($GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
+
+		if (strlen($relativePosition) > 0) {
+				// Insert at specified position
+			$matchedPosition = t3lib_utility_Array::filterByValueRecursive(
+				$relativeToField,
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['items']
+			);
+			if (count($matchedPosition) > 0) {
+				$relativeItemKey = key($matchedPosition);
+				if ($relativePosition === 'replace') {
+					$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'][$relativeItemKey] = $item;
+				} else {
+					if ($relativePosition === 'before') {
+						$offset = $relativeItemKey;
+					} else {
+						$offset = $relativeItemKey + 1;
+					}
+					array_splice($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'], $offset, 0, array(0 => $item));
+				}
+			} else {
+				throw new RuntimeException(
+					'Relative position to insert item to was not found.',
+					1303238142
+				);
+			}
+		} else {
+				// Insert at new item at the end of the array
+			$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'][] = $item;
+		}
+	}
+
+	/**
 	 * Adds a list of new fields to the TYPO3 USER SETTINGS configuration "showitem" list, the array with
 	 * the new fields itself needs to be added additionally to show up in the user setup, like
 	 * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
