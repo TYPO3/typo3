@@ -453,6 +453,155 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 
 
 	/////////////////////////////////////////
+	// Tests concerning addTcaSelectItem
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString() {
+		t3lib_extMgm::addTcaSelectItem(array(), 'foo', array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString() {
+		t3lib_extMgm::addTcaSelectItem('foo', array(), array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString() {
+		t3lib_extMgm::addTcaSelectItem('foo', 'bar', array(), array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString() {
+		t3lib_extMgm::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords() {
+		t3lib_extMgm::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca() {
+		$GLOBALS['TCA'] = array();
+		t3lib_extMgm::addTcaSelectItem('foo', 'bar', array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function addTcaSelectItemThrowsExceptionIfRelativePositionItemIsNotFound() {
+		$GLOBALS['TCA'] = array(
+			'testTable' => array(
+				'columns' => array(
+					'testField' => array(
+						'config' => array(
+							'items' => array(),
+						),
+					),
+				),
+			),
+		);
+
+		t3lib_extMgm::addTcaSelectItem('testTable', 'testField', array('foo'), 'notExistingItem', 'after');
+	}
+
+	/**
+	 * Data provider for addTcaSelectItemInsertsItemAtSpecifiedPosition
+	 */
+	public function addTcaSelectItemDataProvider() {
+			// Every array splits into:
+			// - relativeToField
+			// - relativePosition
+			// - expectedResultArray
+		return array(
+			'add at end of array' => array(
+				'',
+				'',
+				array(
+					0 => array('firstElement'),
+					1 => array('matchMe'),
+					2 => array('thirdElement'),
+					3 => array('insertedElement'),
+				),
+			),
+			'replace element' => array(
+				'matchMe',
+				'replace',
+				array(
+					0 => array('firstElement'),
+					1 => array('insertedElement'),
+					2 => array('thirdElement'),
+				),
+			),
+			'add element after' => array(
+				'matchMe',
+				'after',
+				array(
+					0 => array('firstElement'),
+					1 => array('matchMe'),
+					2 => array('insertedElement'),
+					3 => array('thirdElement'),
+				),
+			),
+			'add element before' => array(
+				'matchMe',
+				'before',
+				array(
+					0 => array('firstElement'),
+					1 => array('insertedElement'),
+					2 => array('matchMe'),
+					3 => array('thirdElement'),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider addTcaSelectItemDataProvider
+	 */
+	public function addTcaSelectItemInsertsItemAtSpecifiedPosition($relativeToField, $relativePosition, $expectedResultArray) {
+		$GLOBALS['TCA'] = array(
+			'testTable' => array(
+				'columns' => array(
+					'testField' => array(
+						'config' => array(
+							'items' => array(
+								'0' => array('firstElement'),
+								'1' => array('matchMe'),
+								2 => array('thirdElement'),
+							),
+						),
+					),
+				),
+			),
+		);
+		t3lib_extMgm::addTcaSelectItem('testTable', 'testField', array('insertedElement'), $relativeToField, $relativePosition);
+		$this->assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
+	}
+
+
+	/////////////////////////////////////////
 	// Tests concerning getExtensionVersion
 	/////////////////////////////////////////
 
