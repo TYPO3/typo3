@@ -508,7 +508,7 @@ class tx_Workspaces_Service_Workspaces {
 		$viewUrl = '';
 		if ($table == 'pages') {
 			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
-		} elseif ($table == 'pages_language_oderlay' || $table == 'tt_content') {
+		} elseif ($table == 'pages_language_overlay' || $table == 'tt_content') {
 			$elementRecord = is_array($record) ? $record : t3lib_BEfunc::getLiveVersionOfRecord($table, $uid);
 			$viewUrl = t3lib_BEfunc::viewOnClick($elementRecord['pid']);
 		} else {
