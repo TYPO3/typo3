@@ -559,11 +559,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 */
 	function checkTextObj($conf)	{
+		$cObj = t3lib_div::makeInstance('tslib_cObj');
+		$cObj->start($this->data);
+
 		$isStdWrapped = array();
 		foreach($conf as $key => $value) {
 			$parameter = rtrim($key,'.');
 			if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
-				$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
+				$conf[$parameter] = $cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
 				$isStdWrapped[$parameter] = 1;
 			}
 		}
@@ -575,8 +578,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$conf['angle']=0;
 		}
 		if (!isset($conf['antiAlias'])){$conf['antiAlias']=1;}
-		$cObj =t3lib_div::makeInstance('tslib_cObj');
-		$cObj->start($this->data);
 
 		$conf['fontColor'] = trim($conf['fontColor']);
 			// Strip HTML
