@@ -4,7 +4,7 @@ plugin.tx_felogin_pi1 {
 	recursive = 
 	
 		#Template File
-	templateFile = EXT:felogin/template.html
+	templateFile = {$styles.content.loginform.templateFile}
 	
 		#baseURL for the link generation
 	feloginBaseURL = 
