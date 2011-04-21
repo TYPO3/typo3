@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A cache frontend tailored to PHP code.
  *
@@ -56,7 +55,7 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
-	public function set($entryIdentifier, $sourceCode, $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
 			throw new InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',

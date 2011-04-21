@@ -22,38 +22,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * A cache for any kinds of PHP variables
+ * A cache frontend for any kinds of PHP variables
  *
  * This file is a backport from FLOW3
  *
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_AbstractFrontend {
 
 	/**
-	 * If the extension "igbinary" is installed, use it for increased performance
+	 * If the extension "igbinary" is installed, use it for increased performance.
+	 * Caching the result of extension_loaded() here is faster than calling extension_loaded() multiple times.
 	 *
 	 * @var boolean
 	 */
 	protected $useIgBinary = FALSE;
-
-	/**
-	 * Constructs the cache
-	 *
-	 * @param string A identifier which describes this cache
-	 * @param t3lib_cache_backend_Backend Backend to be used for this cache
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @throws InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
-	 * @internal
-	 */
-	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
-		parent::__construct($identifier, $backend);
-		$this->initializeObject();
-	}
 
 	/**
 	 * Initializes this cache frontend
@@ -76,10 +63,11 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
-	public function set($entryIdentifier, $variable, $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
 				1233058264
 			);
@@ -87,7 +75,7 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {
-				throw new InvalidArgumentException(
+				throw new \InvalidArgumentException(
 					'"' . $tag . '" is not a valid tag for a cache entry.',
 					1233058269
 				);
@@ -102,22 +90,27 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	}
 
 	/**
-	 * Loads a variable value from the cache.
+	 * Finds and returns a variable value from the cache.
 	 *
-	 * @param string Identifier of the cache entry to fetch
+	 * @param string $entryIdentifier Identifier of the cache entry to fetch
 	 * @return mixed The value
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @throws t3lib_cache_exception_ClassAlreadyLoaded if the class already exists
+	 * @api
 	 */
 	public function get($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
 				1233058294
 			);
 		}
 
-		return ($this->useIgBinary === TRUE) ? igbinary_unserialize($this->backend->get($entryIdentifier)) : unserialize($this->backend->get($entryIdentifier));
+		$rawResult = $this->backend->get($entryIdentifier);
+		if ($rawResult === FALSE) {
+			return FALSE;
+		} else {
+			return ($this->useIgBinary === TRUE) ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+		}
 	}
 
 	/**
@@ -126,10 +119,11 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @param string $tag The tag to search for
 	 * @return array An array with the content of all matching entries. An empty array if no entries matched
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function getByTag($tag) {
 		if (!$this->isValidTag($tag)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $tag . '" is not a valid tag for a cache entry.',
 				1233058312
 			);
@@ -137,11 +131,12 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 
 		$entries = array();
 		$identifiers = $this->backend->findIdentifiersByTag($tag);
-
 		foreach ($identifiers as $identifier) {
-			$entries[] = ($this->useIgBinary === TRUE) ? igbinary_unserialize($this->backend->get($identifier)) : unserialize($this->backend->get($identifier));
+			$rawResult = $this->backend->get($identifier);
+			if ($rawResult !== FALSE) {
+				$entries[] = ($this->useIgBinary === TRUE) ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+			}
 		}
-
 		return $entries;
 	}
 

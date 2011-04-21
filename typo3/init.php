@@ -230,8 +230,7 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 
 if (TYPO3_UseCachingFramework) {
 	$typo3CacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-	$typo3CacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory');
-	$typo3CacheFactory->setCacheManager($typo3CacheManager);
+	$typo3CacheFactory = t3lib_div::makeInstance('t3lib_cache_Factory', 'production', $typo3CacheManager);
 
 	t3lib_cache::initPageCache();
 	t3lib_cache::initPageSectionCache();
