@@ -1293,7 +1293,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$path = PATH_t3lib;
 		$directories = t3lib_div::get_dirs($path);
 
-		$this->assertType('array', $directories);
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $directories);
 	}
 
 	/**
@@ -2117,7 +2117,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		rmdir($directory);
 
 		$this->assertTrue($directoryCreated);
-		$this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
 		$this->assertEquals($directoryPath, $fileInfo['path']);
 		$this->assertEquals($directoryName, $fileInfo['file']);
 		$this->assertEquals($directoryName, $fileInfo['filebody']);
@@ -2132,7 +2132,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$testFile = 'fileadmin/media/someFile.png';
 
 		$fileInfo = t3lib_div::split_fileref($testFile);
-		$this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
 		$this->assertEquals('fileadmin/media/', $fileInfo['path']);
 		$this->assertEquals('someFile.png', $fileInfo['file']);
 		$this->assertEquals('someFile', $fileInfo['filebody']);
