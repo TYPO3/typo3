@@ -106,6 +106,10 @@ class tx_linkvalidator_Processor {
 	public function init($searchField, $pid) {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
+		
+		foreach ($searchField as $tableName => $table) {
+			t3lib_div::loadTCA($tableName);
+		}
 	}
 
 	/**

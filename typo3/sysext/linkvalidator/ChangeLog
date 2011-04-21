@@ -1,3 +1,7 @@
+2011-03-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
+	
 2011-02-24  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #13340: Regression in TYPO3 4.5.1: pid and uid database fields are always 0
