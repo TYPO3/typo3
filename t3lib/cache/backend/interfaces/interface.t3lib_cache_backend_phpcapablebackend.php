@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A contract for a cache backend which is capable of storing, retrieving and
  * including PHP source code.
@@ -45,5 +44,4 @@ interface t3lib_cache_backend_PhpCapableBackend extends t3lib_cache_backend_Back
 	public function requireOnce($entryIdentifier);
 
 }
-
 ?>
