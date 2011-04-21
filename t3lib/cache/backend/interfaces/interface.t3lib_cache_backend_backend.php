@@ -25,14 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * interface for a Cache Backend
+ * A contract for a Cache Backend
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
- * @api
  * @subpackage t3lib
+ * @api
  */
 interface t3lib_cache_backend_Backend {
 
@@ -41,20 +40,22 @@ interface t3lib_cache_backend_Backend {
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
 	 * @return void
+	 * @api
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache);
 
 	/**
 	 * Saves data in the cache.
 	 *
-	 * @param string An identifier for this specific cache entry
-	 * @param string The data to be stored
-	 * @param array Tags to associate with this cache entry
-	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param string $entryIdentifier An identifier for this specific cache entry
+	 * @param string $data The data to be stored
+	 * @param array $tags Tags to associate with this cache entry
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
-	 * @throws InvalidArgumentException if the identifier is not valid
+	 * @throws \InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_Exception_InvalidData if the data is not a string
+	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL);
 
@@ -63,14 +64,16 @@ interface t3lib_cache_backend_Backend {
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
+	 * @api
 	 */
 	public function get($entryIdentifier);
 
 	/**
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
-	 * @param string $entryIdentifier: An identifier specifying the cache entry
+	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @api
 	 */
 	public function has($entryIdentifier);
 
@@ -79,8 +82,9 @@ interface t3lib_cache_backend_Backend {
 	 * Usually this only affects one entry but if - for what reason ever -
 	 * old entries for the identifier still exist, they are removed as well.
 	 *
-	 * @param string $entryIdentifier: Specifies the cache entry to remove
+	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @api
 	 */
 	public function remove($entryIdentifier);
 
@@ -88,6 +92,7 @@ interface t3lib_cache_backend_Backend {
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function flush();
 
@@ -96,15 +101,17 @@ interface t3lib_cache_backend_Backend {
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
+	 * @api
 	 */
 	public function flushByTag($tag);
 
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tags.
 	 *
-	 * @param	array	The tags the entries must have
+	 * @param array $tags The tags the entries must have
 	 * @return void
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function flushByTags(array $tags);
 
@@ -114,6 +121,7 @@ interface t3lib_cache_backend_Backend {
 	 *
 	 * @param string $tag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+	 * @api
 	 */
 	public function findIdentifiersByTag($tag);
 
@@ -123,9 +131,10 @@ interface t3lib_cache_backend_Backend {
 	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end
 	 * of a tag.
 	 *
-	 * @param array Array of tags to search for, the "*" wildcard is supported
+	 * @param array $tags Array of tags to search for, the "*" wildcard is supported
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function findIdentifiersByTags(array $tags);
 
@@ -133,10 +142,9 @@ interface t3lib_cache_backend_Backend {
 	 * Does garbage collection
 	 *
 	 * @return void
+	 * @api
 	 */
 	public function collectGarbage();
 
 }
-
-
 ?>
