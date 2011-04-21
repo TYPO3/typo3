@@ -61,7 +61,7 @@ class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 		$factory->setCacheManager($mockCacheManager);
 
 		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_cache_frontend_VariableFrontend', 't3lib_cache_backend_NullBackend');
-		$this->assertType('t3lib_cache_frontend_VariableFrontend', $cache);
+		$this->assertInstanceOf('t3lib_cache_frontend_VariableFrontend', $cache);
 	}
 
 	/**

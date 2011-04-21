@@ -439,7 +439,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 */
 	public function normalizeMonthReturnsInteger($monthName, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeMonth($monthName);
-		$this->assertType('integer', $result);
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
 	}
 
 	/**
@@ -527,7 +527,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 */
 	public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeWeekday($weekday);
-		$this->assertType('integer', $result);
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
 	}
 
 	/**
