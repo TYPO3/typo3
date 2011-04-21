@@ -86,6 +86,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$this->backend = t3lib_div::makeInstance(
 			't3lib_cache_backend_DbBackend',
+			'Testing',
 			$backendOptions
 		);
 	}

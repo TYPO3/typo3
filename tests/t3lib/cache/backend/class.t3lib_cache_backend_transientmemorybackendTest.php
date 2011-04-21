@@ -27,7 +27,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -39,7 +39,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 
 		$data = 'Some data';
 		$identifier = 'MyIdentifier';
@@ -53,7 +53,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'Some data';
@@ -70,7 +70,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'Some data';
@@ -87,7 +87,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'Some data';
@@ -105,7 +105,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'Some data';
@@ -124,7 +124,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'Some data';
@@ -145,7 +145,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$identifier = 'NonExistingIdentifier';
@@ -160,7 +160,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$identifier = 'NonExistingIdentifier';
@@ -176,7 +176,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'some data' . microtime();
@@ -198,7 +198,7 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_TransientMemoryBackend();
+		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 
 		$data = 'some data' . microtime();
