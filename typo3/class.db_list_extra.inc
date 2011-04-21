@@ -917,7 +917,7 @@ class localRecordList extends recordList {
 							if ($table=="tt_content" && $this->newWizards)	{
 									//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 								$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
-								$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 								$newContentWizScriptPath = $this->backPath.t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
 								$icon = '<a href="#" onclick="' . htmlspecialchars('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');') . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">'.

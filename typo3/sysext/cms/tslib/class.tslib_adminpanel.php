@@ -748,7 +748,7 @@ $query . '<table class="typo3-adminPanel">' .
 	public function ext_makeToolBar() {
 			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tsConfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
-		$tsConfig = $tsConfig ['properties']['newContentWiz.']['overrideWithExtension'];
+		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tsConfig) ? (t3lib_extMgm::extRelPath($tsConfig) . 'mod1/db_new_content_el.php') : (TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php');
 
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);

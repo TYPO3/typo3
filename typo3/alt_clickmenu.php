@@ -611,7 +611,7 @@ class clickMenu {
 	function DB_newWizard($table,$uid,$rec)	{
 			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
-		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+		$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
 		$url = ($table=='pages' || !t3lib_extMgm::isLoaded('cms')) ? 'db_new.php?id='.$uid.'&pagesOnly=1' : $newContentWizScriptPath.'?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
