@@ -88,7 +88,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Renders the contente of the module.
+	 * Renders the content of the module.
 	 *
 	 * @return	void
 	 */
@@ -238,7 +238,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 		);
 			// Regular expression to strip the selection prefix and possibly something from the label name:
 		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
-			// Iterate throuh all locallang lables:
+			// Iterate through all locallang lables:
 		foreach ($labels as $label => $value) {
 			if (strpos($label, $selectionPrefix) === 0) {
 				$key = preg_replace($labelPattern, '', $label);
@@ -269,7 +269,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return	string		HTML representiation of the shortcut button
+	 * @return	string		HTML representation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
