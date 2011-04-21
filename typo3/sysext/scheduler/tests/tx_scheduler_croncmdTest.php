@@ -254,7 +254,7 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	 */
 	public function getTimestampReturnsInteger() {
 		$instance = new tx_scheduler_CronCmd('* * * * *');
-		$this->assertType('integer', $instance->getTimestamp());
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_INT, $instance->getTimestamp());
 	}
 
 	/**
@@ -262,7 +262,7 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	 */
 	public function getCronCommandSectionsReturnsArray() {
 		$instance = new tx_scheduler_CronCmd('* * * * *');
-		$this->assertType('array', $instance->getCronCommandSections());
+		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $instance->getCronCommandSections());
 	}
 }
 ?>
