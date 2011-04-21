@@ -25,18 +25,26 @@
 /**
  * Testcase for the PDO cache backend
  *
- * @author	Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage tests
  */
 class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
-	 * Backup of global variable EXEC_TIME
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
 	 *
 	 * @var array
 	 */
-	protected $backupGlobalVariables;
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * Sets up this testcase
@@ -47,10 +55,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 		if (!extension_loaded('pdo_sqlite')) {
 			$this->markTestSkipped('pdo_sqlite extension was not available');
 		}
-
-		$this->backupGlobalVariables = array(
-			'EXEC_TIME' => $GLOBALS['EXEC_TIME'],
-		);
 	}
 
 	/**
@@ -59,7 +63,7 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = t3lib_div::makeInstance('t3lib_cache_backend_PdoBackend');
+		$backend = new t3lib_cache_backend_PdoBackend('Testing');
 		$data = 'Some data';
 		$identifier = 'MyIdentifier';
 		$backend->set($identifier, $data);
@@ -337,27 +341,12 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 		$mockCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
 
-		$backendOptions = array(
-			'dataSourceName' => 'sqlite::memory:',
-			'username' => '',
-			'password' => '',
-		);
-		$backend = t3lib_div::makeInstance('t3lib_cache_backend_PdoBackend', $backendOptions);
+		$backend = t3lib_div::makeInstance('t3lib_cache_backend_PdoBackend', 'Testing');
 		$backend->setCache($mockCache);
+		$backend->setDataSourceName('sqlite::memory:');
+		$backend->initializeObject();
 
 		return $backend;
-	}
-
-	/**
-	 * Clean up after the tests
-	 *
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function tearDown() {
-		foreach ($this->backupGlobalVariables as $key => $data) {
-			$GLOBALS[$key] = $data;
-		}
 	}
 }
 

@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * An abstract cache
  *
@@ -31,11 +30,13 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_frontend_Frontend {
 
 	/**
-	 * @var string Identifies this cache
+	 * Identifies this cache
+	 * @var string
 	 */
 	protected $identifier;
 
@@ -47,17 +48,15 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	/**
 	 * Constructs the cache
 	 *
-	 * @param string A identifier which describes this cache
-	 * @param t3lib_cache_backend_Backend Backend to be used for this cache
+	 * @param string $identifier A identifier which describes this cache
+	 * @param t3lib_cache_backend_Backend $backend Backend to be used for this cache
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @throws InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
-	 * @internal
+	 * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
 	 */
 	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
 		if (!preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier)) {
-			throw new InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
+			throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
 		}
-
 		$this->identifier = $identifier;
 		$this->backend = $backend;
 		$this->backend->setCache($this);
@@ -68,6 +67,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @return string The identifier for this cache
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function getIdentifier() {
 		return $this->identifier;
@@ -78,6 +78,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @return t3lib_cache_backend_Backend The backend used by this cache
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function getBackend() {
 		return $this->backend;
@@ -90,6 +91,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function has($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
@@ -98,7 +100,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 				1233058486
 			);
 		}
-
 		return $this->backend->has($entryIdentifier);
 	}
 
@@ -109,6 +110,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function remove($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
@@ -117,7 +119,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 				1233058495
 			);
 		}
-
 		return $this->backend->remove($entryIdentifier);
 	}
 
@@ -126,6 +127,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function flush() {
 		$this->backend->flush();
@@ -138,6 +140,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function flushByTag($tag) {
 		if (!$this->isValidTag($tag)) {
@@ -153,9 +156,10 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tag.
 	 *
-	 * @param	array	Array of tags to search for and to remove the cache entries, the "*" wildcard is supported
+	 * @param array $tags Array of tags to search for and to remove the cache entries, the "*" wildcard is supported
 	 * @return void
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function flushByTags(array $tags) {
 		$this->backend->flushByTags($tags);
@@ -166,6 +170,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function collectGarbage() {
 		$this->backend->collectGarbage();
@@ -176,15 +181,16 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * Whenever the specified class is modified, all cache entries tagged with the
 	 * class are flushed.
 	 *
-	 * If an empty string is specified as class name, the returned tag means
-	 * "depends on any class".
+	 * If an empty string is specified as class name, the returned tag means "depends on any class".
 	 *
-	 * @param string The class name
+	 * @param string $className The class name
 	 * @return string Class Tag
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 * @deprecated since TYPO3 4.6 - Use t3lib_cache_Manager::getClassTag() instead
 	 */
 	public function getClassTag($className = '') {
-		return ($className === '') ? self::TAG_CLASS : self::TAG_CLASS . str_replace('\\', '_', $className);
+		return t3lib_cache_Manager::getClassTag($className);
 	}
 
 	/**
@@ -193,6 +199,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @param string $identifier An identifier to be checked for validity
 	 * @return boolean
 	 * @author Christian Jul Jensen <julle@typo3.org>
+	 * @api
 	 */
 	public function isValidEntryIdentifier($identifier) {
 		return preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) === 1;
@@ -204,6 +211,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @param string $tag An identifier to be checked for validity
 	 * @return boolean
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function isValidTag($tag) {
 		return preg_match(self::PATTERN_TAG, $tag) === 1;

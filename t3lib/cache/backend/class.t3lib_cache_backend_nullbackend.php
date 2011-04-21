@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A caching backend which forgets everything immediately
  *
@@ -31,18 +30,20 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBackend {
 
 	/**
 	 * Acts as if it would save data
 	 *
-	 * @param string ignored
-	 * @param string ignored
-	 * @param array ignored
-	 * @param integer ignored
+	 * @param string $entryIdentifier ignored
+	 * @param string $data ignored
+	 * @param array $tags ignored
+	 * @param integer $lifetime ignored
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 	}
@@ -50,9 +51,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Returns False
 	 *
-	 * @param string ignored
+	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function get($entryIdentifier) {
 		return FALSE;
@@ -61,9 +63,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Returns False
 	 *
-	 * @param string ignored
+	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function has($entryIdentifier) {
 		return FALSE;
@@ -72,9 +75,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Does nothing
 	 *
-	 * @param string ignored
+	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function remove($entryIdentifier) {
 		return FALSE;
@@ -83,9 +87,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Returns an empty array
 	 *
-	 * @param string ignored
+	 * @param string $tag ignored
 	 * @return array An empty array
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
 		return array();
@@ -94,9 +99,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Returns an empty array
 	 *
-	 * @param string ignored
+	 * @param string $tags ignored
 	 * @return array An empty array
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function findIdentifiersByTags(array $tags) {
 		return array();
@@ -107,6 +113,7 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function flush() {
 	}
@@ -114,9 +121,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Does nothing
 	 *
-	 * @param string ignored
+	 * @param string $tag ignored
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function flushByTag($tag) {
 	}
@@ -124,9 +132,10 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Does nothing
 	 *
-	 * @param array ignored
+	 * @param array $tags ignored
 	 * @return void
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function flushByTags(array $tags) {
 	}
@@ -136,6 +145,7 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function collectGarbage() {
 	}

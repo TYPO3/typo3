@@ -573,8 +573,7 @@
 			$GLOBALS['TT']->push('Initializing the Caching System','');
 
 			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
-			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory', 'production', $typo3CacheManager);
 
 			try {
 				$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
