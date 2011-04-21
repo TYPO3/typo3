@@ -344,3 +344,5 @@ foreach($SOBE->include_once as $INC_FILE) {
 
 $SOBE->render();
 $SOBE->flush();
+
+?>
