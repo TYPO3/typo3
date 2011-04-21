@@ -45,7 +45,7 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setUp() {
-		$className = uniqid('ConcreteBackend_');
+		$className = 'ConcreteBackend_' . md5(uniqid(mt_rand(), TRUE));
 		eval('
 			class ' . $className. ' extends t3lib_cache_backend_AbstractBackend {
 				public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {}
@@ -66,7 +66,7 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 				}
 			}
 		');
-		$this->backend = new $className();
+		$this->backend = new $className('Testing');
 	}
 
 	/**
@@ -75,7 +75,7 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 	 */
 	public function theConstructorCallsSetterMethodsForAllSpecifiedOptions() {
 		$className = get_class($this->backend);
-		$backend = new $className(array('someOption' => 'someValue'));
+		$backend = new $className('Testing', array('someOption' => 'someValue'));
 		$this->assertSame('someValue', $backend->getSomeOption());
 	}
 }

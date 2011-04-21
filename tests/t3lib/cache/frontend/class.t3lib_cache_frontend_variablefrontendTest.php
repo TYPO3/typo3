@@ -22,20 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Testcase for the variable cache frontend
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
 class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 
 	/**
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
