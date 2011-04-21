@@ -27,7 +27,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -49,7 +49,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 			if (!fsockopen('localhost', 11211)) {
 				$this->markTestSkipped('memcached not reachable');
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$this->markTestSkipped('memcached not reachable');
 		}
 	}
@@ -62,10 +62,10 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
 		$backendOptions = array('servers' => array('localhost:11211'));
-		$backend = new t3lib_cache_backend_MemcachedBackend($backendOptions);
-
+		$backend = new t3lib_cache_backend_MemcachedBackend('Testing', $backendOptions);
+		$backend->initializeObject();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 	}
 
@@ -75,8 +75,9 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_Exception
 	 */
-	public function constructorThrowsExceptionIfNoMemcacheServerIsConfigured() {
-		$backend = new t3lib_cache_backend_MemcachedBackend();
+	public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured() {
+		$backend = new t3lib_cache_backend_MemcachedBackend('Testing');
+		$backend->initializeObject();
 	}
 
 	/**
@@ -88,7 +89,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function setThrowsExceptionIfConfiguredServersAreUnreachable() {
 		$backend = $this->setUpBackend(array('servers' => array('julle.did.this:1234')));
 		$data = 'Somedata';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 	}
 
@@ -99,7 +100,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
 		$this->assertTrue($inCache, 'Memcache failed to set and check entry');
@@ -112,7 +113,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
 		$this->assertEquals($data, $fetchedData, 'Memcache failed to set and retrieve data');
@@ -125,7 +126,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
@@ -139,7 +140,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
@@ -155,7 +156,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
@@ -173,7 +174,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 
@@ -187,7 +188,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = uniqid('NonExistingIdentifier');
+		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->has($identifier);
 		$this->assertFalse($inCache,'"has" did not return false when checking on non existing identifier');
 	}
@@ -198,7 +199,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = uniqid('NonExistingIdentifier');
+		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->remove($identifier);
 		$this->assertFalse($inCache,'"remove" did not return false when checking on non existing identifier');
 	}
@@ -250,31 +251,17 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	public function flushRemovesOnlyOwnEntries() {
 		$backendOptions = array('servers' => array('localhost:11211'));
 
-		$thisCache = $this->getMock(
-			't3lib_cache_frontend_AbstractFrontend',
-			array(),
-			array(),
-			'',
-			FALSE
-		);
-		$thisCache->expects($this->any())
-			->method('getIdentifier')
-			->will($this->returnValue('thisCache'));
-		$thisBackend = new t3lib_cache_backend_MemcachedBackend($backendOptions);
+		$thisCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
+		$thisBackend = new t3lib_cache_backend_MemcachedBackend('Testing', $backendOptions);
 		$thisBackend->setCache($thisCache);
+		$thisBackend->initializeObject();
 
-		$thatCache = $this->getMock(
-			't3lib_cache_frontend_AbstractFrontend',
-			array(),
-			array(),
-			'',
-			FALSE
-		);
-		$thatCache->expects($this->any())
-			->method('getIdentifier')
-			->will($this->returnValue('thatCache'));
-		$thatBackend = new t3lib_cache_backend_MemcachedBackend($backendOptions);
+		$thatCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
+		$thatBackend = new t3lib_cache_backend_MemcachedBackend('Testing', $backendOptions);
 		$thatBackend->setCache($thatCache);
+		$thatBackend->initializeObject();
 
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
@@ -304,7 +291,7 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the memcached backend used for testing
 	 *
-	 * @param	array	$backendOptions Options for the memcache backend
+	 * @param array $backendOptions Options for the memcache backend
 	 * @return t3lib_cache_backend_MemcachedBackend
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -312,13 +299,13 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		if (empty($backendOptions)) {
+		if ($backendOptions == array()) {
 			$backendOptions = array('servers' => array('localhost:11211'));
 		}
 
-		$backend = new t3lib_cache_backend_MemcachedBackend($backendOptions);
+		$backend = new t3lib_cache_backend_MemcachedBackend('Testing', $backendOptions);
 		$backend->setCache($cache);
-
+		$backend->initializeObject();
 		return $backend;
 	}
 }

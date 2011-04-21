@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A caching backend which stores cache entries during one script run.
  *
@@ -31,6 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_AbstractBackend {
 
@@ -54,6 +54,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
@@ -74,6 +75,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function get($entryIdentifier) {
 		return (isset($this->entries[$entryIdentifier])) ? $this->entries[$entryIdentifier] : FALSE;
@@ -85,6 +87,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function has($entryIdentifier) {
 		return isset($this->entries[$entryIdentifier]);
@@ -96,6 +99,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if the entry could be removed or FALSE if no entry was found
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function remove($entryIdentifier) {
 		if (isset($this->entries[$entryIdentifier])) {
@@ -118,6 +122,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param string $tag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
 		if (isset($this->tagsAndEntries[$tag])) {
@@ -133,9 +138,10 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end
 	 * of a tag.
 	 *
-	 * @param array Array of tags to search for, the "*" wildcard is supported
+	 * @param array $tags Array of tags to search for, the "*" wildcard is supported
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function findIdentifiersByTags(array $tags) {
 		$taggedEntries = array();
@@ -159,6 +165,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function flush() {
 		$this->entries = array();
@@ -171,6 +178,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param string $tag The tag the entries must have
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function flushByTag($tag) {
 		$identifiers = $this->findIdentifiersByTag($tag);
@@ -182,9 +190,10 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tags.
 	 *
-	 * @param	array	The tags the entries must have
+	 * @param array $tags The tags the entries must have
 	 * @return void
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 * @api
 	 */
 	public function flushByTags(array $tags) {
 		foreach ($tags as $tag) {
@@ -197,6 +206,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function collectGarbage() {
 	}
