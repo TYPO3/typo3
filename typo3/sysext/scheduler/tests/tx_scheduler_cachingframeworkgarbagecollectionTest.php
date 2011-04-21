@@ -31,7 +31,21 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class tx_scheduler_CachingFrameworkGarbageCollectionTest extends tx_phpunit_testcase {
+
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
 	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serialization
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @test
@@ -59,7 +73,7 @@ class tx_scheduler_CachingFrameworkGarbageCollectionTest extends tx_phpunit_test
 	/**
 	 * @test
 	 */
-	public function executeDoesNotCallCollectGarbageOfConfiguredBackend() {
+	public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend() {
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array(), array(), '', FALSE);
 		$cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
 
