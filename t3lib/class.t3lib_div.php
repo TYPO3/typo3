@@ -3069,24 +3069,28 @@ final class t3lib_div {
 
 	/**
 	 * Creates a directory - including parent directories if necessary and
-	 * fixes permissions on newly created directories.
+	 * sets permissions on newly created directories.
 	 *
-	 * @param string $destination Base directory. This must exist! Must have trailing slash!
+	 * @param string $destination Absolute base directory. This must exist! Must have trailing slash!
 	 * 		Example: "/root/typo3site/"
 	 * @param string $deepDirectory Directory to create.
 	 * 		Expample: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
-	 * @return void/string Error string if error occured
+	 * @throws RuntimeException If directory could not be created
+	 * @return void
 	 */
 	public static function mkdir_deep($baseDirectory, $deepDirectory) {
-		$directories = self::trimExplode('/', $deepDirectory, 1);
-		$currentPath = '';
-		foreach ($directories as $directory) {
-			$currentPath .= $directory . '/';
-			if (!is_dir($baseDirectory . $currentPath)) {
-				$result = self::mkdir($baseDirectory . $currentPath);
-				if (!$result) {
-					return 'Error: The directory "' . $baseDirectory . $currentPath . '" could not be created...';
-				}
+		$fullPath = $baseDirectory . $deepDirectory;
+		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
+			$result = @mkdir(
+				$fullPath,
+				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
+				TRUE
+			);
+			if (!is_dir($fullPath)) {
+				throw new RuntimeException(
+					'Could not create directory!',
+					1170251400
+				);
 			}
 		}
 	}
