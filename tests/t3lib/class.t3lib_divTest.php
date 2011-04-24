@@ -1976,6 +1976,87 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	///////////////////////////////
+	// Tests concerning mkdir_deep
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesDirectory() {
+		$directory = 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir_deep(PATH_site, $directory);
+		$isDirectoryCreated = is_dir(PATH_site . $directory);
+		rmdir(PATH_site . $directory);
+		$this->assertTrue($isDirectoryCreated);
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesSubdirectoriesRecursive() {
+		$directory = 'typo3temp/' . uniqid('test_');
+		$subDirectory = $directory . '/foo';
+		t3lib_div::mkdir_deep(PATH_site, $subDirectory);
+		$isDirectoryCreated = is_dir(PATH_site . $subDirectory);
+		rmdir(PATH_site . $subDirectory);
+		rmdir(PATH_site . $directory);
+		$this->assertTrue($isDirectoryCreated);
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepFixesPermissionsOnNewDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirDeepFixesPermissionsOnNewDirectory() test not available on Windows.');
+		}
+
+		$directory = uniqid('test_');
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $directory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), 2);
+		@rmdir(PATH_site . 'typo3temp/' . $directory);
+		$this->assertEquals($resultDirectoryPermissions, '0770');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
+		}
+
+		$baseDirectory = PATH_site . 'typo3temp/';
+		$existingDirectory = uniqid('test_existing_') . '/';
+		$newSubDirectory = uniqid('test_new_');
+		@mkdir($baseDirectory . $existingDirectory);
+		chmod($baseDirectory . $existingDirectory, 0742);
+		t3lib_div::mkdir_deep($baseDirectory, $existingDirectory . $newSubDirectory);
+		$resultExistingDirectoryPermissions = substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2);
+		@rmdir($baseDirectory, $existingDirectory . $newSubDirectory);
+		@rmdir($baseDirectory, $existingDirectory);
+		$this->assertEquals($resultExistingDirectoryPermissions, '0742');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesDirectoryInVfsStream() {
+		if (!class_exists('\vfsStreamWrapper')) {
+			$this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
+		}
+
+		\vfsStreamWrapper::register();
+		$baseDirectory = uniqid('test_');
+		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory($baseDirectory));
+		t3lib_div::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
+		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
+	}
+
+
+	///////////////////////////////
 	// Tests concerning unQuoteFilenames
 	///////////////////////////////
 
