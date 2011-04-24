@@ -3069,24 +3069,45 @@ final class t3lib_div {
 
 	/**
 	 * Creates a directory - including parent directories if necessary and
-	 * fixes permissions on newly created directories.
+	 * sets permissions on newly created directories.
 	 *
-	 * @param string $baseDirectory Base directory. This must exist! Must have trailing slash!
-	 * 		Example: "/root/typo3site/"
-	 * @param string $deepDirectory Directory to create.
-	 * 		Expample: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
-	 * @return void/string Error string if error occured
+	 * @param string $directory Target directory to create. Must a have trailing slash
+	 * 		if second parameter is given!
+	 * 		Example: "/root/typo3site/typo3temp/foo/"
+	 * @param string $deepDirectory Directory to create. This second parameter
+	 * 		is kept for backwards compatibility since 4.6 where this method
+	 * 		was split into a base directory and a deep directory to be created.
+	 * 		Example: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $directory is "/root/typo3site/"
+	 * @return void
+	 * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
+	 * @throws \RuntimeException If directory could not be created
 	 */
-	public static function mkdir_deep($baseDirectory, $deepDirectory) {
-		$directories = self::trimExplode('/', $deepDirectory, 1);
-		$currentPath = '';
-		foreach ($directories as $directory) {
-			$currentPath .= $directory . '/';
-			if (!is_dir($baseDirectory . $currentPath)) {
-				$result = self::mkdir($baseDirectory . $currentPath);
-				if (!$result) {
-					return 'Error: The directory "' . $baseDirectory . $currentPath . '" could not be created...';
-				}
+	public static function mkdir_deep($directory, $deepDirectory = '') {
+		if (!is_string($directory)) {
+			throw new \InvalidArgumentException(
+				'The specified directory is of type "' . gettype($directory) . '" but a string is expected.',
+				1303662955
+			);
+		}
+		if (!is_string($deepDirectory)) {
+			throw new \InvalidArgumentException(
+				'The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.',
+				1303662956
+			);
+		}
+
+		$fullPath = $directory . $deepDirectory;
+		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
+			@mkdir(
+				$fullPath,
+				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
+				TRUE
+			);
+			if (!is_dir($fullPath)) {
+				throw new \RuntimeException(
+					'Could not create directory!',
+					1170251400
+				);
 			}
 		}
 	}

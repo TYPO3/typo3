@@ -2011,13 +2011,13 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			$this->markTestSkipped('mkdirDeepFixesPermissionsOnNewDirectory() test not available on Windows.');
 		}
 
-		$directory = uniqid('test_');
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+		$directory = uniqid('mkdirdeeptest_');
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0750';
 		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $directory);
 		clearstatcache();
-		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), 2);
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3);
 		@rmdir(PATH_site . 'typo3temp/' . $directory);
-		$this->assertEquals($resultDirectoryPermissions, '0770');
+		$this->assertEquals($resultDirectoryPermissions, '750');
 	}
 
 	/**
@@ -2053,6 +2053,30 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory($baseDirectory));
 		t3lib_div::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
 		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function mkdirDeepThrowsExceptionIfDirectoryCreationFails() {
+		t3lib_div::mkdir_deep('http://localhost');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function mkdirDeepThrowsExceptionIfBaseDirectoryIsNotOfTypeString() {
+		t3lib_div::mkdir_deep(array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function mkdirDeepThrowsExceptionIfDeepDirectoryIsNotOfTypeString() {
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/foo', array());
 	}
 
 
