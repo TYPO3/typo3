@@ -2955,7 +2955,6 @@ final class t3lib_div {
 						// "@" is there because file is not necessarily OWNED by the user
 					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
 				} elseif (@is_dir($path)) {
-					$path = preg_replace('|/$|', '', $path);
 						// "@" is there because file is not necessarily OWNED by the user
 					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
 				}
@@ -3061,7 +3060,6 @@ final class t3lib_div {
 	 * @return	boolean		TRUE if @mkdir went well!
 	 */
 	public static function mkdir($newFolder) {
-		$newFolder = preg_replace('|/$|', '', $newFolder);
 		$result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
 		if ($result) {
 			self::fixPermissions($newFolder);

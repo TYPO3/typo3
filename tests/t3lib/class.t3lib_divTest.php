@@ -1640,7 +1640,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionsCorrectlySetsGroup() {
+	public function fixPermissionsSetsGroup() {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissionsCorrectlySetsGroupOwnerOfFile() tests not available on Windows');
 		}
@@ -1666,7 +1666,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionsCorrectlySetsPermissionsToFile() {
+	public function fixPermissionsSetsPermissionsToFile() {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
@@ -1693,7 +1693,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionsCorrectlySetsPermissionsToHiddenFile() {
+	public function fixPermissionsSetsPermissionsToHiddenFile() {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
@@ -1720,7 +1720,34 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionsCorrectlySetsPermissionsToDirectory() {
+	public function fixPermissionsSetsPermissionsToDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test directory
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir($directory);
+		chmod($directory, 1551);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+		$fixPermissionsResult = t3lib_div::fixPermissions($directory);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		t3lib_div::rmdir($directory);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultDirectoryPermissions, '0770');
+	}
+
+	/**
+	 * @test
+	 */
+	public function fixPermissionsSetsPermissionsToDirectoryWithTrailingSlash() {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
@@ -1747,7 +1774,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionsCorrectlySetsPermissionsToHiddenDirectory() {
+	public function fixPermissionsSetsPermissionsToHiddenDirectory() {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
@@ -1894,11 +1921,12 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function mkdirCorrectlyCreatesDirectory() {
+	public function mkdirCreatesDirectory() {
 		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
 		$mkdirResult = t3lib_div::mkdir($directory);
+		clearstatcache();
 		$directoryCreated = is_dir($directory);
-		t3lib_div::rmdir($directory);
+		@rmdir($directory);
 		$this->assertTrue($mkdirResult);
 		$this->assertTrue($directoryCreated);
 	}
@@ -1906,11 +1934,12 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function mkdirCorrectlyCreatesHiddenDirectory() {
+	public function mkdirCreatesHiddenDirectory() {
 		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
 		$mkdirResult = t3lib_div::mkdir($directory);
+		clearstatcache();
 		$directoryCreated = is_dir($directory);
-		t3lib_div::rmdir($directory);
+		@rmdir($directory);
 		$this->assertTrue($mkdirResult);
 		$this->assertTrue($directoryCreated);
 	}
@@ -1918,14 +1947,37 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function mkdirCorrectlyCreatesDirectoryWithTrailingSlash() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+	public function mkdirCreatesDirectoryWithTrailingSlash() {
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_') . '/';
 		$mkdirResult = t3lib_div::mkdir($directory);
+		clearstatcache();
 		$directoryCreated = is_dir($directory);
-		t3lib_div::rmdir($directory);
+		@rmdir($directory);
 		$this->assertTrue($mkdirResult);
 		$this->assertTrue($directoryCreated);
 	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirSetsPermissionsOfCreatedDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
+		}
+
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+		t3lib_div::mkdir($directory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		rmdir($directory);
+		$this->assertEquals($resultDirectoryPermissions, '0770');
+	}
+
+
+	///////////////////////////////
+	// Tests concerning unQuoteFilenames
+	///////////////////////////////
 
 	/**
 	 * Data provider for ImageMagick shell commands
