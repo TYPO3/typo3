@@ -3068,21 +3068,24 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Creates a directory - including parent directories if necessary - in the file system
+	 * Creates a directory - including parent directories if necessary and
+	 * fixes permissions on newly created directories.
 	 *
-	 * @param	string		Base folder. This must exist! Must have trailing slash! Example "/root/typo3site/"
-	 * @param	string		Deep directory to create, eg. "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
-	 * @return	string		If error, returns error string.
+	 * @param string $baseDirectory Base directory. This must exist! Must have trailing slash!
+	 * 		Example: "/root/typo3site/"
+	 * @param string $deepDirectory Directory to create.
+	 * 		Expample: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
+	 * @return void/string Error string if error occured
 	 */
-	public static function mkdir_deep($destination, $deepDir) {
-		$allParts = self::trimExplode('/', $deepDir, 1);
-		$root = '';
-		foreach ($allParts as $part) {
-			$root .= $part . '/';
-			if (!is_dir($destination . $root)) {
-				self::mkdir($destination . $root);
-				if (!@is_dir($destination . $root)) {
-					return 'Error: The directory "' . $destination . $root . '" could not be created...';
+	public static function mkdir_deep($baseDirectory, $deepDirectory) {
+		$directories = self::trimExplode('/', $deepDirectory, 1);
+		$currentPath = '';
+		foreach ($directories as $directory) {
+			$currentPath .= $directory . '/';
+			if (!is_dir($baseDirectory . $currentPath)) {
+				$result = self::mkdir($baseDirectory . $currentPath);
+				if (!$result) {
+					return 'Error: The directory "' . $baseDirectory . $currentPath . '" could not be created...';
 				}
 			}
 		}
