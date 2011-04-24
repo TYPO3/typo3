@@ -2055,6 +2055,30 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
 	}
 
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function mkdirDeepThrowsExceptionIfDirectoryCreationFails() {
+		t3lib_div::mkdir_deep('http://localhost');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function mkdirDeepThrowsExceptionIfBaseDirectoryIsNotOfTypeString() {
+		t3lib_div::mkdir_deep(array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function mkdirDeepThrowsExceptionIfDeepDirectoryIsNotOfTypeString() {
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/foo', array());
+	}
+
 
 	///////////////////////////////
 	// Tests concerning unQuoteFilenames
