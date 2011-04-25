@@ -16,7 +16,7 @@ Module menu
 #typo3-module-menu,
 #typo3-menu li.menuSection li a:hover {
 	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
-	/* star-hack targets IE6+7 */
+	/* star-hack targets IE7 */
 	*background-image: url("../../images/backgrounds/module-menu-right.png");
 	background-position: right;
 	background-repeat: repeat-y;

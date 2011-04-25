@@ -478,11 +478,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			$("list_frame").setStyle({height: parentHeight+"px", width: parentWidth+"px"});
 
 		}
-		// event crashes IE6 so he is excluded first
-		var version = parseFloat(navigator.appVersion.split(";")[1].strip().split(" ")[1]);
-		if (!(Prototype.Browser.IE && version == 6)) {
-			Event.observe(window, "resize", resizeIframe, false);
-		}';
+		Event.observe(window, "resize", resizeIframe, false);';
 
 		return '<iframe onload="resizeIframe(this,' . $max . ');" scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no" style="margin-top:-51px;border: none;"></iframe>';
 	}
