@@ -462,9 +462,6 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	openBrowserWindow: function(title, content, group) {
-		if (Ext.isIE6) {
-			group = group.replace(' ', '_');
-		}
 		var newWindow = window.open('', 'TYPO3DebugWindow_' + group,
 			'width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1'
 		);

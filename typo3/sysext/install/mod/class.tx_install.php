@@ -7696,12 +7696,6 @@ $out="
 					t3lib_div::createVersionNumberedFilename($this->backPath .
 						'sysext/install/Resources/Public/Stylesheets/ie7.css'
 				) . '" />';
-				// IE6
-			} elseif (intval($browserInfo['version']) < 7) {
-				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-					t3lib_div::createVersionNumberedFilename($this->backPath .
-						'sysext/install/Resources/Public/Stylesheets/ie6.css'
-				) . '" />';
 			}
 		}
 

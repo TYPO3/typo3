@@ -26,7 +26,7 @@ Pagetree
 
 #typo3-pagetree .x-tree-node .x-tree-node-over {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
-	/* star-hack targets IE6+7 */
+	/* star-hack targets IE7 */
 	*background-image: url("../../images/shadows/navigation-container.png");
 	background-position: right;
 	background-repeat: repeat-y;
