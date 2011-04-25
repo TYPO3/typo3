@@ -1946,20 +1946,6 @@ $str.=$this->docBodyTagBegin().
 		$moduleBody = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###FULLDOC###');
 			// Add CSS
 		$this->inDocStylesArray[] = 'html { overflow: hidden; }';
-			// Add JS code to the <head> for IE
-		$this->JScode.= $this->wrapScriptTags('
-				// workaround since IE6 cannot deal with relative height for scrolling elements
-			function resizeDocBody()	{
-				$("typo3-docbody").style.height = (document.body.offsetHeight - parseInt($("typo3-docheader").getStyle("height")));
-			}
-			if (Prototype.Browser.IE) {
-				var version = parseFloat(navigator.appVersion.split(\';\')[1].strip().split(\' \')[1]);
-				if (version == 6) {
-					Event.observe(window, "resize", resizeDocBody, false);
-					Event.observe(window, "load", resizeDocBody, false);
-				}
-			}
-		');
 
 			// Get the page path for the docheader
 		$markerArray['PAGEPATH'] = $this->getPagePath($pageRecord);

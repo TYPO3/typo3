@@ -2272,7 +2272,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 .no-boxshadow #typo3-navigationContainer-xcollapsed,
 .no-boxshadow #typo3-navigationDummy  {
 	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
-	/* star-hack targets IE6+7 */
+	/* star-hack targets IE7 */
 	*background-image: url("../images/backgrounds/module-menu-right.png");
 	background-position: right;
 	background-repeat: repeat-y;
