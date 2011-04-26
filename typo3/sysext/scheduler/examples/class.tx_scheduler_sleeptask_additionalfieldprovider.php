@@ -53,7 +53,7 @@ class tx_scheduler_SleepTask_AdditionalFieldProvider implements tx_scheduler_Add
 			if ($parentObject->CMD == 'add') {
 					// In case of new task and if field is empty, set default sleep time
 				$taskInfo['sleepTime'] = 30;
-			} else if ($parentObject->CMD == 'edit') {
+			} elseif ($parentObject->CMD == 'edit') {
 					// In case of edit, set to internal value if no data was submitted already
 				$taskInfo['sleepTime'] = $task->sleepTime;
 			} else {

@@ -407,7 +407,7 @@ class tx_cms_layout extends recordList {
 		if ($backendLayoutUid == -1) {
 				// if it is set to "none" - don't use any
 			$backendLayoutUid = NULL;
-		} else if ($backendLayoutUid == 0) {
+		} elseif ($backendLayoutUid == 0) {
 				// if it not set check the rootline for a layout on next level and use this
 			$rootline = t3lib_BEfunc::BEgetRootLine($id);
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
@@ -415,7 +415,7 @@ class tx_cms_layout extends recordList {
 				if ($backendLayoutUid > 0) {
 						// stop searching if a layout for "next level" is set
 					break;
-				} else if ($backendLayoutUid == -1){
+				} elseif ($backendLayoutUid == -1){
 						// if layout for "next level" is set to "none" - don't use any and stop searching
 					$backendLayoutUid = NULL;
 					break;
@@ -633,7 +633,7 @@ class tx_cms_layout extends recordList {
 							// If not, a new header without any buttons will be generated.
 							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} else if ($columnConfig['colPos']) {
+							} elseif ($columnConfig['colPos']) {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');

@@ -472,7 +472,7 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 							}
 							if ($legacyCaptionSplit) {
 								$thisCaption = $captionArray[$imgIndex];
-							} else if (($conf['captionSplit'] || $conf['imageTextSplit']) && isset($conf['caption.'])) {
+							} elseif (($conf['captionSplit'] || $conf['imageTextSplit']) && isset($conf['caption.'])) {
 								$thisCaption = $this->cObj->cObjGet($conf['caption.'], 'caption.');
 								$thisCaption = $this->cObj->stdWrap($thisCaption, $conf['caption.']);
 							}

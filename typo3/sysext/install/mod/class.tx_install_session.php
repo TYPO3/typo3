@@ -123,7 +123,7 @@ class tx_install_session {
 			$sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
 			$sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
 			throw new RuntimeException($sessionCreationError, 1294587485);
-		} else if (defined('SID')) {
+		} elseif (defined('SID')) {
 			$sessionCreationError = 'Session already started by session_start().<br />';
 			$sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
 			throw new RuntimeException($sessionCreationError, 1294587486);

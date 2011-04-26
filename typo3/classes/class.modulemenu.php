@@ -222,7 +222,7 @@ class ModuleMenu {
 					'navigationFrameScriptParam' => NULL,
 					'navigationComponentId' => NULL,
 				);
-			} else if (is_array($moduleData['sub'])) {
+			} elseif (is_array($moduleData['sub'])) {
 				foreach($moduleData['sub'] as $submoduleName => $submoduleData) {
 					$submoduleLink = t3lib_div::resolveBackPath($submoduleData['script']);
 

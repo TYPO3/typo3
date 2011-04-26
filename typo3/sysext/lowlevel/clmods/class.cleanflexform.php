@@ -140,7 +140,7 @@ Cleaning XML for FlexForm fields.
 					} else {
 						if ($echoLevel>2)	echo ' was CLEAN';
 					}
-				} else if ($echoLevel>2)	echo ' was EMPTY';
+				} elseif ($echoLevel>2)	echo ' was EMPTY';
 			}
 		}
 	}

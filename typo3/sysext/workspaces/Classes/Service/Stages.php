@@ -169,7 +169,7 @@ class Tx_Workspaces_Service_Stages {
 				foreach ($workspaceStageRecs as $workspaceStageRec) {
 					if ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
 						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
-					} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
+					} elseif ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 						$allowedStages[] = $workspaceStageRec;
 						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
 					}

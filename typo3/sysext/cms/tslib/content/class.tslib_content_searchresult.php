@@ -58,7 +58,7 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 						$theStartId = $temp_theStartId;
 					}
 				}
-			} else if (t3lib_div::_GP('stype')) {
+			} elseif (t3lib_div::_GP('stype')) {
 				if (substr(t3lib_div::_GP('stype'), 0, 1) == 'L') {
 					$pointer = intval(substr(t3lib_div::_GP('stype'), 1));
 					$theRootLine = $GLOBALS['TSFE']->tmpl->rootLine;

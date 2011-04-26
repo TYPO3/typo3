@@ -856,7 +856,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			&& !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid') // There must be no existing version of this record in workspace.
 			&& !t3lib_BEfunc::isPidInVersionizedBranch($recpid, $table)) { // PID must NOT be in a versionized branch either
 			return TRUE;
-		} else if ($this->workspaceRec['disable_autocreate']) {
+		} elseif ($this->workspaceRec['disable_autocreate']) {
 			t3lib_div::deprecationLog('Usage of disable_autocreate feature is deprecated since 4.5.');
 		}
 	}

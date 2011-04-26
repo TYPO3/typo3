@@ -616,7 +616,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						break;
 					}
-				} else if ($this->logintype === 'login') { // after login-error
+				} elseif ($this->logintype === 'login') { // after login-error
 					switch ($redirMethod) {
 						case 'loginError':
 							if ($this->conf['redirectPageLoginError']) {

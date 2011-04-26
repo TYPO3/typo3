@@ -154,7 +154,7 @@ class tx_t3editor_codecompletion {
 					}
 					$cleanedTreeBranch[$key]['v'] = $value;
 				}
-			} else if ($dotCount == 1) { // subtree (definition of properties)
+			} elseif ($dotCount == 1) { // subtree (definition of properties)
 				$subBranch = $this->treeWalkCleanup($value);
 				if ($subBranch) {
 					$key = str_replace('.', '', $key);

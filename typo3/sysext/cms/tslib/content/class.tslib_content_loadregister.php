@@ -52,7 +52,7 @@ class tslib_content_LoadRegister extends tslib_content_Abstract {
 					$registerProperties = $register . '.';
 					if(isset($conf[$register]) && isset($conf[$registerProperties])) {
 						$theValue = $this->cObj->stdWrap($conf[$register], $conf[$registerProperties]);
-					} else if(isset($conf[$registerProperties])) {
+					} elseif(isset($conf[$registerProperties])) {
 						$theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
 					}
 					$GLOBALS['TSFE']->register[$register] = $theValue;

@@ -174,7 +174,7 @@ class tx_rtehtmlarea_parse_html {
 				if (isset($HTMLparserConfig['tags.']['span.']['allowedAttribs'])) {
 					if (!$HTMLparserConfig['tags.']['span.']['allowedAttribs']) {
 						$HTMLparserConfig['tags.']['span.']['allowedAttribs'] = 'id';
-					} else if (!t3lib_div::inList($HTMLparserConfig['tags.']['span.']['allowedAttribs'], 'id')) {
+					} elseif (!t3lib_div::inList($HTMLparserConfig['tags.']['span.']['allowedAttribs'], 'id')) {
 						$HTMLparserConfig['tags.']['span.']['allowedAttribs'] .= ',id';
 					}
 				}

@@ -1908,9 +1908,9 @@ $str.=$this->docBodyTagBegin().
 		}
 		if (t3lib_div::isFirstPartOfStr($filename, 'EXT:')) {
 			$filename = t3lib_div::getFileAbsFileName($filename, TRUE, TRUE);
-		} else if (!t3lib_div::isAbsPath($filename)) {
+		} elseif (!t3lib_div::isAbsPath($filename)) {
 			$filename = t3lib_div::resolveBackPath($this->backPath . $filename);
-		} else if (!t3lib_div::isAllowedAbsPath($filename)) {
+		} elseif (!t3lib_div::isAllowedAbsPath($filename)) {
 			$filename = '';
 		}
 		$htmlTemplate = '';

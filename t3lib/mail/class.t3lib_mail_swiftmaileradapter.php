@@ -240,9 +240,9 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 						if ($matches[2]) {
 							$charset = trim($matches[3]);
 						}
-					} else if (preg_match('/^content-transfer-encoding:(.*)$/i', $line, $matches)) {
+					} elseif (preg_match('/^content-transfer-encoding:(.*)$/i', $line, $matches)) {
 						$encoding = trim($matches[1]);
-					} else if (strlen(trim($line)) == 0) {
+					} elseif (strlen(trim($line)) == 0) {
 							// empty line before actual content of this part
 						break;
 					}

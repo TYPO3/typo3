@@ -145,7 +145,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 			// Preparing the current-path string (if found in the listing we will see a red blinking arrow).
 		if (!$GLOBALS['SOBE']->browser->curUrlInfo['value'])	{
 			$cmpPath='';
-		} else if (substr(trim($GLOBALS['SOBE']->browser->curUrlInfo['info']),-1)!='/')	{
+		} elseif (substr(trim($GLOBALS['SOBE']->browser->curUrlInfo['info']),-1)!='/')	{
 			$cmpPath=PATH_site.dirname($GLOBALS['SOBE']->browser->curUrlInfo['info']).'/';
 		} else {
 			$cmpPath=PATH_site.$GLOBALS['SOBE']->browser->curUrlInfo['info'];

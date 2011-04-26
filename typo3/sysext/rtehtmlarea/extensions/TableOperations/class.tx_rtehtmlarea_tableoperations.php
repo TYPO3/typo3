@@ -106,7 +106,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 							$registerRTEinJavascriptString .= '
 					RTEarea['.$RTEcounter.'].buttons.'.$dialogue.' = new Object();
 					RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = "' . $disabledFieldsets . '";';
-						} else if ($this->thisConfig['buttons.'][$dialogue.'.']['removeFieldsets']) {
+						} elseif ($this->thisConfig['buttons.'][$dialogue.'.']['removeFieldsets']) {
 							$registerRTEinJavascriptString .= '
 					RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets += ",' . $disabledFieldsets . '";';
 						} else {

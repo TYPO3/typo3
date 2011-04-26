@@ -990,7 +990,7 @@ class SC_mod_user_setup_index {
 				// Setting comes from another extension
 			$context = $strParts[0];
 			$field = $strParts[1];
-		} else if (!t3lib_div::inList('language,simuser', $str)) {
+		} elseif (!t3lib_div::inList('language,simuser', $str)) {
 			$field = 'option_' . $str;
  		}
 		return t3lib_BEfunc::wrapInHelp($context, $field, $label);

@@ -175,7 +175,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 			$item = array('term' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset), 'abbr' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset), 'language' => $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
 			if ($acronymRow['type'] == 1) {
 				$acronymArray[] = $item;
-			} else if ($acronymRow['type'] == 2) {
+			} elseif ($acronymRow['type'] == 2) {
 				$abbrArray[] = $item;
 			}
 		}

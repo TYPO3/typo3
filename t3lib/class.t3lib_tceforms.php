@@ -6346,7 +6346,7 @@ class t3lib_TCEforms {
 		if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']) {
 			$out .= t3lib_iconWorks::getSpriteIcon($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']);
 			$out .= '&nbsp;';
-		} else if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {
+		} elseif ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {
 			$out .= '[' . $this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] . ']';
 			$out .= '&nbsp;';
 		}

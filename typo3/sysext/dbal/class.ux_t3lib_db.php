@@ -1000,7 +1000,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$mt = $this->sql_field_metatype($table, $k);
 					if ($mt{0} == 'I') {
 						$v = (int) $v;
-					} else if ($mt{0} == 'F') {
+					} elseif ($mt{0} == 'F') {
 						$v = (double) $v;
 					}
 
@@ -1110,7 +1110,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$mt = $this->sql_field_metatype($table, $k);
 						if ($mt{0} == 'I') {
 							$v = (int) $v;
-						} else if ($mt{0} == 'F') {
+						} elseif ($mt{0} == 'F') {
 							$v = (double) $v;
 						}
 						$nArr[] = $this->quoteFieldNames($k) . '=' . ((!in_array($k, $no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);

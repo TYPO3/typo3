@@ -190,7 +190,7 @@ class tx_Workspaces_Service_Workspaces {
 			// Contains either nothing or a list with live-uids
 		if ($pageId != -1 && $recursionLevel > 0) {
 			$pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
-		} else if ($pageId != -1) {
+		} elseif ($pageId != -1) {
 			$pageList = $pageId;
 		} else {
 			$pageList = '';
@@ -243,7 +243,7 @@ class tx_Workspaces_Service_Workspaces {
 		 */
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid;
-		} else if ($wsid === self::SELECT_ALL_WORKSPACES) {
+		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0';
 		}
 
@@ -298,7 +298,7 @@ class tx_Workspaces_Service_Workspaces {
 
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
-		} else if ($wsid === self::SELECT_ALL_WORKSPACES) {
+		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
 		}
 

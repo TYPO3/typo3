@@ -4022,7 +4022,7 @@ class tslib_cObj {
 			if ($globalJumpUrlEnabled && isset($conf['jumpurl']) && $conf['jumpurl'] == 0) {
 				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 0;
 					// if the global jumpURL feature is deactivated, but is wanted for this link, then activate it for now
-			} else if (!$globalJumpUrlEnabled && $conf['jumpurl']) {
+			} elseif (!$globalJumpUrlEnabled && $conf['jumpurl']) {
 				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 1;
 			}
 			$theLinkWrap = $this->typoLink('|', $typoLinkConf);

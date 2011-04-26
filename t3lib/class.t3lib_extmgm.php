@@ -336,7 +336,7 @@ final class t3lib_extMgm {
 					} else {
 						if (strpos($typeDetails['showitem'], $str) !== FALSE) {
 							$fieldExists = TRUE;
-						} else if(is_array($GLOBALS['TCA'][$table]['palettes'])) {
+						} elseif (is_array($GLOBALS['TCA'][$table]['palettes'])) {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
 								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
 								&& strpos($paletteDetails['showitem'], $str) !== FALSE) {
