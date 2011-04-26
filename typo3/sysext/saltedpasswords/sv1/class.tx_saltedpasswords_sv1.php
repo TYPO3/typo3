@@ -177,7 +177,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 				}
 
 				// password is stored as md5
-			} else if (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
+			} elseif (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
 				$validPasswd = (!strcmp(md5($password), $user['password']) ? TRUE : FALSE);
 
 					// skip further authentication methods
