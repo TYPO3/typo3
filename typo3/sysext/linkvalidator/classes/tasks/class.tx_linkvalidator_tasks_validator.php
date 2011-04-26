@@ -291,7 +291,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
 		}
 
-		$processor->getLinkStatistics($array, $modTS['checkhidden']);
+		$processor->getLinkStatistics($linkTypes, $modTS['checkhidden']);
 
 		if (!empty($this->email)) {
 			$linkCounts = $processor->getLinkCounts($page);
@@ -373,12 +373,13 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return	array	$linkTypes: list of link types.
 	 */
 	protected function getLinkTypes($modTS) {
-		$types = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
-		if (is_array($linkTypes)) {
+		$linkTypes = array();
+		$typesTmp = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
+		if (is_array($typesTmp)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 					&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
-					if (in_array($type, $linkTypes)) {
+					if (in_array($type, $typesTmp)) {
 						$linkTypes[$type] = 1;
 					}
 				}

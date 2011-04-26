@@ -1,4 +1,8 @@
-2011-03-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
+2011-04-26 	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13757 Scheduler task does not work at all
+
+2011-04-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
 	
