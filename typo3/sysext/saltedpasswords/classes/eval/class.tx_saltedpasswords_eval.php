@@ -77,7 +77,7 @@ class tx_saltedpasswords_eval {
 			if ($isMD5) {
 				$set = TRUE;
 				$value = 'M' . $this->objInstanceSaltedPW->getHashedPassword($value);
-			} else if (!$isSaltedHash) {
+			} elseif (!$isSaltedHash) {
 				$set = TRUE;
 				$value = $this->objInstanceSaltedPW->getHashedPassword($value);
 			}

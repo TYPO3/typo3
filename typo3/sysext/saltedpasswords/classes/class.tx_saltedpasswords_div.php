@@ -136,7 +136,7 @@ class tx_saltedpasswords_div {
 			$securityLevel = $GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel'];
 			if ($mode == 'BE' && $extConf['enabled']) {
 				return (($securityLevel =='normal' && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0) || $securityLevel == 'rsa');
-			} else if ($mode =='FE' && $extConf['enabled']) {
+			} elseif ($mode =='FE' && $extConf['enabled']) {
 				return t3lib_div::inList('normal,rsa', $securityLevel);
 			}
 

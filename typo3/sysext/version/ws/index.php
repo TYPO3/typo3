@@ -712,7 +712,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
-		else if ($GLOBALS['BE_USER']->isAdmin()) {
+		elseif ($GLOBALS['BE_USER']->isAdmin()) {
 			// show users for draft/live workspace only to admin users
 			$content .=	'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
@@ -736,7 +736,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($wksp['uid'] == -1) {
 				// draft workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_draft');
-		} else if ($wksp['uid'] == 0) {
+		} elseif ($wksp['uid'] == 0) {
 				// live workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_live');
 		}
@@ -790,7 +790,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($wksp['uid'] == -1) {
 				// draft workspace - none!
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_draft');
-		} else if ($wksp['uid'] == 0) {
+		} elseif ($wksp['uid'] == 0) {
 				// live workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_live');
 		}

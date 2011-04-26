@@ -127,7 +127,7 @@ class AjaxLogin {
 			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 			 	$ajaxObj->addContent('login', array('will_time_out' => FALSE, 'locked' => TRUE));
 				$ajaxObj->setContentFormat('json');
-			} else if (!isset($GLOBALS['BE_USER']->user['uid'])) {
+			} elseif (!isset($GLOBALS['BE_USER']->user['uid'])) {
 				$ajaxObj->addContent('login', array('timed_out' => TRUE));
 			} else {
 				$GLOBALS['BE_USER']->fetchUserSession(TRUE);

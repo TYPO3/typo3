@@ -118,10 +118,10 @@ class tx_cms_BackendLayout {
 					$backendLayoutUid = $selectedBackendLayout;
 				}
 				break;
-			} else if ($selectedBackendLayoutNextLevel == -1 && $page['uid'] != $id) {
+			} elseif ($selectedBackendLayoutNextLevel == -1 && $page['uid'] != $id) {
 					// Some previous page in our rootline sets layout_next to "None"
 				break;
-			} else if ($selectedBackendLayoutNextLevel > 0 && $page['uid'] != $id) {
+			} elseif ($selectedBackendLayoutNextLevel > 0 && $page['uid'] != $id) {
 					// Some previous page in our rootline sets some backend_layout, use it
 				$backendLayoutUid = $selectedBackendLayoutNextLevel;
 				break;

@@ -697,7 +697,7 @@ class TYPO3backend {
 		if(!$startModule)	{
 			if ($GLOBALS['BE_USER']->uc['startModule'])	{
 				$startModule = $GLOBALS['BE_USER']->uc['startModule'];
-			} else if($GLOBALS['BE_USER']->uc['startInTaskCenter'])	{
+			} elseif ($GLOBALS['BE_USER']->uc['startInTaskCenter'])	{
 				$startModule = 'user_task';
 			}
 		}

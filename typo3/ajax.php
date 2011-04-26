@@ -67,7 +67,7 @@ $ajaxParams = array();
 	// evaluating the arguments and calling the AJAX method/function
 if (empty($ajaxID)) {
 	$ajaxObj->setError('No valid ajaxID parameter given.');
-} else if (empty($ajaxScript)) {
+} elseif (empty($ajaxScript)) {
 	$ajaxObj->setError('No backend function registered for ajaxID "'.$ajaxID.'".');
 } else {
 	$ret = t3lib_div::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, false, true);

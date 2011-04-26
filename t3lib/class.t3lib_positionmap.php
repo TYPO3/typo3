@@ -492,9 +492,9 @@ class t3lib_positionMap {
 
 					if (isset($columnConfig['colPos']) && $head) {
 						$table .= $this->wrapColumnHeader($head, '', '') . '</div>' . implode('<br />', $lines[$columnKey]);
-					} else if ($columnConfig['colPos']) {
+					} elseif ($columnConfig['colPos']) {
 						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('noAccess'), '', '') . '</div>';
-					} else if ($columnConfig['name']) {
+					} elseif ($columnConfig['name']) {
 						$table .= $this->wrapColumnHeader($columnConfig['name'], '', '') . '</div>';
 					} else {
 						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '') . '</div>';

@@ -4085,7 +4085,7 @@ if (version == "n3") {
 		$n = $n + $offset;
 		if ($offset > 0 && $n > $end)	{
 			$n = $start + ($n - $end - 1);
-		} else if ($offset < 0 && $n < $start)	{
+		} elseif ($offset < 0 && $n < $start)	{
 			$n = $end - ($start - $n - 1);
 		}
 		return chr($n);
@@ -4115,7 +4115,7 @@ if (version == "n3") {
 					$out .= $this->encryptCharcode($charValue,0x2B,0x3A,$offset);
 				} elseif ($charValue >= 0x40 && $charValue <= 0x5A)	{	// A-Z @
 					$out .= $this->encryptCharcode($charValue,0x40,0x5A,$offset);
-				} else if ($charValue >= 0x61 && $charValue <= 0x7A)	{	// a-z
+				} elseif ($charValue >= 0x61 && $charValue <= 0x7A)	{	// a-z
 					$out .= $this->encryptCharcode($charValue,0x61,0x7A,$offset);
 				} else {
 					$out .= $string{$i};

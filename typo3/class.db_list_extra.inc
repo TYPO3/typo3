@@ -1613,7 +1613,7 @@ class localRecordList extends recordList {
 			}
 
 			if ($lNew)	$out[1].= $lNew;
-		} else if ($row['l18n_parent']) {
+		} elseif ($row['l18n_parent']) {
 			$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 		}
 

@@ -119,7 +119,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 			// could be merged; still here to clarify
 		if (!strcmp(TYPO3_MODE, 'BE')) {
 			$password = $loginData['uident_text'];
-		} else if (!strcmp(TYPO3_MODE, 'FE')) {
+		} elseif (!strcmp(TYPO3_MODE, 'FE')) {
 			$password = $loginData['uident_text'];
 		}
 
@@ -156,7 +156,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 				);
 			}
 			// we process also clear-text, md5 and passwords updated by Portable PHP password hashing framework
-		} else if (!intval($this->extConf['forceSalted'])) {
+		} elseif (!intval($this->extConf['forceSalted'])) {
 
 				// stored password is in deprecated salted hashing method
 			if (t3lib_div::inList('C$,M$', substr($user['password'], 0, 2))) {
@@ -249,20 +249,20 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					$this->login['uname']
 				);
 				$OK = 0;
-			} else if(!$validPasswd) {
+			} elseif(!$validPasswd) {
 					// Failed login attempt (wrong password)
 				$this->writeLog(
 					"Login-attempt from %s, username '%s', password not accepted!",
 					$this->authInfo['REMOTE_ADDR'], $this->login['uname']
 				);
-			} else if ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
+			} elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
 					// Lock domain didn't match, so error:
 				$this->writeLog(
 					"Login-attempt from %s, username '%s', locked domain '%s' did not match '%s'!",
 					$this->authInfo['REMOTE_ADDR'], $this->login['uname'], $user['lockToDomain'], $this->authInfo['HTTP_HOST']
 				);
 				$OK = 0;
-			} else if ($validPasswd) {
+			} elseif ($validPasswd) {
 				$this->writeLog(
 					TYPO3_MODE . ' Authentication successful for username \'%s\'',
 					$this->login['uname']

@@ -158,7 +158,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlarea_api {
 					// Restriction clause
 				if ($this->thisConfig['buttons.']['formattext.']['restrictTo']) {
 					$restrictTo = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formattext.']['restrictTo']), 1);
-				} else if ($this->thisConfig['buttons.']['formattext.']['restrictToItems']) {
+				} elseif ($this->thisConfig['buttons.']['formattext.']['restrictToItems']) {
 					$restrictTo = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formattext.']['restrictToItems']), 1);
 				}
 					// Elements order

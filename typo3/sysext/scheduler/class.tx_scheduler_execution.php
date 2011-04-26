@@ -233,7 +233,7 @@ class tx_scheduler_Execution {
 				if ($this->cronCmd) {
 						// If it uses cron-like syntax, calculate next date
 					$date = $this->getNextCronExecution();
-				} else if ($this->interval == 0) {
+				} elseif ($this->interval == 0) {
 						// If not and there's no interval either, it's a singe execution: use start date
 					$date = $this->start;
 				} else {

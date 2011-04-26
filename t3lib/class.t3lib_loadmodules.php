@@ -340,7 +340,7 @@ class t3lib_loadModules {
 					$modconf['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
 						// check if the parent has a navigation component that also
 						// goes down to the submodules (if they haven't overwritten it yet)
-				} else if ($mainModule && is_array($this->navigationComponents[$mainModule])) {
+				} elseif ($mainModule && is_array($this->navigationComponents[$mainModule])) {
 					$modconf['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
 				}
 			} else {
