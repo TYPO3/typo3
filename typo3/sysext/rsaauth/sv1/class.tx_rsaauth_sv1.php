@@ -49,7 +49,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	 *
 	 * @var	tx_rsaauth_abstract_backend
 	 */
-	protected	$backend = null;
+	protected	$backend = NULL;
 
 	/**
 	 * Standard extension key for the service
@@ -94,13 +94,13 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 			// Preprocess the password
 			$password = $this->login['uident'];
 			$key = $storage->get();
-			if ($key != null && substr($password, 0, 4) == 'rsa:') {
+			if ($key != NULL && substr($password, 0, 4) == 'rsa:') {
 				// Decode password and pass to parent
 				$decryptedPassword = $this->backend->decrypt($key, substr($password, 4));
-				if ($decryptedPassword != null) {
+				if ($decryptedPassword != NULL) {
 					// Run the password through the eval function
 					$decryptedPassword = $this->runPasswordEvaluations($decryptedPassword);
-					if ($decryptedPassword != null) {
+					if ($decryptedPassword != NULL) {
 						$this->login['uident'] = $decryptedPassword;
 						if (parent::authUser($userRecord)) {
 							$result = 200;
@@ -110,7 +110,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 				// Reset the password to its original value
 				$this->login['uident'] = $password;
 				// Remove the key
-				$storage->put(null);
+				$storage->put(NULL);
 			}
 		}
 		return $result;
@@ -155,7 +155,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 		$conf = &$GLOBALS['TCA'][$table]['columns'][$this->pObj->userident_column]['config'];
 		$evaluations = $conf['eval'];
 		if ($evaluations) {
-			$tce = null;
+			$tce = NULL;
 			foreach (t3lib_div::trimExplode(',', $evaluations, true) as $evaluation) {
 				switch ($evaluation) {
 					case 'md5':
@@ -181,14 +181,14 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 						// We must run these evaluations through TCEmain to avoid
 						// code duplication and ensure that any custom evaluations
 						// are called in a proper context
-						if ($tce == null) {
+						if ($tce == NULL) {
 							/* @var $tce t3lib_TCEmain */
 							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 						}
 						$result = $tce->checkValue_input_Eval($password, array($evaluation), $conf['is_in']);
 						if (!isset($result['value'])) {
 							// Failure!!!
-							return null;
+							return NULL;
 						}
 						$password = $result['value'];
 				}

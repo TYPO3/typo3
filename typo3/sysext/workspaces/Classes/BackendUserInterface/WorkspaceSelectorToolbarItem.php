@@ -56,7 +56,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	 *
 	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct(TYPO3backend &$backendReference = null) {
+	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference       = $backendReference;
 		$this->changeWorkspace        = t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');

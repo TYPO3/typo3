@@ -158,7 +158,7 @@ final class tslib_eidtools {
 	 */
 	private static function getTSFE() {
 		// Cached instance
-		static $tsfe = null;
+		static $tsfe = NULL;
 
 		if (is_null($tsfe)) {
 			$tsfe = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);

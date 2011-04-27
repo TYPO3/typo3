@@ -58,7 +58,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 *
 	 * @param	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct(TYPO3backend &$backendReference = null) {
+	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
 		$this->loadDocsFromUserSession();
 	}
@@ -255,7 +255,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	string		list item HTML attibutes
 	 */
-	public function closeDocument($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function closeDocument($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$md5sum = t3lib_div::_GP('md5sum');
 
 		if ($md5sum && isset($this->openDocs[$md5sum])) {
@@ -288,7 +288,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$menuContent = $this->renderMenu();
 
 		$ajaxObj->addContent('opendocsMenu', $menuContent);

@@ -45,7 +45,7 @@ class tx_rsaauth_loginformhook {
 	 * @return	string	Form tag
 	 */
 	public function getLoginFormTag(array $params, SC_index& $pObj) {
-		$form = null;
+		$form = NULL;
 		if ($pObj->loginSecurityLevel == 'rsa') {
 
 			// If we can get the backend, we can proceed

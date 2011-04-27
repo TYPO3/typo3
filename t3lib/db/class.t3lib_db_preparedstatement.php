@@ -164,7 +164,7 @@ class t3lib_db_PreparedStatement {
 	 * $statement->bindValues(array(':nickname' => 'goofy', ':status' => 'FIXED'));
 	 * </code>
 	 *
-	 * @param array $values The values to bind to the parameter. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, null), so make sure your variables are properly casted, if needed.
+	 * @param array $values The values to bind to the parameter. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, NULL), so make sure your variables are properly casted, if needed.
 	 * @return t3lib_db_PreparedStatement The current prepared statement to allow method chaining
 	 * @api
 	 */
@@ -253,7 +253,7 @@ class t3lib_db_PreparedStatement {
 	 * $statement->execute(array(':nickname' => 'goofy', ':status' => 'FIXED'));
 	 * </code>
 	 *
-	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, null), so make sure your variables are properly casted, if needed.
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, NULL), so make sure your variables are properly casted, if needed.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @api
 	 */

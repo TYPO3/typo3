@@ -66,7 +66,7 @@ class tx_rsaauth_backendfactory {
 	 *
 	 * @var	tx_rsaauth_abstract_backend
 	 */
-	static protected $selectedBackend = null;
+	static protected $selectedBackend = NULL;
 
 	/**
 	 * Obtains a backend. This function will return a non-abstract class, which

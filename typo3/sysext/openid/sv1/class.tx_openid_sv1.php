@@ -78,7 +78,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	 *
 	 * @var	Auth_OpenID_ConsumerResponse
 	 */
-	protected $openIDResponse = null;
+	protected $openIDResponse = NULL;
 
 	/**
 	 * A reference to the calling object
@@ -144,7 +144,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
 		// If we are here after authentication by the OpenID server, get its response.
-		if (t3lib_div::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == null) {
+		if (t3lib_div::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == NULL) {
 			$this->includePHPOpenIDLibrary();
 			$openIDConsumer = $this->getOpenIDConsumer();
 			$this->openIDResponse = $openIDConsumer->complete($this->getReturnURL());
@@ -161,7 +161,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	 * @return	mixed		User record (content of fe_users/be_users as appropriate for the current mode)
 	 */
 	public function getUser() {
-		$userRecord = null;
+		$userRecord = NULL;
 		if ($this->loginData['status'] == 'login') {
 			if ($this->openIDResponse instanceof Auth_OpenID_ConsumerResponse) {
 				$GLOBALS['BACK_PATH'] = $this->getBackPath();
@@ -174,7 +174,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 					$openIDIdentifier = $this->getFinalOpenIDIdentifier();
 					if ($openIDIdentifier) {
 						$userRecord = $this->getUserRecord($openIDIdentifier);
-						if ($userRecord != null) {
+						if ($userRecord != NULL) {
 							$this->writeLog('User \'%s\' logged in with OpenID \'%s\'',
 								$userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
 						} else {
@@ -269,12 +269,12 @@ class tx_openid_sv1 extends t3lib_svbase {
 			if (!defined('Auth_OpenID_RAND_SOURCE')) {
 				if (TYPO3_OS == 'WIN') {
 					// No random generator on Windows!
-					define('Auth_OpenID_RAND_SOURCE', null);
+					define('Auth_OpenID_RAND_SOURCE', NULL);
 				} elseif (!is_readable('/dev/urandom')) {
 					if (is_readable('/dev/random')) {
 						define('Auth_OpenID_RAND_SOURCE', '/dev/random');
 					} else {
-						define('Auth_OpenID_RAND_SOURCE', null);
+						define('Auth_OpenID_RAND_SOURCE', NULL);
 					}
 				}
 			}
@@ -301,7 +301,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	 * @return	array		Database fields from the table that corresponds to the current login mode (FE/BE)
 	 */
 	protected function getUserRecord($openIDIdentifier) {
-		$record = null;
+		$record = NULL;
 		if ($openIDIdentifier) {
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*',
 				$this->authenticationInformation['db_user']['table'],

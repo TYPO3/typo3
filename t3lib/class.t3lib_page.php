@@ -974,7 +974,7 @@ class t3lib_pageSelect {
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
 	public static function getHash($hash, $expTime = 0) {
-		$hashContent = null;
+		$hashContent = NULL;
 
 		if (TYPO3_UseCachingFramework) {
 			if (is_object($GLOBALS['typo3CacheManager'])) {

@@ -49,12 +49,12 @@
  *
  *			  SECTION: Init functions
  *  911:	 function initCharset($charset)
- *  973:	 function initUnicodeData($mode=null)
+ *  973:	 function initUnicodeData($mode=NULL)
  * 1198:	 function initCaseFolding($charset)
  * 1260:	 function initToASCII($charset)
  *
  *			  SECTION: String operation functions
- * 1331:	 function substr($charset,$string,$start,$len=null)
+ * 1331:	 function substr($charset,$string,$start,$len=NULL)
  * 1384:	 function strlen($charset,$string)
  * 1414:	 function crop($charset,$string,$len,$crop='')
  * 1467:	 function strtrunc($charset,$string,$len)
@@ -65,7 +65,7 @@
  * 1567:	 function sb_char_mapping($str,$charset,$mode,$opt='')
  *
  *			  SECTION: Internal UTF-8 string operation functions
- * 1622:	 function utf8_substr($str,$start,$len=null)
+ * 1622:	 function utf8_substr($str,$start,$len=NULL)
  * 1655:	 function utf8_strlen($str)
  * 1676:	 function utf8_strtrunc($str,$len)
  * 1698:	 function utf8_strpos($haystack,$needle,$offset=0)
@@ -76,7 +76,7 @@
  *
  *			  SECTION: Internal EUC string operation functions
  * 1885:	 function euc_strtrunc($str,$len,$charset)
- * 1914:	 function euc_substr($str,$start,$charset,$len=null)
+ * 1914:	 function euc_substr($str,$start,$charset,$len=NULL)
  * 1939:	 function euc_strlen($str,$charset)
  * 1966:	 function euc_char2byte_pos($str,$pos,$charset)
  * 2007:	 function euc_char_mapping($str,$charset,$mode,$opt='')

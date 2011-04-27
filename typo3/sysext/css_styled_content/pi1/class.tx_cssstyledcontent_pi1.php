@@ -1020,7 +1020,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * Returns an object reference to the hook object if any
 	 *
 	 * @param	string		Name of the function you want to call / hook key
-	 * @return	object		Hook object, if any. Otherwise null.
+	 * @return	object		Hook object, if any. Otherwise NULL.
 	 */
 	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;

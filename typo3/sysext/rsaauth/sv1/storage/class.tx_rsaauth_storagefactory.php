@@ -55,7 +55,7 @@ class tx_rsaauth_storagefactory {
 	 *
 	 * @var	tx_rsaauth_abstract_storage
 	 */
-	static protected $storageInstance = null;
+	static protected $storageInstance = NULL;
 
 	/**
 	 * Obtains a storage. This function will return a non-abstract class, which

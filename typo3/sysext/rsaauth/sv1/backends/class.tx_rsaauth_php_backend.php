@@ -42,11 +42,11 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	/**
 	 * Creates a new public/private key pair using PHP OpenSSL extension.
 	 *
-	 * @return tx_rsaauth_keypair	A new key pair or null in case of error
+	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
 	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = null;
+		$result = NULL;
 		$privateKey = @openssl_pkey_new();
 		if ($privateKey) {
 			// Create private key as string
@@ -81,13 +81,13 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	 *
 	 * @param string	$privateKey	The private key (obtained from a call to createNewKeyPair())
 	 * @param string	$data	Data to decrypt (base64-encoded)
-	 * @return string	Decrypted data or null in case of a error
+	 * @return string	Decrypted data or NULL in case of a error
 	 * @see tx_rsaauth_abstract_backend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {
 		$result = '';
 		if (!@openssl_private_decrypt(base64_decode($data), $result, $privateKey)) {
-			$result = null;
+			$result = NULL;
 		}
 		return $result;
 	}

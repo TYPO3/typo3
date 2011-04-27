@@ -81,13 +81,13 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 	 * @param string $handle Association handle (optional)
 	 * @return Auth_OpenID_Association
 	 */
-	public function getAssociation($serverUrl, $handle = null) {
+	public function getAssociation($serverUrl, $handle = NULL) {
 		$this->cleanupAssociations();
 
 		$where = sprintf('server_url=%s AND expires>%d',
 			$GLOBALS['TYPO3_DB']->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME),
 			time());
-		if ($handle != null) {
+		if ($handle != NULL) {
 			$where .= sprintf(' AND assoc_handle=%s',
 				$GLOBALS['TYPO3_DB']->fullQuoteStr($handle, self::ASSOCIATION_TABLE_NAME));
 			$sort = '';
@@ -103,11 +103,11 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 			$sort
 		);
 
-		$result = null;
+		$result = NULL;
 		if (is_array($row)) {
 			$result = @unserialize(base64_decode($row['content']));
 			if ($result === false) {
-				$result = null;
+				$result = NULL;
 			}
 			else {
 				$this->updateAssociationTimeStamp($row['tstamp']);

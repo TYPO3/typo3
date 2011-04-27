@@ -77,11 +77,11 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 
 	/**
 	 *
-	 * @return tx_rsaauth_keypair	A new key pair or null in case of error
+	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
 	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = null;
+		$result = NULL;
 
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
 		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
@@ -123,7 +123,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 	 *
 	 * @param string	$privateKey	The private key (obtained from a call to createNewKeyPair())
 	 * @param string	$data	Data to decrypt (base64-encoded)
-	 * @return string	Decrypted data or null in case of a error
+	 * @return string	Decrypted data or NULL in case of a error
 	 * @see tx_rsaauth_abstract_backend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {

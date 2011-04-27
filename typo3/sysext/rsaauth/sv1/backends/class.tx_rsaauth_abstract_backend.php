@@ -43,7 +43,7 @@ require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_key
  *
  * To decode data, the decrypt() method should be called with the private key
  * created at the previous step and the data to decode. If the data is decoded
- * successfully, the result is a string. Otherwise it is null.
+ * successfully, the result is a string. Otherwise it is NULL.
  *
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  * @package	TYPO3
@@ -62,7 +62,7 @@ abstract class tx_rsaauth_abstract_backend {
 	/**
 	 * Creates a new key pair for the encryption.
 	 *
-	 * @return	tx_rsaauth_keypair	A new key pair or null in case of error
+	 * @return	tx_rsaauth_keypair	A new key pair or NULL in case of error
 	 */
 	abstract public function createNewKeyPair();
 
@@ -71,7 +71,7 @@ abstract class tx_rsaauth_abstract_backend {
 	 *
 	 * @param	string	$privateKey	The private key (obtained from a call to createNewKeyPair())
 	 * @param	string	$data	Data to decrypt (base64-encoded)
-	 * @return	string	Decrypted data or null in case of a error
+	 * @return	string	Decrypted data or NULL in case of a error
 	 */
 	abstract public function decrypt($privateKey, $data);
 

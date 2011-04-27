@@ -56,11 +56,11 @@ class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Obtains key from the session
 	 *
-	 * @return string	The key or null
+	 * @return string	The key or NULL
 	 * @see tx_rsaauth_abstract_storage::get()
 	 */
 	public function get() {
-		return (isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : null);
+		return (isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : NULL);
 	}
 
 	/**

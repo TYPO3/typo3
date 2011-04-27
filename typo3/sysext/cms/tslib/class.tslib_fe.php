@@ -200,7 +200,7 @@
 	var $rootLine='';					// The rootLine (all the way to tree root, not only the current site!) (array)
 	var $page='';						// The pagerecord (array)
 	var $contentPid=0;					// This will normally point to the same value as id, but can be changed to point to another page from which content will then be displayed instead.
-	protected $originalShortcutPage = null;	// gets set when we are processing a page of type shortcut in the early stages opf init.php when we do not know about languages yet, used later in init.php to determine the correct shortcut in case a translation changes the shortcut target (array)
+	protected $originalShortcutPage = NULL;	// gets set when we are processing a page of type shortcut in the early stages opf init.php when we do not know about languages yet, used later in init.php to determine the correct shortcut in case a translation changes the shortcut target (array)
 
 	/**
 	 * sys_page-object, pagefunctions
@@ -3014,7 +3014,7 @@
 		if (is_object($lockObj) && $lockObj instanceof t3lib_lock && $lockObj->getLockStatus()) {
 			$success = $lockObj->release();
 			$lockObj->sysLog('Released lock');
-			$lockObj = null;
+			$lockObj = NULL;
 			// Otherwise, if caching is disabled, no locking is required:
 		} elseif ($this->no_cache || $this->headerNoCache()) {
 			$success = true;

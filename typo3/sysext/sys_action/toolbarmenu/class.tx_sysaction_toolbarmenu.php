@@ -50,7 +50,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	 *
 	 * @return	void
 	 */
-	public function __construct(TYPO3backend &$backendReference = null) {
+	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
 	}
 

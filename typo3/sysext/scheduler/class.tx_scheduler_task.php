@@ -347,7 +347,7 @@ abstract class tx_scheduler_Task {
 	 * @param	Exception	An exception to signal a failed execution
 	 * @return	void
 	 */
-	public function unmarkExecution($executionID, Exception $failure = null) {
+	public function unmarkExecution($executionID, Exception $failure = NULL) {
 			// Get the executions for the task
 		$queryArr = array(
 			'SELECT' => 'serialized_executions',

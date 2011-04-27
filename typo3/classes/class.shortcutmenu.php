@@ -74,7 +74,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3backend	TYPO3 backend object reference
 	 * @return	void
 	 */
-	public function __construct(TYPO3backend &$backendReference = null) {
+	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
 		$this->shortcuts        = array();
 
@@ -222,7 +222,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$menuContent = $this->renderMenu();
 
 		$ajaxObj->addContent('shortcutMenu', $menuContent);
@@ -384,7 +384,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	array
 	 */
-	protected function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	protected function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 			// groups from TSConfig
 			// "Shortcuts" have been renamed to "Bookmarks"
 			// @deprecated remove shortcuts code in TYPO3 4.7
@@ -457,7 +457,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function getAjaxShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function getAjaxShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$shortcutGroups = $this->shortcutGroups;
 
 		if(!$GLOBALS['BE_USER']->isAdmin()) {
@@ -479,7 +479,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function deleteAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function deleteAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$shortcutId   = (int) t3lib_div::_POST('shortcutId');
 		$fullShortcut = $this->getShortcutById($shortcutId);
 		$ajaxReturn   = 'failed';
@@ -505,7 +505,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function createAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function createAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		global $LANG;
 
 		$shortcutCreated     = 'failed';
@@ -588,7 +588,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function setAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function setAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 
 		$shortcutId      = (int) t3lib_div::_POST('shortcutId');
 		$shortcutName    = strip_tags(t3lib_div::_POST('value'));

@@ -487,7 +487,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * @param  $record
 	 * @return string
 	 */
-	public static function viewSingleRecord($table, $uid, $record=null) {
+	public static function viewSingleRecord($table, $uid, $record=NULL) {
 		$viewUrl = '';
 		if ($table == 'pages') {
 			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
@@ -498,7 +498,7 @@ class tx_Workspaces_Service_Workspaces {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
 				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
-				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, null);
+				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, NULL);
 			}
 		}
 		return $viewUrl;

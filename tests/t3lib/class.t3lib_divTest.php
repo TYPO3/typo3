@@ -215,11 +215,11 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public static function invalidIpDataProvider() {
 		return array(
-			'null' => array(null),
+			'null' => array(NULL),
 			'zero' => array(0),
 			'string' => array('test'),
 			'string empty' => array(''),
-			'string null' => array('null'),
+			'string NULL' => array('NULL'),
 			'out of bounds IPv4' => array('300.300.300.300'),
 			'dotted decimal notation with only two dots' => array('127.0.1'),
 		);
@@ -339,17 +339,17 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'no case sensitive string match' => array('hello world', 'Hello'),
 			'array is not part of string' => array('string', array()),
 			'string is not part of array' => array(array(), 'string'),
-			'null is not part of string' => array('string', NULL),
+			'NULL is not part of string' => array('string', NULL),
 			'string is not part of array' => array(NULL, 'string'),
-			'null is not part of array' => array(array(), NULL),
+			'NULL is not part of array' => array(array(), NULL),
 			'array is not part of string' => array(NULL, array()),
 			'empty string is not part of empty string' => array('', ''),
-			'null is not part of empty string' => array('', NULL),
+			'NULL is not part of empty string' => array('', NULL),
 			'false is not part of empty string' => array('', FALSE),
-			'empty string is not part of null' => array(NULL, ''),
+			'empty string is not part of NULL' => array(NULL, ''),
 			'empty string is not part of false' => array(FALSE, ''),
 			'empty string is not part of zero integer' => array(0, ''),
-			'zero integer is not part of null' => array(NULL, 0),
+			'zero integer is not part of NULL' => array(NULL, 0),
 			'zero integer is not part of empty string' => array('', 0),
 		);
 	}
@@ -2644,7 +2644,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Tests whether verifyFilenameAgainstDenyPattern detects the null character.
+	 * Tests whether verifyFilenameAgainstDenyPattern detects the NULL character.
 	 *
 	 * @test
 	 */
