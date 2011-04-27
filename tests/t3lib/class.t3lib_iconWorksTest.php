@@ -278,7 +278,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	//////////////////////////////////////////
 
 	/**
-	 * Tests the returns of null table + empty array
+	 * Tests the returns of NULL table + empty array
 	 * @test
 	 */
 	public function getSpriteIconForRecordWithNullTableReturnsMissingIcon() {

@@ -55,11 +55,11 @@ class t3lib_Registry implements t3lib_Singleton {
 	 *
 	 * @param	string	Extension key for extensions starting with 'tx_' / 'user_' or 'core' for core registry entries
 	 * @param	string	The key of the entry to return.
-	 * @param	mixed	Optional default value to use if this entry has never been set. Defaults to null.
+	 * @param	mixed	Optional default value to use if this entry has never been set. Defaults to NULL.
 	 * @return	mixed	The value of the entry.
 	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
 	 */
-	public function get($namespace, $key, $defaultValue = null) {
+	public function get($namespace, $key, $defaultValue = NULL) {
 		if (!isset($this->entries[$namespace])) {
 			$this->loadEntriesByNamespace($namespace);
 		}

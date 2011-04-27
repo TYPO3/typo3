@@ -56,7 +56,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @var integer
 	 */
-	protected $maximumPathLength = null;
+	protected $maximumPathLength = NULL;
 
 	/**
 	 * Constructs this backend

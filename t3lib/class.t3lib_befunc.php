@@ -4435,7 +4435,7 @@ final class t3lib_BEfunc {
 									}
 								}
 								$memcache_obj = @memcache_connect($host, $port);
-								if ($memcache_obj != null) {
+								if ($memcache_obj != NULL) {
 									memcache_close($memcache_obj);
 								} else {
 									$failed[] = $configuredServer;

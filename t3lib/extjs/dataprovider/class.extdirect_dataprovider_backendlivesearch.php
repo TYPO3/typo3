@@ -47,12 +47,12 @@ class extDirect_dataProvider_BackendLiveSearch {
 	/**
 	 * @var t3lib_search_livesearch
 	 */
-	protected $liveSearch = null;
+	protected $liveSearch = NULL;
 
 	/**
 	 * @var t3lib_search_livesearch_queryParser
 	 */
-	protected $queryParser = null;
+	protected $queryParser = NULL;
 
 	/**
 	 * Initialize the live search

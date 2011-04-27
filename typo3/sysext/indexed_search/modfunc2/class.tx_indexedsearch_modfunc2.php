@@ -196,7 +196,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * Returns an object reference to the hook object if any
 	 *
 	 * @param	string		Name of the function you want to call / hook key
-	 * @return	object		Hook object, if any. Otherwise null.
+	 * @return	object		Hook object, if any. Otherwise NULL.
 	 * @author Kasper Skårhøj
 	 */
 	function hookRequest($functionName) {

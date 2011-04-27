@@ -34,7 +34,7 @@ class t3lib_csTest extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_cs
 	 */
-	private $fixture = null;
+	private $fixture = NULL;
 
 	public function setUp() {
 		$this->fixture = new t3lib_cs();

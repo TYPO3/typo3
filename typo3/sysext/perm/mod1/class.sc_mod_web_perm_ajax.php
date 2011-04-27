@@ -32,7 +32,7 @@
  *   97:     public function __construct()
  *
  *              SECTION: Main dispatcher method
- *  143:     public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = null)
+ *  143:     public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = NULL)
  *
  *              SECTION: Helpers for this script
  *  259:     private function renderUserSelector($page, $ownerUid, $username = '')
@@ -126,7 +126,7 @@ class SC_mod_web_perm_ajax {
 	 * @param	TYPO3AJAX		$ajaxObj: object of type TYPO3AJAX
 	 * @return	Void
 	 */
-	public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$content = '';
 
 			// Basic test for required value

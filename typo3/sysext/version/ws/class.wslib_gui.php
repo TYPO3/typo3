@@ -40,7 +40,7 @@
  *   84: class wslib_gui
  *
  *              SECTION: Public functions
- *  128:     function getWorkspaceOverview(&$doc, $wsid = null, $filter = 0, $pageId = -1)
+ *  128:     function getWorkspaceOverview(&$doc, $wsid = NULL, $filter = 0, $pageId = -1)
  *  192:     function hlSubelements(origId, verId, over, diffLayer)
  *
  *              SECTION: Private functions (do not use outside of this class!)
@@ -119,12 +119,12 @@ class wslib_gui {
 	 * or click-menu will not be generated properly!
 	 *
 	 * @param	object		$doc	Document (to use for formatting)
-	 * @param	int		$wsid	Workspace ID, If <code>null</code>, the value is obtained from current BE user
+	 * @param	int		$wsid	Workspace ID, If <code>NULL</code>, the value is obtained from current BE user
 	 * @param	int		$filter	If 0, than no filtering, if 10 than select for publishing, otherwise stage value
 	 * @param	int		$pageId	If greater than zero, than it is UID of page in LIVE workspaces to select records for
 	 * @return	string		Generated HTML
 	 */
-	function getWorkspaceOverview(&$doc, $wsid = null, $filter = 0, $pageId = -1) {
+	function getWorkspaceOverview(&$doc, $wsid = NULL, $filter = 0, $pageId = -1) {
 		global	$LANG;
 
 		// Setup

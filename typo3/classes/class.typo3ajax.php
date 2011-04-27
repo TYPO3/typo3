@@ -34,8 +34,8 @@
  * @subpackage	core
  */
 class TYPO3AJAX {
-	protected $ajaxId        = null;
-	protected $errorMessage  = null;
+	protected $ajaxId        = NULL;
+	protected $errorMessage  = NULL;
 	protected $isError       = false;
 	protected $content       = array();
 	protected $contentFormat = 'plain';

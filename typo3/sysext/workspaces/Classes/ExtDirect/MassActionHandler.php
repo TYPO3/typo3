@@ -206,7 +206,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 
 		if ($numRecs == 0) {
 				// All done
-			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', null);
+			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', NULL);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
 		} else {
 				// Execute the commands:

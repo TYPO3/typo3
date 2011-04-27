@@ -98,7 +98,7 @@ class tx_cms_BackendLayout {
 	 * Gets the selected backend layout
 	 *
 	 * @param  int  $id
-	 * @return array|null  $backendLayout
+	 * @return array|NULL  $backendLayout
 	 */
 	public function getSelectedBackendLayout($id) {
 		$rootline = t3lib_BEfunc::BEgetRootLine($id);

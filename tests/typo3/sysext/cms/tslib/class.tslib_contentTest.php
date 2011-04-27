@@ -97,7 +97,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			$GLOBALS[$key] = $data;
 		}
 
-		$GLOBALS['TSFE'] = null;
+		$GLOBALS['TSFE'] = NULL;
 
 		unset($this->cObj, $this->tsfe, $this->template, $this->typoScriptImage);
 	}
