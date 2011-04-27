@@ -111,7 +111,7 @@
  * 1587:	 function addSlashesOnArray(&$theArray)
  * 1611:	 function stripSlashesOnArray(&$theArray)
  * 1633:	 function slashArray($arr,$cmd)
- * 1650:	 function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true)
+ * 1650:	 function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmptyValues=true)
  * 1683:	 function array_merge($arr1,$arr2)
  * 1696:	 function csvValues($row,$delim=',',$quote='"')
  *
@@ -1980,21 +1980,21 @@ final class t3lib_div {
 	 * @param	boolean		If set, values from $arr1 will overrule if they are empty or zero. Default: true
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
-	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = 0, $includeEmtpyValues = TRUE) {
+	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = 0, $includeEmptyValues = TRUE) {
 		foreach ($arr1 as $key => $val) {
 			if (is_array($arr0[$key])) {
 				if (is_array($arr1[$key])) {
-					$arr0[$key] = self::array_merge_recursive_overrule($arr0[$key], $arr1[$key], $notAddKeys, $includeEmtpyValues);
+					$arr0[$key] = self::array_merge_recursive_overrule($arr0[$key], $arr1[$key], $notAddKeys, $includeEmptyValues);
 				}
 			} else {
 				if ($notAddKeys) {
 					if (isset($arr0[$key])) {
-						if ($includeEmtpyValues || $val) {
+						if ($includeEmptyValues || $val) {
 							$arr0[$key] = $val;
 						}
 					}
 				} else {
-					if ($includeEmtpyValues || $val) {
+					if ($includeEmptyValues || $val) {
 						$arr0[$key] = $val;
 					}
 				}
