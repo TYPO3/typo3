@@ -239,7 +239,7 @@
 			<label index="ext_details_remove_button">Click here to remove the extension:</label>
 			<label index="ext_details_not_loaded">The extension is &lt;strong&gt;not&lt;/strong&gt; installed yet.</label>
 			<label index="ext_details_install_button">Click here to install the extension:</label>
-			<label index="ext_details_always_loaded">This extension is entered in the TYPO3_CONF_VARS['SYS']['requiredExt'] list and is therefore always loaded.</label>
+			<label index="ext_details_always_loaded">This extension is entered in the TYPO3_CONF_VARS['EXT']['requiredExt'] list and is therefore always loaded.</label>
 			<label index="ext_details_current_status">Current status:</label>
 			<label index="ext_details_update_needed">Update needed:</label>
 			<label index="ext_details_notice_static_data">(Notice: "Static data" may not &lt;em&gt;need&lt;/em&gt; to be updated. You will only have to import static data each time you upgrade the extension.)</label>
