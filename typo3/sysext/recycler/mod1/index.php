@@ -121,8 +121,8 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			$content
 		);
 
-		$this->content = null;
-		$this->doc = null;
+		$this->content = NULL;
+		$this->doc = NULL;
 
 		echo $content;
 	}

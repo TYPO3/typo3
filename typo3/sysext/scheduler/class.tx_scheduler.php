@@ -168,7 +168,7 @@ class tx_scheduler implements t3lib_Singleton {
 				// Register execution
 			$executionID = $task->markExecution();
 
-			$failure = null;
+			$failure = NULL;
 			try {
 					// Execute task
 				$successfullyExecuted = $task->execute();

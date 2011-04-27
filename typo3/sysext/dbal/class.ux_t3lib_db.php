@@ -1964,7 +1964,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				if ($this->handlerInstance[$this->lastHandlerKey]['link']) {
 					$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				} else {
-					// link may be null when unit testing DBAL
+					// link may be NULL when unit testing DBAL
 					$str = str_replace('\'', '\\\'', $str);
 				}
 				break;
@@ -2452,7 +2452,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Returns the type of the specified field index
 	 */
 	public function sql_field_type(&$res, $pointer) {
-		if ($res === null) {
+		if ($res === NULL) {
 			debug(array('no res in sql_field_type!'));
 			return 'text';
 		}

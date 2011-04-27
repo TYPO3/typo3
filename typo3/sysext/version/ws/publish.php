@@ -167,7 +167,7 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 
 			if ($numRecs == 0) {
 				// All done
-				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher', null);
+				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher', NULL);
 				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher_count', 0);
 				$content .= '<div id="progress-block"><h3>' . $this->title . '</h3><p>';
 				$content .= $GLOBALS['LANG']->getLL($this->isSwap ? 'workspace_swapped' : 'workspace_published');

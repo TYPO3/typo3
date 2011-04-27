@@ -174,7 +174,7 @@ class tx_em_Connection_Soap {
 	 * @return	unknown
 	 */
 	function callPhpSOAP($func, $param) {
-		$header = null;
+		$header = NULL;
 		if ($this->options['authentication'] == 'headers') {
 			if ($this->reactid) {
 				$header = new SoapHeader(

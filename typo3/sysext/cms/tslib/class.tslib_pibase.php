@@ -523,7 +523,7 @@ class tslib_pibase {
 				// Make browse-table/links:
 			if ($showFirstLast) { // Link to first page
 				if ($pointer>0)	{
-					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),array($pointerName => null),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),array($pointerName => NULL),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
 				} else {
 					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),$wrapper['disabledLinkWrap']);
 				}

@@ -1220,7 +1220,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	[type]		...
 	 * @todo Make the method able to handle needed interaction somehow (unmatched dependencies)
 	 */
-	function installExtension($extKey, $version = null, $mode = EM_INSTALL_VERSION_MIN) {
+	function installExtension($extKey, $version = NULL, $mode = EM_INSTALL_VERSION_MIN) {
 		list($inst_list,) = $this->extensionList->getInstalledExtensions();
 
 		// check if it is already installed and loaded with sufficient version
@@ -1228,7 +1228,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$currentVersion = $inst_list[$extKey]['EM_CONF']['version'];
 
 			if (t3lib_extMgm::isLoaded($extKey)) {
-				if ($version===null) {
+				if ($version===NULL) {
 					return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 				} else {
 					switch ($mode) {
@@ -1310,7 +1310,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						// Loop until a version is found
 					}
 
-					if ($v !== null && version_compare($v, $version, '<=')) {
+					if ($v !== NULL && version_compare($v, $version, '<=')) {
 						$version = $v;
 					} else {
 						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));

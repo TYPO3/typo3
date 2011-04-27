@@ -197,10 +197,10 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 			'integer passed with param type NULL' => array(1, t3lib_db_PreparedStatement::PARAM_NULL),
 			'string passed with param type NULL' => array('1', t3lib_db_PreparedStatement::PARAM_NULL),
 			'bool passed with param type NULL' => array(TRUE, t3lib_db_PreparedStatement::PARAM_NULL),
-			'null passed with param type INT' => array(NULL, t3lib_db_PreparedStatement::PARAM_INT),
+			'NULL passed with param type INT' => array(NULL, t3lib_db_PreparedStatement::PARAM_INT),
 			'string passed with param type INT' => array('1', t3lib_db_PreparedStatement::PARAM_INT),
 			'bool passed with param type INT' => array(TRUE, t3lib_db_PreparedStatement::PARAM_INT),
-			'null passed with param type BOOL' => array(NULL, t3lib_db_PreparedStatement::PARAM_BOOL),
+			'NULL passed with param type BOOL' => array(NULL, t3lib_db_PreparedStatement::PARAM_BOOL),
 			'string passed with param type BOOL' => array('1', t3lib_db_PreparedStatement::PARAM_BOOL),
 			'integer passed with param type BOOL' => array(1, t3lib_db_PreparedStatement::PARAM_BOOL),
 		);

@@ -130,13 +130,13 @@ class tx_feloginTest extends tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
-		$this->txFelogin = null;
+		$this->txFelogin = NULL;
 
 		foreach ($this->backupGlobalVariables as $key => $data) {
 			$GLOBALS[$key] = $data;
 		}
 
-		$this->backupGlobalVariables = null;
+		$this->backupGlobalVariables = NULL;
 
 	}
 

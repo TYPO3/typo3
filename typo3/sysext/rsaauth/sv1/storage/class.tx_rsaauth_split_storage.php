@@ -53,11 +53,11 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Obtains a key from the database
 	 *
-	 * @return string	The key or null
+	 * @return string	The key or NULL
 	 * @see tx_rsaauth_abstract_storage::get()
 	 */
 	public function get() {
-		$result = null;
+		$result = NULL;
 
 		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
 		if (t3lib_div::testInt($keyId)) {
@@ -84,7 +84,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 	 * @see	tx_rsaauth_abstract_storage::put()
 	 */
 	public function put($key) {
-		if ($key == null) {
+		if ($key == NULL) {
 			// Remove existing key
 			list($keyId) = $_SESSION['tx_rsaauth_key'];
 

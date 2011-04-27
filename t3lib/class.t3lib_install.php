@@ -514,7 +514,7 @@ class t3lib_install {
 							$parts[1] = str_ireplace(' DEFAULT ', ' default ', $parts[1]);
 						}
 
-							// Change order of "default" and "null" statements
+							// Change order of "default" and "NULL" statements
 						$parts[1] = preg_replace('/(.*) (default .*) (NOT NULL)/', '$1 $3 $2', $parts[1]);
 						$parts[1] = preg_replace('/(.*) (default .*) (NULL)/', '$1 $3 $2', $parts[1]);
 

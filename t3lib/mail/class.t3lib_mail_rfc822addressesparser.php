@@ -105,13 +105,13 @@ class t3lib_mail_Rfc822AddressesParser {
 	 * The current error message, if any.
 	 * @var string $error
 	 */
-	private $error = null;
+	private $error = NULL;
 
 	/**
 	 * An internal counter/pointer.
 	 * @var integer $index
 	 */
-	private $index = null;
+	private $index = NULL;
 
 	/**
 	 * The number of groups that have been found in the address list.
@@ -124,7 +124,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	 * A limit after which processing stops
 	 * @var int $limit
 	 */
-	private $limit = null;
+	private $limit = NULL;
 
 	/**
 	 * Sets up the object.
@@ -134,7 +134,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	 * @param string  $default_domain  Default domain/host etc. If not supplied, will be set to localhost.
 	 * @param boolean $validate		Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
 	 */
-	public function __construct($address = null, $default_domain = null, $validate = null, $limit = null) {
+	public function __construct($address = NULL, $default_domain = NULL, $validate = NULL, $limit = NULL) {
 		if (isset($address)) $this->address = $address;
 		if (isset($default_domain)) $this->default_domain = $default_domain;
 		if (isset($validate)) $this->validate = $validate;
@@ -153,7 +153,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	 *
 	 * @return array A structured array of addresses.
 	 */
-	public function parseAddressList($address = null, $default_domain = null, $validate = null, $limit = null) {
+	public function parseAddressList($address = NULL, $default_domain = NULL, $validate = NULL, $limit = NULL) {
 		if (isset($address)) $this->address = $address;
 		if (isset($default_domain)) $this->default_domain = $default_domain;
 		if (isset($validate)) $this->validate = $validate;
@@ -161,8 +161,8 @@ class t3lib_mail_Rfc822AddressesParser {
 
 		$this->structure = array();
 		$this->addresses = array();
-		$this->error = null;
-		$this->index = null;
+		$this->error = NULL;
+		$this->index = NULL;
 
 		// Unfold any long lines in $this->address.
 		$this->address = preg_replace('/\r?\n/', "\r\n", $this->address);

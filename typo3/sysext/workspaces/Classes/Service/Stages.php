@@ -225,7 +225,7 @@ class Tx_Workspaces_Service_Stages {
 			default:
 				$stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
 
-				if ($stageTitle == null) {
+				if ($stageTitle == NULL) {
 					$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.getStageTitle.stageNotFound');
 				}
 				break;

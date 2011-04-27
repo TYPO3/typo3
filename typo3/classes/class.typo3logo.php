@@ -43,7 +43,7 @@ class TYPO3Logo {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->logo = null;
+		$this->logo = NULL;
 	}
 
 	/**

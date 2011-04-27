@@ -188,7 +188,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 					}
 				}
 				$memcachedConnection = @memcache_connect($host, $port);
-				if ($memcachedConnection != null) {
+				if ($memcachedConnection != NULL) {
 					memcache_close($memcachedConnection);
 				} else {
 					$failedConnections[] = $configuredServer;
