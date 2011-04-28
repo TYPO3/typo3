@@ -61,7 +61,7 @@ class tx_t3editor implements t3lib_Singleton {
 	 *
 	 * @var		bool
 	 */
-	protected $_isEnabled = true;
+	protected $_isEnabled = TRUE;
 
 	/**
 	 * sets the type of code to edit (::MODE_TYPOSCRIPT, ::MODE_JAVASCRIPT)
@@ -128,7 +128,7 @@ class tx_t3editor implements t3lib_Singleton {
 	}
 
 	/**
-	 * @return	boolean		true if the t3editor is enabled
+	 * @return	boolean		TRUE if the t3editor is enabled
 	 */
 	public function isEnabled() {
 		return $this->_isEnabled;

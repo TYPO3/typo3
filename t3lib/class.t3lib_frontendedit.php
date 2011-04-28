@@ -169,7 +169,7 @@ class t3lib_frontendedit {
 	 ****************************************************/
 
 	/**
-	 * Returns true if an edit-action is sent from the Admin Panel
+	 * Returns TRUE if an edit-action is sent from the Admin Panel
 	 *
 	 * @return	boolean
 	 * @see	index_ts.php
@@ -190,8 +190,8 @@ class t3lib_frontendedit {
 	}
 
 	/**
-	 * Returns true if an edit form is shown on the page.
-	 * Used from index_ts.php where a true return-value will result in classes etc. being included.
+	 * Returns TRUE if an edit form is shown on the page.
+	 * Used from index_ts.php where a TRUE return-value will result in classes etc. being included.
 	 *
 	 * @return	boolean
 	 * @see	index_ts.php
@@ -498,7 +498,7 @@ class t3lib_frontendedit {
 	 * @param	array	The data array.
 	 * @param	array	The configuration array for the edit panel.
 	 * @param	boolean	Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
-	 *					 to true but doesn't makes sense when creating new records on a page.
+	 *					 to TRUE but doesn't makes sense when creating new records on a page.
 	 * @return	boolean
 	 */
 	protected function allowedToEdit($table, array $dataArray, array $conf, $checkEditAccessInternals = TRUE) {

@@ -39,7 +39,7 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (true) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (false)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = false;
@@ -48,7 +48,7 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 		if ($this->versionNumber >= 4002000) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=5', '', '', '1');
 			if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				$result = true;
+				$result = TRUE;
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
@@ -61,7 +61,7 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (true) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (false)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = false;
@@ -77,7 +77,7 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 			} else {
-				$result = true;
+				$result = TRUE;
 			}
 		}
 		return $result;

@@ -124,7 +124,7 @@ class tx_em_Connection_Soap {
 		if ($this->error) {
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 

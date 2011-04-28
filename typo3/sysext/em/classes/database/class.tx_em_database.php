@@ -493,7 +493,7 @@ final class tx_em_Database {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field and key information (as provided from Install Tool class!)
-	 * @param	boolean		If true, add "DROP TABLE IF EXISTS"
+	 * @param	boolean		If TRUE, add "DROP TABLE IF EXISTS"
 	 * @return	string		Table definition SQL
 	 */
 	function dumpTableHeader($table, $fieldKeyInfo, $dropTableIfExists = 0) {

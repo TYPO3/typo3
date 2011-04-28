@@ -55,7 +55,7 @@ class tx_em_Translations {
 	 *
 	 * @param string $extKey		The extension key to install the translations for
 	 * @param string $mirrorURL		Mirror URL to fetch data from
-	 * @return mixed	true on success, error string on fauilure
+	 * @return mixed	TRUE on success, error string on fauilure
 	 */
 	function installTranslationsForExtension($extKey, $mirrorURL) {
 		$selectedLanguages = unserialize($this->parentObject->MOD_SETTINGS['selectedLanguages']);
@@ -72,7 +72,7 @@ class tx_em_Translations {
 					t3lib_div::mkdir_deep(PATH_typo3conf, $path);
 				}
 				if (tx_em_Tools::unzip($file, PATH_typo3conf . $path)) {
-					return true;
+					return TRUE;
 				} else {
 					return $GLOBALS['LANG']->getLL('translation_unpacking_failed');
 				}
@@ -88,7 +88,7 @@ class tx_em_Translations {
 	 * @param string $extKey		The extension key to install the translations for
 	 * @param string $lang		Language code of translation to fetch
 	 * @param string $mirrorURL		Mirror URL to fetch data from
-	 * @return mixed	true on success, error string on fauilure
+	 * @return mixed	TRUE on success, error string on fauilure
 	 */
 	function updateTranslation($extKey, $lang, $mirrorURL) {
 		$l10n = $this->parentObject->terConnection->fetchTranslation($extKey, $lang, $mirrorURL);
@@ -357,7 +357,7 @@ class tx_em_Translations {
 							// local!=remote or not installed -> needs update
 							if ($localmd5 != $translationStatusArr[$lang]['md5']) {
 								$ret = $this->updateTranslation($extKey, $lang, $mirrorURL);
-								if ($ret === true) {
+								if ($ret === TRUE) {
 									echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_has_been_updated') .
 											'" style="background-color:#69a550">' . $GLOBALS['LANG']->getLL('translation_status_update') .
 											'</td>');

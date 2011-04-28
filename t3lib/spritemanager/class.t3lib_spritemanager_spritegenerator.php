@@ -123,7 +123,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	protected $nameSpace = 't3-icon';
 
 	/**
-	 * setting this to true, the timestamp of the creation will be included to the background import
+	 * setting this to TRUE, the timestamp of the creation will be included to the background import
 	 * helps to easily rebuild sprites without cache problems
 	 *
 	 * @var boolean

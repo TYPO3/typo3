@@ -350,7 +350,7 @@ class tx_em_Repository {
 	 * object has been registered to this repository.
 	 *
 	 * @access  public
-	 * @return  boolean  true, if a repository mirrors object has been registered, otherwise false
+	 * @return  boolean  TRUE, if a repository mirrors object has been registered, otherwise false
 	 * @see	 $mirrors, addMirrors(), getMirrors(), removeMirrors()
 	 */
 	public function hasMirrors() {

@@ -62,10 +62,10 @@ class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
 	}
 
 	/**
-	 * Returns true if the input "record" contains a folder which can be linked.
+	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return	boolean		True is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
+	 * @return	boolean		TRUE is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
 	 */
 	function ext_isLinkable($v)	{
 		$webpath=t3lib_BEfunc::getPathType_web_nonweb($v['path']);
@@ -760,7 +760,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if ($this->act != 'image') {
 			if (isset($this->act))	{
 				$data['act'] = $this->act;
-				$store = true;
+				$store = TRUE;
 			} else {
 				$this->act = $data['act'];
 			}
@@ -768,7 +768,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		if (isset($this->expandFolder))	{
 			$data['expandFolder'] = $this->expandFolder;
-			$store = true;
+			$store = TRUE;
 		} else {
 			$this->expandFolder = $data['expandFolder'];
 		}
@@ -866,7 +866,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			case 'dragdrop':
 				$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
 				$foldertree->thisScript=$this->thisScript;
-				$foldertree->ext_noTempRecyclerDirs = true;
+				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();
 				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
 				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], implode(',', $this->allowedFileTypes));

@@ -130,7 +130,7 @@ class SC_tce_db {
 
 			// Configuring based on user prefs.
 		if ($GLOBALS['BE_USER']->uc['recursiveDelete']) {
-			$this->tce->deleteTree = 1;	// True if the delete Recursive flag is set.
+			$this->tce->deleteTree = 1;	// TRUE if the delete Recursive flag is set.
 		}
 		if ($GLOBALS['BE_USER']->uc['copyLevels']) {
 				// Set to number of page-levels to copy.

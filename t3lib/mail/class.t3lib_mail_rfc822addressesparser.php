@@ -59,7 +59,7 @@
  * How do I use it?
  *
  * $address_string = 'My Group: "Richard" <richard@localhost> (A comment), ted@example.com (Ted Bloggs), Barney;';
- * $structure = Mail_RFC822::parseAddressList($address_string, 'example.com', true)
+ * $structure = Mail_RFC822::parseAddressList($address_string, 'example.com', TRUE)
  * print_r($structure);
  *
  * @author  Richard Heyes <richard@phpguru.org>
@@ -203,7 +203,7 @@ class t3lib_mail_Rfc822AddressesParser {
 
 		if ($this->_isGroup($address) && !isset($this->error)) {
 			$split_char = ';';
-			$is_group = true;
+			$is_group = TRUE;
 		} elseif (!isset($this->error)) {
 			$split_char = ',';
 			$is_group = false;
@@ -321,7 +321,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $string  The string to check.
-	 * @return boolean  True if there are unclosed quotes inside the string,
+	 * @return boolean  TRUE if there are unclosed quotes inside the string,
 	 *				  false otherwise.
 	 */
 	protected function _hasUnclosedQuotes($string) {
@@ -358,7 +358,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	 * @access private
 	 * @param string $string The string to check.
 	 * @param string $chars  The characters to check for.
-	 * @return boolean True if there are unclosed brackets inside the string, false otherwise.
+	 * @return boolean TRUE if there are unclosed brackets inside the string, false otherwise.
 	 */
 	protected function _hasUnclosedBrackets($string, $chars) {
 		$num_angle_start = substr_count($string, $chars[0]);
@@ -408,7 +408,7 @@ class t3lib_mail_Rfc822AddressesParser {
 		$addresses = array();
 
 		if ($address['group']) {
-			$is_group = true;
+			$is_group = TRUE;
 
 			// Get the group part of the name
 			$parts = explode(':', $address['address']);
@@ -501,7 +501,7 @@ class t3lib_mail_Rfc822AddressesParser {
 			if (!$this->_validateAtom($part)) return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -520,7 +520,7 @@ class t3lib_mail_Rfc822AddressesParser {
 	protected function _validateAtom($atom) {
 		if (!$this->validate) {
 			// Validation has been turned off; assume the atom is okay.
-			return true;
+			return TRUE;
 		}
 
 		// Check for any char from ASCII 0 - ASCII 127
@@ -538,7 +538,7 @@ class t3lib_mail_Rfc822AddressesParser {
 			return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -640,7 +640,7 @@ class t3lib_mail_Rfc822AddressesParser {
 		}
 
 		$mailbox = $mbox;
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -760,7 +760,7 @@ class t3lib_mail_Rfc822AddressesParser {
 		}
 
 		// Got here, so return successful.
-		return true;
+		return TRUE;
 	}
 
 	/**

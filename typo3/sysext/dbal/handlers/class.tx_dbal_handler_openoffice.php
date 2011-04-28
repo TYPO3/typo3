@@ -84,7 +84,7 @@ class tx_dbal_handler_openoffice extends tx_dbal_sqlengine {
 	 *
 	 * @param	array		Configuration from DBAL
 	 * @param	object		Parent object
-	 * @return	boolean		True on success.
+	 * @return	boolean		TRUE on success.
 	 */
 	function init($config, $pObj) {
 		$this->config = $config['config'];
@@ -145,7 +145,7 @@ class tx_dbal_handler_openoffice extends tx_dbal_sqlengine {
 	 * Saving data source
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		True on success
+	 * @return	boolean		TRUE on success
 	 */
 	function saveDataSource($table)	{
 	}

@@ -59,7 +59,7 @@ class tslib_ExtDirectEid {
 	}
 
 	/**
-	 * Returns true if the associated action in _GET is allowed.
+	 * Returns TRUE if the associated action in _GET is allowed.
 	 *
 	 * @return boolean
 	 */

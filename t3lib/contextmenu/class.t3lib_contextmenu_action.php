@@ -219,7 +219,7 @@ class t3lib_contextmenu_Action {
 	}
 
 	/**
-	 * Returns true if the action has child actions
+	 * Returns TRUE if the action has child actions
 	 *
 	 * @return boolean
 	 */

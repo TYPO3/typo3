@@ -99,7 +99,7 @@ class t3lib_flexformtools {
 	 * @param	array		The record data array
 	 * @param	object		Object (passed by reference) in which the call back function is located
 	 * @param	string		Method name of call back function in object for values
-	 * @return	boolean		If true, error happened (error string returned)
+	 * @return	boolean		If TRUE, error happened (error string returned)
 	 */
 	function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 

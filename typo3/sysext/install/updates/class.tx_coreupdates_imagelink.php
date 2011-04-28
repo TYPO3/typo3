@@ -40,7 +40,7 @@ class tx_coreupdates_imagelink extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		True if an update is needed, false otherwise
+	 * @return	boolean		TRUE if an update is needed, false otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'Since TYPO3 4.5 links to images of "Image" and "Text with image" content elements are separated by newline and not by comma anymore. This update converts existing comma separated links to the new form.';
@@ -69,7 +69,7 @@ class tx_coreupdates_imagelink extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		True on success, false on error
+	 * @return	boolean		TRUE on success, false on error
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = TRUE;

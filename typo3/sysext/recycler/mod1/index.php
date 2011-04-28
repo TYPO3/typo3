@@ -78,7 +78,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 		//read configuration
 		$modTS = $GLOBALS['BE_USER']->getTSConfig('mod.recycler');
 		if ($this->isCurrentUserAdmin()) {
-			$this->allowDelete = true;
+			$this->allowDelete = TRUE;
 		} else {
 			$this->allowDelete = ($modTS['properties']['allowDelete'] == '1');
 		}

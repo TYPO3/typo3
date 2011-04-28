@@ -268,8 +268,8 @@ class SC_mod_tools_log_index {
 			array(
 				array($GLOBALS['LANG']->getLL('users'), $menuU),
 				array($GLOBALS['LANG']->getLL('time'), $menuT . ($this->MOD_SETTINGS['time'] == 30 ?
-				'<br />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:from', true) . ' ' . $inputDate . $pickerInputDate .
-				' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:to', true) . ' ' . $inputDate_end . $pickerInputDate_end . '&nbsp;' . $setButton : ''))
+				'<br />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:from', TRUE) . ' ' . $inputDate . $pickerInputDate .
+				' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:to', TRUE) . ' ' . $inputDate_end . $pickerInputDate_end . '&nbsp;' . $setButton : ''))
 			),
 			array(
 				array($GLOBALS['LANG']->getLL('max'), $menuM),

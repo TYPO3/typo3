@@ -352,7 +352,7 @@ class t3lib_positionMap {
 	 * Insert half/quad lines.
 	 *
 	 * @param	string		keywords for which lines to insert.
-	 * @param	boolean		If true all lines are just blank clear.gifs
+	 * @param	boolean		If TRUE all lines are just blank clear.gifs
 	 * @return	string		HTML content.
 	 */
 	function insertQuadLines($codes, $allBlank = 0) {

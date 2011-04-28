@@ -31,7 +31,7 @@
  * @subpackage	tx_scheduler
  */
 if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
-	$hasTask = true;
+	$hasTask = TRUE;
 		// Create an instance of the scheduler object
 		/**
 		 * @var	tx_scheduler
@@ -46,7 +46,7 @@ if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 
 				 * @var	tx_scheduler_Task
 				 */
 			$task = $scheduler->fetchTask();
-			$hasTask = true;
+			$hasTask = TRUE;
 			try {
 				$scheduler->executeTask($task);
 			}

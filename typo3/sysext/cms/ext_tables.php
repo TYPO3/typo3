@@ -40,10 +40,10 @@ $TCA['tt_content'] = array (
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:tt_content',
 		'delete' => 'deleted',
 		'versioningWS' => 2,
-		'versioning_followPages' => true,
+		'versioning_followPages' => TRUE,
 		'origUid' => 't3_origuid',
 		'type' => 'CType',
-		'hideAtCopy' => true,
+		'hideAtCopy' => TRUE,
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
 		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
@@ -190,8 +190,8 @@ $TCA['pages_language_overlay'] = array (
 		'label'                           => 'title',
 		'tstamp'                          => 'tstamp',
 		'title'                           => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
-		'versioningWS'                    => true,
-		'versioning_followPages'          => true,
+		'versioningWS'                    => TRUE,
+		'versioning_followPages'          => TRUE,
 		'origUid'                         => 't3_origuid',
 		'crdate'                          => 'crdate',
 		'cruser_id'                       => 'cruser_id',
@@ -213,7 +213,7 @@ $TCA['pages_language_overlay'] = array (
 			'default' => 'mimetypes-x-content-page-language-overlay',
 		),
 
-		'dividers2tabs'                   => true
+		'dividers2tabs'                   => TRUE
 	)
 );
 
@@ -228,7 +228,7 @@ $TCA['sys_template'] = array (
 		'sortby' => 'sorting',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template',
-		'versioningWS' => true,
+		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

@@ -60,7 +60,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 			$this->sendNotificationEmail($systemStatus);
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**

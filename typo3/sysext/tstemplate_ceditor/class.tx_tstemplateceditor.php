@@ -146,7 +146,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				// Resetting the menu (stop)
 
 			$theOutput.=$this->pObj->doc->spacer(5);
-			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', true),t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow).'<strong>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"],"constants").'</strong>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
+			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', TRUE),t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow).'<strong>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"],"constants").'</strong>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
 
 			if ($manyTemplatesMenu)	{
 				$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
@@ -155,10 +155,10 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 
 			$theOutput.=$this->pObj->doc->spacer(5);
 			if (count($this->pObj->MOD_MENU["constant_editor_cat"]))	{
-				$menu = $GLOBALS['LANG']->getLL('category', true)." ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[constant_editor_cat]",$this->pObj->MOD_SETTINGS["constant_editor_cat"],$this->pObj->MOD_MENU["constant_editor_cat"]);
+				$menu = $GLOBALS['LANG']->getLL('category', TRUE)." ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[constant_editor_cat]",$this->pObj->MOD_SETTINGS["constant_editor_cat"],$this->pObj->MOD_MENU["constant_editor_cat"]);
 				$theOutput.=$this->pObj->doc->section("",'<NOBR>'.$menu.'</NOBR>');
 			} else {
-				$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('noConstants', true),$GLOBALS['LANG']->getLL('noConstantsDescription', true),1,0,1);
+				$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('noConstants', TRUE),$GLOBALS['LANG']->getLL('noConstantsDescription', TRUE),1,0,1);
 			}
 
 

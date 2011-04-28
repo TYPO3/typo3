@@ -201,7 +201,7 @@ class wsol_preview {
 	/**
 	 * Checks if a backend user is logged in. Due to the line "define('TYPO3_PROCEED_IF_NO_USER', '1');" the backend is initialized even if no backend user was authenticated. This is in order to allow previews through this module of yet not-logged in users.
 	 *
-	 * @return	boolean		True, if there is a logged in backend user.
+	 * @return	boolean		TRUE, if there is a logged in backend user.
 	 */
 	function isBeLogin()	{
 		return is_array($GLOBALS['BE_USER']->user);

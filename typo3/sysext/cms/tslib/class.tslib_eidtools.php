@@ -87,7 +87,7 @@ final class tslib_eidtools {
 	 * Connecting to database. If the function fails, last error message
 	 * can be retrieved using $GLOBALS['TYPO3_DB']->sql_error().
 	 *
-	 * @return	boolean		true if connection was successful
+	 * @return	boolean		TRUE if connection was successful
 	 */
 	public static function connectDB()	{
 		static $dbConnected = false;
@@ -96,7 +96,7 @@ final class tslib_eidtools {
 			// Attempt to connect to the database
 			if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password) &&
 					$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
-				$dbConnected = true;
+				$dbConnected = TRUE;
 			}
 		}
 		return $dbConnected;

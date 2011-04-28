@@ -97,7 +97,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 		global $LANG;
 
 		$menu = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[tsconf_parts]',$this->pObj->MOD_SETTINGS['tsconf_parts'],$this->pObj->MOD_MENU['tsconf_parts']);
-		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', true) . '</label> ' . t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
+		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
 		$menu .= '<br /><br />';
 
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts']==99)	{

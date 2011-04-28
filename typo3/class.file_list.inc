@@ -77,7 +77,7 @@ class fileList extends t3lib_recordList {
 	var $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
 	var $fixedL = 30;					// Max length of strings
 	var $script = 'file_list.php';
-	var $clickMenus=1;					// If true click menus are generated on files and folders
+	var $clickMenus=1;					// If TRUE click menus are generated on files and folders
 
 	var $sort = '';						// The field to sort by...
 	var $sortRev = 1;					// Reverse sorting flag
@@ -301,11 +301,11 @@ class fileList extends t3lib_recordList {
 	 **/
 	function getFolderInfo() {
 		if($this->counter == 1) {
-			$fileLabel = $GLOBALS['LANG']->getLL('file', true);
+			$fileLabel = $GLOBALS['LANG']->getLL('file', TRUE);
 		} else {
-			$fileLabel = $GLOBALS['LANG']->getLL('files', true);
+			$fileLabel = $GLOBALS['LANG']->getLL('files', TRUE);
 		}
-		return $this->counter . ' ' . $fileLabel . ', ' . t3lib_div::formatSize($this->totalbytes, $GLOBALS['LANG']->getLL('byteSizeUnits', true));
+		return $this->counter . ' ' . $fileLabel . ', ' . t3lib_div::formatSize($this->totalbytes, $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
 	}
 
 	/**
@@ -338,10 +338,10 @@ class fileList extends t3lib_recordList {
 					foreach ($this->fieldArray as $field) {
 						switch($field)	{
 							case 'size':
-								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', true));
+								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
 							break;
 							case 'rw':
-								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', true) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', true) . '</strong></span>');
+								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
 							break;
 							case 'fileext':
 								$theData[$field]=strtoupper($theFile['fileext']);
@@ -438,11 +438,11 @@ class fileList extends t3lib_recordList {
 		$icon = 'gfx/i/_icon_' . $webpath . 'folders.gif';
 		if ($title == '_temp_')	{
 			$icon = 'gfx/i/sysf.gif';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', true) . '</strong>';
+			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
 		}
 		if ($title == '_recycler_')	{
 			$icon = 'gfx/i/recycler.gif';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', true) . '</strong>';
+			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
 		}
 		$icon = $theFile['writable'] ? 'gfx/i/_icon_' . $webpath . 'folders_ro.gif' : $icon;
 
@@ -482,10 +482,10 @@ class fileList extends t3lib_recordList {
 					foreach ($this->fieldArray as $field) {
 						switch($field)	{
 							case 'size':
-								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', true));
+								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
 							break;
 							case 'rw':
-								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', true) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', true) . '</strong></span>');
+								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
 							break;
 							case 'fileext':
 								$theData[$field]=strtoupper($theFile[$field]);
@@ -541,7 +541,7 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * Returns true if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+	 * Returns TRUE if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	 *
 	 * @param	string		file extension
 	 * @return	boolean

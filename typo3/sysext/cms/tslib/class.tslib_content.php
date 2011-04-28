@@ -2040,8 +2040,8 @@ class tslib_cObj {
 					if ((isset($conf[$functionName]) || $conf[$functionProperties]) &&
 							!($functionType == 'boolean' && $conf[$functionName] === '0')) {
 						//add both keys - with and without the dot - to the set of executed functions
-						$isExecuted[$functionName] = true;
-						$isExecuted[$functionProperties] = true;
+						$isExecuted[$functionName] = TRUE;
+						$isExecuted[$functionProperties] = TRUE;
 						// call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
 						$functionName = 'stdWrap_' . $functionName;
 						$content = $this->$functionName(
@@ -2245,7 +2245,7 @@ class tslib_cObj {
 	/**
 	 * preIfEmptyListNum
 	 * Gets a value off a CSV list before the following ifEmpty check
-	 * Makes sure that the result of ifEmpty will be true in case the CSV does not contain a value at the position given by preIfEmptyListNum
+	 * Makes sure that the result of ifEmpty will be TRUE in case the CSV does not contain a value at the position given by preIfEmptyListNum
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for preIfEmptyListNum.
@@ -2514,7 +2514,7 @@ class tslib_cObj {
 	/**
 	 * date
 	 * Will return a formatted date based on configuration given according to PHP date/gmdate properties
-	 * Will return gmdate when the property GMT returns true
+	 * Will return gmdate when the property GMT returns TRUE
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for date.
@@ -2528,7 +2528,7 @@ class tslib_cObj {
 	/**
 	 * strftime
 	 * Will return a formatted date based on configuration given according to PHP strftime/gmstrftime properties
-	 * Will return gmstrftime when the property GMT returns true
+	 * Will return gmstrftime when the property GMT returns TRUE
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for strftime.
@@ -2664,7 +2664,7 @@ class tslib_cObj {
 	/**
 	 * htmlSpecialChars
 	 * Transforms HTML tags to readable text by replacing special characters with their HTML entity
-	 * When preserveEntities returns true, existing entities will be left untouched
+	 * When preserveEntities returns TRUE, existing entities will be left untouched
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for htmlSpecalChars.
@@ -2917,7 +2917,7 @@ class tslib_cObj {
 	/**
 	 * spaceBefore
 	 * Will add space before the current content
-	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for spaceBefore and space.
@@ -2931,7 +2931,7 @@ class tslib_cObj {
 	/**
 	 * spaceAfter
 	 * Will add space after the current content
-	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for spaceAfter and space.
@@ -2945,7 +2945,7 @@ class tslib_cObj {
 	/**
 	 * space
 	 * Will add space before or after the current content
-	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
 	 * See wrap
 	 *
 	 * @param	string		Input value undergoing processing in this function.
@@ -6905,7 +6905,7 @@ class tslib_cObj {
 	 * @param	array		The record data array for the record in question
 	 * @param	array		The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param	string		Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
-	 * @param	boolean		True, if the fe_user may edit his own fe_user record.
+	 * @param	boolean		TRUE, if the fe_user may edit his own fe_user record.
 	 * @return	boolean
 	 * @see user_feAdmin
 	 */
@@ -6951,7 +6951,7 @@ class tslib_cObj {
 	 * @param	string		The table name
 	 * @param	array		The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param	string		Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
-	 * @param	boolean		True, if the fe_user may edit his own fe_user record.
+	 * @param	boolean		TRUE, if the fe_user may edit his own fe_user record.
 	 * @return	string		The where clause part. ALWAYS returns a string. If no access at all, then " AND 1=0"
 	 * @see DBmayFEUserEdit(), user_feAdmin::displayEditScreen()
 	 */
@@ -7576,7 +7576,7 @@ class tslib_cObj {
 	 * Checks if a page UID is available due to enableFields() AND the list of bad doktype numbers ($this->checkPid_badDoktypeList)
 	 *
 	 * @param	integer		Page UID to test
-	 * @return	boolean		True if OK
+	 * @return	boolean		TRUE if OK
 	 * @access private
 	 * @see getWhere(), checkPidArray()
 	 */

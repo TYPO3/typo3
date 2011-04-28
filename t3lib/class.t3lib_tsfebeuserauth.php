@@ -252,7 +252,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
 	 * Used in the frontend.
 	 *
-	 * @return	boolean		Returns true if access is OK
+	 * @return	boolean		Returns TRUE if access is OK
 	 * @see	typo3/init.php, t3lib_beuserauth::backendCheckLogin()
 	 */
 	public function checkBackendAccessSettingsFromInitPhp() {
@@ -295,12 +295,12 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Evaluates if the Backend User has read access to the input page record.
-	 * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts. Only if both conditions are true will the function return true.
+	 * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts. Only if both conditions are TRUE will the function return TRUE.
 	 * Read access means that previewing is allowed etc.
 	 * Used in index_ts.php
 	 *
 	 * @param	array		The page record to evaluate for
-	 * @return	boolean		True if read access
+	 * @return	boolean		TRUE if read access
 	 */
 	public function extPageReadAccess($pageRec) {
 		return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, 1);

@@ -223,11 +223,11 @@ class t3lib_TCEmain {
 	// Public variables you can configure before using the class:
 	// *********************
 
-	var $storeLogMessages = TRUE; // Boolean: If true, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
-	var $enableLogging = TRUE; // Boolean: If true, actions are logged to sys_log.
-	var $reverseOrder = FALSE; // Boolean: If true, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
-	var $checkSimilar = TRUE; // Boolean: If true, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
-	var $stripslashes_values = TRUE; // Boolean: If true, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
+	var $storeLogMessages = TRUE; // Boolean: If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
+	var $enableLogging = TRUE; // Boolean: If TRUE, actions are logged to sys_log.
+	var $reverseOrder = FALSE; // Boolean: If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
+	var $checkSimilar = TRUE; // Boolean: If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
+	var $stripslashes_values = TRUE; // Boolean: If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
 	var $checkStoredRecords = TRUE; // Boolean: This will read the record after having updated or inserted it. If anything is not properly submitted an error is written to the log. This feature consumes extra time by selecting records
 	var $checkStoredRecords_loose = TRUE; // Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
 	var $deleteTree = FALSE; // Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
@@ -235,10 +235,10 @@ class t3lib_TCEmain {
 	var $dontProcessTransformations = FALSE; // Boolean: If set, then transformations are NOT performed on the input.
 	var $clear_flexFormData_vDEFbase = FALSE; // Boolean: If set, .vDEFbase values are unset in flexforms.
 	var $updateModeL10NdiffData = TRUE; // Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
-	var $updateModeL10NdiffDataClear = FALSE; // Boolean: If true, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
-	var $bypassWorkspaceRestrictions = FALSE; // Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
-	var $bypassFileHandling = FALSE; // Boolean: If true, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
-	var $bypassAccessCheckForRecords = FALSE; // Boolean: If true, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
+	var $updateModeL10NdiffDataClear = FALSE; // Boolean: If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
+	var $bypassWorkspaceRestrictions = FALSE; // Boolean: If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
+	var $bypassFileHandling = FALSE; // Boolean: If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
+	var $bypassAccessCheckForRecords = FALSE; // Boolean: If TRUE, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
 
 	var $copyWhichTables = '*'; // String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
 
@@ -249,7 +249,7 @@ class t3lib_TCEmain {
 	var $alternativeFileName = array(); // Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
 	var $alternativeFilePath = array(); // Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
 	var $data_disableFields = array(); // If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
-	var $suggestedInsertUids = array(); // Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be true, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
+	var $suggestedInsertUids = array(); // Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
 
 	var $callBackObj; // Object. Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
 
@@ -1114,7 +1114,7 @@ class t3lib_TCEmain {
 								}
 
 									// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
-									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be true for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
+									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
 									// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
 									// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
 								if ($this->autoVersioningUpdate === TRUE) {
@@ -4304,7 +4304,7 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Returns true if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
+	 * Returns TRUE if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
 	 *
 	 * @param	string		Record Table
 	 * @param	integer		Record UID
@@ -4458,7 +4458,7 @@ class t3lib_TCEmain {
 	 * @param	string		Table name
 	 * @param	integer		Record uid to versionize
 	 * @param	string		Version label
-	 * @param	boolean		If true, the version is created to delete the record.
+	 * @param	boolean		If TRUE, the version is created to delete the record.
 	 * @param	integer		Indicating "treeLevel" - or versioning type - "element" (-1), "page" (0) or "branch" (>=1)
 	 * @return	integer		Returns the id of the new version (if any)
 	 * @see copyRecord()
@@ -4804,7 +4804,7 @@ class t3lib_TCEmain {
 	function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table) {
 
 			// Initialize variables
-		$set = FALSE; // Will be set true if an upgrade should be done...
+		$set = FALSE; // Will be set TRUE if an upgrade should be done...
 		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table']; // Allowed tables for references.
 		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : ''; // Table name to prepend the UID
 		$dontRemapTables = t3lib_div::trimExplode(',', $conf['dontRemapTablesOnCopy'], 1); // Which tables that should possibly not be remapped
@@ -5095,7 +5095,7 @@ class t3lib_TCEmain {
 	 * Checking group modify_table access list
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		Returns true if the user has general access to modify the $table
+	 * @return	boolean		Returns TRUE if the user has general access to modify the $table
 	 */
 	function checkModifyAccessList($table) {
 		$res = ($this->admin || (!$this->tableAdminOnly($table) && t3lib_div::inList($this->BE_USER->groupData['tables_modify'], $table)));
@@ -5114,7 +5114,7 @@ class t3lib_TCEmain {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		UID of record
-	 * @return	boolean		Returns true if OK. Cached results.
+	 * @return	boolean		Returns TRUE if OK. Cached results.
 	 */
 	function isRecordInWebMount($table, $id) {
 		if (!isset($this->isRecordInWebMount_Cache[$table . ':' . $id])) {
@@ -5128,7 +5128,7 @@ class t3lib_TCEmain {
 	 * Checks if the input page ID is in the BE_USER webmounts
 	 *
 	 * @param	integer		Page ID to check
-	 * @return	boolean		True if OK. Cached results.
+	 * @return	boolean		TRUE if OK. Cached results.
 	 */
 	function isInWebMount($pid) {
 		if (!isset($this->isInWebMount_Cache[$pid])) {
@@ -5144,7 +5144,7 @@ class t3lib_TCEmain {
 	 * @param	integer		Record UID
 	 * @param	array		Record data
 	 * @param	array		Hook objects
-	 * @return	boolean		Returns true if the user may update the record given by $table and $id
+	 * @return	boolean		Returns TRUE if the user may update the record given by $table and $id
 	 */
 	function checkRecordUpdateAccess($table, $id, $data = FALSE, &$hookObjectsArr = FALSE) {
 		$res = NULL;
@@ -5180,7 +5180,7 @@ class t3lib_TCEmain {
 	 * @param	string		Tablename to check
 	 * @param	integer		Integer PID
 	 * @param	integer		For logging: Action number.
-	 * @return	boolean		Returns true if the user may insert a record from table $insertTable on page $pid
+	 * @return	boolean		Returns TRUE if the user may insert a record from table $insertTable on page $pid
 	 */
 	function checkRecordInsertAccess($insertTable, $pid, $action = 1) {
 		$res = 0;
@@ -5212,7 +5212,7 @@ class t3lib_TCEmain {
 	 *
 	 * @param	integer		Page id for which to check, including 0 (zero) if checking for page tree root.
 	 * @param	string		Table name to check
-	 * @return	boolean		True if OK
+	 * @return	boolean		TRUE if OK
 	 */
 	function isTableAllowedForThisPage($page_uid, $checkTable) {
 		$page_uid = intval($page_uid);
@@ -5234,7 +5234,7 @@ class t3lib_TCEmain {
 				? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']
 				: $GLOBALS['PAGES_TYPES']['default']['allowedTables']);
 			$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
-			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) { // If all tables or the table is listed as a allowed type, return true
+			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) { // If all tables or the table is listed as a allowed type, return TRUE
 				return TRUE;
 			}
 		}
@@ -5246,7 +5246,7 @@ class t3lib_TCEmain {
 	 * @param	string		Record table name
 	 * @param	integer		Record UID
 	 * @param	mixed		Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
-	 * @return	boolean		Returns true if the record given by $table, $id and $perms can be selected
+	 * @return	boolean		Returns TRUE if the record given by $table, $id and $perms can be selected
 	 */
 	function doesRecordExist($table, $id, $perms) {
 		if ($this->bypassAccessCheckForRecords) {
@@ -5294,7 +5294,7 @@ class t3lib_TCEmain {
 						// Looking up the page for record:
 					$mres = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
 					$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
-						// Return true if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
+						// Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
 					if (is_array($pageRec) || (!$output['pid'] && $this->admin)) {
 						return TRUE;
 					}
@@ -5462,7 +5462,7 @@ class t3lib_TCEmain {
 
 		$allowedTableList = isset($PAGES_TYPES[$doktype]['allowedTables']) ? $PAGES_TYPES[$doktype]['allowedTables'] : $PAGES_TYPES['default']['allowedTables'];
 		$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
-		if (strstr($allowedTableList, '*')) { // If all tables is OK the return true
+		if (strstr($allowedTableList, '*')) { // If all tables is OK the return TRUE
 			return FALSE; // OK...
 		}
 
@@ -5635,9 +5635,9 @@ class t3lib_TCEmain {
 	 * @param	string		Record table name
 	 * @param	string		"NEW...." uid string
 	 * @param	array		Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
-	 * @param	boolean		Set to true if new version is created.
+	 * @param	boolean		Set to TRUE if new version is created.
 	 * @param	integer		Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
-	 * @param	boolean		If true, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
+	 * @param	boolean		If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
 	 * @return	integer		Returns ID on success.
 	 */
 	function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
@@ -6377,10 +6377,10 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Returns true if the TCA/columns field type is a DB reference field
+	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param	array		config array for TCA/columns field
-	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
+	 * @return	boolean		TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf) {
 		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db' || $conf['type'] == 'select' && $conf['foreign_table']);
@@ -6546,7 +6546,7 @@ class t3lib_TCEmain {
 	 * Used by the deleteFunctions to check if there are records from disallowed tables under the pages to be deleted.
 	 *
 	 * @param	string		List of page integers
-	 * @return	boolean		Return true, if permission granted
+	 * @return	boolean		Return TRUE, if permission granted
 	 */
 	function noRecordsFromUnallowedTables($inList) {
 		$inList = trim($this->rmComma(trim($inList)));
@@ -6571,7 +6571,7 @@ class t3lib_TCEmain {
 	 *
 	 * @param	string		$table: The tablename of the record
 	 * @param	integer		$uid: The uid of the record
-	 * @return	boolean		Returns true if the record is copied or is the result of a copy action
+	 * @return	boolean		Returns TRUE if the record is copied or is the result of a copy action
 	 */
 	function isRecordCopied($table, $uid) {
 			// If the record was copied:

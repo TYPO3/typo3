@@ -130,16 +130,16 @@ class SC_mod_tools_config_index {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => $GLOBALS['LANG']->getLL('typo3ConfVars', true),
-				1 => $GLOBALS['LANG']->getLL('tca', true),
-				2 => $GLOBALS['LANG']->getLL('tcaDescr', true),
-				3 => $GLOBALS['LANG']->getLL('loadedExt', true),
-				4 => $GLOBALS['LANG']->getLL('t3services', true),
-				5 => $GLOBALS['LANG']->getLL('tbemodules', true),
-				6 => $GLOBALS['LANG']->getLL('tbemodulesext', true),
-				7 => $GLOBALS['LANG']->getLL('tbeStyles', true),
-				8 => $GLOBALS['LANG']->getLL('beUser', true),
-				9 => $GLOBALS['LANG']->getLL('usersettings', true),
+				0 => $GLOBALS['LANG']->getLL('typo3ConfVars', TRUE),
+				1 => $GLOBALS['LANG']->getLL('tca', TRUE),
+				2 => $GLOBALS['LANG']->getLL('tcaDescr', TRUE),
+				3 => $GLOBALS['LANG']->getLL('loadedExt', TRUE),
+				4 => $GLOBALS['LANG']->getLL('t3services', TRUE),
+				5 => $GLOBALS['LANG']->getLL('tbemodules', TRUE),
+				6 => $GLOBALS['LANG']->getLL('tbemodulesext', TRUE),
+				7 => $GLOBALS['LANG']->getLL('tbeStyles', TRUE),
+				8 => $GLOBALS['LANG']->getLL('beUser', TRUE),
+				9 => $GLOBALS['LANG']->getLL('usersettings', TRUE),
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -158,18 +158,18 @@ class SC_mod_tools_config_index {
 
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
-		$this->content= $this->doc->header($GLOBALS['LANG']->getLL('configuration', true));
+		$this->content= $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
 		$this->content.= $this->doc->spacer(5);
 
 		$this->content .= '<div id="lowlevel-config">
-						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', true) . '</label>
+						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
 						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
-						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', true) . '" />';
+						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
 		$this->content .= t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"') .
-						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', true) . '</label>';
+						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
 
 		$this->content.= t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
-						'<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', true) . '</label>
+						'<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label>
 						</div>';
 
 		$this->content.= $this->doc->spacer(5);

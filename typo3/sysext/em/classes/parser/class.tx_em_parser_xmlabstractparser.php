@@ -66,7 +66,7 @@ abstract class tx_em_Parser_XmlAbstractParser {
 	 * Method tries to load the extension if necessary and possible.
 	 *
 	 * @access  public
-	 * @return  boolean  true, if PHP extension is available, otherwise false
+	 * @return  boolean  TRUE, if PHP extension is available, otherwise false
 	 */
 	public function isAvailable() {
 		$isAvailable = TRUE;

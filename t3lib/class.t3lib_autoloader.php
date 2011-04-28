@@ -68,7 +68,7 @@ class t3lib_autoloader {
 	/**
 	 * Installs TYPO3 autoloader, and loads the autoload registry for the core.
 	 *
-	 * @return	boolean	true in case of success
+	 * @return	boolean	TRUE in case of success
 	 */
 	static public function registerAutoloader() {
 		self::loadCoreRegistry();
@@ -80,7 +80,7 @@ class t3lib_autoloader {
 	 * Uninstalls TYPO3 autoloader. This function is for the sake of completeness.
 	 * It is never called by the TYPO3 core.
 	 *
-	 * @return	boolean	true in case of success
+	 * @return	boolean	TRUE in case of success
 	 */
 	static public function unregisterAutoloader() {
 		return spl_autoload_unregister('t3lib_autoloader::autoload');

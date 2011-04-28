@@ -300,7 +300,7 @@ class tx_em_Connection_ExtDirectServer {
 		}
 
 		return array(
-			'success' => true,
+			'success' => TRUE,
 			'data' => $parameter['data'],
 			'html' => $html,
 		);
@@ -404,7 +404,7 @@ class tx_em_Connection_ExtDirectServer {
 			$fileArray[] = array(
 				'id' => $node . '/' . $file,
 				'text' => $fileInfo[0],
-				'leaf' => true,
+				'leaf' => TRUE,
 				'qtip' => $fileInfo[1],
 				'iconCls' => $fileInfo[4],
 				'fileType' => $fileInfo[3],

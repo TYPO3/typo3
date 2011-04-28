@@ -267,7 +267,7 @@ class t3lib_TStemplate {
 	 * Fetches data about which TypoScript-matches there are at this page. Then it performs a matchingtest.
 	 *
 	 * @param	array		An array with three keys, "all", "rowSum" and "rootLine" - all coming from the "currentPageData" array
-	 * @return	array		The input array but with a new key added, "match" which contains the items from the "all" key which when passed to tslib_matchCondition returned true.
+	 * @return	array		The input array but with a new key added, "match" which contains the items from the "all" key which when passed to tslib_matchCondition returned TRUE.
 	 * @see t3lib_matchCondition, tslib_fe::getFromCache()
 	 */
 	function matching($cc) {
@@ -821,7 +821,7 @@ class t3lib_TStemplate {
 		$config->regComments = $this->ext_regComments;
 		$config->setup = $this->setup;
 
-			// Transfer information about conditions found in "Constants" and which of them returned true.
+			// Transfer information about conditions found in "Constants" and which of them returned TRUE.
 		$config->sections = $constants->sections;
 		$config->sectionsMatch = $constants->sectionsMatch;
 

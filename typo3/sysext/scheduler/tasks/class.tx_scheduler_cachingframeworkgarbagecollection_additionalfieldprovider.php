@@ -77,7 +77,7 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 	 *
 	 * @param array Reference to the array containing the data submitted by the user
 	 * @param tx_scheduler_Module Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return boolean TRUE if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
 		$validData = TRUE;

@@ -37,7 +37,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	protected $requiresClassesConfiguration = true;		// True if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiresClassesConfiguration = TRUE;		// TRUE if the registered plugin requires the PageTSConfig Classes configuration
 	protected $requiredPlugins = 'TYPO3Color,BlockStyle';	// The comma-separated list of names of prerequisite plugins
 	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,

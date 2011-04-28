@@ -49,7 +49,7 @@ class tx_rtehtmlarea_editormode extends tx_rtehtmlarea_api {
 		parent::main($parentObject);
 			// Do not disable this plugin even if the chMode button is disabled
 		$this->pluginAddsButtons = false;
-		return true;
+		return TRUE;
 	}
 }
 

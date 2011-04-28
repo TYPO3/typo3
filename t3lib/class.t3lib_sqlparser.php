@@ -2186,7 +2186,7 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		SQL String 1
 	 * @param	string		SQL string 2
-	 * @param	boolean		If true, the strings are compared insensitive to case
+	 * @param	boolean		If TRUE, the strings are compared insensitive to case
 	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise false
 	 */
 	public function debug_parseSQLpartCompare($str, $newStr, $caseInsensitive = FALSE) {

@@ -33,7 +33,7 @@ class tx_em_Tasks_UpdateExtensionList extends tx_scheduler_Task {
 	/**
 	 * Public method, usually called by scheduler.
 	 *
-	 * @return boolean True on success
+	 * @return boolean TRUE on success
 	 */
 	public function execute() {
 			// Throws exceptions if something goes wrong

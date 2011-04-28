@@ -176,7 +176,7 @@ class SC_mod_user_setup_index {
 
 				// reload left frame when switching BE language
 			if (isset($d['lang']) && ($d['lang'] != $GLOBALS['BE_USER']->uc['lang'])) {
-				$this->languageUpdate = true;
+				$this->languageUpdate = TRUE;
 			}
 
 				// reload pagetree if the title length is changed
@@ -417,7 +417,7 @@ class SC_mod_user_setup_index {
 
 			// Load available backend modules
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-		$this->loadModules->observeWorkspaces = true;
+		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings') . ' - '.$GLOBALS['BE_USER']->user['realName'] .
@@ -576,7 +576,7 @@ class SC_mod_user_setup_index {
 			'shortcut' => '',
 		);
 
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', true);
+		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', TRUE);
 
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
@@ -783,7 +783,7 @@ class SC_mod_user_setup_index {
 			if ($language != 'default') {
 				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language];
 				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
-				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? false : true);
+				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? false : TRUE);
 				if (!$unavailable) {
 					$languageOptions[$languageValue . '--' . $language] = '
 					<option value="'.$language.'"'.($GLOBALS['BE_USER']->uc['lang'] == $language ? ' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '').'>'.$GLOBALS['LANG']->getLL('lang_' . $language, 1) . $localLabel . '</option>';
@@ -957,7 +957,7 @@ class SC_mod_user_setup_index {
 	 * @param	string		Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
 	 * @return	string		HTML output.
 	 */
-	protected function getLabel($str, $key='', $addLabelTag=true, $altLabelTagId='')	{
+	protected function getLabel($str, $key='', $addLabelTag=TRUE, $altLabelTagId='')	{
 		if (substr($str, 0, 4) == 'LLL:') {
 			$out = $GLOBALS['LANG']->sL($str);
 		} else {

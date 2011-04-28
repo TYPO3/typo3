@@ -196,7 +196,7 @@
 	var $type='';						// RO The type (int)
 	var $idParts=array();				// Loaded with the id, exploded by ','
 	var $cHash='';						// The submitted cHash
-	var $no_cache=''; 					// Page will not be cached. Write only true. Never clear value (some other code might have reasons to set it true)
+	var $no_cache=''; 					// Page will not be cached. Write only TRUE. Never clear value (some other code might have reasons to set it TRUE)
 	var $rootLine='';					// The rootLine (all the way to tree root, not only the current site!) (array)
 	var $page='';						// The pagerecord (array)
 	var $contentPid=0;					// This will normally point to the same value as id, but can be changed to point to another page from which content will then be displayed instead.
@@ -740,7 +740,7 @@
 
 				// Backend user preview features:
 			if ($this->beUserLogin && ($GLOBALS['BE_USER']->adminPanel instanceof tslib_AdminPanel)) {
-				$this->fePreview = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview') ? true : false;
+				$this->fePreview = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview') ? TRUE : false;
 
 					// If admin panel preview is enabled...
 				if ($this->fePreview)	{
@@ -1215,12 +1215,12 @@
 
 	/**
 	 * Checks page record for enableFields
-	 * Returns true if enableFields does not disable the page record.
+	 * Returns TRUE if enableFields does not disable the page record.
 	 * Takes notice of the ->showHiddenPage flag and uses SIM_ACCESS_TIME for start/endtime evaluation
 	 *
 	 * @param	array		The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @param	boolean		Bypass group-check
-	 * @return	boolean		True, if record is viewable.
+	 * @return	boolean		TRUE, if record is viewable.
 	 * @see tslib_cObj::getTreeList(), checkPagerecordForIncludeSection()
 	 */
 	function checkEnableFields($row,$bypassGroupCheck=FALSE)	{
@@ -1236,7 +1236,7 @@
 	 *
 	 * @param	array		The page record to evaluate (needs field: fe_group)
 	 * @param	mixed		List of group id's (comma list or array). Default is $this->gr_list
-	 * @return	boolean		True, if group access is granted.
+	 * @return	boolean		TRUE, if group access is granted.
 	 * @access private
 	 */
 	function checkPageGroupAccess($row, $groupList=NULL) {
@@ -1254,7 +1254,7 @@
 	 * Checks page record for include section
 	 *
 	 * @param	array		The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
-	 * @return	boolean		Returns true if either extendToSubpages is not checked or if the enableFields does not disable the page record.
+	 * @return	boolean		Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
 	 * @see checkEnableFields(), tslib_cObj::getTreeList(), checkRootlineForIncludeSection()
 	 */
@@ -1429,7 +1429,7 @@
 	 * Checks whether the pageUnavailableHandler should be used. To be used, pageUnavailable_handling must be set
 	 * and devIPMask must not match the current visitor's IP address.
 	 *
-	 * @return	boolean		True/false whether the pageUnavailable_handler should be used.
+	 * @return	boolean		TRUE/false whether the pageUnavailable_handler should be used.
 	 */
 	function checkPageUnavailableHandler()	{
 		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
@@ -1520,7 +1520,7 @@
 				$code = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
 				$checkBaseTag = false;
 			} else {
-				$checkBaseTag = true;
+				$checkBaseTag = TRUE;
 			}
 
 				// Check recursion
@@ -1865,7 +1865,7 @@
 
 			if (!is_array($cc)) {
 				$key = $this->id.'::'.$this->MP;
-				$isLocked = $this->acquirePageGenerationLock($this->pagesection_lockObj, $key);	// Returns true if the lock is active now
+				$isLocked = $this->acquirePageGenerationLock($this->pagesection_lockObj, $key);	// Returns TRUE if the lock is active now
 
 				if (!$isLocked) {
 						// Lock is no longer active, the data in "cache_pagesection" is now ready
@@ -2100,7 +2100,7 @@
 					}
 
 					if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
-						$this->config['config']['typolinkCheckRootline'] = true;
+						$this->config['config']['typolinkCheckRootline'] = TRUE;
 					}
 
 						// Set default values for removeDefaultJS, inlineStyle2TempFile and minifyJS so CSS and JS are externalized/minified if compatversion is higher than 4.0
@@ -2158,7 +2158,7 @@
 		}
 
 			// No cache
-		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache true if the config.no_cache value is set!
+		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache TRUE if the config.no_cache value is set!
 
 			// merge GET with defaultGetVars
 		if (!empty($this->config['config']['defaultGetVars.'])) {
@@ -2744,7 +2744,7 @@
 	 *******************************************/
 
 	/**
-	 * Returns true if the page should be generated
+	 * Returns TRUE if the page should be generated
 	 * That is if jumpurl is not set and the cacheContentFlag is not set.
 	 *
 	 * @return	boolean
@@ -2970,13 +2970,13 @@
 	 *
 	 * @param	t3lib_lock	Reference to a locking object
 	 * @param	string		String to identify the lock in the system
-	 * @return	boolean		Returns true if the lock could be obtained, false otherwise (= process had to wait for existing lock to be released)
+	 * @return	boolean		Returns TRUE if the lock could be obtained, false otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
 	 */
 	function acquirePageGenerationLock(&$lockObj, $key)	{
 		if ($this->no_cache || $this->headerNoCache()) {
 			t3lib_div::sysLog('Locking: Page is not cached, no locking required', 'cms', t3lib_div::SYSLOG_SEVERITY_INFO);
-			return true;	// No locking is needed if caching is disabled
+			return TRUE;	// No locking is needed if caching is disabled
 		}
 
 		try {
@@ -2986,7 +2986,7 @@
 
 			$success = false;
 			if (strlen($key)) {
-					// true = Page could get locked without blocking
+					// TRUE = Page could get locked without blocking
 					// false = Page could get locked but process was blocked before
 				$success = $lockObj->acquire();
 				if ($lockObj->getLockStatus()) {
@@ -3005,7 +3005,7 @@
 	 * Release the page generation lock
 	 *
 	 * @param	t3lib_lock	Reference to a locking object
-	 * @return	boolean		Returns true on success, false otherwise
+	 * @return	boolean		Returns TRUE on success, false otherwise
 	 * @see acquirePageGenerationLock()
 	 */
 	function releasePageGenerationLock(&$lockObj) {
@@ -3017,7 +3017,7 @@
 			$lockObj = null;
 			// Otherwise, if caching is disabled, no locking is required:
 		} elseif ($this->no_cache || $this->headerNoCache()) {
-			$success = true;
+			$success = TRUE;
 		}
 		return $success;
 	}
@@ -3209,7 +3209,7 @@
 			$this->INTincScript_process($INTiS_config);
 				// Check if there were new items added to INTincScript during the previous execution:
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
-			$reprocess = (count($INTiS_config) ? true : false);
+			$reprocess = (count($INTiS_config) ? TRUE : false);
 		} while($reprocess);
 
 		$GLOBALS['TT']->push('Substitute header section');
@@ -3230,7 +3230,7 @@
 	protected function INTincScript_includeLibs($INTiS_config) {
 		foreach($INTiS_config as $INTiS_cPart) {
 			if (isset($INTiS_cPart['conf']['includeLibs']) && $INTiS_cPart['conf']['includeLibs']) {
-				$INTiS_resourceList = t3lib_div::trimExplode(',', $INTiS_cPart['conf']['includeLibs'], true);
+				$INTiS_resourceList = t3lib_div::trimExplode(',', $INTiS_cPart['conf']['includeLibs'], TRUE);
 				$this->includeLibraries($INTiS_resourceList);
 			}
 		}
@@ -3328,7 +3328,7 @@ if (version == "n3") {
 	/**
 	 * Determines if there are any INTincScripts to include
 	 *
-	 * @return	boolean		Returns true if scripts are found (and not jumpurl)
+	 * @return	boolean		Returns TRUE if scripts are found (and not jumpurl)
 	 */
 	function isINTincScript()	{
 		return	(is_array($this->config['INTincScript']) && !$this->jumpurl);
@@ -3377,7 +3377,7 @@ if (version == "n3") {
 	 * Determines if content should be outputted.
 	 * Outputting content is done only if jumpUrl is NOT set.
 	 *
-	 * @return	boolean		Returns true if $this->jumpurl is not set.
+	 * @return	boolean		Returns TRUE if $this->jumpurl is not set.
 	 */
 	function isOutputting()	{
 
@@ -3613,7 +3613,7 @@ if (version == "n3") {
 	/**
 	 * Determines if any EXTincScripts should be included
 	 *
-	 * @return	boolean		True, if external php scripts should be included (set by PHP_SCRIPT_EXT cObjects)
+	 * @return	boolean		TRUE, if external php scripts should be included (set by PHP_SCRIPT_EXT cObjects)
 	 * @see tslib_cObj::PHP_SCRIPT
 	 */
 	function isEXTincScript()	{
@@ -3650,7 +3650,7 @@ if (version == "n3") {
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
 	 * This function should be called with care because it might overwrite existing settings otherwise.
 	 *
-	 * @return	boolean		True if statistics are enabled (will require some more processing after charset handling is initialized)
+	 * @return	boolean		TRUE if statistics are enabled (will require some more processing after charset handling is initialized)
 	 * @access private
 	 */
 	protected function statistics_init()	{
@@ -3671,7 +3671,7 @@ if (version == "n3") {
 
 				if (@is_file($theLogFile) && @is_writable($theLogFile)) {
 					$this->config['stat_vars']['logFile'] = $theLogFile;
-					$setStatPageName = true;	// Set page name later on
+					$setStatPageName = TRUE;	// Set page name later on
 				} else {
 					$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
 				}
@@ -4184,7 +4184,7 @@ if (version == "n3") {
 	 * Checks if a PHPfile may be included.
 	 *
 	 * @param	string		Relative path to php file
-	 * @return	boolean		Returns true if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
+	 * @return	boolean		Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
 	 * @see tslib_cObj::PHP_SCRIPT(), tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
 	 */
 	function checkFileInclude($incFile)	{
@@ -4224,7 +4224,7 @@ if (version == "n3") {
 			$this->content = str_replace('"'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"'.$this->absRefPrefix.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
 			$this->content = str_replace('"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], '"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], $this->content);
 			// Process additional directories
-			$directories = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
+			$directories = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);
 			foreach ($directories as $directory) {
 				$this->content = str_replace('"' . $directory, '"' . $this->absRefPrefix . $directory, $this->content);
 			}
@@ -4297,7 +4297,7 @@ if (version == "n3") {
 
 	/**
 	 * Pass the content through tidy - a little program that cleans up HTML-code.
-	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be true and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to contain the filename/path of tidy including clean-up arguments for tidy. See default value in TYPO3_CONF_VARS in t3lib/config_default.php
+	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be TRUE and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to contain the filename/path of tidy including clean-up arguments for tidy. See default value in TYPO3_CONF_VARS in t3lib/config_default.php
 	 *
 	 * @param	string		The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return	string		Returns the
@@ -4356,9 +4356,9 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Returns true if workspace preview is enabled
+	 * Returns TRUE if workspace preview is enabled
 	 *
-	 * @return	boolean		Returns true if workspace preview is enabled
+	 * @return	boolean		Returns TRUE if workspace preview is enabled
 	 */
 	function doWorkspacePreview()	{
 		return (string)$this->workspacePreview!=='';

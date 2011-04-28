@@ -107,11 +107,11 @@ final class t3lib_extMgm {
 	 ***************************************/
 
 	/**
-	 * Returns true if the extension with extension key $key is loaded.
+	 * Returns TRUE if the extension with extension key $key is loaded.
 	 * Usage: 109
 	 *
 	 * @param	string		Extension key to test
-	 * @param	boolean		If $exitOnError is true and the extension is not loaded the function will die with an error message
+	 * @param	boolean		If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
 	 * @return	boolean
 	 */
 	public static function isLoaded($key, $exitOnError = 0) {
@@ -265,7 +265,7 @@ final class t3lib_extMgm {
 	 *
 	 * @param	string		$table is the table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param	array		$columnArray is the array with the additional columns (typical some fields an extension wants to add)
-	 * @param	boolean		If $addTofeInterface is true the list of fields are also added to the fe_admin_fieldList.
+	 * @param	boolean		If $addTofeInterface is TRUE the list of fields are also added to the fe_admin_fieldList.
 	 * @return	void
 	 */
 	public static function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
@@ -1472,7 +1472,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	}
 
 	/**
-	 * Returns true if both the localconf and tables cache file exists (with $cacheFilePrefix)
+	 * Returns TRUE if both the localconf and tables cache file exists (with $cacheFilePrefix)
 	 * Usage: 2
 	 *
 	 * @param	string		Prefix of the cache file to check
@@ -1486,7 +1486,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	}
 
 	/**
-	 * Returns true if the "localconf.php" file in "typo3conf/" is writable
+	 * Returns TRUE if the "localconf.php" file in "typo3conf/" is writable
 	 * Usage: 1
 	 *
 	 * @return	boolean

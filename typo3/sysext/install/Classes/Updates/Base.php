@@ -92,7 +92,7 @@ abstract class Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (true) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (false)
 	 */
 	// public abstract function performUpdate(&$dbQueries, &$customMessages);
 
@@ -100,7 +100,7 @@ abstract class Tx_Install_Updates_Base {
 	 * Checks if user input is valid
 	 *
 	 * @param	string		pointer to output custom messages
-	 * @return	boolean		true if user input is correct, then the update is performed. When false, return to getUserInput
+	 * @return	boolean		TRUE if user input is correct, then the update is performed. When false, return to getUserInput
 	 */
 	// public abstract function checkUserInput(&$customMessages);
 

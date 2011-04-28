@@ -82,7 +82,7 @@ class SC_alt_topmenu_dummy {
 	function main()	{
 
 			// Remember if noMenuMode is set to 'icons' or not because the hook will be ignored in this case.
-		if (!strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons'))	{ $iconMenuMode = true; }
+		if (!strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons'))	{ $iconMenuMode = TRUE; }
 
 		$contentArray=array();
 

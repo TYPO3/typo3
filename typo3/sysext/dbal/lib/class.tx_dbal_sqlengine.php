@@ -827,7 +827,7 @@ class tx_dbal_sqlengine_resultobj {
 	 * Seeking position in result
 	 *
 	 * @param	integer		Position pointer.
-	 * @return	boolean		Returns true on success
+	 * @return	boolean		Returns TRUE on success
 	 */
 	public function sql_data_seek($pointer) {
 		reset($this->result);

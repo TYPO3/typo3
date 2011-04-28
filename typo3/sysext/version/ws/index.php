@@ -539,7 +539,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$wslibGuiObj = t3lib_div::makeInstance('wslib_gui');
 		$wslibGuiObj->diff = $this->MOD_SETTINGS['diff'];
 		$wslibGuiObj->expandSubElements = $this->MOD_SETTINGS['expandSubElements'];
-		$wslibGuiObj->alwaysDisplayHeader = true;
+		$wslibGuiObj->alwaysDisplayHeader = TRUE;
 		return $wslibGuiObj->getWorkspaceOverview($this->doc, $wsid, $filter);
 	}
 
@@ -982,7 +982,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	/**
 	 * Creates a list of icons for workspace.
 	 *
-	 * @param	boolean		<code>true</code> if current workspace
+	 * @param	boolean		<code>TRUE</code> if current workspace
 	 * @param	array		Workspace record
 	 * @return	string		Generated content
 	 */
@@ -1032,7 +1032,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * <code>_ACCESS</code> attribute of the workspace.
 	 *
 	 * @param	array		Workspace record
-	 * @return	boolean		<code>true</code> if user can modify workspace parameters
+	 * @return	boolean		<code>TRUE</code> if user can modify workspace parameters
 	 */
 	function workspaceList_hasEditAccess(&$wksp)	{
 		$access = &$wksp['_ACCESS'];

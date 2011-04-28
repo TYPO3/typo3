@@ -165,8 +165,8 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlarea_api {
 				if ($this->thisConfig['buttons.']['formattext.']['orderItems']) {
 					$inlineElementsOrder = 'none,'.$this->thisConfig['buttons.']['formattext.']['orderItems'];
 				}
-				$prefixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['prefixLabelWithTag'])?true:$prefixLabelWithTag;
-				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['postfixLabelWithTag'])?true:$postfixLabelWithTag;
+				$prefixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['prefixLabelWithTag'])?TRUE:$prefixLabelWithTag;
+				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formattext.']['postfixLabelWithTag'])?TRUE:$postfixLabelWithTag;
 			}
 
 			$inlineElementsOrder = array_diff(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($inlineElementsOrder), 1), $hideItems);

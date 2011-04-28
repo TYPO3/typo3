@@ -153,7 +153,7 @@ debug($this->errorStatus,'XMLDB connect ERROR:');
 	 * Saving data source
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		True on success
+	 * @return	boolean		TRUE on success
 	 */
 	function saveDataSource($table)	{
 

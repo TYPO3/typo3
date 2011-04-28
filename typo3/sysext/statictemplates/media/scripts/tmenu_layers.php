@@ -244,10 +244,10 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	}
 
 	/**
-	 * Returns true if different from ''  OR if intval()!=0
+	 * Returns TRUE if different from ''  OR if intval()!=0
 	 *
 	 * @param	string		Value to evaluate
-	 * @return	boolean		true if $in is different from ''  OR if intval()!=0
+	 * @return	boolean		TRUE if $in is different from ''  OR if intval()!=0
 	 */
 	function isSetIntval($in)	{
 		return $this->mconf['blankStrEqFalse'] ? strcmp($in,'') : intval($in);

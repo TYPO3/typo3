@@ -63,7 +63,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	function tableRow($label, $data, $field)	{
 		$ret = '<tr><td>';
 		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
-			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
+			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
 	}
@@ -88,7 +88,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
-					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', true))) . '</a>';
+					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
 				}
 				$functions.= '</td>';
 			}
@@ -139,7 +139,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param	integer		$id: The uid of the current page
 	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
-	 * @return	boolean		Returns true if a template record was found, otherwise false
+	 * @return	boolean		Returns TRUE if a template record was found, otherwise false
 	 */
 	function initialize_editor($pageId, $template_uid=0)	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -198,7 +198,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		global $BACK_PATH;
 		global $tmpl,$tplRow,$theConstants;
 
-		$this->pObj->MOD_MENU['includeTypoScriptFileContent'] = true;
+		$this->pObj->MOD_MENU['includeTypoScriptFileContent'] = TRUE;
 
 		$edit = $this->pObj->edit;
 		$e = $this->pObj->e;
@@ -326,7 +326,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$tce->clear_cacheCmd('all');
 
 						// tce were processed successfully
-					$this->tce_processed = true;
+					$this->tce_processed = TRUE;
 
 						// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
@@ -518,7 +518,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						'formName' => 'editForm',
 						'itemName' => 'data[config]',
 					);
-					$outCode.= '<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('', array('P' => $params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', true))) . '</a>';
+					$outCode.= '<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('', array('P' => $params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', TRUE))) . '</a>';
 				}
 
 				$theOutput.= $this->pObj->doc->spacer(15);

@@ -56,7 +56,7 @@ class tslib_content_LoadRegister extends tslib_content_Abstract {
 						$theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
 					}
 					$GLOBALS['TSFE']->register[$register] = $theValue;
-					$isExecuted[$register] = true;
+					$isExecuted[$register] = TRUE;
 				}
 			}
 		}

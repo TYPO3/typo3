@@ -97,7 +97,7 @@ class tx_indexed_search_extparse {
 	 * Initialize external parser for parsing content.
 	 *
 	 * @param	string		File extension
-	 * @return	boolean		Returns true if extension is supported/enabled, otherwise false.
+	 * @return	boolean		Returns TRUE if extension is supported/enabled, otherwise false.
 	 */
 	function initParser($extension)	{
 
@@ -217,7 +217,7 @@ class tx_indexed_search_extparse {
 	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc) in backend and frontend plugin
 	 *
 	 * @param	string		File extension to initialize for.
-	 * @return	boolean		Returns true if the extension is supported and enabled, otherwise false.
+	 * @return	boolean		Returns TRUE if the extension is supported and enabled, otherwise false.
 	 */
 	function softInit($extension)	{
 		switch($extension)	{
@@ -351,10 +351,10 @@ class tx_indexed_search_extparse {
 	}
 
 	/**
-	 * Returns true if the input extension (item_type) is a potentially a multi-page extension
+	 * Returns TRUE if the input extension (item_type) is a potentially a multi-page extension
 	 *
 	 * @param	string		Extension / item_type string
-	 * @return	boolean		Return true if multi-page
+	 * @return	boolean		Return TRUE if multi-page
 	 */
 	function isMultiplePageExtension($extension)	{
 			// Switch on file extension:

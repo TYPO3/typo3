@@ -390,7 +390,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	}
 
 	/**
-	 * Returns an SQL statement that evaluates to true if the entry is not expired.
+	 * Returns an SQL statement that evaluates to TRUE if the entry is not expired.
 	 *
 	 * @return string
 	 * @author Karsten Dambekalns <karsten@typo3.org>

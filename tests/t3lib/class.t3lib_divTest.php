@@ -1370,7 +1370,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvaluetNotHtmlspecialcharsDataWithinCDataSetToTrue() {
 		$this->assertContains(
 			'>',
-			t3lib_div::quoteJSvalue('>', true)
+			t3lib_div::quoteJSvalue('>', TRUE)
 		);
 	}
 
@@ -1380,7 +1380,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvalueReturnsEmptyStringQuotedInSingleQuotes() {
 		$this->assertEquals(
 			"''",
-			t3lib_div::quoteJSvalue("", true)
+			t3lib_div::quoteJSvalue("", TRUE)
 		);
 	}
 
@@ -1390,7 +1390,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvalueNotModifiesStringWithoutSpecialCharacters() {
 		$this->assertEquals(
 			"'Hello world!'",
-			t3lib_div::quoteJSvalue("Hello world!", true)
+			t3lib_div::quoteJSvalue("Hello world!", TRUE)
 		);
 	}
 
@@ -1400,7 +1400,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesSingleQuote() {
 		$this->assertEquals(
 			"'\\''",
-			t3lib_div::quoteJSvalue("'", true)
+			t3lib_div::quoteJSvalue("'", TRUE)
 		);
 	}
 
@@ -1410,7 +1410,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesDoubleQuoteWithinCDataSetToTrue() {
 		$this->assertEquals(
 			"'\\\"'",
-			t3lib_div::quoteJSvalue('"', true)
+			t3lib_div::quoteJSvalue('"', TRUE)
 		);
 	}
 

@@ -396,11 +396,11 @@ class tx_install extends t3lib_install {
 	}
 
 	/**
-	 * Returns true if submitted password is ok.
+	 * Returns TRUE if submitted password is ok.
 	 *
 	 * If password is ok, set session as "authorized".
 	 *
-	 * @return boolean true if the submitted password was ok and session was
+	 * @return boolean TRUE if the submitted password was ok and session was
 	 *                 authorized, false otherwise
 	 */
 	function checkPassword() {
@@ -420,7 +420,7 @@ class tx_install extends t3lib_install {
 					'From: TYPO3 Install Tool WARNING <>'
 				);
 			}
-			return true;
+			return TRUE;
 		} else {
 				// Bad password, send warning:
 			if ($p) {
@@ -2162,8 +2162,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 											// to their boolean equivalent.
 										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === false && $value === '0') {
 											$value = false;
-										} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === true && $value === '1') {
-											$value = true;
+										} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === TRUE && $value === '1') {
+											$value = TRUE;
 										}
 									}
 
@@ -4124,7 +4124,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 
 	/**
-	 * Returns true if TTF lib is installed.
+	 * Returns TRUE if TTF lib is installed.
 	 *
 	 * @return boolean TRUE if TrueType support
 	 */
@@ -4536,13 +4536,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$mismatch=false;
 		switch (strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])) {
 			case 'gm':
-				if (doubleval($im_path_version)>=2)	$mismatch=true;
+				if (doubleval($im_path_version)>=2)	$mismatch=TRUE;
 			break;
 			case 'im4':
-				if (doubleval($im_path_version)>=5)	$mismatch=true;
+				if (doubleval($im_path_version)>=5)	$mismatch=TRUE;
 			break;
 			default:
-				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?true:false) != (doubleval($im_path_version)>=5))	$mismatch=true;
+				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?TRUE:false) != (doubleval($im_path_version)>=5))	$mismatch=TRUE;
 			break;
 		}
 
@@ -4824,7 +4824,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
 
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey.'combine1').'.jpg';
-					$imageProc->combineExec($input,$overlay,$mask,$output, true);
+					$imageProc->combineExec($input,$overlay,$mask,$output, TRUE);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,'Combine using a GIF mask with only black and white',$result[0],$result[1]);
@@ -4839,7 +4839,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
 
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey.'combine2').'.jpg';
-					$imageProc->combineExec($input,$overlay,$mask,$output, true);
+					$imageProc->combineExec($input,$overlay,$mask,$output, TRUE);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3],$imageProc->IM_commands);
 					$this->message($headCode,'Combine using a JPG mask with graylevels',$result[0],$result[1]);
@@ -6865,7 +6865,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$content = '';
 		switch($type) {
 			case 'get_form':
-				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',false,true);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',false,TRUE);
 
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'],'Add fields');
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'],'Changing fields',(t3lib_extMgm::isLoaded('dbal')?0:1),0,$arr_update['change_currentValue']);

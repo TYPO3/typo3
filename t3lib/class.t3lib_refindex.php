@@ -168,7 +168,7 @@ class t3lib_refindex {
 
 	/**
 	 * Returns array of arrays with an index of all references found in record from table/uid
-	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be true (no workspace overlay anywhere!)
+	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be TRUE (no workspace overlay anywhere!)
 	 *
 	 * @param	string		Table name from $GLOBALS['TCA']
 	 * @param	integer		Record UID
@@ -849,10 +849,10 @@ class t3lib_refindex {
 	 *******************************/
 
 	/**
-	 * Returns true if the TCA/columns field type is a DB reference field
+	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param	array		config array for TCA/columns field
-	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
+	 * @return	boolean		TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf) {
 		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db') || (($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table']);

@@ -48,7 +48,7 @@ class t3lib_mail_Message extends Swift_Message {
 	protected $mailerHeader = 'TYPO3';
 
 	/**
-	 * True if the message has been sent.
+	 * TRUE if the message has been sent.
 	 * @var boolean
 	 */
 	protected $sent = FALSE;
