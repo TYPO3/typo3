@@ -1870,7 +1870,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 		$filename = 'typo3temp/' . uniqid('test_');
 		t3lib_div::writeFileToTypo3tempDir(PATH_site . $filename, '42');
-		chmod($filename, 0742);
+		chmod(PATH_site . $filename, 0742);
 
 			// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
