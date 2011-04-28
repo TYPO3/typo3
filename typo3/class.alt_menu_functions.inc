@@ -85,7 +85,7 @@ class alt_menu_functions {
 	 * 		4 = part of JavaScript switch contruct for alt_main.php frameset.
 	 *
 	 * @param	array		$theModules is the output from load_modules class ($this->loadModules->modules)
-	 * @param	boolean		$dontLink == true will prevent the output from being linked with A-tags (used in the 'beuser' extension)
+	 * @param	boolean		$dontLink == TRUE will prevent the output from being linked with A-tags (used in the 'beuser' extension)
 	 * @param	string		$backPath must be the 'backPath' to PATH_typo3 from where the menu is displayed.
 	 * @param	integer		$descr determines the type of menu made (see above)
 	 * @return	string		The menu HTML

@@ -45,7 +45,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$performWorkspaceSwitch = FALSE;
 
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$wsCur = array($activeWorkspace => true);
+			$wsCur = array($activeWorkspace => TRUE);
 			$wsList = array_intersect_key($wsList, $wsCur);
 		} else {
 			$wsList = $wsService->getAvailableWorkspaces();
@@ -80,8 +80,8 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		} else {
 			$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 			$this->view->assign('pageUid', t3lib_div::_GP('id'));
-			$this->view->assign('showGrid', true);
-			$this->view->assign('showLegend', true);
+			$this->view->assign('showGrid', TRUE);
+			$this->view->assign('showLegend', TRUE);
 			$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
 			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
@@ -103,11 +103,11 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 
-		$wsCur = array($activeWorkspace => true);
+		$wsCur = array($activeWorkspace => TRUE);
 		$wsList = array_intersect_key($wsList, $wsCur);
 
 		$this->view->assign('pageUid', t3lib_div::_GP('id'));
-		$this->view->assign('showGrid', true);
+		$this->view->assign('showGrid', TRUE);
 		$this->view->assign('showAllWorkspaceTab', false);
 		$this->view->assign('workspaceList', $wsList);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');

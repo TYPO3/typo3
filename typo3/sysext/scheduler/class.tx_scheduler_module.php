@@ -306,7 +306,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// If the user does not exist, try creating it
 		if ($checkUser == -1) {
 				// Prepare necessary data for _cli_scheduler user creation
-			$password = md5(uniqid('scheduler', true));
+			$password = md5(uniqid('scheduler', TRUE));
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
 				/**
 				 * Create an instance of TCEmain and execute user creation
@@ -1078,7 +1078,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 						// Check if task currently has a running execution
 					if (!empty($schedulerRecord['serialized_executions'])) {
-						$isRunning = true;
+						$isRunning = TRUE;
 						$executionStatus = 'running';
 					}
 
@@ -1337,10 +1337,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Checks the submitted data and performs some preprocessing on it
 	 *
-	 * @return	boolean		True if everything was ok, false otherwise
+	 * @return	boolean		TRUE if everything was ok, false otherwise
 	 */
 	protected function preprocessData() {
-		$result = true;
+		$result = TRUE;
 
 			// Validate id
 		$this->submittedData['uid'] = (empty($this->submittedData['uid'])) ? 0 : intval($this->submittedData['uid']);
@@ -1426,7 +1426,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
 			$providerObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
 			if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
-					// The validate method will return true if all went well, but that must not
+					// The validate method will return TRUE if all went well, but that must not
 					// override previous false values => AND the returned value with the existing one
 				$result &= $providerObject->validateAdditionalFields($this->submittedData, $this);
 			}
@@ -1452,13 +1452,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// That failed. Try TYPO3's standard date/time input format
 		if ($timestamp === false) {
 				// Split time and date
-			$dateParts = t3lib_div::trimExplode(' ', $string, true);
+			$dateParts = t3lib_div::trimExplode(' ', $string, TRUE);
 				// Proceed if there are indeed two parts
 				// Extract each component of date and time
 			if (count($dateParts) == 2) {
 				list($time, $date) = $dateParts;
-				list($hour, $minutes) = t3lib_div::trimExplode(':', $time, true);
-				list($day, $month, $year) = t3lib_div::trimExplode('-', $date, true);
+				list($hour, $minutes) = t3lib_div::trimExplode(':', $time, TRUE);
+				list($day, $month, $year) = t3lib_div::trimExplode('-', $date, TRUE);
 					// Get a timestamp from all these parts
 				$timestamp = mktime($hour, $minutes, 0, $month, $day, $year);
 			}

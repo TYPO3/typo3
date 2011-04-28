@@ -911,7 +911,7 @@ class t3lib_clipboard {
 	/**
 	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
 	 *
-	 * @return	boolean		True if elements exist.
+	 * @return	boolean		TRUE if elements exist.
 	 */
 	function isElements() {
 		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);

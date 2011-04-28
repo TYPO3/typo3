@@ -117,7 +117,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	}
 
 	/**
-	 * Returns true if the node is a mount point
+	 * Returns TRUE if the node is a mount point
 	 *
 	 * @return bool
 	 */

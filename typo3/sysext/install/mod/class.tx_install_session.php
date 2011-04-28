@@ -183,7 +183,7 @@ class tx_install_session {
 	/**
 	 * Checks whether we already have an active session.
 	 *
-	 * @return boolean true if there is an active session, false otherwise
+	 * @return boolean TRUE if there is an active session, false otherwise
 	 */
 	public function hasSession() {
 		return (isset($_SESSION['created']));
@@ -233,7 +233,7 @@ class tx_install_session {
 	/**
 	 * Check if we have an already authorized session
 	 *
-	 * @return boolean True if this session has been authorized before (by a correct password)
+	 * @return boolean TRUE if this session has been authorized before (by a correct password)
 	 */
 	public function isAuthorized() {
 		if (!$_SESSION['authorized']) {
@@ -251,7 +251,7 @@ class tx_install_session {
 	 * Useful only right after a false "isAuthorized" to see if this is the
 	 * reason for not being authorized anymore.
 	 *
-	 * @return boolean True if an authorized session exists, but is expired
+	 * @return boolean TRUE if an authorized session exists, but is expired
 	 */
 	public function isExpired() {
 		if (!$_SESSION['authorized']) {

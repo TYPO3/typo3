@@ -134,7 +134,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * Normalize month field.
 	 *
 	 * @param string $expression Month field expression
-	 * @param boolean $isMonthField True if month field is handled, false for weekday field
+	 * @param boolean $isMonthField TRUE if month field is handled, false for weekday field
 	 * @return string Normalized expression
 	 */
 	public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {

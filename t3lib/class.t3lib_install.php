@@ -79,7 +79,7 @@ class t3lib_install {
 	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]'; // Prefix for checkbox fields when updating database.
 	var $localconf_addLinesOnly = 0; // If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
 	var $localconf_editPointToken = 'INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!'; // If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
-	var $allowUpdateLocalConf = 0; // If true, this class will allow the user to update the localconf.php file. Is set true in the init.php file.
+	var $allowUpdateLocalConf = 0; // If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
 	var $backPath = '../'; // Backpath (used for icons etc.)
 
 	var $multiplySize = 1; // Multiplier of SQL field size (for char, varchar and text fields)
@@ -1058,8 +1058,8 @@ class t3lib_install {
 	 * Performs the queries passed from the input array.
 	 *
 	 * @param	array		Array of SQL queries to execute.
-	 * @param	array		Array with keys that must match keys in $arr. Only where a key in this array is set and true will the query be executed (meant to be passed from a form checkbox)
-	 * @return	mixed		Array with error message from database if any occured. Otherwise true if everything was executed successfully.
+	 * @param	array		Array with keys that must match keys in $arr. Only where a key in this array is set and TRUE will the query be executed (meant to be passed from a form checkbox)
+	 * @return	mixed		Array with error message from database if any occured. Otherwise TRUE if everything was executed successfully.
 	 */
 	function performUpdateQueries($arr, $keyArr) {
 		$result = array();

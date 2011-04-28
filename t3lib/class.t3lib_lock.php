@@ -64,7 +64,7 @@ class t3lib_lock {
 	 * @param	string		Define which locking method to use. Defaults to "simple".
 	 * @param	integer		Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
 	 * @param	integer		Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
-	 * @return	boolean		Returns true unless something went wrong
+	 * @return	boolean		Returns TRUE unless something went wrong
 	 */
 	public function __construct($id, $method = '', $loops = 0, $step = 0) {
 
@@ -125,7 +125,7 @@ class t3lib_lock {
 	 *
 	 * It is important to know that the lock will be acquired in any case, even if the request was blocked first. Therefore, the lock needs to be released in every situation.
 	 *
-	 * @return	boolean		Returns true if lock could be acquired without waiting, false otherwise.
+	 * @return	boolean		Returns TRUE if lock could be acquired without waiting, false otherwise.
 	 */
 	public function acquire() {
 		$noWait = TRUE; // Default is TRUE, which means continue without caring for other clients. In the case of TYPO3s cache management, this has no negative effect except some resource overhead.

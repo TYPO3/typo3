@@ -118,7 +118,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 	/**
 	 * Process saving request like in class.tstemplateinfo.php (TCE processing)
 	 *
-	 * @return boolean true if successful
+	 * @return boolean TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = false;
@@ -140,7 +140,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 
 			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 			$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-			$existTemplate = (is_array($tplRow) ? true : false);
+			$existTemplate = (is_array($tplRow) ? TRUE : false);
 
 			if ($existTemplate)	{
 				$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
@@ -174,7 +174,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 						$tstemplateinfo = t3lib_div::makeInstance('tx_tstemplateinfo'); /* @var $tstemplateinfo tx_tstemplateinfo */
 							// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set						
 						$tstemplateinfo->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
-							array('includeTypoScriptFileContent' => true), 
+							array('includeTypoScriptFileContent' => TRUE),
 							array(), 
 							'web_ts'
 						);
@@ -194,7 +194,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 						// cache in tce_main.php)
 						$tce->clear_cacheCmd('all');
 
-						$savingsuccess = true;
+						$savingsuccess = TRUE;
 					}
 				}
 			}

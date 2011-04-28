@@ -1862,7 +1862,7 @@ class t3lib_TCEforms_inline {
 	 *  - 'unstable': Containting partly filled data (e.g. only table and possibly field)
 	 *
 	 * @param	string		$domObjectId: The DOM object-id
-	 * @param	boolean		$loadConfig: Load the TCA configuration for that level (default: true)
+	 * @param	boolean		$loadConfig: Load the TCA configuration for that level (default: TRUE)
 	 * @return	void
 	 */
 	function parseStructureString($string, $loadConfig = TRUE) {
@@ -1969,7 +1969,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$cmd: The command that sould be performed ('new' or 'edit')
 	 * @param	string		$table: The table to check access for
 	 * @param	string		$theUid: The record uid of the table
-	 * @return	boolean		Returns true is the user has access, or false if not
+	 * @return	boolean		Returns TRUE is the user has access, or false if not
 	 */
 	function checkAccess($cmd, $table, $theUid) {
 			// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -2224,7 +2224,7 @@ class t3lib_TCEforms_inline {
 					}
 				}
 
-					// if one or more matches are required ('OR'), return true after the first successful match
+					// if one or more matches are required ('OR'), return TRUE after the first successful match
 				if ($type == '%OR' && $localMatches > 0) {
 					return TRUE;
 				}
@@ -2235,7 +2235,7 @@ class t3lib_TCEforms_inline {
 			}
 		}
 
-			// return the result for '%AND' (if nothing was checked, true is returned)
+			// return the result for '%AND' (if nothing was checked, TRUE is returned)
 		return $localEntries == $localMatches ? TRUE : FALSE;
 	}
 
@@ -2244,7 +2244,7 @@ class t3lib_TCEforms_inline {
 	 * Checks whether an object is an associative array.
 	 *
 	 * @param	mixed		$object: The object to be checked
-	 * @return	boolean		Returns true, if the object is an associative array
+	 * @return	boolean		Returns TRUE, if the object is an associative array
 	 */
 	function isAssociativeArray($object) {
 		return is_array($object) && count($object) && (array_keys($object) !== range(0, sizeof($object) - 1))
@@ -2409,7 +2409,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	string		$table: Name of the child table
 	 * @param	integer		$uid: uid of the the child record
-	 * @return	boolean		true=expand, false=collapse
+	 * @return	boolean		TRUE=expand, false=collapse
 	 */
 	function getExpandedCollapsedState($table, $uid) {
 		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {

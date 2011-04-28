@@ -58,7 +58,7 @@ class tx_simulatestatic {
 			return;
 		}
 
-		$this->enabled = true;
+		$this->enabled = TRUE;
 
 		// setting configuration options
 		$this->conf = array(
@@ -147,7 +147,7 @@ class tx_simulatestatic {
 			($page['alias'] ? $page['alias'] : $page['uid']),
 			intval($parameters['typeNum']),
 			$LD['linkVars'],
-			($LD['no_cache'] ? true : false)
+			($LD['no_cache'] ? TRUE : false)
 		);
 		if ($this->conf['mode'] == 'PATH_INFO') {
 			$url = 'index.php/' . str_replace('.', '/', $url) . '/';
@@ -214,7 +214,7 @@ class tx_simulatestatic {
 
 		// If PATH_INFO is defined as simulateStaticDocuments mode and has information:
 		if (t3lib_div::getIndpEnv('PATH_INFO') && strpos(t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT'), 'index.php/') === 0) {
-			$parts = t3lib_div::trimExplode('/', t3lib_div::getIndpEnv('PATH_INFO'), true);
+			$parts = t3lib_div::trimExplode('/', t3lib_div::getIndpEnv('PATH_INFO'), TRUE);
 			$pCount = count($parts);
 			if ($pCount > 1) {
 				$parentObject->type = intval($parts[$pCount-1]);

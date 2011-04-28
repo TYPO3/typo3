@@ -176,7 +176,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 	/**
 	 * Checks whether memcached is configured, if that's the case we asume it's also used.
 	 *
-	 * @return	boolean	True if memcached is used, false otherwise.
+	 * @return	boolean	TRUE if memcached is used, false otherwise.
 	 */
 	protected function isMemcachedUsed() {
 		$memcachedUsed = FALSE;

@@ -174,7 +174,7 @@ class TYPO3AJAX {
 	 */
 	public function setError($errorMsg = '') {
 		$this->errorMessage = $errorMsg;
-		$this->isError = true;
+		$this->isError = TRUE;
 	}
 
 
@@ -279,7 +279,7 @@ class TYPO3AJAX {
 		$content = json_encode($this->content);
 
 		header('Content-type: application/json; charset='.$this->requestCharset);
-		header('X-JSON: '.($this->contentFormat != 'jsonbody' ? $content : true));
+		header('X-JSON: '.($this->contentFormat != 'jsonbody' ? $content : TRUE));
 
 			// bring content in xhr.responseText except when in "json head only" mode
 		if ($this->contentFormat != 'jsonhead') {

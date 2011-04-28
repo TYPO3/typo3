@@ -421,7 +421,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * $defOp is the default operator. 1=OR, 0=AND
 	 *
-	 * @param	boolean		If true, the default operator will be OR, not AND
+	 * @param	boolean		If TRUE, the default operator will be OR, not AND
 	 * @return	array		Returns array with search words if any found
 	 */
 	function getSearchWords($defOp)	{
@@ -1201,7 +1201,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * ? Should it also check for gr_list "0,-1"?
 	 *
 	 * @param	array		Result row array.
-	 * @return	boolean		Returns true if resume can safely be shown
+	 * @return	boolean		Returns TRUE if resume can safely be shown
 	 */
 	function checkResume($row)	{
 
@@ -1247,7 +1247,7 @@ class tx_indexedsearch extends tslib_pibase {
 	/**
 	 * Returns "DESC" or "" depending on the settings of the incoming highest/lowest result order (piVars['desc']
 	 *
-	 * @param	boolean		If true, inverse the order which is defined by piVars['desc']
+	 * @param	boolean		If TRUE, inverse the order which is defined by piVars['desc']
 	 * @return	string		" DESC" or ""
 	 */
 	function isDescending($inverse=FALSE)	{
@@ -2356,7 +2356,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * Returns if an item type is a multipage item type
 	 *
 	 * @param	string		Item type
-	 * @return	boolean		True if multipage capable
+	 * @return	boolean		TRUE if multipage capable
 	 */
 	function multiplePagesType($item_type)	{
 		return is_object($this->external_parsers[$item_type]) && $this->external_parsers[$item_type]->isMultiplePageExtension($item_type);

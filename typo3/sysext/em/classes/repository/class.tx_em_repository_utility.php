@@ -246,7 +246,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * server.
 	 *
 	 * @access  public
-	 * @param   boolean  $forcedUpdateFromRemote  if boolean true, mirror configuration will always retrieved from remote server
+	 * @param   boolean  $forcedUpdateFromRemote  if boolean TRUE, mirror configuration will always retrieved from remote server
 	 * @return  em_repository_mirrors  instance of repository mirrors class
 	 */
 	public function getMirrors($forcedUpdateFromRemote = TRUE) {

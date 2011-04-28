@@ -75,7 +75,7 @@
  *
  * $filemounts		(see basicFileFunctions)
  * $f_ext	  (see basicFileFunctions)
- *	 ... All fileoperations must be within the filemount-paths. Further the fileextension MUST validate true with the f_ext array
+ *	 ... All fileoperations must be within the filemount-paths. Further the fileextension MUST validate TRUE with the f_ext array
  *
  * The unzip-function allows unzip only if the destination path has it's f_ext[]['allow'] set to '*'!!
  * You are allowed to copy/move folders within the same 'space' (web/ftp).
@@ -383,7 +383,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 * Deleting files and folders (action=4)
 	 *
 	 * @param	array		$cmds['data'] is the file/folder to delete
-	 * @return	boolean		Returns true upon success
+	 * @return	boolean		Returns TRUE upon success
 	 */
 	function func_delete($cmds) {
 		if (!$this->isInit) {
@@ -876,7 +876,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 * Editing textfiles or folders (action=9)
 	 *
 	 * @param	array		$cmds['data'] is the new content. $cmds['target'] is the target (file or dir)
-	 * @return	boolean		Returns true on success
+	 * @return	boolean		Returns TRUE on success
 	 */
 	function func_edit($cmds) {
 		if (!$this->isInit) {
@@ -979,7 +979,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 * This is permitted only if the user has fullAccess or if the file resides
 	 *
 	 * @param	array		$cmds['data'] is the zip-file. $cmds['target'] is the target directory. If not set we'll default to the same directory as the file is in.
-	 * @return	boolean		Returns true on success
+	 * @return	boolean		Returns TRUE on success
 	 */
 	function func_unzip($cmds) {
 		if (!$this->isInit || $this->dont_use_exec_commands) {

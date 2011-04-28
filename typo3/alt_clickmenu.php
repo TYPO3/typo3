@@ -141,18 +141,18 @@ class clickMenu {
 	var $PH_backPath='###BACK_PATH###';		// BackPath place holder: We need different backPath set whether the clickmenu is written back to a frame which is not in typo3/ dir or if the clickmenu is shown in the top frame (no backpath)
 	var $listFrame=0;			// If set, the calling document should be in the listframe of a frameset.
 	var $isDBmenu=0;			// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
-	var $alwaysContentFrame=0;	// If true, the "content" frame is always used for reference (when condensed mode is enabled)
+	var $alwaysContentFrame=0;	// If TRUE, the "content" frame is always used for reference (when condensed mode is enabled)
 	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|": [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame, If "2" then "content frame" is forced  [3] = ("+" prefix = disable all by default, enable these. Default is to disable) Items key list
 	var $disabledItems=array();	// Contains list of keywords of items to disable in the menu
-	var $dontDisplayTopFrameCM=0;	// If true, the context sensitive menu will not appear in the top frame, only as a layer.
-	var $leftIcons=0;			// If true, Show icons on the left.
+	var $dontDisplayTopFrameCM=0;	// If TRUE, the context sensitive menu will not appear in the top frame, only as a layer.
+	var $leftIcons=0;			// If TRUE, Show icons on the left.
 	var $extClassArray=array();		// Array of classes to be used for user processing of the menu content. This is for the API of adding items to the menu from outside.
 	var $ajax=0; // enable/disable ajax behavior
 
 		// Internal, dynamic:
 	var $elCount=0;				// Counter for elements in the menu. Used to number the name / id of the mouse-over icon.
 	var $editPageIconSet=0;		// Set, when edit icon is drawn.
-	var $editOK=0;				// Set to true, if editing of the element is OK.
+	var $editOK=0;				// Set to TRUE, if editing of the element is OK.
 	var $rec=array();
 
 
@@ -213,7 +213,7 @@ class clickMenu {
 	}
 
 	/**
-	 * Returns true if the menu should (also?) be displayed in topframe, not just <div>-layers
+	 * Returns TRUE if the menu should (also?) be displayed in topframe, not just <div>-layers
 	 *
 	 * @return	boolean
 	 */
@@ -978,7 +978,7 @@ class clickMenu {
 				$editOnClick . 'return hideCM();'
 				);
 		} else {
-			return $this->FILE_launch($path, $script, $type, $image, true);
+			return $this->FILE_launch($path, $script, $type, $image, TRUE);
 		}
 	}
 
@@ -1192,7 +1192,7 @@ class clickMenu {
 
 	/**
 	 * Prints the items from input $menuItems array - both as topframe menu AND the JS section for writing to the div-layers.
-	 * Of course the topframe menu will appear only if $this->doDisplayTopFrameCM() returns true
+	 * Of course the topframe menu will appear only if $this->doDisplayTopFrameCM() returns TRUE
 	 *
 	 * @param	array		$menuItems array
 	 * @param	string		HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
@@ -1383,7 +1383,7 @@ class clickMenu {
 								if ($menuEntry) {
 									$p=1;
 									reset ($menuItems);
-									while (true) {
+									while (TRUE) {
 										if (!strcmp(key($menuItems), $menuEntry))	{
 											$pointer = $p;
 											$found=TRUE;
@@ -1563,7 +1563,7 @@ class clickMenu {
 	}
 
 	/**
-	 * Returns true if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
+	 * Returns TRUE if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
 	 *
 	 * @return	boolean
 	 */

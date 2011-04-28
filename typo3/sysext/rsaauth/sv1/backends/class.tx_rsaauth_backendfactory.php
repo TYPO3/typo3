@@ -86,7 +86,7 @@ class tx_rsaauth_backendfactory {
 					if ($backendObject->isAvailable()) {
 						// The backend is available, save it and stop the loop
 						self::$selectedBackend = $backendObject;
-						self::$initialized = true;
+						self::$initialized = TRUE;
 						break;
 					}
 					// Attempt to force destruction of the object

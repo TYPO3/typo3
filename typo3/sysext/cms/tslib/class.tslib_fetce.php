@@ -269,7 +269,7 @@ class tslib_feTCE	{
 			}
 
 			if ($cacheCmd == intval($GLOBALS['TSFE']->id)) {
-					// Setting no_cache true if the cleared-cache page is the current page!
+					// Setting no_cache TRUE if the cleared-cache page is the current page!
 				$GLOBALS['TSFE']->set_no_cache();
 			}
 		}

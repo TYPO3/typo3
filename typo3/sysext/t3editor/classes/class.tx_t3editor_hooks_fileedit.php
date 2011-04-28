@@ -131,7 +131,7 @@ class tx_t3editor_hooks_fileedit {
 	}
 
 	/**
-	 * @return boolean true if successful
+	 * @return boolean TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = false;

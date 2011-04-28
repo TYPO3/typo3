@@ -92,7 +92,7 @@ class language {
 		'dk' => 'http://www.typo3.com/man_dk/',
 	);
 
-		// If true, will show the key/location of labels in the backend.
+		// If TRUE, will show the key/location of labels in the backend.
 	public $debugKey = FALSE;
 
 		// Can contain labels and image references from the backend modules.
@@ -452,12 +452,12 @@ class language {
 
 	/**
 	 * Includes locallang file (and possibly additional localized version if configured for)
-	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = true).
+	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
 	 *
 	 * @param	string		$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
 	 * @param	boolean		If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
-	 * @return	mixed		If $setGlobal is true the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
+	 * @return	mixed		If $setGlobal is TRUE the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
 	 * @access	public
 	 */
 	public function includeLLFile($fileRef, $setGlobal = 1, $mergeLocalOntoDefault = 0) {

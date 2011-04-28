@@ -240,7 +240,7 @@ class SC_alt_doc {
 	/**
 	 * Detects, if a save command has been triggered.
 	 *
-	 * @return	boolean		True, then save the document (data submitted)
+	 * @return	boolean		TRUE, then save the document (data submitted)
 	 */
 	function doProcessData()	{
 		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);

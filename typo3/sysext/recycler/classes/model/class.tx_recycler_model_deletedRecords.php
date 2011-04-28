@@ -185,7 +185,7 @@ class tx_recycler_model_deletedRecords {
 
 						// do NOT query this depth; limit also does not need to be set, we set it anyways
 					$allowQuery = false;
-					$allowDepth = true;
+					$allowDepth = TRUE;
 					$limit = ''; // won't be queried anyways
 					// if the result is < 0
 				} else {
@@ -227,7 +227,7 @@ class tx_recycler_model_deletedRecords {
 							// if the new row count is > 0
 						if ($newCount > 0) {
 							// go into new depth
-							$allowDepth = true;
+							$allowDepth = TRUE;
 						} else {
 								// if the new row count is <= 0 (only =0 makes sense though)
 								// do not go into new depth
@@ -236,12 +236,12 @@ class tx_recycler_model_deletedRecords {
 					}
 
 						// allow query for this depth
-					$allowQuery = true;
+					$allowQuery = TRUE;
 				}
 			} else {
 				$limit = '';
-				$allowDepth = true;
-				$allowQuery = true;
+				$allowDepth = TRUE;
+				$allowQuery = TRUE;
 			}
 
 				// query for actual deleted records
@@ -336,9 +336,9 @@ class tx_recycler_model_deletedRecords {
 			$tce->start('', '');
 			$tce->disableDeleteClause();
 			foreach ($recordsArray as $key => $record) {
-				$tce->deleteEl($record[0], $record[1], true, true);
+				$tce->deleteEl($record[0], $record[1], TRUE, TRUE);
 			}
-			return true;
+			return TRUE;
 		}
 		return false;
 	}
@@ -350,10 +350,10 @@ class tx_recycler_model_deletedRecords {
 
 	/**
 	 * Undelete records
-	 * If $recursive is true all records below the page uid would be undelete too
+	 * If $recursive is TRUE all records below the page uid would be undelete too
 	 *
 	 * @param	string		$recordArray: Representation of the records
-	 * @param	boolean		$recursive: true/false
+	 * @param	boolean		$recursive: TRUE/false
 	 * @return	boolean
 	 */
 	public function undeleteData($recordsArray, $recursive = false) {
@@ -369,7 +369,7 @@ class tx_recycler_model_deletedRecords {
 
 			foreach ($recordsArray as $key => $row) {
 				$cmd[$row[0]][$row[1]]['undelete'] = 1;
-				if ($row[0] == 'pages' && $recursive == true) {
+				if ($row[0] == 'pages' && $recursive == TRUE) {
 					$this->loadData($row[1], '', $depth, '');
 					$childRecords = $this->getDeletedRows();
 					if (count($childRecords)>0) {
@@ -386,7 +386,7 @@ class tx_recycler_model_deletedRecords {
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
-				$result = true;
+				$result = TRUE;
 			}
 		}
 

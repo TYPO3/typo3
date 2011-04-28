@@ -69,7 +69,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	 * checks whether the user has access to this toolbar item
 	 *
 	 * @see		typo3/alt_shortcut.php
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  TRUE if user has access, false if not
 	 */
 	public function checkAccess() {
 		if (t3lib_extMgm::isLoaded('workspaces')) {
@@ -92,7 +92,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', true);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', TRUE);
 		$this->addJavascriptToBackend();
 		$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 		$workspaceMenu       = array();
@@ -124,7 +124,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 			}
 		} else {
 			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
-				$GLOBALS['LANG']->getLL('bookmark_noWSfound', true) .
+				$GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) .
 				'</li>';
 		}
 
@@ -132,7 +132,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 				// go to workspace module link
 			$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' .
 				'<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' .
-				' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
+				' '. $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE) . '</a></li>';
 		}
 
 		$workspaceMenu[] = '</ul>';

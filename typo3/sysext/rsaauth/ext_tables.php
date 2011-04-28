@@ -7,11 +7,11 @@ if (!defined ('TYPO3_MODE')) {
 // any user in any way.
 $TCA['tx_rsaauth_keys'] = array (
 	'ctrl' => array (
-		'adminOnly' => true,
-		'hideTable' => true,
-		'is_static' => true,
+		'adminOnly' => TRUE,
+		'hideTable' => TRUE,
+		'is_static' => TRUE,
 		'label' => 'uid',
-		'readOnly' => true,
+		'readOnly' => TRUE,
 		'rootLevel' => 1,
 		'title' => 'Oops! You should not see this!'
 	),

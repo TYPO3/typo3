@@ -198,7 +198,7 @@ class t3lib_transl8tools {
 	}
 
 	/**
-	 * Returns true, if the input table has localization enabled and done so with records from the same table
+	 * Returns TRUE, if the input table has localization enabled and done so with records from the same table
 	 *
 	 * @param	[type]		$table: ...
 	 * @return	[type]		...

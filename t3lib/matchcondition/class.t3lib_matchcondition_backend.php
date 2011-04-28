@@ -189,7 +189,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 *
 	 * @param	string		$table: Name of the table
 	 * @param	integer		$id: Id of the accordant record
-	 * @param	boolean		$ignoreTable: Whether to ignore the page, if true a positive
+	 * @param	boolean		$ignoreTable: Whether to ignore the page, if TRUE a positive
 	 *						id value is considered as page id without any further checks
 	 * @return	integer		Id of the page the record is persisted on
 	 */
@@ -214,7 +214,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * This information is required for conditions in BE for PIDupinRootline.
 	 *
 	 * @param	integer		$pid: The pid the check for as parent page
-	 * @return	boolean		true if the is currently a new page record being edited with $pid as uid of the parent page
+	 * @return	boolean		TRUE if the is currently a new page record being edited with $pid as uid of the parent page
 	 */
 	protected function isNewPageWithPageId($pageId) {
 		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof SC_alt_doc) {

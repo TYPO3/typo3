@@ -182,7 +182,7 @@ class tx_reports_Module extends t3lib_SCbase {
 			}
 		}
 
-		$this->content .= $this->doc->section($title, $content, false, true);
+		$this->content .= $this->doc->section($title, $content, false, TRUE);
 	}
 
 	/**

@@ -64,7 +64,7 @@ class tx_cms_treelistCacheUpdate {
 			$additionalTreelistUpdateFields = t3lib_div::trimExplode(
 				',',
 				$GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'],
-				true
+				TRUE
 			);
 
 			$this->updateRequiringFields += $additionalTreelistUpdateFields;
@@ -249,7 +249,7 @@ class tx_cms_treelistCacheUpdate {
 	 * checks whether the change requires an update of the treelist cache
 	 *
 	 * @param	array	array of changed fields
-	 * @return	boolean	true if the treelist cache needs to be updated, false if no update to the cache is required
+	 * @return	boolean	TRUE if the treelist cache needs to be updated, false if no update to the cache is required
 	 */
 	protected function requiresUpdate(array $updatedFields) {
 		$requiresUpdate = false;
@@ -257,7 +257,7 @@ class tx_cms_treelistCacheUpdate {
 		$updatedFieldNames = array_keys($updatedFields);
 		foreach ($updatedFieldNames as $updatedFieldName) {
 			if (in_array($updatedFieldName, $this->updateRequiringFields)) {
-				$requiresUpdate = true;
+				$requiresUpdate = TRUE;
 				break;
 			}
 		}
@@ -387,7 +387,7 @@ class tx_cms_treelistCacheUpdate {
 
 		if ($status == 'new') {
 				// new page
-			$actions['allParents'] = true;
+			$actions['allParents'] = TRUE;
 		} elseif ($status == 'update') {
 			$updatedFieldNames = array_keys($updatedFields);
 
@@ -415,7 +415,7 @@ class tx_cms_treelistCacheUpdate {
 					case 'php_tree_stop':
 							// php_tree_stop
 						$actions['allParents'] = TRUE;
-						$actions['uidInTreelist'] = true;
+						$actions['uidInTreelist'] = TRUE;
 						break;
 					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['endtime']:
 							/*
@@ -425,14 +425,14 @@ class tx_cms_treelistCacheUpdate {
 							 page must become listed in the treelist again.
 							*/
 						if($updatedFields['endtime'] > 0) {
-							$actions['setExpiration'] = true;
+							$actions['setExpiration'] = TRUE;
 						} else {
-							$actions['uidInTreelist'] = true;
+							$actions['uidInTreelist'] = TRUE;
 						}
 						break;
 					default:
 						if (in_array($updatedFieldName, $this->updateRequiringFields)) {
-							$actions['uidInTreelist'] = true;
+							$actions['uidInTreelist'] = TRUE;
 						}
 				}
 			}

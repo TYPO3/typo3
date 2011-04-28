@@ -121,7 +121,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 	 *
 	 * @param string $serverUrl Server URL
 	 * @param string $handle Association handle (optional)
-	 * @return boolean true if the association existed
+	 * @return boolean TRUE if the association existed
 	 */
 	function removeAssociation($serverUrl, $handle) {
 		$where = sprintf('server_url=%s AND assoc_handle=%s',
@@ -147,7 +147,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 	 * @param $serverUrl Server URL
 	 * @param $timestamp Time stamp
 	 * @param $salt Nonce value
-	 * @return boolean true if nonce was not used before anc can be used now
+	 * @return boolean TRUE if nonce was not used before anc can be used now
 	 */
 	public function useNonce($serverUrl, $timestamp, $salt) {
 		$result = false;

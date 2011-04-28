@@ -1,0 +1,83 @@
+plugin.tx_contentrss_pi1 {
+	
+	typeNum = {$plugin.tx_contentrss_pi1.rssTypeNum}  
+	
+	#fill these variables if you want to use it without plugin on page
+	pages = 
+	recursive = 
+	
+	#this are the CTypes which will be feeded. list is used by plugins, which needs registering for content feed.
+	allowedTypes = text,textpic,list
+	
+	#count of maximum items in feed
+	limit = 10
+	#sort field, use crdate or tstamp for date order
+	orderField = crdate
+	#see RSS-specification for valid date format. Use string for date(), see http://php.net/date for details
+	dateFormat = D, d M Y H:i:s O
+	#by setting HTML-Tags are stripped
+	stripHTML = 1
+	#cropping length for content (appended with '...'), use 0 for no cropping
+	contentLength = 200
+	
+	#variables for the template
+	siteTitle = {$plugin.tx_contentrss_pi1.siteTitle}
+	siteLink = {$plugin.tx_contentrss_pi1.siteLink}
+	siteDescription = {$plugin.tx_contentrss_pi1.siteDescription}
+	siteImage = {$plugin.tx_contentrss_pi1.siteImage}
+	siteImageW = {$plugin.tx_contentrss_pi1.siteImageW}
+	siteImageH = {$plugin.tx_contentrss_pi1.siteImageH}
+	rssCopyright = {$plugin.tx_contentrss_pi1.rssCopyright}
+	rssWebmaster = {$plugin.tx_contentrss_pi1.rssWebmaster}
+	rssManagingEditor = {$plugin.tx_contentrss_pi1.rssManagingEditor}
+	
+	
+	rssTemplate (
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title>###SITE_TITLE###</title>
+		<link>###SITE_LINK###</link>
+		<description>###SITE_DESCRIPTION###</description>
+		<image>
+			<title>###SITE_TITLE###</title>
+			<url>###IMG###</url>
+			<link>###SITE_LINK###</link>
+			<width>###IMG_W###</width>
+			<height>###IMG_H###</height>
+			<description>###SITE_DESCRIPTION###</description>
+		</image>
+		<generator>TYPO3 - get.content</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<copyright>###COPYRIGHT###</copyright>
+		<webMaster>###WEBMASTER###</webMaster>
+		<managingEditor>###MANAGINGEDITOR###</managingEditor>
+		<lastBuildDate>###LASTBUILD###</lastBuildDate>
+		<!-- ###CONTENTROWS### begin -->
+		<item>
+			<title>###TITLE###</title>
+			<link>###LINK###</link>
+			<content:encoded><![CDATA[###CONTENT###]]></content:encoded>
+			<author>###AUTHOR###</author>
+			<pubDate>###DATE###</pubDate>
+		</item>
+		<!-- ###CONTENTROWS### end -->
+	</channel>
+</rss>
+	)
+}
+
+
+rssContent = PAGE
+rssContent {
+	typeNum = {$plugin.tx_contentrss_pi1.rssTypeNum}
+
+	10 < plugin.tx_contentrss_pi1
+	
+	config {
+	disableAllHeaderCode = 1
+	#additionalHeaders = Content-type:application/xml
+	xhtml_cleaning = 0
+	admPanel = 0
+	}
+}

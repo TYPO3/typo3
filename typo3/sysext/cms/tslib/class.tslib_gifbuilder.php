@@ -346,7 +346,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	}
 
 	/**
-	 * Initiates the image file generation if ->setup is true and if the file did not exist already.
+	 * Initiates the image file generation if ->setup is TRUE and if the file did not exist already.
 	 * Gets filename from fileName() and if file exists in typo3temp/ dir it will - of course - not be rendered again.
 	 * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
 	 *
@@ -831,7 +831,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	integer		The maxium value of the given comma separated and calculated values
 	 */
 	protected function calculateMaximum($string) {
-		$parts = t3lib_div::trimExplode(',', $this->calcOffset($string), true);
+		$parts = t3lib_div::trimExplode(',', $this->calcOffset($string), TRUE);
 		$maximum = (count($parts) ? max($parts) : 0);
 		return $maximum;
 	}

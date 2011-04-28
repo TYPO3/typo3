@@ -47,7 +47,7 @@
  *  538:	 function convertPosNeg($valueArray,$fTable,$nfTable)
  *  560:	 function getFromDB()
  *  595:	 function readyForInterface()
- *  621:	 function countItems($returnAsArray = true)
+ *  621:	 function countItems($returnAsArray = TRUE)
  *  636:	 function updateRefIndex($table,$id)
  *
  * TOTAL FUNCTIONS: 12
@@ -857,7 +857,7 @@ class t3lib_loadDBGroup {
 	 * @param	string		$parentUid: The uid of the parent record
 	 * @param	array		$parentConf: The TCA configuration of the parent field embedding the child records
 	 * @param	array		$childRec: The record row of the child record
-	 * @return	boolean		Returns true if looking from the symmetric ("other") side to the relation.
+	 * @return	boolean		Returns TRUE if looking from the symmetric ("other") side to the relation.
 	 */
 	function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
 		return t3lib_div::testInt($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']]

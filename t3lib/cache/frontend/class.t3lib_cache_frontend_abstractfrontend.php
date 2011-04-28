@@ -188,7 +188,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	}
 
 	/**
-	 * Checks the validity of an entry identifier. Returns true if it's valid.
+	 * Checks the validity of an entry identifier. Returns TRUE if it's valid.
 	 *
 	 * @param string $identifier An identifier to be checked for validity
 	 * @return boolean
@@ -199,7 +199,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	}
 
 	/**
-	 * Checks the validity of a tag. Returns true if it's valid.
+	 * Checks the validity of a tag. Returns TRUE if it's valid.
 	 *
 	 * @param string $tag An identifier to be checked for validity
 	 * @return boolean

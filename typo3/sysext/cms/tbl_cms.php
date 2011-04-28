@@ -823,7 +823,7 @@ $TCA['pages_language_overlay'] = array(
 		'),
 	),
 	'palettes' => array(
-		'5' => array('showitem' => 'author,author_email', 'canNotCollapse' => true),
+		'5' => array('showitem' => 'author,author_email', 'canNotCollapse' => TRUE),
 		'standard' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel, sys_language_uid',
 			'canNotCollapse' => 1,

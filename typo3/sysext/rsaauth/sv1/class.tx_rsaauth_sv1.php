@@ -156,7 +156,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 		$evaluations = $conf['eval'];
 		if ($evaluations) {
 			$tce = null;
-			foreach (t3lib_div::trimExplode(',', $evaluations, true) as $evaluation) {
+			foreach (t3lib_div::trimExplode(',', $evaluations, TRUE) as $evaluation) {
 				switch ($evaluation) {
 					case 'md5':
 						$password = md5($password);

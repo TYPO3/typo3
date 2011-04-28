@@ -107,7 +107,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function adminIsAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = true;
+		$this->fixture->admin = TRUE;
 
 		$this->assertTrue(
 			$this->fixture->checkModifyAccessList('tt_content')
@@ -141,7 +141,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function adminIsAllowedToModifyAdminTable() {
-		$this->fixture->admin = true;
+		$this->fixture->admin = TRUE;
 
 		$this->assertTrue(
 			$this->fixture->checkModifyAccessList('be_users')
@@ -242,7 +242,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$hookClass = uniqid('tx_coretest');
 		eval('
 			class ' . $hookClass . ' implements t3lib_TCEmain_checkModifyAccessListHook {
-				public function checkModifyAccessList(&$accessAllowed, $table, t3lib_TCEmain $parent) { $accessAllowed = true; }
+				public function checkModifyAccessList(&$accessAllowed, $table, t3lib_TCEmain $parent) { $accessAllowed = TRUE; }
 			}
 		');
 

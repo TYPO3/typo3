@@ -95,7 +95,7 @@ class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine {
 	 *
 	 * @param	array		Configuration array from handler
 	 * @param	object		Parent object.
-	 * @return	boolean		True if connection and database selection worked out well.
+	 * @return	boolean		TRUE if connection and database selection worked out well.
 	 */
 	function init($config,&$pObj)	{
 		$this->config = $config['config'];
@@ -119,7 +119,7 @@ class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field=>Value array
-	 * @return	boolean		True on success
+	 * @return	boolean		TRUE on success
 	 */
 	function exec_INSERTquery($table,$fields_values)	{
 		return mysql_query($GLOBALS['TYPO3_DB']->INSERTquery($table,$fields_values), $this->link);
@@ -131,7 +131,7 @@ class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine {
 	 * @param	string		Table name
 	 * @param	string		WHERE clause
 	 * @param	array		Field=>Value array
-	 * @return	boolean		True on success
+	 * @return	boolean		TRUE on success
 	 */
 	function exec_UPDATEquery($table,$where,$fields_values)	{
 		return mysql_query($GLOBALS['TYPO3_DB']->UPDATEquery($table,$where,$fields_values), $this->link);
@@ -142,7 +142,7 @@ class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine {
 	 *
 	 * @param	string		Table name
 	 * @param	string		WHERE clause
-	 * @return	boolean		True on success
+	 * @return	boolean		TRUE on success
 	 */
 	function exec_DELETEquery($table,$where)	{
 		return mysql_query($GLOBALS['TYPO3_DB']->DELETEquery($table,$where), $this->link);

@@ -207,10 +207,10 @@ class t3lib_TCEforms {
 	var $backPath = ''; // Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
 	var $returnUrl = ''; // Alternative return URL path (default is t3lib_div::linkThisScript())
 	var $doSaveFieldName = ''; // Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
-	var $palettesCollapsed = 0; // Can be set true/false to whether palettes (secondary options) are in the topframe or in form. True means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
+	var $palettesCollapsed = 0; // Can be set TRUE/false to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	var $disableRTE = 0; // If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
 	var $globalShowHelp = 1; // If false, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
-	var $localizationMode = ''; // If true, the forms are rendering only localization relevant fields of the records.
+	var $localizationMode = ''; // If TRUE, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder = ''; // Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette = 1; // If set to false, palettes will NEVER be rendered.
 
@@ -246,7 +246,7 @@ class t3lib_TCEforms {
 	var $edit_showFieldHelp = ''; // Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon'), full description ('text') or not at all (blank).
 	var $docLarge = 0; // If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
 	var $clientInfo = array(); // Loaded with info about the browser when class is instantiated.
-	var $RTEenabled = 0; // True, if RTE is possible for the current user (based on result from BE_USER->isRTE())
+	var $RTEenabled = 0; // TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
 	var $RTEenabled_notReasons = ''; // If $this->RTEenabled was false, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
 	var $RTEcounter = 0; // Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 
@@ -835,7 +835,7 @@ class t3lib_TCEforms {
 				if ($PA['fieldConf']['l10n_display']
 					&& t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly')
 					&& $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
-					$PA['fieldConf']['config']['readOnly'] = true;
+					$PA['fieldConf']['config']['readOnly'] = TRUE;
 					$PA['itemFormElValue'] = $this->defaultLanguageData[$table . ':' . $row['uid']][$field];
 				}
 
@@ -903,7 +903,7 @@ class t3lib_TCEforms {
 					if ($PA['fieldConf']['l10n_display'] && (t3lib_div::inList($PA['fieldConf']['l10n_display'], 'hideDiff') || t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly'))) {
 						$renderLanguageDiff = false;
 					} else {
-						$renderLanguageDiff = true;
+						$renderLanguageDiff = TRUE;
 					}
 
 					if ($renderLanguageDiff) {
@@ -1134,7 +1134,7 @@ class t3lib_TCEforms {
 					$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
 						// Mark this field for date/time disposal:
 					if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
-						$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = true;
+						$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = TRUE;
 					}
 				break;
 				default:
@@ -1244,8 +1244,8 @@ class t3lib_TCEforms {
 		}
 
 			// Init RTE vars:
-		$RTEwasLoaded = 0; // Set true, if the RTE is loaded; If not a normal textarea is shown.
-		$RTEwouldHaveBeenLoaded = 0; // Set true, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
+		$RTEwasLoaded = 0; // Set TRUE, if the RTE is loaded; If not a normal textarea is shown.
+		$RTEwouldHaveBeenLoaded = 0; // Set TRUE, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
 
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
@@ -3932,7 +3932,7 @@ class t3lib_TCEforms {
 			$flexFormPath = str_replace('][', '/', substr($PA['itemFormElName'], strlen($prefixOfFormElName) + 1, -1));
 		}
 
-			// Manipulate the field name (to be the true form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
+			// Manipulate the field name (to be the TRUE form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
 		if ($PA['fieldConf']['config']['form_type'] == 'select') {
 			if ($PA['fieldConf']['config']['maxitems'] <= 1) { // Single select situation:
 				$listFlag = '';
@@ -6095,7 +6095,7 @@ class t3lib_TCEforms {
 	}
 
 	/**
-	 * Returns true, if the palette, $palette, is collapsed (not shown, but found in top-frame) for the table.
+	 * Returns TRUE, if the palette, $palette, is collapsed (not shown, but found in top-frame) for the table.
 	 *
 	 * @param	string		The table name
 	 * @param	integer		The palette pointer/number
@@ -6112,7 +6112,7 @@ class t3lib_TCEforms {
 	}
 
 	/**
-	 * Returns true, if the evaluation of the required-field code is OK.
+	 * Returns TRUE, if the evaluation of the required-field code is OK.
 	 *
 	 * @param	string		The required-field code
 	 * @param	array		The record to evaluate
@@ -6227,8 +6227,8 @@ class t3lib_TCEforms {
 
 							// New records in a workspace are not handled as a version record
 							// if it's no new version, we detect versions like this:
-							// -- if user is in workspace: always true
-							// -- if editor is in live ws: only true if pid == -1
+							// -- if user is in workspace: always TRUE
+							// -- if editor is in live ws: only TRUE if pid == -1
 						$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
 
 						if (strtolower($parts[2]) == 'true') {
@@ -6265,7 +6265,7 @@ class t3lib_TCEforms {
 	}
 
 	/**
-	 * Returns true if descriptions should be loaded always
+	 * Returns TRUE if descriptions should be loaded always
 	 *
 	 * @param	string		Table for which to check
 	 * @return	boolean
@@ -6483,7 +6483,7 @@ class t3lib_TCEforms {
 	 *
 	 * @param	boolean		$json: Return a JSON string instead of an array - default: false
 	 * @param	boolean		$skipFirst: Skip the first element in the dynNestedStack - default: false
-	 * @return	mixed		Returns an associative array by default. If $json is true, it will be returned as JSON string.
+	 * @return	mixed		Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
 	 */
 	function getDynNestedStack($json = FALSE, $skipFirst = FALSE) {
 		$result = $this->dynNestedStack;
@@ -6521,7 +6521,7 @@ class t3lib_TCEforms {
 	 * Sets the current situation of nested tabs and inline levels for a given element.
 	 *
 	 * @param	string		$itemName: The element the nesting should be stored for
-	 * @param	boolean		$setLevel: Set the reverse level lookup - default: true
+	 * @param	boolean		$setLevel: Set the reverse level lookup - default: TRUE
 	 * @return	void
 	 */
 	protected function registerNestedElement($itemName, $setLevel = TRUE) {

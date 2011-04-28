@@ -249,7 +249,7 @@ class tx_em_Extensions_Details {
 		if ($emConfFileContent) {
 
 			if (@is_file($emConfFileName)) {
-				if (t3lib_div::writeFile($emConfFileName, $emConfFileContent) === true) {
+				if (t3lib_div::writeFile($emConfFileName, $emConfFileContent) === TRUE) {
 					return sprintf($GLOBALS['LANG']->getLL('updateLocalEM_CONF_ok'),
 						substr($emConfFileName, strlen($absPath)));
 				} else {

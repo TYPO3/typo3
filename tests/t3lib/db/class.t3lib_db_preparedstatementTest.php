@@ -135,7 +135,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 			'one named integer parameter is replaced multiple times' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
 			'two named integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:uid', array(':pid' => 1, ':uid' => 10), 'SELECT * FROM pages WHERE pid=1 OR uid=10'),
 			'two unnamed integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=? OR uid=?', array(1,1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
-			'php bool true parameter is replaced with 1' => array('SELECT * FROM pages WHERE deleted=?', array(TRUE), 'SELECT * FROM pages WHERE deleted=1'),
+			'php bool TRUE parameter is replaced with 1' => array('SELECT * FROM pages WHERE deleted=?', array(TRUE), 'SELECT * FROM pages WHERE deleted=1'),
 			'php bool false parameter is replaced with 0' => array('SELECT * FROM pages WHERE deleted=?', array(FALSE), 'SELECT * FROM pages WHERE deleted=0'),
 			'php null parameter is replaced with NULL' => array('SELECT * FROM pages WHERE deleted=?', array(NULL), 'SELECT * FROM pages WHERE deleted=NULL'),
 			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), "SELECT * FROM pages WHERE title='Foo bar'"),

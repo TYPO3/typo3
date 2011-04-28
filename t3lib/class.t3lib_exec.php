@@ -62,7 +62,7 @@
  *
  * addPaths() could be used to extend the search paths
  * getCommand() get a command string
- * checkCommand() returns true if a command is available
+ * checkCommand() returns TRUE if a command is available
  *
  * Search paths that are included:
  * $TYPO3_CONF_VARS['GFX']['im_path_lzw'] or $TYPO3_CONF_VARS['GFX']['im_path']
@@ -86,7 +86,7 @@ class t3lib_exec {
 	 * Contains application list. This is an array with the following structure:
 	 * - app => file name to the application (like 'tar' or 'bzip2')
 	 * - path => full path to the application without application name (like '/usr/bin/' for '/usr/bin/tar')
-	 * - valid => true or false
+	 * - valid => TRUE or false
 	 * Array key is identical to 'app'.
 	 *
 	 * @var	array
@@ -119,7 +119,7 @@ class t3lib_exec {
 		if (self::$applications[$cmd]['valid']) {
 			return TRUE;
 		}
-			// Is set but was (above) not true
+			// Is set but was (above) not TRUE
 		if (isset(self::$applications[$cmd]['valid'])) {
 			return FALSE;
 		}

@@ -89,15 +89,15 @@
 class localRecordList extends recordList {
 
 		// External:
-	var $alternateBgColors=FALSE;			// If true, table rows in the list will alternate in background colors (and have background colors at all!)
+	var $alternateBgColors=FALSE;			// If TRUE, table rows in the list will alternate in background colors (and have background colors at all!)
 	var $allowedNewTables=array();			// Used to indicate which tables (values in the array) that can have a create-new-record link. If the array is empty, all tables are allowed.
 	var $deniedNewTables=array();			// Used to indicate which tables (values in the array) that cannot have a create-new-record link. If the array is empty, all tables are allowed.
-	var $newWizards=FALSE;					// If true, the control panel will contain links to the create-new wizards for pages and tt_content elements (normally, the link goes to just creating a new element without the wizards!).
+	var $newWizards=FALSE;					// If TRUE, the control panel will contain links to the create-new wizards for pages and tt_content elements (normally, the link goes to just creating a new element without the wizards!).
 
-	var $dontShowClipControlPanels=FALSE;	// If true, will disable the rendering of clipboard + control panels.
-	var $showClipboard=FALSE;				// If true, will show the clipboard in the field list.
- 	var $noControlPanels = FALSE;			// If true, will DISABLE all control panels in lists. (Takes precedence)
-	var $clickMenuEnabled = TRUE;			// If true, clickmenus will be rendered
+	var $dontShowClipControlPanels=FALSE;	// If TRUE, will disable the rendering of clipboard + control panels.
+	var $showClipboard=FALSE;				// If TRUE, will show the clipboard in the field list.
+ 	var $noControlPanels = FALSE;			// If TRUE, will DISABLE all control panels in lists. (Takes precedence)
+	var $clickMenuEnabled = TRUE;			// If TRUE, clickmenus will be rendered
 
 	var $totalRowCount;						// count of record rows in view
 
@@ -181,7 +181,7 @@ class localRecordList extends recordList {
 		if (isset($this->id)) {
 				// View  Exclude doktypes 254,255 Configuration: mod.web_list.noViewWithDokTypes = 254,255
 			if (isset($GLOBALS['SOBE']->modTSconfig['properties']['noViewWithDokTypes'])) {
-				$noViewDokTypes = t3lib_div::trimExplode(',', $GLOBALS['SOBE']->modTSconfig['properties']['noViewWithDokTypes'], true);
+				$noViewDokTypes = t3lib_div::trimExplode(',', $GLOBALS['SOBE']->modTSconfig['properties']['noViewWithDokTypes'], TRUE);
 			} else {
 					//default exclusion: doktype 254 (folder), 255 (recycler)
 				$noViewDokTypes = array(t3lib_pageSelect::DOKTYPE_SYSFOLDER, t3lib_pageSelect::DOKTYPE_RECYCLER);
@@ -308,7 +308,7 @@ class localRecordList extends recordList {
 		$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
 			&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
-		$tableCollapsed = (!$this->tablesCollapsed[$table]) ? false : true;
+		$tableCollapsed = (!$this->tablesCollapsed[$table]) ? false : TRUE;
 
 		// prepare space icon
 		$this->spaceIcon = t3lib_iconWorks::getSpriteIcon('empty-empty', array('style' => 'background-position: 0 10px;'));
@@ -564,7 +564,7 @@ class localRecordList extends recordList {
 										$lRow = is_array($tmpRow)?$tmpRow:$lRow;
 									}
 										// In offline workspace, look for alternative record:
-									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace, true);
+									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace, TRUE);
 									if (is_array($lRow) && $GLOBALS['BE_USER']->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 										$currentIdList[] = $lRow['uid'];
 										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
@@ -1625,7 +1625,7 @@ class localRecordList extends recordList {
 	 * Create the selector box for selecting fields to display from a table:
 	 *
 	 * @param	string		Table name
-	 * @param	boolean		If true, form-fields will be wrapped around the table.
+	 * @param	boolean		If TRUE, form-fields will be wrapped around the table.
 	 * @return	string		HTML table with the selector box (name: displayFields['.$table.'][])
 	 */
 	function fieldSelectBox($table,$formFields=1)	{
@@ -1641,7 +1641,7 @@ class localRecordList extends recordList {
 		$setFields=is_array($this->setFields[$table]) ? $this->setFields[$table] : array();
 
 			// Request fields from table:
-		$fields = $this->makeFieldList($table, false, true);
+		$fields = $this->makeFieldList($table, false, TRUE);
 
 			// Add pseudo "control" fields
 		$fields[]='_PATH_';
@@ -1718,7 +1718,7 @@ class localRecordList extends recordList {
 	}
 
 	/**
-	 * Returns true if a numeric clipboard pad is selected/active
+	 * Returns TRUE if a numeric clipboard pad is selected/active
 	 *
 	 * @return	boolean
 	 */
@@ -1769,19 +1769,19 @@ class localRecordList extends recordList {
 	}
 
 	/**
-	 * Returns true if a link for creating new records should be displayed for $table
+	 * Returns TRUE if a link for creating new records should be displayed for $table
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		Returns true if a link for creating new records should be displayed for $table
+	 * @return	boolean		Returns TRUE if a link for creating new records should be displayed for $table
 	 * @see		SC_db_new::showNewRecLink
 	 */
 	function showNewRecLink($table)	{
 			// No deny/allow tables are set:
 		if (!count($this->allowedNewTables) && !count($this->deniedNewTables)) {
-			return true;
+			return TRUE;
 			// If table is not denied (which takes precedence over allowed tables):
 		} elseif (!in_array($table, $this->deniedNewTables) && (!count($this->allowedNewTables) || in_array($table, $this->allowedNewTables))) {
-			return true;
+			return TRUE;
 			// If table is denied or allowed tables are set, but table is not part of:
 		} else {
 			return false;

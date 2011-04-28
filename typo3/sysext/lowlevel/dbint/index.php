@@ -153,16 +153,16 @@ class SC_mod_tools_dbint_index {
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => $GLOBALS['LANG']->getLL('menu', true),
-				'records' => $GLOBALS['LANG']->getLL('recordStatistics', true),
-				'relations' => $GLOBALS['LANG']->getLL('databaseRelations', true),
-				'search' => $GLOBALS['LANG']->getLL('fullSearch', true),
-				'filesearch' => $GLOBALS['LANG']->getLL('findFilename', true),
-				'refindex' => $GLOBALS['LANG']->getLL('manageRefIndex', true),
+				0 => $GLOBALS['LANG']->getLL('menu', TRUE),
+				'records' => $GLOBALS['LANG']->getLL('recordStatistics', TRUE),
+				'relations' => $GLOBALS['LANG']->getLL('databaseRelations', TRUE),
+				'search' => $GLOBALS['LANG']->getLL('fullSearch', TRUE),
+				'filesearch' => $GLOBALS['LANG']->getLL('findFilename', TRUE),
+				'refindex' => $GLOBALS['LANG']->getLL('manageRefIndex', TRUE),
 			),
 			'search' => array(
-				'raw' => $GLOBALS['LANG']->getLL('rawSearch', true),
-				'query' => $GLOBALS['LANG']->getLL('advancedQuery', true)
+				'raw' => $GLOBALS['LANG']->getLL('rawSearch', TRUE),
+				'query' => $GLOBALS['LANG']->getLL('advancedQuery', TRUE)
 			),
 
 			'search_query_smallparts' => '',
@@ -185,11 +185,11 @@ class SC_mod_tools_dbint_index {
 			'storeQueryConfigs' => '',	// Used to store the available Query configs in memory
 
 			'search_query_makeQuery' => array(
-				'all' => $GLOBALS['LANG']->getLL('selectRecords', true),
-				'count' => $GLOBALS['LANG']->getLL('countResults', true),
-				'explain' => $GLOBALS['LANG']->getLL('explainQuery', true),
-				'csv' => $GLOBALS['LANG']->getLL('csvExport', true),
-				'xml' => $GLOBALS['LANG']->getLL('xmlExport', true)
+				'all' => $GLOBALS['LANG']->getLL('selectRecords', TRUE),
+				'count' => $GLOBALS['LANG']->getLL('countResults', TRUE),
+				'explain' => $GLOBALS['LANG']->getLL('explainQuery', TRUE),
+				'csv' => $GLOBALS['LANG']->getLL('csvExport', TRUE),
+				'xml' => $GLOBALS['LANG']->getLL('xmlExport', TRUE)
 			),
 
 			'sword' => ''
@@ -345,7 +345,7 @@ class SC_mod_tools_dbint_index {
 
 		$content .= '</dl>';
 
-		$this->content .= $this->doc->section($moduleTitle, $content, false, true);
+		$this->content .= $this->doc->section($moduleTitle, $content, false, TRUE);
 	}
 
 
@@ -390,7 +390,7 @@ class SC_mod_tools_dbint_index {
 		$content.= '<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
 		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails') . '<br /><a href="' . $GLOBALS['BACK_PATH'] . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">' . PATH_typo3 . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';
 
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('updateRefIndex'), $content, false, true);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('updateRefIndex'), $content, false, TRUE);
 	}
 
 	/**
@@ -429,8 +429,8 @@ class SC_mod_tools_dbint_index {
 			break;
 			case 'raw':
 			default:
-				$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('searchOptions'), $fullsearch->form(), false, true);
-				$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('result'), $fullsearch->search(), false, true);
+				$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('searchOptions'), $fullsearch->form(), false, TRUE);
+				$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('result'), $fullsearch->search(), false, TRUE);
 			break;
 		}
 	}
@@ -469,7 +469,7 @@ class SC_mod_tools_dbint_index {
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('deleted_pages');
 		$codeArr[$i][] = count($admin->recStats['deleted']['pages']);
 
-		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), false, true);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), false, TRUE);
 
 			// Doktype
 		$codeArr=array();
@@ -483,7 +483,7 @@ class SC_mod_tools_dbint_index {
 					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
 				}
 			}
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), false, true);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), false, TRUE);
 		}
 
 			// Tables and lost records
@@ -540,7 +540,7 @@ class SC_mod_tools_dbint_index {
 				}
 				$codeArr[$t][]=$lr;
 			}
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tables'), $this->doc->table($codeArr), false, true);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tables'), $this->doc->table($codeArr), false, TRUE);
 		}
 	}
 
@@ -571,7 +571,7 @@ class SC_mod_tools_dbint_index {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong></nobr><br>';
 			}
 		}
-		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, true, true);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, TRUE, TRUE);
 
 		$code='';
 		if (is_array($fileTest['moreReferences']))	{
@@ -579,7 +579,7 @@ class SC_mod_tools_dbint_index {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
 		}
-		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'),$code, true, true);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'),$code, TRUE, TRUE);
 
 		$code='';
 		if (is_array($fileTest['noFile']))	{
@@ -588,9 +588,9 @@ class SC_mod_tools_dbint_index {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
 			}
 		}
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('files_no_file'), $code, true, true);
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('select_db'), $admin->testDBRefs($admin->checkSelectDBRefs), true, true);
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('group_db'), $admin->testDBRefs($admin->checkGroupDBRefs), true, true);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('files_no_file'), $code, TRUE, TRUE);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('select_db'), $admin->testDBRefs($admin->checkSelectDBRefs), TRUE, TRUE);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('group_db'), $admin->testDBRefs($admin->checkGroupDBRefs), TRUE, TRUE);
 	}
 
 	/**
@@ -601,7 +601,7 @@ class SC_mod_tools_dbint_index {
 	function func_filesearch()	{
 		$pattern = t3lib_div::_GP('pattern');
 		$pcontent = $GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="' . htmlspecialchars($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']) . '"> <input type="submit" name="' . $GLOBALS['LANG']->getLL('SearchButton') . '">';
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, false, true);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, false, TRUE);
 
 		if (strcmp($pattern,''))	{
 			$dirs = t3lib_div::get_dirs(PATH_site);
@@ -625,7 +625,7 @@ class SC_mod_tools_dbint_index {
 				}
 			}
 
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('searchingForFilenames'), implode('<br>', $lines), false, true);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('searchingForFilenames'), implode('<br>', $lines), false, TRUE);
 		}
 	}
 

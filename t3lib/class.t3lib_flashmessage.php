@@ -63,7 +63,7 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message's storeInSession flag.
 	 *
-	 * @return	bool	true if message should be stored in the session, otherwise false.
+	 * @return	bool	TRUE if message should be stored in the session, otherwise false.
 	 */
 	public function isSessionMessage() {
 		return $this->storeInSession;

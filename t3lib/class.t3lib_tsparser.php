@@ -79,7 +79,7 @@ class t3lib_TSparser {
 	var $multiLineObject = ''; // Internally set, when multiline value is accumulated
 	var $multiLineValue = array(); // Internally set, when multiline value is accumulated
 	var $inBrace = 0; // Internally set, when in brace. Counter.
-	var $lastConditionTrue = 1; // For each condition this flag is set, if the condition is true, else it's cleared. Then it's used by the [ELSE] condition to determine if the next part should be parsed.
+	var $lastConditionTrue = 1; // For each condition this flag is set, if the condition is TRUE, else it's cleared. Then it's used by the [ELSE] condition to determine if the next part should be parsed.
 	var $sections = array(); // Tracking all conditions found
 	var $sectionsMatch = array(); // Tracking all matching conditions found
 	var $syntaxHighLight = 0; // If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
@@ -201,7 +201,7 @@ class t3lib_TSparser {
 				$this->commentSet = 1;
 			}
 
-			if (!$this->commentSet && ($line || $this->multiLineEnabled)) { // If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be true.
+			if (!$this->commentSet && ($line || $this->multiLineEnabled)) { // If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be TRUE.
 				if ($this->multiLineEnabled) { // If multiline is enabled. Escape by ')'
 					if (substr($line, 0, 1) == ')') { // Multiline ends...
 						if ($this->syntaxHighLight) {

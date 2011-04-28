@@ -143,9 +143,9 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (true/false)
+	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/false)
 	 *
-	 * @return	boolean		True, if IP address validates OK (or no check is done at all)
+	 * @return	boolean		TRUE, if IP address validates OK (or no check is done at all)
 	 * @access private
 	 */
 	function checkLockToIP() {
@@ -163,7 +163,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 	/**
 	 * Check if user is logged in and if so, call ->fetchGroupData() to load group information and access lists of all kind, further check IP, set the ->uc array and send login-notification email if required.
-	 * If no user is logged in the default behaviour is to exit with an error message, but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set true.
+	 * If no user is logged in the default behaviour is to exit with an error message, but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set TRUE.
 	 * This function is called right after ->start() in fx. init.php
 	 *
 	 * @return	void
@@ -191,7 +191,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
-	 * @return	boolean		Returns true if a CLI user was loaded, otherwise false!
+	 * @return	boolean		Returns TRUE if a CLI user was loaded, otherwise false!
 	 */
 	function checkCLIuser() {
 			// First, check if cliMode is enabled:

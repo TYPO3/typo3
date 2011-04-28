@@ -88,7 +88,7 @@ abstract class t3lib_contextmenu_AbstractDataProvider {
 	}
 
 	/**
-	 * Evaluates a given display condition and returns true if the condition matches
+	 * Evaluates a given display condition and returns TRUE if the condition matches
 	 *
 	 * Examples:
 	 * getContextInfo|inCutMode:1 || isInCopyMode:1

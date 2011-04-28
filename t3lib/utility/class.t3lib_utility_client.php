@@ -43,7 +43,7 @@ final class t3lib_utility_Client {
 		$getBrowserInfoHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo'];
 		if (is_array($getBrowserInfoHooks)) {
 			foreach ($getBrowserInfoHooks as $hookFunction) {
-				$returnResult = true;
+				$returnResult = TRUE;
 				$hookParameters = array(
 					'userAgent' => &$userAgent,
 					'returnResult' => &$returnResult,

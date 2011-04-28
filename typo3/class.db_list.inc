@@ -105,7 +105,7 @@ class recordList extends t3lib_recordList {
 		// Internal, static:
 	var $id;					// Page id
 	var $table='';					// Tablename if single-table mode
-	var $listOnlyInSingleTableMode=FALSE;		// If true, records are listed only if a specific table is selected.
+	var $listOnlyInSingleTableMode=FALSE;		// If TRUE, records are listed only if a specific table is selected.
 	var $firstElementNumber=0;			// Pointer for browsing list
 	var $searchString='';				// Search string
 	var $searchLevels='';				// Levels to search down.
@@ -313,7 +313,7 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Creates the search box
 	 *
-	 * @param	boolean		If true, the search box is wrapped in its own form-tags
+	 * @param	boolean		If TRUE, the search box is wrapped in its own form-tags
 	 * @return	string		HTML for the search box
 	 */
 	function getSearchBox($formFields=1)	{

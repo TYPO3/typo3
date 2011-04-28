@@ -96,7 +96,7 @@ class t3lib_pageSelect {
 	var $sys_language_uid = 0;
 
 		// Versioning preview related:
-	var $versioningPreview = FALSE; // If true, versioning preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
+	var $versioningPreview = FALSE; // If TRUE, versioning preview of other record versions is allowed. THIS MUST ONLY BE SET IF the page is not cached and truely previewed by a backend user!!!
 	var $versioningWorkspaceId = 0; // Workspace ID for preview
 	var $workspaceCache = array();
 
@@ -139,7 +139,7 @@ class t3lib_pageSelect {
 	 * init() MUST be run directly after creating a new template-object
 	 * This sets the internal variable $this->where_hid_del to the correct where clause for page records taking deleted/hidden/starttime/endtime/t3ver_state into account
 	 *
-	 * @param	boolean		If $show_hidden is true, the hidden-field is ignored!! Normally this should be false. Is used for previewing.
+	 * @param	boolean		If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be false. Is used for previewing.
 	 * @return	void
 	 * @see tslib_fe::fetch_the_id(), tx_tstemplateanalyzer::initialize_editor()
 	 */
@@ -1274,7 +1274,7 @@ class t3lib_pageSelect {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Row (passed by reference) - only online records...
-	 * @return	boolean		True if overlay is made.
+	 * @return	boolean		TRUE if overlay is made.
 	 * @see t3lib_BEfunc::movePlhOl()
 	 */
 	function movePlhOL($table, &$row) {
@@ -1343,7 +1343,7 @@ class t3lib_pageSelect {
 	 * @param	string		Table name to select from
 	 * @param	integer		Record uid for which to find workspace version.
 	 * @param	string		Field list to select
-	 * @param	boolean		If true, enablefields are not checked for.
+	 * @param	boolean		If TRUE, enablefields are not checked for.
 	 * @return	mixed		If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
 	 * @see t3lib_befunc::getWorkspaceVersionOfRecord()
 	 */
@@ -1403,7 +1403,7 @@ class t3lib_pageSelect {
 	 * Checks if user has access to workspace.
 	 *
 	 * @param	int	$wsid	Workspace ID
-	 * @return	boolean	<code>true</code> if has access
+	 * @return	boolean	<code>TRUE</code> if has access
 	 */
 	function checkWorkspaceAccess($wsid) {
 		if (!$GLOBALS['BE_USER'] || !t3lib_extMgm::isLoaded('workspaces')) {

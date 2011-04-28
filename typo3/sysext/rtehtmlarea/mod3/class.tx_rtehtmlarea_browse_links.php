@@ -412,7 +412,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$selected = '';
 						if ($this->setClass == $class || (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class)) {
 							$selected = 'selected="selected"';
-							$classSelected[$anchorType] = true;
+							$classSelected[$anchorType] = TRUE;
 						}
 						$classLabel = (is_array($this->RTEProperties['classes.']) && is_array($this->RTEProperties['classes.'][$class.'.']) && $this->RTEProperties['classes.'][$class.'.']['name']) ? $this->getPageConfigLabel($this->RTEProperties['classes.'][$class.'.']['name'], 0) : $class;
 						$classStyle = (is_array($this->RTEProperties['classes.']) && is_array($this->RTEProperties['classes.'][$class.'.']) && $this->RTEProperties['classes.'][$class.'.']['value']) ? $this->RTEProperties['classes.'][$class.'.']['value'] : '';

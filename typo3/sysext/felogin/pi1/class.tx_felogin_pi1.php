@@ -37,7 +37,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	var $scriptRelPath = 'pi1/class.tx_felogin_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'felogin';	// The extension key.
 	public $pi_checkCHash = false;
-	public $pi_USER_INT_obj = true;
+	public $pi_USER_INT_obj = TRUE;
 
 	protected $userIsLoggedIn;	// Is user logged in?
 	protected $template;	// holds the template for FE rendering
@@ -210,7 +210,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('reset_password', '', 1);
-		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), true);
+		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), TRUE);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', 1);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
 		$markerArray['###FORGOT_EMAIL###'] = $this->prefixId.'[forgot_email]';
@@ -298,7 +298,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								array('password' => $newPass, 'felogin_forgotHash' => '')
 							);
 						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']);
-						$done = true;
+						$done = TRUE;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
 					}
@@ -395,7 +395,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###STATUS_MESSAGE###']=$this->getDisplayText('status_message',$this->conf['logoutMessage_stdWrap.']);$this->cObj->stdWrap($this->flexFormValue('message','s_status'),$this->conf['logoutMessage_stdWrap.']);
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('logout', '', 1);
-		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),true);
+		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),TRUE);
 		$markerArray['###LOGOUT_LABEL###'] = $this->pi_getLL('logout', '', 1);
 		$markerArray['###NAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['name']);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
@@ -503,7 +503,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 
 			// Login form
-		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),true);
+		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),TRUE);
 		$markerArray['###EXTRA_HIDDEN###'] = $extraHidden; // used by kb_md5fepw extension...
 		$markerArray['###LEGEND###'] = $this->pi_getLL('login', '', 1);
 		$markerArray['###LOGIN_LABEL###'] = $this->pi_getLL('login', '', 1);
@@ -600,7 +600,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 									$found = false;
 									foreach(t3lib_div::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
 										if (preg_match('/(^|\.)/'.$d.'$', $redirect_domain)) {
-											$found = true;
+											$found = TRUE;
 											break;
 										}
 									}
@@ -754,7 +754,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @param	string		linktext
 	 * @param	array		link vars
-	 * @param	boolean		true: returns only url  false (default) returns the link)
+	 * @param	boolean		TRUE: returns only url  false (default) returns the link)
 	 *
 	 * @return	string		link or url
 	 */

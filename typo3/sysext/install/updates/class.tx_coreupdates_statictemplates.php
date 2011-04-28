@@ -39,7 +39,7 @@ class tx_coreupdates_statictemplates extends Tx_Install_Updates_Base {
 	 * Checks if there are any references to static_templates and an update is needed.
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (true) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (false)
 	 */
 	public function checkForUpdate(&$description) {
 		$description = '<strong>Check dependencies / references to old TypoScript templates in table static_template.</strong><br />

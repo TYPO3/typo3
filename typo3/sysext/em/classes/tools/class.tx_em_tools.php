@@ -100,7 +100,7 @@ final class tx_em_Tools {
 	 *
 	 * @param string $file		Full path to zip file
 	 * @param string $path		Path to change to before extracting
-	 * @return boolean	True on success, false in failure
+	 * @return boolean	TRUE on success, false in failure
 	 */
 	public static function unzip($file, $path) {
 		$unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
@@ -483,12 +483,12 @@ final class tx_em_Tools {
 	}
 
 	/**
-	 * Evaluates differences in version numbers with three parts, x.x.x. Returns true if $v1 is greater than $v2
+	 * Evaluates differences in version numbers with three parts, x.x.x. Returns TRUE if $v1 is greater than $v2
 	 *
 	 * @param	string		Version number 1
 	 * @param	string		Version number 2
 	 * @param	integer		Tolerance factor. For instance, set to 1000 to ignore difference in dev-version (third part)
-	 * @return	boolean		True if version 1 is greater than version 2
+	 * @return	boolean		TRUE if version 1 is greater than version 2
 	 */
 	public static function versionDifference($v1, $v2, $div = 1) {
 		return floor(self::makeVersion($v1, 'int') / $div) > floor(self::makeVersion($v2, 'int') / $div);
@@ -496,12 +496,12 @@ final class tx_em_Tools {
 
 
 	/**
-	 * Returns true if the $str is found as the first part of a string in $array
+	 * Returns TRUE if the $str is found as the first part of a string in $array
 	 *
 	 * @param	string		String to test with.
 	 * @param	array		Input array
 	 * @param	boolean		If set, the test is case insensitive
-	 * @return	boolean		True if found.
+	 * @return	boolean		TRUE if found.
 	 */
 	public static function first_in_array($str, $array, $caseInsensitive = FALSE) {
 		if ($caseInsensitive) {
@@ -814,7 +814,7 @@ final class tx_em_Tools {
 	 *
 	 * @param	string		Scope: G, L, S
 	 * @param	string		Extension lock-type (eg. "L" or "G")
-	 * @return	boolean		True if installation is allowed.
+	 * @return	boolean		TRUE if installation is allowed.
 	 */
 	public static function importAsType($type, $lockType = '') {
 		switch ($type) {
@@ -833,10 +833,10 @@ final class tx_em_Tools {
 	}
 
 	/**
-	 * Returns true if extensions in scope, $type, can be deleted (or installed for that sake)
+	 * Returns TRUE if extensions in scope, $type, can be deleted (or installed for that sake)
 	 *
 	 * @param	string		Scope: "G" or "L"
-	 * @return	boolean		True if possible.
+	 * @return	boolean		TRUE if possible.
 	 */
 	public static function deleteAsType($type) {
 		switch ($type) {

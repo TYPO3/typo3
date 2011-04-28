@@ -247,7 +247,7 @@ class tx_feedit_editpanel {
 		} else {
 			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
 					// Gets htmlspecialchared later
- 				$cf1 = 'if (confirm(' . t3lib_div::quoteJSvalue($confirm, true) . ')) {';
+ 				$cf1 = 'if (confirm(' . t3lib_div::quoteJSvalue($confirm, TRUE) . ')) {';
 				$cf2 = '}';
 			} else {
 				$cf1 = $cf2 = '';
@@ -320,7 +320,7 @@ class tx_feedit_editpanel {
 	}
 
 	/**
-	 * Returns true if the input table/row would be hidden in the frontend (according nto the current time and simulate user group)
+	 * Returns TRUE if the input table/row would be hidden in the frontend (according nto the current time and simulate user group)
 	 *
 	 * @param	string		The table name
 	 * @param	array		The data record
@@ -332,7 +332,7 @@ class tx_feedit_editpanel {
 			($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup) ||
 			($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME']) ||
 			($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])) {
-			return true;
+			return TRUE;
 		}
 	}
 
@@ -370,7 +370,7 @@ class tx_feedit_editpanel {
 		$tceforms->helpTextFontTag = '<font face="verdana,sans-serif" color="#333333" size="1">';
 
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
-		$trData->addRawData = true;
+		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
 			// Added without testing - should provide ability to submit default values in frontend editing, in-page.
 		$trData->defVals = t3lib_div::_GP('defVals');

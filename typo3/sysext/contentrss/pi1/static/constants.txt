@@ -1,0 +1,23 @@
+plugin.tx_contentrss_pi1 {
+	# cat=plugin.tx_contentrss_pi1/site/1; type=text; label= Title of the site
+  siteTitle = Your Sitetitle goes here
+	# cat=plugin.tx_contentrss_pi1/site/3; type=text; label= Description of the site
+  siteDescription = Your description goes here
+	# cat=plugin.tx_contentrss_pi1/site/5; type=text; label= Link to your site
+  siteLink = http://www.yoursite.com/
+	# cat=plugin.tx_contentrss_pi1/site/5; type=text; label= Image for the site
+  siteImage = typo3/gfx/typo3logo_mini.png
+	# cat=plugin.tx_contentrss_pi1/site/7; type=int+; label= Width of Image for the site
+  siteImageW = 60
+	# cat=plugin.tx_contentrss_pi1/site/9; type=int+; label= Height of Image for the site
+  siteImageH = 20
+	
+	# cat=plugin.tx_contentrss_pi1/rss/1; type=text; label= Copyright for RSS
+  rssCopyright = Your Copyright goes here
+	# cat=plugin.tx_contentrss_pi1/rss/3; type=text; label= Webmaster for RSS
+  rssWebmaster = Your Webmaster goes here
+	# cat=plugin.tx_contentrss_pi1/rss/5; type=text; label= Managing Editor for RSS
+  rssManagingEditor = Your Managing Editor goes here
+	# cat=plugin.tx_contentrss_pi1/rss/7; type=int+; label= Type number for RSS (page type)
+  rssTypeNum = 911
+}

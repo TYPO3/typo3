@@ -436,7 +436,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$arr = unserialize($row['cHashParams']);
 				if (!is_array($arr)) {
 					$arr = array(
-						'cHash' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.error', true)
+						'cHash' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.error', TRUE)
 					);
 				}
 				$theCHash = $arr['cHash'];

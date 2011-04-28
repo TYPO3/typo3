@@ -126,7 +126,7 @@ class tx_recycler_controller_ajax {
 						$str = false;
 						$model = t3lib_div::makeInstance('tx_recycler_model_deletedRecords');
 						if ($model->deleteData($this->data)) {
-							$str = true;
+							$str = TRUE;
 						}
 						break;
 
@@ -136,7 +136,7 @@ class tx_recycler_controller_ajax {
 						$recursive = t3lib_div::_GP('recursive');
 						$model = t3lib_div::makeInstance('tx_recycler_model_deletedRecords');
 						if ($model->undeleteData($this->data, $recursive)) {
-							$str = true;
+							$str = TRUE;
 						}
 						break;
 

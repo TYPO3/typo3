@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_contentrss_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="wrong_pagetype">Wrong page type! Try %s</label>
+			<label index="no_content_found">No Content found</label>
+			<label index="this_link">this link</label>
+			<label index="no_pages_selected">please set the startingpoint in plugin configuration!</label>
+		</languageKey>
+	</data>
+</T3locallang>
