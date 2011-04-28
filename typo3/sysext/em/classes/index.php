@@ -64,7 +64,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $requiredExt = ''; // List of required extension (from TYPO3_CONF_VARS)
 	var $maxUploadSize = 31457280; // Max size in bytes of extension upload to repository
 	var $kbMax = 500; // Max size in kilobytes for files to be edited.
-	var $doPrintContent = true; // If set (default), the function printContent() will echo the content which was collected in $this->content. You can set this to FALSE in order to echo content from elsewhere, fx. when using outbut buffering
+	var $doPrintContent = TRUE; // If set (default), the function printContent() will echo the content which was collected in $this->content. You can set this to FALSE in order to echo content from elsewhere, fx. when using outbut buffering
 	var $listingLimit = 500; // List that many extension maximally at one time (fixing memory problems)
 	var $listingLimitAuthor = 250; // List that many extension maximally at one time (fixing memory problems)
 	var $script = ''; //URL to this script
@@ -107,7 +107,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	var $content; // Accumulated content
 
 	var $inst_keys = array(); // Storage of installed extensions
-	var $gzcompress = 0; // Is set true, if system support compression.
+	var $gzcompress = 0; // Is set TRUE, if system support compression.
 
 	/**
 	 * Instance of EM API
@@ -1018,8 +1018,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		   $addUrl = '&nodoc=1';
 	   }
 		// Fetch remote data:
-		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', true, true);
-		list($fetchData,) = $this->extensionList->prepareImportExtList(true);
+		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
+		list($fetchData,) = $this->extensionList->prepareImportExtList(TRUE);
 
 		$versions = array_keys($fetchData[$extKey]['versions']);
 		natsort($versions);
@@ -1094,7 +1094,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * extension XML files.
 	 *
 	 * @param	string		Type of data to fetch: (mirrors)
-	 * @param	boolean		If true the method doesn't produce any output
+	 * @param	boolean		If TRUE the method doesn't produce any output
 	 * @return	void
 	 */
 	function fetchMetaData($metaType) {
@@ -1229,22 +1229,22 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			if (t3lib_extMgm::isLoaded($extKey)) {
 				if ($version===null) {
-					return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
+					return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 				} else {
 					switch ($mode) {
 						case EM_INSTALL_VERSION_STRICT:
 							if ($currentVersion == $version) {
-								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
+								return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 						case EM_INSTALL_VERSION_MIN:
 							if (version_compare($currentVersion, $version, '>=')) {
-								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
+								return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 						case EM_INSTALL_VERSION_MAX:
 							if (version_compare($currentVersion, $version, '<=')) {
-								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
+								return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 					}
@@ -1275,7 +1275,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					$this->install->writeNewExtensionList($newExtList);
 					tx_em_Tools::refreshGlobalExtList();
 					$this->install->forceDBupdates($extKey, $inst_list[$extKey]);
-					return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_loaded'));
+					return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_loaded'));
 				}
 			}
 		}
@@ -1286,7 +1286,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (!$this->xmlHandler->countExtensions()) {
 			$this->fetchMetaData('extensions');
 		}
-		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', true);
+		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE);
 
 		// check if extension can be fetched
 		if (isset($this->xmlHandler->extensionsXML[$extKey])) {
@@ -1324,7 +1324,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				tx_em_Tools::refreshGlobalExtList();
 				$this->install->forceDBupdates($extKey, $inst_list[$extKey]);
 				$this->translations->installTranslationsForExtension($extKey, $this->getMirrorURL());
-				return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_imported'));
+				return array(TRUE, $GLOBALS['LANG']->getLL('ext_import_ext_imported'));
 			} else {
 				return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_not_loaded'));
 			}
@@ -1341,8 +1341,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @param	string		Extension key
 	 * @param	string		Version
 	 * @param	string		Install scope: "L" or "G" or "S"
-	 * @param	boolean		If true, extension is uploaded as file
-	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
+	 * @param	boolean		If TRUE, extension is uploaded as file
+	 * @param	boolean		If TRUE, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
 	 * @param	array		Direct input array (like from kickstarter)
 	 * @return	string		Return false on success, returns error message if error.
 	 */
@@ -1432,7 +1432,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				return $flashMessage->render();
 			}
 		} else {
-			$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', true, true);
+			$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
 
 			// Fetch extension from TER:
 			if (!strlen($version)) {
@@ -1623,7 +1623,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							} else {
 								// Determine if new modules were installed:
 								$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
-								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], true)) {
+								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], TRUE)) {
 									$vA['CMD']['refreshMenu'] = 1;
 								}
 								t3lib_utility_Http::redirect(t3lib_div::linkThisScript($vA));
@@ -2390,9 +2390,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 
 	/**
-	 * Returns true if global OR local installation of extensions is allowed/possible.
+	 * Returns TRUE if global OR local installation of extensions is allowed/possible.
 	 *
-	 * @return	boolean		Returns true if global OR local installation of extensions is allowed/possible.
+	 * @return	boolean		Returns TRUE if global OR local installation of extensions is allowed/possible.
 	 */
 	function importAtAll() {
 		return ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall'] || $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall']);
@@ -2400,11 +2400,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 
 	/**
-	 * Searches for ->lookUpStr in extension and returns true if found (or if no search string is set)
+	 * Searches for ->lookUpStr in extension and returns TRUE if found (or if no search string is set)
 	 *
 	 * @param	string		Extension key
 	 * @param	array		Extension content
-	 * @return	boolean		If true, display extension in list
+	 * @return	boolean		If TRUE, display extension in list
 	 */
 	function searchExtension($extKey, $row) {
 		if ($this->lookUpStr) {
@@ -2416,7 +2416,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							stristr($row['EM_CONF']['author_company'], $this->lookUpStr)
 			);
 		} else {
-			return true;
+			return TRUE;
 		}
 	}
 
@@ -2513,7 +2513,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 *
 	 * @param	string		Scope: G, L, S
 	 * @param	string		Extension lock-type (eg. "L" or "G")
-	 * @return	boolean		True if installation is allowed.
+	 * @return	boolean		TRUE if installation is allowed.
 	 */
 	public static function importAsType($type, $lockType = '') {
 		return tx_em_Tools::importAsType($type, $lockType);

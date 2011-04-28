@@ -243,10 +243,10 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	}
 
 	/**
-	 * Returns true if different from ''  OR if intval()!=0
+	 * Returns TRUE if different from ''  OR if intval()!=0
 	 *
 	 * @param	string		Value to evaluate
-	 * @return	boolean		true if $in is different from ''  OR if intval()!=0
+	 * @return	boolean		TRUE if $in is different from ''  OR if intval()!=0
 	 */
 	function isSetIntval($in)	{
 		return $this->mconf['blankStrEqFalse'] ? strcmp($in,'') : intval($in);
@@ -437,7 +437,7 @@ GLV_timeout_count++;
 	 *
 	 * @param	string		Direction to test.
 	 * @param	integer		The boundary limit in the direction set by $kind. If set then a value is returned, otherwise blank.
-	 * @return	string		JavaScript string for correction of the layer position (if $integer is true)
+	 * @return	string		JavaScript string for correction of the layer position (if $integer is TRUE)
 	 * @see extProc_finish(), extProc_init()
 	 */
 	function extCalcBorderWithin($kind,$integer)	{

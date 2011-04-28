@@ -46,10 +46,10 @@
  *
  *			  SECTION: SQL-related, selecting records, searching
  *  206:	 function deleteClause($table,$tableAlias='')
- *  230:	 function getRecord($table,$uid,$fields='*',$where='',$useDeleteClause=true)
- *  253:	 function getRecordWSOL($table,$uid,$fields='*',$where='',$useDeleteClause=true)
+ *  230:	 function getRecord($table,$uid,$fields='*',$where='',$useDeleteClause=TRUE)
+ *  253:	 function getRecordWSOL($table,$uid,$fields='*',$where='',$useDeleteClause=TRUE)
  *  286:	 function getRecordRaw($table,$where='',$fields='*')
- *  309:	 function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='',$useDeleteClause=true)
+ *  309:	 function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='',$useDeleteClause=TRUE)
  *  342:	 function searchQuery($searchWords,$fields,$table='')
  *  357:	 function listQuery($field,$value)
  *  369:	 function splitTable_Uid($str)
@@ -219,7 +219,7 @@ final class t3lib_BEfunc {
 	 * @param	integer		UID of record
 	 * @param	string		List of fields to select
 	 * @param	string		Additional WHERE clause, eg. " AND blablabla = 0"
-	 * @param	boolean		Use the deleteClause to check if a record is deleted (default true)
+	 * @param	boolean		Use the deleteClause to check if a record is deleted (default TRUE)
 	 * @return	array		Returns the row if found, otherwise nothing
 	 */
 	public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
@@ -244,8 +244,8 @@ final class t3lib_BEfunc {
 	 * @param	integer		UID of record
 	 * @param	string		List of fields to select
 	 * @param	string		Additional WHERE clause, eg. " AND blablabla = 0"
-	 * @param	boolean		Use the deleteClause to check if a record is deleted (default true)
-	 * @param	boolean		If true the function does not return a "pointer" row for moved records in a workspace
+	 * @param	boolean		Use the deleteClause to check if a record is deleted (default TRUE)
+	 * @param	boolean		If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return	array		Returns the row if found, otherwise nothing
 	 */
 	public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
@@ -303,7 +303,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @param	boolean		Use the deleteClause to check if a record is deleted (default true)
+	 * @param	boolean		Use the deleteClause to check if a record is deleted (default TRUE)
 	 * @return	mixed		Multidimensional array with selected records (if any is selected)
 	 */
 	public static function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '', $useDeleteClause = TRUE) {
@@ -452,7 +452,7 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	integer		Page id for which to create the root line.
 	 * @param	string		$clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param	boolean		If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @param	boolean		If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
 	public static function BEgetRootLine($uid, $clause = '', $workspaceOL = FALSE) {
@@ -512,7 +512,7 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	integer		$uid: Page id for which to create the root line.
 	 * @param	string		$clause: can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param	boolean		$workspaceOL: If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @param	boolean		$workspaceOL: If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return	array		Cached page record for the rootline
 	 * @see		BEgetRootLine
 	 */
@@ -835,7 +835,7 @@ final class t3lib_BEfunc {
 	/**
 	 * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record. Thus is works as an access check that returns a page record if access was granted, otherwise not.
 	 * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
-	 * In any case ->isInWebMount must return true for the user (regardless of $perms_clause)
+	 * In any case ->isInWebMount must return TRUE for the user (regardless of $perms_clause)
 	 * Usage: 21
 	 *
 	 * @param	integer		Page uid for which to check read-access
@@ -1005,7 +1005,7 @@ final class t3lib_BEfunc {
 	 * @param	array		Record data
 	 * @param	string		The table name
 	 * @param	string		Optional fieldname passed to hook object
-	 * @param	boolean		Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a true reflection of how things are in the live workspace.
+	 * @param	boolean		Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
 	 * @param	integer		SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return	mixed		If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
@@ -2104,7 +2104,7 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Get a localized [No title] string, wrapped in <em>|</em> if $prep is true.
+	 * Get a localized [No title] string, wrapped in <em>|</em> if $prep is TRUE.
 	 *
 	 * @param	boolean		$prep: Wrap result in <em>|</em>
 	 * @return	string		Localized [No title] string
@@ -2699,7 +2699,7 @@ final class t3lib_BEfunc {
 	 * @param	string		$anchorSection is optional anchor to the URL
 	 * @param	string		$alternativeUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
 	 * @param	string		$additionalGetVars Additional GET variables.
-	 * @param	boolean		If true, then the preview window will gain the focus.
+	 * @param	boolean		If TRUE, then the preview window will gain the focus.
 	 * @return	string
 	 */
 	public static function viewOnClick($pageUid, $backPath = '', $rootLine = '', $anchorSection = '', $alternativeUrl = '', $additionalGetVars = '', $switchFocus = TRUE) {
@@ -3102,7 +3102,7 @@ final class t3lib_BEfunc {
 	 * @param string $moduleName Name of the module
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
 	 * @param bool/string $backPathOverride backpath that should be used instead of the global $BACK_PATH
-	 * @param bool $returnAbsoluteUrl If set to true, the URL returned will be absolute, $backPathOverride will be ignored in this case
+	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return bool/string calculated URL or FALSE
 	 */
 	public static function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
@@ -3686,7 +3686,7 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Returns true if $modName is set and is found as a main- or submodule in $TBE_MODULES array
+	 * Returns TRUE if $modName is set and is found as a main- or submodule in $TBE_MODULES array
 	 * Usage: 1
 	 *
 	 * @param	string		Module name
@@ -3901,7 +3901,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
-	 * @param	boolean		If true the function does not return a "pointer" row for moved records in a workspace
+	 * @param	boolean		If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return	void		(Passed by ref).
 	 * @see fixVersioningPid()
 	 */
@@ -3989,7 +3989,7 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	string		Table name
 	 * @param	array		Row (passed by reference) - must be online record!
-	 * @return	boolean		True if overlay is made.
+	 * @return	boolean		TRUE if overlay is made.
 	 * @see t3lib_page::movePlhOl()
 	 */
 	public static function movePlhOL($table, &$row) {
@@ -4088,7 +4088,7 @@ final class t3lib_BEfunc {
 	 * Alternatively; if the page of the PID itself is a version and swapmode is zero (page+content) then tables from versioning_followPages are allowed as well.
 	 *
 	 * @param	integer		Page id inside of which you want to edit/create/delete something.
-	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned true. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
+	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned TRUE. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
 	 * @param	boolean		If set, the keyword "branchpoint" or "first" is not returned by rather the "t3ver_stage" value of the branch-point.
 	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or false if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
 	 */

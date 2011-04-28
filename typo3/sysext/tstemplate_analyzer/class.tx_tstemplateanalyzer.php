@@ -90,7 +90,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
 			$theOutput.=$this->pObj->doc->divider(5);
-			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', true) ,
+			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE) ,
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
 				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
 				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' - (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
@@ -110,19 +110,19 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 		$hierarArr = array();
 		$head = '<tr class="t3-row-header">';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('title', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootlevel', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearSetup', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearConstants', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('pid', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootline', true) . '</td>';
-		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', true) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('title', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootlevel', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearSetup', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearConstants', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('pid', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootline', TRUE) . '</td>';
+		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</td>';
 		$head.= '</tr>';
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, "", array(), 1)), "");
 		$hierar= '<table id="ts-analyzer" border="0" cellpadding="0" cellspacing="1">' . $head . $hierar . '</table>';
 
 		$theOutput.=$this->pObj->doc->spacer(5);
-		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', true), $hierar, 0, 1);
+		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 
 		$completeLink = '<p><a href="index.php?id=' . $GLOBALS['SOBE']->id . '&amp;template=all">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
@@ -132,18 +132,18 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 			// Output options
 		$theOutput.=$this->pObj->doc->spacer(25);
 		$theOutput.=$this->pObj->doc->divider(0);
-		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', true), '', 1, 1);
+		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', 1, 1);
 		$addParams = t3lib_div::_GET('template') ? '&template=' . t3lib_div::_GET('template') : '';
 		$theOutput .= '<div class="tst-analyzer-options">' .
 			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkLinenum]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
-			'<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', true) . '</label> ' .
+			'<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', TRUE) . '</label> ' .
 			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkSyntax]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
-			'<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', true) . '</label> ' .
+			'<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' .
 			(!$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"] ?
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkComments]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
-				'<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', true) . '</label> ' .
+				'<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', TRUE) . '</label> ' .
 				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkCrop]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
-				'<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', true) . '</label> '
+				'<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label> '
 				:
 				''
 			) . '</div>';
@@ -152,7 +152,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 				// Output Constants
 			if (t3lib_div::_GET('template')) {
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', true), "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', TRUE), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table border="0" cellpadding="1" cellspacing="0">
@@ -192,7 +192,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 			// Output setup
 			if (t3lib_div::_GET('template')) {
 				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', true), "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', TRUE), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table border="0" cellpadding="1" cellspacing="0">

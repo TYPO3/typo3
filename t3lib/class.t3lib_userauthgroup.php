@@ -160,7 +160,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 ************************************/
 
 	/**
-	 * Returns true if user is admin
+	 * Returns TRUE if user is admin
 	 * Basically this function evaluates if the ->user[admin] field has bit 0 set. If so, user is admin.
 	 *
 	 * @return	boolean
@@ -170,9 +170,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true if the current user is a member of group $groupId
+	 * Returns TRUE if the current user is a member of group $groupId
 	 * $groupId must be set. $this->groupList must contain groups
-	 * Will return true also if the user is a member of a group through subgroups.
+	 * Will return TRUE also if the user is a member of a group through subgroups.
 	 *
 	 * @param	integer		Group ID to look for in $this->groupList
 	 * @return	boolean
@@ -197,7 +197,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param	array		$row is the pagerow for which the permissions is checked
 	 * @param	integer		$perms is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
-	 * @return	boolean		True or False upon evaluation
+	 * @return	boolean		TRUE or False upon evaluation
 	 */
 	function doesUserHaveAccess($row, $perms) {
 		$userPerms = $this->calcPerms($row);
@@ -251,7 +251,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param	array		$MCONF array of a backend module!
 	 * @param	boolean		If set, an array will issue an error message and exit.
-	 * @return	boolean		Will return true if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return false if the module name is not even found in $TBE_MODULES
+	 * @return	boolean		Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return false if the module name is not even found in $TBE_MODULES
 	 */
 	function modAccess($conf, $exitOnError) {
 		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name'])) {
@@ -275,12 +275,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 		}
 
-			// Returns true if conf[access] is not set at all or if the user is admin
+			// Returns TRUE if conf[access] is not set at all or if the user is admin
 		if (!$conf['access'] || $this->isAdmin()) {
 			return TRUE;
 		}
 
-			// If $conf['access'] is set but not with 'admin' then we return true, if the module is found in the modList
+			// If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
 		if (!strstr($conf['access'], 'admin') && $conf['name']) {
 			$acs = $this->check('modules', $conf['name']);
 		}
@@ -380,7 +380,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true if the RTE (Rich Text Editor) can be enabled for the user
+	 * Returns TRUE if the RTE (Rich Text Editor) can be enabled for the user
 	 * Strictly this is not permissions being checked but rather a series of settings like a loaded extension, browser/client type and a configuration option in ->uc[edit_RTE]
 	 * The reasons for a FALSE return can be found in $this->RTE_errors
 	 *
@@ -413,14 +413,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true if the $value is found in the list in a $this->groupData[] index pointed to by $type (array key).
+	 * Returns TRUE if the $value is found in the list in a $this->groupData[] index pointed to by $type (array key).
 	 * Can thus be users to check for modules, exclude-fields, select/modify permissions for tables etc.
-	 * If user is admin true is also returned
+	 * If user is admin TRUE is also returned
 	 * Please see the document Inside TYPO3 for examples.
 	 *
 	 * @param	string		The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules"
 	 * @param	string		String to search for in the groupData-list
-	 * @return	boolean		True if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
+	 * @return	boolean		TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
 	 */
 	function check($type, $value) {
 		if (isset($this->groupData[$type])) {
@@ -438,7 +438,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		Field name (must be configured in TCA and of type "select" with authMode set!)
 	 * @param	string		Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param	string		Auth mode keyword (explicitAllow, explicitDeny, individual)
-	 * @return	boolean		True or false whether access is granted or not.
+	 * @return	boolean		TRUE or false whether access is granted or not.
 	 */
 	function checkAuthMode($table, $field, $value, $authMode) {
 
@@ -507,7 +507,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
 	 *
 	 * @param	integer		Language value to evaluate
-	 * @return	boolean		Returns true if the language value is allowed, otherwise false.
+	 * @return	boolean		Returns TRUE if the language value is allowed, otherwise false.
 	 */
 	function checkLanguageAccess($langValue) {
 		if (strcmp(trim($this->groupData['allowed_languages']), '')) { // The users language list must be non-blank - otherwise all languages are allowed.
@@ -581,13 +581,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	boolean		Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
 	 * @param	boolean		Set, if testing a deleted record array.
 	 * @param	boolean		Set, whenever access to all translations of the record is required
-	 * @return	boolean		True if OK, otherwise false
+	 * @return	boolean		TRUE if OK, otherwise false
 	 */
 	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (isset($GLOBALS['TCA'][$table])) {
 			t3lib_div::loadTCA($table);
 
-				// Always return true for Admin users.
+				// Always return TRUE for Admin users.
 			if ($this->isAdmin()) {
 				return TRUE;
 			}
@@ -671,7 +671,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 
-				// Finally, return true if all is well.
+				// Finally, return TRUE if all is well.
 			return TRUE;
 		}
 	}
@@ -714,7 +714,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true if the BE_USER is allowed to *create* shortcuts in the backend modules
+	 * Returns TRUE if the BE_USER is allowed to *create* shortcuts in the backend modules
 	 *
 	 * @return	boolean
 	 */
@@ -1102,7 +1102,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true if $item is in $in_list
+	 * Returns TRUE if $item is in $in_list
 	 *
 	 * @param	string		Comma list with items, no spaces between items!
 	 * @param	string		The string to find in the list of items
@@ -1155,7 +1155,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns true or false, depending if an alert popup (a javascript confirmation) should be shown
+	 * Returns TRUE or false, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
 	 *	1 - typeChange
@@ -1165,7 +1165,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *	128 - other (not used yet)
 	 *
 	 * @param	integer   Bitmask
-	 * @return	boolean		true if the confirmation should be shown
+	 * @return	boolean		TRUE if the confirmation should be shown
 	 */
 	function jsConfirmation($bitmask) {
 		$alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
@@ -1459,11 +1459,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Adds a filemount to the users array of filemounts, $this->groupData['filemounts'][hash_key] = Array ('name'=>$name, 'path'=>$path, 'type'=>$type);
 	 * Is a part of the authentication proces of the user.
-	 * A final requirement for a path being mounted is that a) it MUST return true on is_dir(), b) must contain either PATH_site+'fileadminDir' OR 'lockRootPath' - if lockRootPath is set - as first part of string!
+	 * A final requirement for a path being mounted is that a) it MUST return TRUE on is_dir(), b) must contain either PATH_site+'fileadminDir' OR 'lockRootPath' - if lockRootPath is set - as first part of string!
 	 * Paths in the mounted information will always be absolute and have a trailing slash.
 	 *
 	 * @param	string		$title will be the (root)name of the filemount in the folder tree
-	 * @param	string		$altTitle will be the (root)name of the filemount IF $title is not true (blank or zero)
+	 * @param	string		$altTitle will be the (root)name of the filemount IF $title is not TRUE (blank or zero)
 	 * @param	string		$path is the path which should be mounted. Will accept backslash in paths on windows servers (will substituted with forward slash). The path should be 1) relative to TYPO3_CONF_VARS[BE][fileadminDir] if $webspace is set, otherwise absolute.
 	 * @param	boolean		If $webspace is set, the $path is relative to 'fileadminDir' in TYPO3_CONF_VARS, otherwise $path is absolute. 'fileadminDir' must be set to allow mounting of relative paths.
 	 * @param	string		Type of filemount; Can be blank (regular) or "user" / "group" (for user and group filemounts presumably). Probably sets the icon first and foremost.
@@ -1481,7 +1481,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		if ($this->OS == 'WIN') { // with WINDOWS convert backslash to slash!!
 			$path = str_replace('\\', '/', $path);
 		}
-			// If the path is true and validates as a valid path string:
+			// If the path is TRUE and validates as a valid path string:
 		if ($path && t3lib_div::validPathStr($path)) {
 				// normalize path: remove leading '/' and './', and trailing '/' and '/.'
 			$path = trim($path);
@@ -1505,7 +1505,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$name = $title ? $title : $altTitle;
 						// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
 					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
-						// Return true - went well, success!
+						// Return TRUE - went well, success!
 					return 1;
 				}
 			}

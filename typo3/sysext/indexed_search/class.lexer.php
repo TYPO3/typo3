@@ -245,7 +245,7 @@ class tx_indexedsearch_lexer {
 
 		$len=0;
 
-			// If return is true, a word was found starting at this position, so returning position and length:
+			// If return is TRUE, a word was found starting at this position, so returning position and length:
 		if ($this->utf8_is_letter($str, $len, $pos))	{
 			return array($pos,$len);
 		}
@@ -272,7 +272,7 @@ class tx_indexedsearch_lexer {
 		$len = 0;
 		$bc = 0;
 		$cType = $cType_prev = false; // Letter type
-		$letter = true; // looking for a letter?
+		$letter = TRUE; // looking for a letter?
 
 		if ($str{$pos} == '')	return false;	// Return false on end-of-string at this stage
 
@@ -291,7 +291,7 @@ class tx_indexedsearch_lexer {
 								$len = $printJoinLgd;
 							}
 							#debug($cp);
-							return true;
+							return TRUE;
 						} else {	// If a printJoin char is found, record the length if it has not been recorded already:
 							if (!$printJoinLgd)	$printJoinLgd = $len;
 						}

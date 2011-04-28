@@ -120,7 +120,7 @@ class SC_view_help {
 	var $allowedHTML = '<strong><em><b><i>';
 
 		// For these vars, see init()
-	var $limitAccess;	// If set access to fields and tables is checked. Should be done for true database tables.
+	var $limitAccess;	// If set access to fields and tables is checked. Should be done for TRUE database tables.
 	var $table;			// The "table" key
 	var $field;			// The "field" key
 		/**

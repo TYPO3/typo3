@@ -41,7 +41,7 @@
  *  146:     function wrapTitle($title,$row,$bank=0)
  *  165:     function printTree($treeArr = '')
  *  271:     function PMicon($row,$a,$c,$nextCount,$exp)
- *  292:     function PMiconATagWrap($icon, $cmd, $isExpand = true)
+ *  292:     function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)
  *  309:     function getBrowsableTree()
  *  377:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')
  *
@@ -145,10 +145,10 @@ class filelistFolderTree extends t3lib_folderTree {
 				$expandedFolderUid = $PM[2];
 				$ajaxOutput = '';
 				$invertedDepthOfAjaxRequestedItem = 0; // We don't know yet. Will be set later.
-				$doExpand = true;
+				$doExpand = TRUE;
 			} else	{
 				$expandedFolderUid = $PM[2];
-				$doCollapse = true;
+				$doCollapse = TRUE;
 			}
 		}
 
@@ -197,7 +197,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 			// ajax request: collapse
 			if($doCollapse && $expandedFolderUid == $uid) {
-				$this->ajaxStatus = true;
+				$this->ajaxStatus = TRUE;
 				return $itemHTML;
 			}
 
@@ -209,7 +209,7 @@ class filelistFolderTree extends t3lib_folderTree {
 				if($v['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
 					$ajaxOutput .= $itemHTML;
 				} else {
-					$this->ajaxStatus = true;
+					$this->ajaxStatus = TRUE;
 					return $ajaxOutput;
 				}
 			}
@@ -218,7 +218,7 @@ class filelistFolderTree extends t3lib_folderTree {
 		}
 
 		if($ajaxOutput) {
-			$this->ajaxStatus = true;
+			$this->ajaxStatus = TRUE;
 			return $ajaxOutput;
 		}
 
@@ -261,7 +261,7 @@ class filelistFolderTree extends t3lib_folderTree {
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	function PMiconATagWrap($icon, $cmd, $isExpand = true)	{
+	function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)	{
 		if ($this->thisScript) {
 				// activate dynamic ajax-based tree
 			$js = htmlspecialchars('Tree.load(\''.$cmd.'\', '.intval($isExpand).', this);');
@@ -326,9 +326,9 @@ class filelistFolderTree extends t3lib_folderTree {
 			$row['path']  = $val['path'];
 			$row['title'] = $val['name'];
 
-				// hasSub is true when the root of the mount is expanded
+				// hasSub is TRUE when the root of the mount is expanded
 			if ($isOpen) {
-				$hasSub = true;
+				$hasSub = TRUE;
 			}
 				// Add the root of the mount to ->tree
 			$this->tree[] = array('HTML' => $firstHtml, 'row' => $row, 'bank' => $this->bank, 'hasSub' => $hasSub);
@@ -426,13 +426,13 @@ class filelistFolderTree extends t3lib_folderTree {
 				}
 				if ($val == '_temp_')	{
 					$icon = 'apps-filetree-folder-temp';
-					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true);
-					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true) . '</strong>';
+					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', TRUE);
+					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', TRUE) . '</strong>';
 				}
 				if ($val == '_recycler_')	{
 					$icon = 'apps-filetree-folder-recycler';
-					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true);
-					$row['_title'] = '<strong>' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true) . '</strong>';
+					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', TRUE);
+					$row['_title'] = '<strong>' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', TRUE) . '</strong>';
 				}
 				$HTML .= $this->wrapIcon(t3lib_iconWorks::getSpriteIcon($icon,array('title'=>$row['title']),$overlays),$row);
 			}
@@ -449,7 +449,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			);
 		}
 
-		if($a) { $this->tree[$treeKey]['isLast'] = true; }
+		if($a) { $this->tree[$treeKey]['isLast'] = TRUE; }
 		return $c;
 	}
 }

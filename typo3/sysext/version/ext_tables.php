@@ -31,8 +31,8 @@ $TCA['sys_workspace'] = array(
 			'default' => 'mimetypes-x-sys_workspace'
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-		'versioningWS_alwaysAllowLiveEdit' => true,
-		'dividers2tabs' => true
+		'versioningWS_alwaysAllowLiveEdit' => TRUE,
+		'dividers2tabs' => TRUE
 	)
 );
 

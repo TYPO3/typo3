@@ -358,7 +358,7 @@ class t3lib_admin {
 	 *
 	 * @param	string		Database tablename
 	 * @param	integer		The uid of the record which will have the PID value set to 0 (zero)
-	 * @return	boolean		True if done.
+	 * @return	boolean		TRUE if done.
 	 */
 	function fixLostRecord($table, $uid) {
 		if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin']) {

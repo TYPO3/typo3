@@ -1145,7 +1145,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 *
 	 * @param	string		The string in which to find $needle
 	 * @param	string		The string to find in $haystack
-	 * @return	boolean		Returns true if $needle matches or is found in $haystack
+	 * @return	boolean		Returns TRUE if $needle matches or is found in $haystack
 	 */
 	public static function isAllowedLinkVarValue($haystack,$needle) {
 		$OK = false;
@@ -1153,13 +1153,13 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($needle=='int' || $needle=='integer')	{	// Integer
 
 			if (t3lib_div::testInt($haystack))	{
-				$OK = true;
+				$OK = TRUE;
 			}
 
 		} elseif (preg_match('/^\/.+\/[imsxeADSUXu]*$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
 
 			if (@preg_match($needle, $haystack))	{
-				$OK = true;
+				$OK = TRUE;
 			}
 
 		} elseif (strstr($needle,'-'))	{	// Range
@@ -1167,7 +1167,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			if (t3lib_div::testInt($haystack))	{
 				$range = explode('-',$needle);
 				if ($range[0] <= $haystack && $range[1] >= $haystack)	{
-					$OK = true;
+					$OK = TRUE;
 				}
 			}
 
@@ -1175,11 +1175,11 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			$haystack = str_replace(' ','',$haystack);	// Trim the input
 			if (strstr('|'.$needle.'|', '|'.$haystack.'|'))	{
-				$OK = true;
+				$OK = TRUE;
 			}
 
 		} elseif (!strcmp($needle,$haystack))	{	// String comparison
-			$OK = true;
+			$OK = TRUE;
 		}
 
 		return $OK;

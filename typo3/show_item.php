@@ -136,7 +136,7 @@ class SC_show_item {
 
 		// Internal, static:
 	var $perms_clause;	// Page select clause
-	var $access;		// If true, access to element is granted
+	var $access;		// If TRUE, access to element is granted
 	var $type;			// Which type of element: "file" or "db"
 	var $doc;			// Document Template Object
 
@@ -162,7 +162,7 @@ class SC_show_item {
 
 			// Initialize:
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->access = 0;	// Set to true if there is access to the record / file.
+		$this->access = 0;	// Set to TRUE if there is access to the record / file.
 		$this->type = '';	// Sets the type, "db" or "file". If blank, nothing can be shown.
 
 			// Checking if the $table value is really a table and if the user has access to it.
@@ -231,7 +231,7 @@ class SC_show_item {
 					if(is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render'))	{
 						if ($typeRenderObj->isValid($this->type, $this)) {
 							$this->content .=  $typeRenderObj->render($this->type, $this);
-							$typeRendered = true;
+							$typeRendered = TRUE;
 							break;
 						}
 					}

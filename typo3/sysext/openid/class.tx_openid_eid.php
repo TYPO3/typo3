@@ -51,7 +51,7 @@ class tx_openid_eID {
 		// our service is called even if there is no login data in the request.
 		// Inside the service we will process OpenID response and authenticate
 		// the user.
-		$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = true;
+		$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = TRUE;
 
 		// Initialize Frontend user
 		tslib_eidtools::connectDB();

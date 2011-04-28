@@ -794,7 +794,7 @@ class tx_indexedsearch_crawler {
 	}
 
 	/**
-	 * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns true.
+	 * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns TRUE.
 	 *
 	 * @param	string		URL to test
 	 * @param	string		String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)

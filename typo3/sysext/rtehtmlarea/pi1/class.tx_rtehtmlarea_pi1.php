@@ -66,7 +66,7 @@ class tx_rtehtmlarea_pi1 {
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 
 			// Setting start time
-		$time_start = microtime(true);
+		$time_start = microtime(TRUE);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
 		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
 		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
@@ -239,7 +239,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 ';
 
 				// Calculating parsing and spell checkting time
-			$time = number_format(microtime(true) - $time_start, 2, ',', ' ');
+			$time = number_format(microtime(TRUE) - $time_start, 2, ',', ' ');
 
 				// Insert spellcheck info
 			$this->result .= 'var spellcheckInfo = { "Total words":"'.$this->wordCount.'","Misspelled words":"'.sizeof($this->misspelled).'","Total suggestions":"'.$this->suggestionCount.'","Total words suggested":"'.$this->suggestedWordCount.'","Spelling checked in":"'.$time.'" };

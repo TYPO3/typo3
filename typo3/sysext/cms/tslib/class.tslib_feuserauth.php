@@ -203,7 +203,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			if(strlen($isPermanent) != 1) {
 				$isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
 			} elseif(!$isPermanent) {
-				$this->forceSetCookie = true; // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie, we need to force seeting the session cookie here
+				$this->forceSetCookie = TRUE; // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie, we need to force seeting the session cookie here
 			}
 			$isPermanent = $isPermanent?1:0;
 		} elseif($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
@@ -550,7 +550,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * This calls the parent function but additionally tries to look up the session ID in the "fe_session_data" table.
 	 *
 	 * @param	integer		Claimed Session ID
-	 * @return	boolean		Returns true if a corresponding session was found in the database
+	 * @return	boolean		Returns TRUE if a corresponding session was found in the database
 	 */
 	function isExistingSessionRecord($id) {
 			// Perform check in parent function
@@ -566,7 +566,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			$res = $statement->execute(array(':hash' => $id));
 			if ($res !== FALSE) {
 				if ($sesDataRow = $statement->fetch()) {
-					$count = true;
+					$count = TRUE;
 					$this->sesData = unserialize($sesDataRow['content']);
 				}
 				$statement->free();
@@ -585,7 +585,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 						);
 			if ($dbres !== false) {
 				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
-					$count = true;
+					$count = TRUE;
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 			}

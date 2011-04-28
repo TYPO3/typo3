@@ -408,7 +408,7 @@ $spriteManager->loadCacheFile();
 // *******************************
 /*
 	NOTICE:
-	if constant TYPO3_PROCEED_IF_NO_USER is defined true (in the mainscript), this script will return even though a user did not log in!
+	if constant TYPO3_PROCEED_IF_NO_USER is defined TRUE (in the mainscript), this script will return even though a user did not log in!
 */
 $BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
 $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];

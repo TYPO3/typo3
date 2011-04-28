@@ -105,7 +105,7 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 			if (TYPO3_OS !== 'WIN') {
 				// If the server does not run Windows, we can be sure than
 				// OpenSSL will work
-				$result = true;
+				$result = TRUE;
 			}
 			else {
 				// On Windows PHP extension has to be configured properly. It
@@ -114,7 +114,7 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 				$testKey = @openssl_pkey_new();
 				if ($testKey) {
 					openssl_free_key($testKey);
-					$result = true;
+					$result = TRUE;
 				}
 			}
 		}

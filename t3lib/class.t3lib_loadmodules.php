@@ -78,7 +78,7 @@ class t3lib_loadModules {
 	 * @var t3lib_beUserAuth
 	 */
 	var $BE_USER;
-	var $observeWorkspaces = FALSE; // If set true, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
+	var $observeWorkspaces = FALSE; // If set TRUE, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 
 	/**
 	 * Contains the registered navigation components
@@ -353,17 +353,17 @@ class t3lib_loadModules {
 	}
 
 	/**
-	 * Returns true if the internal BE_USER has access to the module $name with $MCONF (based on security level set for that module)
+	 * Returns TRUE if the internal BE_USER has access to the module $name with $MCONF (based on security level set for that module)
 	 *
 	 * @param	string		Module name
 	 * @param	array		MCONF array (module configuration array) from the modules conf.php file (contains settings about what access level the module has)
-	 * @return	boolean		True if access is granted for $this->BE_USER
+	 * @return	boolean		TRUE if access is granted for $this->BE_USER
 	 */
 	function checkModAccess($name, $MCONF) {
 		if ($MCONF['access']) {
 			$access = strtolower($MCONF['access']);
 				// Checking if admin-access is required
-			if (strstr($access, 'admin')) { // If admin-permissions is required then return true if user is admin
+			if (strstr($access, 'admin')) { // If admin-permissions is required then return TRUE if user is admin
 				if ($this->BE_USER->isAdmin()) {
 					return TRUE;
 				}
@@ -391,7 +391,7 @@ class t3lib_loadModules {
 	 *
 	 * @param	string		Module name
 	 * @param	array		MCONF array (module configuration array) from the modules conf.php file (contains settings about workspace restrictions)
-	 * @return	boolean		True if access is granted for $this->BE_USER
+	 * @return	boolean		TRUE if access is granted for $this->BE_USER
 	 */
 	function checkModWorkspace($name, $MCONF) {
 		if ($this->observeWorkspaces) {
@@ -414,7 +414,7 @@ class t3lib_loadModules {
 
 	/**
 	 * Parses the moduleArray ($TBE_MODULES) into a internally useful structure.
-	 * Returns an array where the keys are names of the module and the values may be true (only module) or an array (of submodules)
+	 * Returns an array where the keys are names of the module and the values may be TRUE (only module) or an array (of submodules)
 	 *
 	 * @param	array		moduleArray ($TBE_MODULES)
 	 * @return	array		Output structure with available modules

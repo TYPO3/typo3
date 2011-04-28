@@ -59,11 +59,11 @@ class ModuleMenu {
 	public function __construct() {
 
 		$this->backPath    = '';
-		$this->linkModules = true;
+		$this->linkModules = TRUE;
 
 			// Loads the backend modules available for the logged in user.
 		$this->moduleLoader = t3lib_div::makeInstance('t3lib_loadModules');
-		$this->moduleLoader->observeWorkspaces = true;
+		$this->moduleLoader->observeWorkspaces = TRUE;
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->loadedModules = $this->moduleLoader->modules;
 

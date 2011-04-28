@@ -117,18 +117,18 @@ class tx_cms_layout extends recordList {
 	var $stat_codes = array(); // eg. 	"HITS_days:-1"
 
 	// External, static: Flags of various kinds:
-	var $pI_showUser = 0; // If true, users/groups are shown in the page info box.
-	var $pI_showStat = 1; // If true, hit statistics are shown in the page info box.
+	var $pI_showUser = 0; // If TRUE, users/groups are shown in the page info box.
+	var $pI_showStat = 1; // If TRUE, hit statistics are shown in the page info box.
 	var $nextThree = 3; // The number of successive records to edit when showing content elements.
-	var $pages_noEditColumns = 0; // If true, disables the edit-column icon for tt_content elements
-	var $option_showBigButtons = 1; // If true, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
-	var $option_newWizard = 1; // If true, new-wizards are linked to rather than the regular new-element list.
+	var $pages_noEditColumns = 0; // If TRUE, disables the edit-column icon for tt_content elements
+	var $option_showBigButtons = 1; // If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
+	var $option_newWizard = 1; // If TRUE, new-wizards are linked to rather than the regular new-element list.
 	var $ext_function = 0; // If set to "1", will link a big button to content element wizard.
-	var $doEdit = 1; // If true, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
+	var $doEdit = 1; // If TRUE, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
 	var $agePrefixes = ' min| hrs| days| yrs'; // Age prefixes for displaying times. May be set externally to localized values.
 	var $externalTables = array(); // Array of tables to be listed by the Web > Page module in addition to the default tables.
 	var $descrTable; // "Pseudo" Description -table name
-	var $defLangBinding = FALSE; // If set true, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
+	var $defLangBinding = FALSE; // If set TRUE, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
 
 	// External, static: Configuration of tt_content element display:
 	var $tt_contentConfig = Array(
@@ -1289,7 +1289,7 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Table name
 	 * @param	integer		Page id.
 	 * @param	string		Comma list of fields to display
-	 * @param	boolean		If true, icon is shown
+	 * @param	boolean		If TRUE, icon is shown
 	 * @param	string		Additional WHERE-clauses.
 	 * @return	string		HTML table
 	 */
@@ -1784,7 +1784,7 @@ class tx_cms_layout extends recordList {
 
 			// If header layout is set to 'hidden', display an accordant note:
 			if ($row['header_layout'] == 100) {
-				$hiddenHeaderNote = ' <em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.hidden', true) . ']</em>';
+				$hiddenHeaderNote = ' <em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.hidden', TRUE) . ']</em>';
 			}
 			$outHeader = ($row['date'] ? htmlspecialchars($this->itemLabels['date'] . ' ' . t3lib_BEfunc::date($row['date'])) . '<br />' : '') .
 					'<strong>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</strong><br />';
@@ -1792,7 +1792,7 @@ class tx_cms_layout extends recordList {
 
 		// Make content:
 		$infoArr = array();
-		$drawItem = true;
+		$drawItem = TRUE;
 
 		// Hook: Render an own preview of a record
 		$drawItemHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
@@ -2263,7 +2263,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Output string
 	 */
 	function renderText($input) {
-		$input = $this->strip_tags($input, true);
+		$input = $this->strip_tags($input, TRUE);
 		$input = t3lib_div::fixed_lgd_cs($input, 1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
@@ -2313,11 +2313,11 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
-	 * Returns true, if the record given as parameters is NOT visible based on hidden/starttime/endtime (if available)
+	 * Returns TRUE, if the record given as parameters is NOT visible based on hidden/starttime/endtime (if available)
 	 *
 	 * @param	string		Tablename of table to test
 	 * @param	array		Record row.
-	 * @return	boolean		Returns true, if disabled.
+	 * @return	boolean		Returns TRUE, if disabled.
 	 */
 	function isDisabled($table, $row) {
 		if (
@@ -2329,7 +2329,7 @@ class tx_cms_layout extends recordList {
 				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']]
 				&& $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME'])
 		) {
-			return true;
+			return TRUE;
 		}
 	}
 
@@ -2395,13 +2395,13 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
-	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns true.
+	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns TRUE.
 	 * Used to determine if the RTE button should be displayed.
 	 *
 	 * @param	string		Table name
 	 * @param	array		Record row (needed, if there are RTE dependencies based on other fields in the record)
 	 * @param	string		Field name
-	 * @return	boolean		Returns true if the rich text editor would be enabled/available for the field name specified.
+	 * @return	boolean		Returns TRUE if the rich text editor would be enabled/available for the field name specified.
 	 */
 	function isRTEforField($table, $row, $field) {
 		$specConf = $this->getSpecConfForField($table, $row, $field);
@@ -2713,7 +2713,7 @@ class tx_cms_layout extends recordList {
 	 * Example <link email@hostname.com></link> is accepted by TYPO3 but would not displayed in the Backend otherwise.
 	 *
 	 * @param	string		Input string
-	 * @param	boolean		If true, empty tags will be filled with the first attribute of the tag before.
+	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
 	 */
 	function strip_tags($content, $fillEmptyContent = false) {

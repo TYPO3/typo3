@@ -91,7 +91,7 @@ class SC_wizard_table {
 	var $doc;
 	var $content;				// Content accumulation for the module.
 	var $include_once=array();	// List of files to include.
-	var $inputStyle=0;			// True, then <input> fields are shown, not textareas.
+	var $inputStyle=0;			// TRUE, then <input> fields are shown, not textareas.
 
 
 		// Internal, static:
@@ -523,7 +523,7 @@ class SC_wizard_table {
 					break;
 					case 'row_add':
 						for($a=1;$a<=$this->numNewRows;$a++)	{
-							if (!isset($this->TABLECFG['c'][$kk+$a]))	{	// Checking if set: The point is that any new row inbetween existing rows will be true after one row is added while if rows are added in the bottom of the table there will be no existing rows to stop the addition of new rows which means it will add up to $this->numNewRows rows then.
+							if (!isset($this->TABLECFG['c'][$kk+$a]))	{	// Checking if set: The point is that any new row inbetween existing rows will be TRUE after one row is added while if rows are added in the bottom of the table there will be no existing rows to stop the addition of new rows which means it will add up to $this->numNewRows rows then.
 								$this->TABLECFG['c'][$kk+$a] = array();
 							} else {
 								break;

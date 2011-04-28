@@ -80,7 +80,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		/** @var $node t3lib_tree_pagetree_Node */
 		$node = t3lib_div::makeInstance('t3lib_tree_pagetree_Node');
 		$node->setId('root');
-		$node->setExpanded(true);
+		$node->setExpanded(TRUE);
 
 		return $node;
 	}
@@ -362,7 +362,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	}
 
 	/**
-	 * Returns true if the node has child's
+	 * Returns TRUE if the node has child's
 	 *
 	 * @param int $id
 	 * @return bool

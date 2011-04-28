@@ -222,7 +222,7 @@ class template {
 	var $pageHeaderBlock = '';
 	var $endOfPageJsBlock = '';
 
-	var $hasDocheader = true;
+	var $hasDocheader = TRUE;
 
 	/**
 	 * @var t3lib_PageRenderer
@@ -420,7 +420,7 @@ class template {
 	}
 
 	/**
-	 * Returns true if click-menu layers can be displayed for the current user/browser
+	 * Returns TRUE if click-menu layers can be displayed for the current user/browser
 	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
 	 *
 	 * @return	boolean
@@ -462,7 +462,7 @@ class template {
 	 * @param	string		Table name
 	 * @param	array		Record row
 	 * @param	string		Alt text
-	 * @param	boolean		Set $noViewPageIcon true if you don't want a magnifier-icon for viewing the page in the frontend
+	 * @param	boolean		Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
 	 * @param	array		$tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
 	 * @return	string		HTML content
 	 */
@@ -911,7 +911,7 @@ $str.=$this->docBodyTagBegin().
 
 
 			// Logging: Can't find better place to put it:
-		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => true));
+		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => TRUE));
 
 		return $str;
 	}
@@ -1034,7 +1034,7 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Begins an output section.
-	 * Returns the <div>-begin tag AND sets the ->sectionFlag true (if the ->sectionFlag is not already set!)
+	 * Returns the <div>-begin tag AND sets the ->sectionFlag TRUE (if the ->sectionFlag is not already set!)
 	 * You can call this function even if a section is already begun since the function will only return something if the sectionFlag is not already set!
 	 *
 	 * @return	string		HTML content
@@ -2025,7 +2025,7 @@ $str.=$this->docBodyTagBegin().
 				// Get the template for each float
 			$buttonTemplate = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
 				// Fill the button markers in this float
-			$buttonTemplate = t3lib_parsehtml::substituteMarkerArray($buttonTemplate, $buttons, '###|###', true);
+			$buttonTemplate = t3lib_parsehtml::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
 				// getting the wrap for each group
 			$buttonWrap = t3lib_parsehtml::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
 				// looping through the groups (max 6) and remove the empty groups

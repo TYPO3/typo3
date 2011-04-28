@@ -141,7 +141,7 @@ interface t3lib_cache_frontend_Frontend {
 	public function collectGarbage();
 
 	/**
-	 * Checks the validity of an entry identifier. Returns true if it's valid.
+	 * Checks the validity of an entry identifier. Returns TRUE if it's valid.
 	 *
 	 * @param string $identifier An identifier to be checked for validity
 	 * @return boolean
@@ -149,7 +149,7 @@ interface t3lib_cache_frontend_Frontend {
 	public function isValidEntryIdentifier($identifier);
 
 	/**
-	 * Checks the validity of a tag. Returns true if it's valid.
+	 * Checks the validity of a tag. Returns TRUE if it's valid.
 	 *
 	 * @param string $tag A tag to be checked for validity
 	 * @return boolean

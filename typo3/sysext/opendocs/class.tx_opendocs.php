@@ -66,11 +66,11 @@ class tx_opendocs implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  TRUE if user has access, false if not
 	 */
 	public function checkAccess() {
 		$conf = $GLOBALS['BE_USER']->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
-		return ($conf['value'] == 1 ? false : true);
+		return ($conf['value'] == 1 ? false : TRUE);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$this->addCssToBackend();
 		$numDocs      = count($this->openDocs);
 		$opendocsMenu = array();
-		$title        = $GLOBALS['LANG']->getLL('toolbaritem', true);
+		$title        = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
 
 			// toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
@@ -120,7 +120,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$content         = '';
 
 		if (count($openDocuments)) {
-			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', true) . '</th></tr>';
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', TRUE) . '</th></tr>';
 
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
@@ -131,19 +131,19 @@ class tx_opendocs implements backend_toolbarItem {
 
 			// if there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
-			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', true) . '</th></tr>';
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE) . '</th></tr>';
 
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
-				$entries[] = $this->renderMenuEntry($recentDocument, $md5sum, true, ($i == 1));
+				$entries[] = $this->renderMenuEntry($recentDocument, $md5sum, TRUE, ($i == 1));
 			}
 		}
 
 		if (count($entries)) {
 			$content = '<table class="list" cellspacing="0" cellpadding="0" border="0">' . implode('', $entries) . '</table>';
 		} else {
-			$content = '<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', true) . '</div>';
+			$content = '<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</div>';
 		}
 
 		return $content;
@@ -172,7 +172,7 @@ class tx_opendocs implements backend_toolbarItem {
 		}
 
 		if (!$isRecentDoc) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', TRUE);
 
 				// open document
 			$closeIcon = t3lib_iconWorks::getSpriteIcon('actions-document-close');

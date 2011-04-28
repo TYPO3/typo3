@@ -42,7 +42,7 @@ require($BACK_PATH . 'init.php');
 require($BACK_PATH . 'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
 
-$BE_USER->modAccess($MCONF, true);
+$BE_USER->modAccess($MCONF, TRUE);
 
 
 // ***************************

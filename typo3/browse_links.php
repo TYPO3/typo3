@@ -186,7 +186,7 @@ class SC_browse_links {
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
 						$this->content.= $browserRenderObj->render($this->mode, $this);
-						$browserRendered = true;
+						$browserRendered = TRUE;
 						break;
 					}
 				}

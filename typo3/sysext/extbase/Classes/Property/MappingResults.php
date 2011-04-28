@@ -68,7 +68,7 @@ class Tx_Extbase_Property_MappingResults {
 	/**
 	 * Returns true if any error was recognized
 	 *
-	 * @return boolean True if an error occured
+	 * @return boolean TRUE if an error occured
 	 */
 	public function hasErrors() {
 		return (count($this->errors) > 0);

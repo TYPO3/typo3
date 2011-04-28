@@ -107,7 +107,7 @@ $ICON_TYPES = array();
  * Only the "pages" table is defined fully in this file - the others are only defined for the "ctrl" part and the columns are defined in detail in the associated file, "tbl_be.php"
  *
  * NOTE: The (default) icon for a table is defined 1) as a giffile named 'gfx/i/[tablename].gif' or 2) as the value of [table][ctrl][iconfile]
- * NOTE: [table][ctrl][rootLevel] goes NOT for pages. Apart from that if rootLevel is true, records can ONLY be created on rootLevel. If it's false records can ONLY be created OUTSIDE rootLevel
+ * NOTE: [table][ctrl][rootLevel] goes NOT for pages. Apart from that if rootLevel is TRUE, records can ONLY be created on rootLevel. If it's false records can ONLY be created OUTSIDE rootLevel
  */
 $TCA = array();
 
@@ -219,7 +219,7 @@ $TCA['be_users'] = array(
 		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
-		'dividers2tabs' => true,
+		'dividers2tabs' => TRUE,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)
@@ -254,7 +254,7 @@ $TCA['be_groups'] = array(
 		),
 		'title' => 'LLL:EXT:lang/locallang_tca.php:be_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain, fileoper_perms',
-		'dividers2tabs' => true,
+		'dividers2tabs' => TRUE,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)

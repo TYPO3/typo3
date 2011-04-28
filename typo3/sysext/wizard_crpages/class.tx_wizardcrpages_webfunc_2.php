@@ -130,7 +130,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					$thePid = $this->pObj->id;
 				}
 
-				$firstRecord = true;
+				$firstRecord = TRUE;
 				$previousIdentifier = '';
 
 				foreach ($data['pages'] as $identifier => $dat) {

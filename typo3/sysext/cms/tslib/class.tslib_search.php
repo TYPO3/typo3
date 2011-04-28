@@ -225,7 +225,7 @@ class tslib_search {
 		$sword = $origSword;
 		$specs = '[' . preg_quote($specchars, '/') . ']';
 
-			// As long as $sword is true (that means $sword MUST be reduced little by little until its empty inside the loop!)
+			// As long as $sword is TRUE (that means $sword MUST be reduced little by little until its empty inside the loop!)
 		while ($sword)	{
 			if (preg_match('/^"/',$sword))	{		// There was a double-quote and we will then look for the ending quote.
 				$sword = preg_replace('/^"/','',$sword);		// Removes first double-quote
@@ -278,7 +278,7 @@ class tslib_search {
 	 * Sets $this->queryParts
 	 *
 	 * @param	string		$endClause is some extra conditions that the search must match.
-	 * @return	boolean		Returns true no matter what - sweet isn't it!
+	 * @return	boolean		Returns TRUE no matter what - sweet isn't it!
 	 * @access private
 	 * @see	tslib_cObj::SEARCHRESULT()
 	 */
@@ -430,7 +430,7 @@ class tslib_search {
 	/**
 	 * Counts the results and sets the result in $this->res_count
 	 *
-	 * @return	boolean		True, if $this->query was found
+	 * @return	boolean		TRUE, if $this->query was found
 	 */
 	function count_query() {
 		if (is_array($this->queryParts))	{
@@ -443,7 +443,7 @@ class tslib_search {
 	/**
 	 * Executes the search, sets result pointer in $this->result
 	 *
-	 * @return	boolean		True, if $this->query was set and query performed
+	 * @return	boolean		TRUE, if $this->query was set and query performed
 	 */
 	function execute_query() {
 		if (is_array($this->queryParts))	{

@@ -51,7 +51,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 // ******************
 // Constants defined
 // ******************
-$TYPO3_MISC['microtime_start'] = microtime(true);
+$TYPO3_MISC['microtime_start'] = microtime(TRUE);
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','FE');
 
@@ -274,7 +274,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 $BE_USER = NULL;
 /** @var $BE_USER t3lib_tsfeBeUserAuth */
 if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
-	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(true);
+	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(TRUE);
 	$TT->push('Back End user initialized','');
 
 			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
@@ -293,7 +293,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 			$TSFE->beUserLogin=0;
 		}
 	$TT->pull();
-	$TYPO3_MISC['microtime_BE_USER_end'] = microtime(true);
+	$TYPO3_MISC['microtime_BE_USER_end'] = microtime(TRUE);
 } elseif ($TSFE->ADMCMD_preview_BEUSER_uid)	{
 
 		// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
@@ -483,7 +483,7 @@ if ($TSFE->isOutputting())	{
 				// Special feature: Include libraries
 			foreach ($EXTiS_config as $EXTiS_cPart) {
 				if (isset($EXTiS_cPart['conf']['includeLibs']) && $EXTiS_cPart['conf']['includeLibs']) {
-					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'], true);
+					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'], TRUE);
 					$TSFE->includeLibraries($EXTiS_resourceList);
 				}
 			}
@@ -506,7 +506,7 @@ if ($TSFE->isOutputting())	{
 
 		$TT->pull();
 	} else {
-		$sendTSFEContent = true;
+		$sendTSFEContent = TRUE;
 	}
 	$TT->pull();
 }
@@ -521,7 +521,7 @@ $TSFE->storeSessionData();
 // ***********
 // Statistics
 // ***********
-$TYPO3_MISC['microtime_end'] = microtime(true);
+$TYPO3_MISC['microtime_end'] = microtime(TRUE);
 $TSFE->setParseTime();
 if ($TSFE->isOutputting() && (!empty($TSFE->TYPO3_CONF_VARS['FE']['debug']) || !empty($TSFE->config['config']['debug']))) {
 	$TSFE->content .=  LF . '<!-- Parsetime: ' . $TSFE->scriptParseTime . 'ms -->';

@@ -108,7 +108,7 @@ class t3lib_cli {
 	}
 
 	/**
-	 * Return true if option is found
+	 * Return TRUE if option is found
 	 *
 	 * @param	string		Option string, eg. "-s"
 	 * @return	boolean		TRUE if option found
@@ -215,7 +215,7 @@ class t3lib_cli {
 	}
 
 	/**
-	 * Asks for Yes/No from shell and returns true if "y" or "yes" is found as input.
+	 * Asks for Yes/No from shell and returns TRUE if "y" or "yes" is found as input.
 	 *
 	 * @param	string		String to ask before...
 	 * @return	boolean		TRUE if "y" or "yes" is the input (case insensitive)

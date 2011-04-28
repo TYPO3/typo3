@@ -54,7 +54,7 @@ class tx_scheduler_SleepTask extends tx_scheduler_Task {
 
 		sleep($time);
 
-		return true;
+		return TRUE;
 	}
 
 	/**

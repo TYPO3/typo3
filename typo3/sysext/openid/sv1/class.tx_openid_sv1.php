@@ -88,7 +88,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	protected $parentObject;
 
 	/**
-	 * If set to true, than libraries are already included.
+	 * If set to TRUE, than libraries are already included.
 	 */
 	protected static $openIDLibrariesIncluded = false;
 
@@ -100,7 +100,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 		// is available in PHP, however the TYPO3 setting is not considered here:
 		if (!defined('Auth_Yadis_CURL_OVERRIDE')) {
 			if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']) {
-				define('Auth_Yadis_CURL_OVERRIDE', true);
+				define('Auth_Yadis_CURL_OVERRIDE', TRUE);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	 * - GMP or BCMATH PHP extensions are installed and functional
 	 * - set_include_path() PHP function is available
 	 *
-	 * @return	boolean		true if service is available
+	 * @return	boolean		TRUE if service is available
 	 */
 	public function init() {
 		$available = false;
@@ -192,7 +192,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 			// we must change the password in the record to a long random string so
 			// that this user cannot be authenticated with other service.
 			if (is_array($userRecord)) {
-				$userRecord[$this->authenticationInformation['db_user']['userident_column']] = uniqid($this->prefixId . LF, true);
+				$userRecord[$this->authenticationInformation['db_user']['userident_column']] = uniqid($this->prefixId . LF, TRUE);
 			}
 		}
 		return $userRecord;
@@ -255,7 +255,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 		if (!self::$openIDLibrariesIncluded) {
 
 			// Prevent further calls
-			self::$openIDLibrariesIncluded = true;
+			self::$openIDLibrariesIncluded = TRUE;
 
 			// PHP OpenID libraries requires adjustments of path settings
 			$oldIncludePath = get_include_path();

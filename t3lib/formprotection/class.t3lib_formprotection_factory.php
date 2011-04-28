@@ -96,7 +96,7 @@ final class t3lib_formprotection_Factory {
 	 * @return string
 	 */
 	protected static function getClassNameByState() {
-		switch (true) {
+		switch (TRUE) {
 			case self::isInstallToolSession():
 				$className = 't3lib_formprotection_InstallToolFormProtection';
 				break;

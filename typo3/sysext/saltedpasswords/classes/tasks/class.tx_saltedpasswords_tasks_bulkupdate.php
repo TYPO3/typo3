@@ -189,7 +189,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 * If a password does not start with M or C determine if a password is already a usual salted hash.
 	 *
 	 * @param string Password
-	 * @return boolean True if password is a salted hash
+	 * @return boolean TRUE if password is a salted hash
 	 */
 	protected function isSaltedHash($password) {
 		$isSaltedHash = FALSE;

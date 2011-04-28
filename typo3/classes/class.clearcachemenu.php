@@ -57,7 +57,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 			// Clear cache for ALL tables!
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'all',
 				'title' => $title,
@@ -72,7 +72,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 			// Clear cache for either ALL pages
 		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'pages',
 				'title' => $title,
@@ -87,7 +87,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 			// Clearing of cache-files in typo3conf/ + menu
 		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
 				'title' => $title,
@@ -119,18 +119,18 @@ class ClearCacheMenu implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  TRUE if user has access, false if not
 	 */
 	public function checkAccess() {
 
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			return true;
+			return TRUE;
 		}
 
 		if (is_array($this->optionValues)) {
 			foreach($this->optionValues as $value) {
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.' . $value)) {
-					return true;
+					return TRUE;
 				}
 			}
 		}
@@ -144,7 +144,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_clearCache', true);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_clearCache', TRUE);
 		$this->addJavascriptToBackend();
 		$cacheMenu = array();
 

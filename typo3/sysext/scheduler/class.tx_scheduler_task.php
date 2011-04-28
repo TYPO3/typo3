@@ -51,7 +51,7 @@ abstract class tx_scheduler_Task {
 	protected $taskUid;
 
 	/**
-	 * Disable flag, true if task is disabled, false otherwise
+	 * Disable flag, TRUE if task is disabled, false otherwise
 	 *
 	 * @var	boolean
 	 */
@@ -84,9 +84,9 @@ abstract class tx_scheduler_Task {
 	 * It MUST be implemented by all classes inheriting from this one
 	 * Note that there is no error handling, errors and failures are expected
 	 * to be handled and logged by the client implementations.
-	 * Should return true on successful execution, false on error.
+	 * Should return TRUE on successful execution, false on error.
 	 *
-	 * @return boolean	Returns true on successful execution, false on error
+	 * @return boolean	Returns TRUE on successful execution, false on error
 	 */
 	abstract public function execute();
 
@@ -124,7 +124,7 @@ abstract class tx_scheduler_Task {
 	/**
 	 * This method returns the disable status of the task
 	 *
-	 * @return	boolean		True if task is disabled, false otherwise
+	 * @return	boolean		TRUE if task is disabled, false otherwise
 	 */
 	public function isDisabled() {
 		return $this->disabled;
@@ -133,12 +133,12 @@ abstract class tx_scheduler_Task {
 	/**
 	 * This method is used to set the disable status of the task
 	 *
-	 * @param	boolean	$flag: true if task should be disabled, false otherwise
+	 * @param	boolean	$flag: TRUE if task should be disabled, false otherwise
 	 * @return	void
 	 */
 	public function setDisabled($flag) {
 		if ($flag) {
-			$this->disabled = true;
+			$this->disabled = TRUE;
 		} else {
 			$this->disabled = false;
 		}
@@ -259,18 +259,18 @@ abstract class tx_scheduler_Task {
 	}
 
 	/**
-	 * Returns true if several runs of the task are allowed concurrently
+	 * Returns TRUE if several runs of the task are allowed concurrently
 	 *
-	 * @return	boolean		True if concurrent executions are allowed, false otherwise
+	 * @return	boolean		TRUE if concurrent executions are allowed, false otherwise
 	 */
 	public function areMultipleExecutionsAllowed() {
 		return $this->execution->getMultiple();
 	}
 
 	/**
-	 * Returns true if an instance of the task is already running
+	 * Returns TRUE if an instance of the task is already running
 	 *
-	 * @return	boolean		True if an instance is already running, false otherwise
+	 * @return	boolean		TRUE if an instance is already running, false otherwise
 	 */
 	public function isExecutionRunning() {
 		$isRunning = false;
@@ -285,7 +285,7 @@ abstract class tx_scheduler_Task {
 
 		if (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 			if (strlen($row['serialized_executions']) > 0) {
-				$isRunning = true;
+				$isRunning = TRUE;
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -400,7 +400,7 @@ abstract class tx_scheduler_Task {
  	/**
 	 * Clears all marked executions
 	 *
-	 * @return	boolean		True if the clearing succeeded, false otherwise
+	 * @return	boolean		TRUE if the clearing succeeded, false otherwise
 	 */
 	public function unmarkAllExecutions() {
 			// Set the serialized executions field to empty

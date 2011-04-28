@@ -104,7 +104,7 @@ class tx_em_Connection_Ter {
 	 * @param string $extKey		The extension key to install the translations for
 	 * @param string $lang		Language code of translation to fetch
 	 * @param string $mirrorURL		Mirror URL to fetch data from
-	 * @return mixed	true on success, error string on fauilure
+	 * @return mixed	TRUE on success, error string on fauilure
 	 */
 	function updateTranslation($extKey, $lang, $mirrorURL) {
 		$l10n = $this->fetchTranslation($extKey, $lang, $mirrorURL);

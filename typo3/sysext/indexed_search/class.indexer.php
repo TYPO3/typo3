@@ -159,7 +159,7 @@ class tx_indexedsearch_indexer {
 	var $tstamp_minAge = 0;		// If set, this tells a minimum limit before a document can be indexed again. This is regardless of mtime.
 	var $maxExternalFiles = 0;	// Max number of external files to index.
 
-	var $forceIndexing = FALSE;		// If true, indexing is forced despite of hashes etc.
+	var $forceIndexing = FALSE;		// If TRUE, indexing is forced despite of hashes etc.
 	var $crawlerActive = FALSE;		// Set when crawler is detected (internal)
 
 		// INTERNALS:
@@ -275,7 +275,7 @@ class tx_indexedsearch_indexer {
 								// Configuration of behavior:
 							$this->conf['index_externals'] = $pObj->config['config']['index_externals'];	// Whether to index external documents like PDF, DOC etc. (if possible)
 							$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];		// Length of description text (max 250, default 200)
-							$this->conf['index_metatags'] = isset($pObj->config['config']['index_metatags']) ? $pObj->config['config']['index_metatags'] : true;
+							$this->conf['index_metatags'] = isset($pObj->config['config']['index_metatags']) ? $pObj->config['config']['index_metatags'] : TRUE;
 
 								// Set to zero:
 							$this->conf['recordUid'] = 0;
@@ -345,7 +345,7 @@ class tx_indexedsearch_indexer {
 			// Configuration of behavior:
 		$this->conf['index_externals'] = 1;	// Whether to index external documents like PDF, DOC etc. (if possible)
 		$this->conf['index_descrLgd'] = 200;		// Length of description text (max 250, default 200)
-		$this->conf['index_metatags'] = true;	// Whether to index document keywords and description (if present)
+		$this->conf['index_metatags'] = TRUE;	// Whether to index document keywords and description (if present)
 
 			// Init and start indexing:
 		$this->init();
@@ -700,7 +700,7 @@ class tx_indexedsearch_indexer {
 	 * @param	string		Passed by reference: Content inside found tag
 	 * @param	string		Passed by reference: Content after found tag
 	 * @param	string		Passed by reference: Attributes of the found tag.
-	 * @return	boolean		Returns false if tag was not found, otherwise true.
+	 * @return	boolean		Returns false if tag was not found, otherwise TRUE.
 	 */
 	function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList) {
 		$endTag = '</'.$tagName.'>';
@@ -720,14 +720,14 @@ class tx_indexedsearch_indexer {
 			$stringAfter = $isTagInText;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Removes content that shouldn't be indexed according to TYPO3SEARCH-tags.
 	 *
 	 * @param	string		HTML Content, passed by reference
-	 * @return	boolean		Returns true if a TYPOSEARCH_ tag was found, otherwise false.
+	 * @return	boolean		Returns TRUE if a TYPOSEARCH_ tag was found, otherwise false.
 	 */
 	function typoSearchTags(&$body) {
 		$expBody = preg_split('/\<\!\-\-[\s]?TYPO3SEARCH_/',$body);
@@ -746,7 +746,7 @@ class tx_indexedsearch_indexer {
 					$prev = $val;
 				}
 			}
-			return true;
+			return TRUE;
 		} else {
 			return false;
 		}
@@ -881,7 +881,7 @@ class tx_indexedsearch_indexer {
 		$htmlParts = $htmlParser->splitTags('base', $html);
 		foreach ($htmlParts as $index => $tagData) {
 			if (($index % 2) !== 0) {
-				$tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
+				$tagAttributes = $htmlParser->get_tag_attributes($tagData, TRUE);
 				$firstTagName = $htmlParser->getFirstTagName($tagData);
 				if (strtolower($firstTagName) == 'base') {
 					$href = $tagAttributes[0]['href'];
@@ -1793,7 +1793,7 @@ class tx_indexedsearch_indexer {
 	/**
 	 * Check content hash in phash table
 	 *
-	 * @return	mixed		Returns true if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
+	 * @return	mixed		Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
 	 */
 	function checkContentHash()	{
 			// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
@@ -1806,11 +1806,11 @@ class tx_indexedsearch_indexer {
 
 	/**
 	 * Check content hash for external documents
-	 * Returns true if the document needs to be indexed (that is, there was no result)
+	 * Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 *
 	 * @param	integer		phash value to check (phash_grouping)
 	 * @param	integer		Content hash to check
-	 * @return	boolean		Returns true if the document needs to be indexed (that is, there was no result)
+	 * @return	boolean		Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 */
 	function checkExternalDocContentHash($hashGr,$content_md5h)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_phash A', 'A.phash_grouping='.intval($hashGr).' AND A.contentHash='.intval($content_md5h));

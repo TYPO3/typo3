@@ -3155,7 +3155,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Checks whether the DBAL is currently inside an operation running on the "native" DB handler (i.e. MySQL)
 	 *
-	 * @return boolean	True if running on "native" DB handler (i.e. MySQL)
+	 * @return boolean	TRUE if running on "native" DB handler (i.e. MySQL)
 	 */
 	public function runningNative() {
 		return ((string) $this->handlerCfg[$this->lastHandlerKey]['type']==='native');
@@ -3166,7 +3166,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * Checks whether the ADOdb handler is running with a driver that contains the argument
 	 *
 	 * @param string	$driver	Driver name, matched with strstr().
-	 * @return boolean	True if running with the given driver
+	 * @return boolean	TRUE if running with the given driver
 	 */
 	public function runningADOdbDriver($driver) {
 		return strstr($this->handlerCfg[$this->lastHandlerKey]['config']['driver'], $driver);

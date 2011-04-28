@@ -120,7 +120,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function simulateEnabledMatchAllConditionsSucceeds() {
-		$this->matchCondition->setSimulateMatchResult(true);
+		$this->matchCondition->setSimulateMatchResult(TRUE);
 		$this->assertTrue($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
 	}
 

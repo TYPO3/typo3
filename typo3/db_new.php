@@ -94,7 +94,7 @@ class localPageTree extends t3lib_pageTree {
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
 	 *
 	 * @param	integer		The ID (page id) of the element
-	 * @return	boolean		Returns true if the IDs matches
+	 * @return	boolean		Returns TRUE if the IDs matches
 	 */
 	function expandNext($id)	{
 		return $id==$GLOBALS['SOBE']->id ? 1 : 0;
@@ -549,7 +549,7 @@ class SC_db_new {
 			// user sort
 		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
-			$this->newRecordSortList = t3lib_div::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
+			$this->newRecordSortList = t3lib_div::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], TRUE);
 		}
 		uksort($this->tRows, array($this, 'sortNewRecordsByConfig'));
 
@@ -657,16 +657,16 @@ class SC_db_new {
 	}
 
 	/**
-	 * Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
+	 * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 *
 	 * @param	array		Record for parent page.
 	 * @param	string		Table name to check
-	 * @return	boolean		Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
+	 * @return	boolean		Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
 	function isTableAllowedForThisPage($pid_row, $checkTable)	{
 		if (!is_array($pid_row))	{
 			if ($GLOBALS['BE_USER']->user['admin'])	{
-				return true;
+				return TRUE;
 			} else {
 				return false;
 			}
@@ -680,13 +680,13 @@ class SC_db_new {
 		if (!$allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
-		if (strstr($allowedTableList,'*') || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return true
-			return true;
+		if (strstr($allowedTableList,'*') || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return TRUE
+			return TRUE;
 		}
 	}
 
 	/**
-	 * Returns true if:
+	 * Returns TRUE if:
 	 * - $allowedNewTables and $deniedNewTables are empty
 	 * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in $allowedNewTables
 	 *
@@ -696,17 +696,17 @@ class SC_db_new {
 	 * @param	string		Table name to test if in allowedTables
 	 * @param	array		Array of new tables that are allowed.
 	 * @param	array		Array of new tables that are not allowed.
-	 * @return	boolean		Returns true if a link for creating new records should be displayed for $table
+	 * @return	boolean		Returns TRUE if a link for creating new records should be displayed for $table
 	 */
 	function showNewRecLink($table, array $allowedNewTables=array(), array $deniedNewTables=array()) {
 		$allowedNewTables = ($allowedNewTables ? $allowedNewTables : $this->allowedNewTables);
 		$deniedNewTables = ($deniedNewTables ? $deniedNewTables : $this->deniedNewTables);
 			// No deny/allow tables are set:
 		if (!count($allowedNewTables) && !count($deniedNewTables)) {
-			return true;
+			return TRUE;
 			// If table is not denied (which takes precedence over allowed tables):
 		} elseif (!in_array($table, $deniedNewTables) && (!count($allowedNewTables) || in_array($table, $allowedNewTables))) {
-			return true;
+			return TRUE;
 			// If table is denied or allowed tables are set, but table is not part of:
 		} else {
 			return false;

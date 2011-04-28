@@ -111,7 +111,7 @@
  * 1587:	 function addSlashesOnArray(&$theArray)
  * 1611:	 function stripSlashesOnArray(&$theArray)
  * 1633:	 function slashArray($arr,$cmd)
- * 1650:	 function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmptyValues=true)
+ * 1650:	 function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=TRUE)
  * 1683:	 function array_merge($arr1,$arr2)
  * 1696:	 function csvValues($row,$delim=',',$quote='"')
  *
@@ -479,7 +479,7 @@ final class t3lib_div {
 
 	/**
 	 * Converts a png file to gif.
-	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set true.
+	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set TRUE.
 	 * Usage: 5
 	 *
 	 * @param	string		$theFile	the filename with path
@@ -608,7 +608,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
-	 * @return	boolean		True if an IP-mask from $list matches $baseIP
+	 * @return	boolean		TRUE if an IP-mask from $list matches $baseIP
 	 */
 	public static function cmpIP($baseIP, $list) {
 		$list = trim($list);
@@ -629,7 +629,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
-	 * @return	boolean		True if an IP-mask from $list matches $baseIP
+	 * @return	boolean		TRUE if an IP-mask from $list matches $baseIP
 	 */
 	public static function cmpIPv4($baseIP, $list) {
 		$IPpartsReq = explode('.', $baseIP);
@@ -672,7 +672,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance
 	 * @param	string		$list is a comma-list of IPv6 prefixes, could also contain IPv4 addresses
-	 * @return	boolean		True if an baseIP matches any prefix
+	 * @return	boolean		TRUE if an baseIP matches any prefix
 	 */
 	public static function cmpIPv6($baseIP, $list) {
 		$success = FALSE; // Policy default: Deny connection
@@ -793,7 +793,7 @@ final class t3lib_div {
 	 * Possible format are IPv4 and IPv6.
 	 *
 	 * @param	string		IP address to be tested
-	 * @return	boolean		True if $ip is either of IPv4 or IPv6 format.
+	 * @return	boolean		TRUE if $ip is either of IPv4 or IPv6 format.
 	 */
 	public static function validIP($ip) {
 		return (filter_var($ip, FILTER_VALIDATE_IP) !== FALSE);
@@ -805,7 +805,7 @@ final class t3lib_div {
 	 * Example for possible format:  10.0.45.99
 	 *
 	 * @param	string		IP address to be tested
-	 * @return	boolean		True if $ip is of IPv4 format.
+	 * @return	boolean		TRUE if $ip is of IPv4 format.
 	 */
 	public static function validIPv4($ip) {
 		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== FALSE);
@@ -817,7 +817,7 @@ final class t3lib_div {
 	 * Example for possible format:  43FB::BB3F:A0A0:0 | ::1
 	 *
 	 * @param	string		IP address to be tested
-	 * @return	boolean		True if $ip is of IPv6 format.
+	 * @return	boolean		TRUE if $ip is of IPv6 format.
 	 */
 	public static function validIPv6($ip) {
 		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== FALSE);
@@ -828,7 +828,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		The current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
-	 * @return	boolean		True if a domain name mask from $list matches $baseIP
+	 * @return	boolean		TRUE if a domain name mask from $list matches $baseIP
 	 */
 	public static function cmpFQDN($baseIP, $list) {
 		if (count(explode('.', $baseIP)) == 4) {
@@ -871,7 +871,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		comma-separated list of items (string)
 	 * @param	string		item to check for
-	 * @return	boolean		true if $item is in $list
+	 * @return	boolean		TRUE if $item is in $list
 	 */
 	public static function inList($list, $item) {
 		return (strpos(',' . $list . ',', ',' . $item . ',') !== FALSE ? TRUE : FALSE);
@@ -978,11 +978,11 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns true if the current TYPO3 version (or compatibility version) is compatible to the input version
+	 * Returns TRUE if the current TYPO3 version (or compatibility version) is compatible to the input version
 	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
 	 *
 	 * @param	string		Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
-	 * @return	boolean		Returns true if this setup is compatible with the provided version number
+	 * @return	boolean		Returns TRUE if this setup is compatible with the provided version number
 	 * @todo	Still needs a function to convert versions to branches
 	 */
 	public static function compat_version($verNumberStr) {
@@ -1180,7 +1180,7 @@ final class t3lib_div {
 	 * Tests if the input can be interpreted as integer.
 	 *
 	 * @param mixed Any input variable to test
-	 * @return boolean Returns true if string is an integer
+	 * @return boolean Returns TRUE if string is an integer
 	 */
 	public static function testInt($var) {
 		if ($var === '') {
@@ -1190,12 +1190,12 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns true if the first part of $str matches the string $partStr
+	 * Returns TRUE if the first part of $str matches the string $partStr
 	 * Usage: 59
 	 *
 	 * @param	string		Full string to check
 	 * @param	string		Reference string which must be found as the "first part" of the full string
-	 * @return	boolean		True if $partStr was found to be equal to the first part of $str
+	 * @return	boolean		TRUE if $partStr was found to be equal to the first part of $str
 	 */
 	public static function isFirstPartOfStr($str, $partStr) {
 		return $partStr != '' && strpos((string) $str, (string) $partStr, 0) === 0;
@@ -1430,7 +1430,7 @@ final class t3lib_div {
 	 * Usage: 5
 	 *
 	 * @param	string		Input string to evaluate
-	 * @return	boolean		Returns true if the $email address (input string) is valid
+	 * @return	boolean		Returns TRUE if the $email address (input string) is valid
 	 */
 	public static function validEmail($email) {
 			// enforce maximum length to prevent libpcre recursion crash bug #52929 in PHP
@@ -1445,13 +1445,13 @@ final class t3lib_div {
 	 * Checks if current e-mail sending method does not accept recipient/sender name
 	 * in a call to PHP mail() function. Windows version of mail() and mini_sendmail
 	 * program are known not to process such input correctly and they cause SMTP
-	 * errors. This function will return true if current mail sending method has
+	 * errors. This function will return TRUE if current mail sending method has
 	 * problem with recipient name in recipient/sender argument for mail().
 	 *
 	 * TODO: 4.3 should have additional configuration variable, which is combined
 	 * by || with the rest in this function.
 	 *
-	 * @return	boolean	true if mail() does not accept recipient name
+	 * @return	boolean	TRUE if mail() does not accept recipient name
 	 */
 	public static function isBrokenEmailEnvironment() {
 		return TYPO3_OS == 'WIN' || (FALSE !== strpos(ini_get('sendmail_path'), 'mini_sendmail'));
@@ -1646,20 +1646,20 @@ final class t3lib_div {
 	 * -> $array = array(0, 1, 2, 3);
 	 * -> variant_a := t3lib_div::inArray($array, $needle)
 	 * -> variant_b := in_array($needle, $array)
-	 * -> variant_c := in_array($needle, $array, true)
+	 * -> variant_c := in_array($needle, $array, TRUE)
 	 * +---------+-----------+-----------+-----------+
 	 * | $needle | variant_a | variant_b | variant_c |
 	 * +---------+-----------+-----------+-----------+
-	 * | '1a'	| false	 | true	  | false	 |
-	 * | ''	  | false	 | true	  | false	 |
-	 * | '0'	 | true	  | true	  | false	 |
-	 * | 0	   | true	  | true	  | true	  |
+	 * | '1a'	| false	 | TRUE	  | false	 |
+	 * | ''	  | false	 | TRUE	  | false	 |
+	 * | '0'	 | TRUE	  | TRUE	  | false	 |
+	 * | 0	   | TRUE	  | TRUE	  | TRUE	  |
 	 * +---------+-----------+-----------+-----------+
 	 * Usage: 3
 	 *
 	 * @param	array		one-dimensional array of items
 	 * @param	string		item to check for
-	 * @return	boolean		true if $item is in the one-dimensional array $in_array
+	 * @return	boolean		TRUE if $item is in the one-dimensional array $in_array
 	 */
 	public static function inArray(array $in_array, $item) {
 		foreach ($in_array as $val) {
@@ -1977,7 +1977,7 @@ final class t3lib_div {
 	 * @param	array		First array
 	 * @param	array		Second array, overruling the first array
 	 * @param	boolean		If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param	boolean		If set, values from $arr1 will overrule if they are empty or zero. Default: true
+	 * @param	boolean		If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = 0, $includeEmptyValues = TRUE) {
@@ -2177,7 +2177,7 @@ final class t3lib_div {
 	 *
 	 * @param	array		Array with attribute key/value pairs, eg. "bgcolor"=>"red", "border"=>0
 	 * @param	boolean		If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
-	 * @param	boolean		If true, don't check if values are blank. Default is to omit attributes with blank values.
+	 * @param	boolean		If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
 	 * @return	string		Imploded attributes, eg. 'bgcolor="red" border="0"'
 	 */
 	public static function implodeAttributes(array $arr, $xhtmlSafe = FALSE, $dontOmitBlankAttribs = FALSE) {
@@ -2909,7 +2909,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Filepath to write to
 	 * @param	string		Content to write
-	 * @return	boolean		True if the file was successfully opened and written to.
+	 * @return	boolean		TRUE if the file was successfully opened and written to.
 	 */
 	public static function writeFile($file, $content) {
 		if (!@is_file($file)) {
@@ -3117,7 +3117,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
 	 * @param	boolean		Allow deletion of non-empty directories
-	 * @return	boolean		true if @rmdir went well!
+	 * @return	boolean		TRUE if @rmdir went well!
 	 */
 	public static function rmdir($path, $removeNonEmpty = FALSE) {
 		$OK = FALSE;
@@ -3413,7 +3413,7 @@ final class t3lib_div {
 	 *
 	 * Behaviour is influenced by the setting
 	 * TYPO3_CONF_VARS[TYPO3_MODE][versionNumberInFilename]
-	 * = true (BE) / "embed" (FE) : modify filename
+	 * = TRUE (BE) / "embed" (FE) : modify filename
 	 * = false (BE) / "querystring" (FE) : add timestamp as parameter
 	 *
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
@@ -4004,7 +4004,7 @@ final class t3lib_div {
 				$bInfo['SYSTEM'] = 'unix';
 			}
 		}
-		// Is true if the browser supports css to format forms, especially the width
+		// Is TRUE if the browser supports css to format forms, especially the width
 		$bInfo['FORMSTYLE'] = ($bInfo['BROWSER'] == 'msie' || ($bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5) || $bInfo['BROWSER'] == 'opera' || $bInfo['BROWSER'] == 'konqu');
 
 		return $bInfo;
@@ -4115,7 +4115,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns true if so.
+	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
 	 * Usage: 8
 	 *
 	 * @param	string		Filepath to evaluate
@@ -4126,7 +4126,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Returns true if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
+	 * Returns TRUE if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
 	 * Usage: 5
 	 *
 	 * @param	string		Filepath to evaluate
@@ -4145,7 +4145,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Verifies the input filename againts the 'fileDenyPattern'. Returns true if OK.
+	 * Verifies the input filename againts the 'fileDenyPattern'. Returns TRUE if OK.
 	 * Usage: 2
 	 *
 	 * @param	string		Filepath to evaluate
@@ -4215,7 +4215,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Source file, absolute path
 	 * @param	string		Destination file, absolute path
-	 * @return	boolean		Returns true if the file was moved.
+	 * @return	boolean		Returns TRUE if the file was moved.
 	 * @coauthor	Dennis Petersen <fessor@software.dk>
 	 * @see upload_to_tempfile()
 	 */
@@ -4260,7 +4260,7 @@ final class t3lib_div {
 	 * Usage: 9
 	 *
 	 * @param	string		Filepath for a file in PATH_site."typo3temp/". Must be absolute.
-	 * @return	boolean		Returns true if the file was unlink()'ed
+	 * @return	boolean		Returns TRUE if the file was unlink()'ed
 	 * @see upload_to_tempfile(), tempnam()
 	 */
 	public static function unlink_tempfile($uploadedTempFileName) {
@@ -4385,7 +4385,7 @@ final class t3lib_div {
 	 * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
 	 *
 	 * @param	integer		Value from "l18n_cfg" field of a page record
-	 * @return	boolean		True if the page should be hidden
+	 * @return	boolean		TRUE if the page should be hidden
 	 */
 	public static function hideIfNotTranslated($l18n_cfg_fieldValue) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault']) {
@@ -5287,7 +5287,7 @@ final class t3lib_div {
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the header content will not be encoded.
-	 * @return	boolean		True if mail was accepted for delivery, false otherwise
+	 * @return	boolean		TRUE if mail was accepted for delivery, false otherwise
 	 */
 	public static function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
 		if (!$charset) {

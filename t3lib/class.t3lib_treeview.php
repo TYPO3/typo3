@@ -104,11 +104,11 @@ class t3lib_treeView {
 	var $expandAll = 0; // If set, then ALL items will be expanded, regardless of stored settings.
 	var $thisScript = ''; // Holds the current script to reload to.
 	var $titleAttrib = 'title'; // Which HTML attribute to use: alt/title. See init().
-	var $ext_IconMode = FALSE; // If true, no context menu is rendered on icons. If set to "titlelink" the icon is linked as the title is.
+	var $ext_IconMode = FALSE; // If TRUE, no context menu is rendered on icons. If set to "titlelink" the icon is linked as the title is.
 	var $addSelfId = 0; // If set, the id of the mounts will be added to the internal ids array
 	var $title = 'no title'; // Used if the tree is made of records (not folders for ex.)
-	var $showDefaultTitleAttribute = FALSE; // If true, a default title attribute showing the UID of the record is shown. This cannot be enabled by default because it will destroy many applications where another title attribute is in fact applied later.
-	var $highlightPagesWithVersions = TRUE; // If true, pages containing child records which has versions will be highlighted in yellow. This might be too expensive in terms of processing power.
+	var $showDefaultTitleAttribute = FALSE; // If TRUE, a default title attribute showing the UID of the record is shown. This cannot be enabled by default because it will destroy many applications where another title attribute is in fact applied later.
+	var $highlightPagesWithVersions = TRUE; // If TRUE, pages containing child records which has versions will be highlighted in yellow. This might be too expensive in terms of processing power.
 
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
@@ -199,13 +199,13 @@ class t3lib_treeView {
 	var $iconName = 'default.gif';
 
 	/**
-	 * If true, HTML code is also accumulated in ->tree array during rendering of the tree.
+	 * If TRUE, HTML code is also accumulated in ->tree array during rendering of the tree.
 	 * If 2, then also the icon prefix code (depthData) is stored
 	 */
 	var $makeHTML = 1;
 
 	/**
-	 * If true, records as selected will be stored internally in the ->recs array
+	 * If TRUE, records as selected will be stored internally in the ->recs array
 	 */
 	var $setRecs = 0;
 
@@ -545,7 +545,7 @@ class t3lib_treeView {
 
 
 	/**
-	 * Returns true/false if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
+	 * Returns TRUE/false if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
 	 * Extending parent function
 	 *
 	 * @param	integer		record id/key

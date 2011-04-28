@@ -53,7 +53,7 @@ class t3lib_formprotection_DisabledFormProtection extends t3lib_formprotection_A
 
 	/**
 	 * Disable parent method.
-	 * Always return true.
+	 * Always return TRUE.
 	 *
 	 * @return boolean
 	 */

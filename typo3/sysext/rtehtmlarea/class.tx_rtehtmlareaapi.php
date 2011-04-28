@@ -42,18 +42,18 @@ abstract class tx_rtehtmlarea_api {
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $pluginButtons = '';				// The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	protected $pluginLabels = '';				// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
-	protected $pluginAddsButtons = true;			// Boolean indicating whether the plugin is adding buttons or not
+	protected $pluginAddsButtons = TRUE;			// Boolean indicating whether the plugin is adding buttons or not
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
-	protected $requiresSynchronousLoad = false;		// True if the plugin must be loaded synchronously
+	protected $requiresClassesConfiguration = false;	// TRUE if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiresSynchronousLoad = false;		// TRUE if the plugin must be loaded synchronously
 	protected $requiredPlugins = '';			// The comma-separated list of names of prerequisite plugins
 
 	/**
-	 * Returns true if the plugin is available and correctly initialized
+	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
 	 * @param	object		Reference to parent object, which is an instance of the htmlArea RTE
 	 *
-	 * @return	boolean		true if this plugin object should be made available in the current environment and is correctly initialized
+	 * @return	boolean		TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS, $LANG, $TSFE;
@@ -80,7 +80,7 @@ abstract class tx_rtehtmlarea_api {
 				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -190,18 +190,18 @@ abstract class tx_rtehtmlarea_api {
 	}
 
 	/**
-	 * Returns true if the extension requires the PageTSConfig Classes configuration
+	 * Returns TRUE if the extension requires the PageTSConfig Classes configuration
 	 *
-	 * @return	boolean		true if the extension requires the PageTSConfig Classes configuration
+	 * @return	boolean		TRUE if the extension requires the PageTSConfig Classes configuration
 	 */
 	public function requiresClassesConfiguration() {
 		return $this->requiresClassesConfiguration;
 	}
 
 	/**
-	 * Returns true if the plugin requires synchronous load
+	 * Returns TRUE if the plugin requires synchronous load
 	 *
-	 * @return	boolean		true if the plugin requires synchronous load
+	 * @return	boolean		TRUE if the plugin requires synchronous load
 	 */
 	public function requiresSynchronousLoad() {
 		return $this->requiresSynchronousLoad;
@@ -214,7 +214,7 @@ abstract class tx_rtehtmlarea_api {
 	 *
 	 * @return	void
 	 */
-	public function setSynchronousLoad($value = true) {
+	public function setSynchronousLoad($value = TRUE) {
 		$this->requiresSynchronousLoad = $value;
 	}
 

@@ -43,7 +43,7 @@ class tx_recycler_helper {
 	 * @param	string		$cmd: The command that sould be performed ('new' or 'edit')
 	 * @param	string		$table: The table to check access for
 	 * @param	string		$theUid: The record uid of the table
-	 * @return	boolean		Returns true is the user has access, or false if not
+	 * @return	boolean		Returns TRUE is the user has access, or false if not
 	 */
 	public static function checkAccess($table, $row) {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -79,7 +79,7 @@ class tx_recycler_helper {
 			}
 		}
 
-		return $hasAccess ? true : false;
+		return $hasAccess ? TRUE : false;
 	}
 
 	/**

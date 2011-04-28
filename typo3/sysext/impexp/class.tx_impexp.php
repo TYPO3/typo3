@@ -1088,9 +1088,9 @@ class tx_impexp {
 	}
 
 	/**
-	 * Returns true if the output should be compressed.
+	 * Returns TRUE if the output should be compressed.
 	 *
-	 * @return	boolean		True if compression is possible AND requested.
+	 * @return	boolean		TRUE if compression is possible AND requested.
 	 */
 	function doOutputCompress()	{
 		return $this->compress && !$this->dontCompress;
@@ -2111,7 +2111,7 @@ class tx_impexp {
 	 * @param	string		Absolute filename inside PATH_site to write to
 	 * @param	string		File ID from import memory
 	 * @param	boolean		Bypasses the checking against filemounts - only for RTE files!
-	 * @return	boolean		Returns true if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
+	 * @return	boolean		Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
 	function writeFileVerify($fileName, $fileID, $bypassMountCheck=FALSE)	{
 		$fileProcObj = $this->getFileProcObj();
@@ -2135,10 +2135,10 @@ class tx_impexp {
 	}
 
 	/**
-	 * Returns true if directory exists  and if it doesn't it will create directory and return true if that succeeded.
+	 * Returns TRUE if directory exists  and if it doesn't it will create directory and return TRUE if that succeeded.
 	 *
 	 * @param	string		Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
-	 * @return	boolean		True, if directory exists (was created)
+	 * @return	boolean		TRUE, if directory exists (was created)
 	 */
 	function checkOrCreateDir($dirPrefix)	{
 
@@ -2221,7 +2221,7 @@ class tx_impexp {
 	 *
 	 * @param	string		Filename, absolute
 	 * @param	boolean		If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
-	 * @return	boolean		True if the operation went well
+	 * @return	boolean		TRUE if the operation went well
 	 */
 	function loadFile($filename,$all=0)	{
 		if (@is_file($filename))	{
@@ -2944,14 +2944,14 @@ class tx_impexp {
 	 *
 	 * @param	string		Table name to check
 	 * @param	integer		doktype value.
-	 * @return	boolean		True if OK
+	 * @return	boolean		TRUE if OK
 	 */
 	function checkDokType($checkTable,$doktype)	{
 		global $PAGES_TYPES;
 		$allowedTableList = isset($PAGES_TYPES[$doktype]['allowedTables']) ? $PAGES_TYPES[$doktype]['allowedTables'] : $PAGES_TYPES['default']['allowedTables'];
 		$allowedArray = t3lib_div::trimExplode(',',$allowedTableList,1);
-		if (strstr($allowedTableList,'*') || in_array($checkTable,$allowedArray))	{		// If all tables or the table is listed as a allowed type, return true
-			return true;
+		if (strstr($allowedTableList,'*') || in_array($checkTable,$allowedArray))	{		// If all tables or the table is listed as a allowed type, return TRUE
+			return TRUE;
 		}
 	}
 
@@ -3061,10 +3061,10 @@ class tx_impexp {
 	 *****************************/
 
 	/**
-	 * Returns true if the input table name is to be regarded as a static relation (that is, not exported etc).
+	 * Returns TRUE if the input table name is to be regarded as a static relation (that is, not exported etc).
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		True, if table is marked static
+	 * @return	boolean		TRUE, if table is marked static
 	 */
 	function isTableStatic($table)	{
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -3073,10 +3073,10 @@ class tx_impexp {
 	}
 
 	/**
-	 * Returns true if the input table name is to be included as relation
+	 * Returns TRUE if the input table name is to be included as relation
 	 *
 	 * @param	string		Table name
-	 * @return	boolean		True, if table is marked static
+	 * @return	boolean		TRUE, if table is marked static
 	 */
 	function inclRelation($table)	{
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -3085,21 +3085,21 @@ class tx_impexp {
 	}
 
 	/**
-	 * Returns true if the element should be excluded as static record.
+	 * Returns TRUE if the element should be excluded as static record.
 	 *
 	 * @param	string		Table name
 	 * @param	integer		UID value
-	 * @return	boolean		True, if table is marked static
+	 * @return	boolean		TRUE, if table is marked static
 	 */
 	function isExcluded($table,$uid)	{
 		return $this->excludeMap[$table.':'.$uid] ? TRUE : FALSE;
 	}
 
 	/**
-	 * Returns true if soft reference should be included in exported file.
+	 * Returns TRUE if soft reference should be included in exported file.
 	 *
 	 * @param	string		Token ID for soft reference
-	 * @return	boolean		True if softreference media should be included
+	 * @return	boolean		TRUE if softreference media should be included
 	 */
 	function includeSoftref($tokenID)	{
 		return $tokenID && !t3lib_div::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
@@ -3109,7 +3109,7 @@ class tx_impexp {
 	 * Checking if a PID is in the webmounts of the user
 	 *
 	 * @param	integer		Page ID to check
-	 * @return	boolean		True if OK
+	 * @return	boolean		TRUE if OK
 	 */
 	function checkPID($pid)	{
 		if (!isset($this->checkPID_cache[$pid]))	{
@@ -3124,7 +3124,7 @@ class tx_impexp {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Uid or record
-	 * @return	boolean		True if the position of the record should be updated to match the one in the import structure
+	 * @return	boolean		TRUE if the position of the record should be updated to match the one in the import structure
 	 */
 	function dontIgnorePid($table, $uid)	{
 		return $this->import_mode[$table.':'.$uid]!=='ignore_pid' &&

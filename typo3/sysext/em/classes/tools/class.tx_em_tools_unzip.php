@@ -202,7 +202,7 @@ class tx_em_Tools_Unzip {
 	 * This method gives the latest error code name.
 	 *
 	 * @access public
-	 * @param  boolean $p_with_code  If true, gives the name and the int value.
+	 * @param  boolean $p_with_code  If TRUE, gives the name and the int value.
 	 * @return string The error name.
 	 */
 	function errorName($p_with_code = false) {
@@ -217,7 +217,7 @@ class tx_em_Tools_Unzip {
 		}
 
 		// Search the name form the code value
-		$v_key = array_search($this->_error_code, $v_error_list, true);
+		$v_key = array_search($this->_error_code, $v_error_list, TRUE);
 		if ($v_key != false) {
 			$v_value = $v_key;
 		} else {
@@ -235,7 +235,7 @@ class tx_em_Tools_Unzip {
 	 * This method returns the description associated with the latest error.
 	 *
 	 * @access public
-	 * @param  boolean $p_full If set to true gives the description with the
+	 * @param  boolean $p_full If set to TRUE gives the description with the
 	 *						 error code, the name and the description.
 	 *						 If set to false gives only the description
 	 *						 and the error code.
@@ -243,7 +243,7 @@ class tx_em_Tools_Unzip {
 	 */
 	function errorInfo($p_full = false) {
 		if ($p_full) {
-			return ($this->errorName(true) . " : " . $this->_error_string);
+			return ($this->errorName(TRUE) . " : " . $this->_error_string);
 		} else {
 			return ($this->_error_string . " [code " . $this->_error_code . "]");
 		}
@@ -258,7 +258,7 @@ class tx_em_Tools_Unzip {
 	 * @param integer $p_level
 	 */
 	function _checkFormat($p_level = 0) {
-		$v_result = true;
+		$v_result = TRUE;
 
 		// Reset the error handler
 		$this->_errorReset();
@@ -512,7 +512,7 @@ class tx_em_Tools_Unzip {
 		// TBC
 
 		// Look for all path to remove
-		if ($p_remove_all_path == true) {
+		if ($p_remove_all_path == TRUE) {
 			// Get the basename of the path
 			$p_entry['filename'] = basename($p_entry['filename']);
 		}
@@ -1368,7 +1368,7 @@ class tx_em_Tools_Unzip {
 	 *
 	 * @param [type] $p_remove_disk_letter
 	 */
-	function _tool_TranslateWinPath($p_path, $p_remove_disk_letter = true) {
+	function _tool_TranslateWinPath($p_path, $p_remove_disk_letter = TRUE) {
 		if (stristr(php_uname(), 'windows')) {
 			// Look for potential disk letter
 			if (($p_remove_disk_letter)

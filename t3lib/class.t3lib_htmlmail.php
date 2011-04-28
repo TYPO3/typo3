@@ -1078,7 +1078,7 @@ class t3lib_htmlmail {
 	/**
 	 * This function substitutes the media-references in $this->theParts["html"]["content"]
 	 *
-	 * @param	boolean		$absolute: If true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
+	 * @param	boolean		$absolute: If TRUE, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
 	 * @return	void
 	 */
 	public function substMediaNamesInHTML($absolute) {

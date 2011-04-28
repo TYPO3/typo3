@@ -1621,7 +1621,7 @@ class t3lib_cs {
 			}
 
 			/*
-			   if (abs($len)<$this->strlen($charset,$string))	{	// Has to use ->strlen() - otherwise multibyte strings ending with a multibyte char will return true here (which is not a catastrophe, but...)
+			   if (abs($len)<$this->strlen($charset,$string))	{	// Has to use ->strlen() - otherwise multibyte strings ending with a multibyte char will return TRUE here (which is not a catastrophe, but...)
 				   if ($len > 0)	{
 					   return substr($string,0,$i).$crop;
 				   } else {

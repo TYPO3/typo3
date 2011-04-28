@@ -210,13 +210,13 @@ class TBE_browser_recordList extends localRecordList {
 	}
 
 	/**
-	 * Local version that sets allFields to true to support userFieldSelect
+	 * Local version that sets allFields to TRUE to support userFieldSelect
 	 *
 	 * @return	void
 	 * @see fieldSelectBox
 	 */
 	function generateList() {
-		$this->allFields = true;
+		$this->allFields = TRUE;
 		parent::generateList();
 	}
 }
@@ -322,7 +322,7 @@ class localPageTree extends t3lib_browseTree {
 	}
 
 	/**
-	 * Returns true if a doktype can be linked.
+	 * Returns TRUE if a doktype can be linked.
 	 *
 	 * @param	integer		Doktype value to test
 	 * @param	integer		uid to test.
@@ -330,7 +330,7 @@ class localPageTree extends t3lib_browseTree {
 	 */
 	function ext_isLinkable($doktype,$uid)	{
 		if ($uid && $doktype<199)	{
-			return true;
+			return TRUE;
 		}
 	}
 
@@ -402,14 +402,14 @@ class rtePageTree extends localPageTree {
 class TBE_PageTree extends localPageTree {
 
 	/**
-	 * Returns true if a doktype can be linked (which is always the case here).
+	 * Returns TRUE if a doktype can be linked (which is always the case here).
 	 *
 	 * @param	integer		Doktype value to test
 	 * @param	integer		uid to test.
 	 * @return	boolean
 	 */
 	function ext_isLinkable($doktype,$uid)	{
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -477,10 +477,10 @@ class localFolderTree extends t3lib_folderTree {
 	}
 
 	/**
-	 * Returns true if the input "record" contains a folder which can be linked.
+	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return	boolean		True is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
+	 * @return	boolean		TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
 	 */
 	function ext_isLinkable($v)	{
 		$webpath=t3lib_BEfunc::getPathType_web_nonweb($v['path']);	// Checking, if the input path is a web-path.
@@ -601,10 +601,10 @@ class TBE_FolderTree extends localFolderTree {
 	var $ext_noTempRecyclerDirs=0;		// If file-drag mode is set, temp and recycler folders are filtered out.
 
 	/**
-	 * Returns true if the input "record" contains a folder which can be linked.
+	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return	boolean		True is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
+	 * @return	boolean		TRUE is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
 	function ext_isLinkable($v)	{
 		if ($this->ext_noTempRecyclerDirs && (substr($v['path'],-7)=='_temp_/' || substr($v['path'],-11)=='_recycler_/'))	{
@@ -1196,7 +1196,7 @@ class browse_links {
 			case 'db':
 				if (isset($this->expandPage))	{
 					$data['expandPage']=$this->expandPage;
-					$store = true;
+					$store = TRUE;
 				} else {
 					$this->expandPage=$data['expandPage'];
 				}
@@ -1206,7 +1206,7 @@ class browse_links {
 			case 'folder':
 				if (isset($this->expandFolder))	{
 					$data['expandFolder']=$this->expandFolder;
-					$store = true;
+					$store = TRUE;
 				} else {
 					$this->expandFolder=$data['expandFolder'];
 				}
@@ -2538,7 +2538,7 @@ class browse_links {
 	 * Verifies that a path is a web-folder:
 	 *
 	 * @param	string		Absolute filepath
-	 * @return	boolean		If the input path is found in PATH_site then it returns true.
+	 * @return	boolean		If the input path is found in PATH_site then it returns TRUE.
 	 */
 	function isWebFolder($folder)	{
 		$folder = rtrim($folder, '/').'/';
@@ -2549,17 +2549,17 @@ class browse_links {
 	 * Checks, if a path is within the mountpoints of the backend user
 	 *
 	 * @param	string		Absolute filepath
-	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
+	 * @return	boolean		If the input path is found in the backend users filemounts, then return TRUE.
 	 */
 	function checkFolder($folder)	{
-		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? true : false;
+		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? TRUE : false;
 	}
 
 	/**
 	 * Checks, if a path is within a read-only mountpoint of the backend user
 	 *
 	 * @param	string		Absolute filepath
-	 * @return	boolean		If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return true.
+	 * @return	boolean		If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return TRUE.
 	 */
 	function isReadOnlyFolder($folder) {
 		return ($GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/')]['type'] == 'readonly');

@@ -233,7 +233,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		);
 
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows($res) == 1) {
-			$entryRemoved = true;
+			$entryRemoved = TRUE;
 		}
 
 		return $entryRemoved;

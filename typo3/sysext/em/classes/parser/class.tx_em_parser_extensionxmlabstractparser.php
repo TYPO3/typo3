@@ -392,7 +392,7 @@ abstract class tx_em_Parser_ExtensionXmlAbstractParser extends tx_em_Parser_XmlA
 	 * Method resets version class properties.
 	 *
 	 * @access  protected
-	 * @param   boolean	$all  if true, additionally extension properties are reset
+	 * @param   boolean	$all  if TRUE, additionally extension properties are reset
 	 * @return  void
 	 * @see	 $extensionKey, $version, $extensionDLCounter, $versionDLCounter,
 	 *		  $title, $description, $state, $reviewstate, $category,

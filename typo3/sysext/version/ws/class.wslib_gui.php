@@ -459,12 +459,12 @@ class wslib_gui {
 										case 'page':
 											$swapLabel = ' ['.$LANG->getLL('label_page').']';
 											$swapClass = 'ver-page';	// Do not translate!
-											$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
+											$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is TRUE only if multiple workspaces are shown and we need the opposite here.
 											break;
 										case 'branch':
 											$swapLabel = ' ['.$LANG->getLL('label_branch').']';
 											$swapClass = 'ver-branch';	// Do not translate!
-											$warnAboutVersions_next = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
+											$warnAboutVersions_next = !$this->showWorkspaceCol;		// This value is TRUE only if multiple workspaces are shown and we need the opposite here.
 											break;
 									}
 
@@ -997,7 +997,7 @@ class wslib_gui {
 					$uid,
 					$rec,
 					$origId,
-					$c==$elCount && $treeLevel==0 ? 1 : 0,		// If true, will show bottom-join icon.
+					$c==$elCount && $treeLevel==0 ? 1 : 0,		// If TRUE, will show bottom-join icon.
 					''
 				);
 			}
@@ -1044,7 +1044,7 @@ class wslib_gui {
 							$uid,
 							$rec,
 							$origId,
-							$c==$elCount?1:0,	// If true, will show bottom-join icon.
+							$c==$elCount?1:0,	// If TRUE, will show bottom-join icon.
 							$data['HTML_depthData']
 						);
 					}
@@ -1112,7 +1112,7 @@ class wslib_gui {
 				if ($this->targets['orig_'.$origId.'_'.$tN.'_'.$rec[$origUidFields]])	{	// If there IS a corresponding original record...:
 
 					// Prepare Table row parameters:
-					$this->addHlSubelementsScript = true;
+					$this->addHlSubelementsScript = TRUE;
 					$tdParams =  ' onmouseover="hlSubelements(\''.$origId.'_'.$tN.'_'.$rec[$origUidFields].'\', \''.$uid.'_'.$tN.'_'.$rec[$origUidFields].'\', 1, '.($this->diff==2?1:0).');"'.
 						' onmouseout="hlSubelements(\''.$origId.'_'.$tN.'_'.$rec[$origUidFields].'\', \''.$uid.'_'.$tN.'_'.$rec[$origUidFields].'\', 0, '.($this->diff==2?1:0).');"'.
 						' id="ver_'.$uid.'_'.$tN.'_'.$rec[$origUidFields].'" class="typo3-ver"';

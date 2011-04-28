@@ -94,12 +94,12 @@ class tslib_AdminPanel {
 
 		if (t3lib_div::_GP('ADMCMD_simUser')) {
 			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
-			$this->ext_forcePreview = true;
+			$this->ext_forcePreview = TRUE;
 		}
 
 		if (t3lib_div::_GP('ADMCMD_simTime')) {
 			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
-			$this->ext_forcePreview = true;
+			$this->ext_forcePreview = TRUE;
 		}
 
 		if ($GLOBALS['TSFE']->forceTemplateParsing || $GLOBALS['TSFE']->displayEditIcons || $GLOBALS['TSFE']->displayFieldEditIcons) {
@@ -127,7 +127,7 @@ class tslib_AdminPanel {
 	}
 
 	/**
-	 * Checks if a Admin Panel section ("module") is available for the user. If so, true is returned.
+	 * Checks if a Admin Panel section ("module") is available for the user. If so, TRUE is returned.
 	 *
 	 * @param	string		The module key, eg. "edit", "preview", "info" etc.
 	 * @return	boolean
@@ -135,18 +135,18 @@ class tslib_AdminPanel {
 	public function isAdminModuleEnabled($key) {
 		$result = false;
 
-			// Returns true if the module checked is "preview" and the forcePreview flag is set.
+			// Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
 		if ($key == 'preview' && $this->ext_forcePreview) {
-			$result = true;
+			$result = TRUE;
 		}
 
 			// If key is not set, only "all" is checked
 		if ($GLOBALS['BE_USER']->extAdminConfig['enable.']['all']) {
-			$result = true;
+			$result = TRUE;
 		}
 
 		if ($GLOBALS['BE_USER']->extAdminConfig['enable.'][$key]) {
-			$result = true;
+			$result = TRUE;
 		}
 
 		return $result;
@@ -209,10 +209,10 @@ class tslib_AdminPanel {
 				// Exceptions where the values can be overridden from backend:
 				// deprecated
 			if ($sectionName . '_' . $val == 'edit_displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons']) {
-				return true;
+				return TRUE;
 			}
 			if ($sectionName . '_' . $val == 'edit_displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons']) {
-				return true;
+				return TRUE;
 			}
 
 				// override all settings with user TSconfig
@@ -226,7 +226,7 @@ class tslib_AdminPanel {
 			$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
 
 			if ($sectionName == 'preview' && $this->ext_forcePreview) {
-				return (!$val ? true : $retVal);
+				return (!$val ? TRUE : $retVal);
 			}
 				// regular check:
 			if ($this->isAdminModuleOpen($sectionName)) {	// See if the menu is expanded!
@@ -251,7 +251,7 @@ class tslib_AdminPanel {
 	 * @return	void
 	 */
 	public function forcePreview() {
-		$this->ext_forcePreview = true;
+		$this->ext_forcePreview = TRUE;
 	}
 
 	/**
@@ -264,10 +264,10 @@ class tslib_AdminPanel {
 	}
 
 	/**
-	 * Returns true if admin panel module is open
+	 * Returns TRUE if admin panel module is open
 	 *
 	 * @param	string		Module key
-	 * @return	boolean		True, if the admin panel is open for the specified admin panel module key.
+	 * @return	boolean		TRUE, if the admin panel is open for the specified admin panel module key.
 	 */
 	public function isAdminModuleOpen($pre) {
 		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $pre];
@@ -432,7 +432,7 @@ $query . '<table class="typo3-adminPanel">' .
 	protected function getPreviewModule() {
 		$out = $this->extGetHead('preview');
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_preview']) {
-			$this->extNeedUpdate = true;
+			$this->extNeedUpdate = TRUE;
 			$out .= $this->extGetItem('preview_showHiddenPages', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_showHiddenPages'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('preview_showHiddenRecords', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_showHiddenRecords'] ? ' checked="checked"' : '') . ' />');
 
@@ -465,7 +465,7 @@ $query . '<table class="typo3-adminPanel">' .
 	protected function getCacheModule() {
 		$out = $this->extGetHead('cache');
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_cache']) {
-			$this->extNeedUpdate = true;
+			$this->extNeedUpdate = TRUE;
 			$out .= $this->extGetItem('cache_noCache', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[cache_noCache]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[cache_noCache]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['cache_noCache'] ? ' checked="checked"' : '') . ' />');
 			$levels = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['cache_clearCacheLevels'];
 			$options = '';
@@ -507,7 +507,7 @@ $query . '<table class="typo3-adminPanel">' .
 	protected function getPublishModule() {
 		$out = $this->extGetHead('publish');
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_publish']) {
-			$this->extNeedUpdate = true;
+			$this->extNeedUpdate = TRUE;
 			$levels = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['publish_levels'];
 			$options = '';
 			$options .= '<option value="0"' . ($levels == 0 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_0') . '</option>';
@@ -551,7 +551,7 @@ $query . '<table class="typo3-adminPanel">' .
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 			$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
-			$this->extNeedUpdate = true;
+			$this->extNeedUpdate = TRUE;
 			$out .= $this->extGetItem('edit_displayFieldIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('edit_displayIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('edit_editFormsOnPage', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_editFormsOnPage]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_editFormsOnPage]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] ? ' checked="checked"':'') . ' />');
@@ -590,7 +590,7 @@ $query . '<table class="typo3-adminPanel">' .
 	protected function getTSDebugModule() {
 		$out = $this->extGetHead('tsdebug');
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_tsdebug']) {
-			$this->extNeedUpdate = true;
+			$this->extNeedUpdate = TRUE;
 
 			$out .= $this->extGetItem('tsdebug_tree', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_tree'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('tsdebug_displayTimes', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayTimes'] ? ' checked="checked"' : '') . ' />');

@@ -143,7 +143,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	protected $fullScreen = false;
 
 	/**
-	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
+	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
 	 * If there are reasons why the RTE cannot be displayed you simply enter them as text in ->errorLog
 	 *
 	 * @return	boolean		TRUE if this RTE object offers an RTE in the current browser environment
@@ -672,7 +672,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
 				foreach ($buttonArray as $button) {
 					if (in_array($button, $this->toolbar)) {
-						$showPlugin = true;
+						$showPlugin = TRUE;
 					}
 				}
 				if (!$showPlugin) {
@@ -835,7 +835,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber].disablePCexamples = ' . (trim($this->thisConfig['disablePCexamples'])?'true':'false') . ';
 			RTEarea[editornumber].showTagFreeClasses = ' . (trim($this->thisConfig['showTagFreeClasses'])?'true':'false') . ';
 			RTEarea[editornumber].useHTTPS = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
-			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(true) : '[]') . ';
+			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(TRUE) : '[]') . ';
 			RTEarea[editornumber].dialogueWindows = new Object();';
 		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])) {
 			$configureRTEInJavascriptString .= '
@@ -929,11 +929,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	/**
-	 * Return true, if the plugin can be loaded
+	 * Return TRUE, if the plugin can be loaded
 	 *
 	 * @param	string		$pluginId: The identification string of the plugin
 	 *
-	 * @return	boolean		true if the plugin can be loaded
+	 * @return	boolean		TRUE if the plugin can be loaded
 	 */
 
 	function isPluginEnabled($pluginId) {
@@ -1377,7 +1377,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	/**
-	 * Return true if we are in the FE, but not in the FE editing feature of BE.
+	 * Return TRUE if we are in the FE, but not in the FE editing feature of BE.
 	 *
 	 * @return boolean
 	 */

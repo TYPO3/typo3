@@ -102,7 +102,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	}
 
 	/**
-	 * Returns true if the node has child nodes attached
+	 * Returns TRUE if the node has child nodes attached
 	 *
 	 * @return boolean
 	 */

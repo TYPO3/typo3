@@ -1535,7 +1535,7 @@ class t3lib_DB {
 	 * @param	string		SQL query
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
 	 * @param	integer		Number of resulting rows
-	 * @return	boolean		True if explain was run, false otherwise
+	 * @return	boolean		TRUE if explain was run, false otherwise
 	 */
 	protected function explain($query, $from_table, $row_count) {
 

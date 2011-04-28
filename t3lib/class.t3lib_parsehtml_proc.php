@@ -664,7 +664,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach ($blockSplit as $k => $v) {
 			$error = '';
 			if ($k % 2) { // block:
-				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), true);
+				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), TRUE);
 				$link_param = $tagCode[1];
 				$href = '';
 					// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
@@ -789,7 +789,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * Cleaning (->db) for standard content elements (ts)
 	 *
 	 * @param	string		Content input
-	 * @param	boolean		If true, the transformation was "css_transform", otherwise "ts_transform"
+	 * @param	boolean		If TRUE, the transformation was "css_transform", otherwise "ts_transform"
 	 * @return	string		Content output
 	 * @see TS_transform_rte()
 	 */
@@ -946,7 +946,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * Set (->rte) for standard content elements (ts)
 	 *
 	 * @param	string		Content input
-	 * @param	boolean		If true, the transformation was "css_transform", otherwise "ts_transform"
+	 * @param	boolean		If TRUE, the transformation was "css_transform", otherwise "ts_transform"
 	 * @return	string		Content output
 	 * @see TS_transform_db()
 	 */
@@ -1212,7 +1212,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 *
 	 * @param	string		Value to process.
 	 * @param	integer		Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
-	 * @param	boolean		If true, an array with the lines is returned, otherwise a string of the processed input value.
+	 * @param	boolean		If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
 	 * @return	string		Processed input value.
 	 * @see setDivTags()
 	 */
@@ -1289,7 +1289,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							if (!count($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses)) {
 								$newAttribs['class'] = $attribs[0]['class'];
 							} else {
-								$classes = t3lib_div::trimExplode(' ', $attribs[0]['class'], true);
+								$classes = t3lib_div::trimExplode(' ', $attribs[0]['class'], TRUE);
 								$newClasses = array();
 								foreach ($classes as $class) {
 									if (in_array($class, $this->allowedClasses)) {
@@ -1601,7 +1601,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
 	 *
 	 * @param	string		Content input
-	 * @param	boolean		If true, then the "rtekeep" attribute will not be set.
+	 * @param	boolean		If TRUE, then the "rtekeep" attribute will not be set.
 	 * @return	string		Content output
 	 */
 	function TS_AtagToAbs($value, $dontSetRTEKEEP = FALSE) {

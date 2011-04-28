@@ -378,7 +378,7 @@ class SC_mod_web_perm_index {
 	 *****************************/
 
 	/**
-	 * Creating form for editing the permissions	($this->edit = true)
+	 * Creating form for editing the permissions	($this->edit = TRUE)
 	 * (Adding content to internal content variable)
 	 *
 	 * @return	void

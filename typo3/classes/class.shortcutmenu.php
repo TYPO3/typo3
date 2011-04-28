@@ -94,7 +94,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  TRUE if user has access, false if not
 	 */
 	public function checkAccess() {
 			// "Shortcuts" have been renamed to "Bookmarks"
@@ -114,7 +114,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', true);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', TRUE);
 		$this->addJavascriptToBackend();
 
 		$shortcutMenu = array();
@@ -136,9 +136,9 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	public function renderMenu() {
 
-		$shortcutGroup  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksGroup', true);
-		$shortcutEdit   = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksEdit', true);
-		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksDelete', true);
+		$shortcutGroup  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksGroup', TRUE);
+		$shortcutEdit   = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksEdit', TRUE);
+		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksDelete', TRUE);
 
 		$groupIcon  = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"').' title="'.$shortcutGroup.'" alt="'.$shortcutGroup.'" />';
 		$editIcon   = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"').' title="'.$shortcutEdit.'" alt="'.$shortcutEdit.'"';
@@ -199,7 +199,7 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		if(count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', TRUE);
 			$icon = t3lib_iconWorks::getSpriteIcon('actions-system-shortcut-new', array(
 				'title' => $title
 			));
@@ -760,7 +760,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				}
 		}
 
-		return '<img src="' . $icon . '" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', true) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', true) . '" />';
+		return '<img src="' . $icon . '" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE) . '" />';
 	}
 
 	/**

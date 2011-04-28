@@ -303,7 +303,7 @@ class tslib_pibase {
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
 		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
-		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('', $urlParameters, '', true).$this->pi_moreParams;
+		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('', $urlParameters, '', TRUE).$this->pi_moreParams;
 
 		return $this->cObj->typoLink($str, $conf);
 	}
@@ -358,7 +358,7 @@ class tslib_pibase {
 	 * @param	integer		UID of the record for which to display details (basically this will become the value of [showUid]
 	 * @param	boolean		See pi_linkTP_keepPIvars
 	 * @param	array		Array of values to override in the current piVars. Same as $overrulePIvars in pi_linkTP_keepPIvars
-	 * @param	boolean		If true, only the URL is returned, not a full link
+	 * @param	boolean		If TRUE, only the URL is returned, not a full link
 	 * @param	integer		Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
@@ -442,7 +442,7 @@ class tslib_pibase {
 	 * @param	array		Array with elements to overwrite the default $wrapper-array.
 	 * @param	string		varname for the pointer.
 	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
-	 * @param   boolean     forces the output of the page browser if you set this option to "true" (otherwise it's only drawn if enough entries are available)
+	 * @param   boolean     forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
  	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
 	 */
 	function pi_list_browseresults($showResultCount=1, $tableParams='', $wrapArr=array(), $pointerName='pointer', $hscText=TRUE, $forceOutput=FALSE) {
@@ -930,7 +930,7 @@ class tslib_pibase {
 	 *
 	 * @param	string		The key from the LOCAL_LANG array for which to return the value.
 	 * @param	string		Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
+	 * @param	boolean		If TRUE, the output label is passed through htmlspecialchars()
 	 * @return	string		The value from LOCAL_LANG.
 	 */
 	function pi_getLL($key,$alt='',$hsc=FALSE)	{
@@ -1304,12 +1304,12 @@ class tslib_pibase {
 	 **************************/
 
 	/**
-	 * Returns true if the piVars array has ONLY those fields entered that is set in the $fList (commalist) AND if none of those fields value is greater than $lowerThan field if they are integers.
+	 * Returns TRUE if the piVars array has ONLY those fields entered that is set in the $fList (commalist) AND if none of those fields value is greater than $lowerThan field if they are integers.
 	 * Notice that this function will only work as long as values are integers.
 	 *
 	 * @param	string		List of fields (keys from piVars) to evaluate on
 	 * @param	integer		Limit for the values.
-	 * @return	boolean		Returns true (1) if conditions are met.
+	 * @return	boolean		Returns TRUE (1) if conditions are met.
 	 */
 	function pi_isOnlyFields($fList,$lowerThan=-1)	{
 		$lowerThan = $lowerThan==-1 ? $this->pi_lowerThan : $lowerThan;
@@ -1323,12 +1323,12 @@ class tslib_pibase {
 	}
 
 	/**
-	 * Returns true if the array $inArray contains only values allowed to be cached based on the configuration in $this->pi_autoCacheFields
+	 * Returns TRUE if the array $inArray contains only values allowed to be cached based on the configuration in $this->pi_autoCacheFields
 	 * Used by ->pi_linkTP_keepPIvars
 	 * This is an advanced form of evaluation of whether a URL should be cached or not.
 	 *
 	 * @param	array		An array with piVars values to evaluate
-	 * @return	boolean		Returns true (1) if conditions are met.
+	 * @return	boolean		Returns TRUE (1) if conditions are met.
 	 * @see pi_linkTP_keepPIvars()
 	 */
 	function pi_autoCache($inArray)	{
