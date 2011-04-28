@@ -97,7 +97,15 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	public function init() {
 		$available = FALSE;
 
-		if (tx_saltedpasswords_div::isUsageEnabled()) {
+		$mode = TYPO3_MODE;
+		if($this->info['requestedServiceSubType'] === 'authUserBE') {
+			$mode = 'BE';
+		}
+		else if ($this->info['requestedServiceSubType'] === 'authUserFE') {
+			$mode = 'FE';
+		}
+
+		if (tx_saltedpasswords_div::isUsageEnabled($mode)) {
 			$available = TRUE;
 			$this->extConf = tx_saltedpasswords_div::returnExtConf();
 		}
@@ -282,13 +290,9 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 * @return	void
 	 */
 	protected function updatePassword($uid, $updateFields) {
-		if (TYPO3_MODE === 'BE') {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'be_users', sprintf('uid = %u', $uid), $updateFields);
-		} else {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'fe_users', sprintf('uid = %u', $uid), $updateFields);
-		}
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->pObj->user_table, sprintf('uid = %u', $uid), $updateFields);
 
-		t3lib_div::devLog(sprintf('Automatic password update for %s user with uid %u', TYPO3_MODE, $uid), $this->extKey, 1);
+		t3lib_div::devLog(sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid), $this->extKey, 1);
 	}
 
 	/**
