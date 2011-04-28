@@ -5210,12 +5210,24 @@ final class t3lib_div {
 		if (!is_array($excludeServiceKeys)) {
 			$excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, 1);
 		}
+
+		$requestInfo['requestedServiceType'] = $serviceType;
+		$requestInfo['requestedServiceSubType'] = $serviceSubType;
+		$requestInfo['requestedExcludeServiceKeys'] = $excludeServiceKeys;
+
 		while ($info = t3lib_extMgm::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
+
+				// provide information about requested service to service object
+			$info =  array_merge($info, $requestInfo);
 
 				// Check persistent object and if found, call directly and exit.
 			if (is_object($GLOBALS['T3_VAR']['makeInstanceService'][$info['className']])) {
+
+					// update request info in persistent object
+				$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->info = $info;
+
 					// reset service and return object
-				$T3_VAR['makeInstanceService'][$info['className']]->reset();
+				$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->reset();
 				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
 
 				// include file and create object
@@ -5233,7 +5245,7 @@ final class t3lib_div {
 						if ($obj->init()) { // service available?
 
 								// create persistent object
-							$T3_VAR['makeInstanceService'][$info['className']] = $obj;
+							$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
 
 								// needed to delete temp files
 							register_shutdown_function(array(&$obj, '__destruct'));
