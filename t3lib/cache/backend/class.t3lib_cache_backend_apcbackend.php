@@ -201,33 +201,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tags.
-	 *
-	 * @param array Array of tags to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		$taggedEntries = array();
-		$foundEntries = array();
-
-		foreach ($tags as $tag) {
-			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
-		}
-
-		$intersectedTaggedEntries = call_user_func_array('array_intersect', $taggedEntries);
-
-		foreach ($intersectedTaggedEntries as $entryIdentifier) {
-			if ($this->has($entryIdentifier)) {
-				$foundEntries[$entryIdentifier] = $entryIdentifier;
-			}
-		}
-
-		return $foundEntries;
-	}
-
-	/**
 	 * Finds all tags for the given identifier. This function uses reverse tag
 	 * index to search for tags.
 	 *
@@ -272,19 +245,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 		$identifiers = $this->findIdentifiersByTag($tag);
 		foreach ($identifiers as $identifier) {
 			$this->remove($identifier);
-		}
-	}
-
-	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function flushByTags(array $tags) {
-		foreach ($tags as $tag) {
-			$this->flushByTag($tag);
 		}
 	}
 

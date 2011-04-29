@@ -97,18 +97,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	}
 
 	/**
-	 * Returns an empty array
-	 *
-	 * @param array $tags ignored
-	 * @return array An empty array
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		return array();
-	}
-
-	/**
 	 * Does nothing
 	 *
 	 * @return void
@@ -127,17 +115,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function flushByTag($tag) {
-	}
-
-	/**
-	 * Does nothing
-	 *
-	 * @param array $tags ignored
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function flushByTags(array $tags) {
 	}
 
 	/**
