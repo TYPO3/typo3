@@ -510,7 +510,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 			// Including CSS files
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.']) && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
 			$temp_styleLines = array ();
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode) && $iCSScode['_CSS_DEFAULT_STYLE']) {
