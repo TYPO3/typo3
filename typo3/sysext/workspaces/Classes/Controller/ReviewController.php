@@ -108,7 +108,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$this->view->assign('pageUid', t3lib_div::_GP('id'));
 		$this->view->assign('showGrid', true);
-		$this->view->assign('showAllWorkspaceTab', false);
+		$this->view->assign('showAllWorkspaceTab', FALSE);
 		$this->view->assign('workspaceList', $wsList);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
 	}

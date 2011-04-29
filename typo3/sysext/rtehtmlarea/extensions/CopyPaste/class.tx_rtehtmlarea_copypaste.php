@@ -56,7 +56,7 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlarea_api {
 			$this->pluginButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), $this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']]));
 		}
 			// Force enabling the plugin even if no button remains in the tool bar, so that hot keys still are enabled
-		$this->pluginAddsButtons = false;
+		$this->pluginAddsButtons = FALSE;
 		return $enabled;
 	}
 

@@ -239,7 +239,7 @@ class t3lib_TStemplate {
 	 * is regenerated - at least the this->start function must be called,
 	 * because this will make a new portion of data in currentPageData string.
 	 *
-	 * @return	array		Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise false is returned which means that the array must be generated and stored in the cache-table
+	 * @return	array		Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache-table
 	 * @see start(), tslib_fe::getFromCache()
 	 */
 	function getCurrentPageData() {

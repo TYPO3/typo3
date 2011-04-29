@@ -842,7 +842,7 @@ class browse_links {
 					}
 					$this->curUrlInfo = $this->parseCurUrl('mailto:'.$this->curUrlArray['href'], $this->siteURL);
 				} else { // nothing of the above. this is an external link
-					if(strpos($this->curUrlArray['href'], '://') === false) {
+					if(strpos($this->curUrlArray['href'], '://') === FALSE) {
 						$currentLinkParts[0] = 'http://' . $this->curUrlArray['href'];
 					}
 					$this->curUrlInfo = $this->parseCurUrl($currentLinkParts[0], $this->siteURL);
@@ -1190,7 +1190,7 @@ class browse_links {
 	 * @return	array		Session data and boolean which indicates that data needs to be stored in session because it's changed
 	 */
 	function processSessionData($data) {
-		$store = false;
+		$store = FALSE;
 
 		switch((string)$this->mode)	{
 			case 'db':
@@ -1776,7 +1776,7 @@ class browse_links {
 		$foldertree                         = t3lib_div::makeInstance('TBE_FolderTree');
 		$foldertree->thisScript             = $this->thisScript;
 		$foldertree->ext_noTempRecyclerDirs = ($this->mode == 'filedrag');
-		$tree                                = $foldertree->getBrowsableTree(false);
+		$tree                                = $foldertree->getBrowsableTree(FALSE);
 
 		list(, , $specUid) = explode('_', $this->PM);
 
@@ -2552,7 +2552,7 @@ class browse_links {
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
 	 */
 	function checkFolder($folder)	{
-		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? true : false;
+		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? true : FALSE;
 	}
 
 	/**

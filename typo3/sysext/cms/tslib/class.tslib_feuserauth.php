@@ -99,7 +99,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_timeout_field = 6000;				// Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 6000;				// Server session lifetime. If > 0: session-timeout in seconds. If FALSE or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 
 	var $lifetime = 0;				// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	protected $sessionDataLifetime = 86400;		// Lifetime of session data in seconds.
@@ -557,7 +557,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$count = parent::isExistingSessionRecord($id);
 
 			// Check if there are any fe_session_data records for the session ID the client claims to have
-		if ($count == false) {
+		if ($count == FALSE) {
 			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
 				'content',
 				'fe_session_data',
@@ -575,7 +575,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 			// @deprecated: Check for commerce basket records. The following lines should be removed once a fixed commerce version is released.
 			// Extensions like commerce which have their own session table should just put some small bit of data into fe_session_data using $GLOBALS['TSFE']->fe_user->setKey('ses', ...) to make the session stable.
-		if ($count == false && t3lib_extMgm::isLoaded('commerce')) {
+		if ($count == FALSE && t3lib_extMgm::isLoaded('commerce')) {
 			t3lib_div::deprecationLog("EXT:commerce specific code in tslib_feuserauth::isExistingSessionRecord() is deprecated. Will be removed in 4.6");
 
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -583,7 +583,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 							'tx_commerce_baskets',
 							'sid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'tx_commerce_baskets')
 						);
-			if ($dbres !== false) {
+			if ($dbres !== FALSE) {
 				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
 					$count = true;
 				}

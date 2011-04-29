@@ -224,7 +224,7 @@ class SC_show_item {
 			$returnLinkTag = $returnLink ? '<a href="' . $returnLink . '" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 
 				// render type by user func
-			$typeRendered = false;
+			$typeRendered = FALSE;
 			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
 					$typeRenderObj = t3lib_div::getUserObj($classRef);
@@ -325,7 +325,7 @@ class SC_show_item {
 		$imgObj->mayScaleUp = 0;
 		$imgObj->absPrefix = PATH_site;
 
-			// Read Image Dimensions (returns false if file was not an image type, otherwise dimensions in an array)
+			// Read Image Dimensions (returns FALSE if file was not an image type, otherwise dimensions in an array)
 		$imgInfo = '';
 		$imgInfo = $imgObj->getImageDimensions($this->file);
 

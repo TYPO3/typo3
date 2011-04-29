@@ -82,7 +82,7 @@ class tx_recycler_controller_ajax {
 					// check params
 				if (!is_string($this->command)) {
 						// @TODO make devlog output
-					return false;
+					return FALSE;
 				}
 
 					// Create content
@@ -123,7 +123,7 @@ class tx_recycler_controller_ajax {
 
 						// Delete records
 					case 'doDelete':
-						$str = false;
+						$str = FALSE;
 						$model = t3lib_div::makeInstance('tx_recycler_model_deletedRecords');
 						if ($model->deleteData($this->data)) {
 							$str = true;
@@ -132,7 +132,7 @@ class tx_recycler_controller_ajax {
 
 						// Undelete records
 					case 'doUndelete':
-						$str = false;
+						$str = FALSE;
 						$recursive = t3lib_div::_GP('recursive');
 						$model = t3lib_div::makeInstance('tx_recycler_model_deletedRecords');
 						if ($model->undeleteData($this->data, $recursive)) {

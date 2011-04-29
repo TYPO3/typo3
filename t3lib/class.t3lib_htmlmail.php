@@ -1229,7 +1229,7 @@ class t3lib_htmlmail {
 	 * reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
 	 *
 	 * @param	string		$url: the URL to get information of
-	 * @return	mixed		either false or the array with information
+	 * @return	mixed		either FALSE or the array with information
 	 */
 	public function getExtendedURL($url) {
 		$res = array();

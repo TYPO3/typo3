@@ -102,8 +102,8 @@
  * 3567:	 function deleteSpecificPage($uid,$forceHardDelete=FALSE)
  * 3592:	 function canDeletePage($uid)
  * 3619:	 function cannotDeleteRecord($table,$id)
- * 3638:	 function deleteRecord_procFields($table, $uid, $undeleteRecord = false)
- * 3661:	 function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = false)
+ * 3638:	 function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE)
+ * 3661:	 function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = FALSE)
  *
  *			  SECTION: Cmd: Versioning
  * 3722:	 function versionizeRecord($table,$id,$label,$delete=FALSE,$versionizeTree=-1)
@@ -3728,7 +3728,7 @@ class t3lib_TCEmain {
 	 * @param	string		Table name
 	 * @param	integer		Record uid (to be localized)
 	 * @param	integer		Language ID (from sys_language table)
-	 * @return	mixed		The uid (integer) of the new translated record or false (boolean) if something went wrong
+	 * @return	mixed		The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
 	 */
 	function localize($table, $uid, $language) {
 		$newId = FALSE;
@@ -4304,7 +4304,7 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Returns true if record CANNOT be deleted, otherwise false. Used to check before the versioning API allows a record to be marked for deletion.
+	 * Returns true if record CANNOT be deleted, otherwise FALSE. Used to check before the versioning API allows a record to be marked for deletion.
 	 *
 	 * @param	string		Record Table
 	 * @param	integer		Record UID
@@ -5398,7 +5398,7 @@ class t3lib_TCEmain {
 	 *
 	 * @param	integer		Destination Page ID to test
 	 * @param	integer		Page ID to test for presence inside Destination
-	 * @return	boolean		Returns false if ID is inside destination (including equal to)
+	 * @return	boolean		Returns FALSE if ID is inside destination (including equal to)
 	 */
 	function destNotInsideSelf($dest, $id) {
 		$loopCheck = 100;
@@ -5511,7 +5511,7 @@ class t3lib_TCEmain {
 	 * @param	string		Table name
 	 * @param	integer		UID of the record from $table
 	 * @param	string		Field list for the SELECT query, eg. "*" or "uid,pid,..."
-	 * @return	mixed		Returns the selected record on success, otherwise false.
+	 * @return	mixed		Returns the selected record on success, otherwise FALSE.
 	 */
 	function recordInfo($table, $id, $fieldList) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -5816,7 +5816,7 @@ class t3lib_TCEmain {
 	 * @param	string		Table name
 	 * @param	integer		Uid of record to find sorting number for. May be zero in case of new.
 	 * @param	integer		Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
-	 * @return	mixed		Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly false in case of error.
+	 * @return	mixed		Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
 	 */
 	function getSortNumber($table, $uid, $pid) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
@@ -6388,10 +6388,10 @@ class t3lib_TCEmain {
 
 	/**
 	 * Returns the subtype as a string of an inline field.
-	 * If it's not a inline field at all, it returns false.
+	 * If it's not a inline field at all, it returns FALSE.
 	 *
 	 * @param	array		config array for TCA/columns field
-	 * @return	mixed		string: inline subtype (field|mm|list), boolean: false
+	 * @return	mixed		string: inline subtype (field|mm|list), boolean: FALSE
 	 */
 	function getInlineFieldType($conf) {
 		if ($conf['type'] == 'inline' && $conf['foreign_table']) {
@@ -6672,7 +6672,7 @@ class t3lib_TCEmain {
 					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
 							$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
-								// Returns the array of ids to clear, false if nothing should be cleared! Never an empty array!
+								// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
 							t3lib_div::callUserFunction($funcName, $_params, $this);
 						}
 					}
@@ -6821,7 +6821,7 @@ class t3lib_TCEmain {
 				if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
 					foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
 						$_params = array('pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()');
-							// Returns the array of ids to clear, false if nothing should be cleared! Never an empty array!
+							// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
 						t3lib_div::callUserFunction($funcName, $_params, $this);
 					}
 				}

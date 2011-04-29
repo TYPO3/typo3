@@ -82,14 +82,14 @@ class tx_scheduler_SleepTask_AdditionalFieldProvider implements tx_scheduler_Add
 	 *
 	 * @param	array					$submittedData: reference to the array containing the data submitted by the user
 	 * @param	tx_scheduler_Module		$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	boolean					True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return	boolean					True if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
 		$submittedData['sleepTime'] = intval($submittedData['sleepTime']);
 
 		if ($submittedData['sleepTime'] < 0) {
 			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.invalidSleepTime'), t3lib_FlashMessage::ERROR);
-			$result = false;
+			$result = FALSE;
 		} else {
 			$result = true;
 		}

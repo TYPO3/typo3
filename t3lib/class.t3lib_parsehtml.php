@@ -680,7 +680,7 @@ class t3lib_parsehtml {
 	 *				 'trim,intval,lower,upper' =>	 All booleans. If any of these keys are set, the value is passed through the respective PHP-functions.
 	 *				 'range' => Array ('[low limit]','[high limit, optional]')		Setting integer range.
 	 *				 'list' => Array ('[value1/default]','[value2]','[value3]')		Attribute must be in this list. If not, the value is set to the first element.
-	 *				 'removeIfFalse' =>	 Boolean/'blank'.	If set, then the attribute is removed if it is 'false'. If this value is set to 'blank' then the value must be a blank string (that means a 'zero' value will not be removed)
+	 *				 'removeIfFalse' =>	 Boolean/'blank'.	If set, then the attribute is removed if it is 'FALSE'. If this value is set to 'blank' then the value must be a blank string (that means a 'zero' value will not be removed)
 	 *				 'removeIfEquals' =>	 [value]	If the attribute value matches the value set here, then it is removed.
 	 *				 'casesensitiveComp' => 1	If set, then the removeIfEquals and list comparisons will be case sensitive. Otherwise not.
 	 *			 )
@@ -1219,7 +1219,7 @@ class t3lib_parsehtml {
 	 * Internal function for case shifting of a string or whole array
 	 *
 	 * @param	mixed		Input string/array
-	 * @param	boolean		If $str is a string AND this boolean(caseSensitive) is false, the string is returned in uppercase
+	 * @param	boolean		If $str is a string AND this boolean(caseSensitive) is FALSE, the string is returned in uppercase
 	 * @param	string		Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
 	 * @return	string		Output string, processed
 	 * @access private

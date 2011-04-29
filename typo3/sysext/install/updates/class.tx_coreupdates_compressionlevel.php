@@ -37,7 +37,7 @@ class tx_coreupdates_compressionlevel extends Tx_Install_Updates_Base {
 	 * Checks if there there is an compression level configured which may break the BE.
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (true) or not (false)
+	 * @return	boolean		whether an update is needed (true) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$description = '<p><strong>TYPO3_CONF_VARS[BE][compressionLevel] is enabled.</strong><br />

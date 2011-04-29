@@ -584,7 +584,7 @@ class fileList extends t3lib_recordList {
 			$d = @dir($path);
 			$tempArray=Array();
 			if (is_object($d))	{
-				while(false !== ($entry=$d->read())) {
+				while(FALSE !== ($entry=$d->read())) {
 					if ($entry!='.' && $entry!='..')	{
 						$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <br />-tag is sometimes placed after a filename!!
 						if (@file_exists($wholePath) && (!$type || t3lib_div::inList($type,filetype($wholePath))))	{

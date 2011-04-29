@@ -148,7 +148,7 @@ class t3lib_xml {
 	 * Indents/Outdents a new level named, $name
 	 *
 	 * @param	string		The name of the new element for this level
-	 * @param	boolean		If false, then this function call will *end* the level, otherwise create it.
+	 * @param	boolean		If FALSE, then this function call will *end* the level, otherwise create it.
 	 * @param	array		Array of attributes in key/value pairs which will be added to the element (tag), $name
 	 * @return	void
 	 */

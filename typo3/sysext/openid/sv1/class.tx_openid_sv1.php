@@ -90,7 +90,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	/**
 	 * If set to true, than libraries are already included.
 	 */
-	protected static $openIDLibrariesIncluded = false;
+	protected static $openIDLibrariesIncluded = FALSE;
 
 	/**
 	 * Contructs the OpenID authentication service.
@@ -114,7 +114,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 	 * @return	boolean		true if service is available
 	 */
 	public function init() {
-		$available = false;
+		$available = FALSE;
 		if (extension_loaded('gmp')) {
 			$available = is_callable('gmp_init');
 		} elseif (extension_loaded('bcmath')) {
@@ -124,10 +124,10 @@ class tx_openid_sv1 extends t3lib_svbase {
 		}
 		// We also need set_include_path() PHP function
 		if (!is_callable('set_include_path')) {
-			$available = false;
+			$available = FALSE;
 			$this->writeDevLog('set_include_path() PHP function is not available. OpenID authentication is disabled.');
 		}
-		return $available ? parent::init() : false;
+		return $available ? parent::init() : FALSE;
 	}
 
 	/**
@@ -386,7 +386,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 			t3lib_utility_Http::redirect($redirectURL, t3lib_utility_Http::HTTP_STATUS_303);
 		} else {
 			$formHtml = $authenticationRequest->htmlMarkup($trustedRoot,
-							$returnURL, false, array('id' => 'openid_message'));
+							$returnURL, FALSE, array('id' => 'openid_message'));
 
 			// Display an error if the form markup couldn't be generated;
 			// otherwise, render the HTML.

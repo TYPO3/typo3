@@ -168,10 +168,10 @@ class tx_em_Tools_Unzip {
 			$p_params = array();
 		}
 		if ($this->_check_parameters($p_params,
-			array('extract_as_string' => false,
+			array('extract_as_string' => FALSE,
 				'add_path' => '',
 				'remove_path' => '',
-				'remove_all_path' => false,
+				'remove_all_path' => FALSE,
 				'callback_pre_extract' => '',
 				'callback_post_extract' => '',
 				'set_chmod' => 0)) != 1) {
@@ -205,7 +205,7 @@ class tx_em_Tools_Unzip {
 	 * @param  boolean $p_with_code  If true, gives the name and the int value.
 	 * @return string The error name.
 	 */
-	function errorName($p_with_code = false) {
+	function errorName($p_with_code = FALSE) {
 		$v_const_list = get_defined_constants();
 
 		// Extract error constants from all const.
@@ -218,7 +218,7 @@ class tx_em_Tools_Unzip {
 
 		// Search the name form the code value
 		$v_key = array_search($this->_error_code, $v_error_list, true);
-		if ($v_key != false) {
+		if ($v_key != FALSE) {
 			$v_value = $v_key;
 		} else {
 			$v_value = 'NoName';
@@ -237,11 +237,11 @@ class tx_em_Tools_Unzip {
 	 * @access public
 	 * @param  boolean $p_full If set to true gives the description with the
 	 *						 error code, the name and the description.
-	 *						 If set to false gives only the description
+	 *						 If set to FALSE gives only the description
 	 *						 and the error code.
 	 * @return string The error description.
 	 */
-	function errorInfo($p_full = false) {
+	function errorInfo($p_full = FALSE) {
 		if ($p_full) {
 			return ($this->errorName(true) . " : " . $this->_error_string);
 		} else {
@@ -268,7 +268,7 @@ class tx_em_Tools_Unzip {
 			// Error log
 			$this->_errorLog(ARCHIVE_ZIP_ERR_MISSING_FILE,
 					"Missing archive file '" . $this->_zipname . "'");
-			return (false);
+			return (FALSE);
 		}
 
 		// Check that the file is readeable
@@ -276,7 +276,7 @@ class tx_em_Tools_Unzip {
 			// Error log
 			$this->_errorLog(ARCHIVE_ZIP_ERR_READ_OPEN_FAIL,
 					"Unable to read archive '" . $this->_zipname . "'");
-			return (false);
+			return (FALSE);
 		}
 
 		// Check the magic code
@@ -1062,7 +1062,7 @@ class tx_em_Tools_Unzip {
 	 *
 	 * @param [type] $p_is_dir
 	 */
-	function _dirCheck($p_dir, $p_is_dir = false) {
+	function _dirCheck($p_dir, $p_is_dir = FALSE) {
 		$v_result = 1;
 
 		// Remove the final '/'
@@ -1372,7 +1372,7 @@ class tx_em_Tools_Unzip {
 		if (stristr(php_uname(), 'windows')) {
 			// Look for potential disk letter
 			if (($p_remove_disk_letter)
-					&& (($v_position = strpos($p_path, ':')) != false)) {
+					&& (($v_position = strpos($p_path, ':')) != FALSE)) {
 				$p_path = substr($p_path, $v_position + 1);
 			}
 			// Change potential windows directory separator

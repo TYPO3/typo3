@@ -632,7 +632,7 @@ class t3lib_cs {
 					$conv_str = mb_convert_encoding($str, $toCS, $fromCS);
 					if (FALSE !== $conv_str) {
 						return $conv_str;
-					} // returns false for unsupported charsets
+					} // returns FALSE for unsupported charsets
 					break;
 
 				case 'iconv':

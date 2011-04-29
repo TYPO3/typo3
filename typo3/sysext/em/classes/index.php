@@ -1103,7 +1103,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			case 'mirrors':
 				$mfile = t3lib_div::tempnam('mirrors');
 				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL'], 0, array(TYPO3_user_agent));
-				if ($mirrorsFile===false) {
+				if ($mirrorsFile===FALSE) {
 					t3lib_div::unlink_tempfile($mfile);
 					$content = '<p>' .
 							sprintf($GLOBALS['LANG']->getLL('ext_import_list_not_updated'),
@@ -1142,7 +1142,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				// count cached extensions. If cache is empty re-fill it
 				$cacheCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('extkey', 'cache_extensions');
 
-				if ($extmd5 === false) {
+				if ($extmd5 === FALSE) {
 					$content .= '<p>' .
 							sprintf($GLOBALS['LANG']->getLL('ext_import_md5_not_updated'),
 									$mirror . 'extensions.md5'
@@ -1158,7 +1158,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					$content .= $flashMessage->render();
 				} else {
 					$extXML = t3lib_div::getURL($extfile, 0, array(TYPO3_user_agent));
-					if ($extXML === false) {
+					if ($extXML === FALSE) {
 						$content .= '<p>' .
 								sprintf($GLOBALS['LANG']->getLL('ext_import_list_unchanged'),
 									$extfile
@@ -1190,7 +1190,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$this->fetchMetaData('mirrors');
 			$mirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
 			if (!is_array($mirrors)) {
-				return false;
+				return FALSE;
 			}
 		}
 		if ($this->MOD_SETTINGS['selectedMirror'] == '') {
@@ -1251,7 +1251,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 			} else {
 				if (!t3lib_extMgm::isLocalconfWritable()) {
-					return array(false, $GLOBALS['LANG']->getLL('ext_import_p_localconf'));
+					return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_p_localconf'));
 				}
 				$newExtList = -1;
 				switch ($mode) {
@@ -1295,14 +1295,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			switch ($mode) {
 				case EM_INSTALL_VERSION_STRICT:
 					if (!isset($this->xmlHandler->extensionsXML[$extKey]['versions'][$version])) {
-						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
+						return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 				case EM_INSTALL_VERSION_MIN:
 					if (version_compare($latestVersion, $version, '>=')) {
 						$version = $latestVersion;
 					} else {
-						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
+						return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 				case EM_INSTALL_VERSION_MAX:
@@ -1313,7 +1313,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					if ($v !== null && version_compare($v, $version, '<=')) {
 						$version = $v;
 					} else {
-						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
+						return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 			}
@@ -1326,10 +1326,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$this->translations->installTranslationsForExtension($extKey, $this->getMirrorURL());
 				return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_imported'));
 			} else {
-				return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_not_loaded'));
+				return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_ext_not_loaded'));
 			}
 		} else {
-			return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a_rep'));
+			return array(FALSE, $GLOBALS['LANG']->getLL('ext_import_ext_n_a_rep'));
 		}
 	}
 
@@ -1344,11 +1344,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @param	boolean		If true, extension is uploaded as file
 	 * @param	boolean		If true, extension directory+files will not be deleted before writing the new ones. That way custom files stored in the extension folder will be kept.
 	 * @param	array		Direct input array (like from kickstarter)
-	 * @return	string		Return false on success, returns error message if error.
+	 * @return	string		Return FALSE on success, returns error message if error.
 	 */
 	function importExtFromRep($extKey, $version, $loc, $uploadFlag = 0, $dontDelete = 0, $directInput = '') {
 
-		$uploadSucceed = false;
+		$uploadSucceed = FALSE;
 		$uploadedTempFile = '';
 		if (is_array($directInput)) {
 			$fetchData = array($directInput, '');
@@ -1451,7 +1451,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			t3lib_div::unlink_tempfile($uploadedTempFile);
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**

@@ -211,7 +211,7 @@ class template {
 	);
 
 		// DEV:
-	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to false when releasing TYPO3. Only for dev.
+	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to FALSE when releasing TYPO3. Only for dev.
 
 		// INTERNAL
 	var $charset = 'iso-8859-1';	// Default charset. see function initCharset()
@@ -1074,7 +1074,7 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * If a form-tag is defined in ->form then and end-tag for that <form> element is outputted
-	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to false)
+	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to FALSE)
 	 *
 	 * @return	string		HTML content (<script> tag section)
 	 */

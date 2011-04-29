@@ -98,7 +98,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	var $content;						// Accumulated content
 
 	// internal variables
-	var	$isEditAction = false;			// true if about to edit workspace
+	var	$isEditAction = FALSE;			// true if about to edit workspace
 	var $workspaceId;					// ID of the workspace that we will edit. Set only if $isEditAction is true.
 
 	/**
@@ -585,10 +585,10 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 */
 	function checkWorkspaceAccess() {
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . intval($this->workspaceId) . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
-		if (is_array($workspaces) && count($workspaces) != 0 && false !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
+		if (is_array($workspaces) && count($workspaces) != 0 && FALSE !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
 			return ($rec['_ACCESS'] == 'owner' || $rec['_ACCESS'] == 'admin');
 		}
-		return false;
+		return FALSE;
 	}
 }
 

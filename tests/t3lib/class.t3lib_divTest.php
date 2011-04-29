@@ -1360,7 +1360,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvaluetHtmlspecialcharsDataWithinCDataSetToFalse() {
 		$this->assertContains(
 			'&gt;',
-			t3lib_div::quoteJSvalue('>', false)
+			t3lib_div::quoteJSvalue('>', FALSE)
 		);
 	}
 
@@ -1420,7 +1420,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesAndHtmlspecialcharsDoubleQuoteWithinCDataSetToFalse() {
 		$this->assertEquals(
 			"'\\&quot;'",
-			t3lib_div::quoteJSvalue('"', false)
+			t3lib_div::quoteJSvalue('"', FALSE)
 		);
 	}
 

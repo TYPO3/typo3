@@ -1310,7 +1310,7 @@ class SC_alt_doc {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record UID
-	 * @return	array		Returns record to edit, false if none
+	 * @return	array		Returns record to edit, FALSE if none
 	 */
 	function getRecordForEdit($table,$theUid)	{
 
@@ -1337,7 +1337,7 @@ class SC_alt_doc {
 					}
 				} else return FALSE;		// This means that editing cannot occur on this record because it was not supporting versioning which is required inside an offline workspace.
 			} else return $reqRecord; 	// In ONLINE workspace, just return the originally requested record:
-		} else return FALSE;	// Return false because the table/uid was not found anyway.
+		} else return FALSE;	// Return FALSE because the table/uid was not found anyway.
 	}
 
 	/**

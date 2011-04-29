@@ -40,7 +40,7 @@ require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_abs
 class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 
 	/**
-	 * A path to the openssl binary or false if the binary does not exist
+	 * A path to the openssl binary or FALSE if the binary does not exist
 	 *
 	 * @var	mixed
 	 */
@@ -97,7 +97,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 
 		// Test that we got a private key
 		$privateKey = file_get_contents($privateKeyFile);
-		if (false !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
+		if (FALSE !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
 			// Ok, we got the private key. Get the modulus.
 			$command = $this->opensslPath . ' rsa -noout -modulus -in ' .
 				escapeshellarg($privateKeyFile);
@@ -159,7 +159,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 	 * @see tx_rsaauth_abstract_backend::isAvailable()
 	 */
 	public function isAvailable() {
-		$result = false;
+		$result = FALSE;
 		if ($this->opensslPath) {
 			// If path exists, test that command runs and can produce output
 			$test = t3lib_utility_Command::exec($this->opensslPath . ' version');

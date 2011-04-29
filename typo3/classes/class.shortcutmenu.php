@@ -94,7 +94,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  true if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 			// "Shortcuts" have been renamed to "Bookmarks"
@@ -361,10 +361,10 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * gets a shortcut by its uid
 	 *
 	 * @param	integer		shortcut id to get the complete shortcut for
-	 * @return	mixed		an array containing the shortcut's data on success or false on failure
+	 * @return	mixed		an array containing the shortcut's data on success or FALSE on failure
 	 */
 	protected function getShortcutById($shortcutId) {
-		$returnShortcut = false;
+		$returnShortcut = FALSE;
 
 		foreach($this->shortcuts as $shortcut) {
 			if($shortcut['raw']['uid'] == (int) $shortcutId) {

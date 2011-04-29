@@ -530,7 +530,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$renderGlobalCaption = !$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']);
 		if ($imgCount == 1) {
 				// If we just have one image, the caption relates to the image, so it is not "global"
-			$renderGlobalCaption = false;
+			$renderGlobalCaption = FALSE;
 		}
 
 			// Use the calculated information (amount of images, if global caption is wanted) to choose a different rendering method for the images-block

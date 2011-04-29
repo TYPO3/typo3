@@ -1999,10 +1999,10 @@ class tslib_cObj {
 			// additional Array to check whether a function has already been executed
 			$isExecuted = array();
 			// additional switch to make sure 'required', 'if' and 'fieldRequired'
-			// will still stop rendering immediately in case they return false
+			// will still stop rendering immediately in case they return FALSE
 
 			$this->stdWrapRecursionLevel++;
-			$this->stopRendering[$this->stdWrapRecursionLevel] = false;
+			$this->stopRendering[$this->stdWrapRecursionLevel] = FALSE;
 
 			// execute each funtion in the predefined order
 			foreach ($sortedConf as $stdWrapName => $functionType) {
@@ -2258,7 +2258,7 @@ class tslib_cObj {
 
 	/**
 	 * ifEmpty
-	 * Will set content to a replacement value in case the trimmed value of content returns false
+	 * Will set content to a replacement value in case the trimmed value of content returns FALSE
 	 * 0 (zero) will be replaced as well
 	 *
 	 * @param	string		Input value undergoing processing in this function.
@@ -2368,7 +2368,7 @@ class tslib_cObj {
 	/**
 	 * if
 	 * Will immediately stop rendering and return an empty value
-	 * when the result of the checks returns false
+	 * when the result of the checks returns FALSE
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for if.

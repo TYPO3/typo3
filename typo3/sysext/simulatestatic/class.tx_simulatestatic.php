@@ -33,7 +33,7 @@
  * @author	Benjamin Mack <benni . typo3 . o)rg>
  */
 class tx_simulatestatic {
-	public $enabled = false;
+	public $enabled = FALSE;
 	public $replacementChar = '';
 	public $conf = array();
 	public $pEncodingAllowedParamNames = array();
@@ -147,7 +147,7 @@ class tx_simulatestatic {
 			($page['alias'] ? $page['alias'] : $page['uid']),
 			intval($parameters['typeNum']),
 			$LD['linkVars'],
-			($LD['no_cache'] ? true : false)
+			($LD['no_cache'] ? true : FALSE)
 		);
 		if ($this->conf['mode'] == 'PATH_INFO') {
 			$url = 'index.php/' . str_replace('.', '/', $url) . '/';
@@ -298,7 +298,7 @@ class tx_simulatestatic {
 	 * @return	string		The body of the filename.
 	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
 	 */
-	public function makeSimulatedFileName($inTitle, $page, $type, $addParams = '', $no_cache = false) {
+	public function makeSimulatedFileName($inTitle, $page, $type, $addParams = '', $no_cache = FALSE) {
 			// Default value is 30 but values > 1 will be override this
 		$titleChars = intval($this->conf['addTitle']);
 		if ($titleChars == 1) {

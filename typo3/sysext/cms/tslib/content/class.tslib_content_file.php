@@ -46,7 +46,7 @@ class tslib_content_File extends tslib_content_Abstract {
 			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
 			: $conf['file'];
 
-		$theValue = $this->cObj->fileResource($file, trim($this->cObj->getAltParam($conf, false)));
+		$theValue = $this->cObj->fileResource($file, trim($this->cObj->getAltParam($conf, FALSE)));
 
 		$linkWrap =  isset($conf['linkWrap.'])
 			? $this->cObj->stdWrap($conf['linkWrap'], $conf['linkWrap.'])

@@ -113,7 +113,7 @@ class t3lib_basicFileFunctions {
 	 *		 $f_ext['ftpspace']['allow']='*';
 	 *		 $f_ext['ftpspace']['deny']='';
 	 *	 The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
-	 *	 The control is done like this: If an extension matches 'allow' then the check returns true. If not and an extension matches 'deny' then the check return false. If no match at all, returns true.
+	 *	 The control is done like this: If an extension matches 'allow' then the check returns true. If not and an extension matches 'deny' then the check return FALSE. If no match at all, returns true.
 	 *	 You list extensions comma-separated. If the value is a '*' every extension is allowed
 	 *	 The list is case-insensitive when used in this class (see init())
 	 *  Typically TYPO3_CONF_VARS['BE']['fileExtensions'] would be passed along as $f_ext.
@@ -188,7 +188,7 @@ class t3lib_basicFileFunctions {
 				if ($this->f_ext[$type]['allow'] == '*' || t3lib_div::inList($this->f_ext[$type]['allow'], $ik)) {
 					return TRUE;
 				}
-					// If the extension is found amongst the denied types, we return false immediately
+					// If the extension is found amongst the denied types, we return FALSE immediately
 				if ($this->f_ext[$type]['deny'] == '*' || t3lib_div::inList($this->f_ext[$type]['deny'], $ik)) {
 					return FALSE;
 				}
@@ -267,7 +267,7 @@ class t3lib_basicFileFunctions {
 	 * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
 	 *
 	 * @param	string		Directory path to check
-	 * @return	string		Returns the cleaned up directory name if OK, otherwise false.
+	 * @return	string		Returns the cleaned up directory name if OK, otherwise FALSE.
 	 */
 	function is_directory($theDir) {
 		if ($this->isPathValid($theDir)) {

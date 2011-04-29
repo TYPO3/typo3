@@ -134,7 +134,7 @@ class tx_t3editor_hooks_fileedit {
 	 * @return boolean true if successful
 	 */
 	public function save($parameters, $pObj) {
-		$savingsuccess = false;
+		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
 			require_once('init.php');
 			require_once('classes/class.typo3_tcefile.php');

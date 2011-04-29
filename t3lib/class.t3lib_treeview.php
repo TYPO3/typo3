@@ -269,7 +269,7 @@ class t3lib_treeView {
 			t3lib_div::loadTCA($this->table);
 		}
 
-			// setting this to false disables the use of array-trees by default
+			// setting this to FALSE disables the use of array-trees by default
 		$this->data = FALSE;
 		$this->dataLookup = FALSE;
 	}
@@ -545,7 +545,7 @@ class t3lib_treeView {
 
 
 	/**
-	 * Returns true/false if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
+	 * Returns true/FALSE if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
 	 * Extending parent function
 	 *
 	 * @param	integer		record id/key

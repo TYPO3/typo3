@@ -59,10 +59,10 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	/**
 	 * Find a user (eg. look up the user record in database when a login is sent)
 	 *
-	 * @return	mixed		user array or false
+	 * @return	mixed		user array or FALSE
 	 */
 	function getUser()	{
-		$user = false;
+		$user = FALSE;
 
 		if ($this->login['status']=='login' && $this->login['uident'])	{
 
@@ -127,7 +127,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 						0
 					);
 				}
-				$OK = false;
+				$OK = FALSE;
 			}
 		}
 

@@ -40,9 +40,9 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 
 	protected $relativePath;
 	protected $pageRecord = array();
-	protected $isAccessibleForCurrentUser = false;
+	protected $isAccessibleForCurrentUser = FALSE;
 
-	protected $allowDelete = false;
+	protected $allowDelete = FALSE;
 	protected $recordsPageLimit = 50;
 
 	/**
@@ -72,7 +72,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 
 		//don't access in workspace
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
-			$this->isAccessibleForCurrentUser = false;
+			$this->isAccessibleForCurrentUser = FALSE;
 		}
 
 		//read configuration

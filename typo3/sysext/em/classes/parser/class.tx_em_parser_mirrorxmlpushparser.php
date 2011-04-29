@@ -197,7 +197,7 @@ class tx_em_Parser_MirrorXmlPushParser extends tx_em_Parser_MirrorXmlAbstractPar
 	 */
 	public function detach(SplObserver $observer) {
 		$key = array_search($observer, $this->observers, true);
-		if (!($key === false)) {
+		if (!($key === FALSE)) {
 			unset($this->observers[$key]);
 		}
 	}

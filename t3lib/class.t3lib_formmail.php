@@ -37,7 +37,7 @@
  *
  *
  *   69: class t3lib_formmail
- *   95:	 function start($V,$base64=false)
+ *   95:	 function start($V,$base64=FALSE)
  *  172:	 function addAttachment($file, $filename)
  *
  * TOTAL FUNCTIONS: 2
@@ -99,7 +99,7 @@ class t3lib_formmail {
 	 * @param	boolean		Whether to base64 encode the mail content
 	 * @return	void
 	 */
-	function start($valueList, $base64 = false) {
+	function start($valueList, $base64 = FALSE) {
 
 		$this->mailMessage = t3lib_div::makeInstance('t3lib_mail_Message');
 

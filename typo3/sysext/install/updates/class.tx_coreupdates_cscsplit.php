@@ -37,7 +37,7 @@ class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
 	 * @param	string		pointer to description for the update
-	 * @return	boolean		true if update is needs to be performed, false otherwise.
+	 * @return	boolean		true if update is needs to be performed, FALSE otherwise.
 	 */
 	function checkForUpdate(&$description) {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
@@ -51,7 +51,7 @@ class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
 				'first, and then return back to this one.</p>';
 			return true;
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -59,14 +59,14 @@ class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
 	 * @param	string		pointer to output custom messages
-	 * @return	boolean		true if update succeeded, false otherwise
+	 * @return	boolean		true if update succeeded, FALSE otherwise
 	 */
 	function performUpdate(&$dbQueries, &$customMessages) {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
 		$templates = $this->findUpdateableTemplatesWithCsc($templates);
 		$this->updateCscTemplates($templates, $dbQueries, $customMessages);
 		if ($customMessages) {
-			return false;
+			return FALSE;
 		} else {
 			return true;
 		}
@@ -111,12 +111,12 @@ class tx_coreupdates_cscsplit extends Tx_Install_Updates_Base {
 		$templatesCount = count($allTemplates);
 		$updateableTemplates = array();
 		for ($i = 0; $i < $templatesCount; $i++) {
-			$templateNeedsUpdate = false;
+			$templateNeedsUpdate = FALSE;
 			$includedTemplates = explode(',', $allTemplates[$i]['include_static_file']);
 			$includedTemplatesCount = count($includedTemplates);
 			// loop through every entry in the "include static file"
 			for ($j = 0; $j < $includedTemplatesCount; $j++) {
-				if (strpos($includedTemplates[$j], 'css_styled_content') !== false) {
+				if (strpos($includedTemplates[$j], 'css_styled_content') !== FALSE) {
 					if ($compatVersion <= t3lib_div::int_from_ver('3.8')) {
 						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v3.8/') {
 							$includedTemplates[$j] = 'EXT:css_styled_content/static/v3.8/';

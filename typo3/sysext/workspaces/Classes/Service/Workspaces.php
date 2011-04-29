@@ -141,7 +141,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * Building tcemain CMD-array for releasing all versions in a workspace.
 	 *
 	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param	boolean		Run Flush (true) or ClearWSID (false) command
+	 * @param	boolean		Run Flush (true) or ClearWSID (FALSE) command
 	 * @param	integer		$pageId: ...
 	 * @return	array		Command array for tcemain
 	 */

@@ -291,7 +291,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @param string $file		Full path to zip file
 	 * @param string $path		Path to change to before extracting
-	 * @return boolean	True on success, false in failure
+	 * @return boolean	True on success, FALSE in failure
 	 */
 	function unzip($file, $path)	{
 			// we use the unzip class of the Extension Manager here
@@ -381,7 +381,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @param	string		Name of the child style that we want to get properties for
 	 * @param	string		Name of the parent style that we want to compare the child against
-	 * @return	boolean		true if the child and parent are linked together. false otherwise.
+	 * @return	boolean		true if the child and parent are linked together. FALSE otherwise.
 	 */
 	function isStyleChildOf($child, $parent) {
 		global $Styles;

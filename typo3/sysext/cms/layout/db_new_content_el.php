@@ -473,7 +473,7 @@ class SC_db_new_content_el {
 			foreach ($wizards as $groupKey => $wizardGroup) {
 				$groupKey = preg_replace('/\.$/', '', $groupKey);
 				$showItems = t3lib_div::trimExplode(',', $wizardGroup['show'], true);
-				$showAll = (strcmp($wizardGroup['show'], '*') ? false : true);
+				$showAll = (strcmp($wizardGroup['show'], '*') ? FALSE : true);
 				$groupItems = array();
 
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {

@@ -672,7 +672,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 *
 	 * @param	string		Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource"
 	 * @param	array		TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
-	 * @return	array		Returns an array with file information if an image was returned. Otherwise false.
+	 * @return	array		Returns an array with file information if an image was returned. Otherwise FALSE.
 	 * @access private
 	 * @see tslib_cObj::getImgResource()
 	 */

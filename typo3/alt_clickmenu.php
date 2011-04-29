@@ -219,7 +219,7 @@ class clickMenu {
 	 */
 	function doDisplayTopFrameCM()	{
 		if($this->ajax)	{
-			return false;
+			return FALSE;
 		} else {
 			return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
 		}
@@ -265,7 +265,7 @@ class clickMenu {
 			$DBmount = TRUE;
 		}
 			// used to hide cut,copy icons for l10n-records
-		$l10nOverlay = false;
+		$l10nOverlay = FALSE;
 			// should only be performed for overlay-records within the same table
 		if (t3lib_BEfunc::isTableLocalizable($table) && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			$l10nOverlay = intval($this->rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) != 0;

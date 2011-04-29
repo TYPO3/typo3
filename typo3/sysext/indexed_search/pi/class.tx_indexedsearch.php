@@ -213,7 +213,7 @@ class tx_indexedsearch extends tslib_pibase {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
 				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 
-					// Init parser and if it returns false, unset its entry again:
+					// Init parser and if it returns FALSE, unset its entry again:
 				if (!$this->external_parsers[$extension]->softInit($extension))	{
 					unset($this->external_parsers[$extension]);
 				}
@@ -1954,7 +1954,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * Returns the resume for the search-result.
 	 *
 	 * @param	array		Search result row
-	 * @param	boolean		If noMarkup is false, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
+	 * @param	boolean		If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
 	 * @param	integer		String length
 	 * @return	string		HTML string		...
 	 */

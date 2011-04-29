@@ -106,7 +106,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 		$result = null;
 		if (is_array($row)) {
 			$result = @unserialize(base64_decode($row['content']));
-			if ($result === false) {
+			if ($result === FALSE) {
 				$result = null;
 			}
 			else {
@@ -150,7 +150,7 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 	 * @return boolean true if nonce was not used before anc can be used now
 	 */
 	public function useNonce($serverUrl, $timestamp, $salt) {
-		$result = false;
+		$result = FALSE;
 
 		if (abs($timestamp - time()) < $GLOBALS['Auth_OpenID_SKEW']) {
 			$values = array(

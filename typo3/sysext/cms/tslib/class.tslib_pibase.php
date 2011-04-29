@@ -841,7 +841,7 @@ class tslib_pibase {
 	 * @param	string		Table name
 	 * @param	string		A label to show with the panel.
 	 * @param	array		TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
-	 * @return	string		Returns false/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
+	 * @return	string		Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
 	 * @see tslib_cObj::EDITPANEL()
 	 */
 	function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	{
@@ -1204,7 +1204,7 @@ class tslib_pibase {
 	 * @param	string		The table name
 	 * @param	integer		The uid of the record from the table
 	 * @param	boolean		If $checkPage is set, it's required that the page on which the record resides is accessible
-	 * @return	array		If record is found, an array. Otherwise false.
+	 * @return	array		If record is found, an array. Otherwise FALSE.
 	 */
 	function pi_getRecord($table,$uid,$checkPage=0)	{
 		return $GLOBALS['TSFE']->sys_page->checkRecord($table,$uid,$checkPage);

@@ -195,7 +195,7 @@ class Tx_Workspaces_Service_Stages {
 	/**
 	 * Check if given workspace has custom staging activated
 	 *
-	 * @return bool true or false
+	 * @return bool true or FALSE
 	 */
 	public function checkCustomStagingForWS() {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());

@@ -487,7 +487,7 @@ class tx_indexedsearch_indexer {
 				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 				$this->external_parsers[$extension]->pObj = $this;
 
-					// Init parser and if it returns false, unset its entry again:
+					// Init parser and if it returns FALSE, unset its entry again:
 				if (!$this->external_parsers[$extension]->initParser($extension))	{
 					unset($this->external_parsers[$extension]);
 				}
@@ -692,7 +692,7 @@ class tx_indexedsearch_indexer {
 
 	/**
 	 * Finds first occurence of embracing tags and returns the embraced content and the original string with
-	 * the tag removed in the two passed variables. Returns false if no match found. ie. useful for finding
+	 * the tag removed in the two passed variables. Returns FALSE if no match found. ie. useful for finding
 	 * <title> of document or removing <script>-sections
 	 *
 	 * @param	string		String to search in
@@ -700,14 +700,14 @@ class tx_indexedsearch_indexer {
 	 * @param	string		Passed by reference: Content inside found tag
 	 * @param	string		Passed by reference: Content after found tag
 	 * @param	string		Passed by reference: Attributes of the found tag.
-	 * @return	boolean		Returns false if tag was not found, otherwise true.
+	 * @return	boolean		Returns FALSE if tag was not found, otherwise true.
 	 */
 	function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList) {
 		$endTag = '</'.$tagName.'>';
 		$startTag = '<'.$tagName;
 
 		$isTagInText = stristr($string,$startTag);		// stristr used because we want a case-insensitive search for the tag.
-		if(!$isTagInText) return false;	// if the tag was not found, return false
+		if(!$isTagInText) return FALSE;	// if the tag was not found, return FALSE
 
 		list($paramList,$isTagInText) = explode('>',substr($isTagInText,strlen($startTag)),2);
 		$afterTagInText = stristr($isTagInText,$endTag);
@@ -727,7 +727,7 @@ class tx_indexedsearch_indexer {
 	 * Removes content that shouldn't be indexed according to TYPO3SEARCH-tags.
 	 *
 	 * @param	string		HTML Content, passed by reference
-	 * @return	boolean		Returns true if a TYPOSEARCH_ tag was found, otherwise false.
+	 * @return	boolean		Returns true if a TYPOSEARCH_ tag was found, otherwise FALSE.
 	 */
 	function typoSearchTags(&$body) {
 		$expBody = preg_split('/\<\!\-\-[\s]?TYPO3SEARCH_/',$body);
@@ -748,7 +748,7 @@ class tx_indexedsearch_indexer {
 			}
 			return true;
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -818,7 +818,7 @@ class tx_indexedsearch_indexer {
 							$crawler->addQueueEntry_callBack(0,$params,'EXT:indexed_search/class.crawler.php:&tx_indexedsearch_files',$this->conf['id']);
 							$this->log_setTSlogMessage('media "'.$params['document'].'" added to "crawler" queue.',1);
 						} else {
-							$this->indexRegularDocument($linkInfo['href'], false, $linkSource, $ext);
+							$this->indexRegularDocument($linkInfo['href'], FALSE, $linkSource, $ext);
 						}
 					} else {
 						if (is_object($crawler))	{
@@ -939,7 +939,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @param	string		The URL
 	 * @param	integer		Timeout (seconds?)
-	 * @return	mixed		If no answer, returns false. Otherwise an array where HTTP headers are keys
+	 * @return	mixed		If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
 	 */
 	function getUrlHeaders($url)	{
 		$content = t3lib_div::getURL($url,2);	// Try to get the headers only

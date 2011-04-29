@@ -755,7 +755,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	array		Session data and boolean which indicates that data needs to be stored in session because it's changed
 	 */
 	function processSessionData($data) {
-		$store = false;
+		$store = FALSE;
 
 		if ($this->act != 'image') {
 			if (isset($this->act))	{

@@ -346,7 +346,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
 		/* @var $tmpl t3lib_tsparser_ext */
-		$tmpl->tt_track = false;	// Do not log time-performance information
+		$tmpl->tt_track = FALSE;	// Do not log time-performance information
 		$tmpl->init();
 
 			// No template
@@ -403,7 +403,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	function templateMenu() {
 		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
 		/* @var $tmpl t3lib_tsparser_ext */
-		$tmpl->tt_track = false;	// Do not log time-performance information
+		$tmpl->tt_track = FALSE;	// Do not log time-performance information
 		$tmpl->init();
 		$all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);
 		$menu = '';

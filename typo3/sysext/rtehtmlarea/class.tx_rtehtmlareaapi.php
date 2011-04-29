@@ -44,8 +44,8 @@ abstract class tx_rtehtmlarea_api {
 	protected $pluginLabels = '';				// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
 	protected $pluginAddsButtons = true;			// Boolean indicating whether the plugin is adding buttons or not
 	protected $convertToolbarForHtmlAreaArray = array();	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	protected $requiresClassesConfiguration = false;	// True if the registered plugin requires the PageTSConfig Classes configuration
-	protected $requiresSynchronousLoad = false;		// True if the plugin must be loaded synchronously
+	protected $requiresClassesConfiguration = FALSE;	// True if the registered plugin requires the PageTSConfig Classes configuration
+	protected $requiresSynchronousLoad = FALSE;		// True if the plugin must be loaded synchronously
 	protected $requiredPlugins = '';			// The comma-separated list of names of prerequisite plugins
 
 	/**
@@ -69,7 +69,7 @@ abstract class tx_rtehtmlarea_api {
 
 			// Check if the plugin should be disabled in frontend
 		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
-			return false;
+			return FALSE;
 		}
 
 			// Localization array must be initialized here

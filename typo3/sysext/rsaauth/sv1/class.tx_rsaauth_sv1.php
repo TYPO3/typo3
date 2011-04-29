@@ -127,7 +127,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 			// Get the backend
 			$this->backend = tx_rsaauth_backendfactory::getBackend();
 			if (is_null($this->backend)) {
-				$available = false;
+				$available = FALSE;
 			}
 		}
 

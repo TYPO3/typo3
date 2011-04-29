@@ -126,7 +126,7 @@ class t3lib_userAuth {
 	var $formfield_status = ''; // formfield with status: *'login', 'logout'. If empty login is not verified.
 	var $security_level = 'normal'; // sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_timeout_field = 0; // Server session lifetime. If > 0: session-timeout in seconds. If false or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 0; // Server session lifetime. If > 0: session-timeout in seconds. If FALSE or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0; // Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	var $gc_time = 0; // GarbageCollection. Purge all server session data older than $gc_time seconds. 0 = default to $this->timeout or use 86400 seconds (1 day) if $this->lifetime is 0
 	var $gc_probability = 1; // Possibility (in percent) for GarbageCollection to be run.
@@ -208,7 +208,7 @@ class t3lib_userAuth {
 			// Init vars.
 		$mode = '';
 		$this->newSessionID = FALSE;
-			// $id is set to ses_id if cookie is present. Else set to false, which will start a new session
+			// $id is set to ses_id if cookie is present. Else set to FALSE, which will start a new session
 		$id = $this->getCookie($this->name);
 		$this->svConfig = $TYPO3_CONF_VARS['SVCONF']['auth'];
 
@@ -1094,7 +1094,7 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * Sets $theUC as the internal variable ->uc IF $theUC is an array. If $theUC is false, the 'uc' content from the ->user array will be unserialized and restored in ->uc
+	 * Sets $theUC as the internal variable ->uc IF $theUC is an array. If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
 	 *
 	 * @param	mixed		If an array, then set as ->uc, otherwise load from user record
 	 * @return	void

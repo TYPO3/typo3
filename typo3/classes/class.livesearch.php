@@ -55,7 +55,7 @@ class LiveSearch implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  true if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 		$access = FALSE;

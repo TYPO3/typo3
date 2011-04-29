@@ -658,7 +658,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					$taskInfo['start']     = 0;
 					$taskInfo['end']       = 0;
 					$taskInfo['frequency'] = '';
-					$taskInfo['multiple']  = false;
+					$taskInfo['multiple']  = FALSE;
 					$taskInfo['type']      = 1;
 				}
 			} catch (OutOfBoundsException $e) {
@@ -1041,7 +1041,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" class="icon"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . '/res/gfx/stop.png') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
 					// Define some default values
 				$lastExecution = '-';
-				$isRunning = false;
+				$isRunning = FALSE;
 				$executionStatus = 'scheduled';
 				$executionStatusDetail = '';
 				$executionStatusOutput = '';
@@ -1337,7 +1337,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Checks the submitted data and performs some preprocessing on it
 	 *
-	 * @return	boolean		True if everything was ok, false otherwise
+	 * @return	boolean		True if everything was ok, FALSE otherwise
 	 */
 	protected function preprocessData() {
 		$result = true;
@@ -1353,14 +1353,14 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Check start date
 		if (empty($this->submittedData['start'])) {
 			$this->addMessage($GLOBALS['LANG']->getLL('msg.noStartDate'), t3lib_FlashMessage::ERROR);
-			$result = false;
+			$result = FALSE;
 		} else {
 			try {
 				$timestamp = $this->checkDate($this->submittedData['start']);
 				$this->submittedData['start'] = $timestamp;
 			} catch (Exception $e) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.invalidStartDate'), t3lib_FlashMessage::ERROR);
-				$result = false;
+				$result = FALSE;
 			}
 		}
 
@@ -1372,11 +1372,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 				if ($this->submittedData['end'] < $this->submittedData['start']) {
 					$this->addMessage($GLOBALS['LANG']->getLL('msg.endDateSmallerThanStartDate'), t3lib_FlashMessage::ERROR);
-					$result = false;
+					$result = FALSE;
 				}
 			} catch (Exception $e) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.invalidEndDate'), t3lib_FlashMessage::ERROR);
-				$result = false;
+				$result = FALSE;
 			}
 		}
 
@@ -1427,7 +1427,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$providerObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
 			if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
 					// The validate method will return true if all went well, but that must not
-					// override previous false values => AND the returned value with the existing one
+					// override previous FALSE values => AND the returned value with the existing one
 				$result &= $providerObject->validateAdditionalFields($this->submittedData, $this);
 			}
 		}
@@ -1450,7 +1450,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$timestamp = strtotime($string);
 
 			// That failed. Try TYPO3's standard date/time input format
-		if ($timestamp === false) {
+		if ($timestamp === FALSE) {
 				// Split time and date
 			$dateParts = t3lib_div::trimExplode(' ', $string, true);
 				// Proceed if there are indeed two parts
@@ -1462,8 +1462,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// Get a timestamp from all these parts
 				$timestamp = mktime($hour, $minutes, 0, $month, $day, $year);
 			}
-				// If the timestamp is still false, throw an exception
-			if ($timestamp === false) {
+				// If the timestamp is still FALSE, throw an exception
+			if ($timestamp === FALSE) {
 				throw new InvalidArgumentException('"' . $string . '" seems not to be a correct date.', 1294587694);
 			}
 		}

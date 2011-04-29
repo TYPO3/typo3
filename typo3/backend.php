@@ -733,10 +733,10 @@ class TYPO3backend {
 	 * adds a javscript file to the backend after it has been checked that it exists
 	 *
 	 * @param	string	javascript file reference
-	 * @return	boolean	true if the javascript file was successfully added, false otherwise
+	 * @return	boolean	true if the javascript file was successfully added, FALSE otherwise
 	 */
 	public function addJavascriptFile($javascriptFile) {
-		$jsFileAdded = false;
+		$jsFileAdded = FALSE;
 
 			//TODO add more checks if neccessary
 		if(file_exists(t3lib_div::resolveBackPath(PATH_typo3.$javascriptFile))) {
@@ -766,10 +766,10 @@ class TYPO3backend {
 	 *
 	 * @param	string	the css file's name with out the .css ending
 	 * @param	string	css file reference
-	 * @return	boolean	true if the css file was added, false otherwise
+	 * @return	boolean	true if the css file was added, FALSE otherwise
 	 */
 	public function addCssFile($cssFileName, $cssFile) {
-		$cssFileAdded = false;
+		$cssFileAdded = FALSE;
 
 		if(empty($this->cssFiles[$cssFileName])) {
 			$this->cssFiles[$cssFileName] = $cssFile;

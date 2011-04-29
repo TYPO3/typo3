@@ -31,7 +31,7 @@
  *
  *   49: class tx_tstemplateinfo extends t3lib_extobjbase
  *   63:     function tableRow($label, $data, $field)
- *   77:     function procesResources($resources, $func=false)
+ *   77:     function procesResources($resources, $func=FALSE)
  *  117:     function resourceListForCopy($id, $template_uid)
  *  143:     function initialize_editor($pageId, $template_uid=0)
  *  160:     function main()
@@ -50,7 +50,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
  */
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
-	public $tce_processed = false;  // indicator for t3editor, whether data is stored
+	public $tce_processed = FALSE;  // indicator for t3editor, whether data is stored
 
 	/**
 	 * Creates a row for a HTML table
@@ -72,10 +72,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * Renders HTML table with available template resources/files
 	 *
 	 * @param	string		$resources: List of  resources/files to be shown (e.g. 'file_01.txt,file.txt')
-	 * @param	boolean		$func: Whether to render functions like 'to top' or 'delete' for each resource (default: false)
+	 * @param	boolean		$func: Whether to render functions like 'to top' or 'delete' for each resource (default: FALSE)
 	 * @return	string		HTML table with available template resources/files
 	 */
-	function procesResources($resources, $func=false)	{
+	function procesResources($resources, $func=FALSE)	{
 		$arr = t3lib_div::trimExplode(',', $resources.',,', 1);
 		$out = '';
 		$bgcol = ($func ? ' class="bgColor4"' : '');
@@ -139,7 +139,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param	integer		$id: The uid of the current page
 	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
-	 * @return	boolean		Returns true if a template record was found, otherwise false
+	 * @return	boolean		Returns true if a template record was found, otherwise FALSE
 	 */
 	function initialize_editor($pageId, $template_uid=0)	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!

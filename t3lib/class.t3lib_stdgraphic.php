@@ -103,7 +103,7 @@
  *			  SECTION: ImageMagick API functions
  * 2499:	 function imageMagickIdentify($imagefile)
  * 2534:	 function imageMagickExec($input,$output,$params)
- * 2557:	 function combineExec($input,$overlay,$mask,$output, $handleNegation = false)
+ * 2557:	 function combineExec($input,$overlay,$mask,$output, $handleNegation = FALSE)
  * 2588:	 function wrapFileName($inputName)
  *
  *			  SECTION: Various IO functions
@@ -120,7 +120,7 @@
  * 2831:	 function imageCreateFromFile($sourceImg)
  * 2870:	 function imagecreate($w, $h)
  * 2885:	 function hexColor($col)
- * 2903:	 function unifyColors(&$img, $colArr, $closest = false)
+ * 2903:	 function unifyColors(&$img, $colArr, $closest = FALSE)
  *
  * TOTAL FUNCTIONS: 66
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -170,7 +170,7 @@ class t3lib_stdGraphic {
 		// Variables for testing, alternative usage etc.
 	var $filenamePrefix = ''; // Filename prefix for images scaled in imageMagickConvert()
 	var $imageMagickConvert_forceFileNameBody = ''; // Forcing the output filename of imageMagickConvert() to this value. However after calling imageMagickConvert() it will be set blank again.
-	var $dontCheckForExistingTempFile = 0; // This flag should always be false. If set true, imageMagickConvert will always write a new file to the tempdir! Used for debugging.
+	var $dontCheckForExistingTempFile = 0; // This flag should always be FALSE. If set true, imageMagickConvert will always write a new file to the tempdir! Used for debugging.
 	var $dontCompress = 0; // Prevents imageMagickConvert() from compressing the gif-files with t3lib_div::gif_compress()
 	var $dontUnlinkTempFiles = 0; // For debugging ONLY!
 	var $alternativeOutputKey = ''; // For debugging only. Filenames will not be based on mtime and only filename (not path) will be used. This key is also included in the hash of the filename...
@@ -275,7 +275,7 @@ class t3lib_stdGraphic {
 			// This should be set if ImageMagick ver. 5+ is used.
 		if ($gfxConf['im_negate_mask']) {
 				// Boolean. Indicates if the mask images should be inverted first.
-				// This depends of the ImageMagick version. Below ver. 5.1 this should be false.
+				// This depends of the ImageMagick version. Below ver. 5.1 this should be FALSE.
 				// Above ImageMagick version 5.2+ it should be true.
 				// Just set the flag if the masks works opposite the intension!
 			$this->maskNegate = ' -negate';
@@ -396,7 +396,7 @@ class t3lib_stdGraphic {
 	}
 
 	/**
-	 * Implements the "IMAGE" GIFBUILDER object, when the "mask" property is false (using only $conf['file'])
+	 * Implements the "IMAGE" GIFBUILDER object, when the "mask" property is FALSE (using only $conf['file'])
 	 *
 	 * @param	pointer		GDlib image pointer
 	 * @param	array		TypoScript array with configuration for the GIFBUILDER object.

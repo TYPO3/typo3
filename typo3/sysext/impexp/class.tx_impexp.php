@@ -2170,8 +2170,8 @@ class tx_impexp {
 	 * If it doesn't it will try to find another relative filemount for the user and return an alternative path prefix for the file.
 	 *
 	 * @param	string		Path relative to PATH_site
-	 * @param	boolean		If set, Do not look for alternative path! Just return false
-	 * @return	string		If a path is available that will be returned, otherwise false.
+	 * @param	boolean		If set, Do not look for alternative path! Just return FALSE
+	 * @return	string		If a path is available that will be returned, otherwise FALSE.
 	 */
 	function verifyFolderAccess($dirPrefix, $noAlternative=FALSE)	{
 		$fileProcObj = $this->getFileProcObj();
@@ -3137,7 +3137,7 @@ class tx_impexp {
 	 * @param	string		Table name
 	 * @param	integer		UID of record
 	 * @param	string		Field list to select. Default is "uid,pid"
-	 * @return	array		Result of t3lib_BEfunc::getRecord() which means the record if found, otherwise false
+	 * @return	array		Result of t3lib_BEfunc::getRecord() which means the record if found, otherwise FALSE
 	 */
 	function doesRecordExist($table,$uid,$fields='')	{
 		return t3lib_BEfunc::getRecord($table, $uid, $fields ? $fields : 'uid,pid');

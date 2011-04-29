@@ -223,7 +223,7 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 	 */
 	public function detach(SplObserver $observer) {
 		$key = array_search($observer, $this->observers, true);
-		if (!($key === false)) {
+		if (!($key === FALSE)) {
 			unset($this->observers[$key]);
 		}
 	}

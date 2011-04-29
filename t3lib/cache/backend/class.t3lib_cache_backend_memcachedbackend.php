@@ -97,7 +97,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @var	boolean
 	 */
-	protected $serverConnected = false;
+	protected $serverConnected = FALSE;
 
 	/**
 	 * Constructs this backend
@@ -321,7 +321,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function has($entryIdentifier) {
-		return $this->serverConnected && $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
+		return $this->serverConnected && $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== FALSE;
 	}
 
 	/**
@@ -440,7 +440,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 			foreach ($tags as $tag) {
 					// Update tag-to-identifier index
 				$identifiers = $this->findIdentifiersByTag($tag);
-				if (array_search($entryIdentifier, $identifiers) === false) {
+				if (array_search($entryIdentifier, $identifiers) === FALSE) {
 					$identifiers[] = $entryIdentifier;
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
 										 $identifiers);
@@ -472,12 +472,12 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				// Deassociate tags with this identifier
 			foreach ($tags as $tag) {
 				$identifiers = $this->findIdentifiersByTag($tag);
-					// Formally array_search() below should never return false
+					// Formally array_search() below should never return FALSE
 					// due to the behavior of findTagsForIdentifier(). But if
-					// reverse index is corrupted, we still can get 'false' from
+					// reverse index is corrupted, we still can get 'FALSE' from
 					// array_search(). This is not a problem because we are
 					// removing this identifier from anywhere.
-				if (($key = array_search($entryIdentifier, $identifiers)) !== false) {
+				if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 					unset($identifiers[$key]);
 
 					if (count($identifiers)) {

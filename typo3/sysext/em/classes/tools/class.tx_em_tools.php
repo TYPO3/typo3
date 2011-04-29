@@ -100,7 +100,7 @@ final class tx_em_Tools {
 	 *
 	 * @param string $file		Full path to zip file
 	 * @param string $path		Path to change to before extracting
-	 * @return boolean	True on success, false in failure
+	 * @return boolean	True on success, FALSE in failure
 	 */
 	public static function unzip($file, $path) {
 		$unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
@@ -857,7 +857,7 @@ final class tx_em_Tools {
 	 *
 	 * @param	array		Array of directories to create relative to extDirPath, eg. "blabla", "blabla/blabla" etc...
 	 * @param	string		Absolute path to directory.
-	 * @return	mixed		Returns false on success or an error string
+	 * @return	mixed		Returns FALSE on success or an error string
 	 */
 	public static function createDirsInPath($dirs, $extDirPath) {
 		if (is_array($dirs)) {
@@ -1072,7 +1072,7 @@ final class tx_em_Tools {
 			return rename($file, $newName);
 		}
 
-		return false;
+		return FALSE;
 	}
 
 

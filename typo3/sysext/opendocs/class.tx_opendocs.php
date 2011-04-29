@@ -66,11 +66,11 @@ class tx_opendocs implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  true if user has access, false if not
+	 * @return  boolean  true if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 		$conf = $GLOBALS['BE_USER']->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
-		return ($conf['value'] == 1 ? false : true);
+		return ($conf['value'] == 1 ? FALSE : true);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
-				$entries[] = $this->renderMenuEntry($openDocument, $md5sum, false, ($i == 1));
+				$entries[] = $this->renderMenuEntry($openDocument, $md5sum, FALSE, ($i == 1));
 			}
 		}
 
@@ -154,7 +154,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 *
 	 * @return	array	all recent documents as list-items
 	 */
-	public function renderMenuEntry($document, $md5sum, $isRecentDoc = false, $isFirstDoc = false) {
+	public function renderMenuEntry($document, $md5sum, $isRecentDoc = FALSE, $isFirstDoc = FALSE) {
 		$table  = $document[3]['table'];
 		$uid    = $document[3]['uid'];
 		$record = t3lib_BEfunc::getRecordWSOL($table, $uid);

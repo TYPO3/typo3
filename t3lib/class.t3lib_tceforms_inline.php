@@ -66,7 +66,7 @@
  * 1000:	 function getStructureItemName($levelData)
  * 1015:	 function getStructureLevel($level)
  * 1032:	 function getStructurePath($structureDepth = -1)
- * 1057:	 function parseStructureString($string, $loadConfig = false)
+ * 1057:	 function parseStructureString($string, $loadConfig = FALSE)
  *
  *			  SECTION: Helper functions
  * 1098:	 function checkConfiguration(&$config)
@@ -169,7 +169,7 @@ class t3lib_TCEforms_inline {
 	 * @return	string		The HTML code for the TCEform field
 	 */
 	function getSingleField_typeInline($table, $field, $row, &$PA) {
-			// check the TCA configuration - if false is returned, something was wrong
+			// check the TCA configuration - if FALSE is returned, something was wrong
 		if ($this->checkConfiguration($PA['fieldConf']['config']) === FALSE) {
 			return FALSE;
 		}
@@ -1551,7 +1551,7 @@ class t3lib_TCEforms_inline {
 	 * @param	array		The record data array where the value(s) for the field can be found
 	 * @param	array		An array with additional configuration options.
 	 * @param	string		$checkForConfField: For which field in the foreign_table the possible records should be fetched
-	 * @return	mixed		Array of possible record items; false if type is "group/db", then everything could be "possible"
+	 * @return	mixed		Array of possible record items; FALSE if type is "group/db", then everything could be "possible"
 	 */
 	function getPossibleRecords($table, $field, $row, $conf, $checkForConfField = 'foreign_selector') {
 			// ctrl configuration from TCA:
@@ -1918,7 +1918,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$table: The table name of the record
 	 * @param	string		$field: The field name which this element is supposed to edit
 	 * @param	array		$row: The record data array of the parent
-	 * @return	boolean		If critical configuration errors were found, false is returned
+	 * @return	boolean		If critical configuration errors were found, FALSE is returned
 	 */
 	function checkConfiguration(&$config) {
 		$foreign_table = $config['foreign_table'];
@@ -1969,7 +1969,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$cmd: The command that sould be performed ('new' or 'edit')
 	 * @param	string		$table: The table to check access for
 	 * @param	string		$theUid: The record uid of the table
-	 * @return	boolean		Returns true is the user has access, or false if not
+	 * @return	boolean		Returns true is the user has access, or FALSE if not
 	 */
 	function checkAccess($cmd, $table, $theUid) {
 			// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -2228,7 +2228,7 @@ class t3lib_TCEforms_inline {
 				if ($type == '%OR' && $localMatches > 0) {
 					return TRUE;
 				}
-					// if all matches are required ('AND') and we have no result after the first run, return false
+					// if all matches are required ('AND') and we have no result after the first run, return FALSE
 				if ($type == '%AND' && $localMatches == 0) {
 					return FALSE;
 				}
@@ -2276,7 +2276,7 @@ class t3lib_TCEforms_inline {
 	 * the value of the flat array is the label of the record.
 	 *
 	 * @param	array		$possibleRecords: The possibleRecords array (for select fields)
-	 * @return	mixed		A flat array with key=uid, value=label; if $possibleRecords isn't an array, false is returned.
+	 * @return	mixed		A flat array with key=uid, value=label; if $possibleRecords isn't an array, FALSE is returned.
 	 */
 	function getPossibleRecordsFlat($possibleRecords) {
 		$flat = FALSE;
@@ -2292,7 +2292,7 @@ class t3lib_TCEforms_inline {
 	 * Determine the configuration and the type of a record selector.
 	 *
 	 * @param	array		$conf: TCA configuration of the parent(!) field
-	 * @return	array		Associative array with the keys 'PA' and 'type', both are false if the selector was not valid.
+	 * @return	array		Associative array with the keys 'PA' and 'type', both are FALSE if the selector was not valid.
 	 */
 	function getPossibleRecordsSelectorConfig($conf, $field = '') {
 		$foreign_table = $conf['foreign_table'];
@@ -2332,7 +2332,7 @@ class t3lib_TCEforms_inline {
 	 * Determine the type of a record selector, e.g. select or group/db.
 	 *
 	 * @param	array		$config: TCE configuration of the selector
-	 * @return	mixed		The type of the selector, 'select' or 'groupdb' - false not valid
+	 * @return	mixed		The type of the selector, 'select' or 'groupdb' - FALSE not valid
 	 */
 	function getPossibleRecordsSelectorType($config) {
 		$type = FALSE;
@@ -2409,7 +2409,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	string		$table: Name of the child table
 	 * @param	integer		$uid: uid of the the child record
-	 * @return	boolean		true=expand, false=collapse
+	 * @return	boolean		true=expand, FALSE=collapse
 	 */
 	function getExpandedCollapsedState($table, $uid) {
 		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {

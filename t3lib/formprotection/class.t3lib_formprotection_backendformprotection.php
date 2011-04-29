@@ -247,7 +247,7 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 			$success = $lockObject->acquire();
 		} catch (Exception $e) {
 			t3lib_div::sysLog('Locking: Failed to acquire lock: '.$e->getMessage(), 't3lib_formprotection_BackendFormProtection', t3lib_div::SYSLOG_SEVERITY_ERROR);
-			$success = FALSE;	// If locking fails, return with false and continue without locking
+			$success = FALSE;	// If locking fails, return with FALSE and continue without locking
 		}
 
 		return $success ? $lockObject : FALSE;

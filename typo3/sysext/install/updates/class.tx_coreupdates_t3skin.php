@@ -37,7 +37,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	 * Checks if t3skin is not installed.
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (true) or not (false)
+	 * @return	boolean		whether an update is needed (true) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;

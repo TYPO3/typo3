@@ -88,7 +88,7 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 	 *
 	 * @param	array	$submittedData An array containing the data submitted by the add/edit task form
 	 * @param	tx_scheduler_Module	$schedulerModule Reference to the scheduler backend module
-	 * @return	boolean	True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return	boolean	True if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
 		$validInput = TRUE;

@@ -39,10 +39,10 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (true) or not (false)
+	 * @return	boolean		whether an update is needed (true) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = false;
+		$result = FALSE;
 		$description = 'Removes the deprecated pages doktype "Not in menu". It sets the successing flag "Not in menu" for the corresponding pages instead.';
 
 		if ($this->versionNumber >= 4002000) {
@@ -61,10 +61,10 @@ class tx_coreupdates_notinmenu extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (true) or not (false)
+	 * @return	boolean		whether it worked (true) or not (FALSE)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = false;
+		$result = FALSE;
 		if($this->versionNumber >= 4002000)	{
 			$updateArray = array(
 				'doktype' => 1,

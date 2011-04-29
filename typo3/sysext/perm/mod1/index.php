@@ -532,7 +532,7 @@ class SC_mod_web_perm_index {
 	}
 
 	/**
-	 * Showing the permissions in a tree ($this->edit = false)
+	 * Showing the permissions in a tree ($this->edit = FALSE)
 	 * (Adding content to internal content variable)
 	 *
 	 * @return	void
@@ -620,14 +620,14 @@ class SC_mod_web_perm_index {
 				// User/Group names:
 			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ?  $data['row']['perms_userid'] : '');
 			if ($data['row']['perms_userid'] && (!$beUserArray[$data['row']['perms_userid']])) {
-				$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)), false);
+				$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)), FALSE);
 			} else {
 				$userName = SC_mod_web_perm_ajax::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($userName, 20)));
 			}
 
 			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ?  $data['row']['perms_groupid']  : '');
 			if ($data['row']['perms_groupid'] && (!$beGroupArray[$data['row']['perms_groupid']])) {
-				$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)), false);
+				$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)), FALSE);
 			} else {
 				$groupName = SC_mod_web_perm_ajax::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(t3lib_div::fixed_lgd_cs($groupName, 20)));
 			}

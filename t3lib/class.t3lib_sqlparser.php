@@ -2162,7 +2162,7 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		Part definition of string; "SELECT" = fieldlist (also ORDER BY and GROUP BY), "FROM" = table list, "WHERE" = Where clause.
 	 * @param	string		SQL string to verify parsability of
-	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise false
+	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise FALSE
 	 */
 	public function debug_parseSQLpart($part, $str) {
 		$retVal = FALSE;
@@ -2187,7 +2187,7 @@ class t3lib_sqlparser {
 	 * @param	string		SQL String 1
 	 * @param	string		SQL string 2
 	 * @param	boolean		If true, the strings are compared insensitive to case
-	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise false
+	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise FALSE
 	 */
 	public function debug_parseSQLpartCompare($str, $newStr, $caseInsensitive = FALSE) {
 		if ($caseInsensitive) {

@@ -97,8 +97,8 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			$addItems = array();
 			$restrictTo = array('*');
 			$blockElementsOrder = $this->defaultBlockElementsOrder;
-			$prefixLabelWithTag = false;
-			$postfixLabelWithTag = false;
+			$prefixLabelWithTag = FALSE;
+			$postfixLabelWithTag = FALSE;
 
 				// Processing PageTSConfig
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {

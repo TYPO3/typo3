@@ -168,7 +168,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function get($entryIdentifier) {
-		$cacheEntry = false;
+		$cacheEntry = FALSE;
 
 		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
@@ -220,7 +220,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
-		$entryRemoved = false;
+		$entryRemoved = FALSE;
 
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
@@ -463,7 +463,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	protected function getQueryForTag($tag) {
-		if (strpos($tag, '*') === false) {
+		if (strpos($tag, '*') === FALSE) {
 			$query = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
 		} else {
 			$patternForLike = $GLOBALS['TYPO3_DB']->escapeStrForLike(

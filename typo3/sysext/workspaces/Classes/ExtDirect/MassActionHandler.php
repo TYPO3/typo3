@@ -86,10 +86,10 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	 */
 	public function publishWorkspace(stdclass $parameters) {
 		$result = array(
-			'init' => false,
+			'init' => FALSE,
 			'total' => 0,
 			'processed' => 0,
-			'error' => false
+			'error' => FALSE
 		);
 
 		try {
@@ -114,10 +114,10 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	 */
 	public function flushWorkspace(stdclass $parameters) {
 		$result = array(
-			'init' => false,
+			'init' => FALSE,
 			'total' => 0,
 			'processed' => 0,
-			'error' => false
+			'error' => FALSE
 		);
 
 		try {

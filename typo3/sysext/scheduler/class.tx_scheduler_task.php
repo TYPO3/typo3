@@ -51,11 +51,11 @@ abstract class tx_scheduler_Task {
 	protected $taskUid;
 
 	/**
-	 * Disable flag, true if task is disabled, false otherwise
+	 * Disable flag, true if task is disabled, FALSE otherwise
 	 *
 	 * @var	boolean
 	 */
-	protected $disabled = false;
+	protected $disabled = FALSE;
 
 	/**
 	 * The execution object related to the task
@@ -84,9 +84,9 @@ abstract class tx_scheduler_Task {
 	 * It MUST be implemented by all classes inheriting from this one
 	 * Note that there is no error handling, errors and failures are expected
 	 * to be handled and logged by the client implementations.
-	 * Should return true on successful execution, false on error.
+	 * Should return true on successful execution, FALSE on error.
 	 *
-	 * @return boolean	Returns true on successful execution, false on error
+	 * @return boolean	Returns true on successful execution, FALSE on error
 	 */
 	abstract public function execute();
 
@@ -124,7 +124,7 @@ abstract class tx_scheduler_Task {
 	/**
 	 * This method returns the disable status of the task
 	 *
-	 * @return	boolean		True if task is disabled, false otherwise
+	 * @return	boolean		True if task is disabled, FALSE otherwise
 	 */
 	public function isDisabled() {
 		return $this->disabled;
@@ -133,14 +133,14 @@ abstract class tx_scheduler_Task {
 	/**
 	 * This method is used to set the disable status of the task
 	 *
-	 * @param	boolean	$flag: true if task should be disabled, false otherwise
+	 * @param	boolean	$flag: true if task should be disabled, FALSE otherwise
 	 * @return	void
 	 */
 	public function setDisabled($flag) {
 		if ($flag) {
 			$this->disabled = true;
 		} else {
-			$this->disabled = false;
+			$this->disabled = FALSE;
 		}
 	}
 
@@ -205,11 +205,11 @@ abstract class tx_scheduler_Task {
 	 * @param	integer		$start: the first date/time where this execution should occur (timestamp)
 	 * @param	string		$interval: execution interval in seconds
 	 * @param	integer		$end: the last date/time where this execution should occur (timestamp)
-	 * @param	boolean		$multiple: set to false if multiple executions of this task are not permitted in parallel
+	 * @param	boolean		$multiple: set to FALSE if multiple executions of this task are not permitted in parallel
 	 * @param	string		$croncmd: used like in crontab (minute hour day month weekday)
 	 * @return	void
 	 */
-	public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '') {
+	public function registerRecurringExecution($start, $interval, $end = 0, $multiple = FALSE, $cron_cmd = '') {
 		$execution = t3lib_div::makeInstance('tx_scheduler_Execution');
 			// Set general values
 		$execution->setStart($start);
@@ -261,7 +261,7 @@ abstract class tx_scheduler_Task {
 	/**
 	 * Returns true if several runs of the task are allowed concurrently
 	 *
-	 * @return	boolean		True if concurrent executions are allowed, false otherwise
+	 * @return	boolean		True if concurrent executions are allowed, FALSE otherwise
 	 */
 	public function areMultipleExecutionsAllowed() {
 		return $this->execution->getMultiple();
@@ -270,10 +270,10 @@ abstract class tx_scheduler_Task {
 	/**
 	 * Returns true if an instance of the task is already running
 	 *
-	 * @return	boolean		True if an instance is already running, false otherwise
+	 * @return	boolean		True if an instance is already running, FALSE otherwise
 	 */
 	public function isExecutionRunning() {
-		$isRunning = false;
+		$isRunning = FALSE;
 
 		$queryArr = array(
 			'SELECT' => 'serialized_executions',
@@ -400,7 +400,7 @@ abstract class tx_scheduler_Task {
  	/**
 	 * Clears all marked executions
 	 *
-	 * @return	boolean		True if the clearing succeeded, false otherwise
+	 * @return	boolean		True if the clearing succeeded, FALSE otherwise
 	 */
 	public function unmarkAllExecutions() {
 			// Set the serialized executions field to empty

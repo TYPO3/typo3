@@ -358,7 +358,7 @@ class SC_db_new {
 	 */
 	function regularNew()	{
 
-		$doNotShowFullDescr = false;
+		$doNotShowFullDescr = FALSE;
 			// Initialize array for accumulating table rows:
 		$this->tRows = array();
 
@@ -638,7 +638,7 @@ class SC_db_new {
 	 * @param	boolean		If $addContentTable is set, then a new contentTable record is created together with pages
 	 * @return	string		The link.
 	 */
-	function linkWrap($linkText, $table, $pid, $addContentTable = false) {
+	function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {
 		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
 
 		if ($table == 'pages'
@@ -668,12 +668,12 @@ class SC_db_new {
 			if ($GLOBALS['BE_USER']->user['admin'])	{
 				return true;
 			} else {
-				return false;
+				return FALSE;
 			}
 		}
 			// be_users and be_groups may not be created anywhere but in the root.
 		if ($checkTable=='be_users' || $checkTable=='be_groups')	{
-			return false;
+			return FALSE;
 		}
 			// Checking doktype:
 		$doktype = intval($pid_row['doktype']);
@@ -709,7 +709,7 @@ class SC_db_new {
 			return true;
 			// If table is denied or allowed tables are set, but table is not part of:
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 }

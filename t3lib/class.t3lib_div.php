@@ -182,7 +182,7 @@
  * 3871:	 function &makeInstance($className)
  * 3883:	 function makeInstanceClassName($className)
  * 3897:	 function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
- * 3961:	 function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=false)
+ * 3961:	 function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='',$dontEncodeHeader=FALSE)
  * 4031:	 function quoted_printable($string,$maxlen=76)
  * 4078:	 function encodeHeader($line,$enc='',$charset='ISO-8859-1')
  * 4121:	 function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
@@ -194,7 +194,7 @@
  * 4355:	 function arrayToLogString($arr, $valueList=array(), $valueLength=20)
  * 4378:	 function imageMagickCommand($command, $parameters, $path='')
  * 4425:	 function unQuoteFilenames($parameters,$unQuote=FALSE)
- * 4459:	 function quoteJSvalue($value, $inScriptTags = false)
+ * 4459:	 function quoteJSvalue($value, $inScriptTags = FALSE)
  *
  * TOTAL FUNCTIONS: 138
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -926,13 +926,13 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'false' then the $zeroValue is applied.
+	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'FALSE' then the $zeroValue is applied.
 	 * Usage: 224
 	 *
 	 * @param	integer		Input value
 	 * @param	integer		Lower limit
 	 * @param	integer		Higher limit
-	 * @param	integer		Default value if input is false.
+	 * @param	integer		Default value if input is FALSE.
 	 * @return	integer		The input value forced into the boundaries of $min and $max
 	 */
 	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
@@ -1650,9 +1650,9 @@ final class t3lib_div {
 	 * +---------+-----------+-----------+-----------+
 	 * | $needle | variant_a | variant_b | variant_c |
 	 * +---------+-----------+-----------+-----------+
-	 * | '1a'	| false	 | true	  | false	 |
-	 * | ''	  | false	 | true	  | false	 |
-	 * | '0'	 | true	  | true	  | false	 |
+	 * | '1a'	| FALSE	 | true	  | FALSE	 |
+	 * | ''	  | FALSE	 | true	  | FALSE	 |
+	 * | '0'	 | true	  | true	  | FALSE	 |
 	 * | 0	   | true	  | true	  | true	  |
 	 * +---------+-----------+-----------+-----------+
 	 * Usage: 3
@@ -2596,7 +2596,7 @@ final class t3lib_div {
 					if ($val['attributes']['base64']) {
 						$current[$tagName] = base64_decode($val['value']);
 					} else {
-						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate false if tested with isset()!!
+						$current[$tagName] = (string) $val['value']; // Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
 
 							// Cast type:
 						switch ((string) $val['attributes']['type']) {
@@ -3414,7 +3414,7 @@ final class t3lib_div {
 	 * Behaviour is influenced by the setting
 	 * TYPO3_CONF_VARS[TYPO3_MODE][versionNumberInFilename]
 	 * = true (BE) / "embed" (FE) : modify filename
-	 * = false (BE) / "querystring" (FE) : add timestamp as parameter
+	 * = FALSE (BE) / "querystring" (FE) : add timestamp as parameter
 	 *
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
 	 * @param boolean $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
@@ -3497,7 +3497,7 @@ final class t3lib_div {
 	/**
 	 * Returns HTML-code, which is a visual representation of a multidimensional array
 	 * use t3lib_div::print_array() in order to print an array
-	 * Returns false if $array_in is not an array
+	 * Returns FALSE if $array_in is not an array
 	 * Usage: 31
 	 *
 	 * @param	mixed		Array to view
@@ -3758,7 +3758,7 @@ final class t3lib_div {
 			case 'PATH_INFO':
 					// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
 					// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
+					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
 					//				if (strcmp($_SERVER['PATH_INFO'],self::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$_SERVER['PATH_INFO']))>1)	{
 				if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
 					$retVal = $_SERVER['PATH_INFO'];
@@ -4058,7 +4058,7 @@ final class t3lib_div {
 	 *************************/
 
 	/**
-	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with t3lib_div::validPathStr(). Returns false if checks failed. Does not check if the file exists.
+	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with t3lib_div::validPathStr(). Returns FALSE if checks failed. Does not check if the file exists.
 	 * Usage: 24
 	 *
 	 * @param	string		The input filename/filepath to evaluate
@@ -4222,7 +4222,7 @@ final class t3lib_div {
 	public static function upload_copy_move($source, $destination) {
 		if (is_uploaded_file($source)) {
 			$uploaded = TRUE;
-				// Return the value of move_uploaded_file, and if false the temporary $source is still around so the user can use unlink to delete it:
+				// Return the value of move_uploaded_file, and if FALSE the temporary $source is still around so the user can use unlink to delete it:
 			$uploadedResult = move_uploaded_file($source, $destination);
 		} else {
 			$uploaded = FALSE;
@@ -4231,7 +4231,7 @@ final class t3lib_div {
 
 		self::fixPermissions($destination); // Change the permissions of the file
 
-			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
+			// If here the file is copied and the temporary $source is still around, so when returning FALSE the user can try unlink to delete the $source
 		return $uploaded ? $uploadedResult : FALSE;
 	}
 
@@ -4851,7 +4851,7 @@ final class t3lib_div {
 	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
 	 * @param	integer		Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
-	 * @return	mixed		Content from method/function call or false if the class/method/function was not found
+	 * @return	mixed		Content from method/function call or FALSE if the class/method/function was not found
 	 * @see getUserObj()
 	 */
 	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0) {
@@ -5287,7 +5287,7 @@ final class t3lib_div {
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the header content will not be encoded.
-	 * @return	boolean		True if mail was accepted for delivery, false otherwise
+	 * @return	boolean		True if mail was accepted for delivery, FALSE otherwise
 	 */
 	public static function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
 		if (!$charset) {

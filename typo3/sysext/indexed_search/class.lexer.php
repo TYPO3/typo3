@@ -44,7 +44,7 @@
  *  239:     function get_word(&$str, $pos=0)
  *  264:     function utf8_is_letter(&$str, &$len, $pos=0)
  *  329:     function charType($cp)
- *  383:     function utf8_ord(&$str, &$len, $pos=0, $hex=false)
+ *  383:     function utf8_ord(&$str, &$len, $pos=0, $hex=FALSE)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -239,7 +239,7 @@ class tx_indexedsearch_lexer {
 	 *
 	 * @param	string		Input string (reference)
 	 * @param	integer		Starting position in input string
-	 * @return	array		0: start, 1: len or false if no word has been found
+	 * @return	array		0: start, 1: len or FALSE if no word has been found
 	 */
 	function get_word(&$str, $pos=0)	{
 
@@ -250,9 +250,9 @@ class tx_indexedsearch_lexer {
 			return array($pos,$len);
 		}
 
-			// If the return value was false it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
+			// If the return value was FALSE it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
 		$pos += $len;
-		if ($str{$pos} == '')	return false;	// check end of string before looking for word of course.
+		if ($str{$pos} == '')	return FALSE;	// check end of string before looking for word of course.
 
 		$this->utf8_is_letter($str, $len, $pos);
 		return array($pos,$len);
@@ -271,10 +271,10 @@ class tx_indexedsearch_lexer {
 
 		$len = 0;
 		$bc = 0;
-		$cType = $cType_prev = false; // Letter type
+		$cType = $cType_prev = FALSE; // Letter type
 		$letter = true; // looking for a letter?
 
-		if ($str{$pos} == '')	return false;	// Return false on end-of-string at this stage
+		if ($str{$pos} == '')	return FALSE;	// Return FALSE on end-of-string at this stage
 
 		while(1) {
 
@@ -300,7 +300,7 @@ class tx_indexedsearch_lexer {
 					}
 				}
 				elseif (!$letter && $cType)	{	// end of non-word reached
-					return false;
+					return FALSE;
 				}
 			}
 			$len += $bc;	// add byte-length of last found character
@@ -318,11 +318,11 @@ class tx_indexedsearch_lexer {
 				continue;
 			}
 
-				// Setting letter to false if the first char was not a letter!
-			if (!$len)	$letter = false;
+				// Setting letter to FALSE if the first char was not a letter!
+			if (!$len)	$letter = FALSE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -385,7 +385,7 @@ class tx_indexedsearch_lexer {
 	 * @param	boolean		If set, then a hex. number is returned
 	 * @return	integer		UNICODE codepoint
 	 */
-	function utf8_ord(&$str, &$len, $pos=0, $hex=false)	{
+	function utf8_ord(&$str, &$len, $pos=0, $hex=FALSE)	{
 		$ord = ord($str{$pos});
 		$len = 1;
 

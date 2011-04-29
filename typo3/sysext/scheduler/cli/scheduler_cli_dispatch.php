@@ -59,7 +59,7 @@ if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 
 		}
 			// There are no more tasks, quit the run
 		catch (OutOfBoundsException $e) {
-			$hasTask = false;
+			$hasTask = FALSE;
 		}
 			// A task could not be unserialized properly, skip to next task
 		catch (UnexpectedValueException $e) {

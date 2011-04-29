@@ -401,7 +401,7 @@ class tx_install extends t3lib_install {
 	 * If password is ok, set session as "authorized".
 	 *
 	 * @return boolean true if the submitted password was ok and session was
-	 *                 authorized, false otherwise
+	 *                 authorized, FALSE otherwise
 	 */
 	function checkPassword() {
 		$p = t3lib_div::_GP('password');
@@ -437,7 +437,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 				}
 			}
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -874,7 +874,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							behind. Therefore the script is invoked from the
 							backend init.php file, which allows access if the
 							constant \'TYPO3_enterInstallScript\' has been
-							defined and is not false. That is and should be the
+							defined and is not FALSE. That is and should be the
 							case <em>only</em> when calling the script
 							\'typo3/install/index.php\' - this script!
 						</p>
@@ -2157,11 +2157,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										$value = str_replace(LF, "' . LF . '", $value);
 									}
 									if (preg_match('/^boolean/i', $description)) {
-											// When submitting settings in the Install Tool, values that default to "false" or "true"
+											// When submitting settings in the Install Tool, values that default to "FALSE" or "true"
 											// in config_default.php will be sent as "0" resp. "1". Therefore, reset the values
 											// to their boolean equivalent.
-										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === false && $value === '0') {
-											$value = false;
+										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
+											$value = FALSE;
 										} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === true && $value === '1') {
 											$value = true;
 										}
@@ -2382,7 +2382,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		// Mail tests
 		if (TYPO3_OS == 'WIN') {
 			$smtp = ini_get('SMTP');
-			$bad_smtp = false;
+			$bad_smtp = FALSE;
 			if (!t3lib_div::validIP($smtp)) {
 				$smtp_addr = @gethostbyname($smtp);
 				$bad_smtp = ($smtp_addr == $smtp);
@@ -3134,7 +3134,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		}
 
 		$cmd = t3lib_div::imageMagickCommand($file, $parameters, $path);
-		$retVal = false;
+		$retVal = FALSE;
 		t3lib_utility_Command::exec($cmd, $retVal);
 		$string = $retVal[0];
 		list(,$ver) = explode('Magick', $string);
@@ -4533,7 +4533,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		';
 
 			// Various checks to detect IM/GM version mismatches
-		$mismatch=false;
+		$mismatch=FALSE;
 		switch (strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])) {
 			case 'gm':
 				if (doubleval($im_path_version)>=2)	$mismatch=true;
@@ -4542,7 +4542,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				if (doubleval($im_path_version)>=5)	$mismatch=true;
 			break;
 			default:
-				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?true:false) != (doubleval($im_path_version)>=5))	$mismatch=true;
+				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?true:FALSE) != (doubleval($im_path_version)>=5))	$mismatch=true;
 			break;
 		}
 
@@ -4570,7 +4570,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$this->message('Image Processing', 'Image Processing disabled!', '
 				<p>
 					Image Processing is disabled by the config flag
-					[GFX][image_processing] set to false (zero)
+					[GFX][image_processing] set to FALSE (zero)
 				</p>
 			', 2);
 			$this->output($this->outputWrapper($this->printAll()));
@@ -6865,7 +6865,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$content = '';
 		switch($type) {
 			case 'get_form':
-				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',false,true);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'],'Clear tables (use with care!)',FALSE,true);
 
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'],'Add fields');
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'],'Changing fields',(t3lib_extMgm::isLoaded('dbal')?0:1),0,$arr_update['change_currentValue']);
@@ -8346,7 +8346,7 @@ $out="
 
 	/**
 	 * Returns HTML-code, which is a visual representation of a multidimensional array
-	 * Returns false if $array_in is not an array
+	 * Returns FALSE if $array_in is not an array
 	 *
 	 * @param mixed $incomingValue Array to view
 	 * @return string HTML output

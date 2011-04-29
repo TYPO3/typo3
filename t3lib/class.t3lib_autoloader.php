@@ -96,7 +96,7 @@ class t3lib_autoloader {
 	 * @return	void
 	 */
 	static public function autoload($className) {
-		$classPath = false;
+		$classPath = FALSE;
 
 			// use core and extension registry
 		$classPath = self::getClassPathByRegistryLookup($className);

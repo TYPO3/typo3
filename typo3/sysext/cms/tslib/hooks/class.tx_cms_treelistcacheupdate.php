@@ -140,7 +140,7 @@ class tx_cms_treelistCacheUpdate {
 				$recordId,
 				'*',
 				'',
-				false
+				FALSE
 			);
 
 			$affectedPageUid = $deletedRecord['uid'];
@@ -249,10 +249,10 @@ class tx_cms_treelistCacheUpdate {
 	 * checks whether the change requires an update of the treelist cache
 	 *
 	 * @param	array	array of changed fields
-	 * @return	boolean	true if the treelist cache needs to be updated, false if no update to the cache is required
+	 * @return	boolean	true if the treelist cache needs to be updated, FALSE if no update to the cache is required
 	 */
 	protected function requiresUpdate(array $updatedFields) {
-		$requiresUpdate = false;
+		$requiresUpdate = FALSE;
 
 		$updatedFieldNames = array_keys($updatedFields);
 		foreach ($updatedFieldNames as $updatedFieldName) {
