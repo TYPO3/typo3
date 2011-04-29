@@ -246,26 +246,93 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 
 			if (!$validPasswd && (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed)) {
 					// Failed login attempt (wrong password) - no delegation to further services
-				$this->writeLog(
+				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';
+				$this->writeLogMessage(
 					TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'',
 					$this->login['uname']
+				);
+				$this->writelog(255, 3, 3, 1,
+					$errorMessage,
+					array(
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$this->login['uname']
+					)
+				);
+				t3lib_div::sysLog(
+					sprintf(
+						$errorMessage,
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$this->login['uname']
+					),
+					'Core',
+					0
 				);
 				$OK = 0;
 			} else if(!$validPasswd) {
 					// Failed login attempt (wrong password)
-				$this->writeLog(
-					"Login-attempt from %s, username '%s', password not accepted!",
-					$this->authInfo['REMOTE_ADDR'], $this->login['uname']
+				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';
+				$this->writeLogMessage(
+					$errorMessage,
+					$this->authInfo['REMOTE_ADDR'],
+					$this->authInfo['REMOTE_HOST'],
+					$this->login['uname']
+				);
+				$this->writelog(255, 3, 3, 1,
+					$errorMessage,
+					array(
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$this->login['uname']
+					)
+				);
+				t3lib_div::sysLog(
+					sprintf(
+						$errorMessage,
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$this->login['uname']
+					),
+					'Core',
+					0
 				);
 			} else if ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
 					// Lock domain didn't match, so error:
-				$this->writeLog(
-					"Login-attempt from %s, username '%s', locked domain '%s' did not match '%s'!",
-					$this->authInfo['REMOTE_ADDR'], $this->login['uname'], $user['lockToDomain'], $this->authInfo['HTTP_HOST']
+				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
+				$this->writeLogMessage(
+					$errorMessage,
+					$this->authInfo['REMOTE_ADDR'],
+					$this->authInfo['REMOTE_HOST'],
+					$this->login['uname'],
+					$user['lockToDomain'],
+					$this->authInfo['HTTP_HOST']
+				);
+				$this->writelog(255, 3, 3, 1,
+					$errorMessage,
+					array(
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$user[$this->db_user['username_column']],
+						$user['lockToDomain'],
+						$this->authInfo['HTTP_HOST']
+					)
+				);
+				t3lib_div::sysLog(
+					sprintf(
+						$errorMessage,
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$user[$this->db_user['username_column']],
+						$user['lockToDomain'],
+						$this->authInfo['HTTP_HOST']
+					),
+					'Core',
+					0
 				);
 				$OK = 0;
 			} else if ($validPasswd) {
-				$this->writeLog(
+				$this->writeLogMessage(
 					TYPO3_MODE . ' Authentication successful for username \'%s\'',
 					$this->login['uname']
 				);
@@ -309,7 +376,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 * @see	t3lib_div::sysLog()
 	 * @see	t3lib_timeTrack::setTSlogMessage()
 	 */
-	function writeLog($message) {
+	function writeLogMessage($message) {
 		if (func_num_args() > 1) {
 			$params = func_get_args();
 			array_shift($params);
