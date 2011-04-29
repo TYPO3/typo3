@@ -211,10 +211,11 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 		}
 	}
 
-	if (this.countSelectedNodes >= this.tcaMaxItems) {
+	if (checked === true && this.countSelectedNodes >= this.tcaMaxItems) {
 		checkedNode.attributes.checked = false;
 		checkedNode.getUI().toggleCheck(false);
-		checked = false;
+		this.resumeEvents();
+		return false;
 	}
 	if (checked) {
 		checkedNode.getUI().addClass('complete');
