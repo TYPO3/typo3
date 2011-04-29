@@ -53,7 +53,7 @@ class t3lib_Registry implements t3lib_Singleton {
 	/**
 	 * Returns a persistent entry.
 	 *
-	 * @param	string	Extension key for extensions starting with 'tx_' / 'user_' or 'core' for core registry entries
+	 * @param	string	Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
 	 * @param	string	The key of the entry to return.
 	 * @param	mixed	Optional default value to use if this entry has never been set. Defaults to NULL.
 	 * @return	mixed	The value of the entry.
@@ -72,7 +72,7 @@ class t3lib_Registry implements t3lib_Singleton {
 	 * Do not store binary data into the registry, it's not build to do that,
 	 * instead use the proper way to store binary data: The filesystem.
 	 *
-	 * @param	string	Extension key for extensions starting with 'tx_' / 'user_' or 'core' for core registry entries.
+	 * @param	string	Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries.
 	 * @param	string	The key of the entry to set.
 	 * @param	mixed	The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
 	 * @return	void
@@ -174,20 +174,20 @@ class t3lib_Registry implements t3lib_Singleton {
 	/**
 	 * Checks the given namespace. If it does not have a valid format an
 	 * exception is thrown.
-	 * Allowed namespaces are 'core', 'tx_*' and 'user_*'
+	 * Allowed namespaces are 'core', 'tx_*', 'Tx_*' and 'user_*'
 	 *
 	 * @param	string	Namespace. extension key for extensions or 'core' for core registry entries
 	 * @return	void
 	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
-		if (t3lib_div::isFirstPartOfStr($namespace, 'tx_') || t3lib_div::isFirstPartOfStr($namespace, 'user_')) {
+		if (t3lib_div::hasValidClassPrefix($namespace, array('user_'))) {
 			return;
 		}
 
 		if ($namespace !== 'core') {
 			throw new InvalidArgumentException(
-				'"' . $namespace . '" is no valid Namespace. The namespace has to be prefixed with "tx_", "user_" or must be equal to "core"',
+				'"' . $namespace . '" is no valid Namespace. The namespace has to be prefixed with "tx_", "Tx_", "user_" or must be equal to "core"',
 				1249755131
 			);
 		}
