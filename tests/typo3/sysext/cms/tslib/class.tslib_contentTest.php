@@ -73,6 +73,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$this->tsfe->config = array();
 		$GLOBALS['TSFE'] = $this->tsfe;
 		$GLOBALS['TSFE']->csConvObj = new t3lib_cs();
+		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 
 		$className = 'tslib_cObj_' . uniqid('test');
