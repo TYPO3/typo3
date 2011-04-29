@@ -7490,17 +7490,17 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
-		include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');
+		t3lib_div::includeFile(TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib . 'stddb/tables.php');
 
 			// Extension additions
 		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']) {
-			include(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php');
+			t3lib_div::includeFile(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php');
 		} else {
-			include(PATH_t3lib.'stddb/load_ext_tables.php');
+			t3lib_div::includeFile(PATH_t3lib . 'stddb/load_ext_tables.php');
 		}
 
 		if (TYPO3_extTableDef_script) {
-			include (PATH_typo3conf.TYPO3_extTableDef_script);
+			t3lib_div::includeFile(PATH_typo3conf . TYPO3_extTableDef_script);
 		}
 
 		foreach ($GLOBALS['TCA'] as $table => $conf) {
