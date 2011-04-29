@@ -155,15 +155,19 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	}
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param array $tags Array of tags to search for and to remove the cache entries, the "*" wildcard is supported
+	 * Removes all cache entries of this cache which are tagged by
+	 * one of the specified tags.
+	 * @param array $tags Array of tags to search for
 	 * @return void
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @deprecated since 4.6, will be removed in 4.8
 	 * @api
 	 */
 	public function flushByTags(array $tags) {
-		$this->backend->flushByTags($tags);
+		t3lib_div::deprecationLog('flushByTags is deprecated since 4.6 and will be removed in 4.8');
+		foreach ($tags as $tag) {
+			$this->backend->flushByTag($tag);
+		}
 	}
 
 	/**

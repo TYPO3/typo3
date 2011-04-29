@@ -134,16 +134,6 @@ interface t3lib_cache_frontend_Frontend {
 	public function flushByTag($tag);
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param array $tags Array of tags to search for and to remove the cache entries, the "*" wildcard is supported
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function flushByTags(array $tags);
-
-	/**
 	 * Does garbage collection
 	 *
 	 * @return void

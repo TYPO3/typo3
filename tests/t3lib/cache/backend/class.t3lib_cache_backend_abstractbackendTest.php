@@ -54,9 +54,7 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 				public function remove($entryIdentifier) {}
 				public function flush() {}
 				public function flushByTag($tag) {}
-				public function flushByTags(array $tags) {}
 				public function findIdentifiersByTag($tag) {}
-				public function findIdentifiersByTags(array $tags) {}
 				public function collectGarbage() {}
 				public function setSomeOption($value) {
 					$this->someOption = $value;

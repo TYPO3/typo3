@@ -57,7 +57,7 @@
  *   This is "forward" tag index. It is mainly used for flushing content by tag.
  * - temp:xxx, value type "set"
  *   xxx is a unique id, value is a set of identifiers. Used as temporary key
- *   used in flushByTag() and flushByTags(), removed after usage again.
+ *   used in flushByTag(), removed after usage again.
  *
  * Each cache using this backend should use an own redis database to
  * avoid namespace problems. By default redis has 16 databases which are
@@ -529,32 +529,6 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged
-	 * with all of the specified tags.
-	 *
-	 * Scales O(n) with number of tags
-	 *
-	 * @param array $tags Array of tags to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @api
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		$foundIdentifiers = array();
-
-		if ($this->connected) {
-			$tagsWithPrefix = array();
-			foreach ($tags as $tag) {
-				$tagsWithPrefix[] = self::TAG_IDENTIFIERS_PREFIX . $tag;
-			}
-			$foundIdentifiers = $this->redis->sInter($tagsWithPrefix);
-		}
-
-		return $foundIdentifiers;
-	}
-
-	/**
 	 * Removes all cache entries of this cache.
 	 *
 	 * Scales O(1) with number of cache entries
@@ -601,33 +575,6 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	}
 
 	/**
-	 * Removes all cache entries of this cache which are tagged with one of the specified tags.
-	 *
-	 * Scales O(1) with number of cache entries
-	 * Scales O(n^2) with number of tags
-	 *
-	 * @param array $tags Tags the entries must have
-	 * @return void
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @api
-	 */
-	public function flushByTags(array $tags) {
-		if ($this->connected) {
-			$prefixedKeysToDelete = array();
-			foreach ($tags as $tag) {
-				$prefixedKeysToDelete[] = self::TAG_IDENTIFIERS_PREFIX . $tag;
-			}
-
-				// Get all identifiers tagged with at least one of the given tags
-			$identifiers = $this->redis->sUnion($prefixedKeysToDelete);
-
-			if (count($identifiers)) {
-				$this->removeIdentifierEntriesAndRelations($identifiers, $tags, $prefixedKeysToDelete);
-			}
-		}
-	}
-
-	/**
 	 * With the current internal structure, only the identifier to data entries
 	 * have a redis internal lifetime. If an entry expires, attached
 	 * identifier to tags and tag to identifiers entries will be left over.
@@ -658,7 +605,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	}
 
 	/**
-	 * Helper method for flushByTag() and flushByTags()
+	 * Helper method for flushByTag()
 	 * Gets list of identifiers and tags and removes all relations of those tags
 	 *
 	 * Scales O(1) with number of cache entries

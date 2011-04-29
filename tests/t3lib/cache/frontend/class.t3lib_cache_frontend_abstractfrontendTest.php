@@ -39,7 +39,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function theConstructorAcceptsValidIdentifiers() {
-		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		foreach (array('x', 'someValue', '123fivesixseveneight', 'some&', 'ab_cd%', rawurlencode('resource://some/äöü$&% sadf'), str_repeat('x', 250)) as $identifier) {
 			$abstractCache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
 		}
@@ -51,7 +51,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function theConstructorRejectsInvalidIdentifiers() {
-		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $identifier) {
 			try {
 				$abstractCache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
@@ -68,7 +68,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	 */
 	public function flushCallsBackend() {
 		$identifier = 'someCacheIdentifier';
-		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('flush');
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
@@ -99,7 +99,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	public function flushByTagCallsBackend() {
 		$tag = 'sometag';
 		$identifier = 'someCacheIdentifier';
-		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('flushByTag')->with($tag);
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
@@ -113,7 +113,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	 */
 	public function collectGarbageCallsBackend() {
 		$identifier = 'someCacheIdentifier';
-		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('collectGarbage');
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
@@ -127,7 +127,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	 */
 	public function getClassTagRendersTagWhichCanBeUsedToTagACacheEntryWithACertainClass() {
 		$identifier = 'someCacheIdentifier';
-		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
+		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
 		$this->assertEquals('%CLASS%F3_Foo_Bar_Baz', t3lib_cache_Manager::getClassTag('F3\Foo\Bar\Baz'));
