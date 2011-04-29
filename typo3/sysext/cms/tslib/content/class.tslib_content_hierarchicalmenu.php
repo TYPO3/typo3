@@ -50,6 +50,10 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 
 			if (t3lib_div::inList($GLOBALS['TSFE']->tmpl->menuclasses, $cls)) {
 
+				if (isset($conf['excludeUidList.'])) {
+					$conf['excludeUidList'] = $this->cObj->stdWrap($conf['excludeUidList'], $conf['excludeUidList.']);
+				}
+
 				if (isset($conf['special.']['value.'])) {
 					$conf['special.']['value'] = $this->cObj->stdWrap($conf['special.']['value'], $conf['special.']['value.']);
 				}
