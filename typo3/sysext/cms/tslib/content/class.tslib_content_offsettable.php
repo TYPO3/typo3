@@ -52,7 +52,7 @@ class tslib_content_OffsetTable extends tslib_content_Abstract {
 		}
 
 		$offset = isset($conf['offset.'])
-			? $this->cObj->tsdWrap($conf['offset'], $conf['offset.'])
+			? $this->cObj->stdWrap($conf['offset'], $conf['offset.'])
 			: $conf['offset'];
 
 		$content = $controlTable->start($this->cObj->cObjGet($conf), $offset);
