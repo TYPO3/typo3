@@ -5252,6 +5252,34 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Includes a PHP file in the TYPO3 global context.
+	 * This is useful to include files from a method or function,
+	 * but having some variables of the global context available.
+	 *
+	 * @param string $includeFile The file to be included
+	 * @return void
+	 */
+	public static function includeOnce($includeFile) {
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS, $TCA;
+
+		include_once $includeFile;
+	}
+
+	/**
+	 * Includes a PHP file in the TYPO3 global context.
+	 * This is useful to include files from a method or function,
+	 * but having some variables of the global context available.
+	 *
+	 * @param string $includeFile The file to be included
+	 * @return void
+	 */
+	public static function includeFile($includeFile) {
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS, $TCA;
+
+		include $includeFile;
+	}
+
+	/**
 	 * Require a class for TYPO3
 	 * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
 	 */
