@@ -166,7 +166,7 @@ class t3lib_superadmin {
 	 *
 	 * @return	void
 	 */
-	function t3lib_superadmin() {
+	function __construct() {
 		$this->show = t3lib_div::_GP('show');
 		$this->type = t3lib_div::_GP('type');
 		$this->exp = t3lib_div::_GP('exp');

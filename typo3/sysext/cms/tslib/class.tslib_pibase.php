@@ -204,7 +204,7 @@ class tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	function tslib_pibase()	{
+	function __construct()	{
 
 			// Setting piVars:
 		if ($this->prefixId)	{

@@ -60,8 +60,8 @@ class tx_lowlevel_rte_images extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_rte_images()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 			// Setting up help:
 		$this->cli_help['name'] = 'rte_images -- Looking up all occurencies of RTEmagic images in the database and check existence of parent and copy files on the file system plus report possibly lost files of this type.';

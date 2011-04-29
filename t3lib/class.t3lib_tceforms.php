@@ -303,7 +303,7 @@ class t3lib_TCEforms {
 	 *
 	 * @return	void
 	 */
-	function t3lib_TCEforms() {
+	function __construct() {
 		global $CLIENT, $TYPO3_CONF_VARS;
 
 		$this->clientInfo = t3lib_div::clientInfo();

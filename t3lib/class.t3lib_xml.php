@@ -87,7 +87,7 @@ class t3lib_xml {
 	 * @param	string		Top Level Name
 	 * @return	void
 	 */
-	function t3lib_xml($topLevelName) {
+	function __construct($topLevelName) {
 		$this->topLevelName = $topLevelName;
 	}
 

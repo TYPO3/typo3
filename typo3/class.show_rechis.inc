@@ -61,7 +61,7 @@ class recordHistory {
 	 *
 	 * @return	void
 	 */
-	function recordHistory()	{
+	function __construct()	{
 			// GPvars:
 		$this->element = t3lib_div::_GP('element');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));

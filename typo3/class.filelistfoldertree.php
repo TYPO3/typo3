@@ -69,8 +69,8 @@ class filelistFolderTree extends t3lib_folderTree {
 	 *
 	 * @return	void
 	 */
-	function filelistFolderTree() {
-		parent::t3lib_folderTree();
+	function __construct() {
+		parent::__construct();
 	}
 
 	/**

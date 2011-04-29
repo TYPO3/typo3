@@ -245,7 +245,7 @@ class template {
 	 *
 	 * @return	void
 	 */
-	function template()	{
+	function __construct()	{
 		global $TBE_STYLES;
 
 			// Initializes the page rendering object:

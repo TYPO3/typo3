@@ -134,7 +134,7 @@ class localPageTree extends t3lib_browseTree {
 	 *
 	 * @return	void
 	 */
-	function localPageTree() {
+	function __construct() {
 		$this->init();
 	}
 

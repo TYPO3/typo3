@@ -60,8 +60,8 @@ class tx_lowlevel_versions extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_versions()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 			// Setting up help:
 		$this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
