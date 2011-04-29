@@ -106,16 +106,6 @@ interface t3lib_cache_backend_Backend {
 	public function flushByTag($tag);
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tags.
-	 *
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function flushByTags(array $tags);
-
-	/**
 	 * Finds and returns all cache entry identifiers which are tagged by the
 	 * specified tag.
 	 *
@@ -124,19 +114,6 @@ interface t3lib_cache_backend_Backend {
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag);
-
-	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tags.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end
-	 * of a tag.
-	 *
-	 * @param array $tags Array of tags to search for, the "*" wildcard is supported
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function findIdentifiersByTags(array $tags);
 
 	/**
 	 * Does garbage collection

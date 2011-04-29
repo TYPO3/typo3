@@ -267,39 +267,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tags.
-	 *
-	 * @param array Array of tags to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		$cacheEntryIdentifiers = array();
-		$whereClause = array();
-
-		foreach ($tags as $tag) {
-			$whereClause[] = $this->getQueryForTag($tag);
-		}
-
-		$whereClause[] = $this->tableJoin;
-		$whereClause[] = $this->notExpiredStatement;
-
-		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			$this->identifierField,
-			$this->tableList,
-			implode(' AND ', $whereClause),
-			$this->identifierField
-		);
-
-		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
-			$cacheEntryIdentifiers[$cacheEntryIdentifierRow['identifier']] = $cacheEntryIdentifierRow['identifier'];
-		}
-
-		return $cacheEntryIdentifiers;
-	}
-
-	/**
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
@@ -325,30 +292,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			$this->tagsTable,
 			$tagsTableWhereClause
 		);
-	}
-
-	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tags.
-	 *
-	 * @param array	The tags the entries must have
-	 * @return void
-	 */
-	public function flushByTags(array $tags) {
-		if (count($tags)) {
-			$listQueryConditions = array();
-			foreach ($tags as $tag) {
-				$listQueryConditions[$tag] = $this->getQueryForTag($tag);
-			}
-
-			$tagsTableWhereClause = implode(' OR ', $listQueryConditions);
-
-			$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
-
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				$this->tagsTable,
-				$tagsTableWhereClause
-			);
-		}
 	}
 
 	/**

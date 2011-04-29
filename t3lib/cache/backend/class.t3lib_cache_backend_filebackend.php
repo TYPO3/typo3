@@ -412,43 +412,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tags.
-	 *
-	 * @param array $searchedTags Array of tags to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @api
-	 */
-	public function findIdentifiersByTags(array $searchedTags) {
-		$entryIdentifiers = array();
-		$now = $GLOBALS['EXEC_TIME'];
-		$cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
-		for ($directoryIterator = t3lib_div::makeInstance('DirectoryIterator', $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
-			if ($directoryIterator->isDot()) {
-				continue;
-			}
-			$cacheEntryPathAndFilename = $directoryIterator->getPathname();
-			$index = (integer) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
-			$metaData = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index);
-
-			$expiryTime = (integer) substr($metaData, 0, self::EXPIRYTIME_LENGTH);
-			if ($expiryTime !== 0 && $expiryTime < $now) {
-				continue;
-			}
-			if (in_array($searchedTags, explode(' ', substr($metaData, self::EXPIRYTIME_LENGTH, -self::DATASIZE_DIGITS)))) {
-				if ($cacheEntryFileExtensionLength > 0) {
-					$entryIdentifiers[] = substr($directoryIterator->getFilename(), 0, - $cacheEntryFileExtensionLength);
-				} else {
-					$entryIdentifiers[] = $directoryIterator->getFilename();
-				}
-			}
-		}
-		return $entryIdentifiers;
-	}
-
-	/**
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
@@ -477,20 +440,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 
 		foreach ($identifiers as $entryIdentifier) {
 			$this->remove($entryIdentifier);
-		}
-	}
-
-	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function flushByTags(array $tags) {
-		foreach ($tags as $tag) {
-			$this->flushByTag($tag);
 		}
 	}
 

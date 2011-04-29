@@ -133,34 +133,6 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	}
 
 	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tags.
-	 * The asterisk ("*") is allowed as a wildcard at the beginning and the end
-	 * of a tag.
-	 *
-	 * @param array $tags Array of tags to search for, the "*" wildcard is supported
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		$taggedEntries = array();
-		$foundEntries = array();
-
-		foreach ($tags as $tag) {
-			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
-		}
-
-		$intersectedTaggedEntries = call_user_func_array('array_intersect', $taggedEntries);
-
-		foreach ($intersectedTaggedEntries as $entryIdentifier) {
-			$foundEntries[$entryIdentifier] = $entryIdentifier;
-		}
-
-		return $foundEntries;
-	}
-
-	/**
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
@@ -188,20 +160,6 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	}
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tags.
-	 *
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @api
-	 */
-	public function flushByTags(array $tags) {
-		foreach ($tags as $tag) {
-			$this->flushByTag($tag);
-		}
-	}
-
-	/**
 	 * Does nothing
 	 *
 	 * @return void
@@ -211,7 +169,6 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	public function collectGarbage() {
 	}
 }
-
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php']);
