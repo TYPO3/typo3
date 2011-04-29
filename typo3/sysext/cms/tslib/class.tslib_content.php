@@ -6329,7 +6329,7 @@ class tslib_cObj {
 	 */
 	function callUserFunction($funcName, $conf, $content) {
 		$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
-		if ($pre && !t3lib_div::isFirstPartOfStr(trim($funcName), $pre) && !t3lib_div::isFirstPartOfStr(trim($funcName), 'tx_')) {
+		if ($pre && !t3lib_div::hasValidClassPrefix($funcName, array($pre))) {
 			$GLOBALS['TT']->setTSlogMessage('Function "' . $funcName . '" was not prepended with "' . $pre . '"', 3);
 			return $content;
 		}

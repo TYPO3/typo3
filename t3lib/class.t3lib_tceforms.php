@@ -1140,7 +1140,7 @@ class t3lib_TCEforms {
 					}
 				break;
 				default:
-					if (substr($func, 0, 3) == 'tx_') {
+					if (t3lib_div::hasValidClassPrefix($func)) {
 							// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval()
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 						if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
@@ -1190,7 +1190,7 @@ class t3lib_TCEforms {
 
 			// going through all custom evaluations configured for this field
 		foreach ($evalList as $evalData) {
-			if (substr($evalData, 0, 3) == 'tx_') {
+			if (t3lib_div::hasValidClassPrefix($evalData)) {
 				$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
 				if (is_object($evalObj) && method_exists($evalObj, 'returnFieldJS')) {
 					$this->extJSCODE .= "\n\nfunction " . $evalData . "(value) {\n" . $evalObj->returnFieldJS() . "\n}\n";
@@ -1345,7 +1345,7 @@ class t3lib_TCEforms {
 							$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
 						break;
 						default:
-							if (substr($func, 0, 3) == 'tx_') {
+							if (t3lib_div::hasValidClassPrefix($func)) {
 									// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval() and t3lib_TCEmain::checkValue_text_Eval()
 								$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 								if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {

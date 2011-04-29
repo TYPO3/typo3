@@ -5088,10 +5088,7 @@ final class t3lib_div {
 		}
 
 			// Check prefix is valid:
-		if ($checkPrefix &&
-				!self::isFirstPartOfStr(trim($funcRef), $checkPrefix) &&
-				!self::isFirstPartOfStr(trim($funcRef), 'tx_')
-		) {
+		if ($checkPrefix && !self::hasValidClassPrefix($funcRef, array($checkPrefix))) {
 			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
 			if ($errorMode == 2) {
 				throw new Exception($errorMsg);
@@ -5169,7 +5166,7 @@ final class t3lib_div {
 	 * Usage: 5
 	 *
 	 * @param	string		Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
-	 * @param	string		Required prefix of class name. By default "tx_" is allowed.
+	 * @param	string		Required prefix of class name. By default "tx_" and "Tx_" are allowed.
 	 * @param	boolean		If set, no debug() error message is shown if class/function is not present.
 	 * @return	object		The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
@@ -5201,10 +5198,7 @@ final class t3lib_div {
 			}
 
 				// Check prefix is valid:
-			if ($checkPrefix &&
-					!self::isFirstPartOfStr(trim($class), $checkPrefix) &&
-					!self::isFirstPartOfStr(trim($class), 'tx_')
-			) {
+			if ($checkPrefix && !self::hasValidClassPrefix($class, array($checkPrefix))) {
 				if (!$silent) {
 					debug("Class '" . $class . "' was not prepended with '" . $checkPrefix . "'", 't3lib_div::getUserObj');
 				}
@@ -5227,6 +5221,32 @@ final class t3lib_div {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if a class or function has a valid prefix: tx_, Tx_ or custom, e.g. user_
+	 *
+	 * @param string $classRef The class or function to check
+	 * @param array $additionalPrefixes Additional allowed prefixes, mostly this will be user_
+	 * @return bool TRUE if name is allowed
+	 */
+	public static function hasValidClassPrefix($classRef, array $additionalPrefixes = array()) {
+		$hasValidPrefix = FALSE;
+		$validPrefixes = array('tx_', 'Tx_', $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix']);
+		$classRef = trim($classRef);
+
+		if (count($additionalPrefixes)) {
+			$validPrefixes = array_merge($validPrefixes, $additionalPrefixes);
+		}
+
+		foreach ($validPrefixes as $prefixToCheck) {
+			if (self::isFirstPartOfStr($classRef, $prefixToCheck)) {
+				$hasValidPrefix = TRUE;
+				break;
+			}
+		}
+
+		return $hasValidPrefix;
 	}
 
 	/**
