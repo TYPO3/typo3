@@ -2728,5 +2728,66 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
+
+	///////////////////////////////////////////////////
+	// Tests concerning hasValidClassPrefix
+	///////////////////////////////////////////////////
+
+	/**
+	 * @return array
+	 */
+	public function validClassPrefixDataProvider() {
+		return array(
+			array('tx_foo'),
+			array('tx_foo_bar'),
+			array('Tx_foo'),
+			array($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] . 'foo'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validClassPrefixDataProvider
+	 * @param string $className Class name to test
+	 */
+	public function hasValidClassPrefixAcceptsValidPrefixes($className) {
+		$this->assertTrue(
+			t3lib_div::hasValidClassPrefix($className)
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function invalidClassPrefixDataProvider() {
+		return array(
+			array(''),
+			array('ab_c'),
+			array('txfoo'),
+			array('Txfoo'),
+			array('userfoo'),
+			array('User_foo'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidClassPrefixDataProvider
+	 * @param string $className Class name to test
+	 */
+	public function hasValidClassPrefixRefusesInvalidPrefixes($className) {
+		$this->assertFalse(
+			t3lib_div::hasValidClassPrefix($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function hasValidClassPrefixAcceptsAdditionalPrefixes() {
+		$this->assertTrue(
+			t3lib_div::hasValidClassPrefix('customPrefix_foo', array('customPrefix_'))
+		);
+	}
 }
 ?>

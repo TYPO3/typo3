@@ -936,7 +936,7 @@ class SC_mod_user_setup_index {
 	protected function checkAccess(array $config) {
 		$access = $config['access'];
 			// check for hook
-		if (strpos($access, 'tx_') === 0) {
+		if (t3lib_div::hasValidClassPrefix($access)) {
 			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
 			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck'))	{
 					// initialize vars. If method fails, $set will be set to false

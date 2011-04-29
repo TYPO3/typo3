@@ -2093,7 +2093,7 @@ class t3lib_TCEmain {
 					}
 				break;
 				default:
-					if (substr($func, 0, 3) == 'tx_') {
+					if (t3lib_div::hasValidClassPrefix($func)) {
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 						if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
 							$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
@@ -2199,7 +2199,7 @@ class t3lib_TCEmain {
 					$value = preg_replace('/[^a-zA-Z0-9_-]/', '', $value);
 				break;
 				default:
-					if (substr($func, 0, 3) == 'tx_') {
+					if (t3lib_div::hasValidClassPrefix($func)) {
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 						if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
 							$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
