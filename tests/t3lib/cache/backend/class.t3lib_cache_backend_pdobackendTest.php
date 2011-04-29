@@ -142,28 +142,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
-	public function findIdentifiersByTagsFindsSetEntries() {
-		$backend = $this->setUpBackend();
-
-		$data = 'Some data';
-		$entryIdentifier = 'MyIdentifier';
-		$backend->set($entryIdentifier . 'A', $data, array('UnitTestTag%tag1'));
-		$backend->set($entryIdentifier . 'B', $data, array('UnitTestTag%tag2'));
-		$backend->set($entryIdentifier . 'C', $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-		$backend->set($entryIdentifier . 'D', $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2', 'UnitTestTag%tag3'));
-
-		$retrieved = $backend->findIdentifiersByTags(array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-
-		$this->assertFalse(in_array($entryIdentifier . 'A', $retrieved));
-		$this->assertFalse(in_array($entryIdentifier . 'B', $retrieved));
-		$this->assertTrue(in_array($entryIdentifier . 'C', $retrieved));
-		$this->assertTrue(in_array($entryIdentifier . 'D', $retrieved));
-	}
-
-	/**
-	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setRemovesTagsFromPreviousSet() {
@@ -216,27 +194,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 		$this->assertTrue($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
 		$this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
 		$this->assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
-	}
-
-	/**
-	 * @test
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
-	public function flushByTagsRemovesCacheEntriesWithSpecifiedTags() {
-		$backend = $this->setUpBackend();
-
-		$data = 'some data' . microtime();
-		$backend->set('PdoBackendTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$backend->set('PdoBackendTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special1'));
-		$backend->set('PdoBackendTest3', $data, array('UnitTestTag%test', 'UnitTestTag%special2'));
-		$backend->set('PdoBackendTest4', $data, array('UnitTestTag%test', 'UnitTestTag%special2'));
-
-		$backend->flushByTags(array('UnitTestTag%special1','UnitTestTag%special2'));
-
-		$this->assertTrue($backend->has('PdoBackendTest1'));
-		$this->assertFalse($backend->has('PdoBackendTest2'));
-		$this->assertFalse($backend->has('PdoBackendTest3'));
-		$this->assertFalse($backend->has('PdoBackendTest4'));
 	}
 
 	/**

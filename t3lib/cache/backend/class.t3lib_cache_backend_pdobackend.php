@@ -274,21 +274,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	}
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tags.
-	 * This method doesn't exist in FLOW3, but is mandatory for TYPO3v4.
-	 *
-	 * @TODO: Make smarter
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
-	public function flushBytags(array $tags) {
-		foreach ($tags as $tag) {
-			$this->flushByTag($tag);
-		}
-	}
-
-	/**
 	 * Finds and returns all cache entry identifiers which are tagged by the
 	 * specified tag.
 	 *
@@ -305,35 +290,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 			array($this->context, $this->cacheIdentifier, $tag)
 		);
 		return $statementHandle->fetchAll(\PDO::FETCH_COLUMN);
-	}
-
-	/**
-	 * Finds and returns all cache entry identifiers which are tagged with
-	 * all of the specified tags.
-	 * This method doesn't exist in FLOW3, but is mandatory for TYPO3v4.
-	 *
-	 * @TODO: Make smarter
-	 * @param array $tags Tags to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
-	public function findIdentifiersByTags(array $tags) {
-		$taggedEntries = array();
-		$foundEntries = array();
-
-		foreach ($tags as $tag) {
-			$taggedEntries[$tag] = $this->findIdentifiersByTag($tag);
-		}
-
-		$intersectedTaggedEntries = call_user_func_array('array_intersect', $taggedEntries);
-
-		foreach ($intersectedTaggedEntries as $entryIdentifier) {
-			if ($this->has($entryIdentifier)) {
-				$foundEntries[$entryIdentifier] = $entryIdentifier;
-			}
-		}
-
-		return $foundEntries;
 	}
 
 	/**
