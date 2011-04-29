@@ -4887,10 +4887,7 @@ final class t3lib_div {
 		}
 
 			// Check prefix is valid:
-		if ($checkPrefix &&
-				!self::isFirstPartOfStr(trim($funcRef), $checkPrefix) &&
-				!self::isFirstPartOfStr(trim($funcRef), 'tx_')
-		) {
+		if ($checkPrefix && !self::hasValidClassPrefix($funcRef, $checkPrefix)) {
 			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
 			if ($errorMode == 2) {
 				throw new InvalidArgumentException($errorMsg, 1294585864);
@@ -5000,10 +4997,7 @@ final class t3lib_div {
 			}
 
 				// Check prefix is valid:
-			if ($checkPrefix &&
-					!self::isFirstPartOfStr(trim($class), $checkPrefix) &&
-					!self::isFirstPartOfStr(trim($class), 'tx_')
-			) {
+			if ($checkPrefix && !self::hasValidClassPrefix($class, $checkPrefix)) {
 				if (!$silent) {
 					debug("Class '" . $class . "' was not prepended with '" . $checkPrefix . "'", 't3lib_div::getUserObj');
 				}
@@ -5026,6 +5020,32 @@ final class t3lib_div {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if a class or function has a valid prefix: tx_, Tx_ or custom, e.g. user_
+	 *
+	 * @param string $classRef The class or function to check
+	 * @param string $additionalPrefix Additional allowed prefix, mostly this will be user_
+	 * @return bool TRUE if name is allowed
+	 */
+	public static function hasValidClassPrefix($classRef, $additionalPrefix = '') {
+		$hasValidPrefix = FALSE;
+		$validPrefixes = array('tx_', 'Tx_');
+		$classRef = trim($classRef);
+
+		if ($additionalPrefix !== '') {
+			$validPrefixes[] = $additionalPrefix;
+		}
+
+		foreach ($validPrefixes as $prefixToCheck) {
+			if (self::isFirstPartOfStr($classRef, $prefixToCheck)) {
+				$hasValidPrefix = TRUE;
+				break;
+			}
+		}
+
+		return $hasValidPrefix;
 	}
 
 	/**

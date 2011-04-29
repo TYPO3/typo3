@@ -406,8 +406,7 @@ abstract class t3lib_matchCondition_abstract {
 				$funcValue = t3lib_div::trimExplode(',', $values[1]);
 				$prefix = $this->getUserFuncClassPrefix();
 				if ($prefix &&
-					!t3lib_div::isFirstPartOfStr(trim($funcName), $prefix) &&
-					!t3lib_div::isFirstPartOfStr(trim($funcName), 'tx_')
+					!t3lib_div::hasValidClassPrefix($funcName, $prefix)
 				) {
 					$this->log('Match condition: Function "' . $funcName . '" was not prepended with "' . $prefix . '"');
 					return FALSE;

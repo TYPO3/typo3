@@ -987,8 +987,8 @@ final class t3lib_extMgm {
 			// but maybe it's better to move non-available services to a different array??
 
 		if ($serviceType &&
-				!t3lib_div::isFirstPartOfStr($serviceType, 'tx_') &&
-				(t3lib_div::isFirstPartOfStr($serviceKey, 'tx_') || t3lib_div::isFirstPartOfStr($serviceKey, 'user_')) &&
+				!t3lib_div::hasValidClassPrefix($serviceType) &&
+				t3lib_div::hasValidClassPrefix($serviceKey, 'user_') &&
 				is_array($info)) {
 
 			$info['priority'] = max(0, min(100, $info['priority']));
