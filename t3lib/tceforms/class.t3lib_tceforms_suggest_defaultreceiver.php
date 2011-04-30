@@ -147,7 +147,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 *
 	 * @param array $params
 	 * @param object $ref The parent object
-	 * @return mixed array of rows or false if nothing found
+	 * @return mixed array of rows or FALSE if nothing found
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {
 		$rows = array();

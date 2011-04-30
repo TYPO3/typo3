@@ -352,7 +352,7 @@ class ModuleMenu {
 	/**
 	 * turns linking of modules on or off
 	 *
-	 * @param	boolean		status for linking modules with a-tags, set to false to turn lining off
+	 * @param	boolean		status for linking modules with a-tags, set to FALSE to turn lining off
 	 */
 	public function setLinkModules($linkModules) {
 		if(!is_bool($linkModules)) {

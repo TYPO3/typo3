@@ -179,7 +179,7 @@ class SC_browse_links {
 
 
 			// render type by user func
-		$browserRendered = false;
+		$browserRendered = FALSE;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
 				$browserRenderObj = t3lib_div::getUserObj($classRef);

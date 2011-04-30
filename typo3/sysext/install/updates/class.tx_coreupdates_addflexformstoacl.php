@@ -38,7 +38,7 @@ class tx_coreupdates_addflexformstoacl extends Tx_Install_Updates_Base {
 	 * Checks if FlexForm fields are missing in group access lists.
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean Whether an update is required (TRUE) or not (false)
+	 * @return boolean Whether an update is required (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$description = '

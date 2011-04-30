@@ -99,7 +99,7 @@ class t3lib_pageTree extends t3lib_treeView {
 	}
 
 	/**
-	 * Returns TRUE/false if the next level for $id should be expanded - and all levels should, so we always return 1.
+	 * Returns TRUE/FALSE if the next level for $id should be expanded - and all levels should, so we always return 1.
 	 *
 	 * @param	integer		ID (uid) to test for (see extending classes where this is checked againts session data)
 	 * @return	boolean

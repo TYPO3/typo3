@@ -39,10 +39,10 @@ class tx_coreupdates_imagecols extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (TRUE) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = false;
+		$result = FALSE;
 		$description = 'Sets tt_content.imagecols = 1 to all entries having "0". This is needed to have a valid value for imagecols.';
 
 		if ($this->versionNumber >= 4003000) {
@@ -61,10 +61,10 @@ class tx_coreupdates_imagecols extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (TRUE) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = false;
+		$result = FALSE;
 		if($this->versionNumber >= 4003000)	{
 			$updateArray = array(
 				'imagecols' => 1,

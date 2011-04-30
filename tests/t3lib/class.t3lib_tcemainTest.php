@@ -118,7 +118,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function nonAdminIsNorAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = false;
+		$this->fixture->admin = FALSE;
 
 		$this->assertFalse(
 			$this->fixture->checkModifyAccessList('tt_content')
@@ -129,7 +129,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = false;
+		$this->fixture->admin = FALSE;
 		$this->backEndUser->groupData['tables_modify'] = 'tt_content';
 
 		$this->assertTrue(
@@ -152,7 +152,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function nonAdminIsNotAllowedToModifyAdminTable() {
-		$this->fixture->admin = false;
+		$this->fixture->admin = FALSE;
 
 		$this->assertFalse(
 			$this->fixture->checkModifyAccessList('be_users')
@@ -163,7 +163,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable() {
-		$this->fixture->admin = false;
+		$this->fixture->admin = FALSE;
 		$this->backEndUser->groupData['tables_modify'] = 'be_users';
 
 		$this->assertFalse(

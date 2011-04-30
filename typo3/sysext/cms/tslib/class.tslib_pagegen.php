@@ -1141,14 +1141,14 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	}
 
 	/**
-	 * Checks if the value defined in "config.linkVars" contains an allowed value. Otherwise, return false which means the value will not be added to any links.
+	 * Checks if the value defined in "config.linkVars" contains an allowed value. Otherwise, return FALSE which means the value will not be added to any links.
 	 *
 	 * @param	string		The string in which to find $needle
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns TRUE if $needle matches or is found in $haystack
 	 */
 	public static function isAllowedLinkVarValue($haystack,$needle) {
-		$OK = false;
+		$OK = FALSE;
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer
 

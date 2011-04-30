@@ -603,7 +603,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
-	 * @return	integer		Number of versions for record, false if none.
+	 * @return	integer		Number of versions for record, FALSE if none.
 	 */
 	function lookForOwnVersions($table,$uid)	{
 		global $TCA;

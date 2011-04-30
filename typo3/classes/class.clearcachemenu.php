@@ -117,7 +117,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  TRUE if user has access, false if not
+	 * @return  boolean  TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 
@@ -132,7 +132,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 				}
 			}
 		}
-		return false;
+		return FALSE;
 
 	}
 

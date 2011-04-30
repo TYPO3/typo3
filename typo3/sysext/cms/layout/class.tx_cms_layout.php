@@ -95,7 +95,7 @@
  *			  SECTION: External renderings
  * 2341:	 function getPageInfoBox($rec,$edit=0)
  * 2510:	 function getTableMenu($id)
- * 2575:	 function strip_tags($content, $fillEmptyContent=false)
+ * 2575:	 function strip_tags($content, $fillEmptyContent=FALSE)
  *
  * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -2716,7 +2716,7 @@ class tx_cms_layout extends recordList {
 	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
 	 */
-	function strip_tags($content, $fillEmptyContent = false) {
+	function strip_tags($content, $fillEmptyContent = FALSE) {
 		if ($fillEmptyContent && strstr($content, '><')) {
 			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\/[^>]*>)/', '$1$2$3$2$4', $content);
 		}

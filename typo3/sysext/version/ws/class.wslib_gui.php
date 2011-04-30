@@ -88,9 +88,9 @@ class wslib_gui {
 	var $pageTreeIndent_titleLgd = 30;
 
 	// Options
-	var	$diff = false;
-	var	$expandSubElements = false;
-	var	$alwaysDisplayHeader = false;
+	var	$diff = FALSE;
+	var	$expandSubElements = FALSE;
+	var	$alwaysDisplayHeader = FALSE;
 
 	// Internal
 	var	$showWorkspaceCol = 0;
@@ -101,7 +101,7 @@ class wslib_gui {
 	var	$pageModule = '';
 	var $formatCount_cache = array();
 	var $stageIndex = array();
-	var	$addHlSubelementsScript = false;
+	var	$addHlSubelementsScript = FALSE;
 
 	/*********************************
 	 *

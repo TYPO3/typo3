@@ -69,8 +69,8 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	var $db_user = array();		// User db table definition
 	var $db_groups = array();	// Usergroups db table definition
 
-	var $writeAttemptLog = false;	// If the writelog() functions is called if a login-attempt has be tried without success
-	var $writeDevLog = false;	// If the t3lib_div::devLog() function should be used
+	var $writeAttemptLog = FALSE;	// If the writelog() functions is called if a login-attempt has be tried without success
+	var $writeDevLog = FALSE;	// If the t3lib_div::devLog() function should be used
 
 
 	/**
@@ -151,7 +151,7 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	 * @param	string		user name
 	 * @param	string		additional WHERE clause: " AND ...
 	 * @param	array		User db table definition: $this->db_user
-	 * @return	mixed		user array or false
+	 * @return	mixed		user array or FALSE
 	 */
 	function fetchUserRecord($username, $extraWhere='', $dbUserSetup='')	{
 

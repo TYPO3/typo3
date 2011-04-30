@@ -40,7 +40,7 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (TRUE) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -132,7 +132,7 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (TRUE) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 

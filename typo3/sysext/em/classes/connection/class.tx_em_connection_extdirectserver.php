@@ -391,7 +391,7 @@ class tx_em_Connection_ExtDirectServer {
 				$fileArray[] = array(
 					'id' => ($node == '' ? '' : $node . '/') . $dir,
 					'text' => htmlspecialchars($dir),
-					'leaf' => false,
+					'leaf' => FALSE,
 					'qtip' => ''
 				);
 			}

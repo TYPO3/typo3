@@ -56,7 +56,7 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 			// Prepare public key information
 			$exportedData = '';
 			$csr = openssl_csr_new(array(), $privateKey);
-			openssl_csr_export($csr, $exportedData, false);
+			openssl_csr_export($csr, $exportedData, FALSE);
 
 			// Get public key (in fact modulus) and exponent
 			$publicKey = $this->extractPublicKeyModulus($exportedData);
@@ -100,7 +100,7 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	 * @see tx_rsaauth_abstract_backend::isAvailable()
 	 */
 	public function isAvailable() {
-		$result = false;
+		$result = FALSE;
 		if (is_callable('openssl_pkey_new')) {
 			if (TYPO3_OS !== 'WIN') {
 				// If the server does not run Windows, we can be sure than
@@ -129,7 +129,7 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	 */
 	protected function extractExponent($data) {
 		$index = strpos($data, 'Exponent: ');
-		// We do not check for '$index === false' because the exponent is
+		// We do not check for '$index === FALSE' because the exponent is
 		// always there!
 		return intval(substr($data, $index + 10));
 	}

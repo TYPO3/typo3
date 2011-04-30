@@ -303,7 +303,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 
 				// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
-			if (array_search($entryIdentifier, $existingTags) === false) {
+			if (array_search($entryIdentifier, $existingTags) === FALSE) {
 				apc_store($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 
@@ -324,9 +324,9 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			// Deassociate tags with this identifier
 		foreach ($tags as $tag) {
 			$identifiers = $this->findIdentifiersByTag($tag);
-				// Formally array_search() below should never return false due to
+				// Formally array_search() below should never return FALSE due to
 				// the behavior of findTagsByIdentifier(). But if reverse index is
-				// corrupted, we still can get 'false' from array_search(). This is
+				// corrupted, we still can get 'FALSE' from array_search(). This is
 				// not a problem because we are removing this identifier from
 				// anywhere.
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {

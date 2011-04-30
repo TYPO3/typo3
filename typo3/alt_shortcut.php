@@ -856,7 +856,7 @@ class SC_alt_shortcut {
 	function hasWorkspaceAccess() {
 		$MCONF = array();
 		include('mod/user/ws/conf.php');
-		return $GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false);
+		return $GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), FALSE) && $GLOBALS['BE_USER']->modAccess($MCONF, FALSE);
 	}
 }
 

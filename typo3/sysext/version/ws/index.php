@@ -660,21 +660,21 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Live
 		$wksp = $this->workspaceList_createFakeWorkspaceRecord(0);
 		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
-		if (false !== $wksp) {
+		if (FALSE !== $wksp) {
 			$availableWorkspaces[] = $wksp;
 		}
 
 			// Draft
 		$wksp = $this->workspaceList_createFakeWorkspaceRecord(-1);
 		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
-		if (false !== $wksp) {
+		if (FALSE !== $wksp) {
 			$availableWorkspaces[] = $wksp;
 		}
 
 			// Custom
 		foreach($workspaces as $rec)	{
 				// see if user can access this workspace in any way
-			if (false !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec)))	{
+			if (FALSE !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec)))	{
 				$availableWorkspaces[] = $result;	// `$result` contains `$rec` plus access type through '_ACCESS' key
 			}
 		}
@@ -920,7 +920,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 				// get user names and sort
 			$regExp = '/^(be_[^_]+)_(\d+)$/';
-			$groups = false;
+			$groups = FALSE;
 			foreach ($userIDs as $userUID)	{
 				$id = $userUID;
 
@@ -943,7 +943,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 					}
 					else {
 						// group
-						if (false === $groups) {
+						if (FALSE === $groups) {
 							$groups = t3lib_BEfunc::getGroupNames();
 						}
 						$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"'), $table, $id, 2) .

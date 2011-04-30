@@ -519,7 +519,7 @@ class t3lib_refindex {
 	 * @param	string		Field value
 	 * @param	array		Field configuration array of type "TCA/columns"
 	 * @param	integer		Field uid
-	 * @return	array		If field type is OK it will return an array with the files inside. Else false
+	 * @return	array		If field type is OK it will return an array with the files inside. Else FALSE
 	 */
 	function getRelations_procFiles($value, $conf, $uid) {
 			// Take care of files...
@@ -570,7 +570,7 @@ class t3lib_refindex {
 	 * @param	array		Field configuration array of type "TCA/columns"
 	 * @param	integer		Field uid
 	 * @param	string		Table name
-	 * @return	array		If field type is OK it will return an array with the database relations. Else false
+	 * @return	array		If field type is OK it will return an array with the database relations. Else FALSE
 	 */
 	function getRelations_procDB($value, $conf, $uid, $table = '') {
 
@@ -609,7 +609,7 @@ class t3lib_refindex {
 	 * @param	mixed		Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
 	 * @param	boolean		Return $dataArray only, do not submit it to database.
 	 * @param	boolean		If set, it will bypass check for workspace-zero and admin user
-	 * @return	string		If a return string, that carries an error message, otherwise false (=OK) (except if $returnDataArray is set!)
+	 * @return	string		If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
 	 */
 	function setReferenceValue($hash, $newValue, $returnDataArray = FALSE, $bypassWorkspaceAdminCheck = FALSE) {
 
@@ -729,7 +729,7 @@ class t3lib_refindex {
 	 * @param	string		Value to substitute current value with (or NULL to unset it)
 	 * @param	array		data array in which the new value is set (passed by reference)
 	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise false = OK
+	 * @return	string		Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		if (!strcmp($itemArray[$refRec['sorting']]['id'], $refRec['ref_uid']) && !strcmp($itemArray[$refRec['sorting']]['table'], $refRec['ref_table'])) {
@@ -769,7 +769,7 @@ class t3lib_refindex {
 	 * @param	string		Value to substitute current value with (or NULL to unset it)
 	 * @param	array		data array in which the new value is set (passed by reference)
 	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise false = OK
+	 * @return	string		Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		if (!strcmp(substr($itemArray[$refRec['sorting']]['ID_absFile'], strlen(PATH_site)), $refRec['ref_string']) && !strcmp('_FILE', $refRec['ref_table'])) {
@@ -809,7 +809,7 @@ class t3lib_refindex {
 	 * @param	string		Value to substitute current value with
 	 * @param	array		data array in which the new value is set (passed by reference)
 	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise false = OK
+	 * @return	string		Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexpointer = '') {
 		if (is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {

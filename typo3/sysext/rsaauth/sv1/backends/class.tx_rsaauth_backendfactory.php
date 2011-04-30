@@ -55,7 +55,7 @@ class tx_rsaauth_backendfactory {
 	 *
 	 * @var	boolean
 	 */
-	static protected $initialized = false;
+	static protected $initialized = FALSE;
 
 	/**
 	 * A selected backend. This member is set in the getBackend() function. It

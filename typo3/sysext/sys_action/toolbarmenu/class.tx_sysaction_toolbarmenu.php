@@ -189,7 +189,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	/**
 	 * Checks if user has access to the sys action menu
 	 *
-	 * @return	boolean	TRUE if the user has access, false otherwise
+	 * @return	boolean	TRUE if the user has access, FALSE otherwise
 	 */
 	public function checkAccess() {
 			// taskcenter is enabled for everybody

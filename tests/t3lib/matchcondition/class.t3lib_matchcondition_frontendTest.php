@@ -89,8 +89,8 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression() {
-		$this->matchCondition->matchAll = false;
-		$this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
+		$this->matchCondition->matchAll = FALSE;
+		$this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return FALSE in general]'));
 	}
 
 	/**
@@ -99,7 +99,7 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 	 */
 	public function simulateEnabledMatchAllConditionsSucceeds() {
 		$this->matchCondition->setSimulateMatchResult(TRUE);
-		$this->assertTrue($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
+		$this->assertTrue($this->matchCondition->match('[nullCondition = This expression would return FALSE in general]'));
 	}
 
 	/**

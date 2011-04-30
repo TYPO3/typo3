@@ -90,7 +90,7 @@ final class tslib_eidtools {
 	 * @return	boolean		TRUE if connection was successful
 	 */
 	public static function connectDB()	{
-		static $dbConnected = false;
+		static $dbConnected = FALSE;
 
 		if (!$dbConnected) {
 			// Attempt to connect to the database
@@ -127,7 +127,7 @@ final class tslib_eidtools {
 		// TCA is still loaded if such bad extensions are installed
 		if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
 			// Load TCA using TSFE
-			self::getTSFE()->includeTCA(false);
+			self::getTSFE()->includeTCA(FALSE);
 		}
 	}
 

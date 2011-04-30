@@ -146,8 +146,8 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlarea_api {
 			$hideItems = array();
 			$restrictTo = array('*');
 			$inlineElementsOrder = $this->defaultInlineElementsOrder;
-			$prefixLabelWithTag = false;
-			$postfixLabelWithTag = false;
+			$prefixLabelWithTag = FALSE;
+			$postfixLabelWithTag = FALSE;
 
 				// Processing PageTSConfig
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formattext.'])) {

@@ -91,7 +91,7 @@ class tx_em_Connection_Ter {
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n-' . $lang . '.zip';
 		$l10n = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 
-		if ($l10n !== false) {
+		if ($l10n !== FALSE) {
 			return array($l10n);
 		} else {
 			return 'Error: Translation could not be fetched.';
@@ -134,7 +134,7 @@ class tx_em_Connection_Ter {
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
 		$remote = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
 
-		if ($remote !== false) {
+		if ($remote !== FALSE) {
 			$parsed = $this->emObj->xmlHandler->parseL10nXML($remote);
 			return $parsed['languagePackIndex'];
 		}

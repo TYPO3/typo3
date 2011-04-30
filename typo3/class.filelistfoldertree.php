@@ -62,7 +62,7 @@
 class filelistFolderTree extends t3lib_folderTree {
 
 	var $ext_IconMode;
-	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
+	var $ajaxStatus = FALSE; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
 	 * Calls init functions
@@ -138,7 +138,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			// -- evaluate AJAX request
 			// IE takes anchor as parameter
 		$PM = t3lib_div::_GP('PM');
-		if(($PMpos = strpos($PM, '#')) !== false) { $PM = substr($PM, 0, $PMpos); }
+		if(($PMpos = strpos($PM, '#')) !== FALSE) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
 		if((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM)==4) {
 			if($PM[1])	{
@@ -290,7 +290,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 			// Traverse mounts:
 		foreach($this->MOUNTS as $key => $val)	{
-			$hasSub = false;
+			$hasSub = FALSE;
 			$specUID = t3lib_div::md5int($val['path']);
 			$this->specUIDmap[$specUID] = $val['path'];
 
@@ -443,7 +443,7 @@ class filelistFolderTree extends t3lib_folderTree {
 				'HTML'   => $HTML,
 				'hasSub' => $nextCount && $this->expandNext($specUID),
 				'isFirst'=> ($a == 1),
-				'isLast' => false,
+				'isLast' => FALSE,
 				'invertedDepth'=> $depth,
 				'bank'   => $this->bank
 			);

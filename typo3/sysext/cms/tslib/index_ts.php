@@ -466,7 +466,7 @@ if ($TSFE->isINTincScript())		{
 // ***************
 // Output content
 // ***************
-$sendTSFEContent = false;
+$sendTSFEContent = FALSE;
 if ($TSFE->isOutputting())	{
 	$TT->push('Print Content','');
 	$TSFE->processOutput();

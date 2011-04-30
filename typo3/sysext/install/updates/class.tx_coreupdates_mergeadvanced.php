@@ -37,10 +37,10 @@ class tx_coreupdates_mergeadvanced extends Tx_Install_Updates_Base {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update
-	 * @return	boolean		whether an update is needed (TRUE) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = false;
+		$result = FALSE;
 		$description = 'Merges the "Advanced" pagetype (doktype 2) to "Standard" (doktype 1) because "Standard" now has the same features, and "Advanced" is not needed anymore.';
 
 		if ($this->versionNumber >= 4002000) {
@@ -59,10 +59,10 @@ class tx_coreupdates_mergeadvanced extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (TRUE) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
-		$result = false;
+		$result = FALSE;
 		if($this->versionNumber >= 4002000)	{
 			$updateArray = array(
 				'doktype' => 1,

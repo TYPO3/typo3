@@ -195,7 +195,7 @@ final class t3lib_extMgm {
 	 * Returns the real extension key like 'tt_news' from an extension prefix like 'tx_ttnews'.
 	 *
 	 * @param	string		$prefix: The extension prefix (e.g. 'tx_ttnews')
-	 * @return	mixed		Real extension key (string) or false (boolean) if something went wrong
+	 * @return	mixed		Real extension key (string) or FALSE (boolean) if something went wrong
 	 */
 	public static function getExtensionKeyByPrefix($prefix) {
 		$result = FALSE;
@@ -749,7 +749,7 @@ final class t3lib_extMgm {
 	 *
 	 * @see		explodeItemList
 	 * @param	array		$items: The array of fields/items with optional additional information
-	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: false)
+	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: FALSE)
 	 * @return	string		The list of fields/items which gets used for $GLOBALS['TCA'][<table>]['types'][<type>]['showitem']
 	 *						 or $GLOBALS['TCA'][<table>]['palettes'][<palette>]['showitem'] in most cases
 	 */
@@ -1498,7 +1498,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 
 	/**
 	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
-	 * Returns false if no problem.
+	 * Returns FALSE if no problem.
 	 * Usage: 1
 	 *
 	 * @param	string		Prefix of the cache file to check
@@ -1522,7 +1522,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	}
 
 	/**
-	 * Returns an array with the two cache-files (0=>localconf, 1=>tables) from typo3conf/ if they (both) exist. Otherwise false.
+	 * Returns an array with the two cache-files (0=>localconf, 1=>tables) from typo3conf/ if they (both) exist. Otherwise FALSE.
 	 * Evaluation relies on $TYPO3_LOADED_EXT['_CACHEFILE']
 	 * Usage: 2
 	 *

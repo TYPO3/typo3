@@ -69,7 +69,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	 * checks whether the user has access to this toolbar item
 	 *
 	 * @see		typo3/alt_shortcut.php
-	 * @return  boolean  TRUE if user has access, false if not
+	 * @return  boolean  TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 		if (t3lib_extMgm::isLoaded('workspaces')) {

@@ -222,7 +222,7 @@ class tx_em_Parser_ExtensionXmlPullParser extends tx_em_Parser_ExtensionXmlAbstr
 	 */
 	public function detach(SplObserver $observer) {
 		$key = array_search($observer, $this->observers, TRUE);
-		if (!($key === false)) {
+		if (!($key === FALSE)) {
 			unset($this->observers[$key]);
 		}
 	}

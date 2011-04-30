@@ -173,7 +173,7 @@ class t3lib_loadModules {
 				}
 			}
 
-				// if $theMainMod is not set (false) there is no access to the module !(?)
+				// if $theMainMod is not set (FALSE) there is no access to the module !(?)
 			if ($theMainMod && !is_null($path)) {
 				$this->modules[$mods] = $theMainMod;
 
@@ -230,7 +230,7 @@ class t3lib_loadModules {
 	 * Here we check for the module.
 	 * Return values:
 	 *	 'notFound':	If the module was not found in the path (no "conf.php" file)
-	 *	 false:		If no access to the module (access check failed)
+	 *	 FALSE:		If no access to the module (access check failed)
 	 *	 array():	Configuration array, in case a valid module where access IS granted exists.
 	 *
 	 * @param	string		Module name
