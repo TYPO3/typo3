@@ -140,7 +140,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
 	protected $cumulativeScripts = array();
 	public $registeredPlugins = array();			// Array of registered plugins indexed by their plugin Id's
-	protected $fullScreen = false;
+	protected $fullScreen = FALSE;
 
 	/**
 	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
@@ -530,7 +530,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					// Traverse registered plugins
 		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
 			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
-				$plugin = false;
+				$plugin = FALSE;
 				if (is_array($pluginObjectConfiguration) && count($pluginObjectConfiguration)) {
 					$plugin = t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
 				}
@@ -668,7 +668,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$hidePlugins = array();
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if ($this->registeredPlugins[$pluginId]->addsButtons()) {
-				$showPlugin = false;
+				$showPlugin = FALSE;
 				$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
 				foreach ($buttonArray as $button) {
 					if (in_array($button, $this->toolbar)) {
@@ -902,7 +902,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].pageStyle = "' . t3lib_div::createVersionNumberedFilename($this->getFullFileName($filename)) .'";';
 			// Process classes configuration
-		$classesConfigurationRequired = false;
+		$classesConfigurationRequired = FALSE;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
 				$classesConfigurationRequired = $classesConfigurationRequired || $plugin->requiresClassesConfiguration();

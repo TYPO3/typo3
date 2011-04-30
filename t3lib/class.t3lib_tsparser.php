@@ -44,7 +44,7 @@
  *  413:	 function getVal($string,$setup)
  *  439:	 function setVal($string,&$setup,$value,$wipeOut=0)
  *  485:	 function error($err,$num=2)
- *  497:	 function checkIncludeLines($string, $cycle_counter=1, $returnFiles=false)
+ *  497:	 function checkIncludeLines($string, $cycle_counter=1, $returnFiles=FALSE)
  *  541:	 function checkIncludeLines_array($array)
  *
  *			  SECTION: Syntax highlighting

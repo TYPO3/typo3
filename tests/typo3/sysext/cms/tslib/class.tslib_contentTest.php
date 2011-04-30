@@ -68,7 +68,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$this->template = $this->getMock(
 			't3lib_TStemplate', array('getFileName', 'linkData')
 		);
-		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
+		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$GLOBALS['TSFE'] = $this->tsfe;

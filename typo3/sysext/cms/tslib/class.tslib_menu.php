@@ -281,7 +281,7 @@ class tslib_menu {
 				}
 			}
 
-				// Return false if no page ID was set (thus no menu of subpages can be made).
+				// Return FALSE if no page ID was set (thus no menu of subpages can be made).
 			if ($this->id<=0)	{
 				return FALSE;
 			}
@@ -1486,7 +1486,7 @@ class tslib_menu {
 	 *
 	 * @param	string		The item state to evaluate (SPC, IFSUB, ACT etc... but no xxxRO states of course)
 	 * @param	integer		Key pointing to menu item from ->menuArr
-	 * @return	boolean		True (integer!=0) if match, otherwise false (=0, zero)
+	 * @return	boolean		True (integer!=0) if match, otherwise FALSE (=0, zero)
 	 * @access private
 	 * @see procesItemStates()
 	 */

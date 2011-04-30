@@ -620,7 +620,7 @@ class SC_mod_user_setup_index {
 			if (substr($fieldName, 0, 8) == '--div--;') {
 				if ($firstTabLabel == '') {
 					// first tab
-					$tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
+					$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
 					$firstTabLabel = $tabLabel;
 				} else {
 					if ($this->dividers2tabs) {
@@ -628,7 +628,7 @@ class SC_mod_user_setup_index {
 							'label'   => $tabLabel,
 							'content' => count($code) ? $this->doc->spacer(20) . $this->doc->table($code) : ''
 						);
-						$tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
+						$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
 						$i = 0;
 						$code = array();
 					}
@@ -712,7 +712,7 @@ class SC_mod_user_setup_index {
 						foreach ($config['items'] as $key => $optionLabel) {
 							$html .= '<option value="' . $key . '"' .
 								($value == $key ? ' selected="selected"' : '') .
-								'>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
+								'>' . $this->getLabel($optionLabel, '', FALSE) . '</option>' . LF;
 						}
 						$html .= '</select>';
 					}
@@ -785,7 +785,7 @@ class SC_mod_user_setup_index {
 			if ($language != 'default') {
 				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language];
 				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
-				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? false : TRUE);
+				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? FALSE : TRUE);
 				if (!$unavailable) {
 					$languageOptions[$languageValue . '--' . $language] = '
 					<option value="'.$language.'"'.($GLOBALS['BE_USER']->uc['lang'] == $language ? ' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '').'>'.$GLOBALS['LANG']->getLL('lang_' . $language, 1) . $localLabel . '</option>';
@@ -941,7 +941,7 @@ class SC_mod_user_setup_index {
 		if (strpos($access, 'tx_') === 0) {
 			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
 			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck'))	{
-					// initialize vars. If method fails, $set will be set to false
+					// initialize vars. If method fails, $set will be set to FALSE
 				return $accessObject->accessLevelCheck($config);
 			}
 		} elseif ($access == 'admin') {

@@ -41,14 +41,14 @@ class tslib_AdminPanel {
 	 *
 	 * @var	boolean
 	 */
-	protected $extNeedUpdate = false;
+	protected $extNeedUpdate = FALSE;
 
 	/**
 	 * Force preview?
 	 *
 	 * @var boolean
 	 */
-	protected $ext_forcePreview = false;
+	protected $ext_forcePreview = FALSE;
 
 	/**
 	 * Comma separated list of page UIDs to be published.
@@ -133,7 +133,7 @@ class tslib_AdminPanel {
 	 * @return	boolean
 	 */
 	public function isAdminModuleEnabled($key) {
-		$result = false;
+		$result = FALSE;
 
 			// Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
 		if ($key == 'preview' && $this->ext_forcePreview) {

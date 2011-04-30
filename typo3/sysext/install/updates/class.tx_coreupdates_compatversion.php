@@ -37,7 +37,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
 	 * @param	string		pointer to description for the update
-	 * @return	boolean		TRUE if update is needs to be performed, false otherwise.
+	 * @return	boolean		TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	function checkForUpdate(&$description)	{
 		global $TYPO3_CONF_VARS;
@@ -183,7 +183,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * Checks if user input is valid
 	 *
 	 * @param	string		pointer to output custom messages
-	 * @return	boolean		TRUE if user input is correct, then the update is performed. When false, return to getUserInput
+	 * @return	boolean		TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
 	function checkUserInput(&$customMessages)	{
 		global $TYPO3_CONF_VARS;
@@ -217,7 +217,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 *
 	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
 	 * @param	string		pointer to output custom messages
-	 * @return	boolean		TRUE if update succeeded, false otherwise
+	 * @return	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
 	function performUpdate(&$dbQueries, &$customMessages)	{
 		$customMessages = '';

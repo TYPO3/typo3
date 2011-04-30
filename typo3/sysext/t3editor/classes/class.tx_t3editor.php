@@ -457,7 +457,7 @@ class tx_t3editor implements t3lib_Singleton {
 		if((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 			$ajaxObj->setContentFormat('json');
 			$codeType = t3lib_div::_GP('t3editor_savetype');
-			$savingsuccess = false;
+			$savingsuccess = FALSE;
 
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
 				$_params = array(

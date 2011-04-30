@@ -418,7 +418,7 @@ final class t3lib_BEfunc {
 	 * @param	integer		$uid: The uid of the record
 	 * @param	integer		$language: The uid of the language record in sys_language
 	 * @param	string		$andWhereClause: Optional additional WHERE clause (default: '')
-	 * @return	mixed		Multidimensional array with selected records; if none exist, false is returned
+	 * @return	mixed		Multidimensional array with selected records; if none exist, FALSE is returned
 	 */
 	public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
 		$recordLocalization = FALSE;
@@ -809,11 +809,11 @@ final class t3lib_BEfunc {
 	/**
 	 * Returns the value of the property localizationMode in the given $config array ($GLOBALS['TCA'][<table>]['columns'][<field>]['config']).
 	 * If the table is prepared for localization and no localizationMode is set, 'select' is returned by default.
-	 * If the table is not prepared for localization or not defined at all in $GLOBALS['TCA'], false is returned.
+	 * If the table is not prepared for localization or not defined at all in $GLOBALS['TCA'], FALSE is returned.
 	 *
 	 * @param	string		$table: The name of the table to lookup in TCA
 	 * @param	mixed		$fieldOrConfig: The fieldname (string) or the configuration of the field to check (array)
-	 * @return	mixed		If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, false is returned
+	 * @return	mixed		If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, FALSE is returned
 	 */
 	public static function getInlineLocalizationMode($table, $fieldOrConfig) {
 		$localizationMode = FALSE;
@@ -840,7 +840,7 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	integer		Page uid for which to check read-access
 	 * @param	string		$perms_clause is typically a value generated with $GLOBALS['BE_USER']->getPagePermsClause(1);
-	 * @return	array		Returns page record if OK, otherwise false.
+	 * @return	array		Returns page record if OK, otherwise FALSE.
 	 */
 	public static function readPageAccess($id, $perms_clause) {
 		if ((string) $id != '') {
@@ -1614,7 +1614,7 @@ final class t3lib_BEfunc {
 	 * Usage: 1 (class t3lib_BEfunc)
 	 *
 	 * @param	integer		Time stamp, seconds
-	 * @param	boolean		Output hh:mm:ss. If false: hh:mm
+	 * @param	boolean		Output hh:mm:ss. If FALSE: hh:mm
 	 * @return	string		Formatted time
 	 */
 	public static function time($value, $withSeconds = TRUE) {
@@ -3908,7 +3908,7 @@ final class t3lib_BEfunc {
 	public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = FALSE) {
 		if (t3lib_extMgm::isLoaded('version')) {
 
-			$previewMovePlaceholders = TRUE; // If this is false the placeholder is shown raw in the backend. I don't know if this move can be useful for users to toggle. Technically it can help debugging...
+			$previewMovePlaceholders = TRUE; // If this is FALSE the placeholder is shown raw in the backend. I don't know if this move can be useful for users to toggle. Technically it can help debugging...
 
 				// Initialize workspace ID:
 			if ($wsid == -99) {
@@ -4023,7 +4023,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name to select from
 	 * @param	integer		Record uid for which to find workspace version.
 	 * @param	string		Field list to select
-	 * @return	array		If found, return record, otherwise false
+	 * @return	array		If found, return record, otherwise FALSE
 	 */
 	public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*') {
 		if (t3lib_extMgm::isLoaded('version')) {
@@ -4090,7 +4090,7 @@ final class t3lib_BEfunc {
 	 * @param	integer		Page id inside of which you want to edit/create/delete something.
 	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned TRUE. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
 	 * @param	boolean		If set, the keyword "branchpoint" or "first" is not returned by rather the "t3ver_stage" value of the branch-point.
-	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or false if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
+	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or FALSE if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
 	 */
 	public static function isPidInVersionizedBranch($pid, $table = '', $returnStage = FALSE) {
 		$rl = self::BEgetRootLine($pid);

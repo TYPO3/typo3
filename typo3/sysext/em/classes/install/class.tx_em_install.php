@@ -415,8 +415,8 @@ class tx_em_Install {
 	 */
 	function checkDependencies($extKey, $conf, $instExtInfo) {
 		$content = '';
-		$depError = false;
-		$depIgnore = false;
+		$depError = FALSE;
+		$depIgnore = FALSE;
 		$msg = array();
 		$depsolver = t3lib_div::_POST('depsolver');
 
@@ -540,8 +540,8 @@ class tx_em_Install {
 		}
 
 		// Check conflicts with other extensions:
-		$conflictError = false;
-		$conflictIgnore = false;
+		$conflictError = FALSE;
+		$conflictIgnore = FALSE;
 		$msg = array();
 
 		if (isset($conf['constraints']['conflicts']) && is_array($conf['constraints']['conflicts'])) {
@@ -586,8 +586,8 @@ class tx_em_Install {
 
 		// Check suggests on other extensions:
 		if (isset($conf['constraints']['suggests']) && is_array($conf['constraints']['suggests'])) {
-			$suggestion = false;
-			$suggestionIgnore = false;
+			$suggestion = FALSE;
+			$suggestionIgnore = FALSE;
 			$msg = array();
 			foreach ($conf['constraints']['suggests'] as $suggestK => $suggestV) {
 				if ($depsolver['ignore'][$suggestK]) {

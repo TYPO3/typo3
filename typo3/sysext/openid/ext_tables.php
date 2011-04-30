@@ -20,7 +20,7 @@ $tempColumns = array (
 
 // Add new columns to be_users table
 t3lib_div::loadTCA('be_users');
-t3lib_extMgm::addTCAcolumns('be_users', $tempColumns, false);
+t3lib_extMgm::addTCAcolumns('be_users', $tempColumns, FALSE);
 t3lib_extMgm::addToAllTCAtypes('be_users','tx_openid_openid;;;;1-1-1', '', 'after:username');
 t3lib_extMgm::addLLrefForTCAdescr('be_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 
@@ -29,7 +29,7 @@ $tempColumns['tx_openid_openid']['config']['eval'] = 'trim,nospace,uniqueInPid';
 
 // Add new columns to fe_users table
 t3lib_div::loadTCA('fe_users');
-t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, false);
+t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, FALSE);
 t3lib_extMgm::addFieldsToAllPalettesOfField('fe_users', 'username', 'tx_openid_openid');
 t3lib_extMgm::addLLrefForTCAdescr('fe_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 

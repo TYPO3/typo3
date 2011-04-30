@@ -251,7 +251,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param	array		$MCONF array of a backend module!
 	 * @param	boolean		If set, an array will issue an error message and exit.
-	 * @return	boolean		Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return false if the module name is not even found in $TBE_MODULES
+	 * @return	boolean		Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
 	 */
 	function modAccess($conf, $exitOnError) {
 		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name'])) {
@@ -438,7 +438,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		Field name (must be configured in TCA and of type "select" with authMode set!)
 	 * @param	string		Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param	string		Auth mode keyword (explicitAllow, explicitDeny, individual)
-	 * @return	boolean		TRUE or false whether access is granted or not.
+	 * @return	boolean		TRUE or FALSE whether access is granted or not.
 	 */
 	function checkAuthMode($table, $field, $value, $authMode) {
 
@@ -507,7 +507,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
 	 *
 	 * @param	integer		Language value to evaluate
-	 * @return	boolean		Returns TRUE if the language value is allowed, otherwise false.
+	 * @return	boolean		Returns TRUE if the language value is allowed, otherwise FALSE.
 	 */
 	function checkLanguageAccess($langValue) {
 		if (strcmp(trim($this->groupData['allowed_languages']), '')) { // The users language list must be non-blank - otherwise all languages are allowed.
@@ -581,7 +581,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	boolean		Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
 	 * @param	boolean		Set, if testing a deleted record array.
 	 * @param	boolean		Set, whenever access to all translations of the record is required
-	 * @return	boolean		TRUE if OK, otherwise false
+	 * @return	boolean		TRUE if OK, otherwise FALSE
 	 */
 	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (isset($GLOBALS['TCA'][$table])) {
@@ -958,7 +958,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Workspace swap-mode access?
 	 *
-	 * @return	boolean		Returns TRUE if records can be swapped in the current workspace, otherwise false
+	 * @return	boolean		Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
 	 */
 	function workspaceSwapAccess() {
 		if ($this->workspace > 0 && (int) $this->workspaceRec['swap_modes'] === 2) {
@@ -1155,7 +1155,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns TRUE or false, depending if an alert popup (a javascript confirmation) should be shown
+	 * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
 	 *	1 - typeChange
@@ -1471,7 +1471,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @access private
 	 */
 	function addFileMount($title, $altTitle, $path, $webspace, $type) {
-			// Return false if fileadminDir is not set and we try to mount a relative path
+			// Return FALSE if fileadminDir is not set and we try to mount a relative path
 		if ($webspace && !$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) {
 			return FALSE;
 		}

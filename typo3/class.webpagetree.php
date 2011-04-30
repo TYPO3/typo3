@@ -72,7 +72,7 @@ class webPageTree extends t3lib_browseTree {
 	var $ext_IconMode;
 	var $ext_separateNotinmenuPages;
 	var $ext_alphasortNotinmenuPages;
-	var $ajaxStatus = false; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
+	var $ajaxStatus = FALSE; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
 	 * Calls init functions
@@ -194,7 +194,7 @@ class webPageTree extends t3lib_browseTree {
 			// -- evaluate AJAX request
 			// IE takes anchor as parameter
 		$PM = t3lib_div::_GP('PM');
-		if(($PMpos = strpos($PM, '#')) !== false) { $PM = substr($PM, 0, $PMpos); }
+		if(($PMpos = strpos($PM, '#')) !== FALSE) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
 		if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM) == 4 && $PM[2] != 0) {
 			if($PM[1])	{
@@ -502,7 +502,7 @@ class webPageTree extends t3lib_browseTree {
 				'HTML'   => $HTML,
 				'hasSub' => $nextCount&&$this->expandNext($newID),
 				'isFirst'=> $a==1,
-				'isLast' => false,
+				'isLast' => FALSE,
 				'invertedDepth'=> $depth,
 				'blankLineCode'=> $blankLineCode,
 				'bank' => $this->bank

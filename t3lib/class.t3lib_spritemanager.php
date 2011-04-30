@@ -62,7 +62,7 @@ class t3lib_SpriteManager {
 	/**
 	 * Check if the icon cache has to be rebuild, instantiate and call the handler class if so.
 	 *
-	 * @param boolean Suppress regeneration if false (useful for feediting)
+	 * @param boolean Suppress regeneration if FALSE (useful for feediting)
 	 * @return void
 	 */
 	function __construct($allowRegeneration = TRUE) {

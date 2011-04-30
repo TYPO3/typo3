@@ -139,7 +139,7 @@ class t3lib_pageSelect {
 	 * init() MUST be run directly after creating a new template-object
 	 * This sets the internal variable $this->where_hid_del to the correct where clause for page records taking deleted/hidden/starttime/endtime/t3ver_state into account
 	 *
-	 * @param	boolean		If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be false. Is used for previewing.
+	 * @param	boolean		If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
 	 * @return	void
 	 * @see tslib_fe::fetch_the_id(), tx_tstemplateanalyzer::initialize_editor()
 	 */
@@ -368,8 +368,8 @@ class t3lib_pageSelect {
 	 * @param	string		Table name
 	 * @param	array		Record to overlay. Must containt uid, pid and $table]['ctrl']['languageField']
 	 * @param	integer		Pointer to the sys_language uid for content on the site.
-	 * @param	string		Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is false)
-	 * @return	mixed		Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return false if no translation is found.
+	 * @param	string		Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is FALSE)
+	 * @return	mixed		Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
 	 */
 	function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '') {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {

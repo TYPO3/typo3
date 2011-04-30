@@ -40,7 +40,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 * Checks if an update is needed
 	 *
 	 * @param	string		&$description: The description for the update, which will be updated with a description of the script's purpose
-	 * @return	boolean		whether an update is needed (TRUE) or not (false)
+	 * @return	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -139,7 +139,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 *
 	 * @param	array		&$databaseQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (TRUE) or not (false)
+	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
 		$result = TRUE;

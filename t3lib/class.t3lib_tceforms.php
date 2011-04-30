@@ -207,12 +207,12 @@ class t3lib_TCEforms {
 	var $backPath = ''; // Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
 	var $returnUrl = ''; // Alternative return URL path (default is t3lib_div::linkThisScript())
 	var $doSaveFieldName = ''; // Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
-	var $palettesCollapsed = 0; // Can be set TRUE/false to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
+	var $palettesCollapsed = 0; // Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	var $disableRTE = 0; // If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
-	var $globalShowHelp = 1; // If false, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
+	var $globalShowHelp = 1; // If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
 	var $localizationMode = ''; // If TRUE, the forms are rendering only localization relevant fields of the records.
 	var $fieldOrder = ''; // Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
-	var $doPrintPalette = 1; // If set to false, palettes will NEVER be rendered.
+	var $doPrintPalette = 1; // If set to FALSE, palettes will NEVER be rendered.
 
 	/**
 	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
@@ -247,7 +247,7 @@ class t3lib_TCEforms {
 	var $docLarge = 0; // If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
 	var $clientInfo = array(); // Loaded with info about the browser when class is instantiated.
 	var $RTEenabled = 0; // TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
-	var $RTEenabled_notReasons = ''; // If $this->RTEenabled was false, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
+	var $RTEenabled_notReasons = ''; // If $this->RTEenabled was FALSE, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
 	var $RTEcounter = 0; // Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 
 	var $colorScheme; // Contains current color scheme
@@ -494,7 +494,7 @@ class t3lib_TCEforms {
 						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
 					$tabIdentString = '';
 					$tabIdentStringMD5 = '';
-					if (strstr($itemList, '--div--') !== false && $this->enableTabMenu && $dividers2tabs) {
+					if (strstr($itemList, '--div--') !== FALSE && $this->enableTabMenu && $dividers2tabs) {
 						$tabIdentString = 'TCEforms:' . $table . ':' . $row['uid'];
 						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId($tabIdentString);
 							// Remember that were currently working on the general tab:
@@ -901,7 +901,7 @@ class t3lib_TCEforms {
 
 						// Add language + diff
 					if ($PA['fieldConf']['l10n_display'] && (t3lib_div::inList($PA['fieldConf']['l10n_display'], 'hideDiff') || t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly'))) {
-						$renderLanguageDiff = false;
+						$renderLanguageDiff = FALSE;
 					} else {
 						$renderLanguageDiff = TRUE;
 					}
@@ -1713,7 +1713,7 @@ class t3lib_TCEforms {
 
 		if ($optGroupOpen) { // Closing optgroup if open
 			$opt[] = '</optgroup>';
-			$optGroupOpen = false;
+			$optGroupOpen = FALSE;
 		}
 
 			// No-matching-value:
@@ -2314,7 +2314,7 @@ class t3lib_TCEforms {
 					// Creating string showing allowed types:
 				$tempFT = t3lib_div::trimExplode(',', $allowed, TRUE);
 				if (!strcmp(trim($tempFT[0]), '*')) {
-					$onlySingleTableAllowed = false;
+					$onlySingleTableAllowed = FALSE;
 					$info .= '<span class="nobr">' .
 							 htmlspecialchars($this->getLL('l_allTables')) .
 							 '</span><br />';
@@ -5439,7 +5439,7 @@ class t3lib_TCEforms {
 	 *
 	 * @param	string		$formname: The identification of the form on the page.
 	 * @param	boolean		$update: Just extend/update existing settings, e.g. for AJAX call
-	 * @return	string		A section with JavaScript - if $update is false, embedded in <script></script>
+	 * @return	string		A section with JavaScript - if $update is FALSE, embedded in <script></script>
 	 */
 	function JSbottom($formname = 'forms[0]', $update = FALSE) {
 		$jsFile = array();
@@ -6481,8 +6481,8 @@ class t3lib_TCEforms {
 	 * Get the dynNestedStack as associative array.
 	 * The result is e.g. ['tab','DTM-ABCD-1'], ['inline','data[13][table][uid][field]'], ['tab','DTM-DEFG-2'], ...
 	 *
-	 * @param	boolean		$json: Return a JSON string instead of an array - default: false
-	 * @param	boolean		$skipFirst: Skip the first element in the dynNestedStack - default: false
+	 * @param	boolean		$json: Return a JSON string instead of an array - default: FALSE
+	 * @param	boolean		$skipFirst: Skip the first element in the dynNestedStack - default: FALSE
 	 * @return	mixed		Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
 	 */
 	function getDynNestedStack($json = FALSE, $skipFirst = FALSE) {

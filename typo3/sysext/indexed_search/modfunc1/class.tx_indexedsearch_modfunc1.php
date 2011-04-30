@@ -166,7 +166,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			foreach($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
 				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 
-					// Init parser and if it returns false, unset its entry again:
+					// Init parser and if it returns FALSE, unset its entry again:
 				if (!$this->external_parsers[$extension]->softInit($extension))	{
 					unset($this->external_parsers[$extension]);
 				}

@@ -90,7 +90,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $writeStdLog = 1; // Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 1; // If the writelog() functions is called if a login-attempt has be tried without success
 
-	var $auth_timeout_field = 6000; // if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 6000; // if > 0 : session-timeout in seconds. if FALSE/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0; // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $challengeStoredInCookie = TRUE;
 
@@ -143,7 +143,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/false)
+	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
 	 *
 	 * @return	boolean		TRUE, if IP address validates OK (or no check is done at all)
 	 * @access private
@@ -191,7 +191,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
-	 * @return	boolean		Returns TRUE if a CLI user was loaded, otherwise false!
+	 * @return	boolean		Returns TRUE if a CLI user was loaded, otherwise FALSE!
 	 */
 	function checkCLIuser() {
 			// First, check if cliMode is enabled:

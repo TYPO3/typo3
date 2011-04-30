@@ -201,7 +201,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	/**
 	 * Processing the command array in $this->fileCmdMap
 	 *
-	 * @return	mixed	false, if the file functions were not initialized
+	 * @return	mixed	FALSE, if the file functions were not initialized
 	 *					otherwise returns an array of all the results that are returned
 	 *					from each command, separated in each action.
 	 */
@@ -333,7 +333,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 * If a folder in the tree happens to be a _recycler_-folder (which means that we're deleting something inside a _recycler_-folder) this is ignored
 	 *
 	 * @param	string		Takes a valid Path ($theFile)
-	 * @return	string		Returns the path (without trailing slash) of the closest recycle-folder if found. Else false.
+	 * @return	string		Returns the path (without trailing slash) of the closest recycle-folder if found. Else FALSE.
 	 */
 	function findRecycler($theFile) {
 		if ($this->isPathValid($theFile)) {

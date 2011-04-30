@@ -366,7 +366,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return	object		Returns result object, but if errors, returns false
+	 * @return	object		Returns result object, but if errors, returns FALSE
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit) {
 
@@ -409,7 +409,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 	 * Performs an SQL query on the "database"
 	 *
 	 * @param	string		Query to execute
-	 * @return	object		Result object or false if error
+	 * @return	object		Result object or FALSE if error
 	 */
 	public function sql_query($query) {
 		$res = t3lib_div::makeInstance('tx_dbal_sqlengine_resultobj');

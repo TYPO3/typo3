@@ -282,7 +282,7 @@ class tx_scheduler_CronCmd {
 	public function getNextValue($currentValue, array $listArray) {
 		t3lib_div::deprecationLog('The method is deprecated since TYPO3 version 4.5.');
 
-		$next_value = false;
+		$next_value = FALSE;
 
 		$numValues = count($listArray);
 		for ($i = 0; $i < $numValues; $i++) {

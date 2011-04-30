@@ -121,12 +121,12 @@ class tx_t3editor_hooks_tstemplateinfo {
 	 * @return boolean TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
-		$savingsuccess = false;
+		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
 
 			$pageId = t3lib_div::_GP('pageId');
 			if (!is_numeric($pageId) || $pageId < 1) {
-				return false;
+				return FALSE;
 			}
 
 			// if given use the requested template_uid
@@ -140,7 +140,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 
 			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 			$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-			$existTemplate = (is_array($tplRow) ? TRUE : false);
+			$existTemplate = (is_array($tplRow) ? TRUE : FALSE);
 
 			if ($existTemplate)	{
 				$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);

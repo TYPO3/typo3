@@ -308,7 +308,7 @@ class localRecordList extends recordList {
 		$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
 			&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
-		$tableCollapsed = (!$this->tablesCollapsed[$table]) ? false : TRUE;
+		$tableCollapsed = (!$this->tablesCollapsed[$table]) ? FALSE : TRUE;
 
 		// prepare space icon
 		$this->spaceIcon = t3lib_iconWorks::getSpriteIcon('empty-empty', array('style' => 'background-position: 0 10px;'));
@@ -1641,7 +1641,7 @@ class localRecordList extends recordList {
 		$setFields=is_array($this->setFields[$table]) ? $this->setFields[$table] : array();
 
 			// Request fields from table:
-		$fields = $this->makeFieldList($table, false, TRUE);
+		$fields = $this->makeFieldList($table, FALSE, TRUE);
 
 			// Add pseudo "control" fields
 		$fields[]='_PATH_';
@@ -1784,7 +1784,7 @@ class localRecordList extends recordList {
 			return TRUE;
 			// If table is denied or allowed tables are set, but table is not part of:
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 

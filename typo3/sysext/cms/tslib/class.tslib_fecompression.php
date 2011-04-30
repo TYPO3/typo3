@@ -54,7 +54,7 @@ class tslib_fecompression implements t3lib_Singleton {
 	function compressionOutputHandler($outputBuffer, $mode) {
 		// Compress the content
 		$outputBuffer = ob_gzhandler($outputBuffer, $mode);
-		if ($outputBuffer !== false) {
+		if ($outputBuffer !== FALSE) {
 			// Save compressed size
 			$this->contentLength += strlen($outputBuffer);
 

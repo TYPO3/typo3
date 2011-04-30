@@ -760,7 +760,7 @@ class t3lib_queryGenerator {
 				}
 			}
 			$d = dir(PATH_site . $fieldSetup['uploadfolder']);
-			while (false !== ($entry = $d->read())) {
+			while (FALSE !== ($entry = $d->read())) {
 				if ($entry == '.' || $entry == '..') {
 					continue;
 				}

@@ -139,7 +139,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					} else {
 						$data['pages'][$identifier]['hidden'] = t3lib_div::_GP('hidePages') ? 1 : 0;
 						if ($firstRecord) {
-							$firstRecord = false;
+							$firstRecord = FALSE;
 							$data['pages'][$identifier]['pid'] = $thePid;
 						} else {
 							$data['pages'][$identifier]['pid'] = '-' . $previousIdentifier;

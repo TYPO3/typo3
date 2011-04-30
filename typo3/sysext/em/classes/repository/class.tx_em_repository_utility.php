@@ -162,7 +162,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 		if (is_string($remoteRessource) && is_string($localRessource)
 				&& !empty($remoteRessource) && !empty($localRessource)) {
 			$fileContent = t3lib_div::getURL($remoteRessource, 0, array(TYPO3_user_agent));
-			if ($fileContent !== false) {
+			if ($fileContent !== FALSE) {
 				t3lib_div::writeFile($localRessource, $fileContent) || $this->throwConnectionException(sprintf('Could not write to file %s.', htmlspecialchars($localRessource)));
 			} else {
 				$this->throwConnectionException(sprintf('Could not access remote ressource %s.', htmlspecialchars($remoteRessource)));
@@ -284,7 +284,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 		} else {
 			$remotemd5 = t3lib_div::getURL($this->getRemoteExtHashFile(), 0, array(TYPO3_user_agent));
 
-			if ($remotemd5 !== false) {
+			if ($remotemd5 !== FALSE) {
 				$localmd5 = md5_file($this->getLocalExtListFile());
 				if ($remotemd5 !== $localmd5) {
 					$updateNecessity |= self::PROBLEM_EXTENSION_HASH_CHANGED;

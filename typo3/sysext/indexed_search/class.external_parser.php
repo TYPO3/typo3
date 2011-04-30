@@ -97,7 +97,7 @@ class tx_indexed_search_extparse {
 	 * Initialize external parser for parsing content.
 	 *
 	 * @param	string		File extension
-	 * @return	boolean		Returns TRUE if extension is supported/enabled, otherwise false.
+	 * @return	boolean		Returns TRUE if extension is supported/enabled, otherwise FALSE.
 	 */
 	function initParser($extension)	{
 
@@ -217,7 +217,7 @@ class tx_indexed_search_extparse {
 	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc) in backend and frontend plugin
 	 *
 	 * @param	string		File extension to initialize for.
-	 * @return	boolean		Returns TRUE if the extension is supported and enabled, otherwise false.
+	 * @return	boolean		Returns TRUE if the extension is supported and enabled, otherwise FALSE.
 	 */
 	function softInit($extension)	{
 		switch($extension)	{
@@ -369,10 +369,10 @@ class tx_indexed_search_extparse {
 	 * Wraps the "splitLabel function" of the language object.
 	 *
 	 * @param	string		$reference: Reference/key of the label
-	 * @param	boolean		$useHtmlSpecialChar: Convert special chars to HTML entities (default: false)
+	 * @param	boolean		$useHtmlSpecialChar: Convert special chars to HTML entities (default: FALSE)
 	 * @return	string		The label of the reference/key to be fetched
 	 */
-	protected function sL($reference, $useHtmlSpecialChar = false) {
+	protected function sL($reference, $useHtmlSpecialChar = FALSE) {
 		return $this->langObject->sL($reference, $useHtmlSpecialChar);
 	}
 
@@ -558,7 +558,7 @@ class tx_indexed_search_extparse {
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 			break;
 			default:
-				return false;
+				return FALSE;
 			break;
 		}
 			// If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.

@@ -136,7 +136,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * Tries to determine the ID of the page currently processed.
 	 * When User/Group TS-Config is parsed when no specific page is handled
 	 * (i.e. in the Extension Manager, etc.) this function will return "0", so that
-	 * the accordant conditions (e.g. PIDinRootline) will return "false"
+	 * the accordant conditions (e.g. PIDinRootline) will return "FALSE"
 	 *
 	 * @return	integer		The determined page id or otherwise 0
 	 */

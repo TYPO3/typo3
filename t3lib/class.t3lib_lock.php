@@ -125,7 +125,7 @@ class t3lib_lock {
 	 *
 	 * It is important to know that the lock will be acquired in any case, even if the request was blocked first. Therefore, the lock needs to be released in every situation.
 	 *
-	 * @return	boolean		Returns TRUE if lock could be acquired without waiting, false otherwise.
+	 * @return	boolean		Returns TRUE if lock could be acquired without waiting, FALSE otherwise.
 	 */
 	public function acquire() {
 		$noWait = TRUE; // Default is TRUE, which means continue without caring for other clients. In the case of TYPO3s cache management, this has no negative effect except some resource overhead.

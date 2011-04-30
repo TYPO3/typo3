@@ -78,7 +78,7 @@ class tx_em_Connection_ExtDirectSoap {
 	 */
 	public function testUserLogin() {
 		if (is_array($this->accountData)) {
-			$login = false;
+			$login = FALSE;
 			if ($login) {
 				$data = array(
 					'success' => TRUE,

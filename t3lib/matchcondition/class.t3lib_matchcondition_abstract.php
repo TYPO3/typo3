@@ -183,7 +183,7 @@ abstract class t3lib_matchCondition_abstract {
 				$andParts = explode(']&&[', $orPart);
 				foreach ($andParts as $andPart) {
 					$result = $this->evaluateCondition($andPart);
-						// If condition in AND context fails, the whole block is false:
+						// If condition in AND context fails, the whole block is FALSE:
 					if ($result === FALSE) {
 						break;
 					}
@@ -202,7 +202,7 @@ abstract class t3lib_matchCondition_abstract {
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
 	 * @param	string		The condition to match against its criterias.
-	 * @return	mixed		Returns TRUE or false based on the evaluation
+	 * @return	mixed		Returns TRUE or FALSE based on the evaluation
 	 */
 	protected function evaluateConditionCommon($key, $value) {
 		if (t3lib_div::inList('browser,version,system,useragent', strtolower($key))) {

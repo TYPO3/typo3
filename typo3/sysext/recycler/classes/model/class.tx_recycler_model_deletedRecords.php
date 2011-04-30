@@ -184,7 +184,7 @@ class tx_recycler_model_deletedRecords {
 					$this->limit = implode(',', array($offset, $rowCount));
 
 						// do NOT query this depth; limit also does not need to be set, we set it anyways
-					$allowQuery = false;
+					$allowQuery = FALSE;
 					$allowDepth = TRUE;
 					$limit = ''; // won't be queried anyways
 					// if the result is < 0
@@ -212,7 +212,7 @@ class tx_recycler_model_deletedRecords {
 						$this->limit = implode(',', array($newOffset, 0));
 
 							// do not go into new depth
-						$allowDepth = false;
+						$allowDepth = FALSE;
 					} else {
 							// if the result now is <= limit's row count
 							// use the result as the temporary limit
@@ -231,7 +231,7 @@ class tx_recycler_model_deletedRecords {
 						} else {
 								// if the new row count is <= 0 (only =0 makes sense though)
 								// do not go into new depth
-							$allowDepth = false;
+							$allowDepth = FALSE;
 						}
 					}
 
@@ -254,7 +254,7 @@ class tx_recycler_model_deletedRecords {
 					'',
 					'',
 					$limit,
-					false
+					FALSE
 				);
 				if ($recordsToCheck) {
 					$this->checkRecordAccess($table, $recordsToCheck);
@@ -340,7 +340,7 @@ class tx_recycler_model_deletedRecords {
 			}
 			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 
 
@@ -353,12 +353,12 @@ class tx_recycler_model_deletedRecords {
 	 * If $recursive is TRUE all records below the page uid would be undelete too
 	 *
 	 * @param	string		$recordArray: Representation of the records
-	 * @param	boolean		$recursive: TRUE/false
+	 * @param	boolean		$recursive: TRUE/FALSE
 	 * @return	boolean
 	 */
-	public function undeleteData($recordsArray, $recursive = false) {
+	public function undeleteData($recordsArray, $recursive = FALSE) {
 		require_once PATH_t3lib . 'class.t3lib_tcemain.php';
-		$result = false;
+		$result = FALSE;
 		$depth = 999;
 
 		$recordsArray = json_decode($recordsArray);

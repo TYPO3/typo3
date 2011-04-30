@@ -45,7 +45,7 @@ class tx_scheduler_TestTask extends tx_scheduler_Task {
 	 * @return	void
 	 */
 	public function execute() {
-		$success = false;
+		$success = FALSE;
 
 		if (!empty($this->email)) {
 				// If an email address is defined, send a message to it

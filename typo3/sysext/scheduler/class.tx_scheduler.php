@@ -60,7 +60,7 @@ class tx_scheduler implements t3lib_Singleton {
  	 *
 	 * @param	tx_scheduler_Task	$task: the object representing the task to add
 	 * @param	string				$identifier: the identified of the task
-	 * @return	boolean				TRUE if the task was successfully added, false otherwise
+	 * @return	boolean				TRUE if the task was successfully added, FALSE otherwise
 	 */
 	public function addTask(tx_scheduler_Task $task) {
 		$taskUid = $task->getTaskUid();
@@ -77,10 +77,10 @@ class tx_scheduler implements t3lib_Singleton {
 				$task->save();
 				$result = TRUE;
 			} else {
-				$result = false;
+				$result = FALSE;
 			}
 		} else {
-			$result = false;
+			$result = FALSE;
 		}
 		return $result;
 	}
@@ -136,7 +136,7 @@ class tx_scheduler implements t3lib_Singleton {
 
 	/**
      * This method executes the given task and properly marks and records that execution
-	 * It is expected to return false if the task was barred from running or if it was not saved properly
+	 * It is expected to return FALSE if the task was barred from running or if it was not saved properly
 	 *
 	 * @param	tx_scheduler_Task	$task: the task to execute
 	 * @return	boolean				Whether the task was saved succesfully to the database or not
@@ -157,7 +157,7 @@ class tx_scheduler implements t3lib_Singleton {
 			$logMessage = 'Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
 			$this->log($logMessage);
 
-			$result = false;
+			$result = FALSE;
 
 			// Task isn't running or multiple executions are allowed
 		} else {
@@ -226,14 +226,14 @@ class tx_scheduler implements t3lib_Singleton {
 	 * TODO: find a way to actually kill the existing jobs
 	 *
 	 * @param	tx_scheduler_Task	$task: the object representing the task to delete
-	 * @return	boolean				TRUE if task was successfully deleted, false otherwise
+	 * @return	boolean				TRUE if task was successfully deleted, FALSE otherwise
 	 */
 	public function removeTask(tx_scheduler_Task $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
 			return $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -263,7 +263,7 @@ class tx_scheduler implements t3lib_Singleton {
 			);
 			return $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', "uid = '" . $taskUid . "'", $fields);
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -348,10 +348,10 @@ class tx_scheduler implements t3lib_Singleton {
 	 * Objects are returned as an array
 	 *
 	 * @param	string		$where: part of a SQL where clause (without the "WHERE" keyword)
-	 * @param	boolean		$includeDisabledTasks: TRUE if disabled tasks should be fetched too, false otherwise
+	 * @param	boolean		$includeDisabledTasks: TRUE if disabled tasks should be fetched too, FALSE otherwise
 	 * @return	array		List of task objects
 	 */
-	public function fetchTasksWithCondition($where, $includeDisabledTasks = false) {
+	public function fetchTasksWithCondition($where, $includeDisabledTasks = FALSE) {
 		$tasks = array();
 		if (!empty($where)) {
 			$whereClause = $where;
@@ -387,7 +387,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 * This test checks whether the unserialized object is of the right (parent) class or not.
 	 *
 	 * @param	object		The object to test
-	 * @return	boolean		TRUE if object is a task, false otherwise
+	 * @return	boolean		TRUE if object is a task, FALSE otherwise
 	 */
 	public function isValidTaskObject($task) {
 		return $task instanceof tx_scheduler_Task;
