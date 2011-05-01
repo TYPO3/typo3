@@ -27,7 +27,7 @@
 
 require_once('init.php');
 require_once('template.php');
-require_once('interfaces/interface.backend_toolbaritem.php');
+require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 
 require('classes/class.typo3logo.php');
 require('classes/class.modulemenu.php');
