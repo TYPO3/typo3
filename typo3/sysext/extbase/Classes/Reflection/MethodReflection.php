@@ -39,9 +39,8 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	/**
 	 * The constructor, initializes the reflection class
 	 *
-	 * @param  string $className Name of the method's class
-	 * @param  string $methodName Name of the method to reflect
-	 * @return void
+	 * @param string $className Name of the method's class
+	 * @param string $methodName Name of the method to reflect
 	 */
 	public function __construct($className, $methodName) {
 		parent::__construct($className, $methodName);
@@ -100,6 +99,15 @@ class Tx_Extbase_Reflection_MethodReflection extends ReflectionMethod {
 	 */
 	public function getTagValues($tag) {
 		return $this->getDocCommentParser()->getTagValues($tag);
+	}
+
+	/**
+	 * Returns the description part of the doc comment
+	 *
+	 * @return string Doc comment description
+	 */
+	public function getDescription() {
+		return $this->getDocCommentParser()->getDescription();
 	}
 
 	/**

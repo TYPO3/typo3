@@ -66,64 +66,6 @@ interface Tx_Extbase_MVC_RequestInterface {
 	public function getControllerObjectName();
 
 	/**
-	 * Sets the extension name of the controller.
-	 *
-	 * @param string $extensionName The extension name.
-	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidPackageKey if the package key is not valid
-	 * @api
-	 */
-	public function setControllerExtensionName($extensionName);
-
-	/**
-	 * Returns the extension name of the specified controller.
-	 *
-	 * @return string The package key
-	 * @api
-	 */
-	public function getControllerExtensionName();
-
-	/**
-	 * Sets the name of the controller which is supposed to handle the request.
-	 * Note: This is not the object name of the controller!
-	 *
-	 * @param string $controllerName Name of the controller
-	 * @return void
-	 * @api
-	 */
-	public function setControllerName($controllerName);
-
-	/**
-	 * Returns the object name of the controller supposed to handle this request, if one
-	 * was set already (if not, the name of the default controller is returned)
-	 *
-	 * @return string Object name of the controller
-	 * @api
-	 */
-	public function getControllerName();
-
-	/**
-	 * Sets the name of the action contained in this request.
-	 *
-	 * Note that the action name must start with a lower case letter.
-	 *
-	 * @param string $actionName: Name of the action to execute by the controller
-	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidActionName if the action name is not valid
-	 * @api
-	 */
-	public function setControllerActionName($actionName);
-
-	/**
-	 * Returns the name of the action the controller is supposed to execute.
-	 *
-	 * @return string Action name
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @api
-	 */
-	public function getControllerActionName();
-
-	/**
 	 * Sets the value of the specified argument
 	 *
 	 * @param string $argumentName Name of the argument to set
@@ -169,40 +111,6 @@ interface Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getArguments();
-
-	/**
-	 * Sets the requested representation format
-	 *
-	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like.
-	 * @return void
-	 * @api
-	 */
-	public function setFormat($format);
-
-	/**
-	 * Returns the requested representation format
-	 *
-	 * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-	 * @api
-	 */
-	public function getFormat();
-
-	/**
-	 * Set the request errors that occured during the request
-	 *
-	 * @param array $errors An array of Tx_Extbase_Error_Error objects
-	 * @return void
-	 * @api
-	 */
-	public function setErrors(array $errors);
-
-	/**
-	 * Get the request errors that occured during the request
-	 *
-	 * @return array An array of Tx_Extbase_Error_Error objects
-	 * @api
-	 */
-	public function getErrors();
 
 }
 ?>

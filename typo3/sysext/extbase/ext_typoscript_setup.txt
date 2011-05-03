@@ -11,6 +11,7 @@ config.tx_extbase {
 		requestHandlers {
 			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
 			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
+			Tx_Extbase_MVC_CLI_RequestHandler = Tx_Extbase_MVC_CLI_RequestHandler
 		}
 		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}

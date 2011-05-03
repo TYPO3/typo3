@@ -2,6 +2,7 @@
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 if (TYPO3_MODE == 'BE') {
+	// register Extbase dispatcher for modules
 	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Core_Bootstrap';
 }
 

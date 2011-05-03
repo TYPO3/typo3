@@ -1,5 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Dispatcher.php');
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php');
@@ -34,4 +34,14 @@ Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeCon
 Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter');
 Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_StringConverter');
 # $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:extbase/Classes/Persistence/Hook/TCEMainValueObjectUpdater.php:tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater';
+
+if (TYPO3_MODE === 'BE') {
+	// registers Extbase at the cli_dispatcher with key "extbase".
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['extbase'] = array(
+		'EXT:extbase/Scripts/CommandLineLauncher.php',
+		'_CLI_lowlevel'
+	);
+	// register help command
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Extbase_Command_HelpCommandController';
+}
 ?>

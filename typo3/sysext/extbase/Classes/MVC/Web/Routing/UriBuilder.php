@@ -143,10 +143,10 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Sets the current request
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param Tx_Extbase_MVC_Request $request
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 */
-	public function setRequest(Tx_Extbase_MVC_Web_Request $request) {
+	public function setRequest(Tx_Extbase_MVC_Request $request) {
 		$this->request = $request;
 		return $this;
 	}

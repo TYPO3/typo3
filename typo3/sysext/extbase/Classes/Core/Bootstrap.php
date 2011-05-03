@@ -73,11 +73,6 @@ class Tx_Extbase_Core_Bootstrap {
 	protected $persistenceManager;
 
 	/**
-	 * @var boolean
-	 */
-	protected $isInitialized = FALSE;
-
-	/**
 	 * Explicitly initializes all necessary Extbase objects by invoking the various initialize* methods.
 	 *
 	 * Usually this method is only called from unit tests or other applications which need a more fine grained control over
@@ -89,11 +84,13 @@ class Tx_Extbase_Core_Bootstrap {
 	 * @api
 	 */
 	public function initialize($configuration) {
-		if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
-			throw new RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
-		}
-		if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
-			throw new RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
+		if (!defined('TYPO3_cliMode') || TYPO3_cliMode !== TRUE) {
+			if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
+				throw new RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
+			}
+			if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
+				throw new RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
+			}
 		}
 		$this->initializeObjectManager();
 		$this->initializeConfiguration($configuration);
@@ -102,7 +99,6 @@ class Tx_Extbase_Core_Bootstrap {
 		$this->initializeReflection();
 		$this->initializePersistence();
 		$this->initializeBackwardsCompatibility();
-		$this->isInitialized = TRUE;
 	}
 
 	/**
@@ -118,6 +114,7 @@ class Tx_Extbase_Core_Bootstrap {
 	/**
 	 * Initializes the Object framework.
 	 *
+	 * @param array $configuration
 	 * @return void
 	 * @see initialize()
 	 */
@@ -200,20 +197,45 @@ class Tx_Extbase_Core_Bootstrap {
 	 * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
 	 * If the Framework is not initialized yet, it will be initialized.
 	 *
-	 * @param string $content The content
+	 * @param string $content The content. Not used
 	 * @param array $configuration The TS configuration array
 	 * @return string $content The processed content
 	 * @api
 	 */
 	public function run($content, $configuration) {
-		//var_dump(Tx_Extbase_Utility_Extension::createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'), array(
-		//	'tx_extbase_basetestcase' => '$extensionClassesPath . \'../Tests/BaseTestCase.php\'',
-		//	'tx_extbase_tests_unit_basetestcase' => '$extensionClassesPath . \'../Tests/Unit/BaseTestCase.php\'',
-		//)));
-		//die("autoload registry");
-
 		$this->initialize($configuration);
 
+			// CLI
+		if (defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE) {
+			$content = $this->handleCommandLineRequest();
+		} else {
+			$content = $this->handleWebRequest();
+		}
+		return $content;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function handleCommandLineRequest() {
+		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
+
+		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_RequestBuilder')->build(array_slice($commandLine, 1));
+		$response = $this->objectManager->get('Tx_Extbase_MVC_CLI_Response');
+		$extensionName = $request->getControllerExtensionName();
+		$this->configurationManager->setConfiguration(array('extensionName' => $extensionName));
+		$this->objectManager->get('Tx_Extbase_MVC_Dispatcher')->dispatch($request, $response);
+
+		$content = $response->getContent();
+
+		$this->resetSingletons();
+		return $content;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function handleWebRequest() {
 		$requestHandlerResolver = $this->objectManager->get('Tx_Extbase_MVC_RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
 
@@ -285,5 +307,6 @@ class Tx_Extbase_Core_Bootstrap {
 		print $content;
 		return TRUE;
 	}
+
 }
 ?>

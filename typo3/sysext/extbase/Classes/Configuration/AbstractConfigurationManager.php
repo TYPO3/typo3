@@ -120,8 +120,8 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 		// reset 1st level cache
 		$this->configurationCache = array();
 
-		$this->extensionName = $configuration['extensionName'];
-		$this->pluginName = $configuration['pluginName'];
+		$this->extensionName = isset($configuration['extensionName']) ? $configuration['extensionName'] : NULL;
+		$this->pluginName = isset($configuration['pluginName']) ? $configuration['pluginName'] : NULL;
 		$this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
 	}
 
