@@ -164,7 +164,6 @@ class t3lib_stdGraphic {
 	);
 	var $NO_IMAGE_MAGICK = '';
 	var $V5_EFFECTS = 0;
-	var $im_version_4 = 0;
 	var $mayScaleUp = 1;
 
 		// Variables for testing, alternative usage etc.
@@ -235,11 +234,12 @@ class t3lib_stdGraphic {
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor']) {
 			$this->png_truecolor = TRUE;
 		}
-		if (!$gfxConf['im_version_5']) {
-			t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is not set, ImageMagic 4 is assumed. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
-			$this->im_version_4 = TRUE;
-		} elseif ($gfxConf['im_version_5'] === 'im5') {
-			t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is set to \'im5\'. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
+		if (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5') {
+			throw new RuntimeException(
+				'Your TYPO3 installation is configured to use an old version of ImageMagick, which is not supported anymore. ' .
+				'Please upgrade to ImageMagick version 6 or GraphicksMagick and set $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] appropriately.',
+				1305059666
+			);
 		}
 
 			// When GIFBUILDER gets used in truecolor mode
@@ -1909,14 +1909,11 @@ class t3lib_stdGraphic {
 		$result = $this->randomName() . '.' . $ext;
 		if (($reduce = t3lib_div::intInRange($cols, 0, ($ext == 'gif' ? 256 : $this->truecolorColors), 0)) > 0) {
 			$params = ' -colors ' . $reduce;
-			if (!$this->im_version_4) {
-					// IM4 doesn't have this options but forces them automatically if applicaple (<256 colors in image)
-				if ($reduce <= 256) {
-					$params .= ' -type Palette';
-				}
-				if ($ext == 'png' && $reduce <= 256) {
-					$prefix = 'png8:';
-				}
+			if ($reduce <= 256) {
+				$params .= ' -type Palette';
+			}
+			if ($ext == 'png' && $reduce <= 256) {
+				$prefix = 'png8:';
 			}
 			$this->imageMagickExec($file, $prefix . $result, $params);
 			if ($result) {
