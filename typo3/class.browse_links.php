@@ -137,7 +137,7 @@ class TBE_browser_recordList extends localRecordList {
 	 *
 	 * @return	void
 	 */
-	function TBE_browser_recordList () {
+	function __construct() {
 		parent::__construct();
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 	}
@@ -246,7 +246,7 @@ class localPageTree extends t3lib_browseTree {
 	 *
 	 * @return	void
 	 */
-	function localPageTree() {
+	function __construct() {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 
 		$this->init();
@@ -455,7 +455,7 @@ class localFolderTree extends t3lib_folderTree {
 	 *
 	 * @return	void
 	 */
-	function localFolderTree() {
+	function __construct() {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
 		$this->t3lib_folderTree();
 	}

@@ -53,10 +53,10 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_admin_core()	{
+	function __construct()	{
 
 			// Running parent class constructor
-		parent::t3lib_cli();
+		parent::__construct();
 
 			// Adding options to help archive:
 		$this->cli_options[] = array('--redirect=[URL]', 'For toolkey "setBElock": The URL to which the redirection will occur.');

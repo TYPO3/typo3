@@ -83,7 +83,7 @@ class t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	function t3lib_cli() {
+	function __construct() {
 			// Loads the cli_args array with command line arguments
 		$this->cli_args = $this->cli_getArgIndex();
 	}

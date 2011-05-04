@@ -65,15 +65,6 @@ class filelistFolderTree extends t3lib_folderTree {
 	var $ajaxStatus = FALSE; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
-	 * Calls init functions
-	 *
-	 * @return	void
-	 */
-	function filelistFolderTree() {
-		parent::t3lib_folderTree();
-	}
-
-	/**
 	 * Wrapping icon in browse tree
 	 *
 	 * @param	string		Icon IMG code

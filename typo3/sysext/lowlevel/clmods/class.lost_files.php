@@ -62,8 +62,8 @@ class tx_lowlevel_lost_files extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_lost_files()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 		$this->cli_options[] = array('--excludePath [path-list]', 'Comma separated list of paths to exclude. Example: "uploads/[path1],uploads/[path2],..."');
 

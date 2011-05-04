@@ -107,7 +107,7 @@ class tx_indexedsearch_lexer {
 	 *
 	 * @return	void
 	 */
-	function tx_indexedsearch_lexer() {
+	function __construct() {
 		$this->csObj = t3lib_div::makeInstance('t3lib_cs');
 	}
 
