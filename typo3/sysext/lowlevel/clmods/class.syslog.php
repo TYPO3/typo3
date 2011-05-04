@@ -61,8 +61,8 @@ class tx_lowlevel_syslog extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_cleanflexform()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 		$this->cli_help['name'] = 'syslog -- Show entries from syslog';
 		$this->cli_help['description'] = trim('

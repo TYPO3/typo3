@@ -71,7 +71,7 @@ class t3lib_folderTree extends t3lib_treeView {
 	 *
 	 * @return	void
 	 */
-	function t3lib_folderTree() {
+	function __construct() {
 		parent::init();
 
 		$this->MOUNTS = $GLOBALS['FILEMOUNTS'];

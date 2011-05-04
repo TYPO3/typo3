@@ -60,8 +60,8 @@ class tx_lowlevel_double_files extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_double_files()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 			// Setting up help:
 		$this->cli_help['name'] = 'double_files -- Looking for files from TYPO3 managed records which are referenced more than one time (only one time allowed)';

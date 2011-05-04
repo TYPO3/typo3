@@ -79,7 +79,7 @@ class webPageTree extends t3lib_browseTree {
 	 *
 	 * @return	void
 	 */
-	function webPageTree() {
+	function __construct() {
 		$this->init();
 	}
 

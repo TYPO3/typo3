@@ -62,8 +62,8 @@ class tx_lowlevel_missing_files extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_missing_files()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 			// Setting up help:
 		$this->cli_help['name'] = 'missing_files -- Find all file references from records pointing to a missing (non-existing) file.';

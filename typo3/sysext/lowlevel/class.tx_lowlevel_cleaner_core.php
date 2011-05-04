@@ -84,10 +84,10 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_cleaner_core()	{
+	function __construct()	{
 
 			// Running parent class constructor
-		parent::t3lib_cli();
+		parent::__construct();
 
 		$this->cleanerModules = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
 

@@ -136,7 +136,7 @@ $BE_USER->modAccess($MCONF,1);
 	 * @param	array		Webmounts for the backend user.
 	 * @return	void
 	 */
-	function localPageTree($BE_USER,$WEBMOUNTS='')	{
+	function __construct($BE_USER,$WEBMOUNTS='')	{
 		$this->init();
 
 		$this->BE_USER = $BE_USER;
@@ -392,7 +392,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	array		Filemounts for the backend user.
 	 * @return	void
 	 */
-	function localFolderTree($BE_USER,$FILEMOUNTS='')	{
+	function __construct($BE_USER,$FILEMOUNTS='')	{
 		$this->init();
 
 		$this->BE_USER = $BE_USER;

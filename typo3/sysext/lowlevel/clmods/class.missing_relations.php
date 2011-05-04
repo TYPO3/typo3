@@ -62,8 +62,8 @@ class tx_lowlevel_missing_relations extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function tx_lowlevel_missing_relations()	{
-		parent::tx_lowlevel_cleaner_core();
+	function __construct()	{
+		parent::__construct();
 
 			// Setting up help:
 		$this->cli_help['name'] = 'missing_relations -- Find all record references pointing to a non-existing record.';
