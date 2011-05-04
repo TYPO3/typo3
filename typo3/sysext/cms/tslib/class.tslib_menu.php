@@ -3004,6 +3004,7 @@ class tslib_jsmenu extends tslib_menu {
 		$parent = $count==1 ? 0 : $var.($count-1);
 		$prev=0;
 		$c=0;
+		$codeLines = '';
 
 		$menuItems = is_array($menuItemArray) ? $menuItemArray : $this->sys_page->getMenu($pid);
 		foreach($menuItems as $uid => $data)	{
@@ -3038,7 +3039,7 @@ class tslib_jsmenu extends tslib_menu {
 						$url = $GLOBALS['TSFE']->baseUrlWrap($LD['totalURL']);
 						$target = $LD['target'];
 					}
-					$codeLines.=LF.$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, TRUE).",".t3lib_div::quoteJSvalue($url, TRUE).",".t3lib_div::quoteJSvalue($target, TRUE).");";
+					$codeLines .= LF . $var . $count . '=' . $menuName . '.add(' . $parent . ',' . $prev . ',0,' . t3lib_div::quoteJSvalue($title, TRUE) . ',' . t3lib_div::quoteJSvalue($url, TRUE) . ',' . t3lib_div::quoteJSvalue($target, TRUE) . ');';
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $this->isActive($data['uid'], $MP_var));
 						// If the first item should be shown
