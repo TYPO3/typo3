@@ -329,7 +329,8 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 */
 	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')	{
 
-		$pt = t3lib_div::milliseconds();$this->performanceStatistics['genTree()']='';
+		$pt = t3lib_div::milliseconds();
+		$this->performanceStatistics['genTree()'] = '';
 
 			// Initialize:
 		if (t3lib_extMgm::isLoaded('workspaces')) {
@@ -352,7 +353,9 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		);
 
 			// Start traversal:
-		$pt2 = t3lib_div::milliseconds();$this->performanceStatistics['genTree_traverse()']=''; $this->performanceStatistics['genTree_traverse():TraverseTables']='';
+		$pt2 = t3lib_div::milliseconds();
+		$this->performanceStatistics['genTree_traverse()'] = '';
+		$this->performanceStatistics['genTree_traverse():TraverseTables'] = '';
 		$this->genTree_traverse($rootID,$depth,$echoLevel,$callBack);
 		$this->performanceStatistics['genTree_traverse()'] = t3lib_div::milliseconds()-$pt2;
 

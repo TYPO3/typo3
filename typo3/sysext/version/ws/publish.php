@@ -150,7 +150,8 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 			// Prepare limited set of records
 			$this->publishData = $GLOBALS['BE_USER']->getSessionData('workspacePublisher');
 			$this->recordCount = $GLOBALS['BE_USER']->getSessionData('workspacePublisher_count');
-			$limitedCmd = array(); $numRecs = 0;
+			$limitedCmd = array();
+			$numRecs = 0;
 			foreach ($this->publishData as $table => $recs) {
 				foreach ($recs as $key => $value) {
 					$numRecs++;
