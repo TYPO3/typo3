@@ -1602,7 +1602,7 @@ class localRecordList extends recordList {
 					);
 					$language = t3lib_BEfunc::getRecord('sys_language', $lUid_OnPage, 'title');
 					if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
-						$lC = t3lib_iconWorks::getSpriteIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon']);;
+						$lC = t3lib_iconWorks::getSpriteIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon']);
 					} else {
 						$lC = $this->languageIconTitles[$lUid_OnPage]['title'];
 					}

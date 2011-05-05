@@ -445,8 +445,14 @@ GLV_timeout_count++;
 				case 'right':
 				case 'bottom':
 					$add='';
-					if ($kind=='right')		{$add='GL_getObj(id).width'; $key = 'left';}
-					if ($kind=='bottom')	{$add='GL_getObj(id).height'; $key = 'top';}
+					if ($kind == 'right') {
+						$add = 'GL_getObj(id).width';
+						$key = 'left';
+					}
+					if ($kind == 'bottom') {
+						$add = 'GL_getObj(id).height';
+						$key = 'top';
+					}
 					$str = 'if (parseInt(GLV_menuOn["'.$this->WMid.'"].'.$key.')+'.$add.'>'.$integer.') GLV_menuOn["'.$this->WMid.'"].'.$key.'='.$integer.'-'.$add.';';
 				break;
 				default:

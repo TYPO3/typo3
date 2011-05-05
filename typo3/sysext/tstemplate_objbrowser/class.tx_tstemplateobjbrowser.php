@@ -332,7 +332,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$tmpl->fixedLgd=$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"];
 		$tmpl->linkObjects = TRUE;
 		$tmpl->ext_regLinenumbers = TRUE;
-		$tmpl->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];;
+		$tmpl->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
 		$tmpl->bType=$bType;
 		$tmpl->resourceCheck=1;
 		$tmpl->uplPath = PATH_site.$tmpl->uplPath;
