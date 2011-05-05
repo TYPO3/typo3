@@ -390,7 +390,10 @@ class tx_indexedsearch_lexer {
 		$len = 1;
 
 		if ($ord > 0x80)	{
-			for ($bc=-1, $mbs=$ord; $mbs & 0x80; $mbs = $mbs << 1)	$bc++;	// calculate number of extra bytes
+			for ($bc = -1, $mbs = $ord; $mbs & 0x80; $mbs = $mbs << 1) {
+					// calculate number of extra bytes
+				$bc++;
+			}
 			$len += $bc;
 
 			$ord = $ord & ((1 << (6-$bc)) - 1);	// mask utf-8 lead-in bytes

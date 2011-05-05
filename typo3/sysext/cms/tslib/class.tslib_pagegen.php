@@ -266,8 +266,15 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 		}
 
-		if (is_array($GLOBALS['TSFE']->pSetup['includeLibs.']))	{$incLibs=$GLOBALS['TSFE']->pSetup['includeLibs.'];} else {$incLibs=array();}
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.']))	{$incLibs+=$GLOBALS['TSFE']->tmpl->setup['includeLibs.'];}	// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
+		if (is_array($GLOBALS['TSFE']->pSetup['includeLibs.'])) {
+			$incLibs = $GLOBALS['TSFE']->pSetup['includeLibs.'];
+		} else {
+			$incLibs = array();
+		}
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.'])) {
+				// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
+			$incLibs += $GLOBALS['TSFE']->tmpl->setup['includeLibs.'];
+		}
 		if (count($incLibs))	{
 			foreach ($incLibs as $theLib) {
 				if (!is_array($theLib) && $incFile=$GLOBALS['TSFE']->tmpl->getFileName($theLib))	{

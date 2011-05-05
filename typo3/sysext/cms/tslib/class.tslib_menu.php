@@ -1713,7 +1713,10 @@ class tslib_tmenu extends tslib_menu {
 		if ($splitCount)	{
 			list($NOconf) = $this->procesItemStates($splitCount);
 		}
-		if ($this->mconf['debugItemConf'])	{echo '<h3>$NOconf:</h3>';	debug($NOconf);	}
+		if ($this->mconf['debugItemConf']) {
+			echo '<h3>$NOconf:</h3>';
+			debug($NOconf);
+		}
 		$this->result = $NOconf;
 	}
 
@@ -2093,13 +2096,19 @@ class tslib_gmenu extends tslib_menu {
 			$tempcnt_HMENU_MENUOBJ = $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'];
 			$tempcnt_MENUOBJ = $GLOBALS['TSFE']->register['count_MENUOBJ'];
 
-			if ($this->mconf['debugItemConf'])	{echo '<h3>$NOconf:</h3>';	debug($NOconf);	}
+			if ($this->mconf['debugItemConf']) {
+				echo '<h3>$NOconf:</h3>';
+				debug($NOconf);
+			}
 			if ($ROconf)	{		// RollOver
 					//start recount for rollover with initial values
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']= $temp_HMENU_MENUOBJ;
 				$GLOBALS['TSFE']->register['count_MENUOBJ']= $temp_MENUOBJ;
 				$this->makeGifs($ROconf,'RO');
-				if ($this->mconf['debugItemConf'])	{echo '<h3>$ROconf:</h3>';	debug($ROconf);	}
+				if ($this->mconf['debugItemConf']) {
+					echo '<h3>$ROconf:</h3>';
+					debug($ROconf);
+				}
 			}
 				// use count from NO obj
 			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = $tempcnt_HMENU_MENUOBJ;
@@ -2170,8 +2179,14 @@ class tslib_gmenu extends tslib_menu {
 
 				$flag =0;
 				$tempXY = explode(',',$val['XY']);
-				if ($Wcounter<$minDim[0])	{$tempXY[0]=$minDim[0]-$Wcounter; $flag=1;}
-				if ($Hcounter<$minDim[1])	{$tempXY[1]=$minDim[1]-$Hcounter; $flag=1;}
+				if ($Wcounter<$minDim[0]) {
+					$tempXY[0] = $minDim[0] - $Wcounter;
+					$flag = 1;
+				}
+				if ($Hcounter<$minDim[1]) {
+					$tempXY[1] = $minDim[1] - $Hcounter;
+					$flag = 1;
+				}
 				$val['XY'] = implode(',',$tempXY);
 				if (!$flag){break;}
 			}
@@ -2222,8 +2237,14 @@ class tslib_gmenu extends tslib_menu {
 					// If max dimensions are specified
 				if ($maxDim)	{
 					$tempXY = explode(',',$val['XY']);
-					if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0])	{$tempXY[0]==$maxDim[0]-$Wcounter; $maxFlag=1;}
-					if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1])	{$tempXY[1]=$maxDim[1]-$Hcounter; $maxFlag=1;}
+					if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0]) {
+						$tempXY[0] == $maxDim[0] - $Wcounter;
+						$maxFlag = 1;
+					}
+					if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1]) {
+						$tempXY[1] = $maxDim[1] - $Hcounter;
+						$maxFlag = 1;
+					}
 					if ($maxFlag)	{
 						$val['XY'] = implode(',',$tempXY);
 						$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
@@ -2337,8 +2358,14 @@ class tslib_gmenu extends tslib_menu {
 
 				$flag =0;
 				$tempXY = explode(',',$val['XY']);
-				if ($Wcounter<$minDim[0])	{$tempXY[0]=$minDim[0]-$Wcounter; $flag=1;}
-				if ($Hcounter<$minDim[1])	{$tempXY[1]=$minDim[1]-$Hcounter; $flag=1;}
+				if ($Wcounter<$minDim[0]) {
+					$tempXY[0] = $minDim[0] - $Wcounter;
+					$flag = 1;
+				}
+				if ($Hcounter<$minDim[1]) {
+					$tempXY[1] = $minDim[1] - $Hcounter;
+					$flag = 1;
+				}
 				$val['XY'] = implode(',',$tempXY);
 				if (!$flag){break;}
 			}
@@ -2349,8 +2376,14 @@ class tslib_gmenu extends tslib_menu {
 			$gifCreator->start($val,$this->menuArr[$key]);
 			if ($maxDim)	{
 				$tempXY = explode(',',$val['XY']);
-				if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0])	{$tempXY[0]==$maxDim[0]-$Wcounter; $maxFlag=1;}
-				if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1])	{$tempXY[1]=$maxDim[1]-$Hcounter; $maxFlag=1;}
+				if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0]) {
+					$tempXY[0] == $maxDim[0] - $Wcounter;
+					$maxFlag = 1;
+				}
+				if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1]) {
+					$tempXY[1] = $maxDim[1] - $Hcounter;
+					$maxFlag = 1;
+				}
 				if ($maxFlag)	{
 					$val['XY'] = implode(',',$tempXY);
 					$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
@@ -2629,7 +2662,10 @@ class tslib_imgmenu extends tslib_menu {
 		if ($splitCount)	{
 			list($NOconf) = $this->procesItemStates($splitCount);
 		}
-		if ($this->mconf['debugItemConf'])	{echo '<h3>$NOconf:</h3>';	debug($NOconf);	}
+		if ($this->mconf['debugItemConf']) {
+			echo '<h3>$NOconf:</h3>';
+			debug($NOconf);
+		}
 		$this->makeImageMap($NOconf);
 	}
 
@@ -2791,7 +2827,10 @@ class tslib_imgmenu extends tslib_menu {
 					$workArea[1]+=$dConf[$key][1];
 				}
 
-				if ($this->mconf['debugRenumberedObject'])	{echo '<h3>Renumbered GIFBUILDER object:</h3>';	debug($gifCreator->setup);}
+				if ($this->mconf['debugRenumberedObject']) {
+					echo '<h3>Renumbered GIFBUILDER object:</h3>';
+					debug($gifCreator->setup);
+				}
 
 				$gifCreator->createTempSubDir('menu/');
 				$gifFileName = $gifCreator->fileName('menu/');

@@ -986,17 +986,16 @@ class tx_indexedsearch extends tslib_pibase {
 
 		switch((string)$this->piVars['media'])	{
 			case '0':		// '0' => 'Kun TYPO3 sider',
-				$out = 'AND IP.item_type='.$GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');;
-			break;
+				$out = 'AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
 			case '-2':		// All external documents
-				$out = 'AND IP.item_type!='.$GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');;
-			break;
+				$out = 'AND IP.item_type!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
 			case '-1':	// All content
-				$out='';
-			break;
+				$out = '';
+				break;
 			default:
-				$out = 'AND IP.item_type='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['media'], 'index_phash');
-			break;
+				$out = 'AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['media'], 'index_phash');
 		}
 
 		return $out;
@@ -2044,7 +2043,7 @@ class tx_indexedsearch extends tslib_pibase {
 										preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
 					}
 				}
-				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);;
+				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);
 
 					// Protect output:
 				$output[$k] = htmlspecialchars($output[$k]);

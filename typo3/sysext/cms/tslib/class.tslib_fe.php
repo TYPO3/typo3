@@ -1391,7 +1391,11 @@
 			$host = explode('.',t3lib_div::getIndpEnv('HTTP_HOST'));
 			while(count($host))	{
 				$pageUid = $this->sys_page->getDomainStartPage(implode('.',$host),t3lib_div::getIndpEnv('SCRIPT_NAME'),t3lib_div::getIndpEnv('REQUEST_URI'));
-				if ($pageUid)	return $pageUid; else array_shift($host);
+				if ($pageUid) {
+					return $pageUid;
+				} else {
+					array_shift($host);
+				}
 			}
 			return $pageUid;
 		} else {
@@ -4778,7 +4782,10 @@ if (version == "n3") {
 
 		$ls = explode('|',TYPO3_languages);
 		foreach ($ls as $i => $v) {
-			if ($v==$this->lang)	{$this->langSplitIndex=$i; break;}
+			if ($v==$this->lang) {
+				$this->langSplitIndex=$i;
+				break;
+			}
 		}
 
 			// Setting charsets:

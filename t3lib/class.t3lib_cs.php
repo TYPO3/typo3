@@ -1238,17 +1238,23 @@ class t3lib_cs {
 							$utf8_char = $this->UnumberToChar(hexdec($char));
 							if ($char != $lower) {
 								$arr = explode(' ', $lower);
-								for ($i = 0; isset($arr[$i]); $i++) $arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								for ($i = 0; isset($arr[$i]); $i++) {
+									$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								}
 								$utf8CaseFolding['toLower'][$utf8_char] = implode('', $arr);
 							}
 							if ($char != $title && $title != $upper) {
 								$arr = explode(' ', $title);
-								for ($i = 0; isset($arr[$i]); $i++) $arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								for ($i = 0; isset($arr[$i]); $i++) {
+									$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								}
 								$utf8CaseFolding['toTitle'][$utf8_char] = implode('', $arr);
 							}
 							if ($char != $upper) {
 								$arr = explode(' ', $upper);
-								for ($i = 0; isset($arr[$i]); $i++) $arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								for ($i = 0; isset($arr[$i]); $i++) {
+									$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								}
 								$utf8CaseFolding['toUpper'][$utf8_char] = implode('', $arr);
 							}
 						}
@@ -1919,11 +1925,17 @@ class t3lib_cs {
 	function utf8_strtrunc($str, $len) {
 		$i = $len - 1;
 		if (ord($str{$i}) & 0x80) { // part of a multibyte sequence
-			for (; $i > 0 && !(ord($str{$i}) & 0x40); $i--) ; // find the first byte
+			for (; $i > 0 && !(ord($str{$i}) & 0x40); $i--) {
+				// find the first byte
+				;
+			}
 			if ($i <= 0) {
 				return '';
 			} // sanity check
-			for ($bc = 0, $mbs = ord($str{$i}); $mbs & 0x80; $mbs = $mbs << 1) $bc++; // calculate number of bytes
+			for ($bc = 0, $mbs = ord($str{$i}); $mbs & 0x80; $mbs = $mbs << 1) {
+				// calculate number of bytes
+				$bc++;
+			}
 			if ($bc + $i > $len) {
 				return substr($str, 0, $i);
 			}

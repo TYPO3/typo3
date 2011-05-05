@@ -1255,7 +1255,7 @@ class tx_em_Connection_ExtDirectServer {
 						}
 					} else {
 							//translation is up to date
-						$result[$lang] = $okIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_uptodate');;
+						$result[$lang] = $okIcon . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_uptodate');
 					}
 				}
 

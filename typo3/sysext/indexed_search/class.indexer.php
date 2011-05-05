@@ -1438,7 +1438,11 @@ class tx_indexedsearch_indexer {
 		if ($retRaw)	return $tmp;
 
 			// Otherwise create hash and return integer
-		if($tmp=='') $ret=0; else $ret=hexdec(substr(md5($tmp),0,7));
+		if ($tmp == '') {
+			$ret = 0;
+		} else {
+			$ret = hexdec(substr(md5($tmp), 0, 7));
+		}
 		return $ret;
 	}
 
