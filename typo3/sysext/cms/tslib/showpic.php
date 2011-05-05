@@ -222,11 +222,17 @@ class SC_tslib_showpic {
 		$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 
-		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
+		if (strstr($this->width . $this->height, 'm')) {
+			$max = 'm';
+		} else {
+			$max = '';
+		}
 
 		$this->height = t3lib_div::intInRange($this->height,0);
 		$this->width = t3lib_div::intInRange($this->width,0);
-		if ($this->frame)	{$this->frame = intval($this->frame);}
+		if ($this->frame) {
+			$this->frame = intval($this->frame);
+		}
 		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
 
 			// Create HTML output:

@@ -126,10 +126,15 @@ class SC_file_rename {
 		}
 
 			// Finding the icon
-		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{
-			case 'user':	$this->icon = 'gfx/i/_icon_ftp_user.gif';	break;
-			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
-			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
+		switch($GLOBALS['FILEMOUNTS'][$key]['type']) {
+			case 'user':
+				$this->icon = 'gfx/i/_icon_ftp_user.gif';
+				break;
+			case 'group':
+				$this->icon = 'gfx/i/_icon_ftp_group.gif';
+				break;
+			default:
+				$this->icon = 'gfx/i/_icon_ftp.gif';
 		}
 
 		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
