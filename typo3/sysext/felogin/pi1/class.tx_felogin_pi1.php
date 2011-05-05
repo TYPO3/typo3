@@ -392,7 +392,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$subpartArray = $linkpartArray = array();
 
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header',$this->conf['logoutHeader_stdWrap.']);
-		$markerArray['###STATUS_MESSAGE###']=$this->getDisplayText('status_message',$this->conf['logoutMessage_stdWrap.']);$this->cObj->stdWrap($this->flexFormValue('message','s_status'),$this->conf['logoutMessage_stdWrap.']);
+		$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('status_message', $this->conf['logoutMessage_stdWrap.']);
+		$this->cObj->stdWrap($this->flexFormValue('message', 's_status'), $this->conf['logoutMessage_stdWrap.']);
 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('logout', '', 1);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('',array(),TRUE);

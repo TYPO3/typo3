@@ -235,7 +235,11 @@ class tslib_feTCE	{
 			$dataArr[$field] = $GLOBALS['EXEC_TIME'];
 			$extraList .= ',' . $field;
 		}
-		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id']; $dataArr[$field]=0; $extraList.=','.$field;}
+		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
+			$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+			$dataArr[$field] = 0;
+			$extraList .= ',' . $field;
+		}
 
 		unset($dataArr['uid']);	// uid can never be set
 		$insertFields = array();

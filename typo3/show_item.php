@@ -99,8 +99,13 @@ class transferData extends t3lib_transferData	{
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		switch($config['type'])	{
 			case 'input':
-				if (isset($config['checkbox']) && $content==$config['checkbox'])	{$content=''; break;}
-				if (t3lib_div::inList($config['eval'],'date'))	{$content = Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$content); }
+				if (isset($config['checkbox']) && $content == $config['checkbox']) {
+					$content = '';
+					break;
+				}
+				if (t3lib_div::inList($config['eval'],'date')) {
+					$content = Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $content);
+				}
 			break;
 			case 'group':
 			break;
