@@ -60,7 +60,7 @@ TYPO3.TCEFORMS = {
 				maxDate:	maxDate,
 				handler: 	function(picker, date){
 					var relElement = Ext.getDom(picker.ownerCt.id.substring(1));
-					if (index === 1) {
+					if (index === 1 && oldValue !== undefined) {
 							//datetimefield, preserve time information
 						date.setHours(oldValue.getHours());
 						date.setMinutes(oldValue.getMinutes());
