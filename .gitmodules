@@ -1,0 +1,6 @@
+[submodule "typo3/sysext/version"]
+	path = typo3/sysext/version
+	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/version.git
+[submodule "typo3/sysext/workspaces"]
+	path = typo3/sysext/workspaces
+	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/workspaces.git
