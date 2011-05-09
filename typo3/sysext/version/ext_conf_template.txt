@@ -1,0 +1,3 @@
+
+  # cat=basic//10; type=boolean; label= Show draft workspace: Enable the simplified draft workspace in the menus
+showDraftWorkspace = 0
