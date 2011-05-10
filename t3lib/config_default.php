@@ -777,9 +777,6 @@ if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']='gif,jpg,jpeg,png';
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] = 0;
 }
-if (!strcmp('0', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']))	{
-	unset($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']);	// Make sure that setting "im_version_5" to "0" means IM4
-}
 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;

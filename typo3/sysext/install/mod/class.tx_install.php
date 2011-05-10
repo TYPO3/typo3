@@ -3833,15 +3833,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								if (doubleval($version) > 0 && doubleval($version) < 4) {
 										// Assume GraphicsMagick
 									$value_ext = 'gm';
-								} elseif (doubleval($version) < 5) {
-										// Assume ImageMagick 4.x
-									$value_ext = '';
-								} elseif (doubleval($version) >= 6) {
+								} else	{
 										// Assume ImageMagick 6.x
 									$value_ext = 'im6';
-								} else	{
-										// Assume ImageMagick 5.x
-									$value_ext = 'im5';
 								}
 								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']), $value_ext)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\']', $value_ext);
@@ -4086,10 +4080,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$formArray['im_path'] = array($path);
 							$found = 1;
 						}
-					} elseif (!$found) {
-						$formArray['im_version_5']=array('im5');
-						$formArray['im_path']=array($path);
-						$found=1;
 					}
 				} elseif ($dat['gm']) {
 					$formArray['im_version_5']=array('gm');
@@ -4536,11 +4526,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			case 'gm':
 				if (doubleval($im_path_version)>=2)	$mismatch=TRUE;
 			break;
-			case 'im4':
-				if (doubleval($im_path_version)>=5)	$mismatch=TRUE;
-			break;
 			default:
-				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?TRUE:FALSE) != (doubleval($im_path_version)>=5))	$mismatch=TRUE;
+				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?TRUE:FALSE) != (doubleval($im_path_version)>=6))	$mismatch=TRUE;
 			break;
 		}
 
