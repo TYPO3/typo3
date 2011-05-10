@@ -412,10 +412,28 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * @test
+	 * Provide various user agent strings for android devices
+	 *
+	 * @static
+	 * @return array List of user agents
 	 */
-	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfAndroid() {
-		$userAgentString = 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
+	public static function androidUserAgentsProvider() {
+		$agents = array(
+			'defaultBrowser' => array(
+				'agent' => 'Mozilla/5.0 (Linux; U; Android 2.3; en-US; sdk Build/GRH55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1',
+			),
+			'operaMini' => array(
+				'agent' => 'Opera/9.80 (Android; Opera Mini/6.0.24556/24.816; U; en) Presto/2.5.25 Version/10.54'
+			)
+		);
+		return $agents;
+	}
+
+	/**
+	 * @test
+	 * @dataProvider androidUserAgentsProvider
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfAndroid($userAgentString) {
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
 		$this->assertContains(
@@ -480,7 +498,7 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			$infoArray['all_systems']
 		);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -519,7 +537,7 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			$infoArray['browser']
 		);
 	}
-	
+
 	/**
 	 * @test
 	 */
