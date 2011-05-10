@@ -1633,20 +1633,6 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
-	 * Use quoteFieldNames instead!
-	 *
-	 * @param	string		List of fields to be selected from DB
-	 * @return	string		Quoted list of fields to be selected from DB
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6
-	 */
-	public function quoteSelectFields($select_fields) {
-		t3lib_div::logDeprecatedFunction();
-
-		$this->quoteFieldNames($select_fields);
-	}
-
-	/**
-	 * Quotes field (and table) names with the quote character suitable for the DB being used
 	 *
 	 * @param	string		List of fields to be used in query to DB
 	 * @return	string		Quoted list of fields to be in query to DB
@@ -2489,21 +2475,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * Deprecated or still experimental.
 	 *
 	 **********/
-
-	/**
-	 * Executes query (on DEFAULT handler!)
-	 * DEPRECATED - use exec_* functions from this class instead!
-	 *
-	 * @param	string		Database name
-	 * @param	string		Query to execute
-	 * @return	pointer		Result pointer
-	 * @deprecated since TYPO3 4.1, will be removed in TYPO3 4.6
-	 */
-	public function sql($db, $query) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->sql_query($query);
-	}
 
 	/**
 	 * Executes a query

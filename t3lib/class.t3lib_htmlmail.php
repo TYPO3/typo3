@@ -177,6 +177,8 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package	TYPO3
  * @subpackage	t3lib
+ *
+ * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. Please use t3lib_mail instead (SwiftMail based).
  */
 class t3lib_htmlmail {
 		// Headerinfo:
@@ -241,6 +243,7 @@ class t3lib_htmlmail {
 	 * See function sendTheMail for more info
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 4.5, this method will be removed in TYPO3 4.7. Use t3lib_mail instead.
 	 */
 	public function t3lib_htmlmail() {
 		t3lib_div::logDeprecatedFunction();
