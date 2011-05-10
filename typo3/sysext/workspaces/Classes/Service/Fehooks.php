@@ -61,3 +61,4 @@ class tx_Workspaces_Service_Fehooks {
 
 	}
 }
+?>
