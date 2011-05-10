@@ -4,3 +4,6 @@
 [submodule "typo3/sysext/workspaces"]
 	path = typo3/sysext/workspaces
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/workspaces.git
+[submodule "typo3/sysext/dbal"]
+	path = typo3/sysext/dbal
+	url = git://git.typo3.org/TYPO3v4/Extensions/dbal.git
