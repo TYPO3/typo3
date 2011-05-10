@@ -541,7 +541,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$wslibGuiObj = t3lib_div::makeInstance('wslib_gui');
 		$wslibGuiObj->diff = $this->MOD_SETTINGS['diff'];
 		$wslibGuiObj->expandSubElements = $this->MOD_SETTINGS['expandSubElements'];
-		$wslibGuiObj->alwaysDisplayHeader = true;
+		$wslibGuiObj->alwaysDisplayHeader = TRUE;
 		return $wslibGuiObj->getWorkspaceOverview($this->doc, $wsid, $filter);
 	}
 
@@ -662,21 +662,21 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Live
 		$wksp = $this->workspaceList_createFakeWorkspaceRecord(0);
 		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
-		if (false !== $wksp) {
+		if (FALSE !== $wksp) {
 			$availableWorkspaces[] = $wksp;
 		}
 
 			// Draft
 		$wksp = $this->workspaceList_createFakeWorkspaceRecord(-1);
 		$wksp = $GLOBALS['BE_USER']->checkWorkspace($wksp);
-		if (false !== $wksp) {
+		if (FALSE !== $wksp) {
 			$availableWorkspaces[] = $wksp;
 		}
 
 			// Custom
 		foreach($workspaces as $rec)	{
 				// see if user can access this workspace in any way
-			if (false !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec)))	{
+			if (FALSE !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec)))	{
 				$availableWorkspaces[] = $result;	// `$result` contains `$rec` plus access type through '_ACCESS' key
 			}
 		}
@@ -714,7 +714,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
-		else if ($GLOBALS['BE_USER']->isAdmin()) {
+		elseif ($GLOBALS['BE_USER']->isAdmin()) {
 			// show users for draft/live workspace only to admin users
 			$content .=	'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
@@ -738,7 +738,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($wksp['uid'] == -1) {
 				// draft workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_draft');
-		} else if ($wksp['uid'] == 0) {
+		} elseif ($wksp['uid'] == 0) {
 				// live workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_db_mount_point_live');
 		}
@@ -792,7 +792,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		if ($wksp['uid'] == -1) {
 				// draft workspace - none!
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_draft');
-		} else if ($wksp['uid'] == 0) {
+		} elseif ($wksp['uid'] == 0) {
 				// live workspace
 			return $GLOBALS['LANG']->getLL('workspace_list_file_mount_point_live');
 		}
@@ -922,7 +922,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 				// get user names and sort
 			$regExp = '/^(be_[^_]+)_(\d+)$/';
-			$groups = false;
+			$groups = FALSE;
 			foreach ($userIDs as $userUID)	{
 				$id = $userUID;
 
@@ -945,7 +945,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 					}
 					else {
 						// group
-						if (false === $groups) {
+						if (FALSE === $groups) {
 							$groups = t3lib_BEfunc::getGroupNames();
 						}
 						$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"'), $table, $id, 2) .
@@ -984,7 +984,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	/**
 	 * Creates a list of icons for workspace.
 	 *
-	 * @param	boolean		<code>true</code> if current workspace
+	 * @param	boolean		<code>TRUE</code> if current workspace
 	 * @param	array		Workspace record
 	 * @return	string		Generated content
 	 */
@@ -1034,7 +1034,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	 * <code>_ACCESS</code> attribute of the workspace.
 	 *
 	 * @param	array		Workspace record
-	 * @return	boolean		<code>true</code> if user can modify workspace parameters
+	 * @return	boolean		<code>TRUE</code> if user can modify workspace parameters
 	 */
 	function workspaceList_hasEditAccess(&$wksp)	{
 		$access = &$wksp['_ACCESS'];

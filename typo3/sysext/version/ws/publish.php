@@ -152,7 +152,8 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 			// Prepare limited set of records
 			$this->publishData = $GLOBALS['BE_USER']->getSessionData('workspacePublisher');
 			$this->recordCount = $GLOBALS['BE_USER']->getSessionData('workspacePublisher_count');
-			$limitedCmd = array(); $numRecs = 0;
+			$limitedCmd = array();
+			$numRecs = 0;
 			foreach ($this->publishData as $table => $recs) {
 				foreach ($recs as $key => $value) {
 					$numRecs++;
@@ -169,7 +170,7 @@ class SC_mod_user_ws_publish extends t3lib_SCbase {
 
 			if ($numRecs == 0) {
 				// All done
-				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher', null);
+				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher', NULL);
 				$GLOBALS['BE_USER']->setAndSaveSessionData('workspacePublisher_count', 0);
 				$content .= '<div id="progress-block"><h3>' . $this->title . '</h3><p>';
 				$content .= $GLOBALS['LANG']->getLL($this->isSwap ? 'workspace_swapped' : 'workspace_published');

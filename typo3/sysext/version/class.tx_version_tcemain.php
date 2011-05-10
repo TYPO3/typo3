@@ -296,7 +296,7 @@ class tx_version_tcemain {
 				// Workspace destination check:
 
 				// All records can be inserted if $destRes is greater than zero.
-				// Only new versions can be inserted if $destRes is false.
+				// Only new versions can be inserted if $destRes is FALSE.
 				// NO RECORDS can be inserted if $destRes is negative which indicates a stage
 				//  not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
 			if (!($destRes > 0 || ($canMoveRecord && !$destRes))) {
@@ -372,7 +372,7 @@ class tx_version_tcemain {
 				}
 			}
 
-			if ($notificationAlternativeRecipients == false) {
+			if ($notificationAlternativeRecipients == FALSE) {
 					// Compile list of recipients:
 				$emails = array();
 				switch((int)$stat['stagechg_notification'])	{

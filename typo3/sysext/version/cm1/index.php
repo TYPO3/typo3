@@ -603,7 +603,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
-	 * @return	integer		Number of versions for record, false if none.
+	 * @return	integer		Number of versions for record, FALSE if none.
 	 */
 	function lookForOwnVersions($table,$uid)	{
 		global $TCA;
@@ -922,7 +922,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							case 'page':
 								$swapLabel = $GLOBALS['LANG']->getLL('page');
 								$swapClass = 'ver-page';
-								$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is true only if multiple workspaces are shown and we need the opposite here.
+								$warnAboutVersions_page = !$this->showWorkspaceCol;		// This value is TRUE only if multiple workspaces are shown and we need the opposite here.
 							break;
 							case 'branch':
 								$swapLabel = $GLOBALS['LANG']->getLL('branch');
@@ -1291,7 +1291,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					$uid,
 					$rec,
 					$origId,
-					$c==$elCount && $treeLevel==0 ? 1 : 0,		// If true, will show bottom-join icon.
+					$c==$elCount && $treeLevel==0 ? 1 : 0,		// If TRUE, will show bottom-join icon.
 					''
 				);
 			}
@@ -1338,7 +1338,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							$uid,
 							$rec,
 							$origId,
-							$c==$elCount?1:0,	// If true, will show bottom-join icon.
+							$c==$elCount?1:0,	// If TRUE, will show bottom-join icon.
 							$data['HTML_depthData']
 						);
 					}

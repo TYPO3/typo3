@@ -100,8 +100,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	var $content;						// Accumulated content
 
 	// internal variables
-	var	$isEditAction = false;			// true if about to edit workspace
-	var $workspaceId;					// ID of the workspace that we will edit. Set only if $isEditAction is true.
+	var $isEditAction = FALSE;			// TRUE if about to edit workspace
+	var $workspaceId;					// ID of the workspace that we will edit. Set only if $isEditAction is TRUE.
 
 	/**
 	 * An instance of t3lib_TCEForms
@@ -282,8 +282,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->tceforms->returnUrl = $this->R_URI;
 		$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 		$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
-		$this->tceforms->enableClickMenu = true;
-		$this->tceforms->enableTabMenu = true;
+		$this->tceforms->enableClickMenu = TRUE;
+		$this->tceforms->enableTabMenu = TRUE;
 
 			// Setting external variables:
 		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$this->tceforms->edit_showFieldHelp='text';
@@ -523,7 +523,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 
 		$tce->start($inputData, array(), $GLOBALS['BE_USER']);
 		$tce->admin = 1;	// Bypass table restrictions
-		$tce->bypassWorkspaceRestrictions = true;
+		$tce->bypassWorkspaceRestrictions = TRUE;
 		$tce->process_datamap();
 
 			// print error messages (if any)
@@ -535,7 +535,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		if (count($tce->substNEWwithIDs_table))	{
 			reset($tce->substNEWwithIDs_table);	// not really necessary but better be safe...
 			$this->workspaceId = current($tce->substNEWwithIDs);
-			$this->isEditAction = true;
+			$this->isEditAction = TRUE;
 		}
 	}
 
@@ -548,7 +548,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	 */
 	function fixVariousTCAFields() {
 		// enable tabs
-		$GLOBALS['TCA']['sys_workspace']['ctrl']['dividers2tabs'] = true;
+		$GLOBALS['TCA']['sys_workspace']['ctrl']['dividers2tabs'] = TRUE;
 	}
 
 
@@ -569,7 +569,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 				'config' => Array (
 					'type' => 'select',
 					'itemsProcFunc' => 'user_SC_mod_user_ws_workspaceForms->processUserAndGroups',
-					//'iconsInOptionTags' => true,
+					//'iconsInOptionTags' => TRUE,
 					'size' => 10,
 					'maxitems' => $field['config']['maxitems'],
 					'autoSizeMax' => $field['config']['autoSizeMax'],
@@ -583,14 +583,14 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 	/**
 	 * Checks if use has editing access to the workspace.
 	 *
-	 * @return	boolean		Returns true if user can edit workspace
+	 * @return	boolean		Returns TRUE if user can edit workspace
 	 */
 	function checkWorkspaceAccess() {
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','uid=' . intval($this->workspaceId) . ' AND pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'));
-		if (is_array($workspaces) && count($workspaces) != 0 && false !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
+		if (is_array($workspaces) && count($workspaces) != 0 && FALSE !== ($rec = $GLOBALS['BE_USER']->checkWorkspace($workspaces[0])))	{
 			return ($rec['_ACCESS'] == 'owner' || $rec['_ACCESS'] == 'admin');
 		}
-		return false;
+		return FALSE;
 	}
 }
 
