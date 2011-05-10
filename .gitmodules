@@ -4,3 +4,6 @@
 [submodule "typo3/sysext/version"]
 	path = typo3/sysext/version
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/version.git
+[submodule "typo3/sysext/dbal"]
+	path = typo3/sysext/dbal
+	url = git://git.typo3.org/TYPO3v4/Extensions/dbal.git
