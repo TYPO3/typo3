@@ -1,3 +1,0 @@
-  # cat=basic; type=user[EXT:dbal/lib/class.tx_dbal_tsparserext.php:tx_dbal_tsparserext->displayMessage];
-Compatibility=
-
