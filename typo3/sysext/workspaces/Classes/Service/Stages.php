@@ -169,7 +169,7 @@ class Tx_Workspaces_Service_Stages {
 				foreach ($workspaceStageRecs as $workspaceStageRec) {
 					if ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
 						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
-					} else if ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
+					} elseif ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 						$allowedStages[] = $workspaceStageRec;
 						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
 					}
@@ -195,7 +195,7 @@ class Tx_Workspaces_Service_Stages {
 	/**
 	 * Check if given workspace has custom staging activated
 	 *
-	 * @return bool true or false
+	 * @return bool TRUE or FALSE
 	 */
 	public function checkCustomStagingForWS() {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
@@ -225,7 +225,7 @@ class Tx_Workspaces_Service_Stages {
 			default:
 				$stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
 
-				if ($stageTitle == null) {
+				if ($stageTitle == NULL) {
 					$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.getStageTitle.stageNotFound');
 				}
 				break;

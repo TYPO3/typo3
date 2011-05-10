@@ -137,7 +137,7 @@ class tx_Workspaces_Service_GridData {
 
 					if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
 						$versionArray['allowedAction_swap'] = $stagesObj->isNextStageAllowedForUser($swapStage);
-					} else if ($swapAccess && $swapStage == 0) {
+					} elseif ($swapAccess && $swapStage == 0) {
 						$versionArray['allowedAction_swap'] = TRUE;
 					} else {
 						$versionArray['allowedAction_swap'] = FALSE;

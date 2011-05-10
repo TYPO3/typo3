@@ -141,7 +141,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * Building tcemain CMD-array for releasing all versions in a workspace.
 	 *
 	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param	boolean		Run Flush (true) or ClearWSID (false) command
+	 * @param	boolean		Run Flush (TRUE) or ClearWSID (FALSE) command
 	 * @param	integer		$pageId: ...
 	 * @return	array		Command array for tcemain
 	 */
@@ -190,7 +190,7 @@ class tx_Workspaces_Service_Workspaces {
 			// Contains either nothing or a list with live-uids
 		if ($pageId != -1 && $recursionLevel > 0) {
 			$pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
-		} else if ($pageId != -1) {
+		} elseif ($pageId != -1) {
 			$pageList = $pageId;
 		} else {
 			$pageList = '';
@@ -243,7 +243,7 @@ class tx_Workspaces_Service_Workspaces {
 		 */
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid;
-		} else if ($wsid === self::SELECT_ALL_WORKSPACES) {
+		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0';
 		}
 
@@ -298,7 +298,7 @@ class tx_Workspaces_Service_Workspaces {
 
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
-		} else if ($wsid === self::SELECT_ALL_WORKSPACES) {
+		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
 		}
 
@@ -504,7 +504,7 @@ class tx_Workspaces_Service_Workspaces {
 	 * @param  $record
 	 * @return string
 	 */
-	public static function viewSingleRecord($table, $uid, $record=null) {
+	public static function viewSingleRecord($table, $uid, $record=NULL) {
 		$viewUrl = '';
 		if ($table == 'pages') {
 			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
@@ -515,7 +515,7 @@ class tx_Workspaces_Service_Workspaces {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
 				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
-				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, null);
+				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, NULL);
 			}
 		}
 		return $viewUrl;
