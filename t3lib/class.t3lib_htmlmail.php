@@ -241,6 +241,7 @@ class t3lib_htmlmail {
 	 * See function sendTheMail for more info
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 4.5
 	 */
 	public function t3lib_htmlmail() {
 		t3lib_div::logDeprecatedFunction();
