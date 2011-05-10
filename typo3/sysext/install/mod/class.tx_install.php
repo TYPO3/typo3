@@ -7488,6 +7488,9 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
+			// this line hast to stay, as included files use $TCA in global scope
+		global $TCA;
+
 		include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');
 
 			// Extension additions
