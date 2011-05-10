@@ -146,15 +146,13 @@ final class t3lib_utility_Client {
 				$browserInfo['all_systems'][] = 'mac';
 			}
 				// unixes
+		} elseif (strstr($userAgent, 'Android')) {
+			$browserInfo['system'] = 'linux'; // backwards compatible
+			$browserInfo['all_systems'][] = 'android';
+			$browserInfo['all_systems'][] = 'linux';
 		} elseif (strstr($userAgent, 'Linux')) {
-			if (strstr($userAgent, 'Android')) {
-				$browserInfo['system'] = 'linux'; // backwards compatible
-				$browserInfo['all_systems'][] = 'android';
-				$browserInfo['all_systems'][] = 'linux';
-			} else {
-				$browserInfo['system'] = 'linux';
-				$browserInfo['all_systems'][] = 'linux';
-			}
+			$browserInfo['system'] = 'linux';
+			$browserInfo['all_systems'][] = 'linux';
 		} elseif (strstr($userAgent, 'BSD')) {
 			$browserInfo['system'] = 'unix_bsd';
 			$browserInfo['all_systems'][] = 'unix_bsd';
