@@ -93,13 +93,20 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 		if (!empty($TSconfig[$tableField][$flexformIdentifier . '.'])) {
 			$sheetConf = t3lib_div::removeDotsFromTS($TSconfig[$tableField][$flexformIdentifier . '.']);
 		}
-		;
 
 			// Get non-exclude-fields from group access lists
 		$nonExcludeFields = $this->getFlexFormNonExcludeFields($table, $tableField, $flexformIdentifier);
 
 			// Load complete DS, including external file references
 		$dataStructure = t3lib_div::resolveAllSheetsInDS($dataStructure);
+
+			// Modify language handling in meta configuration
+		if (isset($sheetConf['langDisable'])) {
+			$metaConf['langDisable'] = $sheetConf['langDisable'];
+		}
+		if (isset($sheetConf['langChildren'])) {
+			$metaConf['langChildren'] = $sheetConf['langChildren'];
+		}
 
 			// Modify flexform sheets
 		foreach ($dataStructure['sheets'] as $sheetName => $sheet) {
@@ -118,7 +125,17 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 				$dataStructure['sheets'][$sheetName]['ROOT']['TCEforms']['sheetTitle'] = $sheetConf[$sheetName]['title'];
 			}
 
-				// Modify all configured fields in sheet
+				// Set sheet description (tab)
+			if (!empty($sheetConf[$sheetName]['sheetDescription'])) {
+				$dataStructure['sheets'][$sheetName]['ROOT']['TCEforms']['sheetDescription'] = $sheetConf[$sheetName]['sheetDescription'];
+			}
+
+				// Set sheet short description (tab)
+			if (!empty($sheetConf[$sheetName]['sheetShortDescr'])) {
+				$dataStructure['sheets'][$sheetName]['ROOT']['TCEforms']['sheetShortDescr'] = $sheetConf[$sheetName]['sheetShortDescr'];
+			}
+
+				// Modify all configured fields in sheet (tab)
 			$dataStructure['sheets'][$sheetName]['ROOT']['el'] = $this->modifySingleFlexFormSheet(
 				$sheet['ROOT']['el'],
 				$table,
