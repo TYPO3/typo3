@@ -1457,7 +1457,7 @@ class tslib_cObj {
 					// Create TARGET-attribute only if the right doctype is used
 				if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype)) {
 					$target = isset($conf['target.'])
-						? $this-stdWrap($conf['target'], $conf['target.'])
+						? $this->stdWrap($conf['target'], $conf['target.'])
 						: $conf['target'];
 					if ($target) {
 						$target = sprintf(' target="%s"', $target);
