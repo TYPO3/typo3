@@ -657,7 +657,6 @@ define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://typo3.org/documentation/document
 define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'http://typo3.org/documentation/document-library/references/doc_core_tsconfig/current/view/');
 define('TYPO3_URL_CONSULTANCY', 'http://typo3.com/Consultancies.1248.0.html');
 define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/community/participate/');
-define('TYPO3_URL_DONATE', 'http://typo3.com/Donations.1261.0.html');
 define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');
 define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/packages/');
 define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/1275.0.html');
