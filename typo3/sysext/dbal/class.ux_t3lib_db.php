@@ -1003,7 +1003,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$mt = $this->sql_field_metatype($table, $k);
 					if ($mt{0} == 'I') {
 						$v = (int) $v;
-					} else if ($mt{0} == 'F') {
+					} elseif ($mt{0} == 'F') {
 						$v = (double) $v;
 					}
 
@@ -1115,7 +1115,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$mt = $this->sql_field_metatype($table, $k);
 						if ($mt{0} == 'I') {
 							$v = (int) $v;
-						} else if ($mt{0} == 'F') {
+						} elseif ($mt{0} == 'F') {
 							$v = (double) $v;
 						}
 						$nArr[] = $this->quoteFieldNames($k) . '=' . ((!in_array($k, $no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);
@@ -2452,7 +2452,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Returns the type of the specified field index
 	 */
 	public function sql_field_type(&$res, $pointer) {
-		if ($res === null) {
+		if ($res === NULL) {
 			debug(array('no res in sql_field_type!'));
 			return 'text';
 		}

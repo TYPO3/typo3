@@ -662,13 +662,13 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 											}
-										} else if (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+										} elseif (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 											$lbound = $v['values'][0];
 											$ubound = $v['values'][1];
 											$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
 											$output .= ' AND ';
 											$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
-										} else if (isset($v['value']['operator'])) {
+										} elseif (isset($v['value']['operator'])) {
 											$values = array();
 											foreach ($v['value']['args'] as $fieldDef) {
 												$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
