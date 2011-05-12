@@ -458,8 +458,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		} else {
 			if($this->logintype === 'logout') {
 					// login form after logout
-				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('logout_header',$this->conf['welcomeHeader_stdWrap.']);
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('logout_message',$this->conf['welcomeMessage_stdWrap.']);
+				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('logout_header',$this->conf['logoutHeader_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('logout_message',$this->conf['logoutMessage_stdWrap.']);
 			} else {
 					// login form
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('welcome_header',$this->conf['welcomeHeader_stdWrap.']);
