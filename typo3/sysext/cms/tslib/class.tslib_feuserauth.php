@@ -76,36 +76,10 @@
  * @subpackage tslib
  */
 class tslib_feUserAuth extends t3lib_userAuth {
-	var $session_table = 'fe_sessions'; 		// Table to use for session data.
-	var $name = 'fe_typo_user';                 // Session/Cookie name
-	var $get_name = 'ftu';		                	 // Session/GET-var name
 
-	var $user_table = 'fe_users'; 					// Table in database with userdata
-	var $username_column = 'username'; 				// Column for login-name
-	var $userident_column = 'password'; 			// Column for password
-	var $userid_column = 'uid'; 					// Column for user-id
-	var $lastLogin_column = 'lastlogin';
-
-	var $enablecolumns = Array (
-		'deleted' => 'deleted',
-		'disabled' => 'disable',
-		'starttime' => 'starttime',
-		'endtime' => 'endtime'
-	);
-	var $formfield_uname = 'user'; 				// formfield with login-name
-	var $formfield_uident = 'pass'; 			// formfield with password
-	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
-	var $formfield_status = 'logintype'; 		// formfield with status: *'login', 'logout'
 	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
-	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
-	var $auth_timeout_field = 6000;				// Server session lifetime. If > 0: session-timeout in seconds. If FALSE or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
-
-	var $lifetime = 0;				// Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
 	protected $sessionDataLifetime = 86400;		// Lifetime of session data in seconds.
-	var $sendNoCacheHeaders = 0;
-	var $getFallBack = 1;						// If this is set, authentication is also accepted by the _GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
-	var $getMethodEnabled = 1;					// Login may be supplied by url.
 
 	var $usergroup_column = 'usergroup';
 	var $usergroup_table = 'fe_groups';
@@ -132,6 +106,38 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $userData_change = 0;
 	protected $sessionDataTimestamp;
 
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->session_table = 'fe_sessions';     // Table to use for session data.
+		$this->name = 'fe_typo_user';             // Session/Cookie name
+		$this->get_name = 'ftu';                  // Session/GET-var name
+
+		$this->user_table = 'fe_users';           // Table in database with userdata
+		$this->username_column = 'username';      // Column for login-name
+		$this->userident_column = 'password';     // Column for password
+		$this->userid_column = 'uid';             // Column for user-id
+		$this->lastLogin_column = 'lastlogin';
+
+		$this->enablecolumns = array(
+			'deleted' => 'deleted',
+			'disabled' => 'disable',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime'
+		);
+
+		$this->formfield_uname = 'user';          // Form field with login-name
+		$this->formfield_uident = 'pass';         // Form field with password
+		$this->formfield_chalvalue = 'challenge'; // Form field with a unique value which is used to encrypt the password and username
+		$this->formfield_status = 'logintype';    // Form field with status: *'login', 'logout'
+		$this->security_level = '';
+
+		$this->auth_timeout_field = 6000;         // Server session lifetime
+		$this->sendNoCacheHeaders = FALSE;        // Headers is sent to assure, caching is NOT done
+		$this->getFallBack = TRUE;                // Authentication is also accepted by the $_GET
+		$this->getMethodEnabled = TRUE;           // Login may be supplied by URL.
+	}
 
 	/**
 	 * Starts a user session
