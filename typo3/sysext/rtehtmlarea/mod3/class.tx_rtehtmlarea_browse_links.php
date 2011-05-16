@@ -276,7 +276,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Process bparams
 		$this->bparams = t3lib_div::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
-		$pRteArr = explode(':', $pArr[1]);
+		$pRteArr = explode(';', $pArr[1]);
 		$this->editorNo = $pRteArr[0];
 		$this->contentTypo3Language = $pRteArr[1];
 		$this->contentTypo3Charset = $pRteArr[2];
@@ -292,7 +292,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->expandFolder = t3lib_div::_GP('expandFolder');
 		$this->P = t3lib_div::_GP('P');
 		$this->PM = t3lib_div::_GP('PM');
-		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
+		$pArr[1] = implode(';', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
 		$pArr[2] = $this->RTEtsConfigParams;
 		$this->bparams = implode('|', $pArr);
 
