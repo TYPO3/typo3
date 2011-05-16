@@ -196,7 +196,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Process bparams
 		$this->bparams = t3lib_div::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
-		$pRteArr = explode(':', $pArr[1]);
+		$pRteArr = explode(';', $pArr[1]);
 		$this->editorNo = $pRteArr[0];
 		$this->sys_language_content = $pRteArr[1];
 		$this->RTEtsConfigParams = $pArr[2];
@@ -207,7 +207,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 		$this->expandPage = t3lib_div::_GP('expandPage');
 		$this->expandFolder = t3lib_div::_GP('expandFolder');
-		$pArr[1] = implode(':', array($this->editorNo, $this->sys_language_content));
+		$pArr[1] = implode(';', array($this->editorNo, $this->sys_language_content));
 		$pArr[2] = $this->RTEtsConfigParams;
 		if ($this->act == 'dragdrop' || $this->act == 'plain') {
 			$this->allowedFileTypes = explode(',','jpg,jpeg,gif,png');
