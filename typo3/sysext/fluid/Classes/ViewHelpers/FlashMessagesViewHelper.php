@@ -68,6 +68,25 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	const RENDER_MODE_DIV = 'div';
 
 	/**
+	 * @var tslib_cObj
+	 */
+	protected $contentObject;
+
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->contentObject = $this->configurationManager->getContentObject();
+	}
+
+	/**
 	 * Initialize arguments
 	 *
 	 * @return void
@@ -79,11 +98,13 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	}
 
 	/**
-	 * Render method.
+	 * Renders FlashMessages and flushes the FlashMessage queue
+	 * Note: This disables the current page cache in order to prevent FlashMessage output
+	 * from being cached.
+	 * @see tslib_fe::no_cache
 	 *
 	 * @param string $renderMode one of the RENDER_MODE_* constants
 	 * @return string rendered Flash Messages, if there are any.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function render($renderMode = self::RENDER_MODE_UL) {
@@ -91,6 +112,10 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 		if ($flashMessages === NULL || count($flashMessages) === 0) {
 			return '';
 		}
+		if (isset($GLOBALS['TSFE']) && $this->contentObject->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
+			$GLOBALS['TSFE']->no_cache = 1;
+		}
+
 		switch ($renderMode) {
 			case self::RENDER_MODE_UL:
 				return $this->renderUl($flashMessages);
