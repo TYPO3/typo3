@@ -92,7 +92,7 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 		}
 		$currentValue = NULL;
 		if (is_object($data)) {
-			$data = Tx_Extbase_Reflection_ObjectAccess::getAccessibleProperties($data);
+			$data = Tx_Extbase_Reflection_ObjectAccess::getGettablePropertyNames($data);
 		} elseif (is_string($data)) {
 			$currentValue = $data;
 			$data = array($data);
