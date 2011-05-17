@@ -148,6 +148,7 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_ch
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_compatversion.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_cscsplit.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_notinmenu.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_cachetables.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_mergeadvanced.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installsysexts.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_imagescols.php');
