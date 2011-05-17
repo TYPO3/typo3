@@ -683,7 +683,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 					if ($confData['type'] == 'label') {
 						$labelLayout = isset($conf['LABEL.']['layout.'])
 							? $this->cObj->stdWrap($conf['LABEL.']['layout'], $conf['LABEL.']['layout.'])
-							: $conf['CHECK.']['layout'];
+							: $conf['LABEL.']['layout'];
 						if ($labelLayout) {
 							$result = $labelLayout;
 						}
