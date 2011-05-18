@@ -49,7 +49,10 @@ $TCA['be_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
-				'eval' => 'nospace,lower,unique,required'
+				'eval' => 'nospace,lower,unique,required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'password' => array(
@@ -194,7 +197,10 @@ $TCA['be_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'disable' => array(
@@ -423,7 +429,10 @@ $TCA['be_groups'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '50',
-				'eval' => 'trim,required'
+				'eval' => 'trim,required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'db_mountpoints' => array(
@@ -704,7 +713,10 @@ $TCA['sys_filemounts'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '30',
-				'eval' => 'required,trim'
+				'eval' => 'required,trim',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'path' => array(

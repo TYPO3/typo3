@@ -82,6 +82,9 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim,required',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'TSconfig' => array(
@@ -288,6 +291,9 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'nav_hide' => array(
@@ -310,6 +316,9 @@ $TCA['pages'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => '',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'target' => array(
@@ -331,6 +340,9 @@ $TCA['pages'] = array(
 				'max' => '32',
 				'eval' => 'nospace,alphanum_x,lower,unique',
 				'softref' => 'notify',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'url' => array(
@@ -341,6 +353,9 @@ $TCA['pages'] = array(
 				'max' => '255',
 				'eval' => 'trim,required',
 				'softref' => 'url',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'urltype' => array(
@@ -556,6 +571,9 @@ $TCA['pages'] = array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'description' => array(
@@ -565,6 +583,9 @@ $TCA['pages'] = array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'abstract' => array(
@@ -574,6 +595,9 @@ $TCA['pages'] = array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'author' => array(
@@ -584,6 +608,9 @@ $TCA['pages'] = array(
 				'size' => '23',
 				'eval' => 'trim',
 				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'author_email' => array(
@@ -595,6 +622,9 @@ $TCA['pages'] = array(
 				'eval' => 'trim',
 				'max' => '80',
 				'softref' => 'email[subst]',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'media' => array(

@@ -335,6 +335,9 @@ $TCA['tt_content'] = array(
 				'type' => 'input',
 				'size' => '50',
 				'max' => '256',
+				'search' => array(
+					'nocase'
+				)
 			),
 		),
 		'header_position' => array(
@@ -430,6 +433,9 @@ $TCA['tt_content'] = array(
 				'size' => '50',
 				'max' => '256',
 				'softref' => 'email[subst]',
+				'search' => array(
+					'nocase'
+				)
 			),
 		),
 		'bodytext' => array(
@@ -487,6 +493,10 @@ $TCA['tt_content'] = array(
 					),
 				),
 				'softref' => 'typolink_tag,images,email[subst],url',
+				'search' => array(
+					'nocase',
+					'andWhere' => 'CType=\'text\' OR CType=\'textpic\'',
+				)
 			),
 		),
 		'text_align' => array(
@@ -1629,6 +1639,10 @@ $TCA['tt_content'] = array(
 					',
 					',media' => file_get_contents(t3lib_extMgm::extPath('cms') . 'flexform_media.xml'),
 				),
+				'search' => array(
+					'nocase',
+					'andWhere' => 'CType=\'list\''
+				)
 			),
 		),
 		'tx_impexp_origuid' => array(

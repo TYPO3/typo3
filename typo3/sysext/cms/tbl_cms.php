@@ -52,7 +52,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
-				'eval' => 'nospace,lower,uniqueInPid,required'
+				'eval' => 'nospace,lower,uniqueInPid,required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'password' => array(
@@ -93,7 +96,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '40',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'first_name' => array(
@@ -103,7 +109,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'eval' => 'trim',
-				'max' => '50'
+				'max' => '50',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'middle_name' => array(
@@ -113,7 +122,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'eval' => 'trim',
-				'max' => '50'
+				'max' => '50',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'last_name' => array(
@@ -123,7 +135,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'eval' => 'trim',
-				'max' => '50'
+				'max' => '50',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'address' => array(
@@ -132,7 +147,10 @@ $TCA['fe_users'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '20',
-				'rows' => '3'
+				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'telephone' => array(
@@ -142,7 +160,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '20',
-				'max' => '20'
+				'max' => '20',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'fax' => array(
@@ -152,7 +173,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '20'
+				'max' => '20',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'email' => array(
@@ -162,7 +186,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'title' => array(
@@ -172,7 +199,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '40'
+				'max' => '40',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'zip' => array(
@@ -182,7 +212,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '10',
-				'max' => '10'
+				'max' => '10',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'city' => array(
@@ -192,7 +225,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '50'
+				'max' => '50',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'country' => array(
@@ -202,7 +238,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '40'
+				'max' => '40',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'www' => array(
@@ -222,7 +261,10 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'eval' => 'trim',
 				'size' => '20',
-				'max' => '80'
+				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'image' => array(
@@ -350,7 +392,10 @@ $TCA['fe_groups'] = array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
-				'eval' => 'trim,required'
+				'eval' => 'trim,required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'subgroup' => array(
@@ -381,7 +426,10 @@ $TCA['fe_groups'] = array(
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
-				'cols' => 48
+				'cols' => 48,
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'TSconfig' => array(
@@ -434,7 +482,10 @@ $TCA['sys_domain'] = array(
 				'size' => '35',
 				'max' => '80',
 				'eval' => 'required,unique,lower,trim',
-				'softref' => 'substitute'
+				'softref' => 'substitute',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'redirectTo' => array(
@@ -445,7 +496,10 @@ $TCA['sys_domain'] = array(
 				'max' => '255',
 				'default' => '',
 				'eval' => 'trim',
-				'softref' => 'substitute'
+				'softref' => 'substitute',
+				'search' => array(
+					'nocase'
+				),
 			),
 		),
 		'redirectHttpStatusCode' => array(
@@ -557,6 +611,9 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim,required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'subtitle' => array(
@@ -568,6 +625,9 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'nav_title' => array(
@@ -579,6 +639,9 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '50',
 				'max' => '255',
 				'eval' => 'trim',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'keywords' => array(
@@ -596,7 +659,10 @@ $TCA['pages_language_overlay'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '3'
+				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'abstract' => array(
@@ -605,7 +671,10 @@ $TCA['pages_language_overlay'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '3'
+				'rows' => '3',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'author' => array(
@@ -616,6 +685,9 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '23',
 				'eval' => 'trim',
 				'max' => '80',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'author_email' => array(
@@ -896,7 +968,10 @@ $TCA['sys_template'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
-				'eval' => 'required'
+				'eval' => 'required',
+				'search' => array(
+					'nocase'
+				),
 			)
 		),
 		'hidden' => array(
@@ -964,7 +1039,10 @@ $TCA['sys_template'] = array(
 				'cols' => '48',
 				'rows' => '10',
 				'wrap' => 'OFF',
-				'softref' => 'TStemplate,email[subst],url[subst]'
+				'softref' => 'TStemplate,email[subst],url[subst]',
+				'search' => array(
+					'nocase'
+				),
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
@@ -1076,7 +1154,10 @@ $TCA['sys_template'] = array(
 					)
 				),
 				'wrap' => 'OFF',
-				'softref' => 'TStemplate,email[subst],url[subst]'
+				'softref' => 'TStemplate,email[subst],url[subst]',
+				'search' => array(
+					'nocase'
+				),
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
@@ -1146,7 +1227,7 @@ $TCA['backend_layout'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
-				'eval' => 'required'
+				'eval' => 'required',
 			)
 		),
 		'description' => array(
