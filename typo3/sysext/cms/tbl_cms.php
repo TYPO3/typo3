@@ -896,7 +896,7 @@ $TCA['sys_template'] = array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
-				'eval' => 'required'
+				'eval' => 'required',
 			)
 		),
 		'hidden' => array(

@@ -487,6 +487,9 @@ $TCA['tt_content'] = array(
 					),
 				),
 				'softref' => 'typolink_tag,images,email[subst],url',
+				'search' => array(
+					'andWhere' => 'CType=\'text\' OR CType=\'textpic\'',
+				)
 			),
 		),
 		'text_align' => array(
@@ -1629,6 +1632,9 @@ $TCA['tt_content'] = array(
 					',
 					',media' => file_get_contents(t3lib_extMgm::extPath('cms') . 'flexform_media.xml'),
 				),
+				'search' => array(
+					'andWhere' => 'CType=\'list\''
+				)
 			),
 		),
 		'tx_impexp_origuid' => array(
