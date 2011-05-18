@@ -236,8 +236,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$panelCheck = '{
 
 		       title: TYPO3.lang.CheckLink,
-		       html: ' . json_encode($this->flush()) . ',
-			},	';
+		       html: ' . json_encode($this->flush()) . '
+			}';
 		}
 
 		$this->render();
