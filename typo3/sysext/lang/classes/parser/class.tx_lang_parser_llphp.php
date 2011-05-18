@@ -44,6 +44,7 @@ class tx_lang_parser_Llphp implements tx_lang_parser {
 	 * @return void
 	 */
 	public function getParsedData($sourcePath, $languageKey, $charset = '') {
+return;
 		throw new RuntimeException(
 			'Parser for plain old PHP array is not yet implemented.',
 			1301654458
