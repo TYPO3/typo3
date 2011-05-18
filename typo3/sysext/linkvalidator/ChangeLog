@@ -2,6 +2,7 @@
 
 	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
 	* Fixed bug #13757: Scheduler task does not work at all (Michael Miousse)
+    * Fixed bug #13828: checkhidden has no effect for some configurations (Michael Miousse)
 
 2011-02-24  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
