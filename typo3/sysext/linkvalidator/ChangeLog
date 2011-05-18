@@ -2,6 +2,7 @@
 
 	* Fixed bug #13828: checkhidden has no effect for some configurations (Michael Miousse)
 	* Fixed bug #26731: The info module does not show up in IE 7 and 8 (Michael Miousse)
+	* Fixed bug #13368: Content of Tab is not scrollable (Michael Miousse)
 
 2011-04-26 	Michael Miousse  <michael.miousse@infoglobe.ca>
 
