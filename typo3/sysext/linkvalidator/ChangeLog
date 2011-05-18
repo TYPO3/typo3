@@ -1,6 +1,10 @@
+2011-05-18  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Fixed bug #13828: checkhidden has no effect for some configurations (Michael Miousse)
+
 2011-04-26 	Michael Miousse  <michael.miousse@infoglobe.ca>
 
-	* Fixed bug #13757 Scheduler task does not work at all
+	* Fixed bug #13757: Scheduler task does not work at all
 
 2011-04-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
 
