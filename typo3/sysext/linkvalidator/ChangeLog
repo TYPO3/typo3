@@ -1,6 +1,7 @@
 2011-05-18  Philipp Gampe <forge.typo3.org@philippgampe.info>
 
 	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
+	* Fixed bug #13757: Scheduler task does not work at all (Michael Miousse)
 
 2011-02-24  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
