@@ -189,7 +189,7 @@ class recordList extends t3lib_recordList {
 		}
 
 			// Set select levels:
-		$sL=intval($this->searchLevels);
+		$searchLevels = intval($this->searchLevels);
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 			// this will hide records from display - it has nothing todo with user rights!!
@@ -217,11 +217,16 @@ class recordList extends t3lib_recordList {
 			}
 		}
 
-		if ($sL>0)	{
-			$tree = $this->getTreeObject($this->id, $sL, $this->perms_clause);
+		if ($searchLevels > 0) {
+			$tree = $this->getTreeObject($this->id, $searchLevels, $this->perms_clause);
 			$pidList = implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($tree->ids));
 			$this->pidSelect = 'pid IN (' . $pidList . ')';
-		} else {
+		}
+		elseif ($searchLevels < 0) {
+			// Search everywhere
+			$this->pidSelect = '1=1';
+		}
+		else {
 			$this->pidSelect = 'pid='.intval($id);
 		}
 
@@ -303,7 +308,7 @@ class recordList extends t3lib_recordList {
 						$this->pidSelect = 'pid='.intval($this->id);
 					}
 				}
-#debug($this->pidSelect,$tableName);
+
 					// Finally, render the list:
 				$this->HTMLcode.=$this->getTable($tableName, $this->id, implode(',',$fields));
 			}
@@ -499,7 +504,7 @@ class recordList extends t3lib_recordList {
 		$pC = ($table=='pages' && $this->perms_clause)?' AND '.$this->perms_clause:'';
 
 			// Adding search constraints:
-		$search = $this->makeSearchString($table);
+		$search = $this->makeSearchString($table, $id);
 
 			// Compiling query array:
 		$queryParts = array(
@@ -549,39 +554,84 @@ class recordList extends t3lib_recordList {
 	}
 
 	/**
-	 * Creates part of query for searching after a word ($this->searchString) fields in input table
+	 * Creates part of query for searching after a word ($this->searchString)
+	 * fields in input table.
 	 *
-	 * @param	string		Table, in which the fields are being searched.
-	 * @return	string		Returns part of WHERE-clause for searching, if applicable.
+	 * @param string $table Table, in which the fields are being searched.
+	 * @param int $currentPid Page id for the possible search limit. -1 only if called from an old XCLASS.
+	 * @return string Returns part of WHERE-clause for searching, if applicable.
 	 */
-	function makeSearchString($table)	{
+	function makeSearchString($table, $currentPid = -1) {
+		global $TCA;
+
+		$result = '';
+
+		$currentPid = intval($currentPid);
+		$tablePidField = ($table == 'pages' ? 'uid' : 'pid');
 
 			// Make query, only if table is valid and a search string is actually defined:
-		if ($GLOBALS['TCA'][$table] && $this->searchString) {
+		if ($this->searchString) {
+			$result = ' AND 0=1';
+			if ($TCA[$table] && $TCA[$table]['ctrl']['searchFields']) {
+				$searchableFields = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['searchFields'], true);
 
-				// Loading full table description - we need to traverse fields:
-			t3lib_div::loadTCA($table);
+					// Loading full table description - we need to traverse fields:
+				t3lib_div::loadTCA($table);
 
-				// Initialize field array:
-			$sfields=array();
-			$sfields[]='uid';	// Adding "uid" by default.
+				if (t3lib_div::testInt($this->searchString)) {
+					$whereParts = array(
+						'uid=' . $this->searchString
+					);
 
-				// Traverse the configured columns and add all columns that can be searched:
-			foreach($GLOBALS['TCA'][$table]['columns'] as $fieldName => $info) {
-				if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !preg_match('/date|time|int/',$info['config']['eval'])))	{
-					$sfields[]=$fieldName;
+					foreach($searchableFields as $fieldName)	{
+						if (isset($TCA[$table]['columns'][$fieldName])) {
+							$fieldConfig = &$TCA[$table]['columns'][$fieldName]['config'];
+							if ($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && t3lib_div::inList($fieldConfig['eval'], 'int')) {
+								$condition = $fieldName . '=' . $this->searchString;
+								if (is_array($fieldConfig['search']) && in_array('pidonly', $fieldConfig['search']) && $currentPid > 0) {
+									$condition = '(' . $condition . ' AND ' . $tablePidField . '=' . $currentPid . ')';
+								}
+								$whereParts[] = $condition;
+							}
+						}
+					}
+				}
+				else {
+					$whereParts = array();
+					$like = '\'%' .
+						$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($this->searchString, $table), $table) .
+						'%\'';
+					foreach($searchableFields as $fieldName) {
+						if (isset($TCA[$table]['columns'][$fieldName])) {
+							$fieldConfig = &$TCA[$table]['columns'][$fieldName]['config'];
+							$format = '%s LIKE %s';
+							if (is_array($fieldConfig['search'])) {
+								if (in_array('nocase', $fieldConfig['search'])) {
+									$format = 'LCASE(%s) LIKE LCASE(%s)';
+								}
+								if (in_array('pidonly', $fieldConfig['search']) && $currentPid > 0) {
+									$format = '(' . $format . ' AND ' . $tablePidField . '=' . $currentPid . ')';
+								}
+								if ($fieldConfig['search']['andWhere']) {
+									$format = '((' . $fieldConfig['search']['andWhere'] . ') AND (' . $format . '))';
+								}
+							}
+							if ($fieldConfig['type'] == 'text' ||
+									$fieldConfig['type'] == 'flex' ||
+									($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/',$fieldConfig['eval'])))) {
+								$whereParts[] = sprintf($format, $fieldName, $like);
+							}
+						}
+					}
+				}
+
+					// If search-fields were defined (and there always are) we create the query:
+				if (count($whereParts))	{
+					$result = ' AND (' . implode(' OR ', $whereParts) . ')';
 				}
 			}
-
-				// If search-fields were defined (and there always are) we create the query:
-			if (count($sfields))	{
-				$like = ' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table).'%\'';		// Free-text searching...
-				$queryPart = ' AND ('.implode($like.' OR ',$sfields).$like.')';
-
-					// Return query:
-				return $queryPart;
-			}
 		}
+		return $result;
 	}
 
 	/**
