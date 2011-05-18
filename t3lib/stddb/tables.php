@@ -179,6 +179,7 @@ $TCA['pages'] = array(
 			'255' => 'recycler.gif',
 		),
 		'dynamicConfigFile' => 'T3LIB:tbl_pages.php',
+		'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email',
 	)
 );
 
@@ -221,7 +222,8 @@ $TCA['be_users'] = array(
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
 		'dividers2tabs' => TRUE,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => TRUE,
+		'searchFields' => 'username,email,realName',
 	)
 );
 
@@ -256,7 +258,8 @@ $TCA['be_groups'] = array(
 		'useColumnsForDefaultValues' => 'lockToDomain, fileoper_perms',
 		'dividers2tabs' => TRUE,
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => TRUE,
+		'searchFields' => 'title',
 	)
 );
 
@@ -281,7 +284,8 @@ $TCA['sys_filemounts'] = array(
 		'iconfile' => '_icon_ftp.gif',
 		'useColumnsForDefaultValues' => 'path,base',
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => TRUE,
+		'searchFields' => 'title,path',
 	)
 );
 
