@@ -1,3 +1,7 @@
+2011-05-18  Philipp Gampe <forge.typo3.org@philippgampe.info>
+
+	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
+
 2011-02-24  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Cleaned emconf for the release of TYPO3 4.5.2
