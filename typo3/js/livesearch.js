@@ -44,7 +44,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	listWidth: 315,
 	listHovered: false,
 	loadingText: null,
-	minChars: 2,
+	minChars: 1,
 	resizable: false,
 	title: null,
 	width: 205,
