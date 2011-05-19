@@ -97,7 +97,8 @@ foreach ($temp_publish_pages as $temp_publish_id) {
 		}
 
 			// Get filename
-		$temp_fileName = $TSFE->getSimulFileName();
+		$pageTitle = $TSFE->page['alias'] ? $TSFE->page['alias'] : $TSFE->page['title'];
+		$temp_fileName = $TSFE->csConvObj->specCharsToASCII($TSFE->renderCharset, $pageTitle) . '.html';
 
 		if (!isset($temp_publish_array[$temp_fileName]))	{	// If the page is not rendered allready, which will happen if a hidden page is 'published'
 				// Images file
