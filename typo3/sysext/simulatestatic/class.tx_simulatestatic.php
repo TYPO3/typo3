@@ -266,28 +266,6 @@ class tx_simulatestatic {
 	 *******************************************/
 
 	/**
-	 * This is just a wrapper function to use the params from the array split up. Can be deleted once the function in class.t3lib_fe.php is deleted
-	 *
-	 * @param	array		Parameter array delivered from tslib_fe::makeSimulFileName
-	 * @param	tslib_fe	Reference to the calling TSFE instance
-	 * @return	string		The body of the filename.
-	 * @see makeSimulatedFileName()
-	 * @deprecated since TYPO3 4.3, will be deleted in TYPO3 4.6
-	 */
-	public function makeSimulatedFileNameCompat(array &$parameters, tslib_fe &$parentObject) {
-		t3lib_div::logDeprecatedFunction();
-
-		return $this->makeSimulatedFileName(
-			$parameters['inTitle'],
-			$parameters['page'],
-			$parameters['type'],
-			$parameters['addParams'],
-			$parameters['no_cache']
-		);
-	}
-
-
-	/**
 	 * Make simulation filename (without the ".html" ending, only body of filename)
 	 *
 	 * @param	string		The page title to use
@@ -296,7 +274,6 @@ class tx_simulatestatic {
 	 * @param	string		Query-parameters to encode (will be done only if caching is enabled and TypoScript configured for it. I don't know it this makes much sense in fact...)
 	 * @param	boolean		The "no_cache" status of the link.
 	 * @return	string		The body of the filename.
-	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
 	 */
 	public function makeSimulatedFileName($inTitle, $page, $type, $addParams = '', $no_cache = FALSE) {
 			// Default value is 30 but values > 1 will be override this
