@@ -43,7 +43,7 @@ require ('template.php');
 require_once ('class.alt_menu_functions.inc');
 
 
-t3lib_div::deprecationLog('alt_palette.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
+t3lib_div::deprecationLog('alt_menu.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
 
 
 
