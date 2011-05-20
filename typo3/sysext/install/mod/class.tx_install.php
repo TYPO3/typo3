@@ -2571,16 +2571,16 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 			// Check availability of PHP session support
 		if (extension_loaded('session')) {
-			$this->message($ext, 'PHP sessions availiable', '
+			$this->message($ext, 'PHP sessions available', '
 				<p>
-					<em>PHP Sessions availiabe</em>
+					<em>PHP Sessions available</em>
 					<br />
 					PHP is compiled with session support and session support is
 					available.
 				</p>
 			', -1);
 		} else {
-			$this->message($ext, 'PHP Sessions not availiabe', '
+			$this->message($ext, 'PHP Sessions not available', '
 				<p>
 					PHP is not compiled with session support, or session support
 					is disabled in php.ini.
