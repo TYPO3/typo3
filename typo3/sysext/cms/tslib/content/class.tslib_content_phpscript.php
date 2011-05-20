@@ -39,8 +39,13 @@ class tslib_content_PhpScript extends tslib_content_Abstract {
 	 *
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	public function render($conf = array()) {
+		$GLOBALS['TSFE']->logDeprecatedTyposcript(
+			'PHP_SCRIPT',
+			'Usage of PHP_SCRIPT is deprecated since TYPO3 4.6. Use plugins instead.'
+		);
 
 		$file = isset($conf['file.'])
 			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
