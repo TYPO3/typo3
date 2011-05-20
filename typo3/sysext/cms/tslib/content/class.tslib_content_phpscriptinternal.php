@@ -41,6 +41,11 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
+			// @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+		$GLOBALS['TSFE']->logDeprecatedTyposcript(
+			'PHP_SCRIPT_INT',
+			'Usage of PHP_SCRIPT_INT is deprecated since TYPO3 4.6. Use plugins instead.'
+		);
 		$file = isset($conf['file.'])
 			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
 			: $conf['file'];
