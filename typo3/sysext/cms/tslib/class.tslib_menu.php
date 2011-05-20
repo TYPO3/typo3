@@ -933,27 +933,6 @@ class tslib_menu {
 	}
 
 	/**
-	 * Includes the PHP script defined for the HMENU special type "userdefined".
-	 * This script is supposed to populate the array $menuItemsArray with a set of page records comprising the menu.
-	 * The "userdefined" type is deprecated since "userfunction" has arrived since and is a better choice for many reasons (like using classes/functions for rendering the menu)
-	 *
-	 * @param	array		TypoScript parameters for "special.". In particular the property "file" is reserved and specifies the file to include. Seems like any other property can be used freely by the script.
-	 * @param	string		The sorting field. Can be used from the script in the $incFile.
-	 * @return	array		An array with the menu items
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use HMENU of type "userfunction" instead of "userdefined"
-	 * @access private
-	 */
-	function includeMakeMenu($conf,$altSortField)	{
-		t3lib_div::logDeprecatedFunction();
-
-		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($conf['file']);
-		if ($incFile && $GLOBALS['TSFE']->checkFileInclude($incFile))	{
-			include($incFile);
-		}
-		return is_array($menuItemsArray) ? $menuItemsArray : array();
-	}
-
-	/**
 	 * Checks if a page is OK to include in the final menu item array. Pages can be excluded if the doktype is wrong, if they are hidden in navigation, have a uid in the list of banned uids etc.
 	 *
 	 * @param	array		Array of menu items
