@@ -1150,19 +1150,6 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->imagesOnPage[] = $info[3]; // This array is used to collect the image-refs on the page...
 
 
-				// Backwards compatibility if altText is not set and alttext is set
-				// @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6
-			if (strlen($conf['alttext']) || is_array($conf['alttext.'])) {
-				$GLOBALS['TSFE']->logDeprecatedTyposcript(
-					'IMAGE.alttext',
-					'use IMAGE.altText instead - src: ' . $info[3] . ' - original image: ' . $info['origFile']
-				);
-				if (!strlen($conf['altText']) && !is_array($conf['altText.'])) {
-					$conf['altText'] = $conf['alttext'];
-					$conf['altText.'] = $conf['alttext.'];
-				}
-			}
-
 			$altParam = $this->getAltParam($conf);
 			if($conf['params'] && !isset($conf['params.'])) {
 				$params = ' ' . $conf['params'];

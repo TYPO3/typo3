@@ -716,28 +716,6 @@ class localRecordList extends recordList {
 	}
 
 	/**
-	 * Write sys_refindex entries for current record to $this->references
-	 *
-	 * @param	string		Table name
-	 * @param	integer		Uid of current record
-	 * @return	void
-	 *
-	 * @deprecated since 4.4, will be removed in TYPO3 4.6 - Use getReferenceCount instead
-	 */
-	function setReferences($table, $uid) {
-		t3lib_div::logDeprecatedFunction();
-
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'tablename, recuid, field',
-			'sys_refindex',
-			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
-				' AND ref_uid='.intval($uid).
-				' AND deleted=0'
-		);
-		$this->references = $rows;
-	}
-
-	/**
 	 * Gets the number of records referencing the record with the UID $uid in
 	 * the table $tableName.
 	 *
@@ -1449,29 +1427,6 @@ class localRecordList extends recordList {
 			// Compile items into a DIV-element:
 		return '							<!-- CLIPBOARD PANEL: '.$table.':'.$row['uid'].' -->
 											<div class="typo3-clipCtrl">'.implode('',$cells).'</div>';
-	}
-
-	/**
-	 * Make reference count
-	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of record
-	 * @return	string		HTML-table
-	 *
-	 * @deprecated since 4.4, will be removed in TYPO3 4.6 - Use createReferenceHtml() instead
-	 */
-	function makeRef($table,$uid)	{
-		t3lib_div::logDeprecatedFunction();
-
-			// Compile information for title tag:
-		$infoData=array();
-		if (is_array($this->references)) {
-			foreach ($this->references as $row) {
-				$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
-			}
-		}
-
-		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
 	}
 
 	/**
