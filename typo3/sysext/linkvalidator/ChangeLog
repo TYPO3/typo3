@@ -1,3 +1,8 @@
+2011-05-21  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Feature #13800: Add user-agent header
+	* Fixed Bug #13680: Refactor external link, do not follow senseless	loop, add user agent (thanks to Daniel Minder)
+
 2011-05-18  Philipp Gampe <forge.typo3.org@philippgampe.info>
 
 	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
