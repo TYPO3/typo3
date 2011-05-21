@@ -249,6 +249,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Set the meta charset tag
+	 *
+	 * @param string $metaCharsetTag
+	 * @return void
+	 */
+	public function setMetaCharsetTag($metaCharsetTag) {
+		$this->metaCharsetTag = $metaCharsetTag;
+	}
+
+	/**
 	 * Sets html tag
 	 *
 	 * @param string $htmlTag	html tag
@@ -552,6 +562,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getHtmlTag() {
 		return $this->htmlTag;
+	}
+
+	/**
+	 * Get meta charset
+	 *
+	 * @return string
+	 */
+	public function getMetaCharsetTag() {
+		return $this->metaCharsetTag;
 	}
 
 	/**
