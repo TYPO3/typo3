@@ -1521,7 +1521,11 @@
 			$url_parts = parse_url($code);
 			if ($url_parts['host'] == '')	{
 				$url_parts['host'] = t3lib_div::getIndpEnv('HTTP_HOST');
-				$code = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
+				if ($code{0} === '/') {
+					$code = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
+				} else {
+					$code = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . $code;
+				}
 				$checkBaseTag = FALSE;
 			} else {
 				$checkBaseTag = TRUE;
