@@ -249,6 +249,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Set the meta charset tag
+	 *
+	 * @param string $metaCharsetTag
+	 * @return void
+	 */
+	public function setMetaCharsetTag($metaCharsetTag) {
+		$this->metaCharsetTag = $metaCharsetTag;
+	}
+
+	/**
 	 * Sets html tag
 	 *
 	 * @param string $htmlTag	html tag
@@ -552,6 +562,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getHtmlTag() {
 		return $this->htmlTag;
+	}
+
+	/**
+	 * Get meta charset
+	 *
+	 * @return string
+	 */
+	public function getMetaCharsetTag() {
+		return $this->metaCharsetTag;
 	}
 
 	/**
@@ -1420,7 +1439,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if ($this->getRenderXhtml()) {
 			$endingSlash = ' /';
 		} else {
-			$this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);
+			$this->metaCharsetTag = str_replace(' />', '>', $this->getMetaCharsetTag());
 			$this->baseUrlTag = str_replace(' />', '>', $this->baseUrlTag);
 			$this->shortcutTag = str_replace(' />', '>', $this->shortcutTag);
 			$endingSlash = '';
@@ -1591,7 +1610,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
 			'HTMLTAG'           => $this->htmlTag,
 			'HEADTAG'           => $this->headTag,
-			'METACHARSET'       => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
+			'METACHARSET'       => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->getMetaCharsetTag()) : '',
 			'INLINECOMMENT'     => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
 			'BASEURL'           => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
 			'SHORTCUT'          => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',

@@ -434,6 +434,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					break;
 				case 'html5' :
 					$docTypeParts[] = '<!DOCTYPE html>';
+					$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
 					break;
 				case 'none' :
 					break;
