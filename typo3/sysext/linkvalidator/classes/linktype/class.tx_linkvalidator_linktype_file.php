@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -49,7 +49,7 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing. 
+	 * Generate the localized error message from the error params saved from the parsing.
 	 *
 	 * @param   array    all parameters needed for the rendering of the error message
 	 * @return  string    validation error message

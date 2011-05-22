@@ -106,6 +106,10 @@ class tx_linkvalidator_Processor {
 	public function init($searchField, $pid) {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
+
+		foreach ($searchField as $tableName => $table) {
+			t3lib_div::loadTCA($tableName);
+		}
 	}
 
 	/**
@@ -386,7 +390,7 @@ class tx_linkvalidator_Processor {
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
-	public function extGetTreeList($id, $depth, $begin = 0, $permsClause) {
+	public function extGetTreeList($id, $depth, $begin = 0, $permsClause,  $considerHidden = FALSE) {
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
@@ -394,23 +398,47 @@ class tx_linkvalidator_Processor {
 
 		if ($depth > 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'uid,title',
+				'uid,title,hidden,extendToSubpages',
 				'pages',
 				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
+
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if ($begin <= 0) {
+				if ($begin <= 0 && ($row['hidden']==0 || $considerHidden == 1)) {
 					$theList .= $row['uid'] . ',';
 					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
 				}
-				if ($depth > 1) {
-					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause);
+				if ($depth > 1 && (!($row['hidden']==1 && $row['extendToSubpages']==1) || $considerHidden == 1)) {
+					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
 				}
 			}
 		}
 		return $theList;
 	}
 
+	public function getRootLineIsHidden($pageInfo){
+		$hidden = FALSE;
+		if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1){
+			$hidden = TRUE;
+		} else {
+			if ($pageInfo['pid'] > 0) {
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid,title,hidden,extendToSubpages',
+					'pages',
+					'uid=' . $pageInfo['pid']
+				);
+
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$hidden = $this->getRootLineIsHidden($row);
+				}
+			}
+			else {
+				$hidden = FALSE;
+			}
+		}
+		return $hidden;
+
+	}
 
 }
 
