@@ -198,7 +198,7 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 	 *
 	 * @param	array		$submittedData: reference to the array containing the data submitted by the user
 	 * @param	tx_scheduler_module1		$parentObject: reference to the calling object (BE module of the Scheduler)
-	 * @return	boolean		True if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @return	boolean		TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
 		$isValid = TRUE;

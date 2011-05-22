@@ -283,15 +283,30 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
 		$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
-		$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1');
-		$pageIds .= $page;
-		$processor->init($searchFields, $pageIds);
-		if (!empty($this->email)) {
-			$oldLinkCounts = $processor->getLinkCounts($page);
-			$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
+		$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
+		$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
+		if(!$rootLineHidden || $modTS['checkhidden']==1) {
+			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
+			if($pageRow['hidden'] == 0 || $modTS['checkhidden']==1){
+				$pageIds .= $page;
+			}
+
+			$processor->init($searchFields, $pageIds);
+			if (!empty($this->email)) {
+				$oldLinkCounts = $processor->getLinkCounts($page);
+				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
+			}
+
+			$processor->getLinkStatistics($array, $modTS['checkhidden']);
+
+			if (!empty($this->email)) {
+				$linkCounts = $processor->getLinkCounts($page);
+				$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
+				$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
+			}
 		}
 
-		$processor->getLinkStatistics($array, $modTS['checkhidden']);
+		$processor->getLinkStatistics($linkTypes, $modTS['checkhidden']);
 
 		if (!empty($this->email)) {
 			$linkCounts = $processor->getLinkCounts($page);
@@ -337,30 +352,11 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return	array	$searchFields: list of fields.
 	 */
 	protected function getSearchField($modTS) {
-			// get the searchFields from TCA
-		foreach ($GLOBALS['TCA'] as $tableName => $table) {
-			if (!empty($table['columns'])) {
-				foreach ($table['columns'] as $columnName => $column) {
-					if ($column['config']['type'] == 'text' || $column['config']['type'] == 'input') {
-						if (!empty($column['config']['softref']) && (stripos($column['config']['softref'], "typolink")
-								!== FALSE || stripos($column['config']['softref'], "url") !== FALSE)) {
-
-							$searchFields[$tableName][] = $columnName;
-						}
-					}
-				}
-			}
-		}
-
 			// get the searchFields from TypoScript
 		foreach ($modTS['searchFields.'] as $table => $fieldList) {
 			$fields = t3lib_div::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
-				if (is_array($searchFields[$table])) {
-					if (array_search($field, $searchFields[$table]) === FALSE) {
-						$searchFields[$table][] = $field;
-					}
-				}
+				$searchFields[$table][] = $field;
 			}
 		}
 		return $searchFields;
@@ -373,12 +369,13 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return	array	$linkTypes: list of link types.
 	 */
 	protected function getLinkTypes($modTS) {
-		$types = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
-		if (is_array($linkTypes)) {
+		$linkTypes = array();
+		$typesTmp = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
+		if (is_array($typesTmp)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
 					&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
-					if (in_array($type, $linkTypes)) {
+					if (in_array($type, $typesTmp)) {
 						$linkTypes[$type] = 1;
 					}
 				}

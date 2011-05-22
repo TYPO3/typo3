@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -47,6 +47,14 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	protected $urlErrorParams = array();
 
 	/**
+	 * List of headers to be used for metching an URL for the current processing
+	 *
+	 * @var array
+	 */
+	protected $additionalHeaders = array();
+
+
+	/**
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param	string		$url: url to check
@@ -56,6 +64,9 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		$errorParams = array();
+		$report = array();
+		$additionalHeaders['User-Agent'] = 'User-Agent: Mozilla/5.0 TYPO3-linkvalidator';
+
 		if (isset($this->urlReports[$url])) {
 			if(!$this->urlReports[$url]) {
 				if(is_array($this->urlErrorParams[$url])) {
@@ -70,23 +81,45 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$url = substr($url, 0, strrpos($url, '#'));
 		}
 
-			// try to fetch the content of the URL (headers only)
-		$report = array();
-
-			// try fetching the content of the URL (just fetching the headers does not work correctly)
-		$content = '';
-		$content = t3lib_div::getURL($url, 1, FALSE, $report);
+			// try to fetch the content of the URL
+		$content = t3lib_div::getURL($url, 1, $additionalHeaders, $report);
 
 		$tries = 0;
+		$lastUrl = $url;
 		while (($report['http_code'] == 301 || $report['http_code'] == 302
-			|| $report['http_code'] == 303 || $report['http_code'] == 307)
-			&& ($tries < 5)) {
-				$isCodeRedirect = preg_match('/Location: (.*)/', $content, $location);
-				if (isset($location[1])) {
-					$content = t3lib_div::getURL($location[1], 2, FALSE, $report);
+				|| $report['http_code'] == 303 || $report['http_code'] == 307)
+			   && ($tries < 5)) {
+
+				// split header into lines and find Location:
+			$responseHeaders = t3lib_div::trimExplode(chr(10), $content, TRUE);
+			foreach ($responseHeaders as $line) {
+					// construct new URL
+				if ((preg_match('/Location: ([^\r\n]+)/', $line, $location))) {
+					if (isset($location[1])) {
+						$parsedUrl = parse_url($location[1]);
+						if (!isset($parsedUrl['host'])) {
+								// the location did not contain a complete URI, build it!
+							$parsedUrl = parse_url($lastUrl);
+							$newUrl = $parsedUrl['scheme'] . '://' . (isset($parsedUrl['user']) ?
+								$parsedUrl['user'] . (isset($parsedUrl['pass']) ? ':' . $parsedUrl['pass'] : '')
+								: '') . $parsedUrl['host'] . (
+							isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '') . $location[1];
+						}
+						else {
+							$newUrl = $location[1];
+						}
+
+						if ($lastUrl === $newUrl) break 2;
+					} else break 2;
 				}
-				$tries++;
+			}
+
+				// now try to fetch again
+			$content = t3lib_div::getURL($newUrl, 1, $additionalHeaders, $report);
+			$lastUrl = $newUrl;
+			$tries++;
 		}
+
 
 		$response = TRUE;
 
@@ -118,13 +151,8 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		if (($report['http_code'] == 301) || ($report['http_code'] == 302)
 			|| ($report['http_code'] == 303) || ($report['http_code'] == 307)) {
 				$errorParams['errorType'] = $report['http_code'];
-				$errorParams['location'] = $location[1];
+				$errorParams['location'] = $lastUrl;
 				$response = FALSE;
-		}
-
-		if ($report['http_code'] == 404 || $report['http_code'] == 403) {
-			$errorParams['errorType'] = $report['http_code'];
-			$response = FALSE;
 		}
 
 		if ($report['http_code'] >= 300 && $response) {
@@ -162,12 +190,12 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorType, $errorParams['location']);
 				break;
 
-			case 404:
-				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
-				break;
-
 			case 403:
 				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+				break;
+
+			case 404:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 				break;
 
 			case 500:
