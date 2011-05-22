@@ -290,15 +290,15 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			if($pageRow['hidden'] == 0 || $modTS['checkhidden']==1){
 				$pageIds .= $page;
 			}
-		
+
 			$processor->init($searchFields, $pageIds);
 			if (!empty($this->email)) {
 				$oldLinkCounts = $processor->getLinkCounts($page);
 				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
 			}
-	
+
 			$processor->getLinkStatistics($array, $modTS['checkhidden']);
-	
+
 			if (!empty($this->email)) {
 				$linkCounts = $processor->getLinkCounts($page);
 				$this->totalBrokenLink += $linkCounts['brokenlinkCount'];

@@ -81,7 +81,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$url = substr($url, 0, strrpos($url, '#'));
 		}
 
-			// try to fetch the content of the URL 
+			// try to fetch the content of the URL
 		$content = t3lib_div::getURL($url, 1, $additionalHeaders, $report);
 
 		$tries = 0;
@@ -90,7 +90,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 				|| $report['http_code'] == 303 || $report['http_code'] == 307)
 			   && ($tries < 5)) {
 
-				// split header into lines and find Location: 
+				// split header into lines and find Location:
 			$responseHeaders = t3lib_div::trimExplode(chr(10), $content, TRUE);
 			foreach ($responseHeaders as $line) {
 					// construct new URL
@@ -119,8 +119,8 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$lastUrl = $newUrl;
 			$tries++;
 		}
-		
-		
+
+
 		$response = TRUE;
 
 			// analyze the response

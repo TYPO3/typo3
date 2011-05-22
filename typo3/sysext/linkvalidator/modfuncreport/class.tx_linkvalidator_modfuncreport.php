@@ -249,7 +249,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			items : [
 			{
 				autoHeight: true,
-		       	title: TYPO3.lang.Report,
+			title: TYPO3.lang.Report,
 				html: ' . json_encode($this->flush(TRUE)) . '
 			},
 			' . $panelCheck . '
@@ -340,18 +340,18 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				$GLOBALS['BE_USER']->getPagePermsClause(1),
 				$this->modTS['checkhidden']
 			);
-	
-	
+
+
 			if($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
 				$pageList .= $this->pObj->id;
 			}
-		
+
 
 			$this->processor->init($searchFields, $pageList);
-	
+
 				// check if button press
 			$update = t3lib_div::_GP('updateLinkList');
-		
+
 			if (!empty($update)) {
 				$this->processor->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 			}
@@ -445,7 +445,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			if($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
 				$pageList .= $this->pObj->id;
 			}
-		
+
 			if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'tx_linkvalidator_link',
@@ -456,18 +456,18 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				// Display table with broken links
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 					$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
-	
+
 					$brokenLinksItemTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
-	
+
 						// Table header
 					$brokenLinksMarker = $this->startTable();
-	
+
 						// Table rows containing the broken links
 					while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 						$items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
-					}					
+					}
 					$brokenLinkItems = implode(chr(10), $items);
-	
+
 					// Display note that there are no broken links to display
 				} else {
 					$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
@@ -475,7 +475,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			}
 		}
 		else{
-			
+
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 		}
 		$brokenLinksTemplate = t3lib_parsehtml::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
@@ -484,7 +484,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		return $content;
 	}
 
-	protected  function getNoBrokenLinkMessage($brokenLinksMarker){	
+	protected  function getNoBrokenLinkMessage($brokenLinksMarker){
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
 		$message = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
@@ -493,7 +493,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			t3lib_FlashMessage::OK
 		);
 		$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
-		
+
 		return $brokenLinksMarker;
 	}
 

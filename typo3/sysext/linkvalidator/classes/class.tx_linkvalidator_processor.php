@@ -106,7 +106,7 @@ class tx_linkvalidator_Processor {
 	public function init($searchField, $pid) {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
-		
+
 		foreach ($searchField as $tableName => $table) {
 			t3lib_div::loadTCA($tableName);
 		}
@@ -402,7 +402,7 @@ class tx_linkvalidator_Processor {
 				'pages',
 				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
-			
+
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0 && ($row['hidden']==0 || $considerHidden == 1)) {
 					$theList .= $row['uid'] . ',';
@@ -426,9 +426,9 @@ class tx_linkvalidator_Processor {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,title,hidden,extendToSubpages',
 					'pages',
-					'uid=' . $pageInfo['pid'] 
+					'uid=' . $pageInfo['pid']
 				);
-			
+
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$hidden = $this->getRootLineIsHidden($row);
 				}
@@ -438,7 +438,7 @@ class tx_linkvalidator_Processor {
 			}
 		}
 		return $hidden;
-			
+
 	}
 
 }
