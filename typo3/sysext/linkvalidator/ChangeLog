@@ -1,3 +1,7 @@
+2011-05-22  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Task: Fix whitespace issues in all branches
+
 2011-05-21  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* Feature #13800: Add user-agent header
@@ -25,7 +29,7 @@
 
 	* Fixed bug #13318: Regression in linkvalidator
 
-2011-02-22  Michael Miousse <michael.miousse@infoglobe.ca>
+2011-02-22  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #12649: Split up analyzeRecord()
 	* Cleaned emconf for the release of TYPO3 4.5.1
@@ -121,7 +125,7 @@
 	* Fixed bug #12008: Row "Title" should be called "Headline"
 	* Fixed bug #12009: Display a nice text, if an element does not have a headline
 
-2011-01-07  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2011-01-07  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Followup to bug #11794: If website root is active, searching for links does not work
 
@@ -131,7 +135,7 @@
 	* Fixed bug #11888: Button "Check Links" only checks those categories of links which are marked with the checkboxes below
 	* Fixed bug #11269: Proofread the manual
 
-2011-01-05  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2011-01-05  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11794: If website root is active, searching for links does not work
 
@@ -186,11 +190,11 @@
 	* Fixed bug #11775: Table should use new design for TYPO3 4.5
 	* Fixed bug #11796: Improve usage of $GLOBALS['LANG']
 
-2010-12-28  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-28  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11715: Use localized format for date and time
 
-2010-12-06  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-06  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11277: Initialize and other methods in modfunc1 could be protected
 	* Fixed bug #11278: Create an interface for the linktype classes
@@ -201,7 +205,7 @@
 	* Fixed bug #11275: Remove clear.gif in modfunc1
 	* Fixed bug #10987: linkvalidator doesn't detect hidden pages (Thanks to Joh. Feustel)
 
-2010-12-03  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-03  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11271: Lowercase all filenames
 	* Fixed bug #11280: Refactor class tx_linkvalidator_processing
