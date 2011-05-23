@@ -882,8 +882,8 @@ class tx_em_Install {
 						$dbStatus['static'][$table]['count'] = $insertCount[$table];
 
 						$out .= '<tr>
-							<td><input type="checkbox" name="TYPO3_INSTALL[database_import][' . $table . ']" checked="checked" value="' . md5($definition) . '" /></td>
-							<td><strong>' . $table . '</strong></td>
+							<td><input type="checkbox" id="check_table_' . $table . '" name="TYPO3_INSTALL[database_import][' . $table . ']" checked="checked" value="' . md5($definition) . '" /></td>
+							<td><strong><label for="check_table_' . $table . '">' . $table . '</label></strong></td>
 							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
 							<td nowrap="nowrap">' .
 								($insertCount[$table] ?
