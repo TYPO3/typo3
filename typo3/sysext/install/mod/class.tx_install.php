@@ -603,6 +603,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'How to configure TYPO3',
 						$this->generallyAboutConfiguration()
 					);
+					$phpSAPI = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi');
 					$this->message(
 						'System Information',
 						'Your system has the following configuration',
@@ -611,7 +612,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								<dt>OS detected:</dt>
 								<dd>' . (TYPO3_OS == 'WIN' ? 'WIN' : 'UNIX') .'</dd>
 								<dt>UNIX/CGI detected:</dt>
-								<dd>' . (PHP_SAPI == 'cgi' ? 'YES' : 'NO') . '</dd>
+								<dd>' . ($phpSAPI ? 'YES' : 'NO') . '</dd>
 								<dt>PATH_thisScript:</dt>
 								<dd>' . PATH_thisScript . '</dd>
 							</dl>
