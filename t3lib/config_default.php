@@ -729,7 +729,7 @@ if ($TYPO3_CONF_VARS['SYS']['setDBinit'] == '-1' && $typo_db) {
 
 
 
-$timeZone = $GLOBALS['TYPO3_CONF_VARS']['phpTimeZone'];
+$timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
 if (empty($timeZone)) {
 		// time zone from the server environment (TZ env or OS query)
 	$defaultTimeZone = @date_default_timezone_get();
