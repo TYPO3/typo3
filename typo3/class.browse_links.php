@@ -457,7 +457,7 @@ class localFolderTree extends t3lib_folderTree {
 	 */
 	function __construct() {
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		$this->t3lib_folderTree();
+		parent::__construct();
 	}
 
 	/**

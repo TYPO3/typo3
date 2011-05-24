@@ -44,7 +44,7 @@ interface tslib_menu_filterMenuPagesHook {
 	 * @param	tslib_menu	The menu object
 	 * @return	boolean		Returns TRUE if the page can be safely included.
 	 */
-	public function __construct (array &$data, array $banUidArray, $spacer, tslib_menu $obj);
+	public function processFilter (array &$data, array $banUidArray, $spacer, tslib_menu $obj);
 }
 
 ?>
