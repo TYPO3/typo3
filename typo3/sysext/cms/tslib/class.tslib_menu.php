@@ -972,7 +972,7 @@ class tslib_menu {
 					throw new UnexpectedValueException('$hookObject must implement interface tslib_menu_filterMenuPagesHook', 1269877402);
 				}
 
-				$includePage = $includePage && $hookObject->tslib_menu_filterMenuPagesHook($data, $banUidArray, $spacer, $this);
+				$includePage = $includePage && $hookObject->processFilter($data, $banUidArray, $spacer, $this);
 			}
 		}
 		if (!$includePage) {
