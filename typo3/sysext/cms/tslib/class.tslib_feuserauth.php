@@ -76,7 +76,6 @@
  * @subpackage tslib
  */
 class tslib_feUserAuth extends t3lib_userAuth {
-
 	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 
 	protected $sessionDataLifetime = 86400;		// Lifetime of session data in seconds.
@@ -111,8 +110,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 */
 	public function __construct() {
 		$this->session_table = 'fe_sessions';
-		$this->name = 'fe_typo_user';
+		$this->name = self::getCookieName();
 		$this->get_name = 'ftu';
+		$this->loginType = 'FE';
 
 		$this->user_table = 'fe_users';
 		$this->username_column = 'username';
@@ -138,6 +138,22 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$this->getFallBack = TRUE;
 		$this->getMethodEnabled = TRUE;
 	}
+
+
+	/**
+	 * @static
+	 * @return string
+	 *
+	 * returns the configured cookie name
+	 */
+	public static function getCookieName() {
+		$configuredCookieName = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'];
+		if(!isset($configuredCookieName)) {
+			$configuredCookieName = 'fe_typo_user';
+		}
+		return $configuredCookieName;
+	}
+
 
 	/**
 	 * Starts a user session

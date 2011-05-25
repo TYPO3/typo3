@@ -98,6 +98,7 @@ class t3lib_TimeTrackNull {
 	 * @return	string		HTML table with the information about parsing times.
 	 */
 	public function printTSlog() {
+		return '<strong>Timetracking not enabled on first load of admin panel. Reload page to enable timetracking</strong>';
 	}
 
 	/**
@@ -127,6 +128,10 @@ class t3lib_TimeTrackNull {
 	 * @return	integer		The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
+		if (!isset($microtime)) {
+			$microtime = microtime(TRUE);
+		}
+		return round($microtime * 1000);
 	}
 
 }

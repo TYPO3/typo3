@@ -587,7 +587,7 @@
 		if (t3lib_div::_GP('FE_SESSION_KEY'))	{
 			$fe_sParts = explode('-',t3lib_div::_GP('FE_SESSION_KEY'));
 			if (!strcmp(md5($fe_sParts[0].'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']), $fe_sParts[1]))	{	// If the session key hash check is OK:
-				$_COOKIE[$this->fe_user->name] = $fe_sParts[0];
+				$_COOKIE[tslib_feUserAuth::getCookieName()] = $fe_sParts[0];
 				$this->fe_user->forceSetCookie = 1;
 			}
 		}
@@ -1734,7 +1734,7 @@
 	 */
 	function ADMCMD_preview_postInit(array $previewConfig){
 			// Clear cookies:
-		unset($_COOKIE['be_typo_user']);
+		unset($_COOKIE[t3lib_beUserAuth::getCookieName()]);
 		$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
 	}
 

@@ -78,7 +78,7 @@ class AjaxLogin {
 			&& isset($loginFormData['uname'])
 			&& isset($loginFormData['uident'])
 			&& isset($loginFormData['chalvalue'])
-			&& ((string)$_COOKIE['be_typo_user'] !== (string)$GLOBALS['BE_USER']->id);
+			&& ((string)$_COOKIE[t3lib_beUserAuth::getCookieName()] !== (string)$GLOBALS['BE_USER']->id);
 	}
 
 	/**
