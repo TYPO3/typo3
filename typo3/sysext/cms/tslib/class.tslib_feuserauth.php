@@ -77,7 +77,7 @@
  */
 class tslib_feUserAuth extends t3lib_userAuth {
 	var $session_table = 'fe_sessions'; 		// Table to use for session data.
-	var $name = 'fe_typo_user';                 // Session/Cookie name
+	protected $name;				                 // Session/Cookie name
 	var $get_name = 'ftu';		                	 // Session/GET-var name
 
 	var $user_table = 'fe_users'; 					// Table in database with userdata
@@ -131,6 +131,29 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $sesData_change = 0;
 	var $userData_change = 0;
 	protected $sessionDataTimestamp;
+
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->name = self::getCookieName();
+		$this->loginType = 'FE';
+	}
+
+	/**
+	 * Returns the configured name of the session cookie
+	 *
+	 * @static
+	 * @return string session cookie name
+	 */
+	public static function getCookieName() {
+		$configuredCookieName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['frontendCookieName'];
+		if (strlen($configuredCookieName) === 0) {
+			$configuredCookieName = 'fe_typo_user';
+		}
+		return $configuredCookieName;
+	}
 
 
 	/**

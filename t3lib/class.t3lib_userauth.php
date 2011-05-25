@@ -100,10 +100,10 @@ require_once(t3lib_extMgm::extPath('sv') . 'class.tx_sv_authbase.php');
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_userAuth {
+abstract class t3lib_userAuth {
 	var $global_database = ''; // Which global database to connect to
 	var $session_table = ''; // Table to use for session data.
-	var $name = ''; // Session/Cookie name
+	protected $name = ''; // Session/Cookie name
 	var $get_name = ''; // Session/GET-var name
 
 	var $user_table = ''; // Table in database with userdata
@@ -179,7 +179,9 @@ class t3lib_userAuth {
 		global $TYPO3_CONF_VARS;
 
 			// backend or frontend login - used for auth services
-		$this->loginType = ($this->name == 'fe_typo_user') ? 'FE' : 'BE';
+		if ($this->loginType !== 'FE' &&  $this->loginType !== 'BE') {
+			throw new t3lib_error_Exception('No loginType defined, has to be set explicitly by subclass', 1306526711);
+		}
 
 			// set level to normal if not already set
 		if (!$this->security_level) {
