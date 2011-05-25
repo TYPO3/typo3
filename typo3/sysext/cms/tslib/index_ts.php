@@ -94,7 +94,7 @@ ob_start();
 // *********************
 // Timetracking started
 // *********************
-if ($_COOKIE['be_typo_user']) {
+if ($_SESSION['TYPO3-TT-start']) {
 	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 	$TT = new t3lib_timeTrack;
 } else {
@@ -129,6 +129,14 @@ if (!defined('PATH_tslib')) {
 }
 
 
+// Restart time tracking if BE login exists
+if (!$_SESSION['TYPO3-TT-start'] && $_COOKIE[t3lib_beUserAuth::getCookieName()]) {
+	$_SESSION['TYPO3-TT-start'] = TRUE;
+
+	$TT = new t3lib_timeTrack;
+	$TT->start();
+	$TT->push('', 'Script start (late)');
+}
 
 
 // *********************
@@ -273,7 +281,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 // *********
 $BE_USER = NULL;
 /** @var $BE_USER t3lib_tsfeBeUserAuth */
-if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
+if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(TRUE);
 	$TT->push('Back End user initialized','');
 
@@ -291,6 +299,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || !$BE_USER->user['uid']) {
 			$BE_USER = NULL;
 			$TSFE->beUserLogin=0;
+			$_SESSION['TYPO3-TT-start'] = FALSE;
 		}
 	$TT->pull();
 	$TYPO3_MISC['microtime_BE_USER_end'] = microtime(TRUE);
@@ -308,6 +317,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 	} else {
 		$BE_USER = NULL;
 		$TSFE->beUserLogin = 0;
+		$_SESSION['TYPO3-TT-start'] = FALSE;
 	}
 }
 
