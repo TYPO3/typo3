@@ -76,6 +76,28 @@
  * @subpackage tslib
  */
 class tslib_feUserAuth extends t3lib_userAuth {
+	var $session_table = 'fe_sessions'; 		// Table to use for session data.
+	protected $name;				                 // Session/Cookie name
+	var $get_name = 'ftu';		                	 // Session/GET-var name
+
+	var $user_table = 'fe_users'; 					// Table in database with userdata
+	var $username_column = 'username'; 				// Column for login-name
+	var $userident_column = 'password'; 			// Column for password
+	var $userid_column = 'uid'; 					// Column for user-id
+	var $lastLogin_column = 'lastlogin';
+
+	var $enablecolumns = Array (
+		'deleted' => 'deleted',
+		'disabled' => 'disable',
+		'starttime' => 'starttime',
+		'endtime' => 'endtime'
+	);
+	var $formfield_uname = 'user'; 				// formfield with login-name
+	var $formfield_uident = 'pass'; 			// formfield with password
+	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
+	var $formfield_status = 'logintype'; 		// formfield with status: *'login', 'logout'
+	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
+	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 
@@ -138,6 +160,29 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$this->getFallBack = TRUE;
 		$this->getMethodEnabled = TRUE;
 	}
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->name = self::getCookieName();
+		$this->loginType = 'FE';
+	}
+
+	/**
+	 * @static
+	 * @return string
+	 *
+	 * returns the configured cookie name
+	 */
+	public static function getCookieName() {
+		$configuredCookieName = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'];
+		if(!isset($configuredCookieName)) {
+			$configuredCookieName = 'fe_typo_user';
+		}
+		return $configuredCookieName;
+	}
+
 
 	/**
 	 * Starts a user session

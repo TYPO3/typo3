@@ -109,7 +109,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_userAuthGroup extends t3lib_userAuth {
+abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $usergroup_column = 'usergroup'; // Should be set to the usergroup-column (id-list) in the user-record
 	var $usergroup_table = 'be_groups'; // The name of the group-table
 
