@@ -361,7 +361,7 @@ class SC_index {
 		if ($GLOBALS['BE_USER']->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector)) {
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$_COOKIE[$GLOBALS['BE_USER']->name]) {
+			if (!$_COOKIE[t3lib_beUserAuth::getCookieName()]) {
 				if ($this->commandLI=='setCookie') {
 						// we tried it a second time but still no cookie
 						// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.

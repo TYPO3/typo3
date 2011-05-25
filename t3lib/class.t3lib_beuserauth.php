@@ -66,7 +66,7 @@
  */
 class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $session_table = 'be_sessions'; // Table to use for session data.
-	var $name = 'be_typo_user'; // Session/Cookie name
+	protected $name; // Session/Cookie name
 
 	var $user_table = 'be_users'; // Table in database with userdata
 	var $username_column = 'username'; // Column for login-name
@@ -128,6 +128,28 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'resizeTextareas_MaxHeight' => 300,
 		'resizeTextareas_Flexible' => 1,
 	);
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->name = self::getCookieName();
+		$this->loginType = 'BE';
+	}
+
+	/**
+	 * @static
+	 * @return string
+	 *
+	 * returns the configured cookie name
+	 */
+	public static function getCookieName() {
+		$configuredCookieName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieNameBe'];
+		if(strlen($configuredCookieName) === 0) {
+			$configuredCookieName = 'be_typo_user';
+		}
+		return $configuredCookieName;
+	}
 
 
 	/**

@@ -94,7 +94,7 @@ ob_start();
 // *********************
 // Timetracking started
 // *********************
-if ($_COOKIE['be_typo_user']) {
+if ($_COOKIE['TYPO3-AdminPanel']]) {
 	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 	$TT = new t3lib_timeTrack;
 } else {
@@ -273,7 +273,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 // *********
 $BE_USER = NULL;
 /** @var $BE_USER t3lib_tsfeBeUserAuth */
-if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
+if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(TRUE);
 	$TT->push('Back End user initialized','');
 
