@@ -70,6 +70,15 @@ file is not actually deleted, but stored in the _recycler_ folder.
 This new task now deletes all files insider _recycler_ folders that have been
 moved there for longer than a given number of days.
 
+* New option to customize the cookie names used by TYPO3
+
+It is now possible to customize the cookie names used by TYPO3 to avoid clashes
+when running more installations on the same domain. The names used can be con-
+figured with:
+$TYPO3_CONF_VARS['FE']['cookieName'] and
+$TYPO3_CONF_VARS['BE']['cookieName'].
+
+
 -------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------

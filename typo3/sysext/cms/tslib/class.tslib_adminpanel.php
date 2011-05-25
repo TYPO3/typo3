@@ -75,7 +75,7 @@ class tslib_AdminPanel {
 	public function initialize() {
 		$this->saveConfigOptions();
 
-				// Setting some values based on the admin panel
+			// Setting some values based on the admin panel
 		$GLOBALS['TSFE']->forceTemplateParsing = $this->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
 		$GLOBALS['TSFE']->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
 		$GLOBALS['TSFE']->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
