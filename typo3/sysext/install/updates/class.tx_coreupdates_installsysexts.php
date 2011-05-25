@@ -27,14 +27,14 @@
 ***************************************************************/
 
 /**
- * Contains the update class for adding the system extension "simulate static".
+ * Contains the update class for adding outsources system extensions.
  *
  * @author  Benjamin Mack <benni@typo3.org>
  * @author  Steffen Kamper <info@sk-typo3.de>
  */
 class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	protected $title = 'Install Outsourced System Extensions';
-	protected $newSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs', 'simulatestatic');
+	protected $outsourcedSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs', 'simulatestatic');
 
 	/**
 	 * Checks if an update is needed
@@ -44,73 +44,37 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = '
-			<p>
-				Install the following system extensions as their functionality
-				is moved out of the TYPO3 base installation and now optional:
-			</p>
+
+        $description .= '
 			<ul>
-				<li>
-					<strong>Web&gt;Info [info]</strong>
-					<br />
-					Shows page related information, eg. hit statistics, change log, record counts.
-				</li>
-				<li>
-					<strong>Web&gt;Access [perm]</strong>
-					<br />
-					Sets page editing permissions.
-				</li>
-				<li>
-					<strong>Web&gt;Functions [func]</strong>
-					<br />
-					Advanced functions like wizards for page sorting and batch creating.
-				</li>
-				<li>
-					<strong>File&gt;Filelist [filelist]</strong>
-					<br />
-					 Listing of files in the directory.
-				</li>
-				<li>
-					<strong>Help&gt;About [about]</strong>
-					<br />
-					Shows info about TYPO3 and installed extensions.
-				</li>
-				<li>
-					<strong>Help&gt;TYPO3 Manual [cshmanual]</strong>
-					<br />
-					Shows TYPO3 inline user manual.
-				</li>
-				<li>
-					<strong>Frontend Editing [feedit]</strong>
-					<br />
-					This module enables FE-editing, configuration is done by
-					Typoscript.
-				</li>
-				<li>
-					<strong>User&gt;Open Documents [opendocs]</strong>
-					<br />
-					Handles the list of opened documents in TYPO3 backend.
-				</li>
-				<li>
-					<strong>Simulate Static URLs [simulatestatic]</strong>
-					<br />
-					If you do not want to use RealURL or CoolURI but still want
-					the Speaking URL feature. If you used
-					"config.simulateStaticDocuments = 1" in this installation
-					before, you should install this system extension. Be sure to
-					read the manual of "simulatestatic".
-				</li>
-			</ul>
 		';
 
-		foreach($this->newSystemExtensions as $ext) {
-			if (!t3lib_extMgm::isLoaded($ext)) {
+		foreach($this->outsourcedSystemExtensions as $_EXTKEY) {
+			if (!t3lib_extMgm::isLoaded($_EXTKEY)) {
+				$EM_CONF = FALSE;
+					// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
+				require (PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php');
+				$description .= '
+					<li>
+						<strong>
+							' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']
+						</strong>
+						<br />
+						' . $EM_CONF[$_EXTKEY]['description'] . '
+					</li>
+				';
+
 				$result = TRUE;
 			}
 		}
+
+		$description .= '
+			</ul>
+		';
 		if ($this->isWizardDone()) {
 			$result = FALSE;
 		}
+
 		return $result;
 	}
 
@@ -121,50 +85,34 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @return	string		HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		$content = '
+        $content = '
 			<p>
 				<strong>
-					Install the following SystemExtensions
-				</strong>:
+					Install the following SystemExtensions:
+				</strong>
 			</p>
+		';
+
+		$content .= '
 			<fieldset>
 				<ol>
+		';
+
+		foreach($this->outsourcedSystemExtensions as $_EXTKEY) {
+			if (!t3lib_extMgm::isLoaded($_EXTKEY)) {
+				$EM_CONF = FALSE;
+					// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
+				require (PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php');
+				$content .= '
 					<li class="labelAfter">
-						<input type="checkbox" id="info" name="' . $inputPrefix . '[sysext][info]" value="1" checked="checked" />
-						<label for="info">Web&gt;Info [info]</label>
+						<input type="checkbox" id="' . $_EXTKEY . '" name="' . $inputPrefix . '[sysext][' . $_EXTKEY . ']" value="1" checked="checked" />
+						<label for="' . $_EXTKEY . '">' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</label>
 					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="perm" name="' . $inputPrefix . '[sysext][perm]" value="1" checked="checked" />
-						<label for="perm">Web&gt;Access [perm]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="func" name="' . $inputPrefix . '[sysext][func]" value="1" checked="checked" />
-						<label for="func">Web&gt;Functions [func]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="filelist" name="' . $inputPrefix . '[sysext][filelist]" value="1" checked="checked" />
-						<label for="filelist">File&gt;Filelist [filelist]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" />
-						<label for="about">Help&gt;About [about]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" />
-						<label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="feedit" name="' . $inputPrefix . '[sysext][feedit]" value="1" checked="checked" />
-						<label for="feedit">Frontend Editing [feedit]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="opendocs" name="' . $inputPrefix . '[sysext][opendocs]" value="1" checked="checked" />
-						<label for="opendocs">User&gt;Open Documents [opendocs]</label>
-					</li>
-					<li class="labelAfter">
-						<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" />
-						<label for="simulatestatic">Simulate Static URLs [simulatestatic]</label>
-					</li>
+				';
+			}
+		}
+
+		$content .= '
 				</ol>
 			</fieldset>
 		';
@@ -173,7 +121,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	}
 
 	/**
-	 * Adds the extensions "about", "cshmanual" and "simulatestatic" to the extList in TYPO3_CONF_VARS
+	 * Adds the outsourced extensions to the extList in TYPO3_CONF_VARS
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
@@ -184,7 +132,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
 			$extArray = array_intersect(
-				$this->newSystemExtensions,
+				$this->outsourcedSystemExtensions,
 				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
 			);
 			$this->installExtensions($extArray);
@@ -218,7 +166,6 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 			// Implode unique list of extensions to load and return:
 		return implode(',', array_unique($listArr));
 	}
-
 
 	/**
 	 * Writes the extension list to "localconf.php" file
