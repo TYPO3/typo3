@@ -174,6 +174,12 @@ now possible to set accordingly different cookie domains using
 $TYPO3_CONF_VARS['FE']['cookieDomain'] and
 $TYPO3_CONF_VARS['BE']['cookieDomain'].
 
+It is now possible to customize the cookienames used by TYPO3 to avoid clashes
+when running more installations on the same domain. The names used can be con-
+figured with:
+$TYPO3_CONF_VARS['FE']['cookieName'] and
+$TYPO3_CONF_VARS['BE']['cookieName'].
+
 The media element now has a core wizard for rewriting URLs. This allows the
 user to copy the URL from browser (e.g. a youtube URL like
 http://www.youtube.com/watch?v=pkA9qw80xO0) and use it as URL in the media
