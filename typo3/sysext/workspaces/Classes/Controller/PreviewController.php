@@ -35,20 +35,31 @@
 class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controller_AbstractController {
 
 	/**
+	 * @var Tx_Workspaces_Service_Stages
+	 */
+	protected $stageService;
+
+	/**
+	 * @var tx_Workspaces_Service_Workspaces
+	 */
+	protected $workspaceService;
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
-
+		$this->stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+		$this->workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 		$this->template->setExtDirectStateProvider();
 
-		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
-		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath . 'StyleSheet/preview.css';
+		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
+		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
+
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
-
 
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode(array(
@@ -64,7 +75,20 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 
-		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/Ext.ux.plugins.TabStripContainer.js');
+		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
+
+		$resourcePathJavaScript = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+
+		$jsFiles = array(
+			'Ext.ux.plugins.TabStripContainer.js',
+			'Store/mainstore.js',
+			'helpers.js',
+			'actions.js',
+		);
+
+		foreach ($jsFiles as $jsFile) {
+			$this->pageRenderer->addJsFile($resourcePathJavaScript . $jsFile);
+		}
 
 			// todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
@@ -84,6 +108,11 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$language = intval(t3lib_div::_GP('L'));
 
+			// fetch the next and previous stage
+		$workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), $filter = 1, $stage = -99, $this->pageId, $recursionLevel = 0, $selectionType = 'tables_modify');
+		list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+		list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+
 		/** @var $wsService tx_Workspaces_Service_Workspaces */
 		$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 		$wsList = $wsService->getAvailableWorkspaces();
@@ -97,7 +126,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			}
 		}
 
-		$controller = t3lib_div::makeInstance('Tx_Workspaces_Controller_ReviewController', TRUE);
 		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
 		$uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 
@@ -131,7 +159,13 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
 
 		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
-		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll" , "TYPO3.LLL.Workspaces = {
+
+		$this->pageRenderer->addInlineSetting('Workspaces', 'disableNextStageButton', $this->isInvalidStage($nextStage));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'disablePreviousStageButton', $this->isInvalidStage($previousStage));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
+
+		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll", "
+		TYPO3.LLL.Workspaces = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . "',
 			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE) . "',
 			livePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE) . "',
@@ -140,11 +174,26 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			workspacePreviewDetail: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', TRUE) . "',
 			modeSlider: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', TRUE) . "',
 			modeVbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', TRUE) . "',
-			modeHbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE) . "'
+			modeHbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE) . "',
+			discard: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE) . "',
+			nextStage: '" . $nextStage['title'] . "',
+			previousStage: '" . $previousStage['title'] . "'
 		};\n");
 
 		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
+	}
+
+	/**
+	 * Evaluate the activate state based on given $stageArray.
+	 *
+	 * @param array $stageArray
+	 * @return boolean
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	protected function isInvalidStage($stageArray) {
+		return !(is_array($stageArray) && count($stageArray) > 0);
 	}
 
 	/**

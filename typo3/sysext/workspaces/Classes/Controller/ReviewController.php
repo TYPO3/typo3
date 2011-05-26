@@ -176,6 +176,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 			'gridfilters/filter/NumericFilter.js',
 			'gridfilters/filter/BooleanFilter.js',
 			'gridfilters/filter/BooleanFilter.js',
+			'Store/mainstore.js',
 
 			'configuration.js',
 			'helpers.js',

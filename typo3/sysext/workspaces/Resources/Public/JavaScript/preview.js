@@ -34,7 +34,10 @@ Ext.onReady(function() {
 	if (Ext.isObject(TYPO3.settings.Workspaces.States)) {
 		Ext.state.Manager.getProvider().initState(TYPO3.settings.Workspaces.States);
 	}
-
+	// late binding of ExtDirect
+	TYPO3.Workspaces.MainStore.proxy = new Ext.data.DirectProxy({
+		directFn : TYPO3.Workspaces.ExtDirect.getWorkspaceInfos
+	});
 
 	var iconClsChecked = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
 	var iconClsEmpty = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
@@ -51,7 +54,7 @@ Ext.onReady(function() {
 			plugins : [{
 				ptype : 'Ext.ux.plugins.TabStripContainer',
 				id: 'controls',
-				width: 600,
+				width: 1000,
 				items: [
 					{
 						xtype: 'panel',
@@ -112,10 +115,51 @@ Ext.onReady(function() {
 								}
 							]
 						}]
-					},
-					{
-						id: 'visual-mode-toolbar',
+					}, {
+						xtype: 'buttongroup',
+						id: 'stageButtonGroup',
+						columns: 4,
+						width: 400,
 						items: [{
+							text: TYPO3.LLL.Workspaces.nextStage,
+							xtype: 'button',
+							iconCls: 'x-btn-text',
+							id: 'feToolbarButtonNextStage',
+							hidden: TYPO3.settings.Workspaces.disableNextStageButton,
+							listeners: {
+								click: {
+									fn: function () {
+										TYPO3.Workspaces.Actions.sendPageToNextStage();
+									}
+								}
+							}
+						}, {
+							text: TYPO3.LLL.Workspaces.previousStage,
+							xtype: 'button',
+							iconCls: 'x-btn-text',
+							id: 'feToolbarButtonPreviousStage',
+							hidden: TYPO3.settings.Workspaces.disablePreviousStageButton,
+							listeners: {
+								click: {
+									fn: function () {
+										TYPO3.Workspaces.Actions.sendPageToPrevStage();
+									}
+								}
+							}
+						}, {
+							text: TYPO3.LLL.Workspaces.discard,
+							iconCls: 'x-btn-text',
+							xtype: 'button',
+							id: 'feToolbarButtonDiscardStage',
+							hidden: TYPO3.settings.Workspaces.disableDiscardStageButton,
+							listeners: {
+								click: {
+									fn: function () {
+										TYPO3.Workspaces.Actions.discardPage();
+									}
+								}
+							}
+						}, {
 							xtype: 'button',
 							iconCls: 'x-btn-icon t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view',
 							id: 'visual-mode-options',
@@ -169,6 +213,7 @@ Ext.onReady(function() {
 						if (Ext.isObject(top.Ext.getCmp('slider'))) {
 							top.Ext.getCmp('slider').show();
 							top.Ext.getCmp('visual-mode-options').show();
+							TYPO3.Workspaces.ExtDirectActions.updateStageChangeButtons(TYPO3.settings.Workspaces.id, TYPO3.Workspaces.Actions.updateStageChangeButtons);
 						}
 					}
 				},
@@ -279,6 +324,9 @@ Ext.onReady(function() {
 					activate: function () {
 						top.Ext.getCmp('slider').hide();
 						top.Ext.getCmp('visual-mode-options').hide();
+						top.Ext.getCmp('feToolbarButtonNextStage').hide();
+						top.Ext.getCmp('feToolbarButtonPreviousStage').hide();
+						top.Ext.getCmp('feToolbarButtonDiscardStage').hide();
 					}
 				},
 				items:  [{

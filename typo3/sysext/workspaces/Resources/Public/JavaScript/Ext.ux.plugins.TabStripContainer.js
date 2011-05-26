@@ -70,7 +70,6 @@ Ext.ux.plugins.TabStripContainer = Ext.extend(Object, {
 					: this.tabPanel.header;
 		height = this.headerFooterEl.getComputedHeight();
 		stripTarget = tabPanel[tabPanel.stripTarget];
-
 		stripTarget.applyStyles('position: relative;');
 
 		panelDiv = this.headerFooterEl.createChild({
@@ -79,21 +78,22 @@ Ext.ux.plugins.TabStripContainer = Ext.extend(Object, {
 			style : {
 				position : 'absolute',
 				right: 0,
-				top: 0
+				top: '1px'
 			}
 		});
 		panelDiv.setSize(this.width, height, false);
 		config = Ext.applyIf({
 			layout: 'hbox',
-			layoutConfig: {
-				align: 'stretchmax'
-			},
 			height: height,
 			width: this.width,
 			renderTo: panelDiv
 		}, this.panelConfig);
 		this.panelContainer = new Ext.Panel(config);
 		this.panelContainer.add(this.items);
+		this.panelContainer.doLayout();
+	},
+
+	doLayout: function () {
 		this.panelContainer.doLayout();
 	}
 

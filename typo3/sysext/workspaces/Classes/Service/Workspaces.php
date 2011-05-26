@@ -237,13 +237,14 @@ class tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 *
 	 * @param string $table
 	 * @param string $pageList
+	 * @param integer $wsid
 	 * @param integer $filter
 	 * @param integer $stage
 	 * @return array
 	 */
 	protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage) {
 
-		$fields = 'A.uid, A.t3ver_oid,' . ($table==='pages' ? ' A.t3ver_swapmode,' : '') . 'B.pid AS wspid, B.pid AS livepid';
+		$fields = 'A.uid, A.t3ver_oid, A.t3ver_stage, ' . ($table==='pages' ? ' A.t3ver_swapmode,' : '') . 'B.pid AS wspid, B.pid AS livepid';
 		$from = $table . ' A,' . $table . ' B';
 
 			// Table A is the offline version and pid=-1 defines offline

@@ -208,9 +208,17 @@
 				<source>Discard workspace version of record.</source>
 				<target approved="yes">Discard workspace version of record.</target>
 			</trans-unit>
+			<trans-unit id="window.discardAll.title">
+				<source>Discard all workspace version of current page.</source>
+				<target approved="yes">Discard all workspace version of current page.</target>
+			</trans-unit>
 			<trans-unit id="window.discard.message">
 				<source>Do you really want to discard this version from workspace?</source>
 				<target approved="yes">Do you really want to discard this version from workspace?</target>
+			</trans-unit>
+			<trans-unit id="window.discardAll.message">
+				<source>Do you really want to discard all versions from page?</source>
+				<target approved="yes">Do you really want to discard all versions from page?</target>
 			</trans-unit>
 			<trans-unit id="window.swap.title">
 				<source>Swap version</source>

@@ -53,34 +53,6 @@ TYPO3.Workspaces.Configuration.GridFilters = new Ext.ux.grid.GridFilters({
 		}
 	]
 });
-TYPO3.Workspaces.Configuration.StoreFieldArray = [
-	{name : 'table'},
-	{name : 'uid', type : 'int'},
-	{name : 't3ver_oid', type : 'int'},
-	{name : 'livepid', type : 'int'},
-	{name : 'stage', type: 'int'},
-	{name : 'change',type : 'int'},
-	{name : 'label_Live'},
-	{name : 'label_Workspace'},
-	{name : 'label_Stage'},
-	{name : 'workspace_Title'},
-	{name : 'actions'},
-	{name : 'icon_Workspace'},
-	{name : 'icon_Live'},
-	{name : 'path_Live'},
-	{name : 'path_Workspace'},
-	{name : 'state_Workspace'},
-	{name : 'workspace_Tstamp'},
-	{name : 'workspace_Formated_Tstamp'},
-	{name : 'allowedAction_nextStage'},
-	{name : 'allowedAction_prevStage'},
-	{name : 'allowedAction_swap'},
-	{name : 'allowedAction_delete'},
-	{name : 'allowedAction_edit'},
-	{name : 'allowedAction_editVersionedPage'},
-	{name : 'allowedAction_view'}
-
-];
 
 TYPO3.Workspaces.Configuration.WsPath = {
 	id: 'path_Workspace',

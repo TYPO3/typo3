@@ -106,6 +106,110 @@ class Tx_Workspaces_Service_Stages {
 	}
 
 	/**
+	 * Find the highest possible "previous" stage for all $byTableName
+	 *
+	 * @param array $workspaceItems
+	 * @param array $byTableName
+	 * @return array Current and next highest possible stage
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	public function getPreviousStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')) {
+		$currentStage = array();
+		$previousStage = array();
+		$usedStages = array();
+		$found = FALSE;
+		$availableStagesForWS = array_reverse($this->getStagesForWS());
+		$availableStagesForWSUser = $this->getStagesForWSUser();
+		$byTableName = array_flip($byTableName);
+
+		foreach ($workspaceItems as $tableName => $items) {
+			if (!array_key_exists($tableName, $byTableName)) {
+				continue;
+			}
+			foreach ($items as $item) {
+				$usedStages[$item['t3ver_stage']] = TRUE;
+			}
+		}
+
+		foreach ($availableStagesForWS as $stage) {
+			if (isset($usedStages[$stage['uid']])) {
+				$currentStage = $stage;
+				$previousStage = $this->getPrevStage($stage['uid']);
+				break;
+			}
+		}
+
+		foreach ($availableStagesForWSUser as $userWS) {
+			if ($previousStage['uid'] == $userWS['uid']) {
+				$found = TRUE;
+				break;
+			}
+		}
+
+		if ($found === FALSE) {
+			$previousStage = array();
+		}
+
+		return array (
+			$currentStage,
+			$previousStage
+		);
+	}
+
+	/**
+	 * Retrieve the next stage based on the lowest stage given in the $workspaceItems record array.
+	 *
+	 * @param array $workspaceItems
+	 * @param array $byTableName
+	 * @return array Current and next possible stage.
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	public function getNextStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')) {
+		$currentStage = array();
+		$usedStages = array();
+		$nextStage = array();
+		$availableStagesForWS = $this->getStagesForWS();
+		$availableStagesForWSUser = $this->getStagesForWSUser();
+		$byTableName = array_flip($byTableName);
+		$found = FALSE;
+
+		foreach ($workspaceItems as $tableName => $items) {
+			if (! array_key_exists($tableName, $byTableName)) {
+				continue;
+			}
+			foreach ($items as $item) {
+				$usedStages[$item['t3ver_stage']] = TRUE;
+			}
+		}
+
+		foreach ($availableStagesForWS as $stage) {
+			if (isset($usedStages[$stage['uid']])) {
+				$currentStage = $stage;
+				$nextStage = $this->getNextStage($stage['uid']);
+				break;
+			}
+		}
+
+		foreach ($availableStagesForWSUser as $userWS) {
+			if ($nextStage['uid'] == $userWS['uid']) {
+				$found = TRUE;
+				break;
+			}
+		}
+
+		if ($found === FALSE) {
+			$nextStage = array();
+		}
+
+		return array (
+			$currentStage,
+			$nextStage
+		);
+	}
+
+	/**
 	 * Building an array with all stage ids and titles related to the given workspace
 	 *
 	 * @return array id and title of the stages

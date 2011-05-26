@@ -126,8 +126,6 @@ TYPO3.Workspaces.Actions = {
 						comments: values.comments
 					};
 
-
-
 					TYPO3.Workspaces.Actions.sendToStageExecute(parameters);
 					top.TYPO3.Windows.close('sendToStageWindow');
 					TYPO3.Workspaces.MainStore.reload();
@@ -192,7 +190,6 @@ TYPO3.Workspaces.Actions = {
 				}
 			}
 		});
-
 	},
 	handlerResponseOnExecuteAction: function(response) {
 		if (!Ext.isObject(response)) {
@@ -204,5 +201,153 @@ TYPO3.Workspaces.Actions = {
 			var code = (error.code ? ' #' + error.code : '');
 			top.TYPO3.Dialog.ErrorDialog({ title: 'Error' + code, msg: error.message });
 		}
+	},
+
+	/**
+	 * Process "send to next stage" action.
+	 *
+	 * This method is used in the split frontend preview part.
+	 *
+	 * @return void
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	sendPageToNextStage: function () {
+		TYPO3.Workspaces.ExtDirectActions.sendPageToNextStage(TYPO3.settings.Workspaces.id, function (response) {
+			if (Ext.isObject(response.error)) {
+				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+			} else {
+				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
+					title: TYPO3.LLL.Workspaces.nextStage,
+					items: response.items.items,
+					executeHandler: function(event) {
+						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
+						affects = response.affects;
+						var parameters = {
+							affects: affects,
+							receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
+							additional: values.additional,
+							comments: values.comments,
+							stageId: response.stageId
+						};
+						TYPO3.Workspaces.ExtDirectActions.sentCollectionToStage(parameters, function (response) {
+							TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+							TYPO3.Workspaces.ExtDirectActions.updateStageChangeButtons(TYPO3.settings.Workspaces.id, TYPO3.Workspaces.Actions.updateStageChangeButtons);
+
+							if (response.refreshLivePanel == true) {
+								Ext.getCmp('livePanel').refresh();
+								Ext.getCmp('livePanel-hbox').refresh();
+								Ext.getCmp('livePanel-vbox').refresh();
+							}
+						});
+						top.TYPO3.Windows.close('sendToStageWindow');
+					}
+				});
+			}
+		});
+	},
+
+	/**
+	 * Process "send to previous stage" action.
+	 *
+	 * This method is used in the split frontend preview part.
+	 *
+	 * @return void
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	sendPageToPrevStage: function () {
+		TYPO3.Workspaces.ExtDirectActions.sendPageToPreviousStage(TYPO3.settings.Workspaces.id, function (response) {
+			if (Ext.isObject(response.error)) {
+				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+			} else {
+				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
+					title: TYPO3.LLL.Workspaces.nextStage,
+					items: response.items.items,
+					executeHandler: function(event) {
+						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
+
+						affects = response.affects;
+						var parameters = {
+							affects: affects,
+							receipients: TYPO3.Workspaces.Helpers.getElementIdsFromFormValues(values, 'receipients'),
+							additional: values.additional,
+							comments: values.comments,
+							stageId: response.stageId
+						};
+						TYPO3.Workspaces.ExtDirectActions.sentCollectionToStage(parameters, function (response) {
+							TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+							TYPO3.Workspaces.ExtDirectActions.updateStageChangeButtons(TYPO3.settings.Workspaces.id, TYPO3.Workspaces.Actions.updateStageChangeButtons);
+						});
+						top.TYPO3.Windows.close('sendToStageWindow');
+					}
+				});
+			}
+		});
+	},
+
+	/**
+	 * Update the visible state for the buttons "next stage", "prev stage" and "discard".
+	 *
+	 * This method is used in the split frontend preview part.
+	 *
+	 * @param object response
+	 * @return void
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	updateStageChangeButtons: function (response) {
+
+		if (Ext.isObject(response.error)) {
+				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+		} else {
+			for (componentId in response) {
+				if (response[componentId].visible) {
+					if (!top.Ext.getCmp(componentId).isVisible()) {
+						top.Ext.getCmp(componentId).show();
+					}
+					top.Ext.getCmp(componentId).setText(response[componentId].text);
+				} else {
+					if (top.Ext.getCmp(componentId).isVisible()) {
+						top.Ext.getCmp(componentId).hide();
+					}
+				}
+			}
+				// force doLayout on each plugin containing the preview panel
+			Ext.getCmp('preview').plugins.each(function (item, index) {
+				if (Ext.isFunction(item.doLayout)) {
+					item.doLayout();
+				}
+			});
+		}
+	},
+
+	/**
+	 * Process the discard all items from current page action.
+	 *
+	 * This method is used in the split frontend preview part.
+	 *
+	 * @return void
+	 *
+	 * @author Michael Klapper <development@morphodo.com>
+	 */
+	discardPage: function () {
+		var configuration = {
+			title: TYPO3.l10n.localize('window.discardAll.title'),
+			msg: TYPO3.l10n.localize('window.discardAll.message'),
+			fn: function(result) {
+				if (result == 'yes') {
+					TYPO3.Workspaces.ExtDirectActions.discardStagesFromPage(TYPO3.settings.Workspaces.id, function (response) {
+						TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
+						TYPO3.Workspaces.ExtDirectActions.updateStageChangeButtons(TYPO3.settings.Workspaces.id, TYPO3.Workspaces.Actions.updateStageChangeButtons);
+						Ext.getCmp('wsPanel').refresh();
+						Ext.getCmp('wsPanel-hbox').refresh();
+						Ext.getCmp('wsPanel-vbox').refresh();
+					});
+				}
+			}
+		};
+
+		top.TYPO3.Dialog.QuestionDialog(configuration);
 	}
 };

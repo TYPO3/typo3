@@ -151,7 +151,7 @@ ul.x-tab-strip-top {
 #visual-mode-options {
 	display: block;
 	height: 20px;
-	margin: 5px 0 0 0;
+	margin: 0px 0 0 10px;
 }
 #visual-mode-options.x-btn-menu-active {
 	background-color: #f9f9f9;
@@ -277,6 +277,38 @@ ul.x-tab-strip-top {
 
 .x-btn {
 	color: #FFF;
+}
+.t3-icon-system-options-view {
+	float: right;
+}
+#feToolbarButtonNextStage.x-btn, #feToolbarButtonPreviousStage.x-btn, #feToolbarButtonDiscardStage.x-btn {
+	background-image: url('../Images/button_approve.png');
+	background-repeat: repeat-x;
+	border: 1px solid #7c7c7c;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
+	height: 13px;
+	line-height: 8px;
+	margin-right: 10px;
+	font-size: 13px;
+	margin-top:0px;
+}
+#feToolbarButtonNextStage.x-btn .x-btn-text, #feToolbarButtonPreviousStage.x-btn .x-btn-text, #feToolbarButtonDiscardStage.x-btn .x-btn-text {
+	color: #FFF;
+	font-size: 11px;
+	line-height: 8px;
+	height: 13px;
+	padding: 0 3px 0 3px;
+}
+#feToolbarButtonPreviousStage.x-btn .x-btn-text {
+	color:#7c7c7c;
+}
+#feToolbarButtonPreviousStage.x-btn {
+	background-image: url('../Images/button_reject.png');
+}
+#feToolbarButtonDiscardStage.x-btn {
+	background-image: url('../Images/button_discard.png');
 }
 #sendToStageWindow .x-btn {
 	background-color: #d5d5d5;
