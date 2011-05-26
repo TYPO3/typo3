@@ -333,7 +333,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	protected function addBaseUriIfNecessary($uri) {
 		$baseUri = $this->request->getBaseURI();
-		if(stripos($uri, $baseUri) !== 0) {
+		if(stripos($uri, 'http://') !== 0 && stripos($uri, 'https://') !== 0) {
 			$uri = $baseUri . (string)$uri;
 		}
 		return $uri;
