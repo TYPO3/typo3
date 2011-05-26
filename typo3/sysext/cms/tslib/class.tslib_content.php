@@ -6412,6 +6412,9 @@ class tslib_cObj {
 			case 'lower' :
 				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
 			break;
+			case 'capitalize':
+				$theValue = ucwords($theValue);
+			break;
 		}
 		return $theValue;
 	}
