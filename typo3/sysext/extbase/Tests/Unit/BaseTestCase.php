@@ -86,7 +86,7 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *
-	 * @param protected $className Full qualified name of the original class
+	 * @param $className Full qualified name of the original class
 	 * @return string Full qualified name of the built class
 	 */
 	protected function buildAccessibleProxy($className) {
