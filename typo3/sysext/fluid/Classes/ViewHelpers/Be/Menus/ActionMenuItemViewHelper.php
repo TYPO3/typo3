@@ -79,7 +79,7 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Co
 		$currentController = $currentRequest->getControllerName();
 		$currentAction = $currentRequest->getControllerActionName();
 		if ($action === $currentAction && $controller === $currentController) {
-			$this->tag->addAttribute('selected', TRUE);
+			$this->tag->addAttribute('selected', 'selected');
 		}
 
 		$this->tag->setContent($label);
