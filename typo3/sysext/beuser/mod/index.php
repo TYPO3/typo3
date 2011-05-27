@@ -681,7 +681,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						foreach ($uGroups as $vv) {
 							if ($vv) {
 								$uGRow = t3lib_BEfunc::getRecord('be_groups',$vv);
-								$pout[]='<tr><td nowrap="nowrap">'.t3lib_iconWorks::getSpriteIconForRecord('be_groups',$uGRow).'&nbsp;'.htmlspecialchars($uGRow['title']).'&nbsp;&nbsp;</td><td width=1% nowrap="nowrap">'.$GLOBALS['SOBE']->elementLinks('be_groups',$uGRow).'</td></tr>';
+								$title = t3lib_BEfunc::getRecordTitle('be_groups', $uGRow);
+								$pout[] = '<tr><td nowrap="nowrap">' . t3lib_iconWorks::getSpriteIconForRecord('be_groups',$uGRow) .
+									'&nbsp;' . htmlspecialchars($title) . '&nbsp;&nbsp;</td><td width=1% nowrap="nowrap">' .
+									$GLOBALS['SOBE']->elementLinks('be_groups',$uGRow) . '</td></tr>';
 							}
 						}
 						$out[$k] = '<table border="0" cellpadding="0" cellspacing="0" width="100%">'.implode('',$pout).'</table>';
