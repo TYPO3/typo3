@@ -20,12 +20,12 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-/**
- */
-
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
+ * Test for the Form view helper
+ *
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_FormViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 	/**

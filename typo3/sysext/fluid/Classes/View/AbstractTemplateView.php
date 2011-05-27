@@ -68,6 +68,8 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	protected $renderingStack = array();
 
 	/**
+	 * Injects the Object Manager
+	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
@@ -103,7 +105,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	/**
 	 * Sets the current controller context
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
@@ -318,11 +320,11 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * @param Tx_Fluid_Core_Parser_ParsedTemplateInterface $parsedTemplate
 	 * @return string the Layout name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Rens Admiraal <r.admiraal@drecomm.nl>
 	 */
 	protected function getLayoutNameInTemplate(Tx_Fluid_Core_Parser_ParsedTemplateInterface $parsedTemplate) {
 		if ($this->isLayoutDefinedInTemplate($parsedTemplate)) {
 			$layoutNameNode = $parsedTemplate->getVariableContainer()->get('layoutName');
-
 			$layoutName = $layoutNameNode->evaluate($this->baseRenderingContext);
 			if (!empty($layoutName)) {
 				return $layoutName;
@@ -395,7 +397,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * By default we assume that the view implementation can handle all kinds of
 	 * contexts. Override this method if that is not the case.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
 	 * @api
 	 */

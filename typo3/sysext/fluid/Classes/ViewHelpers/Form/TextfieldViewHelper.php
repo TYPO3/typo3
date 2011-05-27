@@ -23,7 +23,7 @@
 /**
  * View Helper which creates a text field (<input type="text">).
  *
-  * = Examples =
+ * = Examples =
  *
  * <code title="Example">
  * <f:form.textfield name="myTextBox" value="default value" />

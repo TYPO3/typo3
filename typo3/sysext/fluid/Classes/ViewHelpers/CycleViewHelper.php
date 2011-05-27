@@ -57,12 +57,14 @@
 class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var array|Tx_Extbase_Persistence_ObjectStorage the values to be iterated through
+	 * the values to be iterated through
+	 * @var array|Tx_Extbase_Persistence_ObjectStorage
 	 */
 	protected $values = NULL;
 
 	/**
-	 * @var integer current values index
+	 * current values index
+	 * @var integer
 	 */
 	protected $currentCycleIndex = NULL;
 

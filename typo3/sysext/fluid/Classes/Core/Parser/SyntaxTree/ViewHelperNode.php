@@ -93,12 +93,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		$this->uninitializedViewHelper = $viewHelper;
 		$this->viewHelpersByContext = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 		$this->arguments = $arguments;
-
-		if (FALSE /*FIXME*/) {
-			$this->viewHelperClassName = $this->uninitializedViewHelper->FLOW3_AOP_Proxy_getProxyTargetClassName();
-		} else {
-			$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
-		}
+		$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
 	}
 
 	/**
@@ -188,6 +183,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode Value to be converted
 	 * @param string $type Target type
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed New value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>

@@ -33,6 +33,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 	public function setUp() {
 		$this->variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer();
 	}
+
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

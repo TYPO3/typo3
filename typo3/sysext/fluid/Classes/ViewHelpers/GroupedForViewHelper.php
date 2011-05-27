@@ -33,9 +33,9 @@
  *   </f:for>
  * </f:groupedFor>
  * </code>
- *
- * Output:
+ * <output>
  * apple cherry strawberry banana
+ * </output>
  *
  * <code title="Two dimensional list">
  * <ul>
