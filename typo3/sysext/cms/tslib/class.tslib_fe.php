@@ -410,6 +410,8 @@
 	protected $pageCache;
 	protected $pageCacheTags = array();
 
+		// caches the timestamp until a cache entry for this page is valid
+	protected $getCacheTimeoutCache = NULL;
 
 	/**
 	 * Class constructor
@@ -2819,15 +2821,11 @@
 	 * @return	void
 	 */
 	function realPageCacheContent()	{
-		$cache_timeout = $this->get_cache_timeout();		// seconds until a cached page is too old
-		$timeOutTime = $GLOBALS['EXEC_TIME']+$cache_timeout;
-		if ($this->config['config']['cache_clearAtMidnight'])	{
-			$midnightTime = mktime (0,0,0,date('m',$timeOutTime),date('d',$timeOutTime),date('Y',$timeOutTime));
-			if ($midnightTime > $GLOBALS['EXEC_TIME'])	{		// If the midnight time of the expire-day is greater than the current time, we may set the timeOutTime to the new midnighttime.
-				$timeOutTime = $midnightTime;
-			}
-		}
+			// seconds until a cached page is too old
+		$cacheTimeout = $this->get_cache_timeout();
+		$timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
 		$this->tempContent = FALSE;
+
 		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
 
 			// Hook for cache post processing (eg. writing static files!)
@@ -4630,17 +4628,35 @@ if (version == "n3") {
 	 * @return	integer		The cache timeout for the current page.
 	 */
 	function get_cache_timeout() {
-			// Cache period was set for the page:
-		if ($this->page['cache_timeout']) {
-			$cacheTimeout = intval($this->page['cache_timeout']);
-			// Cache period was set for the whole site:
-		} elseif ($this->cacheTimeOutDefault) {
-			$cacheTimeout = $this->cacheTimeOutDefault;
-			// No cache period set at all, so we take one day (60*60*24 seconds = 86400 seconds):
-		} else {
-			$cacheTimeout = 86400;
+		if ($this->getCacheTimeoutCache == NULL) {
+			if ($this->page['cache_timeout']) {
+					// Cache period was set for the page:
+				$cacheTimeout = $this->page['cache_timeout'];
+			} elseif ($this->cacheTimeOutDefault) {
+					// Cache period was set for the whole site:
+				$cacheTimeout = $this->cacheTimeOutDefault;
+			} else {
+					// No cache period set at all, so we take one day (60*60*24 seconds = 86400 seconds):
+				$cacheTimeout = 86400;
+			}
+
+			if ($this->config['config']['cache_clearAtMidnight']) {
+				$timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+				$midnightTime = mktime(0, 0, 0, date('m', $timeOutTime), date('d', $timeOutTime), date('Y', $timeOutTime));
+					// If the midnight time of the expire-day is greater than the current time,
+					// we may set the timeOutTime to the new midnighttime.
+				if ($midnightTime > $GLOBALS['EXEC_TIME']) {
+					$cacheTimeout = $midnightTime - $GLOBALS['EXEC_TIME'];
+				}
+			} else {
+					// if cache_clearAtMidnight is not set calculate the timeout time for records on the page
+				$calculatedCacheTimeout = $this->calculatePageCacheTimeout();
+				$cacheTimeout = ($calculatedCacheTimeout < $cacheTimeout) ? $calculatedCacheTimeout : $cacheTimeout;
+			}
+			$this->getCacheTimeoutCache = $cacheTimeout;
 		}
-		return $cacheTimeout;
+
+		return $this->getCacheTimeoutCache;
 	}
 
 	/**
@@ -4836,6 +4852,122 @@ if (version == "n3") {
 			$this->csConvObj->convArray($_POST,$this->metaCharset,$this->renderCharset);
 			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}
+	}
+
+	/**
+	 * Calculates page cache timeout according to the records with starttime/endtime on the page.
+	 *
+	 * @return int Page cache timeout or PHP_INT_MAX if cannot be determined
+	 */
+	protected function calculatePageCacheTimeout() {
+		$result = PHP_INT_MAX;
+
+			// Get the configuration
+		$tablesToConsider = $this->getCurrentPageCacheConfiguration();
+
+			// Get the time, rounded to the minute (do not polute MySQL cache!)
+			// It is ok that we do not take seconds into account here because this
+			// value will be substracted later. So we never get the time "before"
+			// the cache change.
+		$now = $GLOBALS['ACCESS_TIME'];
+
+			// Find timeout by checking every table
+		foreach ($tablesToConsider as $tableDef) {
+			$result = min($result, $this->getFirstTimeValueForRecord($tableDef, $now));
+		}
+
+			// We return + 1 second just to ensure that cache is definitely regenerated
+		return ($result == PHP_INT_MAX ? PHP_INT_MAX : $result - $now + 1);
+	}
+
+	/**
+	 * Obtains a list of table/pid pairs to consider for page caching.
+	 *
+	 * TS configuration looks like this:
+	 *
+	 * The cache lifetime of all pages takes starttime and endtime of news records of page 14 into account:
+	 *   config.cache.all = tt_news:14
+	 *
+	 * The cache lifetime of page 42 takes starttime and endtime of news records of page 15 and addresses of page 16 into account:
+	 *   config.cache.42 = tt_news:15,tt_address:16
+	 *
+	 * @return array Array of 'tablename:pid' pairs. There is at least a current page id in the array
+	 * @see tslib_fe::calculatePageCacheTimeout()
+	 */
+	protected function getCurrentPageCacheConfiguration() {
+		$result = array('tt_content:' . $this->id);
+		if (isset($this->config['config']['cache.'][$this->id])) {
+			$result = array_merge($result, t3lib_div::trimExplode(',', $this->config['config']['cache.'][$this->id]));
+		}
+		if (isset($this->config['config']['cache.']['all'])) {
+			$result = array_merge($result, t3lib_div::trimExplode(',', $this->config['config']['cache.']['all']));
+		}
+		return array_unique($result);
+	}
+
+	/**
+	 * Find the minimum starttime or endtime value in the table and pid that is greater than the current time.
+	 *
+	 * @param string $tableDef Table definition (format tablename:pid)
+	 * @param int $now "Now" time value
+	 * @return int Value of the next start/stop time or PHP_INT_MAX if not found
+	 * @see tslib_fe::calculatePageCacheTimeout()
+	 */
+	protected function getFirstTimeValueForRecord($tableDef, $now) {
+		$result = PHP_INT_MAX;
+
+		list($tableName, $pid) = t3lib_div::trimExplode(':', $tableDef);
+
+		if (empty($tableName) || empty($pid)) {
+			throw new InvalidArgumentException(
+				'Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.',
+				1307190365
+			);
+		}
+			// Additional fields
+		$showHidden = ($tableName === 'pages' ? $this->showHiddenPage : $this->showHiddenRecords);
+		$enableFields = $this->sys_page->enableFields($tableName, $showHidden, array('starttime' => TRUE, 'endtime' => TRUE));
+
+			// saves the name of the starttime and endtime field in $tableName (if defined)
+		$timeFields = array();
+			// saves the SELECT parts of the SQL query
+		$selectFields = array();
+			// saves the WHERE parts of the SQL query
+		$whereConditions = array();
+
+		foreach (array('starttime', 'endtime') as $field) {
+				// there is no need to load TCA because we need only enable columns!
+			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
+				$timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
+				$selectFields[$field] = 'MIN(' . $timeFields[$field] . ') AS ' . $field;
+				$whereConditions[$field] = $timeFields[$field] . '>' . $now;
+			}
+		}
+
+			// if starttime or endtime are defined, evaluate them
+		if (count($timeFields)) {
+				// find the timestamp, when the current page's content changes the next time
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					// MIN(starttime) AS starttime, MIN(endtime) AS endtime
+				implode(', ', $selectFields),
+				$tableName,
+					// pid=$pid AND starttime>$now AND $endtime>$now . $enablefields
+				'pid=' . intval($pid) . ' AND (' . implode(' OR ', $whereConditions) . ')' . $enableFields
+			);
+			if ($row) {
+				foreach ($timeFields as $timeField => $_) {
+						// if a MIN value is found, take it into account for the cache lifetime
+						// we have to filter out start/endtimes < $now, as the SQL query also returns
+						// rows with starttime < $now and endtime > $now (and using a starttime from the past
+						// would be wrong)
+					if (!is_null($row[$timeField]) && $row[$timeField] > $now) {
+						$result = min($result, $row[$timeField]);
+					}
+				}
+			}
+		}
+
+		return $result;
 	}
 }
 
