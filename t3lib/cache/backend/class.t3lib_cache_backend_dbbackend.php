@@ -22,13 +22,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A caching backend which stores cache entries in database tables
  *
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
@@ -55,10 +55,11 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Constructs this backend
 	 *
+	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - depends on the actual backend
 	 */
-	public function __construct(array $options = array()) {
-		parent::__construct($options);
+	public function __construct($context, array $options = array()) {
+		parent::__construct($context, $options);
 
 		if (!$this->cacheTable) {
 			throw new t3lib_cache_Exception(
