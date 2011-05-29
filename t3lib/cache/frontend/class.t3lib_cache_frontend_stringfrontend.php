@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A cache frontend for strings. Nothing else.
  *
@@ -31,23 +30,26 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  * @api
+ * @scope prototype
  */
 class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractFrontend {
 
 	/**
-	 * Saves the value of a PHP variable in the cache. Note that the variable
-	 * will be serialized if necessary.
+	 * Saves the value of a PHP variable in the cache.
 	 *
-	 * @param string An identifier used for this cache entry
-	 * @param string The variable to cache
-	 * @param array Tags to associate with this cache entry
-	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param string $entryIdentifier An identifier used for this cache entry
+	 * @param string $string The variable to cache
+	 * @param array $tags Tags to associate with this cache entry
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
+	 * @throws \InvalidArgumentException if the identifier or tag is not valid
+	 * @throws t3lib_cache_exception_InvalidData if the variable to cache is not of type string
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
-	public function set($entryIdentifier, $string, $tags = array(), $lifetime = NULL) {
+	public function set($entryIdentifier, $string, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
 				1233057566
 			);
@@ -62,7 +64,7 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {
-				throw new InvalidArgumentException(
+				throw new \InvalidArgumentException(
 					'"' . $tag . '" is not a valid tag for a cache entry.',
 					1233057512
 				);
@@ -73,15 +75,17 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	}
 
 	/**
-	 * Loads a variable value from the cache.
+	 * Finds and returns a variable value from the cache.
 	 *
-	 * @param string Identifier of the cache entry to fetch
+	 * @param string $entryIdentifier Identifier of the cache entry to fetch
 	 * @return string The value
+	 * @throws \InvalidArgumentException if the cache identifier is not valid
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function get($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $entryIdentifier . '" is not a valid cache entry identifier.',
 				1233057752
 			);
@@ -95,11 +99,13 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 *
 	 * @param string $tag The tag to search for
 	 * @return array An array with the content of all matching entries. An empty array if no entries matched
+	 * @throws \InvalidArgumentException if the tag is not valid
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function getByTag($tag) {
 		if (!$this->isValidTag($tag)) {
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'"' . $tag . '" is not a valid tag for a cache entry.',
 				1233057772
 			);
@@ -107,11 +113,9 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 
 		$entries = array();
 		$identifiers = $this->backend->findIdentifiersByTag($tag);
-
 		foreach ($identifiers as $identifier) {
 			$entries[] = $this->backend->get($identifier);
 		}
-
 		return $entries;
 	}
 

@@ -40,6 +40,22 @@
  * @subpackage tests
  */
 class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
+
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
 	/**
 	 * If set, the tearDown() method will flush the cache used by this unit test.
 	 *
@@ -68,7 +84,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 			if (!@fsockopen('127.0.0.1', 6379)) {
 				$this->markTestSkipped('redis server not reachable');
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$this->markTestSkipped('redis server not reachable');
 		}
 	}
@@ -76,15 +92,16 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the redis backend used for testing
 	 *
-	 * @param array Options for the redis backend
+	 * @param array $backendOptions Options for the redis backend
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$mockCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
 
-		$this->backend = new t3lib_cache_backend_RedisBackend($backendOptions);
+		$this->backend = new t3lib_cache_backend_RedisBackend('Testing', $backendOptions);
 		$this->backend->setCache($mockCache);
+		$this->backend->initializeObject();
 	}
 
 	/**
@@ -93,7 +110,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpRedis() {
-		$this->redis = new Redis();
+		$this->redis = new \Redis();
 		$this->redis->connect('127.0.0.1', 6379);
 	}
 
@@ -106,30 +123,36 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		if ($this->backend instanceof t3lib_cache_backend_RedisBackend) {
 			$this->backend->flush();
 		}
-
-		unset($this->redis, $this->backend);
 	}
 
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
-	public function constructorThrowsNoExceptionIfPasswordOptionIsSet() {
-		$this->setUpBackend(array('password' => 'foo'));
+	public function initializeObjectThrowsNoExceptionIfPasswordOptionIsSet() {
+		try {
+			$this->setUpBackend(array('password' => 'foo'));
+		} catch (Exception $e) {
+			$this->assertTrue();
+		}
 	}
 
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
-	public function constructorThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
-		$this->setUpBackend(array('database' => 1));
+	public function initializeObjectThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
+		try {
+			$this->setUpBackend(array('database' => 1));
+		} catch (Exception $e) {
+			$this->assertTrue();
+		}
 	}
 
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger() {
 		$this->setUpBackend(array('database' => 'foo'));
@@ -138,7 +161,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNegative() {
 		$this->setUpBackend(array('database' => -1));
@@ -147,7 +170,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean() {
 		$this->setUpBackend(array('compression' => 'foo'));
@@ -156,7 +179,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger() {
 		$this->setUpBackend(array('compressionLevel' => 'foo'));
@@ -165,7 +188,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine() {
 		$this->setUpBackend(array('compressionLevel' => 11));
@@ -174,7 +197,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfIdentifierIsNotAString() {
 		$this->setUpBackend();
@@ -194,7 +217,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfLifetimeIsNegative() {
 		$this->setUpBackend();
@@ -204,7 +227,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger() {
 		$this->setUpBackend();
@@ -237,7 +260,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		$identifier = 'identifier' . uniqid();
 		$this->backend->set($identifier, 'data');
 
-		$this->assertSame(Redis::REDIS_STRING, $this->redis->type('identData:' . $identifier));
+		$this->assertSame(\Redis::REDIS_STRING, $this->redis->type('identData:' . $identifier));
 	}
 
 	/**
@@ -371,7 +394,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		$identifier = 'identifier' . uniqid();
 		$this->backend->set($identifier, 'data', array('tag'));
 
-		$this->assertSame(Redis::REDIS_SET, $this->redis->type('identTags:' . $identifier));
+		$this->assertSame(\Redis::REDIS_SET, $this->redis->type('identTags:' . $identifier));
 	}
 
 	/**
@@ -438,7 +461,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		$tag = 'tag';
 		$this->backend->set($identifier, 'data', array($tag));
 
-		$this->assertSame(Redis::REDIS_SET, $this->redis->type('tagIdents:' . $tag));
+		$this->assertSame(\Redis::REDIS_SET, $this->redis->type('tagIdents:' . $tag));
 	}
 
 	/**
@@ -531,7 +554,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		$uncompresedStoredData = '';
 		try {
 			$uncompresedStoredData = @gzuncompress($this->redis->get('identData:' . $identifier));
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 		}
 
 		$this->assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');
@@ -560,7 +583,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function hasThrowsExceptionIfIdentifierIsNotAString() {
 		$this->setUpBackend();
@@ -591,7 +614,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getThrowsExceptionIfIdentifierIsNotAString() {
 		$this->setUpBackend();
@@ -631,7 +654,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function removeThrowsExceptionIfIdentifierIsNotAString() {
 		$this->setUpBackend();
@@ -726,7 +749,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString() {
 		$this->setUpBackend();
@@ -796,8 +819,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-
-
 	/**
 	 * @test Implementation
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
@@ -816,7 +837,7 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function flushByTagThrowsExceptionIfTagIsNotAString() {
 		$this->setUpBackend();
