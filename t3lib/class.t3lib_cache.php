@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A cache handling helper class
  *
@@ -31,6 +30,7 @@
  * @subpackage t3lib
  */
 class t3lib_cache {
+
 	/**
 	 * @var	boolean
 	 */
@@ -45,8 +45,7 @@ class t3lib_cache {
 	public static function initializeCachingFramework() {
 		if (!self::isCachingFrameworkInitialized()) {
 			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
-			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory', 'production', $GLOBALS['typo3CacheManager']);
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 	}
