@@ -27,7 +27,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -56,7 +56,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 			try {
 				$abstractCache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
 				$this->fail('Identifier "' . $identifier . '" was not rejected.');
-			} catch (InvalidArgumentException $exception) {
+			} catch (\InvalidArgumentException $exception) {
 			}
 		}
 	}
@@ -130,7 +130,7 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'findIdentifiersByTags', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'), array(), '', FALSE);
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-		$this->assertEquals('%CLASS%F3_Foo_Bar_Baz', $cache->getClassTag('F3\Foo\Bar\Baz'));
+		$this->assertEquals('%CLASS%F3_Foo_Bar_Baz', t3lib_cache_Manager::getClassTag('F3\Foo\Bar\Baz'));
 	}
 
 	/**

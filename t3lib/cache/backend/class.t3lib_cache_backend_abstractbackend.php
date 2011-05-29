@@ -39,7 +39,6 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 
 	/**
 	 * Reference to the cache which uses this backend
-	 *
 	 * @var t3lib_cache_frontend_Frontend
 	 */
 	protected $cache;
@@ -50,8 +49,18 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	protected $cacheIdentifier;
 
 	/**
-	 * Default lifetime of a cache entry in seconds
+	 * The current application context
 	 *
+	 * TYPO3 v4 note: This variable is currently unused in v4 context and set to
+	 * "production" always by t3lib_cache. It is only kept to stay in sync with
+	 * FLOW3 code.
+	 *
+	 * @var string
+	 */
+	protected $context;
+
+	/**
+	 * Default lifetime of a cache entry in seconds
 	 * @var integer
 	 */
 	protected $defaultLifetime = 3600;
@@ -59,17 +68,24 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	/**
 	 * Constructs this backend
 	 *
+	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - depends on the actual backend
+	 * @throws \InvalidArgumentException
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
-	public function __construct(array $options = array()) {
+	public function __construct($context, array $options = array()) {
+		$this->context = $context;
 		if (is_array($options) || $options instanceof ArrayAccess) {
 			foreach ($options as $optionKey => $optionValue) {
 				$methodName = 'set' . ucfirst($optionKey);
 				if (method_exists($this, $methodName)) {
 					$this->$methodName($optionValue);
 				} else {
-					throw new InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . get_class($this) . '"', 1235837747);
+					throw new \InvalidArgumentException(
+						'Invalid cache backend option "' . $optionKey . '" for backend of type "' . get_class($this) . '"',
+						1231267498
+					);
 				}
 			}
 		}
@@ -78,9 +94,10 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	/**
 	 * Sets a reference to the cache frontend which uses this backend
 	 *
-	 * @param t3lib_cache_frontend_Frontend The frontend for this backend
+	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		$this->cache = $cache;
@@ -93,6 +110,7 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 * @param integer $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
 	public function setDefaultLifetime($defaultLifetime) {
 		if (!is_int($defaultLifetime) || $defaultLifetime < 0) {
@@ -112,16 +130,15 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 * @param integer $lifetime The lifetime in seconds
 	 * @return \DateTime The expiry time
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @internal
 	 */
 	protected function calculateExpiryTime($lifetime = NULL) {
 		if ($lifetime === self::UNLIMITED_LIFETIME || ($lifetime === NULL && $this->defaultLifetime === self::UNLIMITED_LIFETIME)) {
-			$expiryTime = new DateTime(self::DATETIME_EXPIRYTIME_UNLIMITED, new DateTimeZone('UTC'));
+			$expiryTime = new \DateTime(self::DATETIME_EXPIRYTIME_UNLIMITED, new \DateTimeZone('UTC'));
 		} else {
 			if ($lifetime === NULL) {
 				$lifetime = $this->defaultLifetime;
 			}
-			$expiryTime = new DateTime('now +' . $lifetime . ' seconds', new DateTimeZone('UTC'));
+			$expiryTime = new \DateTime('now +' . $lifetime . ' seconds', new \DateTimeZone('UTC'));
 		}
 
 		return $expiryTime;

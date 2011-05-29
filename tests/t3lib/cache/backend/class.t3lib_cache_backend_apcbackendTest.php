@@ -57,9 +57,9 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new t3lib_cache_backend_ApcBackend();
+		$backend = new t3lib_cache_backend_ApcBackend('Testing');
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 	}
 
@@ -70,7 +70,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
 		$this->assertTrue($inCache, 'APC backend failed to set and check entry');
@@ -83,7 +83,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
 		$this->assertEquals($data, $fetchedData, 'APC backend failed to set and retrieve data');
@@ -96,7 +96,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
@@ -110,7 +110,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
@@ -126,7 +126,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
@@ -144,7 +144,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'Some data';
-		$identifier = uniqid('MyIdentifier');
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 
@@ -158,7 +158,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = uniqid('NonExistingIdentifier');
+		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->has($identifier);
 		$this->assertFalse($inCache,'"has" did not return FALSE when checking on non existing identifier');
 	}
@@ -169,7 +169,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = uniqid('NonExistingIdentifier');
+		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->remove($identifier);
 		$this->assertFalse($inCache,'"remove" did not return FALSE when checking on non existing identifier');
 	}
@@ -221,12 +221,12 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new t3lib_cache_backend_ApcBackend();
+		$thisBackend = new t3lib_cache_backend_ApcBackend('Testing');
 		$thisBackend->setCache($thisCache);
 
 		$thatCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new t3lib_cache_backend_ApcBackend();
+		$thatBackend = new t3lib_cache_backend_ApcBackend('Testing');
 		$thatBackend->setCache($thatCache);
 
 		$thisBackend->set('thisEntry', 'Hello');
@@ -247,7 +247,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = str_repeat('abcde', 1024 * 1024);
-		$identifier = uniqid('tooLargeData');
+		$identifier = 'tooLargeData' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 
 		$this->assertTrue($backend->has($identifier));
@@ -257,14 +257,13 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the APC backend used for testing
 	 *
-	 * @param array $backendOptions Options for the APC backend
 	 * @return t3lib_cache_backend_ApcBackend
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	protected function setUpBackend() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_ApcBackend();
+		$backend = new t3lib_cache_backend_ApcBackend('Testing');
 		$backend->setCache($cache);
 
 		return $backend;
