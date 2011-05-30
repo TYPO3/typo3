@@ -143,6 +143,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					}
 				</script>
 			';
+			$this->doc->getPageRenderer()->addInlineSetting('scheduler', 'runningIcon', t3lib_extMgm::extRelPath('scheduler') . 'res/gfx/status_running.png');
 
 				// Prepare main content
 			$this->content  = $this->doc->header(
@@ -1156,7 +1157,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 						// Format the execution status,
 						// including failure feedback, if any
-					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.legend.' . $executionStatus)) . '" />' . $failureOutput;
+					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' id="executionstatus_' . $schedulerRecord['uid'] . '" alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.legend.' . $executionStatus)) . '" />' . $failureOutput;
 
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;
@@ -1193,7 +1194,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Render table
 			$content .= $this->doc->table($table, $tableLayout);
 
-			$content .= '<input type="submit" class="button" name="go" value="' . $GLOBALS['LANG']->getLL('label.executeSelected') . '" />';
+			$content .= '<input type="submit" class="button" name="go" id="scheduler_executeselected" value="' . $GLOBALS['LANG']->getLL('label.executeSelected') . '" />';
 		}
 
 		if (count($registeredClasses) > 0) {
