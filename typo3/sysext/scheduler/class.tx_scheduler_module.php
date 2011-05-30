@@ -135,6 +135,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					function jumpToUrl(URL) {
 						document.location = URL;
 					}
+						// Scheduler: Icon for running status
+					var schedulerRunningIcon = ' . t3lib_div::quoteJSvalue(t3lib_extMgm::extRelPath('scheduler') . 'res/gfx/status_running.png') . ';
 				</script>
 			';
 
