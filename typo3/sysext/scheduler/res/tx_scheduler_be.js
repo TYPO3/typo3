@@ -30,7 +30,7 @@
 /**
  * Global variable to keep track of checked/unchecked status of all
  * checkboxes for execution selection
- * 
+ *
  * @var	boolean
  */
 var allCheckedStatus = false;
@@ -98,3 +98,26 @@ function toggleCheckboxes() {
 		checkboxes.item(i).dom.checked = allCheckedStatus;
 	}
 }
+
+/**
+ * Ext.onReader functions
+ *
+ * onClick event for scheduler task execution from backend module
+ */
+Ext.onReady(function(){
+	Ext.addBehaviors({
+			// Add a listener for click on scheduler execute button
+		'#scheduler_executeselected@click' : function(e, t){
+				// Get all active checkboxes with proper class
+			var checkboxes = Ext.select('.checkboxes:checked');
+			var count = checkboxes.getCount();
+			var idParts;
+
+				// Set the status icon all to same status: running
+			for (var i = 0; i < count; i++) {
+				idParts = checkboxes.item(i).id.split('_');
+				Ext.select('#executionstatus_' + idParts[1]).item(0).set({src: TYPO3.settings.scheduler.runningIcon});
+			}
+		}
+	});
+});
