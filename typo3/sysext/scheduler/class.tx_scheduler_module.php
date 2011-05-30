@@ -1445,7 +1445,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * @param	string		$string: string to check
 	 * @return	integer		Unix timestamp
 	 */
-	protected function checkDate($string) {
+	public function checkDate($string) {
 			// Try with strtotime
 		$timestamp = strtotime($string);
 
