@@ -343,7 +343,11 @@ class t3lib_admin {
 				);
 				$lostIdList = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($garbage)) {
-					$this->lRecords[$table][$row['uid']] = array('uid' => $row['uid'], 'pid' => $row['pid'], 'title' => strip_tags($row[$GLOBALS['TCA'][$table]['ctrl']['label']]));
+					$this->lRecords[$table][$row['uid']] = array(
+						'uid' => $row['uid'],
+						'pid' => $row['pid'],
+						'title' => strip_tags(t3lib_BEfunc::getRecordTitle($table, $row)),
+					);
 					$lostIdList[] = $row['uid'];
 				}
 				if ($table == 'pages') {
