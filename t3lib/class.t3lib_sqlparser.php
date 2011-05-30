@@ -2057,12 +2057,12 @@ class t3lib_sqlparser {
 						$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 						$output .= ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
-						$output = ' ' . trim($v['modifier']) . ' IFNULL(';
+						$output .= ' ' . trim($v['modifier']) . ' IFNULL(';
 						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 						$output .= ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
-						$output = ' ' . trim($v['modifier']) . ' FIND_IN_SET(';
+						$output .= ' ' . trim($v['modifier']) . ' FIND_IN_SET(';
 						$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
 						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ')';
