@@ -116,8 +116,8 @@ class tx_Workspaces_Service_GridData {
 					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
-					$versionArray['label_Workspace'] = htmlspecialchars($versionRecord[$GLOBALS['TCA'][$table]['ctrl']['label']]);
-					$versionArray['label_Live'] = htmlspecialchars($origRecord[$GLOBALS['TCA'][$table]['ctrl']['label']]);
+					$versionArray['label_Workspace'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $versionRecord));
+					$versionArray['label_Live'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$versionArray['change'] = $pctChange;
 					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
