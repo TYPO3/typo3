@@ -9,7 +9,7 @@
 /* panel containing the tabs */
 .x-tab-panel-header {
 	background-color: #3f3f3f;
-	background-image: url('../../../../t3skin/images/backgrounds/topbar.png');
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/topbar.png');
 	background-image: -moz-linear-gradient(center top, #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #494949), color-stop(0.91, #373737), color-stop(0.92, #343434), color-stop(1, #2a2a2a));
 	background-repeat: repeat-x;
@@ -130,21 +130,6 @@ ul.x-tab-strip-top {
 	background-image: url('../Images/slider-bg.png');
 }
 
-/* text */
-.x-btn.sliderButton .x-btn-text {
-	color: #a0a0a0;
-	font-style: normal;
-}
-
-/* alignment of text in Button "Live" */
-#sizeSliderButtonLive .x-btn-mc {
-	text-align: right;
-}
-
-/* alignment of text in Button "Workspace" */
-#sizeSliderButtonWorkspace .x-btn-mc {
-	text-align: left;
-}
 
 #visual-mode-selector {
 	list-style: none;
@@ -202,4 +187,166 @@ ul.x-tab-strip-top {
 	-ms-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* the mask for dialogs */
+.ext-el-mask {
+	background-color: #000000;
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+	filter:alpha(opacity=75);
+}
+
+.x-mask-loading {
+	border: none;
+}
+
+.x-mask-loading div {
+	background-image: url("../../../../t3skin/images/spinner/big-f0f0f0.gif");
+	background-position: top center;
+	border: none;
+	color: #828282;
+	padding-top: 40px;
+}
+
+.x-window-tc {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/top-bottom.png);
+}
+.x-window-tl {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-corners.png);
+}
+.x-window-tr {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/right-corners.png);
+}
+.x-window-bc {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/top-bottom.png);
+}
+.x-window-bl {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-corners.png);
+}
+.x-window-br {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/right-corners.png);
+}
+
+.x-window-ml {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-right.png);
+}
+.x-window-mr {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-right.png);
+}
+
+.x-window-mc {
+	border:1px solid #A2AAB8;
+	background:#e8e8e8;
+}
+
+.x-window-tl .x-window-header {
+    color: #FFFFFF;
+    font: bold 10px verdana,arial,tahoma,verdana,sans-serif;
+    padding: 4px 0;
+}
+.x-window-draggable, .x-window-draggable .x-window-header-text {
+    cursor: move;
+}
+
+.x-window-tl .x-window-header {
+	color:#fff;
+	font:bold 10px verdana, arial,tahoma,verdana,sans-serif;
+	padding:4px 0 4px 0;
+}
+
+.x-window-mc {
+	border-color:#A2AAB8;
+	font: normal 10px verdana, arial,tahoma,helvetica,sans-serif;
+	background-color:#e7e7e7;
+}
+
+.x-window-maximized .x-window-tc {
+	background-color:#fff;
+}
+
+.x-window-bbar .x-toolbar {
+	border-top-color:#A2AAB8;
+}
+
+.x-form-text, textarea.x-form-field {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-color: #B5B8C8;
+}
+
+.x-btn {
+	color: #FFF;
+}
+#sendToStageWindow .x-btn {
+	background-color: #d5d5d5;
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/button.png');
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	border: 1px solid #7c7c7c;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
+	color: #434343;
+}
+#sendToStageWindow .x-btn-pressed,
+#sendToStageWindow .x-btn-over,
+#sendToStageWindow .x-btn-icon.x-btn-over {
+	background-color: #bdbcbc;
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/button-hover.png');
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #bdbcbc));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	border-color: #737f91;
+	color: #1e1e1e;
+}
+
+#sendToStageWindow .x-btn-over .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-click .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-menu-active .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-pressed .x-btn-mc em.x-btn-split {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/button/s-arrow-o.gif);
+}
+
+.x-tool {
+    background-image: url("../../../../../../typo3/sysext/t3skin/extjs/images/panel/tool-sprites.gif");
+}
+
+.x-tool-close {
+    background-position: 0 0;
+}
+.x-tool-close-over {
+    background-position: -15px 0;
+}
+
+/* text */
+.x-btn.sliderButton .x-btn-text {
+    color: #A0A0A0;
+    font-style: normal;
+}
+
+/* alignment of text in Button "Live" */
+#sizeSliderButtonLive .x-btn-mc {
+	text-align: right;
+}
+
+/* alignment of text in Button "Workspace" */
+#sizeSliderButtonWorkspace .x-btn-mc {
+	text-align: left;
+}
+.x-panel-header {
+	border: none;
+	font-weight: bold;
+	padding-left:0px;
+}
+
+.x-window-dlg .x-btn {
+     background-color: #D5D5D5;
+     background-image: -moz-linear-gradient(center top , #F6F6F6 10%, #D5D5D5 90%);
+     background-repeat: repeat-x;
+     border-radius: 1px 1px 1px 1px;
+     border: 1px solid #7C7C7C;
+     color: #434343;
 }

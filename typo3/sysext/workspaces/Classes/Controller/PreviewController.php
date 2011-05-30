@@ -59,6 +59,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
 		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
+		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
+
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 
