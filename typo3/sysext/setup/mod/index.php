@@ -867,6 +867,7 @@ class SC_mod_user_setup_index {
 					($parent->getInstallToolFileKeep() ? ' disabled="disabled"' : '') .
 					' value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" onclick="document.getElementById(\'deleteInstallToolEnableFile\').value=1;this.form.submit();" />
 					<input type="hidden" name="deleteInstallToolEnableFile" value="0" id="deleteInstallToolEnableFile" />
+					<br /><a href="javascript:top.goToModule(\'tools_install\',1);">'.$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.goToInstallTool').'</a>
 					';
 
 		} else {
