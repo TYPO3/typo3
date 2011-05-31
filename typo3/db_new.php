@@ -120,6 +120,7 @@ class SC_db_new {
 	var $newPagesInto;
 	var $newContentInto;
 	var $newPagesAfter;
+	protected $newPagesSelectPosition = 1;
 	var $web_list_modTSconfig;
 	var $allowedNewTables;
 	var $deniedNewTables;
@@ -370,6 +371,20 @@ class SC_db_new {
 		$secondLevelLast = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
 						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
 
+			// Get TSconfig for current page
+		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
+			// Finish initializing new pages options with TSconfig
+			// Each new page option may be hidden by TSconfig
+		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside'] === '0') {
+			$this->newPagesInto = 0;
+		}
+		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter'] === '0') {
+			$this->newPagesAfter = 0;
+		}
+		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition'] === '0') {
+			$this->newPagesSelectPosition = 0;
+		}
+
 			// Slight spacer from header:
 		$this->code .= $halfLine;
 
@@ -379,33 +394,33 @@ class SC_db_new {
 		$pageIcon = t3lib_iconWorks::getSpriteIconForRecord($table,array());
 
 		$newPageIcon = t3lib_iconWorks::getSpriteIcon('actions-page-new');
-		$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>';
+		$rowContent = '';
 
 			// New pages INSIDE this pages
+		$newPageLinks = array();
 		if ($this->newPagesInto
 			&& $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
 			&& $GLOBALS['BE_USER']->check('tables_modify','pages')
 			&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, 'pages')
-			)	{
+			) {
 
 				// Create link to new page inside:
-
-			$rowContent .= '<br />' . $secondLevel . $this->linkWrap(
-						t3lib_iconWorks::getSpriteIconForRecord($table, array()) .
-						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside', 1) . ')',
-						$table,
-						$this->id);
+			$newPageLinks[] = $this->linkWrap(
+				t3lib_iconWorks::getSpriteIconForRecord($table, array()) .
+				$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside', 1) . ')',
+				$table,
+				$this->id
+			);
 		}
 
 				// New pages AFTER this pages
 		if ($this->newPagesAfter
-				&& $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
-				&& $GLOBALS['BE_USER']->check('tables_modify', 'pages')
-				&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
-				)	{
+			&& $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
+			&& $GLOBALS['BE_USER']->check('tables_modify', 'pages')
+			&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+			) {
 
-				$rowContent .= '<br />' . $secondLevel .
-				$this->linkWrap(
+				$newPageLinks[] = $this->linkWrap(
 					$pageIcon .
 						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1) . ')',
 					'pages',
@@ -414,19 +429,35 @@ class SC_db_new {
 
 		}
 
-			// Link to page-wizard:
-		$rowContent.=  '<br />' . $secondLevelLast .
-			'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => 1))) . '">' .
-			$pageIcon .
-			htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) .
-			'</a>';
+			// New pages at selection position
+		if ($this->newPagesSelectPosition) {
+				// Link to page-wizard:
+			$newPageLinks[] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => 1))) . '">' .
+				$pageIcon .
+				htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) .
+				'</a>';
+		}
 
-			// Half-line:
-		$rowContent.= '<br />' . $halfLine;
+			// Assemble all new page links
+		$numPageLinks = count($newPageLinks);
+		for ($i = 0; $i < $numPageLinks; $i++) {
+				// For the last link, use the "branch bottom" icon
+			if ($i == $numPageLinks - 1) {
+				$treeComponent = $secondLevelLast;
+			} else {
+				$treeComponent = $secondLevel;
+			}
+			$rowContent .= '<br />' . $treeComponent . $newPageLinks[$i];
+		}
+			// Add row header and half-line if not empty
+		if (!empty($rowContent)) {
+			$rowContent.= '<br />' . $halfLine;
+			$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>' . $rowContent;
+		}
 
 			// Compile table row to show the icon for "new page (select position)"
 		$startRows = array();
-		if ($this->showNewRecLink('pages')) {
+		if ($this->showNewRecLink('pages') && !empty($rowContent)) {
 			$startRows[] = '
 				<tr>
 					<td nowrap="nowrap">' . $rowContent . '</td>
@@ -547,7 +578,6 @@ class SC_db_new {
 		}
 
 			// user sort
-		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
 			$this->newRecordSortList = t3lib_div::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], TRUE);
 		}
