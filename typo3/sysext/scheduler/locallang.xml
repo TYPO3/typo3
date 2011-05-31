@@ -10,6 +10,8 @@
 			<label index="testTask.description">The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</label>
 			<label index="sleepTask.name">Scheduler sleep task</label>
 			<label index="sleepTask.description">This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</label>
+			<label index="saveTaskObjectStateTask.name">Scheduler save task object state task</label>
+			<label index="saveTaskObjectStateTask.description">This task does nothing but shows the usage of saving the task object state after execution. It is designed to test the task object state saving.</label>
 			<label index="cachingFrameworkGarbageCollection.name">Caching framework garbage collection</label>
 			<label index="cachingFrameworkGarbageCollection.description">This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</label>
 		</languageKey>

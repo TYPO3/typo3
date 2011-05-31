@@ -44,6 +44,7 @@
 			<label index="label.type">Type</label>
 			<label index="label.type.recurring">Recurring</label>
 			<label index="label.type.single">Single</label>
+			<label index="label.savedString">Saved string</label>
 			<label index="msg.addError">The task could not be added.</label>
 			<label index="msg.addSuccess">The task was added successfully.</label>
 			<label index="msg.cliScript">The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</label>

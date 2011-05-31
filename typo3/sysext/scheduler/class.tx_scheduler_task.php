@@ -72,6 +72,18 @@ abstract class tx_scheduler_Task {
 	protected $executionTime = 0;
 
 	/**
+	 * Task object save state flag.
+	 *
+	 * If TRUE the state of scheduler task object will be saved in database.
+	 * At the next execution, internal member variables have the same value like last run.
+	 * If FALSE the state won`t be saved.
+	 * At the next execution, all member variables are back to default values.
+	 *
+	 * @var boolean
+	 */
+	protected $saveTaskObjectState = FALSE;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -142,6 +154,33 @@ abstract class tx_scheduler_Task {
 		} else {
 			$this->disabled = FALSE;
 		}
+	}
+
+	/**
+	 * This method is used to enable saving of task after execution
+	 *
+	 * @return	void
+	 */
+	public function enableSavingTheTaskObjectState() {
+		$this->saveTaskObjectState = TRUE;
+	}
+
+	/**
+	 * This method is used to disable saving of task after execution
+	 *
+	 * @return	void
+	 */
+	public function disableSavingTheTaskObjectState() {
+		$this->saveTaskObjectState = FALSE;
+	}
+
+	/**
+	 * This method returns the flag if saving the task object state after execution is enabled or not
+	 *
+	 * @return	boolean
+	 */
+	public function isSavingTheTaskObjectStateEnabled() {
+		return $this->saveTaskObjectState;
 	}
 
 	/**

@@ -184,6 +184,11 @@ class tx_scheduler implements t3lib_Singleton {
 				$failure = $e;
 			}
 
+				// If it is enabled, the task state will be saved for the next execution
+			if ($task->isSavingTheTaskObjectStateEnabled() === TRUE) {
+				$this->saveTask($task, FALSE);
+			}
+
 				// Unregister excution
 			$task->unmarkExecution($executionID, $failure);
 
@@ -241,30 +246,49 @@ class tx_scheduler implements t3lib_Singleton {
 	 * Updates a task in the pool
  	 *
 	 * @param	tx_scheduler_Task	$task: Scheduler task object
+	 * @param	boolean				$calculateNextExecutionTime: If TRUE the execution time for the next run is calculated and saved, otherwise not
 	 * @return	boolean				False if submitted task was not of proper class
 	 */
-	public function saveTask(tx_scheduler_Task $task) {
+	public function saveTask(tx_scheduler_Task $task, $calculateNextExecutionTime = TRUE) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
-			try {
-				$executionTime = $task->getNextDueExecution();
-				$task->setExecutionTime($executionTime);
+
+			$fields = array();
+			if ($calculateNextExecutionTime === TRUE) {
+				$executionTime = $this->calculateNextExecutionTime($task);
+				$fields = array(
+					'nextexecution' => $executionTime,
+					'classname' => get_class($task),
+					'disable' => $task->isDisabled()
+				);
 			}
-			catch (Exception $e) {
-				$task->setDisabled(TRUE);
-				$executionTime = 0;
-			}
+
 			$task->unsetScheduler();
-			$fields = array(
-				'nextexecution' => $executionTime,
-				'classname' => get_class($task),
-				'disable' => $task->isDisabled(),
-				'serialized_task_object' => serialize($task)
-			);
+			$fields['serialized_task_object'] = serialize($task);
+
 			return $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', "uid = '" . $taskUid . "'", $fields);
 		} else {
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Returns the UNIX timestamp for the next execution
+	 *
+	 * @param	tx_scheduler_Task	$task: Scheduler task object
+	 * @return	integer				Timestamp of next execution
+	 */
+	protected function calculateNextExecutionTime(tx_scheduler_Task $task) {
+		try {
+			$executionTime = $task->getNextDueExecution();
+			$task->setExecutionTime($executionTime);
+		}
+		catch (Exception $e) {
+			$task->setDisabled(TRUE);
+			$executionTime = 0;
+		}
+
+		return $executionTime;
 	}
 
 	/**

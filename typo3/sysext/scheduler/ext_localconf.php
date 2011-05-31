@@ -27,6 +27,13 @@ if (!empty($extConf['showSampleTasks'])) {
 		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:sleepTask.description',
 		'additionalFields' => 'tx_scheduler_SleepTask_AdditionalFieldProvider'
 	);
+
+		// Register SaveTaskObjectStateTask
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_SaveTaskObjectStateTask'] = array(
+		'extension'        => $_EXTKEY,
+		'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:saveTaskObjectStateTask.name',
+		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:saveTaskObjectStateTask.description',
+	);
 }
 
 	// Add caching framework garbage collection task
