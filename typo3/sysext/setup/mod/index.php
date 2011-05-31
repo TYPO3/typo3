@@ -872,7 +872,9 @@ class SC_mod_user_setup_index {
 		} else {
 			return '<input type="button" name="createInstallToolEnableFile" value="' .
 					$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" onclick="document.getElementById(\'createInstallToolEnableFile\').value=1;this.form.submit();" />
-					<input type="hidden" name="createInstallToolEnableFile" value="0" id="createInstallToolEnableFile" />';
+					<input type="hidden" name="createInstallToolEnableFile" value="0" id="createInstallToolEnableFile" />
+					<br />
+-					<a href="javascript:top.goToModule(\'tools_install\',1);">'.$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.goToInstallTool').'</a>;
 		}
 	}
 
