@@ -79,6 +79,27 @@ class tx_scheduler_Execution {
 	 */
 	protected $isNewSingleExecution = FALSE;
 
+	/**
+	 * Keeps current timestamp.
+	 * Base for all calculations in "now" context.
+	 *
+	 * @var integer
+	 */
+	protected $currentTimestamp;
+
+	/**
+	 * Class constructor
+	 *
+	 * @access	public
+	 * @param	integer		$currentTimestamp	Current timestamp which is used as base for all calculations
+	 */
+	public function __construct($currentTimestamp = NULL) {
+		if ($currentTimestamp === NULL) {
+			$this->currentTimestamp = $GLOBALS['EXEC_TIME'];
+		} else {
+			$this->currentTimestamp = intval($currentTimestamp);
+		}
+	}
 
 	/**********************************
 	 * Setters and getters
@@ -197,6 +218,27 @@ class tx_scheduler_Execution {
 	}
 
 	/**
+	 * Sets current timestamp (base in context "now").
+	 *
+	 * @access	public
+	 * @param	integer		$timestamp		UNIX timestamp which is used for all calculations
+	 * @return	void
+	 */
+	public function setCurrentTimestamp($timestamp) {
+		$this->currentTimestamp = $timestamp;
+	}
+
+	/**
+	 * Returns current timestamp (basis in context "now").
+	 *
+	 * @access	public
+	 * @return	integer		timestamp		UNIX timestamp which is used for all calculations
+	 */
+	public function getCurrentTimestamp() {
+		return $this->currentTimestamp;
+	}
+
+	/**
 	 * Get whether this is a newly created single execution
 	 *
 	 * @return	boolean		Is newly created single execution?
@@ -238,8 +280,7 @@ class tx_scheduler_Execution {
 					$date = $this->start;
 				} else {
 						// Otherwise calculate date based on interval
-					$now = time();
-					$date = $now + $this->interval - (($now - $this->start) % $this->interval);
+					$date = $this->currentTimestamp + $this->interval - (($this->currentTimestamp - $this->start) % $this->interval);
 				}
 					// If date is in the future, throw an exception
 				if (!empty($this->end) && $date > $this->end) {
@@ -260,7 +301,7 @@ class tx_scheduler_Execution {
 	 * @return	integer		Next execution (timestamp)
 	 */
 	public function getNextCronExecution() {
-		$cronCmd = t3lib_div::makeInstance('tx_scheduler_CronCmd', $this->getCronCmd());
+		$cronCmd = t3lib_div::makeInstance('tx_scheduler_CronCmd', $this->getCronCmd(), $this->currentTimestamp);
 		$cronCmd->calculateNextValue();
 
 		return $cronCmd->getTimestamp();
@@ -272,7 +313,7 @@ class tx_scheduler_Execution {
 	 * @return	boolean		TRUE if the schedule is already active, FALSE otherwise
 	 */
 	public function isStarted() {
-		return $this->start < time();
+		return $this->start <= $this->currentTimestamp;
 	}
 
 	/**
@@ -286,7 +327,7 @@ class tx_scheduler_Execution {
 			$result = FALSE;
 		} else {
 				// Otherwise check if end is in the past
-			$result = $this->end < time();
+			$result = $this->end < $this->currentTimestamp;
 		}
 
 		return $result;
