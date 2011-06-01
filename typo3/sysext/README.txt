@@ -1,13 +1,40 @@
-typo3/sysext/
+*******************************************************************************
+System Extensions for TYPO3
+*******************************************************************************
 
-"System" extensions for TYPO3
-This is also a global repository for extensions in TYPO3, just like the global extensions (in typo3/ext/)
-System extensions cannot (by default at least) be updated like global and local extensions; They are meant to always be distributed with the core (while global extensions
-in ext/ are not) and to the user they will probably be understood more like a part of the core since they come along with the core. But technically they are extensions for various reasons.
+This document is a part of the TYPO3 project. TYPO3 is an open source web
+content management system released under the GNU GPL. TYPO3 is copyright
+(c) 1999-2011 by Kasper Skaarhoj.
 
-System Extensions are in the TYPO3core SVN module.
-System Extensions should be hidden in TER (last check of this was oct. 2005 by kasper)
+This document provides information about the content of the typo3/sysext
+folder.
 
-System extensions with manuals are currently (oct 2005):
-- css_styled_content
-- indexed_search
+===============================================================================
+Content
+===============================================================================
+
+This is the repository for extensions which are shipped with the core. They are
+regular extensions with the difference that they are not available on the TYPO3
+Extension Repository (ter), but instead are part of the Core packages.
+
+Since they are shipped with the TYPO3 core (typo3_src package), their content
+will change when updating the core. They are packaged together with the core
+by the release team, so updating the core will update these extensions too.
+
+===============================================================================
+Git Repositories
+===============================================================================
+
+Most of these extensions are developed by the core team itself and are
+maintained directly in the main Core Git repository:
+
+http://git.typo3.org/TYPO3v4/Core.git
+
+Some of the extensions are developed by external teams (e.g. dbal, version,
+workspaces) and are thus maintained in separate Git repositories and linked
+into the core as submodules.
+
+In order to retrieve them together with the core, issue these commands:
+
+git pull
+git submodule update --init
