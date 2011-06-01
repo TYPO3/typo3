@@ -1492,6 +1492,8 @@ class tslib_menu {
 	 */
 	function isItemState($kind,$key)	{
 		$natVal=0;
+		$uid = $this->menuArr[$key]['uid'];
+		$linkUid = $this->resolveLinkUid($key);
 		if ($this->menuArr[$key]['ITEM_STATE'])	{		// If any value is set for ITEM_STATE the normal evaluation is discarded
 			if (!strcmp($this->menuArr[$key]['ITEM_STATE'],$kind))	{$natVal=1;}
 		} else {
@@ -1500,19 +1502,19 @@ class tslib_menu {
 					$natVal = $this->menuArr[$key]['isSpacer'];
 				break;
 				case 'IFSUB':
-					$natVal = $this->isSubMenu($this->menuArr[$key]['uid']);
+					$natVal = $this->isSubMenu($uid);
 				break;
 				case 'ACT':
-					$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					$natVal = $this->isActive($uid, $this->getMPvar($key));
 				break;
 				case 'ACTIFSUB':
-					$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					$natVal = $this->isActive($uid, $this->getMPvar($key)) && $this->isSubMenu($uid);
 				break;
 				case 'CUR':
-					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					$natVal = $this->isCurrent($linkUid, $this->getMPvar($key));
 				break;
 				case 'CURIFSUB':
-					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					$natVal = $this->isCurrent($linkUid, $this->getMPvar($key)) && $this->isSubMenu($uid);
 				break;
 				case 'USR':
 					$natVal = $this->menuArr[$key]['fe_group'];
@@ -1522,6 +1524,24 @@ class tslib_menu {
 
 		return $natVal;
 	}
+
+	/**
+	 * Resolves the final link uid of the given page id, if page of given ID is of type shortcut
+	 *
+	 * @param	integer	uid of the page.
+	 * @return	integer	uid of the linked page
+	 */
+	protected function resolveLinkUid($key) {
+		$page =& $this->menuArr[$key];
+		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+			$shortcutPage = $GLOBALS['TSFE']->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid']);
+			if (is_array($shortcutPage) && $shortcutPage['uid']) {
+				return $shortcutPage['uid'];
+			}
+		}
+		return $page['uid'];
+	}
+
 
 	/**
 	 * Creates an access-key for a TMENU/GMENU menu item based on the menu item titles first letter
