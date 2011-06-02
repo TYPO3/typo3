@@ -2088,7 +2088,7 @@ final class t3lib_div {
 		if (!is_array($array)) {
 			return FALSE;
 		}
-		uksort($array, 'strcasecmp');
+		uksort($array, 'strnatcasecmp');
 		foreach ($array as $key => $value) {
 			self::naturalKeySortRecursive($array[$key]);
 		}
