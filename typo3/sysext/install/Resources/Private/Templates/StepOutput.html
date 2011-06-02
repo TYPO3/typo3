@@ -87,7 +87,7 @@
 						<div>
 							<label for="t3-install-123-newdatabase">###LLOPTION1###</label>
 							<p>###LLREMARK1###</p>
-							<input id="t3-install-123-newdatabase" class="t3-install-form-input-text" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" onchange="this.form.db_select_option[0].checked=true" />
+							<input id="t3-install-123-newdatabase" class="t3-install-form-input-text" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" onfocus="document.getElementById('t3-install-form-db-select-new').checked=true" />
 						</div>
 					</li>
 					<li>
@@ -95,7 +95,7 @@
 						<div>
 							<label for="t3-install-123-database">###LLOPTION2###</label>
 							<p>###LLREMARK2###</p>
-							<select id="t3-install-123-database" name="TYPO3_INSTALL[localconf.php][typo_db]" onchange="this.form.db_select_option[1].checked=true">
+							<select id="t3-install-123-database" name="TYPO3_INSTALL[localconf.php][typo_db]" onfocus="document.getElementById('t3-install-form-db-select-existing').checked=true">
 								<option value="">Select database</option>
 								<!-- ###DATABASEOPTIONS### begin -->
 								<option value="###DATABASEVALUE###" ###DATABASESELECTED###>###DATABASENAME###</option>
