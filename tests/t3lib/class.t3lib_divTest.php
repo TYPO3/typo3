@@ -1281,6 +1281,119 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedResult, t3lib_div::removeDotsFromTS($typoScript));
 	}
 
+	//////////////////////////////////////
+	// Tests concerning naturalKeySortRecursive
+	//////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function naturalKeySortRecursiveReturnsFalseIfInputIsNotAnArray() {
+		$testValues = array(
+			1,
+			'string',
+			FALSE
+		);
+		foreach($testValues as $testValue) {
+			$this->assertFalse(t3lib_div::naturalKeySortRecursive($testValue));
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function naturalKeySortRecursiveSortsOneDimensionalArrayByNaturalOrder() {
+		$testArray = array(
+			'bb' => 'bb',
+			'ab' => 'ab',
+			'123' => '123',
+			'aaa' => 'aaa',
+			'abc' => 'abc',
+			'23' => '23',
+			'ba' => 'ba',
+			'bad' => 'bad',
+			'2' => '2',
+			'zap' => 'zap',
+			'210' => '210'
+		);
+		$expectedResult = array(
+			'2',
+			'23',
+			'123',
+			'210',
+			'aaa',
+			'ab',
+			'abc',
+			'ba',
+			'bad',
+			'bb',
+			'zap'
+		);
+		t3lib_div::naturalKeySortRecursive($testArray);
+		$this->assertEquals($expectedResult, array_values($testArray));
+	}
+
+	/**
+	 * @test
+	 */
+	public function naturalKeySortRecursiveSortsMultiDimensionalArrayByNaturalOrder() {
+		$testArray = array(
+			'2' => '2',
+			'bb' => 'bb',
+			'ab' => 'ab',
+			'23' => '23',
+			'aaa' => array(
+				'bb' => 'bb',
+				'ab' => 'ab',
+				'123' => '123',
+				'aaa' => 'aaa',
+				'2' => '2',
+				'abc' => 'abc',
+				'ba' => 'ba',
+				'23' => '23',
+				'bad' => array(
+					'bb' => 'bb',
+					'ab' => 'ab',
+					'123' => '123',
+					'aaa' => 'aaa',
+					'abc' => 'abc',
+					'23' => '23',
+					'ba' => 'ba',
+					'bad' => 'bad',
+					'2' => '2',
+					'zap' => 'zap',
+					'210' => '210'
+				),
+				'210' => '210',
+				'zap' => 'zap'
+			),
+			'abc' => 'abc',
+			'ba' => 'ba',
+			'210' => '210',
+			'bad' => 'bad',
+			'123' => '123',
+			'zap' => 'zap'
+		);
+
+		$expectedResult = array(
+			'2',
+			'23',
+			'123',
+			'210',
+			'aaa',
+			'ab',
+			'abc',
+			'ba',
+			'bad',
+			'bb',
+			'zap'
+		);
+		t3lib_div::naturalKeySortRecursive($testArray);
+
+		$this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa']['bad'])));
+		$this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));
+		$this->assertEquals($expectedResult, array_values(array_keys($testArray)));
+	}
 
 	//////////////////////////////////////
 	// Tests concerning get_dirs
