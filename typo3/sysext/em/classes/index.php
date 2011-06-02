@@ -364,20 +364,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		if (!is_array($globalSettings)) {
 				// no settings saved yet, set default values
-			$globalSettings['showOldModules'] = 1;
 			$globalSettings['inlineToWindow'] = 1;
 			$globalSettings['displayMyExtensions'] = 0;
 		}
 
-		if ($globalSettings['showOldModules'] == 0) {
-			unset(
-				$this->MOD_MENU['function']['loaded_list'],
-				$this->MOD_MENU['function']['installed_list'],
-				$this->MOD_MENU['function']['import'],
-				$this->MOD_MENU['function']['translations'],
-				$this->MOD_MENU['function']['settings']
-			);
-		}
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
 		$this->MOD_MENU['extensionInfo'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', array());
 

@@ -1,6 +1,3 @@
-  # cat=basic; type=boolean; label=LLL:EXT:em/language/locallang.xml:extTemplate_showOldModules
-showOldModules = 1
-
   # cat=basic; type=boolean; label=LLL:EXT:em/language/locallang.xml:extTemplate_inlineToWindow
 inlineToWindow = 1
 

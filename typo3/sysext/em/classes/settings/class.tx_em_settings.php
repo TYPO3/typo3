@@ -106,13 +106,7 @@ class tx_em_Settings implements t3lib_Singleton {
 		}
 		$this->MOD_MENU = array(
 			'function' => array(
-				'loaded_list' => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
-				'installed_list' => $GLOBALS['LANG']->getLL('menu_install_extensions'),
-				'import' => $GLOBALS['LANG']->getLL('menu_import_extensions'),
-				'translations' => $GLOBALS['LANG']->getLL('menu_translation_handling'),
-				'settings' => $GLOBALS['LANG']->getLL('menu_settings'),
 				'extensionmanager' => $GLOBALS['LANG']->getLL('header'),
-				'updates' => $GLOBALS['LANG']->getLL('menu_extension_updates'),
 			),
 			'listOrder' => array(
 				'cat' => $GLOBALS['LANG']->getLL('list_order_category'),
