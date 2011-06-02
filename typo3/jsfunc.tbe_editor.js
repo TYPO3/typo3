@@ -538,7 +538,7 @@ var TBE_EDITOR = {
 	rawurlencode: function(str,maxlen) {
 		var output = str;
 		if (maxlen)	output = output.substr(0,200);
-		output = Ext.urlEncode({'' : output});
+		output = encodeURIComponent(output);
 		return output;
 	},
 	str_replace: function(match,replace,string) {
