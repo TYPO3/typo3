@@ -313,7 +313,7 @@ final class tx_em_Tools {
 	 */
 	public static function includeEMCONF($path, $_EXTKEY) {
 		$EM_CONF = NULL;
-		@include($path);
+		include($path);
 		if (is_array($EM_CONF[$_EXTKEY])) {
 			return self::fixEMCONF($EM_CONF[$_EXTKEY]);
 		}
