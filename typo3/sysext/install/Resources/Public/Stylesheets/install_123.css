@@ -207,6 +207,7 @@ h3 {
 #t3-install-123-step3 ul li div {
 	display: inline-block;
 	margin-bottom: 10px;
+	width: 90%;
 }
 
 #t3-install-123-step3 ul li input.radio {
