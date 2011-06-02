@@ -1110,6 +1110,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								TRUE
 							);
 						}
+
+						$createDatabaseAllowed = $this->checkCreateDatabasePrivileges();
+						if ($createDatabaseAllowed) {
+							$formFieldAttributesNew = 'checked="checked"';
+							$llRemark1 = 'Enter a name for your TYPO3 database.';
+						} else {
+							$formFieldAttributesNew = 'disabled="disabled"';
+							$formFieldAttributesSelect = 'checked="checked"';
+							$llRemark1 = 'You have no permissions to create new databases.';
+						}
+
 							// Substitute the subpart for the database options
 						$content = t3lib_parsehtml::substituteSubpart(
 							$step3SubPart,
@@ -1122,7 +1133,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							'llOptions' => 'You have two options:',
 							'action' => htmlspecialchars($this->action),
 							'llOption1' => 'Create a new database (recommended):',
-							'llRemark1' => 'Enter a name for your TYPO3 database.',
+							'llRemark1' => $llRemark1,
+							'formFieldAttributesNew' => $formFieldAttributesNew,
+							'formFieldAttributesSelect' => $formFieldAttributesSelect,
 							'llOption2' => 'Select an EMPTY existing database:',
 							'llRemark2' => 'Any tables used by TYPO3 will be overwritten.',
 							'continue' => 'Continue'
@@ -8407,6 +8420,53 @@ $out="
 		}
 
 		$this->errorMessages[] = $messageText;
+	}
+
+	/**
+	 * Checks whether the mysql user is allowed to create new databases.
+	 *
+	 * This code is adopted from the phpMyAdmin project
+	 * http://www.phpmyadmin.net
+	 *
+	 * @return boolean
+	 */
+	protected function checkCreateDatabasePrivileges() {
+		$createAllowed = FALSE;
+
+		$grants = $GLOBALS['TYPO3_DB']->sql_query('SHOW GRANTS');
+
+			// we get one or more lines like this
+
+			// insufficent rights:
+			// GRANT USAGE ON *.* TO 'test'@'localhost' IDENTIFIED BY ...
+			// GRANT ALL PRIVILEGES ON `test`.* TO 'test'@'localhost'
+
+			// sufficient rights:
+			// GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY ...
+
+			// loop over all result rows
+		foreach ($GLOBALS['TYPO3_DB']->sql_fetch_assoc($grants) as $row) {
+			$dbNameOffset = strpos($row, ' ON ') + 4;
+			$dbName = substr($row, $dbNameOffset, strpos($row, '.', $dbNameOffset) - $dbNameOffset);
+			$privileges = substr($row, 6, (strpos($row, ' ON ') - 6));
+
+				// we need at least one of the following privileges
+			if ($privileges === 'ALL'
+				|| $privileges === 'ALL PRIVILEGES'
+				|| $privileges === 'CREATE'
+				|| strpos($privileges, 'CREATE,') !== FALSE) {
+
+
+					// and we need this privelege not on a specific DB, but on *
+				if ($dbName === '*') {
+						// user has permissions to create new databases
+					$createAllowed = TRUE;
+					break;
+				}
+			}
+		}
+
+		return $createAllowed;
 	}
 }
 
