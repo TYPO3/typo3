@@ -1110,19 +1110,47 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								TRUE
 							);
 						}
+
+						$usePatternList = FALSE;
+						$createDatabaseAllowed = $this->checkCreateDatabasePrivileges();
+						if ($createDatabaseAllowed === TRUE) {
+							$formFieldAttributesNew = 'checked="checked"';
+							$llRemark1 = 'Enter a name for your TYPO3 database.';
+						} elseif (is_array($createDatabaseAllowed)) {
+							$llRemark1 = 'Enter a name for your TYPO3 database.';
+							$llDbPatternRemark = 'The name has to match one of these names/patterns (% is a wild card):';
+							$llDbPatternList = '<li>' . implode('</li><li>', $createDatabaseAllowed) . '</li>';
+							$usePatternList = TRUE;
+						} else {
+							$formFieldAttributesNew = 'disabled="disabled"';
+							$formFieldAttributesSelect = 'checked="checked"';
+							$llRemark1 = 'You have no permissions to create new databases.';
+						}
+
 							// Substitute the subpart for the database options
 						$content = t3lib_parsehtml::substituteSubpart(
 							$step3SubPart,
 							'###DATABASEOPTIONS###',
 							implode(LF, $step3DatabaseOptions)
 						);
+						if ($usePatternList === FALSE) {
+							$content = t3lib_parsehtml::substituteSubpart(
+								$content,
+								'###DATABASENAMEPATTERNS###',
+								''
+							);
+						}
 							// Define the markers content
 						$step3SubPartMarkers = array(
 							'step' => $this->step + 1,
 							'llOptions' => 'You have two options:',
 							'action' => htmlspecialchars($this->action),
 							'llOption1' => 'Create a new database (recommended):',
-							'llRemark1' => 'Enter a name for your TYPO3 database.',
+							'llRemark1' => $llRemark1,
+							'llDbPatternRemark' => $llDbPatternRemark,
+							'llDbPatternList' => $llDbPatternList,
+							'formFieldAttributesNew' => $formFieldAttributesNew,
+							'formFieldAttributesSelect' => $formFieldAttributesSelect,
 							'llOption2' => 'Select an EMPTY existing database:',
 							'llRemark2' => 'Any tables used by TYPO3 will be overwritten.',
 							'continue' => 'Continue'
@@ -8407,6 +8435,71 @@ $out="
 		}
 
 		$this->errorMessages[] = $messageText;
+	}
+
+	/**
+	 * Checks whether the mysql user is allowed to create new databases.
+	 *
+	 * This code is adopted from the phpMyAdmin project
+	 * http://www.phpmyadmin.net
+	 *
+	 * @return boolean
+	 */
+	protected function checkCreateDatabasePrivileges() {
+		$createAllowed = FALSE;
+		$allowedPatterns = array();
+
+		$grants = $GLOBALS['TYPO3_DB']->sql_query('SHOW GRANTS');
+
+			// we get one or more lines like this
+
+			// insufficent rights:
+			// GRANT USAGE ON *.* TO 'test'@'localhost' IDENTIFIED BY ...
+			// GRANT ALL PRIVILEGES ON `test`.* TO 'test'@'localhost'
+
+			// sufficient rights:
+			// GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY ...
+
+			// loop over all result rows
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($grants)) {
+			$grant = $row[0];
+			$dbNameOffset = strpos($grant, ' ON ') + 4;
+			$dbName = substr($grant, $dbNameOffset, strpos($grant, '.', $dbNameOffset) - $dbNameOffset);
+			$privileges = substr($grant, 6, (strpos($grant, ' ON ') - 6));
+
+				// we need at least one of the following privileges
+			if ($privileges === 'ALL'
+				|| $privileges === 'ALL PRIVILEGES'
+				|| $privileges === 'CREATE'
+				|| strpos($privileges, 'CREATE,') !== FALSE) {
+
+
+					// and we need this privelege not on a specific DB, but on *
+				if ($dbName === '*') {
+						// user has permissions to create new databases
+					$createAllowed = TRUE;
+					break;
+				} else {
+					$allowedPatterns[] = str_replace('`', '', $dbName);
+				}
+			}
+		}
+
+			// remove all existing databases from the list of allowed patterns
+		$existingDatabases = $this->getDatabaseList();
+		foreach ($allowedPatterns as $index => $pattern) {
+			if (strpos($pattern, '%') !== FALSE) continue;
+
+			if (in_array($pattern, $existingDatabases)) {
+				unset($allowedPatterns[$index]);
+			}
+		}
+
+		if (count($allowedPatterns) > 0) {
+			return $allowedPatterns;
+		} else {
+			return $createAllowed;
+		}
 	}
 }
 
