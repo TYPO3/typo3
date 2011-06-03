@@ -1868,13 +1868,13 @@ class browse_links {
 
 				// Look up tt_content elements from the expanded page:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'uid,header,hidden,starttime,endtime,fe_group,CType,colpos,bodytext',
+							'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
 							'tt_content',
 							'pid='.intval($expPageId).
 								t3lib_BEfunc::deleteClause('tt_content').
 								t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 							'',
-							'colpos,sorting'
+							'colPos,sorting'
 						);
 			$cc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 
