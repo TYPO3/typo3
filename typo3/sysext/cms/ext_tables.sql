@@ -259,7 +259,7 @@ CREATE TABLE pages_language_overlay (
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   subtitle varchar(255) DEFAULT '' NOT NULL,
   nav_title varchar(255) DEFAULT '' NOT NULL,
-  media tinytext,
+  media text,
   keywords text,
   description text,
   abstract text,
