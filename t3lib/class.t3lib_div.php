@@ -828,6 +828,7 @@ final class t3lib_div {
 
 			$hiddenBlocks = 8 - ($left + $right);
 			$hiddenPart = '';
+			$h = 0;
 			while ($h<$hiddenBlocks)	{
 				$hiddenPart .= '0000:';
 				$h++;
