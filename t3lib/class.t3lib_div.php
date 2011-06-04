@@ -223,7 +223,7 @@ define('CRLF', CR . LF);
  * So: Don't instantiate - call functions with "t3lib_div::" prefixed the function name.
  * So use t3lib_div::[method-name] to refer to the functions, eg. 't3lib_div::milliseconds()'
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -260,11 +260,17 @@ final class t3lib_div {
 	 * @param	string		GET/POST var to return
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
 	 */
-	public static function _GP($var)	{
-		if(empty($var)) return;
+	public static function _GP($var) {
+		if (empty($var)) {
+			return;
+		}
 		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
-		if (isset($value))	{
-			if (is_array($value))	{ self::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		if (isset($value)) {
+			if (is_array($value)) {
+				self::stripSlashesOnArray($value);
+			} else {
+				$value = stripslashes($value);
+			}
 		}
 		return $value;
 	}
@@ -277,7 +283,7 @@ final class t3lib_div {
 	 */
 	public static function _GPmerged($parameter) {
 		$postParameter = (isset($_POST[$parameter]) && is_array($_POST[$parameter])) ? $_POST[$parameter] : array();
-		$getParameter  = (isset($_GET[$parameter]) && is_array($_GET[$parameter])) ? $_GET[$parameter] : array();
+		$getParameter = (isset($_GET[$parameter]) && is_array($_GET[$parameter])) ? $_GET[$parameter] : array();
 
 		$mergedParameters = self::array_merge_recursive_overrule($getParameter, $postParameter);
 		self::stripSlashesOnArray($mergedParameters);
@@ -294,10 +300,14 @@ final class t3lib_div {
 	 * @return	mixed		If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
 	 * @see _POST(), _GP(), _GETset()
 	 */
-	public static function _GET($var=NULL)	{
+	public static function _GET($var = NULL) {
 		$value = ($var === NULL) ? $_GET : (empty($var) ? NULL : $_GET[$var]);
-		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-			if (is_array($value))	{ self::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		if (isset($value)) { // Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+			if (is_array($value)) {
+				self::stripSlashesOnArray($value);
+			} else {
+				$value = stripslashes($value);
+			}
 		}
 		return $value;
 	}
@@ -311,10 +321,14 @@ final class t3lib_div {
 	 * @return	mixed		If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself. In any case *slashes are stipped from the output!*
 	 * @see _GET(), _GP()
 	 */
-	public static function _POST($var=NULL)	{
+	public static function _POST($var = NULL) {
 		$value = ($var === NULL) ? $_POST : (empty($var) ? NULL : $_POST[$var]);
-		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-			if (is_array($value))	{ self::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		if (isset($value)) { // Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+			if (is_array($value)) {
+				self::stripSlashesOnArray($value);
+			} else {
+				$value = stripslashes($value);
+			}
 		}
 		return $value;
 	}
@@ -382,13 +396,19 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 3.6 - Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
 	 * @see _GP()
 	 */
-	public static function GPvar($var,$strip=0)	{
+	public static function GPvar($var, $strip=0) {
 		self::logDeprecatedFunction();
 
-		if(empty($var)) return;
+		if (empty($var)) {
+			return;
+		}
 		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
-		if (isset($value) && is_string($value))	{ $value = stripslashes($value); }	// Originally check '&& get_magic_quotes_gpc() ' but the values of $_GET are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
-		if ($strip && isset($value) && is_array($value)) { self::stripSlashesOnArray($value); }
+		if (isset($value) && is_string($value)) {
+			$value = stripslashes($value);
+		} // Originally check '&& get_magic_quotes_gpc() ' but the values of $_GET are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
+		if ($strip && isset($value) && is_array($value)) {
+			self::stripSlashesOnArray($value);
+		}
 		return $value;
 	}
 
@@ -401,7 +421,7 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 3.7 - Use t3lib_div::_GPmerged instead
 	 * @see _GP()
 	 */
-	public static function GParrayMerged($var)	{
+	public static function GParrayMerged($var) {
 		self::logDeprecatedFunction();
 
 		return self::_GPmerged($var);
@@ -416,19 +436,11 @@ final class t3lib_div {
 	 * @param	string		Input string
 	 * @return	string		Input string with potential XSS code removed
 	 */
-	public static function removeXSS($string)	{
+	public static function removeXSS($string) {
 		require_once(PATH_typo3.'contrib/RemoveXSS/RemoveXSS.php');
 		$string = RemoveXSS::process($string);
 		return $string;
 	}
-
-
-
-
-
-
-
-
 
 
 	/*************************
@@ -457,23 +469,23 @@ final class t3lib_div {
 	 * @param	string		See description of function
 	 * @return	string		Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
 	 */
-	public static function gif_compress($theFile, $type)	{
+	public static function gif_compress($theFile, $type) {
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-		$returnCode='';
-		if ($gfxConf['gif_compress'] && strtolower(substr($theFile,-4,4))=='.gif')	{	// GIF...
-			if (($type=='IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw'])	{	// IM
-				$cmd = self::imageMagickCommand('convert', '"'.$theFile.'" "'.$theFile.'"', $gfxConf['im_path_lzw']);
+		$returnCode = '';
+		if ($gfxConf['gif_compress'] && strtolower(substr($theFile,-4,4)) == '.gif') { // GIF...
+			if (($type=='IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) { // IM
+				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
 				exec($cmd);
 
 				$returnCode='IM';
 				if (@is_file($theFile)) {
 					self::fixPermissions($theFile);
 				}
-			} elseif (($type=='GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png'])	{	// GD
+			} elseif (($type == 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) { // GD
 				$tempImage = imageCreateFromGif($theFile);
 				imageGif($tempImage, $theFile);
 				imageDestroy($tempImage);
-				$returnCode='GD';
+				$returnCode = 'GD';
 				if (@is_file($theFile)) {
 					self::fixPermissions($theFile);
 				}
@@ -490,7 +502,7 @@ final class t3lib_div {
 	 * @param	string		$theFile	the filename with path
 	 * @return	string		new filename
 	 */
-	public static function png_to_gif_by_imagemagick($theFile)	{
+	public static function png_to_gif_by_imagemagick($theFile) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif']
 			&& $GLOBALS['TYPO3_CONF_VARS']['GFX']['im']
 			&& $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']
@@ -517,8 +529,8 @@ final class t3lib_div {
 	 * @param	boolean		If set, then input file is converted to PNG, otherwise to GIF
 	 * @return	string		If the new image file exists, it's filepath is returned
 	 */
-	public static function read_png_gif($theFile,$output_png=0)	{
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && @is_file($theFile))	{
+	public static function read_png_gif($theFile,$output_png=0) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && @is_file($theFile)) {
 			$ext = strtolower(substr($theFile,-4,4));
 			if (
 					((string)$ext=='.png' && $output_png)	||
@@ -812,23 +824,26 @@ final class t3lib_div {
 	 * @param	string		Given IPv6 address
 	 * @return	string		Normalized address
 	 */
-	public static function normalizeIPv6($address)	{
+	public static function normalizeIPv6($address) {
 		$normalizedAddress = '';
 		$stageOneAddress = '';
 
-		$chunks = explode('::', $address);	// Count 2 if if address has hidden zero blocks
-		if (count($chunks)==2)	{
+		$chunks = explode('::', $address); // Count 2 if if address has hidden zero blocks
+		if (count($chunks) == 2) {
 			$chunksLeft = explode(':', $chunks[0]);
 			$chunksRight = explode(':', $chunks[1]);
 			$left = count($chunksLeft);
 			$right = count($chunksRight);
 
-				// Special case: leading zero-only blocks count to 1, should be 0
-			if ($left==1 && strlen($chunksLeft[0])==0)	$left=0;
+			// Special case: leading zero-only blocks count to 1, should be 0
+			if ($left == 1 && strlen($chunksLeft[0]) == 0) {
+				$left=0;
+			}
 
 			$hiddenBlocks = 8 - ($left + $right);
 			$hiddenPart = '';
-			while ($h<$hiddenBlocks)	{
+			$h = 0;
+			while ($h<$hiddenBlocks) {
 				$hiddenPart .= '0000:';
 				$h++;
 			}
@@ -838,21 +853,23 @@ final class t3lib_div {
 			} else {
 				$stageOneAddress = $chunks[0] . ':' . $hiddenPart . $chunks[1];
 			}
-		} else $stageOneAddress = $address;
+		} else {
+			$stageOneAddress = $address;
+		}
 
-			// normalize the blocks:
+		// normalize the blocks:
 		$blocks = explode(':', $stageOneAddress);
 		$divCounter = 0;
-		foreach ($blocks as $block)	{
+		foreach ($blocks as $block) {
 			$tmpBlock = '';
 			$i = 0;
 			$hiddenZeros = 4 - strlen($block);
-			while ($i < $hiddenZeros)	{
+			while ($i < $hiddenZeros) {
 				$tmpBlock .= '0';
 				$i++;
 			}
 			$normalizedAddress .= $tmpBlock . $block;
-			if ($divCounter < 7)	{
+			if ($divCounter < 7) {
 				$normalizedAddress .= ':';
 				$divCounter++;
 			}
@@ -869,7 +886,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is either of IPv4 or IPv6 format.
 	 */
 	public static function validIP($ip) {
-		return (filter_var($ip, FILTER_VALIDATE_IP) !== false);
+		return (filter_var($ip, FILTER_VALIDATE_IP) !== FALSE);
 	}
 
 	/**
@@ -881,7 +898,7 @@ final class t3lib_div {
 	 * @return	boolean		True if $ip is of IPv4 format.
 	 */
 	public static function validIPv4($ip) {
-		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false);
+		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== FALSE);
 	}
 
 	/**
@@ -892,8 +909,8 @@ final class t3lib_div {
 	 * @param	string		IP address to be tested
 	 * @return	boolean		True if $ip is of IPv6 format.
 	 */
-	public static function validIPv6($ip)	{
-		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false);
+	public static function validIPv6($ip) {
+		return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== FALSE);
 	}
 
 	/**
@@ -903,18 +920,18 @@ final class t3lib_div {
 	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
 	 * @return	boolean		True if a domain name mask from $list matches $baseIP
 	 */
-	public static function cmpFQDN($baseIP, $list)        {
-		if (count(explode('.',$baseIP))==4)     {
+	public static function cmpFQDN($baseIP, $list) {
+		if (count(explode('.', $baseIP)) == 4) {
 			$resolvedHostName = explode('.', gethostbyaddr($baseIP));
-			$values = self::trimExplode(',',$list,1);
+			$values = self::trimExplode(',', $list, 1);
 
-			foreach($values as $test)	{
-				$hostNameParts = explode('.',$test);
+			foreach ($values as $test) {
+				$hostNameParts = explode('.', $test);
 				$yes = 1;
 
-				foreach($hostNameParts as $index => $val)	{
+				foreach ($hostNameParts as $index => $val)	{
 					$val = trim($val);
-					if (strcmp($val,'*') && strcmp($resolvedHostName[$index],$val)) {
+					if (strcmp($val,'*') && strcmp($resolvedHostName[$index], $val)) {
 						$yes=0;
 					}
 				}
