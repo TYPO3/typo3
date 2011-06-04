@@ -108,6 +108,26 @@ class t3lib_cache {
 	}
 
 	/**
+	 * Initializes the cache_runtime cache.
+	 * This cache is designed to cache data which is only valid for one request.
+	 *
+	 * @return void
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public static function initRuntimeCache() {
+		try {
+			$GLOBALS['typo3CacheFactory']->create(
+				'cache_runtime',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_runtime']['frontend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_runtime']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_runtime']['options']
+			);
+		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
+			// do nothing, a cache_hash cache already exists
+		}
+	}
+
+	/**
 	 * Determines whether the caching framework is initialized.
 	 * The caching framework could be disabled for the core but used by an extension.
 	 *
