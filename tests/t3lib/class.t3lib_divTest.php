@@ -182,6 +182,121 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
 
+	///////////////////////////
+	// Tests concerning cmpIPv6
+	///////////////////////////
+
+	/**
+	 * Data provider for cmpIPv6ReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv6DataProviderTrue() {
+		return array(
+			'empty 1' => array('::', '::'),
+			'empty 2' => array('::', '::/0'),
+			'empty 3' => array('::', '::123/0'),
+			'localhost 1' => array('::1', '::1'),
+			'localhost 2' => array('::1', '0:0::1'),
+			'localhost 2' => array('::1', '0:0::1/128'),
+			'subnet 1' => array('1234::1', '1234:5678::/16'),
+			'subnet 2' => array('1234:5678::3', '1234:5678::/126'),
+			'subnet 3' => array('1234:5678::3', '1234:5678::2/126'),
+			'mixed list 1' => array('1234:5678::3', '127.0.0.1, 1234:5678::/126, 192.168.1.1'),
+			'mixed list 2' => array('1234:5678::3', '::1, 1234:5678::/126, 192.168.1.1'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv6DataProviderTrue
+	 */
+	public function cmpIPv6ReturnsTrue($ip, $list) {
+		$this->assertTrue(t3lib_div::cmpIPv6($ip, $list));
+	}
+
+	/**
+	 * Data provider for cmpIPv6ReturnsFalse
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv6DataProviderFalse() {
+		return array(
+			'empty 1' => array('::', '::1'),
+			'empty 2' => array('::', '::1/128'),
+			'localhost 1' => array('::1', '::2'),
+			'localhost 2' => array('::1', '::1:1'),
+			'subnet 1' => array('1234::1', '1234:f678::/17'),
+			'subnet 2' => array('1234:5678::3', '1234:5678::/127'),
+			'mixed list 1' => array('1234:5678::3', '127.0.0.1, 192.168.1.1'),
+			'mixed list 2' => array('1234:5678::3', '::1, 1234:5678::/127'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv6DataProviderFalse
+	 */
+	public function cmpIPv6ReturnsFalse($ip, $list) {
+		$this->assertFalse(t3lib_div::cmpIPv6($ip, $list));
+	}
+
+	///////////////////////////////
+	// Tests concerning IPv6Hex2Bin
+	///////////////////////////////
+
+	/**
+	 * Data provider for IPv6Hex2BinReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public static function IPv6Hex2BinDataProviderTrue() {
+		return array(
+			'empty 1' => array('::', str_pad('', 16, "\x00")),
+			'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")),
+			'empty 3, already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
+			'expansion in middle 1' => array('1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"),
+			'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider IPv6Hex2BinDataProviderTrue
+	 */
+	public function IPv6Hex2BinReturnsTrue($inputIP, $binary) {
+		$this->assertTrue(t3lib_div::IPv6Hex2Bin($inputIP) === $binary);
+	}
+
+	/////////////////////////////////
+	// Tests concerning normalizeIPv6
+	/////////////////////////////////
+
+	/**
+	 * Data provider for normalizeIPv6ReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public static function normalizeIPv6DataProviderTrue() {
+		return array(
+			'empty' => array('::', '0000:0000:0000:0000:0000:0000:0000:0000'),
+			'localhost' => array('::1', '0000:0000:0000:0000:0000:0000:0000:0001'),
+			'some address on right side' => array('::F0F', '0000:0000:0000:0000:0000:0000:0000:0F0F'),
+			'expansion in middle 1' => array('1::2', '0001:0000:0000:0000:0000:0000:0000:0002'),
+			'expansion in middle 2' => array('1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'),
+			'expansion in middle 3' => array('1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'),
+			'expansion in middle 4' => array('1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider normalizeIPv6DataProviderTrue
+	 */
+	public function normalizeIPv6ReturnsTrue($inputIP, $normalized) {
+		$this->assertTrue(t3lib_div::normalizeIPv6($inputIP) === $normalized);
+	}
+
 	///////////////////////////////
 	// Tests concerning validIP
 	///////////////////////////////

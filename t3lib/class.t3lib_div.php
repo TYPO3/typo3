@@ -680,29 +680,38 @@ final class t3lib_div {
 
 		$values = self::trimExplode(',', $list, 1);
 		foreach ($values as $test) {
-			list($test, $mask) = explode('/', $test);
+			$testList = explode('/', $test);
+			if (count($testList) == 2) {
+				list($test, $mask) = $testList;
+			} else {
+				$mask = FALSE;
+			}
+
 			if (self::validIPv6($test)) {
 				$test = self::normalizeIPv6($test);
-				if (intval($mask)) {
-					switch ($mask) { // test on /48 /64
-						case '48':
-							$testBin = substr(self::IPv6Hex2Bin($test), 0, 48);
-							$baseIPBin = substr(self::IPv6Hex2Bin($baseIP), 0, 48);
-							$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
-							break;
-						case '64':
-							$testBin = substr(self::IPv6Hex2Bin($test), 0, 64);
-							$baseIPBin = substr(self::IPv6Hex2Bin($baseIP), 0, 64);
-							$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
-							break;
-						default:
-							$success = FALSE;
-					}
+				$maskInt = intval($mask) ? intval($mask) : 128;
+				if ($mask === '0') { // special case; /0 is an allowed mask - equals a wildcard
+					$success = TRUE;
+				} elseif ($maskInt == 128) {
+					$success = ($test === $baseIP);
 				} else {
-					if (self::validIPv6($test)) { // test on full ip address 128 bits
-						$testBin = self::IPv6Hex2Bin($test);
-						$baseIPBin = self::IPv6Hex2Bin($baseIP);
-						$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
+					$testBin = self::IPv6Hex2Bin($test);
+					$baseIPBin = self::IPv6Hex2Bin($baseIP);
+					$success = TRUE;
+
+					// modulo is 0 if this is a 8-bit-boundary
+					$maskIntModulo = $maskInt % 8;
+					$numFullCharactersUntilBoundary = intval($maskInt / 8);
+
+					if (substr($testBin, 0, $numFullCharactersUntilBoundary) !== substr($baseIPBin, 0, $numFullCharactersUntilBoundary)) {
+						$success = FALSE;
+					} elseif ($maskIntModulo > 0) {
+						// if not an 8-bit-boundary, check bits of last character
+						$testLastBits = str_pad(decbin(ord(substr($testBin, $numFullCharactersUntilBoundary, 1))), 8, '0', STR_PAD_LEFT);
+						$baseIPLastBits = str_pad(decbin(ord(substr($baseIPBin, $numFullCharactersUntilBoundary, 1))), 8, '0', STR_PAD_LEFT);
+						if (strncmp($testLastBits, $baseIPLastBits, $maskIntModulo) != 0) {
+							$success = FALSE;
+						}
 					}
 				}
 			}
@@ -714,17 +723,19 @@ final class t3lib_div {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Transform a regular IPv6-address from hex-representation into binary
 	 *
-	 * @param	[type]		$hex: ...
-	 * @return	[type]		...
+	 * @param	string		$hex is an IPv6-address in hex-presentation
+	 * @return	string		binary representation (16 characters, 128 characters)
+	 * @see normalizeIPv6()
 	 */
 	public static function IPv6Hex2Bin($hex) {
-		$bin = '';
-		$hex = str_replace(':', '', $hex); // Replace colon to nothing
-		for ($i = 0; $i < strlen($hex); $i = $i + 2) {
-			$bin .= chr(hexdec(substr($hex, $i, 2)));
+		// normalized representation has 39 characters (0000:0000:0000:0000:0000:0000:0000:0000)
+		if(strlen($hex) < 39) {
+			$hex = self::normalizeIPv6($hex);
 		}
+		$hex = str_replace(':', '', $hex); // Replace colon to nothing
+		$bin = pack("H*" , $hex);
 		return $bin;
 	}
 
