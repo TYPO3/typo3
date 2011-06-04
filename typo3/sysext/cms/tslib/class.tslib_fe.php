@@ -410,9 +410,6 @@
 	protected $pageCache;
 	protected $pageCacheTags = array();
 
-		// caches the timestamp until a cache entry for this page is valid
-	protected $getCacheTimeoutCache = NULL;
-
 	/**
 	 * Class constructor
 	 * Takes a number of GET/POST input variable as arguments and stores them internally.
@@ -4629,7 +4626,18 @@ if (version == "n3") {
 	 * @return	integer		The cache timeout for the current page.
 	 */
 	function get_cache_timeout() {
-		if ($this->getCacheTimeoutCache == NULL) {
+		/** @var $runtimeCache t3lib_cache_frontend_AbstractFrontend */
+		$runtimeCache = NULL;
+		try {
+			$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+		} catch (t3lib_cache_exception_NoSuchCache $e) {
+			t3lib_cache::initRuntimeCache();
+			$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+		}
+		$cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
+		$cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
+
+		if ($cachedCacheLifetime === FALSE) {
 			if ($this->page['cache_timeout']) {
 					// Cache period was set for the page:
 				$cacheTimeout = $this->page['cache_timeout'];
@@ -4654,10 +4662,10 @@ if (version == "n3") {
 				$calculatedCacheTimeout = $this->calculatePageCacheTimeout();
 				$cacheTimeout = ($calculatedCacheTimeout < $cacheTimeout) ? $calculatedCacheTimeout : $cacheTimeout;
 			}
-			$this->getCacheTimeoutCache = $cacheTimeout;
+			$runtimeCache->set($cachedCacheLifetimeIdentifier, $cacheTimeout);
 		}
 
-		return $this->getCacheTimeoutCache;
+		return $cachedCacheLifetime;
 	}
 
 	/**
