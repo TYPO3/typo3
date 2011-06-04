@@ -182,6 +182,120 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
 
+	///////////////////////////
+	// Tests concerning cmpIPv6
+	///////////////////////////
+
+	/**
+	 * Data provider for cmpIPv6ReturnsTrueForMatchingAddress
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv6DataProviderMatching() {
+		return array(
+			'empty address' => array('::', '::'),
+			'empty with netmask in list' => array('::', '::/0'),
+			'empty with netmask 0 and host-bits set in list' => array('::', '::123/0'),
+			'localhost' => array('::1', '::1'),
+			'localhost with leading zero blocks' => array('::1', '0:0::1'),
+			'host with submask /128' => array('::1', '0:0::1/128'),
+			'/16 subnet' => array('1234::1', '1234:5678::/16'),
+			'/126 subnet' => array('1234:5678::3', '1234:5678::/126'),
+			'/126 subnet with host-bits in list set' => array('1234:5678::3', '1234:5678::2/126'),
+			'list with IPv4/IPv6 addresses' => array('1234:5678::3', '::1, 127.0.0.1, 1234:5678::/126, 192.168.1.1'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv6DataProviderMatching
+	 */
+	public function cmpIPv6ReturnsTrueForMatchingAddress($ip, $list) {
+		$this->assertTrue(t3lib_div::cmpIPv6($ip, $list));
+	}
+
+	/**
+	 * Data provider for cmpIPv6ReturnsFalseForNotMatchingAddress
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv6DataProviderNotMatching() {
+		return array(
+			'empty against localhost' => array('::', '::1'),
+			'empty against localhost with /128 netmask' => array('::', '::1/128'),
+			'localhost against different host' => array('::1', '::2'),
+			'localhost against host with prior bits set' => array('::1', '::1:1'),
+			'host against different /17 subnet' => array('1234::1', '1234:f678::/17'),
+			'host against different /127 subnet' => array('1234:5678::3', '1234:5678::/127'),
+			'host against IPv4 address list' => array('1234:5678::3', '127.0.0.1, 192.168.1.1'),
+			'host against mixed list with IPv6 host in different subnet' => array('1234:5678::3', '::1, 1234:5678::/127'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv6DataProviderNotMatching
+	 */
+	public function cmpIPv6ReturnsFalseForNotMatchingAddress($ip, $list) {
+		$this->assertFalse(t3lib_div::cmpIPv6($ip, $list));
+	}
+
+	///////////////////////////////
+	// Tests concerning IPv6Hex2Bin
+	///////////////////////////////
+
+	/**
+	 * Data provider for IPv6Hex2BinReturnsCorrectBinaryHosts
+	 *
+	 * @return array Data sets
+	 */
+	public static function IPv6Hex2BinDataProviderCorrectlyConverted() {
+		return array(
+			'empty 1' => array('::', str_pad('', 16, "\x00")),
+			'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")),
+			'empty 3, already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
+			'expansion in middle 1' => array('1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"),
+			'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider IPv6Hex2BinDataProviderCorrectlyConverted
+	 */
+	public function IPv6Hex2BinReturnsCorrectBinaryHosts($inputIP, $binary) {
+		$this->assertTrue(t3lib_div::IPv6Hex2Bin($inputIP) === $binary);
+	}
+
+	/////////////////////////////////
+	// Tests concerning normalizeIPv6
+	/////////////////////////////////
+
+	/**
+	 * Data provider for normalizeIPv6ReturnsCorrectlyNormalizedFormat
+	 *
+	 * @return array Data sets
+	 */
+	public static function normalizeIPv6DataProviderCorrectlyNormalized() {
+		return array(
+			'empty' => array('::', '0000:0000:0000:0000:0000:0000:0000:0000'),
+			'localhost' => array('::1', '0000:0000:0000:0000:0000:0000:0000:0001'),
+			'some address on right side' => array('::F0F', '0000:0000:0000:0000:0000:0000:0000:0F0F'),
+			'expansion in middle 1' => array('1::2', '0001:0000:0000:0000:0000:0000:0000:0002'),
+			'expansion in middle 2' => array('1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'),
+			'expansion in middle 3' => array('1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'),
+			'expansion in middle 4' => array('1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider normalizeIPv6DataProviderCorrectlyNormalized
+	 */
+	public function normalizeIPv6ReturnsCorrectlyNormalizedFormat($inputIP, $normalized) {
+		$this->assertTrue(t3lib_div::normalizeIPv6($inputIP) === $normalized);
+	}
+
 	///////////////////////////////
 	// Tests concerning validIP
 	///////////////////////////////
