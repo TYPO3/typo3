@@ -628,7 +628,7 @@ final class t3lib_div {
 	 * Match IPv4 number with list of numbers with wildcard
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
+	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168), could also contain IPv6 addresses
 	 * @return	boolean		TRUE if an IP-mask from $list matches $baseIP
 	 */
 	public static function cmpIPv4($baseIP, $list) {
@@ -637,7 +637,12 @@ final class t3lib_div {
 			$values = self::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
-				list($test, $mask) = explode('/', $test);
+				$testList = explode('/', $test);	
+				if (count($testList) == 2) {
+					list($test, $mask) = $testList;
+				} else {
+					$mask = FALSE;
+				}
 
 				if (intval($mask)) {
 						// "192.168.3.0/24"
@@ -654,7 +659,7 @@ final class t3lib_div {
 					$yes = 1;
 					foreach ($IPparts as $index => $val) {
 						$val = trim($val);
-						if (strcmp($val, '*') && strcmp($IPpartsReq[$index], $val)) {
+						if (($val != '*') && ($IPpartsReq[$index] != $val)) {
 							$yes = 0;
 						}
 					}
@@ -680,29 +685,34 @@ final class t3lib_div {
 
 		$values = self::trimExplode(',', $list, 1);
 		foreach ($values as $test) {
-			list($test, $mask) = explode('/', $test);
+			$testList = explode('/', $test);	
+			if (count($testList) == 2) {
+				list($test, $mask) = $testList;
+			} else {
+				$mask = FALSE;
+			}
+
 			if (self::validIPv6($test)) {
 				$test = self::normalizeIPv6($test);
-				if (intval($mask)) {
-					switch ($mask) { // test on /48 /64
-						case '48':
-							$testBin = substr(self::IPv6Hex2Bin($test), 0, 48);
-							$baseIPBin = substr(self::IPv6Hex2Bin($baseIP), 0, 48);
-							$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
-							break;
-						case '64':
-							$testBin = substr(self::IPv6Hex2Bin($test), 0, 64);
-							$baseIPBin = substr(self::IPv6Hex2Bin($baseIP), 0, 64);
-							$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
-							break;
-						default:
-							$success = FALSE;
-					}
+				$maskInt = intval($mask) ? intval($mask) : 128;
+				if ($mask === '0') { // special case; /0 is an allowed mask - equals a wildcard
+					$success = TRUE;
+				} elseif ($maskInt == 128) {
+					$success = strcmp($test, $baseIP) == 0 ? TRUE : FALSE;
 				} else {
-					if (self::validIPv6($test)) { // test on full ip address 128 bits
-						$testBin = self::IPv6Hex2Bin($test);
-						$baseIPBin = self::IPv6Hex2Bin($baseIP);
-						$success = strcmp($testBin, $baseIPBin) == 0 ? TRUE : FALSE;
+					$testBin = self::IPv6Hex2Bin($test);
+					$baseIPBin = self::IPv6Hex2Bin($baseIP);
+					$success = TRUE;
+					$maskIntModulo = $maskInt % 8; // 0 if this is a 8-bit-boundary
+					if (strncmp($testBin, $baseIPBin, floor($maskInt / 8)) != 0) {
+						$success = FALSE;
+					} else
+					if ($maskIntModulo>0) { // if not an 8-bit-boundary, check bits of last char
+						$testLastBits = str_pad(decbin(ord(substr($testBin, -1))), 8, '0', STR_PAD_LEFT);
+						$baseIPLastBits = str_pad(decbin(ord(substr($baseIPBin, -1))), 8, '0', STR_PAD_LEFT);
+						if (strncmp($testLastBits, $baseIPLastBits, $maskIntModulo) != 0) {
+							$success = FALSE;
+						}
 					}
 				}
 			}
@@ -714,17 +724,15 @@ final class t3lib_div {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Transform a regular IPv6-address (in hex-representation; normalized) into binary
 	 *
-	 * @param	[type]		$hex: ...
-	 * @return	[type]		...
+	 * @param	string		$hex is an IPv6-address in normalized hex-presentation, as can be retrieved from normalizeIPv6()
+	 * @return	string		binary representation (16 characters, 128 characters)
+	 * @see normalizeIPv6()
 	 */
 	public static function IPv6Hex2Bin($hex) {
-		$bin = '';
 		$hex = str_replace(':', '', $hex); // Replace colon to nothing
-		for ($i = 0; $i < strlen($hex); $i = $i + 2) {
-			$bin .= chr(hexdec(substr($hex, $i, 2)));
-		}
+		$bin = pack("H*" , $hex);
 		return $bin;
 	}
 
