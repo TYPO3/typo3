@@ -233,6 +233,58 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertFalse(t3lib_div::validIP($ip));
 	}
 
+	///////////////////////////////
+	// Tests concerning cmpFQDN
+	///////////////////////////////
+
+	/**
+	 * Data provider for cmpFqdnReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpFqdnValidDataProvider() {
+		return array(
+			'localhost should usually resolve, IPv4' => array('127.0.0.1', '*'),
+			'localhost should usually resolve, IPv6' => array('::1', '*'),
+				// other testcases with resolving not possible since it would
+				// require a working IPv4/IPv6-connectivity
+			'aaa.bbb.ccc.ddd.eee, full' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee'),
+			'aaa.bbb.ccc.ddd.eee, wildcard first' => array('aaa.bbb.ccc.ddd.eee', '*.ccc.ddd.eee'),
+			'aaa.bbb.ccc.ddd.eee, wildcard last' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.*'),
+			'aaa.bbb.ccc.ddd.eee, wildcard middle' => array('aaa.bbb.ccc.ddd.eee', 'aaa.*.eee'),
+			'list-matches, 1' => array('aaa.bbb.ccc.ddd.eee', 'xxx, yyy, zzz, aaa.*.eee'),
+			'list-matches, 2' => array('aaa.bbb.ccc.ddd.eee', '127:0:0:1,,aaa.*.eee,::1'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpFqdnValidDataProvider
+	 */
+	public function cmpFqdnReturnsTrue($baseHost, $list) {
+		$this->assertTrue(t3lib_div::cmpFQDN($baseHost, $list));
+	}
+
+	/**
+	 * Data provider for cmpFqdnReturnsFalse
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpFqdnInvalidDataProvider() {
+		return array(
+			'num-parts of hostname to check can only be less or equal than hostname, 1' => array('aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee.fff'),
+			'num-parts of hostname to check can only be less or equal than hostname, 2' => array('aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpFqdnInvalidDataProvider
+	 */
+	public function cmpFqdnReturnsFalse($baseHost, $list) {
+		$this->assertFalse(t3lib_div::cmpFQDN($baseHost, $list));
+	}
+
 
 	///////////////////////////////
 	// Tests concerning testInt
