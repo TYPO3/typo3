@@ -22,7 +22,7 @@
 			<label index="js.label_yes">Yes</label>
 			<label index="js.label_no">No</label>
 			<label index="js.label_sure">Are you Sure?</label>
-			<label index="js.label_crdate">Create</label>
+			<label index="js.label_crdate">Created</label>
 			<label index="js.label_owner">Owner</label>
 			<label index="js.label_tstamp">Last edit</label>
 			<label index="js.label_clear">Clear</label>
