@@ -188,7 +188,7 @@ Recycler.grid = {
 					items: [
 						{
 							xtype: 'label',
-							text: confirmText + tables.join(', ')
+							text: confirmText + ' ' + tables.join(', ')
 						},{
 							xtype: 'label',
 							text:  confirmQuestion
