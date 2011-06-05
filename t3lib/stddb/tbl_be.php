@@ -258,7 +258,7 @@ $TCA['be_users'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 			)
 		),
@@ -268,7 +268,7 @@ $TCA['be_users'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0, 0, 0, 12, 31, 2020),
@@ -827,7 +827,7 @@ $TCA['sys_news'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0'
 			)
 		),
@@ -838,7 +838,7 @@ $TCA['sys_news'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0'
 			)
 		),

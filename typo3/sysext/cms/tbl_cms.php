@@ -254,7 +254,7 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 			)
 		),
@@ -265,7 +265,7 @@ $TCA['fe_users'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
@@ -530,7 +530,7 @@ $TCA['pages_language_overlay'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0'
 			)
 		),
@@ -541,7 +541,7 @@ $TCA['pages_language_overlay'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
@@ -914,7 +914,7 @@ $TCA['sys_template'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0'
 			)
 		),
@@ -925,7 +925,7 @@ $TCA['sys_template'] = array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0,0,0,12,31,2020),
