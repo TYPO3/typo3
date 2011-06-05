@@ -1327,7 +1327,12 @@ class tx_indexedsearch extends tslib_pibase {
 		$markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label','',1);
 
 			// Adding search field value
-		$markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+		if (isset($this->piVars['sword']) && $this->piVars['sword'] !== '') {
+			$markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+		} else {
+			$markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
+		}
+
 
 			// Additonal keyword => "Add to current search words"
 		if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox'])	{
