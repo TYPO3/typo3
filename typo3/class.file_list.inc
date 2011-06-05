@@ -692,13 +692,14 @@ class fileList extends t3lib_recordList {
 		} else {
 			$editOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_edit.php?target=' .
 				rawurlencode($fullIdent) .
-				'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
+				'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
 			$cells['edit'] = '<a href="#" onclick="' . $editOnClick . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.edit') . '">' . t3lib_iconWorks::getSpriteIcon('actions-page-open') . '</a>';
 		}
 			//rename
 		$renameOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_rename.php?target=' .
 			rawurlencode($fullIdent) .
-			'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
+			'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
+
 		$cells['rename'] = '<a href="#" onclick="' . $renameOnClick . '"  title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.rename') . '">' . t3lib_iconWorks::getSpriteIcon('actions-edit-rename') . '</a>';
 
 			//info
