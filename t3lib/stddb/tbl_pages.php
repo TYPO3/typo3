@@ -176,7 +176,7 @@ $TCA['pages'] = array(
 				'type' => 'input',
 				'size' => '13',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 			),
 		),
@@ -187,7 +187,7 @@ $TCA['pages'] = array(
 				'type' => 'input',
 				'size' => '13',
 				'max' => '20',
-				'eval' => 'date',
+				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
 					'upper' => mktime(0, 0, 0, 12, 31, 2020),
