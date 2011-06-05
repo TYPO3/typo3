@@ -440,7 +440,7 @@ class clickMenu {
 	function urlRefForCM($url,$retUrl='',$hideCM=1,$overrideLoc='')	{
 		$loc = 'top.content.list_frame';
 		$editOnClick= ($overrideLoc ? 'var docRef='.$overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc).'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
-			($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . ')' :'') . ';' .
+			($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '') . ';' .
 			($hideCM ? 'return hideCM();' : '');
 		return $editOnClick;
 	}
@@ -491,7 +491,7 @@ class clickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '); hideCM();}';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search); hideCM();}';
 
 		return $this->linkItem(
 			$this->label('paste'.$type),
@@ -687,11 +687,11 @@ class clickMenu {
 			if ($GLOBALS['BE_USER']->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms')) {
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
 			} else {
-				$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+				$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
 			}
 		}
 		if (!$editOnClick)	{
-			$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+			$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
 		}
 
 		return $this->linkItem(
@@ -714,7 +714,7 @@ class clickMenu {
 		$loc = 'top.content.list_frame';
 		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".
 			($this->listFrame?
-				"alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'&edit[".$table."][-".$uid."]=new'":
+				"alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][-".$uid."]=new'":
 				'db_new.php?id='.intval($uid)."'").
 			';}';
 
@@ -745,7 +745,7 @@ class clickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'".
+		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'" .
 			"&cmd[" . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
 
 		return $this->linkItem(
@@ -831,7 +831,8 @@ class clickMenu {
 		$uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'" .
+		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='" .
+			"+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'" .
 			"&data[" . $table . '][' . $uid . '][' . $flagField . ']=' .
 				($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
 
@@ -947,8 +948,7 @@ class clickMenu {
 	function FILE_launch($path,$script,$type,$image,$noReturnUrl=FALSE)	{
 		$loc = 'top.content.list_frame';
 
-		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . ($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")") . ";}";
-
+		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . ($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)") . ";}";
 		return $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
@@ -1024,7 +1024,7 @@ class clickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_file.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . ")+'" .
+		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_file.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'" .
 			"&file[delete][0][data]=".rawurlencode($path).'&vC='.$GLOBALS['BE_USER']->veriCode()."';}hideCM();";
 
 		return $this->linkItem(
@@ -1053,7 +1053,7 @@ class clickMenu {
 		}
 
 		$editOnClick='if('.$conf.'){'.$loc.".location.href=top.TS.PATH_typo3+'".$this->clipObj->pasteUrl('_FILE',$path,0).
-			"&redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') .'); }hideCM();top.nav.refresh();';
+			"&redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search);  }hideCM();top.nav.refresh();';
 
 		return $this->linkItem(
 			$this->label('pasteinto'),
@@ -1141,7 +1141,7 @@ class clickMenu {
 		$negativeSign = ($into == 'into') ? '' : '-';
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_db.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') . ')+"' .
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_db.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)+"' .
 			'&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . '";}hideCM();top.nav.refresh();';
 
 		return $this->linkItem(
@@ -1165,7 +1165,7 @@ class clickMenu {
 	function dragDrop_copymovefolder($srcPath,$dstPath,$action)	{
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') .')+"' .
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)+"' .
 			'&file['.$action.'][0][data]='.$srcPath.'&file['.$action.'][0][target]='.$dstPath.'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode().'";}hideCM();top.nav.refresh();';
 
 		return $this->linkItem(
