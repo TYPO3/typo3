@@ -484,7 +484,7 @@ class template {
 		global $TCA;
 		if (is_array($row) && $row['uid'])	{
 			$iconImgTag=t3lib_iconWorks::getSpriteIconForRecord($table, $row , array('title' => htmlspecialchars($path)));
-			$title= strip_tags($row[$TCA[$table]['ctrl']['label']]);
+			$title = strip_tags(t3lib_BEfunc::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
 			if ($table=='pages')	$path.=' - '.t3lib_BEfunc::titleAttribForPages($row,'',0);
 		} else {

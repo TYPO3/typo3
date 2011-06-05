@@ -5603,7 +5603,7 @@ class t3lib_TCEmain {
 			t3lib_BEfunc::fixVersioningPid($table, $row);
 
 			$out = array(
-				'header' => $row[$TCA[$table]['ctrl']['label']],
+				'header' => t3lib_BEfunc::getRecordTitle($table, $row),
 				'pid' => $row['pid'],
 				'event_pid' => $this->eventPid($table, isset($row['_ORIG_pid']) ? $row['t3ver_oid'] : $row['uid'], $row['pid']),
 				't3ver_state' => $TCA[$table]['ctrl']['versioningWS'] ? $row['t3ver_state'] : '',
