@@ -628,7 +628,7 @@ final class t3lib_div {
 	 * Match IPv4 number with list of numbers with wildcard
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
+	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168), could also contain IPv6 addresses
 	 * @return	boolean		TRUE if an IP-mask from $list matches $baseIP
 	 */
 	public static function cmpIPv4($baseIP, $list) {
@@ -637,7 +637,12 @@ final class t3lib_div {
 			$values = self::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
-				list($test, $mask) = explode('/', $test);
+				$testList = explode('/', $test);
+				if (count($testList) == 2) {
+					list($test, $mask) = $testList;
+				} else {
+					$mask = FALSE;
+				}
 
 				if (intval($mask)) {
 						// "192.168.3.0/24"
@@ -654,7 +659,7 @@ final class t3lib_div {
 					$yes = 1;
 					foreach ($IPparts as $index => $val) {
 						$val = trim($val);
-						if (strcmp($val, '*') && strcmp($IPpartsReq[$index], $val)) {
+						if (($val !== '*') && ($IPpartsReq[$index] !== $val)) {
 							$yes = 0;
 						}
 					}
