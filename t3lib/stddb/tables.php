@@ -701,6 +701,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-status-permission-granted',
 	'status-status-reference-hard',
 	'status-status-reference-soft',
+	'status-status-sort-asc',
+	'status-status-sort-desc',
 	'status-status-workspace-draft',
 	'status-system-extension-required',
 	'status-user-admin',
