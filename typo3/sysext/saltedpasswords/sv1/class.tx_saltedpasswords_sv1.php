@@ -242,41 +242,23 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 				);
 			}
 
-			if (!$validPasswd && (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed)) {
-					// Failed login attempt (wrong password) - no delegation to further services
-				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';
-				$this->writeLogMessage(
-					TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'',
-					$this->login['uname']
-				);
-				$this->writelog(255, 3, 3, 1,
-					$errorMessage,
-					array(
-						$this->authInfo['REMOTE_ADDR'],
-						$this->authInfo['REMOTE_HOST'],
-						$this->login['uname']
-					)
-				);
-				t3lib_div::sysLog(
-					sprintf(
-						$errorMessage,
-						$this->authInfo['REMOTE_ADDR'],
-						$this->authInfo['REMOTE_HOST'],
-						$this->login['uname']
-					),
-					'Core',
-					0
-				);
-				$OK = 0;
-			} elseif(!$validPasswd) {
+			if (!$validPasswd) {
 					// Failed login attempt (wrong password)
 				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';
-				$this->writeLogMessage(
-					$errorMessage,
-					$this->authInfo['REMOTE_ADDR'],
-					$this->authInfo['REMOTE_HOST'],
-					$this->login['uname']
-				);
+					// no delegation to further services
+				if (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed) {
+					$this->writeLogMessage(
+						TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'',
+						$this->login['uname']
+					);
+				} else {
+					$this->writeLogMessage(
+						$errorMessage,
+						$this->authInfo['REMOTE_ADDR'],
+						$this->authInfo['REMOTE_HOST'],
+						$this->login['uname']
+					);
+				}
 				$this->writelog(255, 3, 3, 1,
 					$errorMessage,
 					array(
@@ -295,6 +277,9 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					'Core',
 					0
 				);
+				if (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed) {
+					$OK = 0;
+				}
 			} elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
 					// Lock domain didn't match, so error:
 				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
