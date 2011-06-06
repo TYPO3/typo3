@@ -182,6 +182,61 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
 
+	///////////////////////////
+	// Tests concerning cmpIPv4
+	///////////////////////////
+
+	/**
+	 * Data provider for cmpIPv4ReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv4DataProviderTrue() {
+		return array(
+			'localhost 1' => array('127.0.0.1', '127.0.0.1'),
+			'localhost 2' => array('127.0.0.1', '127.0.*.*'),
+			'localhost 3' => array('127.0.0.1', '127.0.*.1'),
+			'localhost 4' => array('127.0.0.1', '127.*.0.1'),
+			'subnet 1' => array('127.0.0.1', '127.1.1.1/8'),
+			'subnet 2' => array('127.0.0.1', '127.0.0.1/32'),
+			'subnet 3' => array('10.10.3.1', '10.10.3.3/30'),
+			'mixed list 1' => array('192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'),
+			'mixed list 2' => array('192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv4DataProviderTrue
+	 */
+	public function cmpIPv4ReturnsTrue($ip, $list) {
+		$this->assertTrue(t3lib_div::cmpIPv4($ip, $list));
+	}
+
+	/**
+	 * Data provider for cmpIPv4ReturnsFalse
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv4DataProviderFalse() {
+		return array(
+			'localhost 1' => array('127.0.0.1', '127.0.0.2'),
+			'localhost 2' => array('127.0.0.1', '127.*.1.1'),
+			'subnet 1' => array('127.0.0.1', '127.0.0.2/32'),
+			'subnet 2' => array('127.0.0.1', '127.0.0.2/31'),
+			'mixed list 1' => array('127.0.0.1', '10.0.2.3, 192.168.1.1, ::1'),
+			'mixed list 2' => array('10.20.30.40', '::1, 1234:5678::/127'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv4DataProviderFalse
+	 */
+	public function cmpIPv4ReturnsFalse($ip, $list) {
+		$this->assertFalse(t3lib_div::cmpIPv4($ip, $list));
+	}
+
 	///////////////////////////////
 	// Tests concerning validIP
 	///////////////////////////////
