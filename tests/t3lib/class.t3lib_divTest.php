@@ -182,6 +182,61 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
 
+	///////////////////////////
+	// Tests concerning cmpIPv4
+	///////////////////////////
+
+	/**
+	 * Data provider for cmpIPv4ReturnsTrueForMatchingAddress
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv4DataProviderMatching() {
+		return array(
+			'host with full IP address' => array('127.0.0.1', '127.0.0.1'),
+			'host with two wildcards at the end' => array('127.0.0.1', '127.0.*.*'),
+			'host with wildcard at third octet' => array('127.0.0.1', '127.0.*.1'),
+			'host with wildcard at second octet' => array('127.0.0.1', '127.*.0.1'),
+			'/8 subnet' => array('127.0.0.1', '127.1.1.1/8'),
+			'/32 subnet (match only name)' => array('127.0.0.1', '127.0.0.1/32'),
+			'/30 subnet' => array('10.10.3.1', '10.10.3.3/30'),
+			'host with wildcard in list with IPv4/IPv6 addresses' => array('192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'),
+			'host in list with IPv4/IPv6 addresses' => array('192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv4DataProviderMatching
+	 */
+	public function cmpIPv4ReturnsTrueForMatchingAddress($ip, $list) {
+		$this->assertTrue(t3lib_div::cmpIPv4($ip, $list));
+	}
+
+	/**
+	 * Data provider for cmpIPv4ReturnsFalseForNotMatchingAddress
+	 *
+	 * @return array Data sets
+	 */
+	public static function cmpIPv4DataProviderNotMatching() {
+		return array(
+			'single host' => array('127.0.0.1', '127.0.0.2'),
+			'single host with wildcard' => array('127.0.0.1', '127.*.1.1'),
+			'single host with /32 subnet mask' => array('127.0.0.1', '127.0.0.2/32'),
+			'/31 subnet' => array('127.0.0.1', '127.0.0.2/31'),
+			'list with IPv4/IPv6 addresses' => array('127.0.0.1', '10.0.2.3, 192.168.1.1, ::1'),
+			'list with only IPv6 addresses' => array('10.20.30.40', '::1, 1234:5678::/127'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cmpIPv4DataProviderNotMatching
+	 */
+	public function cmpIPv4ReturnsFalseForNotMatchingAddress($ip, $list) {
+		$this->assertFalse(t3lib_div::cmpIPv4($ip, $list));
+	}
+
 	///////////////////////////////
 	// Tests concerning validIP
 	///////////////////////////////
