@@ -3289,9 +3289,9 @@ class tslib_cObj {
 		}
 		$temp = explode($char, $content);
 		$last = '' . (count($temp) - 1);
-		// take a random item if requested
+			// take a random item if requested
 		if ($listNum === 'rand') {
-			$listNum = rand(0,count($temp)-1);
+			$listNum = rand(0, count($temp) - 1);
 		}
 		$index = $this->calc(str_ireplace('last', $last, $listNum));
 		return $temp[$index];
