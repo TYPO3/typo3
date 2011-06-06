@@ -140,16 +140,18 @@
 // include requirements definition:
 require_once(t3lib_extMgm::extPath('install') . 'requirements.php');
 
+// include session handling
+require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install_session.php');
+
 // include update classes
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_charsetdefaults.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_compatversion.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_cscsplit.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_notinmenu.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_mergeadvanced.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_installsysexts.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_imagescols.php');
-require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_installnewsysexts.php');
-require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install_session.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_compatversion.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_cscsplit.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_notinmenu.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_mergeadvanced.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installsysexts.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_imagescols.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installnewsysexts.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_t3skin.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_compressionlevel.php');
@@ -8072,7 +8074,7 @@ $out="
 					This will let you analyze and verify that everything in your
 					installation is in order. In addition, you can configure advanced
 					TYPO3 options in this step.
-		 		</li>
+				</li>
 				<li>
 					<a href="../../index.php">
 						Visit the frontend
@@ -8083,9 +8085,9 @@ $out="
 						Login to the backend
 					</a>
 					<br />
-			 		(Default username: <em>admin</em>, default password: <em>password</em>.)
+					(Default username: <em>admin</em>, default password: <em>password</em>.)
 				</li>
-			 </ul>
+			</ul>
 		';
 	}
 
