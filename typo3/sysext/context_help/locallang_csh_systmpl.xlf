@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:24 UTC 2011" product-name="context_help">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>TypoScript template record.</source>
+        <target approved="yes">TypoScript template record.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+        <target approved="yes">The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>static_template
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/</source>
+        <target approved="yes">static_template
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:context_help/cshimages/systemplate.png,
+EXT:context_help/cshimages/systemplate1.png</source>
+        <target approved="yes">EXT:context_help/cshimages/systemplate.png,
+EXT:context_help/cshimages/systemplate1.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+        <target approved="yes">A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target approved="yes">Hiding the template will deactivate the template record.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target approved="yes">If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target approved="yes">Start time. Use this to enable a template on a certain date.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target approved="yes">End time. Use this to disable a template on a certain date.</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target approved="yes">The title of the template record is only an internal label and does not have any effect on the output in the frontend.</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target approved="yes">Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</target>
+      </trans-unit>
+      <trans-unit id="constants.description">
+        <source>TypoScript Constants.</source>
+        <target approved="yes">TypoScript Constants.</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso">
+        <source>static_template:constants</source>
+        <target approved="yes">static_template:constants</target>
+      </trans-unit>
+      <trans-unit id="config.description">
+        <source>TypoScript Setup code</source>
+        <target approved="yes">TypoScript Setup code</target>
+      </trans-unit>
+      <trans-unit id="config.details">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target approved="yes">Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso">
+        <source>static_template:config,
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</source>
+        <target approved="yes">static_template:config,
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</target>
+      </trans-unit>
+      <trans-unit id="resources.description">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target approved="yes">Resource files for the template. For example a logo, a TTF-font etc.</target>
+      </trans-unit>
+      <trans-unit id="resources.details">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target approved="yes">Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</target>
+      </trans-unit>
+      <trans-unit id="clear.description">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target approved="yes">Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</target>
+      </trans-unit>
+      <trans-unit id="clear.details">
+        <source>In the Web &gt; Template / Template Analyser module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target approved="yes">In the Web &gt; Template / Template Analyser module you can see how far back in the template tree that constants and setup code is inherited.</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso">
+        <source>sys_template:root</source>
+        <target approved="yes">sys_template:root</target>
+      </trans-unit>
+      <trans-unit id="_clear.image">
+        <source>EXT:context_help/cshimages/systemplate2.png</source>
+        <target approved="yes">EXT:context_help/cshimages/systemplate2.png</target>
+      </trans-unit>
+      <trans-unit id="root.description">
+        <source>Defines that the template represents a root of a website.</source>
+        <target approved="yes">Defines that the template represents a root of a website.</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso">
+        <source>sys_template:clear</source>
+        <target approved="yes">sys_template:clear</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target approved="yes">If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details">
+        <source>The Web &gt; Template / Template Analyser module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target approved="yes">The Web &gt; Template / Template Analyser module allows you to view the order of inclusion of all TypoScript sources your template uses.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description">
+        <source>Static Template records to include.</source>
+        <target approved="yes">Static Template records to include.</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso">
+        <source>static_template</source>
+        <target approved="yes">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description">
+        <source>Static Template files to include.</source>
+        <target approved="yes">Static Template files to include.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target approved="yes">Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso">
+        <source>sys_template:include_static</source>
+        <target approved="yes">sys_template:include_static</target>
+      </trans-unit>
+      <trans-unit id="basedOn.description">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target approved="yes">Other Template Records that are included like "static templates".</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target approved="yes">Define the mode of inclusion of static template files.</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyser to view the order.</source>
+        <target approved="yes">If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyser to view the order.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target approved="yes">Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Enter a description of the template if you like.</source>
+        <target approved="yes">Enter a description of the template if you like.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target approved="yes">Editor Configuration for the stylesheet editor extension.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

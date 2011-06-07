@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning">
+        <source>Are you sure you want to delete this record?</source>
+        <target approved="yes">Are you sure you want to delete this record?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target approved="yes">Undo/Redo last change (%s ago)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory">
+        <source>View record change history</source>
+        <target approved="yes">View record change history</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord">
+        <source>Edit whole record</source>
+        <target approved="yes">Edit whole record</target>
+      </trans-unit>
+      <trans-unit id="openDocs">
+        <source>OPEN DOCUMENTS</source>
+        <target approved="yes">OPEN DOCUMENTS</target>
+      </trans-unit>
+      <trans-unit id="noDocuments">
+        <source>No open documents</source>
+        <target approved="yes">No open documents</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg">
+        <source>There are no open documents available to edit.</source>
+        <target approved="yes">There are no open documents available to edit.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target approved="yes">You can go to %s to find the page or the record you wish to edit.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3">
+        <source>You can select one of your most recently edited records from this list:</source>
+        <target approved="yes">You can select one of your most recently edited records from this list:</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule">
+        <source>the Web&gt;Page module</source>
+        <target approved="yes">the Web&gt;Page module</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR">
+        <source>or</source>
+        <target approved="yes">or</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule">
+        <source>the Web&gt;List module</source>
+        <target approved="yes">the Web&gt;List module</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

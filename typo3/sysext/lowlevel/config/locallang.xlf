@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:58 UTC 2011" product-name="lowlevel">
+    <header/>
+    <body>
+      <trans-unit id="configuration">
+        <source>Configuration</source>
+        <target approved="yes">Configuration</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars">
+        <source>$TYPO3_CONF_VARS (Global Configuration)</source>
+        <target approved="yes">$TYPO3_CONF_VARS (Global Configuration)</target>
+      </trans-unit>
+      <trans-unit id="tca">
+        <source>$TCA (Table configuration array)</source>
+        <target approved="yes">$TCA (Table configuration array)</target>
+      </trans-unit>
+      <trans-unit id="tcaDescr">
+        <source>$TCA_DESCR (Table Help Description)</source>
+        <target approved="yes">$TCA_DESCR (Table Help Description)</target>
+      </trans-unit>
+      <trans-unit id="loadedExt">
+        <source>$TYPO3_LOADED_EXT (Loaded Extensions)</source>
+        <target approved="yes">$TYPO3_LOADED_EXT (Loaded Extensions)</target>
+      </trans-unit>
+      <trans-unit id="tbeStyles">
+        <source>$TBE_STYLES (Skinning Styles)</source>
+        <target approved="yes">$TBE_STYLES (Skinning Styles)</target>
+      </trans-unit>
+      <trans-unit id="beUser">
+        <source>$BE_USER-&gt;uc (User Settings)</source>
+        <target approved="yes">$BE_USER-&gt;uc (User Settings)</target>
+      </trans-unit>
+      <trans-unit id="usersettings">
+        <source>$TYPO3_USER_SETTINGS (User Settings Configuration)</source>
+        <target approved="yes">$TYPO3_USER_SETTINGS (User Settings Configuration)</target>
+      </trans-unit>
+      <trans-unit id="t3services">
+        <source>$T3_SERVICES (Registered Services)</source>
+        <target approved="yes">$T3_SERVICES (Registered Services)</target>
+      </trans-unit>
+      <trans-unit id="tbemodulesext">
+        <source>$TBE_MODULES_EXT (BE Modules Extensions)</source>
+        <target approved="yes">$TBE_MODULES_EXT (BE Modules Extensions)</target>
+      </trans-unit>
+      <trans-unit id="tbemodules">
+        <source>$TBE_MODULES (BE Modules)</source>
+        <target approved="yes">$TBE_MODULES (BE Modules)</target>
+      </trans-unit>
+      <trans-unit id="cropLines">
+        <source>Crop lines</source>
+        <target approved="yes">Crop lines</target>
+      </trans-unit>
+      <trans-unit id="variable">
+        <source>Variable:</source>
+        <target approved="yes">Variable:</target>
+      </trans-unit>
+      <trans-unit id="copyPaste">
+        <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+        <target approved="yes">(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</target>
+      </trans-unit>
+      <trans-unit id="enterSearchPhrase">
+        <source>Enter search phrase:</source>
+        <target approved="yes">Enter search phrase:</target>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="useRegExp">
+        <source>Use regular expression</source>
+        <target approved="yes">Use regular expression</target>
+      </trans-unit>
+      <trans-unit id="writeValue">
+        <source>Write value to configuration file</source>
+        <target approved="yes">Write value to configuration file</target>
+      </trans-unit>
+      <trans-unit id="writeMessage">
+        <source>Following line was added to configuration file (%s): %s%s</source>
+        <target approved="yes">Following line was added to configuration file (%s): %s%s</target>
+      </trans-unit>
+      <trans-unit id="writeMessageFailed">
+        <source>Write to configuration file failed (%s)!</source>
+        <target approved="yes">Write to configuration file failed (%s)!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

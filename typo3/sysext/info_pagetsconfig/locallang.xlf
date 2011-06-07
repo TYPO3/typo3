@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:13 UTC 2011" product-name="info_pagetsconfig">
+    <header/>
+    <body>
+      <trans-unit id="tsconf_title">
+        <source>Page TSconfig</source>
+        <target approved="yes">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_0">
+        <source>All</source>
+        <target approved="yes">All</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1">
+        <source>Module key ('mod') with overruling user settings</source>
+        <target approved="yes">Module key ('mod') with overruling user settings</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1a">
+        <source>Module: Web&gt;Page</source>
+        <target approved="yes">Module: Web&gt;Page</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1b">
+        <source>Module: Web&gt;View</source>
+        <target approved="yes">Module: Web&gt;View</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1c">
+        <source>Module: Web&gt;Modules</source>
+        <target approved="yes">Module: Web&gt;Modules</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1d">
+        <source>Module: Web&gt;List</source>
+        <target approved="yes">Module: Web&gt;List</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1e">
+        <source>Module: Web&gt;Info</source>
+        <target approved="yes">Module: Web&gt;Info</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1f">
+        <source>Module: Web&gt;Func</source>
+        <target approved="yes">Module: Web&gt;Func</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1g">
+        <source>Module: Web&gt;Template</source>
+        <target approved="yes">Module: Web&gt;Template</target>
+      </trans-unit>
+      <trans-unit id="tsconf_configFields">
+        <source>View TSconfig fields content</source>
+        <target approved="yes">View TSconfig fields content</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn">
+        <source>Edit the field '%s' for all listed pages</source>
+        <target approved="yes">Edit the field '%s' for all listed pages</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig">
+        <source>Edit TSconfig for this page</source>
+        <target approved="yes">Edit TSconfig for this page</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_all">
+        <source>Edit TSconfig for all shown pages</source>
+        <target approved="yes">Edit TSconfig for all shown pages</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig_default">
+        <source>Default Configuration from TYPO3_CONF_VARS</source>
+        <target approved="yes">Default Configuration from TYPO3_CONF_VARS</target>
+      </trans-unit>
+      <trans-unit id="mod_pagetsconfig">
+        <source>Page TSconfig</source>
+        <target approved="yes">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="sort_alphabetic">
+        <source>Sort alphabetically:</source>
+        <target approved="yes">Sort alphabetically:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

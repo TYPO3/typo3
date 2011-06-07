@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:58 UTC 2011" product-name="lowlevel">
+    <header/>
+    <body>
+      <trans-unit id="menu">
+        <source>[ MENU ]</source>
+        <target approved="yes">[ MENU ]</target>
+      </trans-unit>
+      <trans-unit id="recordStatistics">
+        <source>Record Statistics</source>
+        <target approved="yes">Record Statistics</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree">
+        <source>Total Page Tree</source>
+        <target approved="yes">Total Page Tree</target>
+      </trans-unit>
+      <trans-unit id="databaseRelations">
+        <source>Database Relations</source>
+        <target approved="yes">Database Relations</target>
+      </trans-unit>
+      <trans-unit id="fullSearch">
+        <source>Full search</source>
+        <target approved="yes">Full search</target>
+      </trans-unit>
+      <trans-unit id="findFilename">
+        <source>Find filename</source>
+        <target approved="yes">Find filename</target>
+      </trans-unit>
+      <trans-unit id="manageRefIndex">
+        <source>Manage Reference Index</source>
+        <target approved="yes">Manage Reference Index</target>
+      </trans-unit>
+      <trans-unit id="rawSearch">
+        <source>Raw search in all fields</source>
+        <target approved="yes">Raw search in all fields</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery">
+        <source>Advanced query</source>
+        <target approved="yes">Advanced query</target>
+      </trans-unit>
+      <trans-unit id="selectRecords">
+        <source>Select records</source>
+        <target approved="yes">Select records</target>
+      </trans-unit>
+      <trans-unit id="countResults">
+        <source>Count results</source>
+        <target approved="yes">Count results</target>
+      </trans-unit>
+      <trans-unit id="explainQuery">
+        <source>Explain query</source>
+        <target approved="yes">Explain query</target>
+      </trans-unit>
+      <trans-unit id="csvExport">
+        <source>CSV Export</source>
+        <target approved="yes">CSV Export</target>
+      </trans-unit>
+      <trans-unit id="xmlExport">
+        <source>XML Export</source>
+        <target approved="yes">XML Export</target>
+      </trans-unit>
+      <trans-unit id="clickToUpdateRefIndex">
+        <source>Click here to update reference index:</source>
+        <target approved="yes">Click here to update reference index:</target>
+      </trans-unit>
+      <trans-unit id="updateNow">
+        <source>Update now!</source>
+        <target approved="yes">Update now!</target>
+      </trans-unit>
+      <trans-unit id="clickToTestRefIndex">
+        <source>Click here to test reference index:</source>
+        <target approved="yes">Click here to test reference index:</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_description">
+        <source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+        <target approved="yes">TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonUpdate">
+        <source>Update reference index</source>
+        <target approved="yes">Update reference index</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonCheck">
+        <source>Check reference index</source>
+        <target approved="yes">Check reference index</target>
+      </trans-unit>
+      <trans-unit id="checkNow">
+        <source>Check now!</source>
+        <target approved="yes">Check now!</target>
+      </trans-unit>
+      <trans-unit id="checkScript_headline">
+        <source>Using the command line interface</source>
+        <target approved="yes">Using the command line interface</target>
+      </trans-unit>
+      <trans-unit id="checkScript">
+        <source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+        <target approved="yes">You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_description">
+        <source>To check the reference index use:</source>
+        <target approved="yes">To check the reference index use:</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_example">
+        <source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -c</source>
+        <target approved="yes">php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -c</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_description">
+        <source>To update the reference index use:</source>
+        <target approved="yes">To update the reference index use:</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_example">
+        <source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -e</source>
+        <target approved="yes">php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -e</target>
+      </trans-unit>
+      <trans-unit id="checkScript_more">
+        <source>Make sure that a BE user with the name _cli_lowlevel exists. For more details see: /path/to/your/typo3/sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</source>
+        <target approved="yes">Make sure that a BE user with the name _cli_lowlevel exists. For more details see: /path/to/your/typo3/sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</target>
+      </trans-unit>
+      <trans-unit id="checkScript_information">
+        <source>If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</source>
+        <target approved="yes">If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</target>
+      </trans-unit>
+      <trans-unit id="checkScript_moreDetails">
+        <source>For more details see:</source>
+        <target approved="yes">For more details see:</target>
+      </trans-unit>
+      <trans-unit id="updateRefIndex">
+        <source>Update reference index</source>
+        <target approved="yes">Update reference index</target>
+      </trans-unit>
+      <trans-unit id="showSQL">
+        <source>Show SQL parts</source>
+        <target approved="yes">Show SQL parts</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target approved="yes">Use formatted strings, labels and dates instead of original values for results</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues">
+        <source>Don't use original values in brackets as prefix for labelled results</source>
+        <target approved="yes">Don't use original values in brackets as prefix for labelled results</target>
+      </trans-unit>
+      <trans-unit id="sortOptions">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target approved="yes">Sort selectbox-options for relations by label and not by value</target>
+      </trans-unit>
+      <trans-unit id="showDeleted">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target approved="yes">Show even deleted entries (with undelete buttons)</target>
+      </trans-unit>
+      <trans-unit id="searchOptions">
+        <source>Search options:</source>
+        <target approved="yes">Search options:</target>
+      </trans-unit>
+      <trans-unit id="result">
+        <source>Result:</source>
+        <target approved="yes">Result:</target>
+      </trans-unit>
+      <trans-unit id="tables">
+        <source>Tables:</source>
+        <target approved="yes">Tables:</target>
+      </trans-unit>
+      <trans-unit id="references">
+        <source>references:</source>
+        <target approved="yes">references:</target>
+      </trans-unit>
+      <trans-unit id="isMissing">
+        <source>is missing!</source>
+        <target approved="yes">is missing!</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom">
+        <source>Referenced from:</source>
+        <target approved="yes">Referenced from:</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern">
+        <source>Enter regex pattern:</source>
+        <target approved="yes">Enter regex pattern:</target>
+      </trans-unit>
+      <trans-unit id="searchButton">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="pattern">
+        <source>Pattern</source>
+        <target approved="yes">Pattern</target>
+      </trans-unit>
+      <trans-unit id="beingChecked">
+        <source>being checked...</source>
+        <target approved="yes">being checked...</target>
+      </trans-unit>
+      <trans-unit id="directories">
+        <source>Dirs:</source>
+        <target approved="yes">Dirs:</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep">
+        <source>ERROR: Directories deeper than the following number of levels:</source>
+        <target approved="yes">ERROR: Directories deeper than the following number of levels:</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>Files:</source>
+        <target approved="yes">Files:</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles">
+        <source>Matching files:</source>
+        <target approved="yes">Matching files:</target>
+      </trans-unit>
+      <trans-unit id="notChecked">
+        <source>not checked.</source>
+        <target approved="yes">not checked.</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames">
+        <source>Searching for filenames:</source>
+        <target approved="yes">Searching for filenames:</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target approved="yes">Click to move this lost record to rootlevel (pid=0)</target>
+      </trans-unit>
+      <trans-unit id="doktype">
+        <source>Document types:</source>
+        <target approved="yes">Document types:</target>
+      </trans-unit>
+      <trans-unit id="doktype_value">
+        <source>Document types (value)</source>
+        <target approved="yes">Document types (value)</target>
+      </trans-unit>
+      <trans-unit id="pages">
+        <source>Pages:</source>
+        <target approved="yes">Pages:</target>
+      </trans-unit>
+      <trans-unit id="total_pages">
+        <source>Total number of pages:</source>
+        <target approved="yes">Total number of pages:</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages">
+        <source>Marked-deleted pages:</source>
+        <target approved="yes">Marked-deleted pages:</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages">
+        <source>Hidden pages:</source>
+        <target approved="yes">Hidden pages:</target>
+      </trans-unit>
+      <trans-unit id="count">
+        <source>Count</source>
+        <target approved="yes">Count</target>
+      </trans-unit>
+      <trans-unit id="label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="tablename">
+        <source>Table name</source>
+        <target approved="yes">Table name</target>
+      </trans-unit>
+      <trans-unit id="total_lost">
+        <source>Records total / lost</source>
+        <target approved="yes">Records total / lost</target>
+      </trans-unit>
+      <trans-unit id="relations">
+        <source>Relations</source>
+        <target approved="yes">Relations</target>
+      </trans-unit>
+      <trans-unit id="relations_description">
+        <source>This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+        <target approved="yes">This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</target>
+      </trans-unit>
+      <trans-unit id="files_many_ref">
+        <source>Files referenced from more than one record:</source>
+        <target approved="yes">Files referenced from more than one record:</target>
+      </trans-unit>
+      <trans-unit id="files_no_ref">
+        <source>Files with no references at all (delete them!):</source>
+        <target approved="yes">Files with no references at all (delete them!):</target>
+      </trans-unit>
+      <trans-unit id="files_no_file">
+        <source>Missing files:</source>
+        <target approved="yes">Missing files:</target>
+      </trans-unit>
+      <trans-unit id="select_db">
+        <source>Select fields:</source>
+        <target approved="yes">Select fields:</target>
+      </trans-unit>
+      <trans-unit id="group_db">
+        <source>Group fields:</source>
+        <target approved="yes">Group fields:</target>
+      </trans-unit>
+      <trans-unit id="tree">
+        <source>The Page Tree:</source>
+        <target approved="yes">The Page Tree:</target>
+      </trans-unit>
+      <trans-unit id="tree_description">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target approved="yes">This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</target>
+      </trans-unit>
+      <trans-unit id="records">
+        <source>Records Statistics</source>
+        <target approved="yes">Records Statistics</target>
+      </trans-unit>
+      <trans-unit id="records_description">
+        <source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+        <target approved="yes">This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</target>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search whole Database</source>
+        <target approved="yes">Search whole Database</target>
+      </trans-unit>
+      <trans-unit id="search_description">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target approved="yes">This searches through all database tables and records for a text string.</target>
+      </trans-unit>
+      <trans-unit id="filesearch">
+        <source>Search all filenames for pattern</source>
+        <target approved="yes">Search all filenames for pattern</target>
+      </trans-unit>
+      <trans-unit id="filesearch_description">
+        <source>Will search recursively for filenames in the PATH_site (subdirs to the website path) matching a certain regex pattern.</source>
+        <target approved="yes">Will search recursively for filenames in the PATH_site (subdirs to the website path) matching a certain regex pattern.</target>
+      </trans-unit>
+      <trans-unit id="refindex">
+        <source>Check and update global reference index</source>
+        <target approved="yes">Check and update global reference index</target>
+      </trans-unit>
+      <trans-unit id="refindex_description">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target approved="yes">Allows you to maintain the reference index kept by TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Database integrity check</source>
+        <target approved="yes">Database integrity check</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

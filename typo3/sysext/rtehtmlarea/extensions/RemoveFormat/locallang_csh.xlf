@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>htmlArea RTE &gt; Remove Format</source>
+        <target approved="yes">htmlArea RTE &gt; Remove Format</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The Remove Format feature offers options for cleaning up the HTML markup of the text being edited.</source>
+        <target approved="yes">The Remove Format feature offers options for cleaning up the HTML markup of the text being edited.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>This feature may be useful in order to clean up text that was copied from some external source and pasted into the editing area.
+
+The feature is accessed by clicking on the "Remove format" button in the editor tool bar.
+
+In the dialogue window that opens when the button is clicked:
+- First, select the area to be cleaned;
+- Second, choose the format removal options that you wish to be applied to the selected area;
+- Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.</source>
+        <target approved="yes">This feature may be useful in order to clean up text that was copied from some external source and pasted into the editing area.
+
+The feature is accessed by clicking on the "Remove format" button in the editor tool bar.
+
+In the dialogue window that opens when the button is clicked:
+- First, select the area to be cleaned;
+- Second, choose the format removal options that you wish to be applied to the selected area;
+- Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.</target>
+      </trans-unit>
+      <trans-unit id=".image">
+        <source>EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</source>
+        <target approved="yes">EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>Remove format icon in the editor tool bar.</source>
+        <target approved="yes">Remove format icon in the editor tool bar.</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</source>
+        <target approved="yes">xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</target>
+      </trans-unit>
+      <trans-unit id="area.alttitle">
+        <source>Select the area to be cleaned</source>
+        <target approved="yes">Select the area to be cleaned</target>
+      </trans-unit>
+      <trans-unit id="area.description">
+        <source>The format removal operation may be applied either to the currently highlighted text or to the whole contents of the editing area.</source>
+        <target approved="yes">The format removal operation may be applied either to the currently highlighted text or to the whole contents of the editing area.</target>
+      </trans-unit>
+      <trans-unit id="area.details">
+        <source>Use one of these two radio buttons to select the area to which you wish to apply the format removal operation.</source>
+        <target approved="yes">Use one of these two radio buttons to select the area to which you wish to apply the format removal operation.</target>
+      </trans-unit>
+      <trans-unit id="selection.alttitle">
+        <source>Remove format on selected text only</source>
+        <target approved="yes">Remove format on selected text only</target>
+      </trans-unit>
+      <trans-unit id="selection.description">
+        <source>Select this option to perform the format removal operation on the currently selected text only.</source>
+        <target approved="yes">Select this option to perform the format removal operation on the currently selected text only.</target>
+      </trans-unit>
+      <trans-unit id="_selection.seeAlso">
+        <source>xEXT_rtehtmlarea_RemoveFormat:area</source>
+        <target approved="yes">xEXT_rtehtmlarea_RemoveFormat:area</target>
+      </trans-unit>
+      <trans-unit id="all.alttitle">
+        <source>Remove format on all contents</source>
+        <target approved="yes">Remove format on all contents</target>
+      </trans-unit>
+      <trans-unit id="all.description">
+        <source>Select this option to perform the format removal operation on the whole contents of the editing area.</source>
+        <target approved="yes">Select this option to perform the format removal operation on the whole contents of the editing area.</target>
+      </trans-unit>
+      <trans-unit id="_all.seeAlso">
+        <source>xEXT_rtehtmlarea_RemoveFormat:area</source>
+        <target approved="yes">xEXT_rtehtmlarea_RemoveFormat:area</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle">
+        <source>Select the types of format to be removed</source>
+        <target approved="yes">Select the types of format to be removed</target>
+      </trans-unit>
+      <trans-unit id="options.description">
+        <source>The format removal operation may remove various types of format.</source>
+        <target approved="yes">The format removal operation may remove various types of format.</target>
+      </trans-unit>
+      <trans-unit id="options.details">
+        <source>Check one or more of these check boxes to select the type(s) of format you wish to be removed.</source>
+        <target approved="yes">Check one or more of these check boxes to select the type(s) of format you wish to be removed.</target>
+      </trans-unit>
+      <trans-unit id="options.seeAlso">
+        <source>xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</source>
+        <target approved="yes">xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</target>
+      </trans-unit>
+      <trans-unit id="htmlFormat.alttitle">
+        <source>Remove all HTML inline markup and style</source>
+        <target approved="yes">Remove all HTML inline markup and style</target>
+      </trans-unit>
+      <trans-unit id="htmlFormat.description">
+        <source>Check this option if you wish to remove all HTML inline markup and style.</source>
+        <target approved="yes">Check this option if you wish to remove all HTML inline markup and style.</target>
+      </trans-unit>
+      <trans-unit id="htmlFormat.details">
+        <source>This option removes:
+- the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
+- the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.</source>
+        <target approved="yes">This option removes:
+- the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
+- the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.</target>
+      </trans-unit>
+      <trans-unit id="msWordFormat.alttitle">
+        <source>Remove all MS Word markup and style</source>
+        <target approved="yes">Remove all MS Word markup and style</target>
+      </trans-unit>
+      <trans-unit id="msWordFormat.description">
+        <source>Check this option if you wish to remove all MS Word markup and style.</source>
+        <target approved="yes">Check this option if you wish to remove all MS Word markup and style.</target>
+      </trans-unit>
+      <trans-unit id="msWordFormat.details">
+        <source>This option removes:
+- all attributes on the following elements: b, em, i, li, p, strong, ul;
+- the following attributes on all HTML elements: align, class, style;
+- the following elements, but keeps their textual contents: div, link, meta, span, any element containing ":" in its name;
+- the following elements and their contents: style, title;
+- HTML comments;
+- the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
+- double opening and double closing tags;
+- multiples spaces, replacing them by single spaces.</source>
+        <target approved="yes">This option removes:
+- all attributes on the following elements: b, em, i, li, p, strong, ul;
+- the following attributes on all HTML elements: align, class, style;
+- the following elements, but keeps their textual contents: div, link, meta, span, any element containing ":" in its name;
+- the following elements and their contents: style, title;
+- HTML comments;
+- the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
+- double opening and double closing tags;
+- multiples spaces, replacing them by single spaces.</target>
+      </trans-unit>
+      <trans-unit id="typographicalPunctuation.alttitle">
+        <source>Replace typographical punctuation</source>
+        <target approved="yes">Replace typographical punctuation</target>
+      </trans-unit>
+      <trans-unit id="typographicalPunctuation.description">
+        <source>Check this option if you wish to replace typographical punctuation with ASCII character codes.</source>
+        <target approved="yes">Check this option if you wish to replace typographical punctuation with ASCII character codes.</target>
+      </trans-unit>
+      <trans-unit id="typographicalPunctuation.details">
+        <source>This option replaces typographical punctuation entities with ASCII character codes. The following substitutions are performed:
+- replace horizontal ellipsis with three periods;
+- replace en-dash and em-dash with hyphen;
+- replace double low-9, left double and right double quotation mark with double quote;
+- replace left single, right single and single low-9 quotation mark with single quote;
+- replace single left/right-pointing angle quotation mark with single quote;
+- replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
+- replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.</source>
+        <target approved="yes">This option replaces typographical punctuation entities with ASCII character codes. The following substitutions are performed:
+- replace horizontal ellipsis with three periods;
+- replace en-dash and em-dash with hyphen;
+- replace double low-9, left double and right double quotation mark with double quote;
+- replace left single, right single and single low-9 quotation mark with single quote;
+- replace single left/right-pointing angle quotation mark with single quote;
+- replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
+- replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.</target>
+      </trans-unit>
+      <trans-unit id="nonBreakingSpace.alttitle">
+        <source>Replace non-breaking spaces</source>
+        <target approved="yes">Replace non-breaking spaces</target>
+      </trans-unit>
+      <trans-unit id="nonBreakingSpace.description">
+        <source>Check this option if you wish to replace non-breaking spaces with normal spaces.</source>
+        <target approved="yes">Check this option if you wish to replace non-breaking spaces with normal spaces.</target>
+      </trans-unit>
+      <trans-unit id="nonBreakingSpace.details">
+        <source>This option replaces any non-breaking space with a simple normal space.</source>
+        <target approved="yes">This option replaces any non-breaking space with a simple normal space.</target>
+      </trans-unit>
+      <trans-unit id="images.alttitle">
+        <source>Remove images</source>
+        <target approved="yes">Remove images</target>
+      </trans-unit>
+      <trans-unit id="images.description">
+        <source>Check this option if you wish to remove all images.</source>
+        <target approved="yes">Check this option if you wish to remove all images.</target>
+      </trans-unit>
+      <trans-unit id="images.details">
+        <source>This option removes all images from the selected text.</source>
+        <target approved="yes">This option removes all images from the selected text.</target>
+      </trans-unit>
+      <trans-unit id="allHtml.alttitle">
+        <source>Remove all HTML format</source>
+        <target approved="yes">Remove all HTML format</target>
+      </trans-unit>
+      <trans-unit id="allHtml.description">
+        <source>Check this option if you wish to remove all HTML format.</source>
+        <target approved="yes">Check this option if you wish to remove all HTML format.</target>
+      </trans-unit>
+      <trans-unit id="allHtml.details">
+        <source>This option removes all HTML markup from the selected text.</source>
+        <target approved="yes">This option removes all HTML markup from the selected text.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

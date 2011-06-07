@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="adminOptions">
+        <source>ADMIN PANEL</source>
+        <target approved="yes">ADMIN PANEL</target>
+      </trans-unit>
+      <trans-unit id="adminPanelTitle">
+        <source>TYPO3 ADMIN PANEL</source>
+        <target approved="yes">TYPO3 ADMIN PANEL</target>
+      </trans-unit>
+      <trans-unit id="preview">
+        <source>Preview</source>
+        <target approved="yes">Preview</target>
+      </trans-unit>
+      <trans-unit id="preview_showHiddenPages">
+        <source>Show hidden pages</source>
+        <target approved="yes">Show hidden pages</target>
+      </trans-unit>
+      <trans-unit id="preview_showHiddenRecords">
+        <source>Show hidden records</source>
+        <target approved="yes">Show hidden records</target>
+      </trans-unit>
+      <trans-unit id="preview_simulateDate">
+        <source>Simulate time</source>
+        <target approved="yes">Simulate time</target>
+      </trans-unit>
+      <trans-unit id="preview_simulateUserGroup">
+        <source>Simulate user group</source>
+        <target approved="yes">Simulate user group</target>
+      </trans-unit>
+      <trans-unit id="cache">
+        <source>Cache</source>
+        <target approved="yes">Cache</target>
+      </trans-unit>
+      <trans-unit id="cache_noCache">
+        <source>No caching</source>
+        <target approved="yes">No caching</target>
+      </trans-unit>
+      <trans-unit id="cache_doit">
+        <source>Clear cache now!</source>
+        <target approved="yes">Clear cache now!</target>
+      </trans-unit>
+      <trans-unit id="cache_clearLevels">
+        <source>Clear levels</source>
+        <target approved="yes">Clear levels</target>
+      </trans-unit>
+      <trans-unit id="cache_cacheEntries">
+        <source>Cache entries</source>
+        <target approved="yes">Cache entries</target>
+      </trans-unit>
+      <trans-unit id="publish">
+        <source>Publish</source>
+        <target approved="yes">Publish</target>
+      </trans-unit>
+      <trans-unit id="publish_levels">
+        <source>Publish levels</source>
+        <target approved="yes">Publish levels</target>
+      </trans-unit>
+      <trans-unit id="publish_tree">
+        <source>Publish pages</source>
+        <target approved="yes">Publish pages</target>
+      </trans-unit>
+      <trans-unit id="publish_doit">
+        <source>Publish now!</source>
+        <target approved="yes">Publish now!</target>
+      </trans-unit>
+      <trans-unit id="edit">
+        <source>Editing</source>
+        <target approved="yes">Editing</target>
+      </trans-unit>
+      <trans-unit id="edit_displayIcons">
+        <source>Display edit panels</source>
+        <target approved="yes">Display edit panels</target>
+      </trans-unit>
+      <trans-unit id="edit_displayFieldIcons">
+        <source>Display edit icons</source>
+        <target approved="yes">Display edit icons</target>
+      </trans-unit>
+      <trans-unit id="edit_editFormsOnPage">
+        <source>Editforms on page</source>
+        <target approved="yes">Editforms on page</target>
+      </trans-unit>
+      <trans-unit id="edit_editNoPopup">
+        <source>No popup window</source>
+        <target approved="yes">No popup window</target>
+      </trans-unit>
+      <trans-unit id="edit_openAB">
+        <source>Open TYPO3 Backend</source>
+        <target approved="yes">Open TYPO3 Backend</target>
+      </trans-unit>
+      <trans-unit id="edit_recordHistory">
+        <source>View record change history</source>
+        <target approved="yes">View record change history</target>
+      </trans-unit>
+      <trans-unit id="edit_newContentElement">
+        <source>Create new content element</source>
+        <target approved="yes">Create new content element</target>
+      </trans-unit>
+      <trans-unit id="edit_move_page">
+        <source>Move page</source>
+        <target approved="yes">Move page</target>
+      </trans-unit>
+      <trans-unit id="edit_newPage">
+        <source>Create new page</source>
+        <target approved="yes">Create new page</target>
+      </trans-unit>
+      <trans-unit id="edit_editPageProperties">
+        <source>Edit page properties</source>
+        <target approved="yes">Edit page properties</target>
+      </trans-unit>
+      <trans-unit id="edit_editPageOverlay">
+        <source>Edit properties of translated page</source>
+        <target approved="yes">Edit properties of translated page</target>
+      </trans-unit>
+      <trans-unit id="edit_db_list">
+        <source>Web&gt;List module</source>
+        <target approved="yes">Web&gt;List module</target>
+      </trans-unit>
+      <trans-unit id="tsdebug">
+        <source>TypoScript</source>
+        <target approved="yes">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_tree">
+        <source>Tree display</source>
+        <target approved="yes">Tree display</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_LR">
+        <source>Track content rendering</source>
+        <target approved="yes">Track content rendering</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_forceTemplateParsing">
+        <source>Force TS Rendering</source>
+        <target approved="yes">Force TS Rendering</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayTimes">
+        <source>Display all times</source>
+        <target approved="yes">Display all times</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayMessages">
+        <source>Display messages</source>
+        <target approved="yes">Display messages</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayContent">
+        <source>Display content</source>
+        <target approved="yes">Display content</target>
+      </trans-unit>
+      <trans-unit id="tsdebug_displayQueries">
+        <source>Explain SELECT queries</source>
+        <target approved="yes">Explain SELECT queries</target>
+      </trans-unit>
+      <trans-unit id="info">
+        <source>Info</source>
+        <target approved="yes">Info</target>
+      </trans-unit>
+      <trans-unit id="div_Levels_0">
+        <source>This page</source>
+        <target approved="yes">This page</target>
+      </trans-unit>
+      <trans-unit id="div_Levels_1">
+        <source>+ 1 sublevel</source>
+        <target approved="yes">+ 1 sublevel</target>
+      </trans-unit>
+      <trans-unit id="div_Levels_2">
+        <source>+ 2 sublevels</source>
+        <target approved="yes">+ 2 sublevels</target>
+      </trans-unit>
+      <trans-unit id="update">
+        <source>Update</source>
+        <target approved="yes">Update</target>
+      </trans-unit>
+      <trans-unit id="p_editRecord">
+        <source>Edit record</source>
+        <target approved="yes">Edit record</target>
+      </trans-unit>
+      <trans-unit id="p_moveUp">
+        <source>Move up</source>
+        <target approved="yes">Move up</target>
+      </trans-unit>
+      <trans-unit id="p_moveDown">
+        <source>Move down</source>
+        <target approved="yes">Move down</target>
+      </trans-unit>
+      <trans-unit id="p_unhide">
+        <source>Un-Hide</source>
+        <target approved="yes">Un-Hide</target>
+      </trans-unit>
+      <trans-unit id="p_hide">
+        <source>Hide</source>
+        <target approved="yes">Hide</target>
+      </trans-unit>
+      <trans-unit id="p_newSubpage">
+        <source>New subpage</source>
+        <target approved="yes">New subpage</target>
+      </trans-unit>
+      <trans-unit id="p_newRecordAfter">
+        <source>New record after</source>
+        <target approved="yes">New record after</target>
+      </trans-unit>
+      <trans-unit id="p_delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="p_deleteConfirm">
+        <source>Are you sure you want to delete this record?</source>
+        <target approved="yes">Are you sure you want to delete this record?</target>
+      </trans-unit>
+      <trans-unit id="p_hideConfirm">
+        <source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
+Continue?</source>
+        <target approved="yes">Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
+Continue?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints">
+        <source>File Mounts:</source>
+        <target approved="yes">File Mounts:</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_edit_title">
+        <source>Edit filemount</source>
+        <target approved="yes">Edit filemount</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title">
+        <source>Create new filemount</source>
+        <target approved="yes">Create new filemount</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title">
+        <source>List filemounts</source>
+        <target approved="yes">List filemounts</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints">
+        <source>DB Mounts:</source>
+        <target approved="yes">DB Mounts:</target>
+      </trans-unit>
+      <trans-unit id="userMods">
+        <source>Modules:</source>
+        <target approved="yes">Modules:</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages">
+        <source>Limit to languages:</source>
+        <target approved="yes">Limit to languages:</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms">
+        <source>Workspace permissions:</source>
+        <target approved="yes">Workspace permissions:</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live">
+        <source>Edit Live (Online)</source>
+        <target approved="yes">Edit Live (Online)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_draft">
+        <source>Edit Draft (Offline)</source>
+        <target approved="yes">Edit Draft (Offline)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_custom">
+        <source>Create new workspace projects</source>
+        <target approved="yes">Create new workspace projects</target>
+      </trans-unit>
+      <trans-unit id="TSconfig">
+        <source>TSconfig:</source>
+        <target approved="yes">TSconfig:</target>
+      </trans-unit>
+      <trans-unit id="TSconfig_title">
+        <source>TSconfig QuickReference</source>
+        <target approved="yes">TSconfig QuickReference</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain">
+        <source>Lock to domain:</source>
+        <target approved="yes">Lock to domain:</target>
+      </trans-unit>
+      <trans-unit id="be_users.username">
+        <source>Username:</source>
+        <target approved="yes">Username:</target>
+      </trans-unit>
+      <trans-unit id="be_users.password">
+        <source>Password:</source>
+        <target approved="yes">Password:</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup">
+        <source>Group:</source>
+        <target approved="yes">Group:</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title">
+        <source>Edit usergroup</source>
+        <target approved="yes">Edit usergroup</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title">
+        <source>Create new group</source>
+        <target approved="yes">Create new group</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title">
+        <source>List groups</source>
+        <target approved="yes">List groups</target>
+      </trans-unit>
+      <trans-unit id="be_users.disableIPlock">
+        <source>Disable IP lock for user:</source>
+        <target approved="yes">Disable IP lock for user:</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin">
+        <source>Admin(!):</source>
+        <target approved="yes">Admin(!):</target>
+      </trans-unit>
+      <trans-unit id="be_users.options">
+        <source>Mount from groups:</source>
+        <target approved="yes">Mount from groups:</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_db_mounts">
+        <source>DB Mounts:</source>
+        <target approved="yes">DB Mounts:</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts">
+        <source>File Mounts:</source>
+        <target approved="yes">File Mounts:</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms">
+        <source>Fileoperation permissions:</source>
+        <target approved="yes">Fileoperation permissions:</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target approved="yes">Files: Upload,Copy,Move,Delete,Rename,New,Edit</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip">
+        <source>Files: Unzip</source>
+        <target approved="yes">Files: Unzip</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target approved="yes">Directory: Move,Delete,Rename,New</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy">
+        <source>Directory: Copy</source>
+        <target approved="yes">Directory: Copy</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target approved="yes">Directory: Delete recursively (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.lang">
+        <source>Default Language:</source>
+        <target approved="yes">Default Language:</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.rights">
+        <source>Access Rights</source>
+        <target approved="yes">Access Rights</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.mounts_and_workspaces">
+        <source>Mounts and Workspaces</source>
+        <target approved="yes">Mounts and Workspaces</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options">
+        <source>Options</source>
+        <target approved="yes">Options</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended">
+        <source>Extended</source>
+        <target approved="yes">Extended</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access">
+        <source>Access</source>
+        <target approved="yes">Access</target>
+      </trans-unit>
+      <trans-unit id="be_groups.title">
+        <source>Grouptitle:</source>
+        <target approved="yes">Grouptitle:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.pagetypes_select">
+        <source>Page types:</source>
+        <target approved="yes">Page types:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify">
+        <source>Tables (modify):</source>
+        <target approved="yes">Tables (modify):</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select">
+        <source>Tables (listing):</source>
+        <target approved="yes">Tables (listing):</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields">
+        <source>Allowed excludefields:</source>
+        <target approved="yes">Allowed excludefields:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.explicit_allowdeny">
+        <source>Explicitly allow/deny field values:</source>
+        <target approved="yes">Explicitly allow/deny field values:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options">
+        <source>Custom module options:</source>
+        <target approved="yes">Custom module options:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.inc_access_lists">
+        <source>Include Access Lists:</source>
+        <target approved="yes">Include Access Lists:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.hide_in_lists">
+        <source>Hide in lists:</source>
+        <target approved="yes">Hide in lists:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup">
+        <source>Sub Groups:</source>
+        <target approved="yes">Sub Groups:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.base_rights">
+        <source>Access Lists</source>
+        <target approved="yes">Access Lists</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.mounts_and_workspaces">
+        <source>Mounts and Workspaces</source>
+        <target approved="yes">Mounts and Workspaces</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms">
+        <source>Fileoperation permissions:</source>
+        <target approved="yes">Fileoperation permissions:</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target approved="yes">Files: Upload,Copy,Move,Delete,Rename,New,Edit</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip">
+        <source>Files: Unzip</source>
+        <target approved="yes">Files: Unzip</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target approved="yes">Directory: Move,Delete,Rename,New</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy">
+        <source>Directory: Copy</source>
+        <target approved="yes">Directory: Copy</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target approved="yes">Directory: Delete recursively (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options">
+        <source>Options</source>
+        <target approved="yes">Options</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended">
+        <source>Extended</source>
+        <target approved="yes">Extended</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users">
+        <source>Users</source>
+        <target approved="yes">Users</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints">
+        <source>Mountpoints</source>
+        <target approved="yes">Mountpoints</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing">
+        <source>Publishing</source>
+        <target approved="yes">Publishing</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other">
+        <source>Other</source>
+        <target approved="yes">Other</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title">
+        <source>Label:</source>
+        <target approved="yes">Label:</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.path">
+        <source>Path:</source>
+        <target approved="yes">Path:</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base">
+        <source>Base:</source>
+        <target approved="yes">Base:</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_absolute">
+        <source>absolute (root) / </source>
+        <target approved="yes">absolute (root) / </target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_relative">
+        <source>relative ../fileadmin/</source>
+        <target approved="yes">relative ../fileadmin/</target>
+      </trans-unit>
+      <trans-unit id="sys_news">
+        <source>System News</source>
+        <target approved="yes">System News</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access">
+        <source>Access</source>
+        <target approved="yes">Access</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers">
+        <source>Owners:</source>
+        <target approved="yes">Owners:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members">
+        <source>Members:</source>
+        <target approved="yes">Members:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.reviewers">
+        <source>Reviewers:</source>
+        <target approved="yes">Reviewers:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time">
+        <source>Publish:</source>
+        <target approved="yes">Publish:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time">
+        <source>Un-Publish:</source>
+        <target approved="yes">Un-Publish:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze">
+        <source>Freeze Editing</source>
+        <target approved="yes">Freeze Editing</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target approved="yes">Allow "live" editing of records from tables without versioning</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target approved="yes">Allow members to edit records in "Review" stage</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate">
+        <source>Disable auto-versioning when editing</source>
+        <target approved="yes">Disable auto-versioning when editing</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes">
+        <source>Swap modes</source>
+        <target approved="yes">Swap modes</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.vtypes">
+        <source>Disable Versioning Types for members and reviewers:</source>
+        <target approved="yes">Disable Versioning Types for members and reviewers:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access">
+        <source>Publish access:</source>
+        <target approved="yes">Publish access:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification">
+        <source>Stage change notification by email:</source>
+        <target approved="yes">Stage change notification by email:</target>
+      </trans-unit>
+      <trans-unit id="pages">
+        <source>Page</source>
+        <target approved="yes">Page</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0">
+        <source>Standard</source>
+        <target approved="yes">Standard</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1">
+        <source>SysFolder</source>
+        <target approved="yes">SysFolder</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder">
+        <source>Folder</source>
+        <target approved="yes">Folder</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2">
+        <source>Recycler</source>
+        <target approved="yes">Recycler</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Pagetitle:</source>
+        <target approved="yes">Pagetitle:</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop">
+        <source>Stop page tree:</source>
+        <target approved="yes">Stop page tree:</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot">
+        <source>Is root of website:</source>
+        <target approved="yes">Is root of website:</target>
+      </trans-unit>
+      <trans-unit id="storage_pid">
+        <source>General Record Storage page:</source>
+        <target approved="yes">General Record Storage page:</target>
+      </trans-unit>
+      <trans-unit id="be_users">
+        <source>Backend user</source>
+        <target approved="yes">Backend user</target>
+      </trans-unit>
+      <trans-unit id="be_groups">
+        <source>Backend usergroup</source>
+        <target approved="yes">Backend usergroup</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts">
+        <source>Filemount</source>
+        <target approved="yes">Filemount</target>
+      </trans-unit>
+      <trans-unit id="sys_language">
+        <source>Website Language</source>
+        <target approved="yes">Website Language</target>
+      </trans-unit>
+      <trans-unit id="sys_language.isocode">
+        <source>Select Official Language (ISO code):</source>
+        <target approved="yes">Select Official Language (ISO code):</target>
+      </trans-unit>
+      <trans-unit id="sys_language.flag">
+        <source>Select flag icon:</source>
+        <target approved="yes">Select flag icon:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace">
+        <source>Workspace</source>
+        <target approved="yes">Workspace</target>
+      </trans-unit>
+      <trans-unit id="editlock">
+        <source>Restrict editing by non-Admins:</source>
+        <target approved="yes">Restrict editing by non-Admins:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

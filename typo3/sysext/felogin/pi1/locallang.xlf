@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:47 UTC 2011" product-name="felogin">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header">
+        <source>User login</source>
+        <target approved="yes">User login</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message">
+        <source>Enter your username and password here in order to log in on the website:</source>
+        <target approved="yes">Enter your username and password here in order to log in on the website:</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header">
+        <source>You have logged out.</source>
+        <target approved="yes">You have logged out.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target approved="yes">You just logged out from your user session on this website. You can login again or as another user by the form below.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header">
+        <source>Login failure</source>
+        <target approved="yes">Login failure</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message">
+        <source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+        <target approved="yes">An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</target>
+      </trans-unit>
+      <trans-unit id="ll_success_header">
+        <source>Login successful</source>
+        <target approved="yes">Login successful</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message">
+        <source>You are now logged in as '###USER###'</source>
+        <target approved="yes">You are now logged in as '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header">
+        <source>Current status</source>
+        <target approved="yes">Current status</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message">
+        <source>This is your current status:</source>
+        <target approved="yes">This is your current status:</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target approved="yes">Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</target>
+      </trans-unit>
+      <trans-unit id="username">
+        <source>Username:</source>
+        <target approved="yes">Username:</target>
+      </trans-unit>
+      <trans-unit id="password">
+        <source>Password:</source>
+        <target approved="yes">Password:</target>
+      </trans-unit>
+      <trans-unit id="login">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="permalogin">
+        <source>Stay logged in:</source>
+        <target approved="yes">Stay logged in:</target>
+      </trans-unit>
+      <trans-unit id="logout">
+        <source>Logout</source>
+        <target approved="yes">Logout</target>
+      </trans-unit>
+      <trans-unit id="send_password">
+        <source>Send password</source>
+        <target approved="yes">Send password</target>
+      </trans-unit>
+      <trans-unit id="reset_password">
+        <source>Reset Password</source>
+        <target approved="yes">Reset Password</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header">
+        <source>Change your password</source>
+        <target approved="yes">Change your password</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target approved="yes">Please enter your new password twice. Password needs a minimum length of %s chars.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_nolinkprefix_message">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRelPrefix = http://yourdomain/</source>
+        <target approved="yes">Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRelPrefix = http://yourdomain/</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message">
+        <source>The link you clicked is not valid. Please repeat the forgot message procedure.</source>
+        <target approved="yes">The link you clicked is not valid. Please repeat the forgot message procedure.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target approved="yes">The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target approved="yes">The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target approved="yes">Your password has been saved. You can now login with your new password.</target>
+      </trans-unit>
+      <trans-unit id="change_password">
+        <source>Change your password</source>
+        <target approved="yes">Change your password</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1">
+        <source>Enter new password</source>
+        <target approved="yes">Enter new password</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2">
+        <source>Repeat new password</source>
+        <target approved="yes">Repeat new password</target>
+      </trans-unit>
+      <trans-unit id="your_email">
+        <source>Your email:</source>
+        <target approved="yes">Your email:</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header">
+        <source>Forgot your password?</source>
+        <target approved="yes">Forgot your password?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"
+			</source>
+        <target approved="yes">Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"
+			</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword">
+        <source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?
+			</source>
+        <target approved="yes">Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?
+			</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password">
+        <source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
+			</source>
+        <target approved="yes">Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
+			</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target approved="yes">Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent">
+        <source>Your password has now been sent to the email address %s</source>
+        <target approved="yes">Your password has now been sent to the email address %s</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target approved="yes">Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target approved="yes">An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin">
+        <source>Return to login form</source>
+        <target approved="yes">Return to login form</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data">
+        <source>Username or email address:</source>
+        <target approved="yes">Username or email address:</target>
+      </trans-unit>
+      <trans-unit id="noValidRedirectUrl">
+        <source>Url "%s" for redirect was not accepted!</source>
+        <target approved="yes">Url "%s" for redirect was not accepted!</target>
+      </trans-unit>
+      <trans-unit id="xssAttackDetected">
+        <source>Url "%s" contained an XSS attack and was cleaned!</source>
+        <target approved="yes">Url "%s" contained an XSS attack and was cleaned!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

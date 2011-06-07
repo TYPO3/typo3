@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:50 UTC 2011" product-name="func_wizards">
+    <header/>
+    <body>
+      <trans-unit id="tx_funcwizards.alttitle">
+        <source>Page Wizards</source>
+        <target approved="yes">Page Wizards</target>
+      </trans-unit>
+      <trans-unit id="tx_funcwizards.description">
+        <source>This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</source>
+        <target approved="yes">This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</target>
+      </trans-unit>
+      <trans-unit id="_tx_funcwizards.seeAlso">
+        <source>_MOD_web_func:tx_wizardcrpages,
+_MOD_web_func:tx_wizardsortpages</source>
+        <target approved="yes">_MOD_web_func:tx_wizardcrpages,
+_MOD_web_func:tx_wizardsortpages</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

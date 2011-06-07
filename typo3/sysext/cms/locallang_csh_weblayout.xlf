@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:10 UTC 2011" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>Web &gt; Page Module</source>
+        <target approved="yes">Web &gt; Page Module</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target approved="yes">The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+        <target approved="yes">Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+        <target approved="yes">Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:cms/cshimages/pagemodule_13.png,
+EXT:cms/cshimages/pagemodule_14.png,
+EXT:cms/cshimages/pagemodule_15.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_13.png,
+EXT:cms/cshimages/pagemodule_14.png,
+EXT:cms/cshimages/pagemodule_15.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+        <target approved="yes">Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.alttitle">
+        <source>Quick Edit</source>
+        <target approved="yes">Quick Edit</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target approved="yes">The Quick Editor gives you direct access to the form fields of the page content.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target approved="yes">The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target approved="yes">_MOD_web_layout:quickEdit_selElement</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image">
+        <source>EXT:cms/cshimages/pagemodule_5.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_5.png</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target approved="yes">The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle">
+        <source>Content Elements</source>
+        <target approved="yes">Content Elements</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target approved="yes">This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso">
+        <source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+        <target approved="yes">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.image">
+        <source>EXT:cms/cshimages/pagemodule_4.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_4.png</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target approved="yes">Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</target>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle">
+        <source>Listing by Column</source>
+        <target approved="yes">Listing by Column</target>
+      </trans-unit>
+      <trans-unit id="columns_1.description">
+        <source>In the "Columns" view you can control the content of the web page as it is positioned in columns.</source>
+        <target approved="yes">In the "Columns" view you can control the content of the web page as it is positioned in columns.</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle">
+        <source>Listing by Language</source>
+        <target approved="yes">Listing by Language</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns.</source>
+        <target approved="yes">In the "Languages" view you can control the content of the web page as it is divided into languages and columns.</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.seeAlso">
+        <source>Article about localization | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/</source>
+        <target approved="yes">Article about localization | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/</target>
+      </trans-unit>
+      <trans-unit id="columns_3.alttitle">
+        <source>Page Information</source>
+        <target approved="yes">Page Information</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target approved="yes">In the "Page Information" view you can see various statistics about a page.</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details">
+        <source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+        <target approved="yes">The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</target>
+      </trans-unit>
+      <trans-unit id="_columns_3.image">
+        <source>EXT:cms/cshimages/pagemodule_9.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_9.png</target>
+      </trans-unit>
+      <trans-unit id="language_list.alttitle">
+        <source>Language view</source>
+        <target approved="yes">Language view</target>
+      </trans-unit>
+      <trans-unit id="language_list.description">
+        <source>This view will display the available translations of the page content side-by-side. It enables users to create a new translation of a page.</source>
+        <target approved="yes">This view will display the available translations of the page content side-by-side. It enables users to create a new translation of a page.</target>
+      </trans-unit>
+      <trans-unit id="_language_list.seeAlso">
+        <source>sys_language</source>
+        <target approved="yes">sys_language</target>
+      </trans-unit>
+      <trans-unit id="_language_list.image">
+        <source>EXT:cms/cshimages/pagemodule_6.png,
+EXT:cms/cshimages/pagemodule_7.png,
+EXT:cms/cshimages/pagemodule_11.png,
+EXT:cms/cshimages/pagemodule_10.png,</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_6.png,
+EXT:cms/cshimages/pagemodule_7.png,
+EXT:cms/cshimages/pagemodule_11.png,
+EXT:cms/cshimages/pagemodule_10.png,</target>
+      </trans-unit>
+      <trans-unit id="language_list.image_descr">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+This example shows how page content for three languages is shown side-by-side in the Page module.
+In the top of the Page module you can also select between the available translations...
+... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+        <target approved="yes">In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+This example shows how page content for three languages is shown side-by-side in the Page module.
+In the top of the Page module you can also select between the available translations...
+... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</target>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle">
+        <source>Page content elements in a single column</source>
+        <target approved="yes">Page content elements in a single column</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target approved="yes">The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details">
+        <source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+        <target approved="yes">You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</target>
+      </trans-unit>
+      <trans-unit id="_columns_single.seeAlso">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target approved="yes">_MOD_web_layout:columns_multi</target>
+      </trans-unit>
+      <trans-unit id="_columns_single.image">
+        <source>EXT:cms/cshimages/pagemodule_1.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_1.png</target>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target approved="yes">Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</target>
+      </trans-unit>
+      <trans-unit id="columns_multi.alttitle">
+        <source>Page content elements in a multiple columns</source>
+        <target approved="yes">Page content elements in a multiple columns</target>
+      </trans-unit>
+      <trans-unit id="columns_multi.description">
+        <source>The multiple column view will show the content of your website arranged in multiple columns. This is the case if your website supports more than one content zone and the content elements from each zone is arranged in "columns".</source>
+        <target approved="yes">The multiple column view will show the content of your website arranged in multiple columns. This is the case if your website supports more than one content zone and the content elements from each zone is arranged in "columns".</target>
+      </trans-unit>
+      <trans-unit id="_columns_multi.seeAlso">
+        <source>_MOD_web_layout:columns_single</source>
+        <target approved="yes">_MOD_web_layout:columns_single</target>
+      </trans-unit>
+      <trans-unit id="_columns_multi.image">
+        <source>EXT:cms/cshimages/pagemodule_12.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_12.png</target>
+      </trans-unit>
+      <trans-unit id="columns_multi.image_descr">
+        <source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
+        <target approved="yes">When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle">
+        <source>The "Big Buttons"</source>
+        <target approved="yes">The "Big Buttons"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target approved="yes">These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso">
+        <source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+        <target approved="yes">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.image">
+        <source>EXT:cms/cshimages/pagemodule_2.png</source>
+        <target approved="yes">EXT:cms/cshimages/pagemodule_2.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

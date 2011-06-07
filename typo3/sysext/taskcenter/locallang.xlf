@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:47 UTC 2011" product-name="taskcenter">
+    <header/>
+    <body>
+      <trans-unit id="taskcenter">
+        <source>Taskcenter</source>
+        <target approved="yes">Taskcenter</target>
+      </trans-unit>
+      <trans-unit id="choose_task">
+        <source>Task:</source>
+        <target approved="yes">Task:</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Tasks</source>
+        <target approved="yes">Tasks</target>
+      </trans-unit>
+      <trans-unit id="task_overview">
+        <source>Overview</source>
+        <target approved="yes">Overview</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress">
+        <source>Reply address is your email</source>
+        <target approved="yes">Reply address is your email</target>
+      </trans-unit>
+      <trans-unit id="lSelf">
+        <source>Self</source>
+        <target approved="yes">Self</target>
+      </trans-unit>
+      <trans-unit id="lSendNew">
+        <source>Send message</source>
+        <target approved="yes">Send message</target>
+      </trans-unit>
+      <trans-unit id="lSendReply">
+        <source>Reply to message</source>
+        <target approved="yes">Reply to message</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups">
+        <source>__Groups:__</source>
+        <target approved="yes">__Groups:__</target>
+      </trans-unit>
+      <trans-unit id="lHomedir">
+        <source>Home dir</source>
+        <target approved="yes">Home dir</target>
+      </trans-unit>
+      <trans-unit id="lNone">
+        <source>[none]</source>
+        <target approved="yes">[none]</target>
+      </trans-unit>
+      <trans-unit id="lCreate">
+        <source>Create</source>
+        <target approved="yes">Create</target>
+      </trans-unit>
+      <trans-unit id="lCancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning">
+        <source>Are you sure you want to delete this user?</source>
+        <target approved="yes">Are you sure you want to delete this user?</target>
+      </trans-unit>
+      <trans-unit id="lDelete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="lUpdate">
+        <source>Update</source>
+        <target approved="yes">Update</target>
+      </trans-unit>
+      <trans-unit id="task_help_title">
+        <source>About the taskcenter</source>
+        <target approved="yes">About the taskcenter</target>
+      </trans-unit>
+      <trans-unit id="task_help_description">
+        <source>Get more information about the taskcenter</source>
+        <target approved="yes">Get more information about the taskcenter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:47 UTC 2011" product-name="taskcenter">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Tasks</source>
+        <target approved="yes">Tasks</target>
+      </trans-unit>
+      <trans-unit id="task_overview">
+        <source>Overview</source>
+        <target approved="yes">Overview</target>
+      </trans-unit>
+      <trans-unit id="error_header">
+        <source>Error</source>
+        <target approved="yes">Error</target>
+      </trans-unit>
+      <trans-unit id="error-access">
+        <source>No access to this module.</source>
+        <target approved="yes">No access to this module.</target>
+      </trans-unit>
+      <trans-unit id="error_no-instance">
+        <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
+        <target approved="yes">The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</target>
+      </trans-unit>
+      <trans-unit id="no-tasks">
+        <source>No tasks have been registered yet.</source>
+        <target approved="yes">No tasks have been registered yet.</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress">
+        <source>Reply address is your email</source>
+        <target approved="yes">Reply address is your email</target>
+      </trans-unit>
+      <trans-unit id="lSelf">
+        <source>Self</source>
+        <target approved="yes">Self</target>
+      </trans-unit>
+      <trans-unit id="lSendNew">
+        <source>Send message</source>
+        <target approved="yes">Send message</target>
+      </trans-unit>
+      <trans-unit id="lSendReply">
+        <source>Reply to message</source>
+        <target approved="yes">Reply to message</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups">
+        <source>__Groups:__</source>
+        <target approved="yes">__Groups:__</target>
+      </trans-unit>
+      <trans-unit id="lHomedir">
+        <source>Home dir</source>
+        <target approved="yes">Home dir</target>
+      </trans-unit>
+      <trans-unit id="lNone">
+        <source>[none]</source>
+        <target approved="yes">[none]</target>
+      </trans-unit>
+      <trans-unit id="lCreate">
+        <source>Create</source>
+        <target approved="yes">Create</target>
+      </trans-unit>
+      <trans-unit id="lCancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning">
+        <source>Are you sure you want to delete this user?</source>
+        <target approved="yes">Are you sure you want to delete this user?</target>
+      </trans-unit>
+      <trans-unit id="lDelete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="lUpdate">
+        <source>Update</source>
+        <target approved="yes">Update</target>
+      </trans-unit>
+      <trans-unit id="task_description">
+        <source>Description, blablabla lipusm</source>
+        <target approved="yes">Description, blablabla lipusm</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-about">
+        <source>
+				
+					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
+					&lt;ul class="withicons"&gt;
+						&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+						&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+					&lt;/ul&gt;
+					&lt;br /&gt;
+					&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+				
+			</source>
+        <target approved="yes">
+				
+					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
+					&lt;ul class="withicons"&gt;
+						&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+						&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+					&lt;/ul&gt;
+					&lt;br /&gt;
+					&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+				
+			</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-adminheader">
+        <source>Create a task</source>
+        <target approved="yes">Create a task</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-admin">
+        <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
+        <target approved="yes">It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

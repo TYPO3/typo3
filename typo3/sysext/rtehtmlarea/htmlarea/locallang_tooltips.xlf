@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="bold">
+        <source>Bold</source>
+        <target approved="yes">Bold</target>
+      </trans-unit>
+      <trans-unit id="italic">
+        <source>Italic</source>
+        <target approved="yes">Italic</target>
+      </trans-unit>
+      <trans-unit id="underline">
+        <source>Underline</source>
+        <target approved="yes">Underline</target>
+      </trans-unit>
+      <trans-unit id="strikethrough">
+        <source>Strikethrough</source>
+        <target approved="yes">Strikethrough</target>
+      </trans-unit>
+      <trans-unit id="subscript">
+        <source>Subscript</source>
+        <target approved="yes">Subscript</target>
+      </trans-unit>
+      <trans-unit id="superscript">
+        <source>Superscript</source>
+        <target approved="yes">Superscript</target>
+      </trans-unit>
+      <trans-unit id="justifyleft">
+        <source>Justify Left</source>
+        <target approved="yes">Justify Left</target>
+      </trans-unit>
+      <trans-unit id="justifycenter">
+        <source>Justify Center</source>
+        <target approved="yes">Justify Center</target>
+      </trans-unit>
+      <trans-unit id="justifyright">
+        <source>Justify Right</source>
+        <target approved="yes">Justify Right</target>
+      </trans-unit>
+      <trans-unit id="justifyfull">
+        <source>Justify Full</source>
+        <target approved="yes">Justify Full</target>
+      </trans-unit>
+      <trans-unit id="insertorderedlist">
+        <source>Ordered List</source>
+        <target approved="yes">Ordered List</target>
+      </trans-unit>
+      <trans-unit id="insertunorderedlist">
+        <source>Bulleted List</source>
+        <target approved="yes">Bulleted List</target>
+      </trans-unit>
+      <trans-unit id="outdent">
+        <source>Decrease Indent</source>
+        <target approved="yes">Decrease Indent</target>
+      </trans-unit>
+      <trans-unit id="indent">
+        <source>Increase Indent</source>
+        <target approved="yes">Increase Indent</target>
+      </trans-unit>
+      <trans-unit id="forecolor">
+        <source>Font Color</source>
+        <target approved="yes">Font Color</target>
+      </trans-unit>
+      <trans-unit id="hilitecolor">
+        <source>Background Color</source>
+        <target approved="yes">Background Color</target>
+      </trans-unit>
+      <trans-unit id="inserthorizontalrule">
+        <source>Horizontal Rule</source>
+        <target approved="yes">Horizontal Rule</target>
+      </trans-unit>
+      <trans-unit id="createlink">
+        <source>Insert Web Link</source>
+        <target approved="yes">Insert Web Link</target>
+      </trans-unit>
+      <trans-unit id="unlink">
+        <source>Remove link</source>
+        <target approved="yes">Remove link</target>
+      </trans-unit>
+      <trans-unit id="insertimage">
+        <source>Insert/Modify Image</source>
+        <target approved="yes">Insert/Modify Image</target>
+      </trans-unit>
+      <trans-unit id="inserttable">
+        <source>Insert Table</source>
+        <target approved="yes">Insert Table</target>
+      </trans-unit>
+      <trans-unit id="htmlmode">
+        <source>Toggle HTML Source</source>
+        <target approved="yes">Toggle HTML Source</target>
+      </trans-unit>
+      <trans-unit id="popupeditor">
+        <source>Enlarge the editor</source>
+        <target approved="yes">Enlarge the editor</target>
+      </trans-unit>
+      <trans-unit id="about">
+        <source>About this editor</source>
+        <target approved="yes">About this editor</target>
+      </trans-unit>
+      <trans-unit id="showhelp">
+        <source>Help using editor</source>
+        <target approved="yes">Help using editor</target>
+      </trans-unit>
+      <trans-unit id="textindicator">
+        <source>Current style</source>
+        <target approved="yes">Current style</target>
+      </trans-unit>
+      <trans-unit id="undo">
+        <source>Undo the last action</source>
+        <target approved="yes">Undo the last action</target>
+      </trans-unit>
+      <trans-unit id="redo">
+        <source>Redo the last action</source>
+        <target approved="yes">Redo the last action</target>
+      </trans-unit>
+      <trans-unit id="cut">
+        <source>Cut selection</source>
+        <target approved="yes">Cut selection</target>
+      </trans-unit>
+      <trans-unit id="copy">
+        <source>Copy selection</source>
+        <target approved="yes">Copy selection</target>
+      </trans-unit>
+      <trans-unit id="paste">
+        <source>Paste from clipboard</source>
+        <target approved="yes">Paste from clipboard</target>
+      </trans-unit>
+      <trans-unit id="lefttoright">
+        <source>Direction left to right</source>
+        <target approved="yes">Direction left to right</target>
+      </trans-unit>
+      <trans-unit id="righttoleft">
+        <source>Direction right to left</source>
+        <target approved="yes">Direction right to left</target>
+      </trans-unit>
+      <trans-unit id="removeformat">
+        <source>Remove formatting</source>
+        <target approved="yes">Remove formatting</target>
+      </trans-unit>
+      <trans-unit id="print">
+        <source>Print document</source>
+        <target approved="yes">Print document</target>
+      </trans-unit>
+      <trans-unit id="killword">
+        <source>Clear MSOffice tags</source>
+        <target approved="yes">Clear MSOffice tags</target>
+      </trans-unit>
+      <trans-unit id="fontname">
+        <source>Font</source>
+        <target approved="yes">Font</target>
+      </trans-unit>
+      <trans-unit id="fontsize">
+        <source>Font size</source>
+        <target approved="yes">Font size</target>
+      </trans-unit>
+      <trans-unit id="formatblock">
+        <source>Type of paragragh</source>
+        <target approved="yes">Type of paragragh</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

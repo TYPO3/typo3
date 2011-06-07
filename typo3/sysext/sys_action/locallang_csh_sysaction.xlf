@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:38 UTC 2011" product-name="sys_action">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target approved="yes">An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</source>
+        <target approved="yes">Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Enter the title of the action. This is shown in the list of available actions in the Task Center.</source>
+        <target approved="yes">Enter the title of the action. This is shown in the list of available actions in the Task Center.</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Describe what the action does or allows to do.</source>
+        <target approved="yes">Describe what the action does or allows to do.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>Check this option if you wish to disable the availability of the action or non-admin users.</source>
+        <target approved="yes">Check this option if you wish to disable the availability of the action or non-admin users.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</source>
+        <target approved="yes">This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</target>
+      </trans-unit>
+      <trans-unit id="type.description">
+        <source>Select the action type.</source>
+        <target approved="yes">Select the action type.</target>
+      </trans-unit>
+      <trans-unit id="type.details">
+        <source>&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the proces. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the Tools&gt;DBint module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)
+</source>
+        <target approved="yes">&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the proces. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the Tools&gt;DBint module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)
+</target>
+      </trans-unit>
+      <trans-unit id="assign_to_groups.description">
+        <source>Select the backend users groups allowed to activate the action in the Task Center.</source>
+        <target approved="yes">Select the backend users groups allowed to activate the action in the Task Center.</target>
+      </trans-unit>
+      <trans-unit id="t1_userprefix.description">
+        <source>Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</source>
+        <target approved="yes">Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</target>
+      </trans-unit>
+      <trans-unit id="t1_allowed_groups.description">
+        <source>Enter the Backend user groups which the user performing the action is able to choose among (if any).</source>
+        <target approved="yes">Enter the Backend user groups which the user performing the action is able to choose among (if any).</target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.description">
+        <source>If checked, a private home-directory is also created during user creation. </source>
+        <target approved="yes">If checked, a private home-directory is also created during user creation. </target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.details">
+        <source>&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</source>
+        <target approved="yes">&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.description">
+        <source>Insert a current Backend user which will be used as a template for the new users created. </source>
+        <target approved="yes">Insert a current Backend user which will be used as a template for the new users created. </target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.details">
+        <source>All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</source>
+        <target approved="yes">All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</target>
+      </trans-unit>
+      <trans-unit id="t4_recordsToEdit.description">
+        <source>[FILL IN] sys_action-&gt;t4_recordsToEdit</source>
+        <target approved="yes">[FILL IN] sys_action-&gt;t4_recordsToEdit</target>
+      </trans-unit>
+      <trans-unit id="t3_listPid.description">
+        <source>[FILL IN] sys_action-&gt;t3_listPid</source>
+        <target approved="yes">[FILL IN] sys_action-&gt;t3_listPid</target>
+      </trans-unit>
+      <trans-unit id="t3_tables.description">
+        <source>[FILL IN] sys_action-&gt;t3_tables</source>
+        <target approved="yes">[FILL IN] sys_action-&gt;t3_tables</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:24 UTC 2011" product-name="context_help">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>Static templates are a centrally distributed TypoScript library. You should never change these values.</source>
+        <target approved="yes">Static templates are a centrally distributed TypoScript library. You should never change these values.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
+Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).</source>
+        <target approved="yes">The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
+Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>sys_template
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
+sys_template:include_static</source>
+        <target approved="yes">sys_template
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
+sys_template:include_static</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:context_help/cshimages/static.png</source>
+        <target approved="yes">EXT:context_help/cshimages/static.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>The static templates are located in the page tree root where only the Admin users can access them. However they are read-only by default so you can only look at their content, not change it.</source>
+        <target approved="yes">The static templates are located in the page tree root where only the Admin users can access them. However they are read-only by default so you can only look at their content, not change it.</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Template Title. Will be visible in the list of static templates in Template Records</source>
+        <target approved="yes">Template Title. Will be visible in the list of static templates in Template Records</target>
+      </trans-unit>
+      <trans-unit id="constants.description">
+        <source>TypoScript Constants field</source>
+        <target approved="yes">TypoScript Constants field</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso">
+        <source>sys_template:constants</source>
+        <target approved="yes">sys_template:constants</target>
+      </trans-unit>
+      <trans-unit id="config.description">
+        <source>TypoScript Setup code field</source>
+        <target approved="yes">TypoScript Setup code field</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso">
+        <source>sys_template:config</source>
+        <target approved="yes">sys_template:config</target>
+      </trans-unit>
+      <trans-unit id="include_static.description">
+        <source>Inclusion of other static templates</source>
+        <target approved="yes">Inclusion of other static templates</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Description of the static template record.</source>
+        <target approved="yes">Description of the static template record.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description">
+        <source>Editor Configuration - used to configure Stylesheet editor.</source>
+        <target approved="yes">Editor Configuration - used to configure Stylesheet editor.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

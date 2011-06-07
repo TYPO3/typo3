@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:27 UTC 2011" product-name="css_styled_content">
+    <header/>
+    <body>
+      <trans-unit id="label.toTop">
+        <source>To top</source>
+        <target approved="yes">To top</target>
+      </trans-unit>
+      <trans-unit id="login.username">
+        <source>Username:</source>
+        <target approved="yes">Username:</target>
+      </trans-unit>
+      <trans-unit id="login.password">
+        <source>Password:</source>
+        <target approved="yes">Password:</target>
+      </trans-unit>
+      <trans-unit id="login.login">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="login.logout">
+        <source>Logout</source>
+        <target approved="yes">Logout</target>
+      </trans-unit>
+      <trans-unit id="search.emptySearch">
+        <source>Sorry, your search was empty!</source>
+        <target approved="yes">Sorry, your search was empty!</target>
+      </trans-unit>
+      <trans-unit id="search.resultRange">
+        <source>Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</source>
+        <target approved="yes">Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</target>
+      </trans-unit>
+      <trans-unit id="search.searchResultNext">
+        <source>Next</source>
+        <target approved="yes">Next</target>
+      </trans-unit>
+      <trans-unit id="search.searchResultPrev">
+        <source>Prev</source>
+        <target approved="yes">Prev</target>
+      </trans-unit>
+      <trans-unit id="search.searchWord">
+        <source>Searchword:</source>
+        <target approved="yes">Searchword:</target>
+      </trans-unit>
+      <trans-unit id="search.searchIn">
+        <source>Search in:</source>
+        <target approved="yes">Search in:</target>
+      </trans-unit>
+      <trans-unit id="search.headersKeywords">
+        <source>Headers and keywords</source>
+        <target approved="yes">Headers and keywords</target>
+      </trans-unit>
+      <trans-unit id="search.pageContent">
+        <source>Page content</source>
+        <target approved="yes">Page content</target>
+      </trans-unit>
+      <trans-unit id="search.searchButton">
+        <source>Search now!</source>
+        <target approved="yes">Search now!</target>
+      </trans-unit>
+      <trans-unit id="eIcon.html">
+        <source>Edit pure HTML content</source>
+        <target approved="yes">Edit pure HTML content</target>
+      </trans-unit>
+      <trans-unit id="eIcon.header">
+        <source>Edit header</source>
+        <target approved="yes">Edit header</target>
+      </trans-unit>
+      <trans-unit id="eIcon.subheader">
+        <source>Edit subheader</source>
+        <target approved="yes">Edit subheader</target>
+      </trans-unit>
+      <trans-unit id="eIcon.bodytext">
+        <source>Edit bodytext</source>
+        <target approved="yes">Edit bodytext</target>
+      </trans-unit>
+      <trans-unit id="eIcon.images">
+        <source>Edit images</source>
+        <target approved="yes">Edit images</target>
+      </trans-unit>
+      <trans-unit id="eIcon.caption">
+        <source>Edit image caption</source>
+        <target approved="yes">Edit image caption</target>
+      </trans-unit>
+      <trans-unit id="eIcon.bullets">
+        <source>Edit bullet list</source>
+        <target approved="yes">Edit bullet list</target>
+      </trans-unit>
+      <trans-unit id="eIcon.table">
+        <source>Edit table</source>
+        <target approved="yes">Edit table</target>
+      </trans-unit>
+      <trans-unit id="eIcon.filelist">
+        <source>Edit file list</source>
+        <target approved="yes">Edit file list</target>
+      </trans-unit>
+      <trans-unit id="eIcon.menuSitemap">
+        <source>Edit menu / sitemap</source>
+        <target approved="yes">Edit menu / sitemap</target>
+      </trans-unit>
+      <trans-unit id="eIcon.recordList">
+        <source>Edit recordlist</source>
+        <target approved="yes">Edit recordlist</target>
+      </trans-unit>
+      <trans-unit id="eIcon.plugin">
+        <source>Change/configure plugin</source>
+        <target approved="yes">Change/configure plugin</target>
+      </trans-unit>
+      <trans-unit id="eIcon.multimedia">
+        <source>Edit multimedia element</source>
+        <target approved="yes">Edit multimedia element</target>
+      </trans-unit>
+      <trans-unit id="eIcon.form">
+        <source>Edit email form</source>
+        <target approved="yes">Edit email form</target>
+      </trans-unit>
+      <trans-unit id="eIcon.search">
+        <source>Edit search element</source>
+        <target approved="yes">Edit search element</target>
+      </trans-unit>
+      <trans-unit id="eIcon.login">
+        <source>Edit login element</source>
+        <target approved="yes">Edit login element</target>
+      </trans-unit>
+      <trans-unit id="eIcon.page">
+        <source>Page:</source>
+        <target approved="yes">Page:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

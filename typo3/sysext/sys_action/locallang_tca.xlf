@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:38 UTC 2011" product-name="sys_action">
+    <header/>
+    <body>
+      <trans-unit id="sys_action">
+        <source>Action</source>
+        <target approved="yes">Action</target>
+      </trans-unit>
+      <trans-unit id="tx_sys_action">
+        <source>Actions</source>
+        <target approved="yes">Actions</target>
+      </trans-unit>
+      <trans-unit id="sys_action.hidden">
+        <source>Deactivated:</source>
+        <target approved="yes">Deactivated:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.assign_to_groups">
+        <source>Assign action to groups:</source>
+        <target approved="yes">Assign action to groups:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t1_userprefix">
+        <source>User prefix:</source>
+        <target approved="yes">User prefix:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t1_allowed_groups">
+        <source>Groups which may be assigned through the action:</source>
+        <target approved="yes">Groups which may be assigned through the action:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t1_create_user_dir">
+        <source>Create User Home Directory:</source>
+        <target approved="yes">Create User Home Directory:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t1_copy_of_user">
+        <source>Template user:</source>
+        <target approved="yes">Template user:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t3_listPid">
+        <source>List pid:</source>
+        <target approved="yes">List pid:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t3_tables">
+        <source>List only table:</source>
+        <target approved="yes">List only table:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.t4_recordsToEdit">
+        <source>Records to edit:</source>
+        <target approved="yes">Records to edit:</target>
+      </trans-unit>
+      <trans-unit id="sys_action.type.1">
+        <source>Create Backend User</source>
+        <target approved="yes">Create Backend User</target>
+      </trans-unit>
+      <trans-unit id="sys_action.type.2">
+        <source>SQL query</source>
+        <target approved="yes">SQL query</target>
+      </trans-unit>
+      <trans-unit id="sys_action.type.3">
+        <source>Record list</source>
+        <target approved="yes">Record list</target>
+      </trans-unit>
+      <trans-unit id="sys_action.type.4">
+        <source>Edit records</source>
+        <target approved="yes">Edit records</target>
+      </trans-unit>
+      <trans-unit id="sys_action.type.5">
+        <source>New Record</source>
+        <target approved="yes">New Record</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

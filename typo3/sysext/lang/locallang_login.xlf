@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="labels.username">
+        <source>Username</source>
+        <target approved="yes">Username</target>
+      </trans-unit>
+      <trans-unit id="labels.openId">
+        <source>OpenID</source>
+        <target approved="yes">OpenID</target>
+      </trans-unit>
+      <trans-unit id="labels.password">
+        <source>Password</source>
+        <target approved="yes">Password</target>
+      </trans-unit>
+      <trans-unit id="labels.interface">
+        <source>Interface</source>
+        <target approved="yes">Interface</target>
+      </trans-unit>
+      <trans-unit id="labels.submitLogin">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="labels.submitLogout">
+        <source>Log Out</source>
+        <target approved="yes">Log Out</target>
+      </trans-unit>
+      <trans-unit id="labels.donate">
+        <source>Donate</source>
+        <target approved="yes">Donate</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId">
+        <source>What is OpenId?</source>
+        <target approved="yes">What is OpenId?</target>
+      </trans-unit>
+      <trans-unit id="labels.switchToOpenId">
+        <source>Switch to OpenID</source>
+        <target approved="yes">Switch to OpenID</target>
+      </trans-unit>
+      <trans-unit id="labels.switchToDefault">
+        <source>Switch to default login</source>
+        <target approved="yes">Switch to default login</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target approved="yes">Backend,Front End,Traditional Backend</target>
+      </trans-unit>
+      <trans-unit id="interface.backend">
+        <source>Backend</source>
+        <target approved="yes">Backend</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend">
+        <source>Frontend</source>
+        <target approved="yes">Frontend</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old">
+        <source>Traditional Backend</source>
+        <target approved="yes">Traditional Backend</target>
+      </trans-unit>
+      <trans-unit id="headline">
+        <source>Login to the TYPO3 Backend on ###SITENAME###</source>
+        <target approved="yes">Login to the TYPO3 Backend on ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target approved="yes">This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset">
+        <source>Reset this form</source>
+        <target approved="yes">Reset this form</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target approved="yes">(Note: Cookies and JavaScript must be enabled!)</target>
+      </trans-unit>
+      <trans-unit id="clear">
+        <source>Clear this field!</source>
+        <target approved="yes">Clear this field!</target>
+      </trans-unit>
+      <trans-unit id="login_process">
+        <source>Verifying Login Data ...</source>
+        <target approved="yes">Verifying Login Data ...</target>
+      </trans-unit>
+      <trans-unit id="newsheadline">
+        <source>Important Messages:</source>
+        <target approved="yes">Important Messages:</target>
+      </trans-unit>
+      <trans-unit id="error.login">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target approved="yes">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+      </trans-unit>
+      <trans-unit id="error.login.title">
+        <source>Your login attempt did not succeed</source>
+        <target approved="yes">Your login attempt did not succeed</target>
+      </trans-unit>
+      <trans-unit id="error.login.description">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target approved="yes">Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+      </trans-unit>
+      <trans-unit id="error.javascript">
+        <source>Activate JavaScript, please!</source>
+        <target approved="yes">Activate JavaScript, please!</target>
+      </trans-unit>
+      <trans-unit id="error.cookies">
+        <source>Activate Cookies, please!</source>
+        <target approved="yes">Activate Cookies, please!</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore">
+        <source>Ignore!</source>
+        <target approved="yes">Ignore!</target>
+      </trans-unit>
+      <trans-unit id="error.capslock">
+        <source>Attention: Caps lock enabled!</source>
+        <target approved="yes">Attention: Caps lock enabled!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation">
+        <source>For more information or further help click here</source>
+        <target approved="yes">For more information or further help click here</target>
+      </trans-unit>
+      <trans-unit id="warranty.by">
+        <source>Warranty is supplied by %s; %sclick for details.%s</source>
+        <target approved="yes">Warranty is supplied by %s; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="no.warranty">
+        <source>TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
+        <target approved="yes">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="typo3.logo">
+        <source>TYPO3 logo</source>
+        <target approved="yes">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms">
+        <source>TYPO3 CMS</source>
+        <target approved="yes">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short">
+        <source>ver.</source>
+        <target approved="yes">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright">
+        <source>Copyright</source>
+        <target approved="yes">Copyright</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target approved="yes">Extensions are copyright of their respective owners.</target>
+      </trans-unit>
+      <trans-unit id="details.link">
+        <source>Go to %s for details.</source>
+        <target approved="yes">Go to %s for details.</target>
+      </trans-unit>
+      <trans-unit id="free.software">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</source>
+        <target approved="yes">This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="keep.notice">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target approved="yes">Obstructing the appearance of this notice is prohibited by law.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

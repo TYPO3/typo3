@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>htmlArea RTE &gt; Edit Element</source>
+        <target approved="yes">htmlArea RTE &gt; Edit Element</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The "Edit element" dialogue allows to edit the general attributes of an element in the RTE editing area.</source>
+        <target approved="yes">The "Edit element" dialogue allows to edit the general attributes of an element in the RTE editing area.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
+The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.</source>
+        <target approved="yes">Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
+The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.</target>
+      </trans-unit>
+      <trans-unit id=".image">
+        <source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</source>
+        <target approved="yes">EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>"Edit element" icon in the editor tool bar.</source>
+        <target approved="yes">"Edit element" icon in the editor tool bar.</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_EditElement:id,
+xEXT_rtehtmlarea_EditElement:title,
+xEXT_rtehtmlarea_EditElement:className,
+xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_EditElement:events
+</source>
+        <target approved="yes">xEXT_rtehtmlarea_EditElement:id,
+xEXT_rtehtmlarea_EditElement:title,
+xEXT_rtehtmlarea_EditElement:className,
+xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_EditElement:events
+</target>
+      </trans-unit>
+      <trans-unit id="id.alttitle">
+        <source>Id attribute</source>
+        <target approved="yes">Id attribute</target>
+      </trans-unit>
+      <trans-unit id="id.description">
+        <source>Enter or edit the value of the id attribute of the element.</source>
+        <target approved="yes">Enter or edit the value of the id attribute of the element.</target>
+      </trans-unit>
+      <trans-unit id="title.alttitle">
+        <source>Title attribute</source>
+        <target approved="yes">Title attribute</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Enter or edit the value of the title attribute of the element.</source>
+        <target approved="yes">Enter or edit the value of the title attribute of the element.</target>
+      </trans-unit>
+      <trans-unit id="className.alttitle">
+        <source>Class attribute</source>
+        <target approved="yes">Class attribute</target>
+      </trans-unit>
+      <trans-unit id="className.description">
+        <source>Choose a CSS class selector to be assigned to the element.</source>
+        <target approved="yes">Choose a CSS class selector to be assigned to the element.</target>
+      </trans-unit>
+      <trans-unit id="events.alttitle">
+        <source>Event handlers</source>
+        <target approved="yes">Event handlers</target>
+      </trans-unit>
+      <trans-unit id="events.description">
+        <source>Using this fieldset, edit handlers for keyboard and mouse events.</source>
+        <target approved="yes">Using this fieldset, edit handlers for keyboard and mouse events.</target>
+      </trans-unit>
+      <trans-unit id="onkeydown.alttitle">
+        <source>Onkeydown event handler</source>
+        <target approved="yes">Onkeydown event handler</target>
+      </trans-unit>
+      <trans-unit id="onkeydown.description">
+        <source>Enter or edit the script to be run when a key is pressed.</source>
+        <target approved="yes">Enter or edit the script to be run when a key is pressed.</target>
+      </trans-unit>
+      <trans-unit id="onkeypress.alttitle">
+        <source>Onkeypress event handler</source>
+        <target approved="yes">Onkeypress event handler</target>
+      </trans-unit>
+      <trans-unit id="onkeypress.description">
+        <source>Enter or edit the script to be run when a key is pressed and released.</source>
+        <target approved="yes">Enter or edit the script to be run when a key is pressed and released.</target>
+      </trans-unit>
+      <trans-unit id="onkeyup.alttitle">
+        <source>Onkeyup event handler</source>
+        <target approved="yes">Onkeyup event handler</target>
+      </trans-unit>
+      <trans-unit id="onkeyup.description">
+        <source>Enter or edit the script to be run when a key is pressed and released.</source>
+        <target approved="yes">Enter or edit the script to be run when a key is pressed and released.</target>
+      </trans-unit>
+      <trans-unit id="onclick.alttitle">
+        <source>Onclick event handler</source>
+        <target approved="yes">Onclick event handler</target>
+      </trans-unit>
+      <trans-unit id="onclick.description">
+        <source>Enter or edit the script to be run on a mouse click.</source>
+        <target approved="yes">Enter or edit the script to be run on a mouse click.</target>
+      </trans-unit>
+      <trans-unit id="ondblclick.alttitle">
+        <source>Ondblclick event handler</source>
+        <target approved="yes">Ondblclick event handler</target>
+      </trans-unit>
+      <trans-unit id="ondblclick.description">
+        <source>Enter or edit the script to be run on a mouse double-click.</source>
+        <target approved="yes">Enter or edit the script to be run on a mouse double-click.</target>
+      </trans-unit>
+      <trans-unit id="onmousedown.alttitle">
+        <source>Onmousedown event handler</source>
+        <target approved="yes">Onmousedown event handler</target>
+      </trans-unit>
+      <trans-unit id="onmousedown.description">
+        <source>Enter or edit the script to be run when a mouse button is pressed.</source>
+        <target approved="yes">Enter or edit the script to be run when a mouse button is pressed.</target>
+      </trans-unit>
+      <trans-unit id="onmousemove.alttitle">
+        <source>Onmousemove event handler</source>
+        <target approved="yes">Onmousemove event handler</target>
+      </trans-unit>
+      <trans-unit id="onmousemove.description">
+        <source>Enter or edit the script to be run when the mouse pointer moves.</source>
+        <target approved="yes">Enter or edit the script to be run when the mouse pointer moves.</target>
+      </trans-unit>
+      <trans-unit id="onmouseout.alttitle">
+        <source>Onmouseout event handler</source>
+        <target approved="yes">Onmouseout event handler</target>
+      </trans-unit>
+      <trans-unit id="onmouseout.description">
+        <source>Enter or edit the script to be run when mouse pointer moves out of the element.</source>
+        <target approved="yes">Enter or edit the script to be run when mouse pointer moves out of the element.</target>
+      </trans-unit>
+      <trans-unit id="onmouseover.alttitle">
+        <source>Onmouseover event handler</source>
+        <target approved="yes">Onmouseover event handler</target>
+      </trans-unit>
+      <trans-unit id="onmouseover.description">
+        <source>Enter or edit the script to be run when mouse pointer moves over the element.</source>
+        <target approved="yes">Enter or edit the script to be run when mouse pointer moves over the element.</target>
+      </trans-unit>
+      <trans-unit id="onmouseup.alttitle">
+        <source>Onmouseup event handler</source>
+        <target approved="yes">Onmouseup event handler</target>
+      </trans-unit>
+      <trans-unit id="onmouseup.description">
+        <source>Enter or edit the script to be run when a mouse button is released.</source>
+        <target approved="yes">Enter or edit the script to be run when a mouse button is released.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

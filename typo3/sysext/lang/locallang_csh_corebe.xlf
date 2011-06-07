@@ -1,0 +1,1344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>TYPO3 Core</source>
+        <target approved="yes">TYPO3 Core</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target approved="yes">TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target approved="yes">For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>Inside TYPO3 | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/</source>
+        <target approved="yes">Inside TYPO3 | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:lang/cshimages/login.png</source>
+        <target approved="yes">EXT:lang/cshimages/login.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>TYPO3 backend login screen.</source>
+        <target approved="yes">TYPO3 backend login screen.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle">
+        <source>Backend modules</source>
+        <target approved="yes">Backend modules</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target approved="yes">The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details">
+        <source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+        <target approved="yes">Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</target>
+      </trans-unit>
+      <trans-unit id="_menu_modules.seeAlso">
+        <source>be_groups:groupMods,
+be_users:userMods,
+_MOD_user_setup:option_noMenuMode,
+More about Modules | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_and_frontend/</source>
+        <target approved="yes">be_groups:groupMods,
+be_users:userMods,
+_MOD_user_setup:option_noMenuMode,
+More about Modules | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_and_frontend/</target>
+      </trans-unit>
+      <trans-unit id="_menu_modules.image">
+        <source>EXT:lang/cshimages/core_2.png,
+EXT:lang/cshimages/core_3.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_2.png,
+EXT:lang/cshimages/core_3.png</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.image_descr">
+        <source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screen shot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+        <target approved="yes">This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screen shot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle">
+        <source>Admin Functions</source>
+        <target approved="yes">Admin Functions</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target approved="yes">The Admin Functions allow administrators to clear caches etc.</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details">
+        <source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3conf/ folder, named "temp_CACHED_*.php". Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+        <target approved="yes">TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3conf/ folder, named "temp_CACHED_*.php". Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</target>
+      </trans-unit>
+      <trans-unit id="_menu_adminFunction.seeAlso">
+        <source>be_users:admin</source>
+        <target approved="yes">be_users:admin</target>
+      </trans-unit>
+      <trans-unit id="_menu_adminFunction.image">
+        <source>EXT:lang/cshimages/core_1.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_1.png</target>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle">
+        <source>The Page Tree</source>
+        <target approved="yes">The Page Tree</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target approved="yes">This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details">
+        <source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+        <target approved="yes">The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</target>
+      </trans-unit>
+      <trans-unit id="_pagetree.seeAlso">
+        <source>xMOD_csh_corebe:list_module,
+More about the Page Tree | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/
+Rendering Page trees [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Rendering_page_trees/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</source>
+        <target approved="yes">xMOD_csh_corebe:list_module,
+More about the Page Tree | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/
+Rendering Page trees [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Rendering_page_trees/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</target>
+      </trans-unit>
+      <trans-unit id="_pagetree.image">
+        <source>EXT:lang/cshimages/core_4.png,
+EXT:lang/cshimages/core_5.png,
+EXT:lang/cshimages/core_6.png,
+EXT:lang/cshimages/core_7.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_4.png,
+EXT:lang/cshimages/core_5.png,
+EXT:lang/cshimages/core_6.png,
+EXT:lang/cshimages/core_7.png</target>
+      </trans-unit>
+      <trans-unit id="pagetree.image_descr">
+        <source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+        <target approved="yes">An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</target>
+      </trans-unit>
+      <trans-unit id="filetree.alttitle">
+        <source>The Folder Tree</source>
+        <target approved="yes">The Folder Tree</target>
+      </trans-unit>
+      <trans-unit id="filetree.description">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target approved="yes">Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</target>
+      </trans-unit>
+      <trans-unit id="filetree.details">
+        <source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+        <target approved="yes">The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</target>
+      </trans-unit>
+      <trans-unit id="_filetree.seeAlso">
+        <source>be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
+Uploading Files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/,
+Details about file mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</source>
+        <target approved="yes">be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
+Uploading Files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/,
+Details about file mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</target>
+      </trans-unit>
+      <trans-unit id="_filetree.image">
+        <source>EXT:lang/cshimages/core_8.png,
+EXT:lang/cshimages/core_9.png,
+EXT:lang/cshimages/core_10.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_8.png,
+EXT:lang/cshimages/core_9.png,
+EXT:lang/cshimages/core_10.png</target>
+      </trans-unit>
+      <trans-unit id="filetree.image_descr">
+        <source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+        <target approved="yes">The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</target>
+      </trans-unit>
+      <trans-unit id="tcatree.collapseAll">
+        <source>Collapse All</source>
+        <target approved="yes">Collapse All</target>
+      </trans-unit>
+      <trans-unit id="tcatree">
+        <source>TYPO3 TCA tree</source>
+        <target approved="yes">TYPO3 TCA tree</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll">
+        <source>Expand All</source>
+        <target approved="yes">Expand All</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem">
+        <source>Find Item</source>
+        <target approved="yes">Find Item</target>
+      </trans-unit>
+      <trans-unit id="tcatree.filter.startsWith">
+        <source>starts with</source>
+        <target approved="yes">starts with</target>
+      </trans-unit>
+      <trans-unit id="tcatree.filter.contains">
+        <source>contains</source>
+        <target approved="yes">contains</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle">
+        <source>The Web&gt;List module</source>
+        <target approved="yes">The Web&gt;List module</target>
+      </trans-unit>
+      <trans-unit id="list_module.description">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target approved="yes">Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</target>
+      </trans-unit>
+      <trans-unit id="list_module.details">
+        <source>The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+        <target approved="yes">The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</target>
+      </trans-unit>
+      <trans-unit id="_list_module.seeAlso">
+        <source>xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Selective_editing/
+The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/,</source>
+        <target approved="yes">xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Selective_editing/
+The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/,</target>
+      </trans-unit>
+      <trans-unit id="_list_module.image">
+        <source>EXT:lang/cshimages/core_11.png,
+EXT:lang/cshimages/core_12.png,
+EXT:lang/cshimages/core_34.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_11.png,
+EXT:lang/cshimages/core_12.png,
+EXT:lang/cshimages/core_34.png,</target>
+      </trans-unit>
+      <trans-unit id="list_module.image_descr">
+        <source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Pagecontent" tabel (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+        <target approved="yes">Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Pagecontent" tabel (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.alttitle">
+        <source>Web&gt;List module with no ID given</source>
+        <target approved="yes">Web&gt;List module with no ID given</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target approved="yes">The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</target>
+      </trans-unit>
+      <trans-unit id="_list_module_noId.seeAlso">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target approved="yes">xMOD_csh_corebe:list_module</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle">
+        <source>Root of the Page Tree</source>
+        <target approved="yes">Root of the Page Tree</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target approved="yes">The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details">
+        <source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+        <target approved="yes">Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</target>
+      </trans-unit>
+      <trans-unit id="_list_module_root.seeAlso">
+        <source>xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/</source>
+        <target approved="yes">xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/</target>
+      </trans-unit>
+      <trans-unit id="_list_module_root.image">
+        <source>EXT:lang/cshimages/core_13.png,
+EXT:lang/cshimages/core_14.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_13.png,
+EXT:lang/cshimages/core_14.png,</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.image_descr">
+        <source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+        <target approved="yes">Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.alttitle">
+        <source>TYPO3 Clipboard</source>
+        <target approved="yes">TYPO3 Clipboard</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target approved="yes">The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.seeAlso">
+        <source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | http://typo3.org/documentation/document-library/doc_tut_quickstart/Using_the_List_modul/
+Numeric Clipboard pads | http://typo3.org/documentation/document-library/doc_tut_quickstart/The_numeric_clipboar/
+Clipboard details [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/,
+Accessing clipboard in scripts [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Accessing_the_clipbo/</source>
+        <target approved="yes">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | http://typo3.org/documentation/document-library/doc_tut_quickstart/Using_the_List_modul/
+Numeric Clipboard pads | http://typo3.org/documentation/document-library/doc_tut_quickstart/The_numeric_clipboar/
+Clipboard details [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/,
+Accessing clipboard in scripts [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Accessing_the_clipbo/</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.image">
+        <source>EXT:lang/cshimages/core_16.png,
+EXT:lang/cshimages/core_17.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_16.png,
+EXT:lang/cshimages/core_17.png,</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.image_descr">
+        <source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+        <target approved="yes">Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.alttitle">
+        <source>Search Box</source>
+        <target approved="yes">Search Box</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target approved="yes">By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.seeAlso">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target approved="yes">xMOD_csh_corebe:list_module</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.image">
+        <source>EXT:lang/cshimages/core_15.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_15.png,</target>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle">
+        <source>List module options</source>
+        <target approved="yes">List module options</target>
+      </trans-unit>
+      <trans-unit id="list_options.description">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target approved="yes">Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</target>
+      </trans-unit>
+      <trans-unit id="_list_options.seeAlso">
+        <source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</source>
+        <target approved="yes">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</target>
+      </trans-unit>
+      <trans-unit id="_list_options.image">
+        <source>EXT:lang/cshimages/core_18.png,
+EXT:lang/cshimages/core_19.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_18.png,
+EXT:lang/cshimages/core_19.png,</target>
+      </trans-unit>
+      <trans-unit id="list_options.image_descr">
+        <source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+        <target approved="yes">The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle">
+        <source>Create new record</source>
+        <target approved="yes">Create new record</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target approved="yes">This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.seeAlso">
+        <source>xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</source>
+        <target approved="yes">xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.image">
+        <source>EXT:lang/cshimages/core_70.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_70.png</target>
+      </trans-unit>
+      <trans-unit id="new_regular.image_descr">
+        <source>The selection of records a user can create on this particular page. The selection depends on the users permissions and the page type. For example a SysFolder page type can contain any kind of record while regular pages can contain only some types (like content elements).</source>
+        <target approved="yes">The selection of records a user can create on this particular page. The selection depends on the users permissions and the page type. For example a SysFolder page type can contain any kind of record while regular pages can contain only some types (like content elements).</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle">
+        <source>Create new page wizard</source>
+        <target approved="yes">Create new page wizard</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target approved="yes">Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.seeAlso">
+        <source>xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/</source>
+        <target approved="yes">xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.image">
+        <source>EXT:lang/cshimages/core_20.png,
+EXT:lang/cshimages/core_21.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_20.png,
+EXT:lang/cshimages/core_21.png,</target>
+      </trans-unit>
+      <trans-unit id="new_pages.image_descr">
+        <source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+        <target approved="yes">Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</target>
+      </trans-unit>
+      <trans-unit id="new_ce.alttitle">
+        <source>Create new Content Element Wizard</source>
+        <target approved="yes">Create new Content Element Wizard</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target approved="yes">Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target approved="yes">Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.seeAlso">
+        <source>xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/
+More about Content Element types | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
+Adding Custom elements [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Adding_elements_to_t/</source>
+        <target approved="yes">xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/
+More about Content Element types | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
+Adding Custom elements [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Adding_elements_to_t/</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.image">
+        <source>EXT:lang/cshimages/core_22.png,
+EXT:lang/cshimages/core_23.png,
+EXT:lang/cshimages/core_24.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_22.png,
+EXT:lang/cshimages/core_23.png,
+EXT:lang/cshimages/core_24.png,</target>
+      </trans-unit>
+      <trans-unit id="new_ce.image_descr">
+        <source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+        <target approved="yes">The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.alttitle">
+        <source>Move page wizard</source>
+        <target approved="yes">Move page wizard</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target approved="yes">By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target approved="yes">As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.seeAlso">
+        <source>xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Move_page/</source>
+        <target approved="yes">xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Move_page/</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.image">
+        <source>EXT:lang/cshimages/core_27.png,
+EXT:lang/cshimages/core_28.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_27.png,
+EXT:lang/cshimages/core_28.png,</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.image_descr">
+        <source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+        <target approved="yes">The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.alttitle">
+        <source>Move Content Element Wizard</source>
+        <target approved="yes">Move Content Element Wizard</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target approved="yes">By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target approved="yes">By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.seeAlso">
+        <source>xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</source>
+        <target approved="yes">xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.image">
+        <source>EXT:lang/cshimages/core_25.png,
+EXT:lang/cshimages/core_26.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_25.png,
+EXT:lang/cshimages/core_26.png,</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.image_descr">
+        <source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+        <target approved="yes">The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</target>
+      </trans-unit>
+      <trans-unit id="history_log.alttitle">
+        <source>History log</source>
+        <target approved="yes">History log</target>
+      </trans-unit>
+      <trans-unit id="history_log.description">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target approved="yes">The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</target>
+      </trans-unit>
+      <trans-unit id="history_log.details">
+        <source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target approved="yes">By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</target>
+      </trans-unit>
+      <trans-unit id="_history_log.seeAlso">
+        <source>xMOD_csh_corebe:history_sum,
+Configuring History using Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/MOD/
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+        <target approved="yes">xMOD_csh_corebe:history_sum,
+Configuring History using Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/MOD/
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target>
+      </trans-unit>
+      <trans-unit id="_history_log.image">
+        <source>EXT:lang/cshimages/core_37.png,
+EXT:lang/cshimages/core_38.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_37.png,
+EXT:lang/cshimages/core_38.png</target>
+      </trans-unit>
+      <trans-unit id="history_log.image_descr">
+        <source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+        <target approved="yes">You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</target>
+      </trans-unit>
+      <trans-unit id="history_sum.alttitle">
+        <source>History Summary</source>
+        <target approved="yes">History Summary</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target approved="yes">This shows the total difference between the selected state in history to the current state of this element.</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details">
+        <source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target approved="yes">You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</target>
+      </trans-unit>
+      <trans-unit id="_history_sum.seeAlso">
+        <source>xMOD_csh_corebe:history_entry,
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+        <target approved="yes">xMOD_csh_corebe:history_entry,
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target>
+      </trans-unit>
+      <trans-unit id="_history_sum.image">
+        <source>EXT:lang/cshimages/core_39.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_39.png</target>
+      </trans-unit>
+      <trans-unit id="history_sum.image_descr">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target approved="yes">The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle">
+        <source>Log entry history</source>
+        <target approved="yes">Log entry history</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target approved="yes">This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target approved="yes">&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</target>
+      </trans-unit>
+      <trans-unit id="_history_entry.image">
+        <source>EXT:lang/cshimages/core_40.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_40.png</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle">
+        <source>TYPO3 Editing Forms</source>
+        <target approved="yes">TYPO3 Editing Forms</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target approved="yes">All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.details">
+        <source>&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Secondary options (palettes)&lt;/b&gt;
+Fields in the editing forms are prioritized so that certain fields of generally lesser interest is moved to a so called "palette". By default it means that the fields appears in the top frame when you enter the field to which the secondary fields are associated. But you can also enable the fields to be shown in the main form which is more convenient some times - just select the "Show secondary options" checkbox (bottom of page).
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
+        <target approved="yes">&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Secondary options (palettes)&lt;/b&gt;
+Fields in the editing forms are prioritized so that certain fields of generally lesser interest is moved to a so called "palette". By default it means that the fields appears in the top frame when you enter the field to which the secondary fields are associated. But you can also enable the fields to be shown in the main form which is more convenient some times - just select the "Show secondary options" checkbox (bottom of page).
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms.seeAlso">
+        <source>Editing pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/
+Page TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/RTE/
+Linking to the edit forms [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Links_to_edit_record/</source>
+        <target approved="yes">Editing pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/
+Page TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/RTE/
+Linking to the edit forms [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Links_to_edit_record/</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms.image">
+        <source>EXT:lang/cshimages/core_30.png,
+EXT:lang/cshimages/core_29.png,
+EXT:lang/cshimages/core_32.png,
+EXT:lang/cshimages/core_33.png,
+EXT:lang/cshimages/core_31.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_30.png,
+EXT:lang/cshimages/core_29.png,
+EXT:lang/cshimages/core_32.png,
+EXT:lang/cshimages/core_33.png,
+EXT:lang/cshimages/core_31.png,</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.image_descr">
+        <source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+In the bottom of the editing page you will find additional options for the interface. You can select "Show field descriptions" if you want a small text shown for each element that explains what it is used for. Also "Show secondary options" is very important since it will show additional form fields in the main forms (from "palettes").
+Here "Show secondary options (palettes)" is enabled. The result is that a number of additional fields of "lower priority" is shown under the "Pagetitle" field.
+The "additional fields" from the example above is located in a so called "palette" which is normally shown in the top frame when "Show secondary options" is disabled. Whether you prefer the one or the other solution is your choice.
+This is an example of three Content Elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+        <target approved="yes">This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+In the bottom of the editing page you will find additional options for the interface. You can select "Show field descriptions" if you want a small text shown for each element that explains what it is used for. Also "Show secondary options" is very important since it will show additional form fields in the main forms (from "palettes").
+Here "Show secondary options (palettes)" is enabled. The result is that a number of additional fields of "lower priority" is shown under the "Pagetitle" field.
+The "additional fields" from the example above is located in a so called "palette" which is normally shown in the top frame when "Show secondary options" is disabled. Whether you prefer the one or the other solution is your choice.
+This is an example of three Content Elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_docSelector.alttitle">
+        <source>Document Selector</source>
+        <target approved="yes">Document Selector</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_docSelector.description">
+        <source>Here you can switch between "open documents" in TYPO3.</source>
+        <target approved="yes">Here you can switch between "open documents" in TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_docSelector.image">
+        <source>EXT:lang/cshimages/core_35.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_35.png,</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle">
+        <source>Forms Menu</source>
+        <target approved="yes">Forms Menu</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target approved="yes">This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details">
+        <source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+        <target approved="yes">Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.seeAlso">
+        <source>User TSconfig (See "clearCache.pages/.all") | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+        <target approved="yes">User TSconfig (See "clearCache.pages/.all") | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.image">
+        <source>EXT:lang/cshimages/core_36.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_36.png,</target>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle">
+        <source>Viewing page permissions</source>
+        <target approved="yes">Viewing page permissions</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target approved="yes">This view will tell you about the page permissions in the page tree.</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details">
+        <source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target approved="yes">There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</target>
+      </trans-unit>
+      <trans-unit id="_perm_module.seeAlso">
+        <source>xMOD_csh_corebe:perm_module_setting,
+User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/
+Permission system in TYPO3 [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Access_Control_optio/,
+_MOD_user_setup:option_helpText</source>
+        <target approved="yes">xMOD_csh_corebe:perm_module_setting,
+User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/
+Permission system in TYPO3 [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Access_Control_optio/,
+_MOD_user_setup:option_helpText</target>
+      </trans-unit>
+      <trans-unit id="_perm_module.image">
+        <source>EXT:lang/cshimages/core_43.png,
+EXT:lang/cshimages/core_41.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_43.png,
+EXT:lang/cshimages/core_41.png,</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.alttitle">
+        <source>Setting permissions for a page</source>
+        <target approved="yes">Setting permissions for a page</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target approved="yes">Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details">
+        <source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+        <target approved="yes">Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</target>
+      </trans-unit>
+      <trans-unit id="_perm_module_setting.seeAlso">
+        <source>xMOD_csh_corebe:perm_module,
+User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/</source>
+        <target approved="yes">xMOD_csh_corebe:perm_module,
+User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/</target>
+      </trans-unit>
+      <trans-unit id="_perm_module_setting.image">
+        <source>EXT:lang/cshimages/core_42.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_42.png</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.image_descr">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target approved="yes">In this matrix you can set permissions for owner, group and everybody in the five categories available.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle">
+        <source>File &gt; Filelist module</source>
+        <target approved="yes">File &gt; Filelist module</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target approved="yes">Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.details">
+        <source>The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
+        <target approved="yes">The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_module.seeAlso">
+        <source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+        <target approved="yes">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</target>
+      </trans-unit>
+      <trans-unit id="_filelist_module.image">
+        <source>EXT:lang/cshimages/core_47.png,
+EXT:lang/cshimages/core_49.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_47.png,
+EXT:lang/cshimages/core_49.png</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.image_descr">
+        <source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+        <target approved="yes">Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle">
+        <source>Filelist Clipboard</source>
+        <target approved="yes">Filelist Clipboard</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target approved="yes">The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.seeAlso">
+        <source>xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/</source>
+        <target approved="yes">xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.image">
+        <source>EXT:lang/cshimages/core_44.png,
+EXT:lang/cshimages/core_46.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_44.png,
+EXT:lang/cshimages/core_46.png</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr">
+        <source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+        <target approved="yes">This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.alttitle">
+        <source>File &gt; Filelist options</source>
+        <target approved="yes">File &gt; Filelist options</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target approved="yes">You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.seeAlso">
+        <source>xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</source>
+        <target approved="yes">xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.image">
+        <source>EXT:lang/cshimages/core_48.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_48.png</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.image_descr">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target approved="yes">Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle">
+        <source>Editing a file</source>
+        <target approved="yes">Editing a file</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target approved="yes">You can edit the contents of a text file with this dialog.</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.seeAlso">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target approved="yes">xMOD_csh_corebe:filelist_module</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.image">
+        <source>EXT:lang/cshimages/core_50.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_50.png</target>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target approved="yes">The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle">
+        <source>Creating a new folder</source>
+        <target approved="yes">Creating a new folder</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target approved="yes">Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.seeAlso">
+        <source>xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</source>
+        <target approved="yes">xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.image">
+        <source>EXT:lang/cshimages/core_51.png,
+EXT:lang/cshimages/core_52.png,
+EXT:lang/cshimages/core_53.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_51.png,
+EXT:lang/cshimages/core_52.png,
+EXT:lang/cshimages/core_53.png,</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.image_descr">
+        <source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+        <target approved="yes">To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.alttitle">
+        <source>Creating a new file</source>
+        <target approved="yes">Creating a new file</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.description">
+        <source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown above (except "php" endings).</source>
+        <target approved="yes">Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown above (except "php" endings).</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target approved="yes">Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.seeAlso">
+        <source>xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</source>
+        <target approved="yes">xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.image">
+        <source>EXT:lang/cshimages/core_51.png,
+EXT:lang/cshimages/core_54.png,
+EXT:lang/cshimages/core_55.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_51.png,
+EXT:lang/cshimages/core_54.png,
+EXT:lang/cshimages/core_55.png,</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.image_descr">
+        <source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+        <target approved="yes">To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle">
+        <source>Rename a file or folder</source>
+        <target approved="yes">Rename a file or folder</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target approved="yes">You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.seeAlso">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target approved="yes">xMOD_csh_corebe:filelist_module</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.image">
+        <source>EXT:lang/cshimages/core_56.png,
+EXT:lang/cshimages/core_57.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_56.png,
+EXT:lang/cshimages/core_57.png,</target>
+      </trans-unit>
+      <trans-unit id="file_rename.image_descr">
+        <source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+        <target approved="yes">To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.alttitle">
+        <source>Uploading files.</source>
+        <target approved="yes">Uploading files.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target approved="yes">Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details">
+        <source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+        <target approved="yes">If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</target>
+      </trans-unit>
+      <trans-unit id="_file_upload.seeAlso">
+        <source>xMOD_csh_corebe:filelist_module,
+Howto upload files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/</source>
+        <target approved="yes">xMOD_csh_corebe:filelist_module,
+Howto upload files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/</target>
+      </trans-unit>
+      <trans-unit id="_file_upload.image">
+        <source>EXT:lang/cshimages/core_58.png,
+EXT:lang/cshimages/core_59.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_58.png,
+EXT:lang/cshimages/core_59.png,</target>
+      </trans-unit>
+      <trans-unit id="file_upload.image_descr">
+        <source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+        <target approved="yes">To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz.alttitle">
+        <source>Forms Wizard</source>
+        <target approved="yes">Forms Wizard</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz.description">
+        <source>The Form Wizard enables you to create form elements through a nice interface rather than "coding" a certain syntax for the elements.</source>
+        <target approved="yes">The Form Wizard enables you to create form elements through a nice interface rather than "coding" a certain syntax for the elements.</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz.details">
+        <source>To the left in the form wizard you can add, delete and move items in the form around.
+In the Element Type column you can select between various kinds of form elements such as regular input fields, text areas, selector boxes, checkboxes etc. Each form element also has a label field where you can enter a title for the field. Some fields also provide the possibility of checking for "required" values.
+In the "Detailed" configuration column the options will depend on the form field type selected in the "Element type" column. The options here can be to enter elements for a selector box or enter the width of an input field. The "Field:" box is important since it defines the technical name of the form field. This is the name that people will see when they receive an email from the mail form.
+
+&lt;b&gt;Custom applications of the form wizard&lt;/b&gt;
+The most typical application of the Form wizard is with Content Elements of the type "Form" but the wizard can be used for other custom applications as well. Technical details about this is available in the links below.</source>
+        <target approved="yes">To the left in the form wizard you can add, delete and move items in the form around.
+In the Element Type column you can select between various kinds of form elements such as regular input fields, text areas, selector boxes, checkboxes etc. Each form element also has a label field where you can enter a title for the field. Some fields also provide the possibility of checking for "required" values.
+In the "Detailed" configuration column the options will depend on the form field type selected in the "Element type" column. The options here can be to enter elements for a selector box or enter the width of an input field. The "Field:" box is important since it defines the technical name of the form field. This is the name that people will see when they receive an email from the mail form.
+
+&lt;b&gt;Custom applications of the form wizard&lt;/b&gt;
+The most typical application of the Form wizard is with Content Elements of the type "Form" but the wizard can be used for other custom applications as well. Technical details about this is available in the links below.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_forms_wiz.seeAlso">
+        <source>xMOD_csh_corebe:wizard_table_wiz,
+Form Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/,</source>
+        <target approved="yes">xMOD_csh_corebe:wizard_table_wiz,
+Form Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/,</target>
+      </trans-unit>
+      <trans-unit id="_wizard_forms_wiz.image">
+        <source>EXT:lang/cshimages/core_60.png,
+EXT:lang/cshimages/core_69.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_60.png,
+EXT:lang/cshimages/core_69.png,</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz.image_descr">
+        <source>This is how the form wizard looks in action. Using the form fields for setting up forms rather than coding them is much easier.
+Usually you enter the Form Wizard by clicking the form wizard icon next for a text field like this. Notice the contents of the field to the left of the icon - this is the "raw codes" that the Form Wizard saves you from editing manually!</source>
+        <target approved="yes">This is how the form wizard looks in action. Using the form fields for setting up forms rather than coding them is much easier.
+Usually you enter the Form Wizard by clicking the form wizard icon next for a text field like this. Notice the contents of the field to the left of the icon - this is the "raw codes" that the Form Wizard saves you from editing manually!</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz_buttons.alttitle">
+        <source>Form Wizard buttons</source>
+        <target approved="yes">Form Wizard buttons</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz_buttons.description">
+        <source>Use the refresh button to update the form (without saving it), for instance if you changed a field type or so. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target approved="yes">Use the refresh button to update the form (without saving it), for instance if you changed a field type or so. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_forms_wiz_buttons.image">
+        <source>EXT:lang/cshimages/core_62.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_62.png,</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz_formmail_info.alttitle">
+        <source>Mailform Info Fields</source>
+        <target approved="yes">Mailform Info Fields</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz_formmail_info.description">
+        <source>These fields specifically apply to the usage of the form wizard with Content Elements of the type "Form". They allow you to enter information like the subject line of the email sent, the recipient address and whether the sent email should be in HTML or not.</source>
+        <target approved="yes">These fields specifically apply to the usage of the form wizard with Content Elements of the type "Form". They allow you to enter information like the subject line of the email sent, the recipient address and whether the sent email should be in HTML or not.</target>
+      </trans-unit>
+      <trans-unit id="wizard_forms_wiz_formmail_info.details">
+        <source>Notice: In order to enter a recipient address you need access to the "Subheader" field in the Content Elements. Yes, its quite strange, but so it is. Ask your administrator for access if you don't have it.</source>
+        <target approved="yes">Notice: In order to enter a recipient address you need access to the "Subheader" field in the Content Elements. Yes, its quite strange, but so it is. Ask your administrator for access if you don't have it.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_forms_wiz_formmail_info.seeAlso">
+        <source>Howto create Mail Forms | http://typo3.org/documentation/document-library/doc_tut_quickstart/Email_form/</source>
+        <target approved="yes">Howto create Mail Forms | http://typo3.org/documentation/document-library/doc_tut_quickstart/Email_form/</target>
+      </trans-unit>
+      <trans-unit id="_wizard_forms_wiz_formmail_info.image">
+        <source>EXT:lang/cshimages/core_61.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_61.png,</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle">
+        <source>Table wizard</source>
+        <target approved="yes">Table wizard</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target approved="yes">The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details">
+        <source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+        <target approved="yes">The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz.seeAlso">
+        <source>xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizard_scripts_in_th/</source>
+        <target approved="yes">xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizard_scripts_in_th/</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz.image">
+        <source>EXT:lang/cshimages/core_63.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_63.png</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle">
+        <source>Table wizard buttons</source>
+        <target approved="yes">Table wizard buttons</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target approved="yes">Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz_buttons.image">
+        <source>EXT:lang/cshimages/core_62.png</source>
+        <target approved="yes">EXT:lang/cshimages/core_62.png</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle">
+        <source>Backend Shortcuts</source>
+        <target approved="yes">Backend Shortcuts</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target approved="yes">You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details">
+        <source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+        <target approved="yes">In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</target>
+      </trans-unit>
+      <trans-unit id="_shortcuts.seeAlso">
+        <source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+        <target approved="yes">User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</target>
+      </trans-unit>
+      <trans-unit id="_shortcuts.image">
+        <source>EXT:lang/cshimages/core_64.png,
+EXT:lang/cshimages/core_65.png,
+EXT:lang/cshimages/core_67.png,
+EXT:lang/cshimages/core_68.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_64.png,
+EXT:lang/cshimages/core_65.png,
+EXT:lang/cshimages/core_67.png,
+EXT:lang/cshimages/core_68.png,</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.image_descr">
+        <source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+        <target approved="yes">To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.alttitle">
+        <source>Backend Bookmarks</source>
+        <target approved="yes">Backend Bookmarks</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.description">
+        <source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target approved="yes">You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.details">
+        <source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
+        <target approved="yes">In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.seeAlso">
+        <source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+        <target approved="yes">User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.image">
+        <source>EXT:lang/cshimages/core_64.png,
+EXT:lang/cshimages/core_65.png,
+EXT:lang/cshimages/core_67.png,
+EXT:lang/cshimages/core_68.png,</source>
+        <target approved="yes">EXT:lang/cshimages/core_64.png,
+EXT:lang/cshimages/core_65.png,
+EXT:lang/cshimages/core_67.png,
+EXT:lang/cshimages/core_68.png,</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.image_descr">
+        <source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+        <target approved="yes">To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.alttitle">
+        <source>Workspace Selector</source>
+        <target approved="yes">Workspace Selector</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target approved="yes">By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.details">
+        <source>There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
+When working in the default Draft workspace or any customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
+        <target approved="yes">There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
+When working in the default Draft workspace or any customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

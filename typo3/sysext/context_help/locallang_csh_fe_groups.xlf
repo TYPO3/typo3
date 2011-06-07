@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:24 UTC 2011" product-name="context_help">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description">
+        <source>This option disables the user group.</source>
+        <target approved="yes">This option disables the user group.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+        <target approved="yes">If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso">
+        <source>fe_users:disable</source>
+        <target approved="yes">fe_users:disable</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Name of the group.</source>
+        <target approved="yes">Name of the group.</target>
+      </trans-unit>
+      <trans-unit id="title.details">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target approved="yes">This title will appear as the group name in the 'Access'-list in other records.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description">
+        <source>Enter the host name from which the group will be available only.</source>
+        <target approved="yes">Enter the host name from which the group will be available only.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details">
+        <source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+        <target approved="yes">This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</target>
+      </trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso">
+        <source>fe_users:lockToDomain</source>
+        <target approved="yes">fe_users:lockToDomain</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description">
+        <source>Member of other groups.</source>
+        <target approved="yes">Member of other groups.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details">
+        <source>List of other groups that this group is a member of.</source>
+        <target approved="yes">List of other groups that this group is a member of.</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Enter a description of the group.</source>
+        <target approved="yes">Enter a description of the group.</target>
+      </trans-unit>
+      <trans-unit id="description.details">
+        <source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+        <target approved="yes">This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description">
+        <source>TSconfig for the group (advanced).</source>
+        <target approved="yes">TSconfig for the group (advanced).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details">
+        <source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+        <target approved="yes">This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target approved="yes">TypoScript syntax, without conditions and constants.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso">
+        <source>fe_users:TSconfig</source>
+        <target approved="yes">fe_users:TSconfig</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>Usergroups for Website users.</source>
+        <target approved="yes">Usergroups for Website users.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</source>
+        <target approved="yes">The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>fe_users,
+About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</source>
+        <target approved="yes">fe_users,
+About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:context_help/cshimages/fegroups_3.png,
+EXT:context_help/cshimages/fegroups_4.png</source>
+        <target approved="yes">EXT:context_help/cshimages/fegroups_3.png,
+EXT:context_help/cshimages/fegroups_4.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+        <target approved="yes">The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

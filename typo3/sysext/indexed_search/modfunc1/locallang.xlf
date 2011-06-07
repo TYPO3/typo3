@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:09 UTC 2011" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Indexed search</source>
+        <target approved="yes">Indexed search</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

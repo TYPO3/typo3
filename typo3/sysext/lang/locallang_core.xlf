@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow">
+        <source>Open in new window</source>
+        <target approved="yes">Open in new window</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack">
+        <source>Go back</source>
+        <target approved="yes">Go back</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut">
+        <source>Create a shortcut to this page?</source>
+        <target approved="yes">Create a shortcut to this page?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark">
+        <source>Create a bookmark to this page</source>
+        <target approved="yes">Create a bookmark to this page</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target approved="yes">The user '%s' began to edit this record %s ago.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target approved="yes">The user '%s' began to edit content on this page %s ago.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target approved="yes">The %s '%s' began to edit this record %s ago.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target approved="yes">The %s '%s' began to edit content on this page %s ago.</target>
+      </trans-unit>
+      <trans-unit id="labels.user">
+        <source>User</source>
+        <target approved="yes">User</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser">
+        <source>BE-User</source>
+        <target approved="yes">BE-User</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser">
+        <source>FE-User</source>
+        <target approved="yes">FE-User</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser">
+        <source>-Unknown-</source>
+        <target approved="yes">-Unknown-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords">
+        <source>Show records</source>
+        <target approved="yes">Show records</target>
+      </trans-unit>
+      <trans-unit id="labels.path">
+        <source>Path</source>
+        <target approved="yes">Path</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter">
+        <source>Reset Filter</source>
+        <target approved="yes">Reset Filter</target>
+      </trans-unit>
+      <trans-unit id="labels.table">
+        <source>Table</source>
+        <target approved="yes">Table</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel">
+        <source>Up one level</source>
+        <target approved="yes">Up one level</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable">
+        <source>Expand table</source>
+        <target approved="yes">Expand table</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable">
+        <source>Collapse table</source>
+        <target approved="yes">Collapse table</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString">
+        <source>Search String:</source>
+        <target approved="yes">Search String:</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target approved="yes">This page|1 level down|2 levels down|3 levels down|4 levels down</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target approved="yes">Sorry, you didn't have proper permissions to perform this change.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing">
+        <source>The fields marked with a yellow exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target approved="yes">The fields marked with a yellow exclamation mark are not yet correctly filled in. Please complete them properly.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged">
+        <source>There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</source>
+        <target approved="yes">There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target approved="yes">Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</target>
+      </trans-unit>
+      <trans-unit id="labels.showPalettes">
+        <source>Show secondary options (palettes)</source>
+        <target approved="yes">Show secondary options (palettes)</target>
+      </trans-unit>
+      <trans-unit id="labels.showDescriptions">
+        <source>Show field descriptions</source>
+        <target approved="yes">Show field descriptions</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target approved="yes">Disable Rich Text Editor (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_">
+        <source>Control</source>
+        <target approved="yes">Control</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_">
+        <source>Path</source>
+        <target approved="yes">Path</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_">
+        <source>Localization</source>
+        <target approved="yes">Localization</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields">
+        <source>Set fields</source>
+        <target approved="yes">Set fields</target>
+      </trans-unit>
+      <trans-unit id="labels.search">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="labels.author">
+        <source>Author:</source>
+        <target approved="yes">Author:</target>
+      </trans-unit>
+      <trans-unit id="labels.note">
+        <source>Note:</source>
+        <target approved="yes">Note:</target>
+      </trans-unit>
+      <trans-unit id="labels.category">
+        <source>Category:</source>
+        <target approved="yes">Category:</target>
+      </trans-unit>
+      <trans-unit id="labels.reload">
+        <source>Reload</source>
+        <target approved="yes">Reload</target>
+      </trans-unit>
+      <trans-unit id="labels.csv">
+        <source>Download CSV file</source>
+        <target approved="yes">Download CSV file</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache">
+        <source>Clear cache for this page</source>
+        <target approved="yes">Clear cache for this page</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title">
+        <source>No title</source>
+        <target approved="yes">No title</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden">
+        <source>Hidden</source>
+        <target approved="yes">Hidden</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime">
+        <source>Start</source>
+        <target approved="yes">Start</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime">
+        <source>End</source>
+        <target approved="yes">End</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears">
+        <source>min| hrs| days| yrs</source>
+        <target approved="yes">min| hrs| days| yrs</target>
+      </trans-unit>
+      <trans-unit id="labels.menu">
+        <source>Menu:</source>
+        <target approved="yes">Menu:</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage">
+        <source>View webpage</source>
+        <target approved="yes">View webpage</target>
+      </trans-unit>
+      <trans-unit id="labels.showList">
+        <source>Show record list</source>
+        <target approved="yes">Show record list</target>
+      </trans-unit>
+      <trans-unit id="labels.days">
+        <source>days</source>
+        <target approved="yes">days</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0">
+        <source>This page</source>
+        <target approved="yes">This page</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1">
+        <source>1 level</source>
+        <target approved="yes">1 level</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2">
+        <source>2 levels</source>
+        <target approved="yes">2 levels</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3">
+        <source>3 levels</source>
+        <target approved="yes">3 levels</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4">
+        <source>4 levels</source>
+        <target approved="yes">4 levels</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi">
+        <source>Infinite</source>
+        <target approved="yes">Infinite</target>
+      </trans-unit>
+      <trans-unit id="labels.allow">
+        <source>Allow</source>
+        <target approved="yes">Allow</target>
+      </trans-unit>
+      <trans-unit id="labels.deny">
+        <source>Deny</source>
+        <target approved="yes">Deny</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic">
+        <source>Auto</source>
+        <target approved="yes">Auto</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled">
+        <source>Enabled</source>
+        <target approved="yes">Enabled</target>
+      </trans-unit>
+      <trans-unit id="labels.show">
+        <source>Show</source>
+        <target approved="yes">Show</target>
+      </trans-unit>
+      <trans-unit id="labels.generalTab">
+        <source>General</source>
+        <target approved="yes">General</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh">
+        <source>Reload the tree from server</source>
+        <target approved="yes">Reload the tree from server</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryDBmount">
+        <source>Cancel temporary DB mount</source>
+        <target approved="yes">Cancel temporary DB mount</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList">
+        <source>Reload list from server</source>
+        <target approved="yes">Reload list from server</target>
+      </trans-unit>
+      <trans-unit id="labels.close">
+        <source>Close</source>
+        <target approved="yes">Close</target>
+      </trans-unit>
+      <trans-unit id="labels.new">
+        <source>NEW</source>
+        <target approved="yes">NEW</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage">
+        <source>Create new %s</source>
+        <target approved="yes">Create new %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord">
+        <source>Create new %s on page "%s"</source>
+        <target approved="yes">Create new %s on page "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel">
+        <source>Create new %s on root level</source>
+        <target approved="yes">Create new %s on root level</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage">
+        <source>Edit %s "%s"</source>
+        <target approved="yes">Edit %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target approved="yes">Edit %s "%s" on page "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle">
+        <source>Edit %s on page "%s"</source>
+        <target approved="yes">Edit %s on page "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel">
+        <source>Edit %s "%s" on root level</source>
+        <target approved="yes">Edit %s "%s" on root level</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel">
+        <source>root level</source>
+        <target approved="yes">root level</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew">
+        <source>Add new</source>
+        <target approved="yes">Add new</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall">
+        <source>Toggle all</source>
+        <target approved="yes">Toggle all</target>
+      </trans-unit>
+      <trans-unit id="labels.selected">
+        <source>Selected Items</source>
+        <target approved="yes">Selected Items</target>
+      </trans-unit>
+      <trans-unit id="labels.items">
+        <source>Available Items</source>
+        <target approved="yes">Available Items</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected">
+        <source>Remove selected items</source>
+        <target approved="yes">Remove selected items</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top">
+        <source>Move selected items to top</source>
+        <target approved="yes">Move selected items to top</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up">
+        <source>Move selected items upwards</source>
+        <target approved="yes">Move selected items upwards</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down">
+        <source>Move selected items downwards</source>
+        <target approved="yes">Move selected items downwards</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom">
+        <source>Move selected items to bottom</source>
+        <target approved="yes">Move selected items to bottom</target>
+      </trans-unit>
+      <trans-unit id="labels.move">
+        <source>Move this item</source>
+        <target approved="yes">Move this item</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_file">
+        <source>Browse for files</source>
+        <target approved="yes">Browse for files</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db">
+        <source>Browse for records</source>
+        <target approved="yes">Browse for records</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target approved="yes">Insert %s file(s) from the clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target approved="yes">Insert %s record(s) from the clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions">
+        <source>General options:</source>
+        <target approved="yes">General options:</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more">
+        <source>General options (continued):</source>
+        <target approved="yes">General options (continued):</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables">
+        <source>[All tables]</source>
+        <target approved="yes">[All tables]</target>
+      </trans-unit>
+      <trans-unit id="labels.moreOptions">
+        <source>More options...</source>
+        <target approved="yes">More options...</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue">
+        <source>INVALID VALUE ("%s")</source>
+        <target approved="yes">INVALID VALUE ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target approved="yes">Show Thumbnails on ClipBoard</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode">
+        <source>Copy items instead of moving them</source>
+        <target approved="yes">Copy items instead of moving them</target>
+      </trans-unit>
+      <trans-unit id="labels.clipNoEl">
+        <source>No elements</source>
+        <target approved="yes">No elements</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs">
+        <source>Clipboard #</source>
+        <target approved="yes">Clipboard #</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem">
+        <source>Remove item</source>
+        <target approved="yes">Remove item</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL">
+        <source>Important: Hold down the CTRL key while toggling elements in this list!</source>
+        <target approved="yes">Important: Hold down the CTRL key while toggling elements in this list!</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection">
+        <source>Revert selection</source>
+        <target approved="yes">Revert selection</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes">
+        <source>Select All Checkboxes</source>
+        <target approved="yes">Select All Checkboxes</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll">
+        <source>Check all</source>
+        <target approved="yes">Check all</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll">
+        <source>Uncheck all</source>
+        <target approved="yes">Uncheck all</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig">
+        <source>Changed in original translation</source>
+        <target approved="yes">Changed in original translation</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll">
+        <source>Expand all</source>
+        <target approved="yes">Expand all</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section">
+        <source>Create new:</source>
+        <target approved="yes">Create new:</target>
+      </trans-unit>
+      <trans-unit id="labels.count">
+        <source>Quantity:</source>
+        <target approved="yes">Quantity:</target>
+      </trans-unit>
+      <trans-unit id="labels.findRecord">
+        <source>Find records</source>
+        <target approved="yes">Find records</target>
+      </trans-unit>
+      <trans-unit id="labels.noRecordFound">
+        <source>No record found</source>
+        <target approved="yes">No record found</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching">
+        <source>Searching...</source>
+        <target approved="yes">Searching...</target>
+      </trans-unit>
+      <trans-unit id="ver.online">
+        <source>ONLINE</source>
+        <target approved="yes">ONLINE</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm">
+        <source>Version Management</source>
+        <target approved="yes">Version Management</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer">
+        <source>Select version:</source>
+        <target approved="yes">Select version:</target>
+      </trans-unit>
+      <trans-unit id="ver.swap">
+        <source>Swap/Publish</source>
+        <target approved="yes">Swap/Publish</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage">
+        <source>Publish this version of the page including content</source>
+        <target approved="yes">Publish this version of the page including content</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser">
+        <source>TYPO3 Element Browser</source>
+        <target approved="yes">TYPO3 Element Browser</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord">
+        <source>(There are %s reference(s) to this record!)</source>
+        <target approved="yes">(There are %s reference(s) to this record!)</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord">
+        <source>(This record has %s translation(s) which will be deleted, too!)</source>
+        <target approved="yes">(This record has %s translation(s) which will be deleted, too!)</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem">
+        <source>View Item</source>
+        <target approved="yes">View Item</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem">
+        <source>References to this item:</source>
+        <target approved="yes">References to this item:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem">
+        <source>References from this item:</source>
+        <target approved="yes">References from this item:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file">
+        <source>File</source>
+        <target approved="yes">File</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions">
+        <source>Dimensions</source>
+        <target approved="yes">Dimensions</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize">
+        <source>Size</source>
+        <target approved="yes">Size</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels">
+        <source>Pixels</source>
+        <target approved="yes">Pixels</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files">
+        <source>files</source>
+        <target approved="yes">files</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive">
+        <source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
+        <target approved="yes">Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table">
+        <source>Table:</source>
+        <target approved="yes">Table:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid">
+        <source>Uid:</source>
+        <target approved="yes">Uid:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field">
+        <source>Field:</source>
+        <target approved="yes">Field:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer">
+        <source>Flexpointer:</source>
+        <target approved="yes">Flexpointer:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey">
+        <source>Softref Key:</source>
+        <target approved="yes">Softref Key:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting">
+        <source>Sorting:</source>
+        <target approved="yes">Sorting:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable">
+        <source>Ref Table:</source>
+        <target approved="yes">Ref Table:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid">
+        <source>Ref Uid:</source>
+        <target approved="yes">Ref Uid:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString">
+        <source>Ref String:</source>
+        <target approved="yes">Ref String:</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area">
+        <source>FTP AREA</source>
+        <target approved="yes">FTP AREA</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle">
+        <source>New record</source>
+        <target approved="yes">New record</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after">
+        <source>after</source>
+        <target approved="yes">after</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside">
+        <source>inside</source>
+        <target approved="yes">inside</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle">
+        <source>Upload files</source>
+        <target approved="yes">Upload files</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit">
+        <source>Upload files</source>
+        <target approved="yes">Upload files</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files">
+        <source>files</source>
+        <target approved="yes">files</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.number_of_files">
+        <source>Number of files:</source>
+        <target approved="yes">Number of files:</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle">
+        <source>Rename</source>
+        <target approved="yes">Rename</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit">
+        <source>Rename</source>
+        <target approved="yes">Rename</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle">
+        <source>Edit</source>
+        <target approved="yes">Edit</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit">
+        <source>Save</source>
+        <target approved="yes">Save</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose">
+        <source>Save and Close</source>
+        <target approved="yes">Save and Close</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</source>
+        <target approved="yes">This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle">
+        <source>New file or folder</source>
+        <target approved="yes">New file or folder</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit">
+        <source>Create folders</source>
+        <target approved="yes">Create folders</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders">
+        <source>folders</source>
+        <target approved="yes">folders</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit">
+        <source>Create file</source>
+        <target approved="yes">Create file</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile">
+        <source>Create new textfile</source>
+        <target approved="yes">Create new textfile</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders">
+        <source>Number of folders:</source>
+        <target approved="yes">Number of folders:</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head">
+        <source>Upload path error</source>
+        <target approved="yes">Upload path error</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
+        <target approved="yes">No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target approved="yes">Redrawing the page will discard the current data. Do you want to continue?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete">
+        <source>Are you sure you want to delete "%s"?</source>
+        <target approved="yes">Are you sure you want to delete "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip">
+        <source>Are you sure you want to delete ALL selected elements (%s) on the clipboard?</source>
+        <target approved="yes">Are you sure you want to delete ALL selected elements (%s) on the clipboard?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login">
+        <source>Your login has probably expired.
+Do you want to refresh it now?</source>
+        <target approved="yes">Your login has probably expired.
+Do you want to refresh it now?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button">
+        <source>Stay logged in!</source>
+        <target approved="yes">Stay logged in!</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_logout_button">
+        <source>Logout</source>
+        <target approved="yes">Logout</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button">
+        <source>No, log out.</source>
+        <target approved="yes">No, log out.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_countdown">
+        <source>{0} seconds</source>
+        <target approved="yes">{0} seconds</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_countdown_singular">
+        <source>{0} second</source>
+        <target approved="yes">{0} second</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in">
+        <source>Logging in...</source>
+        <target approved="yes">Logging in...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed">
+        <source>Login failed</source>
+        <target approved="yes">Login failed</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message">
+        <source>Password not correct.</source>
+        <target approved="yes">Password not correct.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target approved="yes">Refresh Login to TYPO3 (User: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username">
+        <source>Username</source>
+        <target approved="yes">Username</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password">
+        <source>Password</source>
+        <target approved="yes">Password</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword">
+        <source>Empty password is not allowed!</source>
+        <target approved="yes">Empty password is not allowed!</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait">
+        <source>Please wait ...</source>
+        <target approved="yes">Please wait ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target approved="yes">The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target approved="yes">Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title">
+        <source>TYPO3 login expiration notice</source>
+        <target approved="yes">TYPO3 login expiration notice</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target approved="yes">Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target approved="yes">Please select one or more items in the list before you can edit.</target>
+      </trans-unit>
+      <trans-unit id="mess.onChangeAlert">
+        <source>This change will affect which fields are available in the form.
+Would you like to save now in order to refresh the display?</source>
+        <target approved="yes">This change will affect which fields are available in the form.
+Would you like to save now in order to refresh the display?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into">
+        <source>Move "%s" into "%s"?</source>
+        <target approved="yes">Move "%s" into "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after">
+        <source>Move "%s" to after "%s"?</source>
+        <target approved="yes">Move "%s" to after "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into">
+        <source>Copy "%s" into "%s"?</source>
+        <target approved="yes">Copy "%s" into "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after">
+        <source>Copy "%s" to after "%s"?</source>
+        <target approved="yes">Copy "%s" to after "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target approved="yes">Copy all elements (%s) from the clipboard into "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target approved="yes">Copy all elements (%s) from the clipboard to the position after "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target approved="yes">Move all elements (%s) from the clipboard into "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target approved="yes">Move all elements (%s) from the clipboard to the position after "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu">
+        <source>[menu]</source>
+        <target approved="yes">[menu]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc">
+        <source>Save document</source>
+        <target approved="yes">Save document</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow">
+        <source>Save document and view page</source>
+        <target approved="yes">Save document and view page</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc">
+        <source>Save and close document</source>
+        <target approved="yes">Save and close document</target>
+      </trans-unit>
+      <trans-unit id="rm.translationSaveDoc">
+        <source>Translation finished, save and close</source>
+        <target approved="yes">Translation finished, save and close</target>
+      </trans-unit>
+      <trans-unit id="rm.translationSaveDocClear">
+        <source>Translation NOT finished, Save</source>
+        <target approved="yes">Translation NOT finished, Save</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs">
+        <source>Save and close all documents</source>
+        <target approved="yes">Save and close all documents</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc">
+        <source>Save document and create a new one</source>
+        <target approved="yes">Save document and create a new one</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc">
+        <source>Close document</source>
+        <target approved="yes">Close document</target>
+      </trans-unit>
+      <trans-unit id="rm.closeAllDocs">
+        <source>Close all documents</source>
+        <target approved="yes">Close all documents</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_clearCache">
+        <source>Clear cache</source>
+        <target approved="yes">Clear cache</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage">
+        <source>This page</source>
+        <target approved="yes">This page</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all">
+        <source>Clear FE cache</source>
+        <target approved="yes">Clear FE cache</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages">
+        <source>Clear Page Cache</source>
+        <target approved="yes">Clear Page Cache</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf">
+        <source>Clear cache in typo3conf/</source>
+        <target approved="yes">Clear cache in typo3conf/</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_all">
+        <source>Clear all caches</source>
+        <target approved="yes">Clear all caches</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_pages">
+        <source>Clear page content cache</source>
+        <target approved="yes">Clear page content cache</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_allTypo3Conf">
+        <source>Clear configuration cache</source>
+        <target approved="yes">Clear configuration cache</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions">
+        <source>Admin functions</source>
+        <target approved="yes">Admin functions</target>
+      </trans-unit>
+      <trans-unit id="rm.edit">
+        <source>Edit</source>
+        <target approved="yes">Edit</target>
+      </trans-unit>
+      <trans-unit id="rm.export">
+        <source>Export</source>
+        <target approved="yes">Export</target>
+      </trans-unit>
+      <trans-unit id="rm.delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="buttons.logout">
+        <source>Logout</source>
+        <target approved="yes">Logout</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit">
+        <source>Exit</source>
+        <target approved="yes">Exit</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules">
+        <source>MODULES</source>
+        <target approved="yes">MODULES</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear">
+        <source>Clear</source>
+        <target approved="yes">Clear</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard">
+        <source>Clipboard</source>
+        <target approved="yes">Clipboard</target>
+      </trans-unit>
+      <trans-unit id="cm.copy">
+        <source>Copy</source>
+        <target approved="yes">Copy</target>
+      </trans-unit>
+      <trans-unit id="cm.cut">
+        <source>Cut</source>
+        <target approved="yes">Cut</target>
+      </trans-unit>
+      <trans-unit id="cm.view">
+        <source>Show</source>
+        <target approved="yes">Show</target>
+      </trans-unit>
+      <trans-unit id="cm.edit">
+        <source>Edit</source>
+        <target approved="yes">Edit</target>
+      </trans-unit>
+      <trans-unit id="cm.new">
+        <source>New</source>
+        <target approved="yes">New</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto">
+        <source>Paste into</source>
+        <target approved="yes">Paste into</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter">
+        <source>Paste after</source>
+        <target approved="yes">Paste after</target>
+      </trans-unit>
+      <trans-unit id="cm.select">
+        <source>Select</source>
+        <target approved="yes">Select</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect">
+        <source>Deselect</source>
+        <target approved="yes">Deselect</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto">
+        <source>Select to</source>
+        <target approved="yes">Select to</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto">
+        <source>Deselect to</source>
+        <target approved="yes">Deselect to</target>
+      </trans-unit>
+      <trans-unit id="cm.delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="cm.hide">
+        <source>Hide</source>
+        <target approved="yes">Hide</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide">
+        <source>Unhide</source>
+        <target approved="yes">Unhide</target>
+      </trans-unit>
+      <trans-unit id="cm.upload">
+        <source>Upload Files</source>
+        <target approved="yes">Upload Files</target>
+      </trans-unit>
+      <trans-unit id="cm.rename">
+        <source>Rename</source>
+        <target approved="yes">Rename</target>
+      </trans-unit>
+      <trans-unit id="cm.open">
+        <source>Open</source>
+        <target approved="yes">Open</target>
+      </trans-unit>
+      <trans-unit id="cm.save">
+        <source>Save</source>
+        <target approved="yes">Save</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip">
+        <source>Unzip</source>
+        <target approved="yes">Unzip</target>
+      </trans-unit>
+      <trans-unit id="cm.info">
+        <source>Info</source>
+        <target approved="yes">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew">
+        <source>Create new</source>
+        <target approved="yes">Create new</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint">
+        <source>Mount as treeroot</source>
+        <target approved="yes">Mount as treeroot</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into">
+        <source>Copy page into</source>
+        <target approved="yes">Copy page into</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after">
+        <source>Copy page after</source>
+        <target approved="yes">Copy page after</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into">
+        <source>Move page into</source>
+        <target approved="yes">Move page into</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after">
+        <source>Move page after</source>
+        <target approved="yes">Move page after</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into">
+        <source>Copy folder into</source>
+        <target approved="yes">Copy folder into</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into">
+        <source>Move folder into</source>
+        <target approved="yes">Move folder into</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation">
+        <source>Create new relation</source>
+        <target approved="yes">Create new relation</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions">
+        <source>Branch Actions</source>
+        <target approved="yes">Branch Actions</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions">
+        <source>Page Actions</source>
+        <target approved="yes">Page Actions</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch">
+        <source>Collapse Branch</source>
+        <target approved="yes">Collapse Branch</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch">
+        <source>Expand Branch</source>
+        <target approved="yes">Expand Branch</target>
+      </trans-unit>
+      <trans-unit id="tree.defaultPageTitle">
+        <source>[Default Title]</source>
+        <target approved="yes">[Default Title]</target>
+      </trans-unit>
+      <trans-unit id="tree.copyHint">
+        <source>Press Ctrl to copy.</source>
+        <target approved="yes">Press Ctrl to copy.</target>
+      </trans-unit>
+      <trans-unit id="tree.activeFilterMode">
+        <source>Active Filtering Mode</source>
+        <target approved="yes">Active Filtering Mode</target>
+      </trans-unit>
+      <trans-unit id="tree.dropToRemove">
+        <source>Drop here to delete</source>
+        <target approved="yes">Drop here to delete</target>
+      </trans-unit>
+      <trans-unit id="tree.dropZoneElementRemoved">
+        <source>Click here to undelete</source>
+        <target approved="yes">Click here to undelete</target>
+      </trans-unit>
+      <trans-unit id="tree.dropZoneElementRestored">
+        <source>Page restored</source>
+        <target approved="yes">Page restored</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonNewNode">
+        <source>Create new pages</source>
+        <target approved="yes">Create new pages</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonFilter">
+        <source>Filter tree</source>
+        <target approved="yes">Filter tree</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo">
+        <source>Enter search term</source>
+        <target approved="yes">Enter search term</target>
+      </trans-unit>
+      <trans-unit id="warning.install_password">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
+        <target approved="yes">The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_admin">
+        <source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
+        <target approved="yes">The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target approved="yes">The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent">
+        <source>Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target approved="yes">Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target approved="yes">The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target approved="yes">The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd">
+        <source>Click to remove the file now!</source>
+        <target approved="yes">Click to remove the file now!</target>
+      </trans-unit>
+      <trans-unit id="warning.install_encryption">
+        <source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
+        <target approved="yes">The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</source>
+        <target approved="yes">This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</target>
+      </trans-unit>
+      <trans-unit id="warning.header">
+        <source>Important Notice!</source>
+        <target approved="yes">Important Notice!</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target approved="yes">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference_index">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target approved="yes">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s):</source>
+        <target approved="yes">Memcache is configured, but connection to memcached failed with these configuration(s):</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing">
+        <source>File is missing!</source>
+        <target approved="yes">File is missing!</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text">
+        <source>This content element references a file which seems to not exist:</source>
+        <target approved="yes">This content element references a file which seems to not exist:</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target approved="yes">Validating the security token of this form has failed. Please reload the form and submit it again.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcuts">
+        <source>Shortcuts</source>
+        <target approved="yes">Shortcuts</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcut">
+        <source>Shortcut</source>
+        <target approved="yes">Shortcut</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsGroup">
+        <source>Shortcut Group</source>
+        <target approved="yes">Shortcut Group</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsEdit">
+        <source>Edit Shortcut</source>
+        <target approved="yes">Edit Shortcut</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsDelete">
+        <source>Delete Shortcut</source>
+        <target approved="yes">Delete Shortcut</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarks">
+        <source>Bookmarks</source>
+        <target approved="yes">Bookmarks</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmark">
+        <source>Bookmark</source>
+        <target approved="yes">Bookmark</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksGroup">
+        <source>Bookmark group</source>
+        <target approved="yes">Bookmark group</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksEdit">
+        <source>Edit bookmark</source>
+        <target approved="yes">Edit bookmark</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksDelete">
+        <source>Delete bookmark</source>
+        <target approved="yes">Delete bookmark</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.workspace">
+        <source>Workspace</source>
+        <target approved="yes">Workspace</target>
+      </trans-unit>
+      <trans-unit id="tabs.closeAll">
+        <source>Close All Tabs</source>
+        <target approved="yes">Close All Tabs</target>
+      </trans-unit>
+      <trans-unit id="tabs.closeOther">
+        <source>Close Other Tabs</source>
+        <target approved="yes">Close Other Tabs</target>
+      </trans-unit>
+      <trans-unit id="tabs.close">
+        <source>Close Tab</source>
+        <target approved="yes">Close Tab</target>
+      </trans-unit>
+      <trans-unit id="tabs.openInBrowserWindow">
+        <source>Open In Browser Window</source>
+        <target approved="yes">Open In Browser Window</target>
+      </trans-unit>
+      <trans-unit id="donateWindow.title">
+        <source>TYPO3 donation notice</source>
+        <target approved="yes">TYPO3 donation notice</target>
+      </trans-unit>
+      <trans-unit id="donateWindow.message">
+        <source>&lt;b&gt;You have now used TYPO3 for more than three months.&lt;/b&gt; It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</source>
+        <target approved="yes">&lt;b&gt;You have now used TYPO3 for more than three months.&lt;/b&gt; It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</target>
+      </trans-unit>
+      <trans-unit id="donateWindow.button_donate">
+        <source>Donate now</source>
+        <target approved="yes">Donate now</target>
+      </trans-unit>
+      <trans-unit id="donateWindow.button_disable">
+        <source>Never show again</source>
+        <target approved="yes">Never show again</target>
+      </trans-unit>
+      <trans-unit id="donateWindow.button_postpone">
+        <source>Remind me later</source>
+        <target approved="yes">Remind me later</target>
+      </trans-unit>
+      <trans-unit id="ExtDirect.namespaceError">
+        <source>Ext Direct error in "%s" with namespace: "%s"\n
+Try to clear the TYPO3 cache and / or use paramater no_cache=1 as parameter in URL typo3/ajax.php\n\n
+Check also the following points:\n
+- configuration in ext_localconf.php: registration key should be like "TYPO3.MyExtension.Sample"\n
+- URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
+- javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n</source>
+        <target approved="yes">Ext Direct error in "%s" with namespace: "%s"\n
+Try to clear the TYPO3 cache and / or use paramater no_cache=1 as parameter in URL typo3/ajax.php\n\n
+Check also the following points:\n
+- configuration in ext_localconf.php: registration key should be like "TYPO3.MyExtension.Sample"\n
+- URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
+- javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n</target>
+      </trans-unit>
+      <trans-unit id="ExtDirect.noNamespace">
+        <source>Ext Direct error in "%s": no namespace has been found.</source>
+        <target approved="yes">Ext Direct error in "%s": no namespace has been found.</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed">
+        <source>Extension "%s" is not installed.</source>
+        <target approved="yes">Extension "%s" is not installed.</target>
+      </trans-unit>
+      <trans-unit id="link.to.dblist.correctly">
+        <source>Please, do not link to this page. Use t3lib_BEfunc::getListViewLink() for link generation.</source>
+        <target approved="yes">Please, do not link to this page. Use t3lib_BEfunc::getListViewLink() for link generation.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly">
+        <source>Please, do not link to this page.</source>
+        <target approved="yes">Please, do not link to this page.</target>
+      </trans-unit>
+      <trans-unit id="loadingIndicator">
+        <source>Loading ...</source>
+        <target approved="yes">Loading ...</target>
+      </trans-unit>
+      <trans-unit id="csh_tooltip_loading">
+        <source>Loading help...</source>
+        <target approved="yes">Loading help...</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

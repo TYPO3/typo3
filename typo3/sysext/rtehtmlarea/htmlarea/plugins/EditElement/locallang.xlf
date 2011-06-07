@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="editElement">
+        <source>Edit element</source>
+        <target approved="yes">Edit element</target>
+      </trans-unit>
+      <trans-unit id="general">
+        <source>General</source>
+        <target approved="yes">General</target>
+      </trans-unit>
+      <trans-unit id="identification">
+        <source>Identification</source>
+        <target approved="yes">Identification</target>
+      </trans-unit>
+      <trans-unit id="id">
+        <source>Id</source>
+        <target approved="yes">Id</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target approved="yes">Title</target>
+      </trans-unit>
+      <trans-unit id="className">
+        <source>Class</source>
+        <target approved="yes">Class</target>
+      </trans-unit>
+      <trans-unit id="events">
+        <source>Events</source>
+        <target approved="yes">Events</target>
+      </trans-unit>
+      <trans-unit id="onkeydown">
+        <source>Onkeydown</source>
+        <target approved="yes">Onkeydown</target>
+      </trans-unit>
+      <trans-unit id="onkeypress">
+        <source>Onkeypress</source>
+        <target approved="yes">Onkeypress</target>
+      </trans-unit>
+      <trans-unit id="onkeyup">
+        <source>Onkeyup</source>
+        <target approved="yes">Onkeyup</target>
+      </trans-unit>
+      <trans-unit id="onclick">
+        <source>Onclick</source>
+        <target approved="yes">Onclick</target>
+      </trans-unit>
+      <trans-unit id="ondblclick">
+        <source>Ondblclick</source>
+        <target approved="yes">Ondblclick</target>
+      </trans-unit>
+      <trans-unit id="onmousedown">
+        <source>Onmousedown</source>
+        <target approved="yes">Onmousedown</target>
+      </trans-unit>
+      <trans-unit id="onmousemove">
+        <source>Onmousemove</source>
+        <target approved="yes">Onmousemove</target>
+      </trans-unit>
+      <trans-unit id="onmouseout">
+        <source>Onmouseout</source>
+        <target approved="yes">Onmouseout</target>
+      </trans-unit>
+      <trans-unit id="onmouseover">
+        <source>Onmouseover</source>
+        <target approved="yes">Onmouseover</target>
+      </trans-unit>
+      <trans-unit id="onmouseup">
+        <source>Onmouseup</source>
+        <target approved="yes">Onmouseup</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

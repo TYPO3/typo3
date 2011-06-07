@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="removeLink">
+        <source>Remove link</source>
+        <target approved="yes">Remove link</target>
+      </trans-unit>
+      <trans-unit id="uploadImage">
+        <source>Upload Image</source>
+        <target approved="yes">Upload Image</target>
+      </trans-unit>
+      <trans-unit id="update">
+        <source>Update</source>
+        <target approved="yes">Update</target>
+      </trans-unit>
+      <trans-unit id="path">
+        <source>Path</source>
+        <target approved="yes">Path</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source>Page</source>
+        <target approved="yes">Page</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File</source>
+        <target approved="yes">File</target>
+      </trans-unit>
+      <trans-unit id="folder">
+        <source>Folder</source>
+        <target approved="yes">Folder</target>
+      </trans-unit>
+      <trans-unit id="extUrl">
+        <source>External URL</source>
+        <target approved="yes">External URL</target>
+      </trans-unit>
+      <trans-unit id="email">
+        <source>Email</source>
+        <target approved="yes">Email</target>
+      </trans-unit>
+      <trans-unit id="special">
+        <source>Special</source>
+        <target approved="yes">Special</target>
+      </trans-unit>
+      <trans-unit id="folderTree">
+        <source>Folder Tree</source>
+        <target approved="yes">Folder Tree</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>Files</source>
+        <target approved="yes">Files</target>
+      </trans-unit>
+      <trans-unit id="target">
+        <source>Target</source>
+        <target approved="yes">Target</target>
+      </trans-unit>
+      <trans-unit id="class">
+        <source>CSS-Class</source>
+        <target approved="yes">CSS-Class</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target approved="yes">Title</target>
+      </trans-unit>
+      <trans-unit id="params">
+        <source>Additional link parameters</source>
+        <target approved="yes">Additional link parameters</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow">
+        <source>Open in window</source>
+        <target approved="yes">Open in window</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow_width">
+        <source>Width</source>
+        <target approved="yes">Width</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow_height">
+        <source>Height</source>
+        <target approved="yes">Height</target>
+      </trans-unit>
+      <trans-unit id="newWindow">
+        <source>New window</source>
+        <target approved="yes">New window</target>
+      </trans-unit>
+      <trans-unit id="top">
+        <source>Top</source>
+        <target approved="yes">Top</target>
+      </trans-unit>
+      <trans-unit id="none">
+        <source>None - new link!</source>
+        <target approved="yes">None - new link!</target>
+      </trans-unit>
+      <trans-unit id="pageTree">
+        <source>Page tree</source>
+        <target approved="yes">Page tree</target>
+      </trans-unit>
+      <trans-unit id="contentElements">
+        <source>Content elements</source>
+        <target approved="yes">Content elements</target>
+      </trans-unit>
+      <trans-unit id="selectRecords">
+        <source>Select Records</source>
+        <target approved="yes">Select Records</target>
+      </trans-unit>
+      <trans-unit id="addToList">
+        <source>Add to list...</source>
+        <target approved="yes">Add to list...</target>
+      </trans-unit>
+      <trans-unit id="info">
+        <source>Info</source>
+        <target approved="yes">Info</target>
+      </trans-unit>
+      <trans-unit id="emailAddress">
+        <source>Email address</source>
+        <target approved="yes">Email address</target>
+      </trans-unit>
+      <trans-unit id="setLink">
+        <source>Set Link</source>
+        <target approved="yes">Set Link</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target approved="yes">Image is larger than shown here! Click to redraw page with full sized images.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target approved="yes">Find and click on your image then drag it into the editor in the main window!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target approved="yes">You cannot drag images from this folder (yellow) because it is internal on the server.</target>
+      </trans-unit>
+      <trans-unit id="currentLink">
+        <source>Current Link</source>
+        <target approved="yes">Current Link</target>
+      </trans-unit>
+      <trans-unit id="invalidChar">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target approved="yes">ERROR: Invalid character found in file path (%s). Cannot add the file!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection">
+        <source>Toggle selection</source>
+        <target approved="yes">Toggle selection</target>
+      </trans-unit>
+      <trans-unit id="importSelection">
+        <source>Import selection</source>
+        <target approved="yes">Import selection</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target approved="yes">OK</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="Close">
+        <source>Close</source>
+        <target approved="yes">Close</target>
+      </trans-unit>
+      <trans-unit id="Not set">
+        <source>Not set</source>
+        <target approved="yes">Not set</target>
+      </trans-unit>
+      <trans-unit id="General">
+        <source>General</source>
+        <target approved="yes">General</target>
+      </trans-unit>
+      <trans-unit id="Alignment:">
+        <source>Text alignment:</source>
+        <target approved="yes">Text alignment:</target>
+      </trans-unit>
+      <trans-unit id="Alignment not set">
+        <source>Not set</source>
+        <target approved="yes">Not set</target>
+      </trans-unit>
+      <trans-unit id="Left">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="Center">
+        <source>Center</source>
+        <target approved="yes">Center</target>
+      </trans-unit>
+      <trans-unit id="Right">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="Texttop">
+        <source>Texttop</source>
+        <target approved="yes">Texttop</target>
+      </trans-unit>
+      <trans-unit id="Absmiddle">
+        <source>Absmiddle</source>
+        <target approved="yes">Absmiddle</target>
+      </trans-unit>
+      <trans-unit id="Baseline">
+        <source>Baseline</source>
+        <target approved="yes">Baseline</target>
+      </trans-unit>
+      <trans-unit id="Absbottom">
+        <source>Absbottom</source>
+        <target approved="yes">Absbottom</target>
+      </trans-unit>
+      <trans-unit id="Bottom">
+        <source>Bottom</source>
+        <target approved="yes">Bottom</target>
+      </trans-unit>
+      <trans-unit id="Middle">
+        <source>Middle</source>
+        <target approved="yes">Middle</target>
+      </trans-unit>
+      <trans-unit id="Top">
+        <source>Top</source>
+        <target approved="yes">Top</target>
+      </trans-unit>
+      <trans-unit id="Justify">
+        <source>Justify</source>
+        <target approved="yes">Justify</target>
+      </trans-unit>
+      <trans-unit id="Float:">
+        <source>Float:</source>
+        <target approved="yes">Float:</target>
+      </trans-unit>
+      <trans-unit id="Non-floating">
+        <source>Non-floating</source>
+        <target approved="yes">Non-floating</target>
+      </trans-unit>
+      <trans-unit id="Layout">
+        <source>Layout</source>
+        <target approved="yes">Layout</target>
+      </trans-unit>
+      <trans-unit id="Spacing and padding">
+        <source>Spacing and padding</source>
+        <target approved="yes">Spacing and padding</target>
+      </trans-unit>
+      <trans-unit id="Horizontal:">
+        <source>Horizontal:</source>
+        <target approved="yes">Horizontal:</target>
+      </trans-unit>
+      <trans-unit id="Horizontal padding">
+        <source>Horizontal padding</source>
+        <target approved="yes">Horizontal padding</target>
+      </trans-unit>
+      <trans-unit id="Vertical:">
+        <source>Vertical:</source>
+        <target approved="yes">Vertical:</target>
+      </trans-unit>
+      <trans-unit id="Vertical padding">
+        <source>Vertical padding</source>
+        <target approved="yes">Vertical padding</target>
+      </trans-unit>
+      <trans-unit id="Border">
+        <source>Border</source>
+        <target approved="yes">Border</target>
+      </trans-unit>
+      <trans-unit id="Border thickness:">
+        <source>Border thickness:</source>
+        <target approved="yes">Border thickness:</target>
+      </trans-unit>
+      <trans-unit id="Leave empty for no border">
+        <source>Leave empty for no border</source>
+        <target approved="yes">Leave empty for no border</target>
+      </trans-unit>
+      <trans-unit id="Insert/Modify Link">
+        <source>Insert/Modify Link</source>
+        <target approved="yes">Insert/Modify Link</target>
+      </trans-unit>
+      <trans-unit id="Insert link">
+        <source>Insert link</source>
+        <target approved="yes">Insert link</target>
+      </trans-unit>
+      <trans-unit id="Modify link">
+        <source>Modify link</source>
+        <target approved="yes">Modify link</target>
+      </trans-unit>
+      <trans-unit id="URL:">
+        <source>URL:</source>
+        <target approved="yes">URL:</target>
+      </trans-unit>
+      <trans-unit id="link_href_tooltip">
+        <source>Enter the link URL here</source>
+        <target approved="yes">Enter the link URL here</target>
+      </trans-unit>
+      <trans-unit id="link_url_required">
+        <source>Please enter the URL where this link points to</source>
+        <target approved="yes">Please enter the URL where this link points to</target>
+      </trans-unit>
+      <trans-unit id="Title (tooltip):">
+        <source>Title:</source>
+        <target approved="yes">Title:</target>
+      </trans-unit>
+      <trans-unit id="link_title_tooltip">
+        <source>Enter the link tooltip here</source>
+        <target approved="yes">Enter the link tooltip here</target>
+      </trans-unit>
+      <trans-unit id="Target:">
+        <source>Target:</source>
+        <target approved="yes">Target:</target>
+      </trans-unit>
+      <trans-unit id="link_target_tooltip">
+        <source>Select the name of the target frame</source>
+        <target approved="yes">Select the name of the target frame</target>
+      </trans-unit>
+      <trans-unit id="target_none">
+        <source>None (use implicit)</source>
+        <target approved="yes">None (use implicit)</target>
+      </trans-unit>
+      <trans-unit id="target_blank">
+        <source>New window (_blank)</source>
+        <target approved="yes">New window (_blank)</target>
+      </trans-unit>
+      <trans-unit id="target_self">
+        <source>Same frame (_self)</source>
+        <target approved="yes">Same frame (_self)</target>
+      </trans-unit>
+      <trans-unit id="target_top">
+        <source>Top frame (_top)</source>
+        <target approved="yes">Top frame (_top)</target>
+      </trans-unit>
+      <trans-unit id="target_other">
+        <source>Other frame</source>
+        <target approved="yes">Other frame</target>
+      </trans-unit>
+      <trans-unit id="Insert Custom Element">
+        <source>Insert Custom Element</source>
+        <target approved="yes">Insert Custom Element</target>
+      </trans-unit>
+      <trans-unit id="Insert Table">
+        <source>Insert Table</source>
+        <target approved="yes">Insert Table</target>
+      </trans-unit>
+      <trans-unit id="Dimension">
+        <source>Dimension</source>
+        <target approved="yes">Dimension</target>
+      </trans-unit>
+      <trans-unit id="Rows:">
+        <source>Rows:</source>
+        <target approved="yes">Rows:</target>
+      </trans-unit>
+      <trans-unit id="Number of rows">
+        <source>Number of rows</source>
+        <target approved="yes">Number of rows</target>
+      </trans-unit>
+      <trans-unit id="You must enter a number of rows">
+        <source>You must enter a number of rows</source>
+        <target approved="yes">You must enter a number of rows</target>
+      </trans-unit>
+      <trans-unit id="Cols:">
+        <source>Cols:</source>
+        <target approved="yes">Cols:</target>
+      </trans-unit>
+      <trans-unit id="Number of columns">
+        <source>Number of columns</source>
+        <target approved="yes">Number of columns</target>
+      </trans-unit>
+      <trans-unit id="You must enter a number of columns">
+        <source>You must enter a number of columns</source>
+        <target approved="yes">You must enter a number of columns</target>
+      </trans-unit>
+      <trans-unit id="Width:">
+        <source>Width:</source>
+        <target approved="yes">Width:</target>
+      </trans-unit>
+      <trans-unit id="Width of the table">
+        <source>Width of the table</source>
+        <target approved="yes">Width of the table</target>
+      </trans-unit>
+      <trans-unit id="Percent">
+        <source>Percent</source>
+        <target approved="yes">Percent</target>
+      </trans-unit>
+      <trans-unit id="Pixels">
+        <source>Pixels</source>
+        <target approved="yes">Pixels</target>
+      </trans-unit>
+      <trans-unit id="Em">
+        <source>Em</source>
+        <target approved="yes">Em</target>
+      </trans-unit>
+      <trans-unit id="Width unit">
+        <source>Width unit</source>
+        <target approved="yes">Width unit</target>
+      </trans-unit>
+      <trans-unit id="Text alignment">
+        <source>Text alignment</source>
+        <target approved="yes">Text alignment</target>
+      </trans-unit>
+      <trans-unit id="Where the table should float">
+        <source>Specifies where the table should float</source>
+        <target approved="yes">Specifies where the table should float</target>
+      </trans-unit>
+      <trans-unit id="Cell spacing:">
+        <source>Cell spacing:</source>
+        <target approved="yes">Cell spacing:</target>
+      </trans-unit>
+      <trans-unit id="Space between adjacent cells">
+        <source>Space between adjacent cells</source>
+        <target approved="yes">Space between adjacent cells</target>
+      </trans-unit>
+      <trans-unit id="Cell padding:">
+        <source>Cell padding:</source>
+        <target approved="yes">Cell padding:</target>
+      </trans-unit>
+      <trans-unit id="Space between content and border in cell">
+        <source>Space between content and border in cell</source>
+        <target approved="yes">Space between content and border in cell</target>
+      </trans-unit>
+      <trans-unit id="Insert Image">
+        <source>Insert/Modify Image</source>
+        <target approved="yes">Insert/Modify Image</target>
+      </trans-unit>
+      <trans-unit id="Insert image">
+        <source>Insert image</source>
+        <target approved="yes">Insert image</target>
+      </trans-unit>
+      <trans-unit id="Modify image">
+        <source>Modify image</source>
+        <target approved="yes">Modify image</target>
+      </trans-unit>
+      <trans-unit id="Image URL:">
+        <source>Image URL:</source>
+        <target approved="yes">Image URL:</target>
+      </trans-unit>
+      <trans-unit id="Enter the image URL here">
+        <source>Enter the image URL here</source>
+        <target approved="yes">Enter the image URL here</target>
+      </trans-unit>
+      <trans-unit id="Preview">
+        <source>Preview</source>
+        <target approved="yes">Preview</target>
+      </trans-unit>
+      <trans-unit id="Preview the image in a new window">
+        <source>Preview the image in a new window</source>
+        <target approved="yes">Preview the image in a new window</target>
+      </trans-unit>
+      <trans-unit id="Alternate text:">
+        <source>Alternate text:</source>
+        <target approved="yes">Alternate text:</target>
+      </trans-unit>
+      <trans-unit id="For browsers that dont support images">
+        <source>For browsers that don't support images</source>
+        <target approved="yes">For browsers that don't support images</target>
+      </trans-unit>
+      <trans-unit id="Where the image should float">
+        <source>Specifies where the image should float</source>
+        <target approved="yes">Specifies where the image should float</target>
+      </trans-unit>
+      <trans-unit id="Image alignment:">
+        <source>Image alignment:</source>
+        <target approved="yes">Image alignment:</target>
+      </trans-unit>
+      <trans-unit id="Positioning of this image">
+        <source>Positioning of this image relative to text</source>
+        <target approved="yes">Positioning of this image relative to text</target>
+      </trans-unit>
+      <trans-unit id="Image Preview">
+        <source>Image Preview</source>
+        <target approved="yes">Image Preview</target>
+      </trans-unit>
+      <trans-unit id="image_url_first">
+        <source>You have to enter the image URL first</source>
+        <target approved="yes">You have to enter the image URL first</target>
+      </trans-unit>
+      <trans-unit id="image_url_required">
+        <source>You must enter the image URL</source>
+        <target approved="yes">You must enter the image URL</target>
+      </trans-unit>
+      <trans-unit id="Select Color">
+        <source>Select Color</source>
+        <target approved="yes">Select Color</target>
+      </trans-unit>
+      <trans-unit id="Insert/Modify Acronym">
+        <source>Insert/Modify Acronym or Abbreviation</source>
+        <target approved="yes">Insert/Modify Acronym or Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="About HTMLArea">
+        <source>About htmlArea RTE</source>
+        <target approved="yes">About htmlArea RTE</target>
+      </trans-unit>
+      <trans-unit id="About">
+        <source>About</source>
+        <target approved="yes">About</target>
+      </trans-unit>
+      <trans-unit id="free_editor">
+        <source>A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</source>
+        <target approved="yes">A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="Browser support">
+        <source>Browser support</source>
+        <target approved="yes">Browser support</target>
+      </trans-unit>
+      <trans-unit id="Mozilla_or_IE">
+        <source>For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</source>
+        <target approved="yes">For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</target>
+      </trans-unit>
+      <trans-unit id="product_documentation">
+        <source>For more information, please visit:</source>
+        <target approved="yes">For more information, please visit:</target>
+      </trans-unit>
+      <trans-unit id="All rights reserved.">
+        <source>All Rights Reserved.</source>
+        <target approved="yes">All Rights Reserved.</target>
+      </trans-unit>
+      <trans-unit id="License">
+        <source>License</source>
+        <target approved="yes">License</target>
+      </trans-unit>
+      <trans-unit id="htmlArea License (based on BSD license)">
+        <source>htmlArea RTE License, based on BSD License</source>
+        <target approved="yes">htmlArea RTE License, based on BSD License</target>
+      </trans-unit>
+      <trans-unit id="Plugins">
+        <source>Plugins</source>
+        <target approved="yes">Plugins</target>
+      </trans-unit>
+      <trans-unit id="Name">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="Developer">
+        <source>Developer</source>
+        <target approved="yes">Developer</target>
+      </trans-unit>
+      <trans-unit id="Sponsored by">
+        <source>Sponsored by</source>
+        <target approved="yes">Sponsored by</target>
+      </trans-unit>
+      <trans-unit id="The following plugins have been loaded.">
+        <source>The following plugins have been loaded.</source>
+        <target approved="yes">The following plugins have been loaded.</target>
+      </trans-unit>
+      <trans-unit id="No plugins have been loaded.">
+        <source>No plugins have been loaded.</source>
+        <target approved="yes">No plugins have been loaded.</target>
+      </trans-unit>
+      <trans-unit id="User agent reports:">
+        <source>User agent reports:</source>
+        <target approved="yes">User agent reports:</target>
+      </trans-unit>
+      <trans-unit id="style">
+        <source>Paragraph:</source>
+        <target approved="yes">Paragraph:</target>
+      </trans-unit>
+      <trans-unit id="Block style label">
+        <source>Block style:</source>
+        <target approved="yes">Block style:</target>
+      </trans-unit>
+      <trans-unit id="text_style">
+        <source>Text style:</source>
+        <target approved="yes">Text style:</target>
+      </trans-unit>
+      <trans-unit id="LeftToRight">
+        <source>Left to right</source>
+        <target approved="yes">Left to right</target>
+      </trans-unit>
+      <trans-unit id="RightToLeft">
+        <source>Right to left</source>
+        <target approved="yes">Right to left</target>
+      </trans-unit>
+      <trans-unit id="Language">
+        <source>Language</source>
+        <target approved="yes">Language</target>
+      </trans-unit>
+      <trans-unit id="Text direction">
+        <source>Text direction</source>
+        <target approved="yes">Text direction</target>
+      </trans-unit>
+      <trans-unit id="Language:">
+        <source>Language:</source>
+        <target approved="yes">Language:</target>
+      </trans-unit>
+      <trans-unit id="Text direction:">
+        <source>Text direction:</source>
+        <target approved="yes">Text direction:</target>
+      </trans-unit>
+      <trans-unit id="No language mark">
+        <source>No language</source>
+        <target approved="yes">No language</target>
+      </trans-unit>
+      <trans-unit id="Remove language mark">
+        <source>Remove language</source>
+        <target approved="yes">Remove language</target>
+      </trans-unit>
+      <trans-unit id="statusBarStyle">
+        <source>Style</source>
+        <target approved="yes">Style</target>
+      </trans-unit>
+      <trans-unit id="statusBarReady">
+        <source>Ready</source>
+        <target approved="yes">Ready</target>
+      </trans-unit>
+      <trans-unit id="word">
+        <source>word</source>
+        <target approved="yes">word</target>
+      </trans-unit>
+      <trans-unit id="words">
+        <source>words</source>
+        <target approved="yes">words</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

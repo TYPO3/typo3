@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:28 UTC 2011" product-name="scheduler">
+    <header/>
+    <body>
+      <trans-unit id="action.add">
+        <source>Add task</source>
+        <target approved="yes">Add task</target>
+      </trans-unit>
+      <trans-unit id="action.edit">
+        <source>Edit task</source>
+        <target approved="yes">Edit task</target>
+      </trans-unit>
+      <trans-unit id="button.cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler">
+        <source>Scheduled tasks</source>
+        <target approved="yes">Scheduled tasks</target>
+      </trans-unit>
+      <trans-unit id="function.check">
+        <source>Setup check</source>
+        <target approved="yes">Setup check</target>
+      </trans-unit>
+      <trans-unit id="function.info">
+        <source>Information</source>
+        <target approved="yes">Information</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript">
+        <source>CLI script</source>
+        <target approved="yes">CLI script</target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun">
+        <source>Last run</source>
+        <target approved="yes">Last run</target>
+      </trans-unit>
+      <trans-unit id="hdg.schedulerUser">
+        <source>TYPO3 Scheduler backend user</source>
+        <target approved="yes">TYPO3 Scheduler backend user</target>
+      </trans-unit>
+      <trans-unit id="label.automatically">
+        <source>automatically</source>
+        <target approved="yes">automatically</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends">
+        <source>Backend types</source>
+        <target approved="yes">Backend types</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll">
+        <source>Check/uncheck all</source>
+        <target approved="yes">Check/uncheck all</target>
+      </trans-unit>
+      <trans-unit id="label.class">
+        <source>Class</source>
+        <target approved="yes">Class</target>
+      </trans-unit>
+      <trans-unit id="label.cron">
+        <source>Cron</source>
+        <target approved="yes">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType">
+        <source>Definition type</source>
+        <target approved="yes">Definition type</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval">
+        <source>Interval</source>
+        <target approved="yes">Interval</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron">
+        <source>Cron command</source>
+        <target approved="yes">Cron command</target>
+      </trans-unit>
+      <trans-unit id="label.description">
+        <source>Description</source>
+        <target approved="yes">Description</target>
+      </trans-unit>
+      <trans-unit id="label.email">
+        <source>Email</source>
+        <target approved="yes">Email</target>
+      </trans-unit>
+      <trans-unit id="label.end">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target approved="yes">End (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected">
+        <source>Execute selected tasks</source>
+        <target approved="yes">Execute selected tasks</target>
+      </trans-unit>
+      <trans-unit id="label.extension">
+        <source>Extension</source>
+        <target approved="yes">Extension</target>
+      </trans-unit>
+      <trans-unit id="label.frequency">
+        <source>Frequency</source>
+        <target approved="yes">Frequency</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long">
+        <source>Frequency (seconds or cron command)</source>
+        <target approved="yes">Frequency (seconds or cron command)</target>
+      </trans-unit>
+      <trans-unit id="label.id">
+        <source>ID</source>
+        <target approved="yes">ID</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution">
+        <source>Last Execution</source>
+        <target approved="yes">Last Execution</target>
+      </trans-unit>
+      <trans-unit id="label.manual">
+        <source>Manual</source>
+        <target approved="yes">Manual</target>
+      </trans-unit>
+      <trans-unit id="label.manually">
+        <source>manually</source>
+        <target approved="yes">manually</target>
+      </trans-unit>
+      <trans-unit id="label.name">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution">
+        <source>Next Execution</source>
+        <target approved="yes">Next Execution</target>
+      </trans-unit>
+      <trans-unit id="label.parallel">
+        <source>Parallel Execution</source>
+        <target approved="yes">Parallel Execution</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long">
+        <source>Allow Parallel Execution</source>
+        <target approved="yes">Allow Parallel Execution</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime">
+        <source>Server time</source>
+        <target approved="yes">Server time</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime">
+        <source>Sleep time</source>
+        <target approved="yes">Sleep time</target>
+      </trans-unit>
+      <trans-unit id="label.start">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target approved="yes">Start (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.type">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring">
+        <source>Recurring</source>
+        <target approved="yes">Recurring</target>
+      </trans-unit>
+      <trans-unit id="label.type.single">
+        <source>Single</source>
+        <target approved="yes">Single</target>
+      </trans-unit>
+      <trans-unit id="msg.addError">
+        <source>The task could not be added.</source>
+        <target approved="yes">The task could not be added.</target>
+      </trans-unit>
+      <trans-unit id="msg.addSuccess">
+        <source>The task was added successfully.</source>
+        <target approved="yes">The task was added successfully.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</source>
+        <target approved="yes">The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptExecutable">
+        <source>The webserver user is allowed execute this script.</source>
+        <target approved="yes">The webserver user is allowed execute this script.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptNotExecutable">
+        <source>The webserver user is not allowed to execute this script.</source>
+        <target approved="yes">The webserver user is not allowed to execute this script.</target>
+      </trans-unit>
+      <trans-unit id="msg.delete">
+        <source>Are you sure you want to delete this task?</source>
+        <target approved="yes">Are you sure you want to delete this task?</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError">
+        <source>The task could not be deleted.</source>
+        <target approved="yes">The task could not be deleted.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess">
+        <source>The task was successfully deleted.</source>
+        <target approved="yes">The task was successfully deleted.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate">
+        <source>The end date is before the start date.</source>
+        <target approved="yes">The end date is before the start date.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed">
+        <source>Executed: %s</source>
+        <target approved="yes">Executed: %s</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target approved="yes">Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target approved="yes">The information about the last execution of the Scheduler is incomplete.</target>
+      </trans-unit>
+      <trans-unit id="msg.infoScreenIntro">
+        <source>This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</source>
+        <target approved="yes">This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target approved="yes">Invalid frequency. Please enter either a number of seconds or a valid cron command.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target approved="yes">Please enter a sleep time greater or equal to 0 (zero).</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target approved="yes">The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotDeleteRunningTask">
+        <source>A running task may not be deleted.</source>
+        <target approved="yes">A running task may not be deleted.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask">
+        <source>A running task may not be edited.</source>
+        <target approved="yes">A running task may not be edited.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target approved="yes">The task is not running. There are no executions to unmark.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail">
+        <source>Please enter an email address.</source>
+        <target approved="yes">Please enter an email address.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target approved="yes">No frequency was defined, either as an interval or as a cron command.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target approved="yes">The Scheduler has never yet run or the information about the last run has been lost.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasksDefined">
+        <source>There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</source>
+        <target approved="yes">There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTaskClassFound">
+        <source>The selected task class could not be found. You should probably contact the task's developers.</source>
+        <target approved="yes">The selected task class could not be found. You should probably contact the task's developers.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks">
+        <source>No tasks defined yet.</source>
+        <target approved="yes">No tasks defined yet.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted">
+        <source>Not executed: %s</source>
+        <target approved="yes">Not executed: %s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target approved="yes">Execution of task "%1$s" failed with the following message: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target approved="yes">The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target approved="yes">Execution failed: %1$d, %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate">
+        <source>Please define a start date.</source>
+        <target approved="yes">Please define a start date.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate">
+        <source>Start date is invalid.</source>
+        <target approved="yes">Start date is invalid.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate">
+        <source>End date is invalid.</source>
+        <target approved="yes">End date is invalid.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass">
+        <source>Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
+        <target approved="yes">Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClassEdit">
+        <source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>
+        <target approved="yes">The current class (%s) could not be found. Change it below or consider deleting this task altogether.</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target approved="yes">This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerUser">
+        <source>The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</source>
+        <target approved="yes">The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerUserFound">
+        <source>The backend user "_cli_scheduler" was found.</source>
+        <target approved="yes">The backend user "_cli_scheduler" was found.</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerUserFoundButDisabled">
+        <source>The backend user "_cli_scheduler" exists but is currently disabled.</source>
+        <target approved="yes">The backend user "_cli_scheduler" exists but is currently disabled.</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerUserMissing">
+        <source>The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</source>
+        <target approved="yes">The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime">
+        <source>Current server time is %s.</source>
+        <target approved="yes">Current server time is %s.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target approved="yes">All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</target>
+      </trans-unit>
+      <trans-unit id="msg.stop">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target approved="yes">Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError">
+        <source>The task could not be marked as non-running.</source>
+        <target approved="yes">The task could not be marked as non-running.</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess">
+        <source>The task was successfully marked as non-running.</source>
+        <target approved="yes">The task was successfully marked as non-running.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target approved="yes">The requested task (UID: %d) was not found.</target>
+      </trans-unit>
+      <trans-unit id="msg.updateSuccess">
+        <source>The task was updated successfully.</source>
+        <target approved="yes">The task was updated successfully.</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError">
+        <source>The task could not be updated.</source>
+        <target approved="yes">The task could not be updated.</target>
+      </trans-unit>
+      <trans-unit id="msg.userCreated">
+        <source>The "_cli_scheduler" user was created successfully.</source>
+        <target approved="yes">The "_cli_scheduler" user was created successfully.</target>
+      </trans-unit>
+      <trans-unit id="msg.userExists">
+        <source>The "_cli_scheduler" user already exists. It was not created.</source>
+        <target approved="yes">The "_cli_scheduler" user already exists. It was not created.</target>
+      </trans-unit>
+      <trans-unit id="msg.userNotCreated">
+        <source>The creation of the "_cli_scheduler" user failed.</source>
+        <target approved="yes">The creation of the "_cli_scheduler" user failed.</target>
+      </trans-unit>
+      <trans-unit id="none">
+        <source>None</source>
+        <target approved="yes">None</target>
+      </trans-unit>
+      <trans-unit id="status">
+        <source>Status</source>
+        <target approved="yes">Status</target>
+      </trans-unit>
+      <trans-unit id="status.legend">
+        <source>Status Legend</source>
+        <target approved="yes">Status Legend</target>
+      </trans-unit>
+      <trans-unit id="status.legend.disabled">
+        <source>Disabled, will not be executed, except manually</source>
+        <target approved="yes">Disabled, will not be executed, except manually</target>
+      </trans-unit>
+      <trans-unit id="status.legend.failure">
+        <source>Failure! An error occured during the last execution (move over bullet for more details)</source>
+        <target approved="yes">Failure! An error occured during the last execution (move over bullet for more details)</target>
+      </trans-unit>
+      <trans-unit id="status.legend.late">
+        <source>Late, will run with next execution</source>
+        <target approved="yes">Late, will run with next execution</target>
+      </trans-unit>
+      <trans-unit id="status.legend.running">
+        <source>Currently running</source>
+        <target approved="yes">Currently running</target>
+      </trans-unit>
+      <trans-unit id="status.legend.scheduled">
+        <source>Scheduled, will run on next possible execution</source>
+        <target approved="yes">Scheduled, will run on next possible execution</target>
+      </trans-unit>
+      <trans-unit id="status.disabled">
+        <source>disabled</source>
+        <target approved="yes">disabled</target>
+      </trans-unit>
+      <trans-unit id="status.failure">
+        <source>failure</source>
+        <target approved="yes">failure</target>
+      </trans-unit>
+      <trans-unit id="status.late">
+        <source>late</source>
+        <target approved="yes">late</target>
+      </trans-unit>
+      <trans-unit id="status.running">
+        <source>running</source>
+        <target approved="yes">running</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled">
+        <source>scheduled</source>
+        <target approved="yes">scheduled</target>
+      </trans-unit>
+      <trans-unit id="task">
+        <source>Task</source>
+        <target approved="yes">Task</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>TYPO3 Scheduler administration module</source>
+        <target approved="yes">TYPO3 Scheduler administration module</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

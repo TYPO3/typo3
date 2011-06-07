@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Please wait">
+        <source>The editor is being loaded. Please wait...</source>
+        <target approved="yes">The editor is being loaded. Please wait...</target>
+      </trans-unit>
+      <trans-unit id="Normal">
+        <source>Normal</source>
+        <target approved="yes">Normal</target>
+      </trans-unit>
+      <trans-unit id="Heading 1">
+        <source>Heading 1</source>
+        <target approved="yes">Heading 1</target>
+      </trans-unit>
+      <trans-unit id="Heading 2">
+        <source>Heading 2</source>
+        <target approved="yes">Heading 2</target>
+      </trans-unit>
+      <trans-unit id="Heading 3">
+        <source>Heading 3</source>
+        <target approved="yes">Heading 3</target>
+      </trans-unit>
+      <trans-unit id="Heading 4">
+        <source>Heading 4</source>
+        <target approved="yes">Heading 4</target>
+      </trans-unit>
+      <trans-unit id="Heading 5">
+        <source>Heading 5</source>
+        <target approved="yes">Heading 5</target>
+      </trans-unit>
+      <trans-unit id="Heading 6">
+        <source>Heading 6</source>
+        <target approved="yes">Heading 6</target>
+      </trans-unit>
+      <trans-unit id="Preformatted">
+        <source>Preformatted</source>
+        <target approved="yes">Preformatted</target>
+      </trans-unit>
+      <trans-unit id="Address">
+        <source>Address</source>
+        <target approved="yes">Address</target>
+      </trans-unit>
+      <trans-unit id="No font">
+        <source>No font</source>
+        <target approved="yes">No font</target>
+      </trans-unit>
+      <trans-unit id="No size">
+        <source>No font size</source>
+        <target approved="yes">No font size</target>
+      </trans-unit>
+      <trans-unit id="rteSettings">
+        <source>Rich Text Editor</source>
+        <target approved="yes">Rich Text Editor</target>
+      </trans-unit>
+      <trans-unit id="rteWidth">
+        <source>Width of the RTE in pixels or percentage</source>
+        <target approved="yes">Width of the RTE in pixels or percentage</target>
+      </trans-unit>
+      <trans-unit id="rteHeight">
+        <source>Height of the RTE in pixels</source>
+        <target approved="yes">Height of the RTE in pixels</target>
+      </trans-unit>
+      <trans-unit id="rteResize">
+        <source>Make RTE resizable</source>
+        <target approved="yes">Make RTE resizable</target>
+      </trans-unit>
+      <trans-unit id="rteMaxHeight">
+        <source>Maximal height of resizable RTE in pixels</source>
+        <target approved="yes">Maximal height of resizable RTE in pixels</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

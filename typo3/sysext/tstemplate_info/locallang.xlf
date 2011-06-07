@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:53 UTC 2011" product-name="tstemplate_info">
+    <header/>
+    <body>
+      <trans-unit id="delete">
+        <source>Delete:</source>
+        <target approved="yes">Delete:</target>
+      </trans-unit>
+      <trans-unit id="toTop">
+        <source>To top:</source>
+        <target approved="yes">To top:</target>
+      </trans-unit>
+      <trans-unit id="fileChanged">
+        <source>File changed</source>
+        <target approved="yes">File changed</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated">
+        <source>Resource '%s' has been updated.</source>
+        <target approved="yes">Resource '%s' has been updated.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation">
+        <source>Template information:</source>
+        <target approved="yes">Template information:</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title:</source>
+        <target approved="yes">Title:</target>
+      </trans-unit>
+      <trans-unit id="sitetitle">
+        <source>Sitetitle:</source>
+        <target approved="yes">Sitetitle:</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Description:</source>
+        <target approved="yes">Description:</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions">
+        <source>Allowed extensions:</source>
+        <target approved="yes">Allowed extensions:</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize">
+        <source>Max filesize:</source>
+        <target approved="yes">Max filesize:</target>
+      </trans-unit>
+      <trans-unit id="uploadResource">
+        <source>Upload resource:</source>
+        <target approved="yes">Upload resource:</target>
+      </trans-unit>
+      <trans-unit id="newTextResource">
+        <source>New text resource (enter name):</source>
+        <target approved="yes">New text resource (enter name):</target>
+      </trans-unit>
+      <trans-unit id="copyResource">
+        <source>Make a copy of resource:</source>
+        <target approved="yes">Make a copy of resource:</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList">
+        <source>Update resource list:</source>
+        <target approved="yes">Update resource list:</target>
+      </trans-unit>
+      <trans-unit id="constants">
+        <source>Constants:</source>
+        <target approved="yes">Constants:</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File:</source>
+        <target approved="yes">File:</target>
+      </trans-unit>
+      <trans-unit id="editResource">
+        <source>Edit Resource:</source>
+        <target approved="yes">Edit Resource:</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded">
+        <source>Filesize exceeded %s KBytes</source>
+        <target approved="yes">Filesize exceeded %s KBytes</target>
+      </trans-unit>
+      <trans-unit id="notAllowed">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target approved="yes">Files larger than %s KBytes are not allowed to be edited.</target>
+      </trans-unit>
+      <trans-unit id="setup">
+        <source>Setup:</source>
+        <target approved="yes">Setup:</target>
+      </trans-unit>
+      <trans-unit id="resources">
+        <source>Resources:</source>
+        <target approved="yes">Resources:</target>
+      </trans-unit>
+      <trans-unit id="editToView">
+        <source>(edit to view, %s lines)</source>
+        <target approved="yes">(edit to view, %s lines)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord">
+        <source>Edit the whole template record</source>
+        <target approved="yes">Edit the whole template record</target>
+      </trans-unit>
+      <trans-unit id="includeTypoScriptFileContent">
+        <source>Include TypoScript file content</source>
+        <target approved="yes">Include TypoScript file content</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Substitute this occurrence?">
+        <source>Substitute this occurrence?</source>
+        <target approved="yes">Substitute this occurrence?</target>
+      </trans-unit>
+      <trans-unit id="Enter the text you want to find">
+        <source>Enter the text you want to find</source>
+        <target approved="yes">Enter the text you want to find</target>
+      </trans-unit>
+      <trans-unit id="Inform a replacement word">
+        <source>This will erase all occurrences.</source>
+        <target approved="yes">This will erase all occurrences.</target>
+      </trans-unit>
+      <trans-unit id="found items">
+        <source>found items</source>
+        <target approved="yes">found items</target>
+      </trans-unit>
+      <trans-unit id="replaced items">
+        <source>replaced items</source>
+        <target approved="yes">replaced items</target>
+      </trans-unit>
+      <trans-unit id="found item">
+        <source>item found</source>
+        <target approved="yes">item found</target>
+      </trans-unit>
+      <trans-unit id="replaced item">
+        <source>item replaced</source>
+        <target approved="yes">item replaced</target>
+      </trans-unit>
+      <trans-unit id="not found">
+        <source>not found</source>
+        <target approved="yes">not found</target>
+      </trans-unit>
+      <trans-unit id="Find and Replace">
+        <source>Find And Replace</source>
+        <target approved="yes">Find And Replace</target>
+      </trans-unit>
+      <trans-unit id="Options">
+        <source>Options</source>
+        <target approved="yes">Options</target>
+      </trans-unit>
+      <trans-unit id="Whole words only">
+        <source>Whole words only</source>
+        <target approved="yes">Whole words only</target>
+      </trans-unit>
+      <trans-unit id="Case sensitive search">
+        <source>Case sensitive search</source>
+        <target approved="yes">Case sensitive search</target>
+      </trans-unit>
+      <trans-unit id="Substitute all occurrences">
+        <source>Substitute all occurrences</source>
+        <target approved="yes">Substitute all occurrences</target>
+      </trans-unit>
+      <trans-unit id="Search for:">
+        <source>Search for:</source>
+        <target approved="yes">Search for:</target>
+      </trans-unit>
+      <trans-unit id="Replace with:">
+        <source>Replace with:</source>
+        <target approved="yes">Replace with:</target>
+      </trans-unit>
+      <trans-unit id="Actions">
+        <source>Actions</source>
+        <target approved="yes">Actions</target>
+      </trans-unit>
+      <trans-unit id="Clear">
+        <source>Clear</source>
+        <target approved="yes">Clear</target>
+      </trans-unit>
+      <trans-unit id="Highlight">
+        <source>Highlight</source>
+        <target approved="yes">Highlight</target>
+      </trans-unit>
+      <trans-unit id="Undo">
+        <source>Undo</source>
+        <target approved="yes">Undo</target>
+      </trans-unit>
+      <trans-unit id="Next">
+        <source>Next</source>
+        <target approved="yes">Next</target>
+      </trans-unit>
+      <trans-unit id="Done">
+        <source>Done</source>
+        <target approved="yes">Done</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

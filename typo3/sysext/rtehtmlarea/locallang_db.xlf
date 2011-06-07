@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="tx_rtehtmlarea_acronym">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.type">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.type.I.0">
+        <source>Acronym</source>
+        <target approved="yes">Acronym</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.type.I.1">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.term">
+        <source>Term</source>
+        <target approved="yes">Term</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.acronym">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode">
+        <source>Language of the abbreviation</source>
+        <target approved="yes">Language of the abbreviation</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

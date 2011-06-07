@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:58 UTC 2011" product-name="impexp">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>Import/Export</source>
+        <target approved="yes">Import/Export</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target approved="yes">Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:impexp/cshimages/impexp.png</source>
+        <target approved="yes">EXT:impexp/cshimages/impexp.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target approved="yes">Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle">
+        <source>Exporting records from TYPO3</source>
+        <target approved="yes">Exporting records from TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.description">
+        <source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" (requires the extensions "extra_page_cm_options" to be installed) and then "Export to .t3d". This will bring up the export interface where you can configure options for your export session.</source>
+        <target approved="yes">To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" (requires the extensions "extra_page_cm_options" to be installed) and then "Export to .t3d". This will bring up the export interface where you can configure options for your export session.</target>
+      </trans-unit>
+      <trans-unit id="export.details">
+        <source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+        <target approved="yes">There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</target>
+      </trans-unit>
+      <trans-unit id="_export.seeAlso">
+        <source>xMOD_tx_impexp:import</source>
+        <target approved="yes">xMOD_tx_impexp:import</target>
+      </trans-unit>
+      <trans-unit id="_export.image">
+        <source>EXT:impexp/cshimages/export.png,
+EXT:impexp/cshimages/export1.png,
+EXT:impexp/cshimages/export2.png</source>
+        <target approved="yes">EXT:impexp/cshimages/export.png,
+EXT:impexp/cshimages/export1.png,
+EXT:impexp/cshimages/export2.png</target>
+      </trans-unit>
+      <trans-unit id="export.image_descr">
+        <source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+        <target approved="yes">To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle">
+        <source>Configuration of page tree export</source>
+        <target approved="yes">Configuration of page tree export</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description">
+        <source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+        <target approved="yes">Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeCfg.image">
+        <source>EXT:impexp/cshimages/pagetreecfg.png</source>
+        <target approved="yes">EXT:impexp/cshimages/pagetreecfg.png</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle">
+        <source>Page Tree</source>
+        <target approved="yes">Page Tree</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target approved="yes">Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle">
+        <source>Levels</source>
+        <target approved="yes">Levels</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target approved="yes">Here you select how deeply in the page tree from the current starting point to go for this export.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target approved="yes">If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image">
+        <source>EXT:impexp/cshimages/impexp_misc.png</source>
+        <target approved="yes">EXT:impexp/cshimages/impexp_misc.png</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle">
+        <source>Include tables</source>
+        <target approved="yes">Include tables</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target approved="yes">When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target approved="yes">In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle">
+        <source>Export single record</source>
+        <target approved="yes">Export single record</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target approved="yes">This overview tells you which independent records has been independently selected for export.</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image">
+        <source>EXT:impexp/cshimages/singlerecord.png,
+EXT:impexp/cshimages/export2.png</source>
+        <target approved="yes">EXT:impexp/cshimages/singlerecord.png,
+EXT:impexp/cshimages/export2.png</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.image_descr">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target approved="yes">The way to export multiple records like this is using the clipboard like shown below.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle">
+        <source>Table export</source>
+        <target approved="yes">Table export</target>
+      </trans-unit>
+      <trans-unit id="tableList.description">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target approved="yes">Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</target>
+      </trans-unit>
+      <trans-unit id="tableList.details">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target approved="yes">Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image">
+        <source>EXT:impexp/cshimages/tablelist.png,
+EXT:impexp/cshimages/export1.png</source>
+        <target approved="yes">EXT:impexp/cshimages/tablelist.png,
+EXT:impexp/cshimages/export1.png</target>
+      </trans-unit>
+      <trans-unit id="tableList.image_descr">
+        <source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+        <target approved="yes">Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</target>
+      </trans-unit>
+      <trans-unit id="tableListMaxNumber.alttitle">
+        <source>Max number to export</source>
+        <target approved="yes">Max number to export</target>
+      </trans-unit>
+      <trans-unit id="tableListMaxNumber.description">
+        <source>Run-away brake that will make sure a large amount of records does not halt the interface. Default is 100, but you can change it to anything you like of course.</source>
+        <target approved="yes">Run-away brake that will make sure a large amount of records does not halt the interface. Default is 100, but you can change it to anything you like of course.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.alttitle">
+        <source>Include relations</source>
+        <target approved="yes">Include relations</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target approved="yes">Configure the tables from which you want to include records that are found as relations in the main export configuration.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details">
+        <source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+        <target approved="yes">Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</target>
+      </trans-unit>
+      <trans-unit id="_inclRelations.image">
+        <source>EXT:impexp/cshimages/references.png,
+EXT:impexp/cshimages/references1.png,
+EXT:impexp/cshimages/references2.png</source>
+        <target approved="yes">EXT:impexp/cshimages/references.png,
+EXT:impexp/cshimages/references1.png,
+EXT:impexp/cshimages/references2.png</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.image_descr">
+        <source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+        <target approved="yes">This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.alttitle">
+        <source>Set static tables</source>
+        <target approved="yes">Set static tables</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target approved="yes">Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target approved="yes">By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image">
+        <source>EXT:impexp/cshimages/static.png,
+EXT:impexp/cshimages/static1.png</source>
+        <target approved="yes">EXT:impexp/cshimages/static.png,
+EXT:impexp/cshimages/static1.png</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.image_descr">
+        <source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+        <target approved="yes">In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.alttitle">
+        <source>Excluded elements</source>
+        <target approved="yes">Excluded elements</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target approved="yes">By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image">
+        <source>EXT:impexp/cshimages/excludebox.png</source>
+        <target approved="yes">EXT:impexp/cshimages/excludebox.png</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target approved="yes">Exclude resources from HTML and CSS files</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target approved="yes">When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.details">
+        <source>Notice: Resources found inside an HTML or CSS file are not analysed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+        <target approved="yes">Notice: Resources found inside an HTML or CSS file are not analysed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image">
+        <source>EXT:impexp/cshimages/htmlcss.png</source>
+        <target approved="yes">EXT:impexp/cshimages/htmlcss.png</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target approved="yes">In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle">
+        <source>Extension Dependencies</source>
+        <target approved="yes">Extension Dependencies</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.description">
+        <source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "css_styled_content" for the template, "tt_news" for a news archive etc.</source>
+        <target approved="yes">Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "css_styled_content" for the template, "tt_news" for a news archive etc.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target approved="yes">During import warnings will appear for all selected extensions from this list which were not installed.</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image">
+        <source>EXT:impexp/cshimages/extdep.png</source>
+        <target approved="yes">EXT:impexp/cshimages/extdep.png</target>
+      </trans-unit>
+      <trans-unit id="presets.alttitle">
+        <source>Configuration presets</source>
+        <target approved="yes">Configuration presets</target>
+      </trans-unit>
+      <trans-unit id="presets.description">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target approved="yes">Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</target>
+      </trans-unit>
+      <trans-unit id="presets.details">
+        <source>In the "Select preset" box you can select any previously saved preset to load. If you are exporting a page the presets listed will be those found for the start page ID. For records, any preset can be loaded.
+To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
+To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
+To delete old presets, simply select it and press "Delete".
+
+The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
+
+In the Taskcenter you can see a list of your presets and jump directly to them.</source>
+        <target approved="yes">In the "Select preset" box you can select any previously saved preset to load. If you are exporting a page the presets listed will be those found for the start page ID. For records, any preset can be loaded.
+To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
+To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
+To delete old presets, simply select it and press "Delete".
+
+The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
+
+In the Taskcenter you can see a list of your presets and jump directly to them.</target>
+      </trans-unit>
+      <trans-unit id="_presets.image">
+        <source>EXT:impexp/cshimages/impexp_misc1.png,
+EXT:impexp/cshimages/impexp_misc2.png</source>
+        <target approved="yes">EXT:impexp/cshimages/impexp_misc1.png,
+EXT:impexp/cshimages/impexp_misc2.png</target>
+      </trans-unit>
+      <trans-unit id="presets.image_descr">
+        <source>The preset selector in the export interface.
+Presets from the task center.</source>
+        <target approved="yes">The preset selector in the export interface.
+Presets from the task center.</target>
+      </trans-unit>
+      <trans-unit id="metadata.alttitle">
+        <source>Meta data setting</source>
+        <target approved="yes">Meta data setting</target>
+      </trans-unit>
+      <trans-unit id="metadata.description">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target approved="yes">Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</target>
+      </trans-unit>
+      <trans-unit id="metadata.details">
+        <source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
+The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!</source>
+        <target approved="yes">The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
+The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!</target>
+      </trans-unit>
+      <trans-unit id="_metadata.image">
+        <source>EXT:impexp/cshimages/metadata.png</source>
+        <target approved="yes">EXT:impexp/cshimages/metadata.png</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle">
+        <source>File format options</source>
+        <target approved="yes">File format options</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.description">
+        <source>You can export your records to a TYPO3 specific binary format (serialized PHP array) called "T3D". Alternatively you can select a plain-text XML export which potentially can be imported by other applications written to support this format. However the schema of the XML is TYPO3 specific.</source>
+        <target approved="yes">You can export your records to a TYPO3 specific binary format (serialized PHP array) called "T3D". Alternatively you can select a plain-text XML export which potentially can be imported by other applications written to support this format. However the schema of the XML is TYPO3 specific.</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.details">
+        <source>Generally you should use the T3D format, preferably compressed. The T3D compressed format normally yields a size about 10 times less than the XML format which is bloaded due to the plain-text nature of the format.
+
+With "Max size of files to include" you can set a limit to the size of attached files to records. This is useful if you have large PDF files or videoclips attached to records which you do not desire (or do desire!) to include; then with this limit you can adjust whether they are allowed in or not.
+
+Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+        <target approved="yes">Generally you should use the T3D format, preferably compressed. The T3D compressed format normally yields a size about 10 times less than the XML format which is bloaded due to the plain-text nature of the format.
+
+With "Max size of files to include" you can set a limit to the size of attached files to records. This is useful if you have large PDF files or videoclips attached to records which you do not desire (or do desire!) to include; then with this limit you can adjust whether they are allowed in or not.
+
+Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</target>
+      </trans-unit>
+      <trans-unit id="_fileFormat.image">
+        <source>EXT:impexp/cshimages/fileformat.png</source>
+        <target approved="yes">EXT:impexp/cshimages/fileformat.png</target>
+      </trans-unit>
+      <trans-unit id="import.alttitle">
+        <source>Importing TYPO3 records</source>
+        <target approved="yes">Importing TYPO3 records</target>
+      </trans-unit>
+      <trans-unit id="import.description">
+        <source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" (requires the extensions "extra_page_cm_options" to be installed) and then "Import from .t3d". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+        <target approved="yes">To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" (requires the extensions "extra_page_cm_options" to be installed) and then "Import from .t3d". This will bring up the import interface where you can select a file to import or upload a new one.</target>
+      </trans-unit>
+      <trans-unit id="import.details">
+        <source>&lt;b&gt;Tip: Import into a Sys Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+        <target approved="yes">&lt;b&gt;Tip: Import into a Sys Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</target>
+      </trans-unit>
+      <trans-unit id="_import.seeAlso">
+        <source>xMOD_tx_impexp:export</source>
+        <target approved="yes">xMOD_tx_impexp:export</target>
+      </trans-unit>
+      <trans-unit id="_import.image">
+        <source>EXT:impexp/cshimages/import.png</source>
+        <target approved="yes">EXT:impexp/cshimages/import.png</target>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle">
+        <source>Select file to import</source>
+        <target approved="yes">Select file to import</target>
+      </trans-unit>
+      <trans-unit id="importFile.description">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target approved="yes">The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target approved="yes">xMOD_tx_impexp:fileFormat</target>
+      </trans-unit>
+      <trans-unit id="_importFile.image">
+        <source>EXT:impexp/cshimages/import_selectfile.png</source>
+        <target approved="yes">EXT:impexp/cshimages/import_selectfile.png</target>
+      </trans-unit>
+      <trans-unit id="update.alttitle">
+        <source>Update instead of Insert</source>
+        <target approved="yes">Update instead of Insert</target>
+      </trans-unit>
+      <trans-unit id="update.description">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target approved="yes">By default the import operation inserts new records in the system. Using this option will update existing records.</target>
+      </trans-unit>
+      <trans-unit id="update.details">
+        <source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+        <target approved="yes">There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</target>
+      </trans-unit>
+      <trans-unit id="_update.image">
+        <source>EXT:impexp/cshimages/impexp_misc4.png,
+EXT:impexp/cshimages/update.png</source>
+        <target approved="yes">EXT:impexp/cshimages/impexp_misc4.png,
+EXT:impexp/cshimages/update.png</target>
+      </trans-unit>
+      <trans-unit id="update.image_descr">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target approved="yes">In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle">
+        <source>Import options</source>
+        <target approved="yes">Import options</target>
+      </trans-unit>
+      <trans-unit id="options.description">
+        <source>Various options for import.</source>
+        <target approved="yes">Various options for import.</target>
+      </trans-unit>
+      <trans-unit id="options.details">
+        <source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
+
+&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
+Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.</source>
+        <target approved="yes">&lt;b&gt;Do not show differences in records&lt;/b&gt;
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
+
+&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
+Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.</target>
+      </trans-unit>
+      <trans-unit id="_options.image">
+        <source>EXT:impexp/cshimages/impexp_misc3.png,
+EXT:impexp/cshimages/phpext.png</source>
+        <target approved="yes">EXT:impexp/cshimages/impexp_misc3.png,
+EXT:impexp/cshimages/phpext.png</target>
+      </trans-unit>
+      <trans-unit id="options.image_descr">
+        <source>Options for import.
+Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</source>
+        <target approved="yes">Options for import.
+Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</target>
+      </trans-unit>
+      <trans-unit id="action.alttitle">
+        <source>Import Action</source>
+        <target approved="yes">Import Action</target>
+      </trans-unit>
+      <trans-unit id="action.description">
+        <source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+        <target approved="yes">Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</target>
+      </trans-unit>
+      <trans-unit id="_action.image">
+        <source>EXT:impexp/cshimages/diffview.png</source>
+        <target approved="yes">EXT:impexp/cshimages/diffview.png</target>
+      </trans-unit>
+      <trans-unit id="action.image_descr">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target approved="yes">Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle">
+        <source>Enable System Logging</source>
+        <target approved="yes">Enable System Logging</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target approved="yes">If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle">
+        <source>Upload import file</source>
+        <target approved="yes">Upload import file</target>
+      </trans-unit>
+      <trans-unit id="upload.description">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes succesfully you can immediately see its content displayed in the preview display.</source>
+        <target approved="yes">Select a file to import from your local computer and upload it here. If the upload completes succesfully you can immediately see its content displayed in the preview display.</target>
+      </trans-unit>
+      <trans-unit id="upload.details">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files at around 2 MB in which case nothing will happen.</source>
+        <target approved="yes">Notice that there are usually limits set by the server (PHP) to the size of uploaded files at around 2 MB in which case nothing will happen.</target>
+      </trans-unit>
+      <trans-unit id="task.title">
+        <source>Preset title</source>
+        <target approved="yes">Preset title</target>
+      </trans-unit>
+      <trans-unit id="task.icon">
+        <source>Icon</source>
+        <target approved="yes">Icon</target>
+      </trans-unit>
+      <trans-unit id="task.public">
+        <source>Public</source>
+        <target approved="yes">Public</target>
+      </trans-unit>
+      <trans-unit id="task.owner">
+        <source>Owner</source>
+        <target approved="yes">Owner</target>
+      </trans-unit>
+      <trans-unit id="task.page">
+        <source>Page</source>
+        <target approved="yes">Page</target>
+      </trans-unit>
+      <trans-unit id="task.path">
+        <source>Path</source>
+        <target approved="yes">Path</target>
+      </trans-unit>
+      <trans-unit id="task.meta">
+        <source>Meta data</source>
+        <target approved="yes">Meta data</target>
+      </trans-unit>
+      <trans-unit id="task.own">
+        <source>Own</source>
+        <target approved="yes">Own</target>
+      </trans-unit>
+      <trans-unit id="notes">
+        <source>Notes</source>
+        <target approved="yes">Notes</target>
+      </trans-unit>
+      <trans-unit id="single-record">
+        <source>Single record</source>
+        <target approved="yes">Single record</target>
+      </trans-unit>
+      <trans-unit id="no-presets">
+        <source>No presets found!</source>
+        <target approved="yes">No presets found!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

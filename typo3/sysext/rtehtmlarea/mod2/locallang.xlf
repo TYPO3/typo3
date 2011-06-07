@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Type_of_abridged_form">
+        <source>Acronym or Abbreviation?</source>
+        <target approved="yes">Acronym or Abbreviation?</target>
+      </trans-unit>
+      <trans-unit id="Term_to_abridge">
+        <source>Term to abridge</source>
+        <target approved="yes">Term to abridge</target>
+      </trans-unit>
+      <trans-unit id="Defined_term">
+        <source>Pre-defined Acronyms and Abbreviations</source>
+        <target approved="yes">Pre-defined Acronyms and Abbreviations</target>
+      </trans-unit>
+      <trans-unit id="Term">
+        <source>Term:</source>
+        <target approved="yes">Term:</target>
+      </trans-unit>
+      <trans-unit id="Unabridged_term">
+        <source>Unabridged Term:</source>
+        <target approved="yes">Unabridged Term:</target>
+      </trans-unit>
+      <trans-unit id="Select_a_term">
+        <source>Select a term</source>
+        <target approved="yes">Select a term</target>
+      </trans-unit>
+      <trans-unit id="Abridged_term">
+        <source>Abridged Term:</source>
+        <target approved="yes">Abridged Term:</target>
+      </trans-unit>
+      <trans-unit id="Acronym">
+        <source>Acronym</source>
+        <target approved="yes">Acronym</target>
+      </trans-unit>
+      <trans-unit id="Abbreviation">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Select_an_acronym">
+        <source>Select an acronym or abbreviation</source>
+        <target approved="yes">Select an acronym or abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Use_this_term">
+        <source>Use this term:</source>
+        <target approved="yes">Use this term:</target>
+      </trans-unit>
+      <trans-unit id="Use_this_term_explain">
+        <source>Associate this term to the current selection</source>
+        <target approved="yes">Associate this term to the current selection</target>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target approved="yes">OK</target>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="Language">
+        <source>Language:</source>
+        <target approved="yes">Language:</target>
+      </trans-unit>
+      <trans-unit id="Select_a_language">
+        <source>Select a language</source>
+        <target approved="yes">Select a language</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

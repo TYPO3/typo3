@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>htmlArea RTE &gt; Abbreviation</source>
+        <target approved="yes">htmlArea RTE &gt; Abbreviation</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The "Abbreviation" dialogue allows to associate an abbreviation to a term.</source>
+        <target approved="yes">The "Abbreviation" dialogue allows to associate an abbreviation to a term.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
+Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</source>
+        <target approved="yes">Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
+Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</target>
+      </trans-unit>
+      <trans-unit id=".image">
+        <source>EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</source>
+        <target approved="yes">EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>"Insert abbreviation" icon in the editor tool bar.</source>
+        <target approved="yes">"Insert abbreviation" icon in the editor tool bar.</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_Acronym:preDefinedAbbreviation,
+xEXT_rtehtmlarea_Acronym:unabridgedTerm,
+xEXT_rtehtmlarea_Acronym:abridgedTerm,
+xEXT_rtehtmlarea_Acronym:language,
+xEXT_rtehtmlarea_Acronym:termToAbridge,
+xEXT_rtehtmlarea_Acronym:useThisTerm
+tx_rtehtmlarea_acronym
+</source>
+        <target approved="yes">xEXT_rtehtmlarea_Acronym:preDefinedAbbreviation,
+xEXT_rtehtmlarea_Acronym:unabridgedTerm,
+xEXT_rtehtmlarea_Acronym:abridgedTerm,
+xEXT_rtehtmlarea_Acronym:language,
+xEXT_rtehtmlarea_Acronym:termToAbridge,
+xEXT_rtehtmlarea_Acronym:useThisTerm
+tx_rtehtmlarea_acronym
+</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAbbreviation.alttitle">
+        <source>Pre-defined abbreviations</source>
+        <target approved="yes">Pre-defined abbreviations</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAbbreviation.description">
+        <source>This section lets you select abbreviations already defined in the database.</source>
+        <target approved="yes">This section lets you select abbreviations already defined in the database.</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAbbreviation.seeAlso">
+        <source>tx_rtehtmlarea_acronym</source>
+        <target approved="yes">tx_rtehtmlarea_acronym</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAcronym.alttitle">
+        <source>Pre-defined acronyms</source>
+        <target approved="yes">Pre-defined acronyms</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAcronym.description">
+        <source>This section lets you select acronyms already defined in the database.</source>
+        <target approved="yes">This section lets you select acronyms already defined in the database.</target>
+      </trans-unit>
+      <trans-unit id="preDefinedAcronym.seeAlso">
+        <source>tx_rtehtmlarea_acronym</source>
+        <target approved="yes">tx_rtehtmlarea_acronym</target>
+      </trans-unit>
+      <trans-unit id="unabridgedTerm.alttitle">
+        <source>Unabbreviated term</source>
+        <target approved="yes">Unabbreviated term</target>
+      </trans-unit>
+      <trans-unit id="unabridgedTerm.description">
+        <source>Select the unabbreviated form of the term.</source>
+        <target approved="yes">Select the unabbreviated form of the term.</target>
+      </trans-unit>
+      <trans-unit id="unabridgedTerm.details">
+        <source>The selected term will be set as the title attribute of the abbreviation (or acronym) element.</source>
+        <target approved="yes">The selected term will be set as the title attribute of the abbreviation (or acronym) element.</target>
+      </trans-unit>
+      <trans-unit id="abridgedTerm.alttitle">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="abridgedTerm.description">
+        <source>Select the short form of the term.</source>
+        <target approved="yes">Select the short form of the term.</target>
+      </trans-unit>
+      <trans-unit id="language.alttitle">
+        <source>Language</source>
+        <target approved="yes">Language</target>
+      </trans-unit>
+      <trans-unit id="language.description">
+        <source>Select the language for which the abbreviation is defined.</source>
+        <target approved="yes">Select the language for which the abbreviation is defined.</target>
+      </trans-unit>
+      <trans-unit id="language.details">
+        <source>The selected language will be set as the language attribute of the abbreviation (or acronym) element.
+If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.</source>
+        <target approved="yes">The selected language will be set as the language attribute of the abbreviation (or acronym) element.
+If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.</target>
+      </trans-unit>
+      <trans-unit id="termToAbridge.alttitle">
+        <source>Term to abbreviate</source>
+        <target approved="yes">Term to abbreviate</target>
+      </trans-unit>
+      <trans-unit id="termToAbridge.description">
+        <source>This section lets you enter a term for which the current selection will be the short form.</source>
+        <target approved="yes">This section lets you enter a term for which the current selection will be the short form.</target>
+      </trans-unit>
+      <trans-unit id="useThisTerm.alttitle">
+        <source>Use this term</source>
+        <target approved="yes">Use this term</target>
+      </trans-unit>
+      <trans-unit id="useThisTerm.description">
+        <source>Enter the term that you want to associate as the unabbreviated form of the current selection.</source>
+        <target approved="yes">Enter the term that you want to associate as the unabbreviated form of the current selection.</target>
+      </trans-unit>
+      <trans-unit id="useThisTerm.details">
+        <source>The entered term will be set as the title attribute of the abbreviation (or acronym) element.</source>
+        <target approved="yes">The entered term will be set as the title attribute of the abbreviation (or acronym) element.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Insert Smiley">
+        <source>Insert Smiley</source>
+        <target approved="yes">Insert Smiley</target>
+      </trans-unit>
+      <trans-unit id="Smiley">
+        <source>Smiley</source>
+        <target approved="yes">Smiley</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="mozilla_smile">
+        <source>Smile</source>
+        <target approved="yes">Smile</target>
+      </trans-unit>
+      <trans-unit id="mozilla_frown">
+        <source>Frown</source>
+        <target approved="yes">Frown</target>
+      </trans-unit>
+      <trans-unit id="mozilla_wink">
+        <source>Wink</source>
+        <target approved="yes">Wink</target>
+      </trans-unit>
+      <trans-unit id="mozilla_tongueout">
+        <source>Tongue out</source>
+        <target approved="yes">Tongue out</target>
+      </trans-unit>
+      <trans-unit id="mozilla_laughing">
+        <source>Laughing</source>
+        <target approved="yes">Laughing</target>
+      </trans-unit>
+      <trans-unit id="mozilla_embarassed">
+        <source>Embarassed</source>
+        <target approved="yes">Embarassed</target>
+      </trans-unit>
+      <trans-unit id="mozilla_undecided">
+        <source>Undecided</source>
+        <target approved="yes">Undecided</target>
+      </trans-unit>
+      <trans-unit id="mozilla_surprised">
+        <source>Surprise</source>
+        <target approved="yes">Surprise</target>
+      </trans-unit>
+      <trans-unit id="mozilla_kiss">
+        <source>Kiss</source>
+        <target approved="yes">Kiss</target>
+      </trans-unit>
+      <trans-unit id="mozilla_yell">
+        <source>Yell</source>
+        <target approved="yes">Yell</target>
+      </trans-unit>
+      <trans-unit id="mozilla_cool">
+        <source>Cool</source>
+        <target approved="yes">Cool</target>
+      </trans-unit>
+      <trans-unit id="mozilla_moneyinmouth">
+        <source>Money Mouth</source>
+        <target approved="yes">Money Mouth</target>
+      </trans-unit>
+      <trans-unit id="mozilla_footinmouth">
+        <source>Foot in mouth</source>
+        <target approved="yes">Foot in mouth</target>
+      </trans-unit>
+      <trans-unit id="mozilla_innocent">
+        <source>Innocent</source>
+        <target approved="yes">Innocent</target>
+      </trans-unit>
+      <trans-unit id="mozilla_cry">
+        <source>Cry</source>
+        <target approved="yes">Cry</target>
+      </trans-unit>
+      <trans-unit id="mozilla_sealed">
+        <source>Lips are sealed</source>
+        <target approved="yes">Lips are sealed</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

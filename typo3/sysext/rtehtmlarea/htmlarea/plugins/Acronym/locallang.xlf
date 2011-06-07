@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Insert/Modify Acronym">
+        <source>Insert/edit abbreviation</source>
+        <target approved="yes">Insert/edit abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Insert abbreviation">
+        <source>Insert abbreviation</source>
+        <target approved="yes">Insert abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Edit abbreviation">
+        <source>Edit abbreviation</source>
+        <target approved="yes">Edit abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Term_to_abridge">
+        <source>Term to abbreviate</source>
+        <target approved="yes">Term to abbreviate</target>
+      </trans-unit>
+      <trans-unit id="Defined_acronym">
+        <source>Pre-defined acronyms</source>
+        <target approved="yes">Pre-defined acronyms</target>
+      </trans-unit>
+      <trans-unit id="Defined_abbr">
+        <source>Pre-defined abbreviations</source>
+        <target approved="yes">Pre-defined abbreviations</target>
+      </trans-unit>
+      <trans-unit id="Term">
+        <source>Term</source>
+        <target approved="yes">Term</target>
+      </trans-unit>
+      <trans-unit id="Unabridged_term">
+        <source>Term</source>
+        <target approved="yes">Term</target>
+      </trans-unit>
+      <trans-unit id="Select_a_term">
+        <source>Select a term</source>
+        <target approved="yes">Select a term</target>
+      </trans-unit>
+      <trans-unit id="Abridged_term">
+        <source>Short form</source>
+        <target approved="yes">Short form</target>
+      </trans-unit>
+      <trans-unit id="Acronym">
+        <source>Acronym</source>
+        <target approved="yes">Acronym</target>
+      </trans-unit>
+      <trans-unit id="Abbreviation">
+        <source>Abbreviation</source>
+        <target approved="yes">Abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Select_an_acronym">
+        <source>Select an acronym</source>
+        <target approved="yes">Select an acronym</target>
+      </trans-unit>
+      <trans-unit id="Select_an_abbr">
+        <source>Select an abbreviation</source>
+        <target approved="yes">Select an abbreviation</target>
+      </trans-unit>
+      <trans-unit id="Use_this_term">
+        <source>Use this term</source>
+        <target approved="yes">Use this term</target>
+      </trans-unit>
+      <trans-unit id="Use_this_term_explain">
+        <source>Associate this term to the current selection</source>
+        <target approved="yes">Associate this term to the current selection</target>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="Select_a_language">
+        <source>Select a language</source>
+        <target approved="yes">Select a language</target>
+      </trans-unit>
+      <trans-unit id="Language_abbr_helpText">
+        <source>This is the language for which the abbreviation is defined</source>
+        <target approved="yes">This is the language for which the abbreviation is defined</target>
+      </trans-unit>
+      <trans-unit id="Language_acronym_helpText">
+        <source>This is the language for which the acronym is defined</source>
+        <target approved="yes">This is the language for which the acronym is defined</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

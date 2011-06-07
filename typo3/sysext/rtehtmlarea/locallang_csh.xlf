@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>htmlArea RTE</source>
+        <target approved="yes">htmlArea RTE</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>htmlArea RTE is a free, open-source, ExtJS-based editor for &lt;textarea&gt; fields featuring tight integration with TYPO3.</source>
+        <target approved="yes">htmlArea RTE is a free, open-source, ExtJS-based editor for &lt;textarea&gt; fields featuring tight integration with TYPO3.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>htmlArea RTE supports the following browsers: Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and Internet Explorer 6.0+ on Windows.</source>
+        <target approved="yes">htmlArea RTE supports the following browsers: Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and Internet Explorer 6.0+ on Windows.</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_General:beUserSettings,
+xEXT_rtehtmlarea_EditElement,
+xEXT_rtehtmlarea_Language,
+xEXT_rtehtmlarea_PlainText,
+xEXT_rtehtmlarea_RemoveFormat
+</source>
+        <target approved="yes">xEXT_rtehtmlarea_General:beUserSettings,
+xEXT_rtehtmlarea_EditElement,
+xEXT_rtehtmlarea_Language,
+xEXT_rtehtmlarea_PlainText,
+xEXT_rtehtmlarea_RemoveFormat
+</target>
+      </trans-unit>
+      <trans-unit id="beUserSettings.alttitle">
+        <source>BE User settings</source>
+        <target approved="yes">BE User settings</target>
+      </trans-unit>
+      <trans-unit id="beUserSettings.description">
+        <source>BE User settings let you specify some options of the RTE.</source>
+        <target approved="yes">BE User settings let you specify some options of the RTE.</target>
+      </trans-unit>
+      <trans-unit id="beUserSettings.seeAlso">
+        <source>xEXT_rtehtmlarea_General:rteWidth,xEXT_rtehtmlarea_General:rteHeight,xEXT_rtehtmlarea_General:rteResize,xEXT_rtehtmlarea_General:rteMaxHeight,xEXT_rtehtmlarea_PlainText:behaviour,_MOD_user_setup</source>
+        <target approved="yes">xEXT_rtehtmlarea_General:rteWidth,xEXT_rtehtmlarea_General:rteHeight,xEXT_rtehtmlarea_General:rteResize,xEXT_rtehtmlarea_General:rteMaxHeight,xEXT_rtehtmlarea_PlainText:behaviour,_MOD_user_setup</target>
+      </trans-unit>
+      <trans-unit id="rteWidth.alttitle">
+        <source>Default width of the RTE in px or %</source>
+        <target approved="yes">Default width of the RTE in px or %</target>
+      </trans-unit>
+      <trans-unit id="rteWidth.description">
+        <source>This option lets you specify the initial width of the RTE.</source>
+        <target approved="yes">This option lets you specify the initial width of the RTE.</target>
+      </trans-unit>
+      <trans-unit id="rteWidth.details">
+        <source>The option specifies the width of the RTE when it is initially displayed. The width may be specified as a fixed number of pixels or as a percentage.</source>
+        <target approved="yes">The option specifies the width of the RTE when it is initially displayed. The width may be specified as a fixed number of pixels or as a percentage.</target>
+      </trans-unit>
+      <trans-unit id="rteHeight.alttitle">
+        <source>Default height of the RTE in px</source>
+        <target approved="yes">Default height of the RTE in px</target>
+      </trans-unit>
+      <trans-unit id="rteHeight.description">
+        <source>This option lets you specify the initial height of the RTE.</source>
+        <target approved="yes">This option lets you specify the initial height of the RTE.</target>
+      </trans-unit>
+      <trans-unit id="rteHeight.details">
+        <source>The option specifies the height of the RTE when it is initially displayed. The height of the RTE must be specified as a fixed number of pixels not as a percentage.
+The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE.</source>
+        <target approved="yes">The option specifies the height of the RTE when it is initially displayed. The height of the RTE must be specified as a fixed number of pixels not as a percentage.
+The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE.</target>
+      </trans-unit>
+      <trans-unit id="rteResize.alttitle">
+        <source>Make RTE resizable</source>
+        <target approved="yes">Make RTE resizable</target>
+      </trans-unit>
+      <trans-unit id="rteResize.description">
+        <source>This option will make RTE-enabled fields resizable. A resize handle will appear at the bottom right corner of the RTE.</source>
+        <target approved="yes">This option will make RTE-enabled fields resizable. A resize handle will appear at the bottom right corner of the RTE.</target>
+      </trans-unit>
+      <trans-unit id="rteMaxHeight.alttitle">
+        <source>Maximal height of resizable RTE in pixels</source>
+        <target approved="yes">Maximal height of resizable RTE in pixels</target>
+      </trans-unit>
+      <trans-unit id="rteMaxHeight.description">
+        <source>The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE. Default value is 2000.</source>
+        <target approved="yes">The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE. Default value is 2000.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

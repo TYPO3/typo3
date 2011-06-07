@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No font">
+        <source>No font</source>
+        <target approved="yes">No font</target>
+      </trans-unit>
+      <trans-unit id="No size">
+        <source>No font size</source>
+        <target approved="yes">No font size</target>
+      </trans-unit>
+      <trans-unit id="Default font">
+        <source>Default font</source>
+        <target approved="yes">Default font</target>
+      </trans-unit>
+      <trans-unit id="Default size">
+        <source>Default size</source>
+        <target approved="yes">Default size</target>
+      </trans-unit>
+      <trans-unit id="Extra small">
+        <source>Extra small</source>
+        <target approved="yes">Extra small</target>
+      </trans-unit>
+      <trans-unit id="Very small">
+        <source>Very small</source>
+        <target approved="yes">Very small</target>
+      </trans-unit>
+      <trans-unit id="Small">
+        <source>Small</source>
+        <target approved="yes">Small</target>
+      </trans-unit>
+      <trans-unit id="Medium">
+        <source>Medium</source>
+        <target approved="yes">Medium</target>
+      </trans-unit>
+      <trans-unit id="Large">
+        <source>Large</source>
+        <target approved="yes">Large</target>
+      </trans-unit>
+      <trans-unit id="Very large">
+        <source>Very large</source>
+        <target approved="yes">Very large</target>
+      </trans-unit>
+      <trans-unit id="Extra large">
+        <source>Extra large</source>
+        <target approved="yes">Extra large</target>
+      </trans-unit>
+      <trans-unit id="Arial">
+        <source>Arial</source>
+        <target approved="yes">Arial</target>
+      </trans-unit>
+      <trans-unit id="Arial Black">
+        <source>Arial Black</source>
+        <target approved="yes">Arial Black</target>
+      </trans-unit>
+      <trans-unit id="Verdana">
+        <source>Verdana</source>
+        <target approved="yes">Verdana</target>
+      </trans-unit>
+      <trans-unit id="Times New Roman">
+        <source>Times New Roman</source>
+        <target approved="yes">Times New Roman</target>
+      </trans-unit>
+      <trans-unit id="Garamond">
+        <source>Garamond</source>
+        <target approved="yes">Garamond</target>
+      </trans-unit>
+      <trans-unit id="Lucida Handwriting">
+        <source>Lucida Handwriting</source>
+        <target approved="yes">Lucida Handwriting</target>
+      </trans-unit>
+      <trans-unit id="Courier">
+        <source>Courier</source>
+        <target approved="yes">Courier</target>
+      </trans-unit>
+      <trans-unit id="Webdings">
+        <source>Webdings</source>
+        <target approved="yes">Webdings</target>
+      </trans-unit>
+      <trans-unit id="Wingdings">
+        <source>Wingdings</source>
+        <target approved="yes">Wingdings</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="rte_undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target approved="yes">Undo/Redo last change (%s ago)</target>
+      </trans-unit>
+      <trans-unit id="tsprop">
+        <source>TypoScript property lookup</source>
+        <target approved="yes">TypoScript property lookup</target>
+      </trans-unit>
+      <trans-unit id="tsprop_TSref">
+        <source>TSref online</source>
+        <target approved="yes">TSref online</target>
+      </trans-unit>
+      <trans-unit id="tsprop_tsconfig">
+        <source>TSconfig online</source>
+        <target approved="yes">TSconfig online</target>
+      </trans-unit>
+      <trans-unit id="tsprop_title">
+        <source>Object title</source>
+        <target approved="yes">Object title</target>
+      </trans-unit>
+      <trans-unit id="tsprop_prefix">
+        <source>Object prefix</source>
+        <target approved="yes">Object prefix</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_indent">
+        <source>Indent +2</source>
+        <target approved="yes">Indent +2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_outdent">
+        <source>Outdent -2</source>
+        <target approved="yes">Outdent -2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_wrap">
+        <source>Wrap</source>
+        <target approved="yes">Wrap</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_transfer">
+        <source>Transfer &amp; Close</source>
+        <target approved="yes">Transfer &amp; Close</target>
+      </trans-unit>
+      <trans-unit id="tsprop_addToList">
+        <source>Add to list...</source>
+        <target approved="yes">Add to list...</target>
+      </trans-unit>
+      <trans-unit id="table_title">
+        <source>Table wizard</source>
+        <target approved="yes">Table wizard</target>
+      </trans-unit>
+      <trans-unit id="table_smallFields">
+        <source>Small fields</source>
+        <target approved="yes">Small fields</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn">
+        <source>Add column to the right</source>
+        <target approved="yes">Add column to the right</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn">
+        <source>Remove column</source>
+        <target approved="yes">Remove column</target>
+      </trans-unit>
+      <trans-unit id="table_addRow">
+        <source>Add row below</source>
+        <target approved="yes">Add row below</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow">
+        <source>Remove row</source>
+        <target approved="yes">Remove row</target>
+      </trans-unit>
+      <trans-unit id="table_left">
+        <source>Move left</source>
+        <target approved="yes">Move left</target>
+      </trans-unit>
+      <trans-unit id="table_right">
+        <source>Move right</source>
+        <target approved="yes">Move right</target>
+      </trans-unit>
+      <trans-unit id="table_up">
+        <source>Move up</source>
+        <target approved="yes">Move up</target>
+      </trans-unit>
+      <trans-unit id="table_down">
+        <source>Move down</source>
+        <target approved="yes">Move down</target>
+      </trans-unit>
+      <trans-unit id="table_top">
+        <source>Move to top</source>
+        <target approved="yes">Move to top</target>
+      </trans-unit>
+      <trans-unit id="table_bottom">
+        <source>Move to bottom</source>
+        <target approved="yes">Move to bottom</target>
+      </trans-unit>
+      <trans-unit id="table_start">
+        <source>Move to first column</source>
+        <target approved="yes">Move to first column</target>
+      </trans-unit>
+      <trans-unit id="table_end">
+        <source>Move to last column</source>
+        <target approved="yes">Move to last column</target>
+      </trans-unit>
+      <trans-unit id="table_noData">
+        <source>No table,field or uid given</source>
+        <target approved="yes">No table,field or uid given</target>
+      </trans-unit>
+      <trans-unit id="forms_title">
+        <source>Forms wizard</source>
+        <target approved="yes">Forms wizard</target>
+      </trans-unit>
+      <trans-unit id="forms_refresh">
+        <source>Refresh without saving</source>
+        <target approved="yes">Refresh without saving</target>
+      </trans-unit>
+      <trans-unit id="forms_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="forms_type">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="forms_type_textarea">
+        <source>Text area</source>
+        <target approved="yes">Text area</target>
+      </trans-unit>
+      <trans-unit id="forms_type_input">
+        <source>Input field</source>
+        <target approved="yes">Input field</target>
+      </trans-unit>
+      <trans-unit id="forms_type_password">
+        <source>Password field</source>
+        <target approved="yes">Password field</target>
+      </trans-unit>
+      <trans-unit id="forms_type_file">
+        <source>File upload</source>
+        <target approved="yes">File upload</target>
+      </trans-unit>
+      <trans-unit id="forms_type_check">
+        <source>Check box</source>
+        <target approved="yes">Check box</target>
+      </trans-unit>
+      <trans-unit id="forms_type_select">
+        <source>Selector box</source>
+        <target approved="yes">Selector box</target>
+      </trans-unit>
+      <trans-unit id="forms_type_radio">
+        <source>Radio buttons</source>
+        <target approved="yes">Radio buttons</target>
+      </trans-unit>
+      <trans-unit id="forms_type_hidden">
+        <source>Hidden value</source>
+        <target approved="yes">Hidden value</target>
+      </trans-unit>
+      <trans-unit id="forms_type_submit">
+        <source>Submit Button</source>
+        <target approved="yes">Submit Button</target>
+      </trans-unit>
+      <trans-unit id="forms_type_property">
+        <source>Property</source>
+        <target approved="yes">Property</target>
+      </trans-unit>
+      <trans-unit id="forms_type_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="forms_required">
+        <source>Required</source>
+        <target approved="yes">Required</target>
+      </trans-unit>
+      <trans-unit id="forms_fieldName">
+        <source>Field</source>
+        <target approved="yes">Field</target>
+      </trans-unit>
+      <trans-unit id="forms_cols">
+        <source>Columns</source>
+        <target approved="yes">Columns</target>
+      </trans-unit>
+      <trans-unit id="forms_rows">
+        <source>Rows</source>
+        <target approved="yes">Rows</target>
+      </trans-unit>
+      <trans-unit id="forms_size">
+        <source>Size</source>
+        <target approved="yes">Size</target>
+      </trans-unit>
+      <trans-unit id="forms_max">
+        <source>Max</source>
+        <target approved="yes">Max</target>
+      </trans-unit>
+      <trans-unit id="forms_autosize">
+        <source>Auto size</source>
+        <target approved="yes">Auto size</target>
+      </trans-unit>
+      <trans-unit id="forms_extra">
+        <source>No Wrap</source>
+        <target approved="yes">No Wrap</target>
+      </trans-unit>
+      <trans-unit id="forms_default">
+        <source>Value</source>
+        <target approved="yes">Value</target>
+      </trans-unit>
+      <trans-unit id="forms_multiple">
+        <source>Multiple</source>
+        <target approved="yes">Multiple</target>
+      </trans-unit>
+      <trans-unit id="forms_options">
+        <source>List options</source>
+        <target approved="yes">List options</target>
+      </trans-unit>
+      <trans-unit id="forms_checked">
+        <source>Checked</source>
+        <target approved="yes">Checked</target>
+      </trans-unit>
+      <trans-unit id="forms_preview">
+        <source>Preview of element</source>
+        <target approved="yes">Preview of element</target>
+      </trans-unit>
+      <trans-unit id="forms_element">
+        <source>Element type</source>
+        <target approved="yes">Element type</target>
+      </trans-unit>
+      <trans-unit id="forms_config">
+        <source>Detailed configuration</source>
+        <target approved="yes">Detailed configuration</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_subject">
+        <source>Subject</source>
+        <target approved="yes">Subject</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_recipient">
+        <source>Recipient email</source>
+        <target approved="yes">Recipient email</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_html_enabled">
+        <source>HTML mode enabled</source>
+        <target approved="yes">HTML mode enabled</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_formtype_mail">
+        <source>Send button label</source>
+        <target approved="yes">Send button label</target>
+      </trans-unit>
+      <trans-unit id="forms_special_eform">
+        <source>Special configuration for mail forms</source>
+        <target approved="yes">Special configuration for mail forms</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_title">
+        <source>Color Picker</source>
+        <target approved="yes">Color Picker</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_setClose">
+        <source>Save and Close</source>
+        <target approved="yes">Save and Close</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_colorValue">
+        <source>Selected Color:</source>
+        <target approved="yes">Selected Color:</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromImage">
+        <source>Capture color from image (click on image):</source>
+        <target approved="yes">Capture color from image (click on image):</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromMatrix">
+        <source>Select color from matrix (websafe colors):</source>
+        <target approved="yes">Select color from matrix (websafe colors):</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_fromList">
+        <source>Select HTML color name:</source>
+        <target approved="yes">Select HTML color name:</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_black">
+        <source>BLACK</source>
+        <target approved="yes">BLACK</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_white">
+        <source>WHITE</source>
+        <target approved="yes">WHITE</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle">
+        <source>Set cell name and column number</source>
+        <target approved="yes">Set cell name and column number</target>
+      </trans-unit>
+      <trans-unit id="grid_labelName">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="grid_labelColumn">
+        <source>Column Number</source>
+        <target approved="yes">Column Number</target>
+      </trans-unit>
+      <trans-unit id="grid_labelSave">
+        <source>Save to cell</source>
+        <target approved="yes">Save to cell</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn">
+        <source>Add column</source>
+        <target approved="yes">Add column</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn">
+        <source>Remove column</source>
+        <target approved="yes">Remove column</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow">
+        <source>Add row</source>
+        <target approved="yes">Add row</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow">
+        <source>Remove row</source>
+        <target approved="yes">Remove row</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell">
+        <source>Edit cell</source>
+        <target approved="yes">Edit cell</target>
+      </trans-unit>
+      <trans-unit id="grid_mergeCell">
+        <source>Combine with next cell</source>
+        <target approved="yes">Combine with next cell</target>
+      </trans-unit>
+      <trans-unit id="grid_splitCell">
+        <source>Split cell</source>
+        <target approved="yes">Split cell</target>
+      </trans-unit>
+      <trans-unit id="grid_name">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="grid_column">
+        <source>Column number</source>
+        <target approved="yes">Column number</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet">
+        <source>not set</source>
+        <target approved="yes">not set</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp">
+        <source>Enter a name for the cell.</source>
+        <target approved="yes">Enter a name for the cell.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target approved="yes">The column position defines in which area the content is rendered in the frontend.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

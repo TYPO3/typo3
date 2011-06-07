@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="introtext">
+        <source>Web Content Management System</source>
+        <target approved="yes">Web Content Management System</target>
+      </trans-unit>
+      <trans-unit id="introtext2">
+        <source>This is a brief description of the available modules:</source>
+        <target approved="yes">This is a brief description of the available modules:</target>
+      </trans-unit>
+      <trans-unit id="endText">
+        <source>Features may vary depending on your website and permissions</source>
+        <target approved="yes">Features may vary depending on your website and permissions</target>
+      </trans-unit>
+      <trans-unit id="userInfo">
+        <source>You're logged in as user:</source>
+        <target approved="yes">You're logged in as user:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

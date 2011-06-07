@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:51 UTC 2011" product-name="linkvalidator">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target approved="yes">Click the following checkboxes to consider or to ignore the corresponding broken links.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target approved="yes">Path to the content element, which contains the broken link.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target approved="yes">Type of the element containing the broken link, its headline and the field in which the broken link is located.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description">
+        <source>The linking text.</source>
+        <target approved="yes">The linking text.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description">
+        <source>URL to which the broken link is pointing.</source>
+        <target approved="yes">URL to which the broken link is pointing.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description">
+        <source>Status of that link.</source>
+        <target approved="yes">Status of that link.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target approved="yes">Date and time of the last update of the information in each table row.</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle">
+        <source>Start page of the task</source>
+        <target approved="yes">Start page of the task</target>
+      </trans-unit>
+      <trans-unit id="task_page.description">
+        <source>UID of the start page for this task.</source>
+        <target approved="yes">UID of the start page for this task.</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle">
+        <source>Depth of the task</source>
+        <target approved="yes">Depth of the task</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description">
+        <source>Level of pages the task should check.</source>
+        <target approved="yes">Level of pages the task should check.</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle">
+        <source>Special TSconfig code</source>
+        <target approved="yes">Special TSconfig code</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description">
+        <source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+        <target approved="yes">TSconfig Code which defines settings for linkvalidator to be used for this task.</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle">
+        <source>Email address</source>
+        <target approved="yes">Email address</target>
+      </trans-unit>
+      <trans-unit id="task_email.description">
+        <source>Email address to which an email report is sent.</source>
+        <target approved="yes">Email address to which an email report is sent.</target>
+      </trans-unit>
+      <trans-unit id="task_emailonbrokenlinkonly.alttitle">
+        <source>Mailing option</source>
+        <target approved="yes">Mailing option</target>
+      </trans-unit>
+      <trans-unit id="task_emailonbrokenlinkonly.description">
+        <source>Only send an email, if new broken links were found.</source>
+        <target approved="yes">Only send an email, if new broken links were found.</target>
+      </trans-unit>
+      <trans-unit id="task_emailfile.alttitle">
+        <source>Email template file</source>
+        <target approved="yes">Email template file</target>
+      </trans-unit>
+      <trans-unit id="task_emailfile.description">
+        <source>Define a template to be used for the email.</source>
+        <target approved="yes">Define a template to be used for the email.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:35 UTC 2011" product-name="statictemplates">
+    <header/>
+    <body>
+      <trans-unit id="static_template">
+        <source>Static templates</source>
+        <target approved="yes">Static templates</target>
+      </trans-unit>
+      <trans-unit id="static_template.title">
+        <source>Template title:</source>
+        <target approved="yes">Template title:</target>
+      </trans-unit>
+      <trans-unit id="static_template.constants">
+        <source>Constants:</source>
+        <target approved="yes">Constants:</target>
+      </trans-unit>
+      <trans-unit id="static_template.include_static">
+        <source>Include static:</source>
+        <target approved="yes">Include static:</target>
+      </trans-unit>
+      <trans-unit id="static_template.config">
+        <source>Setup:</source>
+        <target approved="yes">Setup:</target>
+      </trans-unit>
+      <trans-unit id="static_template.editorcfg">
+        <source>Backend Editor Configuration:</source>
+        <target approved="yes">Backend Editor Configuration:</target>
+      </trans-unit>
+      <trans-unit id="static_template.description">
+        <source>Description:</source>
+        <target approved="yes">Description:</target>
+      </trans-unit>
+      <trans-unit id="include_static">
+        <source>Include static:</source>
+        <target approved="yes">Include static:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

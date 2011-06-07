@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:38 UTC 2011" product-name="sys_action">
+    <header/>
+    <body>
+      <trans-unit id="sys_action">
+        <source>Action</source>
+        <target approved="yes">Action</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target approved="yes">An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</target>
+      </trans-unit>
+      <trans-unit id="new-sys_action">
+        <source>Create a new action</source>
+        <target approved="yes">Create a new action</target>
+      </trans-unit>
+      <trans-unit id="edit-sys_action">
+        <source>Edit record</source>
+        <target approved="yes">Edit record</target>
+      </trans-unit>
+      <trans-unit id="action_error-not-found">
+        <source>The action doesn't exist</source>
+        <target approved="yes">The action doesn't exist</target>
+      </trans-unit>
+      <trans-unit id="action_not-found">
+        <source>No actions found</source>
+        <target approved="yes">No actions found</target>
+      </trans-unit>
+      <trans-unit id="action_not-found-description">
+        <source>Currently there are no actions yet defined!</source>
+        <target approved="yes">Currently there are no actions yet defined!</target>
+      </trans-unit>
+      <trans-unit id="action_error-access">
+        <source>You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</source>
+        <target approved="yes">You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-email">
+        <source>The E-mail address is wrong.</source>
+        <target approved="yes">The E-mail address is wrong.</target>
+      </trans-unit>
+      <trans-unit id="error-username-empty">
+        <source>The username is empty.</source>
+        <target approved="yes">The username is empty.</target>
+      </trans-unit>
+      <trans-unit id="error-password-empty">
+        <source>The password is empty.</source>
+        <target approved="yes">The password is empty.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-user">
+        <source>You are not allowed to edit this user.</source>
+        <target approved="yes">You are not allowed to edit this user.</target>
+      </trans-unit>
+      <trans-unit id="success">
+        <source>Success</source>
+        <target approved="yes">Success</target>
+      </trans-unit>
+      <trans-unit id="success-user-created">
+        <source>The user has been created.</source>
+        <target approved="yes">The user has been created.</target>
+      </trans-unit>
+      <trans-unit id="success-user-updated">
+        <source>The user has been updated.</source>
+        <target approved="yes">The user has been updated.</target>
+      </trans-unit>
+      <trans-unit id="action_noType">
+        <source>Error: The action had no type defined.</source>
+        <target approved="yes">Error: The action had no type defined.</target>
+      </trans-unit>
+      <trans-unit id="action_notReady">
+        <source>Error: The action configuration is not finished.</source>
+        <target approved="yes">Error: The action configuration is not finished.</target>
+      </trans-unit>
+      <trans-unit id="action_download_file">
+        <source>Click here to download the exported data in a file</source>
+        <target approved="yes">Click here to download the exported data in a file</target>
+      </trans-unit>
+      <trans-unit id="action_editQuery">
+        <source>Edit Query</source>
+        <target approved="yes">Edit Query</target>
+      </trans-unit>
+      <trans-unit id="action_createQuery">
+        <source>Create Query</source>
+        <target approved="yes">Create Query</target>
+      </trans-unit>
+      <trans-unit id="action_emptyQuery">
+        <source>Query is empty, create one first!</source>
+        <target approved="yes">Query is empty, create one first!</target>
+      </trans-unit>
+      <trans-unit id="action_error">
+        <source>Action error!</source>
+        <target approved="yes">Action error!</target>
+      </trans-unit>
+      <trans-unit id="action_lowlevelMissing">
+        <source>The extension "lowlevel" must be installed in order to create a query.</source>
+        <target approved="yes">The extension "lowlevel" must be installed in order to create a query.</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_hidden">
+        <source>Disable user</source>
+        <target approved="yes">Disable user</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_username">
+        <source>Login name</source>
+        <target approved="yes">Login name</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_password">
+        <source>Password</source>
+        <target approved="yes">Password</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_realName">
+        <source>Real name</source>
+        <target approved="yes">Real name</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_email">
+        <source>Email</source>
+        <target approved="yes">Email</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_usergroups">
+        <source>Member of groups</source>
+        <target approved="yes">Member of groups</target>
+      </trans-unit>
+      <trans-unit id="action_t2_result">
+        <source>Result of query</source>
+        <target approved="yes">Result of query</target>
+      </trans-unit>
+      <trans-unit id="action_Create">
+        <source>Create Backend User</source>
+        <target approved="yes">Create Backend User</target>
+      </trans-unit>
+      <trans-unit id="action_Update">
+        <source>Update Backend User</source>
+        <target approved="yes">Update Backend User</target>
+      </trans-unit>
+      <trans-unit id="action_t1_listOfUsers">
+        <source>List of backend users</source>
+        <target approved="yes">List of backend users</target>
+      </trans-unit>
+      <trans-unit id="action_BEu_db_mount">
+        <source>Pagetree starting points</source>
+        <target approved="yes">Pagetree starting points</target>
+      </trans-unit>
+      <trans-unit id="action_t4_edit">
+        <source>Select record to edit:</source>
+        <target approved="yes">Select record to edit:</target>
+      </trans-unit>
+      <trans-unit id="action_toolbaritem">
+        <source>Open System Actions</source>
+        <target approved="yes">Open System Actions</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

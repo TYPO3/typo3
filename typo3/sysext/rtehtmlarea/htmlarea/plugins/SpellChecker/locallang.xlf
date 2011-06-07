@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Spell Checker">
+        <source>Spell Checker</source>
+        <target approved="yes">Spell Checker</target>
+      </trans-unit>
+      <trans-unit id="CONFIRM_LINK_CLICK">
+        <source>Please confirm that you want to open this link</source>
+        <target approved="yes">Please confirm that you want to open this link</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="Dictionary">
+        <source>Dictionary</source>
+        <target approved="yes">Dictionary</target>
+      </trans-unit>
+      <trans-unit id="Finished list of mispelled words">
+        <source>Finished list of mispelled words</source>
+        <target approved="yes">Finished list of mispelled words</target>
+      </trans-unit>
+      <trans-unit id="I will open it in a new page.">
+        <source>I will open it in a new page.</source>
+        <target approved="yes">I will open it in a new page.</target>
+      </trans-unit>
+      <trans-unit id="Ignore all">
+        <source>Ignore all</source>
+        <target approved="yes">Ignore all</target>
+      </trans-unit>
+      <trans-unit id="Ignore">
+        <source>Ignore</source>
+        <target approved="yes">Ignore</target>
+      </trans-unit>
+      <trans-unit id="NO_ERRORS">
+        <source>No mispelled words found with the selected dictionary.</source>
+        <target approved="yes">No mispelled words found with the selected dictionary.</target>
+      </trans-unit>
+      <trans-unit id="NO_ERRORS_CLOSING">
+        <source>Spell check complete, didn't find any mispelled words.  Closing now...</source>
+        <target approved="yes">Spell check complete, didn't find any mispelled words.  Closing now...</target>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target approved="yes">OK</target>
+      </trans-unit>
+      <trans-unit id="Original word">
+        <source>Original word</source>
+        <target approved="yes">Original word</target>
+      </trans-unit>
+      <trans-unit id="Please wait. Calling spell checker.">
+        <source>Please wait. Calling spell checker.</source>
+        <target approved="yes">Please wait. Calling spell checker.</target>
+      </trans-unit>
+      <trans-unit id="Please wait: changing dictionary to">
+        <source>Please wait: changing dictionary to</source>
+        <target approved="yes">Please wait: changing dictionary to</target>
+      </trans-unit>
+      <trans-unit id="HTMLArea Spell Checker">
+        <source>HTMLArea Spell Checker</source>
+        <target approved="yes">HTMLArea Spell Checker</target>
+      </trans-unit>
+      <trans-unit id="QUIT_CONFIRMATION">
+        <source>This will drop changes and quit spell checker.  Please confirm.</source>
+        <target approved="yes">This will drop changes and quit spell checker.  Please confirm.</target>
+      </trans-unit>
+      <trans-unit id="Re-check">
+        <source>Re-check</source>
+        <target approved="yes">Re-check</target>
+      </trans-unit>
+      <trans-unit id="Replacement">
+        <source>Replacement</source>
+        <target approved="yes">Replacement</target>
+      </trans-unit>
+      <trans-unit id="Replace all">
+        <source>Replace all</source>
+        <target approved="yes">Replace all</target>
+      </trans-unit>
+      <trans-unit id="Replace with">
+        <source>Replace with</source>
+        <target approved="yes">Replace with</target>
+      </trans-unit>
+      <trans-unit id="Replace">
+        <source>Replace</source>
+        <target approved="yes">Replace</target>
+      </trans-unit>
+      <trans-unit id="Learn">
+        <source>Add to dictionary</source>
+        <target approved="yes">Add to dictionary</target>
+      </trans-unit>
+      <trans-unit id="Revert">
+        <source>Revert</source>
+        <target approved="yes">Revert</target>
+      </trans-unit>
+      <trans-unit id="SC-spell-check">
+        <source>Spell-check</source>
+        <target approved="yes">Spell-check</target>
+      </trans-unit>
+      <trans-unit id="Suggestions">
+        <source>Suggestions</source>
+        <target approved="yes">Suggestions</target>
+      </trans-unit>
+      <trans-unit id="One occurrence">
+        <source>One occurrence</source>
+        <target approved="yes">One occurrence</target>
+      </trans-unit>
+      <trans-unit id="Two occurrences">
+        <source>Two occurrences</source>
+        <target approved="yes">Two occurrences</target>
+      </trans-unit>
+      <trans-unit id="occurrences">
+        <source>occurrences</source>
+        <target approved="yes">occurrences</target>
+      </trans-unit>
+      <trans-unit id="of the word">
+        <source>of the word</source>
+        <target approved="yes">of the word</target>
+      </trans-unit>
+      <trans-unit id="was found.">
+        <source>was found.</source>
+        <target approved="yes">was found.</target>
+      </trans-unit>
+      <trans-unit id="were found.">
+        <source>were found.</source>
+        <target approved="yes">were found.</target>
+      </trans-unit>
+      <trans-unit id="Info">
+        <source>Info</source>
+        <target approved="yes">Info</target>
+      </trans-unit>
+      <trans-unit id="Document information">
+        <source>Document information</source>
+        <target approved="yes">Document information</target>
+      </trans-unit>
+      <trans-unit id="No information available">
+        <source>No information available</source>
+        <target approved="yes">No information available</target>
+      </trans-unit>
+      <trans-unit id="Total words">
+        <source>Total words</source>
+        <target approved="yes">Total words</target>
+      </trans-unit>
+      <trans-unit id="Misspelled words">
+        <source>Misspelled words</source>
+        <target approved="yes">Misspelled words</target>
+      </trans-unit>
+      <trans-unit id="Total suggestions">
+        <source>Total suggestions</source>
+        <target approved="yes">Total suggestions</target>
+      </trans-unit>
+      <trans-unit id="Total words suggested">
+        <source>Total words suggested</source>
+        <target approved="yes">Total words suggested</target>
+      </trans-unit>
+      <trans-unit id="Spelling checked in">
+        <source>Spelling checked in</source>
+        <target approved="yes">Spelling checked in</target>
+      </trans-unit>
+      <trans-unit id="seconds">
+        <source>seconds</source>
+        <target approved="yes">seconds</target>
+      </trans-unit>
+      <trans-unit id="pliz weit ;-)">
+        <source>Please wait...</source>
+        <target approved="yes">Please wait...</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

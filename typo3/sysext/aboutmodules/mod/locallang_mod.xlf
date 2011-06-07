@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:23:29 UTC 2011" product-name="aboutmodules">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Information about modules</source>
+        <target approved="yes">Information about modules</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Shows this page about available modules.</source>
+        <target approved="yes">Shows this page about available modules.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>About Modules</source>
+        <target approved="yes">About Modules</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

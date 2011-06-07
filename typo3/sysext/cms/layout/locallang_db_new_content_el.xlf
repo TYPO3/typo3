@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:09 UTC 2011" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id="sel1">
+        <source>Please select the type of page content you wish to create:</source>
+        <target approved="yes">Please select the type of page content you wish to create:</target>
+      </trans-unit>
+      <trans-unit id="sel2">
+        <source>Now, click the position where you wish to place the element on the page:</source>
+        <target approved="yes">Now, click the position where you wish to place the element on the page:</target>
+      </trans-unit>
+      <trans-unit id="common">
+        <source>Typical page content</source>
+        <target approved="yes">Typical page content</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title">
+        <source>Header Only</source>
+        <target approved="yes">Header Only</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description">
+        <source>Adds a header only.</source>
+        <target approved="yes">Adds a header only.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title">
+        <source>Regular Text Element</source>
+        <target approved="yes">Regular Text Element</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target approved="yes">A regular text element with header and bodytext fields.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title">
+        <source>Text &amp; Images</source>
+        <target approved="yes">Text &amp; Images</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target approved="yes">Any number of images wrapped right around a regular text element.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title">
+        <source>Images Only</source>
+        <target approved="yes">Images Only</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target approved="yes">Any number of images aligned in columns and rows with a caption.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title">
+        <source>Bullet List</source>
+        <target approved="yes">Bullet List</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description">
+        <source>A single bullet list.</source>
+        <target approved="yes">A single bullet list.</target>
+      </trans-unit>
+      <trans-unit id="common_table_title">
+        <source>Table</source>
+        <target approved="yes">Table</target>
+      </trans-unit>
+      <trans-unit id="common_table_description">
+        <source>A simple table.</source>
+        <target approved="yes">A simple table.</target>
+      </trans-unit>
+      <trans-unit id="special">
+        <source>Special elements</source>
+        <target approved="yes">Special elements</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title">
+        <source>File Links</source>
+        <target approved="yes">File Links</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description">
+        <source>Makes a list of files for download.</source>
+        <target approved="yes">Makes a list of files for download.</target>
+      </trans-unit>
+      <trans-unit id="special_multimedia_title">
+        <source>Multimedia</source>
+        <target approved="yes">Multimedia</target>
+      </trans-unit>
+      <trans-unit id="special_multimedia_description">
+        <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+        <target approved="yes">Inserts a media element like a Flash animation, audio file or video clip.</target>
+      </trans-unit>
+      <trans-unit id="special_media_title">
+        <source>Media</source>
+        <target approved="yes">Media</target>
+      </trans-unit>
+      <trans-unit id="special_media_description">
+        <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+        <target approved="yes">Inserts a media element like a Flash animation, audio file or video clip.</target>
+      </trans-unit>
+      <trans-unit id="special_swfobject_title">
+        <source>Inserts a Flash media element.</source>
+        <target approved="yes">Inserts a Flash media element.</target>
+      </trans-unit>
+      <trans-unit id="special_swfobject_description">
+        <source>Inserts Flash media element, audio file or video clip.</source>
+        <target approved="yes">Inserts Flash media element, audio file or video clip.</target>
+      </trans-unit>
+      <trans-unit id="special_qtobject_title">
+        <source>Inserts a Quicktime element.</source>
+        <target approved="yes">Inserts a Quicktime element.</target>
+      </trans-unit>
+      <trans-unit id="special_qtobject_description">
+        <source>Inserts a Quicktime element like a Quicktime audio file or video clip (*.mov).</source>
+        <target approved="yes">Inserts a Quicktime element like a Quicktime audio file or video clip (*.mov).</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title">
+        <source>Sitemap</source>
+        <target approved="yes">Sitemap</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_description">
+        <source>Creates a sitemap of the website.</source>
+        <target approved="yes">Creates a sitemap of the website.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title">
+        <source>Plain HTML</source>
+        <target approved="yes">Plain HTML</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target approved="yes">With this element you can insert raw HTML code on the page.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title">
+        <source>Divider</source>
+        <target approved="yes">Divider</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target approved="yes">This element inserts a visual divider, which is by default a horizontal line.</target>
+      </trans-unit>
+      <trans-unit id="forms">
+        <source>Form elements</source>
+        <target approved="yes">Form elements</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title">
+        <source>Mail Form</source>
+        <target approved="yes">Mail Form</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target approved="yes">A mail form allowing website users to submit responses.</target>
+      </trans-unit>
+      <trans-unit id="forms_search_title">
+        <source>Search Form</source>
+        <target approved="yes">Search Form</target>
+      </trans-unit>
+      <trans-unit id="forms_search_description">
+        <source>Draws a search form and the searchresult if a search is performed.</source>
+        <target approved="yes">Draws a search form and the searchresult if a search is performed.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title">
+        <source>Login Form</source>
+        <target approved="yes">Login Form</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target approved="yes">Login/logout form used to password protect pages allowing only authorised website users and groups access.</target>
+      </trans-unit>
+      <trans-unit id="plugins">
+        <source>Plugins</source>
+        <target approved="yes">Plugins</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title">
+        <source>General Plugin</source>
+        <target approved="yes">General Plugin</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target approved="yes">Select this element type to insert a plugin which cannot be found amongst the options below.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:27:05 UTC 2011" product-name="recycler">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Recycler</source>
+        <target approved="yes">Recycler</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>TYPO3 Recycler</source>
+        <target approved="yes">TYPO3 Recycler</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.</source>
+        <target approved="yes">The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

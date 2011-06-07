@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:24 UTC 2011" product-name="context_help">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>Represents an alternative language for the page.</source>
+        <target approved="yes">Represents an alternative language for the page.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>These records contains fields very similar to the Page records, exactly those fields which should be translated to another language in case you want a localized version of the page.
+Create only ONE Alternative Page Language record of a specific language in each page. Having more than one record will leave it uncertain which of them is used when the page is displayed.
+
+Before you can create Alternative Page Language records you should create a 'master' language to be available in the root of the website ("Website Language")
+The TypoScript template must be configured to allow other languages as well.
+
+Technically when an alternative language is being viewed, the content of the Alternative Page Language record is simply overlaid on the actual page records thus substituting the content of the fields in the default language.</source>
+        <target approved="yes">These records contains fields very similar to the Page records, exactly those fields which should be translated to another language in case you want a localized version of the page.
+Create only ONE Alternative Page Language record of a specific language in each page. Having more than one record will leave it uncertain which of them is used when the page is displayed.
+
+Before you can create Alternative Page Language records you should create a 'master' language to be available in the root of the website ("Website Language")
+The TypoScript template must be configured to allow other languages as well.
+
+Technically when an alternative language is being viewed, the content of the Alternative Page Language record is simply overlaid on the actual page records thus substituting the content of the fields in the default language.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>sys_language,
+_MOD_web_layout:language_list</source>
+        <target approved="yes">sys_language,
+_MOD_web_layout:language_list</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>Use this to temporarily disable the alternative language overlay for this page.</source>
+        <target approved="yes">Use this to temporarily disable the alternative language overlay for this page.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>Setting this option is practical in the phase of adding the extra language. When it is set, the alternative content will not be displayed unless you - as an logged in backend user - enableds the Admin Panel&gt;Preview&gt;Show hidden records option.</source>
+        <target approved="yes">Setting this option is practical in the phase of adding the extra language. When it is set, the alternative content will not be displayed unless you - as an logged in backend user - enableds the Admin Panel&gt;Preview&gt;Show hidden records option.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso">
+        <source>pages_language_overlay:starttime,
+pages_language_overlay:endtime</source>
+        <target approved="yes">pages_language_overlay:starttime,
+pages_language_overlay:endtime</target>
+      </trans-unit>
+      <trans-unit id="starttime.description">
+        <source>The 'Start' time determines the date from which the alternative language will be available online.</source>
+        <target approved="yes">The 'Start' time determines the date from which the alternative language will be available online.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso">
+        <source>pages_language_overlay:endtime,
+pages_language_overlay:hidden,
+pages:starttime</source>
+        <target approved="yes">pages_language_overlay:endtime,
+pages_language_overlay:hidden,
+pages:starttime</target>
+      </trans-unit>
+      <trans-unit id="endtime.description">
+        <source>The 'End' time determines the date from which the alternative language will be available online.</source>
+        <target approved="yes">The 'End' time determines the date from which the alternative language will be available online.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso">
+        <source>pages_language_overlay:starttime,
+pages_language_overlay:hidden,
+pages:endtime</source>
+        <target approved="yes">pages_language_overlay:starttime,
+pages_language_overlay:hidden,
+pages:endtime</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Enter the title of the alternative language.</source>
+        <target approved="yes">Enter the title of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_title.seeAlso">
+        <source>pages:title</source>
+        <target approved="yes">pages:title</target>
+      </trans-unit>
+      <trans-unit id="subtitle.description">
+        <source>Enter the subtitle of the alternative language.</source>
+        <target approved="yes">Enter the subtitle of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_subtitle.seeAlso">
+        <source>pages:subtitle</source>
+        <target approved="yes">pages:subtitle</target>
+      </trans-unit>
+      <trans-unit id="keywords.description">
+        <source>Enter the keywords of the alternative language.</source>
+        <target approved="yes">Enter the keywords of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_keywords.seeAlso">
+        <source>pages:keywords</source>
+        <target approved="yes">pages:keywords</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Enter the description of the alternative language.</source>
+        <target approved="yes">Enter the description of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso">
+        <source>pages:description</source>
+        <target approved="yes">pages:description</target>
+      </trans-unit>
+      <trans-unit id="abstract.description">
+        <source>Enter the abstract of the alternative language.</source>
+        <target approved="yes">Enter the abstract of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_abstract.seeAlso">
+        <source>pages:abstract</source>
+        <target approved="yes">pages:abstract</target>
+      </trans-unit>
+      <trans-unit id="author.description">
+        <source>Enter the author of the alternative language.</source>
+        <target approved="yes">Enter the author of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_author.seeAlso">
+        <source>pages:author</source>
+        <target approved="yes">pages:author</target>
+      </trans-unit>
+      <trans-unit id="author_email.description">
+        <source>Enter the author email address of the alternative language.</source>
+        <target approved="yes">Enter the author email address of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso">
+        <source>pages:author_email</source>
+        <target approved="yes">pages:author_email</target>
+      </trans-unit>
+      <trans-unit id="media.description">
+        <source>Enter the media files of the alternative language.</source>
+        <target approved="yes">Enter the media files of the alternative language.</target>
+      </trans-unit>
+      <trans-unit id="_media.seeAlso">
+        <source>pages:media</source>
+        <target approved="yes">pages:media</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.description">
+        <source>Select the Alternative Language represented by this record.</source>
+        <target approved="yes">Select the Alternative Language represented by this record.</target>
+      </trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso">
+        <source>sys_language,
+sys_language:title</source>
+        <target approved="yes">sys_language,
+sys_language:title</target>
+      </trans-unit>
+      <trans-unit id="nav_title.description">
+        <source>Enter optional navigation title of the alternative language.</source>
+        <target approved="yes">Enter optional navigation title of the alternative language.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

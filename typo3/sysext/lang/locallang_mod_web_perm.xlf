@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="permissions">
+        <source>Permissions</source>
+        <target approved="yes">Permissions</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions">
+        <source>Change permissions</source>
+        <target approved="yes">Change permissions</target>
+      </trans-unit>
+      <trans-unit id="Legend">
+        <source>Legend</source>
+        <target approved="yes">Legend</target>
+      </trans-unit>
+      <trans-unit id="Owner">
+        <source>Owner</source>
+        <target approved="yes">Owner</target>
+      </trans-unit>
+      <trans-unit id="Group">
+        <source>Group</source>
+        <target approved="yes">Group</target>
+      </trans-unit>
+      <trans-unit id="Everybody">
+        <source>Everybody</source>
+        <target approved="yes">Everybody</target>
+      </trans-unit>
+      <trans-unit id="EditLock">
+        <source>Lock</source>
+        <target approved="yes">Lock</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr">
+        <source>The page and all content is locked for editing by all non-Admin users.</source>
+        <target approved="yes">The page and all content is locked for editing by all non-Admin users.</target>
+      </trans-unit>
+      <trans-unit id="Save">
+        <source>Save</source>
+        <target approved="yes">Save</target>
+      </trans-unit>
+      <trans-unit id="Abort">
+        <source>Abort</source>
+        <target approved="yes">Abort</target>
+      </trans-unit>
+      <trans-unit id="Edit">
+        <source>EDIT</source>
+        <target approved="yes">EDIT</target>
+      </trans-unit>
+      <trans-unit id="recursive">
+        <source>Set recursively</source>
+        <target approved="yes">Set recursively</target>
+      </trans-unit>
+      <trans-unit id="pages_affected">
+        <source>pages affected</source>
+        <target approved="yes">pages affected</target>
+      </trans-unit>
+      <trans-unit id="user_overview">
+        <source>User overview</source>
+        <target approved="yes">User overview</target>
+      </trans-unit>
+      <trans-unit id="Mode">
+        <source>Mode</source>
+        <target approved="yes">Mode</target>
+      </trans-unit>
+      <trans-unit id="Depth">
+        <source>Depth</source>
+        <target approved="yes">Depth</target>
+      </trans-unit>
+      <trans-unit id="levels">
+        <source>levels</source>
+        <target approved="yes">levels</target>
+      </trans-unit>
+      <trans-unit id="User">
+        <source>User</source>
+        <target approved="yes">User</target>
+      </trans-unit>
+      <trans-unit id="def">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target approved="yes">Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted">
+        <source>Access Granted</source>
+        <target approved="yes">Access Granted</target>
+      </trans-unit>
+      <trans-unit id="A_Denied">
+        <source>Access Denied</source>
+        <target approved="yes">Access Denied</target>
+      </trans-unit>
+      <trans-unit id="1">
+        <source>Show page</source>
+        <target approved="yes">Show page</target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>Edit content</source>
+        <target approved="yes">Edit content</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Edit page</source>
+        <target approved="yes">Edit page</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Delete page</source>
+        <target approved="yes">Delete page</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>New pages</source>
+        <target approved="yes">New pages</target>
+      </trans-unit>
+      <trans-unit id="1_t">
+        <source>Show/Copy page and content.</source>
+        <target approved="yes">Show/Copy page and content.</target>
+      </trans-unit>
+      <trans-unit id="16_t">
+        <source>Change/Add/Delete/Move content.</source>
+        <target approved="yes">Change/Add/Delete/Move content.</target>
+      </trans-unit>
+      <trans-unit id="2_t">
+        <source>Change/Move page, eg. change pagetitle etc.</source>
+        <target approved="yes">Change/Move page, eg. change pagetitle etc.</target>
+      </trans-unit>
+      <trans-unit id="4_t">
+        <source>Delete page and content.</source>
+        <target approved="yes">Delete page and content.</target>
+      </trans-unit>
+      <trans-unit id="8_t">
+        <source>Create new pages under this page.</source>
+        <target approved="yes">Create new pages under this page.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Page editing permissions</source>
+        <target approved="yes">Page editing permissions</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+        <target approved="yes">Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Access</source>
+        <target approved="yes">Access</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning">
+        <source>Workspace Warning</source>
+        <target approved="yes">Workspace Warning</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText">
+        <source>Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+        <target approved="yes">Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</target>
+      </trans-unit>
+      <trans-unit id="notSet">
+        <source>not set</source>
+        <target approved="yes">not set</target>
+      </trans-unit>
+      <trans-unit id="deleted">
+        <source>deleted</source>
+        <target approved="yes">deleted</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

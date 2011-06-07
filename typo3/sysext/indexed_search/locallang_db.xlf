@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:09 UTC 2011" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="index_config">
+        <source>Indexing Configuration</source>
+        <target approved="yes">Indexing Configuration</target>
+      </trans-unit>
+      <trans-unit id="index_config.title">
+        <source>Title:</source>
+        <target approved="yes">Title:</target>
+      </trans-unit>
+      <trans-unit id="index_config.description">
+        <source>Description:</source>
+        <target approved="yes">Description:</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1">
+        <source>Database Records</source>
+        <target approved="yes">Database Records</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2">
+        <source>Filepath on server</source>
+        <target approved="yes">Filepath on server</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3">
+        <source>External URL</source>
+        <target approved="yes">External URL</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4">
+        <source>Page tree</source>
+        <target approved="yes">Page tree</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5">
+        <source>Meta configuration</source>
+        <target approved="yes">Meta configuration</target>
+      </trans-unit>
+      <trans-unit id="index_config.type">
+        <source>Type:</source>
+        <target approved="yes">Type:</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.0">
+        <source>Single page</source>
+        <target approved="yes">Single page</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.1">
+        <source>1 Level</source>
+        <target approved="yes">1 Level</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.2">
+        <source>2 Levels</source>
+        <target approved="yes">2 Levels</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.3">
+        <source>3 Levels</source>
+        <target approved="yes">3 Levels</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth">
+        <source>Depth:</source>
+        <target approved="yes">Depth:</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index">
+        <source>Table to index:</source>
+        <target approved="yes">Table to index:</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid">
+        <source>Alternative Source Page:</source>
+        <target approved="yes">Alternative Source Page:</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params">
+        <source>GET parameter string (with ###UID### substitution):</source>
+        <target approved="yes">GET parameter string (with ###UID### substitution):</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields">
+        <source>Fields (first is title):</source>
+        <target approved="yes">Fields (first is title):</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl">
+        <source>External URL (eg. "http://www.domain.org/"):</source>
+        <target approved="yes">External URL (eg. "http://www.domain.org/"):</target>
+      </trans-unit>
+      <trans-unit id="index_config.chashcalc">
+        <source>Calculate cHash (force caching)?</source>
+        <target approved="yes">Calculate cHash (force caching)?</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath">
+        <source>Filepath:</source>
+        <target approved="yes">Filepath:</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions">
+        <source>Limit to extensions (commalist):</source>
+        <target approved="yes">Limit to extensions (commalist):</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny">
+        <source>Enter sub-URLs in which not to decend:</source>
+        <target approved="yes">Enter sub-URLs in which not to decend:</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange">
+        <source>Index Records immediately when saved?:</source>
+        <target approved="yes">Index Records immediately when saved?:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing">
+        <source>Next indexing is scheduled (if empty, then immediately):</source>
+        <target approved="yes">Next indexing is scheduled (if empty, then immediately):</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset">
+        <source>Timing offset from midnight:</source>
+        <target approved="yes">Timing offset from midnight:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency">
+        <source>How often would you like a re-index?:</source>
+        <target approved="yes">How often would you like a re-index?:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0">
+        <source>Every hour</source>
+        <target approved="yes">Every hour</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1">
+        <source>Every day (24 hours)</source>
+        <target approved="yes">Every day (24 hours)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2">
+        <source>Every week</source>
+        <target approved="yes">Every week</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch">
+        <source>How many records to index a minute (default is 100):</source>
+        <target approved="yes">How many records to index a minute (default is 100):</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id">
+        <source>Session ID (if &gt; zero, then indexing job is running):</source>
+        <target approved="yes">Session ID (if &gt; zero, then indexing job is running):</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs">
+        <source>Indexing configurations:</source>
+        <target approved="yes">Indexing configurations:</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###):</source>
+        <target approved="yes">Parameter combination configuration ([tablename]:&amp;[param]=###UID###):</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage">
+        <source>Root page:</source>
+        <target approved="yes">Root page:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

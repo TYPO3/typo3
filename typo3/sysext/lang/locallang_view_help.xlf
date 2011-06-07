@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="details">
+        <source>Details</source>
+        <target approved="yes">Details</target>
+      </trans-unit>
+      <trans-unit id="syntax">
+        <source>Syntax</source>
+        <target approved="yes">Syntax</target>
+      </trans-unit>
+      <trans-unit id="seeAlso">
+        <source>See also</source>
+        <target approved="yes">See also</target>
+      </trans-unit>
+      <trans-unit id="goBack">
+        <source>Go back</source>
+        <target approved="yes">Go back</target>
+      </trans-unit>
+      <trans-unit id="fullDescription">
+        <source>See full description of table</source>
+        <target approved="yes">See full description of table</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module">
+        <source>See full description of module</source>
+        <target approved="yes">See full description of module</target>
+      </trans-unit>
+      <trans-unit id="goToToc">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target approved="yes">&lt;&lt; go to Manual Index</target>
+      </trans-unit>
+      <trans-unit id="to_top">
+        <source>To top</source>
+        <target approved="yes">To top</target>
+      </trans-unit>
+      <trans-unit id="TOC">
+        <source>Table Of Contents</source>
+        <target approved="yes">Table Of Contents</target>
+      </trans-unit>
+      <trans-unit id="TOC_core">
+        <source>TYPO3 Core Features</source>
+        <target approved="yes">TYPO3 Core Features</target>
+      </trans-unit>
+      <trans-unit id="TOC_modules">
+        <source>Backend Modules</source>
+        <target approved="yes">Backend Modules</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables">
+        <source>Database Tables</source>
+        <target approved="yes">Database Tables</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions">
+        <source>Extensions</source>
+        <target approved="yes">Extensions</target>
+      </trans-unit>
+      <trans-unit id="TOC_glossary">
+        <source>Glossary</source>
+        <target approved="yes">Glossary</target>
+      </trans-unit>
+      <trans-unit id="TOC_other">
+        <source>Other</source>
+        <target approved="yes">Other</target>
+      </trans-unit>
+      <trans-unit id="close">
+        <source>Close</source>
+        <target approved="yes">Close</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>TYPO3 Inline Help</source>
+        <target approved="yes">TYPO3 Inline Help</target>
+      </trans-unit>
+      <trans-unit id="manual_title">
+        <source>TYPO3 Inline User Manual</source>
+        <target approved="yes">TYPO3 Inline User Manual</target>
+      </trans-unit>
+      <trans-unit id="introduction">
+        <source>Introduction</source>
+        <target approved="yes">Introduction</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
+        <target approved="yes">The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</target>
+      </trans-unit>
+      <trans-unit id="full_manual">
+        <source>Full Manual (in one page)</source>
+        <target approved="yes">Full Manual (in one page)</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters">
+        <source>Manual Chapters</source>
+        <target approved="yes">Manual Chapters</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

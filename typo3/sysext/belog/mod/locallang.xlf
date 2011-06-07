@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:23:36 UTC 2011" product-name="belog">
+    <header/>
+    <body>
+      <trans-unit id="adminLog">
+        <source>Administration log</source>
+        <target approved="yes">Administration log</target>
+      </trans-unit>
+      <trans-unit id="allUsers">
+        <source>[All users]</source>
+        <target approved="yes">[All users]</target>
+      </trans-unit>
+      <trans-unit id="any">
+        <source>[Any]</source>
+        <target approved="yes">[Any]</target>
+      </trans-unit>
+      <trans-unit id="live">
+        <source>LIVE</source>
+        <target approved="yes">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft">
+        <source>Draft</source>
+        <target approved="yes">Draft</target>
+      </trans-unit>
+      <trans-unit id="self">
+        <source>Self</source>
+        <target approved="yes">Self</target>
+      </trans-unit>
+      <trans-unit id="userGroup">
+        <source>Group:</source>
+        <target approved="yes">Group:</target>
+      </trans-unit>
+      <trans-unit id="thisWeek">
+        <source>This week</source>
+        <target approved="yes">This week</target>
+      </trans-unit>
+      <trans-unit id="lastWeek">
+        <source>Last week</source>
+        <target approved="yes">Last week</target>
+      </trans-unit>
+      <trans-unit id="last7Days">
+        <source>Last 7 days</source>
+        <target approved="yes">Last 7 days</target>
+      </trans-unit>
+      <trans-unit id="thisMonth">
+        <source>This month</source>
+        <target approved="yes">This month</target>
+      </trans-unit>
+      <trans-unit id="lastMonth">
+        <source>Last month</source>
+        <target approved="yes">Last month</target>
+      </trans-unit>
+      <trans-unit id="last31Days">
+        <source>Last 31 days</source>
+        <target approved="yes">Last 31 days</target>
+      </trans-unit>
+      <trans-unit id="noLimit">
+        <source>No limit</source>
+        <target approved="yes">No limit</target>
+      </trans-unit>
+      <trans-unit id="userdefined">
+        <source>User defined</source>
+        <target approved="yes">User defined</target>
+      </trans-unit>
+      <trans-unit id="set">
+        <source>Set</source>
+        <target approved="yes">Set</target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source>20</source>
+        <target approved="yes">20</target>
+      </trans-unit>
+      <trans-unit id="50">
+        <source>50</source>
+        <target approved="yes">50</target>
+      </trans-unit>
+      <trans-unit id="100">
+        <source>100</source>
+        <target approved="yes">100</target>
+      </trans-unit>
+      <trans-unit id="200">
+        <source>200</source>
+        <target approved="yes">200</target>
+      </trans-unit>
+      <trans-unit id="500">
+        <source>500</source>
+        <target approved="yes">500</target>
+      </trans-unit>
+      <trans-unit id="1000">
+        <source>1000</source>
+        <target approved="yes">1000</target>
+      </trans-unit>
+      <trans-unit id="actionAll">
+        <source>All</source>
+        <target approved="yes">All</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase">
+        <source>Database</source>
+        <target approved="yes">Database</target>
+      </trans-unit>
+      <trans-unit id="actionFile">
+        <source>File</source>
+        <target approved="yes">File</target>
+      </trans-unit>
+      <trans-unit id="actionCache">
+        <source>Cache</source>
+        <target approved="yes">Cache</target>
+      </trans-unit>
+      <trans-unit id="actionSettings">
+        <source>Settings</source>
+        <target approved="yes">Settings</target>
+      </trans-unit>
+      <trans-unit id="actionLogin">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="actionErrors">
+        <source>Errors</source>
+        <target approved="yes">Errors</target>
+      </trans-unit>
+      <trans-unit id="group">
+        <source>Group:</source>
+        <target approved="yes">Group:</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User:</source>
+        <target approved="yes">User:</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users:</source>
+        <target approved="yes">Users:</target>
+      </trans-unit>
+      <trans-unit id="time">
+        <source>Time:</source>
+        <target approved="yes">Time:</target>
+      </trans-unit>
+      <trans-unit id="max">
+        <source>Max:</source>
+        <target approved="yes">Max:</target>
+      </trans-unit>
+      <trans-unit id="changesInFields">
+        <source>Changes in fields: %s.</source>
+        <target approved="yes">Changes in fields: %s.</target>
+      </trans-unit>
+      <trans-unit id="showHistory">
+        <source>Show History</source>
+        <target approved="yes">Show History</target>
+      </trans-unit>
+      <trans-unit id="action">
+        <source>Action:</source>
+        <target approved="yes">Action:</target>
+      </trans-unit>
+      <trans-unit id="workspace">
+        <source>Workspace:</source>
+        <target approved="yes">Workspace:</target>
+      </trans-unit>
+      <trans-unit id="groupByPage">
+        <source>Group by page:</source>
+        <target approved="yes">Group by page:</target>
+      </trans-unit>
+      <trans-unit id="pagenameWithUID">
+        <source>%s" [UID: %s]</source>
+        <target approved="yes">%s" [UID: %s]</target>
+      </trans-unit>
+      <trans-unit id="overview">
+        <source>Overview</source>
+        <target approved="yes">Overview</target>
+      </trans-unit>
+      <trans-unit id="timeInfo">
+        <source>These pages have log messages from %s to %s</source>
+        <target approved="yes">These pages have log messages from %s to %s</target>
+      </trans-unit>
+      <trans-unit id="forNonPageRelatedActions">
+        <source>for NON-PAGE related actions</source>
+        <target approved="yes">for NON-PAGE related actions</target>
+      </trans-unit>
+      <trans-unit id="forRootLevel">
+        <source>for ROOT LEVEL</source>
+        <target approved="yes">for ROOT LEVEL</target>
+      </trans-unit>
+      <trans-unit id="forPage">
+        <source>for PAGE "%s" (UID: %s)</source>
+        <target approved="yes">for PAGE "%s" (UID: %s)</target>
+      </trans-unit>
+      <trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage">
+        <source>Log %s from %s to %s</source>
+        <target approved="yes">Log %s from %s to %s</target>
+      </trans-unit>
+      <trans-unit id="type_1">
+        <source>DB</source>
+        <target approved="yes">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1">
+        <source>Insert</source>
+        <target approved="yes">Insert</target>
+      </trans-unit>
+      <trans-unit id="action_1_2">
+        <source>Update</source>
+        <target approved="yes">Update</target>
+      </trans-unit>
+      <trans-unit id="action_1_3">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="action_1_4">
+        <source>Check</source>
+        <target approved="yes">Check</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target approved="yes">Referer host '%s' and server host '%s' did not match!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target approved="yes">Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target approved="yes">Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target approved="yes">Attempt to modify table '%s' without permission</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target approved="yes">Attempt to modify record '%s' (%s) without permission. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10">
+        <source>Record '%s' (%s) was updated.</source>
+        <target approved="yes">Record '%s' (%s) was updated.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12">
+        <source>MySQL error: '%s' (%s)</source>
+        <target approved="yes">MySQL error: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target approved="yes">Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target approved="yes">Moved record '%s' (%s) to page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target approved="yes">Moved record '%s' (%s) from page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target approved="yes">Moved record '%s' (%s) on page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target approved="yes">Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target approved="yes">Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target approved="yes">Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target approved="yes">Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target approved="yes">Attempt to move record '%s' (%s) without having permissions to do so</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target approved="yes">You cannot change the 'doktype' of page '%s' to the desired value.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target approved="yes">'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3">
+        <source>Too few items in the list of values. (%s)</source>
+        <target approved="yes">Too few items in the list of values. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target approved="yes">Could not delete file '%s' (does not exist). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target approved="yes">Copying file '%s' failed!: No destination file (%s) possible!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target approved="yes">File extension '%s' is not allowed. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target approved="yes">File size (%s) of file '%s' exceeds limit (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target approved="yes">The destination (%s) or the source file (%s) does not exist. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target approved="yes">Copying to file '%s' failed! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target approved="yes">Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2">
+        <source>FILE</source>
+        <target approved="yes">FILE</target>
+      </trans-unit>
+      <trans-unit id="action_2_1">
+        <source>Upload</source>
+        <target approved="yes">Upload</target>
+      </trans-unit>
+      <trans-unit id="action_2_2">
+        <source>Copy</source>
+        <target approved="yes">Copy</target>
+      </trans-unit>
+      <trans-unit id="action_2_3">
+        <source>Move</source>
+        <target approved="yes">Move</target>
+      </trans-unit>
+      <trans-unit id="action_2_4">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="action_2_5">
+        <source>Rename</source>
+        <target approved="yes">Rename</target>
+      </trans-unit>
+      <trans-unit id="action_2_6">
+        <source>New</source>
+        <target approved="yes">New</target>
+      </trans-unit>
+      <trans-unit id="action_2_7">
+        <source>Unzip</source>
+        <target approved="yes">Unzip</target>
+      </trans-unit>
+      <trans-unit id="action_2_8">
+        <source>New file</source>
+        <target approved="yes">New file</target>
+      </trans-unit>
+      <trans-unit id="action_2_9">
+        <source>Edit</source>
+        <target approved="yes">Edit</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target approved="yes">File saved to '%s', bytes: %s, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3">
+        <source>CACHE</source>
+        <target approved="yes">CACHE</target>
+      </trans-unit>
+      <trans-unit id="action_3_1">
+        <source>Clear Cache</source>
+        <target approved="yes">Clear Cache</target>
+      </trans-unit>
+      <trans-unit id="type_254">
+        <source>SETTING</source>
+        <target approved="yes">SETTING</target>
+      </trans-unit>
+      <trans-unit id="action_254_1">
+        <source>Change</source>
+        <target approved="yes">Change</target>
+      </trans-unit>
+      <trans-unit id="type_255">
+        <source>LOGIN</source>
+        <target approved="yes">LOGIN</target>
+      </trans-unit>
+      <trans-unit id="action_255_1">
+        <source>LOGIN</source>
+        <target approved="yes">LOGIN</target>
+      </trans-unit>
+      <trans-unit id="action_255_2">
+        <source>LOGOUT</source>
+        <target approved="yes">LOGOUT</target>
+      </trans-unit>
+      <trans-unit id="action_255_3">
+        <source>ATTEMPT</source>
+        <target approved="yes">ATTEMPT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

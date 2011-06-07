@@ -1,0 +1,1388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:10 UTC 2011" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0">
+        <source>Header</source>
+        <target approved="yes">Header</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1">
+        <source>Text</source>
+        <target approved="yes">Text</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2">
+        <source>Text &amp; Images</source>
+        <target approved="yes">Text &amp; Images</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3">
+        <source>Images</source>
+        <target approved="yes">Images</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4">
+        <source>Bullet List</source>
+        <target approved="yes">Bullet List</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5">
+        <source>Table</source>
+        <target approved="yes">Table</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6">
+        <source>File Links</source>
+        <target approved="yes">File Links</target>
+      </trans-unit>
+      <trans-unit id="CType.I.7">
+        <source>Multimedia</source>
+        <target approved="yes">Multimedia</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8">
+        <source>Form</source>
+        <target approved="yes">Form</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11">
+        <source>Textbox</source>
+        <target approved="yes">Textbox</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12">
+        <source>Menu/Sitemap</source>
+        <target approved="yes">Menu/Sitemap</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13">
+        <source>Insert Records</source>
+        <target approved="yes">Insert Records</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14">
+        <source>Insert Plugin</source>
+        <target approved="yes">Insert Plugin</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15">
+        <source>Script</source>
+        <target approved="yes">Script</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16">
+        <source>Divider</source>
+        <target approved="yes">Divider</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17">
+        <source>HTML</source>
+        <target approved="yes">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.I.18">
+        <source>Media</source>
+        <target approved="yes">Media</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard">
+        <source>Standard</source>
+        <target approved="yes">Standard</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists">
+        <source>Lists</source>
+        <target approved="yes">Lists</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms">
+        <source>Forms</source>
+        <target approved="yes">Forms</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special">
+        <source>Special</source>
+        <target approved="yes">Special</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1">
+        <source>Layout 1</source>
+        <target approved="yes">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2">
+        <source>Layout 2</source>
+        <target approved="yes">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3">
+        <source>Layout 3</source>
+        <target approved="yes">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="colPos">
+        <source>Columns:</source>
+        <target approved="yes">Columns:</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel">
+        <source>Column</source>
+        <target approved="yes">Column</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3">
+        <source>Border</source>
+        <target approved="yes">Border</target>
+      </trans-unit>
+      <trans-unit id="date">
+        <source>Date</source>
+        <target approved="yes">Date</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel">
+        <source>Date</source>
+        <target approved="yes">Date</target>
+      </trans-unit>
+      <trans-unit id="header">
+        <source>Header:</source>
+        <target approved="yes">Header:</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel">
+        <source>Header</source>
+        <target approved="yes">Header</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target approved="yes">Name (not visible in frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target approved="yes">Name (not visible in frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target approved="yes">Name (not visible in frontend)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target approved="yes">Name (not visible in frontend)</target>
+      </trans-unit>
+      <trans-unit id="header_position">
+        <source>Align:</source>
+        <target approved="yes">Align:</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel">
+        <source>Alignment</source>
+        <target approved="yes">Alignment</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1">
+        <source>Center</source>
+        <target approved="yes">Center</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="header_link">
+        <source>Link:</source>
+        <target approved="yes">Link:</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel">
+        <source>Link</source>
+        <target approved="yes">Link</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1">
+        <source>Layout 1</source>
+        <target approved="yes">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2">
+        <source>Layout 2</source>
+        <target approved="yes">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3">
+        <source>Layout 3</source>
+        <target approved="yes">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4">
+        <source>Layout 4</source>
+        <target approved="yes">Layout 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5">
+        <source>Layout 5</source>
+        <target approved="yes">Layout 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6">
+        <source>Hidden</source>
+        <target approved="yes">Hidden</target>
+      </trans-unit>
+      <trans-unit id="text_align">
+        <source>Align:</source>
+        <target approved="yes">Align:</target>
+      </trans-unit>
+      <trans-unit id="text_align_formlabel">
+        <source>Text Alignment</source>
+        <target approved="yes">Text Alignment</target>
+      </trans-unit>
+      <trans-unit id="text_align.I.1">
+        <source>Center</source>
+        <target approved="yes">Center</target>
+      </trans-unit>
+      <trans-unit id="text_align.I.2">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="text_align.I.3">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="text_face">
+        <source>Fontface:</source>
+        <target approved="yes">Fontface:</target>
+      </trans-unit>
+      <trans-unit id="text_face_formlabel">
+        <source>Text Face</source>
+        <target approved="yes">Text Face</target>
+      </trans-unit>
+      <trans-unit id="text_size">
+        <source>Size:</source>
+        <target approved="yes">Size:</target>
+      </trans-unit>
+      <trans-unit id="text_size_formlabel">
+        <source>Text Size</source>
+        <target approved="yes">Text Size</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.1">
+        <source>1: Small</source>
+        <target approved="yes">1: Small</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.2">
+        <source>2: Medium</source>
+        <target approved="yes">2: Medium</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.3">
+        <source>3: Large</source>
+        <target approved="yes">3: Large</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.4">
+        <source>4: Header 1</source>
+        <target approved="yes">4: Header 1</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.5">
+        <source>5: Header 2</source>
+        <target approved="yes">5: Header 2</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.6">
+        <source>Default +1</source>
+        <target approved="yes">Default +1</target>
+      </trans-unit>
+      <trans-unit id="text_size.I.7">
+        <source>Default -1</source>
+        <target approved="yes">Default -1</target>
+      </trans-unit>
+      <trans-unit id="text_color">
+        <source>Color:</source>
+        <target approved="yes">Color:</target>
+      </trans-unit>
+      <trans-unit id="text_color_formlabel">
+        <source>Text Color</source>
+        <target approved="yes">Text Color</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.1">
+        <source>Color 1</source>
+        <target approved="yes">Color 1</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.2">
+        <source>Color 2</source>
+        <target approved="yes">Color 2</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.3">
+        <source>None</source>
+        <target approved="yes">None</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.5">
+        <source>Black</source>
+        <target approved="yes">Black</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.6">
+        <source>White</source>
+        <target approved="yes">White</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.7">
+        <source>Dark Gray</source>
+        <target approved="yes">Dark Gray</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.8">
+        <source>Gray</source>
+        <target approved="yes">Gray</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.9">
+        <source>Silver</source>
+        <target approved="yes">Silver</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.10">
+        <source>Red</source>
+        <target approved="yes">Red</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.11">
+        <source>Navy Blue</source>
+        <target approved="yes">Navy Blue</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.12">
+        <source>Yellow</source>
+        <target approved="yes">Yellow</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.13">
+        <source>Green</source>
+        <target approved="yes">Green</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.14">
+        <source>Olive</source>
+        <target approved="yes">Olive</target>
+      </trans-unit>
+      <trans-unit id="text_color.I.15">
+        <source>Maroon</source>
+        <target approved="yes">Maroon</target>
+      </trans-unit>
+      <trans-unit id="text_properties">
+        <source>Properties:</source>
+        <target approved="yes">Properties:</target>
+      </trans-unit>
+      <trans-unit id="text_properties_formlabel">
+        <source>Text Decoration</source>
+        <target approved="yes">Text Decoration</target>
+      </trans-unit>
+      <trans-unit id="text_properties.I.0">
+        <source>Bold</source>
+        <target approved="yes">Bold</target>
+      </trans-unit>
+      <trans-unit id="text_properties.I.1">
+        <source>Italics</source>
+        <target approved="yes">Italics</target>
+      </trans-unit>
+      <trans-unit id="text_properties.I.2">
+        <source>Underline</source>
+        <target approved="yes">Underline</target>
+      </trans-unit>
+      <trans-unit id="text_properties.I.3">
+        <source>Uppercase</source>
+        <target approved="yes">Uppercase</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.RTE">
+        <source>Fullscreen Rich Text Editing</source>
+        <target approved="yes">Fullscreen Rich Text Editing</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.table">
+        <source>Table Wizard</source>
+        <target approved="yes">Table Wizard</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms">
+        <source>Forms wizard</source>
+        <target approved="yes">Forms wizard</target>
+      </trans-unit>
+      <trans-unit id="imagewidth">
+        <source>Width (pixels):</source>
+        <target approved="yes">Width (pixels):</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel">
+        <source>Width (px)</source>
+        <target approved="yes">Width (px)</target>
+      </trans-unit>
+      <trans-unit id="imageheight">
+        <source>Height (pixels):</source>
+        <target approved="yes">Height (pixels):</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel">
+        <source>Height (px)</source>
+        <target approved="yes">Height (px)</target>
+      </trans-unit>
+      <trans-unit id="imageorient">
+        <source>Position:</source>
+        <target approved="yes">Position:</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel">
+        <source>Position and Alignment</source>
+        <target approved="yes">Position and Alignment</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0">
+        <source>Above, center</source>
+        <target approved="yes">Above, center</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1">
+        <source>Above, right</source>
+        <target approved="yes">Above, right</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2">
+        <source>Above, left</source>
+        <target approved="yes">Above, left</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3">
+        <source>Below, center</source>
+        <target approved="yes">Below, center</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4">
+        <source>Below, right</source>
+        <target approved="yes">Below, right</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5">
+        <source>Below, left</source>
+        <target approved="yes">Below, left</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6">
+        <source>In text, right</source>
+        <target approved="yes">In text, right</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7">
+        <source>In text, left</source>
+        <target approved="yes">In text, left</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8">
+        <source>__No wrap:__</source>
+        <target approved="yes">__No wrap:__</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9">
+        <source>Beside Text, Right</source>
+        <target approved="yes">Beside Text, Right</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10">
+        <source>Beside Text, Left</source>
+        <target approved="yes">Beside Text, Left</target>
+      </trans-unit>
+      <trans-unit id="imageborder">
+        <source>Border:</source>
+        <target approved="yes">Border:</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel">
+        <source>Border</source>
+        <target approved="yes">Border</target>
+      </trans-unit>
+      <trans-unit id="image_noRows">
+        <source>No Rows:</source>
+        <target approved="yes">No Rows:</target>
+      </trans-unit>
+      <trans-unit id="image_noRows_formlabel">
+        <source>Horizontal Rows</source>
+        <target approved="yes">Horizontal Rows</target>
+      </trans-unit>
+      <trans-unit id="image_noRows.I.0">
+        <source>Deactivate</source>
+        <target approved="yes">Deactivate</target>
+      </trans-unit>
+      <trans-unit id="image_noRows_formlabel">
+        <source>Display as Rows</source>
+        <target approved="yes">Display as Rows</target>
+      </trans-unit>
+      <trans-unit id="image_link">
+        <source>Link:</source>
+        <target approved="yes">Link:</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel">
+        <source>Links (one per line, one link per image)</source>
+        <target approved="yes">Links (one per line, one link per image)</target>
+      </trans-unit>
+      <trans-unit id="image_zoom">
+        <source>Click-enlarge:</source>
+        <target approved="yes">Click-enlarge:</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel">
+        <source>Enlarge on Click</source>
+        <target approved="yes">Enlarge on Click</target>
+      </trans-unit>
+      <trans-unit id="image_effects">
+        <source>Effects:</source>
+        <target approved="yes">Effects:</target>
+      </trans-unit>
+      <trans-unit id="image_effects_formlabel">
+        <source>Effect</source>
+        <target approved="yes">Effect</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.0">
+        <source>None</source>
+        <target approved="yes">None</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.1">
+        <source>Rotate 90 CW</source>
+        <target approved="yes">Rotate 90 CW</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.2">
+        <source>Rotate -90 CCW</source>
+        <target approved="yes">Rotate -90 CCW</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.3">
+        <source>Rotate 180</source>
+        <target approved="yes">Rotate 180</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.4">
+        <source>Grayscale</source>
+        <target approved="yes">Grayscale</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.5">
+        <source>Sharpen</source>
+        <target approved="yes">Sharpen</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.6">
+        <source>Normalize</source>
+        <target approved="yes">Normalize</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.7">
+        <source>Contrast</source>
+        <target approved="yes">Contrast</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.8">
+        <source>Brighter</source>
+        <target approved="yes">Brighter</target>
+      </trans-unit>
+      <trans-unit id="image_effects.I.9">
+        <source>Darker</source>
+        <target approved="yes">Darker</target>
+      </trans-unit>
+      <trans-unit id="image_frames">
+        <source>Frames:</source>
+        <target approved="yes">Frames:</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel">
+        <source>Graphical Frames</source>
+        <target approved="yes">Graphical Frames</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0">
+        <source>(None)</source>
+        <target approved="yes">(None)</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1">
+        <source>Frame 1</source>
+        <target approved="yes">Frame 1</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2">
+        <source>Frame 2</source>
+        <target approved="yes">Frame 2</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3">
+        <source>Frame 3</source>
+        <target approved="yes">Frame 3</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4">
+        <source>Frame 4</source>
+        <target approved="yes">Frame 4</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5">
+        <source>Frame 5</source>
+        <target approved="yes">Frame 5</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6">
+        <source>Frame 6</source>
+        <target approved="yes">Frame 6</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7">
+        <source>Frame 7</source>
+        <target approved="yes">Frame 7</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8">
+        <source>Frame 8</source>
+        <target approved="yes">Frame 8</target>
+      </trans-unit>
+      <trans-unit id="image_compression">
+        <source>Image Quality/Processing:</source>
+        <target approved="yes">Image Quality/Processing:</target>
+      </trans-unit>
+      <trans-unit id="image_compression_formlabel">
+        <source>Quality and Type</source>
+        <target approved="yes">Quality and Type</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.1">
+        <source>None (ignores all other options)</source>
+        <target approved="yes">None (ignores all other options)</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.15">
+        <source>JPG/Very High</source>
+        <target approved="yes">JPG/Very High</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.16">
+        <source>JPG/High</source>
+        <target approved="yes">JPG/High</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.17">
+        <source>JPG/Medium</source>
+        <target approved="yes">JPG/Medium</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.18">
+        <source>JPG/Low</source>
+        <target approved="yes">JPG/Low</target>
+      </trans-unit>
+      <trans-unit id="image_compression.I.19">
+        <source>JPG/Very Low</source>
+        <target approved="yes">JPG/Very Low</target>
+      </trans-unit>
+      <trans-unit id="imagecols">
+        <source>Columns:</source>
+        <target approved="yes">Columns:</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel">
+        <source>Number of Columns</source>
+        <target approved="yes">Number of Columns</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_position">
+        <source>Align:</source>
+        <target approved="yes">Align:</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_position_formlabel">
+        <source>Caption Alignment</source>
+        <target approved="yes">Caption Alignment</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_position.I.1">
+        <source>Center</source>
+        <target approved="yes">Center</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_position.I.2">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_position.I.3">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="image_altText">
+        <source>Alternative Text:</source>
+        <target approved="yes">Alternative Text:</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel">
+        <source>Alternative Labels (one per line)</source>
+        <target approved="yes">Alternative Labels (one per line)</target>
+      </trans-unit>
+      <trans-unit id="image_titleText">
+        <source>Title Text:</source>
+        <target approved="yes">Title Text:</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel">
+        <source>Titles (one per line)</source>
+        <target approved="yes">Titles (one per line)</target>
+      </trans-unit>
+      <trans-unit id="image_longdescURL">
+        <source>Long Description URL:</source>
+        <target approved="yes">Long Description URL:</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel">
+        <source>Long Description URLs (one per line)</source>
+        <target approved="yes">Long Description URLs (one per line)</target>
+      </trans-unit>
+      <trans-unit id="cols">
+        <source>Columns</source>
+        <target approved="yes">Columns</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0">
+        <source>Auto</source>
+        <target approved="yes">Auto</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0">
+        <source>0 levels (only selected page)</source>
+        <target approved="yes">0 levels (only selected page)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1">
+        <source>1 level</source>
+        <target approved="yes">1 level</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2">
+        <source>2 levels</source>
+        <target approved="yes">2 levels</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3">
+        <source>3 levels</source>
+        <target approved="yes">3 levels</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4">
+        <source>4 levels</source>
+        <target approved="yes">4 levels</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5">
+        <source>Infinite</source>
+        <target approved="yes">Infinite</target>
+      </trans-unit>
+      <trans-unit id="menu_type">
+        <source>Menu Type</source>
+        <target approved="yes">Menu Type</target>
+      </trans-unit>
+      <trans-unit id="menu_type_formlabel">
+        <source>Menu Type</source>
+        <target approved="yes">Menu Type</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.0">
+        <source>Menu of selected pages</source>
+        <target approved="yes">Menu of selected pages</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.1">
+        <source>Menu of subpages of selected pages</source>
+        <target approved="yes">Menu of subpages of selected pages</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.2">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target approved="yes">Menu of subpages of selected pages including abstracts</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.3">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target approved="yes">Menu of subpages of selected pages including sections</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.4">
+        <source>Sitemap</source>
+        <target approved="yes">Sitemap</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.5">
+        <source>Section index (page content marked for section menus)</source>
+        <target approved="yes">Section index (page content marked for section menus)</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.6">
+        <source>Recently updated pages</source>
+        <target approved="yes">Recently updated pages</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.7">
+        <source>Related pages (based on keywords)</source>
+        <target approved="yes">Related pages (based on keywords)</target>
+      </trans-unit>
+      <trans-unit id="list_type">
+        <source>Plugin:</source>
+        <target approved="yes">Plugin:</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel">
+        <source>Selected Plugin</source>
+        <target approved="yes">Selected Plugin</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor">
+        <source>Backgr. Color:</source>
+        <target approved="yes">Backgr. Color:</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor_formlabel">
+        <source>Background color</source>
+        <target approved="yes">Background color</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.1">
+        <source>Color 1</source>
+        <target approved="yes">Color 1</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.2">
+        <source>Color 2</source>
+        <target approved="yes">Color 2</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.3">
+        <source>None</source>
+        <target approved="yes">None</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.5">
+        <source>Black</source>
+        <target approved="yes">Black</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.6">
+        <source>White</source>
+        <target approved="yes">White</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.7">
+        <source>Dark Gray</source>
+        <target approved="yes">Dark Gray</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.8">
+        <source>Gray</source>
+        <target approved="yes">Gray</target>
+      </trans-unit>
+      <trans-unit id="table_bgColor.I.9">
+        <source>Silver</source>
+        <target approved="yes">Silver</target>
+      </trans-unit>
+      <trans-unit id="table_border">
+        <source>Border:</source>
+        <target approved="yes">Border:</target>
+      </trans-unit>
+      <trans-unit id="table_border_formlabel">
+        <source>Border Size (px)</source>
+        <target approved="yes">Border Size (px)</target>
+      </trans-unit>
+      <trans-unit id="table_cellspacing">
+        <source>Cellspacing:</source>
+        <target approved="yes">Cellspacing:</target>
+      </trans-unit>
+      <trans-unit id="table_cellspacing_formlabel">
+        <source>Cellspacing (px)</source>
+        <target approved="yes">Cellspacing (px)</target>
+      </trans-unit>
+      <trans-unit id="table_cellpadding">
+        <source>Cellpadding:</source>
+        <target approved="yes">Cellpadding:</target>
+      </trans-unit>
+      <trans-unit id="table_cellpadding_formlabel">
+        <source>Cellpadding (px)</source>
+        <target approved="yes">Cellpadding (px)</target>
+      </trans-unit>
+      <trans-unit id="media">
+        <source>Files</source>
+        <target approved="yes">Files</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel">
+        <source>Select Files</source>
+        <target approved="yes">Select Files</target>
+      </trans-unit>
+      <trans-unit id="multimedia">
+        <source>File:</source>
+        <target approved="yes">File:</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel">
+        <source>Selected Media File</source>
+        <target approved="yes">Selected Media File</target>
+      </trans-unit>
+      <trans-unit id="filelink_size">
+        <source>Show File Size:</source>
+        <target approved="yes">Show File Size:</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel">
+        <source>Display File Size Information</source>
+        <target approved="yes">Display File Size Information</target>
+      </trans-unit>
+      <trans-unit id="records">
+        <source>Items:</source>
+        <target approved="yes">Items:</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel">
+        <source>Records</source>
+        <target approved="yes">Records</target>
+      </trans-unit>
+      <trans-unit id="spaceBefore">
+        <source>Before:</source>
+        <target approved="yes">Before:</target>
+      </trans-unit>
+      <trans-unit id="spaceBefore_formlabel">
+        <source>Top Margin</source>
+        <target approved="yes">Top Margin</target>
+      </trans-unit>
+      <trans-unit id="spaceAfter">
+        <source>After:</source>
+        <target approved="yes">After:</target>
+      </trans-unit>
+      <trans-unit id="spaceAfter_formlabel">
+        <source>Bottom Margin</source>
+        <target approved="yes">Bottom Margin</target>
+      </trans-unit>
+      <trans-unit id="section_frame">
+        <source>Frame:</source>
+        <target approved="yes">Frame:</target>
+      </trans-unit>
+      <trans-unit id="section_frame_formlabel">
+        <source>Indentation and Frames</source>
+        <target approved="yes">Indentation and Frames</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.1">
+        <source>Invisible</source>
+        <target approved="yes">Invisible</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.2">
+        <source>Ruler Before</source>
+        <target approved="yes">Ruler Before</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.3">
+        <source>Ruler After</source>
+        <target approved="yes">Ruler After</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.4">
+        <source>Indent</source>
+        <target approved="yes">Indent</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.5">
+        <source>Indent, 33/66%</source>
+        <target approved="yes">Indent, 33/66%</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.6">
+        <source>Indent, 66/33%</source>
+        <target approved="yes">Indent, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.7">
+        <source>Frame 1</source>
+        <target approved="yes">Frame 1</target>
+      </trans-unit>
+      <trans-unit id="section_frame.I.8">
+        <source>Frame 2</source>
+        <target approved="yes">Frame 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout">
+        <source>Textbox Type:</source>
+        <target approved="yes">Textbox Type:</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1">
+        <source>Image Shadow</source>
+        <target approved="yes">Image Shadow</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2">
+        <source>Image Frame 1</source>
+        <target approved="yes">Image Frame 1</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3">
+        <source>Image Frame 2</source>
+        <target approved="yes">Image Frame 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4">
+        <source>__Graphical:__</source>
+        <target approved="yes">__Graphical:__</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5">
+        <source>Postit 1</source>
+        <target approved="yes">Postit 1</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex">
+        <source>Index:</source>
+        <target approved="yes">Index:</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel">
+        <source>Show in Section Menus</source>
+        <target approved="yes">Show in Section Menus</target>
+      </trans-unit>
+      <trans-unit id="linkToTop">
+        <source>To top:</source>
+        <target approved="yes">To top:</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel">
+        <source>Append with Link to Top of Page</source>
+        <target approved="yes">Append with Link to Top of Page</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled">
+        <source>Disable Rich Text Editor:</source>
+        <target approved="yes">Disable Rich Text Editor:</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel">
+        <source>Rich Text Editor</source>
+        <target approved="yes">Rich Text Editor</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0">
+        <source>Disable</source>
+        <target approved="yes">Disable</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform">
+        <source>Plugin Options</source>
+        <target approved="yes">Plugin Options</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions">
+        <source>Image Options</source>
+        <target approved="yes">Image Options</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks">
+        <source>Image Links</source>
+        <target approved="yes">Image Links</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions">
+        <source>Image Dimensions</source>
+        <target approved="yes">Image Dimensions</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel">
+        <source>Plugin Mode</source>
+        <target approved="yes">Plugin Mode</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads">
+        <source>Read from Path:</source>
+        <target approved="yes">Read from Path:</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel">
+        <source>Path</source>
+        <target approved="yes">Path</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel">
+        <source>PHP Code</source>
+        <target approved="yes">PHP Code</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads">
+        <source>Descriptions:</source>
+        <target approved="yes">Descriptions:</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel">
+        <source>File Descriptions (one per line)</source>
+        <target approved="yes">File Descriptions (one per line)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script">
+        <source>Comments:</source>
+        <target approved="yes">Comments:</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform">
+        <source>Configuration:</source>
+        <target approved="yes">Configuration:</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel">
+        <source>Form Structure</source>
+        <target approved="yes">Form Structure</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform">
+        <source>Target Page</source>
+        <target approved="yes">Target Page</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform">
+        <source>Target page</source>
+        <target approved="yes">Target page</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target approved="yes">Selected pages: Target (1st), Frontend user container (2nd)</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.search">
+        <source>Send to Page:</source>
+        <target approved="yes">Send to Page:</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.login">
+        <source>Send to Page:</source>
+        <target approved="yes">Send to Page:</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel">
+        <source>Selected Pages</source>
+        <target approved="yes">Selected Pages</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel">
+        <source>Record Storage Page</source>
+        <target approved="yes">Record Storage Page</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel">
+        <source>Starting Point for This Script</source>
+        <target approved="yes">Starting Point for This Script</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform">
+        <source>Recipient Email:</source>
+        <target approved="yes">Recipient Email:</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform_formlabel">
+        <source>Recipient Email</source>
+        <target approved="yes">Recipient Email</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html">
+        <source>HTML:</source>
+        <target approved="yes">HTML:</target>
+      </trans-unit>
+      <trans-unit id="tabs.text">
+        <source>Text</source>
+        <target approved="yes">Text</target>
+      </trans-unit>
+      <trans-unit id="tabs.media">
+        <source>Media</source>
+        <target approved="yes">Media</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin">
+        <source>Plugin</source>
+        <target approved="yes">Plugin</target>
+      </trans-unit>
+      <trans-unit id="media.options">
+        <source>Media Options</source>
+        <target approved="yes">Media Options</target>
+      </trans-unit>
+      <trans-unit id="media.url">
+        <source>Path or URL</source>
+        <target approved="yes">Path or URL</target>
+      </trans-unit>
+      <trans-unit id="media.browseUrlTitle">
+        <source>Select File or URL</source>
+        <target approved="yes">Select File or URL</target>
+      </trans-unit>
+      <trans-unit id="media.width">
+        <source>Media Width</source>
+        <target approved="yes">Media Width</target>
+      </trans-unit>
+      <trans-unit id="media.height">
+        <source>Media Height</source>
+        <target approved="yes">Media Height</target>
+      </trans-unit>
+      <trans-unit id="media.forcePlayer">
+        <source>Use Player (Flash only)</source>
+        <target approved="yes">Use Player (Flash only)</target>
+      </trans-unit>
+      <trans-unit id="media.type">
+        <source>Media Type</source>
+        <target approved="yes">Media Type</target>
+      </trans-unit>
+      <trans-unit id="media.type.video">
+        <source>Video</source>
+        <target approved="yes">Video</target>
+      </trans-unit>
+      <trans-unit id="media.type.audio">
+        <source>Audio</source>
+        <target approved="yes">Audio</target>
+      </trans-unit>
+      <trans-unit id="media.renderType">
+        <source>Render Type</source>
+        <target approved="yes">Render Type</target>
+      </trans-unit>
+      <trans-unit id="media.renderType.auto">
+        <source>Auto</source>
+        <target approved="yes">Auto</target>
+      </trans-unit>
+      <trans-unit id="media.renderType.swf">
+        <source>Flash Browser Plugin</source>
+        <target approved="yes">Flash Browser Plugin</target>
+      </trans-unit>
+      <trans-unit id="media.renderType.qt">
+        <source>QuickTime Browser Plugin</source>
+        <target approved="yes">QuickTime Browser Plugin</target>
+      </trans-unit>
+      <trans-unit id="media.renderType.embed">
+        <source>Native HTML Embed Element</source>
+        <target approved="yes">Native HTML Embed Element</target>
+      </trans-unit>
+      <trans-unit id="media.additionalOptions">
+        <source>Additional Parameters</source>
+        <target approved="yes">Additional Parameters</target>
+      </trans-unit>
+      <trans-unit id="media.params">
+        <source>Media Parameter</source>
+        <target approved="yes">Media Parameter</target>
+      </trans-unit>
+      <trans-unit id="media.params.option">
+        <source>Option</source>
+        <target approved="yes">Option</target>
+      </trans-unit>
+      <trans-unit id="media.params.setTo">
+        <source>Set to</source>
+        <target approved="yes">Set to</target>
+      </trans-unit>
+      <trans-unit id="media.params.on">
+        <source>On</source>
+        <target approved="yes">On</target>
+      </trans-unit>
+      <trans-unit id="media.params.off">
+        <source>Off</source>
+        <target approved="yes">Off</target>
+      </trans-unit>
+      <trans-unit id="media.params.valueEntry">
+        <source>Value Entry</source>
+        <target approved="yes">Value Entry</target>
+      </trans-unit>
+      <trans-unit id="media.params.value">
+        <source>Value</source>
+        <target approved="yes">Value</target>
+      </trans-unit>
+      <trans-unit id="media.params.autoPlay">
+        <source>AutoPlay</source>
+        <target approved="yes">AutoPlay</target>
+      </trans-unit>
+      <trans-unit id="media.params.loop">
+        <source>Loop</source>
+        <target approved="yes">Loop</target>
+      </trans-unit>
+      <trans-unit id="media.params.quality">
+        <source>Quality</source>
+        <target approved="yes">Quality</target>
+      </trans-unit>
+      <trans-unit id="media.params.preview">
+        <source>Preview Video</source>
+        <target approved="yes">Preview Video</target>
+      </trans-unit>
+      <trans-unit id="media.params.bgColor">
+        <source>Background Color</source>
+        <target approved="yes">Background Color</target>
+      </trans-unit>
+      <trans-unit id="media.params.allowScriptAccess">
+        <source>Allow ScriptAccess</source>
+        <target approved="yes">Allow ScriptAccess</target>
+      </trans-unit>
+      <trans-unit id="media.params.allowFullScreen">
+        <source>Allow Fullscreen</source>
+        <target approved="yes">Allow Fullscreen</target>
+      </trans-unit>
+      <trans-unit id="media.alternativeContent">
+        <source>Alternative Content</source>
+        <target approved="yes">Alternative Content</target>
+      </trans-unit>
+      <trans-unit id="media.params.customEntry">
+        <source>Custom Parameters</source>
+        <target approved="yes">Custom Parameters</target>
+      </trans-unit>
+      <trans-unit id="media.params.customEntryLabel">
+        <source>Enter flashvars, params or attributes</source>
+        <target approved="yes">Enter flashvars, params or attributes</target>
+      </trans-unit>
+      <trans-unit id="media.noFile">
+        <source>ERROR: Missing URL or File!</source>
+        <target approved="yes">ERROR: Missing URL or File!</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel">
+        <source>Language</source>
+        <target approved="yes">Language</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel">
+        <source>Subheader</source>
+        <target approved="yes">Subheader</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel">
+        <source>Content Element</source>
+        <target approved="yes">Content Element</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0">
+        <source>Disable</source>
+        <target approved="yes">Disable</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel">
+        <source>Publish Date</source>
+        <target approved="yes">Publish Date</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel">
+        <source>Expiration Date</source>
+        <target approved="yes">Expiration Date</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel">
+        <source>Usergroup Access Rights</source>
+        <target approved="yes">Usergroup Access Rights</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel">
+        <source>Layout</source>
+        <target approved="yes">Layout</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel">
+        <source>Text</source>
+        <target approved="yes">Text</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel">
+        <source>Bullet List</source>
+        <target approved="yes">Bullet List</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel">
+        <source>Table Structure</source>
+        <target approved="yes">Table Structure</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel">
+        <source>Alternative Content</source>
+        <target approved="yes">Alternative Content</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.multimedia_formlabel">
+        <source>Parameters</source>
+        <target approved="yes">Parameters</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel">
+        <source>Text</source>
+        <target approved="yes">Text</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel">
+        <source>Parameters to pass to the script</source>
+        <target approved="yes">Parameters to pass to the script</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel">
+        <source>HTML Code</source>
+        <target approved="yes">HTML Code</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel">
+        <source>Images</source>
+        <target approved="yes">Images</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel">
+        <source>Image Files</source>
+        <target approved="yes">Image Files</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel">
+        <source>Captions (one per line)</source>
+        <target approved="yes">Captions (one per line)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script_formlabel">
+        <source>Comments</source>
+        <target approved="yes">Comments</target>
+      </trans-unit>
+      <trans-unit id="palette.general">
+        <source>Content Element</source>
+        <target approved="yes">Content Element</target>
+      </trans-unit>
+      <trans-unit id="palette.headers">
+        <source>Headlines</source>
+        <target approved="yes">Headlines</target>
+      </trans-unit>
+      <trans-unit id="palette.header">
+        <source>Header</source>
+        <target approved="yes">Header</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility">
+        <source>Visibility</source>
+        <target approved="yes">Visibility</target>
+      </trans-unit>
+      <trans-unit id="palette.access">
+        <source>Publish Dates and Access Rights</source>
+        <target approved="yes">Publish Dates and Access Rights</target>
+      </trans-unit>
+      <trans-unit id="palette.frames">
+        <source>Content Element Layout</source>
+        <target approved="yes">Content Element Layout</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout">
+        <source>Text Layout</source>
+        <target approved="yes">Text Layout</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles">
+        <source>Images and Captions</source>
+        <target approved="yes">Images and Captions</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks">
+        <source>Behavior</source>
+        <target approved="yes">Behavior</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility">
+        <source>Accessibility</source>
+        <target approved="yes">Accessibility</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings">
+        <source>Image Adjustments</source>
+        <target approved="yes">Image Adjustments</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock">
+        <source>Image Alignment</source>
+        <target approved="yes">Image Alignment</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform">
+        <source>Target and Recipient</source>
+        <target approved="yes">Target and Recipient</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform">
+        <source>Search Results</source>
+        <target approved="yes">Search Results</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform">
+        <source>Redirect Target and Frontend User Container</source>
+        <target approved="yes">Redirect Target and Frontend User Container</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles">
+        <source>Media Files and Parameters</source>
+        <target approved="yes">Media Files and Parameters</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox">
+        <source>Render Text into Images</source>
+        <target approved="yes">Render Text into Images</target>
+      </trans-unit>
+      <trans-unit id="palette.menu">
+        <source>Menu and Sitemap</source>
+        <target approved="yes">Menu and Sitemap</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout">
+        <source>Filelinks Layout</source>
+        <target approved="yes">Filelinks Layout</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout">
+        <source>Table Layout</source>
+        <target approved="yes">Table Layout</target>
+      </trans-unit>
+      <trans-unit id="tabs.access">
+        <source>Access</source>
+        <target approved="yes">Access</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance">
+        <source>Appearance</source>
+        <target approved="yes">Appearance</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour">
+        <source>Behaviour</source>
+        <target approved="yes">Behaviour</target>
+      </trans-unit>
+      <trans-unit id="tabs.script">
+        <source>Script</source>
+        <target approved="yes">Script</target>
+      </trans-unit>
+      <trans-unit id="tabs.media">
+        <source>Media</source>
+        <target approved="yes">Media</target>
+      </trans-unit>
+      <trans-unit id="tabs.images">
+        <source>Images</source>
+        <target approved="yes">Images</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended">
+        <source>Extended</source>
+        <target approved="yes">Extended</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

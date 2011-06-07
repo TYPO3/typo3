@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="frame-frame1">
+        <source>Frame with grey background</source>
+        <target approved="yes">Frame with grey background</target>
+      </trans-unit>
+      <trans-unit id="frame-frame2">
+        <source>Frame with yellow background</source>
+        <target approved="yes">Frame with yellow background</target>
+      </trans-unit>
+      <trans-unit id="important">
+        <source>Important</source>
+        <target approved="yes">Important</target>
+      </trans-unit>
+      <trans-unit id="name-of-person">
+        <source>Name of person</source>
+        <target approved="yes">Name of person</target>
+      </trans-unit>
+      <trans-unit id="detail">
+        <source>Detail</source>
+        <target approved="yes">Detail</target>
+      </trans-unit>
+      <trans-unit id="component-items">
+        <source>Component items</source>
+        <target approved="yes">Component items</target>
+      </trans-unit>
+      <trans-unit id="action-items">
+        <source>Action items</source>
+        <target approved="yes">Action items</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

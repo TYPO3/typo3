@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="about">
+        <source>About</source>
+        <target approved="yes">About</target>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>and</source>
+        <target approved="yes">and</target>
+      </trans-unit>
+      <trans-unit id="ascending">
+        <source>Ascending</source>
+        <target approved="yes">Ascending</target>
+      </trans-unit>
+      <trans-unit id="back">
+        <source>Back</source>
+        <target approved="yes">Back</target>
+      </trans-unit>
+      <trans-unit id="byteSizeUnits">
+        <source> B| KB| MB| GB</source>
+        <target approved="yes"> B| KB| MB| GB</target>
+      </trans-unit>
+      <trans-unit id="cancel">
+        <source>Cancel</source>
+        <target approved="yes">Cancel</target>
+      </trans-unit>
+      <trans-unit id="category">
+        <source>Category</source>
+        <target approved="yes">Category</target>
+      </trans-unit>
+      <trans-unit id="close">
+        <source>Close</source>
+        <target approved="yes">Close</target>
+      </trans-unit>
+      <trans-unit id="delete">
+        <source>Delete</source>
+        <target approved="yes">Delete</target>
+      </trans-unit>
+      <trans-unit id="descending">
+        <source>Descending</source>
+        <target approved="yes">Descending</target>
+      </trans-unit>
+      <trans-unit id="details">
+        <source>Details</source>
+        <target approved="yes">Details</target>
+      </trans-unit>
+      <trans-unit id="disable">
+        <source>Disable</source>
+        <target approved="yes">Disable</target>
+      </trans-unit>
+      <trans-unit id="disabled">
+        <source>Disabled</source>
+        <target approved="yes">Disabled</target>
+      </trans-unit>
+      <trans-unit id="down">
+        <source>Down</source>
+        <target approved="yes">Down</target>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+        <target approved="yes">Download</target>
+      </trans-unit>
+      <trans-unit id="edit">
+        <source>Edit</source>
+        <target approved="yes">Edit</target>
+      </trans-unit>
+      <trans-unit id="editField">
+        <source>Edit field</source>
+        <target approved="yes">Edit field</target>
+      </trans-unit>
+      <trans-unit id="editFile">
+        <source>Edit file</source>
+        <target approved="yes">Edit file</target>
+      </trans-unit>
+      <trans-unit id="enable">
+        <source>Enable</source>
+        <target approved="yes">Enable</target>
+      </trans-unit>
+      <trans-unit id="enabled">
+        <source>Enabled</source>
+        <target approved="yes">Enabled</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File</source>
+        <target approved="yes">File</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>Files</source>
+        <target approved="yes">Files</target>
+      </trans-unit>
+      <trans-unit id="first">
+        <source>First</source>
+        <target approved="yes">First</target>
+      </trans-unit>
+      <trans-unit id="from">
+        <source>From</source>
+        <target approved="yes">From</target>
+      </trans-unit>
+      <trans-unit id="go">
+        <source>Go</source>
+        <target approved="yes">Go</target>
+      </trans-unit>
+      <trans-unit id="goTo">
+        <source>Go to</source>
+        <target approved="yes">Go to</target>
+      </trans-unit>
+      <trans-unit id="help">
+        <source>Help</source>
+        <target approved="yes">Help</target>
+      </trans-unit>
+      <trans-unit id="item">
+        <source>Item</source>
+        <target approved="yes">Item</target>
+      </trans-unit>
+      <trans-unit id="items">
+        <source>Items</source>
+        <target approved="yes">Items</target>
+      </trans-unit>
+      <trans-unit id="last">
+        <source>Last</source>
+        <target approved="yes">Last</target>
+      </trans-unit>
+      <trans-unit id="left">
+        <source>Left</source>
+        <target approved="yes">Left</target>
+      </trans-unit>
+      <trans-unit id="login">
+        <source>Login</source>
+        <target approved="yes">Login</target>
+      </trans-unit>
+      <trans-unit id="logout">
+        <source>Logout</source>
+        <target approved="yes">Logout</target>
+      </trans-unit>
+      <trans-unit id="more">
+        <source>More</source>
+        <target approved="yes">More</target>
+      </trans-unit>
+      <trans-unit id="move">
+        <source>Move</source>
+        <target approved="yes">Move</target>
+      </trans-unit>
+      <trans-unit id="new">
+        <source>New</source>
+        <target approved="yes">New</target>
+      </trans-unit>
+      <trans-unit id="next">
+        <source>Next</source>
+        <target approved="yes">Next</target>
+      </trans-unit>
+      <trans-unit id="no">
+        <source>No</source>
+        <target approved="yes">No</target>
+      </trans-unit>
+      <trans-unit id="ok">
+        <source>OK</source>
+        <target approved="yes">OK</target>
+      </trans-unit>
+      <trans-unit id="open">
+        <source>Open</source>
+        <target approved="yes">Open</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source>Page</source>
+        <target approved="yes">Page</target>
+      </trans-unit>
+      <trans-unit id="pages">
+        <source>Pages</source>
+        <target approved="yes">Pages</target>
+      </trans-unit>
+      <trans-unit id="previous">
+        <source>Previous</source>
+        <target approved="yes">Previous</target>
+      </trans-unit>
+      <trans-unit id="print">
+        <source>Print</source>
+        <target approved="yes">Print</target>
+      </trans-unit>
+      <trans-unit id="reload">
+        <source>Reload</source>
+        <target approved="yes">Reload</target>
+      </trans-unit>
+      <trans-unit id="right">
+        <source>Right</source>
+        <target approved="yes">Right</target>
+      </trans-unit>
+      <trans-unit id="save">
+        <source>Save</source>
+        <target approved="yes">Save</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose">
+        <source>Save and close</source>
+        <target approved="yes">Save and close</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc">
+        <source>Save and close document</source>
+        <target approved="yes">Save and close document</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc">
+        <source>Save and create new document</source>
+        <target approved="yes">Save and create new document</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage">
+        <source>Save and view page</source>
+        <target approved="yes">Save and view page</target>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search</source>
+        <target approved="yes">Search</target>
+      </trans-unit>
+      <trans-unit id="send">
+        <source>Send</source>
+        <target approved="yes">Send</target>
+      </trans-unit>
+      <trans-unit id="start">
+        <source>Start</source>
+        <target approved="yes">Start</target>
+      </trans-unit>
+      <trans-unit id="stop">
+        <source>Stop</source>
+        <target approved="yes">Stop</target>
+      </trans-unit>
+      <trans-unit id="submit">
+        <source>Submit</source>
+        <target approved="yes">Submit</target>
+      </trans-unit>
+      <trans-unit id="to">
+        <source>To</source>
+        <target approved="yes">To</target>
+      </trans-unit>
+      <trans-unit id="tsRef">
+        <source>TSref reference</source>
+        <target approved="yes">TSref reference</target>
+      </trans-unit>
+      <trans-unit id="up">
+        <source>Up</source>
+        <target approved="yes">Up</target>
+      </trans-unit>
+      <trans-unit id="upload">
+        <source>Upload</source>
+        <target approved="yes">Upload</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User</source>
+        <target approved="yes">User</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users</source>
+        <target approved="yes">Users</target>
+      </trans-unit>
+      <trans-unit id="view">
+        <source>View</source>
+        <target approved="yes">View</target>
+      </trans-unit>
+      <trans-unit id="yes">
+        <source>Yes</source>
+        <target approved="yes">Yes</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
