@@ -56,6 +56,16 @@ $TYPO3_CONF_VARS = array(
 		'png_truecolor' => FALSE,				// Boolean: If set PNGs will get created as truecolor PNGs. If you use GDlib2 you can create truecolor images if they look not well currently. Note that this results in an increased image size. JPEGs get always created in truecolor now (GDlib2 required)
 	),
 	'SYS' => array(			// System related concerning both frontend and backend.
+		'lang' => array(
+			'format' => array(
+				'priority' => 'xlf,xml,php'
+			),
+			'parser' => array(
+				'php' => 'tx_lang_LlphpParser',
+				'xml' => 'tx_lang_LlxmlParser',
+				'xlf' => 'tx_lang_XliffParser'
+			)
+		),
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
 		'compat_version' => '3.8',				// Compatibility version. TYPO3 behavior will try to be compatible with the output from the TYPO3 version set here. It is recommended to change this setting with the Upgrade Wizard.
 		'encryptionKey' => '',					// This is a "salt" used for various kinds of encryption, CRC checksums and validations. You can enter any rubbish string here but try to keep it secret. You should notice that a change to this value might invalidate temporary information, URLs etc. At least, clear all cache if you change this so any such information can be rebuild with the new key.
@@ -182,6 +192,9 @@ $TYPO3_CONF_VARS = array(
 		),
 	),
 	'BE' => array(		// Backend Configuration.
+		'lang' => array(
+			'degug' => FALSE,					// Debug LL in the backend
+		),
 		'unzip_path' => '',						// Path to "unzip".
 		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: <a href="http://unxutils.sourceforge.net/" target="_blank">unxutils.sourceforge.net</a>
 		'fileadminDir' => 'fileadmin/',			// Path to the fileadmin dir. This is relative to PATH_site. (Automatically mounted for admin-users if set)
