@@ -85,17 +85,17 @@ class Tx_Extbase_Utility_Localization {
 			self::initializeLocalization($extensionName);
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
-				$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key];
+				$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
 				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
 					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
 				}
 			} elseif (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
-				$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key];
+				$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key][0]['target'];
 				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key])) {
 					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key]);
 				}
 			} elseif (isset(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-				$value = self::$LOCAL_LANG[$extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
+				$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target']; // No charset conversion because default is english and thereby ASCII
 			}
 		}
 		if (is_array($arguments)) {
