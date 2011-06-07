@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>Web &gt; Functions module</source>
+        <target state="translated">Web &gt; Functions module</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The idea of the Web&gt;Functions module is to be a host module for backend applications that wish to perform processing of pages or branches of the page tree.</source>
+        <target state="translated">The idea of the Web&gt;Functions module is to be a host module for backend applications that wish to perform processing of pages or branches of the page tree.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Conceptually the Web&gt;Functions module is different from the Web&gt;Info module only by offering processing  functionality rather than offering information only. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
+        <target state="translated">Conceptually the Web&gt;Functions module is different from the Web&gt;Info module only by offering processing  functionality rather than offering information only. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>_MOD_web_info,
+More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
+_MOD_web_func:tx_funcwizards,
+_MOD_web_func:tx_wizardsortpages</source>
+        <target state="translated">_MOD_web_info,
+More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
+_MOD_web_func:tx_funcwizards,
+_MOD_web_func:tx_wizardsortpages</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:lang/cshimages/pagetree_overview_11.png</source>
+        <target state="translated">EXT:lang/cshimages/pagetree_overview_11.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</source>
+        <target state="translated">The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="permissions">
+        <source>Permissions</source>
+        <target state="translated">Permissions</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions">
+        <source>Change permissions</source>
+        <target state="translated">Change permissions</target>
+      </trans-unit>
+      <trans-unit id="Legend">
+        <source>Legend</source>
+        <target state="translated">Legend</target>
+      </trans-unit>
+      <trans-unit id="Owner">
+        <source>Owner</source>
+        <target state="translated">Owner</target>
+      </trans-unit>
+      <trans-unit id="Group">
+        <source>Group</source>
+        <target state="translated">Group</target>
+      </trans-unit>
+      <trans-unit id="Everybody">
+        <source>Everybody</source>
+        <target state="translated">Everybody</target>
+      </trans-unit>
+      <trans-unit id="EditLock">
+        <source>Lock</source>
+        <target state="translated">Lock</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr">
+        <source>The page and all content is locked for editing by all non-Admin users.</source>
+        <target state="translated">The page and all content is locked for editing by all non-Admin users.</target>
+      </trans-unit>
+      <trans-unit id="Save">
+        <source>Save</source>
+        <target state="translated">Save</target>
+      </trans-unit>
+      <trans-unit id="Abort">
+        <source>Abort</source>
+        <target state="translated">Abort</target>
+      </trans-unit>
+      <trans-unit id="Edit">
+        <source>EDIT</source>
+        <target state="translated">EDIT</target>
+      </trans-unit>
+      <trans-unit id="recursive">
+        <source>Set recursively</source>
+        <target state="translated">Set recursively</target>
+      </trans-unit>
+      <trans-unit id="pages_affected">
+        <source>pages affected</source>
+        <target state="translated">pages affected</target>
+      </trans-unit>
+      <trans-unit id="user_overview">
+        <source>User overview</source>
+        <target state="translated">User overview</target>
+      </trans-unit>
+      <trans-unit id="Mode">
+        <source>Mode</source>
+        <target state="translated">Mode</target>
+      </trans-unit>
+      <trans-unit id="Depth">
+        <source>Depth</source>
+        <target state="translated">Depth</target>
+      </trans-unit>
+      <trans-unit id="levels">
+        <source>levels</source>
+        <target state="translated">levels</target>
+      </trans-unit>
+      <trans-unit id="User">
+        <source>User</source>
+        <target state="translated">User</target>
+      </trans-unit>
+      <trans-unit id="def">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="translated">Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted">
+        <source>Access Granted</source>
+        <target state="translated">Access Granted</target>
+      </trans-unit>
+      <trans-unit id="A_Denied">
+        <source>Access Denied</source>
+        <target state="translated">Access Denied</target>
+      </trans-unit>
+      <trans-unit id="1">
+        <source>Show page</source>
+        <target state="translated">Show page</target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>Edit content</source>
+        <target state="translated">Edit content</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Edit page</source>
+        <target state="translated">Edit page</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Delete page</source>
+        <target state="translated">Delete page</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>New pages</source>
+        <target state="translated">New pages</target>
+      </trans-unit>
+      <trans-unit id="1_t">
+        <source>Show/Copy page and content.</source>
+        <target state="translated">Show/Copy page and content.</target>
+      </trans-unit>
+      <trans-unit id="16_t">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="translated">Change/Add/Delete/Move content.</target>
+      </trans-unit>
+      <trans-unit id="2_t">
+        <source>Change/Move page, eg. change pagetitle etc.</source>
+        <target state="translated">Change/Move page, eg. change pagetitle etc.</target>
+      </trans-unit>
+      <trans-unit id="4_t">
+        <source>Delete page and content.</source>
+        <target state="translated">Delete page and content.</target>
+      </trans-unit>
+      <trans-unit id="8_t">
+        <source>Create new pages under this page.</source>
+        <target state="translated">Create new pages under this page.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Page editing permissions</source>
+        <target state="translated">Page editing permissions</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+        <target state="translated">Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Access</source>
+        <target state="translated">Access</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning">
+        <source>Workspace Warning</source>
+        <target state="translated">Workspace Warning</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText">
+        <source>Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+        <target state="translated">Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</target>
+      </trans-unit>
+      <trans-unit id="notSet">
+        <source>not set</source>
+        <target state="translated">not set</target>
+      </trans-unit>
+      <trans-unit id="deleted">
+        <source>deleted</source>
+        <target state="translated">deleted</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Path">
+        <source>Path</source>
+        <target state="translated">Path</target>
+      </trans-unit>
+      <trans-unit id="TEXT_MODE">
+        <source>You are in TEXT MODE.  Use the [&lt;&gt;] button to switch back to WYSIWYG.</source>
+        <target state="translated">You are in TEXT MODE.  Use the [&lt;&gt;] button to switch back to WYSIWYG.</target>
+      </trans-unit>
+      <trans-unit id="ActiveX-required">
+        <source>Loading the editor in Internet Explorer requires the execution of ActiveX controls to be enabled.</source>
+        <target state="translated">Loading the editor in Internet Explorer requires the execution of ActiveX controls to be enabled.</target>
+      </trans-unit>
+      <trans-unit id="HTML-document-not-well-formed">
+        <source>The HTML document is not well-formed.</source>
+        <target state="translated">The HTML document is not well-formed.</target>
+      </trans-unit>
+      <trans-unit id="Moz-Clipboard">
+        <source>Unprivileged scripts cannot access Cut/Copy/Paste programatically for security reasons. Click YES to see a technical note at mozilla.org which shows you how to allow a script to access the clipboard.</source>
+        <target state="translated">Unprivileged scripts cannot access Cut/Copy/Paste programatically for security reasons. Click YES to see a technical note at mozilla.org which shows you how to allow a script to access the clipboard.</target>
+      </trans-unit>
+      <trans-unit id="Moz-Extension">
+        <source>For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable applications from this site to access the clipboard and perform copy, cut and paste operations.</source>
+        <target state="translated">For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable applications from this site to access the clipboard and perform copy, cut and paste operations.</target>
+      </trans-unit>
+      <trans-unit id="Moz-Extension-Success">
+        <source>The installation was successful. You need to exit and restart your browser for the change to take effect.</source>
+        <target state="translated">The installation was successful. You need to exit and restart your browser for the change to take effect.</target>
+      </trans-unit>
+      <trans-unit id="Moz-Extension-Failure">
+        <source>Sorry, Firefox Add-on AllowClipboard Helper could not be installed.</source>
+        <target state="translated">Sorry, Firefox Add-on AllowClipboard Helper could not be installed.</target>
+      </trans-unit>
+      <trans-unit id="Moz-Extension-Install-Not-Enabled">
+        <source>The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from this site.</source>
+        <target state="translated">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from this site.</target>
+      </trans-unit>
+      <trans-unit id="Allow-Clipboard-Helper-Extension">
+        <source>For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</source>
+        <target state="translated">For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</target>
+      </trans-unit>
+      <trans-unit id="Mozilla-Org-Install-Not-Enabled">
+        <source>The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from https://addons.mozilla.org.</source>
+        <target state="translated">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from https://addons.mozilla.org.</target>
+      </trans-unit>
+      <trans-unit id="Allow-Clipboard-Helper-Extension-Success">
+        <source>The installation was successful. You need to exit and restart your browser for the change to take effect. Afterwards, use the AllowClipboard Helper from the tools menu to allow specific sites to use the clipboard.</source>
+        <target state="translated">The installation was successful. You need to exit and restart your browser for the change to take effect. Afterwards, use the AllowClipboard Helper from the tools menu to allow specific sites to use the clipboard.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

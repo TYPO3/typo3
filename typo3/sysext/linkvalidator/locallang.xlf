@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:51 UTC 2011" product-name="linkvalidator">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator">
+        <source>Linkvalidator</source>
+        <target state="translated">Linkvalidator</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name">
+        <source>Linkvalidator</source>
+        <target state="translated">Linkvalidator</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.description">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target state="translated">Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page">
+        <source>Start page (uid)</source>
+        <target state="translated">Start page (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth">
+        <source>Depth</source>
+        <target state="translated">Depth</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf">
+        <source>Overwrite TSconfig</source>
+        <target state="translated">Overwrite TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email">
+        <source>Send email report to</source>
+        <target state="translated">Send email report to</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly">
+        <source>Send email on new broken links only</source>
+        <target state="translated">Send email on new broken links only</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateFile">
+        <source>Email template file</source>
+        <target state="translated">Email template file</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail">
+        <source>Invalid email format!</source>
+        <target state="translated">Invalid email format!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target state="translated">Invalid page uid, please enter a valid page uid!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target state="translated">There is no depth set, please set it to one of the offered values!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.noSubject">
+        <source>No subject for the notification email</source>
+        <target state="translated">No subject for the notification email</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target state="translated">Invalid format of one or more of the recipient email addresses!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="translated">Invalid format of the email address in the from header</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="translated">Invalid TSconfig in the task configuration!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidEmailTemplateFile">
+        <source>The email template file is not existing!</source>
+        <target state="translated">The email template file is not existing!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

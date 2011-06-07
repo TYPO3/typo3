@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="editElement">
+        <source>Edit element</source>
+        <target state="translated">Edit element</target>
+      </trans-unit>
+      <trans-unit id="general">
+        <source>General</source>
+        <target state="translated">General</target>
+      </trans-unit>
+      <trans-unit id="identification">
+        <source>Identification</source>
+        <target state="translated">Identification</target>
+      </trans-unit>
+      <trans-unit id="id">
+        <source>Id</source>
+        <target state="translated">Id</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target state="translated">Title</target>
+      </trans-unit>
+      <trans-unit id="className">
+        <source>Class</source>
+        <target state="translated">Class</target>
+      </trans-unit>
+      <trans-unit id="events">
+        <source>Events</source>
+        <target state="translated">Events</target>
+      </trans-unit>
+      <trans-unit id="onkeydown">
+        <source>Onkeydown</source>
+        <target state="translated">Onkeydown</target>
+      </trans-unit>
+      <trans-unit id="onkeypress">
+        <source>Onkeypress</source>
+        <target state="translated">Onkeypress</target>
+      </trans-unit>
+      <trans-unit id="onkeyup">
+        <source>Onkeyup</source>
+        <target state="translated">Onkeyup</target>
+      </trans-unit>
+      <trans-unit id="onclick">
+        <source>Onclick</source>
+        <target state="translated">Onclick</target>
+      </trans-unit>
+      <trans-unit id="ondblclick">
+        <source>Ondblclick</source>
+        <target state="translated">Ondblclick</target>
+      </trans-unit>
+      <trans-unit id="onmousedown">
+        <source>Onmousedown</source>
+        <target state="translated">Onmousedown</target>
+      </trans-unit>
+      <trans-unit id="onmousemove">
+        <source>Onmousemove</source>
+        <target state="translated">Onmousemove</target>
+      </trans-unit>
+      <trans-unit id="onmouseout">
+        <source>Onmouseout</source>
+        <target state="translated">Onmouseout</target>
+      </trans-unit>
+      <trans-unit id="onmouseover">
+        <source>Onmouseover</source>
+        <target state="translated">Onmouseover</target>
+      </trans-unit>
+      <trans-unit id="onmouseup">
+        <source>Onmouseup</source>
+        <target state="translated">Onmouseup</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

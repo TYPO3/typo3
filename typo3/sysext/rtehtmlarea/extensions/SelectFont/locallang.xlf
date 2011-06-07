@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No font">
+        <source>No font</source>
+        <target state="translated">No font</target>
+      </trans-unit>
+      <trans-unit id="No size">
+        <source>No font size</source>
+        <target state="translated">No font size</target>
+      </trans-unit>
+      <trans-unit id="Default font">
+        <source>Default font</source>
+        <target state="translated">Default font</target>
+      </trans-unit>
+      <trans-unit id="Default size">
+        <source>Default size</source>
+        <target state="translated">Default size</target>
+      </trans-unit>
+      <trans-unit id="Extra small">
+        <source>Extra small</source>
+        <target state="translated">Extra small</target>
+      </trans-unit>
+      <trans-unit id="Very small">
+        <source>Very small</source>
+        <target state="translated">Very small</target>
+      </trans-unit>
+      <trans-unit id="Small">
+        <source>Small</source>
+        <target state="translated">Small</target>
+      </trans-unit>
+      <trans-unit id="Medium">
+        <source>Medium</source>
+        <target state="translated">Medium</target>
+      </trans-unit>
+      <trans-unit id="Large">
+        <source>Large</source>
+        <target state="translated">Large</target>
+      </trans-unit>
+      <trans-unit id="Very large">
+        <source>Very large</source>
+        <target state="translated">Very large</target>
+      </trans-unit>
+      <trans-unit id="Extra large">
+        <source>Extra large</source>
+        <target state="translated">Extra large</target>
+      </trans-unit>
+      <trans-unit id="Arial">
+        <source>Arial</source>
+        <target state="translated">Arial</target>
+      </trans-unit>
+      <trans-unit id="Arial Black">
+        <source>Arial Black</source>
+        <target state="translated">Arial Black</target>
+      </trans-unit>
+      <trans-unit id="Verdana">
+        <source>Verdana</source>
+        <target state="translated">Verdana</target>
+      </trans-unit>
+      <trans-unit id="Times New Roman">
+        <source>Times New Roman</source>
+        <target state="translated">Times New Roman</target>
+      </trans-unit>
+      <trans-unit id="Garamond">
+        <source>Garamond</source>
+        <target state="translated">Garamond</target>
+      </trans-unit>
+      <trans-unit id="Lucida Handwriting">
+        <source>Lucida Handwriting</source>
+        <target state="translated">Lucida Handwriting</target>
+      </trans-unit>
+      <trans-unit id="Courier">
+        <source>Courier</source>
+        <target state="translated">Courier</target>
+      </trans-unit>
+      <trans-unit id="Webdings">
+        <source>Webdings</source>
+        <target state="translated">Webdings</target>
+      </trans-unit>
+      <trans-unit id="Wingdings">
+        <source>Wingdings</source>
+        <target state="translated">Wingdings</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

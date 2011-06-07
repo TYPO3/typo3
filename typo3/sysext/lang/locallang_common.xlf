@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="about">
+        <source>About</source>
+        <target state="translated">About</target>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>and</source>
+        <target state="translated">and</target>
+      </trans-unit>
+      <trans-unit id="ascending">
+        <source>Ascending</source>
+        <target state="translated">Ascending</target>
+      </trans-unit>
+      <trans-unit id="back">
+        <source>Back</source>
+        <target state="translated">Back</target>
+      </trans-unit>
+      <trans-unit id="byteSizeUnits">
+        <source> B| KB| MB| GB</source>
+        <target state="translated"> B| KB| MB| GB</target>
+      </trans-unit>
+      <trans-unit id="cancel">
+        <source>Cancel</source>
+        <target state="translated">Cancel</target>
+      </trans-unit>
+      <trans-unit id="category">
+        <source>Category</source>
+        <target state="translated">Category</target>
+      </trans-unit>
+      <trans-unit id="close">
+        <source>Close</source>
+        <target state="translated">Close</target>
+      </trans-unit>
+      <trans-unit id="delete">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="descending">
+        <source>Descending</source>
+        <target state="translated">Descending</target>
+      </trans-unit>
+      <trans-unit id="details">
+        <source>Details</source>
+        <target state="translated">Details</target>
+      </trans-unit>
+      <trans-unit id="disable">
+        <source>Disable</source>
+        <target state="translated">Disable</target>
+      </trans-unit>
+      <trans-unit id="disabled">
+        <source>Disabled</source>
+        <target state="translated">Disabled</target>
+      </trans-unit>
+      <trans-unit id="down">
+        <source>Down</source>
+        <target state="translated">Down</target>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+        <target state="translated">Download</target>
+      </trans-unit>
+      <trans-unit id="edit">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="editField">
+        <source>Edit field</source>
+        <target state="translated">Edit field</target>
+      </trans-unit>
+      <trans-unit id="editFile">
+        <source>Edit file</source>
+        <target state="translated">Edit file</target>
+      </trans-unit>
+      <trans-unit id="enable">
+        <source>Enable</source>
+        <target state="translated">Enable</target>
+      </trans-unit>
+      <trans-unit id="enabled">
+        <source>Enabled</source>
+        <target state="translated">Enabled</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File</source>
+        <target state="translated">File</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="first">
+        <source>First</source>
+        <target state="translated">First</target>
+      </trans-unit>
+      <trans-unit id="from">
+        <source>From</source>
+        <target state="translated">From</target>
+      </trans-unit>
+      <trans-unit id="go">
+        <source>Go</source>
+        <target state="translated">Go</target>
+      </trans-unit>
+      <trans-unit id="goTo">
+        <source>Go to</source>
+        <target state="translated">Go to</target>
+      </trans-unit>
+      <trans-unit id="help">
+        <source>Help</source>
+        <target state="translated">Help</target>
+      </trans-unit>
+      <trans-unit id="item">
+        <source>Item</source>
+        <target state="translated">Item</target>
+      </trans-unit>
+      <trans-unit id="items">
+        <source>Items</source>
+        <target state="translated">Items</target>
+      </trans-unit>
+      <trans-unit id="last">
+        <source>Last</source>
+        <target state="translated">Last</target>
+      </trans-unit>
+      <trans-unit id="left">
+        <source>Left</source>
+        <target state="translated">Left</target>
+      </trans-unit>
+      <trans-unit id="login">
+        <source>Login</source>
+        <target state="translated">Login</target>
+      </trans-unit>
+      <trans-unit id="logout">
+        <source>Logout</source>
+        <target state="translated">Logout</target>
+      </trans-unit>
+      <trans-unit id="more">
+        <source>More</source>
+        <target state="translated">More</target>
+      </trans-unit>
+      <trans-unit id="move">
+        <source>Move</source>
+        <target state="translated">Move</target>
+      </trans-unit>
+      <trans-unit id="new">
+        <source>New</source>
+        <target state="translated">New</target>
+      </trans-unit>
+      <trans-unit id="next">
+        <source>Next</source>
+        <target state="translated">Next</target>
+      </trans-unit>
+      <trans-unit id="no">
+        <source>No</source>
+        <target state="translated">No</target>
+      </trans-unit>
+      <trans-unit id="ok">
+        <source>OK</source>
+        <target state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="open">
+        <source>Open</source>
+        <target state="translated">Open</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="pages">
+        <source>Pages</source>
+        <target state="translated">Pages</target>
+      </trans-unit>
+      <trans-unit id="previous">
+        <source>Previous</source>
+        <target state="translated">Previous</target>
+      </trans-unit>
+      <trans-unit id="print">
+        <source>Print</source>
+        <target state="translated">Print</target>
+      </trans-unit>
+      <trans-unit id="reload">
+        <source>Reload</source>
+        <target state="translated">Reload</target>
+      </trans-unit>
+      <trans-unit id="right">
+        <source>Right</source>
+        <target state="translated">Right</target>
+      </trans-unit>
+      <trans-unit id="save">
+        <source>Save</source>
+        <target state="translated">Save</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose">
+        <source>Save and close</source>
+        <target state="translated">Save and close</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc">
+        <source>Save and close document</source>
+        <target state="translated">Save and close document</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc">
+        <source>Save and create new document</source>
+        <target state="translated">Save and create new document</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage">
+        <source>Save and view page</source>
+        <target state="translated">Save and view page</target>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search</source>
+        <target state="translated">Search</target>
+      </trans-unit>
+      <trans-unit id="send">
+        <source>Send</source>
+        <target state="translated">Send</target>
+      </trans-unit>
+      <trans-unit id="start">
+        <source>Start</source>
+        <target state="translated">Start</target>
+      </trans-unit>
+      <trans-unit id="stop">
+        <source>Stop</source>
+        <target state="translated">Stop</target>
+      </trans-unit>
+      <trans-unit id="submit">
+        <source>Submit</source>
+        <target state="translated">Submit</target>
+      </trans-unit>
+      <trans-unit id="to">
+        <source>To</source>
+        <target state="translated">To</target>
+      </trans-unit>
+      <trans-unit id="tsRef">
+        <source>TSref reference</source>
+        <target state="translated">TSref reference</target>
+      </trans-unit>
+      <trans-unit id="up">
+        <source>Up</source>
+        <target state="translated">Up</target>
+      </trans-unit>
+      <trans-unit id="upload">
+        <source>Upload</source>
+        <target state="translated">Upload</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User</source>
+        <target state="translated">User</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users</source>
+        <target state="translated">Users</target>
+      </trans-unit>
+      <trans-unit id="view">
+        <source>View</source>
+        <target state="translated">View</target>
+      </trans-unit>
+      <trans-unit id="yes">
+        <source>Yes</source>
+        <target state="translated">Yes</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="CharacterMapTooltip">
+        <source>Insert special character</source>
+        <target state="translated">Insert special character</target>
+      </trans-unit>
+      <trans-unit id="InsertCharacter-Tooltip">
+        <source>Insert special character</source>
+        <target state="translated">Insert special character</target>
+      </trans-unit>
+      <trans-unit id="Insert special character">
+        <source>Insert special character</source>
+        <target state="translated">Insert special character</target>
+      </trans-unit>
+      <trans-unit id="general">
+        <source>General</source>
+        <target state="translated">General</target>
+      </trans-unit>
+      <trans-unit id="mathematical">
+        <source>Mathematical</source>
+        <target state="translated">Mathematical</target>
+      </trans-unit>
+      <trans-unit id="graphical">
+        <source>Shapes and arrows</source>
+        <target state="translated">Shapes and arrows</target>
+      </trans-unit>
+      <trans-unit id="HTML value:">
+        <source>HTML value:</source>
+        <target state="translated">HTML value:</target>
+      </trans-unit>
+      <trans-unit id="Close">
+        <source>Close</source>
+        <target state="translated">Close</target>
+      </trans-unit>
+      <trans-unit id="nbsp">
+        <source>Non-breaking space</source>
+        <target state="translated">Non-breaking space</target>
+      </trans-unit>
+      <trans-unit id="Agrave">
+        <source>Capital a with grave accent</source>
+        <target state="translated">Capital a with grave accent</target>
+      </trans-unit>
+      <trans-unit id="agrave">
+        <source>Small a with grave accent</source>
+        <target state="translated">Small a with grave accent</target>
+      </trans-unit>
+      <trans-unit id="Aacute">
+        <source>Capital a with acute accent</source>
+        <target state="translated">Capital a with acute accent</target>
+      </trans-unit>
+      <trans-unit id="aacute">
+        <source>Small a with acute accent</source>
+        <target state="translated">Small a with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Acirc">
+        <source>Capital a with circumflex accent</source>
+        <target state="translated">Capital a with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="acirc">
+        <source>Small a with circumflex accent</source>
+        <target state="translated">Small a with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="Atilde">
+        <source>Capital a with tilde</source>
+        <target state="translated">Capital a with tilde</target>
+      </trans-unit>
+      <trans-unit id="atilde">
+        <source>Small a with tilde</source>
+        <target state="translated">Small a with tilde</target>
+      </trans-unit>
+      <trans-unit id="Auml">
+        <source>Capital a with umlaut/diaeresis</source>
+        <target state="translated">Capital a with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="auml">
+        <source>Small a with umlaut/diaeresis</source>
+        <target state="translated">Small a with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="Aring">
+        <source>Capital a with ring</source>
+        <target state="translated">Capital a with ring</target>
+      </trans-unit>
+      <trans-unit id="aring">
+        <source>Small a with ring</source>
+        <target state="translated">Small a with ring</target>
+      </trans-unit>
+      <trans-unit id="AElig">
+        <source>Capital ligature ae</source>
+        <target state="translated">Capital ligature ae</target>
+      </trans-unit>
+      <trans-unit id="aelig">
+        <source>Small ligature ae</source>
+        <target state="translated">Small ligature ae</target>
+      </trans-unit>
+      <trans-unit id="ordf">
+        <source>Feminine ordinal indicator</source>
+        <target state="translated">Feminine ordinal indicator</target>
+      </trans-unit>
+      <trans-unit id="Ccedil">
+        <source>Capital c with cedilla</source>
+        <target state="translated">Capital c with cedilla</target>
+      </trans-unit>
+      <trans-unit id="ccedil">
+        <source>Small c with cedilla</source>
+        <target state="translated">Small c with cedilla</target>
+      </trans-unit>
+      <trans-unit id="ETH">
+        <source>Capital eth, Icelandic</source>
+        <target state="translated">Capital eth, Icelandic</target>
+      </trans-unit>
+      <trans-unit id="eth">
+        <source>Small eth, Icelandic</source>
+        <target state="translated">Small eth, Icelandic</target>
+      </trans-unit>
+      <trans-unit id="Egrave">
+        <source>Capital e with grave accent</source>
+        <target state="translated">Capital e with grave accent</target>
+      </trans-unit>
+      <trans-unit id="egrave">
+        <source>Small e with grave accent</source>
+        <target state="translated">Small e with grave accent</target>
+      </trans-unit>
+      <trans-unit id="Eacute">
+        <source>Capital e with acute accent</source>
+        <target state="translated">Capital e with acute accent</target>
+      </trans-unit>
+      <trans-unit id="eacute">
+        <source>Small e with acute accent</source>
+        <target state="translated">Small e with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Ecirc">
+        <source>Capital e with circumflex accent</source>
+        <target state="translated">Capital e with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="ecirc">
+        <source>Small e with circumflex accent</source>
+        <target state="translated">Small e with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="Euml">
+        <source>Capital e with umlaut/diaeresis</source>
+        <target state="translated">Capital e with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="euml">
+        <source>Small e with umlaut/diaeresis</source>
+        <target state="translated">Small e with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="Igrave">
+        <source>Capital i with grave accent</source>
+        <target state="translated">Capital i with grave accent</target>
+      </trans-unit>
+      <trans-unit id="igrave">
+        <source>Small i with grave accent</source>
+        <target state="translated">Small i with grave accent</target>
+      </trans-unit>
+      <trans-unit id="Iacute">
+        <source>Capital i with acute accent</source>
+        <target state="translated">Capital i with acute accent</target>
+      </trans-unit>
+      <trans-unit id="iacute">
+        <source>Small i with acute accent</source>
+        <target state="translated">Small i with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Icirc">
+        <source>Capital i with circumflex accent</source>
+        <target state="translated">Capital i with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="icirc">
+        <source>Small i with circumflex accent</source>
+        <target state="translated">Small i with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="Iuml">
+        <source>Capital i with umlaut/diaeresis</source>
+        <target state="translated">Capital i with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="iuml">
+        <source>Small i with umlaut/diaeresis</source>
+        <target state="translated">Small i with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="Ntilde">
+        <source>Capital n with tilde</source>
+        <target state="translated">Capital n with tilde</target>
+      </trans-unit>
+      <trans-unit id="ntilde">
+        <source>Small n with tilde</source>
+        <target state="translated">Small n with tilde</target>
+      </trans-unit>
+      <trans-unit id="Ograve">
+        <source>Capital o with grave accent</source>
+        <target state="translated">Capital o with grave accent</target>
+      </trans-unit>
+      <trans-unit id="ograve">
+        <source>Small o with grave accent</source>
+        <target state="translated">Small o with grave accent</target>
+      </trans-unit>
+      <trans-unit id="Oacute">
+        <source>Capital o with acute accent</source>
+        <target state="translated">Capital o with acute accent</target>
+      </trans-unit>
+      <trans-unit id="oacute">
+        <source>Small o with acute accent</source>
+        <target state="translated">Small o with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Ocirc">
+        <source>Capital o with circumflex accent</source>
+        <target state="translated">Capital o with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="ocirc">
+        <source>Small o with circumflex accent</source>
+        <target state="translated">Small o with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="Otilde">
+        <source>Capital o with tilde</source>
+        <target state="translated">Capital o with tilde</target>
+      </trans-unit>
+      <trans-unit id="otilde">
+        <source>Small o with tilde</source>
+        <target state="translated">Small o with tilde</target>
+      </trans-unit>
+      <trans-unit id="Ouml">
+        <source>Capital o with umlaut/diaeresis</source>
+        <target state="translated">Capital o with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="ouml">
+        <source>Small o with umlaut/diaeresis</source>
+        <target state="translated">Small o with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="Oslash">
+        <source>Capital o with slash</source>
+        <target state="translated">Capital o with slash</target>
+      </trans-unit>
+      <trans-unit id="oslash">
+        <source>Small o with slash</source>
+        <target state="translated">Small o with slash</target>
+      </trans-unit>
+      <trans-unit id="OElig">
+        <source>Capital ligature OE</source>
+        <target state="translated">Capital ligature OE</target>
+      </trans-unit>
+      <trans-unit id="oelig">
+        <source>Small ligature OE</source>
+        <target state="translated">Small ligature OE</target>
+      </trans-unit>
+      <trans-unit id="ordm">
+        <source>Masculine ordinal indicator</source>
+        <target state="translated">Masculine ordinal indicator</target>
+      </trans-unit>
+      <trans-unit id="Scaron">
+        <source>Capital s with caron</source>
+        <target state="translated">Capital s with caron</target>
+      </trans-unit>
+      <trans-unit id="scaron">
+        <source>Small s with caron</source>
+        <target state="translated">Small s with caron</target>
+      </trans-unit>
+      <trans-unit id="szlig">
+        <source>Small sharp s, German</source>
+        <target state="translated">Small sharp s, German</target>
+      </trans-unit>
+      <trans-unit id="THORN">
+        <source>Capital THORN, Icelandic</source>
+        <target state="translated">Capital THORN, Icelandic</target>
+      </trans-unit>
+      <trans-unit id="thorn">
+        <source>Small thorn, Icelandic</source>
+        <target state="translated">Small thorn, Icelandic</target>
+      </trans-unit>
+      <trans-unit id="Ugrave">
+        <source>Capital u with grave accent</source>
+        <target state="translated">Capital u with grave accent</target>
+      </trans-unit>
+      <trans-unit id="ugrave">
+        <source>Small u with grave accent</source>
+        <target state="translated">Small u with grave accent</target>
+      </trans-unit>
+      <trans-unit id="Uacute">
+        <source>Capital u with acute accent</source>
+        <target state="translated">Capital u with acute accent</target>
+      </trans-unit>
+      <trans-unit id="uacute">
+        <source>Small u with acute accent</source>
+        <target state="translated">Small u with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Ucirc">
+        <source>Capital u with circumflex accent</source>
+        <target state="translated">Capital u with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="ucirc">
+        <source>Small u with circumflex accent</source>
+        <target state="translated">Small u with circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="Uuml">
+        <source>Capital u with umlaut/diaeresis</source>
+        <target state="translated">Capital u with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="uuml">
+        <source>Small u with umlaut/diaeresis</source>
+        <target state="translated">Small u with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="Yacute">
+        <source>Capital y with acute accent</source>
+        <target state="translated">Capital y with acute accent</target>
+      </trans-unit>
+      <trans-unit id="yacute">
+        <source>Small y with acute accent</source>
+        <target state="translated">Small y with acute accent</target>
+      </trans-unit>
+      <trans-unit id="Yuml">
+        <source>Capital y with umlaut/diaeresis</source>
+        <target state="translated">Capital y with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="yuml">
+        <source>Small y with umlaut/diaeresis</source>
+        <target state="translated">Small y with umlaut/diaeresis</target>
+      </trans-unit>
+      <trans-unit id="acute">
+        <source>Spacing acute</source>
+        <target state="translated">Spacing acute</target>
+      </trans-unit>
+      <trans-unit id="circ">
+        <source>Modifier letter circumflex accent</source>
+        <target state="translated">Modifier letter circumflex accent</target>
+      </trans-unit>
+      <trans-unit id="tilde">
+        <source>Small tilde</source>
+        <target state="translated">Small tilde</target>
+      </trans-unit>
+      <trans-unit id="uml">
+        <source>Spacing diaeresis</source>
+        <target state="translated">Spacing diaeresis</target>
+      </trans-unit>
+      <trans-unit id="cedil">
+        <source>Spacing cedilla</source>
+        <target state="translated">Spacing cedilla</target>
+      </trans-unit>
+      <trans-unit id="shy">
+        <source>Soft hyphen</source>
+        <target state="translated">Soft hyphen</target>
+      </trans-unit>
+      <trans-unit id="ndash">
+        <source>En dash</source>
+        <target state="translated">En dash</target>
+      </trans-unit>
+      <trans-unit id="mdash">
+        <source>Em dash</source>
+        <target state="translated">Em dash</target>
+      </trans-unit>
+      <trans-unit id="lsquo">
+        <source>Left single quotation mark</source>
+        <target state="translated">Left single quotation mark</target>
+      </trans-unit>
+      <trans-unit id="rsquo">
+        <source>Right single quotation mark</source>
+        <target state="translated">Right single quotation mark</target>
+      </trans-unit>
+      <trans-unit id="sbquo">
+        <source>Single low-9 quotation mark</source>
+        <target state="translated">Single low-9 quotation mark</target>
+      </trans-unit>
+      <trans-unit id="ldquo">
+        <source>Left double quotation mark</source>
+        <target state="translated">Left double quotation mark</target>
+      </trans-unit>
+      <trans-unit id="rdquo">
+        <source>Right double quotation mark</source>
+        <target state="translated">Right double quotation mark</target>
+      </trans-unit>
+      <trans-unit id="bdquo">
+        <source>Double low-9 quotation mark</source>
+        <target state="translated">Double low-9 quotation mark</target>
+      </trans-unit>
+      <trans-unit id="lsaquo">
+        <source>Single left angle quotation</source>
+        <target state="translated">Single left angle quotation</target>
+      </trans-unit>
+      <trans-unit id="rsaquo">
+        <source>Single right angle quotation</source>
+        <target state="translated">Single right angle quotation</target>
+      </trans-unit>
+      <trans-unit id="laquo">
+        <source>Left angle quotation mark</source>
+        <target state="translated">Left angle quotation mark</target>
+      </trans-unit>
+      <trans-unit id="raquo">
+        <source>Right angle quotation mark</source>
+        <target state="translated">Right angle quotation mark</target>
+      </trans-unit>
+      <trans-unit id="quot">
+        <source>Quotation mark</source>
+        <target state="translated">Quotation mark</target>
+      </trans-unit>
+      <trans-unit id="hellip">
+        <source>Horizontal ellipsis</source>
+        <target state="translated">Horizontal ellipsis</target>
+      </trans-unit>
+      <trans-unit id="iquest">
+        <source>Inverted question mark</source>
+        <target state="translated">Inverted question mark</target>
+      </trans-unit>
+      <trans-unit id="iexcl">
+        <source>Inverted exclamation mark</source>
+        <target state="translated">Inverted exclamation mark</target>
+      </trans-unit>
+      <trans-unit id="bull">
+        <source>Bullet</source>
+        <target state="translated">Bullet</target>
+      </trans-unit>
+      <trans-unit id="dagger">
+        <source>Dagger</source>
+        <target state="translated">Dagger</target>
+      </trans-unit>
+      <trans-unit id="Dagger">
+        <source>Double dagger</source>
+        <target state="translated">Double dagger</target>
+      </trans-unit>
+      <trans-unit id="brvbar">
+        <source>Broken vertical bar</source>
+        <target state="translated">Broken vertical bar</target>
+      </trans-unit>
+      <trans-unit id="para">
+        <source>Paragraph</source>
+        <target state="translated">Paragraph</target>
+      </trans-unit>
+      <trans-unit id="sect">
+        <source>Section</source>
+        <target state="translated">Section</target>
+      </trans-unit>
+      <trans-unit id="loz">
+        <source>Lozenge</source>
+        <target state="translated">Lozenge</target>
+      </trans-unit>
+      <trans-unit id="#064">
+        <source>At</source>
+        <target state="translated">At</target>
+      </trans-unit>
+      <trans-unit id="copy">
+        <source>Copyright</source>
+        <target state="translated">Copyright</target>
+      </trans-unit>
+      <trans-unit id="reg">
+        <source>Registered trademark</source>
+        <target state="translated">Registered trademark</target>
+      </trans-unit>
+      <trans-unit id="trade">
+        <source>Trademark</source>
+        <target state="translated">Trademark</target>
+      </trans-unit>
+      <trans-unit id="curren">
+        <source>Currency</source>
+        <target state="translated">Currency</target>
+      </trans-unit>
+      <trans-unit id="cent">
+        <source>Cent</source>
+        <target state="translated">Cent</target>
+      </trans-unit>
+      <trans-unit id="euro">
+        <source>Euro</source>
+        <target state="translated">Euro</target>
+      </trans-unit>
+      <trans-unit id="pound">
+        <source>Pound</source>
+        <target state="translated">Pound</target>
+      </trans-unit>
+      <trans-unit id="yen">
+        <source>Yen</source>
+        <target state="translated">Yen</target>
+      </trans-unit>
+      <trans-unit id="emsp">
+        <source>Em space</source>
+        <target state="translated">Em space</target>
+      </trans-unit>
+      <trans-unit id="ensp">
+        <source>En space</source>
+        <target state="translated">En space</target>
+      </trans-unit>
+      <trans-unit id="thinsp">
+        <source>Thin space</source>
+        <target state="translated">Thin space</target>
+      </trans-unit>
+      <trans-unit id="zwj">
+        <source>Zero width joiner</source>
+        <target state="translated">Zero width joiner</target>
+      </trans-unit>
+      <trans-unit id="zwnj">
+        <source>Zero width non-joiner</source>
+        <target state="translated">Zero width non-joiner</target>
+      </trans-unit>
+      <trans-unit id="minus">
+        <source>Minus sign</source>
+        <target state="translated">Minus sign</target>
+      </trans-unit>
+      <trans-unit id="plusmn">
+        <source>Plus-or-minus sign</source>
+        <target state="translated">Plus-or-minus sign</target>
+      </trans-unit>
+      <trans-unit id="times">
+        <source>Multiplication</source>
+        <target state="translated">Multiplication</target>
+      </trans-unit>
+      <trans-unit id="divide">
+        <source>Division</source>
+        <target state="translated">Division</target>
+      </trans-unit>
+      <trans-unit id="radic">
+        <source>Square root</source>
+        <target state="translated">Square root</target>
+      </trans-unit>
+      <trans-unit id="sdot">
+        <source>Dot operator</source>
+        <target state="translated">Dot operator</target>
+      </trans-unit>
+      <trans-unit id="otimes">
+        <source>Vector product</source>
+        <target state="translated">Vector product</target>
+      </trans-unit>
+      <trans-unit id="lowast">
+        <source>Asterisk operator</source>
+        <target state="translated">Asterisk operator</target>
+      </trans-unit>
+      <trans-unit id="ge">
+        <source>Greater than or equal to</source>
+        <target state="translated">Greater than or equal to</target>
+      </trans-unit>
+      <trans-unit id="le">
+        <source>Less than or equal to</source>
+        <target state="translated">Less than or equal to</target>
+      </trans-unit>
+      <trans-unit id="ne">
+        <source>Not equal to</source>
+        <target state="translated">Not equal to</target>
+      </trans-unit>
+      <trans-unit id="asymp">
+        <source>Almost equal to, asymptotic to</source>
+        <target state="translated">Almost equal to, asymptotic to</target>
+      </trans-unit>
+      <trans-unit id="sim">
+        <source>Varies with, similar to</source>
+        <target state="translated">Varies with, similar to</target>
+      </trans-unit>
+      <trans-unit id="prop">
+        <source>Proportional to</source>
+        <target state="translated">Proportional to</target>
+      </trans-unit>
+      <trans-unit id="deg">
+        <source>Degree</source>
+        <target state="translated">Degree</target>
+      </trans-unit>
+      <trans-unit id="prime">
+        <source>Prime, minutes, feet</source>
+        <target state="translated">Prime, minutes, feet</target>
+      </trans-unit>
+      <trans-unit id="Prime">
+        <source>Double prime, seconds, inches</source>
+        <target state="translated">Double prime, seconds, inches</target>
+      </trans-unit>
+      <trans-unit id="micro">
+        <source>Micro</source>
+        <target state="translated">Micro</target>
+      </trans-unit>
+      <trans-unit id="ang">
+        <source>Angle</source>
+        <target state="translated">Angle</target>
+      </trans-unit>
+      <trans-unit id="perp">
+        <source>Orthogonal to, perpendicular to</source>
+        <target state="translated">Orthogonal to, perpendicular to</target>
+      </trans-unit>
+      <trans-unit id="permil">
+        <source>Per mille</source>
+        <target state="translated">Per mille</target>
+      </trans-unit>
+      <trans-unit id="frasl">
+        <source>Fraction slash</source>
+        <target state="translated">Fraction slash</target>
+      </trans-unit>
+      <trans-unit id="frac14">
+        <source>Fraction 1/4</source>
+        <target state="translated">Fraction 1/4</target>
+      </trans-unit>
+      <trans-unit id="frac12">
+        <source>Fraction 1/2</source>
+        <target state="translated">Fraction 1/2</target>
+      </trans-unit>
+      <trans-unit id="frac34">
+        <source>Fraction 3/4</source>
+        <target state="translated">Fraction 3/4</target>
+      </trans-unit>
+      <trans-unit id="sup1">
+        <source>Superscript 1</source>
+        <target state="translated">Superscript 1</target>
+      </trans-unit>
+      <trans-unit id="sup2">
+        <source>Superscript 2</source>
+        <target state="translated">Superscript 2</target>
+      </trans-unit>
+      <trans-unit id="sup3">
+        <source>Superscript 3</source>
+        <target state="translated">Superscript 3</target>
+      </trans-unit>
+      <trans-unit id="not">
+        <source>Negation</source>
+        <target state="translated">Negation</target>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>Logical and</source>
+        <target state="translated">Logical and</target>
+      </trans-unit>
+      <trans-unit id="or">
+        <source>Logical or</source>
+        <target state="translated">Logical or</target>
+      </trans-unit>
+      <trans-unit id="there4">
+        <source>Therefore</source>
+        <target state="translated">Therefore</target>
+      </trans-unit>
+      <trans-unit id="cong">
+        <source>Congruent to</source>
+        <target state="translated">Congruent to</target>
+      </trans-unit>
+      <trans-unit id="isin">
+        <source>Is element of</source>
+        <target state="translated">Is element of</target>
+      </trans-unit>
+      <trans-unit id="ni">
+        <source>Contains as member</source>
+        <target state="translated">Contains as member</target>
+      </trans-unit>
+      <trans-unit id="notin">
+        <source>Is not an element of</source>
+        <target state="translated">Is not an element of</target>
+      </trans-unit>
+      <trans-unit id="sub">
+        <source>Proper subset of</source>
+        <target state="translated">Proper subset of</target>
+      </trans-unit>
+      <trans-unit id="sube">
+        <source>Subset of or equal to</source>
+        <target state="translated">Subset of or equal to</target>
+      </trans-unit>
+      <trans-unit id="nsub">
+        <source>Not subset of</source>
+        <target state="translated">Not subset of</target>
+      </trans-unit>
+      <trans-unit id="sup">
+        <source>Proper superset of</source>
+        <target state="translated">Proper superset of</target>
+      </trans-unit>
+      <trans-unit id="supe">
+        <source>Superset of or equal to</source>
+        <target state="translated">Superset of or equal to</target>
+      </trans-unit>
+      <trans-unit id="cap">
+        <source>Intersection</source>
+        <target state="translated">Intersection</target>
+      </trans-unit>
+      <trans-unit id="cup">
+        <source>Union</source>
+        <target state="translated">Union</target>
+      </trans-unit>
+      <trans-unit id="oplus">
+        <source>Direct sum</source>
+        <target state="translated">Direct sum</target>
+      </trans-unit>
+      <trans-unit id="nabla">
+        <source>Gradient</source>
+        <target state="translated">Gradient</target>
+      </trans-unit>
+      <trans-unit id="empty">
+        <source>Empty set</source>
+        <target state="translated">Empty set</target>
+      </trans-unit>
+      <trans-unit id="equiv">
+        <source>Equivalent</source>
+        <target state="translated">Equivalent</target>
+      </trans-unit>
+      <trans-unit id="sum">
+        <source>Sum</source>
+        <target state="translated">Sum</target>
+      </trans-unit>
+      <trans-unit id="prod">
+        <source>Product</source>
+        <target state="translated">Product</target>
+      </trans-unit>
+      <trans-unit id="weierp">
+        <source>Power set (Weierstrass p)</source>
+        <target state="translated">Power set (Weierstrass p)</target>
+      </trans-unit>
+      <trans-unit id="exist">
+        <source>There exists</source>
+        <target state="translated">There exists</target>
+      </trans-unit>
+      <trans-unit id="forall">
+        <source>For all</source>
+        <target state="translated">For all</target>
+      </trans-unit>
+      <trans-unit id="infin">
+        <source>Infinity</source>
+        <target state="translated">Infinity</target>
+      </trans-unit>
+      <trans-unit id="alefsym">
+        <source>Alef (first transfinite cardinal)</source>
+        <target state="translated">Alef (first transfinite cardinal)</target>
+      </trans-unit>
+      <trans-unit id="real">
+        <source>Real part of complex number</source>
+        <target state="translated">Real part of complex number</target>
+      </trans-unit>
+      <trans-unit id="image">
+        <source>Imaginary part of complex number</source>
+        <target state="translated">Imaginary part of complex number</target>
+      </trans-unit>
+      <trans-unit id="fnof">
+        <source>Function</source>
+        <target state="translated">Function</target>
+      </trans-unit>
+      <trans-unit id="int">
+        <source>Integral</source>
+        <target state="translated">Integral</target>
+      </trans-unit>
+      <trans-unit id="part">
+        <source>Partial differential</source>
+        <target state="translated">Partial differential</target>
+      </trans-unit>
+      <trans-unit id="Alpha">
+        <source>Greek capital letter alpha</source>
+        <target state="translated">Greek capital letter alpha</target>
+      </trans-unit>
+      <trans-unit id="alpha">
+        <source>Greek small letter alpha</source>
+        <target state="translated">Greek small letter alpha</target>
+      </trans-unit>
+      <trans-unit id="Beta">
+        <source>Greek capital letter beta</source>
+        <target state="translated">Greek capital letter beta</target>
+      </trans-unit>
+      <trans-unit id="beta">
+        <source>Greek small letter beta</source>
+        <target state="translated">Greek small letter beta</target>
+      </trans-unit>
+      <trans-unit id="Gamma">
+        <source>Greek capital letter gamma</source>
+        <target state="translated">Greek capital letter gamma</target>
+      </trans-unit>
+      <trans-unit id="gamma">
+        <source>Greek small letter gamma</source>
+        <target state="translated">Greek small letter gamma</target>
+      </trans-unit>
+      <trans-unit id="Delta">
+        <source>Greek capital letter delta</source>
+        <target state="translated">Greek capital letter delta</target>
+      </trans-unit>
+      <trans-unit id="delta">
+        <source>Greek small letter delta</source>
+        <target state="translated">Greek small letter delta</target>
+      </trans-unit>
+      <trans-unit id="Epsilon">
+        <source>Greek capital letter epsilon</source>
+        <target state="translated">Greek capital letter epsilon</target>
+      </trans-unit>
+      <trans-unit id="epsilon">
+        <source>Greek small letter epsilon</source>
+        <target state="translated">Greek small letter epsilon</target>
+      </trans-unit>
+      <trans-unit id="Zeta">
+        <source>Greek capital letter zeta</source>
+        <target state="translated">Greek capital letter zeta</target>
+      </trans-unit>
+      <trans-unit id="zeta">
+        <source>Greek small letter zeta</source>
+        <target state="translated">Greek small letter zeta</target>
+      </trans-unit>
+      <trans-unit id="Eta">
+        <source>Greek capital letter eta</source>
+        <target state="translated">Greek capital letter eta</target>
+      </trans-unit>
+      <trans-unit id="eta">
+        <source>Greek small letter eta</source>
+        <target state="translated">Greek small letter eta</target>
+      </trans-unit>
+      <trans-unit id="Theta">
+        <source>Greek capital letter theta</source>
+        <target state="translated">Greek capital letter theta</target>
+      </trans-unit>
+      <trans-unit id="theta">
+        <source>Greek small letter theta</source>
+        <target state="translated">Greek small letter theta</target>
+      </trans-unit>
+      <trans-unit id="thetasym">
+        <source>Greek small letter theta symbol</source>
+        <target state="translated">Greek small letter theta symbol</target>
+      </trans-unit>
+      <trans-unit id="Iota">
+        <source>Greek capital letter iota</source>
+        <target state="translated">Greek capital letter iota</target>
+      </trans-unit>
+      <trans-unit id="iota">
+        <source>Greek small letter iota</source>
+        <target state="translated">Greek small letter iota</target>
+      </trans-unit>
+      <trans-unit id="Kappa">
+        <source>Greek capital letter kappa</source>
+        <target state="translated">Greek capital letter kappa</target>
+      </trans-unit>
+      <trans-unit id="kappa">
+        <source>Greek small letter kappa</source>
+        <target state="translated">Greek small letter kappa</target>
+      </trans-unit>
+      <trans-unit id="Lambda">
+        <source>Greek capital letter lambda</source>
+        <target state="translated">Greek capital letter lambda</target>
+      </trans-unit>
+      <trans-unit id="lambda">
+        <source>Greek small letter lambda</source>
+        <target state="translated">Greek small letter lambda</target>
+      </trans-unit>
+      <trans-unit id="Mu">
+        <source>Greek capital letter mu</source>
+        <target state="translated">Greek capital letter mu</target>
+      </trans-unit>
+      <trans-unit id="mu">
+        <source>Greek small letter mu</source>
+        <target state="translated">Greek small letter mu</target>
+      </trans-unit>
+      <trans-unit id="Nu">
+        <source>Greek capital letter nu</source>
+        <target state="translated">Greek capital letter nu</target>
+      </trans-unit>
+      <trans-unit id="nu">
+        <source>Greek small letter nu</source>
+        <target state="translated">Greek small letter nu</target>
+      </trans-unit>
+      <trans-unit id="Xi">
+        <source>Greek capital letter xi</source>
+        <target state="translated">Greek capital letter xi</target>
+      </trans-unit>
+      <trans-unit id="xi">
+        <source>Greek small letter xi</source>
+        <target state="translated">Greek small letter xi</target>
+      </trans-unit>
+      <trans-unit id="Omicron">
+        <source>Greek capital letter omicron</source>
+        <target state="translated">Greek capital letter omicron</target>
+      </trans-unit>
+      <trans-unit id="omicron">
+        <source>Greek small letter omicron</source>
+        <target state="translated">Greek small letter omicron</target>
+      </trans-unit>
+      <trans-unit id="Pi">
+        <source>Greek capital letter pi</source>
+        <target state="translated">Greek capital letter pi</target>
+      </trans-unit>
+      <trans-unit id="pi">
+        <source>Greek small letter pi</source>
+        <target state="translated">Greek small letter pi</target>
+      </trans-unit>
+      <trans-unit id="piv">
+        <source>Greek pi symbol</source>
+        <target state="translated">Greek pi symbol</target>
+      </trans-unit>
+      <trans-unit id="Rho">
+        <source>Greek capital letter rho</source>
+        <target state="translated">Greek capital letter rho</target>
+      </trans-unit>
+      <trans-unit id="rho">
+        <source>Greek small letter rho</source>
+        <target state="translated">Greek small letter rho</target>
+      </trans-unit>
+      <trans-unit id="Sigma">
+        <source>Greek capital letter sigma</source>
+        <target state="translated">Greek capital letter sigma</target>
+      </trans-unit>
+      <trans-unit id="sigma">
+        <source>Greek small letter sigma</source>
+        <target state="translated">Greek small letter sigma</target>
+      </trans-unit>
+      <trans-unit id="sigmaf">
+        <source>Greek small letter final sigma</source>
+        <target state="translated">Greek small letter final sigma</target>
+      </trans-unit>
+      <trans-unit id="Tau">
+        <source>Greek capital letter tau</source>
+        <target state="translated">Greek capital letter tau</target>
+      </trans-unit>
+      <trans-unit id="tau">
+        <source>Greek small letter tau</source>
+        <target state="translated">Greek small letter tau</target>
+      </trans-unit>
+      <trans-unit id="Upsilon">
+        <source>Greek capital letter upsilon</source>
+        <target state="translated">Greek capital letter upsilon</target>
+      </trans-unit>
+      <trans-unit id="upsih">
+        <source>Greek upsilon with hook symbol</source>
+        <target state="translated">Greek upsilon with hook symbol</target>
+      </trans-unit>
+      <trans-unit id="upsilon">
+        <source>Greek small letter upsilon</source>
+        <target state="translated">Greek small letter upsilon</target>
+      </trans-unit>
+      <trans-unit id="Phi">
+        <source>Greek capital letter phi</source>
+        <target state="translated">Greek capital letter phi</target>
+      </trans-unit>
+      <trans-unit id="phi">
+        <source>Greek small letter phi</source>
+        <target state="translated">Greek small letter phi</target>
+      </trans-unit>
+      <trans-unit id="Chi">
+        <source>Greek capital letter chi</source>
+        <target state="translated">Greek capital letter chi</target>
+      </trans-unit>
+      <trans-unit id="chi">
+        <source>Greek small letter chi</source>
+        <target state="translated">Greek small letter chi</target>
+      </trans-unit>
+      <trans-unit id="Psi">
+        <source>Greek capital letter psi</source>
+        <target state="translated">Greek capital letter psi</target>
+      </trans-unit>
+      <trans-unit id="psi">
+        <source>Greek small letter psi</source>
+        <target state="translated">Greek small letter psi</target>
+      </trans-unit>
+      <trans-unit id="Omega">
+        <source>Greek capital letter omega</source>
+        <target state="translated">Greek capital letter omega</target>
+      </trans-unit>
+      <trans-unit id="omega">
+        <source>Greek small letter omega</source>
+        <target state="translated">Greek small letter omega</target>
+      </trans-unit>
+      <trans-unit id="crarr">
+        <source>Carriage return arrow</source>
+        <target state="translated">Carriage return arrow</target>
+      </trans-unit>
+      <trans-unit id="uarr">
+        <source>Upwards arrow</source>
+        <target state="translated">Upwards arrow</target>
+      </trans-unit>
+      <trans-unit id="darr">
+        <source>Downwards arrow</source>
+        <target state="translated">Downwards arrow</target>
+      </trans-unit>
+      <trans-unit id="larr">
+        <source>Leftwards arrow</source>
+        <target state="translated">Leftwards arrow</target>
+      </trans-unit>
+      <trans-unit id="rarr">
+        <source>Rightwards arrow</source>
+        <target state="translated">Rightwards arrow</target>
+      </trans-unit>
+      <trans-unit id="harr">
+        <source>Left right arrow</source>
+        <target state="translated">Left right arrow</target>
+      </trans-unit>
+      <trans-unit id="uArr">
+        <source>Upwards double arrow</source>
+        <target state="translated">Upwards double arrow</target>
+      </trans-unit>
+      <trans-unit id="dArr">
+        <source>Downwards double arrow</source>
+        <target state="translated">Downwards double arrow</target>
+      </trans-unit>
+      <trans-unit id="lArr">
+        <source>Leftwards double arrow</source>
+        <target state="translated">Leftwards double arrow</target>
+      </trans-unit>
+      <trans-unit id="rArr">
+        <source>Rightwards double arrow</source>
+        <target state="translated">Rightwards double arrow</target>
+      </trans-unit>
+      <trans-unit id="hArr">
+        <source>Left right double arrow</source>
+        <target state="translated">Left right double arrow</target>
+      </trans-unit>
+      <trans-unit id="clubs">
+        <source>Club</source>
+        <target state="translated">Club</target>
+      </trans-unit>
+      <trans-unit id="diams">
+        <source>Diamond</source>
+        <target state="translated">Diamond</target>
+      </trans-unit>
+      <trans-unit id="hearts">
+        <source>Heart</source>
+        <target state="translated">Heart</target>
+      </trans-unit>
+      <trans-unit id="spades">
+        <source>Spade</source>
+        <target state="translated">Spade</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

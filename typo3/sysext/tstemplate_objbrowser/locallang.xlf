@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:54 UTC 2011" product-name="tstemplate_objbrowser">
+    <header/>
+    <body>
+      <trans-unit id="constants">
+        <source>Constants</source>
+        <target state="translated">Constants</target>
+      </trans-unit>
+      <trans-unit id="setup">
+        <source>Setup</source>
+        <target state="translated">Setup</target>
+      </trans-unit>
+      <trans-unit id="all">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="plainSubstitution">
+        <source>Plain substitution (default)</source>
+        <target state="translated">Plain substitution (default)</target>
+      </trans-unit>
+      <trans-unit id="substitutedGreen">
+        <source>Substituted constants in green</source>
+        <target state="translated">Substituted constants in green</target>
+      </trans-unit>
+      <trans-unit id="unsubstitutedGreen">
+        <source>UN-substituted constants in green</source>
+        <target state="translated">UN-substituted constants in green</target>
+      </trans-unit>
+      <trans-unit id="currentTemplate">
+        <source>Current template:</source>
+        <target state="translated">Current template:</target>
+      </trans-unit>
+      <trans-unit id="badProperty">
+        <source>Bad property!</source>
+        <target state="translated">Bad property!</target>
+      </trans-unit>
+      <trans-unit id="noSpaces">
+        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+        <target state="translated">You must enter a property with characters a-z, A-Z and 0-9, no spaces!</target>
+      </trans-unit>
+      <trans-unit id="nothingUpdated">
+        <source>Nothing was updated!</source>
+        <target state="translated">Nothing was updated!</target>
+      </trans-unit>
+      <trans-unit id="propertyAdded">
+        <source>Property added</source>
+        <target state="translated">Property added</target>
+      </trans-unit>
+      <trans-unit id="valueUpdated">
+        <source>Value updated</source>
+        <target state="translated">Value updated</target>
+      </trans-unit>
+      <trans-unit id="objectCleared">
+        <source>Object cleared</source>
+        <target state="translated">Object cleared</target>
+      </trans-unit>
+      <trans-unit id="updateButton">
+        <source>Update</source>
+        <target state="translated">Update</target>
+      </trans-unit>
+      <trans-unit id="editProperty">
+        <source>Edit object/property value:</source>
+        <target state="translated">Edit object/property value:</target>
+      </trans-unit>
+      <trans-unit id="addButton">
+        <source>Add</source>
+        <target state="translated">Add</target>
+      </trans-unit>
+      <trans-unit id="addProperty">
+        <source>Add object property:</source>
+        <target state="translated">Add object property:</target>
+      </trans-unit>
+      <trans-unit id="clear">
+        <source>Clear?</source>
+        <target state="translated">Clear?</target>
+      </trans-unit>
+      <trans-unit id="clearButton">
+        <source>Clear</source>
+        <target state="translated">Clear</target>
+      </trans-unit>
+      <trans-unit id="clearObject">
+        <source>Clear object:</source>
+        <target state="translated">Clear object:</target>
+      </trans-unit>
+      <trans-unit id="edit">
+        <source>Edit:</source>
+        <target state="translated">Edit:</target>
+      </trans-unit>
+      <trans-unit id="noCurrentTemplate">
+        <source>You cannot edit properties and values, if there's no current template.</source>
+        <target state="translated">You cannot edit properties and values, if there's no current template.</target>
+      </trans-unit>
+      <trans-unit id="addKey">
+        <source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
+        <target state="translated">&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</target>
+      </trans-unit>
+      <trans-unit id="removeKey">
+        <source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
+        <target state="translated">&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</target>
+      </trans-unit>
+      <trans-unit id="back">
+        <source>&lt; Back</source>
+        <target state="translated">&lt; Back</target>
+      </trans-unit>
+      <trans-unit id="browse">
+        <source>Browse:</source>
+        <target state="translated">Browse:</target>
+      </trans-unit>
+      <trans-unit id="objectList">
+        <source>Object List:</source>
+        <target state="translated">Object List:</target>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search:</source>
+        <target state="translated">Search:</target>
+      </trans-unit>
+      <trans-unit id="regExp">
+        <source>Regular expressions</source>
+        <target state="translated">Regular expressions</target>
+      </trans-unit>
+      <trans-unit id="errorsWarnings">
+        <source>Errors and warnings</source>
+        <target state="translated">Errors and warnings</target>
+      </trans-unit>
+      <trans-unit id="removeKey">
+        <source>Remove key from OL</source>
+        <target state="translated">Remove key from OL</target>
+      </trans-unit>
+      <trans-unit id="setupRoot">
+        <source>setup root</source>
+        <target state="translated">setup root</target>
+      </trans-unit>
+      <trans-unit id="constantRoot">
+        <source>constants root</source>
+        <target state="translated">constants root</target>
+      </trans-unit>
+      <trans-unit id="displayComments">
+        <source>Display comments</source>
+        <target state="translated">Display comments</target>
+      </trans-unit>
+      <trans-unit id="sortAlphabetically">
+        <source>Sort alphabetically</source>
+        <target state="translated">Sort alphabetically</target>
+      </trans-unit>
+      <trans-unit id="cropLines">
+        <source>Crop lines</source>
+        <target state="translated">Crop lines</target>
+      </trans-unit>
+      <trans-unit id="displayConstants">
+        <source>Display constants:</source>
+        <target state="translated">Display constants:</target>
+      </trans-unit>
+      <trans-unit id="displayOptions">
+        <source>Display options:</source>
+        <target state="translated">Display options:</target>
+      </trans-unit>
+      <trans-unit id="conditions">
+        <source>Conditions:</source>
+        <target state="translated">Conditions:</target>
+      </trans-unit>
+      <trans-unit id="setConditions">
+        <source>Set conditions</source>
+        <target state="translated">Set conditions</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

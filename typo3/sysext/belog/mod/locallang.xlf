@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:23:36 UTC 2011" product-name="belog">
+    <header/>
+    <body>
+      <trans-unit id="adminLog">
+        <source>Administration log</source>
+        <target state="translated">Administration log</target>
+      </trans-unit>
+      <trans-unit id="allUsers">
+        <source>[All users]</source>
+        <target state="translated">[All users]</target>
+      </trans-unit>
+      <trans-unit id="any">
+        <source>[Any]</source>
+        <target state="translated">[Any]</target>
+      </trans-unit>
+      <trans-unit id="live">
+        <source>LIVE</source>
+        <target state="translated">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft">
+        <source>Draft</source>
+        <target state="translated">Draft</target>
+      </trans-unit>
+      <trans-unit id="self">
+        <source>Self</source>
+        <target state="translated">Self</target>
+      </trans-unit>
+      <trans-unit id="userGroup">
+        <source>Group:</source>
+        <target state="translated">Group:</target>
+      </trans-unit>
+      <trans-unit id="thisWeek">
+        <source>This week</source>
+        <target state="translated">This week</target>
+      </trans-unit>
+      <trans-unit id="lastWeek">
+        <source>Last week</source>
+        <target state="translated">Last week</target>
+      </trans-unit>
+      <trans-unit id="last7Days">
+        <source>Last 7 days</source>
+        <target state="translated">Last 7 days</target>
+      </trans-unit>
+      <trans-unit id="thisMonth">
+        <source>This month</source>
+        <target state="translated">This month</target>
+      </trans-unit>
+      <trans-unit id="lastMonth">
+        <source>Last month</source>
+        <target state="translated">Last month</target>
+      </trans-unit>
+      <trans-unit id="last31Days">
+        <source>Last 31 days</source>
+        <target state="translated">Last 31 days</target>
+      </trans-unit>
+      <trans-unit id="noLimit">
+        <source>No limit</source>
+        <target state="translated">No limit</target>
+      </trans-unit>
+      <trans-unit id="userdefined">
+        <source>User defined</source>
+        <target state="translated">User defined</target>
+      </trans-unit>
+      <trans-unit id="set">
+        <source>Set</source>
+        <target state="translated">Set</target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source>20</source>
+        <target state="translated">20</target>
+      </trans-unit>
+      <trans-unit id="50">
+        <source>50</source>
+        <target state="translated">50</target>
+      </trans-unit>
+      <trans-unit id="100">
+        <source>100</source>
+        <target state="translated">100</target>
+      </trans-unit>
+      <trans-unit id="200">
+        <source>200</source>
+        <target state="translated">200</target>
+      </trans-unit>
+      <trans-unit id="500">
+        <source>500</source>
+        <target state="translated">500</target>
+      </trans-unit>
+      <trans-unit id="1000">
+        <source>1000</source>
+        <target state="translated">1000</target>
+      </trans-unit>
+      <trans-unit id="actionAll">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase">
+        <source>Database</source>
+        <target state="translated">Database</target>
+      </trans-unit>
+      <trans-unit id="actionFile">
+        <source>File</source>
+        <target state="translated">File</target>
+      </trans-unit>
+      <trans-unit id="actionCache">
+        <source>Cache</source>
+        <target state="translated">Cache</target>
+      </trans-unit>
+      <trans-unit id="actionSettings">
+        <source>Settings</source>
+        <target state="translated">Settings</target>
+      </trans-unit>
+      <trans-unit id="actionLogin">
+        <source>Login</source>
+        <target state="translated">Login</target>
+      </trans-unit>
+      <trans-unit id="actionErrors">
+        <source>Errors</source>
+        <target state="translated">Errors</target>
+      </trans-unit>
+      <trans-unit id="group">
+        <source>Group:</source>
+        <target state="translated">Group:</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User:</source>
+        <target state="translated">User:</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users:</source>
+        <target state="translated">Users:</target>
+      </trans-unit>
+      <trans-unit id="time">
+        <source>Time:</source>
+        <target state="translated">Time:</target>
+      </trans-unit>
+      <trans-unit id="max">
+        <source>Max:</source>
+        <target state="translated">Max:</target>
+      </trans-unit>
+      <trans-unit id="changesInFields">
+        <source>Changes in fields: %s.</source>
+        <target state="translated">Changes in fields: %s.</target>
+      </trans-unit>
+      <trans-unit id="showHistory">
+        <source>Show History</source>
+        <target state="translated">Show History</target>
+      </trans-unit>
+      <trans-unit id="action">
+        <source>Action:</source>
+        <target state="translated">Action:</target>
+      </trans-unit>
+      <trans-unit id="workspace">
+        <source>Workspace:</source>
+        <target state="translated">Workspace:</target>
+      </trans-unit>
+      <trans-unit id="groupByPage">
+        <source>Group by page:</source>
+        <target state="translated">Group by page:</target>
+      </trans-unit>
+      <trans-unit id="pagenameWithUID">
+        <source>%s" [UID: %s]</source>
+        <target state="translated">%s" [UID: %s]</target>
+      </trans-unit>
+      <trans-unit id="overview">
+        <source>Overview</source>
+        <target state="translated">Overview</target>
+      </trans-unit>
+      <trans-unit id="timeInfo">
+        <source>These pages have log messages from %s to %s</source>
+        <target state="translated">These pages have log messages from %s to %s</target>
+      </trans-unit>
+      <trans-unit id="forNonPageRelatedActions">
+        <source>for NON-PAGE related actions</source>
+        <target state="translated">for NON-PAGE related actions</target>
+      </trans-unit>
+      <trans-unit id="forRootLevel">
+        <source>for ROOT LEVEL</source>
+        <target state="translated">for ROOT LEVEL</target>
+      </trans-unit>
+      <trans-unit id="forPage">
+        <source>for PAGE "%s" (UID: %s)</source>
+        <target state="translated">for PAGE "%s" (UID: %s)</target>
+      </trans-unit>
+      <trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage">
+        <source>Log %s from %s to %s</source>
+        <target state="translated">Log %s from %s to %s</target>
+      </trans-unit>
+      <trans-unit id="type_1">
+        <source>DB</source>
+        <target state="translated">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1">
+        <source>Insert</source>
+        <target state="translated">Insert</target>
+      </trans-unit>
+      <trans-unit id="action_1_2">
+        <source>Update</source>
+        <target state="translated">Update</target>
+      </trans-unit>
+      <trans-unit id="action_1_3">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="action_1_4">
+        <source>Check</source>
+        <target state="translated">Check</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="translated">Referer host '%s' and server host '%s' did not match!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="translated">Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="translated">Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="translated">Attempt to modify table '%s' without permission</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="translated">Attempt to modify record '%s' (%s) without permission. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="translated">Record '%s' (%s) was updated.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="translated">MySQL error: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="translated">Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="translated">Moved record '%s' (%s) to page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="translated">Moved record '%s' (%s) from page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="translated">Moved record '%s' (%s) on page '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="translated">Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="translated">Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="translated">Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="translated">Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="translated">Attempt to move record '%s' (%s) without having permissions to do so</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="translated">You cannot change the 'doktype' of page '%s' to the desired value.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="translated">'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="translated">Too few items in the list of values. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="translated">Could not delete file '%s' (does not exist). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="translated">Copying file '%s' failed!: No destination file (%s) possible!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="translated">File extension '%s' is not allowed. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="translated">File size (%s) of file '%s' exceeds limit (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="translated">The destination (%s) or the source file (%s) does not exist. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="translated">Copying to file '%s' failed! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="translated">Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2">
+        <source>FILE</source>
+        <target state="translated">FILE</target>
+      </trans-unit>
+      <trans-unit id="action_2_1">
+        <source>Upload</source>
+        <target state="translated">Upload</target>
+      </trans-unit>
+      <trans-unit id="action_2_2">
+        <source>Copy</source>
+        <target state="translated">Copy</target>
+      </trans-unit>
+      <trans-unit id="action_2_3">
+        <source>Move</source>
+        <target state="translated">Move</target>
+      </trans-unit>
+      <trans-unit id="action_2_4">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="action_2_5">
+        <source>Rename</source>
+        <target state="translated">Rename</target>
+      </trans-unit>
+      <trans-unit id="action_2_6">
+        <source>New</source>
+        <target state="translated">New</target>
+      </trans-unit>
+      <trans-unit id="action_2_7">
+        <source>Unzip</source>
+        <target state="translated">Unzip</target>
+      </trans-unit>
+      <trans-unit id="action_2_8">
+        <source>New file</source>
+        <target state="translated">New file</target>
+      </trans-unit>
+      <trans-unit id="action_2_9">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="translated">File saved to '%s', bytes: %s, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3">
+        <source>CACHE</source>
+        <target state="translated">CACHE</target>
+      </trans-unit>
+      <trans-unit id="action_3_1">
+        <source>Clear Cache</source>
+        <target state="translated">Clear Cache</target>
+      </trans-unit>
+      <trans-unit id="type_254">
+        <source>SETTING</source>
+        <target state="translated">SETTING</target>
+      </trans-unit>
+      <trans-unit id="action_254_1">
+        <source>Change</source>
+        <target state="translated">Change</target>
+      </trans-unit>
+      <trans-unit id="type_255">
+        <source>LOGIN</source>
+        <target state="translated">LOGIN</target>
+      </trans-unit>
+      <trans-unit id="action_255_1">
+        <source>LOGIN</source>
+        <target state="translated">LOGIN</target>
+      </trans-unit>
+      <trans-unit id="action_255_2">
+        <source>LOGOUT</source>
+        <target state="translated">LOGOUT</target>
+      </trans-unit>
+      <trans-unit id="action_255_3">
+        <source>ATTEMPT</source>
+        <target state="translated">ATTEMPT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:51 UTC 2011" product-name="linkvalidator">
+    <header/>
+    <body>
+      <trans-unit id="menu.introduction">
+        <source>Introduction</source>
+        <target state="translated">Introduction</target>
+      </trans-unit>
+      <trans-unit id="menu.checkLinks">
+        <source>Check Links for validity</source>
+        <target state="translated">Check Links for validity</target>
+      </trans-unit>
+      <trans-unit id="menu.overview">
+        <source>Overview of links on website</source>
+        <target state="translated">Overview of links on website</target>
+      </trans-unit>
+      <trans-unit id="overview.header">
+        <source>Overview - choose options to check the links</source>
+        <target state="translated">Overview - choose options to check the links</target>
+      </trans-unit>
+      <trans-unit id="overview.all.header">
+        <source>Total amounts in tt_content</source>
+        <target state="translated">Total amounts in tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.all.records">
+        <source>Records with ext. links:</source>
+        <target state="translated">Records with ext. links:</target>
+      </trans-unit>
+      <trans-unit id="overview.all.links">
+        <source>External links:</source>
+        <target state="translated">External links:</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.header">
+        <source>Amounts from actual branch in tt_content</source>
+        <target state="translated">Amounts from actual branch in tt_content</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.records">
+        <source>Records with ext. links:</source>
+        <target state="translated">Records with ext. links:</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.links">
+        <source>External links:</source>
+        <target state="translated">External links:</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.header">
+        <source>Attention:</source>
+        <target state="translated">Attention:</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.text">
+        <source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
+        <target state="translated">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</target>
+      </trans-unit>
+      <trans-unit id="Report">
+        <source>Report</source>
+        <target state="translated">Report</target>
+      </trans-unit>
+      <trans-unit id="CheckLink">
+        <source>Check Links</source>
+        <target state="translated">Check Links</target>
+      </trans-unit>
+      <trans-unit id="report.statistics.header">
+        <source>Show these types of broken links</source>
+        <target state="translated">Show these types of broken links</target>
+      </trans-unit>
+      <trans-unit id="checklinks.statistics.header">
+        <source>Check these types of broken links</source>
+        <target state="translated">Check these types of broken links</target>
+      </trans-unit>
+      <trans-unit id="report.func.title">
+        <source>Show this level</source>
+        <target state="translated">Show this level</target>
+      </trans-unit>
+      <trans-unit id="checklinks.func.title">
+        <source>Check this level</source>
+        <target state="translated">Check this level</target>
+      </trans-unit>
+      <trans-unit id="overviews.nbtotal">
+        <source>Broken links total:</source>
+        <target state="translated">Broken links total:</target>
+      </trans-unit>
+      <trans-unit id="hooks.db">
+        <source>Internal Links:</source>
+        <target state="translated">Internal Links:</target>
+      </trans-unit>
+      <trans-unit id="hooks.file">
+        <source>File Links:</source>
+        <target state="translated">File Links:</target>
+      </trans-unit>
+      <trans-unit id="hooks.external">
+        <source>External Links:</source>
+        <target state="translated">External Links:</target>
+      </trans-unit>
+      <trans-unit id="hooks.linkhandler">
+        <source>Linkhandler Links:</source>
+        <target state="translated">Linkhandler Links:</target>
+      </trans-unit>
+      <trans-unit id="label_refresh">
+        <source>Refresh display</source>
+        <target state="translated">Refresh display</target>
+      </trans-unit>
+      <trans-unit id="label_update">
+        <source>Check links</source>
+        <target state="translated">Check links</target>
+      </trans-unit>
+      <trans-unit id="list.header">
+        <source>Listing of broken links</source>
+        <target state="translated">Listing of broken links</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.path">
+        <source>Path</source>
+        <target state="translated">Path</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.element">
+        <source>Element</source>
+        <target state="translated">Element</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink">
+        <source>Link</source>
+        <target state="translated">Link</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linktarget">
+        <source>URL / Link Target</source>
+        <target state="translated">URL / Link Target</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkmessage">
+        <source>Error message</source>
+        <target state="translated">Error message</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck">
+        <source>Last check</source>
+        <target state="translated">Last check</target>
+      </trans-unit>
+      <trans-unit id="list.edit">
+        <source>Edit element containing this broken link</source>
+        <target state="translated">Edit element containing this broken link</target>
+      </trans-unit>
+      <trans-unit id="list.field">
+        <source>(Field: %s)</source>
+        <target state="translated">(Field: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.no.headline">
+        <source>no headline</source>
+        <target state="translated">no headline</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted">
+        <source>Page '###title###' (###uid###) is deleted.</source>
+        <target state="translated">Page '###title###' (###uid###) is deleted.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible">
+        <source>Page '###title###' (###uid###) is not visible.</source>
+        <target state="translated">Page '###title###' (###uid###) is not visible.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting">
+        <source>Page (###uid###) does not exist.</source>
+        <target state="translated">Page (###uid###) does not exist.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved">
+        <source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target state="translated">Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted">
+        <source>Element '###title###' (###uid###) is deleted.</source>
+        <target state="translated">Element '###title###' (###uid###) is deleted.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible">
+        <source>Element '###title###' (###uid###) is not visible.</source>
+        <target state="translated">Element '###title###' (###uid###) is not visible.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting">
+        <source>Element (###uid###) does not exist.</source>
+        <target state="translated">Element (###uid###) does not exist.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted">
+        <source>###title### row (###uid###) is deleted.</source>
+        <target state="translated">###title### row (###uid###) is deleted.</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted.default.title">
+        <source>Linked</source>
+        <target state="translated">Linked</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotexisting">
+        <source>Row (###uid###) does not exist.</source>
+        <target state="translated">Row (###uid###) does not exist.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noresponse">
+        <source>External Link not reachable.</source>
+        <target state="translated">External Link not reachable.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="translated">A redirect loop occurred. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="translated">Accessing this address is not allowed (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404">
+        <source>The requested url was not found (404).</source>
+        <target state="translated">The requested url was not found (404).</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="translated">External Link returned HTTP error code (%s).</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting">
+        <source>File doesn't exist.</source>
+        <target state="translated">File doesn't exist.</target>
+      </trans-unit>
+      <trans-unit id="list.report.timeout">
+        <source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
+        <target state="translated">Operation timeout. The specified time-out period was reached according to the conditions.</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500">
+        <source>Internal Server Error (500)</source>
+        <target state="translated">Internal Server Error (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="translated">Could not resolve host. The given remote host was not resolved.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata">
+        <source>Failure with receiving network data.</source>
+        <target state="translated">Failure with receiving network data.</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok">
+        <source>Ok</source>
+        <target state="translated">Ok</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun">
+        <source>%1$s %2$s</source>
+        <target state="translated">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title">
+        <source>No broken links to show!</source>
+        <target state="translated">No broken links to show!</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links">
+        <source>There are no broken links to be displayed.</source>
+        <target state="translated">There are no broken links to be displayed.</target>
+      </trans-unit>
+      <trans-unit id="no.access.title">
+        <source>No access!</source>
+        <target state="translated">No access!</target>
+      </trans-unit>
+      <trans-unit id="no.access">
+        <source>You do not have access to these listings.</source>
+        <target state="translated">You do not have access to these listings.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

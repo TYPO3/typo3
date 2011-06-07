@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Indent-Tooltip">
+        <source>Increase indent</source>
+        <target state="translated">Increase indent</target>
+      </trans-unit>
+      <trans-unit id="Indent-helpText">
+        <source>Increases text indentation</source>
+        <target state="translated">Increases text indentation</target>
+      </trans-unit>
+      <trans-unit id="Outdent-Tooltip">
+        <source>Reduce indent</source>
+        <target state="translated">Reduce indent</target>
+      </trans-unit>
+      <trans-unit id="Outdent-helpText">
+        <source>Reduces text indentation</source>
+        <target state="translated">Reduces text indentation</target>
+      </trans-unit>
+      <trans-unit id="Blockquote-Tooltip">
+        <source>Large quotation</source>
+        <target state="translated">Large quotation</target>
+      </trans-unit>
+      <trans-unit id="Blockquote-helpText">
+        <source>Makes a large quotation block</source>
+        <target state="translated">Makes a large quotation block</target>
+      </trans-unit>
+      <trans-unit id="FormatBlock-Tooltip">
+        <source>Type of block</source>
+        <target state="translated">Type of block</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphBefore-Tooltip">
+        <source>Insert a paragraph before the current block</source>
+        <target state="translated">Insert a paragraph before the current block</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphBefore-contextMenuTitle">
+        <source>Insert paragraph before</source>
+        <target state="translated">Insert paragraph before</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphBefore-helpText">
+        <source>Inserts a paragraph before the current block</source>
+        <target state="translated">Inserts a paragraph before the current block</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphAfter-Tooltip">
+        <source>Insert a paragraph after the current block</source>
+        <target state="translated">Insert a paragraph after the current block</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphAfter-contextMenuTitle">
+        <source>Insert paragraph after</source>
+        <target state="translated">Insert paragraph after</target>
+      </trans-unit>
+      <trans-unit id="InsertParagraphAfter-helpText">
+        <source>Inserts a paragraph after the current block</source>
+        <target state="translated">Inserts a paragraph after the current block</target>
+      </trans-unit>
+      <trans-unit id="JustifyLeft-Tooltip">
+        <source>Justify left</source>
+        <target state="translated">Justify left</target>
+      </trans-unit>
+      <trans-unit id="JustifyLeft-helpText">
+        <source>Aligns the text to the left</source>
+        <target state="translated">Aligns the text to the left</target>
+      </trans-unit>
+      <trans-unit id="JustifyCenter-Tooltip">
+        <source>Center</source>
+        <target state="translated">Center</target>
+      </trans-unit>
+      <trans-unit id="JustifyCenter-helpText">
+        <source>Centers the text</source>
+        <target state="translated">Centers the text</target>
+      </trans-unit>
+      <trans-unit id="JustifyRight-Tooltip">
+        <source>Justify right</source>
+        <target state="translated">Justify right</target>
+      </trans-unit>
+      <trans-unit id="JustifyRight-helpText">
+        <source>Aligns the text to the right</source>
+        <target state="translated">Aligns the text to the right</target>
+      </trans-unit>
+      <trans-unit id="JustifyFull-Tooltip">
+        <source>Justify left and right</source>
+        <target state="translated">Justify left and right</target>
+      </trans-unit>
+      <trans-unit id="JustifyFull-helpText">
+        <source>Aligns the text both to the left and the right</source>
+        <target state="translated">Aligns the text both to the left and the right</target>
+      </trans-unit>
+      <trans-unit id="Left-Tooltip">
+        <source>Left</source>
+        <target state="translated">Left</target>
+      </trans-unit>
+      <trans-unit id="InsertOrderedList-Tooltip">
+        <source>Ordered List</source>
+        <target state="translated">Ordered List</target>
+      </trans-unit>
+      <trans-unit id="InsertOrderedList-helpText">
+        <source>Makes an ordered list from the curent selection</source>
+        <target state="translated">Makes an ordered list from the curent selection</target>
+      </trans-unit>
+      <trans-unit id="InsertUnorderedList-Tooltip">
+        <source>Bulleted List</source>
+        <target state="translated">Bulleted List</target>
+      </trans-unit>
+      <trans-unit id="InsertUnorderedList-helpText">
+        <source>Makes an bulleted list from the curent selection</source>
+        <target state="translated">Makes an bulleted list from the curent selection</target>
+      </trans-unit>
+      <trans-unit id="InsertHorizontalRule-Tooltip">
+        <source>Horizontal Rule</source>
+        <target state="translated">Horizontal Rule</target>
+      </trans-unit>
+      <trans-unit id="InsertHorizontalRule-helpText">
+        <source>Inserts an horizontal rule</source>
+        <target state="translated">Inserts an horizontal rule</target>
+      </trans-unit>
+      <trans-unit id="No block">
+        <source>No block format</source>
+        <target state="translated">No block format</target>
+      </trans-unit>
+      <trans-unit id="Remove block">
+        <source>Remove block format</source>
+        <target state="translated">Remove block format</target>
+      </trans-unit>
+      <trans-unit id="Technische Universitat Ilmenau">
+        <source>Technische Universität Ilmenau</source>
+        <target state="translated">Technische Universität Ilmenau</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

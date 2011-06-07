@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Top padding">
+        <source>Top padding</source>
+        <target state="translated">Top padding</target>
+      </trans-unit>
+      <trans-unit id="Right padding">
+        <source>Right padding</source>
+        <target state="translated">Right padding</target>
+      </trans-unit>
+      <trans-unit id="Bottom padding">
+        <source>Bottom padding</source>
+        <target state="translated">Bottom padding</target>
+      </trans-unit>
+      <trans-unit id="Left padding">
+        <source>Left padding</source>
+        <target state="translated">Left padding</target>
+      </trans-unit>
+      <trans-unit id="Top:">
+        <source>Top:</source>
+        <target state="translated">Top:</target>
+      </trans-unit>
+      <trans-unit id="Right:">
+        <source>Right:</source>
+        <target state="translated">Right:</target>
+      </trans-unit>
+      <trans-unit id="Bottom:">
+        <source>Bottom:</source>
+        <target state="translated">Bottom:</target>
+      </trans-unit>
+      <trans-unit id="image_url">
+        <source>Image URL</source>
+        <target state="translated">Image URL</target>
+      </trans-unit>
+      <trans-unit id="image_url_invalid">
+        <source>The url could not be accessed or is not a valid image.</source>
+        <target state="translated">The url could not be accessed or is not a valid image.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

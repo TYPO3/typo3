@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No block">
+        <source>No block format</source>
+        <target state="translated">No block format</target>
+      </trans-unit>
+      <trans-unit id="Paragraph">
+        <source>Paragraph</source>
+        <target state="translated">Paragraph</target>
+      </trans-unit>
+      <trans-unit id="Heading 1">
+        <source>Heading 1</source>
+        <target state="translated">Heading 1</target>
+      </trans-unit>
+      <trans-unit id="Heading 2">
+        <source>Heading 2</source>
+        <target state="translated">Heading 2</target>
+      </trans-unit>
+      <trans-unit id="Heading 3">
+        <source>Heading 3</source>
+        <target state="translated">Heading 3</target>
+      </trans-unit>
+      <trans-unit id="Heading 4">
+        <source>Heading 4</source>
+        <target state="translated">Heading 4</target>
+      </trans-unit>
+      <trans-unit id="Heading 5">
+        <source>Heading 5</source>
+        <target state="translated">Heading 5</target>
+      </trans-unit>
+      <trans-unit id="Heading 6">
+        <source>Heading 6</source>
+        <target state="translated">Heading 6</target>
+      </trans-unit>
+      <trans-unit id="Preformatted">
+        <source>Preformatted</source>
+        <target state="translated">Preformatted</target>
+      </trans-unit>
+      <trans-unit id="Long quotation">
+        <source>Quotation</source>
+        <target state="translated">Quotation</target>
+      </trans-unit>
+      <trans-unit id="Address">
+        <source>Address</source>
+        <target state="translated">Address</target>
+      </trans-unit>
+      <trans-unit id="Section">
+        <source>Container</source>
+        <target state="translated">Container</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

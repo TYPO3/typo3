@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</source>
+        <target state="translated">A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+
+&lt;b&gt;The page tree&lt;/b&gt;
+The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
+
+&lt;p&gt;uid, pid and the pagetree root&lt;/b&gt;
+Technically all database elements has a field 'uid' which is a unique identification number. Further they must have a field 'pid' which holds the uid-number of the page (page id) to which they belong. If the 'pid' field is zero the record is found in the so called 'root'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.
+
+&lt;b&gt;Storage of database records&lt;/b&gt;
+Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type "SysFolder".</source>
+        <target state="translated">The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+
+&lt;b&gt;The page tree&lt;/b&gt;
+The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
+
+&lt;p&gt;uid, pid and the pagetree root&lt;/b&gt;
+Technically all database elements has a field 'uid' which is a unique identification number. Further they must have a field 'pid' which holds the uid-number of the page (page id) to which they belong. If the 'pid' field is zero the record is found in the so called 'root'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.
+
+&lt;b&gt;Storage of database records&lt;/b&gt;
+Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type "SysFolder".</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>xMOD_csh_corebe:pagetree,
+tt_content,
+About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</source>
+        <target state="translated">xMOD_csh_corebe:pagetree,
+tt_content,
+About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:lang/cshimages/pages_1.png,
+EXT:lang/cshimages/pages_2.png,</source>
+        <target state="translated">EXT:lang/cshimages/pages_1.png,
+EXT:lang/cshimages/pages_2.png,</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
+Pages are arranged in a page tree in TYPO3. The page from the editing form in the previous screenshot was the "Intro" page from this page tree. As you can see it belongs in the root of the page tree and has a number of "child" pages under it.</source>
+        <target state="translated">The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
+Pages are arranged in a page tree in TYPO3. The page from the editing form in the previous screenshot was the "Intro" page from this page tree. As you can see it belongs in the root of the page tree and has a number of "child" pages under it.</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Enter the title of the page or folder. You must enter a page title. The field is required.</source>
+        <target state="translated">Enter the title of the page or folder. You must enter a page title. The field is required.</target>
+      </trans-unit>
+      <trans-unit id="title.details">
+        <source>The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
+You can always change a page title without affecting links to a page. This is because pages are always referenced by their "uid" number, not their title.
+You can use any characters in the page title.</source>
+        <target state="translated">The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
+You can always change a page title without affecting links to a page. This is because pages are always referenced by their "uid" number, not their title.
+You can use any characters in the page title.</target>
+      </trans-unit>
+      <trans-unit id="_title.image">
+        <source>EXT:lang/cshimages/pages_3.png</source>
+        <target state="translated">EXT:lang/cshimages/pages_3.png</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr">
+        <source>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</source>
+        <target state="translated">The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description">
+        <source>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</source>
+        <target state="translated">Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details">
+        <source>The 'Standard' type represents a webpage.
+'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
+'Recycler' is a garbage bin.
+
+&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).
+
+&lt;b&gt;$PAGES_TYPES [Technical]&lt;/b&gt;
+The restrictions that apply to each page type is defined in the global array $PAGES_TYPES. Here it is defined which tables are allowed on a page. When extensions adds tables to TYPO3 they may need to register their tables in $PAGES_TYPES so they can be created on standard pages.</source>
+        <target state="translated">The 'Standard' type represents a webpage.
+'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
+'Recycler' is a garbage bin.
+
+&lt;b&gt;Notice:&lt;/b&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options are not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).
+
+&lt;b&gt;$PAGES_TYPES [Technical]&lt;/b&gt;
+The restrictions that apply to each page type is defined in the global array $PAGES_TYPES. Here it is defined which tables are allowed on a page. When extensions adds tables to TYPO3 they may need to register their tables in $PAGES_TYPES so they can be created on standard pages.</target>
+      </trans-unit>
+      <trans-unit id="_doktype.seeAlso">
+        <source>be_groups:pagetypes_select,
+About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</source>
+        <target state="translated">be_groups:pagetypes_select,
+About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</target>
+      </trans-unit>
+      <trans-unit id="_doktype.image">
+        <source>EXT:lang/cshimages/pages_4.png</source>
+        <target state="translated">EXT:lang/cshimages/pages_4.png</target>
+      </trans-unit>
+      <trans-unit id="doktype.image_descr">
+        <source>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</source>
+        <target state="translated">This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description">
+        <source>Page TypoScript configuration.</source>
+        <target state="translated">Page TypoScript configuration.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details">
+        <source>Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
+The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension "info_pagetsconfig" to be installed).</source>
+        <target state="translated">Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
+The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension "info_pagetsconfig" to be installed).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax">
+        <source>Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+
+It's recommended that only admin-users are allowed access to this field!</source>
+        <target state="translated">Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+
+It's recommended that only admin-users are allowed access to this field!</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso">
+        <source>_MOD_web_info:tsconfig_hierarchy,
+More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
+        <target state="translated">_MOD_web_info:tsconfig_hierarchy,
+More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.image">
+        <source>EXT:lang/cshimages/pages_5.png</source>
+        <target state="translated">EXT:lang/cshimages/pages_5.png</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.image_descr">
+        <source>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</source>
+        <target state="translated">Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.description">
+        <source>Stops backend rendering of the page tree in navigation and lists.</source>
+        <target state="translated">Stops backend rendering of the page tree in navigation and lists.</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.details">
+        <source>If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
+
+The point with this flag is to prevent descendence into a branch that might have an unusual amount of subpages (hundreds).
+
+You can click the red "+" and the page will become a temporary mount point in the navigation frame.</source>
+        <target state="translated">If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
+
+The point with this flag is to prevent descendence into a branch that might have an unusual amount of subpages (hundreds).
+
+You can click the red "+" and the page will become a temporary mount point in the navigation frame.</target>
+      </trans-unit>
+      <trans-unit id="_php_tree_stop.seeAlso">
+        <source>_MOD_web_info:pagetree_overview</source>
+        <target state="translated">_MOD_web_info:pagetree_overview</target>
+      </trans-unit>
+      <trans-unit id="_php_tree_stop.image">
+        <source>EXT:lang/cshimages/pages_8.png,
+EXT:lang/cshimages/pages_6.png,
+EXT:lang/cshimages/pages_7.png</source>
+        <target state="translated">EXT:lang/cshimages/pages_8.png,
+EXT:lang/cshimages/pages_6.png,
+EXT:lang/cshimages/pages_7.png</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.image_descr">
+        <source>Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
+In the pagetree the setting is reflected with the red "+" and it is not possible to expand that branch of the tree.
+If you click the red "+" you will get the page mounted temporarily in the navigation frame.</source>
+        <target state="translated">Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
+In the pagetree the setting is reflected with the red "+" and it is not possible to expand that branch of the tree.
+If you click the red "+" you will get the page mounted temporarily in the navigation frame.</target>
+      </trans-unit>
+      <trans-unit id="storage_pid.description">
+        <source>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</source>
+        <target state="translated">A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</target>
+      </trans-unit>
+      <trans-unit id="storage_pid.details">
+        <source>It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
+
+A General Record Storage Page is typically a page of the "SysFolder" type.</source>
+        <target state="translated">It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
+
+A General Record Storage Page is typically a page of the "SysFolder" type.</target>
+      </trans-unit>
+      <trans-unit id="_storage_pid.seeAlso">
+        <source>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</source>
+        <target state="translated">The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</target>
+      </trans-unit>
+      <trans-unit id="editlock.description">
+        <source>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</source>
+        <target state="translated">If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</target>
+      </trans-unit>
+      <trans-unit id="fe_login_mode.description">
+        <source>The Login Mode disables the ability to "be logged in" at this page.</source>
+        <target state="translated">The Login Mode disables the ability to "be logged in" at this page.</target>
+      </trans-unit>
+      <trans-unit id="fe_login_mode.details">
+        <source>Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
+
+By disabling the login, this check does not happen anymore. So the content is the same for all states whether logged in or not or for different FE user groups. This again results in being able to send cache headers.</source>
+        <target state="translated">Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
+
+By disabling the login, this check does not happen anymore. So the content is the same for all states whether logged in or not or for different FE user groups. This again results in being able to send cache headers.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

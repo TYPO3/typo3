@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>htmlArea RTE &gt; Language</source>
+        <target state="translated">htmlArea RTE &gt; Language</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The Language feature allows to edit the language and text direction attributes of an element in the RTE editing area.</source>
+        <target state="translated">The Language feature allows to edit the language and text direction attributes of an element in the RTE editing area.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The following items may appear in the RTE toolbar:
+- a selector box that allows to assign the language of contents of an element;
+- two buttons that allow to set the direction of text;
+- another button that allows to make the language marks visible wittin the RTE editing area.
+The language selector box may also appear in some dialogues along with a text direction selector box.</source>
+        <target state="translated">The following items may appear in the RTE toolbar:
+- a selector box that allows to assign the language of contents of an element;
+- two buttons that allow to set the direction of text;
+- another button that allows to make the language marks visible wittin the RTE editing area.
+The language selector box may also appear in some dialogues along with a text direction selector box.</target>
+      </trans-unit>
+      <trans-unit id=".image">
+        <source>EXT:rtehtmlarea/extensions/Language/skin/images/left_to_right.gif,
+EXT:rtehtmlarea/extensions/Language/skin/images/right_to_left.gif,
+EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</source>
+        <target state="translated">EXT:rtehtmlarea/extensions/Language/skin/images/left_to_right.gif,
+EXT:rtehtmlarea/extensions/Language/skin/images/right_to_left.gif,
+EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>"Left to right" icon in the editor tool bar.
+"Right to left" icon in the editor tool bar.
+"Show language marks" icon in the editor tool bar.
+</source>
+        <target state="translated">"Left to right" icon in the editor tool bar.
+"Right to left" icon in the editor tool bar.
+"Show language marks" icon in the editor tool bar.
+</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+</source>
+        <target state="translated">xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+</target>
+      </trans-unit>
+      <trans-unit id="languageCombo.alttitle">
+        <source>Language of contents</source>
+        <target state="translated">Language of contents</target>
+      </trans-unit>
+      <trans-unit id="languageCombo.description">
+        <source>Select the language of the contents of the element.</source>
+        <target state="translated">Select the language of the contents of the element.</target>
+      </trans-unit>
+      <trans-unit id="languageCombo.details">
+        <source>The language selector box may appear in the RTE toolbar and in some dialogues.
+The selector shows the language currently assigned to the current element, if any.
+Selecting a language assigns it to the element. If a language was already assigned to the element, it is replaced by the newly selected language.
+Any currently assigned language may be removed by selecting the "Remove language mark" item at the top of the list of the selector box.</source>
+        <target state="translated">The language selector box may appear in the RTE toolbar and in some dialogues.
+The selector shows the language currently assigned to the current element, if any.
+Selecting a language assigns it to the element. If a language was already assigned to the element, it is replaced by the newly selected language.
+Any currently assigned language may be removed by selecting the "Remove language mark" item at the top of the list of the selector box.</target>
+      </trans-unit>
+      <trans-unit id="directionCombo.alttitle">
+        <source>Direction of text</source>
+        <target state="translated">Direction of text</target>
+      </trans-unit>
+      <trans-unit id="directionCombo.description">
+        <source>Select the direction of text within the contents of the element.</source>
+        <target state="translated">Select the direction of text within the contents of the element.</target>
+      </trans-unit>
+      <trans-unit id="directionCombo.details">
+        <source>The text direction selector box may appear in some dialogues.
+The selector shows the direction of text currently set on the current element, if any.
+Selecting a direction sets it on the element. If a direction was already set on the element, it is replaced by the newly selected direction.
+Any currently set direction may be removed by selecting the "Not set" item at the top of the list of the selector box.</source>
+        <target state="translated">The text direction selector box may appear in some dialogues.
+The selector shows the direction of text currently set on the current element, if any.
+Selecting a direction sets it on the element. If a direction was already set on the element, it is replaced by the newly selected direction.
+Any currently set direction may be removed by selecting the "Not set" item at the top of the list of the selector box.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

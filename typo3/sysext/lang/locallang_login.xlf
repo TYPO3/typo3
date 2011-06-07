@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="labels.username">
+        <source>Username</source>
+        <target state="translated">Username</target>
+      </trans-unit>
+      <trans-unit id="labels.openId">
+        <source>OpenID</source>
+        <target state="translated">OpenID</target>
+      </trans-unit>
+      <trans-unit id="labels.password">
+        <source>Password</source>
+        <target state="translated">Password</target>
+      </trans-unit>
+      <trans-unit id="labels.interface">
+        <source>Interface</source>
+        <target state="translated">Interface</target>
+      </trans-unit>
+      <trans-unit id="labels.submitLogin">
+        <source>Login</source>
+        <target state="translated">Login</target>
+      </trans-unit>
+      <trans-unit id="labels.submitLogout">
+        <source>Log Out</source>
+        <target state="translated">Log Out</target>
+      </trans-unit>
+      <trans-unit id="labels.donate">
+        <source>Donate</source>
+        <target state="translated">Donate</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId">
+        <source>What is OpenId?</source>
+        <target state="translated">What is OpenId?</target>
+      </trans-unit>
+      <trans-unit id="labels.switchToOpenId">
+        <source>Switch to OpenID</source>
+        <target state="translated">Switch to OpenID</target>
+      </trans-unit>
+      <trans-unit id="labels.switchToDefault">
+        <source>Switch to default login</source>
+        <target state="translated">Switch to default login</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="translated">Backend,Front End,Traditional Backend</target>
+      </trans-unit>
+      <trans-unit id="interface.backend">
+        <source>Backend</source>
+        <target state="translated">Backend</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend">
+        <source>Frontend</source>
+        <target state="translated">Frontend</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old">
+        <source>Traditional Backend</source>
+        <target state="translated">Traditional Backend</target>
+      </trans-unit>
+      <trans-unit id="headline">
+        <source>Login to the TYPO3 Backend on ###SITENAME###</source>
+        <target state="translated">Login to the TYPO3 Backend on ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="translated">This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset">
+        <source>Reset this form</source>
+        <target state="translated">Reset this form</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="translated">(Note: Cookies and JavaScript must be enabled!)</target>
+      </trans-unit>
+      <trans-unit id="clear">
+        <source>Clear this field!</source>
+        <target state="translated">Clear this field!</target>
+      </trans-unit>
+      <trans-unit id="login_process">
+        <source>Verifying Login Data ...</source>
+        <target state="translated">Verifying Login Data ...</target>
+      </trans-unit>
+      <trans-unit id="newsheadline">
+        <source>Important Messages:</source>
+        <target state="translated">Important Messages:</target>
+      </trans-unit>
+      <trans-unit id="error.login">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="translated">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+      </trans-unit>
+      <trans-unit id="error.login.title">
+        <source>Your login attempt did not succeed</source>
+        <target state="translated">Your login attempt did not succeed</target>
+      </trans-unit>
+      <trans-unit id="error.login.description">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="translated">Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+      </trans-unit>
+      <trans-unit id="error.javascript">
+        <source>Activate JavaScript, please!</source>
+        <target state="translated">Activate JavaScript, please!</target>
+      </trans-unit>
+      <trans-unit id="error.cookies">
+        <source>Activate Cookies, please!</source>
+        <target state="translated">Activate Cookies, please!</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore">
+        <source>Ignore!</source>
+        <target state="translated">Ignore!</target>
+      </trans-unit>
+      <trans-unit id="error.capslock">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="translated">Attention: Caps lock enabled!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation">
+        <source>For more information or further help click here</source>
+        <target state="translated">For more information or further help click here</target>
+      </trans-unit>
+      <trans-unit id="warranty.by">
+        <source>Warranty is supplied by %s; %sclick for details.%s</source>
+        <target state="translated">Warranty is supplied by %s; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="no.warranty">
+        <source>TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
+        <target state="translated">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="typo3.logo">
+        <source>TYPO3 logo</source>
+        <target state="translated">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms">
+        <source>TYPO3 CMS</source>
+        <target state="translated">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short">
+        <source>ver.</source>
+        <target state="translated">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright">
+        <source>Copyright</source>
+        <target state="translated">Copyright</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="translated">Extensions are copyright of their respective owners.</target>
+      </trans-unit>
+      <trans-unit id="details.link">
+        <source>Go to %s for details.</source>
+        <target state="translated">Go to %s for details.</target>
+      </trans-unit>
+      <trans-unit id="free.software">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</source>
+        <target state="translated">This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</target>
+      </trans-unit>
+      <trans-unit id="keep.notice">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="translated">Obstructing the appearance of this notice is prohibited by law.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

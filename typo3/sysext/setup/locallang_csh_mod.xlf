@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:34 UTC 2011" product-name="setup">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle">
+        <source>User &gt; Setup module</source>
+        <target state="translated">User &gt; Setup module</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="translated">The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="translated">&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>User TSconfig SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/SETUP/</source>
+        <target state="translated">User TSconfig SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/SETUP/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:setup/cshimages/setup8.png,
+EXT:setup/cshimages/setup7.png</source>
+        <target state="translated">EXT:setup/cshimages/setup8.png,
+EXT:setup/cshimages/setup7.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+        <target state="translated">The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</target>
+      </trans-unit>
+      <trans-unit id="language.alttitle">
+        <source>Backend Language selection</source>
+        <target state="translated">Backend Language selection</target>
+      </trans-unit>
+      <trans-unit id="language.description">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="translated">Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</target>
+      </trans-unit>
+      <trans-unit id="language.details">
+        <source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+        <target state="translated">&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</target>
+      </trans-unit>
+      <trans-unit id="_language.image">
+        <source>EXT:setup/cshimages/lang.png</source>
+        <target state="translated">EXT:setup/cshimages/lang.png</target>
+      </trans-unit>
+      <trans-unit id="language.image_descr">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="translated">TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</target>
+      </trans-unit>
+      <trans-unit id="option_condensedMode.alttitle">
+        <source>Condensed Mode</source>
+        <target state="translated">Condensed Mode</target>
+      </trans-unit>
+      <trans-unit id="option_condensedMode.description">
+        <source>If set, the backend will not load the Web-submodules and File-submodules in a frameset but allow the page and folder trees to load the submodule in the main content frame. This allows for a better display on small screens.</source>
+        <target state="translated">If set, the backend will not load the Web-submodules and File-submodules in a frameset but allow the page and folder trees to load the submodule in the main content frame. This allows for a better display on small screens.</target>
+      </trans-unit>
+      <trans-unit id="_option_condensedMode.seeAlso">
+        <source>_MOD_user_setup:option_noMenuMode</source>
+        <target state="translated">_MOD_user_setup:option_noMenuMode</target>
+      </trans-unit>
+      <trans-unit id="_option_condensedMode.image">
+        <source>EXT:setup/cshimages/setup3.png,
+EXT:setup/cshimages/setup4.png</source>
+        <target state="translated">EXT:setup/cshimages/setup3.png,
+EXT:setup/cshimages/setup4.png</target>
+      </trans-unit>
+      <trans-unit id="option_condensedMode.image_descr">
+        <source>In this example Condensed Mode is enabled. The page tree is &lt;em&gt;not&lt;/em&gt; shown in the normal navigation frame but rather in the full content frame to the right of the menu.
+When a page title is clicked in the page tree the module page (here the Web &gt; List module) will be loaded in the &lt;u&gt;same&lt;/u&gt; frame of the backend. In this way Condensed Mode saves horizontal screen space since the navigation frame is removed - but it takes an extra click if you need to go to another page.</source>
+        <target state="translated">In this example Condensed Mode is enabled. The page tree is &lt;em&gt;not&lt;/em&gt; shown in the normal navigation frame but rather in the full content frame to the right of the menu.
+When a page title is clicked in the page tree the module page (here the Web &gt; List module) will be loaded in the &lt;u&gt;same&lt;/u&gt; frame of the backend. In this way Condensed Mode saves horizontal screen space since the navigation frame is removed - but it takes an extra click if you need to go to another page.</target>
+      </trans-unit>
+      <trans-unit id="option_noMenuMode.alttitle">
+        <source>Navigation Mode</source>
+        <target state="translated">Navigation Mode</target>
+      </trans-unit>
+      <trans-unit id="option_noMenuMode.description">
+        <source>Setting alternative backend menu modes</source>
+        <target state="translated">Setting alternative backend menu modes</target>
+      </trans-unit>
+      <trans-unit id="option_noMenuMode.details">
+        <source>By default you navigate between backend modules with the menu in the left frame. By this option you can select alternative navigation modes:
+
+&lt;b&gt;Selectorbox in top frame:&lt;/b&gt;
+If set, the backend will not load the left menu frame but rather put a selector-box menu in the topframe. This saves a lot of space on small screens.
+
+&lt;b&gt;Icons in top frame&lt;/b&gt;
+This option shows all menu items in the top frame as a horizontal list of icons. This is for experienced users only who knows the order of modules and can recognize them based on their icon.</source>
+        <target state="translated">By default you navigate between backend modules with the menu in the left frame. By this option you can select alternative navigation modes:
+
+&lt;b&gt;Selectorbox in top frame:&lt;/b&gt;
+If set, the backend will not load the left menu frame but rather put a selector-box menu in the topframe. This saves a lot of space on small screens.
+
+&lt;b&gt;Icons in top frame&lt;/b&gt;
+This option shows all menu items in the top frame as a horizontal list of icons. This is for experienced users only who knows the order of modules and can recognize them based on their icon.</target>
+      </trans-unit>
+      <trans-unit id="_option_noMenuMode.seeAlso">
+        <source>_MOD_user_setup:option_condensedMode</source>
+        <target state="translated">_MOD_user_setup:option_condensedMode</target>
+      </trans-unit>
+      <trans-unit id="_option_noMenuMode.image">
+        <source>EXT:setup/cshimages/setup1.png,
+EXT:setup/cshimages/setup2.png</source>
+        <target state="translated">EXT:setup/cshimages/setup1.png,
+EXT:setup/cshimages/setup2.png</target>
+      </trans-unit>
+      <trans-unit id="option_noMenuMode.image_descr">
+        <source>The "Selectorbox" menu. Selecting an item makes the backend jump to that module.
+The "Icons" menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.</source>
+        <target state="translated">The "Selectorbox" menu. Selecting an item makes the backend jump to that module.
+The "Icons" menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle">
+        <source>Start module</source>
+        <target state="translated">Start module</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description">
+        <source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+        <target state="translated">Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.alttitle">
+        <source>Show Thumbnails by default</source>
+        <target state="translated">Show Thumbnails by default</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.description">
+        <source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
+        <target state="translated">In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</target>
+      </trans-unit>
+      <trans-unit id="_option_showThumbs.image">
+        <source>EXT:setup/cshimages/setup5.png</source>
+        <target state="translated">EXT:setup/cshimages/setup5.png</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.image_descr">
+        <source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
+        <target state="translated">When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.alttitle">
+        <source>Show help text when applicable</source>
+        <target state="translated">Show help text when applicable</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="translated">If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle">
+        <source>Maximum title length</source>
+        <target state="translated">Maximum title length</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="translated">TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image">
+        <source>EXT:setup/cshimages/setup6.png</source>
+        <target state="translated">EXT:setup/cshimages/setup6.png</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr">
+        <source>In this case the Maximum Title lenght is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="translated">In this case the Maximum Title lenght is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle">
+        <source>Recursive Copy</source>
+        <target state="translated">Recursive Copy</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="translated">When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle">
+        <source>Recursive Delete</source>
+        <target state="translated">Recursive Delete</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.description">
+        <source>You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</source>
+        <target state="translated">You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.details">
+        <source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
+        <target state="translated">You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_wideDocument.alttitle">
+        <source>Wide document background</source>
+        <target state="translated">Wide document background</target>
+      </trans-unit>
+      <trans-unit id="option_edit_wideDocument.description">
+        <source>Setting this option will enlarge the default width of record editing forms in TYPO3 by around 50%</source>
+        <target state="translated">Setting this option will enlarge the default width of record editing forms in TYPO3 by around 50%</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle">
+        <source>Enable Rich Text Editor</source>
+        <target state="translated">Enable Rich Text Editor</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="translated">If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most wellknown example would be the Text field of a Content Element.</source>
+        <target state="translated">A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most wellknown example would be the Text field of a Content Element.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image">
+        <source>EXT:setup/cshimages/rte.png</source>
+        <target state="translated">EXT:setup/cshimages/rte.png</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="translated">Enable File Uploads in editing forms</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="translated">This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="translated">If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image">
+        <source>EXT:setup/cshimages/setup12.png</source>
+        <target state="translated">EXT:setup/cshimages/setup12.png</target>
+      </trans-unit>
+      <trans-unit id="option_enableFlashUploader.alttitle">
+        <source>Enable Flash Uploader</source>
+        <target state="translated">Enable Flash Uploader</target>
+      </trans-unit>
+      <trans-unit id="option_enableFlashUploader.description">
+        <source>This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</source>
+        <target state="translated">This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_showFieldHelp.alttitle">
+        <source>Context Sensitive Help mode</source>
+        <target state="translated">Context Sensitive Help mode</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.alttitle">
+        <source>Make Textareas Resizable</source>
+        <target state="translated">Make Textareas Resizable</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.description">
+        <source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
+        <target state="translated">This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.alttitle">
+        <source>Maximal Height of Textarea</source>
+        <target state="translated">Maximal Height of Textarea</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.description">
+        <source>Define the maximal height of textarea (in Pixel).</source>
+        <target state="translated">Define the maximal height of textarea (in Pixel).</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.alttitle">
+        <source>Make Textareas Flexible</source>
+        <target state="translated">Make Textareas Flexible</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.description">
+        <source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+        <target state="translated">This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</target>
+      </trans-unit>
+      <trans-unit id="option_edit_showFieldHelp.description">
+        <source>Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</source>
+        <target state="translated">Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_showFieldHelp.details">
+        <source>Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.
+Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.
+
+Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.</source>
+        <target state="translated">Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.
+Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.
+
+Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_showFieldHelp.image">
+        <source>EXT:setup/cshimages/setup11.png,
+EXT:setup/cshimages/setup10.png</source>
+        <target state="translated">EXT:setup/cshimages/setup11.png,
+EXT:setup/cshimages/setup10.png</target>
+      </trans-unit>
+      <trans-unit id="option_edit_showFieldHelp.image_descr">
+        <source>The default mode, "Display help icon only", will show the help icons with no additional text.
+When "Display full text message" is selected you will see a short description shown together with the help icon and framed into a box. Clicking the help icon always links to the full description of the element shown in a pop-up window.</source>
+        <target state="translated">The default mode, "Display help icon only", will show the help icons with no additional text.
+When "Display full text message" is selected you will see a short description shown together with the help icon and framed into a box. Clicking the help icon always links to the full description of the element shown in a pop-up window.</target>
+      </trans-unit>
+      <trans-unit id="option_disableCMlayers.alttitle">
+        <source>Disable Popup Context Menus</source>
+        <target state="translated">Disable Popup Context Menus</target>
+      </trans-unit>
+      <trans-unit id="option_disableCMlayers.description">
+        <source>When an icon for a file or database record is shown inside the TYPO3 backend you can often click on the icon and a contextual menu will appear over the icon with options related to it. You can disable this behaviour by this option. However you probably don't want to do that.</source>
+        <target state="translated">When an icon for a file or database record is shown inside the TYPO3 backend you can often click on the icon and a contextual menu will appear over the icon with options related to it. You can disable this behaviour by this option. However you probably don't want to do that.</target>
+      </trans-unit>
+      <trans-unit id="_option_disableCMlayers.image">
+        <source>EXT:setup/cshimages/setup9.png</source>
+        <target state="translated">EXT:setup/cshimages/setup9.png</target>
+      </trans-unit>
+      <trans-unit id="option_disableCMlayers.image_descr">
+        <source>This is the context menu (or "Clickmenu") of a page in the page tree. Notice that it is activated by a regular "left-click" opposite to the normal "right-click" activation known from most Operating Systems.</source>
+        <target state="translated">This is the context menu (or "Clickmenu") of a page in the page tree. Notice that it is activated by a regular "left-click" opposite to the normal "right-click" activation known from most Operating Systems.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle">
+        <source>Your real name</source>
+        <target state="translated">Your real name</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description">
+        <source>Enter your real name here.</source>
+        <target state="translated">Enter your real name here.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle">
+        <source>Your email address</source>
+        <target state="translated">Your email address</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="translated">Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle">
+        <source>Notify by login</source>
+        <target state="translated">Notify by login</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="translated">If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle">
+        <source>Change password</source>
+        <target state="translated">Change password</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description">
+        <source>Enter a new password for your backend account:</source>
+        <target state="translated">Enter a new password for your backend account:</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="translated">The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle">
+        <source>Change password, confirm</source>
+        <target state="translated">Change password, confirm</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="translated">Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle">
+        <source>Reset all Values to default</source>
+        <target state="translated">Reset all Values to default</target>
+      </trans-unit>
+      <trans-unit id="reset.description">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="translated">If you select this option all settings in this module will be reset to the default settings of the system.</target>
+      </trans-unit>
+      <trans-unit id="reset.details">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="translated">This does not apply to user name, email and password settings of course.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle">
+        <source>Simulate backend user</source>
+        <target state="translated">Simulate backend user</target>
+      </trans-unit>
+      <trans-unit id="simuser.description">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="translated">This option allows "admin"-users to change settings for another backend user in the system.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="translated">Admin control for re-enabling Install Tool access</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="translated">By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="removeLink">
+        <source>Remove link</source>
+        <target state="translated">Remove link</target>
+      </trans-unit>
+      <trans-unit id="uploadImage">
+        <source>Upload Image</source>
+        <target state="translated">Upload Image</target>
+      </trans-unit>
+      <trans-unit id="update">
+        <source>Update</source>
+        <target state="translated">Update</target>
+      </trans-unit>
+      <trans-unit id="path">
+        <source>Path</source>
+        <target state="translated">Path</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File</source>
+        <target state="translated">File</target>
+      </trans-unit>
+      <trans-unit id="folder">
+        <source>Folder</source>
+        <target state="translated">Folder</target>
+      </trans-unit>
+      <trans-unit id="extUrl">
+        <source>External URL</source>
+        <target state="translated">External URL</target>
+      </trans-unit>
+      <trans-unit id="email">
+        <source>Email</source>
+        <target state="translated">Email</target>
+      </trans-unit>
+      <trans-unit id="special">
+        <source>Special</source>
+        <target state="translated">Special</target>
+      </trans-unit>
+      <trans-unit id="folderTree">
+        <source>Folder Tree</source>
+        <target state="translated">Folder Tree</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="target">
+        <source>Target</source>
+        <target state="translated">Target</target>
+      </trans-unit>
+      <trans-unit id="class">
+        <source>CSS-Class</source>
+        <target state="translated">CSS-Class</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target state="translated">Title</target>
+      </trans-unit>
+      <trans-unit id="params">
+        <source>Additional link parameters</source>
+        <target state="translated">Additional link parameters</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow">
+        <source>Open in window</source>
+        <target state="translated">Open in window</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow_width">
+        <source>Width</source>
+        <target state="translated">Width</target>
+      </trans-unit>
+      <trans-unit id="target_popUpWindow_height">
+        <source>Height</source>
+        <target state="translated">Height</target>
+      </trans-unit>
+      <trans-unit id="newWindow">
+        <source>New window</source>
+        <target state="translated">New window</target>
+      </trans-unit>
+      <trans-unit id="top">
+        <source>Top</source>
+        <target state="translated">Top</target>
+      </trans-unit>
+      <trans-unit id="none">
+        <source>None - new link!</source>
+        <target state="translated">None - new link!</target>
+      </trans-unit>
+      <trans-unit id="pageTree">
+        <source>Page tree</source>
+        <target state="translated">Page tree</target>
+      </trans-unit>
+      <trans-unit id="contentElements">
+        <source>Content elements</source>
+        <target state="translated">Content elements</target>
+      </trans-unit>
+      <trans-unit id="selectRecords">
+        <source>Select Records</source>
+        <target state="translated">Select Records</target>
+      </trans-unit>
+      <trans-unit id="addToList">
+        <source>Add to list...</source>
+        <target state="translated">Add to list...</target>
+      </trans-unit>
+      <trans-unit id="info">
+        <source>Info</source>
+        <target state="translated">Info</target>
+      </trans-unit>
+      <trans-unit id="emailAddress">
+        <source>Email address</source>
+        <target state="translated">Email address</target>
+      </trans-unit>
+      <trans-unit id="setLink">
+        <source>Set Link</source>
+        <target state="translated">Set Link</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="translated">Image is larger than shown here! Click to redraw page with full sized images.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="translated">Find and click on your image then drag it into the editor in the main window!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="translated">You cannot drag images from this folder (yellow) because it is internal on the server.</target>
+      </trans-unit>
+      <trans-unit id="currentLink">
+        <source>Current Link</source>
+        <target state="translated">Current Link</target>
+      </trans-unit>
+      <trans-unit id="invalidChar">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="translated">ERROR: Invalid character found in file path (%s). Cannot add the file!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection">
+        <source>Toggle selection</source>
+        <target state="translated">Toggle selection</target>
+      </trans-unit>
+      <trans-unit id="importSelection">
+        <source>Import selection</source>
+        <target state="translated">Import selection</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
