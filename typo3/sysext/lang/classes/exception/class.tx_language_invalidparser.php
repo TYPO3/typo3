@@ -35,3 +35,5 @@
 class tx_language_InvalidParser extends RuntimeException {
 
 }
+
+?>

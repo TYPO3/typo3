@@ -88,3 +88,5 @@ class tx_language_CacheFile extends tx_language_CacheAbstract {
 		return PATH_site . 'typo3temp/llxml/' . $hashSource . '.cache';
 	}
 }
+
+?>

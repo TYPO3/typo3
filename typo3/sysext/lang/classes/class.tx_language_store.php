@@ -164,7 +164,7 @@ class tx_language_Store implements t3lib_Singleton {
 			}
 		}
 
-		if ($this->configuration[$fileReference]['fileExtension'] === false) {
+		if ($this->configuration[$fileReference]['fileExtension'] === FALSE) {
 			throw new tx_language_FileNotFoundException(
 				sprintf('Source localization file (%s) not found', $fileReference),
 				1306410755
@@ -232,3 +232,5 @@ class tx_language_Store implements t3lib_Singleton {
 		throw new Exception("An instance of " . get_called_class() . " cannot be cloned.");
 	}
 }
+
+?>

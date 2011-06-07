@@ -92,3 +92,5 @@ class tx_language_XliffParser extends tx_Language_XmlParserAbstract {
 		return $parsedData;
 	}
 }
+
+?>

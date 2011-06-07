@@ -162,3 +162,5 @@ class tx_language_LlxmlParser extends tx_language_XmlParserAbstract {
 		return $this->doParsingTargetFromRoot($rootXmlNode);
 	}
 }
+
+?>

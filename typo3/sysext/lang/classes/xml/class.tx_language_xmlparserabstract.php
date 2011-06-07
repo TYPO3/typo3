@@ -105,3 +105,5 @@ abstract class tx_language_XmlParserAbstract implements tx_Language_ParserInterf
 	 */
 	abstract protected function doParsingFromRoot(SimpleXMLElement $root);
 }
+
+?>

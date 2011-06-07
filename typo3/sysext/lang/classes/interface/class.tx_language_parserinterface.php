@@ -35,3 +35,5 @@
 interface tx_language_ParserInterface {
 	public function getParsedData($sourcePath, $languageKey, $charset);
 }
+
+?>

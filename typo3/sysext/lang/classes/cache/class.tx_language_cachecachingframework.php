@@ -82,3 +82,5 @@ class tx_language_CacheCachingFramework extends tx_language_CacheAbstract {
 		);
 	}
 }
+
+?>

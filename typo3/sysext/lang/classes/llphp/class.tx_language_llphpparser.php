@@ -59,3 +59,5 @@ class tx_language_LlphpParser implements tx_Language_ParserInterface {
 	}
 	
 }
+
+?>

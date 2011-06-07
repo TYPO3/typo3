@@ -108,3 +108,5 @@ abstract class tx_language_CacheAbstract implements t3lib_Singleton {
 	abstract public function set($hash, $data);
 
 }
+
+?>

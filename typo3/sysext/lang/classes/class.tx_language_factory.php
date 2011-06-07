@@ -154,3 +154,5 @@ class tx_language_Factory implements t3lib_Singleton {
 	}
 
 }
+
+?>

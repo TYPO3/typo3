@@ -21,3 +21,5 @@ return array(
 	'tx_language_llxmlparser' => $extensionPath . '/classes/llxml/class.tx_language_llxmlparser.php',
 	'tx_language_llphpparser' => $extensionPath . '/classes/llxml/class.tx_language_llphpparser.php'
 );
+
+?>
