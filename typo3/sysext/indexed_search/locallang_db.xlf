@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:09 UTC 2011" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="index_config">
+        <source>Indexing Configuration</source>
+        <target state="translated">Indexing Configuration</target>
+      </trans-unit>
+      <trans-unit id="index_config.title">
+        <source>Title:</source>
+        <target state="translated">Title:</target>
+      </trans-unit>
+      <trans-unit id="index_config.description">
+        <source>Description:</source>
+        <target state="translated">Description:</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1">
+        <source>Database Records</source>
+        <target state="translated">Database Records</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2">
+        <source>Filepath on server</source>
+        <target state="translated">Filepath on server</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3">
+        <source>External URL</source>
+        <target state="translated">External URL</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4">
+        <source>Page tree</source>
+        <target state="translated">Page tree</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5">
+        <source>Meta configuration</source>
+        <target state="translated">Meta configuration</target>
+      </trans-unit>
+      <trans-unit id="index_config.type">
+        <source>Type:</source>
+        <target state="translated">Type:</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.0">
+        <source>Single page</source>
+        <target state="translated">Single page</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.1">
+        <source>1 Level</source>
+        <target state="translated">1 Level</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.2">
+        <source>2 Levels</source>
+        <target state="translated">2 Levels</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth.I.3">
+        <source>3 Levels</source>
+        <target state="translated">3 Levels</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth">
+        <source>Depth:</source>
+        <target state="translated">Depth:</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index">
+        <source>Table to index:</source>
+        <target state="translated">Table to index:</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid">
+        <source>Alternative Source Page:</source>
+        <target state="translated">Alternative Source Page:</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params">
+        <source>GET parameter string (with ###UID### substitution):</source>
+        <target state="translated">GET parameter string (with ###UID### substitution):</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields">
+        <source>Fields (first is title):</source>
+        <target state="translated">Fields (first is title):</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl">
+        <source>External URL (eg. "http://www.domain.org/"):</source>
+        <target state="translated">External URL (eg. "http://www.domain.org/"):</target>
+      </trans-unit>
+      <trans-unit id="index_config.chashcalc">
+        <source>Calculate cHash (force caching)?</source>
+        <target state="translated">Calculate cHash (force caching)?</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath">
+        <source>Filepath:</source>
+        <target state="translated">Filepath:</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions">
+        <source>Limit to extensions (commalist):</source>
+        <target state="translated">Limit to extensions (commalist):</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny">
+        <source>Enter sub-URLs in which not to decend:</source>
+        <target state="translated">Enter sub-URLs in which not to decend:</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange">
+        <source>Index Records immediately when saved?:</source>
+        <target state="translated">Index Records immediately when saved?:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing">
+        <source>Next indexing is scheduled (if empty, then immediately):</source>
+        <target state="translated">Next indexing is scheduled (if empty, then immediately):</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset">
+        <source>Timing offset from midnight:</source>
+        <target state="translated">Timing offset from midnight:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency">
+        <source>How often would you like a re-index?:</source>
+        <target state="translated">How often would you like a re-index?:</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0">
+        <source>Every hour</source>
+        <target state="translated">Every hour</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1">
+        <source>Every day (24 hours)</source>
+        <target state="translated">Every day (24 hours)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2">
+        <source>Every week</source>
+        <target state="translated">Every week</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch">
+        <source>How many records to index a minute (default is 100):</source>
+        <target state="translated">How many records to index a minute (default is 100):</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id">
+        <source>Session ID (if &gt; zero, then indexing job is running):</source>
+        <target state="translated">Session ID (if &gt; zero, then indexing job is running):</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs">
+        <source>Indexing configurations:</source>
+        <target state="translated">Indexing configurations:</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###):</source>
+        <target state="translated">Parameter combination configuration ([tablename]:&amp;[param]=###UID###):</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage">
+        <source>Root page:</source>
+        <target state="translated">Root page:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

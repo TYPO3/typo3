@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:23:30 UTC 2011" product-name="adodb">
+    <header/>
+    <body>
+      <trans-unit id="dbtype">
+        <source>Database type</source>
+        <target state="translated">Database type</target>
+      </trans-unit>
+      <trans-unit id="host">
+        <source>Host or DSN</source>
+        <target state="translated">Host or DSN</target>
+      </trans-unit>
+      <trans-unit id="dbname">
+        <source>Database name</source>
+        <target state="translated">Database name</target>
+      </trans-unit>
+      <trans-unit id="username">
+        <source>Username</source>
+        <target state="translated">Username</target>
+      </trans-unit>
+      <trans-unit id="password">
+        <source>Password</source>
+        <target state="translated">Password</target>
+      </trans-unit>
+      <trans-unit id="table">
+        <source>Table name</source>
+        <target state="translated">Table name</target>
+      </trans-unit>
+      <trans-unit id="checkconnectionwizard">
+        <source>Check connection to database with configuration entered below</source>
+        <target state="translated">Check connection to database with configuration entered below</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

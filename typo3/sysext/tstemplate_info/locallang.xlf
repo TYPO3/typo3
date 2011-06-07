@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:53 UTC 2011" product-name="tstemplate_info">
+    <header/>
+    <body>
+      <trans-unit id="delete">
+        <source>Delete:</source>
+        <target state="translated">Delete:</target>
+      </trans-unit>
+      <trans-unit id="toTop">
+        <source>To top:</source>
+        <target state="translated">To top:</target>
+      </trans-unit>
+      <trans-unit id="fileChanged">
+        <source>File changed</source>
+        <target state="translated">File changed</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated">
+        <source>Resource '%s' has been updated.</source>
+        <target state="translated">Resource '%s' has been updated.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation">
+        <source>Template information:</source>
+        <target state="translated">Template information:</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title:</source>
+        <target state="translated">Title:</target>
+      </trans-unit>
+      <trans-unit id="sitetitle">
+        <source>Sitetitle:</source>
+        <target state="translated">Sitetitle:</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Description:</source>
+        <target state="translated">Description:</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions">
+        <source>Allowed extensions:</source>
+        <target state="translated">Allowed extensions:</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize">
+        <source>Max filesize:</source>
+        <target state="translated">Max filesize:</target>
+      </trans-unit>
+      <trans-unit id="uploadResource">
+        <source>Upload resource:</source>
+        <target state="translated">Upload resource:</target>
+      </trans-unit>
+      <trans-unit id="newTextResource">
+        <source>New text resource (enter name):</source>
+        <target state="translated">New text resource (enter name):</target>
+      </trans-unit>
+      <trans-unit id="copyResource">
+        <source>Make a copy of resource:</source>
+        <target state="translated">Make a copy of resource:</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList">
+        <source>Update resource list:</source>
+        <target state="translated">Update resource list:</target>
+      </trans-unit>
+      <trans-unit id="constants">
+        <source>Constants:</source>
+        <target state="translated">Constants:</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File:</source>
+        <target state="translated">File:</target>
+      </trans-unit>
+      <trans-unit id="editResource">
+        <source>Edit Resource:</source>
+        <target state="translated">Edit Resource:</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="translated">Filesize exceeded %s KBytes</target>
+      </trans-unit>
+      <trans-unit id="notAllowed">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="translated">Files larger than %s KBytes are not allowed to be edited.</target>
+      </trans-unit>
+      <trans-unit id="setup">
+        <source>Setup:</source>
+        <target state="translated">Setup:</target>
+      </trans-unit>
+      <trans-unit id="resources">
+        <source>Resources:</source>
+        <target state="translated">Resources:</target>
+      </trans-unit>
+      <trans-unit id="editToView">
+        <source>(edit to view, %s lines)</source>
+        <target state="translated">(edit to view, %s lines)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord">
+        <source>Edit the whole template record</source>
+        <target state="translated">Edit the whole template record</target>
+      </trans-unit>
+      <trans-unit id="includeTypoScriptFileContent">
+        <source>Include TypoScript file content</source>
+        <target state="translated">Include TypoScript file content</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

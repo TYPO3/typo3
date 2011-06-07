@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:58 UTC 2011" product-name="impexp">
+    <header/>
+    <body>
+      <trans-unit id="import.details">
+        <source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+        <target state="translated">&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

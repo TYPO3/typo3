@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:27:02 UTC 2011" product-name="openid">
+    <header/>
+    <body>
+      <trans-unit id="tx_openid_openid.description">
+        <source>OpenID identifier</source>
+        <target state="translated">OpenID identifier</target>
+      </trans-unit>
+      <trans-unit id="tx_openid_openid.details">
+        <source>This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</source>
+        <target state="translated">This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</target>
+      </trans-unit>
+      <trans-unit id="tx_openid_openid.seeAlso">
+        <source>http://openid.net/</source>
+        <target state="translated">http://openid.net/</target>
+      </trans-unit>
+      <trans-unit id="tx_openid_change_allowed.description">
+        <source>If this setting is active, users can change their own OpenID identifier using the setup module.</source>
+        <target state="translated">If this setting is active, users can change their own OpenID identifier using the setup module.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

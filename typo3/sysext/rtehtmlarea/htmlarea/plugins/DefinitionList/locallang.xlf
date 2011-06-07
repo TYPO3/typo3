@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Indent-Tooltip">
+        <source>Increase indent</source>
+        <target state="translated">Increase indent</target>
+      </trans-unit>
+      <trans-unit id="Indent-helpText">
+        <source>Increases text indentation</source>
+        <target state="translated">Increases text indentation</target>
+      </trans-unit>
+      <trans-unit id="Outdent-Tooltip">
+        <source>Reduce indent</source>
+        <target state="translated">Reduce indent</target>
+      </trans-unit>
+      <trans-unit id="Outdent-helpText">
+        <source>Reduces text indentation</source>
+        <target state="translated">Reduces text indentation</target>
+      </trans-unit>
+      <trans-unit id="DefinitionList-Tooltip">
+        <source>Definition list</source>
+        <target state="translated">Definition list</target>
+      </trans-unit>
+      <trans-unit id="DefinitionList-helpText">
+        <source>Makes a definition list from the current selection</source>
+        <target state="translated">Makes a definition list from the current selection</target>
+      </trans-unit>
+      <trans-unit id="DefinitionItem-Tooltip">
+        <source>Toggle term and definition</source>
+        <target state="translated">Toggle term and definition</target>
+      </trans-unit>
+      <trans-unit id="DefinitionItem-helpText">
+        <source>Toggles term and definition elements</source>
+        <target state="translated">Toggles term and definition elements</target>
+      </trans-unit>
+      <trans-unit id="No block">
+        <source>No block format</source>
+        <target state="translated">No block format</target>
+      </trans-unit>
+      <trans-unit id="Remove block">
+        <source>Remove block format</source>
+        <target state="translated">Remove block format</target>
+      </trans-unit>
+      <trans-unit id="Technische Universitat Ilmenau">
+        <source>Technische Universität Ilmenau</source>
+        <target state="translated">Technische Universität Ilmenau</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

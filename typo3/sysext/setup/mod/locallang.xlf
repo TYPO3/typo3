@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:35 UTC 2011" product-name="setup">
+    <header/>
+    <body>
+      <trans-unit id="UserSettings">
+        <source>User Settings</source>
+        <target state="translated">User Settings</target>
+      </trans-unit>
+      <trans-unit id="language">
+        <source>Language</source>
+        <target state="translated">Language</target>
+      </trans-unit>
+      <trans-unit id="lang_default">
+        <source>English</source>
+        <target state="translated">English</target>
+      </trans-unit>
+      <trans-unit id="lang_dk">
+        <source>Danish</source>
+        <target state="translated">Danish</target>
+      </trans-unit>
+      <trans-unit id="lang_de">
+        <source>German</source>
+        <target state="translated">German</target>
+      </trans-unit>
+      <trans-unit id="lang_no">
+        <source>Norwegian</source>
+        <target state="translated">Norwegian</target>
+      </trans-unit>
+      <trans-unit id="lang_it">
+        <source>Italian</source>
+        <target state="translated">Italian</target>
+      </trans-unit>
+      <trans-unit id="lang_fr">
+        <source>French</source>
+        <target state="translated">French</target>
+      </trans-unit>
+      <trans-unit id="lang_es">
+        <source>Spanish</source>
+        <target state="translated">Spanish</target>
+      </trans-unit>
+      <trans-unit id="lang_nl">
+        <source>Dutch</source>
+        <target state="translated">Dutch</target>
+      </trans-unit>
+      <trans-unit id="lang_cz">
+        <source>Czech</source>
+        <target state="translated">Czech</target>
+      </trans-unit>
+      <trans-unit id="lang_pl">
+        <source>Polish</source>
+        <target state="translated">Polish</target>
+      </trans-unit>
+      <trans-unit id="lang_si">
+        <source>Slovenian</source>
+        <target state="translated">Slovenian</target>
+      </trans-unit>
+      <trans-unit id="lang_fi">
+        <source>Finnish</source>
+        <target state="translated">Finnish</target>
+      </trans-unit>
+      <trans-unit id="lang_tr">
+        <source>Turkish</source>
+        <target state="translated">Turkish</target>
+      </trans-unit>
+      <trans-unit id="lang_se">
+        <source>Swedish</source>
+        <target state="translated">Swedish</target>
+      </trans-unit>
+      <trans-unit id="lang_pt">
+        <source>Portuguese</source>
+        <target state="translated">Portuguese</target>
+      </trans-unit>
+      <trans-unit id="lang_ru">
+        <source>Russian</source>
+        <target state="translated">Russian</target>
+      </trans-unit>
+      <trans-unit id="lang_ro">
+        <source>Romanian</source>
+        <target state="translated">Romanian</target>
+      </trans-unit>
+      <trans-unit id="lang_ch">
+        <source>Chinese (Simpl)</source>
+        <target state="translated">Chinese (Simpl)</target>
+      </trans-unit>
+      <trans-unit id="lang_sk">
+        <source>Slovak</source>
+        <target state="translated">Slovak</target>
+      </trans-unit>
+      <trans-unit id="lang_lt">
+        <source>Lithuanian</source>
+        <target state="translated">Lithuanian</target>
+      </trans-unit>
+      <trans-unit id="lang_is">
+        <source>Icelandic</source>
+        <target state="translated">Icelandic</target>
+      </trans-unit>
+      <trans-unit id="lang_hr">
+        <source>Croatian</source>
+        <target state="translated">Croatian</target>
+      </trans-unit>
+      <trans-unit id="lang_hu">
+        <source>Hungarian</source>
+        <target state="translated">Hungarian</target>
+      </trans-unit>
+      <trans-unit id="lang_gl">
+        <source>Greenlandic</source>
+        <target state="translated">Greenlandic</target>
+      </trans-unit>
+      <trans-unit id="lang_th">
+        <source>Thai</source>
+        <target state="translated">Thai</target>
+      </trans-unit>
+      <trans-unit id="lang_gr">
+        <source>Greek</source>
+        <target state="translated">Greek</target>
+      </trans-unit>
+      <trans-unit id="lang_hk">
+        <source>Chinese (Trad)</source>
+        <target state="translated">Chinese (Trad)</target>
+      </trans-unit>
+      <trans-unit id="lang_eu">
+        <source>Basque</source>
+        <target state="translated">Basque</target>
+      </trans-unit>
+      <trans-unit id="lang_bg">
+        <source>Bulgarian</source>
+        <target state="translated">Bulgarian</target>
+      </trans-unit>
+      <trans-unit id="lang_br">
+        <source>Brazilian Portuguese</source>
+        <target state="translated">Brazilian Portuguese</target>
+      </trans-unit>
+      <trans-unit id="lang_et">
+        <source>Estonian</source>
+        <target state="translated">Estonian</target>
+      </trans-unit>
+      <trans-unit id="lang_ar">
+        <source>Arabic</source>
+        <target state="translated">Arabic</target>
+      </trans-unit>
+      <trans-unit id="lang_he">
+        <source>Hebrew</source>
+        <target state="translated">Hebrew</target>
+      </trans-unit>
+      <trans-unit id="lang_ua">
+        <source>Ukrainian</source>
+        <target state="translated">Ukrainian</target>
+      </trans-unit>
+      <trans-unit id="lang_lv">
+        <source>Latvian</source>
+        <target state="translated">Latvian</target>
+      </trans-unit>
+      <trans-unit id="lang_jp">
+        <source>Japanese</source>
+        <target state="translated">Japanese</target>
+      </trans-unit>
+      <trans-unit id="lang_vn">
+        <source>Vietnamese</source>
+        <target state="translated">Vietnamese</target>
+      </trans-unit>
+      <trans-unit id="lang_ca">
+        <source>Catalan</source>
+        <target state="translated">Catalan</target>
+      </trans-unit>
+      <trans-unit id="lang_ba">
+        <source>Bosnian</source>
+        <target state="translated">Bosnian</target>
+      </trans-unit>
+      <trans-unit id="lang_kr">
+        <source>Korean</source>
+        <target state="translated">Korean</target>
+      </trans-unit>
+      <trans-unit id="lang_eo">
+        <source>Esperanto</source>
+        <target state="translated">Esperanto</target>
+      </trans-unit>
+      <trans-unit id="lang_my">
+        <source>Bahasa Malaysia</source>
+        <target state="translated">Bahasa Malaysia</target>
+      </trans-unit>
+      <trans-unit id="lang_hi">
+        <source>Hindi</source>
+        <target state="translated">Hindi</target>
+      </trans-unit>
+      <trans-unit id="lang_fo">
+        <source>Faroese</source>
+        <target state="translated">Faroese</target>
+      </trans-unit>
+      <trans-unit id="lang_fa">
+        <source>Persian</source>
+        <target state="translated">Persian</target>
+      </trans-unit>
+      <trans-unit id="lang_sr">
+        <source>Serbian</source>
+        <target state="translated">Serbian</target>
+      </trans-unit>
+      <trans-unit id="lang_sq">
+        <source>Albanian</source>
+        <target state="translated">Albanian</target>
+      </trans-unit>
+      <trans-unit id="lang_ge">
+        <source>Georgian</source>
+        <target state="translated">Georgian</target>
+      </trans-unit>
+      <trans-unit id="lang_ga">
+        <source>Galician</source>
+        <target state="translated">Galician</target>
+      </trans-unit>
+      <trans-unit id="lang_km">
+        <source>Khmer</source>
+        <target state="translated">Khmer</target>
+      </trans-unit>
+      <trans-unit id="lang_qc">
+        <source>French (Canada)</source>
+        <target state="translated">French (Canada)</target>
+      </trans-unit>
+      <trans-unit id="default">
+        <source>Default</source>
+        <target state="translated">Default</target>
+      </trans-unit>
+      <trans-unit id="simulate">
+        <source>Simulate backend user</source>
+        <target state="translated">Simulate backend user</target>
+      </trans-unit>
+      <trans-unit id="opening">
+        <source>Startup</source>
+        <target state="translated">Startup</target>
+      </trans-unit>
+      <trans-unit id="personal_data">
+        <source>Personal data</source>
+        <target state="translated">Personal data</target>
+      </trans-unit>
+      <trans-unit id="showThumbs">
+        <source>Show Thumbnails by default</source>
+        <target state="translated">Show Thumbnails by default</target>
+      </trans-unit>
+      <trans-unit id="condensedMode">
+        <source>Use condensed mode in backend&lt;br /&gt;(for small screens)</source>
+        <target state="translated">Use condensed mode in backend&lt;br /&gt;(for small screens)</target>
+      </trans-unit>
+      <trans-unit id="noMenuMode">
+        <source>Select navigation mode</source>
+        <target state="translated">Select navigation mode</target>
+      </trans-unit>
+      <trans-unit id="noMenuMode_def">
+        <source>Left frame menu (default)</source>
+        <target state="translated">Left frame menu (default)</target>
+      </trans-unit>
+      <trans-unit id="noMenuMode_sel">
+        <source>Selectorbox in top frame</source>
+        <target state="translated">Selectorbox in top frame</target>
+      </trans-unit>
+      <trans-unit id="noMenuMode_icons">
+        <source>Icons in top frame</source>
+        <target state="translated">Icons in top frame</target>
+      </trans-unit>
+      <trans-unit id="startModule">
+        <source>Start up in the following module</source>
+        <target state="translated">Start up in the following module</target>
+      </trans-unit>
+      <trans-unit id="emailMeAtLogin">
+        <source>Notify me by email, when somebody logs in &lt;br /&gt;from my account</source>
+        <target state="translated">Notify me by email, when somebody logs in &lt;br /&gt;from my account</target>
+      </trans-unit>
+      <trans-unit id="helpText">
+        <source>Show help text when applicable</source>
+        <target state="translated">Show help text when applicable</target>
+      </trans-unit>
+      <trans-unit id="maxTitleLen">
+        <source>Max. Title Length</source>
+        <target state="translated">Max. Title Length</target>
+      </trans-unit>
+      <trans-unit id="edit_showFieldHelp">
+        <source>Context Sensitive Help mode</source>
+        <target state="translated">Context Sensitive Help mode</target>
+      </trans-unit>
+      <trans-unit id="edit_showFieldHelp_none">
+        <source>Display no help information</source>
+        <target state="translated">Display no help information</target>
+      </trans-unit>
+      <trans-unit id="edit_showFieldHelp_icon">
+        <source>Display help icon only</source>
+        <target state="translated">Display help icon only</target>
+      </trans-unit>
+      <trans-unit id="edit_showFieldHelp_message">
+        <source>Display full text message</source>
+        <target state="translated">Display full text message</target>
+      </trans-unit>
+      <trans-unit id="edit_wideDocument">
+        <source>Wide document background</source>
+        <target state="translated">Wide document background</target>
+      </trans-unit>
+      <trans-unit id="edit_RTE">
+        <source>Enable Rich Text Editor (if available)</source>
+        <target state="translated">Enable Rich Text Editor (if available)</target>
+      </trans-unit>
+      <trans-unit id="edit_docModuleUpload">
+        <source>File upload directly in Doc-module</source>
+        <target state="translated">File upload directly in Doc-module</target>
+      </trans-unit>
+      <trans-unit id="enableFlashUploader">
+        <source>Enable Flash Uploader (requires Flash 9+)</source>
+        <target state="translated">Enable Flash Uploader (requires Flash 9+)</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas">
+        <source>Make Textareas resizable</source>
+        <target state="translated">Make Textareas resizable</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas_MaxHeight">
+        <source>Maximal Height of resizable Textarea in Pixel</source>
+        <target state="translated">Maximal Height of resizable Textarea in Pixel</target>
+      </trans-unit>
+      <trans-unit id="resizeTextareas_Flexible">
+        <source>Make Textareas flexible</source>
+        <target state="translated">Make Textareas flexible</target>
+      </trans-unit>
+      <trans-unit id="editFunctionsTab">
+        <source>Edit &amp; Advanced functions</source>
+        <target state="translated">Edit &amp; Advanced functions</target>
+      </trans-unit>
+      <trans-unit id="edit_functions">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="disableCMlayers">
+        <source>Disable Popup Context Menus</source>
+        <target state="translated">Disable Popup Context Menus</target>
+      </trans-unit>
+      <trans-unit id="setToStandard">
+        <source>Reset all Values to default</source>
+        <target state="translated">Reset all Values to default</target>
+      </trans-unit>
+      <trans-unit id="resetConfiguration">
+        <source>Reset Configuration and Clear Temporary Data</source>
+        <target state="translated">Reset Configuration and Clear Temporary Data</target>
+      </trans-unit>
+      <trans-unit id="setToStandardQuestion">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target state="translated">Are you sure you want to reset all values to default?</target>
+      </trans-unit>
+      <trans-unit id="clearSessionVars">
+        <source>Clear Temporary Data</source>
+        <target state="translated">Clear Temporary Data</target>
+      </trans-unit>
+      <trans-unit id="clearSessionVarsQuestion">
+        <source>Are you sure you want to clear the temporary data?</source>
+        <target state="translated">Are you sure you want to clear the temporary data?</target>
+      </trans-unit>
+      <trans-unit id="functions">
+        <source>Advanced functions</source>
+        <target state="translated">Advanced functions</target>
+      </trans-unit>
+      <trans-unit id="copyLevels">
+        <source>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</source>
+        <target state="translated">&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</target>
+      </trans-unit>
+      <trans-unit id="recursiveDelete">
+        <source>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</source>
+        <target state="translated">&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</target>
+      </trans-unit>
+      <trans-unit id="activateChanges">
+        <source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
+        <target state="translated">Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</target>
+      </trans-unit>
+      <trans-unit id="levels">
+        <source>levels</source>
+        <target state="translated">levels</target>
+      </trans-unit>
+      <trans-unit id="beUser_realName">
+        <source>Your name</source>
+        <target state="translated">Your name</target>
+      </trans-unit>
+      <trans-unit id="beUser_email">
+        <source>Your email address</source>
+        <target state="translated">Your email address</target>
+      </trans-unit>
+      <trans-unit id="save">
+        <source>Save Configuration</source>
+        <target state="translated">Save Configuration</target>
+      </trans-unit>
+      <trans-unit id="newPassword">
+        <source>New password</source>
+        <target state="translated">New password</target>
+      </trans-unit>
+      <trans-unit id="newPasswordAgain">
+        <source>New password, again</source>
+        <target state="translated">New password, again</target>
+      </trans-unit>
+      <trans-unit id="newPassword_ok">
+        <source>Password was updated.</source>
+        <target state="translated">Password was updated.</target>
+      </trans-unit>
+      <trans-unit id="setupWasUpdated">
+        <source>User settings were updated.</source>
+        <target state="translated">User settings were updated.</target>
+      </trans-unit>
+      <trans-unit id="newPassword_failed">
+        <source>Password was NOT updated because you didn't enter the same password twice.</source>
+        <target state="translated">Password was NOT updated because you didn't enter the same password twice.</target>
+      </trans-unit>
+      <trans-unit id="adminFunctions">
+        <source>Admin functions</source>
+        <target state="translated">Admin functions</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.label">
+        <source>Install Tool Access</source>
+        <target state="translated">Install Tool Access</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.createFile">
+        <source>Create Install Tool Enable File</source>
+        <target state="translated">Create Install Tool Enable File</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.file">
+        <source>Install Tool Enable file</source>
+        <target state="translated">Install Tool Enable file</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_ok">
+        <source>The Install Tool Enable file has been created.</source>
+        <target state="translated">The Install Tool Enable file has been created.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileCreate_failed">
+        <source>The Install Tool Enable file could not be created.</source>
+        <target state="translated">The Install Tool Enable file could not be created.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.deleteFile">
+        <source>Delete Install Tool Enable File</source>
+        <target state="translated">Delete Install Tool Enable File</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_ok">
+        <source>The Install Tool Enable file has been deleted.</source>
+        <target state="translated">The Install Tool Enable file has been deleted.</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileDelete_failed">
+        <source>The Install Tool Enable file could not be deleted!</source>
+        <target state="translated">The Install Tool Enable file could not be deleted!</target>
+      </trans-unit>
+      <trans-unit id="enableInstallTool.fileHasKeep">
+        <source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
+        <target state="translated">The Install Tool file has the content "KEEP_FILE" and can not be deleted!</target>
+      </trans-unit>
+      <trans-unit id="tempDataCleared">
+        <source>Temporary data cleared</source>
+        <target state="translated">Temporary data cleared</target>
+      </trans-unit>
+      <trans-unit id="tempDataClearedFlashMessage">
+        <source>The temporary data has been cleared.</source>
+        <target state="translated">The temporary data has been cleared.</target>
+      </trans-unit>
+      <trans-unit id="tempDataClearedLog">
+        <source>Temporary data cleared</source>
+        <target state="translated">Temporary data cleared</target>
+      </trans-unit>
+      <trans-unit id="settingsAreReset">
+        <source>The user settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="translated">The user settings have been reset to default values and temporary data has been cleared.</target>
+      </trans-unit>
+      <trans-unit id="debugInWindow">
+        <source>Display debug messages in a new browser window</source>
+        <target state="translated">Display debug messages in a new browser window</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

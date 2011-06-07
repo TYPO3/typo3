@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:27:05 UTC 2011" product-name="recycler">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Recycler</source>
+        <target state="translated">Recycler</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="translated">The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</target>
+      </trans-unit>
+      <trans-unit id="label_alltables">
+        <source>All tables</source>
+        <target state="translated">All tables</target>
+      </trans-unit>
+      <trans-unit id="js.label_lostandfound">
+        <source>Lost and found</source>
+        <target state="translated">Lost and found</target>
+      </trans-unit>
+      <trans-unit id="js.label_deletedTab">
+        <source>Deleted data</source>
+        <target state="translated">Deleted data</target>
+      </trans-unit>
+      <trans-unit id="js.label_loadMessage">
+        <source>Please wait...&lt;br/&gt;Records would be loaded!</source>
+        <target state="translated">Please wait...&lt;br/&gt;Records would be loaded!</target>
+      </trans-unit>
+      <trans-unit id="js.label_doDelete_confirmText">
+        <source>Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</source>
+        <target state="translated">Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</target>
+      </trans-unit>
+      <trans-unit id="js.label_deleteButton_text">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="js.label_deleteButton_tooltip">
+        <source>Delete selected items</source>
+        <target state="translated">Delete selected items</target>
+      </trans-unit>
+      <trans-unit id="js.label_undeleteButton_text">
+        <source>Undelete</source>
+        <target state="translated">Undelete</target>
+      </trans-unit>
+      <trans-unit id="js.label_undeleteButton_tooltip">
+        <source>Undelete selected items</source>
+        <target state="translated">Undelete selected items</target>
+      </trans-unit>
+      <trans-unit id="js.label_error_NoSelectedRows_title">
+        <source>No row selected</source>
+        <target state="translated">No row selected</target>
+      </trans-unit>
+      <trans-unit id="js.label_error_NoSelectedRows_msg">
+        <source>You must select a row!</source>
+        <target state="translated">You must select a row!</target>
+      </trans-unit>
+      <trans-unit id="js.label_yes">
+        <source>Yes</source>
+        <target state="translated">Yes</target>
+      </trans-unit>
+      <trans-unit id="js.label_no">
+        <source>No</source>
+        <target state="translated">No</target>
+      </trans-unit>
+      <trans-unit id="js.label_sure">
+        <source>Are you Sure?</source>
+        <target state="translated">Are you Sure?</target>
+      </trans-unit>
+      <trans-unit id="js.label_crdate">
+        <source>Created</source>
+        <target state="translated">Created</target>
+      </trans-unit>
+      <trans-unit id="js.label_owner">
+        <source>Owner</source>
+        <target state="translated">Owner</target>
+      </trans-unit>
+      <trans-unit id="js.label_tstamp">
+        <source>Last edit</source>
+        <target state="translated">Last edit</target>
+      </trans-unit>
+      <trans-unit id="js.label_clear">
+        <source>Clear</source>
+        <target state="translated">Clear</target>
+      </trans-unit>
+      <trans-unit id="js.label_filter">
+        <source>Filter</source>
+        <target state="translated">Filter</target>
+      </trans-unit>
+      <trans-unit id="js.label_title_undelete">
+        <source>Undelete?</source>
+        <target state="translated">Undelete?</target>
+      </trans-unit>
+      <trans-unit id="js.label_text_undelete">
+        <source>Undelete records from tables: </source>
+        <target state="translated">Undelete records from tables: </target>
+      </trans-unit>
+      <trans-unit id="js.label_title_delete">
+        <source>Delete?</source>
+        <target state="translated">Delete?</target>
+      </trans-unit>
+      <trans-unit id="js.label_text_delete">
+        <source>Delete records from tables: </source>
+        <target state="translated">Delete records from tables: </target>
+      </trans-unit>
+      <trans-unit id="js.label_boxLabel_undelete_recursive">
+        <source>Undelete recursively</source>
+        <target state="translated">Undelete recursively</target>
+      </trans-unit>
+      <trans-unit id="js.label_tableMenu_label">
+        <source>Table:</source>
+        <target state="translated">Table:</target>
+      </trans-unit>
+      <trans-unit id="js.label_tableMenu_emptyText">
+        <source>Choose a table...</source>
+        <target state="translated">Choose a table...</target>
+      </trans-unit>
+      <trans-unit id="js.label_filter_emptyText">
+        <source>Keyword</source>
+        <target state="translated">Keyword</target>
+      </trans-unit>
+      <trans-unit id="js.label_search">
+        <source>Search:</source>
+        <target state="translated">Search:</target>
+      </trans-unit>
+      <trans-unit id="js.label_pagingMessage">
+        <source>Displaying records {0} - {1} of {2}</source>
+        <target state="translated">Displaying records {0} - {1} of {2}</target>
+      </trans-unit>
+      <trans-unit id="js.label_pagingEmpty">
+        <source>No records to display</source>
+        <target state="translated">No records to display</target>
+      </trans-unit>
+      <trans-unit id="js.label_noValueFound">
+        <source>No records for {0}</source>
+        <target state="translated">No records for {0}</target>
+      </trans-unit>
+      <trans-unit id="js.label_records">
+        <source>Records</source>
+        <target state="translated">Records</target>
+      </trans-unit>
+      <trans-unit id="js.label_table">
+        <source>Table</source>
+        <target state="translated">Table</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

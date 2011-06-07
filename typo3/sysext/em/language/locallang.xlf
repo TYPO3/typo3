@@ -1,0 +1,2860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:41 UTC 2011" product-name="em">
+    <header/>
+    <body>
+      <trans-unit id="tasks_updateExtensionlistTask.name">
+        <source>Update Extension List</source>
+        <target state="translated">Update Extension List</target>
+      </trans-unit>
+      <trans-unit id="tasks_updateExtensionlistTask.description">
+        <source>Update the extension list on a regular basis. Once a day is a good interval.</source>
+        <target state="translated">Update the extension list on a regular basis. Once a day is a good interval.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>TYPO3 Extension Manager</source>
+        <target state="translated">TYPO3 Extension Manager</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Manages TYPO3 extensions from a central repository. TYPO3 extensions include plugins, modules, class extensions, configuration code, etc.</source>
+        <target state="translated">Manages TYPO3 extensions from a central repository. TYPO3 extensions include plugins, modules, class extensions, configuration code, etc.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Extension Manager</source>
+        <target state="translated">Extension Manager</target>
+      </trans-unit>
+      <trans-unit id="category_BE">
+        <source>Backend</source>
+        <target state="translated">Backend</target>
+      </trans-unit>
+      <trans-unit id="category_BE_modules">
+        <source>Backend Modules</source>
+        <target state="translated">Backend Modules</target>
+      </trans-unit>
+      <trans-unit id="category_FE">
+        <source>Frontend</source>
+        <target state="translated">Frontend</target>
+      </trans-unit>
+      <trans-unit id="category_FE_plugins">
+        <source>Frontend Plugins</source>
+        <target state="translated">Frontend Plugins</target>
+      </trans-unit>
+      <trans-unit id="category_miscellanous">
+        <source>Miscellaneous</source>
+        <target state="translated">Miscellaneous</target>
+      </trans-unit>
+      <trans-unit id="category_services">
+        <source>Services</source>
+        <target state="translated">Services</target>
+      </trans-unit>
+      <trans-unit id="category_templates">
+        <source>Templates</source>
+        <target state="translated">Templates</target>
+      </trans-unit>
+      <trans-unit id="category_examples">
+        <source>Examples</source>
+        <target state="translated">Examples</target>
+      </trans-unit>
+      <trans-unit id="category_documentation">
+        <source>Documentation</source>
+        <target state="translated">Documentation</target>
+      </trans-unit>
+      <trans-unit id="state_alpha">
+        <source>Alpha</source>
+        <target state="translated">Alpha</target>
+      </trans-unit>
+      <trans-unit id="state_beta">
+        <source>Beta</source>
+        <target state="translated">Beta</target>
+      </trans-unit>
+      <trans-unit id="state_stable">
+        <source>Stable</source>
+        <target state="translated">Stable</target>
+      </trans-unit>
+      <trans-unit id="state_experimental">
+        <source>Experimental</source>
+        <target state="translated">Experimental</target>
+      </trans-unit>
+      <trans-unit id="state_test">
+        <source>Test</source>
+        <target state="translated">Test</target>
+      </trans-unit>
+      <trans-unit id="state_obsolete">
+        <source>Obsolete</source>
+        <target state="translated">Obsolete</target>
+      </trans-unit>
+      <trans-unit id="state_exclude_from_updates">
+        <source>Exclude From Updates</source>
+        <target state="translated">Exclude From Updates</target>
+      </trans-unit>
+      <trans-unit id="type_system">
+        <source>System</source>
+        <target state="translated">System</target>
+      </trans-unit>
+      <trans-unit id="type_global">
+        <source>Global</source>
+        <target state="translated">Global</target>
+      </trans-unit>
+      <trans-unit id="type_local">
+        <source>Local</source>
+        <target state="translated">Local</target>
+      </trans-unit>
+      <trans-unit id="descr_system">
+        <source>System extension (typo3/sysext/) - Always distributed with the TYPO3 source code (static).</source>
+        <target state="translated">System extension (typo3/sysext/) - Always distributed with the TYPO3 source code (static).</target>
+      </trans-unit>
+      <trans-unit id="descr_global">
+        <source>Global extension (typo3/ext/) - Available for shared source on server (dynamic).</source>
+        <target state="translated">Global extension (typo3/ext/) - Available for shared source on server (dynamic).</target>
+      </trans-unit>
+      <trans-unit id="descr_local">
+        <source>Local extension (typo3conf/ext/) - Local for this TYPO3 installation only (dynamic).</source>
+        <target state="translated">Local extension (typo3conf/ext/) - Local for this TYPO3 installation only (dynamic).</target>
+      </trans-unit>
+      <trans-unit id="privacy_notice">
+        <source>When you interact with the online repository, server information may be sent and stored in the repository for statistics.</source>
+        <target state="translated">When you interact with the online repository, server information may be sent and stored in the repository for statistics.</target>
+      </trans-unit>
+      <trans-unit id="security_header">
+        <source>Did you find a security problem?</source>
+        <target state="translated">Did you find a security problem?</target>
+      </trans-unit>
+      <trans-unit id="security_warning_extensions">
+        <source>Please be aware that extensions are third-party software. Installing an extension is a security risk, as the high level of quality and security in the TYPO3 Core can not be assured in these extensions.</source>
+        <target state="translated">Please be aware that extensions are third-party software. Installing an extension is a security risk, as the high level of quality and security in the TYPO3 Core can not be assured in these extensions.</target>
+      </trans-unit>
+      <trans-unit id="security_descr">
+        <source>If you think you have found a security issue in TYPO3 or an extension, please contact the %sTYPO3 security team%s! Thank you!</source>
+        <target state="translated">If you think you have found a security issue in TYPO3 or an extension, please contact the %sTYPO3 security team%s! Thank you!</target>
+      </trans-unit>
+      <trans-unit id="menu_loaded_extensions">
+        <source>Loaded extensions</source>
+        <target state="translated">Loaded extensions</target>
+      </trans-unit>
+      <trans-unit id="menu_install_extensions">
+        <source>Install extensions</source>
+        <target state="translated">Install extensions</target>
+      </trans-unit>
+      <trans-unit id="menu_import_extensions">
+        <source>Import extensions</source>
+        <target state="translated">Import extensions</target>
+      </trans-unit>
+      <trans-unit id="menu_update_extensions">
+        <source>Update extensions</source>
+        <target state="translated">Update extensions</target>
+      </trans-unit>
+      <trans-unit id="menu_update_extension">
+        <source>Update extension from version {0} to version {1}</source>
+        <target state="translated">Update extension from version {0} to version {1}</target>
+      </trans-unit>
+      <trans-unit id="menu_translation_handling">
+        <source>Translation handling</source>
+        <target state="translated">Translation handling</target>
+      </trans-unit>
+      <trans-unit id="menu_language_packges">
+        <source>Language Packages</source>
+        <target state="translated">Language Packages</target>
+      </trans-unit>
+      <trans-unit id="menu_settings">
+        <source>Settings</source>
+        <target state="translated">Settings</target>
+      </trans-unit>
+      <trans-unit id="lang_language">
+        <source>Language</source>
+        <target state="translated">Language</target>
+      </trans-unit>
+      <trans-unit id="lang_short">
+        <source>Short</source>
+        <target state="translated">Short</target>
+      </trans-unit>
+      <trans-unit id="menu_extension_updates">
+        <source>Check for extension updates</source>
+        <target state="translated">Check for extension updates</target>
+      </trans-unit>
+      <trans-unit id="menu_extension_develop">
+        <source>Developer Module</source>
+        <target state="translated">Developer Module</target>
+      </trans-unit>
+      <trans-unit id="list_order_category">
+        <source>Category</source>
+        <target state="translated">Category</target>
+      </trans-unit>
+      <trans-unit id="list_order_author">
+        <source>Author</source>
+        <target state="translated">Author</target>
+      </trans-unit>
+      <trans-unit id="list_order_state">
+        <source>State</source>
+        <target state="translated">State</target>
+      </trans-unit>
+      <trans-unit id="list_order_type">
+        <source>Type</source>
+        <target state="translated">Type</target>
+      </trans-unit>
+      <trans-unit id="list_order_downloads">
+        <source>Downloads</source>
+        <target state="translated">Downloads</target>
+      </trans-unit>
+      <trans-unit id="show_details">
+        <source>Details</source>
+        <target state="translated">Details</target>
+      </trans-unit>
+      <trans-unit id="show_links">
+        <source>Links</source>
+        <target state="translated">Links</target>
+      </trans-unit>
+      <trans-unit id="show_description">
+        <source>Description</source>
+        <target state="translated">Description</target>
+      </trans-unit>
+      <trans-unit id="show_more_details">
+        <source>More details</source>
+        <target state="translated">More details</target>
+      </trans-unit>
+      <trans-unit id="show_technical">
+        <source>Technical (takes time!)</source>
+        <target state="translated">Technical (takes time!)</target>
+      </trans-unit>
+      <trans-unit id="show_validating">
+        <source>Validating (takes time!)</source>
+        <target state="translated">Validating (takes time!)</target>
+      </trans-unit>
+      <trans-unit id="show_changed">
+        <source>Changed? (takes time!)</source>
+        <target state="translated">Changed? (takes time!)</target>
+      </trans-unit>
+      <trans-unit id="details_info">
+        <source>Information</source>
+        <target state="translated">Information</target>
+      </trans-unit>
+      <trans-unit id="details_edit">
+        <source>Edit files</source>
+        <target state="translated">Edit files</target>
+      </trans-unit>
+      <trans-unit id="details_backup_delete">
+        <source>Backup/Delete</source>
+        <target state="translated">Backup/Delete</target>
+      </trans-unit>
+      <trans-unit id="details_maintenance">
+        <source>Maintenance</source>
+        <target state="translated">Maintenance</target>
+      </trans-unit>
+      <trans-unit id="details_dump_db">
+        <source>Dump Database</source>
+        <target state="translated">Dump Database</target>
+      </trans-unit>
+      <trans-unit id="details_upload">
+        <source>Upload to TER</source>
+        <target state="translated">Upload to TER</target>
+      </trans-unit>
+      <trans-unit id="details_update">
+        <source>UPDATE!</source>
+        <target state="translated">UPDATE!</target>
+      </trans-unit>
+      <trans-unit id="header">
+        <source>Extension Manager</source>
+        <target state="translated">Extension Manager</target>
+      </trans-unit>
+      <trans-unit id="group_by">
+        <source>Group by:</source>
+        <target state="translated">Group by:</target>
+      </trans-unit>
+      <trans-unit id="show">
+        <source>Show:</source>
+        <target state="translated">Show:</target>
+      </trans-unit>
+      <trans-unit id="display_shy">
+        <source>Display shy extensions</source>
+        <target state="translated">Display shy extensions</target>
+      </trans-unit>
+      <trans-unit id="display_obsolete">
+        <source>Display obsolete extensions</source>
+        <target state="translated">Display obsolete extensions</target>
+      </trans-unit>
+      <trans-unit id="hide_shy">
+        <source>Hide shy extensions</source>
+        <target state="translated">Hide shy extensions</target>
+      </trans-unit>
+      <trans-unit id="hide_obsolete">
+        <source>Hide obsolete extensions</source>
+        <target state="translated">Hide obsolete extensions</target>
+      </trans-unit>
+      <trans-unit id="display_installedOnly">
+        <source>Only display installed extensions</source>
+        <target state="translated">Only display installed extensions</target>
+      </trans-unit>
+      <trans-unit id="display_updatesOnly">
+        <source>Only display updatable extensions</source>
+        <target state="translated">Only display updatable extensions</target>
+      </trans-unit>
+      <trans-unit id="display_all">
+        <source>Display all extensions</source>
+        <target state="translated">Display all extensions</target>
+      </trans-unit>
+      <trans-unit id="only_my_ext">
+        <source>Only my extensions:</source>
+        <target state="translated">Only my extensions:</target>
+      </trans-unit>
+      <trans-unit id="show_obsolete">
+        <source>Show obsolete:</source>
+        <target state="translated">Show obsolete:</target>
+      </trans-unit>
+      <trans-unit id="extensions">
+        <source>Extensions:</source>
+        <target state="translated">Extensions:</target>
+      </trans-unit>
+      <trans-unit id="localExtensionList">
+        <source>Local Extension List</source>
+        <target state="translated">Local Extension List</target>
+      </trans-unit>
+      <trans-unit id="go_back">
+        <source>Go back</source>
+        <target state="translated">Go back</target>
+      </trans-unit>
+      <trans-unit id="look_up">
+        <source>Look up:</source>
+        <target state="translated">Look up:</target>
+      </trans-unit>
+      <trans-unit id="loaded_exts">
+        <source>Loaded Extensions</source>
+        <target state="translated">Loaded Extensions</target>
+      </trans-unit>
+      <trans-unit id="how_to_install">
+        <source>If you want to use an extension in TYPO3, you should simply click the "plus" button %s .</source>
+        <target state="translated">If you want to use an extension in TYPO3, you should simply click the "plus" button %s .</target>
+      </trans-unit>
+      <trans-unit id="how_to_uninstall">
+        <source>Installed extensions can also be removed again - just click the remove button %s .</source>
+        <target state="translated">Installed extensions can also be removed again - just click the remove button %s .</target>
+      </trans-unit>
+      <trans-unit id="available_extensions">
+        <source>Available Extensions - Grouped by: %s</source>
+        <target state="translated">Available Extensions - Grouped by: %s</target>
+      </trans-unit>
+      <trans-unit id="do_update">
+        <source>Update the extension in '%s' from online repository to server</source>
+        <target state="translated">Update the extension in '%s' from online repository to server</target>
+      </trans-unit>
+      <trans-unit id="global">
+        <source>global</source>
+        <target state="translated">global</target>
+      </trans-unit>
+      <trans-unit id="local">
+        <source>local</source>
+        <target state="translated">local</target>
+      </trans-unit>
+      <trans-unit id="excluded_from_updates">
+        <source>The extension is excluded from updates! You can change this in the appropriate ext_emconf.php file.</source>
+        <target state="translated">The extension is excluded from updates! You can change this in the appropriate ext_emconf.php file.</target>
+      </trans-unit>
+      <trans-unit id="import_to_local_dir">
+        <source>Import this extension from the online repository to the 'local' directory typo3conf/ext/.</source>
+        <target state="translated">Import this extension from the online repository to the 'local' directory typo3conf/ext/.</target>
+      </trans-unit>
+      <trans-unit id="list_or_look_up">
+        <source>List or look up %s extensions</source>
+        <target state="translated">List or look up %s extensions</target>
+      </trans-unit>
+      <trans-unit id="list_or_look_up_extensions">
+        <source>Look up extensions:</source>
+        <target state="translated">Look up extensions:</target>
+      </trans-unit>
+      <trans-unit id="list_or_look_up_all">
+        <source>all</source>
+        <target state="translated">all</target>
+      </trans-unit>
+      <trans-unit id="list_or_look_up_reviewed">
+        <source>reviewed</source>
+        <target state="translated">reviewed</target>
+      </trans-unit>
+      <trans-unit id="look_up_button">
+        <source>Look up</source>
+        <target state="translated">Look up</target>
+      </trans-unit>
+      <trans-unit id="privacy_notice_header">
+        <source>PRIVACY NOTICE:</source>
+        <target state="translated">PRIVACY NOTICE:</target>
+      </trans-unit>
+      <trans-unit id="extensions_repository_group_by">
+        <source>Extensions in the TYPO3 Extension Repository (online) - Grouped by:</source>
+        <target state="translated">Extensions in the TYPO3 Extension Repository (online) - Grouped by:</target>
+      </trans-unit>
+      <trans-unit id="extensions_repository_short">
+        <source>Extensions in repository:</source>
+        <target state="translated">Extensions in repository:</target>
+      </trans-unit>
+      <trans-unit id="extension_required_short">
+        <source>Rq</source>
+        <target state="translated">Rq</target>
+      </trans-unit>
+      <trans-unit id="list_of_local_extensions">
+        <source>This is the list of extensions which are available locally, but not in the repository.</source>
+        <target state="translated">This is the list of extensions which are available locally, but not in the repository.</target>
+      </trans-unit>
+      <trans-unit id="might_be_user_defined">
+        <source>They might be user-defined and should be prepended user_ then.</source>
+        <target state="translated">They might be user-defined and should be prepended user_ then.</target>
+      </trans-unit>
+      <trans-unit id="only_on_this_server">
+        <source>Extensions found only on this server</source>
+        <target state="translated">Extensions found only on this server</target>
+      </trans-unit>
+      <trans-unit id="no_matching_extensions">
+        <source>No matching extensions found.</source>
+        <target state="translated">No matching extensions found.</target>
+      </trans-unit>
+      <trans-unit id="connect_to_ter">
+        <source>Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.</source>
+        <target state="translated">Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.</target>
+      </trans-unit>
+      <trans-unit id="retrieve_update">
+        <source>Retrieve/Update</source>
+        <target state="translated">Retrieve/Update</target>
+      </trans-unit>
+      <trans-unit id="ext_list_last_updated">
+        <source>(Last Update: %s)</source>
+        <target state="translated">(Last Update: %s)</target>
+      </trans-unit>
+      <trans-unit id="in_repository">
+        <source>Extensions in the TYPO3 Extension Repository</source>
+        <target state="translated">Extensions in the TYPO3 Extension Repository</target>
+      </trans-unit>
+      <trans-unit id="upload_t3x">
+        <source>Upload extension file (.t3x):</source>
+        <target state="translated">Upload extension file (.t3x):</target>
+      </trans-unit>
+      <trans-unit id="upload_to_location">
+        <source>...to location:</source>
+        <target state="translated">...to location:</target>
+      </trans-unit>
+      <trans-unit id="local_folder">
+        <source>Local (../typo3conf/ext/)</source>
+        <target state="translated">Local (../typo3conf/ext/)</target>
+      </trans-unit>
+      <trans-unit id="global_folder">
+        <source>Global (typo3/ext/)</source>
+        <target state="translated">Global (typo3/ext/)</target>
+      </trans-unit>
+      <trans-unit id="system_folder">
+        <source>System (typo3/sysext/)</source>
+        <target state="translated">System (typo3/sysext/)</target>
+      </trans-unit>
+      <trans-unit id="overwrite_ext">
+        <source>Overwrite any existing extension!</source>
+        <target state="translated">Overwrite any existing extension!</target>
+      </trans-unit>
+      <trans-unit id="upload_ext">
+        <source>Extension Upload</source>
+        <target state="translated">Extension Upload</target>
+      </trans-unit>
+      <trans-unit id="upload_ext_file">
+        <source>Upload extension file</source>
+        <target state="translated">Upload extension file</target>
+      </trans-unit>
+      <trans-unit id="upload_ext_from">
+        <source>Upload extension from your computer</source>
+        <target state="translated">Upload extension from your computer</target>
+      </trans-unit>
+      <trans-unit id="upload_ext_directly">
+        <source>Upload extension file directly (.t3x)</source>
+        <target state="translated">Upload extension file directly (.t3x)</target>
+      </trans-unit>
+      <trans-unit id="upload_selectExtension">
+        <source>Select Extension (*.t3x)</source>
+        <target state="translated">Select Extension (*.t3x)</target>
+      </trans-unit>
+      <trans-unit id="previous_page">
+        <source>Prev page</source>
+        <target state="translated">Prev page</target>
+      </trans-unit>
+      <trans-unit id="next_page">
+        <source>Next page</source>
+        <target state="translated">Next page</target>
+      </trans-unit>
+      <trans-unit id="showing_extensions_from_to">
+        <source>Showing extensions %s to %s</source>
+        <target state="translated">Showing extensions %s to %s</target>
+      </trans-unit>
+      <trans-unit id="security_settings">
+        <source>Security Settings</source>
+        <target state="translated">Security Settings</target>
+      </trans-unit>
+      <trans-unit id="show_exts_without_security_check">
+        <source>Enable extensions without review (basic security check):</source>
+        <target state="translated">Enable extensions without review (basic security check):</target>
+      </trans-unit>
+      <trans-unit id="notice">
+        <source>Notice:</source>
+        <target state="translated">Notice:</target>
+      </trans-unit>
+      <trans-unit id="security_notice">
+        <source>Make sure you know the consequences of enabling this checkbox. Check the %sinformation on typo3.org about security reviews%s!</source>
+        <target state="translated">Make sure you know the consequences of enabling this checkbox. Check the %sinformation on typo3.org about security reviews%s!</target>
+      </trans-unit>
+      <trans-unit id="user_settings">
+        <source>Repository User Settings</source>
+        <target state="translated">Repository User Settings</target>
+      </trans-unit>
+      <trans-unit id="enter_repository_username">
+        <source>Username</source>
+        <target state="translated">Username</target>
+      </trans-unit>
+      <trans-unit id="enter_repository_password">
+        <source>Password</source>
+        <target state="translated">Password</target>
+      </trans-unit>
+      <trans-unit id="repository_password_info">
+        <source>This is &lt;em&gt;not&lt;/em&gt; your password to the TYPO3 backend! This user information is what is needed to log in at typo3.org with your account there!</source>
+        <target state="translated">This is &lt;em&gt;not&lt;/em&gt; your password to the TYPO3 backend! This user information is what is needed to log in at typo3.org with your account there!</target>
+      </trans-unit>
+      <trans-unit id="repository_notfound">
+        <source>No repositories found.</source>
+        <target state="translated">No repositories found.</target>
+      </trans-unit>
+      <trans-unit id="repository_update">
+        <source>Update Repository</source>
+        <target state="translated">Update Repository</target>
+      </trans-unit>
+      <trans-unit id="repository_creating">
+        <source>Creating Repository ...</source>
+        <target state="translated">Creating Repository ...</target>
+      </trans-unit>
+      <trans-unit id="repository_saving">
+        <source>Saving Repository ...</source>
+        <target state="translated">Saving Repository ...</target>
+      </trans-unit>
+      <trans-unit id="repository_update_not_needed">
+        <source>No update needed!</source>
+        <target state="translated">No update needed!</target>
+      </trans-unit>
+      <trans-unit id="repository_updated">
+        <source>Repository was updated.</source>
+        <target state="translated">Repository was updated.</target>
+      </trans-unit>
+      <trans-unit id="repository_extensions_count">
+        <source>There are {0} extensions currently in the repository.</source>
+        <target state="translated">There are {0} extensions currently in the repository.</target>
+      </trans-unit>
+      <trans-unit id="repository_extensions_count">
+        <source>There are {0} extensions currently in the repository.</source>
+        <target state="translated">There are {0} extensions currently in the repository.</target>
+      </trans-unit>
+      <trans-unit id="mirror_selection">
+        <source>Mirror selection</source>
+        <target state="translated">Mirror selection</target>
+      </trans-unit>
+      <trans-unit id="mirror_list_url">
+        <source>Enter mirror list URL:</source>
+        <target state="translated">Enter mirror list URL:</target>
+      </trans-unit>
+      <trans-unit id="mirror_select">
+        <source>Select a mirror from below. This list is built from the online mirror list retrieved from the URL above.</source>
+        <target state="translated">Select a mirror from below. This list is built from the online mirror list retrieved from the URL above.</target>
+      </trans-unit>
+      <trans-unit id="mirror_list">
+        <source>Mirror list</source>
+        <target state="translated">Mirror list</target>
+      </trans-unit>
+      <trans-unit id="mirror_list_reload">
+        <source>Click here to reload the list.</source>
+        <target state="translated">Click here to reload the list.</target>
+      </trans-unit>
+      <trans-unit id="mirror_use">
+        <source>Use</source>
+        <target state="translated">Use</target>
+      </trans-unit>
+      <trans-unit id="mirror_name">
+        <source>Name</source>
+        <target state="translated">Name</target>
+      </trans-unit>
+      <trans-unit id="mirror">
+        <source>Mirror</source>
+        <target state="translated">Mirror</target>
+      </trans-unit>
+      <trans-unit id="mirror_url">
+        <source>URL</source>
+        <target state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="mirror_url_long">
+        <source>Mirror URL</source>
+        <target state="translated">Mirror URL</target>
+      </trans-unit>
+      <trans-unit id="mirror_country">
+        <source>Country</source>
+        <target state="translated">Country</target>
+      </trans-unit>
+      <trans-unit id="mirror_sponsored_by">
+        <source>Sponsored by</source>
+        <target state="translated">Sponsored by</target>
+      </trans-unit>
+      <trans-unit id="mirror_logo_link">
+        <source>Logo / Link</source>
+        <target state="translated">Logo / Link</target>
+      </trans-unit>
+      <trans-unit id="mirror_use_random">
+        <source>Random (recommended!)</source>
+        <target state="translated">Random (recommended!)</target>
+      </trans-unit>
+      <trans-unit id="enter_repository_url">
+        <source>Enter repository URL:</source>
+        <target state="translated">Enter repository URL:</target>
+      </trans-unit>
+      <trans-unit id="repository_url_hint">
+        <source>If you set a repository URL, this overrides the use of a mirror. Use this to select a specific (private) repository.</source>
+        <target state="translated">If you set a repository URL, this overrides the use of a mirror. Use this to select a specific (private) repository.</target>
+      </trans-unit>
+      <trans-unit id="repository_settings">
+        <source>Repository settings</source>
+        <target state="translated">Repository settings</target>
+      </trans-unit>
+      <trans-unit id="repository_edit">
+        <source>Edit repository "{0}"</source>
+        <target state="translated">Edit repository "{0}"</target>
+      </trans-unit>
+      <trans-unit id="repository_create">
+        <source>Create new repository</source>
+        <target state="translated">Create new repository</target>
+      </trans-unit>
+      <trans-unit id="repository_delete">
+        <source>Delete repository</source>
+        <target state="translated">Delete repository</target>
+      </trans-unit>
+      <trans-unit id="repository_deleting">
+        <source>Deleting repository</source>
+        <target state="translated">Deleting repository</target>
+      </trans-unit>
+      <trans-unit id="repository_deleted">
+        <source>Repository "{0}" was deleted.</source>
+        <target state="translated">Repository "{0}" was deleted.</target>
+      </trans-unit>
+      <trans-unit id="repository_created">
+        <source>Repository "{0}" was created.</source>
+        <target state="translated">Repository "{0}" was created.</target>
+      </trans-unit>
+      <trans-unit id="repository_saved">
+        <source>Repository "{0}" was saved.</source>
+        <target state="translated">Repository "{0}" was saved.</target>
+      </trans-unit>
+      <trans-unit id="repository">
+        <source>Repository</source>
+        <target state="translated">Repository</target>
+      </trans-unit>
+      <trans-unit id="repository_main_nodelete">
+        <source>Main repository cannot be deleted!</source>
+        <target state="translated">Main repository cannot be deleted!</target>
+      </trans-unit>
+      <trans-unit id="repository_upToDate">
+        <source>Repository is up to date.</source>
+        <target state="translated">Repository is up to date.</target>
+      </trans-unit>
+      <trans-unit id="translation_settings">
+        <source>Translation Settings</source>
+        <target state="translated">Translation Settings</target>
+      </trans-unit>
+      <trans-unit id="languages_to_fetch">
+        <source>Languages to fetch:</source>
+        <target state="translated">Languages to fetch:</target>
+      </trans-unit>
+      <trans-unit id="translation_info">
+        <source>For the selected languages the Extension Manager tries to download and install translation files if available, whenever an extension is installed. (This replaces the &lt;code&gt;csh_*&lt;/code&gt; extensions that were used to install core translations before TYPO3 version 4!)</source>
+        <target state="translated">For the selected languages the Extension Manager tries to download and install translation files if available, whenever an extension is installed. (This replaces the &lt;code&gt;csh_*&lt;/code&gt; extensions that were used to install core translations before TYPO3 version 4!)</target>
+      </trans-unit>
+      <trans-unit id="translation_loaded_exts">
+        <source>To request an update or installation for already loaded extensions, see below.</source>
+        <target state="translated">To request an update or installation for already loaded extensions, see below.</target>
+      </trans-unit>
+      <trans-unit id="translation_save_selection">
+        <source>Save selection</source>
+        <target state="translated">Save selection</target>
+      </trans-unit>
+      <trans-unit id="translation_selection_saved">
+        <source>Language selection was saved</source>
+        <target state="translated">Language selection was saved</target>
+      </trans-unit>
+      <trans-unit id="translation_check_status_button">
+        <source>Check status against repository</source>
+        <target state="translated">Check status against repository</target>
+      </trans-unit>
+      <trans-unit id="translation_update_button">
+        <source>Update from repository</source>
+        <target state="translated">Update from repository</target>
+      </trans-unit>
+      <trans-unit id="translation_status">
+        <source>Translation status</source>
+        <target state="translated">Translation status</target>
+      </trans-unit>
+      <trans-unit id="translation_check_status">
+        <source>Checking translation status, please wait...</source>
+        <target state="translated">Checking translation status, please wait...</target>
+      </trans-unit>
+      <trans-unit id="translation_checking">
+        <source>Checking ...</source>
+        <target state="translated">Checking ...</target>
+      </trans-unit>
+      <trans-unit id="translation_refresh_languages">
+        <source>Refresh languages ...</source>
+        <target state="translated">Refresh languages ...</target>
+      </trans-unit>
+      <trans-unit id="translation_table_check">
+        <source>This table shows the status of the translations of the loaded extensions.</source>
+        <target state="translated">This table shows the status of the translations of the loaded extensions.</target>
+      </trans-unit>
+      <trans-unit id="translation_extension_key">
+        <source>Extension key</source>
+        <target state="translated">Extension key</target>
+      </trans-unit>
+      <trans-unit id="translation_checking_extension">
+        <source>Checking translation status for extension \"%s\"...</source>
+        <target state="translated">Checking translation status for extension \"%s\"...</target>
+      </trans-unit>
+      <trans-unit id="translation_fetch_extension">
+        <source>Fetch language for extension "{0}"   {1} of {2}</source>
+        <target state="translated">Fetch language for extension "{0}"   {1} of {2}</target>
+      </trans-unit>
+      <trans-unit id="translation_checking_extension">
+        <source>Check languages against repository</source>
+        <target state="translated">Check languages against repository</target>
+      </trans-unit>
+      <trans-unit id="translation_update_extension">
+        <source>Update languages from repository</source>
+        <target state="translated">Update languages from repository</target>
+      </trans-unit>
+      <trans-unit id="translation_no_translation">
+        <source>No translation available</source>
+        <target state="translated">No translation available</target>
+      </trans-unit>
+      <trans-unit id="translation_n_a">
+        <source>not available</source>
+        <target state="translated">not available</target>
+      </trans-unit>
+      <trans-unit id="translation_not_installed">
+        <source>Not installed/Unknown</source>
+        <target state="translated">Not installed/Unknown</target>
+      </trans-unit>
+      <trans-unit id="translation_status_unknown">
+        <source>???</source>
+        <target state="translated">???</target>
+      </trans-unit>
+      <trans-unit id="translation_status_new">
+        <source>New translation available</source>
+        <target state="translated">New translation available</target>
+      </trans-unit>
+      <trans-unit id="translation_status_uptodate">
+        <source>up to date</source>
+        <target state="translated">up to date</target>
+      </trans-unit>
+      <trans-unit id="translation_needs_update">
+        <source>Needs update</source>
+        <target state="translated">Needs update</target>
+      </trans-unit>
+      <trans-unit id="translation_status_update">
+        <source>Update available</source>
+        <target state="translated">Update available</target>
+      </trans-unit>
+      <trans-unit id="translation_status_notchecked">
+        <source>not checked</source>
+        <target state="translated">not checked</target>
+      </trans-unit>
+      <trans-unit id="translation_is_ok">
+        <source>Is up to date</source>
+        <target state="translated">Is up to date</target>
+      </trans-unit>
+      <trans-unit id="translation_status_ok">
+        <source>updated</source>
+        <target state="translated">updated</target>
+      </trans-unit>
+      <trans-unit id="translation_check_done">
+        <source>Check done.</source>
+        <target state="translated">Check done.</target>
+      </trans-unit>
+      <trans-unit id="translation_update_status">
+        <source>Updating translations, please wait...</source>
+        <target state="translated">Updating translations, please wait...</target>
+      </trans-unit>
+      <trans-unit id="translation_table_update">
+        <source>This table shows the update results of the translations of the loaded extensions.</source>
+        <target state="translated">This table shows the update results of the translations of the loaded extensions.</target>
+      </trans-unit>
+      <trans-unit id="translation_full_check_update">
+        <source>If you want to force a full check or update, delete the l10n zip files from the typo3temp folder.</source>
+        <target state="translated">If you want to force a full check or update, delete the l10n zip files from the typo3temp folder.</target>
+      </trans-unit>
+      <trans-unit id="translation_updating_extension">
+        <source>Updating translation for extension \"%s\"...</source>
+        <target state="translated">Updating translation for extension \"%s\"...</target>
+      </trans-unit>
+      <trans-unit id="translation_has_been_updated">
+        <source>Has been updated</source>
+        <target state="translated">Has been updated</target>
+      </trans-unit>
+      <trans-unit id="translation_status_error">
+        <source>ERR</source>
+        <target state="translated">ERR</target>
+      </trans-unit>
+      <trans-unit id="translation_problems">
+        <source>Possible reasons: Network problems, allow_url_fopen is off, cURL is not enabled in the Install Tool</source>
+        <target state="translated">Possible reasons: Network problems, allow_url_fopen is off, cURL is not enabled in the Install Tool</target>
+      </trans-unit>
+      <trans-unit id="translation_status_could_not_fetch">
+        <source>Could not fetch translation status</source>
+        <target state="translated">Could not fetch translation status</target>
+      </trans-unit>
+      <trans-unit id="translation_update_done">
+        <source>Update done.</source>
+        <target state="translated">Update done.</target>
+      </trans-unit>
+      <trans-unit id="translation_unpacking_failed">
+        <source>Unpacking the language pack failed!</source>
+        <target state="translated">Unpacking the language pack failed!</target>
+      </trans-unit>
+      <trans-unit id="translation_singleCheckQuestion">
+        <source>Do you want to update the language package "{0}" for the extension {1}?</source>
+        <target state="translated">Do you want to update the language package "{0}" for the extension {1}?</target>
+      </trans-unit>
+      <trans-unit id="translation_singleCheck">
+        <source>Fetch language {0} for extension {1} ...</source>
+        <target state="translated">Fetch language {0} for extension {1} ...</target>
+      </trans-unit>
+      <trans-unit id="translation_singleCheckTip">
+        <source>Click to update this language for this extension only</source>
+        <target state="translated">Click to update this language for this extension only</target>
+      </trans-unit>
+      <trans-unit id="ext_load_details_button">
+        <source>Load details</source>
+        <target state="translated">Load details</target>
+      </trans-unit>
+      <trans-unit id="ext_or">
+        <source>or</source>
+        <target state="translated">or</target>
+      </trans-unit>
+      <trans-unit id="ext_import_update_button">
+        <source>Import/Update</source>
+        <target state="translated">Import/Update</target>
+      </trans-unit>
+      <trans-unit id="ext_import_update_to">
+        <source>to:</source>
+        <target state="translated">to:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_global">
+        <source>Global:</source>
+        <target state="translated">Global:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_local">
+        <source>Local:</source>
+        <target state="translated">Local:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_system">
+        <source>System:</source>
+        <target state="translated">System:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_overwrite">
+        <source>(OVERWRITE)</source>
+        <target state="translated">(OVERWRITE)</target>
+      </trans-unit>
+      <trans-unit id="ext_import_folder_empty">
+        <source>(empty)</source>
+        <target state="translated">(empty)</target>
+      </trans-unit>
+      <trans-unit id="ext_import_excluded_from_updates">
+        <source>This extension is excluded from updates! You can change this in the ext_emconf.php file in the extension folder.</source>
+        <target state="translated">This extension is excluded from updates! You can change this in the ext_emconf.php file in the extension folder.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_select_command">
+        <source>Select command</source>
+        <target state="translated">Select command</target>
+      </trans-unit>
+      <trans-unit id="ext_import_remote_ext_details">
+        <source>Remote Extension Details</source>
+        <target state="translated">Remote Extension Details</target>
+      </trans-unit>
+      <trans-unit id="ext_import_list_not_updated">
+        <source>Error: The list could not be fetched from %s.</source>
+        <target state="translated">Error: The list could not be fetched from %s.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_list_updated">
+        <source>The mirror list has been updated and now contains %s entries.</source>
+        <target state="translated">The mirror list has been updated and now contains %s entries.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_list_empty">
+        <source>The mirror list contained no entries and was not updated.</source>
+        <target state="translated">The mirror list contained no entries and was not updated.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_md5_not_updated">
+        <source>Error: The extension MD5 sum could not be fetched from %s.</source>
+        <target state="translated">Error: The extension MD5 sum could not be fetched from %s.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_extlist_updated_header">
+        <source>Extension list updated</source>
+        <target state="translated">Extension list updated</target>
+      </trans-unit>
+      <trans-unit id="ext_import_extlist_updated">
+        <source>The extension list has been updated and now contains %s extension entries.</source>
+        <target state="translated">The extension list has been updated and now contains %s extension entries.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_list_unchanged_header">
+        <source>No updates available</source>
+        <target state="translated">No updates available</target>
+      </trans-unit>
+      <trans-unit id="ext_import_list_unchanged">
+        <source>The extension list has not changed remotely and has not been fetched.</source>
+        <target state="translated">The extension list has not changed remotely and has not been fetched.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_already_installed_loaded">
+        <source>Extension already installed and loaded.</source>
+        <target state="translated">Extension already installed and loaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_p_localconf">
+        <source>localconf.php is not writable!</source>
+        <target state="translated">localconf.php is not writable!</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_loaded">
+        <source>Extension was already installed, and has now been loaded.</source>
+        <target state="translated">Extension was already installed, and has now been loaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_n_a">
+        <source>Extension not available in matching version.</source>
+        <target state="translated">Extension not available in matching version.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_imported">
+        <source>Extension has been imported from repository and loaded.</source>
+        <target state="translated">Extension has been imported from repository and loaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_not_loaded">
+        <source>Extension is in repository but could not be loaded.</source>
+        <target state="translated">Extension is in repository but could not be loaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_n_a_rep">
+        <source>Extension not available in repository.</source>
+        <target state="translated">Extension not available in repository.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_file_not_uploaded">
+        <source>File was not uploaded?!</source>
+        <target state="translated">File was not uploaded?!</target>
+      </trans-unit>
+      <trans-unit id="ext_import_file_empty">
+        <source>File is empty!</source>
+        <target state="translated">File is empty!</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_present_no_overwrite">
+        <source>A version of the extension was already present in '%s' and the overwrite flag was not set.</source>
+        <target state="translated">A version of the extension was already present in '%s' and the overwrite flag was not set.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_present_nothing_done">
+        <source>So nothing was done...</source>
+        <target state="translated">So nothing was done...</target>
+      </trans-unit>
+      <trans-unit id="ext_import_no_key">
+        <source>No extension key in file. Strange...</source>
+        <target state="translated">No extension key in file. Strange...</target>
+      </trans-unit>
+      <trans-unit id="ext_import_wrong_file_format">
+        <source>Wrong file format. No data recognized, %s.</source>
+        <target state="translated">Wrong file format. No data recognized, %s.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_no_file">
+        <source>No file uploaded! Probably the file was too large for PHP's internal limit for uploadable files.</source>
+        <target state="translated">No file uploaded! Probably the file was too large for PHP's internal limit for uploadable files.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_file_not_created">
+        <source>Error: File '%s' could not be created!!!</source>
+        <target state="translated">Error: File '%s' could not be created!!!</target>
+      </trans-unit>
+      <trans-unit id="ext_import_file_corrupted">
+        <source>Error: File '%s' MD5 was different from the md5 of the original file - so the file is corrupted!</source>
+        <target state="translated">Error: File '%s' MD5 was different from the md5 of the original file - so the file is corrupted!</target>
+      </trans-unit>
+      <trans-unit id="ext_import_success">
+        <source>Extension imported</source>
+        <target state="translated">Extension imported</target>
+      </trans-unit>
+      <trans-unit id="ext_import_success_folder">
+        <source>Folder created: %s</source>
+        <target state="translated">Folder created: %s</target>
+      </trans-unit>
+      <trans-unit id="ext_import_no_conf_file">
+        <source>Error: Could not find '%s'.</source>
+        <target state="translated">Error: Could not find '%s'.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_type">
+        <source>Installation Type:</source>
+        <target state="translated">Installation Type:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_cache_files_removed">
+        <source>Cache files are removed and will be rewritten upon next hit.</source>
+        <target state="translated">Cache files are removed and will be rewritten upon next hit.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_install_uninstall">
+        <source>Install/Uninstall Extension:</source>
+        <target state="translated">Install/Uninstall Extension:</target>
+      </trans-unit>
+      <trans-unit id="ext_import_uninstall">
+        <source>Uninstall extension</source>
+        <target state="translated">Uninstall extension</target>
+      </trans-unit>
+      <trans-unit id="ext_import_install">
+        <source>Install extension</source>
+        <target state="translated">Install extension</target>
+      </trans-unit>
+      <trans-unit id="ext_import_imported">
+        <source>The extension has been imported.</source>
+        <target state="translated">The extension has been imported.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_close_check">
+        <source>Close window and recheck dependencies.</source>
+        <target state="translated">Close window and recheck dependencies.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_close">
+        <source>Close window.</source>
+        <target state="translated">Close window.</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_path_different">
+        <source>Error: The extension path '%s' was different than expected...</source>
+        <target state="translated">Error: The extension path '%s' was different than expected...</target>
+      </trans-unit>
+      <trans-unit id="ext_import_ext_only_here">
+        <source>Error: The extension can only be installed in the path %s (lockType=%s).</source>
+        <target state="translated">Error: The extension can only be installed in the path %s (lockType=%s).</target>
+      </trans-unit>
+      <trans-unit id="ext_import_no_ext_key_files">
+        <source>Error: No extension key!!! Why? - nobody knows... (Or there are no files in the file array...)</source>
+        <target state="translated">Error: No extension key!!! Why? - nobody knows... (Or there are no files in the file array...)</target>
+      </trans-unit>
+      <trans-unit id="ext_import_data_transfer">
+        <source>Error: The data transfer did not succeed. %s</source>
+        <target state="translated">Error: The data transfer did not succeed. %s</target>
+      </trans-unit>
+      <trans-unit id="ext_import_no_install_here">
+        <source>Error: Installation is not allowed in this path (%s).</source>
+        <target state="translated">Error: Installation is not allowed in this path (%s).</target>
+      </trans-unit>
+      <trans-unit id="ext_import_results">
+        <source>Extension import results</source>
+        <target state="translated">Extension import results</target>
+      </trans-unit>
+      <trans-unit id="ext_import_versions">
+        <source>Import versions of "{0}"</source>
+        <target state="translated">Import versions of "{0}"</target>
+      </trans-unit>
+      <trans-unit id="ext_import_versions_available">
+        <source>{0} versions available</source>
+        <target state="translated">{0} versions available</target>
+      </trans-unit>
+      <trans-unit id="ext_details_ext">
+        <source>Extension:</source>
+        <target state="translated">Extension:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_new_tables_fields">
+        <source>Before the extension can be installed the database needs to be updated with new tables or fields.</source>
+        <target state="translated">Before the extension can be installed the database needs to be updated with new tables or fields.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_new_tables_fields_select">
+        <source>Please select which operations to perform:</source>
+        <target state="translated">Please select which operations to perform:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_installing">
+        <source>Installing %s:</source>
+        <target state="translated">Installing %s:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_db_needs_update">
+        <source>Database needs to be updated</source>
+        <target state="translated">Database needs to be updated</target>
+      </trans-unit>
+      <trans-unit id="ext_details_dbUpToDate">
+        <source>Database is up to date</source>
+        <target state="translated">Database is up to date</target>
+      </trans-unit>
+      <trans-unit id="ext_details_remove_ext">
+        <source>Remove extension</source>
+        <target state="translated">Remove extension</target>
+      </trans-unit>
+      <trans-unit id="ext_details_removing">
+        <source>Removing %s:</source>
+        <target state="translated">Removing %s:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_ext_installed_removed">
+        <source>The extension has been %s.</source>
+        <target state="translated">The extension has been %s.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_ext_installed_with_key">
+        <source>The extension "%s" has been installed.</source>
+        <target state="translated">The extension "%s" has been installed.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_ext_removed_with_key">
+        <source>The extension "%s" has been removed.</source>
+        <target state="translated">The extension "%s" has been removed.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_installed">
+        <source>installed</source>
+        <target state="translated">installed</target>
+      </trans-unit>
+      <trans-unit id="ext_details_removed">
+        <source>removed</source>
+        <target state="translated">removed</target>
+      </trans-unit>
+      <trans-unit id="ext_details_write_access_error">
+        <source>Write access error</source>
+        <target state="translated">Write access error</target>
+      </trans-unit>
+      <trans-unit id="ext_details_write_error_localconf">
+        <source>typo3conf/localconf.php seems not to be writable, so the extension cannot be installed automatically!</source>
+        <target state="translated">typo3conf/localconf.php seems not to be writable, so the extension cannot be installed automatically!</target>
+      </trans-unit>
+      <trans-unit id="ext_details_error_downloading">
+        <source>Error while trying to download the extension file...</source>
+        <target state="translated">Error while trying to download the extension file...</target>
+      </trans-unit>
+      <trans-unit id="ext_details_md5_previous">
+        <source>MD5: %s (Previous File)</source>
+        <target state="translated">MD5: %s (Previous File)</target>
+      </trans-unit>
+      <trans-unit id="ext_details_no_changes">
+        <source>No changes to the file detected!</source>
+        <target state="translated">No changes to the file detected!</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file">
+        <source>File: %s</source>
+        <target state="translated">File: %s</target>
+      </trans-unit>
+      <trans-unit id="ext_details_md5_current">
+        <source>MD5: %s (Current File)</source>
+        <target state="translated">MD5: %s (Current File)</target>
+      </trans-unit>
+      <trans-unit id="ext_details_md5_submitted">
+        <source>MD5: %s (Submitted File)</source>
+        <target state="translated">MD5: %s (Submitted File)</target>
+      </trans-unit>
+      <trans-unit id="ext_details_saving_failed_changes_lost">
+        <source>Saving failed, the content was not correctly written to disk. Changes have been lost!</source>
+        <target state="translated">Saving failed, the content was not correctly written to disk. Changes have been lost!</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_saved">
+        <source>File saved.</source>
+        <target state="translated">File saved.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_save_button">
+        <source>Save file</source>
+        <target state="translated">Save file</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_unknownType">
+        <source>Unknown file type</source>
+        <target state="translated">Unknown file type</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_imageType">
+        <source>Image</source>
+        <target state="translated">Image</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_textType">
+        <source>Text</source>
+        <target state="translated">Text</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_extType">
+        <source>%s - file</source>
+        <target state="translated">%s - file</target>
+      </trans-unit>
+      <trans-unit id="ext_details_saving_disabled">
+        <source>SAVING IS DISABLED - It can be enabled with the $TYPO3_CONF_VARS['EXT']['noEdit'] flag</source>
+        <target state="translated">SAVING IS DISABLED - It can be enabled with the $TYPO3_CONF_VARS['EXT']['noEdit'] flag</target>
+      </trans-unit>
+      <trans-unit id="ext_details_cancel_button">
+        <source>Cancel</source>
+        <target state="translated">Cancel</target>
+      </trans-unit>
+      <trans-unit id="ext_details_edit_file">
+        <source>Edit file:</source>
+        <target state="translated">Edit file:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_filesize_exceeded_kb">
+        <source>File size exceeded %s KBytes</source>
+        <target state="translated">File size exceeded %s KBytes</target>
+      </trans-unit>
+      <trans-unit id="ext_details_file_too_large">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="translated">Files larger than %s KBytes are not allowed to be edited.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_fatal_edit_error">
+        <source>Fatal Edit error: File '%s' was not inside the correct path of the TYPO3 Extension!</source>
+        <target state="translated">Fatal Edit error: File '%s' was not inside the correct path of the TYPO3 Extension!</target>
+      </trans-unit>
+      <trans-unit id="ext_details_loaded_and_running">
+        <source>The extension is installed (loaded and running)!</source>
+        <target state="translated">The extension is installed (loaded and running)!</target>
+      </trans-unit>
+      <trans-unit id="ext_details_remove_button">
+        <source>Click here to remove the extension:</source>
+        <target state="translated">Click here to remove the extension:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_not_loaded">
+        <source>The extension is &lt;strong&gt;not&lt;/strong&gt; installed yet.</source>
+        <target state="translated">The extension is &lt;strong&gt;not&lt;/strong&gt; installed yet.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_install_button">
+        <source>Click here to install the extension:</source>
+        <target state="translated">Click here to install the extension:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_always_loaded">
+        <source>This extension is entered in the TYPO3_CONF_VARS['EXT']['requiredExt'] list and is therefore always loaded.</source>
+        <target state="translated">This extension is entered in the TYPO3_CONF_VARS['EXT']['requiredExt'] list and is therefore always loaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_current_status">
+        <source>Current status:</source>
+        <target state="translated">Current status:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_update_needed">
+        <source>Update needed:</source>
+        <target state="translated">Update needed:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_notice_static_data">
+        <source>(Notice: "Static data" may not &lt;em&gt;need&lt;/em&gt; to be updated. You will only have to import static data each time you upgrade the extension.)</source>
+        <target state="translated">(Notice: "Static data" may not &lt;em&gt;need&lt;/em&gt; to be updated. You will only have to import static data each time you upgrade the extension.)</target>
+      </trans-unit>
+      <trans-unit id="ext_details_configuration">
+        <source>Configuration:</source>
+        <target state="translated">Configuration:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_notice_clear_cache">
+        <source>(&lt;em&gt;Notice: You may need to clear the cache after the configuration of the extension. This is required if the extension adds TypoScript depending on these settings.&lt;/em&gt;)</source>
+        <target state="translated">(&lt;em&gt;Notice: You may need to clear the cache after the configuration of the extension. This is required if the extension adds TypoScript depending on these settings.&lt;/em&gt;)</target>
+      </trans-unit>
+      <trans-unit id="ext_details_details">
+        <source>Details:</source>
+        <target state="translated">Details:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_no_unique_ext">
+        <source>The extension has an extension key prefixed with "user_" which indicates that it is a user-defined extension with no official unique identification. Therefore it cannot be uploaded.</source>
+        <target state="translated">The extension has an extension key prefixed with "user_" which indicates that it is a user-defined extension with no official unique identification. Therefore it cannot be uploaded.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_no_username">
+        <source>You have not configured a default username/password yet. %sGo to "Settings"%s if you want to do that.</source>
+        <target state="translated">You have not configured a default username/password yet. %sGo to "Settings"%s if you want to do that.</target>
+      </trans-unit>
+      <trans-unit id="ext_details_upload_to_ter">
+        <source>Upload extension to repository</source>
+        <target state="translated">Upload extension to repository</target>
+      </trans-unit>
+      <trans-unit id="ext_details_delete">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="ext_details_backup">
+        <source>Backup</source>
+        <target state="translated">Backup</target>
+      </trans-unit>
+      <trans-unit id="ext_details_update_em_conf">
+        <source>Update EM_CONF</source>
+        <target state="translated">Update EM_CONF</target>
+      </trans-unit>
+      <trans-unit id="ext_details_ext_files">
+        <source>Extension files</source>
+        <target state="translated">Extension files</target>
+      </trans-unit>
+      <trans-unit id="ext_details_update">
+        <source>Update:</source>
+        <target state="translated">Update:</target>
+      </trans-unit>
+      <trans-unit id="ext_details_externActions">
+        <source>External extension actions</source>
+        <target state="translated">External extension actions</target>
+      </trans-unit>
+      <trans-unit id="ext_details_no_update_object">
+        <source>No update object</source>
+        <target state="translated">No update object</target>
+      </trans-unit>
+      <trans-unit id="ext_details_updateScript">
+        <source>Update script</source>
+        <target state="translated">Update script</target>
+      </trans-unit>
+      <trans-unit id="ext_details_checkUpdateScript">
+        <source>Check update script</source>
+        <target state="translated">Check update script</target>
+      </trans-unit>
+      <trans-unit id="ext_details_doNotLoadInFE">
+        <source>Load extension in Frontend</source>
+        <target state="translated">Load extension in Frontend</target>
+      </trans-unit>
+      <trans-unit id="reqInstExt_install_import">
+        <source>Install/Import:</source>
+        <target state="translated">Install/Import:</target>
+      </trans-unit>
+      <trans-unit id="reqInstExt_ext_key">
+        <source>Extension Key:</source>
+        <target state="translated">Extension Key:</target>
+      </trans-unit>
+      <trans-unit id="reqInstExt_import_install_selected">
+        <source>Import and Install selected</source>
+        <target state="translated">Import and Install selected</target>
+      </trans-unit>
+      <trans-unit id="reqInstExt_return">
+        <source>Return</source>
+        <target state="translated">Return</target>
+      </trans-unit>
+      <trans-unit id="reqInstExt_imp_inst_ext">
+        <source>Import/Install Extensions:</source>
+        <target state="translated">Import/Install Extensions:</target>
+      </trans-unit>
+      <trans-unit id="updatesForm_make_updates">
+        <source>Make updates</source>
+        <target state="translated">Make updates</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_tables_fields">
+        <source>Table and field structure required</source>
+        <target state="translated">Table and field structure required</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_bytes_written_to">
+        <source>%sbytes written to %s</source>
+        <target state="translated">%sbytes written to %s</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_dumping_content">
+        <source>Dumping table content for static tables:</source>
+        <target state="translated">Dumping table content for static tables:</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_static_tables">
+        <source>Static tables</source>
+        <target state="translated">Static tables</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_write_static">
+        <source>Write current static table contents to ext_tables_static+adt.sql now!</source>
+        <target state="translated">Write current static table contents to ext_tables_static+adt.sql now!</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_dumping_db_structure">
+        <source>Dumping current database structure for:</source>
+        <target state="translated">Dumping current database structure for:</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_tables">
+        <source>Tables:</source>
+        <target state="translated">Tables:</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_solo_fields">
+        <source>Solo fields:</source>
+        <target state="translated">Solo fields:</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_write_dump">
+        <source>Write this dump to ext_tables.sql now!</source>
+        <target state="translated">Write this dump to ext_tables.sql now!</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_based_on">
+        <source>This dump is based on two factors:</source>
+        <target state="translated">This dump is based on two factors:</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_based_on_one">
+        <source>1) All table names in ext_tables.sql which are &lt;em&gt;not&lt;/em&gt; found in the "modify_tables" list in ext_emconf.php are dumped with the current database structure.</source>
+        <target state="translated">1) All table names in ext_tables.sql which are &lt;em&gt;not&lt;/em&gt; found in the "modify_tables" list in ext_emconf.php are dumped with the current database structure.</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_based_on_two">
+        <source>2) For any table names which &lt;em&gt;are&lt;/em&gt; listed in "modify_tables" all fields and keys found for the table in ext_tables.sql will be redumped with the fresh equivalents from the database.</source>
+        <target state="translated">2) For any table names which &lt;em&gt;are&lt;/em&gt; listed in "modify_tables" all fields and keys found for the table in ext_tables.sql will be redumped with the fresh equivalents from the database.</target>
+      </trans-unit>
+      <trans-unit id="extDumpTables_bottomline">
+        <source>Bottomline is: Whole tables are dumped from database with no regard to which fields and keys are defined in ext_tables.sql. But for tables which are only modified, any NEW fields added to the database must in some form or the other exist in the ext_tables.sql file as well.</source>
+        <target state="translated">Bottomline is: Whole tables are dumped from database with no regard to which fields and keys are defined in ext_tables.sql. But for tables which are only modified, any NEW fields added to the database must in some form or the other exist in the ext_tables.sql file as well.</target>
+      </trans-unit>
+      <trans-unit id="extFileList_file">
+        <source>File:</source>
+        <target state="translated">File:</target>
+      </trans-unit>
+      <trans-unit id="extFileList_size">
+        <source>Size:</source>
+        <target state="translated">Size:</target>
+      </trans-unit>
+      <trans-unit id="extFileList_edit">
+        <source>Edit:</source>
+        <target state="translated">Edit:</target>
+      </trans-unit>
+      <trans-unit id="extFileList_download">
+        <source>Download...</source>
+        <target state="translated">Download...</target>
+      </trans-unit>
+      <trans-unit id="extFileList_edit_file">
+        <source>Edit file</source>
+        <target state="translated">Edit file</target>
+      </trans-unit>
+      <trans-unit id="extFileList_total">
+        <source>Total:</source>
+        <target state="translated">Total:</target>
+      </trans-unit>
+      <trans-unit id="extDelete_ext_active">
+        <source>This extension is currently installed (loaded and active) and cannot be deleted!</source>
+        <target state="translated">This extension is currently installed (loaded and active) and cannot be deleted!</target>
+      </trans-unit>
+      <trans-unit id="extDelete_wrong_scope">
+        <source>You cannot delete (and install/update) extensions in the %s scope.</source>
+        <target state="translated">You cannot delete (and install/update) extensions in the %s scope.</target>
+      </trans-unit>
+      <trans-unit id="extDelete_remove_dir_failed">
+        <source>ERROR: Could not remove extension directory '%s'. The following errors occurred:</source>
+        <target state="translated">ERROR: Could not remove extension directory '%s'. The following errors occurred:</target>
+      </trans-unit>
+      <trans-unit id="extDelete_removed_header">
+        <source>Extension deleted</source>
+        <target state="translated">Extension deleted</target>
+      </trans-unit>
+      <trans-unit id="extDelete_removed">
+        <source>Removed extension in path '%s'!</source>
+        <target state="translated">Removed extension in path '%s'!</target>
+      </trans-unit>
+      <trans-unit id="extDelete_sure">
+        <source>Are you sure you want to delete this extension from the server?</source>
+        <target state="translated">Are you sure you want to delete this extension from the server?</target>
+      </trans-unit>
+      <trans-unit id="extDelete_from_server">
+        <source>DELETE EXTENSION FROM SERVER</source>
+        <target state="translated">DELETE EXTENSION FROM SERVER</target>
+      </trans-unit>
+      <trans-unit id="extDelete_from_location">
+        <source>(in the '%s' location '%s'!)</source>
+        <target state="translated">(in the '%s' location '%s'!)</target>
+      </trans-unit>
+      <trans-unit id="extDelete_backup">
+        <source>(Maybe you should make a backup first, see above.)</source>
+        <target state="translated">(Maybe you should make a backup first, see above.)</target>
+      </trans-unit>
+      <trans-unit id="extDelete_neither_global_nor_local">
+        <source>This extension is neither global nor local one and cannot be removed.</source>
+        <target state="translated">This extension is neither global nor local one and cannot be removed.</target>
+      </trans-unit>
+      <trans-unit id="extUpdateEMCONF_sure">
+        <source>Are you sure you want to update EM_CONF?</source>
+        <target state="translated">Are you sure you want to update EM_CONF?</target>
+      </trans-unit>
+      <trans-unit id="extUpdateEMCONF_file">
+        <source>Update extension EM_CONF file</source>
+        <target state="translated">Update extension EM_CONF file</target>
+      </trans-unit>
+      <trans-unit id="extUpdateEMCONF_info_changes">
+        <source>If files are changed, added or removed to an extension this is normally detected and displayed so you know that this extension has been altered locally and may need to be uploaded or at least not overwritten.</source>
+        <target state="translated">If files are changed, added or removed to an extension this is normally detected and displayed so you know that this extension has been altered locally and may need to be uploaded or at least not overwritten.</target>
+      </trans-unit>
+      <trans-unit id="extUpdateEMCONF_info_reset">
+        <source>Updating this file will reset this check.</source>
+        <target state="translated">Updating this file will reset this check.</target>
+      </trans-unit>
+      <trans-unit id="extBackup_select">
+        <source>Make selection:</source>
+        <target state="translated">Make selection:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_files">
+        <source>Extension files:</source>
+        <target state="translated">Extension files:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_download">
+        <source>Download extension '%s' as a file.</source>
+        <target state="translated">Download extension '%s' as a file.</target>
+      </trans-unit>
+      <trans-unit id="extBackup_md5">
+        <source>MD5:</source>
+        <target state="translated">MD5:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_data_tables">
+        <source>Data tables:</source>
+        <target state="translated">Data tables:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_static_tables">
+        <source>Static tables:</source>
+        <target state="translated">Static tables:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_unexpected_error">
+        <source>An unexpected error has occurred. There are problems with your extension key or with the extension data.</source>
+        <target state="translated">An unexpected error has occurred. There are problems with your extension key or with the extension data.</target>
+      </trans-unit>
+      <trans-unit id="extBackup_dump_table">
+        <source>Dump table '%s'</source>
+        <target state="translated">Dump table '%s'</target>
+      </trans-unit>
+      <trans-unit id="extBackup_number_of_records">
+        <source>%s records</source>
+        <target state="translated">%s records</target>
+      </trans-unit>
+      <trans-unit id="extBackup_table_not_there">
+        <source>Did not exist.</source>
+        <target state="translated">Did not exist.</target>
+      </trans-unit>
+      <trans-unit id="extBackup_dump_all_tables">
+        <source>Dump all existing tables.</source>
+        <target state="translated">Dump all existing tables.</target>
+      </trans-unit>
+      <trans-unit id="extBackup_download_all_data">
+        <source>Download all data from:</source>
+        <target state="translated">Download all data from:</target>
+      </trans-unit>
+      <trans-unit id="extBackup_nothing_to_dump">
+        <source>Nothing to dump...</source>
+        <target state="translated">Nothing to dump...</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_general_info">
+        <source>General information:</source>
+        <target state="translated">General information:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_title">
+        <source>Title</source>
+        <target state="translated">Title</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_description">
+        <source>Description</source>
+        <target state="translated">Description</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_author">
+        <source>Author</source>
+        <target state="translated">Author</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_version">
+        <source>Version</source>
+        <target state="translated">Version</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_versions">
+        <source>Versions</source>
+        <target state="translated">Versions</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_downloads">
+        <source>Downloads</source>
+        <target state="translated">Downloads</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_lastUpdate">
+        <source>Last Update</source>
+        <target state="translated">Last Update</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_category">
+        <source>Category</source>
+        <target state="translated">Category</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_state">
+        <source>State</source>
+        <target state="translated">State</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_shy">
+        <source>Shy</source>
+        <target state="translated">Shy</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_internal">
+        <source>Internal</source>
+        <target state="translated">Internal</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_uploads">
+        <source>Uploads</source>
+        <target state="translated">Uploads</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_depends_on">
+        <source>Depends on</source>
+        <target state="translated">Depends on</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_conflicts_with">
+        <source>Conflicts with</source>
+        <target state="translated">Conflicts with</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_suggests">
+        <source>Suggests</source>
+        <target state="translated">Suggests</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_priority">
+        <source>Priority</source>
+        <target state="translated">Priority</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_clear_cache">
+        <source>Clear cache</source>
+        <target state="translated">Clear cache</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_incl_modules">
+        <source>Includes modules</source>
+        <target state="translated">Includes modules</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_lock_type">
+        <source>Lock installation Type</source>
+        <target state="translated">Lock installation Type</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_load_in_frontend">
+        <source>Load in frontend</source>
+        <target state="translated">Load in frontend</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_modifies_tables">
+        <source>Modifies tables</source>
+        <target state="translated">Modifies tables</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_inst_status">
+        <source>Installation status</source>
+        <target state="translated">Installation status</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_inst_type">
+        <source>Type of installation</source>
+        <target state="translated">Type of installation</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_inst_twice">
+        <source>Double installation</source>
+        <target state="translated">Double installation</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_root_files">
+        <source>Root files</source>
+        <target state="translated">Root files</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_table_error">
+        <source>Table error!</source>
+        <target state="translated">Table error!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_missing_fields">
+        <source>One or more required fields/tables are probably missing in the database!</source>
+        <target state="translated">One or more required fields/tables are probably missing in the database!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_static_table_error">
+        <source>Static table error!</source>
+        <target state="translated">Static table error!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_static_tables_missing_empty">
+        <source>The static tables are missing or empty!</source>
+        <target state="translated">The static tables are missing or empty!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_db_update_needed">
+        <source>The database will need to be updated when this extension is installed.</source>
+        <target state="translated">The database will need to be updated when this extension is installed.</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_tables_ok">
+        <source>All required tables are already in the database!</source>
+        <target state="translated">All required tables are already in the database!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_db_requirements">
+        <source>Database requirements:</source>
+        <target state="translated">Database requirements:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_db_status">
+        <source>Database status:</source>
+        <target state="translated">Database status:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_flags">
+        <source>Flags:</source>
+        <target state="translated">Flags:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_config_template">
+        <source>Config template:</source>
+        <target state="translated">Config template:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_typoscript_files">
+        <source>TypoScript files:</source>
+        <target state="translated">TypoScript files:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_language_files">
+        <source>Language files:</source>
+        <target state="translated">Language files:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_upload_folder">
+        <source>Upload folder:</source>
+        <target state="translated">Upload folder:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_create_directories">
+        <source>Create directories:</source>
+        <target state="translated">Create directories:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_module_names">
+        <source>Module names:</source>
+        <target state="translated">Module names:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_class_names">
+        <source>Class names:</source>
+        <target state="translated">Class names:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_code_warnings">
+        <source>Code warnings:</source>
+        <target state="translated">Code warnings:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_dev_relevant">
+        <source>(developer-relevant)</source>
+        <target state="translated">(developer-relevant)</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_relevance">
+        <source>Relevance</source>
+        <target state="translated">Relevance</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_annoyances">
+        <source>Naming annoyances:</source>
+        <target state="translated">Naming annoyances:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_exception">
+        <source>[exception]</source>
+        <target state="translated">[exception]</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_difference_detected">
+        <source>A difference between the originally installed version and the current one was detected!</source>
+        <target state="translated">A difference between the originally installed version and the current one was detected!</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_modified_files">
+        <source>Modified files:</source>
+        <target state="translated">Modified files:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_files_changed">
+        <source>Files changed:</source>
+        <target state="translated">Files changed:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_additional_fields">
+        <source>Additional fields:</source>
+        <target state="translated">Additional fields:</target>
+      </trans-unit>
+      <trans-unit id="extInfoArray_double_installation_infotext">
+        <source>A %s extension with this key is also available on the server, but cannot be loaded, because the "%s" version takes precedence.</source>
+        <target state="translated">A %s extension with this key is also available on the server, but cannot be loaded, because the "%s" version takes precedence.</target>
+      </trans-unit>
+      <trans-unit id="repositories">
+        <source>Repositories</source>
+        <target state="translated">Repositories</target>
+      </trans-unit>
+      <trans-unit id="repository_select">
+        <source>Select Repository</source>
+        <target state="translated">Select Repository</target>
+      </trans-unit>
+      <trans-unit id="repository_details">
+        <source>Repository Details</source>
+        <target state="translated">Repository Details</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_username">
+        <source>Repository Username</source>
+        <target state="translated">Repository Username</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_password">
+        <source>Repository Password</source>
+        <target state="translated">Repository Password</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_changelog">
+        <source>Changelog for upload</source>
+        <target state="translated">Changelog for upload</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_command">
+        <source>Upload command:</source>
+        <target state="translated">Upload command:</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_new_version">
+        <source>New version</source>
+        <target state="translated">New version</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_new_bugfix">
+        <source>New bugfix version (latest %s)</source>
+        <target state="translated">New bugfix version (latest %s)</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_new_sub_version">
+        <source>New sub version (latest %s)</source>
+        <target state="translated">New sub version (latest %s)</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_new_main_version">
+        <source>New main version (latest %s)</source>
+        <target state="translated">New main version (latest %s)</target>
+      </trans-unit>
+      <trans-unit id="repositoryUploadForm_upload">
+        <source>Upload extension</source>
+        <target state="translated">Upload extension</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_modifies_tables_short">
+        <source>Mod. Tables:</source>
+        <target state="translated">Mod. Tables:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_modules">
+        <source>Modules:</source>
+        <target state="translated">Modules:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_clear_cache_short">
+        <source>Cl. Cache?</source>
+        <target state="translated">Cl. Cache?</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_tables_fields">
+        <source>Tables/Fields:</source>
+        <target state="translated">Tables/Fields:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_ts_files">
+        <source>TS files:</source>
+        <target state="translated">TS files:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_affects">
+        <source>Affects:</source>
+        <target state="translated">Affects:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_config">
+        <source>Config:</source>
+        <target state="translated">Config:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_locallang">
+        <source>locallang:</source>
+        <target state="translated">locallang:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_classes">
+        <source>Classes:</source>
+        <target state="translated">Classes:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_changed_files">
+        <source>Changed files:</source>
+        <target state="translated">Changed files:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_ext_key">
+        <source>Extension key:</source>
+        <target state="translated">Extension key:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_download_short">
+        <source>DL:</source>
+        <target state="translated">DL:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_documentation_short">
+        <source>Doc:</source>
+        <target state="translated">Doc:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_type">
+        <source>Type:</source>
+        <target state="translated">Type:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_title_upload_date">
+        <source>Date of upload of the repository version.</source>
+        <target state="translated">Date of upload of the repository version.</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_upload_date">
+        <source>Upload date:</source>
+        <target state="translated">Upload date:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_title_current_version">
+        <source>Current version of the extension on this server. If printed bold, there is a newer version in the repository! Then you should upgrade.</source>
+        <target state="translated">Current version of the extension on this server. If printed bold, there is a newer version in the repository! Then you should upgrade.</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_current_version">
+        <source>Cur. Ver:</source>
+        <target state="translated">Cur. Ver:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_title_current_type">
+        <source>Current type of installation of the extension on this server.</source>
+        <target state="translated">Current type of installation of the extension on this server.</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_current_type">
+        <source>Cur. Type:</source>
+        <target state="translated">Cur. Type:</target>
+      </trans-unit>
+      <trans-unit id="listRowHeader_title_number_of_downloads">
+        <source>Number of downloads: all versions/this version</source>
+        <target state="translated">Number of downloads: all versions/this version</target>
+      </trans-unit>
+      <trans-unit id="listRow_files">
+        <source>Files:</source>
+        <target state="translated">Files:</target>
+      </trans-unit>
+      <trans-unit id="listRow_local_manual">
+        <source>Local Open Office Manual</source>
+        <target state="translated">Local Open Office Manual</target>
+      </trans-unit>
+      <trans-unit id="helperFunction_install_extension">
+        <source>Install extension...</source>
+        <target state="translated">Install extension...</target>
+      </trans-unit>
+      <trans-unit id="helperFunction_import_not_possible">
+        <source>Import to both local and global path is disabled in TYPO3_CONF_VARS!</source>
+        <target state="translated">Import to both local and global path is disabled in TYPO3_CONF_VARS!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_keys">
+        <source>keys</source>
+        <target state="translated">keys</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_tables_are">
+        <source>Some tables or fields are %s!</source>
+        <target state="translated">Some tables or fields are %s!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_tables_are_missing">
+        <source>missing</source>
+        <target state="translated">missing</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_tables_are_of_wrong_type">
+        <source>of wrong type</source>
+        <target state="translated">of wrong type</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_static_tables_missing">
+        <source>Static table(s) missing!</source>
+        <target state="translated">Static table(s) missing!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_wrong_mod_path">
+        <source>Configured TYPO3_MOD_PATH "%s" is different from "%s", which it should be.</source>
+        <target state="translated">Configured TYPO3_MOD_PATH "%s" is different from "%s", which it should be.</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_mconf_missing">
+        <source>No definition of MCONF[name] variable found inside!</source>
+        <target state="translated">No definition of MCONF[name] variable found inside!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_be_module_conf_missing">
+        <source>Backend module conf file "%s" should exist, but does not!</source>
+        <target state="translated">Backend module conf file "%s" should exist, but does not!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_module_folder_missing">
+        <source>Backend module folder "%s" should exist, but does not!</source>
+        <target state="translated">Backend module folder "%s" should exist, but does not!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_unconfigured_module">
+        <source>It seems like there is a backend module in "%s" which is not configured in ext_emconf.php.</source>
+        <target state="translated">It seems like there is a backend module in "%s" which is not configured in ext_emconf.php.</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_module">
+        <source>Module</source>
+        <target state="translated">Module</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_module_and_more">
+        <source>Module+</source>
+        <target state="translated">Module+</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_loadTCA">
+        <source>loadTCA</source>
+        <target state="translated">loadTCA</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_TCA">
+        <source>TCA</source>
+        <target state="translated">TCA</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_plugin">
+        <source>Plugin</source>
+        <target state="translated">Plugin</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_plugin_st43">
+        <source>Plugin/ST43</source>
+        <target state="translated">Plugin/ST43</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_page_ts">
+        <source>Page TSconfig</source>
+        <target state="translated">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_user_ts">
+        <source>User TSconfig</source>
+        <target state="translated">User TSconfig</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_ts_setup">
+        <source>TS/Setup</source>
+        <target state="translated">TS/Setup</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_ts_constants">
+        <source>TS/Constants</source>
+        <target state="translated">TS/Constants</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_constants">
+        <source>Constants</source>
+        <target state="translated">Constants</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_setup">
+        <source>Setup</source>
+        <target state="translated">Setup</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_no_upload_folder">
+        <source>Error: Upload folder "%s" did not exist!</source>
+        <target state="translated">Error: Upload folder "%s" did not exist!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_class_ok">
+        <source>Class filename "%s" contained the class "%s" just as it should.</source>
+        <target state="translated">Class filename "%s" contained the class "%s" just as it should.</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_class_not_ok">
+        <source>Class filename "%s" did NOT contain the class "%s"!</source>
+        <target state="translated">Class filename "%s" did NOT contain the class "%s"!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_xclass_ok">
+        <source>'XCLASS OK in %s.</source>
+        <target state="translated">'XCLASS OK in %s.</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_xclass_no_include">
+        <source>Couldn't find the include_once statement for XCLASS!</source>
+        <target state="translated">Couldn't find the include_once statement for XCLASS!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_xclass_incorrect">
+        <source>The XCLASS filename key "%s" was different from "%s" which it should have been!</source>
+        <target state="translated">The XCLASS filename key "%s" was different from "%s" which it should have been!</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_no_xclass_filename">
+        <source>No XCLASS filename key found in file "%s". Maybe a regex coding error here...</source>
+        <target state="translated">No XCLASS filename key found in file "%s". Maybe a regex coding error here...</target>
+      </trans-unit>
+      <trans-unit id="detailedExtAnalysis_no_xclass_found">
+        <source>No XCLASS inclusion code found in file "%s".</source>
+        <target state="translated">No XCLASS inclusion code found in file "%s".</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_could_not_be_deleted">
+        <source>Error: "%s" could not be deleted!</source>
+        <target state="translated">Error: "%s" could not be deleted!</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error_file">
+        <source>Error: "%s" was either not a file, or it was equal to the removed directory or simply outside the removed directory "%s"!</source>
+        <target state="translated">Error: "%s" was either not a file, or it was equal to the removed directory or simply outside the removed directory "%s"!</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error_files_left">
+        <source>Error: "%s" could not be removed (are there files left?)</source>
+        <target state="translated">Error: "%s" could not be removed (are there files left?)</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error_no_dir">
+        <source>Error: "%s" was no directory!</source>
+        <target state="translated">Error: "%s" was no directory!</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error_folders_left">
+        <source>Error: Extension directory "%s" could not be removed (are there files or folders left?)</source>
+        <target state="translated">Error: Extension directory "%s" could not be removed (are there files or folders left?)</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error">
+        <source>Error:</source>
+        <target state="translated">Error:</target>
+      </trans-unit>
+      <trans-unit id="rmExtDir_error_unallowed_path">
+        <source>Error: Unallowed path to remove:</source>
+        <target state="translated">Error: Unallowed path to remove:</target>
+      </trans-unit>
+      <trans-unit id="clearMakeExtDir_no_ext_key">
+        <source>FATAL ERROR: Extension key was not set for some VERY strange reason. Nothing done...</source>
+        <target state="translated">FATAL ERROR: Extension key was not set for some VERY strange reason. Nothing done...</target>
+      </trans-unit>
+      <trans-unit id="clearMakeExtDir_could_not_remove_dir">
+        <source>ERROR: Could not remove extension directory "%s". Reasons:</source>
+        <target state="translated">ERROR: Could not remove extension directory "%s". Reasons:</target>
+      </trans-unit>
+      <trans-unit id="clearMakeExtDir_could_not_create_dir">
+        <source>ERROR: Could not create extension directory "%s"!</source>
+        <target state="translated">ERROR: Could not create extension directory "%s"!</target>
+      </trans-unit>
+      <trans-unit id="clearMakeExtDir_no_dir">
+        <source>ERROR: The extension install path "%s" was no directory!</source>
+        <target state="translated">ERROR: The extension install path "%s" was no directory!</target>
+      </trans-unit>
+      <trans-unit id="writeModPath_ok">
+        <source>TYPO3_MOD_PATH and $BACK_PATH were updated in "%s"!</source>
+        <target state="translated">TYPO3_MOD_PATH and $BACK_PATH were updated in "%s"!</target>
+      </trans-unit>
+      <trans-unit id="writeModPath_notRequired">
+        <source>Notice: Module "%s" uses module API to register module, TYPO3_MOD_PATH and $BACK_PATH not required.</source>
+        <target state="translated">Notice: Module "%s" uses module API to register module, TYPO3_MOD_PATH and $BACK_PATH not required.</target>
+      </trans-unit>
+      <trans-unit id="writeModPath_error">
+        <source>Error: Either TYPO3_MOD_PATH or $BACK_PATH was not found in the "%s" file. You must manually configure that!</source>
+        <target state="translated">Error: Either TYPO3_MOD_PATH or $BACK_PATH was not found in the "%s" file. You must manually configure that!</target>
+      </trans-unit>
+      <trans-unit id="updateLocalEM_CONF_ok">
+        <source>The file "%s" was updated with a cleaned up EM_CONF array.</source>
+        <target state="translated">The file "%s" was updated with a cleaned up EM_CONF array.</target>
+      </trans-unit>
+      <trans-unit id="updateLocalEM_CONF_not_writable">
+        <source>Error: "%s" was not writable!</source>
+        <target state="translated">Error: "%s" was not writable!</target>
+      </trans-unit>
+      <trans-unit id="updateLocalEM_CONF_not_found">
+        <source>Error: No file "%s" found. DON'T PANIC!</source>
+        <target state="translated">Error: No file "%s" found. DON'T PANIC!</target>
+      </trans-unit>
+      <trans-unit id="updateLocalEM_CONF_no_content">
+        <source>No content to write to "%s"!</source>
+        <target state="translated">No content to write to "%s"!</target>
+      </trans-unit>
+      <trans-unit id="makeUploadArray_error_size">
+        <source>Error: The total size of the uncompressed upload (%s) exceeds %s!</source>
+        <target state="translated">Error: The total size of the uncompressed upload (%s) exceeds %s!</target>
+      </trans-unit>
+      <trans-unit id="makeUploadArray_error_path">
+        <source>Error: Extension path for extension "%s" not found!</source>
+        <target state="translated">Error: Extension path for extension "%s" not found!</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ignored">
+        <source>Dependency on %s ignored as requested.</source>
+        <target state="translated">Dependency on %s ignored as requested.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_php_too_low">
+        <source>The running PHP version (%s) is lower than required (%s).</source>
+        <target state="translated">The running PHP version (%s) is lower than required (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ignore_requirement">
+        <source>Ignore this version requirement</source>
+        <target state="translated">Ignore this version requirement</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_php_too_high">
+        <source>The running PHP version (%s) is higher than allowed (%s).</source>
+        <target state="translated">The running PHP version (%s) is higher than allowed (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_typo3_too_low">
+        <source>The running TYPO3 version (%s) is lower than required (%s).</source>
+        <target state="translated">The running TYPO3 version (%s) is lower than required (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_typo3_too_high">
+        <source>The running TYPO3 version (%s) is higher than allowed (%s).</source>
+        <target state="translated">The running TYPO3 version (%s) is higher than allowed (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ext_not_available">
+        <source>The extension "%s" was not available in the system. Please import it from the TYPO3 Extension Repository.</source>
+        <target state="translated">The extension "%s" was not available in the system. Please import it from the TYPO3 Extension Repository.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_import_ext">
+        <source>Import this extension to the 'local' directory typo3conf/ext/ from online repository.</source>
+        <target state="translated">Import this extension to the 'local' directory typo3conf/ext/ from online repository.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_import_now">
+        <source>Import now (opens a new window)</source>
+        <target state="translated">Import now (opens a new window)</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ignore_ext_requirement">
+        <source>Ignore this extension requirement</source>
+        <target state="translated">Ignore this extension requirement</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ext_not_installed">
+        <source>Extension "%s" (%s) was not installed. Please install it first.</source>
+        <target state="translated">Extension "%s" (%s) was not installed. Please install it first.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_install_now">
+        <source>Install now (opens a new window)</source>
+        <target state="translated">Install now (opens a new window)</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ext_too_low">
+        <source>The running version of extension "%s" (%s) is lower than required (%s).</source>
+        <target state="translated">The running version of extension "%s" (%s) is lower than required (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ext_too_high">
+        <source>The running version of extension "%s" (%s) is higher than allowed (%s).</source>
+        <target state="translated">The running version of extension "%s" (%s) is higher than allowed (%s).</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_conflict_ignored">
+        <source>Conflict with %s ignored as requested.</source>
+        <target state="translated">Conflict with %s ignored as requested.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_conflict_remove">
+        <source>The extensions "%s" and "%s" (%s) will conflict with each other. Please remove "%s", if you want to install "%s".</source>
+        <target state="translated">The extensions "%s" and "%s" (%s) will conflict with each other. Please remove "%s", if you want to install "%s".</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_remove_now">
+        <source>Remove now (opens a new window)</source>
+        <target state="translated">Remove now (opens a new window)</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ignore_conflict">
+        <source>Ignore this conflict error</source>
+        <target state="translated">Ignore this conflict error</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_conflict_error">
+        <source>Conflict Error</source>
+        <target state="translated">Conflict Error</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_suggestion_ignored">
+        <source>Suggestion of %s ignored as requested.</source>
+        <target state="translated">Suggestion of %s ignored as requested.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_suggest_import">
+        <source>Extension "%s" was not available in the system. You may want to import it from the TYPO3 Extension Repository.</source>
+        <target state="translated">Extension "%s" was not available in the system. You may want to import it from the TYPO3 Extension Repository.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_ignore_suggestion">
+        <source>Ignore this suggestion</source>
+        <target state="translated">Ignore this suggestion</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_suggest_installation">
+        <source>Extension "%s" (%s) was not installed. You may want to install it.</source>
+        <target state="translated">Extension "%s" (%s) was not installed. You may want to install it.</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_exts_suggested_by_ext">
+        <source>Extensions suggested by extension "%s"</source>
+        <target state="translated">Extensions suggested by extension "%s"</target>
+      </trans-unit>
+      <trans-unit id="checkDependencies_try_again">
+        <source>Try again</source>
+        <target state="translated">Try again</target>
+      </trans-unit>
+      <trans-unit id="removeExtFromList_dependency">
+        <source>The extension(s) '%s' depend(s) on the extension you are trying to remove. The operation was not completed.</source>
+        <target state="translated">The extension(s) '%s' depend(s) on the extension you are trying to remove. The operation was not completed.</target>
+      </trans-unit>
+      <trans-unit id="removeExtFromList_dependency_error">
+        <source>Dependency Error</source>
+        <target state="translated">Dependency Error</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_clear_cache">
+        <source>Clear cache</source>
+        <target state="translated">Clear cache</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_clear_cache_requested">
+        <source>This extension requests the cache to be cleared when it is installed/removed.</source>
+        <target state="translated">This extension requests the cache to be cleared when it is installed/removed.</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_clear_all_cache">
+        <source>Clear all cache:</source>
+        <target state="translated">Clear all cache:</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_create_upload_folder">
+        <source>Create upload folder</source>
+        <target state="translated">Create upload folder</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_upload_folder_needed">
+        <source>The extension requires the upload folder '%s' to exist.</source>
+        <target state="translated">The extension requires the upload folder '%s' to exist.</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_create_dir">
+        <source>Create directory '%s':</source>
+        <target state="translated">Create directory '%s':</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_error">
+        <source>ERROR: The path '%s' could not be created.</source>
+        <target state="translated">ERROR: The path '%s' could not be created.</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_create_folder">
+        <source>Create folder</source>
+        <target state="translated">Create folder</target>
+      </trans-unit>
+      <trans-unit id="checkUploadFolder_folder_needed">
+        <source>The extension requires the folder '%s' to exist.</source>
+        <target state="translated">The extension requires the folder '%s' to exist.</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_add_fields">
+        <source>Add fields</source>
+        <target state="translated">Add fields</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_changing_fields">
+        <source>Changing fields</source>
+        <target state="translated">Changing fields</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_add_tables">
+        <source>Add tables</source>
+        <target state="translated">Add tables</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_rows">
+        <source>Rows:</source>
+        <target state="translated">Rows:</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_table_exists">
+        <source>Table exists!</source>
+        <target state="translated">Table exists!</target>
+      </trans-unit>
+      <trans-unit id="checkDBupdates_import_static_data">
+        <source>Import static data</source>
+        <target state="translated">Import static data</target>
+      </trans-unit>
+      <trans-unit id="tsStyleConfigForm_note">
+        <source>Note</source>
+        <target state="translated">Note</target>
+      </trans-unit>
+      <trans-unit id="tsStyleConfigForm_additional_config">
+        <source>This extension provides additional configuration options which become available once it is installed.</source>
+        <target state="translated">This extension provides additional configuration options which become available once it is installed.</target>
+      </trans-unit>
+      <trans-unit id="dumpStaticTables_table_not_found">
+        <source>Fatal error: Table for dump not found in database...</source>
+        <target state="translated">Fatal error: Table for dump not found in database...</target>
+      </trans-unit>
+      <trans-unit id="terCommunication_ext_version">
+        <source>The extension is now available in version %s.</source>
+        <target state="translated">The extension is now available in version %s.</target>
+      </trans-unit>
+      <trans-unit id="display_nle">
+        <source>Include not loaded extensions into listing</source>
+        <target state="translated">Include not loaded extensions into listing</target>
+      </trans-unit>
+      <trans-unit id="display_files">
+        <source>Display the list of changed files</source>
+        <target state="translated">Display the list of changed files</target>
+      </trans-unit>
+      <trans-unit id="header_upd_ext">
+        <source>There are new versions of the following extensions in the TER</source>
+        <target state="translated">There are new versions of the following extensions in the TER</target>
+      </trans-unit>
+      <trans-unit id="header_vers_ret">
+        <source>Version information</source>
+        <target state="translated">Version information</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_name">
+        <source>Extension</source>
+        <target state="translated">Extension</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_key">
+        <source>Extension Key</source>
+        <target state="translated">Extension Key</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_loc_ver">
+        <source>Local</source>
+        <target state="translated">Local</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_rem_ver">
+        <source>Remote</source>
+        <target state="translated">Remote</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_comment">
+        <source>Upload Comment</source>
+        <target state="translated">Upload Comment</target>
+      </trans-unit>
+      <trans-unit id="tab_mod_location">
+        <source>Location</source>
+        <target state="translated">Location</target>
+      </trans-unit>
+      <trans-unit id="msg_warn_diff">
+        <source>A difference between the originally installed version and the current was detected!</source>
+        <target state="translated">A difference between the originally installed version and the current was detected!</target>
+      </trans-unit>
+      <trans-unit id="msg_modified">
+        <source>Modified Files:</source>
+        <target state="translated">Modified Files:</target>
+      </trans-unit>
+      <trans-unit id="write_protected">
+        <source>(write-protected)</source>
+        <target state="translated">(write-protected)</target>
+      </trans-unit>
+      <trans-unit id="note_last_update">
+        <source>Last update of the list of extensions:</source>
+        <target state="translated">Last update of the list of extensions:</target>
+      </trans-unit>
+      <trans-unit id="note_last_update_new">
+        <source>Last update of the list of extensions: %s.</source>
+        <target state="translated">Last update of the list of extensions: %s.</target>
+      </trans-unit>
+      <trans-unit id="note_last_update2">
+        <source>To get and update the list, go to the section "Import extensions" and use the button "Retrieve/Update".</source>
+        <target state="translated">To get and update the list, go to the section "Import extensions" and use the button "Retrieve/Update".</target>
+      </trans-unit>
+      <trans-unit id="note_last_update2_new">
+        <source>To get and update the list, %sgo to the section "Import extensions" and use the button "Retrieve/Update"%s.</source>
+        <target state="translated">To get and update the list, %sgo to the section "Import extensions" and use the button "Retrieve/Update"%s.</target>
+      </trans-unit>
+      <trans-unit id="double_inclusion">
+        <source>%1$s takes precedence over %2$s</source>
+        <target state="translated">%1$s takes precedence over %2$s</target>
+      </trans-unit>
+      <trans-unit id="double_inclusion_js">
+        <source>{0} takes precedence over {1}</source>
+        <target state="translated">{0} takes precedence over {1}</target>
+      </trans-unit>
+      <trans-unit id="globalext">
+        <source>Globally installed extension</source>
+        <target state="translated">Globally installed extension</target>
+      </trans-unit>
+      <trans-unit id="localext">
+        <source>Locally installed extension</source>
+        <target state="translated">Locally installed extension</target>
+      </trans-unit>
+      <trans-unit id="sysext">
+        <source>System extension</source>
+        <target state="translated">System extension</target>
+      </trans-unit>
+      <trans-unit id="localExtensions">
+        <source>Local extensions</source>
+        <target state="translated">Local extensions</target>
+      </trans-unit>
+      <trans-unit id="remoteRepository">
+        <source>Remote Repository</source>
+        <target state="translated">Remote Repository</target>
+      </trans-unit>
+      <trans-unit id="myExtensions">
+        <source>My Extensions</source>
+        <target state="translated">My Extensions</target>
+      </trans-unit>
+      <trans-unit id="emLoaded">
+        <source>Application is loaded</source>
+        <target state="translated">Application is loaded</target>
+      </trans-unit>
+      <trans-unit id="cmd_edit">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="cmd_create">
+        <source>Create</source>
+        <target state="translated">Create</target>
+      </trans-unit>
+      <trans-unit id="cmd_delete">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="cmd_save">
+        <source>Save</source>
+        <target state="translated">Save</target>
+      </trans-unit>
+      <trans-unit id="cmd_register">
+        <source>Register</source>
+        <target state="translated">Register</target>
+      </trans-unit>
+      <trans-unit id="cmd_filter">
+        <source>Filter</source>
+        <target state="translated">Filter</target>
+      </trans-unit>
+      <trans-unit id="cmd_action">
+        <source>Action</source>
+        <target state="translated">Action</target>
+      </trans-unit>
+      <trans-unit id="cmd_update">
+        <source>Update</source>
+        <target state="translated">Update</target>
+      </trans-unit>
+      <trans-unit id="cmd_install">
+        <source>Install</source>
+        <target state="translated">Install</target>
+      </trans-unit>
+      <trans-unit id="cmd_cancel">
+        <source>Cancel</source>
+        <target state="translated">Cancel</target>
+      </trans-unit>
+      <trans-unit id="cmd_upload">
+        <source>Upload</source>
+        <target state="translated">Upload</target>
+      </trans-unit>
+      <trans-unit id="cmd_download">
+        <source>Download</source>
+        <target state="translated">Download</target>
+      </trans-unit>
+      <trans-unit id="cmd_openInNewWindow">
+        <source>Open in new window</source>
+        <target state="translated">Open in new window</target>
+      </trans-unit>
+      <trans-unit id="cmd_reloadFile">
+        <source>Reload the file</source>
+        <target state="translated">Reload the file</target>
+      </trans-unit>
+      <trans-unit id="cmd_transferkey">
+        <source>Transfer extension key</source>
+        <target state="translated">Transfer extension key</target>
+      </trans-unit>
+      <trans-unit id="cmd_transferkey_to_user">
+        <source>Transfer extension key to user</source>
+        <target state="translated">Transfer extension key to user</target>
+      </trans-unit>
+      <trans-unit id="cmd_transferkey_do">
+        <source>Do the transfer</source>
+        <target state="translated">Do the transfer</target>
+      </trans-unit>
+      <trans-unit id="cmd_deletekey">
+        <source>Delete extension key</source>
+        <target state="translated">Delete extension key</target>
+      </trans-unit>
+      <trans-unit id="cmd_terupload">
+        <source>TER upload</source>
+        <target state="translated">TER upload</target>
+      </trans-unit>
+      <trans-unit id="cmd_readdoc">
+        <source>Read documentation</source>
+        <target state="translated">Read documentation</target>
+      </trans-unit>
+      <trans-unit id="cmd_downloadext">
+        <source>Download extension</source>
+        <target state="translated">Download extension</target>
+      </trans-unit>
+      <trans-unit id="cmd_undo">
+        <source>Undo</source>
+        <target state="translated">Undo</target>
+      </trans-unit>
+      <trans-unit id="cmd_redo">
+        <source>Redo</source>
+        <target state="translated">Redo</target>
+      </trans-unit>
+      <trans-unit id="cmd_indent">
+        <source>Indent</source>
+        <target state="translated">Indent</target>
+      </trans-unit>
+      <trans-unit id="cmd_jslint">
+        <source>JS Lint</source>
+        <target state="translated">JS Lint</target>
+      </trans-unit>
+      <trans-unit id="cmd_viewOnline">
+        <source>View online</source>
+        <target state="translated">View online</target>
+      </trans-unit>
+      <trans-unit id="msg_terupload">
+        <source>Extension "{0}" was uploaded to the TER.</source>
+        <target state="translated">Extension "{0}" was uploaded to the TER.</target>
+      </trans-unit>
+      <trans-unit id="msg_uploaded">
+        <source>Extension "{0}" was uploaded.</source>
+        <target state="translated">Extension "{0}" was uploaded.</target>
+      </trans-unit>
+      <trans-unit id="msg_error">
+        <source>Error</source>
+        <target state="translated">Error</target>
+      </trans-unit>
+      <trans-unit id="msg_invalid">
+        <source>Invalid</source>
+        <target state="translated">Invalid</target>
+      </trans-unit>
+      <trans-unit id="msg_status">
+        <source>Status</source>
+        <target state="translated">Status</target>
+      </trans-unit>
+      <trans-unit id="msg_longwait">
+        <source>This may take some time, please wait...</source>
+        <target state="translated">This may take some time, please wait...</target>
+      </trans-unit>
+      <trans-unit id="msg_finished">
+        <source>Finished!</source>
+        <target state="translated">Finished!</target>
+      </trans-unit>
+      <trans-unit id="msg_checking">
+        <source>Checking</source>
+        <target state="translated">Checking</target>
+      </trans-unit>
+      <trans-unit id="msg_updating">
+        <source>Updating</source>
+        <target state="translated">Updating</target>
+      </trans-unit>
+      <trans-unit id="msg_updated">
+        <source>Updated</source>
+        <target state="translated">Updated</target>
+      </trans-unit>
+      <trans-unit id="msg_failed">
+        <source>Failed</source>
+        <target state="translated">Failed</target>
+      </trans-unit>
+      <trans-unit id="msg_interrupted">
+        <source>Interrupted!</source>
+        <target state="translated">Interrupted!</target>
+      </trans-unit>
+      <trans-unit id="msg_info">
+        <source>Info</source>
+        <target state="translated">Info</target>
+      </trans-unit>
+      <trans-unit id="msg_debug">
+        <source>Debug</source>
+        <target state="translated">Debug</target>
+      </trans-unit>
+      <trans-unit id="msg_update">
+        <source>Update</source>
+        <target state="translated">Update</target>
+      </trans-unit>
+      <trans-unit id="msg_dbupdate">
+        <source>Database Update</source>
+        <target state="translated">Database Update</target>
+      </trans-unit>
+      <trans-unit id="msg_configuration">
+        <source>Configuration</source>
+        <target state="translated">Configuration</target>
+      </trans-unit>
+      <trans-unit id="msg_congratsNoErrors">
+        <source>Congratulation! No errors found.</source>
+        <target state="translated">Congratulation! No errors found.</target>
+      </trans-unit>
+      <trans-unit id="msg_files">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="msg_line">
+        <source>Line</source>
+        <target state="translated">Line</target>
+      </trans-unit>
+      <trans-unit id="msg_character">
+        <source>Character</source>
+        <target state="translated">Character</target>
+      </trans-unit>
+      <trans-unit id="msg_developerinformation">
+        <source>Developer Information</source>
+        <target state="translated">Developer Information</target>
+      </trans-unit>
+      <trans-unit id="msg_fileSaved">
+        <source>File "{0}" was saved.</source>
+        <target state="translated">File "{0}" was saved.</target>
+      </trans-unit>
+      <trans-unit id="msg_fileNotExists">
+        <source>File does not exist!</source>
+        <target state="translated">File does not exist!</target>
+      </trans-unit>
+      <trans-unit id="msg_fileWriteProtected">
+        <source>File is write protected!</source>
+        <target state="translated">File is write protected!</target>
+      </trans-unit>
+      <trans-unit id="msg_extUpToDate">
+        <source>Extension is up to date.</source>
+        <target state="translated">Extension is up to date.</target>
+      </trans-unit>
+      <trans-unit id="msg_extNotInstalled">
+        <source>Extension "%s" is not installed.</source>
+        <target state="translated">Extension "%s" is not installed.</target>
+      </trans-unit>
+      <trans-unit id="msg_extNoConfiguration">
+        <source>This extension has no configuration.</source>
+        <target state="translated">This extension has no configuration.</target>
+      </trans-unit>
+      <trans-unit id="msg_loginFailed">
+        <source>login failed!</source>
+        <target state="translated">login failed!</target>
+      </trans-unit>
+      <trans-unit id="msg_noUserLoginData">
+        <source>No user login data!</source>
+        <target state="translated">No user login data!</target>
+      </trans-unit>
+      <trans-unit id="msg_ok">
+        <source>OK</source>
+        <target state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="msg_localVersion">
+        <source>Installed version is v{0}</source>
+        <target state="translated">Installed version is v{0}</target>
+      </trans-unit>
+      <trans-unit id="msg_userNotExists">
+        <source>User does not exist!</source>
+        <target state="translated">User does not exist!</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexExists">
+        <source>Extension key already exists.</source>
+        <target state="translated">Extension key already exists.</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexNotExists">
+        <source>Extension key does not exist.</source>
+        <target state="translated">Extension key does not exist.</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexNotValid">
+        <source>Extension key is not valid.</source>
+        <target state="translated">Extension key is not valid.</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexRegistered">
+        <source>Extension key was successful registered.</source>
+        <target state="translated">Extension key was successful registered.</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexUploadedSuccess">
+        <source>Extension was successful uploaded.</source>
+        <target state="translated">Extension was successful uploaded.</target>
+      </trans-unit>
+      <trans-unit id="msg_extkexDeletedSuccess">
+        <source>Extension was successful deleted.</source>
+        <target state="translated">Extension was successful deleted.</target>
+      </trans-unit>
+      <trans-unit id="msg_unknownError">
+        <source>Unknow error occured.</source>
+        <target state="translated">Unknow error occured.</target>
+      </trans-unit>
+      <trans-unit id="msg_startTyping">
+        <source>Start typing here and press &lt;return&gt;</source>
+        <target state="translated">Start typing here and press &lt;return&gt;</target>
+      </trans-unit>
+      <trans-unit id="configurationSaved">
+        <source>Configuration was saved.</source>
+        <target state="translated">Configuration was saved.</target>
+      </trans-unit>
+      <trans-unit id="settingsSaved">
+        <source>Settings were saved.</source>
+        <target state="translated">Settings were saved.</target>
+      </trans-unit>
+      <trans-unit id="action_loading_extlist">
+        <source>Loading Extension List ...</source>
+        <target state="translated">Loading Extension List ...</target>
+      </trans-unit>
+      <trans-unit id="action_loadingRepositoryExtlist">
+        <source>Loading Repository Extension List ...</source>
+        <target state="translated">Loading Repository Extension List ...</target>
+      </trans-unit>
+      <trans-unit id="action_loading">
+        <source>Loading ...</source>
+        <target state="translated">Loading ...</target>
+      </trans-unit>
+      <trans-unit id="action_searching">
+        <source>Searching ...</source>
+        <target state="translated">Searching ...</target>
+      </trans-unit>
+      <trans-unit id="action_saving_settings">
+        <source>Saving settings ...</source>
+        <target state="translated">Saving settings ...</target>
+      </trans-unit>
+      <trans-unit id="action_updateDatabase">
+        <source>Update database ...</source>
+        <target state="translated">Update database ...</target>
+      </trans-unit>
+      <trans-unit id="action_sending_data">
+        <source>Sending data ...</source>
+        <target state="translated">Sending data ...</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_rules_heading">
+        <source>Extension key format rules</source>
+        <target state="translated">Extension key format rules</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_rules_allowedcharacters">
+        <source>Allowed characters are: a-z (lowercase), 0-9 and '_' (underscore)</source>
+        <target state="translated">Allowed characters are: a-z (lowercase), 0-9 and '_' (underscore)</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_rules_prefixes">
+        <source>The key must not begin with one of the following prefixes: tx,u,user_,pages,tt_,sys_,ts_language_,csh_</source>
+        <target state="translated">The key must not begin with one of the following prefixes: tx,u,user_,pages,tt_,sys_,ts_language_,csh_</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_rules_startandend">
+        <source>Extension keys cannot start or end with 0-9 or '_' (underscore)</source>
+        <target state="translated">Extension keys cannot start or end with 0-9 or '_' (underscore)</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_rules_length">
+        <source>An extension key must have a minimum 3 characters and a maximum of 30 characters (not counting underscores)</source>
+        <target state="translated">An extension key must have a minimum 3 characters and a maximum of 30 characters (not counting underscores)</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_check_validity">
+        <source>Check Validity</source>
+        <target state="translated">Check Validity</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_check_validity_extkey">
+        <source>Check validity of extension key</source>
+        <target state="translated">Check validity of extension key</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_check_validity_extkey_isvalid">
+        <source>Extension key is valid</source>
+        <target state="translated">Extension key is valid</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_checking_validity">
+        <source>Checking validity ...</source>
+        <target state="translated">Checking validity ...</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_register_extkey">
+        <source>Register extension key ...</source>
+        <target state="translated">Register extension key ...</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_register_extkey_success">
+        <source>Extension key {0} was registered</source>
+        <target state="translated">Extension key {0} was registered</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_registerkey">
+        <source>Register extension key</source>
+        <target state="translated">Register extension key</target>
+      </trans-unit>
+      <trans-unit id="registerkeys_cancel_register">
+        <source>Cancel register</source>
+        <target state="translated">Cancel register</target>
+      </trans-unit>
+      <trans-unit id="transferkeys_info">
+        <source>Transfer an extension key to another user. There is no undo so be sure you have the right username of the person you want to transfer the extension key to.</source>
+        <target state="translated">Transfer an extension key to another user. There is no undo so be sure you have the right username of the person you want to transfer the extension key to.</target>
+      </trans-unit>
+      <trans-unit id="deletekey_info">
+        <source>Deletes an extension key. There is no undo. Once a key is deleted, it is available again for registration.</source>
+        <target state="translated">Deletes an extension key. There is no undo. Once a key is deleted, it is available again for registration.</target>
+      </trans-unit>
+      <trans-unit id="transferkeys_success">
+        <source>Transfer of extension key {0} to user {1} succeded.</source>
+        <target state="translated">Transfer of extension key {0} to user {1} succeded.</target>
+      </trans-unit>
+      <trans-unit id="transferkeys_fail">
+        <source>Transfer of extension key {0} to user {1} failed.</source>
+        <target state="translated">Transfer of extension key {0} to user {1} failed.</target>
+      </trans-unit>
+      <trans-unit id="deletekey_success">
+        <source>Extension key {0} was successfully deleted.</source>
+        <target state="translated">Extension key {0} was successfully deleted.</target>
+      </trans-unit>
+      <trans-unit id="deletekey_fail">
+        <source>Attempt to delete extension key {0} failed.</source>
+        <target state="translated">Attempt to delete extension key {0} failed.</target>
+      </trans-unit>
+      <trans-unit id="reports_StatusMainRepository">
+        <source>Integrity of TYPO3 main repository record</source>
+        <target state="translated">Integrity of TYPO3 main repository record</target>
+      </trans-unit>
+      <trans-unit id="reports_StatusMainRepositoryUpdate">
+        <source>Last update of TYPO3 main repository</source>
+        <target state="translated">Last update of TYPO3 main repository</target>
+      </trans-unit>
+      <trans-unit id="reports_insecureInstalledExtensions">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:</source>
+        <target state="translated">The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:</target>
+      </trans-unit>
+      <trans-unit id="reports_insecureExistingExtensions">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:</source>
+        <target state="translated">The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:</target>
+      </trans-unit>
+      <trans-unit id="reports_StatusInstalledExtensions">
+        <source>Security status of installed extensions</source>
+        <target state="translated">Security status of installed extensions</target>
+      </trans-unit>
+      <trans-unit id="reports_StatusExistingExtensions">
+        <source>Security status of existing extensions</source>
+        <target state="translated">Security status of existing extensions</target>
+      </trans-unit>
+      <trans-unit id="insecureExtension">
+        <source>This extension is marked as insecure and usage might damage your system. Please update this extension as soon as possible or remove it from your system.</source>
+        <target state="translated">This extension is marked as insecure and usage might damage your system. Please update this extension as soon as possible or remove it from your system.</target>
+      </trans-unit>
+      <trans-unit id="reports_insecureExtensionsFound">
+        <source>%s insecure extension(s) found</source>
+        <target state="translated">%s insecure extension(s) found</target>
+      </trans-unit>
+      <trans-unit id="reports_sysTerNotFound">
+        <source>The table "sys_ter" was not found. Please go to the Install Tool and do a database compare!</source>
+        <target state="translated">The table "sys_ter" was not found. Please go to the Install Tool and do a database compare!</target>
+      </trans-unit>
+      <trans-unit id="reports_MainRepositoryNotFound">
+        <source>The Main Repository entry in table "sys_ter" was not found. Please go to the Extension Manager and import static data!</source>
+        <target state="translated">The Main Repository entry in table "sys_ter" was not found. Please go to the Extension Manager and import static data!</target>
+      </trans-unit>
+      <trans-unit id="reports_MainRepositoryNoExtensions">
+        <source>The Main Repository has no extensions. Please update the repository in the Extension Manager or the Scheduler.</source>
+        <target state="translated">The Main Repository has no extensions. Please update the repository in the Extension Manager or the Scheduler.</target>
+      </trans-unit>
+      <trans-unit id="reports_MainRepositoryOldList">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="translated">The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</target>
+      </trans-unit>
+      <trans-unit id="reports_NoExtensionsFound">
+        <source>No extensions found!</source>
+        <target state="translated">No extensions found!</target>
+      </trans-unit>
+      <trans-unit id="reports_ExtensionsNotUpToDate">
+        <source>Extension list is not up to date!</source>
+        <target state="translated">Extension list is not up to date!</target>
+      </trans-unit>
+      <trans-unit id="wsdlUrl">
+        <source>WSDL URL</source>
+        <target state="translated">WSDL URL</target>
+      </trans-unit>
+      <trans-unit id="msg_items">
+        <source>Items</source>
+        <target state="translated">Items</target>
+      </trans-unit>
+      <trans-unit id="msg_item">
+        <source>Item</source>
+        <target state="translated">Item</target>
+      </trans-unit>
+      <trans-unit id="cmd_ClearAllFilters">
+        <source>Clear all Filters</source>
+        <target state="translated">Clear all Filters</target>
+      </trans-unit>
+      <trans-unit id="cmd_RetrieveUpdate">
+        <source>Retrieve / Update</source>
+        <target state="translated">Retrieve / Update</target>
+      </trans-unit>
+      <trans-unit id="help_localFilter">
+        <source>Enter something to search for. Title and extension key are used for search.</source>
+        <target state="translated">Enter something to search for. Title and extension key are used for search.</target>
+      </trans-unit>
+      <trans-unit id="help_remoteFilter">
+        <source>Enter something to search for and press Enter. For complete extension list use "*"</source>
+        <target state="translated">Enter something to search for and press Enter. For complete extension list use "*"</target>
+      </trans-unit>
+      <trans-unit id="help_loadFileInEditor">
+        <source>Click on a file to load in editor</source>
+        <target state="translated">Click on a file to load in editor</target>
+      </trans-unit>
+      <trans-unit id="extTemplate_showOldModules">
+        <source>Show old modules: Enable this option to have old modules like "Loaded Extensions, Installed extensions ..." available in upper left select box of the Extension Manager</source>
+        <target state="translated">Show old modules: Enable this option to have old modules like "Loaded Extensions, Installed extensions ..." available in upper left select box of the Extension Manager</target>
+      </trans-unit>
+      <trans-unit id="extTemplate_selectedLanguages">
+        <source>Language selection: The language setting is saved here as a global setting. You should not change it at this place but instead use the Extension Manager tab for "Translation handling" to add and remove languages for your installation</source>
+        <target state="translated">Language selection: The language setting is saved here as a global setting. You should not change it at this place but instead use the Extension Manager tab for "Translation handling" to add and remove languages for your installation</target>
+      </trans-unit>
+      <trans-unit id="extTemplate_inlineToWindow">
+        <source>Use windows instead of inline display: On small screens the inline display of rows might take too much space. This switch moves the inline info to windows.</source>
+        <target state="translated">Use windows instead of inline display: On small screens the inline display of rows might take too much space. This switch moves the inline info to windows.</target>
+      </trans-unit>
+      <trans-unit id="extTemplate_displayMyExtensions">
+        <source>Display "My Extensions" Tab: In this tab you can manage your own extensions.</source>
+        <target state="translated">Display "My Extensions" Tab: In this tab you can manage your own extensions.</target>
+      </trans-unit>
+      <trans-unit id="soap_error">
+        <source>Unexpected result from SOAP</source>
+        <target state="translated">Unexpected result from SOAP</target>
+      </trans-unit>
+      <trans-unit id="fileEditFileChanged">
+        <source>File content changed</source>
+        <target state="translated">File content changed</target>
+      </trans-unit>
+      <trans-unit id="fileEditFileChangedSavePrompt">
+        <source>Do you want to save this file before loading another file?</source>
+        <target state="translated">Do you want to save this file before loading another file?</target>
+      </trans-unit>
+      <trans-unit id="fileEditNewFilePrompt">
+        <source>Please enter complete filename</source>
+        <target state="translated">Please enter complete filename</target>
+      </trans-unit>
+      <trans-unit id="fileEditRename">
+        <source>Rename</source>
+        <target state="translated">Rename</target>
+      </trans-unit>
+      <trans-unit id="fileEditCreateFileFolder">
+        <source>Create new file or folder</source>
+        <target state="translated">Create new file or folder</target>
+      </trans-unit>
+      <trans-unit id="fileEditCreateFolder">
+        <source>Make Folder</source>
+        <target state="translated">Make Folder</target>
+      </trans-unit>
+      <trans-unit id="fileEditReloadFiletree">
+        <source>Reload file tree</source>
+        <target state="translated">Reload file tree</target>
+      </trans-unit>
+      <trans-unit id="fileEditOperation">
+        <source>File Operation</source>
+        <target state="translated">File Operation</target>
+      </trans-unit>
+      <trans-unit id="fileEditMoveConfirmation">
+        <source>Are you sure to move "{0}" into "{1}"?</source>
+        <target state="translated">Are you sure to move "{0}" into "{1}"?</target>
+      </trans-unit>
+      <trans-unit id="fileEditCopyConfirmation">
+        <source>Are you sure to copy "{0}" into "{1}"?</source>
+        <target state="translated">Are you sure to copy "{0}" into "{1}"?</target>
+      </trans-unit>
+      <trans-unit id="fileEditCopyConfirmation">
+        <source>Are you sure to copy "{0}" into "{1}"?</source>
+        <target state="translated">Are you sure to copy "{0}" into "{1}"?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

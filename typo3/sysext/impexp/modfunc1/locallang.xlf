@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:58 UTC 2011" product-name="impexp">
+    <header/>
+    <body>
+      <trans-unit id="link_allRecs">
+        <source>Show details of all presets</source>
+        <target state="translated">Show details of all presets</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

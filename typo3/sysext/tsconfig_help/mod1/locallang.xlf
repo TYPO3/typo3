@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:49 UTC 2011" product-name="tsconfig_help">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>TypoScript Help</source>
+        <target state="translated">TypoScript Help</target>
+      </trans-unit>
+      <trans-unit id="display">
+        <source>Display TypoScript Help</source>
+        <target state="translated">Display TypoScript Help</target>
+      </trans-unit>
+      <trans-unit id="rebuild">
+        <source>Rebuild TypoScript Help</source>
+        <target state="translated">Rebuild TypoScript Help</target>
+      </trans-unit>
+      <trans-unit id="referenceExplanation">
+        <source>Choose from the following reference data</source>
+        <target state="translated">Choose from the following reference data</target>
+      </trans-unit>
+      <trans-unit id="referenceExplanationDetailed">
+        <source>In order to view the different TypoScript help popup windows, select from the following reference icons. This online help is built automatically from the manuals available in the installed extensions on your TYPO3 server. To rebuild the help files when you add or remove an extension, you will need to select the "Rebuild TypoScript Help" function of this module.</source>
+        <target state="translated">In order to view the different TypoScript help popup windows, select from the following reference icons. This online help is built automatically from the manuals available in the installed extensions on your TYPO3 server. To rebuild the help files when you add or remove an extension, you will need to select the "Rebuild TypoScript Help" function of this module.</target>
+      </trans-unit>
+      <trans-unit id="displayReferences">
+        <source>Display TypoScript Online Help</source>
+        <target state="translated">Display TypoScript Online Help</target>
+      </trans-unit>
+      <trans-unit id="loadedTSfrom">
+        <source>Loaded TypoScript from:</source>
+        <target state="translated">Loaded TypoScript from:</target>
+      </trans-unit>
+      <trans-unit id="sections">
+        <source>sections</source>
+        <target state="translated">sections</target>
+      </trans-unit>
+      <trans-unit id="rebuildTS">
+        <source>Rebuild TypoScript online help</source>
+        <target state="translated">Rebuild TypoScript online help</target>
+      </trans-unit>
+      <trans-unit id="warning_manualsWithoutMarkers">
+        <source>The following manuals contain one or more tables without markers: </source>
+        <target state="translated">The following manuals contain one or more tables without markers: </target>
+      </trans-unit>
+      <trans-unit id="warning_duplicateMarkers">
+        <source>The following markers appear in several manuals or several times in the same manual:</source>
+        <target state="translated">The following markers appear in several manuals or several times in the same manual:</target>
+      </trans-unit>
+      <trans-unit id="updateWarnings">
+        <source>Update warnings</source>
+        <target state="translated">Update warnings</target>
+      </trans-unit>
+      <trans-unit id="rebuildExplanation">
+        <source>Rebuilding the online help will totally wipe the online help database before parsing the TypoScript help for loaded extensions. We suggest you to have doc_core_tsref and doc_core_tsconfig installed to have them parsed as well.</source>
+        <target state="translated">Rebuilding the online help will totally wipe the online help database before parsing the TypoScript help for loaded extensions. We suggest you to have doc_core_tsref and doc_core_tsconfig installed to have them parsed as well.</target>
+      </trans-unit>
+      <trans-unit id="adminAccessOnly">
+        <source>Access to this function of the module is restricted to admins.</source>
+        <target state="translated">Access to this function of the module is restricted to admins.</target>
+      </trans-unit>
+      <trans-unit id="noRebuildOnWindows">
+        <source>The Rebuild function does not run on Windows systems. Sorry!</source>
+        <target state="translated">The Rebuild function does not run on Windows systems. Sorry!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

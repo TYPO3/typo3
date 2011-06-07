@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:51 UTC 2011" product-name="tstemplate">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle">
+        <source>Template tools</source>
+        <target state="translated">Template tools</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer">
+        <source>Template Analyzer</source>
+        <target state="translated">Template Analyzer</target>
+      </trans-unit>
+      <trans-unit id="constantEditor">
+        <source>Constant Editor</source>
+        <target state="translated">Constant Editor</target>
+      </trans-unit>
+      <trans-unit id="infoModify">
+        <source>Info/Modify</source>
+        <target state="translated">Info/Modify</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser">
+        <source>TypoScript Object Browser</source>
+        <target state="translated">TypoScript Object Browser</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates">
+        <source>Viewing templates of</source>
+        <target state="translated">Viewing templates of</target>
+      </trans-unit>
+      <trans-unit id="pageName">
+        <source>Page name</source>
+        <target state="translated">Page name</target>
+      </trans-unit>
+      <trans-unit id="templates">
+        <source># Templates</source>
+        <target state="translated"># Templates</target>
+      </trans-unit>
+      <trans-unit id="isRoot">
+        <source>Is Root?</source>
+        <target state="translated">Is Root?</target>
+      </trans-unit>
+      <trans-unit id="isExt">
+        <source>Is Ext?</source>
+        <target state="translated">Is Ext?</target>
+      </trans-unit>
+      <trans-unit id="overview">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="translated">This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</target>
+      </trans-unit>
+      <trans-unit id="areYouSure">
+        <source>Are you sure you want to do this?</source>
+        <target state="translated">Are you sure you want to do this?</target>
+      </trans-unit>
+      <trans-unit id="noTemplate">
+        <source>No template</source>
+        <target state="translated">No template</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription">
+        <source>There was no template on this page!</source>
+        <target state="translated">There was no template on this page!</target>
+      </trans-unit>
+      <trans-unit id="createTemplate">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="translated">Create a template record first in order to edit constants!</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="translated">You need to create a template record below in order to edit your configuration.</target>
+      </trans-unit>
+      <trans-unit id="newWebsite">
+        <source>Create new website</source>
+        <target state="translated">Create new website</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteDescription">
+        <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</source>
+        <target state="translated">If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction">
+        <source>Create template for a new site</source>
+        <target state="translated">Create template for a new site</target>
+      </trans-unit>
+      <trans-unit id="extTemplate">
+        <source>Create extension template</source>
+        <target state="translated">Create extension template</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="translated">An extension template allows you to enter TypoScript values that will affect only this page and subpages.</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction">
+        <source>Click here to create an extension template.</source>
+        <target state="translated">Click here to create an extension template.</target>
+      </trans-unit>
+      <trans-unit id="goToClosest">
+        <source>Go to closest page with template</source>
+        <target state="translated">Go to closest page with template</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="translated">Closest template is on page '%s' (uid %s).</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction">
+        <source>Click here to go.</source>
+        <target state="translated">Click here to go.</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard">
+        <source>NEW SITE, based on standard</source>
+        <target state="translated">NEW SITE, based on standard</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite">
+        <source>NEW SITE</source>
+        <target state="translated">NEW SITE</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

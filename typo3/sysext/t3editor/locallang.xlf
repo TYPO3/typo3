@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:42 UTC 2011" product-name="t3editor">
+    <header/>
+    <body>
+      <trans-unit id="deactivate">
+        <source>Deactivate t3editor</source>
+        <target state="translated">Deactivate t3editor</target>
+      </trans-unit>
+      <trans-unit id="template">
+        <source>Template</source>
+        <target state="translated">Template</target>
+      </trans-unit>
+      <trans-unit id="file">
+        <source>File</source>
+        <target state="translated">File</target>
+      </trans-unit>
+      <trans-unit id="delimiter">
+        <source>:</source>
+        <target state="translated">:</target>
+      </trans-unit>
+      <trans-unit id="constants">
+        <source>Constants</source>
+        <target state="translated">Constants</target>
+      </trans-unit>
+      <trans-unit id="setup">
+        <source>Setup</source>
+        <target state="translated">Setup</target>
+      </trans-unit>
+      <trans-unit id="unknownContentType">
+        <source>Unknown content type:</source>
+        <target state="translated">Unknown content type:</target>
+      </trans-unit>
+      <trans-unit id="pageIDInteger">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="translated">Syntax error: Parameter pageID must be a valid integer.</target>
+      </trans-unit>
+      <trans-unit id="noPermission">
+        <source>Access denied: No permission to template records.</source>
+        <target state="translated">Access denied: No permission to template records.</target>
+      </trans-unit>
+      <trans-unit id="typeIDMissing">
+        <source>Syntax error: At least parameter typeID has to be supplied.</source>
+        <target state="translated">Syntax error: At least parameter typeID has to be supplied.</target>
+      </trans-unit>
+      <trans-unit id="js.label_lines">
+        <source>lines</source>
+        <target state="translated">lines</target>
+      </trans-unit>
+      <trans-unit id="js.label_documentModified">
+        <source>document has been modified</source>
+        <target state="translated">document has been modified</target>
+      </trans-unit>
+      <trans-unit id="js.label_errorWhileSaving">
+        <source>An error occured while saving the data.</source>
+        <target state="translated">An error occured while saving the data.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

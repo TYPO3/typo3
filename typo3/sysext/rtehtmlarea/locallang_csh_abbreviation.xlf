@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>An 'Abbreviation' associates a short form to a given term. The abbreviation may be defined for a specific language.</source>
+        <target state="translated">An 'Abbreviation' associates a short form to a given term. The abbreviation may be defined for a specific language.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Defined abbreviations are used in the htmlArea RTE Abbreviation dialogue.
+A defined abbreviation may further be configured so as to be made available only when editing content in a given language.</source>
+        <target state="translated">Defined abbreviations are used in the htmlArea RTE Abbreviation dialogue.
+A defined abbreviation may further be configured so as to be made available only when editing content in a given language.</target>
+      </trans-unit>
+      <trans-unit id=".seeAlso">
+        <source>xEXT_rtehtmlarea_Acronym</source>
+        <target state="translated">xEXT_rtehtmlarea_Acronym</target>
+      </trans-unit>
+      <trans-unit id="term.description">
+        <source>Enter the term to be abbreviated.</source>
+        <target state="translated">Enter the term to be abbreviated.</target>
+      </trans-unit>
+      <trans-unit id="acronym.description">
+        <source>Enter the short form of the term.</source>
+        <target state="translated">Enter the short form of the term.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>Check this option if you wish to disable the availability of this entry to non-admin users.</source>
+        <target state="translated">Check this option if you wish to disable the availability of this entry to non-admin users.</target>
+      </trans-unit>
+      <trans-unit id="type.description">
+        <source>Select the type of abbreviation.</source>
+        <target state="translated">Select the type of abbreviation.</target>
+      </trans-unit>
+      <trans-unit id="type.details">
+        <source>A defined abbreviation may be of two types: abbreviation or acronym. These correspond to HTML elements abbr and acronym. Note however that acronym is deprecated in recent versions of HTML.</source>
+        <target state="translated">A defined abbreviation may be of two types: abbreviation or acronym. These correspond to HTML elements abbr and acronym. Note however that acronym is deprecated in recent versions of HTML.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description">
+        <source>Enter a time at which you want the abbreviation to start being available to non-admin users.
+If no time is specified, the abbreviation becomes immediately available to the users of the RTE, if not hidden.</source>
+        <target state="translated">Enter a time at which you want the abbreviation to start being available to non-admin users.
+If no time is specified, the abbreviation becomes immediately available to the users of the RTE, if not hidden.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description">
+        <source>Enter a date and time at which you want the abbreviation to stop being available to non-admin users.
+If no time is specified, the abbreviation is indefinitely available to the users of the RTE, unless it is hidden.</source>
+        <target state="translated">Enter a date and time at which you want the abbreviation to stop being available to non-admin users.
+If no time is specified, the abbreviation is indefinitely available to the users of the RTE, unless it is hidden.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.description">
+        <source>Select the language of content elements in which the abbreviation may be used.</source>
+        <target state="translated">Select the language of content elements in which the abbreviation may be used.</target>
+      </trans-unit>
+      <trans-unit id="static_lang_isocode.description">
+        <source>Select the language for which the abbreviation is defined.</source>
+        <target state="translated">Select the language for which the abbreviation is defined.</target>
+      </trans-unit>
+      <trans-unit id="static_lang_isocode.details">
+        <source>The selected language will be used as the value of the language attribute of the HTML element inserted in the content element by the RTE.</source>
+        <target state="translated">The selected language will be used as the value of the language attribute of the HTML element inserted in the content element by the RTE.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

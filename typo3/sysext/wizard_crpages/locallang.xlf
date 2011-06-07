@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:02 UTC 2011" product-name="wizard_crpages">
+    <header/>
+    <body>
+      <trans-unit id="wiz_crMany">
+        <source>Create multiple pages</source>
+        <target state="translated">Create multiple pages</target>
+      </trans-unit>
+      <trans-unit id="wiz_W">
+        <source>W!</source>
+        <target state="translated">W!</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages">
+        <source>Create new pages</source>
+        <target state="translated">Create new pages</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_page">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_currentMenu">
+        <source>New page structure</source>
+        <target state="translated">New page structure</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_errorMsg1">
+        <source>You are not allowed to create new subpages to this page!</source>
+        <target state="translated">You are not allowed to create new subpages to this page!</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_lCreate">
+        <source>Create pages</source>
+        <target state="translated">Create pages</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_listEnd">
+        <source>Place new pages after the existing subpages</source>
+        <target state="translated">Place new pages after the existing subpages</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_hidePages">
+        <source>Hide new pages</source>
+        <target state="translated">Hide new pages</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_lCreate_msg1">
+        <source>You're about to create many new pages. Are you sure you want to continue?</source>
+        <target state="translated">You're about to create many new pages. Are you sure you want to continue?</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_lReset">
+        <source>Clear fields</source>
+        <target state="translated">Clear fields</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_noCreate">
+        <source>No pages were created!</source>
+        <target state="translated">No pages were created!</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_create">
+        <source>The pages were created!</source>
+        <target state="translated">The pages were created!</target>
+      </trans-unit>
+      <trans-unit id="wiz_newPages_addMoreLines">
+        <source>Add more lines</source>
+        <target state="translated">Add more lines</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

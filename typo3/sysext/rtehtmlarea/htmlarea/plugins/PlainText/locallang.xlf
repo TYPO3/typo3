@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="PasteToggleTooltip">
+        <source>Toggle paste behaviour</source>
+        <target state="translated">Toggle paste behaviour</target>
+      </trans-unit>
+      <trans-unit id="plainText">
+        <source>Paste as plain text</source>
+        <target state="translated">Paste as plain text</target>
+      </trans-unit>
+      <trans-unit id="pasteStructure">
+        <source>Paste structure only</source>
+        <target state="translated">Paste structure only</target>
+      </trans-unit>
+      <trans-unit id="pasteFormat">
+        <source>Paste structure and basic format</source>
+        <target state="translated">Paste structure and basic format</target>
+      </trans-unit>
+      <trans-unit id="PasteBehaviourTooltip">
+        <source>Select alternate paste behaviour</source>
+        <target state="translated">Select alternate paste behaviour</target>
+      </trans-unit>
+      <trans-unit id="Paste-as-Plain-Text">
+        <source>Paste as plain text</source>
+        <target state="translated">Paste as plain text</target>
+      </trans-unit>
+      <trans-unit id="Access-to-clipboard-denied">
+        <source>Content could not be pasted as plain text because permission to access the clipboard was denied.</source>
+        <target state="translated">Content could not be pasted as plain text because permission to access the clipboard was denied.</target>
+      </trans-unit>
+      <trans-unit id="enableplainText">
+        <source>Enable paste as plain text</source>
+        <target state="translated">Enable paste as plain text</target>
+      </trans-unit>
+      <trans-unit id="enablepasteStructure">
+        <source>Enable paste structure only</source>
+        <target state="translated">Enable paste structure only</target>
+      </trans-unit>
+      <trans-unit id="enablepasteFormat">
+        <source>Enable paste structure and basic format</source>
+        <target state="translated">Enable paste structure and basic format</target>
+      </trans-unit>
+      <trans-unit id="disableplainText">
+        <source>Disable paste as plain text</source>
+        <target state="translated">Disable paste as plain text</target>
+      </trans-unit>
+      <trans-unit id="disablepasteStructure">
+        <source>Disable paste structure only</source>
+        <target state="translated">Disable paste structure only</target>
+      </trans-unit>
+      <trans-unit id="disablepasteFormat">
+        <source>Disable paste structure and basic format</source>
+        <target state="translated">Disable paste structure and basic format</target>
+      </trans-unit>
+      <trans-unit id="pasteInPastingPad">
+        <source>Paste the content into this pasting pad and click OK.</source>
+        <target state="translated">Paste the content into this pasting pad and click OK.</target>
+      </trans-unit>
+      <trans-unit id="rteCleanPasteBehaviour">
+        <source>Clean paste behaviour</source>
+        <target state="translated">Clean paste behaviour</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

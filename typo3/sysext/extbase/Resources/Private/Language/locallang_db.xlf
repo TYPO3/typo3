@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:42 UTC 2011" product-name="extbase">
+    <header/>
+    <body>
+      <trans-unit id="fe_users.tx_extbase_type">
+        <source>Record Type</source>
+        <target state="translated">Record Type</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tx_extbase_type.0">
+        <source>undefined</source>
+        <target state="translated">undefined</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser">
+        <source>Tx_Extbase_Domain_Model_FrontendUser</source>
+        <target state="translated">Tx_Extbase_Domain_Model_FrontendUser</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type">
+        <source>Record Type</source>
+        <target state="translated">Record Type</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type.0">
+        <source>undefined</source>
+        <target state="translated">undefined</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup">
+        <source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
+        <target state="translated">Tx_Extbase_Domain_Model_FrontendUserGroup</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel">
+        <source>Extended view</source>
+        <target state="translated">Extended view</target>
+      </trans-unit>
+      <trans-unit id="clipBoard">
+        <source>Show clipboard</source>
+        <target state="translated">Show clipboard</target>
+      </trans-unit>
+      <trans-unit id="clip_paste">
+        <source>Paste in clipboard content</source>
+        <target state="translated">Paste in clipboard content</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="translated">Paste into: Clipboard content is inserted into this folder</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords">
+        <source>Mark All/Mark none</source>
+        <target state="translated">Mark All/Mark none</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="translated">Transfer the selection of files to clipboard</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked">
+        <source>Delete marked</source>
+        <target state="translated">Delete marked</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="translated">Are you sure you want to delete all marked files from this folder?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs">
+        <source>Display thumbnails</source>
+        <target state="translated">Display thumbnails</target>
+      </trans-unit>
+      <trans-unit id="c_file">
+        <source>Filename</source>
+        <target state="translated">Filename</target>
+      </trans-unit>
+      <trans-unit id="c_size">
+        <source>Size</source>
+        <target state="translated">Size</target>
+      </trans-unit>
+      <trans-unit id="c_fileext">
+        <source>Type</source>
+        <target state="translated">Type</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp">
+        <source>Date</source>
+        <target state="translated">Date</target>
+      </trans-unit>
+      <trans-unit id="c_rw">
+        <source>RW</source>
+        <target state="translated">RW</target>
+      </trans-unit>
+      <trans-unit id="c__REF_">
+        <source>Ref</source>
+        <target state="translated">Ref</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>files</source>
+        <target state="translated">files</target>
+      </trans-unit>
+      <trans-unit id="temp">
+        <source>Temporary files</source>
+        <target state="translated">Temporary files</target>
+      </trans-unit>
+      <trans-unit id="read">
+        <source>R</source>
+        <target state="translated">R</target>
+      </trans-unit>
+      <trans-unit id="recycler">
+        <source>Recycler</source>
+        <target state="translated">Recycler</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Listing of files in the directory</source>
+        <target state="translated">Listing of files in the directory</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="translated">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Filelist</source>
+        <target state="translated">Filelist</target>
+      </trans-unit>
+      <trans-unit id="write">
+        <source>W</source>
+        <target state="translated">W</target>
+      </trans-unit>
+      <trans-unit id="paramError">
+        <source>Parameter Error:</source>
+        <target state="translated">Parameter Error:</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir">
+        <source>Target was not a directory!</source>
+        <target state="translated">Target was not a directory!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

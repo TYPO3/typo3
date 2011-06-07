@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="bold">
+        <source>Bold</source>
+        <target state="translated">Bold</target>
+      </trans-unit>
+      <trans-unit id="italic">
+        <source>Italic</source>
+        <target state="translated">Italic</target>
+      </trans-unit>
+      <trans-unit id="underline">
+        <source>Underline</source>
+        <target state="translated">Underline</target>
+      </trans-unit>
+      <trans-unit id="strikethrough">
+        <source>Strikethrough</source>
+        <target state="translated">Strikethrough</target>
+      </trans-unit>
+      <trans-unit id="subscript">
+        <source>Subscript</source>
+        <target state="translated">Subscript</target>
+      </trans-unit>
+      <trans-unit id="superscript">
+        <source>Superscript</source>
+        <target state="translated">Superscript</target>
+      </trans-unit>
+      <trans-unit id="justifyleft">
+        <source>Justify Left</source>
+        <target state="translated">Justify Left</target>
+      </trans-unit>
+      <trans-unit id="justifycenter">
+        <source>Justify Center</source>
+        <target state="translated">Justify Center</target>
+      </trans-unit>
+      <trans-unit id="justifyright">
+        <source>Justify Right</source>
+        <target state="translated">Justify Right</target>
+      </trans-unit>
+      <trans-unit id="justifyfull">
+        <source>Justify Full</source>
+        <target state="translated">Justify Full</target>
+      </trans-unit>
+      <trans-unit id="insertorderedlist">
+        <source>Ordered List</source>
+        <target state="translated">Ordered List</target>
+      </trans-unit>
+      <trans-unit id="insertunorderedlist">
+        <source>Bulleted List</source>
+        <target state="translated">Bulleted List</target>
+      </trans-unit>
+      <trans-unit id="outdent">
+        <source>Decrease Indent</source>
+        <target state="translated">Decrease Indent</target>
+      </trans-unit>
+      <trans-unit id="indent">
+        <source>Increase Indent</source>
+        <target state="translated">Increase Indent</target>
+      </trans-unit>
+      <trans-unit id="forecolor">
+        <source>Font Color</source>
+        <target state="translated">Font Color</target>
+      </trans-unit>
+      <trans-unit id="hilitecolor">
+        <source>Background Color</source>
+        <target state="translated">Background Color</target>
+      </trans-unit>
+      <trans-unit id="inserthorizontalrule">
+        <source>Horizontal Rule</source>
+        <target state="translated">Horizontal Rule</target>
+      </trans-unit>
+      <trans-unit id="createlink">
+        <source>Insert Web Link</source>
+        <target state="translated">Insert Web Link</target>
+      </trans-unit>
+      <trans-unit id="unlink">
+        <source>Remove link</source>
+        <target state="translated">Remove link</target>
+      </trans-unit>
+      <trans-unit id="insertimage">
+        <source>Insert/Modify Image</source>
+        <target state="translated">Insert/Modify Image</target>
+      </trans-unit>
+      <trans-unit id="inserttable">
+        <source>Insert Table</source>
+        <target state="translated">Insert Table</target>
+      </trans-unit>
+      <trans-unit id="htmlmode">
+        <source>Toggle HTML Source</source>
+        <target state="translated">Toggle HTML Source</target>
+      </trans-unit>
+      <trans-unit id="popupeditor">
+        <source>Enlarge the editor</source>
+        <target state="translated">Enlarge the editor</target>
+      </trans-unit>
+      <trans-unit id="about">
+        <source>About this editor</source>
+        <target state="translated">About this editor</target>
+      </trans-unit>
+      <trans-unit id="showhelp">
+        <source>Help using editor</source>
+        <target state="translated">Help using editor</target>
+      </trans-unit>
+      <trans-unit id="textindicator">
+        <source>Current style</source>
+        <target state="translated">Current style</target>
+      </trans-unit>
+      <trans-unit id="undo">
+        <source>Undo the last action</source>
+        <target state="translated">Undo the last action</target>
+      </trans-unit>
+      <trans-unit id="redo">
+        <source>Redo the last action</source>
+        <target state="translated">Redo the last action</target>
+      </trans-unit>
+      <trans-unit id="cut">
+        <source>Cut selection</source>
+        <target state="translated">Cut selection</target>
+      </trans-unit>
+      <trans-unit id="copy">
+        <source>Copy selection</source>
+        <target state="translated">Copy selection</target>
+      </trans-unit>
+      <trans-unit id="paste">
+        <source>Paste from clipboard</source>
+        <target state="translated">Paste from clipboard</target>
+      </trans-unit>
+      <trans-unit id="lefttoright">
+        <source>Direction left to right</source>
+        <target state="translated">Direction left to right</target>
+      </trans-unit>
+      <trans-unit id="righttoleft">
+        <source>Direction right to left</source>
+        <target state="translated">Direction right to left</target>
+      </trans-unit>
+      <trans-unit id="removeformat">
+        <source>Remove formatting</source>
+        <target state="translated">Remove formatting</target>
+      </trans-unit>
+      <trans-unit id="print">
+        <source>Print document</source>
+        <target state="translated">Print document</target>
+      </trans-unit>
+      <trans-unit id="killword">
+        <source>Clear MSOffice tags</source>
+        <target state="translated">Clear MSOffice tags</target>
+      </trans-unit>
+      <trans-unit id="fontname">
+        <source>Font</source>
+        <target state="translated">Font</target>
+      </trans-unit>
+      <trans-unit id="fontsize">
+        <source>Font size</source>
+        <target state="translated">Font size</target>
+      </trans-unit>
+      <trans-unit id="formatblock">
+        <source>Type of paragragh</source>
+        <target state="translated">Type of paragragh</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

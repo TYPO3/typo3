@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="CleanWord-Tooltip">
+        <source>Clean up HTML content</source>
+        <target state="translated">Clean up HTML content</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

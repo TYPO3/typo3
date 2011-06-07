@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>About TYPO3</source>
+        <target state="translated">About TYPO3</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo">
+        <source>TYPO3 logo</source>
+        <target state="translated">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="information">
+        <source>TYPO3 Information</source>
+        <target state="translated">TYPO3 Information</target>
+      </trans-unit>
+      <trans-unit id="welcome">
+        <source>TYPO3 Professional Web Content Management System</source>
+        <target state="translated">TYPO3 Professional Web Content Management System</target>
+      </trans-unit>
+      <trans-unit id="minor">
+        <source>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</source>
+        <target state="translated">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</target>
+      </trans-unit>
+      <trans-unit id="community_credits">
+        <source>Community Credits</source>
+        <target state="translated">Community Credits</target>
+      </trans-unit>
+      <trans-unit id="information_detail">
+        <source>Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="translated">Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</target>
+      </trans-unit>
+      <trans-unit id="coredevs">
+        <source>Core Team</source>
+        <target state="translated">Core Team</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail">
+        <source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="translated">Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors">
+        <source>Extension Authors</source>
+        <target state="translated">Extension Authors</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="translated">This is a list of the people who contributed to the extensions you're using in your installation.</target>
+      </trans-unit>
+      <trans-unit id="extension">
+        <source>Extension</source>
+        <target state="translated">Extension</target>
+      </trans-unit>
+      <trans-unit id="extension_author">
+        <source>Author</source>
+        <target state="translated">Author</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>About TYPO3</source>
+        <target state="translated">About TYPO3</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="translated">Displays the basic facts about the TYPO3 application, version and licensing terms.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>About TYPO3</source>
+        <target state="translated">About TYPO3</target>
+      </trans-unit>
+      <trans-unit id="donation_header">
+        <source>TYPO3 Donation</source>
+        <target state="translated">TYPO3 Donation</target>
+      </trans-unit>
+      <trans-unit id="donation_message">
+        <source>It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</source>
+        <target state="translated">It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</target>
+      </trans-unit>
+      <trans-unit id="donation_button">
+        <source>Donate now</source>
+        <target state="translated">Donate now</target>
+      </trans-unit>
+      <trans-unit id="external_libraries">
+        <source>External Libraries</source>
+        <target state="translated">External Libraries</target>
+      </trans-unit>
+      <trans-unit id="external_thanks">
+        <source>TYPO3 core uses and thanks these external Open Source projects:</source>
+        <target state="translated">TYPO3 core uses and thanks these external Open Source projects:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:27 UTC 2011" product-name="css_styled_content">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables">
+        <source>Accessibility</source>
+        <target state="translated">Accessibility</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_caption">
+        <source>Table Caption</source>
+        <target state="translated">Table Caption</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_summary">
+        <source>Table Summary</source>
+        <target state="translated">Table Summary</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_tfoot">
+        <source>Use Table Footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="translated">Use Table Footer (wrap last row with &lt;tfoot&gt; tags)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0">
+        <source>No header</source>
+        <target state="translated">No header</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1">
+        <source>Top</source>
+        <target state="translated">Top</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2">
+        <source>Left</source>
+        <target state="translated">Left</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos">
+        <source>Table Header Position</source>
+        <target state="translated">Table Header Position</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_nostyles">
+        <source>No CSS styles for this table</source>
+        <target state="translated">No CSS styles for this table</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_acctables_tableclass">
+        <source>Additional CSS Class</source>
+        <target state="translated">Additional CSS Class</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing">
+        <source>CSV parsing</source>
+        <target state="translated">CSV parsing</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote">
+        <source>Text Delimiter</source>
+        <target state="translated">Text Delimiter</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_none">
+        <source>None</source>
+        <target state="translated">None</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_single">
+        <source>' (Single quotes)</source>
+        <target state="translated">' (Single quotes)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_double">
+        <source>" (Double quotes)</source>
+        <target state="translated">" (Double quotes)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter">
+        <source>Field Delimiter</source>
+        <target state="translated">Field Delimiter</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe">
+        <source>| (Pipe)</source>
+        <target state="translated">| (Pipe)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon">
+        <source>; (Semicolon)</source>
+        <target state="translated">; (Semicolon)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon">
+        <source>: (Colon)</source>
+        <target state="translated">: (Colon)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma">
+        <source>, (Comma)</source>
+        <target state="translated">, (Comma)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab">
+        <source>⇥ (Tab)</source>
+        <target state="translated">⇥ (Tab)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.9">
+        <source>No Frame</source>
+        <target state="translated">No Frame</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.0">
+        <source>Default Frame</source>
+        <target state="translated">Default Frame</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

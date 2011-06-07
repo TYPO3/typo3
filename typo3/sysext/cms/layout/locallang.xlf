@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:09 UTC 2011" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Page content</source>
+        <target state="translated">Page content</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions">
+        <source>Advanced functions</source>
+        <target state="translated">Advanced functions</target>
+      </trans-unit>
+      <trans-unit id="noEditItems">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="translated">Sorry, you do not have permissions to edit items on this page!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="translated">Sorry, you do not have permissions to edit this page!</target>
+      </trans-unit>
+      <trans-unit id="nextThree">
+        <source>Edit next %s records</source>
+        <target state="translated">Edit next %s records</target>
+      </trans-unit>
+      <trans-unit id="moveUp">
+        <source>Move record up</source>
+        <target state="translated">Move record up</target>
+      </trans-unit>
+      <trans-unit id="moveDown">
+        <source>Move record down</source>
+        <target state="translated">Move record down</target>
+      </trans-unit>
+      <trans-unit id="unHide">
+        <source>Un-hide</source>
+        <target state="translated">Un-hide</target>
+      </trans-unit>
+      <trans-unit id="hide">
+        <source>Hide</source>
+        <target state="translated">Hide</target>
+      </trans-unit>
+      <trans-unit id="edit">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="newAfter">
+        <source>New record after this one</source>
+        <target state="translated">New record after this one</target>
+      </trans-unit>
+      <trans-unit id="move_record">
+        <source>Re-position current content element</source>
+        <target state="translated">Re-position current content element</target>
+      </trans-unit>
+      <trans-unit id="move_page">
+        <source>Move page</source>
+        <target state="translated">Move page</target>
+      </trans-unit>
+      <trans-unit id="deleteItem">
+        <source>Delete</source>
+        <target state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="translated">Are you sure you want to delete this record?</target>
+      </trans-unit>
+      <trans-unit id="recursiveDeleteWarning">
+        <source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
+        <target state="translated">You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</target>
+      </trans-unit>
+      <trans-unit id="editColumn">
+        <source>Edit this column</source>
+        <target state="translated">Edit this column</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang">
+        <source>Edit translation properties</source>
+        <target state="translated">Edit translation properties</target>
+      </trans-unit>
+      <trans-unit id="editInRTE">
+        <source>Edit in Rich Text Editor</source>
+        <target state="translated">Edit in Rich Text Editor</target>
+      </trans-unit>
+      <trans-unit id="newPageContent">
+        <source>Create page content</source>
+        <target state="translated">Create page content</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_copyForLang">
+        <source>Copy default content elements</source>
+        <target state="translated">Copy default content elements</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2">
+        <source>New content</source>
+        <target state="translated">New content</target>
+      </trans-unit>
+      <trans-unit id="newInColumn">
+        <source>Create new record in top of this column</source>
+        <target state="translated">Create new record in top of this column</target>
+      </trans-unit>
+      <trans-unit id="records">
+        <source>records</source>
+        <target state="translated">records</target>
+      </trans-unit>
+      <trans-unit id="pageInformation">
+        <source>Page information</source>
+        <target state="translated">Page information</target>
+      </trans-unit>
+      <trans-unit id="goToTable">
+        <source>Go to table</source>
+        <target state="translated">Go to table</target>
+      </trans-unit>
+      <trans-unit id="internalNotes">
+        <source>Internal notes</source>
+        <target state="translated">Internal notes</target>
+      </trans-unit>
+      <trans-unit id="clearCache">
+        <source>Click here to clear cache for this page.</source>
+        <target state="translated">Click here to clear cache for this page.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE">
+        <source>Show hidden content elements</source>
+        <target state="translated">Show hidden content elements</target>
+      </trans-unit>
+      <trans-unit id="new_language">
+        <source>Make new translation of this page</source>
+        <target state="translated">Make new translation of this page</target>
+      </trans-unit>
+      <trans-unit id="newLabel">
+        <source>NEW</source>
+        <target state="translated">NEW</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage">
+        <source>Default</source>
+        <target state="translated">Default</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader">
+        <source>Edit language header</source>
+        <target state="translated">Edit language header</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties">
+        <source>Edit page properties</source>
+        <target state="translated">Edit page properties</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral">
+        <source>Create new record</source>
+        <target state="translated">Create new record</target>
+      </trans-unit>
+      <trans-unit id="newContentElement">
+        <source>Create new content element</source>
+        <target state="translated">Create new content element</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage">
+        <source>Content elements on this page:</source>
+        <target state="translated">Content elements on this page:</target>
+      </trans-unit>
+      <trans-unit id="newPage">
+        <source>Create new page</source>
+        <target state="translated">Create new page</target>
+      </trans-unit>
+      <trans-unit id="newPage2">
+        <source>New page</source>
+        <target state="translated">New page</target>
+      </trans-unit>
+      <trans-unit id="noAccess">
+        <source>No edit access</source>
+        <target state="translated">No edit access</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="translated">You do not have access to edit the requested record.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned">
+        <source>Not assigned</source>
+        <target state="translated">Not assigned</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="translated">Undo/Redo last change (%s ago)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory">
+        <source>View record change history</source>
+        <target state="translated">View record change history</target>
+      </trans-unit>
+      <trans-unit id="viewContent">
+        <source>Viewing content of</source>
+        <target state="translated">Viewing content of</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject">
+        <source>Subject</source>
+        <target state="translated">Subject</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author">
+        <source>Author</source>
+        <target state="translated">Author</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date">
+        <source>Date</source>
+        <target state="translated">Date</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age">
+        <source>Age</source>
+        <target state="translated">Age</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE">
+        <source>RE</source>
+        <target state="translated">RE</target>
+      </trans-unit>
+      <trans-unit id="m_function_0">
+        <source>QuickEdit</source>
+        <target state="translated">QuickEdit</target>
+      </trans-unit>
+      <trans-unit id="m_function_1">
+        <source>Columns</source>
+        <target state="translated">Columns</target>
+      </trans-unit>
+      <trans-unit id="m_function_2">
+        <source>Languages</source>
+        <target state="translated">Languages</target>
+      </trans-unit>
+      <trans-unit id="gridView">
+        <source>Grid-View</source>
+        <target state="translated">Grid-View</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0">
+        <source>List topics only</source>
+        <target state="translated">List topics only</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand">
+        <source>Expand Threads</source>
+        <target state="translated">Expand Threads</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0">
+        <source>Short List</source>
+        <target state="translated">Short List</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1">
+        <source>Address list</source>
+        <target state="translated">Address list</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2">
+        <source>Personal info</source>
+        <target state="translated">Personal info</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1">
+        <source>Whole URL</source>
+        <target state="translated">Whole URL</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2">
+        <source>Alternative note</source>
+        <target state="translated">Alternative note</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date">
+        <source>Date</source>
+        <target state="translated">Date</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext">
+        <source>Date - extended</source>
+        <target state="translated">Date - extended</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo">
+        <source>Todo</source>
+        <target state="translated">Todo</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext">
+        <source>Todo - extended</source>
+        <target state="translated">Todo - extended</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext">
+        <source>Extended</source>
+        <target state="translated">Extended</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext">
+        <source>Extended</source>
+        <target state="translated">Extended</target>
+      </trans-unit>
+      <trans-unit id="m_default">
+        <source>Default</source>
+        <target state="translated">Default</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header">
+        <source>Web&gt;Page module</source>
+        <target state="translated">Web&gt;Page module</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content">
+        <source>Please click the page title in the page tree to the left to edit page content.</source>
+        <target state="translated">Please click the page title in the page tree to the left to edit page content.</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser">
+        <source>Created by</source>
+        <target state="translated">Created by</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate">
+        <source>Created date</source>
+        <target state="translated">Created date</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange">
+        <source>Last change</source>
+        <target state="translated">Last change</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent">
+        <source>Last change, content</source>
+        <target state="translated">Last change, content</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal">
+        <source>Total Hits</source>
+        <target state="translated">Total Hits</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod">
+        <source>Hits Period</source>
+        <target state="translated">Hits Period</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours">
+        <source>Last 24 hours</source>
+        <target state="translated">Last 24 hours</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days">
+        <source>Last 10 days</source>
+        <target state="translated">Last 10 days</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title">
+        <source>Page uses content from this page: %s</source>
+        <target state="translated">Page uses content from this page: %s</target>
+      </trans-unit>
+      <trans-unit id="goToListModule">
+        <source>Go to list module</source>
+        <target state="translated">Go to list module</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="translated">The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

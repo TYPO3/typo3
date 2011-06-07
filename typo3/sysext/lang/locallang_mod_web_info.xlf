@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Page information</source>
+        <target state="translated">Page information</target>
+      </trans-unit>
+      <trans-unit id="depth_0">
+        <source>This page</source>
+        <target state="translated">This page</target>
+      </trans-unit>
+      <trans-unit id="depth_1">
+        <source>1 level</source>
+        <target state="translated">1 level</target>
+      </trans-unit>
+      <trans-unit id="depth_2">
+        <source>2 levels</source>
+        <target state="translated">2 levels</target>
+      </trans-unit>
+      <trans-unit id="depth_3">
+        <source>3 levels</source>
+        <target state="translated">3 levels</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Page related information, eg. hit statistics, change log, record counts</source>
+        <target state="translated">Page related information, eg. hit statistics, change log, record counts</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog allowing browsing of page history changes. An overview of the number of records on each page as well as page settings presented in a classic tree structure is provided.</source>
+        <target state="translated">The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog allowing browsing of page history changes. An overview of the number of records on each page as well as page settings presented in a classic tree structure is provided.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Info</source>
+        <target state="translated">Info</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
