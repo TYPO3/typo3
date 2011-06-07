@@ -64,9 +64,18 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		$theOutput = $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('title'), $this->showStats(), 0, 1);
 
-		$menu=array();
-		$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[tx_indexedsearch_modfunc2_check]',$this->pObj->MOD_SETTINGS['tx_indexedsearch_modfunc2_check'],'','','id="checkTx_indexedsearch_modfunc2_check"').'<label for="checkTx_indexedsearch_modfunc2_check"'.$LANG->getLL('checklabel').'</label>';
-		$theOutput.=$this->pObj->doc->spacer(5);
+		$menu = array();
+		$functionMenu = t3lib_BEfunc::getFuncCheck(
+			$this->pObj->id,
+			'SET[tx_indexedsearch_modfunc2_check]',
+			$this->pObj->MOD_SETTINGS['tx_indexedsearch_modfunc2_check'],
+			'',
+			'',
+			'id="checkTx_indexedsearch_modfunc2_check"'
+		);
+		$menu[] = $functionMenu . '<label for="checkTx_indexedsearch_modfunc2_check"' .
+			$GLOBALS['LANG']->getLL('checklabel') . '</label>';
+		$theOutput .= $this->pObj->doc->spacer(5);
 
 		return $theOutput;
 	}
