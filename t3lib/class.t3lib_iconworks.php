@@ -567,8 +567,8 @@ final class t3lib_iconWorks {
 	 * @return	void
 	 * @access private
 	 */
-	public static function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h) {
-		imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
+	public static function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $destWidth, $destHeight, $srcWidth, $srcHeight) {
+		imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $destWidth, $destHeight, $srcWidth, $srcHeight);
 	}
 
 	/**
