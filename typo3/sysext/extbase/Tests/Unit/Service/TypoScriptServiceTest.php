@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2009 Christian Müller <christian@kitsunet.de>
+*  (c) 2011 Bastian Waidelich <bastian@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,13 +25,11 @@
 
 
 /**
- * Testcase for class Tx_Extbase_Utility_TypoScript
+ * Testcase for class Tx_Extbase_Service_TypoScriptService
  *
  * @package Extbase
- * @subpackage extbase
  */
-
-class Tx_Extbase_Tests_Unit_Utility_TypoScriptTest extends tx_phpunit_testcase {
+class Tx_Extbase_Tests_Unit_Service_TypoScriptServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @return array
@@ -145,7 +144,8 @@ class Tx_Extbase_Tests_Unit_Utility_TypoScriptTest extends tx_phpunit_testcase {
 	 * @dataProvider convertTypoScriptArrayToPlainArrayTestdata
 	 */
 	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray($typoScriptSettings,$expectedSettings) {
-		$processedSettings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($typoScriptSettings);
+		$typoScriptService = new Tx_Extbase_Service_TypoScriptService();
+		$processedSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptSettings);
 		$this->assertEquals($expectedSettings, $processedSettings);
 	}
 
@@ -236,7 +236,8 @@ class Tx_Extbase_Tests_Unit_Utility_TypoScriptTest extends tx_phpunit_testcase {
 	 * @dataProvider convertPlainArrayToTypoScriptArrayTestdata
 	 */
 	public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic) {
-		$converted = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($extbaseTS);
+		$typoScriptService = new Tx_Extbase_Service_TypoScriptService();
+		$converted = $typoScriptService->convertPlainArrayToTypoScriptArray($extbaseTS);
 		$this->assertEquals($converted, $classic);
 	}
 }

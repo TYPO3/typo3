@@ -32,6 +32,11 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	protected $abstractConfigurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_TypoScriptService
+	 */
+	protected $mockTypoScriptService;
+
+	/**
 	 * @var array
 	 */
 	protected $testTypoScriptSetup = array(
@@ -46,6 +51,29 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 				),
 				'view.' => array(
 					'viewSub.' => array(
+						'key1' => 'value1',
+						'key2' => 'value2',
+					)
+				)
+			),
+		),
+	);
+
+	/**
+	 * @var array
+	 */
+	protected $testTypoScriptSetupConverted = array(
+		'foo' => array(
+			'bar' => 'baz'
+		),
+		'config' => array(
+			'tx_extbase' => array(
+				'settings' => array(
+					'setting1' => 'value1',
+					'setting2' => 'value2',
+				),
+				'view' => array(
+					'viewSub' => array(
 						'key1' => 'value1',
 						'key2' => 'value2',
 					)
@@ -91,6 +119,8 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 */
 	public function setUp() {
 		$this->abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$this->mockTypoScriptService = $this->getAccessibleMock('Tx_Extbase_Service_TypoScriptService');
+		$this->abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 	}
 
 	/**
@@ -129,6 +159,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 			'settings' => array('foo' => 'bar'),
 			'view' => array('subkey' => array('subsubkey' => 'subsubvalue'))
 		);
+		$this->mockTypoScriptService->expects($this->atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($expectedResult));
 		$this->abstractConfigurationManager->setConfiguration($configuration);
 		$this->assertEquals($expectedResult, $this->abstractConfigurationManager->_get('configuration'));
 	}
@@ -170,6 +201,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 		$this->abstractConfigurationManager->_set('extensionName', 'CurrentExtensionName');
 		$this->abstractConfigurationManager->_set('pluginName', 'CurrentPluginName');
 		$this->abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
+		$this->mockTypoScriptService->expects($this->atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($this->testTypoScriptSetup['config.']['tx_extbase.'])->will($this->returnValue($this->testTypoScriptSetupConverted['config']['tx_extbase']));
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
 		$expectedResult = array(
 			'settings' => array(
@@ -200,6 +232,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	public function getConfigurationRecursivelyMergesPluginConfigurationOfSpecifiedPluginWithFrameworkConfiguration() {
 		$this->abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('SomeExtensionName', 'SomePluginName')->will($this->returnValue($this->testPluginConfiguration));
+		$this->mockTypoScriptService->expects($this->atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($this->testTypoScriptSetup['config.']['tx_extbase.'])->will($this->returnValue($this->testTypoScriptSetupConverted['config']['tx_extbase']));
 		$expectedResult = array(
 			'settings' => array(
 				'setting1' => 'overriddenValue1',
@@ -288,6 +321,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 */
 	public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified() {
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->never())->method('overrideSwitchableControllerActions');
@@ -298,8 +332,11 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreOverriddenIfSpecifiedPluginIsTheCurrentPlugin() {
+		$configuration = array('extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName', 'switchableControllerActions' => array('overriddenSwitchableControllerActions'));
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
-		$abstractConfigurationManager->setConfiguration(array('extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName', 'switchableControllerActions' => array('overriddenSwitchableControllerActions')));
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
+		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$abstractConfigurationManager->setConfiguration($configuration);
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
 		$abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
@@ -309,8 +346,11 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreOverriddenIfPluginNameIsNotSpecified() {
+		$configuration = array('switchableControllerActions' => array('overriddenSwitchableControllerActions'));
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
-		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
+		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$abstractConfigurationManager->setConfiguration($configuration);
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
 		$abstractConfigurationManager->getConfiguration();
@@ -327,6 +367,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 				'Controller1' => array('action2', 'action1', 'action3'),
 			)
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$this->abstractConfigurationManager->setConfiguration($configuration);
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
 		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
@@ -352,6 +393,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 				'Controller1' => array('action2', 'action1', 'action3', 'newAction'),
 			)
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$this->abstractConfigurationManager->setConfiguration($configuration);
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
 		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
@@ -377,6 +419,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 				'NewController' => array('action1', 'action2'),
 			)
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$this->abstractConfigurationManager->setConfiguration($configuration);
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
 		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
@@ -399,6 +442,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 				'Controller2' => array('newAction2', 'action4', 'action5'),
 			)
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$this->abstractConfigurationManager->setConfiguration($configuration);
 		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
 		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
@@ -420,22 +464,34 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	/**
 	 * @test
 	 */
-	public function setStoragePidWithStdWrap() {
-
-		unset($this->abstractConfigurationManager);
-		$this->abstractConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration'));
-
-		$pluginConfiguration = $this->testPluginConfiguration;
-		$pluginConfiguration['persistence']['storagePid'] = array(
+	public function getConfigurationParsesCObjectsForStoragePid() {
+		$this->markTestIncomplete('This can\'t be tested as we currently cannot mock the FE environment');
+		$storagePidSettings = array(
 			'cObject' => array(
 				'value' => '8,3',
 				'_typoScriptNodeValue' => 'TEXT'
 			)
 		);
+		$storagePidSettingsConverted = array(
+			'cObject' => 'TEXT',
+			'cObject.' => array(
+				'value' => '8,3',
+			)
+		);
+		$pluginConfiguration = $pluginConfigurationConverted = $this->testPluginConfiguration;
+		$pluginConfiguration['persistence']['storagePid'] = $storagePidSettings;
+		$pluginConfigurationConverted['persistence']['storagePid'] = $storagePidSettingsConverted;
 
-		$this->abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
-		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($pluginConfiguration));
-		$this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue(NULL));
+
+		$abstractConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration'));
+		$this->mockTypoScriptService->expects($this->any())->method('convertPlainArrayToTypoScriptArray')->with($storagePidSettings)->will($this->returnValue($storagePidSettingsConverted));
+		$this->mockTypoScriptService->expects($this->atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($this->testTypoScriptSetup['config.']['tx_extbase.'])->will($this->returnValue($this->testTypoScriptSetupConverted['config']['tx_extbase']));
+
+		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+
+		$abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
+		$abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($pluginConfiguration));
+		$abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue(NULL));
 
 		$expectedResult = array(
 			'settings' => array(
@@ -456,7 +512,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 			'controllerConfiguration' => NULL
 		);
 
-		$actualResult = $this->abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
+		$actualResult = $abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
