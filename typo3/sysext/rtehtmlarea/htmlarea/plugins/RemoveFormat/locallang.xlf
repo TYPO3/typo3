@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="RemoveFormatTooltip">
+        <source>Remove format</source>
+        <target state="translated">Remove format</target>
+      </trans-unit>
+      <trans-unit id="Cleaning Area">
+        <source>Cleaning Area</source>
+        <target state="translated">Cleaning Area</target>
+      </trans-unit>
+      <trans-unit id="Selection">
+        <source>Selected text</source>
+        <target state="translated">Selected text</target>
+      </trans-unit>
+      <trans-unit id="All">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="Remove formatting">
+        <source>Remove format</source>
+        <target state="translated">Remove format</target>
+      </trans-unit>
+      <trans-unit id="Cleaning options">
+        <source>Type(s) of format to remove</source>
+        <target state="translated">Type(s) of format to remove</target>
+      </trans-unit>
+      <trans-unit id="Formatting:">
+        <source>HTML Format:</source>
+        <target state="translated">HTML Format:</target>
+      </trans-unit>
+      <trans-unit id="MS Word Formatting:">
+        <source>MS Word Format:</source>
+        <target state="translated">MS Word Format:</target>
+      </trans-unit>
+      <trans-unit id="Typographical punctuation:">
+        <source>Typographical punctuation:</source>
+        <target state="translated">Typographical punctuation:</target>
+      </trans-unit>
+      <trans-unit id="Spaces">
+        <source>Non-breaking spaces:</source>
+        <target state="translated">Non-breaking spaces:</target>
+      </trans-unit>
+      <trans-unit id="Images:">
+        <source>Images:</source>
+        <target state="translated">Images:</target>
+      </trans-unit>
+      <trans-unit id="All HTML:">
+        <source>All HTML tags:</source>
+        <target state="translated">All HTML tags:</target>
+      </trans-unit>
+      <trans-unit id="Select the type of formatting you wish to remove.">
+        <source>Select the type(s) of format to remove.</source>
+        <target state="translated">Select the type(s) of format to remove.</target>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target state="translated">Cancel</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

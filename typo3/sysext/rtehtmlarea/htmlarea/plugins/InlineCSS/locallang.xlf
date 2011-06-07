@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Default">
+        <source>Default</source>
+        <target state="translated">Default</target>
+      </trans-unit>
+      <trans-unit id="Undefined">
+        <source>Undefined</source>
+        <target state="translated">Undefined</target>
+      </trans-unit>
+      <trans-unit id="InlineCSSStyleTooltip">
+        <source>Apply style to the selected text</source>
+        <target state="translated">Apply style to the selected text</target>
+      </trans-unit>
+      <trans-unit id="InlineCSS-class-Tooltip">
+        <source>Apply style to the selected text</source>
+        <target state="translated">Apply style to the selected text</target>
+      </trans-unit>
+      <trans-unit id="You have to select some text">
+        <source>You have to select some text</source>
+        <target state="translated">You have to select some text</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

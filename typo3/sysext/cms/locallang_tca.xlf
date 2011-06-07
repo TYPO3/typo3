@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:10 UTC 2011" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id="mod_tx_cms_webinfo_page">
+        <source>Pagetree Overview</source>
+        <target state="translated">Pagetree Overview</target>
+      </trans-unit>
+      <trans-unit id="mod_tx_cms_webinfo_lang">
+        <source>Localization Overview</source>
+        <target state="translated">Localization Overview</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.standard">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.title">
+        <source>Title</source>
+        <target state="translated">Title</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.visibility">
+        <source>Visibility</source>
+        <target state="translated">Visibility</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.access">
+        <source>Publish Dates and Access Rights</source>
+        <target state="translated">Publish Dates and Access Rights</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.abstract">
+        <source>Abstract</source>
+        <target state="translated">Abstract</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.metatags">
+        <source>Meta Tags</source>
+        <target state="translated">Meta Tags</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.editorial">
+        <source>Editorial</source>
+        <target state="translated">Editorial</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.abstract">
+        <source>Abstract</source>
+        <target state="translated">Abstract</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.layout">
+        <source>Page Layout</source>
+        <target state="translated">Page Layout</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.module">
+        <source>Use as Container</source>
+        <target state="translated">Use as Container</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.replace">
+        <source>Replace Content</source>
+        <target state="translated">Replace Content</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.links">
+        <source>Links to this Page</source>
+        <target state="translated">Links to this Page</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.caching">
+        <source>Caching</source>
+        <target state="translated">Caching</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.language">
+        <source>Language</source>
+        <target state="translated">Language</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.miscellaneous">
+        <source>Miscellaneous</source>
+        <target state="translated">Miscellaneous</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.media">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.storage">
+        <source>General Record Storage Page</source>
+        <target state="translated">General Record Storage Page</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.config">
+        <source>TypoScript Configuration</source>
+        <target state="translated">TypoScript Configuration</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype_formlabel">
+        <source>Type</source>
+        <target state="translated">Type</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.0">
+        <source>Advanced</source>
+        <target state="translated">Advanced</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.2">
+        <source>Shortcut</source>
+        <target state="translated">Shortcut</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.3">
+        <source>Not in Menu</source>
+        <target state="translated">Not in Menu</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.4">
+        <source>Backend User Section</source>
+        <target state="translated">Backend User Section</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.5">
+        <source>Mount Point</source>
+        <target state="translated">Mount Point</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.7">
+        <source>Menu Separator</source>
+        <target state="translated">Menu Separator</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.8">
+        <source>Link to External URL</source>
+        <target state="translated">Link to External URL</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.page">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.link">
+        <source>Link</source>
+        <target state="translated">Link</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.special">
+        <source>Special</source>
+        <target state="translated">Special</target>
+      </trans-unit>
+      <trans-unit id="pages.title_formlabel">
+        <source>Page Title</source>
+        <target state="translated">Page Title</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel">
+        <source>Publish Date</source>
+        <target state="translated">Publish Date</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel">
+        <source>Expiration Date</source>
+        <target state="translated">Expiration Date</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel">
+        <source>Usergroup Access Rights</source>
+        <target state="translated">Usergroup Access Rights</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden">
+        <source>Hide page:</source>
+        <target state="translated">Hide page:</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel">
+        <source>Disable</source>
+        <target state="translated">Disable</target>
+      </trans-unit>
+      <trans-unit id="pages.layout_formlabel">
+        <source>Frontend Layout</source>
+        <target state="translated">Frontend Layout</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1">
+        <source>Layout 1</source>
+        <target state="translated">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2">
+        <source>Layout 2</source>
+        <target state="translated">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3">
+        <source>Layout 3</source>
+        <target state="translated">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="pages.url_scheme">
+        <source>Enforce Protocol:</source>
+        <target state="translated">Enforce Protocol:</target>
+      </trans-unit>
+      <trans-unit id="pages.url_scheme_formlabel">
+        <source>Use Protocol</source>
+        <target state="translated">Use Protocol</target>
+      </trans-unit>
+      <trans-unit id="pages.url_scheme.http">
+        <source>http://</source>
+        <target state="translated">http://</target>
+      </trans-unit>
+      <trans-unit id="pages.url_scheme.https">
+        <source>https://</source>
+        <target state="translated">https://</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages">
+        <source>Include Subpages:</source>
+        <target state="translated">Include Subpages:</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel">
+        <source>Extend to Subpages</source>
+        <target state="translated">Extend to Subpages</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title">
+        <source>Navigation Title:</source>
+        <target state="translated">Navigation Title:</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel">
+        <source>Alternative Navigation Title</source>
+        <target state="translated">Alternative Navigation Title</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide">
+        <source>Hide in Menu:</source>
+        <target state="translated">Hide in Menu:</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel">
+        <source>In Menus</source>
+        <target state="translated">In Menus</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel">
+        <source>Hide</source>
+        <target state="translated">Hide</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle">
+        <source>Subtitle:</source>
+        <target state="translated">Subtitle:</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel">
+        <source>Subtitle</source>
+        <target state="translated">Subtitle</target>
+      </trans-unit>
+      <trans-unit id="pages.target">
+        <source>Target:</source>
+        <target state="translated">Target:</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel">
+        <source>Link Target</source>
+        <target state="translated">Link Target</target>
+      </trans-unit>
+      <trans-unit id="pages.alias">
+        <source>Alias:</source>
+        <target state="translated">Alias:</target>
+      </trans-unit>
+      <trans-unit id="pages.alias_formlabel">
+        <source>URL Alias</source>
+        <target state="translated">URL Alias</target>
+      </trans-unit>
+      <trans-unit id="pages.url">
+        <source>URL:</source>
+        <target state="translated">URL:</target>
+      </trans-unit>
+      <trans-unit id="pages.url_formlabel">
+        <source>URL</source>
+        <target state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.urltype_formlabel">
+        <source>Protocol</source>
+        <target state="translated">Protocol</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated">
+        <source>Last Updated:</source>
+        <target state="translated">Last Updated:</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel">
+        <source>Last Update</source>
+        <target state="translated">Last Update</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil">
+        <source>'New' Until:</source>
+        <target state="translated">'New' Until:</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel">
+        <source>Mark as 'New' Until</source>
+        <target state="translated">Mark as 'New' Until</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout">
+        <source>Cache Expires:</source>
+        <target state="translated">Cache Expires:</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel">
+        <source>Cache Lifetime</source>
+        <target state="translated">Cache Lifetime</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1">
+        <source>1 min</source>
+        <target state="translated">1 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2">
+        <source>5 min</source>
+        <target state="translated">5 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3">
+        <source>15 min</source>
+        <target state="translated">15 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4">
+        <source>30 min</source>
+        <target state="translated">30 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5">
+        <source>1 hour</source>
+        <target state="translated">1 hour</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6">
+        <source>4 hours</source>
+        <target state="translated">4 hours</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7">
+        <source>1 day</source>
+        <target state="translated">1 day</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8">
+        <source>2 days</source>
+        <target state="translated">2 days</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9">
+        <source>7 days</source>
+        <target state="translated">7 days</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10">
+        <source>1 month</source>
+        <target state="translated">1 month</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel">
+        <source>Editable for Admins Only</source>
+        <target state="translated">Editable for Admins Only</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata">
+        <source>Metadata</source>
+        <target state="translated">Metadata</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files">
+        <source>Resources</source>
+        <target state="translated">Resources</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources">
+        <source>Resources</source>
+        <target state="translated">Resources</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access">
+        <source>Access</source>
+        <target state="translated">Access</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options">
+        <source>Options</source>
+        <target state="translated">Options</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount">
+        <source>Mount</source>
+        <target state="translated">Mount</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut">
+        <source>Shortcut</source>
+        <target state="translated">Shortcut</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url">
+        <source>URL</source>
+        <target state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended">
+        <source>Extended</source>
+        <target state="translated">Extended</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance">
+        <source>Appearance</source>
+        <target state="translated">Appearance</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.behaviour">
+        <source>Behaviour</source>
+        <target state="translated">Behaviour</target>
+      </trans-unit>
+      <trans-unit id="pages.no_cache">
+        <source>No Cache:</source>
+        <target state="translated">No Cache:</target>
+      </trans-unit>
+      <trans-unit id="pages.no_cache_formlabel">
+        <source>Cache</source>
+        <target state="translated">Cache</target>
+      </trans-unit>
+      <trans-unit id="pages.no_cache_checkbox_1_formlabel">
+        <source>Disable</source>
+        <target state="translated">Disable</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search">
+        <source>No Search:</source>
+        <target state="translated">No Search:</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel">
+        <source>Include in Search</source>
+        <target state="translated">Include in Search</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel">
+        <source>Disable</source>
+        <target state="translated">Disable</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode">
+        <source>Shortcut Mode:</source>
+        <target state="translated">Shortcut Mode:</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel">
+        <source>Shortcut Mode</source>
+        <target state="translated">Shortcut Mode</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0">
+        <source>Selected page</source>
+        <target state="translated">Selected page</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1">
+        <source>First subpage of current page</source>
+        <target state="translated">First subpage of current page</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.2">
+        <source>Random subpage of current page</source>
+        <target state="translated">Random subpage of current page</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3">
+        <source>Parent page of current page</source>
+        <target state="translated">Parent page of current page</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel">
+        <source>Shortcut Target</source>
+        <target state="translated">Shortcut Target</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid">
+        <source>Show content from this page instead:</source>
+        <target state="translated">Show content from this page instead:</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel">
+        <source>Show Content from Page</source>
+        <target state="translated">Show Content from Page</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid">
+        <source>Mount Point (advanced):</source>
+        <target state="translated">Mount Point (advanced):</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel">
+        <source>Mounted page</source>
+        <target state="translated">Mounted page</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol">
+        <source>Substitute Mount Point (this page) with Mounted page:</source>
+        <target state="translated">Substitute Mount Point (this page) with Mounted page:</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel">
+        <source>Show Content from</source>
+        <target state="translated">Show Content from</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0">
+        <source>This Page</source>
+        <target state="translated">This Page</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1">
+        <source>Mounted Page</source>
+        <target state="translated">Mounted Page</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract">
+        <source>Abstract:</source>
+        <target state="translated">Abstract:</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel">
+        <source>Abstract</source>
+        <target state="translated">Abstract</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel">
+        <source>Keywords</source>
+        <target state="translated">Keywords</target>
+      </trans-unit>
+      <trans-unit id="pages.description_formlabel">
+        <source>Description</source>
+        <target state="translated">Description</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel">
+        <source>Author Name</source>
+        <target state="translated">Author Name</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel">
+        <source>Author Email</source>
+        <target state="translated">Author Email</target>
+      </trans-unit>
+      <trans-unit id="pages.media">
+        <source>Files:</source>
+        <target state="translated">Files:</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel">
+        <source>Media</source>
+        <target state="translated">Media</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel">
+        <source>Stop Page Tree</source>
+        <target state="translated">Stop Page Tree</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot">
+        <source>Is Root of Website:</source>
+        <target state="translated">Is Root of Website:</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel">
+        <source>Use as Root Page</source>
+        <target state="translated">Use as Root Page</target>
+      </trans-unit>
+      <trans-unit id="pages.module">
+        <source>Contains Plugin:</source>
+        <target state="translated">Contains Plugin:</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel">
+        <source>Contains Plugin</source>
+        <target state="translated">Contains Plugin</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1">
+        <source>Shop</source>
+        <target state="translated">Shop</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.2">
+        <source>Board</source>
+        <target state="translated">Board</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3">
+        <source>News</source>
+        <target state="translated">News</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4">
+        <source>Website Users</source>
+        <target state="translated">Website Users</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5">
+        <source>Direct Mail</source>
+        <target state="translated">Direct Mail</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6">
+        <source>Approvals</source>
+        <target state="translated">Approvals</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg">
+        <source>Localization Settings:</source>
+        <target state="translated">Localization Settings:</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel">
+        <source>Localization</source>
+        <target state="translated">Localization</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1">
+        <source>Hide default translation of page</source>
+        <target state="translated">Hide default translation of page</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="translated">Hide page if no translation for current language exists</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a">
+        <source>Show page even if no translation exists</source>
+        <target state="translated">Show page even if no translation exists</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode">
+        <source>Login Mode:</source>
+        <target state="translated">Login Mode:</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode_formlabel">
+        <source>Login Behaviour</source>
+        <target state="translated">Login Behaviour</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disable">
+        <source>Disable</source>
+        <target state="translated">Disable</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.enable">
+        <source>Enable login</source>
+        <target state="translated">Enable login</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disableAll">
+        <source>Disable login</source>
+        <target state="translated">Disable login</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.disableGroups">
+        <source>Enable user login, Disable usergroup login</source>
+        <target state="translated">Enable user login, Disable usergroup login</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode.enableAgain">
+        <source>Re-Enable login</source>
+        <target state="translated">Re-Enable login</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel">
+        <source>Page</source>
+        <target state="translated">Page</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel">
+        <source>Page TSConfig</source>
+        <target state="translated">Page TSConfig</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel">
+        <source>Backend Layout (this page only)</source>
+        <target state="translated">Backend Layout (this page only)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="translated">Backend Layout (subpages of this page)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none">
+        <source>None</source>
+        <target state="translated">None</target>
+      </trans-unit>
+      <trans-unit id="tt_content">
+        <source>Page Content</source>
+        <target state="translated">Page Content</target>
+      </trans-unit>
+      <trans-unit id="fe_users">
+        <source>Website User</source>
+        <target state="translated">Website User</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username">
+        <source>Username:</source>
+        <target state="translated">Username:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password">
+        <source>Password:</source>
+        <target state="translated">Password:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup">
+        <source>Groups:</source>
+        <target state="translated">Groups:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.lockToDomain">
+        <source>Lock to Domain:</source>
+        <target state="translated">Lock to Domain:</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.personelData">
+        <source>Personal Data</source>
+        <target state="translated">Personal Data</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access">
+        <source>Access</source>
+        <target state="translated">Access</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.options">
+        <source>Options</source>
+        <target state="translated">Options</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended">
+        <source>Extended</source>
+        <target state="translated">Extended</target>
+      </trans-unit>
+      <trans-unit id="fe_groups">
+        <source>Website Usergroup</source>
+        <target state="translated">Website Usergroup</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title">
+        <source>Group Title:</source>
+        <target state="translated">Group Title:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.lockToDomain">
+        <source>Lock to Domain:</source>
+        <target state="translated">Lock to Domain:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup">
+        <source>Subgroups:</source>
+        <target state="translated">Subgroups:</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.options">
+        <source>Options</source>
+        <target state="translated">Options</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended">
+        <source>Extended</source>
+        <target state="translated">Extended</target>
+      </trans-unit>
+      <trans-unit id="sys_domain">
+        <source>Domain</source>
+        <target state="translated">Domain</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.domainName">
+        <source>Domain:</source>
+        <target state="translated">Domain:</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectTo">
+        <source>Redirect to:</source>
+        <target state="translated">Redirect to:</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectHttpStatusCode">
+        <source>HTTP Status Code for the Redirect:</source>
+        <target state="translated">HTTP Status Code for the Redirect:</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectHttpStatusCode.301">
+        <source>Moved permanently (301)</source>
+        <target state="translated">Moved permanently (301)</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectHttpStatusCode.302">
+        <source>Found (302)</source>
+        <target state="translated">Found (302)</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectHttpStatusCode.303">
+        <source>See Other (303)</source>
+        <target state="translated">See Other (303)</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.redirectHttpStatusCode.307">
+        <source>Moved Temporarily (307)</source>
+        <target state="translated">Moved Temporarily (307)</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.prepend_params">
+        <source>Transfer parameters to Redirect URL:</source>
+        <target state="translated">Transfer parameters to Redirect URL:</target>
+      </trans-unit>
+      <trans-unit id="sys_domain.forced">
+        <source>Always prepend this domain in links:</source>
+        <target state="translated">Always prepend this domain in links:</target>
+      </trans-unit>
+      <trans-unit id="sys_template">
+        <source>Template</source>
+        <target state="translated">Template</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title">
+        <source>Template Title:</source>
+        <target state="translated">Template Title:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root">
+        <source>Rootlevel:</source>
+        <target state="translated">Rootlevel:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear">
+        <source>Clear:</source>
+        <target state="translated">Clear:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.sitetitle">
+        <source>Website Title:</source>
+        <target state="translated">Website Title:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants">
+        <source>Constants:</source>
+        <target state="translated">Constants:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources">
+        <source>Resources:</source>
+        <target state="translated">Resources:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.nextLevel">
+        <source>Template on Next Level:</source>
+        <target state="translated">Template on Next Level:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file">
+        <source>Include static (from extensions):</source>
+        <target state="translated">Include static (from extensions):</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn">
+        <source>Include Basis Template:</source>
+        <target state="translated">Include Basis Template:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn">
+        <source>Include Static Templates After Basis Templates:</source>
+        <target state="translated">Include Static Templates After Basis Templates:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.config">
+        <source>Setup:</source>
+        <target state="translated">Setup:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.editorcfg">
+        <source>Backend Editor Configuration:</source>
+        <target state="translated">Backend Editor Configuration:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.description">
+        <source>Description:</source>
+        <target state="translated">Description:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode">
+        <source>Static Template Files from TYPO3 Extensions:</source>
+        <target state="translated">Static Template Files from TYPO3 Extensions:</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0">
+        <source>Default (include before if root flag is set)</source>
+        <target state="translated">Default (include before if root flag is set)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1">
+        <source>Always include before this template record</source>
+        <target state="translated">Always include before this template record</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2">
+        <source>Never include before this template record</source>
+        <target state="translated">Never include before this template record</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add">
+        <source>Add New Basis Template</source>
+        <target state="translated">Add New Basis Template</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files">
+        <source>Resources</source>
+        <target state="translated">Resources</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.include">
+        <source>Includes</source>
+        <target state="translated">Includes</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.options">
+        <source>Options</source>
+        <target state="translated">Options</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access">
+        <source>Access</source>
+        <target state="translated">Access</target>
+      </trans-unit>
+      <trans-unit id="pages_language_overlay">
+        <source>Alternative Page Language</source>
+        <target state="translated">Alternative Page Language</target>
+      </trans-unit>
+      <trans-unit id="backend_layout">
+        <source>Backend Layout</source>
+        <target state="translated">Backend Layout</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title">
+        <source>Title</source>
+        <target state="translated">Title</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.description">
+        <source>Description</source>
+        <target state="translated">Description</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config">
+        <source>Config</source>
+        <target state="translated">Config</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard">
+        <source>Wizard</source>
+        <target state="translated">Wizard</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon">
+        <source>Icon</source>
+        <target state="translated">Icon</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

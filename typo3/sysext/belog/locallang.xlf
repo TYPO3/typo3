@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:23:36 UTC 2011" product-name="belog">
+    <header/>
+    <body>
+      <trans-unit id="chLog_title">
+        <source>Admin Changelog</source>
+        <target state="translated">Admin Changelog</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0">
+        <source>All users</source>
+        <target state="translated">All users</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1">
+        <source>Self</source>
+        <target state="translated">Self</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0">
+        <source>This week</source>
+        <target state="translated">This week</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1">
+        <source>Last week</source>
+        <target state="translated">Last week</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2">
+        <source>Last 7 days</source>
+        <target state="translated">Last 7 days</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10">
+        <source>This month</source>
+        <target state="translated">This month</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11">
+        <source>Last month</source>
+        <target state="translated">Last month</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12">
+        <source>Last 31 days</source>
+        <target state="translated">Last 31 days</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20">
+        <source>No limit</source>
+        <target state="translated">No limit</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time">
+        <source>Time</source>
+        <target state="translated">Time</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user">
+        <source>User</source>
+        <target state="translated">User</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_error">
+        <source>E</source>
+        <target state="translated">E</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action">
+        <source>Action</source>
+        <target state="translated">Action</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table">
+        <source>Table</source>
+        <target state="translated">Table</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details">
+        <source>Details</source>
+        <target state="translated">Details</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers">
+        <source>Users</source>
+        <target state="translated">Users</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth">
+        <source>Depth</source>
+        <target state="translated">Depth</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime">
+        <source>Time</source>
+        <target state="translated">Time</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

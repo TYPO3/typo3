@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:28 UTC 2011" product-name="scheduler">
+    <header/>
+    <body>
+      <trans-unit id="testTask.name">
+        <source>Scheduler test task</source>
+        <target state="translated">Scheduler test task</target>
+      </trans-unit>
+      <trans-unit id="testTask.description">
+        <source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
+        <target state="translated">The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</target>
+      </trans-unit>
+      <trans-unit id="sleepTask.name">
+        <source>Scheduler sleep task</source>
+        <target state="translated">Scheduler sleep task</target>
+      </trans-unit>
+      <trans-unit id="sleepTask.description">
+        <source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
+        <target state="translated">This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name">
+        <source>Caching framework garbage collection</source>
+        <target state="translated">Caching framework garbage collection</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.description">
+        <source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
+        <target state="translated">This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

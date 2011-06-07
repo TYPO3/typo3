@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:47 UTC 2011" product-name="taskcenter">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Task Center with overviews, messages, ToDo lists</source>
+        <target state="translated">Task Center with overviews, messages, ToDo lists</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>The task center provides access to your internal To-Do list, messages, Quick-note, actions etc. It also provides shortcuts to your available frontend modules and most recently edited pages. The Task Center is where you keep track of your daily tasks and workflows.</source>
+        <target state="translated">The task center provides access to your internal To-Do list, messages, Quick-note, actions etc. It also provides shortcuts to your available frontend modules and most recently edited pages. The Task Center is where you keep track of your daily tasks and workflows.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Task center</source>
+        <target state="translated">Task center</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

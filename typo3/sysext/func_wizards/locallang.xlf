@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:50 UTC 2011" product-name="func_wizards">
+    <header/>
+    <body>
+      <trans-unit id="wiz_lWizards">
+        <source>Select Wizard</source>
+        <target state="translated">Select Wizard</target>
+      </trans-unit>
+      <trans-unit id="mod_wizards">
+        <source>Wizards</source>
+        <target state="translated">Wizards</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

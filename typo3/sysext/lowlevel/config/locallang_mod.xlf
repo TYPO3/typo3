@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:58 UTC 2011" product-name="lowlevel">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>View configuration from localconf.php and tables.php</source>
+        <target state="translated">View configuration from localconf.php and tables.php</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="translated">Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Configuration</source>
+        <target state="translated">Configuration</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

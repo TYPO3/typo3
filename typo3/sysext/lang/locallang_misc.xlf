@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target state="translated">This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create">
+        <source>Create</source>
+        <target state="translated">Create</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID">
+        <source>Edit/Search</source>
+        <target state="translated">Edit/Search</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save">
+        <source>Update shortcut title</source>
+        <target state="translated">Update shortcut title</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose">
+        <source>Update and close editor</source>
+        <target state="translated">Update and close editor</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close">
+        <source>Close shortcut editor</source>
+        <target state="translated">Close shortcut editor</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete">
+        <source>Remove shortcut</source>
+        <target state="translated">Remove shortcut</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit">
+        <source>Loading page</source>
+        <target state="translated">Loading page</target>
+      </trans-unit>
+      <trans-unit id="shortcut_searchFor">
+        <source>Search for:</source>
+        <target state="translated">Search for:</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable">
+        <source>No editable page found!</source>
+        <target state="translated">No editable page found!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group">
+        <source>Group</source>
+        <target state="translated">Group</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1">
+        <source>Pages</source>
+        <target state="translated">Pages</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2">
+        <source>Records</source>
+        <target state="translated">Records</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4">
+        <source>Tools</source>
+        <target state="translated">Tools</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5">
+        <source>Miscellaneous</source>
+        <target state="translated">Miscellaneous</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global">
+        <source>Global</source>
+        <target state="translated">Global</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="translated">You cannot edit a shared shortcut!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC">
+        <source>Select shortcut</source>
+        <target state="translated">Select shortcut</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="translated">Delete all shortcuts in this group?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS">
+        <source>LIVE workspace</source>
+        <target state="translated">LIVE workspace</target>
+      </trans-unit>
+      <trans-unit id="shortcut_offlineWS">
+        <source>Draft workspace</source>
+        <target state="translated">Draft workspace</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active">
+        <source>active</source>
+        <target state="translated">active</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive">
+        <source>inactive</source>
+        <target state="translated">inactive</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound">
+        <source>ERROR: No workspaces found!</source>
+        <target state="translated">ERROR: No workspaces found!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_FEPreview">
+        <source>Enable Frontend Preview</source>
+        <target state="translated">Enable Frontend Preview</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace">
+        <source>Go to Workspace Module</source>
+        <target state="translated">Go to Workspace Module</target>
+      </trans-unit>
+      <trans-unit id="bookmarkDescription">
+        <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</source>
+        <target state="translated">This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit">
+        <source>Edit</source>
+        <target state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create">
+        <source>Create</source>
+        <target state="translated">Create</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID">
+        <source>Edit/Search</source>
+        <target state="translated">Edit/Search</target>
+      </trans-unit>
+      <trans-unit id="bookmark_save">
+        <source>Update bookmark title</source>
+        <target state="translated">Update bookmark title</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose">
+        <source>Update and close editor</source>
+        <target state="translated">Update and close editor</target>
+      </trans-unit>
+      <trans-unit id="bookmark_close">
+        <source>Close bookmark editor</source>
+        <target state="translated">Close bookmark editor</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delete">
+        <source>Remove bookmark</source>
+        <target state="translated">Remove bookmark</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit">
+        <source>Loading page</source>
+        <target state="translated">Loading page</target>
+      </trans-unit>
+      <trans-unit id="bookmark_searchFor">
+        <source>Search for:</source>
+        <target state="translated">Search for:</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable">
+        <source>No editable page found!</source>
+        <target state="translated">No editable page found!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group">
+        <source>Group</source>
+        <target state="translated">Group</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1">
+        <source>Pages</source>
+        <target state="translated">Pages</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2">
+        <source>Records</source>
+        <target state="translated">Records</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3">
+        <source>Files</source>
+        <target state="translated">Files</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4">
+        <source>Tools</source>
+        <target state="translated">Tools</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5">
+        <source>Miscellaneous</source>
+        <target state="translated">Miscellaneous</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global">
+        <source>Global</source>
+        <target state="translated">Global</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="translated">You cannot edit a shared bookmark!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_selSC">
+        <source>Select bookmark</source>
+        <target state="translated">Select bookmark</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat">
+        <source>Delete all bookmarks in this group</source>
+        <target state="translated">Delete all bookmarks in this group</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS">
+        <source>LIVE workspace</source>
+        <target state="translated">LIVE workspace</target>
+      </trans-unit>
+      <trans-unit id="bookmark_offlineWS">
+        <source>Draft workspace</source>
+        <target state="translated">Draft workspace</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active">
+        <source>active</source>
+        <target state="translated">active</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive">
+        <source>inactive</source>
+        <target state="translated">inactive</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound">
+        <source>ERROR: No workspaces found!</source>
+        <target state="translated">ERROR: No workspaces found!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_FEPreview">
+        <source>Enable Frontend Preview</source>
+        <target state="translated">Enable Frontend Preview</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspaceComparisonView">
+        <source>Enable comparison view</source>
+        <target state="translated">Enable comparison view</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace">
+        <source>Go to Workspace Module</source>
+        <target state="translated">Go to Workspace Module</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles">
+        <source>Overwrite existing files</source>
+        <target state="translated">Overwrite existing files</target>
+      </trans-unit>
+      <trans-unit id="selectPosition">
+        <source>Select a position for the new page</source>
+        <target state="translated">Select a position for the new page</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition">
+        <source>Page (select position)</source>
+        <target state="translated">Page (select position)</target>
+      </trans-unit>
+      <trans-unit id="goBack">
+        <source>Go back</source>
+        <target state="translated">Go back</target>
+      </trans-unit>
+      <trans-unit id="createNewPage">
+        <source>Create a new page</source>
+        <target state="translated">Create a new page</target>
+      </trans-unit>
+      <trans-unit id="createNewContent">
+        <source>Create a new content element</source>
+        <target state="translated">Create a new content element</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard">
+        <source>Click here for wizard!</source>
+        <target state="translated">Click here for wizard!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere">
+        <source>Insert the new page here</source>
+        <target state="translated">Insert the new page here</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere">
+        <source>Insert new record here</source>
+        <target state="translated">Insert new record here</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere">
+        <source>Move page to this position</source>
+        <target state="translated">Move page to this position</target>
+      </trans-unit>
+      <trans-unit id="moveElement">
+        <source>Move element</source>
+        <target state="translated">Move element</target>
+      </trans-unit>
+      <trans-unit id="moveElements">
+        <source>Move elements</source>
+        <target state="translated">Move elements</target>
+      </trans-unit>
+      <trans-unit id="copyElements">
+        <source>Copy elements</source>
+        <target state="translated">Copy elements</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement">
+        <source>Select position of the element</source>
+        <target state="translated">Select position of the element</target>
+      </trans-unit>
+      <trans-unit id="movingElement">
+        <source>Move element</source>
+        <target state="translated">Move element</target>
+      </trans-unit>
+      <trans-unit id="makeCopy">
+        <source>Make copy instead of moving element</source>
+        <target state="translated">Make copy instead of moving element</target>
+      </trans-unit>
+      <trans-unit id="newContentElement">
+        <source>New content element</source>
+        <target state="translated">New content element</target>
+      </trans-unit>
+      <trans-unit id="system_records">
+        <source>System Records</source>
+        <target state="translated">System Records</target>
+      </trans-unit>
+      <trans-unit id="1_selectType">
+        <source>1: Select type of content element:</source>
+        <target state="translated">1: Select type of content element:</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition">
+        <source>2: Select position:</source>
+        <target state="translated">2: Select position:</target>
+      </trans-unit>
+      <trans-unit id="CM_editAccess">
+        <source>Visibility settings</source>
+        <target state="translated">Visibility settings</target>
+      </trans-unit>
+      <trans-unit id="CM_history">
+        <source>History/Undo</source>
+        <target state="translated">History/Undo</target>
+      </trans-unit>
+      <trans-unit id="CM_perms">
+        <source>Access</source>
+        <target state="translated">Access</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard">
+        <source>Move element</source>
+        <target state="translated">Move element</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page">
+        <source>Move page</source>
+        <target state="translated">Move page</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard">
+        <source>'Create New' wizard</source>
+        <target state="translated">'Create New' wizard</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties">
+        <source>Edit page properties</source>
+        <target state="translated">Edit page properties</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list">
+        <source>Web&gt;List module</source>
+        <target state="translated">Web&gt;List module</target>
+      </trans-unit>
+      <trans-unit id="noEditPage">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="translated">You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</target>
+      </trans-unit>
+      <trans-unit id="localize">
+        <source>Localize</source>
+        <target state="translated">Localize</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable">
+        <source>Record can be localized</source>
+        <target state="translated">Record can be localized</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal">
+        <source>Record was removed in original language</source>
+        <target state="translated">Record was removed in original language</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords">
+        <source>Localize all records</source>
+        <target state="translated">Localize all records</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage">
+        <source>Synchronize with original language</source>
+        <target state="translated">Synchronize with original language</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter">
+        <source>Filter</source>
+        <target state="translated">Filter</target>
+      </trans-unit>
+      <trans-unit id="switchtouser">
+        <source>Switch to User</source>
+        <target state="translated">Switch to User</target>
+      </trans-unit>
+      <trans-unit id="switchtousershort">
+        <source>SU:</source>
+        <target state="translated">SU:</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle">
+        <source>File Upload Progress</source>
+        <target state="translated">File Upload Progress</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles">
+        <source>Select Files</source>
+        <target state="translated">Select Files</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll">
+        <source>Cancel All Uploads</source>
+        <target state="translated">Cancel All Uploads</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target state="translated">You can upload files with a maximum size of {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit">
+        <source>You can upload a total of {0}.</source>
+        <target state="translated">You can upload a total of {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit">
+        <source>You can upload the following file types {0}.</source>
+        <target state="translated">You can upload the following file types {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles">
+        <source>Overwrite existing files</source>
+        <target state="translated">Overwrite existing files</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_processRunning">
+        <source>Another process is already uploading</source>
+        <target state="translated">Another process is already uploading</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadWait">
+        <source>Waiting to start upload of {0}</source>
+        <target state="translated">Waiting to start upload of {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting">
+        <source>Starting upload of {0}</source>
+        <target state="translated">Starting upload of {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress">
+        <source>{0}% of {1} uploaded</source>
+        <target state="translated">{0}% of {1} uploaded</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess">
+        <source>{0} was successfully uploaded!</source>
+        <target state="translated">{0} was successfully uploaded!</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueLimitExceeded">
+        <source>Too many files selected</source>
+        <target state="translated">Too many files selected</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit">
+        <source>{0} is too big</source>
+        <target state="translated">{0} is too big</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile">
+        <source>{0} is empty</source>
+        <target state="translated">{0} is empty</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype">
+        <source>Filetype not allowed for {0}</source>
+        <target state="translated">Filetype not allowed for {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttp">
+        <source>Too many files selected</source>
+        <target state="translated">Too many files selected</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttpError">
+        <source>A HTTP error occured: {0}</source>
+        <target state="translated">A HTTP error occured: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadMissingUrl">
+        <source>Internal error: No Upload URL set</source>
+        <target state="translated">Internal error: No Upload URL set</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadIO">
+        <source>Internal error: Problems while reading/writing the file</source>
+        <target state="translated">Internal error: Problems while reading/writing the file</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadSecurityError">
+        <source>Internal error: {0}</source>
+        <target state="translated">Internal error: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadLimit">
+        <source>Upload limit exceeded</source>
+        <target state="translated">Upload limit exceeded</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed">
+        <source>Upload failed</source>
+        <target state="translated">Upload failed</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound">
+        <source>Internal error: File ID not found</source>
+        <target state="translated">Internal error: File ID not found</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileValidation">
+        <source>Internal error while validating the file</source>
+        <target state="translated">Internal error while validating the file</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileCancelled">
+        <source>Upload of {0} canceled</source>
+        <target state="translated">Upload of {0} canceled</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadStopped">
+        <source>Upload of {0} stopped</source>
+        <target state="translated">Upload of {0} stopped</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageTitle">
+        <source>All uploads failed</source>
+        <target state="translated">All uploads failed</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageText">
+        <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
+        <target state="translated">All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError401">
+        <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
+        <target state="translated">The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError2038">
+        <source>An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+        <target state="translated">An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_title">
+        <source>Short result list</source>
+        <target state="translated">Short result list</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText">
+        <source>Enter search term</source>
+        <target state="translated">Enter search term</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText">
+        <source>Searching...</source>
+        <target state="translated">Searching...</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText">
+        <source>No results found.</source>
+        <target state="translated">No results found.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_showAllResults">
+        <source>Show All</source>
+        <target state="translated">Show All</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpTitle">
+        <source>How to use advanced search tags</source>
+        <target state="translated">How to use advanced search tags</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescription">
+        <source>Search in certain tables:</source>
+        <target state="translated">Search in certain tables:</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages">
+        <source>#page:Home will search for all pages with the title "Home"</source>
+        <target state="translated">#page:Home will search for all pages with the title "Home"</target>
+      </trans-unit>
+      <trans-unit id="extDirect_timeoutHeader">
+        <source>Connection Problem</source>
+        <target state="translated">Connection Problem</target>
+      </trans-unit>
+      <trans-unit id="extDirect_timeoutMessage">
+        <source>Sorry, but an error occurred while connecting to the server. Please check your network connection.</source>
+        <target state="translated">Sorry, but an error occurred while connecting to the server. Please check your network connection.</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipModuleMenuSplit">
+        <source>Drag to resize the Modules Menu</source>
+        <target state="translated">Drag to resize the Modules Menu</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag">
+        <source>Drag to resize or double click to collapse the tree</source>
+        <target state="translated">Drag to resize or double click to collapse the tree</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag">
+        <source>Drag to resize or click to collapse the Debug Panel.</source>
+        <target state="translated">Drag to resize or click to collapse the Debug Panel.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

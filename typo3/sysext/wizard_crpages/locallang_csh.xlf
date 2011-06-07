@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:02 UTC 2011" product-name="wizard_crpages">
+    <header/>
+    <body>
+      <trans-unit id="tx_wizardcrpages.alttitle">
+        <source>Create Pages wizard</source>
+        <target state="translated">Create Pages wizard</target>
+      </trans-unit>
+      <trans-unit id="tx_wizardcrpages.description">
+        <source>Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+        <target state="translated">Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</target>
+      </trans-unit>
+      <trans-unit id="tx_wizardcrpages.details">
+        <source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.
+
+
+&lt;b&gt;Lorem Ipsum...&lt;/b&gt;
+The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</source>
+        <target state="translated">The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.
+
+
+&lt;b&gt;Lorem Ipsum...&lt;/b&gt;
+The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</target>
+      </trans-unit>
+      <trans-unit id="_tx_wizardcrpages.seeAlso">
+        <source>xEXT_loremipsum</source>
+        <target state="translated">xEXT_loremipsum</target>
+      </trans-unit>
+      <trans-unit id="_tx_wizardcrpages.image">
+        <source>EXT:wizard_crpages/cshimages/wizards_1.png,
+EXT:wizard_crpages/cshimages/wizards_2.png</source>
+        <target state="translated">EXT:wizard_crpages/cshimages/wizards_1.png,
+EXT:wizard_crpages/cshimages/wizards_2.png</target>
+      </trans-unit>
+      <trans-unit id="tx_wizardcrpages.image_descr">
+        <source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+        <target state="translated">You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

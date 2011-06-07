@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="translated">This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+        <target state="translated">Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>be_users,
+"Inside TYPO3" about users / groups | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/,
+How to set up a backend user | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/,
+Setting up groups (from "Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</source>
+        <target state="translated">be_users,
+"Inside TYPO3" about users / groups | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/,
+How to set up a backend user | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/,
+Setting up groups (from "Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</target>
+      </trans-unit>
+      <trans-unit id="_.image">
+        <source>EXT:lang/cshimages/be_groups_2.png,
+EXT:lang/cshimages/be_groups_1.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_2.png,
+EXT:lang/cshimages/be_groups_1.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr">
+        <source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+        <target state="translated">Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="translated">Name of the Backend usergroup. The name should be descriptive and can always be changed later.</target>
+      </trans-unit>
+      <trans-unit id="title.details">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="translated">Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</target>
+      </trans-unit>
+      <trans-unit id="_title.image">
+        <source>EXT:lang/cshimages/be_groups_2.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_2.png</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="translated">The usergroup title is shown in the record lists.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description">
+        <source>Define page tree root points for the group members.</source>
+        <target state="translated">Define page tree root points for the group members.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details">
+        <source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+        <target state="translated">The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</target>
+      </trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso">
+        <source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</source>
+        <target state="translated">be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</target>
+      </trans-unit>
+      <trans-unit id="_db_mountpoints.image">
+        <source>EXT:lang/cshimages/be_groups_3.png,
+EXT:lang/cshimages/be_groups_4.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_3.png,
+EXT:lang/cshimages/be_groups_4.png</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.image_descr">
+        <source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+        <target state="translated">Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.description">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="translated">Define startpoints for the file folder tree.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details">
+        <source>The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screen shots below.
+"admin" users always have the "fileadmin/" folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</source>
+        <target state="translated">The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screen shots below.
+"admin" users always have the "fileadmin/" folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</target>
+      </trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso">
+        <source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+More about File Mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</source>
+        <target state="translated">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+More about File Mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</target>
+      </trans-unit>
+      <trans-unit id="_file_mountpoints.image">
+        <source>EXT:lang/cshimages/be_groups_5.png,
+EXT:lang/cshimages/be_groups_6.png,
+EXT:lang/cshimages/be_groups_7.png,
+EXT:lang/cshimages/be_groups_8.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_5.png,
+EXT:lang/cshimages/be_groups_6.png,
+EXT:lang/cshimages/be_groups_7.png,
+EXT:lang/cshimages/be_groups_8.png</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.image_descr">
+        <source>The File Mounts are references to records from the "Filemounts" table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to "fileadmin/". In this case the Filemount points to "fileadmin/user_upload/"
+This is the page tree of the "admin" user. Notice the folder "user_upload" which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</source>
+        <target state="translated">The File Mounts are references to records from the "Filemounts" table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to "fileadmin/". In this case the Filemount points to "fileadmin/user_upload/"
+This is the page tree of the "admin" user. Notice the folder "user_upload" which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="translated">Select file operation permissions for the group members.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details">
+        <source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+			
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+        <target state="translated">These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+			
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</target>
+      </trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso">
+        <source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:fileoper_perms</source>
+        <target state="translated">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:fileoper_perms</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.description">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="translated">Select which 'Types' of Pages the members may set.</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.details">
+        <source>This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or "system folder" type.</source>
+        <target state="translated">This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or "system folder" type.</target>
+      </trans-unit>
+      <trans-unit id="_pagetypes_select.seeAlso">
+        <source>pages:doktype,
+be_groups:inc_access_lists</source>
+        <target state="translated">pages:doktype,
+be_groups:inc_access_lists</target>
+      </trans-unit>
+      <trans-unit id="_pagetypes_select.image">
+        <source>EXT:lang/cshimages/be_groups_9.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_9.png</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.image_descr">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="translated">The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description">
+        <source>Select which tables the members may modify.</source>
+        <target state="translated">Select which tables the members may modify.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details">
+        <source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+        <target state="translated">An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</target>
+      </trans-unit>
+      <trans-unit id="_tables_modify.seeAlso">
+        <source>be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</source>
+        <target state="translated">be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</target>
+      </trans-unit>
+      <trans-unit id="_tables_modify.image">
+        <source>EXT:lang/cshimages/be_groups_10.png,
+EXT:lang/cshimages/be_groups_15.png,
+EXT:lang/cshimages/be_groups_11.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_10.png,
+EXT:lang/cshimages/be_groups_15.png,
+EXT:lang/cshimages/be_groups_11.png</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.image_descr">
+        <source>The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Pagecontent" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+        <target state="translated">The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Pagecontent" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</target>
+      </trans-unit>
+      <trans-unit id="tables_select.description">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="translated">Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details">
+        <source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+        <target state="translated">This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</target>
+      </trans-unit>
+      <trans-unit id="_tables_select.seeAlso">
+        <source>be_groups:tables_modify,
+be_groups:inc_access_lists</source>
+        <target state="translated">be_groups:tables_modify,
+be_groups:inc_access_lists</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.description">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="translated">Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details">
+        <source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+        <target state="translated">"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</target>
+      </trans-unit>
+      <trans-unit id="_non_exclude_fields.seeAlso">
+        <source>be_groups:inc_access_lists,
+Examples from "Getting Started" | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</source>
+        <target state="translated">be_groups:inc_access_lists,
+Examples from "Getting Started" | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</target>
+      </trans-unit>
+      <trans-unit id="_non_exclude_fields.image">
+        <source>EXT:lang/cshimages/be_groups_14.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_14.png</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>Disables a user group.</source>
+        <target state="translated">Disables a user group.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="translated">If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description">
+        <source>Enter the host name from which the user is forced to login.</source>
+        <target state="translated">Enter the host name from which the user is forced to login.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details">
+        <source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+        <target state="translated">A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</target>
+      </trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso">
+        <source>be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</source>
+        <target state="translated">be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</target>
+      </trans-unit>
+      <trans-unit id="groupMods.description">
+        <source>Select available backend modules for the group members.</source>
+        <target state="translated">Select available backend modules for the group members.</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details">
+        <source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+        <target state="translated">This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</target>
+      </trans-unit>
+      <trans-unit id="_groupMods.seeAlso">
+        <source>be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface | http://typo3.org/documentation/document-library/doc_core_inside/Backend_interface/</source>
+        <target state="translated">be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface | http://typo3.org/documentation/document-library/doc_core_inside/Backend_interface/</target>
+      </trans-unit>
+      <trans-unit id="_groupMods.image">
+        <source>EXT:lang/cshimages/be_groups_12.png,
+EXT:lang/cshimages/be_groups_13.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_12.png,
+EXT:lang/cshimages/be_groups_13.png</target>
+      </trans-unit>
+      <trans-unit id="groupMods.image_descr">
+        <source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screen shot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+        <target state="translated">The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screen shot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.description">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="translated">Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details">
+        <source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+        <target state="translated">If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</target>
+      </trans-unit>
+      <trans-unit id="_inc_access_lists.seeAlso">
+        <source>be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</source>
+        <target state="translated">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="translated">Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso">
+        <source>fe_groups:description</source>
+        <target state="translated">fe_groups:description</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="translated">User TSconfig: Additional configuration through TypoScript style values (Advanced).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="translated">User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="translated">TypoScript syntax without conditions and constants.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso">
+        <source>be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/,
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</source>
+        <target state="translated">be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/,
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.image">
+        <source>EXT:lang/cshimages/be_groups_16.png,
+EXT:lang/cshimages/be_groups_17.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_16.png,
+EXT:lang/cshimages/be_groups_17.png</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.image_descr">
+        <source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+        <target state="translated">In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</target>
+      </trans-unit>
+      <trans-unit id="hide_in_lists.description">
+        <source>This option will prevent the user group from showing up in lists, where user groups are selected.</source>
+        <target state="translated">This option will prevent the user group from showing up in lists, where user groups are selected.</target>
+      </trans-unit>
+      <trans-unit id="hide_in_lists.details">
+        <source>This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
+The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</source>
+        <target state="translated">This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
+The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description">
+        <source>Select backend user groups which are automatically included for members of this group.</source>
+        <target state="translated">Select backend user groups which are automatically included for members of this group.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details">
+        <source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+        <target state="translated">The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.description">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="translated">Select field values to explicitly deny or allow for user group members.</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details">
+        <source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control. 
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+        <target state="translated">Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control. 
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</target>
+      </trans-unit>
+      <trans-unit id="_explicit_allowdeny.image">
+        <source>EXT:lang/cshimages/be_groups_19.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_19.png</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="translated">Select which record languages the group members are limited to edit.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details">
+        <source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+        <target state="translated">Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</target>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso">
+        <source>be_users:allowed_languages</source>
+        <target state="translated">be_users:allowed_languages</target>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.image">
+        <source>EXT:lang/cshimages/be_groups_18.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_18.png</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.image_descr">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="translated">This example shows a situation where two languages, Danish and German, are created in addition to the default language.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description">
+        <source>Select custom permission options.</source>
+        <target state="translated">Select custom permission options.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="translated">This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</target>
+      </trans-unit>
+      <trans-unit id="_custom_options.image">
+        <source>EXT:lang/cshimages/be_groups_20.png</source>
+        <target state="translated">EXT:lang/cshimages/be_groups_20.png</target>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="translated">This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

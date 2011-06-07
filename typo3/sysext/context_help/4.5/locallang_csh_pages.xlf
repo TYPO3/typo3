@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:24 UTC 2011" product-name="context_help">
+    <header/>
+    <body>
+      <trans-unit id="layout.description">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="translated">The Frontend Layout can change the way a page design appears.</target>
+      </trans-unit>
+      <trans-unit id="layout.details">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="translated">This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="translated">Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details">
+        <source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+        <target state="translated">'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</target>
+      </trans-unit>
+      <trans-unit id="_doktype.seeAlso">
+        <source>pages:shortcut,
+pages:url</source>
+        <target state="translated">pages:shortcut,
+pages:url</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="translated">If this is checked, the page will be disabled on the website.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details">
+        <source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+        <target state="translated">The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="translated">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+      </trans-unit>
+      <trans-unit id="_hidden.image">
+        <source>EXT:context_help/cshimages/hidden_page.gif,
+EXT:context_help/cshimages/pages_1.png</source>
+        <target state="translated">EXT:context_help/cshimages/hidden_page.gif,
+EXT:context_help/cshimages/pages_1.png</target>
+      </trans-unit>
+      <trans-unit id="hidden.image_descr">
+        <source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+        <target state="translated">The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="translated">The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax">
+        <source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+        <target state="translated">The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="translated">pages:endtime,pages:hidden</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>tt_content</source>
+        <target state="translated">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="translated">The Expiration Date specifies when the page will no longer be visible online.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="translated">See Page / Publication Date (click below)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso">
+        <source>pages:starttime</source>
+        <target state="translated">pages:starttime</target>
+      </trans-unit>
+      <trans-unit id="fe_group.description">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="translated">If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso">
+        <source>fe_groups</source>
+        <target state="translated">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.image">
+        <source>EXT:context_help/cshimages/fegroups_4.png</source>
+        <target state="translated">EXT:context_help/cshimages/fegroups_4.png</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="translated">By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details">
+        <source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+        <target state="translated">Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</target>
+      </trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso">
+        <source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+        <target state="translated">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target>
+      </trans-unit>
+      <trans-unit id="_extendToSubpages.image">
+        <source>EXT:context_help/cshimages/pages_2.png</source>
+        <target state="translated">EXT:context_help/cshimages/pages_2.png</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.image_descr">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="translated">This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</target>
+      </trans-unit>
+      <trans-unit id="alias.description">
+        <source>A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</source>
+        <target state="translated">A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</target>
+      </trans-unit>
+      <trans-unit id="alias.details">
+        <source>Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
+URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
+Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</source>
+        <target state="translated">Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
+URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
+Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</target>
+      </trans-unit>
+      <trans-unit id="alias.syntax">
+        <source>A URL Alias can contain only lowercase alphanumeric characters and must be unique.
+Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</source>
+        <target state="translated">A URL Alias can contain only lowercase alphanumeric characters and must be unique.
+Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</target>
+      </trans-unit>
+      <trans-unit id="target.description">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="translated">This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</target>
+      </trans-unit>
+      <trans-unit id="target.details">
+        <source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page. 
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2
+</source>
+        <target state="translated">The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page. 
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2
+</target>
+      </trans-unit>
+      <trans-unit id="no_cache.description">
+        <source>This option disables server caching of the page.</source>
+        <target state="translated">This option disables server caching of the page.</target>
+      </trans-unit>
+      <trans-unit id="no_cache.details">
+        <source>Normally pages in TYPO3 are cached on the server after being constructed for the first time. This means a page is displayed much faster the second time it's requested.
+For most pages this presents no problems; indeed, it boosts the performance of the website.
+However you may need to disable caching for a page if it contains dynamic content which must not be cached under any circumstances. Normally the PHP-code rendering such content is programmed to disable the caching automatically. But with this option you can force the page not to be cached.</source>
+        <target state="translated">Normally pages in TYPO3 are cached on the server after being constructed for the first time. This means a page is displayed much faster the second time it's requested.
+For most pages this presents no problems; indeed, it boosts the performance of the website.
+However you may need to disable caching for a page if it contains dynamic content which must not be cached under any circumstances. Normally the PHP-code rendering such content is programmed to disable the caching automatically. But with this option you can force the page not to be cached.</target>
+      </trans-unit>
+      <trans-unit id="_no_cache.seeAlso">
+        <source>pages:cache_timeout</source>
+        <target state="translated">pages:cache_timeout</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.description">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="translated">Sets the Cache Lifetime for the page.</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details">
+        <source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+        <target state="translated">By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</target>
+      </trans-unit>
+      <trans-unit id="_cache_timeout.seeAlso">
+        <source>pages:no_cache</source>
+        <target state="translated">pages:no_cache</target>
+      </trans-unit>
+      <trans-unit id="no_search.description">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="translated">If enabled, this option excludes the page from searching operations on the website.</target>
+      </trans-unit>
+      <trans-unit id="author.description">
+        <source>Enter the page author's name.</source>
+        <target state="translated">Enter the page author's name.</target>
+      </trans-unit>
+      <trans-unit id="author.details">
+        <source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.			
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+        <target state="translated">Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.			
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</target>
+      </trans-unit>
+      <trans-unit id="_author.seeAlso">
+        <source>pages:author_email</source>
+        <target state="translated">pages:author_email</target>
+      </trans-unit>
+      <trans-unit id="author_email.description">
+        <source>Enter the page author's email address.</source>
+        <target state="translated">Enter the page author's email address.</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso">
+        <source>pages:author</source>
+        <target state="translated">pages:author</target>
+      </trans-unit>
+      <trans-unit id="module.description">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="translated">Define the page as containing a Frontend plugin.</target>
+      </trans-unit>
+      <trans-unit id="module.details">
+        <source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+        <target state="translated">Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</target>
+      </trans-unit>
+      <trans-unit id="media.description">
+        <source>Attach media files related to the page.</source>
+        <target state="translated">Attach media files related to the page.</target>
+      </trans-unit>
+      <trans-unit id="media.details">
+        <source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+        <target state="translated">This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.description">
+        <source>Enter a subtitle if needed.</source>
+        <target state="translated">Enter a subtitle if needed.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="translated">Whether this field is used or not depends on the template. In most cases it's not used.</target>
+      </trans-unit>
+      <trans-unit id="url.description">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="translated">Enter the URL this page redirects to.</target>
+      </trans-unit>
+      <trans-unit id="url.details">
+        <source>For example, 'http://www.typo3.com' or just 'www.typo3.com' if the 'Protocol' selector is set to 'http://'.
+Use the 'Protocol' selector to select a prefix for the URL.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
+        <target state="translated">For example, 'http://www.typo3.com' or just 'www.typo3.com' if the 'Protocol' selector is set to 'http://'.
+Use the 'Protocol' selector to select a prefix for the URL.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</target>
+      </trans-unit>
+      <trans-unit id="_url.seeAlso">
+        <source>pages:urltype</source>
+        <target state="translated">pages:urltype</target>
+      </trans-unit>
+      <trans-unit id="shortcut.description">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="translated">Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details">
+        <source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+        <target state="translated">Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</target>
+      </trans-unit>
+      <trans-unit id="_shortcut.seeAlso">
+        <source>pages:doktype,
+pages:shortcut_mode</source>
+        <target state="translated">pages:doktype,
+pages:shortcut_mode</target>
+      </trans-unit>
+      <trans-unit id="_shortcut.image">
+        <source>EXT:context_help/cshimages/page_shortcut.gif</source>
+        <target state="translated">EXT:context_help/cshimages/page_shortcut.gif</target>
+      </trans-unit>
+      <trans-unit id="shortcut.image_descr">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="translated">Select a Shortcut Target page with the Element Browser.</target>
+      </trans-unit>
+      <trans-unit id="keywords.description">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="translated">Enter keywords for the page separated by commas. You may also use short phrases.</target>
+      </trans-unit>
+      <trans-unit id="keywords.details">
+        <source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+        <target state="translated">Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</target>
+      </trans-unit>
+      <trans-unit id="_keywords.seeAlso">
+        <source>pages:description</source>
+        <target state="translated">pages:description</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="translated">Enter a short description of the page. It will be displayed in the result lists of most search engines.</target>
+      </trans-unit>
+      <trans-unit id="description.details">
+        <source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.
+			</source>
+        <target state="translated">Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.
+			</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso">
+        <source>pages:keywords
+pages:abstract</source>
+        <target state="translated">pages:keywords
+pages:abstract</target>
+      </trans-unit>
+      <trans-unit id="abstract.description">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="translated">Enter an abstract of the contents. It may be displayed in an overview of articles.</target>
+      </trans-unit>
+      <trans-unit id="abstract.details">
+        <source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+			
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+        <target state="translated">An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+			
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</target>
+      </trans-unit>
+      <trans-unit id="_abstract.seeAlso">
+        <source>pages:description</source>
+        <target state="translated">pages:description</target>
+      </trans-unit>
+      <trans-unit id="newUntil.description">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="translated">Enter the date at which this page is no longer considered new.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details">
+        <source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+        <target state="translated">The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.syntax">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="translated">See Page / Publication Date (click below)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso">
+        <source>pages:starttime</source>
+        <target state="translated">pages:starttime</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="translated">Enter the date and time of the most recent update to this page.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details">
+        <source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+        <target state="translated">How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.syntax">
+        <source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+        <target state="translated">The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</target>
+      </trans-unit>
+      <trans-unit id="nav_hide.description">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="translated">With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</target>
+      </trans-unit>
+      <trans-unit id="_nav_hide.seeAlso">
+        <source>pages:nav_title</source>
+        <target state="translated">pages:nav_title</target>
+      </trans-unit>
+      <trans-unit id="nav_title.description">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="translated">Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description">
+        <source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+        <target state="translated">If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</target>
+      </trans-unit>
+      <trans-unit id="urltype.description">
+        <source>Set the Protocol for the URL.</source>
+        <target state="translated">Set the Protocol for the URL.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_mode.description">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="translated">Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="translated">Mount this page. If set, subpages of this page come from the Mounted Page instead.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="translated">In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso">
+        <source>pages:mount_pid_ol</source>
+        <target state="translated">pages:mount_pid_ol</target>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="translated">Show content for the current page or replace it completely with the Mounted Page.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso">
+        <source>pages:mount_pid</source>
+        <target state="translated">pages:mount_pid</target>
+      </trans-unit>
+      <trans-unit id="title.description.+">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="translated">This is normally shown in the website navigation.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+">
+        <source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+        <target state="translated">&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.description">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="translated">Affect availability of pages in the various languages.</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.details">
+        <source>&lt;b&gt;Hide default translation of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</source>
+        <target state="translated">&lt;b&gt;Hide default translation of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

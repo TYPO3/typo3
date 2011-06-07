@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No style">
+        <source>No block style</source>
+        <target state="translated">No block style</target>
+      </trans-unit>
+      <trans-unit id="Remove style">
+        <source>Remove block style</source>
+        <target state="translated">Remove block style</target>
+      </trans-unit>
+      <trans-unit id="Unknown style">
+        <source>Unknown block style</source>
+        <target state="translated">Unknown block style</target>
+      </trans-unit>
+      <trans-unit id="Element style">
+        <source>Block element style</source>
+        <target state="translated">Block element style</target>
+      </trans-unit>
+      <trans-unit id="BlockStyle-Tooltip">
+        <source>Apply style to the containing block</source>
+        <target state="translated">Apply style to the containing block</target>
+      </trans-unit>
+      <trans-unit id="frame-frame1">
+        <source>Frame with grey background</source>
+        <target state="translated">Frame with grey background</target>
+      </trans-unit>
+      <trans-unit id="frame-frame2">
+        <source>Frame with yellow background</source>
+        <target state="translated">Frame with yellow background</target>
+      </trans-unit>
+      <trans-unit id="important">
+        <source>Important</source>
+        <target state="translated">Important</target>
+      </trans-unit>
+      <trans-unit id="name-of-person">
+        <source>Name of person</source>
+        <target state="translated">Name of person</target>
+      </trans-unit>
+      <trans-unit id="detail">
+        <source>Detail</source>
+        <target state="translated">Detail</target>
+      </trans-unit>
+      <trans-unit id="component-items">
+        <source>Component items</source>
+        <target state="translated">Component items</target>
+      </trans-unit>
+      <trans-unit id="action-items">
+        <source>Action items</source>
+        <target state="translated">Action items</target>
+      </trans-unit>
+      <trans-unit id="Technische Universitat Ilmenau">
+        <source>Technische Universität Ilmenau</source>
+        <target state="translated">Technische Universität Ilmenau</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

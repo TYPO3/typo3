@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:49 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Show record history</source>
+        <target state="translated">Show record history</target>
+      </trans-unit>
+      <trans-unit id="time">
+        <source>Time</source>
+        <target state="translated">Time</target>
+      </trans-unit>
+      <trans-unit id="age">
+        <source>Age</source>
+        <target state="translated">Age</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User</source>
+        <target state="translated">User</target>
+      </trans-unit>
+      <trans-unit id="tableUid">
+        <source>Table:uid</source>
+        <target state="translated">Table:uid</target>
+      </trans-unit>
+      <trans-unit id="differences">
+        <source>Differences</source>
+        <target state="translated">Differences</target>
+      </trans-unit>
+      <trans-unit id="changes">
+        <source>Changelog</source>
+        <target state="translated">Changelog</target>
+      </trans-unit>
+      <trans-unit id="return">
+        <source>Return</source>
+        <target state="translated">Return</target>
+      </trans-unit>
+      <trans-unit id="returnLink">
+        <source>Click here to go back</source>
+        <target state="translated">Click here to go back</target>
+      </trans-unit>
+      <trans-unit id="revertAll">
+        <source>Rollback all changes shown</source>
+        <target state="translated">Rollback all changes shown</target>
+      </trans-unit>
+      <trans-unit id="revertRecord">
+        <source>Rollback single record</source>
+        <target state="translated">Rollback single record</target>
+      </trans-unit>
+      <trans-unit id="revertField">
+        <source>Rollback single field</source>
+        <target state="translated">Rollback single field</target>
+      </trans-unit>
+      <trans-unit id="externalChange">
+        <source>Intermediate external change!</source>
+        <target state="translated">Intermediate external change!</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges">
+        <source>Rollback (Preview)</source>
+        <target state="translated">Rollback (Preview)</target>
+      </trans-unit>
+      <trans-unit id="markState">
+        <source>mark this change</source>
+        <target state="translated">mark this change</target>
+      </trans-unit>
+      <trans-unit id="unmarkState">
+        <source>unMark this change</source>
+        <target state="translated">unMark this change</target>
+      </trans-unit>
+      <trans-unit id="elementHistory">
+        <source>You are currently seeing the history for an element.</source>
+        <target state="translated">You are currently seeing the history for an element.</target>
+      </trans-unit>
+      <trans-unit id="elementHistory_link">
+        <source>Show the full page history!</source>
+        <target state="translated">Show the full page history!</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory">
+        <source>Limit history to this record</source>
+        <target state="translated">Limit history to this record</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="translated">In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</target>
+      </trans-unit>
+      <trans-unit id="fullView">
+        <source>Return to full view</source>
+        <target state="translated">Return to full view</target>
+      </trans-unit>
+      <trans-unit id="insert">
+        <source>insert</source>
+        <target state="translated">insert</target>
+      </trans-unit>
+      <trans-unit id="delete">
+        <source>delete</source>
+        <target state="translated">delete</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences">
+        <source>Preview for Rollback</source>
+        <target state="translated">Preview for Rollback</target>
+      </trans-unit>
+      <trans-unit id="settings">
+        <source>Settings</source>
+        <target state="translated">Settings</target>
+      </trans-unit>
+      <trans-unit id="maxSteps">
+        <source>Show entries:</source>
+        <target state="translated">Show entries:</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all">
+        <source>ALL</source>
+        <target state="translated">ALL</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked">
+        <source>marked</source>
+        <target state="translated">marked</target>
+      </trans-unit>
+      <trans-unit id="showDiff">
+        <source>Show differences:</source>
+        <target state="translated">Show differences:</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no">
+        <source>No</source>
+        <target state="translated">No</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline">
+        <source>Inline</source>
+        <target state="translated">Inline</target>
+      </trans-unit>
+      <trans-unit id="showSubElements">
+        <source>Show sub elements:</source>
+        <target state="translated">Show sub elements:</target>
+      </trans-unit>
+      <trans-unit id="no">
+        <source>No</source>
+        <target state="translated">No</target>
+      </trans-unit>
+      <trans-unit id="yes">
+        <source>Yes</source>
+        <target state="translated">Yes</target>
+      </trans-unit>
+      <trans-unit id="showInsertDelete">
+        <source>Show inserts/deletes of records:</source>
+        <target state="translated">Show inserts/deletes of records:</target>
+      </trans-unit>
+      <trans-unit id="consistenceWarning">
+        <source>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</source>
+        <target state="translated">From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</target>
+      </trans-unit>
+      <trans-unit id="noDifferences">
+        <source>There are no differences to the current page!</source>
+        <target state="translated">There are no differences to the current page!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

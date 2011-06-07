@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:06 UTC 2011" product-name="wizard_sortpages">
+    <header/>
+    <body>
+      <trans-unit id="wiz_sort">
+        <source>Sort pages</source>
+        <target state="translated">Sort pages</target>
+      </trans-unit>
+      <trans-unit id="wiz_W">
+        <source>W!</source>
+        <target state="translated">W!</target>
+      </trans-unit>
+      <trans-unit id="wiz_currentPageOrder">
+        <source>Current page order</source>
+        <target state="translated">Current page order</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder">
+        <source>Sort these pages by</source>
+        <target state="translated">Sort these pages by</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_title">
+        <source>Page title</source>
+        <target state="translated">Page title</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_subtitle">
+        <source>Subtitle</source>
+        <target state="translated">Subtitle</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_tCreate">
+        <source>Create-time</source>
+        <target state="translated">Create-time</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_tChange">
+        <source>Change-time</source>
+        <target state="translated">Change-time</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_REVERSE">
+        <source>Reverse current order</source>
+        <target state="translated">Reverse current order</target>
+      </trans-unit>
+      <trans-unit id="wiz_changeOrder_msg1">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="translated">You're about to change the order of the above pages. Are you sure you want to continue?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

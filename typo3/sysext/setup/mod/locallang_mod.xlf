@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:35 UTC 2011" product-name="setup">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Personal user setup</source>
+        <target state="translated">Personal user setup</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
+        <target state="translated">This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>User settings</source>
+        <target state="translated">User settings</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:41 UTC 2011" product-name="sys_note">
+    <header/>
+    <body>
+      <trans-unit id="sys_note">
+        <source>Internal note</source>
+        <target state="translated">Internal note</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.1">
+        <source>Instructions</source>
+        <target state="translated">Instructions</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.2">
+        <source>Notes</source>
+        <target state="translated">Notes</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.3">
+        <source>To-do</source>
+        <target state="translated">To-do</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.4">
+        <source>Template</source>
+        <target state="translated">Template</target>
+      </trans-unit>
+      <trans-unit id="sys_note.subject">
+        <source>Subject:</source>
+        <target state="translated">Subject:</target>
+      </trans-unit>
+      <trans-unit id="sys_note.message">
+        <source>Message:</source>
+        <target state="translated">Message:</target>
+      </trans-unit>
+      <trans-unit id="sys_note.personal">
+        <source>Personal:</source>
+        <target state="translated">Personal:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

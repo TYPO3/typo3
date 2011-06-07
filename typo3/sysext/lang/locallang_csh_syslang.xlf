@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="title.description">
+        <source>Enter the name of this additional system language.</source>
+        <target state="translated">Enter the name of this additional system language.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description">
+        <source>This option will hide the system language from being available in the backend.</source>
+        <target state="translated">This option will hide the system language from being available in the backend.</target>
+      </trans-unit>
+      <trans-unit id=".description">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="translated">Defines which languages are alternatively available on each webpage.</target>
+      </trans-unit>
+      <trans-unit id=".details">
+        <source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.
+For a webpage to be available in another language an "Alternative Page Language" record must be created on the page.</source>
+        <target state="translated">The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.
+For a webpage to be available in another language an "Alternative Page Language" record must be created on the page.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso">
+        <source>pages_language_overlay</source>
+        <target state="translated">pages_language_overlay</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

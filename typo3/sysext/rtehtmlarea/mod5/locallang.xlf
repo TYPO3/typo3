@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="noTitle">
+        <source>No title</source>
+        <target state="translated">No title</target>
+      </trans-unit>
+      <trans-unit id="expand">
+        <source>Expand category</source>
+        <target state="translated">Expand category</target>
+      </trans-unit>
+      <trans-unit id="noTextSelection">
+        <source>Error: There was no selected text to wrap.</source>
+        <target state="translated">Error: There was no selected text to wrap.</target>
+      </trans-unit>
+      <trans-unit id="pixels">
+        <source>Pixels</source>
+        <target state="translated">Pixels</target>
+      </trans-unit>
+      <trans-unit id="filesize">
+        <source>Filesize</source>
+        <target state="translated">Filesize</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

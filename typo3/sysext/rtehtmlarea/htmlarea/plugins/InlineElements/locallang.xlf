@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No markup">
+        <source>No text format</source>
+        <target state="translated">No text format</target>
+      </trans-unit>
+      <trans-unit id="Remove markup">
+        <source>Remove text format</source>
+        <target state="translated">Remove text format</target>
+      </trans-unit>
+      <trans-unit id="FormatText-Tooltip">
+        <source>Apply format to selected text</source>
+        <target state="translated">Apply format to selected text</target>
+      </trans-unit>
+      <trans-unit id="BiDiOverride-Tooltip">
+        <source>Bidirectionality override</source>
+        <target state="translated">Bidirectionality override</target>
+      </trans-unit>
+      <trans-unit id="Big-Tooltip">
+        <source>Large text</source>
+        <target state="translated">Large text</target>
+      </trans-unit>
+      <trans-unit id="Bold-Tooltip">
+        <source>Bold</source>
+        <target state="translated">Bold</target>
+      </trans-unit>
+      <trans-unit id="Citation-Tooltip">
+        <source>Citation</source>
+        <target state="translated">Citation</target>
+      </trans-unit>
+      <trans-unit id="Code-Tooltip">
+        <source>Computer code fragment</source>
+        <target state="translated">Computer code fragment</target>
+      </trans-unit>
+      <trans-unit id="Code-contextMenuTitle">
+        <source>Code fragment</source>
+        <target state="translated">Code fragment</target>
+      </trans-unit>
+      <trans-unit id="Definition-Tooltip">
+        <source>Definition</source>
+        <target state="translated">Definition</target>
+      </trans-unit>
+      <trans-unit id="DeletedText-Tooltip">
+        <source>Deleted text</source>
+        <target state="translated">Deleted text</target>
+      </trans-unit>
+      <trans-unit id="Emphasis-Tooltip">
+        <source>Emphasis</source>
+        <target state="translated">Emphasis</target>
+      </trans-unit>
+      <trans-unit id="Keyboard-Tooltip">
+        <source>Text to be entered by the user</source>
+        <target state="translated">Text to be entered by the user</target>
+      </trans-unit>
+      <trans-unit id="Keyboard-contextMenuTitle">
+        <source>Text to enter</source>
+        <target state="translated">Text to enter</target>
+      </trans-unit>
+      <trans-unit id="InsertedText-Tooltip">
+        <source>Inserted text</source>
+        <target state="translated">Inserted text</target>
+      </trans-unit>
+      <trans-unit id="Italic-Tooltip">
+        <source>Italic</source>
+        <target state="translated">Italic</target>
+      </trans-unit>
+      <trans-unit id="MonoSpaced-Tooltip">
+        <source>Monospaced text</source>
+        <target state="translated">Monospaced text</target>
+      </trans-unit>
+      <trans-unit id="Quotation-Tooltip">
+        <source>Short inline quotation</source>
+        <target state="translated">Short inline quotation</target>
+      </trans-unit>
+      <trans-unit id="Quotation-contextMenuTitle">
+        <source>Short quotation</source>
+        <target state="translated">Short quotation</target>
+      </trans-unit>
+      <trans-unit id="Sample-Tooltip">
+        <source>Sample program output or script</source>
+        <target state="translated">Sample program output or script</target>
+      </trans-unit>
+      <trans-unit id="Sample-contextMenuTitle">
+        <source>Sample output</source>
+        <target state="translated">Sample output</target>
+      </trans-unit>
+      <trans-unit id="Small-Tooltip">
+        <source>Small text</source>
+        <target state="translated">Small text</target>
+      </trans-unit>
+      <trans-unit id="Span-Tooltip">
+        <source>Style container</source>
+        <target state="translated">Style container</target>
+      </trans-unit>
+      <trans-unit id="StrikeThrough-Tooltip">
+        <source>Strike-through text</source>
+        <target state="translated">Strike-through text</target>
+      </trans-unit>
+      <trans-unit id="Strong-Tooltip">
+        <source>Strong emphasis</source>
+        <target state="translated">Strong emphasis</target>
+      </trans-unit>
+      <trans-unit id="Subscript-Tooltip">
+        <source>Subscript</source>
+        <target state="translated">Subscript</target>
+      </trans-unit>
+      <trans-unit id="Superscript-Tooltip">
+        <source>Superscript</source>
+        <target state="translated">Superscript</target>
+      </trans-unit>
+      <trans-unit id="Underline-Tooltip">
+        <source>Underline</source>
+        <target state="translated">Underline</target>
+      </trans-unit>
+      <trans-unit id="Variable-Tooltip">
+        <source>Variable or program argument</source>
+        <target state="translated">Variable or program argument</target>
+      </trans-unit>
+      <trans-unit id="Variable-contextMenuTitle">
+        <source>Variable</source>
+        <target state="translated">Variable</target>
+      </trans-unit>
+      <trans-unit id="Technische Universitat Ilmenau">
+        <source>Technische Universität Ilmenau</source>
+        <target state="translated">Technische Universität Ilmenau</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

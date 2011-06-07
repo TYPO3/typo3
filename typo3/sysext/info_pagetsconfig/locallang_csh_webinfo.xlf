@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:13 UTC 2011" product-name="info_pagetsconfig">
+    <header/>
+    <body>
+      <trans-unit id="tsconfig_hierarchy.alttitle">
+        <source>Page TSconfig hierarchy viewer</source>
+        <target state="translated">Page TSconfig hierarchy viewer</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.description">
+        <source>Allows the user to view the compiled Page TSconfig structure for a branch of the pagetree.</source>
+        <target state="translated">Allows the user to view the compiled Page TSconfig structure for a branch of the pagetree.</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.details">
+        <source>This viewer is indispensable for getting an overview of Page TSconfig settings as they apply to various branches in the page tree. You can see the configuration structure of any page where all inherited Page TSconfig is parsed and the result shown. This helps you to evaluate that the settings you have applied are actually found at the correct position in the configuration tree.
+You can also see the Page TSconfig TypoScript code for each page in the root line with the viewer.
+
+See the links for more information about what Page TSconfig is.</source>
+        <target state="translated">This viewer is indispensable for getting an overview of Page TSconfig settings as they apply to various branches in the page tree. You can see the configuration structure of any page where all inherited Page TSconfig is parsed and the result shown. This helps you to evaluate that the settings you have applied are actually found at the correct position in the configuration tree.
+You can also see the Page TSconfig TypoScript code for each page in the root line with the viewer.
+
+See the links for more information about what Page TSconfig is.</target>
+      </trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.seeAlso">
+        <source>_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
+        <target state="translated">_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</target>
+      </trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.image">
+        <source>EXT:info_pagetsconfig/cshimages/img_1.png,
+EXT:info_pagetsconfig/cshimages/img_2.png,</source>
+        <target state="translated">EXT:info_pagetsconfig/cshimages/img_1.png,
+EXT:info_pagetsconfig/cshimages/img_2.png,</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.image_descr">
+        <source>This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
+One of the branches in Page TSconfig has the special property that it is overridden with any User TSconfig in the same object path given for the current backend user. When you view only the "mod" TLO any user settings for the current backend user are applied as well. Here it is evident that some additional settings must apply for the user since only "mod.SHARED.colPos_list" was actually found in Page TSconfig (according to the "All" view in the first image).</source>
+        <target state="translated">This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
+One of the branches in Page TSconfig has the special property that it is overridden with any User TSconfig in the same object path given for the current backend user. When you view only the "mod" TLO any user settings for the current backend user are applied as well. Here it is evident that some additional settings must apply for the user since only "mod.SHARED.colPos_list" was actually found in Page TSconfig (according to the "All" view in the first image).</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.alttitle">
+        <source>Page TSconfig content viewer</source>
+        <target state="translated">Page TSconfig content viewer</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.description">
+        <source>Displays the raw TSconfig code of all pages in the current root line including any default code.</source>
+        <target state="translated">Displays the raw TSconfig code of all pages in the current root line including any default code.</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.details">
+        <source>The parsed Page TSconfig tree you see in the default view is actually compiled from this TSconfig code in the order it appears here. This view lets you see how the parsed version came to be.
+You can also click the edit-icons of the various pages to go directly to the TSconfig fields of the pages.</source>
+        <target state="translated">The parsed Page TSconfig tree you see in the default view is actually compiled from this TSconfig code in the order it appears here. This view lets you see how the parsed version came to be.
+You can also click the edit-icons of the various pages to go directly to the TSconfig fields of the pages.</target>
+      </trans-unit>
+      <trans-unit id="_tsconfig_edit.seeAlso">
+        <source>_MOD_web_info:tsconfig_hierarchy</source>
+        <target state="translated">_MOD_web_info:tsconfig_hierarchy</target>
+      </trans-unit>
+      <trans-unit id="_tsconfig_edit.image">
+        <source>EXT:info_pagetsconfig/cshimages/img_3.png,
+EXT:info_pagetsconfig/cshimages/img_4.png,
+EXT:info_pagetsconfig/cshimages/img_5.png</source>
+        <target state="translated">EXT:info_pagetsconfig/cshimages/img_3.png,
+EXT:info_pagetsconfig/cshimages/img_4.png,
+EXT:info_pagetsconfig/cshimages/img_5.png</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.image_descr">
+        <source>Shows the raw Page TSconfig code. First you see the default content from TYPO3_CONF_VARS (probably added by extensions), then the content from the "TSconfig" field of the first page in the root line ("Intro") and then for each root line page up to the current page (not shown in screenshot).
+In the bottom of the page you will see a link which will open editing forms for all of the TSconfig fields shown in the list!
+Here you see specifically the TSconfig fields of the first and second page in the rootline being edited. Notice the "TS" icon next to the first field - this will bring up a wizard that helps you to select among available Page TSconfig properties.</source>
+        <target state="translated">Shows the raw Page TSconfig code. First you see the default content from TYPO3_CONF_VARS (probably added by extensions), then the content from the "TSconfig" field of the first page in the root line ("Intro") and then for each root line page up to the current page (not shown in screenshot).
+In the bottom of the page you will see a link which will open editing forms for all of the TSconfig fields shown in the list!
+Here you see specifically the TSconfig fields of the first and second page in the rootline being edited. Notice the "TS" icon next to the first field - this will bring up a wizard that helps you to select among available Page TSconfig properties.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

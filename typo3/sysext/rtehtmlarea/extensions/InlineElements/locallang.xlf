@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:22 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="No markup">
+        <source>No text format</source>
+        <target state="translated">No text format</target>
+      </trans-unit>
+      <trans-unit id="Bold">
+        <source>Bold</source>
+        <target state="translated">Bold</target>
+      </trans-unit>
+      <trans-unit id="BiDi override">
+        <source>BiDi override</source>
+        <target state="translated">BiDi override</target>
+      </trans-unit>
+      <trans-unit id="Large text">
+        <source>Large text</source>
+        <target state="translated">Large text</target>
+      </trans-unit>
+      <trans-unit id="Citation">
+        <source>Citation</source>
+        <target state="translated">Citation</target>
+      </trans-unit>
+      <trans-unit id="Code">
+        <source>Code</source>
+        <target state="translated">Code</target>
+      </trans-unit>
+      <trans-unit id="Definition">
+        <source>Definition</source>
+        <target state="translated">Definition</target>
+      </trans-unit>
+      <trans-unit id="Deleted text">
+        <source>Deleted text</source>
+        <target state="translated">Deleted text</target>
+      </trans-unit>
+      <trans-unit id="Emphasis">
+        <source>Emphasis</source>
+        <target state="translated">Emphasis</target>
+      </trans-unit>
+      <trans-unit id="Inserted text">
+        <source>Inserted text</source>
+        <target state="translated">Inserted text</target>
+      </trans-unit>
+      <trans-unit id="Italic">
+        <source>Italic</source>
+        <target state="translated">Italic</target>
+      </trans-unit>
+      <trans-unit id="Keyboard">
+        <source>Keyboard</source>
+        <target state="translated">Keyboard</target>
+      </trans-unit>
+      <trans-unit id="Label">
+        <source>Label</source>
+        <target state="translated">Label</target>
+      </trans-unit>
+      <trans-unit id="Monospaced text">
+        <source>Monospaced text</source>
+        <target state="translated">Monospaced text</target>
+      </trans-unit>
+      <trans-unit id="Quotation">
+        <source>Quotation</source>
+        <target state="translated">Quotation</target>
+      </trans-unit>
+      <trans-unit id="Sample">
+        <source>Sample</source>
+        <target state="translated">Sample</target>
+      </trans-unit>
+      <trans-unit id="Small text">
+        <source>Small text</source>
+        <target state="translated">Small text</target>
+      </trans-unit>
+      <trans-unit id="Style container">
+        <source>Style container</source>
+        <target state="translated">Style container</target>
+      </trans-unit>
+      <trans-unit id="Strike-through">
+        <source>Strike-through</source>
+        <target state="translated">Strike-through</target>
+      </trans-unit>
+      <trans-unit id="Strong emphasis">
+        <source>Strong emphasis</source>
+        <target state="translated">Strong emphasis</target>
+      </trans-unit>
+      <trans-unit id="Subscript">
+        <source>Subscript</source>
+        <target state="translated">Subscript</target>
+      </trans-unit>
+      <trans-unit id="Superscript">
+        <source>Superscript</source>
+        <target state="translated">Superscript</target>
+      </trans-unit>
+      <trans-unit id="Underline">
+        <source>Underline</source>
+        <target state="translated">Underline</target>
+      </trans-unit>
+      <trans-unit id="Variable">
+        <source>Variable</source>
+        <target state="translated">Variable</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

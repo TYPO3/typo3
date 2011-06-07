@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:24 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="tx_srspellcheck_pi1.list_type">
+        <source>Spell Checking for HTMLArea RTE</source>
+        <target state="translated">Spell Checking for HTMLArea RTE</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

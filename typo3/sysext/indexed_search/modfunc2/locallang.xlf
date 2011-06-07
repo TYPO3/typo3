@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:09 UTC 2011" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Indexed search statistics</source>
+        <target state="translated">Indexed search statistics</target>
+      </trans-unit>
+      <trans-unit id="title2">
+        <source>List of most searched words</source>
+        <target state="translated">List of most searched words</target>
+      </trans-unit>
+      <trans-unit id="noresults">
+        <source>No results</source>
+        <target state="translated">No results</target>
+      </trans-unit>
+      <trans-unit id="all">
+        <source>All</source>
+        <target state="translated">All</target>
+      </trans-unit>
+      <trans-unit id="last30days">
+        <source>Last 30 days</source>
+        <target state="translated">Last 30 days</target>
+      </trans-unit>
+      <trans-unit id="last24hours">
+        <source>Last 24 hours</source>
+        <target state="translated">Last 24 hours</target>
+      </trans-unit>
+      <trans-unit id="justthispage">
+        <source>Statistics for this page only</source>
+        <target state="translated">Statistics for this page only</target>
+      </trans-unit>
+      <trans-unit id="allpages">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics</source>
+        <target state="translated">Statistics for all pages. Select a page with indexed search form to see several statistics</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

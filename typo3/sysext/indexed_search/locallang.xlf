@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:09 UTC 2011" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search">
+        <source>Indexed search</source>
+        <target state="translated">Indexed search</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search">
+        <source>Indexed search statistics</source>
+        <target state="translated">Indexed search statistics</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="translated">Extension %s was set to be ignored.</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsNotFound">
+        <source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</source>
+        <target state="translated">PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled">
+        <source>PDF tools disabled</source>
+        <target state="translated">PDF tools disabled</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target state="translated">PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target state="translated">'catdoc' tool for reading Word-files was not found in path '%scatdoc'</target>
+      </trans-unit>
+      <trans-unit id="catdocDisabled">
+        <source>catdoc tools (Word-files) disabled</source>
+        <target state="translated">catdoc tools (Word-files) disabled</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlNotFound">
+        <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
+        <target state="translated">'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlDisabled">
+        <source>ppthtml tools (Powerpoint-files) disabled</source>
+        <target state="translated">ppthtml tools (Powerpoint-files) disabled</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlNotFound">
+        <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
+        <target state="translated">'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlDisabled">
+        <source>xlhtml tools (Excel-files) disabled</source>
+        <target state="translated">xlhtml tools (Excel-files) disabled</target>
+      </trans-unit>
+      <trans-unit id="unzipNotFound">
+        <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
+        <target state="translated">'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</target>
+      </trans-unit>
+      <trans-unit id="unzipDisabled">
+        <source>unzip tool (OpenOffice.org-files) disabled</source>
+        <target state="translated">unzip tool (OpenOffice.org-files) disabled</target>
+      </trans-unit>
+      <trans-unit id="unrtfNotFound">
+        <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
+        <target state="translated">'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</target>
+      </trans-unit>
+      <trans-unit id="unrtfDisabled">
+        <source>unrtf tool (RTF-files) disabled</source>
+        <target state="translated">unrtf tool (RTF-files) disabled</target>
+      </trans-unit>
+      <trans-unit id="extension.PDF">
+        <source>PDF (*.%s)</source>
+        <target state="translated">PDF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.DOC">
+        <source>MS Word (*.%s)</source>
+        <target state="translated">MS Word (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.PP">
+        <source>MS Powerpoint (*.%s)</source>
+        <target state="translated">MS Powerpoint (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XLS">
+        <source>MS Excel (*.%s)</source>
+        <target state="translated">MS Excel (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXC">
+        <source>OpenOffice.org Calc (*.%s)</source>
+        <target state="translated">OpenOffice.org Calc (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXI">
+        <source>OpenOffice.org Impress (*.%s)</source>
+        <target state="translated">OpenOffice.org Impress (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXW">
+        <source>OpenOffice.org Writer (*.%s)</source>
+        <target state="translated">OpenOffice.org Writer (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODS">
+        <source>ODF Spreadsheet (*.%s)</source>
+        <target state="translated">ODF Spreadsheet (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODP">
+        <source>ODF Presentation (*.%s)</source>
+        <target state="translated">ODF Presentation (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODT">
+        <source>ODF Text (*.%s)</source>
+        <target state="translated">ODF Text (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.RTF">
+        <source>Rich Text Format (*.%s)</source>
+        <target state="translated">Rich Text Format (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.images">
+        <source>Images (*.%s)</source>
+        <target state="translated">Images (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.HTML">
+        <source>Webpages (*.%s)</source>
+        <target state="translated">Webpages (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.TXT">
+        <source>Textfiles (*.%s)</source>
+        <target state="translated">Textfiles (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.CSV">
+        <source>Comma-Separated Values (*.%s)</source>
+        <target state="translated">Comma-Separated Values (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XML">
+        <source>Extensible Markup Language (*.%s)</source>
+        <target state="translated">Extensible Markup Language (*.%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

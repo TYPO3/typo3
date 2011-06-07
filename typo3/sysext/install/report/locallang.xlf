@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:25:15 UTC 2011" product-name="install">
+    <header/>
+    <body>
+      <trans-unit id="status_fileSystem">
+        <source>File System</source>
+        <target state="translated">File System</target>
+      </trans-unit>
+      <trans-unit id="status_writable">
+        <source>Writable</source>
+        <target state="translated">Writable</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory">
+        <source>Required Directory Missing</source>
+        <target state="translated">Required Directory Missing</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory">
+        <source>Directory not existing</source>
+        <target state="translated">Directory not existing</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory">
+        <source>Directory should be writable</source>
+        <target state="translated">Directory should be writable</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory">
+        <source>Directory not writable</source>
+        <target state="translated">Directory not writable</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist">
+        <source>%s does not exist.</source>
+        <target state="translated">%s does not exist.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate">
+        <source>%s does not exist and could not be created.</source>
+        <target state="translated">%s does not exist and could not be created.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="translated">Also note that it should be writable, if it did exist.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable">
+        <source>%s should be writable.</source>
+        <target state="translated">%s should be writable.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable">
+        <source>%s must be writable.</source>
+        <target state="translated">%s must be writable.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates">
+        <source>Remaining Updates</source>
+        <target state="translated">Remaining Updates</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

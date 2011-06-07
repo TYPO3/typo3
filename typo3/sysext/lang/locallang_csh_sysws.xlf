@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:26:48 UTC 2011" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id=".description">
+        <source>Defines custom workspaces in TYPO3 which allows for groups of people to work together in a publishing process with draft content. More information about workspaces can be found in the document "Inside TYPO3".</source>
+        <target state="translated">Defines custom workspaces in TYPO3 which allows for groups of people to work together in a publishing process with draft content. More information about workspaces can be found in the document "Inside TYPO3".</target>
+      </trans-unit>
+      <trans-unit id="title.description">
+        <source>Enter the name of the workspace. This value is shown in the workspace selector box in the backend.</source>
+        <target state="translated">Enter the name of the workspace. This value is shown in the workspace selector box in the backend.</target>
+      </trans-unit>
+      <trans-unit id="description.description">
+        <source>Make a description of the workspace purpose here. This information is shown in the Workspace Manager and should instruct the workspace users about the purpose of the workspace.</source>
+        <target state="translated">Make a description of the workspace purpose here. This information is shown in the Workspace Manager and should instruct the workspace users about the purpose of the workspace.</target>
+      </trans-unit>
+      <trans-unit id="adminusers.description">
+        <source>Owners of the workspace are those who are allowed to add members and reviewers to the workspace and pick the page tree starting points etc.</source>
+        <target state="translated">Owners of the workspace are those who are allowed to add members and reviewers to the workspace and pick the page tree starting points etc.</target>
+      </trans-unit>
+      <trans-unit id="adminusers.details">
+        <source>Owners can also add and delete other owners. If a user is allowed to create workspaces himself he will automatically become the initial owner user of the workspace. They are also the only ones who can eventually publish the workspace content (except general TYPO3 "admin" users) and thus the highest review authority (unless members/reviewers have access to the Live workspace).</source>
+        <target state="translated">Owners can also add and delete other owners. If a user is allowed to create workspaces himself he will automatically become the initial owner user of the workspace. They are also the only ones who can eventually publish the workspace content (except general TYPO3 "admin" users) and thus the highest review authority (unless members/reviewers have access to the Live workspace).</target>
+      </trans-unit>
+      <trans-unit id="members.description">
+        <source>Members can be backend users or groups and will have access to work in the workspace. They cannot publish content (unless they have access to the Live workspace) but only edit it after which they will forward it for approval by a reviewer.</source>
+        <target state="translated">Members can be backend users or groups and will have access to work in the workspace. They cannot publish content (unless they have access to the Live workspace) but only edit it after which they will forward it for approval by a reviewer.</target>
+      </trans-unit>
+      <trans-unit id="_members.seeAlso">
+        <source>sys_workspace:reviewers</source>
+        <target state="translated">sys_workspace:reviewers</target>
+      </trans-unit>
+      <trans-unit id="reviewers.description">
+        <source>Content have to pass through reviewers approval before it can finally be published by a workspace owner. Reviewers can be backend users or groups and will have access to the workspace just as members have, but can in addition approve content for final publication.</source>
+        <target state="translated">Content have to pass through reviewers approval before it can finally be published by a workspace owner. Reviewers can be backend users or groups and will have access to the workspace just as members have, but can in addition approve content for final publication.</target>
+      </trans-unit>
+      <trans-unit id="reviewers.details">
+        <source>In case you need no review layer between editors (normally workspace "members") and the workspace owners what you simply do is to add all editors as reviewers. This give them access to raise content all the way to the workspace owners. Since content is by default raised from editing to review to publish state it even gives the possibility of informal "four-eye" review where workspace owners can require that content has  been raised by action from two different reviewers.</source>
+        <target state="translated">In case you need no review layer between editors (normally workspace "members") and the workspace owners what you simply do is to add all editors as reviewers. This give them access to raise content all the way to the workspace owners. Since content is by default raised from editing to review to publish state it even gives the possibility of informal "four-eye" review where workspace owners can require that content has  been raised by action from two different reviewers.</target>
+      </trans-unit>
+      <trans-unit id="_reviewers.seeAlso">
+        <source>sys_workspace:members</source>
+        <target state="translated">sys_workspace:members</target>
+      </trans-unit>
+      <trans-unit id="stagechg_notification.description">
+        <source>When the stage of content changes, users in the workspace can receive a notification by email. Only members/reviewers who are attached to the workspace as users and not through their groups will be notified.</source>
+        <target state="translated">When the stage of content changes, users in the workspace can receive a notification by email. Only members/reviewers who are attached to the workspace as users and not through their groups will be notified.</target>
+      </trans-unit>
+      <trans-unit id="stagechg_notification.details">
+        <source>"Notify users on next stage only": When content is raised from "Editing" to "Review", reviewers are notified. When content is raised to "Publish", owners are notified. When content is rejected, members and reviewers are notified. When content is raised from rejected state, members are notified.
+
+"Notify all users on any change" : All users in workspace are notified regardless of change.</source>
+        <target state="translated">"Notify users on next stage only": When content is raised from "Editing" to "Review", reviewers are notified. When content is raised to "Publish", owners are notified. When content is rejected, members and reviewers are notified. When content is raised from rejected state, members are notified.
+
+"Notify all users on any change" : All users in workspace are notified regardless of change.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description">
+        <source>If one or more DB mounts are specified the page tree of the backend will be locked into these root points during work in the workspace.</source>
+        <target state="translated">If one or more DB mounts are specified the page tree of the backend will be locked into these root points during work in the workspace.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details">
+        <source>Any DB mount specified here must be inside the DB mount set for the backend user who logs in. If that is not the case the workspace DB mount will simply not be mounted for the user. If no DB mounts are specified for the workspace the users will access the DB mounts of their user profile.</source>
+        <target state="translated">Any DB mount specified here must be inside the DB mount set for the backend user who logs in. If that is not the case the workspace DB mount will simply not be mounted for the user. If no DB mounts are specified for the workspace the users will access the DB mounts of their user profile.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.description">
+        <source>Filemounts available for workspace users. Please see details for security information!</source>
+        <target state="translated">Filemounts available for workspace users. Please see details for security information!</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details">
+        <source>IMPORTANT: By default a draft workspace has all filemounts disabled! This is because versioning does not apply to any files edited through filemounts in TYPO3. Hence any access to those files would violate the principle that no content managed in a draft workspace will be live before published.
+			However, for specific projects this violation might be acceptable or necessary and therefore you can add a filemount. This will be forced upon any user in the workspace regardless of his filemounts inherited from his groups and user profile!</source>
+        <target state="translated">IMPORTANT: By default a draft workspace has all filemounts disabled! This is because versioning does not apply to any files edited through filemounts in TYPO3. Hence any access to those files would violate the principle that no content managed in a draft workspace will be live before published.
+			However, for specific projects this violation might be acceptable or necessary and therefore you can add a filemount. This will be forced upon any user in the workspace regardless of his filemounts inherited from his groups and user profile!</target>
+      </trans-unit>
+      <trans-unit id="publish_time.description">
+        <source>Specify a time of publication of the workspace content.</source>
+        <target state="translated">Specify a time of publication of the workspace content.</target>
+      </trans-unit>
+      <trans-unit id="publish_time.details">
+        <source>The publish and unpublish times are active only if "mod/user/ws/cli/ws_cli.phpsh" is set up as a cronjob running every minute. Example configuration could be "* * * * * /[ABSOLUTE PATH TO TYPO3 SITE]/typo3/mod/user/ws/cli/ws_cli.phpsh"</source>
+        <target state="translated">The publish and unpublish times are active only if "mod/user/ws/cli/ws_cli.phpsh" is set up as a cronjob running every minute. Example configuration could be "* * * * * /[ABSOLUTE PATH TO TYPO3 SITE]/typo3/mod/user/ws/cli/ws_cli.phpsh"</target>
+      </trans-unit>
+      <trans-unit id="_publish_time.seeAlso">
+        <source>sys_workspace:unpublish_time</source>
+        <target state="translated">sys_workspace:unpublish_time</target>
+      </trans-unit>
+      <trans-unit id="unpublish_time.description">
+        <source>Specify an additional time of (un)publication of the workspace content.</source>
+        <target state="translated">Specify an additional time of (un)publication of the workspace content.</target>
+      </trans-unit>
+      <trans-unit id="unpublish_time.details">
+        <source>By "additional" is meant that both publishing times are used in a similar way, but if "Publish" is specified it takes precedence over "Unpublish". Anyway, the point of two publishing times is that workspace content could be swapped in for a limited period and then out again. But notice; for this to work the Swap mode must be set to "Swap-Into-Workspace on Auto-publish".</source>
+        <target state="translated">By "additional" is meant that both publishing times are used in a similar way, but if "Publish" is specified it takes precedence over "Unpublish". Anyway, the point of two publishing times is that workspace content could be swapped in for a limited period and then out again. But notice; for this to work the Swap mode must be set to "Swap-Into-Workspace on Auto-publish".</target>
+      </trans-unit>
+      <trans-unit id="_unpublish_time.seeAlso">
+        <source>sys_workspace:publish_time,sys_workspace:swap_modes</source>
+        <target state="translated">sys_workspace:publish_time,sys_workspace:swap_modes</target>
+      </trans-unit>
+      <trans-unit id="freeze.description">
+        <source>If set, no editing is allowed inside workspace.</source>
+        <target state="translated">If set, no editing is allowed inside workspace.</target>
+      </trans-unit>
+      <trans-unit id="live_edit.description">
+        <source>If set, records from tables where versioning is not enabled can still be edited "live" inside the workspace.</source>
+        <target state="translated">If set, records from tables where versioning is not enabled can still be edited "live" inside the workspace.</target>
+      </trans-unit>
+      <trans-unit id="review_stage_edit.description">
+        <source>If set, records raised to Review stage can still be edited by workspace members. This allows late changes to be made while waiting for the review. Only when the stage is raised to Publish the record is completely locked for editing for members and reviewers.</source>
+        <target state="translated">If set, records raised to Review stage can still be edited by workspace members. This allows late changes to be made while waiting for the review. Only when the stage is raised to Publish the record is completely locked for editing for members and reviewers.</target>
+      </trans-unit>
+      <trans-unit id="disable_autocreate.description">
+        <source>If set, records are not automatically created as new versions when edited in the workspace. A new version must be manually created first.</source>
+        <target state="translated">If set, records are not automatically created as new versions when edited in the workspace. A new version must be manually created first.</target>
+      </trans-unit>
+      <trans-unit id="swap_modes.description">
+        <source>Defines modes for publishing as a "swap" action where the online content is moved into the workspace in exchange for the workspace content.</source>
+        <target state="translated">Defines modes for publishing as a "swap" action where the online content is moved into the workspace in exchange for the workspace content.</target>
+      </trans-unit>
+      <trans-unit id="swap_modes.details">
+        <source>By default swapping is allowed. Thereby two versions can be published "in and out" of a workspace multiple times, always substituting each other. If this is not desired, it can be disabled with "Disable Swap-Into-Workspace".
+Another mode "Swap-Into-Workspace on Auto-publish" will force the automatic publishing through the cronjob to swap versions. This is necessary to use if you specify both a publish AND un-publish time because otherwise the workspace will be empty after the first publish action!</source>
+        <target state="translated">By default swapping is allowed. Thereby two versions can be published "in and out" of a workspace multiple times, always substituting each other. If this is not desired, it can be disabled with "Disable Swap-Into-Workspace".
+Another mode "Swap-Into-Workspace on Auto-publish" will force the automatic publishing through the cronjob to swap versions. This is necessary to use if you specify both a publish AND un-publish time because otherwise the workspace will be empty after the first publish action!</target>
+      </trans-unit>
+      <trans-unit id="_swap_modes.seeAlso">
+        <source>sys_workspace:unpublish_time</source>
+        <target state="translated">sys_workspace:unpublish_time</target>
+      </trans-unit>
+      <trans-unit id="vtypes.description">
+        <source>Select versioning types you want to disable for workspace editors/reviewers (admin users and owners are not limited).</source>
+        <target state="translated">Select versioning types you want to disable for workspace editors/reviewers (admin users and owners are not limited).</target>
+      </trans-unit>
+      <trans-unit id="vtypes.details">
+        <source>"Element" is the most common form of versioning where a single element is versionized solo.
+"Page" is a versioning type where a page record and child records from specified tables (like "Content Elements" and "Language Overlay Records") are copied along. This form is more complex but offers flexibility in terms of rearrangement of elements on the page.
+"Branch" versioning is where a page is versionized and all subpages and content is copied along. This can have quite heavy implications on data duplication and is recommended only in special circumstances.
+
+More information about versioning types can be read in "Inside TYPO3"</source>
+        <target state="translated">"Element" is the most common form of versioning where a single element is versionized solo.
+"Page" is a versioning type where a page record and child records from specified tables (like "Content Elements" and "Language Overlay Records") are copied along. This form is more complex but offers flexibility in terms of rearrangement of elements on the page.
+"Branch" versioning is where a page is versionized and all subpages and content is copied along. This can have quite heavy implications on data duplication and is recommended only in special circumstances.
+
+More information about versioning types can be read in "Inside TYPO3"</target>
+      </trans-unit>
+      <trans-unit id="publish_access.description">
+        <source>Refines the rules of publishing</source>
+        <target state="translated">Refines the rules of publishing</target>
+      </trans-unit>
+      <trans-unit id="publish_access.details">
+        <source>"Publish only content in publish stage" : Only when content is in publish stage can it be published. 
+"Only workspace owner can publish" : Only the workspace owner can publish the content in the workspace, even if members or reviewers have access to the Live workspace.</source>
+        <target state="translated">"Publish only content in publish stage" : Only when content is in publish stage can it be published. 
+"Only workspace owner can publish" : Only the workspace owner can publish the content in the workspace, even if members or reviewers have access to the Live workspace.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

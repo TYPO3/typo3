@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:23 UTC 2011" product-name="rtehtmlarea">
+    <header/>
+    <body>
+      <trans-unit id="Insert Smiley">
+        <source>Insert Smiley</source>
+        <target state="translated">Insert Smiley</target>
+      </trans-unit>
+      <trans-unit id="Smiley">
+        <source>Smiley</source>
+        <target state="translated">Smiley</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target state="translated">Cancel</target>
+      </trans-unit>
+      <trans-unit id="mozilla_smile">
+        <source>Smile</source>
+        <target state="translated">Smile</target>
+      </trans-unit>
+      <trans-unit id="mozilla_frown">
+        <source>Frown</source>
+        <target state="translated">Frown</target>
+      </trans-unit>
+      <trans-unit id="mozilla_wink">
+        <source>Wink</source>
+        <target state="translated">Wink</target>
+      </trans-unit>
+      <trans-unit id="mozilla_tongueout">
+        <source>Tongue out</source>
+        <target state="translated">Tongue out</target>
+      </trans-unit>
+      <trans-unit id="mozilla_laughing">
+        <source>Laughing</source>
+        <target state="translated">Laughing</target>
+      </trans-unit>
+      <trans-unit id="mozilla_embarassed">
+        <source>Embarassed</source>
+        <target state="translated">Embarassed</target>
+      </trans-unit>
+      <trans-unit id="mozilla_undecided">
+        <source>Undecided</source>
+        <target state="translated">Undecided</target>
+      </trans-unit>
+      <trans-unit id="mozilla_surprised">
+        <source>Surprise</source>
+        <target state="translated">Surprise</target>
+      </trans-unit>
+      <trans-unit id="mozilla_kiss">
+        <source>Kiss</source>
+        <target state="translated">Kiss</target>
+      </trans-unit>
+      <trans-unit id="mozilla_yell">
+        <source>Yell</source>
+        <target state="translated">Yell</target>
+      </trans-unit>
+      <trans-unit id="mozilla_cool">
+        <source>Cool</source>
+        <target state="translated">Cool</target>
+      </trans-unit>
+      <trans-unit id="mozilla_moneyinmouth">
+        <source>Money Mouth</source>
+        <target state="translated">Money Mouth</target>
+      </trans-unit>
+      <trans-unit id="mozilla_footinmouth">
+        <source>Foot in mouth</source>
+        <target state="translated">Foot in mouth</target>
+      </trans-unit>
+      <trans-unit id="mozilla_innocent">
+        <source>Innocent</source>
+        <target state="translated">Innocent</target>
+      </trans-unit>
+      <trans-unit id="mozilla_cry">
+        <source>Cry</source>
+        <target state="translated">Cry</target>
+      </trans-unit>
+      <trans-unit id="mozilla_sealed">
+        <source>Lips are sealed</source>
+        <target state="translated">Lips are sealed</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
