@@ -218,5 +218,9 @@ $t3libClasses = array(
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
 
-return array_merge($t3libClasses, $tslibClasses);
+$classes = array_merge($t3libClasses, $tslibClasses);
+
+$langClasses = require(PATH_typo3 . 'sysext/lang/ext_autoload.php');
+
+return array_merge($classes, $langClasses);
 ?>

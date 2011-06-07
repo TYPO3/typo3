@@ -54,8 +54,12 @@ Ext.apply(HTMLArea, {
 	/***************************************************
 	 * LOCALIZATION                                    *
 	 ***************************************************/
-	localize: function (label) {
-		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
+	localize: function (label, plural) {
+        var i = plural || 0;
+		var label = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
+        if (label[i] != undefined) {
+            return label[i]['target'];
+        }
 	},
 	/***************************************************
 	 * INITIALIZATION                                  *
@@ -1462,13 +1466,13 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 			id: this.editorId + '-statusBarTree',
 			tag: 'span',
 			cls: 'statusBarTree',
-			html: HTMLArea.I18N.msg['Path'] + ': '
+			html: HTMLArea.localize('Path') + ': '
 		}, true).setVisibilityMode(Ext.Element.DISPLAY).setVisible(true);
 		this.statusBarTextMode = Ext.DomHelper.append(this.getEl(), {
 			id: this.editorId + '-statusBarTextMode',
 			tag: 'span',
 			cls: 'statusBarTextMode',
-			html: HTMLArea.I18N.msg['TEXT_MODE']
+			html: HTMLArea.localize('TEXT_MODE')
 		}, true).setVisibilityMode(Ext.Element.DISPLAY).setVisible(false);
 	},
 	/*
@@ -1501,7 +1505,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 			this.clear();
 			var path = Ext.DomHelper.append(this.statusBarTree, {
 				tag: 'span',
-				html: HTMLArea.I18N.msg['Path'] + ': '
+				html: HTMLArea.localize('Path') + ': '
 			},true);
 			Ext.each(ancestors, function (ancestor, index) {
 				if (!ancestor) {
@@ -1531,7 +1535,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				var element = Ext.DomHelper.insertAfter(path, {
 					tag: 'a',
 					href: '#',
-					'ext:qtitle': HTMLArea.I18N.dialogs['statusBarStyle'],
+					'ext:qtitle': HTMLArea.localize('statusBarStyle'),
 					'ext:qtip': ancestor.style.cssText.split(';').join('<br />'),
 					html: text
 				}, true);
@@ -1579,7 +1583,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 			}
 		}
 			// Update the word count of the status bar
-		this.statusBarWordCount.dom.innerHTML = wordCount ? ( wordCount + ' ' + HTMLArea.I18N.dialogs[(wordCount == 1) ? 'word' : 'words']) : '&nbsp;';
+		this.statusBarWordCount.dom.innerHTML = wordCount ? ( wordCount + ' ' + HTMLArea.localize((wordCount == 1) ? 'word' : 'words')) : '&nbsp;';
 	},
 	/*
 	 * Adapt status bar to current editor mode
@@ -2172,7 +2176,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 					this.appendToLog('HTMLArea.Editor', 'setMode', 'The HTML document is not well-formed.', 'warn');
 					TYPO3.Dialog.ErrorDialog({
 						title: 'htmlArea RTE',
-						msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
+						msg: HTMLArea.localize('HTML-document-not-well-formed')
 					});
 					break;
 				}
@@ -2923,7 +2927,7 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 		editor.appendToLog('HTMLArea', 'getHTML', 'The HTML document is not well-formed.', 'warn');
 		TYPO3.Dialog.ErrorDialog({
 			title: 'htmlArea RTE',
-			msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
+			msg: HTMLArea.localize('HTML-document-not-well-formed')
 		});
 		return editor.document.body.innerHTML;
 	}
@@ -4363,7 +4367,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	string		the localization of the label
 	 */
 	localize: function (label) {
-		return this.I18N[label] || HTMLArea.localize(label);
+		return HTMLArea.localize(label);
 	},
 	/**
 	 * Get localized label wrapped with contextual help markup when available

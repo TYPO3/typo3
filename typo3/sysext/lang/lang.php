@@ -27,8 +27,6 @@
 /**
  * Contains the TYPO3 Backend Language class
  *
- * Revised for TYPO3 3.6.0
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
@@ -70,41 +68,77 @@
  * @see typo3/template.php, template
  */
 class language {
-		// This is set to the language that is currently running for the user
+	
+	/**
+	 * This is set to the language that is currently running for the user
+	 * 
+	 * @var string
+	 */
 	public $lang = 'default';
-		// Values like the labels in the tables.php-document are split by '|'.
-		// This values defines which language is represented by which position
-		// in the resulting array after splitting a value. (NOTICE: Obsolete concept!)
+
+	/**
+	 * Values like the labels in the tables.php-document are split by '|'.
+	 * This values defines which language is represented by which position
+	 * in the resulting array after splitting a value. (NOTICE: Obsolete concept!)
+	 * 
+	 * @var string
+	 */
 	public $langSplit = 'default';
 
-		// Default charset in backend
-	public $charSet = 'iso-8859-1';
+	/**
+	 * Default charset in backend
+	 *
+	 * @var string
+	 */
+	public $charSet = 'utf-8';
 
-		// Array with alternative charsets for other languages.
-		// Moved to t3lib_cs, set internally from csConvObj!
+	/**
+	 * Array with alternative charsets for other languages.
+	 * Moved to t3lib_cs, set internally from csConvObj!
+	 * 
+	 * @var array
+	 */
 	public $charSetArray = array();
 
-		// This is the url to the TYPO3 manual
-	public $typo3_help_url= 'http://www.typo3.com/man_uk/';
+	/**
+	 * This is the url to the TYPO3 manual
+	 * 
+	 * @var string
+	 */
+	public $typo3_help_url= 'http://typo3.org/documentation/document-library/';
 
-		// Array with alternative URLs based on language.
-	public $helpUrlArray = array(
-		'dk' => 'http://www.typo3.com/man_dk/',
-	);
-
-		// If TRUE, will show the key/location of labels in the backend.
+	/**
+	 * If TRUE, will show the key/location of labels in the backend.
+	 * @var bool
+	 */
 	public $debugKey = FALSE;
 
-		// Can contain labels and image references from the backend modules.
-		// Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
+	/**
+	 * Can contain labels and image references from the backend modules.
+	 * Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
+	 * 
+	 * @var array
+	 */
 	public $moduleLabels = array();
 
-		// Internal
-		// Points to the position of the current language key as found in constant TYPO3_languages
+	/**
+	 * Internal, Points to the position of the current language key as found in constant TYPO3_languages
+	 * @var int
+	 */
 	public $langSplitIndex = 0;
-		// Internal cache for read LL-files
+	
+	/**
+	 * Internal cache for read LL-files
+	 * 
+	 * @var array
+	 */
 	public $LL_files_cache = array();
-		// Internal cache for ll-labels (filled as labels are requested)
+
+	/**
+	 * Internal cache for ll-labels (filled as labels are requested)
+	 * 
+	 * @var array
+	 */
 	public $LL_labels_cache = array();
 
 	/**
@@ -115,22 +149,32 @@ class language {
 	public $csConvObj;
 
 	/**
+	 * instance of the parser factory
+	 * @var tx_language_Factory
+	 */
+	public $parserFactory;
+
+	/**
 	 * Initializes the backend language.
 	 * This is for example done in typo3/template.php with lines like these:
 	 *
 	 * require (PATH_typo3 . 'sysext/lang/lang.php');
 	 * $LANG = t3lib_div::makeInstance('language');
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
-	 *
-	 * @param	string		The language key (two character string from backend users profile)
-	 * @param	string		IGNORE. Not used.
-	 * @return	void
+	 * 
+	 * @throws RuntimeException
+	 * @param  string $lang		The language key (two character string from backend users profile)
+	 * @param  string $altPath	IGNORE. Not used.
+	 * @return void
 	 */
 	public function init($lang, $altPath = '') {
 
 			// Initialize the conversion object:
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		$this->charSetArray = $this->csConvObj->charSetArray;
+
+			// Initialize the parser factory object
+		$this->parserFactory = t3lib_div::makeInstance('tx_language_Factory');
 
 			// Internally setting the list of TYPO3 backend languages.
 		$this->langSplit = TYPO3_languages;
@@ -146,15 +190,15 @@ class language {
 				$this->langSplitIndex = $i;
 					// The current language key
 				$this->lang = $lang;
-						// The help URL if different from the default.
-				if ($this->helpUrlArray[$this->lang]) {
-					$this->typo3_help_url = $this->helpUrlArray[$this->lang];
-				}
 				if ($this->charSetArray[$this->lang]) {
 						// The charset if different from the default.
 					$this->charSet = $this->charSetArray[$this->lang];
 				}
 			}
+		}
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lang']['debug'] === TRUE) {
+			$this->debugKey = TRUE;
 		}
 
 			// If a forced charset is used and different from the charset otherwise used:
@@ -169,14 +213,21 @@ class language {
 	}
 
 	/**
+	 * Get the parser factory
+	 * @return tx_language_Factory
+	 */
+	public function getParserFactory() {
+		return $this->parserFactory;
+	}
+
+	/**
 	 * Adds labels and image references from the backend modules to the internal moduleLabels array
-	 *
-	 * @param	array		Array with references to module labels, keys: ['labels']['tablabel'],
-	 * 						['labels']['tabdescr'], ['tabs']['tab']
-	 * @param	string		Module name prefix
-	 * @return	void
-	 * @access	public
-	 * @see t3lib_loadModules
+	 * 
+	 * @param  array $arr		Array with references to module labels, keys: ['labels']['tablabel'],
+	 * 							['labels']['tabdescr'], ['tabs']['tab']
+	 * @param  string $prefix	Module name prefix
+	 * @return void
+	 * @see    t3lib_loadModules
 	 */
 	public function addModuleLabels($arr, $prefix) {
 		if (is_array($arr)) {
@@ -197,11 +248,11 @@ class language {
 	 * Will htmlspecialchar() the input string and before that any charset conversion
 	 * will also have taken place if needed (see init())
 	 * Used to pipe language labels through just before they are returned.
-	 *
-	 * @param	string		The string to process
-	 * @param	boolean		If set, then the string is htmlspecialchars()'ed
-	 * @return	string		The processed string
-	 * @see init()
+	 * 
+	 * @param  string $lStr The string to process
+	 * @param  boolean $hsc	If set, then the string is htmlspecialchars()'ed
+	 * @return string		The processed string
+	 * @see    init()
 	 * @access public
 	 */
 	public function hscAndCharConv($lStr, $hsc) {
@@ -222,9 +273,9 @@ class language {
 	 * written into the <div> layer is decoded as iso-8859-1 no matter what charset
 	 * is used in the document otherwise (only MSIE, Mozilla is OK).
 	 * So by converting we by-pass this problem.
-	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * 
+	 * @param  string $str	Input string
+	 * @return string		Output string
 	 * @access	public
 	 */
 	public function makeEntities($str) {
@@ -245,8 +296,8 @@ class language {
 	 * rawurlencode() in order to pass strings in a safe way. This could still be done
 	 * for iso-8859-1 charsets but now I have applied the same method here for all charsets.
 	 *
-	 * @param	string		Input string, encoded with $this->charSet
-	 * @return	string		Output string, a JavaScript function: "String.fromCharCode(......)"
+	 * @param	string $str		Input string, encoded with $this->charSet
+	 * @return	string			Output string, a JavaScript function: "String.fromCharCode(......)"
 	 * @access	public
 	 */
 	public function JScharCode($str) {
@@ -263,46 +314,52 @@ class language {
 	}
 
 	/**
+	 * Debug localization key
+	 * 
+	 * @param  $value	Value to debug
+	 * @return string
+	 */
+	public function debugLL($value) {
+		return ($this->debugKey ? '[' . $value . ']' : '');
+	}
+
+	/**
 	 * Returns the label with key $index form the globally loaded $LOCAL_LANG array.
 	 * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
 	 *
-	 * @param	string		Label key
-	 * @param	boolean		If set, the return value is htmlspecialchar'ed
+	 * @param	string $index	Label key
+	 * @param	boolean $hsc	If set, the return value is htmlspecialchar'ed
 	 * @return	string
 	 * @access	public
 	 */
-	public function getLL($index, $hsc = 0) {
+	public function getLL($index, $hsc = FALSE) {
 			// Get Local Language
-		if (strcmp($GLOBALS['LOCAL_LANG'][$this->lang][$index], '')) {
-				// Returns local label if not blank.
-			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index], $hsc);
+		if (strcmp($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'], '')) {
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'], $hsc);
 		} else {
-				// Returns default label
-			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);
+			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index][0]['target'], $hsc);
 		}
-		return $output . ($this->debugKey ? ' [' . $index . ']' : '');
+		return $output . $this->debugLL($index);
 	}
 
 	/**
 	 * Works like ->getLL() but takes the $LOCAL_LANG array
 	 * used as the second argument instead of using the global array.
 	 *
-	 * @param	string		Label key
-	 * @param	array		$LOCAL_LANG array to get label key from
-	 * @param	boolean		If set, the return value is htmlspecialchar'ed
+	 * @param	string  $index			Label key
+	 * @param	array   $localLanguage	$LOCAL_LANG array to get label key from
+	 * @param	boolean	$hsc			If set, the return value is htmlspecialchar'ed
 	 * @return	string
 	 * @access	public
 	 */
-	public function getLLL($index, $LOCAL_LANG, $hsc = 0) {
+	public function getLLL($index, $localLanguage, $hsc = FALSE) {
 			// Get Local Language
-		if (strcmp($LOCAL_LANG[$this->lang][$index], '')) {
-				// Returns local label if not blank.
-			$output = $this->hscAndCharConv($LOCAL_LANG[$this->lang][$index], $hsc);
+		if (strcmp($localLanguage[$this->lang][$index][0]['target'], '')) {
+			$output = $this->hscAndCharConv($localLanguage[$this->lang][$index][0]['target'], $hsc);
 		} else {
-				// Returns default label
-			$output = $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);
+			$output = $this->hscAndCharConv($localLanguage['default'][$index][0]['target'], $hsc);
 		}
-		return $output . ($this->debugKey ? ' [' . $index . ']' : '');
+		return $output . $this->debugLL($index);
 	}
 
 	/**
@@ -315,13 +372,13 @@ class language {
 	 * (and thereby it's highly deprecated to use 'language-splitted' label strings)
 	 * Refer to 'Inside TYPO3' for more details
 	 *
-	 * @param	string		Label key/reference
-	 * @param	boolean		If set, the return value is htmlspecialchar'ed
+	 * @param	string $input	Label key/reference
+	 * @param	boolean	$hsc	If set, the return value is htmlspecialchar'ed
 	 * @return	string
 	 * @access	public
 	 */
-	public function sL($input, $hsc = 0) {
-			// Using obsolete 'language-splitted' labels:
+	public function sL($input, $hsc = FALSE) {
+		// Using obsolete 'language-splitted' labels:
 		if (strcmp(substr($input, 0, 4), 'LLL:')) {
 			$t = explode('|', $input);
 			$out = $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
@@ -370,7 +427,7 @@ class language {
 			if ($hsc) {
 				$output = t3lib_div::deHSCentities(htmlspecialchars($output));
 			}
-			return $output . ($this->debugKey ? ' [' . $input . ']' : '');
+			return $output . $this->debugLL($input);
 		}
 	}
 
@@ -379,29 +436,28 @@ class language {
 	 * as defined in $TCA_DESCR[$table]['refs']
 	 * $TCA_DESCR is a global var
 	 *
-	 * @param	string		Table name found as key in global array $TCA_DESCR
+	 * @param	string $table	Table name found as key in global array $TCA_DESCR
 	 * @return	void
 	 * @access	public
 	 */
 	public function loadSingleTableDescription($table) {
-		global $TCA_DESCR;
 
 			// First the 'table' cannot already be loaded in [columns]
 			// and secondly there must be a references to locallang files available in [refs]
-		if (is_array($TCA_DESCR[$table])
-				&& !isset($TCA_DESCR[$table]['columns'])
-				&& is_array($TCA_DESCR[$table]['refs'])) {
+		if (is_array($GLOBALS['TCA_DESCR'][$table])
+				&& !isset($GLOBALS['TCA_DESCR'][$table]['columns'])
+				&& is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
 
 				// Init $TCA_DESCR for $table-key
-			$TCA_DESCR[$table]['columns'] = array();
+			$GLOBALS['TCA_DESCR'][$table]['columns'] = array();
 
 				// Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
-			foreach ($TCA_DESCR[$table]['refs'] as $llfile) {
-				$LOCAL_LANG = $this->includeLLFile($llfile, 0, 1);
+			foreach ($GLOBALS['TCA_DESCR'][$table]['refs'] as $llfile) {
+				$localLanguage = $this->includeLLFile($llfile, 0, 1);
 
 					// Traverse all keys
-				if (is_array($LOCAL_LANG['default'])) {
-					foreach ($LOCAL_LANG['default'] as $lkey => $lVal) {
+				if (is_array($localLanguage['default'])) {
+					foreach ($localLanguage['default'] as $lkey => $lVal) {
 						$type = '';
 						$fieldName = '';
 
@@ -439,10 +495,10 @@ class language {
 
 							// Append label
 						if ($specialInstruction) {
-							$TCA_DESCR[$table]['columns'][$fieldName][$type] .= LF . $lVal;
+							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $lVal[0]['source'];
 						} else {
 								// Substitute label
-							$TCA_DESCR[$table]['columns'][$fieldName][$type] = $lVal;
+							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] = $lVal[0]['source'];
 						}
 					}
 				}
@@ -454,61 +510,52 @@ class language {
 	 * Includes locallang file (and possibly additional localized version if configured for)
 	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
 	 *
-	 * @param	string		$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
-	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
-	 * @param	boolean		If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
-	 * @return	mixed		If $setGlobal is TRUE the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
+	 * @param	string $fileRef					$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
+	 * @param	boolean $setGlobal				Setting in global variable $LOCAL_LANG (or returning the variable)
+	 * @param	boolean	$mergeLocalOntoDefault	If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
+	 * @return	mixed							If $setGlobal is TRUE the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
 	 * @access	public
 	 */
-	public function includeLLFile($fileRef, $setGlobal = 1, $mergeLocalOntoDefault = 0) {
-			// Configure for global flag:
-		if ($setGlobal) {
-			global $LOCAL_LANG;
-		}
+	public function includeLLFile($fileRef, $setGlobal = TRUE, $mergeLocalOntoDefault = FALSE) {
+
+		$globalLanguage = array();
 
 			// Get default file
-		$llang = $this->readLLfile($fileRef);
+		$localLanguage = $this->readLLfile($fileRef);
 
-		if (is_array($llang) && count($llang)) {
+		if (is_array($localLanguage) && count($localLanguage)) {
 
-			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule((array)$LOCAL_LANG, $llang);
+			$globalLanguage = ($setGlobal) ? t3lib_div::array_merge_recursive_overrule((array)$GLOBALS['LOCAL_LANG'], $localLanguage) : $localLanguage;
 
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
-			if ($lFileRef && (string)$LOCAL_LANG[$this->lang] == 'EXT') {
-				$llang = $this->readLLfile($lFileRef);
-				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG, $llang);
-			}
-
-				// Overriding file?
-				// @deprecated since TYPO3 4.3, remove in TYPO3 4.5, please use the generic method in
-				// t3lib_div::readLLfile and the global array $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef])) {
-				t3lib_div::deprecationLog('Usage of $TYPO3_CONF_VARS[\'BE\'][\'XLLfile\'] is deprecated since TYPO3 4.3. Use $TYPO3_CONF_VARS[\'SYS\'][\'locallangXMLOverride\'][] to include the file ' . $fileRef . ' instead.');
-				$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef]);
-				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG, $ORarray);
+			if ($lFileRef && (string)$globalLanguage[$this->lang] == 'EXT') {
+				$localLanguage = $this->readLLfile($lFileRef);
+				$globalLanguage = t3lib_div::array_merge_recursive_overrule($globalLanguage, $localLanguage);
 			}
 
 				// Merge local onto default
-			if ($mergeLocalOntoDefault && strcmp($this->lang, 'default') && is_array($LOCAL_LANG[$this->lang]) && is_array($LOCAL_LANG['default'])) {
+			if ($mergeLocalOntoDefault && strcmp($this->lang, 'default') && is_array($globalLanguage[$this->lang]) && is_array($globalLanguage['default'])) {
 					// array_merge can be used so far the keys are not
 					// numeric - which we assume they are not...
-				$LOCAL_LANG['default'] = array_merge($LOCAL_LANG['default'], $LOCAL_LANG[$this->lang]);
-				unset($LOCAL_LANG[$this->lang]);
+				$globalLanguage['default'] = array_merge($globalLanguage['default'], $globalLanguage[$this->lang]);
+				unset($globalLanguage[$this->lang]);
 			}
 		}
 
 			// Return value if not global is set.
 		if (!$setGlobal) {
-			return $LOCAL_LANG;
+			return $globalLanguage;
+		} else {
+			$GLOBALS['LOCAL_LANG'] = $globalLanguage;
 		}
 	}
 
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
-	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
-	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
+	 * @param	string $fileRef	Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
+	 * @return	array			Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
 	 * @access	private
 	 */
 	protected function readLLfile($fileRef) {
@@ -518,8 +565,8 @@ class language {
 	/**
 	 * Returns localized fileRef (.[langkey].php)
 	 *
-	 * @param	string		Filename/path of a 'locallang.php' file
-	 * @return	string		Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
+	 * @param	string $fileRef	Filename/path of a 'locallang.php' file
+	 * @return	string			Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
 	 * @access	private
 	 */
 	protected function localizedFileRef($fileRef) {

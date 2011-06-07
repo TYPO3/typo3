@@ -775,24 +775,26 @@ class SC_mod_user_setup_index {
 	 */
 	public function renderLanguageSelect($params, $pObj) {
 
+		$languageOptions = array();
+
 			// compile the languages dropdown
-		$languageOptions = array(
-			'000000000' => LF . '<option value="">' . $GLOBALS['LANG']->getLL('lang_default', 1) . '</option>'
-		);
+		$languageOptions[$GLOBALS['LANG']->getLL('lang_default', 1)] = '<option value="">' . $GLOBALS['LANG']->getLL('lang_default', 1) . '</option>';
+		
 			// traverse the number of languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		foreach ($theLanguages as $language) {
 			if ($language != 'default') {
-				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language];
+				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language][0]['source'];
 				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
 				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? FALSE : TRUE);
 				if (!$unavailable) {
-					$languageOptions[$languageValue . '--' . $language] = '
+					$languageOptions[$languageValue] = '
 					<option value="'.$language.'"'.($GLOBALS['BE_USER']->uc['lang'] == $language ? ' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '').'>'.$GLOBALS['LANG']->getLL('lang_' . $language, 1) . $localLabel . '</option>';
 				}
 			}
 		}
 		ksort($languageOptions);
+
 		$languageCode = '
 				<select id="field_lang" name="data[lang]" class="select">' .
 					implode('', $languageOptions) . '
