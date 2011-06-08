@@ -295,6 +295,8 @@ class tslib_cObj {
 		'intval' => 'boolean',
 		'intval.' => 'array',
 		'numberFormat.' => 'array',
+		'expandList' => 'boolean',
+		'expandList.' => 'array',
 		'date' => 'dateconf',
 		'date.' => 'array',
 		'strftime' => 'strftimeconf',
@@ -2508,6 +2510,19 @@ class tslib_cObj {
 	 */
 	public function stdWrap_numberFormat($content = '', $conf = array()) {
 		$content = $this->numberFormat($content, $conf['numberFormat.']);
+		return $content;
+	}
+
+	/**
+	 * expandList
+	 * Will return a formatted number based on configuration given as stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for expandList.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_expandList($content = '', $conf = array()) {
+		$content = t3lib_div::expandList($content);
 		return $content;
 	}
 
