@@ -16,7 +16,7 @@ Toolbar inside the Topbar
 	padding: 0px;
 }
 
-#typo3-toolbar li {
+#typo3-toolbar>li {
 	display: inline;
 	float: left;
 	margin-right: -1px; /* necessary for overlaying the separators with the active state background */
