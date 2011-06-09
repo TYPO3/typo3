@@ -64,14 +64,6 @@
  * 	#debug(strlen($out));
  */
 
-@ini_set('max_execution_time',600);
-@ini_set('memory_limit','256m');
-
-
-
-
-
-
 
 /**
  * T3D file Import/Export library (TYPO3 Record Document)
