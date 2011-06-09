@@ -210,7 +210,7 @@ class SC_index {
 		}
 
 			// Starting page:
-		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']), FALSE);
+		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
 
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
