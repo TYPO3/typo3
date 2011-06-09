@@ -106,6 +106,13 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $childSortByFieldName;
 
 	/**
+	 * The order in which the results from the child's table are sorted by
+	 *
+	 * @var string
+	 **/
+	protected $childSortByFieldOrder;
+
+	/**
 	 * The name of the relation table
 	 *
 	 * @var string
@@ -220,6 +227,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
+	}
+
+	public function setChildSortByOrder($childSortByOrder) {
+		$this->childSortByOrder = $childSortByOrder;
+	}
+
+	public function getChildSortByOrder() {
+		return $this->childSortByOrder;
 	}
 
 	public function setRelationTableName($relationTableName) {

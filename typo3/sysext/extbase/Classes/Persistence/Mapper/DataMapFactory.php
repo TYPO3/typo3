@@ -205,6 +205,28 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	}
 
 	/**
+	 * Split fieldname like "abc DESC" into name and order
+	 *
+	 * @param string $fieldname Apart from the name itself may also contain an ordering
+	 * @return array Contains fields "name" and "order"
+	 */
+	protected function splitFieldNameIntoNameAndOrder($fieldName) {
+		$fieldName = trim($fieldName);
+		$splitted = array('name' => $fieldName, 'order' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
+
+		if(($pos = strrpos($fieldName, ' ')) !== FALSE) {
+				// recognize if descending order is given
+				// otherwise defaults to ascending
+			if(strtoupper(substr($fieldName, $pos+1) === 'DESC')) {
+				$splitted['order'] = Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING;
+			}
+			$splitted['name'] = trim(substr($fieldName, 0, $pos));
+		}
+
+		return $splitted;
+	}
+
+	/**
 	 * This method sets the configuration for a 1:1 relation based on
 	 * the $TCA column configuration
 	 *
@@ -216,7 +238,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
-		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$nameAndOrder = self::splitFieldNameIntoNameAndOrder($columnConfiguration['foreign_sortby']);
+		$columnMap->setChildSortbyFieldName($nameAndOrder['name']);
+		$columnMap->setChildSortbyOrder($nameAndOrder['order']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
@@ -234,7 +258,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
-		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$nameAndOrder = self::splitFieldNameIntoNameAndOrder($columnConfiguration['foreign_sortby']);
+		$columnMap->setChildSortbyFieldName($nameAndOrder['name']);
+		$columnMap->setChildSortbyOrder($nameAndOrder['order']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
@@ -277,7 +303,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 			$columnMap->setChildKeyFieldName($childKeyFieldName);
-			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
+			$nameAndOrder = self::splitFieldNameIntoNameAndOrder($columnConfiguration['foreign_sortby']);
+			$columnMap->setChildSortbyFieldName($nameAndOrder['name']);
+			$columnMap->setChildSortbyOrder($nameAndOrder['order']);
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnsupportedRelation('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}

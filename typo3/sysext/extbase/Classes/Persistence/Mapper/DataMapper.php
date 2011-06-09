@@ -364,12 +364,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
-				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => $columnMap->getChildSortByOrder()));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query->setSource($this->getSource($parentObject, $propertyName));
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
-				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => $columnMap->getChildSortByOrder()));
 			}
 		}
 		$query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
