@@ -228,10 +228,13 @@ class tslib_content_Media extends tslib_content_Abstract {
 						$content = $hookObj->customMediaRender($renderType, $conf, $this);
 					}
 				}
-		}
 
-		if (isset($conf['stdWrap.'])) {
-			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+					// To prevent a duplicate call of stdWrap we only call stdWrap for custom
+					// media renderers since SWFOBJECT, QTOBJECT and MULTIMEDIA already do a stdWrap
+					// See http://forge.typo3.org/issues/25277
+				if (isset($conf['stdWrap.'])) {
+					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+				}
 		}
 
 		return $content;
