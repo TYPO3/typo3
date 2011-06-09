@@ -302,5 +302,38 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		}
 		return $frameworkConfiguration;
 	}
+
+	/**
+	 * Takes care of extending the list of storage PIDs (persistence.storagePid)
+	 * with the PIDs of sub pages for persistence.recursive levels. If recursive
+	 * lookup is not configured (persistence.recursive not net or 0),
+	 * $frameworkConfiguration is returned as is.
+	 *
+	 * @param array $frameworkConfiguration
+	 * @return array $frameworkConfiguration
+	 */
+	protected function getRecursiveStoragePids(array $frameworkConfiguration) {
+		if (!isset($frameworkConfiguration['persistence']) ||
+			!isset($frameworkConfiguration['persistence']['storagePid']) ||
+			!isset($frameworkConfiguration['persistence']['recursive']) ||
+			$frameworkConfiguration['persistence']['recursive'] == '0') {
+			return $frameworkConfiguration;
+		}
+
+		$recursiveStoragePids = '';
+		$storagePids = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+		foreach ($storagePids as $storagePid) {
+			$pids = $this->contentObject->getTreeList($storagePid, $frameworkConfiguration['persistence']['recursive']);
+			if (strlen($pids) > 0) {
+				$recursiveStoragePids .= $pids;
+			}
+		}
+
+		if (strlen($recursiveStoragePids) > 0) {
+			$recursiveStoragePids = trim($recursiveStoragePids, ',');
+			$frameworkConfiguration['persistence']['storagePid'] .= ',' . $recursiveStoragePids;
+		}
+		return $frameworkConfiguration;
+	}
 }
 ?>

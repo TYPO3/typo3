@@ -90,7 +90,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-		$this->abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$this->abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 	}
 
 	/**
@@ -287,7 +287,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified() {
-		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->never())->method('overrideSwitchableControllerActions');
@@ -298,7 +298,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreOverriddenIfSpecifiedPluginIsTheCurrentPlugin() {
-		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$abstractConfigurationManager->setConfiguration(array('extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName', 'switchableControllerActions' => array('overriddenSwitchableControllerActions')));
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
@@ -309,7 +309,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreOverriddenIfPluginNameIsNotSpecified() {
-		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
@@ -423,7 +423,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	public function setStoragePidWithStdWrap() {
 
 		unset($this->abstractConfigurationManager);
-		$this->abstractConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration'));
+		$this->abstractConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getRecursiveStoragePids'));
 
 		$pluginConfiguration = $this->testPluginConfiguration;
 		$pluginConfiguration['persistence']['storagePid'] = array(

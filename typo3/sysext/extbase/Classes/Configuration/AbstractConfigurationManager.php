@@ -158,17 +158,22 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
 		}
 
-		if (!empty($frameworkConfiguration['persistence']['storagePid']) &&
-			is_array($frameworkConfiguration['persistence']['storagePid'])) {
+		if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
+			if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
 				/**
 				 * We simulate the frontend to enable the use of cObjects in
 				 * stdWrap. Than we convert the configuration to normal TypoScript
 				 * and apply the stdWrap to the storagePid
 				 */
-			Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
-			$conf = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
-			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
-			Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+				Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
+				$conf = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
+				$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
+				Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+			}
+
+			if (!empty($frameworkConfiguration['persistence']['recursive'])) {
+				$frameworkConfiguration = $this->getRecursiveStoragePids($frameworkConfiguration);
+			}
 		}
 
 		// 1st level cache
@@ -260,5 +265,16 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	 * @return array
 	 */
 	abstract protected function getSwitchableControllerActions($extensionName, $pluginName);
+
+	/**
+	 * Takes care of extending the list of storage PIDs (persistence.storagePid)
+	 * with the PIDs of sub pages for persistence.recursive levels. If recursive
+	 * lookup is not configured (persistence.recursive not net or 0),
+	 * $frameworkConfiguration is returned as is.
+	 *
+	 * @param array $frameworkConfiguration
+	 * @return array $frameworkConfiguration
+	 */
+	abstract protected function getRecursiveStoragePids(array $frameworkConfiguration);
 }
 ?>

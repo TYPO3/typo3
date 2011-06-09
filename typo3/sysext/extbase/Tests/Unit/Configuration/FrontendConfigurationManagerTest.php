@@ -305,5 +305,81 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreExtendedIfRecursiveSearchIsConfigured() {
+		$frameworkConfiguration = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3',
+				'recursive' => '99'
+			)
+		);
+		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('dummy'));
+		$contentObject = $this->getMock('tslib_cObj');
+		$contentObject->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('4,', '', '5,6,'));
+		$frontendConfigurationManager->_set('contentObject', $contentObject);
+
+		$expectedResult = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3,4,5,6',
+				'recursive' => '99'
+			)
+		);
+		$actualResult = $frontendConfigurationManager->_call('getRecursiveStoragePids', $frameworkConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured() {
+		$frameworkConfiguration = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3'
+			)
+		);
+		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('dummy'));
+		$contentObject = $this->getMock('tslib_cObj');
+		$frontendConfigurationManager->_set('contentObject', $contentObject);
+
+		$expectedResult = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3'
+			)
+		);
+		$actualResult = $frontendConfigurationManager->_call('getRecursiveStoragePids', $frameworkConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels() {
+		$frameworkConfiguration = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3',
+				'recursive' => '0'
+			)
+		);
+		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('dummy'));
+		$contentObject = $this->getMock('tslib_cObj');
+		$contentObject->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('', '', ''));
+		$frontendConfigurationManager->_set('contentObject', $contentObject);
+
+		$expectedResult = array(
+			'persistence' => array(
+				'storagePid' => '1,2,3',
+				'recursive' => '0'
+			)
+		);
+		$actualResult = $frontendConfigurationManager->_call('getRecursiveStoragePids', $frameworkConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 ?>

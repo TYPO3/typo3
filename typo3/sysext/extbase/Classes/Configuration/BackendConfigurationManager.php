@@ -37,6 +37,22 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	protected $typoScriptSetupCache = NULL;
 
 	/**
+	 * t3lib_queryGenerator is needed to recursively fetch a page tree
+	 *
+	 * @var t3lib_queryGenerator
+	 */
+	protected $queryGenerator;
+
+	/**
+	 * Inject query generator
+	 *
+	 * @param t3lib_queryGenerator $queryGenerator
+	 */
+	public function injectQueryGenerator(t3lib_queryGenerator $queryGenerator) {
+		$this->queryGenerator = $queryGenerator;
+	}
+
+	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
 	 * @return array the raw TypoScript setup
@@ -140,6 +156,38 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 				'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'Tx_Extbase_MVC_Web_FrontendRequestHandler',
 				'Tx_Extbase_MVC_Web_BackendRequestHandler' => 'Tx_Extbase_MVC_Web_BackendRequestHandler'
 			);
+		}
+		return $frameworkConfiguration;
+	}
+
+	/**
+	 * Takes care of extending the list of storage PIDs (persistence.storagePid)
+	 * with the PIDs of sub pages for persistence.recursive levels. If recursive
+	 * lookup is not configured (persistence.recursive not net or 0),
+	 * $frameworkConfiguration is returned as is.
+	 *
+	 * @param array $frameworkConfiguration
+	 * @return array $frameworkConfiguration
+	 */
+	protected function getRecursiveStoragePids(array $frameworkConfiguration) {
+		if (!isset($frameworkConfiguration['persistence']) ||
+			!isset($frameworkConfiguration['persistence']['storagePid']) ||
+			!isset($frameworkConfiguration['persistence']['recursive']) ||
+			$frameworkConfiguration['persistence']['recursive'] == '0') {
+			return $frameworkConfiguration;
+		}
+
+		$recursiveStoragePids = '';
+		$storagePids = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+		foreach ($storagePids as $storagePid) {
+			$pids = $this->queryGenerator->getTreeList($storagePid, $frameworkConfiguration['persistence']['recursive'], 0, 1);
+			if (strlen($pids) > 0) {
+				$recursiveStoragePids .= ',' . $pids;
+			}
+		}
+
+		if (strlen($recursiveStoragePids) > 0) {
+			$frameworkConfiguration['persistence']['storagePid'] .= $recursiveStoragePids;
 		}
 		return $frameworkConfiguration;
 	}
