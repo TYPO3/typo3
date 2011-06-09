@@ -37,8 +37,8 @@ class tslib_content_Media extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, MEDIA
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param $conf array Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$content = '';
@@ -228,10 +228,9 @@ class tslib_content_Media extends tslib_content_Abstract {
 						$content = $hookObj->customMediaRender($renderType, $conf, $this);
 					}
 				}
-		}
-
-		if (isset($conf['stdWrap.'])) {
-			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+				if (isset($conf['stdWrap.'])) {
+					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+				}
 		}
 
 		return $content;
