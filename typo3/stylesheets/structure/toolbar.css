@@ -3,6 +3,6 @@ Toolbar inside the Topbar
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-toolbar li {
+#typo3-toolbar>li {
 	float: left;
 }
