@@ -26,6 +26,13 @@ Toolbar inside the Topbar
 	display: list-item;
 }
 
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+	background:#eee;
+}
+
 #typo3-toolbar div {
 	overflow: visible !important;
 }
