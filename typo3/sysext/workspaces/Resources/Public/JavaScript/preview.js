@@ -161,6 +161,14 @@ Ext.onReady(function() {
 				id: 'wsVisual',
 				layout: 'fit',
 				anchor: '100% 100%',
+				listeners: {
+					activate: function () {
+						if (Ext.isObject(top.Ext.getCmp('slider'))) {
+							top.Ext.getCmp('slider').show();
+							top.Ext.getCmp('visual-mode-options').show();
+						}
+					}
+				},
 				items: [{
 					layout: 'absolute',
 					anchor: '100% 100%',
@@ -264,6 +272,12 @@ Ext.onReady(function() {
 				title: TYPO3.LLL.Workspaces.listView,
 				id: 'wsSettings',
 				layout: 'fit',
+				listeners: {
+					activate: function () {
+						top.Ext.getCmp('slider').hide();
+						top.Ext.getCmp('visual-mode-options').hide();
+					}
+				},
 				items:  [{
 					xtype: 'iframePanel',
 					id: 'settingsPanel',
