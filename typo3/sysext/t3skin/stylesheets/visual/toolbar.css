@@ -19,3 +19,17 @@ $Id$
 .toolbar-item-active {
 	background-image: url('../../icons/gfx/toolbar_item_active_bg.png');
 }
+
+.toolbar-item-menu {
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	list-style: none;
+}
+
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+	background:#eee;
+}

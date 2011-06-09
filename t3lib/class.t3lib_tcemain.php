@@ -6448,20 +6448,19 @@ class t3lib_TCEmain {
 	 * @return	mixed		string: inline subtype (field|mm|list), boolean: false
 	 */
 	function getInlineFieldType($conf) {
-		if ($conf['type'] == 'inline' && $conf['foreign_table']) {
-			if ($conf['foreign_field']) {
-				return 'field';
-			} // the reference to the parent is stored in a pointer field in the child record
-			elseif ($conf['MM'])
-			{
-				return 'mm';
-			} // regular MM intermediate table is used to store data
-			else
-			{
-				return 'list';
-			} // an item list (separated by comma) is stored (like select type is doing)
+		if ($conf['type'] !== 'inline' || !$conf['foreign_table']) {
+			return FALSE;
 		}
-		return FALSE;
+		if ($conf['foreign_field']) {
+				// the reference to the parent is stored in a pointer field in the child record
+			return 'field';
+		} elseif ($conf['MM']) {
+				// regular MM intermediate table is used to store data
+			return 'mm';
+		} else {
+				// an item list (separated by comma) is stored (like select type is doing)
+			return 'list';
+		}
 	}
 
 
