@@ -99,6 +99,7 @@ class tx_Workspaces_Service_GridData {
 
 			foreach ($versions as $table => $records) {
 				$versionArray = array('table' => $table);
+				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 
 				foreach ($records as $record) {
 
@@ -132,21 +133,21 @@ class tx_Workspaces_Service_GridData {
 					$versionArray['icon_Live'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $origRecord);
 					$versionArray['icon_Workspace'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $versionRecord);
 
-					$versionArray['allowedAction_nextStage'] = $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
-					$versionArray['allowedAction_prevStage'] = $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
+					$versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
+					$versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
 
 					if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
-						$versionArray['allowedAction_swap'] = $stagesObj->isNextStageAllowedForUser($swapStage);
+						$versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
 					} elseif ($swapAccess && $swapStage == 0) {
-						$versionArray['allowedAction_swap'] = TRUE;
+						$versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify;
 					} else {
 						$versionArray['allowedAction_swap'] = FALSE;
 					}
-					$versionArray['allowedAction_delete'] = TRUE;
+					$versionArray['allowedAction_delete'] = $isRecordTypeAllowedToModify;
 						// preview and editing of a deleted page won't work ;)
 					$versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
-					$versionArray['allowedAction_edit'] = !$isDeletedPage;
-					$versionArray['allowedAction_editVersionedPage'] = !$isDeletedPage;
+					$versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
+					$versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
 
 					$versionArray['state_Workspace'] = $recordState;
 
