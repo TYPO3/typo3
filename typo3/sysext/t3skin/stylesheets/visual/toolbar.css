@@ -25,3 +25,10 @@ Toolbar inside the Topbar
 	border-top: none;
 	list-style: none;
 }
+
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+	background:#eee;
+}
