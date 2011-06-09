@@ -7114,7 +7114,7 @@ This crops 100x100px; from landscape-images a bit right of the center and portra
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="noRescale" type="boolean">
+		<property name="noScale" type="boolean">
 			<description><![CDATA[If set, image will never be scaled. Only width and height are calculated according to the other properties, so that image is _displayed_ resized, but original files is used. Example:
 
  file = test.jpg // has 1600 x 1200 pixels)
