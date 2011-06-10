@@ -3677,17 +3677,23 @@ class tslib_cObj {
 				</?(?:" . $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
 				(?:
 					(?:
-						\s+\w+					# EITHER spaces, followed by word characters (attribute names)
 						(?:
-							\s*=?\s*			# equals
-							(?>
-								\".*?\"			# attribute values in double-quotes
-								|
-								'.*?'			# attribute values in single-quotes
-								|
-								[^'\">\s]+		# plain attribute values
-							)
-						)?
+							\s+\w+				# EITHER spaces, followed by word characters (attribute names)
+							(?:
+								\s*=?\s*		# equals
+								(?>
+									\".*?\"		# attribute values in double-quotes
+									|
+									'.*?'		# attribute values in single-quotes
+									|
+									[^'\">\s]+	# plain attribute values
+								)
+							)?
+						)
+						|						# OR a single dash (for TYPO3 link tag)
+						(?:
+							\s+-
+						)
 					)+\s*
 					|							# OR only spaces
 					\s*
