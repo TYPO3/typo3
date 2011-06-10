@@ -3644,7 +3644,7 @@ class tslib_cObj {
 				</?(?:" . $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
 				(?:
 					(?:
-						\s+\w+					# EITHER spaces, followed by word characters (attribute names)
+						\s+(?:\w+|-)				# EITHER spaces, followed by word characters (attribute names)
 						(?:
 							\s*=?\s*			# equals
 							(?>
