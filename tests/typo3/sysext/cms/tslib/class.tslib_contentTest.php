@@ -550,6 +550,9 @@ class tslib_contentTest extends tx_phpunit_testcase {
 				$charset . ' text with entities -59|...|1' => array(
 					'-59|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset
 				),
+				$charset . ' text with dash in html-element 28|...|1' => array(
+					'28|...|1', 'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it', 'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>', $charset
+				),
 			));
 		}
 		return $data;
