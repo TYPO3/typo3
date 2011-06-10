@@ -43,6 +43,17 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	protected $storeInSession = FALSE;
 
 	/**
+	 * @var string The message severity class names
+	 */
+	protected $classes = array(
+		self::NOTICE  => 'notice',
+		self::INFO    => 'information',
+		self::OK      => 'ok',
+		self::WARNING => 'warning',
+		self::ERROR   => 'error',
+	);
+
+	/**
 	 * Constructor for a flash message
 	 *
 	 * @param	string	The message.
@@ -80,25 +91,26 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	}
 
 	/**
+	 * Gets the message severity class name
+	 *
+	 * @return	string	The message severity class name
+	 */
+	public function getClass() {
+		return 'message-' . $this->classes[$this->severity];
+	}
+
+	/**
 	 * Renders the flash message.
 	 *
 	 * @return	string	The flash message as HTML.
 	 */
 	public function render() {
-		$classes = array(
-			self::NOTICE =>  'notice',
-			self::INFO =>    'information',
-			self::OK =>      'ok',
-			self::WARNING => 'warning',
-			self::ERROR =>   'error',
-		);
-
 		$title = '';
 		if (!empty($this->title)) {
 			$title = '<div class="message-header">' . $this->title . '</div>';
 		}
 
-		$message = '<div class="typo3-message message-' . $classes[$this->severity] . '">'
+		$message = '<div class="typo3-message ' . $this->getClass() . '">'
 				. $title
 				. '<div class="message-body">' . $this->message . '</div>'
 				. '</div>';
