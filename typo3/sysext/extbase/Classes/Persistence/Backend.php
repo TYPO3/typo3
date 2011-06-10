@@ -853,6 +853,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Determine the storage page ID for a given NEW record
 	 *
 	 * This does the following:
+	 * - If the domain object has an accessible property 'pid' (i.e. through a getPid() method), that is used to store the record.
 	 * - If there is a TypoScript configuration "classes.CLASSNAME.newRecordStoragePid", that is used to store new records.
 	 * - If there is no such TypoScript configuration, it uses the first value of The "storagePid" taken for reading records.
 	 *
@@ -862,6 +863,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($object !== NULL) {
+			if (Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($object, 'pid')) {
+				$pid = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, 'pid');
+				if (isset($pid)) {
+					return (int)$pid;
+				}
+			}
 			$className = get_class($object);
 			if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
 				return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
