@@ -32,6 +32,22 @@ namespace TYPO3\CMS\Extbase\Configuration;
 class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 
 	/**
+	 * t3lib_queryGenerator is needed to recursively fetch a page tree
+	 *
+	 * @var \TYPO3\CMS\Core\Database\QueryGenerator
+	 */
+	protected $queryGenerator;
+
+	/**
+	 * Inject query generator
+	 *
+	 * @param \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator
+	 */
+	public function injectQueryGenerator(\TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator) {
+		$this->queryGenerator = $queryGenerator;
+	}
+
+	/**
 	 * @var array
 	 */
 	protected $typoScriptSetupCache = array();
@@ -158,6 +174,33 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		}
 		return $frameworkConfiguration;
 	}
+
+
+	/**
+	 * Returns a comma separated list of storagePid that are below a certain storage pid.
+	 *
+	 *
+	 * @param string $storagePid Storage PID to start at; multiple PIDs possible as comma-separated list
+	 * @param integer $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
+	 * @return string storage PIDs
+	 */
+	protected function getRecursiveStoragePids($storagePid, $recursionDepth = 0) {
+		if ($recursionDepth <= 0) {
+			return $storagePid;
+		}
+
+		$recursiveStoragePids = '';
+		$storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
+		foreach ($storagePids as $startPid) {
+			$pids = $this->queryGenerator->getTreeList($startPid, $recursionDepth, 0, 1);
+			if (strlen($pids) > 0) {
+				$recursiveStoragePids .= $pids . ',';
+			}
+		}
+
+		return rtrim($recursiveStoragePids, ',');
+	}
+
 }
 
 ?>

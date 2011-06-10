@@ -333,6 +333,63 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreExtendedIfRecursiveSearchIsConfigured() {
+		$storagePid = '3,5,9';
+		$recursive = 99;
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('3,4', '5', '9,898,12'));
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '3,4,5,9,898,12';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured() {
+		$storagePid = '1,2,3';
+
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->never())->method('getTreeList');
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '1,2,3';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels() {
+		$storagePid = '1,2,3';
+		$recursive = 0;
+
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->never())->method('getTreeList');
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '1,2,3';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 
 ?>
