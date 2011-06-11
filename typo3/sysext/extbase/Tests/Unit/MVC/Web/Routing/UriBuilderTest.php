@@ -91,6 +91,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 			->setSection('testSection')
 			->setFormat('testFormat')
 			->setCreateAbsoluteUri(TRUE)
+			->setAbsoluteUriScheme('https')
 			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))
 			->setArgumentPrefix('testArgumentPrefix')
@@ -104,6 +105,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$this->assertEquals('testSection', $this->uriBuilder->getSection());
 		$this->assertEquals('testFormat', $this->uriBuilder->getFormat());
 		$this->assertEquals(TRUE, $this->uriBuilder->getCreateAbsoluteUri());
+		$this->assertEquals('https', $this->uriBuilder->getAbsoluteUriScheme());
 		$this->assertEquals(TRUE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array('test' => 'addQueryStringExcludeArguments'), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
 		$this->assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
@@ -345,6 +347,40 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 
 		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar', 'forceAbsoluteUrl' => TRUE))->will($this->returnValue('http://baseuri/relative/uri'));
 		$uriBuilder->setCreateAbsoluteUri(TRUE);
+
+		$expectedResult = 'http://baseuri/relative/uri';
+		$actualResult = $uriBuilder->buildFrontendUri();
+		$this->assertSame($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildFrontendUriSetsAbsoluteUriSchemeIfSpecified() {
+		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
+		$uriBuilder->_set('contentObject', $this->mockContentObject);
+		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
+
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar', 'forceAbsoluteUrl' => TRUE, 'forceAbsoluteUrl.' => array('scheme' => 'someScheme')))->will($this->returnValue('http://baseuri/relative/uri'));
+		$uriBuilder->setCreateAbsoluteUri(TRUE);
+		$uriBuilder->setAbsoluteUriScheme('someScheme');
+
+		$expectedResult = 'http://baseuri/relative/uri';
+		$actualResult = $uriBuilder->buildFrontendUri();
+		$this->assertSame($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildFrontendUriDoesNotSetAbsoluteUriSchemeIfCreateAbsoluteUriIsFalse() {
+		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
+		$uriBuilder->_set('contentObject', $this->mockContentObject);
+		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
+
+		$this->mockContentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar'))->will($this->returnValue('http://baseuri/relative/uri'));
+		$uriBuilder->setCreateAbsoluteUri(FALSE);
+		$uriBuilder->setAbsoluteUriScheme('someScheme');
 
 		$expectedResult = 'http://baseuri/relative/uri';
 		$actualResult = $uriBuilder->buildFrontendUri();

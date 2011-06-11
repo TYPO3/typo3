@@ -66,6 +66,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $createAbsoluteUri = FALSE;
 
 	/**
+	 * @var string
+	 */
+	protected $absoluteUriScheme = NULL;
+
+	/**
 	 * @var boolean
 	 */
 	protected $addQueryString = FALSE;
@@ -198,7 +203,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Specifies the format of the target (e.g. "html" or "xml")
 	 *
-	 * @param string $section
+	 * @param string $format
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -233,6 +238,24 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function getCreateAbsoluteUri() {
 		return $this->createAbsoluteUri;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAbsoluteUriScheme() {
+		return $this->absoluteUriScheme;
+	}
+
+	/**
+	 * Sets the scheme that should be used for absolute URIs in FE mode
+	 *
+	 * @param string $absoluteUriScheme the scheme to be used for absolute URIs
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 */
+	public function setAbsoluteUriScheme($absoluteUriScheme) {
+		$this->absoluteUriScheme = $absoluteUriScheme;
+		return $this;
 	}
 
 	/**
@@ -544,6 +567,9 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 		if ($this->createAbsoluteUri === TRUE) {
 			$typolinkConfiguration['forceAbsoluteUrl'] = TRUE;
+			if ($this->absoluteUriScheme !== NULL) {
+				$typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
+			}
 		}
 
 		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
