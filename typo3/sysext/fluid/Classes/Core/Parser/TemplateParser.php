@@ -706,7 +706,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function buildArgumentObjectTree($argumentString) {
-		if (strstr($argumentString, '{') === FALSE && strstr($argumentString, '<') === FALSE) {
+		if (strpos($argumentString, '{') === FALSE && strpos($argumentString, '<') === FALSE) {
 			return $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $argumentString);
 		}
 		$splitArgument = $this->splitTemplateAtDynamicTags($argumentString);
