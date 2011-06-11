@@ -34,7 +34,7 @@
  * </output>
  *
  * <code title="Default">
- * <f:be.buttons.icon uri="{f:uri.action(action='new')}" icon="new_el" title="Create new Foo" />
+ * <f:be.buttons.icon uri="{f:uri.action(action:'new')}" icon="new_el" title="Create new Foo" />
  * </code>
  * <output>
  * This time the "new_el" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
