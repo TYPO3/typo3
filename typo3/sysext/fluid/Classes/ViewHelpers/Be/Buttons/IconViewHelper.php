@@ -64,8 +64,7 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelper
 			throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $icon . '" is no valid icon. Allowed are "' . implode('", "', $this->allowedIcons) .'".', 1253208523);
 		}
 
-		$skinnedIcon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $icon . '.gif', '');
-		return '<a href="' . $uri . '"><img' . $skinnedIcon . '" title="' . htmlspecialchars($title) . '" alt="" /></a>';
+		return '<a href="' . $uri . '">' . t3lib_iconWorks::getSpriteIcon($icon, array('title' => $title)) . '</a>';
 	}
 }
 ?>
