@@ -37,11 +37,24 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	protected $configurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $extensionService;
+
+	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -56,7 +69,7 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
 		$requestHashService->verifyRequest($request);
 
-		if ($this->isCacheable($request->getControllerName(), $request->getControllerActionName())) {
+		if ($this->extensionService->isActionCacheable(NULL, NULL, $request->getControllerName(), $request->getControllerActionName())) {
 			$request->setIsCached(TRUE);
 		} else {
 			$contentObject = $this->configurationManager->getContentObject();
@@ -82,22 +95,5 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	public function canHandleRequest() {
 		return TYPO3_MODE === 'FE';
 	}
-
-	/**
-	 * Determines whether the current action can be cached
-	 *
-	 * @param string $controllerName
-	 * @param string $actionName
-	 * @return boolean TRUE if the given action should be cached, otherwise FALSE
-	 */
-	protected function isCacheable($controllerName, $actionName) {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
-			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
-				return FALSE;
-			}
-		return TRUE;
-	}
-
 }
 ?>
