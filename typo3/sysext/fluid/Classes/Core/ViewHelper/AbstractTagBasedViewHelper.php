@@ -95,11 +95,12 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	 * @param string $type Type of the tag attribute
 	 * @param string $description Description of tag attribute
 	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
+	 * @param string $default Default value
 	 * @return void
 	 * @api
 	 */
-	protected function registerTagAttribute($name, $type, $description, $required = FALSE) {
-		$this->registerArgument($name, $type, $description, $required, NULL);
+	protected function registerTagAttribute($name, $type, $description, $required = FALSE, $default = NULL) {
+		$this->registerArgument($name, $type, $description, $required, $default);
 		self::$tagAttributes[get_class($this)][$name] = $name;
 	}
 

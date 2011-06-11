@@ -89,5 +89,25 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();
 	}
+
+	/**
+	 * @test
+	 */
+	public function registerTagAttributeRegistersArgumentWithDefaultValue() {
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('registerArgument'), array(), '', FALSE);
+		$this->viewHelper->expects($this->once())->method('registerArgument')->with('foo', 'string', 'Description', FALSE, 'defaultValue');
+
+		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE, 'defaultValue');
+	}
+
+	/**
+	 * @test
+	 */
+	public function registerTagAttributeRegistersArgumentWithNullIfNoDefaultValueIsSet() {
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('registerArgument'), array(), '', FALSE);
+		$this->viewHelper->expects($this->once())->method('registerArgument')->with('foo', 'string', 'Description', FALSE, NULL);
+
+		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
+	}
 }
 ?>
