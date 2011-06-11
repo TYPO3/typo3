@@ -201,7 +201,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 		$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
 		// Model based validator
-		if (strstr($dataType, '_') !== FALSE && class_exists($dataType)) {
+		if (strpos($dataType, '_') !== FALSE && class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
 
@@ -309,7 +309,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (strstr($validatorName, '_') !== FALSE && class_exists($validatorName)) return $validatorName;
+		if (strpos($validatorName, '_') !== FALSE && class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;
