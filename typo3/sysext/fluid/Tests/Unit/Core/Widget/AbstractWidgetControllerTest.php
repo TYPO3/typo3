@@ -64,5 +64,39 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 		$widgetConfiguration = $abstractWidgetController->_get('widgetConfiguration');
 		$this->assertEquals('myConfiguration', $widgetConfiguration);
 	}
+
+	/**
+	 * @test
+	 */
+	public function viewConfigurationCanBeOverriddenThroughFrameworkConfiguration() {
+		$frameworkConfiguration = array(
+			'view' => array(
+				'widget' => array(
+					'Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper' => array(
+						'templateRootPath' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
+					)
+				)
+			)
+		);
+
+		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
+		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper'));
+
+		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
+		$request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
+
+		$configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager->expects($this->any())
+			->method('getConfiguration')
+			->will($this->returnValue($frameworkConfiguration));
+
+		$view = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'));
+
+		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('dummy'));
+		$abstractWidgetController->injectConfigurationManager($configurationManager);
+		$abstractWidgetController->_set('request', $request);
+		$abstractWidgetController->_call('setViewConfiguration', $view);
+		$this->assertEquals(t3lib_div::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
+	}
 }
 ?>
