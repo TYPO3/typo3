@@ -306,9 +306,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 					)
 					->execute()
 					->getFirst();
-			if ($object !== NULL) {
-				$this->identityMap->registerObject($object, $uid);
-			}
 		}
 		return $object;
 	}
