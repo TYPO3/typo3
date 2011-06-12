@@ -52,6 +52,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $dataMapper;
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
 	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
@@ -133,6 +138,16 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * Injects the Reflection Service
+	 *
+	 * @param Tx_Extbase_Reflection_Service
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**
@@ -250,6 +265,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function setOrderings(array $orderings) {
+		foreach (array_keys($orderings) as $propertyName) {
+			if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805930);
+		}
 		$this->orderings = $orderings;
 		return $this;
 	}
@@ -453,6 +471,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805931);
 		if (is_object($operand) || $caseSensitive) {
 			$comparison = $this->qomFactory->comparison(
 				$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
@@ -481,6 +500,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function like($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805932);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LIKE,
@@ -498,6 +518,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function contains($propertyName, $operand){
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805933);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS,
@@ -515,6 +536,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function in($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805934);
 		if (!is_array($operand) && (!$operand instanceof ArrayAccess) && (!$operand instanceof Traversable)) {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('The "in" operator must be given a mutlivalued operand (array, ArrayAccess, Traversable).', 1264678095);
 		}
@@ -535,6 +557,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function lessThan($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805935);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN,
@@ -551,6 +574,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805936);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO,
@@ -567,6 +591,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function greaterThan($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805937);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN,
@@ -583,11 +608,22 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function greaterThanOrEqual($propertyName, $operand) {
+		if (!$this->queryTypeHasProperty($propertyName)) throw new Tx_Extbase_Persistence_Exception_UnknownProperty('The given property name"' . $propertyName . '" has no corresponding property in class "' . $this->getType() . '".', 1307805938);
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO,
 			$operand
 			);
+	}
+
+	/**
+	 * Checks if a property exists in the query type.
+	 *
+	 * @param string $propertyName The name of the property
+	 * @return bool TRUE if the property exists; FALSE otherwise
+	 */
+	protected function queryTypeHasProperty($propertyName) {
+		return $this->reflectionService->getClassSchema($this->getType())->hasProperty($propertyName);
 	}
 
 	/**
