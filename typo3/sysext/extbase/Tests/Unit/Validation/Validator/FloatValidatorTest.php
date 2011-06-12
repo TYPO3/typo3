@@ -35,52 +35,53 @@
 class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * An array of valid floating point numbers addresses
-	 * @var array
+	 * Data provider with valid floating point numbers
+	 *
+	 * @return array Floats, both as float and string
 	 */
-	protected $validFloatingPointNumbers;
+	public function validFloatingPointNumbers() {
+		return array(
+			array(1029437.234726),
+			array(-666.66),
+			array('123.45'),
+			array('+123.45'),
+			array('-123.45'),
+			array('123.45e3'),
+			array(123.45e3)
+			);
+	}
 
 	/**
-	 * An array of invalid floating point numbers addresses
-	 * @var array
+	 * Data provider with valid floating point numbers
+	 *
+	 * @return array Floats, both as float and string
 	 */
-	protected $invalidFloatingPointNumbers;
-
-	public function setUp() {
-		$this->validFloatingPointNumbers = array(
-			1029437.234726,
-			'123.45',
-			'+123.45',
-			'-123.45',
-			'123.45e3',
-			123.45e3
-			);
-
-		$this->invalidFloatingPointNumbers = array(
-			1029437,
-			'1029437',
-			'not a number'
+	public function invalidFloatingPointNumbers() {
+		return array(
+			array(1029437),
+			array(-666),
+			array('1029437'),
+			array('-666'),
+			array('not a number')
 			);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider validFloatingPointNumbers
 	 */
-	public function floatValidatorReturnsTrueForAValidFloat() {
+	public function floatValidatorReturnsTrueForAValidFloat($number) {
 		$floatValidator = new Tx_Extbase_Validation_Validator_FloatValidator();
-		foreach ($this->validFloatingPointNumbers as $floatingPointNumber) {
-			$this->assertTrue($floatValidator->isValid($floatingPointNumber), "$floatingPointNumber was declared to be invalid, but it is valid.");
-		}
+		$this->assertTrue($floatValidator->isValid($number), "Validator declared $number as invalid though it is valid.");
 	}
 
 	/**
 	 * @test
+	 * @dataProvider invalidFloatingPointNumbers
 	 */
-	public function floatValidatorReturnsFalseForAnInvalidFloat() {
+	public function floatValidatorReturnsFalseForAnInvalidFloat($number) {
 		$floatValidator = $this->getMock('Tx_Extbase_Validation_Validator_FloatValidator', array('addError'), array(), '', FALSE);
-		foreach ($this->invalidFloatingPointNumbers as $floatingPointNumber) {
-			$this->assertFalse($floatValidator->isValid($floatingPointNumber), "$floatingPointNumber was declared to be valid, but it is invalid.");
-		}
+		$this->assertFalse($floatValidator->isValid($number), "Validator declared $number as valid though it is invalid.");
 	}
 
 	/**
