@@ -72,7 +72,8 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_EmailAddressValidatorTest exten
 			array('@typo3.org'),
 			array('someone@typo3.'),
 			array('local@192.168.2'),
-			array('local@192.168.270.1')
+			array('local@192.168.270.1'),
+			array('just@test.invalid ')
 		);
 	}
 
