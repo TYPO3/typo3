@@ -14,7 +14,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 	isWindow: false,
 	loaderUrl: null,
 	rootIcon: 'sysext/t3skin/icons/module_tools_em.png',
-	rootText: TYPO3.lang.ext_details_ext_files,
+	rootText: TYPO3.l10n.localize('ext_details_ext_files'),
 	baseParams: null,
 	treeId: null,
 	fileContent: '',
@@ -84,9 +84,9 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				var action = dropEvent.rawEvent.ctrlKey ? 'copy' : 'move';
 				dropEvent.tree.dragZone.proxy.animRepair = false;
 				dropEvent.cancel = true;
-				var question = this.copyAction ? TYPO3.lang.fileEditCopyConfirmation : TYPO3.lang.fileEditMoveConfirmation;
+				var question = this.copyAction ? TYPO3.l10n.localize('fileEditCopyConfirmation') : TYPO3.l10n.localize('fileEditMoveConfirmation');
 
-				Ext.Msg.confirm(TYPO3.lang.fileEditOperation, String.format(question, dropEvent.dropNode.text, dropEvent.target.text), function(button) {
+				Ext.Msg.confirm(TYPO3.l10n.localize('fileEditOperation'), String.format(question, dropEvent.dropNode.text, dropEvent.target.text), function(button) {
 					if (button == 'yes') {
 						TYPO3.EM.ExtDirect.moveFile(dropEvent.dropNode.id, dropEvent.target.id, !dropEvent.dropNode.leaf, function(response) {
 							if (response.success) {
@@ -137,19 +137,19 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				items: [this.fileTree],
 				tbar: [{
 					iconCls: 'x-tbar-loading',
-					tooltip: TYPO3.lang.fileEditReloadFiletree,
+					tooltip: TYPO3.l10n.localize('fileEditReloadFiletree'),
 					handler: function() {
 						this.fileTree.getRootNode().reload();
 					},
 					scope: this
 				}, {
 					iconCls: 'x-btn-upload',
-					tooltip: TYPO3.lang.cmd_upload,
+					tooltip: TYPO3.l10n.localize('cmd_upload'),
 					ref: '../uploadFileButton',
 					hidden: !this.allowedOperations.uploadFile
 				}, '-', {
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-download',
-					tooltip: TYPO3.lang.cmd_download,
+					tooltip: TYPO3.l10n.localize('cmd_download'),
 					ref: '../downloadFileButton',
 					disabled: true,
 					hidden: !this.allowedOperations.downloadFile,
@@ -162,7 +162,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					scope: this
 				}, {
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new',
-					tooltip: TYPO3.lang.fileEditCreateFileFolder,
+					tooltip: TYPO3.l10n.localize('fileEditCreateFileFolder'),
 					ref: '../createFileButton',
 					disabled: true,
 					hidden: !this.allowedOperations.createFile,
@@ -175,14 +175,14 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					}
 				}, {
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-rename',
-					tooltip: TYPO3.lang.fileEditRename,
+					tooltip: TYPO3.l10n.localize('fileEditRename'),
 					ref: '../renameButton',
 					scope: this,
 					hidden: !this.allowedOperations.renameFile,
 					handler: function() {
 						var node = this.fileTree.getSelectionModel().getSelectedNode();
 						var isFolder = !node.isLeaf();
-						Ext.Msg.prompt(TYPO3.lang.fileEditRename, '', function(btn, text) {
+						Ext.Msg.prompt(TYPO3.l10n.localize('fileEditRename'), '', function(btn, text) {
 							if (btn == 'ok' && text != node.text) {
 								TYPO3.EM.ExtDirect.renameFile(node.attributes.id, text, isFolder, function(response) {
 									if (response.success) {
@@ -197,14 +197,14 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					}
 				}, {
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete',
-					tooltip: TYPO3.lang.ext_details_delete,
+					tooltip: TYPO3.l10n.localize('ext_details_delete'),
 					ref: '../deleteButton',
 					hidden: !this.allowedOperations.deleteFile,
 					scope: this,
 					handler: function() {
 						var node = this.fileTree.getSelectionModel().getSelectedNode();
 						var isFolder = !node.isLeaf();
-						Ext.Msg.confirm(TYPO3.lang.ext_details_delete, '', function(btn, text) {
+						Ext.Msg.confirm(TYPO3.l10n.localize('ext_details_delete'), '', function(btn, text) {
 							if (btn == 'yes') {
 								TYPO3.EM.ExtDirect.deleteFile(node.attributes.id, isFolder, function(response) {
 									if (response.success) {
@@ -227,7 +227,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				items: [this.highlightEditor],
 				tbar: [{
 					iconCls: 'x-btn-filebrowser',
-					tooltip: TYPO3.lang.cmd_openInNewWindow,
+					tooltip: TYPO3.l10n.localize('cmd_openInNewWindow'),
 					ref: '../openWindowButton',
 					scope: this,
 					hidden: this.isWindow || this.noWindowOpen,
@@ -253,7 +253,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					 hidden: this.isWindow
 				 }, {
 					iconCls: 'x-tbar-loading',
-					tooltip: TYPO3.lang.cmd_reloadFile,
+					tooltip: TYPO3.l10n.localize('cmd_reloadFile'),
 					ref: '../reloadButton',
 					scope: this,
 					hidden: true,
@@ -268,7 +268,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					}
 				}, {
 					iconCls: 'x-btn-save',
-					tooltip: TYPO3.settings.EM.fileAllowSave ? TYPO3.lang.cmd_save : TYPO3.lang.ext_details_saving_disabled,
+					tooltip: TYPO3.settings.EM.fileAllowSave ? TYPO3.l10n.localize('cmd_save') : TYPO3.l10n.localize('ext_details_saving_disabled'),
 					ref: '../saveButton',
 					disabled: true,
 					scope: this,
@@ -286,7 +286,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				},
 				{
 					iconCls: 'x-btn-undo',
-					tooltip: TYPO3.lang.cmd_undo,
+					tooltip: TYPO3.l10n.localize('cmd_undo'),
 					ref: '../undoButton',
 					disabled: true,
 					scope: this,
@@ -296,7 +296,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				},
 				{
 					iconCls: 'x-btn-redo',
-					tooltip: TYPO3.lang.cmd_redo,
+					tooltip: TYPO3.l10n.localize('cmd_redo'),
 					ref: '../redoButton',
 					disabled: true,
 					scope: this,
@@ -306,7 +306,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				},
 				{
 					iconCls: 'x-btn-indent',
-					tooltip: TYPO3.lang.cmd_indent,
+					tooltip: TYPO3.l10n.localize('cmd_indent'),
 					ref: '../indentButton',
 					disabled: true,
 					scope: this,
@@ -316,7 +316,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				},
 				{
 					iconCls: 'x-btn-jslint',
-					tooltip: TYPO3.lang.cmd_jslint,
+					tooltip: TYPO3.l10n.localize('cmd_jslint'),
 					ref: '../jslintButton',
 					disabled: true,
 					scope: this,
@@ -334,7 +334,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 								oStore.loadData(aErrorData, false);
 							} else {
 								oStore.loadData([
-									[1, 1, TYPO3.lang.msg_congratsNoErrors]
+									[1, 1, TYPO3.l10n.localize('msg_congratsNoErrors')]
 								], false);
 							}
 							this.highlightEditor.debugWindow.show();
@@ -347,7 +347,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 					xtype: 'tbtext',
 					ref: '../fileLabel',
 					itemId: 'editarea-filename',
-					text: TYPO3.lang.help_loadFileInEditor
+					text: TYPO3.l10n.localize('help_loadFileInEditor')
 				}]
 			}]
 		});
@@ -368,7 +368,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 		if (node.attributes.fileType === 'text') {
 			var file = node.attributes.id;
 			if (this.highlightEditor.contentChanged) {
-				 Ext.MessageBox.confirm(TYPO3.lang.fileEditFileChanged, TYPO3.lang.fileEditFileChangedSavePrompt, function(btn){
+				 Ext.MessageBox.confirm(TYPO3.l10n.localize('fileEditFileChanged'), TYPO3.l10n.localize('fileEditFileChangedSavePrompt'), function(btn){
 					if (btn == 'yes'){
 						this.saveFile(this.highlightEditor.editFile, function() {
 							this.loadFile(node);
@@ -440,11 +440,11 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 			content,
 			function(response) {
 				if (response.success) {
-					TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.lang.cmd_save, String.format(TYPO3.lang.msg_fileSaved, response.file), 5);
+					TYPO3.Flashmessage.display(TYPO3.Severity.ok, TYPO3.l10n.localize('cmd_save'), String.format(TYPO3.l10n.localize('msg_fileSaved'), response.file), 5);
 					this.highlightEditor.contentChanged = false;
 					this.layout.center.panel.fileLabel.removeClass('fileChanged');
 				} else {
-					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.cmd_save, response.error, 5);
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('cmd_save'), response.error, 5);
 				}
 				if (Ext.isFunction(cb)) {
 					cb.call(this);
@@ -526,24 +526,24 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 	fileCreationDialog: function(folderNode) {
 		new Ext.Window({
 			id: 'em-files-createfilefolderdialog',
-			title: TYPO3.lang.fileEditCreateFileFolder,
+			title: TYPO3.l10n.localize('fileEditCreateFileFolder'),
 			layout: 'form',
 			callerClass: this,
 			items: [
 				{
-					fieldLabel:  TYPO3.lang.fileEditNewFilePrompt,
+					fieldLabel:  TYPO3.l10n.localize('fileEditNewFilePrompt'),
 					itemId: 'newfile',
 					xtype: 'textfield',
 					width: 250
 				},
 				{
-					fieldLabel: TYPO3.lang.fileEditCreateFolder,
+					fieldLabel: TYPO3.l10n.localize('fileEditCreateFolder'),
 					xtype: 'checkbox',
 					itemId: 'isFolder'
 				}
 			],
 			buttons: [{
-				text: TYPO3.lang.cmd_create,
+				text: TYPO3.l10n.localize('cmd_create'),
 				handler: function() {
 					var me = Ext.WindowMgr.get('em-files-createfilefolderdialog');
 					var newfile = me.getComponent('newfile').getValue();
@@ -575,7 +575,7 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 				},
 				scope: this
 			}, {
-				text: TYPO3.lang.cmd_cancel,
+				text: TYPO3.l10n.localize('cmd_cancel'),
 				handler: function() {
 					var me = TYPO3.Windows.getById('em-files-createfilefolderdialog');
 					me.close();
@@ -605,7 +605,7 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 		this.contentChanged = false;
 		var me = this;
 		this.debugWindow = new Ext.Window({
-			title: TYPO3.lang.msg_debug,
+			title: TYPO3.l10n.localize('msg_debug'),
 			width: 500,
 			layout: 'border',
 			closeAction: 'hide',
@@ -635,7 +635,7 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 				columns: [
 					{
 						id: 'line',
-						header: TYPO3.lang.msg_line,
+						header: TYPO3.l10n.localize('msg_line'),
 						width: 40,
 						fixed: true,
 						menuDisabled: true,
@@ -643,14 +643,14 @@ TYPO3.EM.CodeMirror = Ext.extend(Ext.Panel, {
 					},
 					{
 						id: 'character',
-						header: TYPO3.lang.msg_character,
+						header: TYPO3.l10n.localize('msg_character'),
 						width: 70,
 						fixed: true,
 						menuDisabled: true,
 						dataIndex: 'character'
 					},
 					{
-						header: TYPO3.lang.show_description,
+						header: TYPO3.l10n.localize('show_description'),
 						menuDisabled: true,
 						dataIndex: 'reason'
 					}
