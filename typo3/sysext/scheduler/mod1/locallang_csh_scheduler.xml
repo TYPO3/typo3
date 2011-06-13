@@ -67,6 +67,8 @@
 			<label index="task_tableGarbageCollection_table.description">Select one of the registered tables to be cleaned up with this task.</label>
 			<label index="task_tableGarbageCollection_allTables.alttitle">Clean up all tables</label>
 			<label index="task_tableGarbageCollection_allTables.description">If selected, all configured tables are cleaned. The selection below is ignored.</label>
+			<label index="task_recyclerGarbageCollection_numberOfDays.alttitle">Number of days</label>
+			<label index="task_recyclerGarbageCollection_numberOfDays.description">Delete files in _recycler_ folders that are older than given number of days.</label>
 		</languageKey>
 	</data>
 </T3locallang>

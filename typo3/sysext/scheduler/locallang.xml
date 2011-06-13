@@ -14,6 +14,8 @@
 			<label index="cachingFrameworkGarbageCollection.description">This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</label>
 			<label index="tableGarbageCollection.name">Table garbage collection</label>
 			<label index="tableGarbageCollection.description">Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</label>
+			<label index="recyclerGarbageCollection.name">Fileadmin recycler garbage collection</label>
+			<label index="recyclerGarbageCollection.description">This task empties all "_recycler_" folders below fileadmin. This will free some space in filesystem.</label>
 		</languageKey>
 	</data>
 </T3locallang>
