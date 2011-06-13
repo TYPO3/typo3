@@ -53,19 +53,19 @@ TYPO3.EM.AdditionalApplicationItems = [];
 
 TYPO3.EM.App = {
 	refreshLocalList: false,
-	loadingIndicor: '<div class="loading-indicator">' + TYPO3.lang.action_loading + '</div>',
+	loadingIndicor: '<div class="loading-indicator">' + TYPO3.l10n.localize('action_loading') + '</div>',
 
 	categoryLabels : [
-			TYPO3.lang.category_BE,
-			TYPO3.lang.category_BE_modules,
-			TYPO3.lang.category_FE,
-			TYPO3.lang.category_FE_plugins,
-			TYPO3.lang.category_miscellanous,
-			TYPO3.lang.category_services,
-			TYPO3.lang.category_templates,
+			TYPO3.l10n.localize('category_BE'),
+			TYPO3.l10n.localize('category_BE_modules'),
+			TYPO3.l10n.localize('category_FE'),
+			TYPO3.l10n.localize('category_FE_plugins'),
+			TYPO3.l10n.localize('category_miscellanous'),
+			TYPO3.l10n.localize('category_services'),
+			TYPO3.l10n.localize('category_templates'),
 			'',
-			TYPO3.lang.category_documentation,
-			TYPO3.lang.category_examples
+			TYPO3.l10n.localize('category_documentation'),
+			TYPO3.l10n.localize('category_examples')
 	],
 
 	init : function() {

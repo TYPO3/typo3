@@ -1735,6 +1735,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 		unset($this->inlineLanguageLabelFiles);
 
+			// Include TYPO3.l18n object
+		$out .= '<script src="' . $this->processJsFile($this->backPath . 'sysext/lang/res/js/typo3lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
+
 			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
 		if ($this->getCharSet() !== 'utf-8') {
 			if ($this->inlineLanguageLabels) {
