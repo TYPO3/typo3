@@ -89,7 +89,7 @@ TYPO3.Workspaces.Configuration.WsPath = {
 	hidden: true,
 	hideable: false,
 	sortable: true,
-	header : TYPO3.lang["column.wsPath"],
+	header : TYPO3.l10n.localize('column.wsPath'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var path = record.json.path_Workspace;
 		return path;
@@ -103,7 +103,7 @@ TYPO3.Workspaces.Configuration.LivePath = {
 	hidden: true,
 	hideable: true,
 	sortable: true,
-	header : TYPO3.lang["column.livePath"],
+	header : TYPO3.l10n.localize('column.livePath'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var path = record.json.path_Live;
 		return path;
@@ -116,7 +116,7 @@ TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 	width: 120,
 	hideable: true,
 	sortable: true,
-	header : TYPO3.lang["column.wsTitle"],
+	header : TYPO3.l10n.localize('column.wsTitle'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var dekoClass = 'item-state-' + record.json.state_Workspace;
 		value = "<span class=\"" + dekoClass + "\">" + value + "</span>";
@@ -135,7 +135,7 @@ TYPO3.Workspaces.Configuration.TitleWithIcon = {
 	width: 120,
 	hideable: false,
 	sortable: true,
-	header : TYPO3.lang["column.liveTitle"],
+	header : TYPO3.l10n.localize('column.liveTitle'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		if (record.json.state_Workspace == 'unhidden') {
 			var dekoClass = 'item-state-hidden';
@@ -154,7 +154,7 @@ TYPO3.Workspaces.Configuration.ChangeState = {
 	width: 80,
 	sortable: true,
 	hidden: true,
-	header : TYPO3.lang["column.difference"],
+	header : TYPO3.l10n.localize('column.difference'),
 	renderer: function(value, metaData) {
 		return value + "%";
 	},
@@ -165,7 +165,7 @@ TYPO3.Workspaces.Configuration.ChangeDate = {
 	dataIndex : 'workspace_Tstamp',
 	width: 120,
 	sortable: true,
-	header : TYPO3.lang["column.changeDate"],
+	header : TYPO3.l10n.localize('column.changeDate'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		return record.json.workspace_Formated_Tstamp;
 	},
@@ -181,7 +181,7 @@ TYPO3.Workspaces.Configuration.SendToPrevStageButton = {
 	items:[
 		{
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtoprevstage',
-			tooltip: TYPO3.lang["tooltip.sendToPrevStage"],
+			tooltip: TYPO3.l10n.localize('tooltip.sendToPrevStage'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				TYPO3.Workspaces.Actions.sendToPrevStageWindow(record.json.table, record.json.uid);
@@ -198,7 +198,7 @@ TYPO3.Workspaces.Configuration.SendToNextStageButton = {
 	items: [
 		{},{	// empty dummy important!!!!
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtonextstage',
-			tooltip: TYPO3.lang["tooltip.sendToNextStage"],
+			tooltip: TYPO3.l10n.localize('tooltip.sendToNextStage'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				TYPO3.Workspaces.Actions.sendToNextStageWindow(record.json.table, record.json.uid, record.json.t3ver_oid);
@@ -212,7 +212,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 	dataIndex : 'label_Stage',
 	width: 80,
 	sortable: true,
-	header : TYPO3.lang["column.stage"],
+	header : TYPO3.l10n.localize('column.stage'),
 	hidden: false,
 	filter : {
 		type : 'string'
@@ -249,7 +249,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 
 TYPO3.Workspaces.Configuration.RowButtons = {
 	xtype: 'actioncolumn',
-	header: TYPO3.lang["column.actions"],
+	header: TYPO3.l10n.localize('column.actions'),
 	width: 70,
 	hideable: false,
 	hidden: (TYPO3.settings.Workspaces.allView === '1'),
@@ -257,7 +257,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 	items: [
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-workspace-preview'
-			,tooltip: TYPO3.lang["tooltip.viewElementAction"]
+			,tooltip: TYPO3.l10n.localize('tooltip.viewElementAction')
 			,handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.uid);
@@ -272,7 +272,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 		},
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
-			tooltip: TYPO3.lang["tooltip.editElementAction"],
+			tooltip: TYPO3.l10n.localize('tooltip.editElementAction'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var newUrl = 'alt_doc.php?returnUrl=' + Ext.urlEncode({}, document.location.href).replace("?","%3F").replace("=", "%3D").replace(":","%3A").replace("/", "%2f") + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
@@ -288,7 +288,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 		},
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-pagemodule-open',
-			tooltip: TYPO3.lang["tooltip.openPage"],
+			tooltip: TYPO3.l10n.localize('tooltip.openPage'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				if (record.json.table == 'pages') {
@@ -307,12 +307,12 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 		},
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-document-remove',
-			tooltip: TYPO3.lang["tooltip.discardVersion"],
+			tooltip: TYPO3.l10n.localize('tooltip.discardVersion'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var configuration = {
-					title: TYPO3.lang["window.discard.title"],
-					msg: TYPO3.lang["window.discard.message"],
+					title: TYPO3.l10n.localize('window.discard.title'),
+					msg: TYPO3.l10n.localize('window.discard.message'),
 					fn: function(result) {
 						if (result == 'yes') {
 							TYPO3.Workspaces.Actions.deleteSingleRecord(record.json.table, record.json.uid);
@@ -344,12 +344,12 @@ TYPO3.Workspaces.Configuration.SwapButton = {
 	items: [
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-swap-workspace'
-			,tooltip: TYPO3.lang["tooltip.swap"]
+			,tooltip: TYPO3.l10n.localize('tooltip.swap')
 			,handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var configuration = {
-					title: TYPO3.lang["window.swap.title"],
-					msg: TYPO3.lang["window.swap.message"],
+					title: TYPO3.l10n.localize('window.swap.title'),
+					msg: TYPO3.l10n.localize('window.swap.message'),
 					fn: function(result) {
 						if (result == 'yes') {
 							TYPO3.Workspaces.Actions.swapSingleRecord(record.json.table, record.json.t3ver_oid, record.json.uid);

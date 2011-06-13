@@ -171,7 +171,7 @@ Ext.ux.TYPO3.Workspace.RowPanel = Ext.extend(Ext.Panel, {
 			width:'100%',
 			autoHeight:true,
 			layout:'fit',
-			title: TYPO3.lang.rowDetails
+			title: TYPO3.l10n.localize('rowDetails')
 		};
 		Ext.apply(this, config);
 		Ext.ux.TYPO3.Workspace.RowPanel.superclass.constructor.call(this, config);

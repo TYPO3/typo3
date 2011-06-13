@@ -63,7 +63,7 @@ TYPO3.Workspaces.Toolbar.selectStateActionCombo = new Ext.form.ComboBox({
 	valueField: 'uid',
 	displayField: 'title',
 	mode: 'local',
-	emptyText: TYPO3.lang.chooseAction,
+	emptyText: TYPO3.l10n.localize('chooseAction'),
 	selectOnFocus: true,
 	disabled : true,
 	hidden : true,	 // we hide it by default and show it in case there are any actions available
@@ -105,7 +105,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 	valueField: 'action',
 	displayField: 'title',
 	mode: 'local',
-	emptyText: TYPO3.lang.chooseMassAction,
+	emptyText: TYPO3.l10n.localize('chooseMassAction'),
 	selectOnFocus: true,
 	triggerAction: 'all',
 	editable: false,
@@ -115,22 +115,22 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 	listeners: {
 		'select' : function (combo, record) {
 			var label = '';
-			var affectWholeWorkspaceWarning = TYPO3.lang["tooltip.affectWholeWorkspace"];
+			var affectWholeWorkspaceWarning = TYPO3.l10n.localize('tooltip.affectWholeWorkspace');
 			switch (record.data.action) {
 				case 'publish':
-					label = TYPO3.lang["tooltip.publishAll"];
+					label = TYPO3.l10n.localize('tooltip.publishAll');
 					break;
 				case 'swap':
-					label = TYPO3.lang["tooltip.swapAll"];
+					label = TYPO3.l10n.localize('tooltip.swapAll');
 					break;
 				case 'discard':
-					label = TYPO3.lang["tooltip.discardAll"];
+					label = TYPO3.l10n.localize('tooltip.discardAll');
 					break;
 			}
 			top.TYPO3.Windows.close('executeMassActionWindow');
 			var dialog = top.TYPO3.Windows.showWindow({
 				id: 'executeMassActionWindow',
-				title: TYPO3.lang["window.massAction.title"],
+				title: TYPO3.l10n.localize('window.massAction.title'),
 				items: [
 					{
 						xtype: 'form',
@@ -153,7 +153,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						id: 'executeMassActionOkButton',
 						data: record.data,
 						scope: this,
-						text: TYPO3.lang.ok,
+						text: TYPO3.l10n.localize('ok'),
 						disabled:false,
 						handler: function(event) {
 							TYPO3.Workspaces.Actions.triggerMassAction(event.data.action);
@@ -162,7 +162,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 					{
 						id: 'executeMassActionCancleButton',
 						scope: this,
-						text: TYPO3.lang.cancel,
+						text: TYPO3.l10n.localize('cancel'),
 						handler: function() {
 							top.TYPO3.Windows.close('executeMassActionWindow');
 							// if clicks during action - this also interrupts the running process -- not the nices way but efficient
@@ -192,7 +192,7 @@ TYPO3.Workspaces.Toolbar.depthFilter = new Ext.form.ComboBox({
 	displayField: 'label',
 	id: 'depthSelector',
 	mode: 'local',
-	emptyText: TYPO3.lang.depth,
+	emptyText: TYPO3.l10n.localize('depth'),
 	selectOnFocus: true,
 	triggerAction: 'all',
 	editable: false,
@@ -202,12 +202,12 @@ TYPO3.Workspaces.Toolbar.depthFilter = new Ext.form.ComboBox({
 		autoLoad: true,
 		fields: ['depth','label'],
 		data : [
-			['0', TYPO3.lang.depth_0],
-			['1', TYPO3.lang.depth_1],
-			['2', TYPO3.lang.depth_2],
-			['3', TYPO3.lang.depth_3],
-			['4', TYPO3.lang.depth_4],
-			['999', TYPO3.lang.depth_infi]
+			['0', TYPO3.l10n.localize('depth_0')],
+			['1', TYPO3.l10n.localize('depth_1')],
+			['2', TYPO3.l10n.localize('depth_2')],
+			['3', TYPO3.l10n.localize('depth_3')],
+			['4', TYPO3.l10n.localize('depth_4')],
+			['999', TYPO3.l10n.localize('depth_infi')]
 		]
 	}),
 	value: 999,

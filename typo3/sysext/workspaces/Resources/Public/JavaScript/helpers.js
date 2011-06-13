@@ -64,11 +64,11 @@ TYPO3.Workspaces.Helpers = {
 			],
 			buttons: [
 				{
-					text: TYPO3.lang.ok,
+					text: TYPO3.l10n.localize('ok'),
 					handler: configuration.executeHandler
 				},
 				{
-					text: TYPO3.lang.cancel,
+					text: TYPO3.l10n.localize('cancel'),
 					handler: function(event) {
 						top.TYPO3.Windows.close('sendToStageWindow');
 					}

@@ -59,7 +59,7 @@ TYPO3.Workspaces.Actions = {
 		}
 
 		var progress = parameters.total > 0 ? parameters.processed / parameters.total : 0;
-		var label = parameters.total > 0 ? parameters.processed + '/' + parameters.total : TYPO3.lang["runMassAction.init"];
+		var label = parameters.total > 0 ? parameters.processed + '/' + parameters.total : TYPO3.l10n.localize('runMassAction.init');
 		top.Ext.getCmp('executeMassActionProgressBar').updateProgress(progress, label, true);
 
 		this.runningMassAction(parameters, TYPO3.Workspaces.Actions.runMassActionCallback);
@@ -69,7 +69,7 @@ TYPO3.Workspaces.Actions = {
 		if (response.error) {
 			top.Ext.getCmp('executeMassActionProgressBar').hide();
 			top.Ext.getCmp('executeMassActionOkButton').hide();
-			top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.lang.close);
+			top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
 			top.Ext.getCmp('executeMassActionForm').show();
 			top.Ext.getCmp('executeMassActionForm').update(response.error);
 		} else {
@@ -78,9 +78,9 @@ TYPO3.Workspaces.Actions = {
 			} else {
 				top.Ext.getCmp('executeMassActionProgressBar').hide();
 				top.Ext.getCmp('executeMassActionOkButton').hide();
-				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.lang.close);
+				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
 				top.Ext.getCmp('executeMassActionForm').show();
-				top.Ext.getCmp('executeMassActionForm').update(TYPO3.lang["runMassAction.done"].replace('%d', response.total));
+				top.Ext.getCmp('executeMassActionForm').update(TYPO3.l10n.localize('runMassAction.done').replace('%d', response.total));
 				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 			}
 		}
@@ -88,7 +88,7 @@ TYPO3.Workspaces.Actions = {
 	generateWorkspacePreviewLink: function() {
 		TYPO3.Workspaces.ExtDirectActions.generateWorkspacePreviewLink(TYPO3.settings.Workspaces.id, function(response) {
 			top.TYPO3.Dialog.InformationDialog({
-				title: TYPO3.lang.previewLink,
+				title: TYPO3.l10n.localize('previewLink'),
 				msg: String.format('<a href="{0}" target="_blank">{0}</a>', response)
 			});
 		});
@@ -196,7 +196,7 @@ TYPO3.Workspaces.Actions = {
 	},
 	handlerResponseOnExecuteAction: function(response) {
 		if (!Ext.isObject(response)) {
-			response = { error: { message: TYPO3.lang["error.noResponse"] }};
+			response = { error: { message: TYPO3.l10n.localize('error.noResponse') }};
 		}
 
 		if (Ext.isObject(response.error)) {
