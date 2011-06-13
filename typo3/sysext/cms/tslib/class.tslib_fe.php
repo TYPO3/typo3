@@ -4791,12 +4791,14 @@ if (version == "n3") {
 	 * @param	array		The locallang array in which to search
 	 * @return	string		Label value of $index key.
 	 */
-	function getLLL($index, &$LOCAL_LANG)	{
-		if (strcmp($LOCAL_LANG[$this->lang][$index],''))	{
-			return $LOCAL_LANG[$this->lang][$index];
-		} else {
-			return $LOCAL_LANG['default'][$index];
+	function getLLL($index, $LOCAL_LANG) {
+		if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
+			return $LOCAL_LANG[$this->lang][$index][0]['target'];
+		} elseif (isset($LOCAL_LANG['default'][$index][0]['target'])) {
+			return $LOCAL_LANG['default'][$index][0]['target'];
 		}
+
+		return FALSE;
 	}
 
 	/**

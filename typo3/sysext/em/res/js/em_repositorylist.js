@@ -54,7 +54,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					record: record,
 					items:[
 						{
-							title: TYPO3.lang.details_info,
+							title: TYPO3.l10n.localize('details_info'),
 							listeners: {
 								activate: function(panel) {
 									panel.update(TYPO3.EM.Layouts.remoteExtensionInfo().applyTemplate(panel.ownerCt.record.data));
@@ -184,7 +184,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			store: this.repositoryListStore,
 			width: 260,
 			specialKeyOnly: true,
-			emptyText: TYPO3.lang.msg_startTyping
+			emptyText: TYPO3.l10n.localize('msg_startTyping')
 		});
 
 		var cm = new Ext.grid.ColumnModel({
@@ -208,7 +208,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		});
 
 		Ext.apply(this, {
-			loadMask: {msg: TYPO3.lang.action_loadingRepositoryExtlist},
+			loadMask: {msg: TYPO3.l10n.localize('action_loadingRepositoryExtlist')},
 			store: this.repositoryListStore,
 			cm: cm,
 			plugins: TYPO3.settings.EM.inlineToWindow == 1 ? [TYPO3.EM.RemoteFilters] : [this.expander, TYPO3.EM.RemoteFilters],
@@ -225,8 +225,8 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			tbar: [
 				' ',
 				{
-					text: TYPO3.lang.cmd_filter,
-					tooltip: TYPO3.lang.help_remoteFilter,
+					text: TYPO3.l10n.localize('cmd_filter'),
+					tooltip: TYPO3.l10n.localize('help_remoteFilter'),
 					scale: 'small',
 					iconAlign: 'right',
 					ref: '../filterMenuButton',
@@ -235,7 +235,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 							{
 								checked: true,
 								group: 'installFilter',
-								text: TYPO3.lang.display_all,
+								text: TYPO3.l10n.localize('display_all'),
 								handler: function(item, event) {
 									this.showInstalledOnly = 0;
 									this.store.reload();
@@ -244,7 +244,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 							}, {
 								checked: false,
 								group: 'installFilter',
-								text: TYPO3.lang.display_installedOnly,
+								text: TYPO3.l10n.localize('display_installedOnly'),
 								handler: function(item, event) {
 									this.showInstalledOnly = 1;
 									this.store.reload();
@@ -253,7 +253,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 							}, {
 								checked: false,
 								group: 'installFilter',
-								text: TYPO3.lang.display_updatesOnly,
+								text: TYPO3.l10n.localize('display_updatesOnly'),
 								handler: function(item, event) {
 									this.showInstalledOnly = 2;
 									this.store.reload();
@@ -264,7 +264,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					}
 				},
 				searchField, ' ', {
-					text: TYPO3.lang.cmd_ClearAllFilters,
+					text: TYPO3.l10n.localize('cmd_ClearAllFilters'),
 					ref: '../doClearFilters',
 					handler: function() {
 						TYPO3.EM.RemoteFilters.clearFilters();
@@ -275,13 +275,13 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 				'->',
 				{
 					xtype: 'tbtext',
-					text: TYPO3.lang.repository + ': '
+					text: TYPO3.l10n.localize('repository') + ': '
 				},
 				TYPO3.EM.RepositoryCombo,
 				{
 					iconCls: 'x-btn-repupdate',
 					handler: this.repositoryUpdate,
-					tooltip: TYPO3.lang.cmd_RetrieveUpdate,
+					tooltip: TYPO3.l10n.localize('cmd_RetrieveUpdate'),
 					scope: this,
 					hidden: !TYPO3.settings.EM.allowRepositoryUpdate
 				},
@@ -300,7 +300,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					store: this.repositoryListStore,
 					pageSize: 50,
 					displayInfo: true,
-					emptyMsg: TYPO3.lang.action_searching
+					emptyMsg: TYPO3.l10n.localize('action_searching')
 				}
 			]
 		});
@@ -318,7 +318,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		this.repositoryStore.load({
 			callback: function() {
 				if (this.getCount() == 0) {
-					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error, TYPO3.lang.repository_notfound, 15);
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('msg_error'), TYPO3.l10n.localize('repository_notfound'), 15);
 				} else {
 					var rec = this.getById(TYPO3.settings.EM.selectedRepository);
 					if (!rec) {
@@ -340,15 +340,15 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					var menu = new Ext.menu.Menu({
 						record: record,
 						items: [{
-							text: String.format(TYPO3.lang.ext_import_versions, record.data.title)
-								+ ' (' + String.format(TYPO3.lang.ext_import_versions_available, record.data.versions) + ')',
+							text: String.format(TYPO3.l10n.localize('ext_import_versions'), record.data.title)
+								+ ' (' + String.format(TYPO3.l10n.localize('ext_import_versions_available'), record.data.versions) + ')',
 							iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-import',
 							handler: function() {
 								var record = this.ownerCt.record.data;
 								var link = TYPO3.settings.EM.scriptLink
 									+ '&nodoc=1&ter_connect=1&ter_search=' + record.extkey  +'&CMD[importExtInfo]=' + record.extkey;
 								TYPO3.EM.ImportWindow = new TYPO3.EM.InstallWindow({
-									title: String.format(TYPO3.lang.ext_import_versions, record.title) + ' (' + record.extkey + ')',
+									title: String.format(TYPO3.l10n.localize('ext_import_versions'), record.title) + ' (' + record.extkey + ')',
 									record: record,
 									installAction: 'import',
 									listeners: {
@@ -380,7 +380,7 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 	},
 
 	repositoryUpdate: function() {
-		var m = Ext.MessageBox.wait(TYPO3.lang.msg_longwait, TYPO3.lang.repository_update);
+		var m = Ext.MessageBox.wait(TYPO3.l10n.localize('msg_longwait'), TYPO3.l10n.localize('repository_update'));
 		var index = TYPO3.EM.RepositoryCombo.getValue();
 		if (!index) {
 			return;
@@ -389,12 +389,12 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 		TYPO3.EM.ExtDirect.repositoryUpdate(index, function(response) {
 			if (!response.success) {
 				if (response.rep == 0) {
-					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.lang.msg_error, response.errormsg, 15);
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('msg_error'), response.errormsg, 15);
 				} else {
-					TYPO3.Flashmessage.display(TYPO3.Severity.notice, TYPO3.lang.repository_update_not_needed, response.errormsg, 5);
+					TYPO3.Flashmessage.display(TYPO3.Severity.notice, TYPO3.l10n.localize('repository_update_not_needed'), response.errormsg, 5);
 				}
 			} else {
-				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.lang.repository_updated, String.format(TYPO3.lang.repository_extensions_count, response.data.count), 10);
+				TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('repository_updated'), String.format(TYPO3.l10n.localize('repository_extensions_count'), response.data.count), 10);
 				record.set('count', response.data.count);
 				record.set('updated', response.data.updated);
 				Ext.getCmp('repListInfo').update(TYPO3.EM.Layouts.repositoryInfo().applyTemplate(record.data));
