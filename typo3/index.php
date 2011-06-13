@@ -810,7 +810,7 @@ class SC_index {
 				}
 					// now override the labels from the LOCAL_LANG with the TYPO3_CONF_VARS
 				foreach ($overrideLabelKeys as $labelKey => $label) {
-					$GLOBALS['LOCAL_LANG'][$lang][$labelKey] = $GLOBALS['LOCAL_LANG']['default'][$labelKey] = $label;
+					$GLOBALS['LANG']->overrideLL($labelKey, $label);
 				}
 			}
 		}

@@ -4406,58 +4406,9 @@ final class t3lib_div {
 	 *						 Otherwise an empty array and it is FALSE in error case.
 	 */
 	public static function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0) {
-
-		$result = FALSE;
-		$file = self::getFileAbsFileName($fileRef);
-		if ($file) {
-			$baseFile = preg_replace('/\.(php|xml)$/', '', $file);
-
-			if (@is_file($baseFile . '.xml')) {
-				$LOCAL_LANG = self::readLLXMLfile($baseFile . '.xml', $langKey, $charset);
-			} elseif (@is_file($baseFile . '.php')) {
-				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] || $charset) {
-					$LOCAL_LANG = self::readLLPHPfile($baseFile . '.php', $langKey, $charset);
-				} else {
-					include($baseFile . '.php');
-					if (is_array($LOCAL_LANG)) {
-						$LOCAL_LANG = array('default' => $LOCAL_LANG['default'], $langKey => $LOCAL_LANG[$langKey]);
-					}
-				}
-			} else {
-				$errorMsg = 'File "' . $fileRef . '" not found!';
-				if ($errorMode == 2) {
-					throw new t3lib_exception($errorMsg);
-				} elseif (!$errorMode) {
-					self::sysLog($errorMsg, 'Core', self::SYSLOG_SEVERITY_ERROR);
-				}
-				$fileNotFound = TRUE;
-			}
-
-
-			$overrides = array();
-			$fileRefWithoutExtension = preg_replace('/\.(php|xml)$/', '', $fileRef);
-
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.php'])) {
-				$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.php']);
-			}
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.xml'])) {
-				$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.xml']);
-			}
-
-			if (count($overrides) > 0) {
-				foreach ($overrides as $overrideFile) {
-					$languageOverrideFileName = self::getFileAbsFileName($overrideFile);
-					if (@is_file($languageOverrideFileName)) {
-						$languageOverrideArray = self::readLLXMLfile($languageOverrideFileName, $langKey, $charset);
-						$LOCAL_LANG = self::array_merge_recursive_overrule($LOCAL_LANG, $languageOverrideArray);
-					}
-				}
-			}
-		}
-		if ($fileNotFound !== TRUE) {
-			$result = is_array($LOCAL_LANG) ? $LOCAL_LANG : array();
-		}
-		return $result;
+		/** @var $languageFactory tx_lang_Factory */
+		$languageFactory = t3lib_div::makeInstance('tx_lang_Factory');
+		return $languageFactory->getParsedData($fileRef, $langKey, $charset, $errorMode);
 	}
 
 	/**
@@ -4468,8 +4419,10 @@ final class t3lib_div {
 	 * @param	string		TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param	string		Character set (optional)
 	 * @return	array		LOCAL_LANG array in return.
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use tx_lang_parser_Llphp::getParsedData() from now on
 	 */
 	public static function readLLPHPfile($fileRef, $langKey, $charset = '') {
+		t3lib_div::logDeprecatedFunction();
 
 		if (is_object($GLOBALS['LANG'])) {
 			$csConvObj = $GLOBALS['LANG']->csConvObj;
@@ -4551,8 +4504,10 @@ final class t3lib_div {
 	 * @param	string		TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param	string		Character set (optional)
 	 * @return	array		LOCAL_LANG array in return.
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use tx_lang_parser_Llxml::getParsedData() from now on
 	 */
 	public static function readLLXMLfile($fileRef, $langKey, $charset = '') {
+		t3lib_div::logDeprecatedFunction();
 
 		if (is_object($GLOBALS['LANG'])) {
 			$csConvObj = $GLOBALS['LANG']->csConvObj;
@@ -4694,6 +4649,15 @@ final class t3lib_div {
 					}
 				} else {
 					$LOCAL_LANG[$langKey] = array();
+				}
+			}
+
+				// Convert the $LOCAL_LANG array to XLIFF structure
+			foreach ($LOCAL_LANG as $languageKey => $keysLabels) {
+				foreach ($keysLabels as $key => $label) {
+					$LOCAL_LANG[$languageKey][$key] = array(0 => array(
+						'target' => $label,
+					));
 				}
 			}
 
