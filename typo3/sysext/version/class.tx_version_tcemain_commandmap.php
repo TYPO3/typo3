@@ -149,7 +149,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Sets the parent object.
 	 *
-	 * @param t3lib_TCEmain $parent
+	 * @param t3lib_TCEmain $tceMain
 	 * @return tx_version_tcemain_CommandMap
 	 */
 	public function setTceMain(t3lib_TCEmain $tceMain) {
@@ -238,7 +238,7 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param t3lib_utility_Dependency $dependency
 	 * @param string $table
-	 * @param iteger $liveId
+	 * @param integer $liveId
 	 * @param array $properties
 	 * @return void
 	 */
@@ -440,7 +440,7 @@ class tx_version_tcemain_CommandMap {
 	 * @return void
 	 */
 	protected function purgeWithErrorMessage(array $elements, $scope) {
-		/** @var $dependentElement t3lib_utility_Dependency_Element */
+		/** @var $element t3lib_utility_Dependency_Element */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback(
@@ -482,7 +482,7 @@ class tx_version_tcemain_CommandMap {
 			);
 		}
 
-		/** @var $dependentElement t3lib_utility_Dependency_Element */
+		/** @var $element t3lib_utility_Dependency_Element */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback(
@@ -652,6 +652,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Gets an instance of the depency resolver utility.
 	 *
+	 * @param string $scope Scope identifier
 	 * @return t3lib_utility_Dependency
 	 */
 	protected function getDependencyUtility($scope) {
@@ -892,7 +893,7 @@ class tx_version_tcemain_CommandMap {
 	 * Gets data for a particular scope.
 	 *
 	 * @throws RuntimeException
-	 * @param string $scope
+	 * @param string $scope Scope identifier
 	 * @param string $key
 	 * @return string
 	 */
@@ -907,7 +908,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Gets a new callback to be used in the dependency resolver utility.
 	 *
-	 * @param string $callbackMethod
+	 * @param string $method
 	 * @param array $targetArguments
 	 * @return t3lib_utility_Dependency_Callback
 	 */
