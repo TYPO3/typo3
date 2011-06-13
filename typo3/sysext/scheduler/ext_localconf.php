@@ -5,7 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 	// Register the Scheduler as a possible key for CLI calls
-$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
 	'EXT:' . $_EXTKEY . '/cli/scheduler_cli_dispatch.php', '_CLI_scheduler'
 );
 
@@ -31,10 +31,18 @@ if (!empty($extConf['showSampleTasks'])) {
 
 	// Add caching framework garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_CachingFrameworkGarbageCollection'] = array(
-		'extension'        => $_EXTKEY,
-		'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.name',
-		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
-		'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
-	);
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
+	'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
+);
+
+	// Add recycler directory cleanup task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_RecyclerGarbageCollection'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.description',
+	'additionalFields' => 'tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider',
+);
 
 ?>
