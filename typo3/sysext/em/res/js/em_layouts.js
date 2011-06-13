@@ -41,34 +41,34 @@ TYPO3.EM.Layouts = {
 				'<p class="desc">{description}</p>',
 				'<div class="em-extlist-extinfo-sub">',
 					'<div class="em-extlist-extinfo-left">',
-						'<h3>' + TYPO3.lang.show_details + '</h3>',
-						'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label> {author}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_version + ':</label> {version}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_category + ':</label> {category}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_state + ':</label> {state}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_shy + ':</label> {shyword}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_internal + ':</label> {internal}<br />',
-						'<label>' + TYPO3.lang.ext_details_doNotLoadInFE + ':</label> {[this.loadInFe(values)]}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_depends_on + ':</label> {depends}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_conflicts_with + ':</label> {conflicts}<br />',
-						'<label>' + TYPO3.lang.extInfoArray_suggests + ':</label> {suggests}<br />',
+						'<h3>' + TYPO3.l10n.localize('show_details') + '</h3>',
+						'<p><label>' + TYPO3.l10n.localize('extInfoArray_author') + ':</label> {author}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_version') + ':</label> {version}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_category') + ':</label> {category}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_state') + ':</label> {state}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_shy') + ':</label> {shyword}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_internal') + ':</label> {internal}<br />',
+						'<label>' + TYPO3.l10n.localize('ext_details_doNotLoadInFE') + ':</label> {[this.loadInFe(values)]}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_depends_on') + ':</label> {depends}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_conflicts_with') + ':</label> {conflicts}<br />',
+						'<label>' + TYPO3.l10n.localize('extInfoArray_suggests') + ':</label> {suggests}<br />',
 					'</div>',
 					'<div class="em-extlist-extinfo-right">',
-						'<h3>' + TYPO3.lang.show_links + '</h3>',
-						'<p><label>' + TYPO3.lang.cmd_downloadext + ':</label> {download}</p> ',
+						'<h3>' + TYPO3.l10n.localize('show_links') + '</h3>',
+						'<p><label>' + TYPO3.l10n.localize('cmd_downloadext') + ':</label> {download}</p> ',
 						'<tpl if="doc">',
-							'<p><label>' + TYPO3.lang.cmd_readdoc + ':</label> {doc}</p>',
+							'<p><label>' + TYPO3.l10n.localize('cmd_readdoc') + ':</label> {doc}</p>',
 						'</tpl>',
 						'<tpl if="updateModule">',
-							'<h3>' + TYPO3.lang.cmd_update + '</h3>',
-							'<p><a href="#" id="update-check-{extkey}" class="update-check-link">' + TYPO3.lang.ext_details_checkUpdateScript + '</a></p>',
+							'<h3>' + TYPO3.l10n.localize('cmd_update') + '</h3>',
+							'<p><a href="#" id="update-check-{extkey}" class="update-check-link">' + TYPO3.l10n.localize('ext_details_checkUpdateScript') + '</a></p>',
 						'</tpl>',
 					'</div>',
 				'</div>',
 			'</div>',
 			{
 				loadInFe: function(values) {
-					return values.doNotLoadInFE ? TYPO3.lang.no : TYPO3.lang.yes;
+					return values.doNotLoadInFE ? TYPO3.l10n.localize('no') : TYPO3.l10n.localize('yes');
 				}
 			}
 		);
@@ -77,18 +77,18 @@ TYPO3.EM.Layouts = {
 	remoteExtensionInfo: function() {
 		return new Ext.XTemplate(
 			'<div class="em-info">',
-				'<p><label>' + TYPO3.lang.extInfoArray_title + ':' +
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_title') + ':' +
 						'</label><a href="http://typo3.org/extensions/repository/view/{extkey}/current/" target="_blank" title="'
-		 				+ TYPO3.lang.cmd_viewOnline + '">{title}</a></p>',
-				'<p><label>' + TYPO3.lang.listRowHeader_ext_key + '</label>{extkey}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_category + ':</label>{[TYPO3.EM.App.getCategoryLabel(values.category)]}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_version + ':</label>{version}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_downloads + ':</label>{alldownloadcounter} / {downloadcounter}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_lastUpdate + ':</label>{lastuploaddate:this.getDateFormat}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_state + ':</label>{state}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_author + ':</label>{[this.getAuthor(values)]}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_versions + ':</label>{versions}</p>',
-				'<p><label>' + TYPO3.lang.extInfoArray_description + ':</label>{description:this.getDescription}</p>',
+		 				+ TYPO3.l10n.localize('cmd_viewOnline') + '">{title}</a></p>',
+				'<p><label>' + TYPO3.l10n.localize('listRowHeader_ext_key') + '</label>{extkey}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_category') + ':</label>{[TYPO3.EM.App.getCategoryLabel(values.category)]}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_version') + ':</label>{version}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_downloads') + ':</label>{alldownloadcounter} / {downloadcounter}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_lastUpdate') + ':</label>{lastuploaddate:this.getDateFormat}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_state') + ':</label>{state}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_author') + ':</label>{[this.getAuthor(values)]}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_versions') + ':</label>{versions}</p>',
+				'<p><label>' + TYPO3.l10n.localize('extInfoArray_description') + ':</label>{description:this.getDescription}</p>',
 			'</div>',
 		{
 			getDescription: function(value) {
@@ -111,12 +111,12 @@ TYPO3.EM.Layouts = {
 	getExtensionRules: function() {
 		return [
 			'<div class="extvalidinfo">',
-				'<b>' + TYPO3.lang.registerkeys_rules_heading + '</b>',
+				'<b>' + TYPO3.l10n.localize('registerkeys_rules_heading') + '</b>',
 				'<ul>',
-					'<li>' + TYPO3.lang.registerkeys_rules_allowedcharacters + '</li>',
-					'<li>' + TYPO3.lang.registerkeys_rules_prefixes + '</li>',
-					'<li>' + TYPO3.lang.registerkeys_rules_startandend + '</li>',
-					'<li>' + TYPO3.lang.registerkeys_rules_length + '</li>',
+					'<li>' + TYPO3.l10n.localize('registerkeys_rules_allowedcharacters') + '</li>',
+					'<li>' + TYPO3.l10n.localize('registerkeys_rules_prefixes') + '</li>',
+					'<li>' + TYPO3.l10n.localize('registerkeys_rules_startandend') + '</li>',
+					'<li>' + TYPO3.l10n.localize('registerkeys_rules_length') + '</li>',
 				'</ul>',
 			'</div>'
 		].join('');
@@ -124,13 +124,13 @@ TYPO3.EM.Layouts = {
 	repositoryInfo: function() {
 		return new Ext.XTemplate(
 			'<span class="typo3-message message-notice" ',
-			'qtip="{updated:this.updatedFormat}<br>' + TYPO3.lang.extensions_repository_short + ' {count}">',
+			'qtip="{updated:this.updatedFormat}<br>' + TYPO3.l10n.localize('extensions_repository_short') + ' {count}">',
 			'{updated:this.updatedFormat}&nbsp;&nbsp;',
-			TYPO3.lang.extensions_repository_short + ' {count}',
+			TYPO3.l10n.localize('extensions_repository_short') + ' {count}',
 			'</span>',
 			{
 				updatedFormat: function(value) {
-					return TYPO3.lang.ext_list_last_updated.replace('%s', value).replace('(', '').replace(')', '');
+					return TYPO3.l10n.localize('ext_list_last_updated').replace('%s', value).replace('(', '').replace(')', '');
 				}
 			}
 		);
