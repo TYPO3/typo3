@@ -312,7 +312,7 @@ class tx_version_tcemain_CommandMap {
 				$workspaceRecord = t3lib_BEfunc::getRecord($table, $liveIds[0], 't3ver_wsid');
 				$workspaceId = $workspaceRecord['t3ver_wsid'];
 			} else {
-				$workspaceId = $this->tceMain()->BE_USER->workspace;
+				$workspaceId = $this->getTceMain()->BE_USER->workspace;
 			}
 
 			if ($table === 'pages') {
