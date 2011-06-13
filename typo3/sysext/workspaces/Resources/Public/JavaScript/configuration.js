@@ -352,7 +352,7 @@ TYPO3.Workspaces.Configuration.SwapButton = {
 					msg: TYPO3.lang["window.swap.message"],
 					fn: function(result) {
 						if (result == 'yes') {
-							TYPO3.Workspaces.Actions.swapSingleRecord(record.json.table, record.json.wsversion, record.json.uid);
+							TYPO3.Workspaces.Actions.swapSingleRecord(record.json.table, record.json.t3ver_oid, record.json.uid);
 						}
 					}
 				};
