@@ -51,7 +51,15 @@ Workspaces
 Other general improvements
 -------------------------------------------------------------------------------
 
-...
+* New scheduler task to delete old files from fileadmin trash directories
+
+The scheduler task 'Fileadmin recycler garbage collection' can be used to
+finally delete old files from _recycler_ directories: If a user deletes a file
+in within the file module of the backend, and a _recycler_ directory is
+existing in the path of the deleted file within the fileadmin directory, the
+deleted file will be moved to this _recycler_ directory instead of a direct
+deletion. The new task now deletes a files within _recycler_ directories if the
+file has been moved there longer than a given number of days ago.
 
 -------------------------------------------------------------------------------
 Backend

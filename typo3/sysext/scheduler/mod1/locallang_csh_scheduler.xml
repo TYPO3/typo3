@@ -61,6 +61,8 @@
 			<label index="task_sleepTime.description">Enter a number of seconds during which the task will just sleep.</label>
 			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle">Select backends</label>
 			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.description">If a cache uses one of the selected backends, the garbage collection will be called for this cache.</label>
+			<label index="task_recyclerGarbageCollection_numberOfDays.alttitle">Number of days</label>
+			<label index="task_recyclerGarbageCollection_numberOfDays.description">Delete files in _recycler_ folders that are older than given number of days.</label>
 		</languageKey>
 	</data>
 </T3locallang>
