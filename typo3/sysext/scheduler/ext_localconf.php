@@ -5,7 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 	// Register the Scheduler as a possible key for CLI calls
-$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
 	'EXT:' . $_EXTKEY . '/cli/scheduler_cli_dispatch.php', '_CLI_scheduler'
 );
 
@@ -36,6 +36,17 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_Ca
 	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
 	'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
 );
+
+	// Add recycler directory cleanup task. Windows is not supported
+	// because "filectime" does not change after moving a file
+if (TYPO3_OS != 'WIN') {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_RecyclerGarbageCollection'] = array(
+		'extension'        => $_EXTKEY,
+		'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.name',
+		'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:recyclerGarbageCollection.description',
+		'additionalFields' => 'tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider',
+	);
+}
 
 	// Add table garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection'] = array(
