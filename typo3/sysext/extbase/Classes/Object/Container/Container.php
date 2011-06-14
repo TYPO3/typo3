@@ -336,12 +336,14 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * @return Tx_Extbase_Object_Container_ClassInfo
 	 */
 	private function getClassInfo($className) {
+		$classNameHash = sha1($className);
+
 			// we also need to make sure that the cache is returning a vaild object
 			// in case something went wrong with unserialization etc..
-		if (!$this->getClassInfoCache()->has($className) || !is_object($this->getClassInfoCache()->get($className))) {
-			$this->getClassInfoCache()->set($className, $this->getClassInfoFactory()->buildClassInfoFromClassName($className));
+		if (!$this->getClassInfoCache()->has($classNameHash) || !is_object($this->getClassInfoCache()->get($classNameHash))) {
+			$this->getClassInfoCache()->set($classNameHash, $this->getClassInfoFactory()->buildClassInfoFromClassName($className));
 		}
 
-		return $this->getClassInfoCache()->get($className);
+		return $this->getClassInfoCache()->get($classNameHash);
 	}
 }
