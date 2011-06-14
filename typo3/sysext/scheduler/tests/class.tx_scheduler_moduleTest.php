@@ -113,7 +113,7 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	public function checkDateWithStrtotimeValues($strToTimeValue, $expectedTimestamp) {
 		$checkDateResult = $this->testObject->checkDate($strToTimeValue);
 
-			// We use assertLessThan here, because we test with relatve values (eg. next Thursday, now, ..)
+			// We use assertLessThan here, because we test with relative values (eg. next Thursday, now, ..)
 			// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
 			// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
 		$delta = 4;
@@ -122,7 +122,7 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 			($checkDateResult - $expectedTimestamp),
 			'assertLessThan fails with value "' . $strToTimeValue . '"'
 		);
-		$this->assertType(
+		$this->assertInternalType(
 			PHPUnit_Framework_Constraint_IsType::TYPE_INT,
 			$checkDateResult,
 			'assertType fails with value "' . $strToTimeValue . '"'
