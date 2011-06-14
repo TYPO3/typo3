@@ -35,64 +35,51 @@
 class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * An array of valid floating point numbers addresses
-	 * @var array
-	 */
-	protected $validIntegerNumbers;
-
-	/**
-	 * An array of invalid floating point numbers addresses
-	 * @var array
-	 */
-	protected $invalidIntegerNumbers;
-
-	public function setUp() {
-		$this->validIntegerNumbers = array(
-			1029437,
-			'12345',
-			'+12345',
-			'-12345'
-			);
-
-		$this->invalidIntegerNumbers = array(
-			'not a number',
-			3.1415,
-			'12345.987'
-			);
-	}
-
-	/**
-	 * @test
-	 */
-	public function integerValidatorReturnsTrueForAValidInteger() {
-		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();
-		foreach ($this->validIntegerNumbers as $integerNumber) {
-			$this->assertTrue($integerValidator->isValid($integerNumber), "$integerNumber was declared to be invalid, but it is valid.");
-		}
-	}
-
-	/**
-	 * Data provider with invalid email addresses
+	 * Data provider with valid integer numbers
 	 *
-	 * @return array
+	 * @return array Integers, both as int and strings
 	 */
-	public function invalidIntegers() {
+	public function validIntegerNumbers() {
+		return array(
+			array(1029437),
+			array(-666),
+			array('12345'),
+			array('+12345'),
+			array('-12345')
+			);
+	}
+
+	/**
+	 * Data provider with invalid integer numbers
+	 *
+	 * @return array Various values of int, float and strings
+	 */
+	public function invalidIntegerNumbers() {
 		return array(
 			array('not a number'),
 			array(3.1415),
-			array('12345.987')
-		);
+			array(-0.75),
+			array('12345.987'),
+			array('-123.45')
+			);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider invalidIntegers
+	 * @dataProvider validIntegerNumbers
 	 */
-	public function integerValidatorReturnsTrueForAnInvalidInteger() {
+	public function integerValidatorReturnsTrueForAValidInteger($number) {
+		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();
+		$this->assertTrue($integerValidator->isValid($number), "Validator declared $number as invalid though it is valid.");
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidIntegerNumbers
+	 */
+	public function integerValidatorReturnsFalseForAnInvalidInteger($number) {
 		$integerValidator = $this->getMock('Tx_Extbase_Validation_Validator_IntegerValidator', array('addError'), array(), '', FALSE);
-		foreach ($this->invalidIntegerNumbers as $integerNumber) {
-			$this->assertFalse($integerValidator->isValid($integerNumber), "$integerNumber was declared to be valid, but it is invalid.");
-		}
+		$this->assertFalse($integerValidator->isValid($number), "Validator declared $number as valid though it is invalid.");
 	}
 
 	/**
