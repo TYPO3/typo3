@@ -184,7 +184,6 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 	 * @return	[type]		...
 	 */
 	function ext_displayExample() {
-		global $SOBE, $tmpl;
 		if ($this->helpConfig["imagetag"] || $this->helpConfig["description"] || $this->helpConfig["header"]) {
 			$out = '<div align="center">' . $this->helpConfig["imagetag"] . '</div><BR>' .
 				   ($this->helpConfig["description"] ? implode(explode("//", $this->helpConfig["description"]), "<BR>") . "<BR>" : "") .

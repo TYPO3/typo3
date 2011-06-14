@@ -1011,8 +1011,6 @@ final class t3lib_BEfunc {
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
 	public static function getFlexFormDS($conf, $row, $table, $fieldName = '', $WSOL = TRUE, $newRecordPidValue = 0) {
-		global $TYPO3_CONF_VARS;
-
 			// Get pointer field etc from TCA-config:
 		$ds_pointerField = $conf['ds_pointerField'];
 		$ds_array = $conf['ds'];
@@ -1125,8 +1123,8 @@ final class t3lib_BEfunc {
 		}
 
 			// Hook for post-processing the Flexform DS. Introduces the possibility to configure Flexforms via TSConfig
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'] as $classRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'] as $classRef) {
 				$hookObj = t3lib_div::getUserObj($classRef);
 				if (method_exists($hookObj, 'getFlexFormDS_postProcessDS')) {
 					$hookObj->getFlexFormDS_postProcessDS($dataStructArray, $conf, $row, $table, $fieldName);
@@ -1587,7 +1585,7 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Returns $tstamp formatted as "ddmmyy" (According to $TYPO3_CONF_VARS['SYS']['ddmmyy'])
+	 * Returns $tstamp formatted as "ddmmyy" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'])
 	 * Usage: 11
 	 *
 	 * @param	integer		Time stamp, seconds
@@ -1598,7 +1596,7 @@ final class t3lib_BEfunc {
 	}
 
 	/**
-	 * Returns $tstamp formatted as "ddmmyy hhmm" (According to $TYPO3_CONF_VARS['SYS']['ddmmyy'] AND $TYPO3_CONF_VARS['SYS']['hhmm'])
+	 * Returns $tstamp formatted as "ddmmyy hhmm" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] AND $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'])
 	 * Usage: 28
 	 *
 	 * @param	integer		Time stamp, seconds
@@ -1688,7 +1686,7 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with a list of image files in a field
-	 * All $TYPO3_CONF_VARS['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
+	 * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
 	 * Thumbsnails are linked to the show_item.php script which will display further details.
 	 * Usage: 7
 	 *
@@ -2292,10 +2290,10 @@ final class t3lib_BEfunc {
 			/*****************
 			 *HOOK: post-processing the human readable output from a record
 			 ****************/
-			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
 					// create NULL-reference
 				$null = NULL;
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
 					$params = array(
 						'value' => $l,
 						'colConf' => $theColConf
@@ -3242,9 +3240,8 @@ final class t3lib_BEfunc {
 	 * @see class.db_layout.inc, alt_db_navframe.php, alt_doc.php, db_layout.php
 	 */
 	public static function isRecordLocked($table, $uid) {
-		global $LOCKED_RECORDS;
-		if (!is_array($LOCKED_RECORDS)) {
-			$LOCKED_RECORDS = array();
+		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
+			$GLOBALS['LOCKED_RECORDS'] = array();
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'sys_lockedrecords',
@@ -3268,15 +3265,15 @@ final class t3lib_BEfunc {
 					$userName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.unknownUser');
 				}
 
-				$LOCKED_RECORDS[$row['record_table'] . ':' . $row['record_uid']] = $row;
-				$LOCKED_RECORDS[$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
+				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']] = $row;
+				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecordUser'),
 					$userType,
 					$userName,
 					self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears'))
 				);
-				if ($row['record_pid'] && !isset($LOCKED_RECORDS[$row['record_table'] . ':' . $row['record_pid']])) {
-					$LOCKED_RECORDS['pages:' . $row['record_pid']]['msg'] = sprintf(
+				if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_pid']])) {
+					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecordUser_content'),
 						$userType,
 						$userName,
@@ -3286,7 +3283,7 @@ final class t3lib_BEfunc {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
-		return $LOCKED_RECORDS[$table . ':' . $uid];
+		return $GLOBALS['LOCKED_RECORDS'][$table . ':' . $uid];
 	}
 
 	/**
@@ -4264,11 +4261,9 @@ final class t3lib_BEfunc {
 	 * @return	void
 	 */
 	public static function TYPO3_copyRightNotice() {
-		global $TYPO3_CONF_VARS;
-
 			// COPYRIGHT NOTICE:
-		$loginCopyrightWarrantyProvider = strip_tags(trim($TYPO3_CONF_VARS['SYS']['loginCopyrightWarrantyProvider']));
-		$loginCopyrightWarrantyURL = strip_tags(trim($TYPO3_CONF_VARS['SYS']['loginCopyrightWarrantyURL']));
+		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
+		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
 
 		if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
 			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:warranty.by'),
