@@ -57,9 +57,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_EmailAddressValidatorTest exten
 	 */
 	public function emailAddressValidatorReturnsTrueForAValidEmailAddress($address) {
 		$emailAddressValidator = new Tx_Extbase_Validation_Validator_EmailAddressValidator();
-		foreach ($this->validAddresses as $address) {
-			$this->assertTrue($emailAddressValidator->isValid($address), "$address was declared to be invalid, but it is valid.");
-		}
+		$this->assertTrue($emailAddressValidator->isValid($address), "$address was declared to be invalid, but it is valid.");
 	}
 
 	/**
