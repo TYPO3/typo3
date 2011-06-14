@@ -254,8 +254,6 @@ class SC_alt_doc {
 	 * @return	void
 	 */
 	function processData()	{
-		global $TYPO3_CONF_VARS;
-
 			// GPvars specifically for processing:
 		$this->data = t3lib_div::_GP('data');
 		$this->cmd = t3lib_div::_GP('cmd');
@@ -307,7 +305,7 @@ class SC_alt_doc {
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 			$tce->log('',0,0,0,1,"Referer host '%s' and server host '%s' did not match and veriCode was not valid either!",1,array($refInfo['host'],$httpHost));
 			debug('Error: Referer host did not match with server host.');
 		} else {

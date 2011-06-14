@@ -283,7 +283,7 @@ class t3lib_TCEmain {
 	var $username; // will be set to username of be_user executing this script
 	var $admin; // will be set if user is admin
 
-	var $defaultPermissions = array( // Can be overridden from $TYPO3_CONF_VARS
+	var $defaultPermissions = array( // Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
 		'user' => 'show,edit,delete,new,editcontent',
 		'group' => 'show,edit,new,editcontent',
 		'everybody' => ''
@@ -3312,8 +3312,6 @@ class t3lib_TCEmain {
 	 * @return	void
 	 */
 	function copyRecord_fixRTEmagicImages($table, $theNewSQLID) {
-		global $TYPO3_DB;
-
 			// Creating fileFunc object.
 		if (!$this->fileFunc) {
 			$this->fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -3321,14 +3319,14 @@ class t3lib_TCEmain {
 		}
 
 			// Select all RTEmagic files in the reference table from the table/ID
-		/* @var $TYPO3_DB t3lib_DB */
-		$recs = $TYPO3_DB->exec_SELECTgetRows(
+		/* @var $GLOBALS['TYPO3_DB'] t3lib_DB */
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') .
-			' AND ref_string LIKE ' . $TYPO3_DB->fullQuoteStr('%/RTEmagic%', 'sys_refindex') .
-			' AND softref_key=' . $TYPO3_DB->fullQuoteStr('images', 'sys_refindex') .
-			' AND tablename=' . $TYPO3_DB->fullQuoteStr($table, 'sys_refindex') .
+			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') .
+			' AND ref_string LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%/RTEmagic%', 'sys_refindex') .
+			' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('images', 'sys_refindex') .
+			' AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') .
 			' AND recuid=' . intval($theNewSQLID),
 			'',
 			'sorting DESC'
@@ -3990,16 +3988,14 @@ class t3lib_TCEmain {
 	 * @return	void
 	 */
 	function deleteAction($table, $id) {
-		global $TYPO3_CONF_VARS;
-
 		$recordToDelete = t3lib_BEfunc::getRecord($table, $id);
 
 			// Record asked to be deleted was found:
 		if (is_array($recordToDelete)) {
 			$recordWasDeleted = FALSE;
 
-			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
 					$hookObj = t3lib_div::getUserObj($classRef);
 					if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
 						$hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
@@ -5493,14 +5489,12 @@ class t3lib_TCEmain {
 	 * @return	array		Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
 	 */
 	function doesPageHaveUnallowedTables($page_uid, $doktype) {
-		global $PAGES_TYPES;
-
 		$page_uid = intval($page_uid);
 		if (!$page_uid) {
 			return FALSE; // Not a number. Probably a new page
 		}
 
-		$allowedTableList = isset($PAGES_TYPES[$doktype]['allowedTables']) ? $PAGES_TYPES[$doktype]['allowedTables'] : $PAGES_TYPES['default']['allowedTables'];
+		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
 		if (strstr($allowedTableList, '*')) { // If all tables is OK the return TRUE
 			return FALSE; // OK...
@@ -6773,7 +6767,7 @@ class t3lib_TCEmain {
 	 * (an integer).
 	 *
 	 * Can call a list of post processing functions as defined in
-	 * $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
+	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
 	 * (numeric array with values being the function references, called by
 	 * t3lib_div::callUserFunction()).
 	 *
@@ -6793,8 +6787,6 @@ class t3lib_TCEmain {
 	 * @return	void
 	 */
 	public function clear_cacheCmd($cacheCmd) {
-		global $TYPO3_CONF_VARS;
-
 		$this->BE_USER->writelog(3, 1, 0, 0, 'User %s has cleared the cache (cacheCmd=%s)', array($this->BE_USER->user['username'], $cacheCmd));
 
 			// Clear cache for either ALL pages or ALL tables!
@@ -6827,8 +6819,8 @@ class t3lib_TCEmain {
 					}
 
 						// Clearing additional cache tables:
-					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
-						foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
 							if (!preg_match('/[^[:alnum:]_]/', $tableName) && substr($tableName, -5) == 'cache') {
 								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
 							} else {
@@ -6840,12 +6832,12 @@ class t3lib_TCEmain {
 						}
 					}
 				}
-				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache']) {
+				if ($this->admin && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
 					$this->removeCacheFiles();
 				}
 			break;
 			case 'temp_CACHED':
-				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache']) {
+				if ($this->admin && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
 					$this->removeCacheFiles();
 				}
 			break;
@@ -6858,8 +6850,8 @@ class t3lib_TCEmain {
 				$list_cache = array($cacheCmd);
 
 					// Call pre-processing function for clearing of cache for page ids:
-				if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
-					foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
 						$_params = array('pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()');
 							// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
 						t3lib_div::callUserFunction($funcName, $_params, $this);
@@ -6891,9 +6883,9 @@ class t3lib_TCEmain {
 		}
 
 			// Call post processing function for clear-cache:
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
 			$_params = array('cacheCmd' => $cacheCmd);
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}

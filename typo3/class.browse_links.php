@@ -278,7 +278,6 @@ class localPageTree extends t3lib_browseTree {
 	 * @return	string		HTML output.
 	 */
 	function printTree($treeArr='')	{
-		global $BACK_PATH;
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 		if (!is_array($treeArr))	$treeArr=$this->tree;
 
@@ -289,7 +288,7 @@ class localPageTree extends t3lib_browseTree {
 			$c++;
 			$bgColorClass = ($c+1)%2 ? 'bgColor' : 'bgColor-10';
 			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'])	{
-				$arrCol='<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
+				$arrCol='<td><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
 				$arrCol='<td></td>';
@@ -297,7 +296,7 @@ class localPageTree extends t3lib_browseTree {
 
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['row']['uid'].'\');';
 			$cEbullet = $this->ext_isLinkable($v['row']['doktype'],$v['row']['uid']) ?
-						'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' :
+						'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' :
 						'';
 			$out.='
 				<tr class="'.$bgColorClass.'">
@@ -515,7 +514,6 @@ class localFolderTree extends t3lib_folderTree {
 	 * @return	string		HTML output of the tree.
 	 */
 	function printTree($treeArr='')	{
-		global $BACK_PATH;
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 
 		if (!is_array($treeArr))	$treeArr=$this->tree;
@@ -539,14 +537,14 @@ class localFolderTree extends t3lib_folderTree {
 
 				// Creating blinking arrow, if applicable:
 			if (($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'file' || $GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'folder') && $cmpPath == $v['row']['path']) {
-				$arrCol='<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
+				$arrCol='<td><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
 				$arrCol='<td></td>';
 			}
 				// Create arrow-bullet for file listing (if folder path is linkable):
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['row']['path']).'\');';
-			$cEbullet = $this->ext_isLinkable($v['row']) ? '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' : '';
+			$cEbullet = $this->ext_isLinkable($v['row']) ? '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' : '';
 
 				// Put table row with folder together:
 			$out.='
@@ -760,8 +758,6 @@ class browse_links {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 			// Main GPvars:
 		$this->pointer           = t3lib_div::_GP('pointer');
 		$this->bparams           = t3lib_div::_GP('bparams');
@@ -1125,7 +1121,7 @@ class browse_links {
 
 			function launchView(url)	{	//
 				var thePreviewWindow="";
-				thePreviewWindow = window.open("'.$BACK_PATH.'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				thePreviewWindow = window.open("'.$GLOBALS['BACK_PATH'].'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus)	{
 					thePreviewWindow.focus();
 				}
@@ -1234,8 +1230,6 @@ class browse_links {
 	 * @return	string		Modified content variable.
 	 */
 	function main_rte($wiz=0)	{
-		global $BACK_PATH;
-
 			// Starting content:
 		$content=$this->doc->startPage('RTE link');
 
@@ -1420,7 +1414,7 @@ class browse_links {
 								// Adding link to menu of user defined links:
 							$subcats[$k2i]='
 								<tr>
-									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
+									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
 								</tr>';
 						}
 					}
@@ -1840,8 +1834,6 @@ class browse_links {
 	 * @return	string		HTML output. Returns content only if the ->expandPage value is set (pointing to a page uid to show tt_content records from ...)
 	 */
 	function expandPage()	{
-		global $BACK_PATH;
-
 		$out='';
 		$expPageId = $this->expandPage;		// Set page id (if any) to expand
 
@@ -1881,12 +1873,12 @@ class browse_links {
 				$c++;
 				$icon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row);
 				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid'])	{
-					$arrCol='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
+					$arrCol='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 				} else {
 					$arrCol='';
 				}
 					// Putting list element HTML together:
-				$out.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+				$out.='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
 						$arrCol.
 						'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.$row['uid'].'\');">'.
 						$icon.
@@ -1901,8 +1893,8 @@ class browse_links {
 						if (($skey%3)==2)	{
 								// Putting list element HTML together:
 							$sval = substr($sval,0,100);
-							$out.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
-									'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join'.($skey+3>count($split)?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+							$out.='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
+									'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/join'.($skey+3>count($split)?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
 									'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.rawurlencode($sval).'\');">'.
 									htmlspecialchars(' <A> '.$sval).
 									'</a><br />';
@@ -2057,8 +2049,6 @@ class browse_links {
 	 * @return	string		HTML output
 	 */
 	function expandFolder($expandFolder=0,$extensionList='')	{
-		global $BACK_PATH;
-
 		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
 		$out='';
 		if ($expandFolder && $this->checkFolder($expandFolder))	{
@@ -2076,11 +2066,11 @@ class browse_links {
 
 				// Create header element; The folder from which files are listed.
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-			$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
+			$picon='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
 			$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 			$picon='<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($expandFolder,strlen(PATH_site))).'\');">'.$picon.'</a>';
 			if ($this->curUrlInfo['act'] == 'folder' && $cmpPath == $expandFolder)	{
-				$out.= '<img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
+				$out.= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
 			}
 			$out.=$picon.'<br />';
 
@@ -2100,25 +2090,25 @@ class browse_links {
 
 					if ($this->mode == 'wizard' && $this->act == 'folder') {
 						$filepath = $expandFolder.$filepath.'/';
-						$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
+						$icon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
 					} else {
 							// File icon:
 						$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 
 							// Get size and icon:
 						$size = ' (' . t3lib_div::formatSize(filesize($filepath)) . 'bytes)';
-						$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/fileicons/' . $icon . '', 'width="18" height="16"') . ' title="' . htmlspecialchars($fI['basename'] . $size) . '" alt="" />';
+						$icon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/fileicons/' . $icon . '', 'width="18" height="16"') . ' title="' . htmlspecialchars($fI['basename'] . $size) . '" alt="" />';
 					}
 
 						// If the listed file turns out to be the CURRENT file, then show blinking arrow:
 					if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder') && $cmpPath == $filepath) {
-						$arrCol='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
+						$arrCol='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 					} else {
 						$arrCol='';
 					}
 
 						// Put it all together for the file element:
-					$out.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+					$out.='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/join'.($c==$cc?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
 							$arrCol.
 							'<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site))).'\');">'.
 							$icon.
@@ -2161,8 +2151,6 @@ class browse_links {
 	 * @return	string		HTML output
 	 */
 	function fileList($files, $folderName='', $noThumbs=0) {
-		global $BACK_PATH;
-
 		$out='';
 
 			// Listing the files:
@@ -2179,7 +2167,7 @@ class browse_links {
 				// Create the header of current folder:
 			if($folderName) {
 				$picon = '<div id="currentFolderHeader">';
-				$picon .= '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" /> ';
+				$picon .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" /> ';
 				$picon .= htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($folderName), $titleLen));
 				$picon .= '</div>';
 				$out .= $picon;
@@ -2201,7 +2189,7 @@ class browse_links {
 				if (t3lib_div::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),strtolower($fI['extension'])) && !$noThumbs)	{
 					$imgInfo = $imgObj->getImageDimensions($filepath);
 					$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
-					$clickIcon = t3lib_BEfunc::getThumbNail($BACK_PATH.'thumbs.php',$filepath,'hspace="5" vspace="5" border="1"');
+					$clickIcon = t3lib_BEfunc::getThumbNail($GLOBALS['BACK_PATH'].'thumbs.php',$filepath,'hspace="5" vspace="5" border="1"');
 				} else {
 					$clickIcon = '';
 					$pDim = '';
@@ -2210,7 +2198,7 @@ class browse_links {
 					// Create file icon:
 				$ficon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 				$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes'.($pDim?', '.$pDim:'').')';
-				$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$ficon,'width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" class="absmiddle" alt="" />';
+				$icon = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/fileicons/'.$ficon,'width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" class="absmiddle" alt="" />';
 
 					// Create links for adding the file:
 				if (strstr($filepath,',') || strstr($filepath,'|'))	{	// In case an invalid character is in the filepath, display error message:
@@ -2234,7 +2222,7 @@ class browse_links {
 				$ATag_e='</a>';
 
 					// Create link to showing details about the file in a window:
-				$Ahref = $BACK_PATH.'show_item.php?table='.rawurlencode($filepath).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$Ahref = $GLOBALS['BACK_PATH'].'show_item.php?table='.rawurlencode($filepath).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 				$ATag2='<a href="'.htmlspecialchars($Ahref).'">';
 				$ATag2_e='</a>';
 
@@ -2246,8 +2234,8 @@ class browse_links {
 					$lines[]='
 						<tr class="bgColor4">
 							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
-							<td>' . $ATag . '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList',1) . '" alt="" />' . $ATag_e . '</td>
-							<td nowrap="nowrap">' . ($ATag2 . '<img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td>' . $ATag . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList',1) . '" alt="" />' . $ATag_e . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td nowrap="nowrap">&nbsp;'.$pDim.'</td>
 						</tr>';
 					$lines[]='
@@ -2258,8 +2246,8 @@ class browse_links {
 					$lines[]='
 						<tr class="bgColor4">
 							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
-							<td>' . $ATag . '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/plusbullet2.gif','width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList',1) . '" alt="" />' . $ATag_e . '</td>
-							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/zoom2.gif','width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td>' . $ATag . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif','width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList',1) . '" alt="" />' . $ATag_e . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
 				}
@@ -2294,8 +2282,6 @@ class browse_links {
 	 * @return	string		HTML output
 	 */
 	function folderList($baseFolder, $folders) {
-		global $BACK_PATH;
-
 		$content = '';
 
 			// Create headline (showing number of folders):
@@ -2321,7 +2307,7 @@ class browse_links {
 				// add the foder icon
 			$folderIcon = $aTag_alt;
 			$folderIcon.= '<img'.t3lib_iconWorks::skinImg(
-				$BACK_PATH,
+				$GLOBALS['BACK_PATH'],
 				'gfx/i/_icon_webfolders.gif','width="18" height="16"'
 			).' alt="" />';
 			$folderIcon.= htmlspecialchars(
@@ -2341,7 +2327,7 @@ class browse_links {
 					$pathInfo = pathinfo($folderPath);
 
 						// Create folder icon:
-					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/i/_icon_webfolders.gif','width="16" height="16"').' title="'.htmlspecialchars($pathInfo['basename'].$size).'" class="absmiddle" alt="" />';
+					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif','width="16" height="16"').' title="'.htmlspecialchars($pathInfo['basename'].$size).'" class="absmiddle" alt="" />';
 
 						// Create links for adding the folder:
 					if($this->P['itemName'] != '' && $this->P['formName'] != '') {
@@ -2375,7 +2361,7 @@ class browse_links {
 						$lines[] = '
 							<tr class="bgColor4">
 								<td nowrap="nowrap">'.$foldernameAndIcon.'&nbsp;</td>
-								<td>' . $aTag . '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $aTag_e .' </td>
+								<td>' . $aTag . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $aTag_e .' </td>
 								<td>&nbsp;</td>
 							</tr>';
 					}
@@ -2411,8 +2397,6 @@ class browse_links {
 	 * @return	string		HTML output
 	 */
 	function TBE_dragNDrop($expandFolder=0,$extensionList='')	{
-		global $BACK_PATH;
-
 		$extensionList = ($extensionList == '*') ? '' : $extensionList;
 		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
 		$out='';
@@ -2425,7 +2409,7 @@ class browse_links {
 					$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):',count($files)));
 
 					$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-					$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
+					$picon='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
 					$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 					$out.=$picon.'<br />';
 
@@ -2452,7 +2436,7 @@ class browse_links {
 
 							$ficon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 							$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes'.($pDim?', '.$pDim:'').')';
-							$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
+							$icon = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
 							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen));
 
 							if (t3lib_div::_GP('noLimit'))	{
@@ -2479,7 +2463,7 @@ class browse_links {
 									<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
 									<td nowrap="nowrap">'.
 									($imgInfo[0]!=$IW ? '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('noLimit'=>'1'))).'">'.
-														'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" />'.
+														'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" />'.
 														'</a>':'').
 									$pDim.'&nbsp;</td>
 								</tr>';
@@ -2585,9 +2569,7 @@ class browse_links {
 	 * @return	string		HTML for the message (wrapped in a table).
 	 */
 	function getMsgBox($in_msg,$icon='icon_note')	{
-		global $BACK_PATH;
-
-		$msg = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/'.$icon.'.gif','width="18" height="16"').' alt="" />'.htmlspecialchars($in_msg);
+		$msg = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$icon.'.gif','width="18" height="16"').' alt="" />'.htmlspecialchars($in_msg);
 		$msg = '
 
 			<!--
@@ -2705,8 +2687,6 @@ class browse_links {
 	 * @return	string		HTML for an upload form.
 	 */
 	function uploadForm($path)	{
-		global $BACK_PATH;
-
 		if ($this->isReadOnlyFolder($path)) return '';
 
 			// Read configuration of upload field count
@@ -2724,7 +2704,7 @@ class browse_links {
 			<!--
 				Form, for uploading files:
 			-->
-			<form action="' . $BACK_PATH . 'tce_file.php" method="post" name="editform" id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
+			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform" id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
 						<td>' . $this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle', 1) . ':') . '</td>
@@ -2770,8 +2750,6 @@ class browse_links {
 	 * @return	string		HTML for the create folder form.
 	 */
 	function createFolder($path)	{
-		global $BACK_PATH;
-
 		if ($this->isReadOnlyFolder($path)) return '';
 
 			// Don't show Folder-create form if it's denied
@@ -2785,7 +2763,7 @@ class browse_links {
 			<!--
 				Form, for creating new folders:
 			-->
-			<form action="' . $BACK_PATH . 'tce_file.php" method="post" name="editform2" id="typo3-crFolderForm">
+			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform2" id="typo3-crFolderForm">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-crFolder">
 					<tr>
 						<td>' . $this->barheader($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle') . ':') . '</td>
@@ -2830,10 +2808,10 @@ class browse_links {
 
 			$out = $this->doc->spacer(15).'<div>' .
 					'<a href="#" onclick="BrowseLinks.Selector.toggle()">' .
-						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/clip_select.gif','width="12" height="12"').' title="'.$labelToggleSelection.'" alt="" /> ' .
+						'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_select.gif','width="12" height="12"').' title="'.$labelToggleSelection.'" alt="" /> ' .
 						$labelToggleSelection.'</a>'.$this->doc->spacer(5) .
 					'<a href="#" onclick="BrowseLinks.Selector.handle()">' .
-						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/import.gif','width="12" height="12"').' title="'.$labelImportSelection.'" alt="" /> ' .
+						'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/import.gif','width="12" height="12"').' title="'.$labelImportSelection.'" alt="" /> ' .
 						$labelImportSelection.'</a>' .
 				'</div>';
 

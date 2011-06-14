@@ -137,7 +137,7 @@ class t3lib_userAuth {
 	var $hash_length = 32; // The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
 	var $getMethodEnabled = FALSE; // Setting this flag TRUE lets user-authetication happen from GET_VARS if POST_VARS are not set. Thus you may supply username/password from the URL.
 	var $lockIP = 4; // If set, will lock the session to the users IP address (all four numbers. Reducing to 1-3 means that only first, second or third part of the IP address is used).
-	var $lockHashKeyWords = 'useragent'; // Keyword list (commalist with no spaces!): "useragent". Each keyword indicates some information that can be included in a integer hash made to lock down usersessions. Configurable through $TYPO3_CONF_VARS[TYPO3_MODE]['lockHashKeyWords']
+	var $lockHashKeyWords = 'useragent'; // Keyword list (commalist with no spaces!): "useragent". Each keyword indicates some information that can be included in a integer hash made to lock down usersessions. Configurable through $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['lockHashKeyWords']
 
 	var $warningEmail = ''; // warning -emailaddress:
 	var $warningPeriod = 3600; // Period back in time (in seconds) in which number of failed logins are collected
@@ -160,7 +160,7 @@ class t3lib_userAuth {
 	var $challengeStoredInCookie = FALSE; // If set, the challenge value will be stored in a session as well so the server can check that is was not forged.
 	var $loginType = ''; // Login type, used for services.
 
-	var $svConfig = array(); // "auth" services configuration array from $TYPO3_CONF_VARS['SVCONF']['auth']
+	var $svConfig = array(); // "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
 	var $writeDevLog = FALSE; // write messages into the devlog?
 
 
@@ -176,25 +176,23 @@ class t3lib_userAuth {
 	 * @return	void
 	 */
 	function start() {
-		global $TYPO3_CONF_VARS;
-
 			// backend or frontend login - used for auth services
 		$this->loginType = ($this->name == 'fe_typo_user') ? 'FE' : 'BE';
 
 			// set level to normal if not already set
 		if (!$this->security_level) {
 				// Notice: cannot use TYPO3_MODE here because BE user can be logged in and operate inside FE!
-			$this->security_level = trim($TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel']);
+			$this->security_level = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']);
 			if (!$this->security_level) {
 				$this->security_level = 'normal';
 			}
 		}
 
 			// enable dev logging if set
-		if ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog']) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog']) {
 			$this->writeDevLog = TRUE;
 		}
-		if ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog' . $this->loginType]) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog' . $this->loginType]) {
 			$this->writeDevLog = TRUE;
 		}
 		if (TYPO3_DLOG) {
@@ -210,7 +208,7 @@ class t3lib_userAuth {
 		$this->newSessionID = FALSE;
 			// $id is set to ses_id if cookie is present. Else set to FALSE, which will start a new session
 		$id = $this->getCookie($this->name);
-		$this->svConfig = $TYPO3_CONF_VARS['SVCONF']['auth'];
+		$this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'];
 
 			// if we have a flash client, take the ID from the GP
 		if (!$id && $GLOBALS['CLIENT']['BROWSER'] == 'flash') {
@@ -244,7 +242,7 @@ class t3lib_userAuth {
 		}
 
 			// Set session hashKey lock keywords from configuration; currently only 'useragent' can be used.
-		$this->lockHashKeyWords = $TYPO3_CONF_VARS[$this->loginType]['lockHashKeyWords'];
+		$this->lockHashKeyWords = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockHashKeyWords'];
 
 			// Make certain that NO user is set initially
 		$this->user = '';
@@ -280,8 +278,8 @@ class t3lib_userAuth {
 		}
 
 			// Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName) {
 				$_params = array(
 					'pObj' => &$this,
 				);
@@ -359,7 +357,7 @@ class t3lib_userAuth {
 
 	/**
 	 * Gets the domain to be used on setting cookies.
-	 * The information is taken from the value in $TYPO3_CONF_VARS[SYS][cookieDomain].
+	 * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS'][SYS][cookieDomain].
 	 *
 	 * @return	string		The domain to be used on setting cookies
 	 */
@@ -1210,9 +1208,7 @@ class t3lib_userAuth {
 	 * @internal
 	 */
 	function processLoginData($loginData, $security_level = '') {
-		global $TYPO3_CONF_VARS;
-
-		$loginSecurityLevel = $security_level ? $security_level : ($TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel'] ? $TYPO3_CONF_VARS[$this->loginType]['loginSecurityLevel'] : $this->security_level);
+		$loginSecurityLevel = $security_level ? $security_level : ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] : $this->security_level);
 
 			// Processing data according to the state it was submitted in.
 			// ($loginSecurityLevel should reflect the security level used on the data being submitted in the login form)

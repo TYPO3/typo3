@@ -85,12 +85,10 @@ class SC_alt_intro {
 	 * @return	void
 	 */
 	function init()	{
-		global $TBE_MODULES;
-
 			// Loads the available backend modules so we can create the description overview.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = TRUE;
-		$this->loadModules->load($TBE_MODULES);
+		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 	}
 
 	/**
@@ -99,11 +97,9 @@ class SC_alt_intro {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE;
-
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
-		$TBE_TEMPLATE->divClass = $GLOBALS['TBE_TEMPLATE']->bodyTagId;
+		$GLOBALS['TBE_TEMPLATE']->divClass = $GLOBALS['TBE_TEMPLATE']->bodyTagId;
 
 		$this->content = '
 			<div id="typo3-docheader">
@@ -130,7 +126,7 @@ class SC_alt_intro {
 		$this->content .= '<br /></div>';
 
 			// Renders the module page
-		$this->content = $TBE_TEMPLATE->render(
+		$this->content = $GLOBALS['TBE_TEMPLATE']->render(
 			'About modules',
 			$this->content
 		);

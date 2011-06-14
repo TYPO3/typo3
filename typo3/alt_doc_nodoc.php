@@ -87,13 +87,11 @@ class SC_alt_doc_nodoc {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 			// Start the template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->bodyTagMargins['x']=5;
 		$this->doc->bodyTagMargins['y']=5;
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			// Add JS
 		$this->doc->JScode = $this->doc->wrapScriptTags('

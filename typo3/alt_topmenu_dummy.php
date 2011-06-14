@@ -161,13 +161,11 @@ class SC_alt_topmenu_dummy {
 	 * @return	void
 	 */
 	function dummyContent()	{
-		global $TBE_TEMPLATE;
-
 			// Start page
-		$this->content.=$TBE_TEMPLATE->startPage('Top frame dummy display');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('Top frame dummy display');
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**
