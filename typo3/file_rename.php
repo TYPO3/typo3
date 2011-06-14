@@ -102,15 +102,13 @@ class SC_file_rename {
 	 * @return	void
 	 */
 	function init()	{
-		global $TYPO3_CONF_VARS;
-
 			// Initialize GPvars:
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
 			// Cleaning and checking target
 		if (file_exists($this->target))	{

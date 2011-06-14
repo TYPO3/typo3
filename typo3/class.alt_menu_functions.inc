@@ -631,8 +631,6 @@ class alt_menu_functions {
 	 * @return	string	goToModule javascript function
 	 */
 	function generateMenuJScode($loadedModules, $menuType = 4)	{
-		global $TBE_TEMPLATE;
-
 		$goToModuleSwitch = $this->topMenu($loadedModules, 0, '', $menuType);
 
 		$jsCode = '

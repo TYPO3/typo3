@@ -168,7 +168,7 @@ class template {
 	var $endJS=1;					// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
 
 		// TYPO3 Colorscheme.
-		// If you want to change this, please do so through a skin using the global var $TBE_STYLES
+		// If you want to change this, please do so through a skin using the global var $GLOBALS['TBE_STYLES']
 	var $bgColor = '#F7F3EF';		// Light background color
 	var $bgColor2 = '#9BA1A8';		// Steel-blue
 	var $bgColor3 = '#F6F2E6';		// dok.color
@@ -241,13 +241,11 @@ class template {
 
 	/**
 	 * Constructor
-	 * Imports relevant parts from global $TBE_STYLES (colorscheme)
+	 * Imports relevant parts from global $GLOBALS['TBE_STYLES'] (colorscheme)
 	 *
 	 * @return	void
 	 */
 	function __construct()	{
-		global $TBE_STYLES;
-
 			// Initializes the page rendering object:
 		$this->getPageRenderer();
 
@@ -264,27 +262,27 @@ class template {
 		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-',$this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
-		if (is_array($TBE_STYLES['scriptIDindex'][$this->scriptID]))	{
-			$ovr = $TBE_STYLES['scriptIDindex'][$this->scriptID];		// Make copy
-			$TBE_STYLES = t3lib_div::array_merge_recursive_overrule($TBE_STYLES,$ovr);		// merge styles.
-			unset($TBE_STYLES['scriptIDindex'][$this->scriptID]);	// Have to unset - otherwise the second instantiation will do it again!
+		if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]))	{
+			$ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];		// Make copy
+			$GLOBALS['TBE_STYLES'] = t3lib_div::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'],$ovr);		// merge styles.
+			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);	// Have to unset - otherwise the second instantiation will do it again!
 		}
 
 			// Color scheme:
-		if ($TBE_STYLES['mainColors']['bgColor'])	$this->bgColor=$TBE_STYLES['mainColors']['bgColor'];
-		if ($TBE_STYLES['mainColors']['bgColor1'])	$this->bgColor1=$TBE_STYLES['mainColors']['bgColor1'];
-		if ($TBE_STYLES['mainColors']['bgColor2'])	$this->bgColor2=$TBE_STYLES['mainColors']['bgColor2'];
-		if ($TBE_STYLES['mainColors']['bgColor3'])	$this->bgColor3=$TBE_STYLES['mainColors']['bgColor3'];
-		if ($TBE_STYLES['mainColors']['bgColor4'])	$this->bgColor4=$TBE_STYLES['mainColors']['bgColor4'];
-		if ($TBE_STYLES['mainColors']['bgColor5'])	$this->bgColor5=$TBE_STYLES['mainColors']['bgColor5'];
-		if ($TBE_STYLES['mainColors']['bgColor6'])	$this->bgColor6=$TBE_STYLES['mainColors']['bgColor6'];
-		if ($TBE_STYLES['mainColors']['hoverColor'])	$this->hoverColor=$TBE_STYLES['mainColors']['hoverColor'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor'])	$this->bgColor=$GLOBALS['TBE_STYLES']['mainColors']['bgColor'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor1'])	$this->bgColor1=$GLOBALS['TBE_STYLES']['mainColors']['bgColor1'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor2'])	$this->bgColor2=$GLOBALS['TBE_STYLES']['mainColors']['bgColor2'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor3'])	$this->bgColor3=$GLOBALS['TBE_STYLES']['mainColors']['bgColor3'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor4'])	$this->bgColor4=$GLOBALS['TBE_STYLES']['mainColors']['bgColor4'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor5'])	$this->bgColor5=$GLOBALS['TBE_STYLES']['mainColors']['bgColor5'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor6'])	$this->bgColor6=$GLOBALS['TBE_STYLES']['mainColors']['bgColor6'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['hoverColor'])	$this->hoverColor=$GLOBALS['TBE_STYLES']['mainColors']['hoverColor'];
 
 			// Main Stylesheets:
-		if ($TBE_STYLES['stylesheet'])	$this->styleSheetFile = $TBE_STYLES['stylesheet'];
-		if ($TBE_STYLES['stylesheet2'])	$this->styleSheetFile2 = $TBE_STYLES['stylesheet2'];
-		if ($TBE_STYLES['styleSheetFile_post'])	$this->styleSheetFile_post = $TBE_STYLES['styleSheetFile_post'];
-		if ($TBE_STYLES['inDocStyles_TBEstyle'])	$this->inDocStyles_TBEstyle = $TBE_STYLES['inDocStyles_TBEstyle'];
+		if ($GLOBALS['TBE_STYLES']['stylesheet'])	$this->styleSheetFile = $GLOBALS['TBE_STYLES']['stylesheet'];
+		if ($GLOBALS['TBE_STYLES']['stylesheet2'])	$this->styleSheetFile2 = $GLOBALS['TBE_STYLES']['stylesheet2'];
+		if ($GLOBALS['TBE_STYLES']['styleSheetFile_post'])	$this->styleSheetFile_post = $GLOBALS['TBE_STYLES']['styleSheetFile_post'];
+		if ($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'])	$this->inDocStyles_TBEstyle = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
 
 			// include all stylesheets
 		foreach ($this->getSkinStylesheetDirectories() as $stylesheetDirectory) {
@@ -292,7 +290,7 @@ class template {
 		}
 
 			// Background image
-		if ($TBE_STYLES['background'])	$this->backGroundImage = $TBE_STYLES['background'];
+		if ($GLOBALS['TBE_STYLES']['background'])	$this->backGroundImage = $GLOBALS['TBE_STYLES']['background'];
 	}
 
 
@@ -1210,7 +1208,7 @@ $str.=$this->docBodyTagBegin().
 				$skinStylesheetDirs = $this->stylesheetsSkins;
 
 					// skins can add custom stylesheetDirectories using
-					// $TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']
+					// $GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']
 				if (is_array($skin['stylesheetDirectories'])) {
 					$skinStylesheetDirs = array_merge($skinStylesheetDirs, $skin['stylesheetDirectories']);
 				}

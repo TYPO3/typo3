@@ -47,7 +47,7 @@
  *
  */
 
-$BACK_PATH = '';
+$GLOBALS['BACK_PATH'] = '';
 require('init.php');
 require('template.php');
 
@@ -91,16 +91,13 @@ class SC_file_edit {
 	 * @return	void
 	 */
 	function init()	{
-		//TODO remove global
-		global $BACK_PATH,$TYPO3_CONF_VARS;
-
 			// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = $this->origTarget = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Creating file management object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
 
 		if (file_exists($this->target))	{
@@ -139,7 +136,7 @@ class SC_file_edit {
 		// ***************************
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate('templates/file_edit.html');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			function backToList()	{	//
 				top.goToModule("file_list");

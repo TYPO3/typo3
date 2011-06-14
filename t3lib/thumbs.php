@@ -86,8 +86,12 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 
 require(PATH_t3lib.'config_default.php');
-if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
-if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disabled!');
+if (!defined ('TYPO3_db')) {
+	die ('The configuration file was not included.');
+}
+if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
+	die ('ImageProcessing was disabled!');
+}
 
 
 
@@ -124,7 +128,7 @@ class SC_t3lib_thumbs {
 	var $output = '';
 	var $sizeDefault='56x56';
 
-	var $imageList;		// Coming from $TYPO3_CONF_VARS['GFX']['imagefile_ext']
+	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
 
 		// Internal, static: GPvar:
@@ -139,40 +143,38 @@ class SC_t3lib_thumbs {
 	 *
 	 * @return	void
 	 */
-	function init()	{
-		global $TYPO3_CONF_VARS;
-
+	function init() {
 			// Setting GPvars:
 		$file = t3lib_div::_GP('file');
 		$size = t3lib_div::_GP('size');
 		$md5sum = t3lib_div::_GP('md5sum');
 
 			// Image extension list is set:
-		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
+		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 
 			// If the filereference $this->file is relative, we correct the path
-		if (substr($file,0,3)=='../')	{
+		if (substr($file,0,3)=='../') {
 			$file = PATH_site.substr($file,3);
 		}
 
 			// Now the path is absolute.
 			// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
-		if (t3lib_div::isAllowedAbsPath($file))	{
+		if (t3lib_div::isAllowedAbsPath($file)) {
 			$mtime = filemtime($file);
 		}
 
 			// Do an MD5 check to prevent viewing of images without permission
 		$OK = FALSE;
-		if ($mtime)	{
+		if ($mtime) {
 				// Always use the absolute path for this check!
 			$check = basename($file).':'.$mtime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 			$md5_real = t3lib_div::shortMD5($check);
-			if (!strcmp($md5_real,$md5sum))	{
+			if (!strcmp($md5_real,$md5sum)) {
 				$OK = TRUE;
 			}
 		}
 
-		if ($OK)	{
+		if ($OK) {
 			$this->input = $file;
 			$this->size = $size;
 			$this->mtime = $mtime;
@@ -190,69 +192,67 @@ class SC_t3lib_thumbs {
 	 *
 	 * @return	void
 	 */
-	function main()	{
-		global $TYPO3_CONF_VARS;
-
+	function main() {
 			// If file exists, we make a thumbsnail of the file.
-		if ($this->input && file_exists($this->input))	{
+		if ($this->input && file_exists($this->input)) {
 
 				// Check file extension:
 			$reg = array();
-			if (preg_match('/(.*)\.([^\.]*$)/',$this->input,$reg))	{
+			if (preg_match('/(.*)\.([^\.]*$)/', $this->input, $reg)) {
 				$ext=strtolower($reg[2]);
-				$ext=($ext=='jpeg')?'jpg':$ext;
-				if ($ext=='ttf')	{
+				$ext=($ext=='jpeg') ? 'jpg' : $ext;
+				if ($ext=='ttf') {
 					$this->fontGif($this->input);	// Make font preview... (will not return)
-				} elseif (!t3lib_div::inList($this->imageList, $ext))	{
-					$this->errorGif('Not imagefile!',$ext,basename($this->input));
+				} elseif (!t3lib_div::inList($this->imageList, $ext)) {
+					$this->errorGif('Not imagefile!', $ext, basename($this->input));
 				}
 			} else {
-				$this->errorGif('Not imagefile!','No ext!',basename($this->input));
+				$this->errorGif('Not imagefile!', 'No ext!', basename($this->input));
 			}
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
 			if (!$this->size) 	$this->size = $this->sizeDefault;	// default
 
 				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
-			$sizeParts = explode('x', $this->size.'x'.$this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
-			$sizeParts = array(t3lib_div::intInRange($sizeParts[0],1,1000),t3lib_div::intInRange($sizeParts[1],1,1000));	// Cleaning it up, only two parameters now.
-			$this->size = implode('x',$sizeParts);		// Imploding the cleaned size-value back to the internal variable
+			$sizeParts = explode('x', $this->size . 'x' . $this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
+			$sizeParts = array(t3lib_div::intInRange($sizeParts[0], 1, 1000), t3lib_div::intInRange($sizeParts[1], 1, 1000));	// Cleaning it up, only two parameters now.
+			$this->size = implode('x', $sizeParts);		// Imploding the cleaned size-value back to the internal variable
 			$sizeMax = max($sizeParts);	// Getting max value
 
 				// Init
-			$outpath = PATH_site.$this->outdir;
+			$outpath = PATH_site . $this->outdir;
 
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
 				// René: png work for me
-			$thmMode = t3lib_div::intInRange($TYPO3_CONF_VARS['GFX']['thumbnails_png'],0);
+			$thmMode = t3lib_div::intInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
 			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
-			$outfile = 'tmb_'.substr(md5($this->input.$this->mtime.$this->size),0,10).'.'.$outext;
-			$this->output = $outpath.$outfile;
+			$outfile = 'tmb_' . substr(md5($this->input . $this->mtime . $this->size), 0, 10) . '.' . $outext;
+			$this->output = $outpath . $outfile;
 
-			if ($TYPO3_CONF_VARS['GFX']['im'])	{
+			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 					// If thumbnail does not exist, we generate it
-				if (!file_exists($this->output))	{
+				if (!file_exists($this->output)) {
 					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->input) . '[0] ' . $this->wrapFileName($this->output);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					t3lib_utility_Command::exec($cmd);
-					if (!file_exists($this->output))	{
-						$this->errorGif('No thumb','generated!',basename($this->input));
+					if (!file_exists($this->output)) {
+						$this->errorGif('No thumb','generated!', basename($this->input));
 					} else {
 						t3lib_div::fixPermissions($this->output);
 					}
 				}
 					// The thumbnail is read and output to the browser
-				if($fd = @fopen($this->output,'rb'))	{
-					header('Content-type: image/'.$outext);
+				if($fd = @fopen($this->output,'rb')) {
+					header('Content-type: image/' . $outext);
 					fpassthru($fd);
 					fclose($fd);
 				} else {
-					$this->errorGif('Read problem!','',$this->output);
+					$this->errorGif('Read problem!', '', $this->output);
 				}
 			} else exit;
 		} else {
-			$this->errorGif('No valid','inputfile!',basename($this->input));
+			$this->errorGif('No valid','inputfile!', basename($this->input));
 		}
 	}
 
@@ -282,10 +282,8 @@ class SC_t3lib_thumbs {
 	 * @param	string		Text line 3
 	 * @return	void
 	 */
-	function errorGif($l1,$l2,$l3)	{
-		global $TYPO3_CONF_VARS;
-
-		if (!$TYPO3_CONF_VARS['GFX']['gdlib']) {
+	function errorGif($l1,$l2,$l3) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
 			throw new RuntimeException(
 				'TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3,
 				1270853952
@@ -293,35 +291,35 @@ class SC_t3lib_thumbs {
 		}
 
 			// Creates the basis for the error image
-		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			header('Content-type: image/png');
-			$im = imagecreatefrompng(PATH_typo3.'gfx/notfound_thumb.png');
+			$im = imagecreatefrompng(PATH_typo3 . 'gfx/notfound_thumb.png');
 		} else {
 			header('Content-type: image/gif');
-			$im = imagecreatefromgif(PATH_typo3.'gfx/notfound_thumb.gif');
+			$im = imagecreatefromgif(PATH_typo3 . 'gfx/notfound_thumb.gif');
 		}
 			// Sets background color and print color.
-		$white = imageColorAllocate($im, 0,0,0);
-		$black = imageColorAllocate($im, 255,255,0);
+		$white = imageColorAllocate($im, 0, 0, 0);
+		$black = imageColorAllocate($im, 255, 255, 0);
 
 			// Prints the text strings with the build-in font functions of GD
 		$x=0;
 		$font=0;
-		if ($l1)	{
+		if ($l1) {
 			imagefilledrectangle($im, $x, 9, 56, 16, $black);
 			imageString($im,$font,$x,9,$l1,$white);
 		}
-		if ($l2)	{
+		if ($l2) {
 			imagefilledrectangle($im, $x, 19, 56, 26, $black);
 			imageString($im,$font,$x,19,$l2,$white);
 		}
-		if ($l3)	{
+		if ($l3) {
 			imagefilledrectangle($im, $x, 29, 56, 36, $black);
 			imageString($im,$font,$x,29,substr($l3,-14),$white);
 		}
 
 			// Outputting the image stream and exit
-		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			imagePng($im);
 		} else {
 			imageGif($im);
@@ -339,10 +337,8 @@ class SC_t3lib_thumbs {
 	 * @param	string		The filepath to the font file (absolute, probably)
 	 * @return	void
 	 */
-	function fontGif($font)	{
-		global $TYPO3_CONF_VARS;
-
-		if (!$TYPO3_CONF_VARS['GFX']['gdlib']) {
+	function fontGif($font) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
 			throw new RuntimeException(
 				'TYPO3 Fatal Error: No gdlib.',
 				1270853953
@@ -350,9 +346,9 @@ class SC_t3lib_thumbs {
 		}
 
 			// Create image and set background color to white.
-		$im = imageCreate(250,76);
-		$white = imageColorAllocate($im, 255,255,255);
-		$col = imageColorAllocate($im, 0,0,0);
+		$im = imageCreate(250, 76);
+		$white = imageColorAllocate($im, 255, 255, 255);
+		$col = imageColorAllocate($im, 0, 0, 0);
 
 			// The test string and offset in x-axis.
 		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÆæØøÅåÄäÖöÜüß';
@@ -372,8 +368,8 @@ class SC_t3lib_thumbs {
 		imagettftext ($im, t3lib_div::freetypeDpiComp(18), 0, $x, 53, $col, $font, $string);
 		imagettftext ($im, t3lib_div::freetypeDpiComp(24), 0, $x, 74, $col, $font, $string);
 
-			// Output PNG or GIF based on $TYPO3_CONF_VARS['GFX']['gdlib_png']
-		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
+			// Output PNG or GIF based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']
+		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			header('Content-type: image/png');
 			imagePng($im);
 		} else {

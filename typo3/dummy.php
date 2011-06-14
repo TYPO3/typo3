@@ -73,13 +73,11 @@ class SC_dummy {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE;
-
 			// Start page
-		$this->content.=$TBE_TEMPLATE->startPage('Dummy document');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('Dummy document');
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**
