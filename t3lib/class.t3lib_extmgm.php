@@ -115,14 +115,13 @@ final class t3lib_extMgm {
 	 * @return	boolean
 	 */
 	public static function isLoaded($key, $exitOnError = 0) {
-		global $TYPO3_LOADED_EXT;
-		if ($exitOnError && !isset($TYPO3_LOADED_EXT[$key])) {
+		if ($exitOnError && !isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 			throw new BadFunctionCallException(
 				'TYPO3 Fatal Error: Extension "' . $key . '" was not loaded!',
 				1270853910
 			);
 		}
-		return isset($TYPO3_LOADED_EXT[$key]);
+		return isset($GLOBALS['TYPO3_LOADED_EXT'][$key]);
 	}
 
 	/**
@@ -136,14 +135,13 @@ final class t3lib_extMgm {
 	 * @return	string
 	 */
 	public static function extPath($key, $script = '') {
-		global $TYPO3_LOADED_EXT;
-		if (!isset($TYPO3_LOADED_EXT[$key])) {
+		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 			throw new BadFunctionCallException(
 				'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
 				1270853878
 			);
 		}
-		return PATH_site . $TYPO3_LOADED_EXT[$key]['siteRelPath'] . $script;
+		return PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $script;
 	}
 
 	/**
@@ -156,14 +154,13 @@ final class t3lib_extMgm {
 	 * @return	string
 	 */
 	public static function extRelPath($key) {
-		global $TYPO3_LOADED_EXT;
-		if (!isset($TYPO3_LOADED_EXT[$key])) {
+		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 			throw new BadFunctionCallException(
 				'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
 				1270853879
 			);
 		}
-		return $TYPO3_LOADED_EXT[$key]['typo3RelPath'];
+		return $GLOBALS['TYPO3_LOADED_EXT'][$key]['typo3RelPath'];
 	}
 
 	/**
@@ -1367,14 +1364,14 @@ tt_content.' . $key . $prefix . ' {
 	 ***************************************/
 
 	/**
-	 * Loading extensions configured in $TYPO3_CONF_VARS['EXT']['extList']
+	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
 	 *
-	 * CACHING ON: ($TYPO3_CONF_VARS['EXT']['extCache'] = 1 or 2)
+	 * CACHING ON: ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1 or 2)
 	 *		 If caching is enabled (and possible), the output will be $extensions['_CACHEFILE'] set to the cacheFilePrefix. Subsequently the cache files must be included then since those will eventually set up the extensions.
 	 *		 If cachefiles are not found they will be generated
-	 * CACHING OFF:	($TYPO3_CONF_VARS['EXT']['extCache'] = 0)
+	 * CACHING OFF:	($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 0)
 	 *		 The returned value will be an array where each key is an extension key and the value is an array with filepaths for the extension.
-	 *		 This array will later be set in the global var $TYPO3_LOADED_EXT
+	 *		 This array will later be set in the global var $GLOBALS['TYPO3_LOADED_EXT']
 	 *
 	 * Usages of this function can be seen in config_default.php
 	 * Extensions are always detected in the order local - global - system.
@@ -1384,7 +1381,6 @@ tt_content.' . $key . $prefix . ' {
 	 * @internal
 	 */
 	public static function typo3_loadExtensions() {
-		global $TYPO3_CONF_VARS;
 
 			// Caching behaviour of ext_tables.php and ext_localconf.php files:
 		$extensionCacheBehaviour = self::getExtensionCacheBehaviour();
@@ -1438,7 +1434,7 @@ tt_content.' . $key . $prefix . ' {
 								@is_dir(PATH_typo3 . 'ext/')) { // Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
 					$wrError = self::cannotCacheFilesWritable($cacheFilePrefix);
 					if ($wrError) {
-						$TYPO3_CONF_VARS['EXT']['extCache'] = 0;
+						$GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 0;
 					} else {
 							// Write cache files:
 						$extensions = self::writeCacheFiles($extensions, $cacheFilePrefix);
@@ -1466,7 +1462,7 @@ tt_content.' . $key . $prefix . ' {
 ###########################
 
 $_EXTKEY = \'' . $key . '\';
-$_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
+$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS'][\'EXT\'][\'extConf\'][$_EXTKEY];
 
 ?>';
 	}
@@ -1523,7 +1519,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 
 	/**
 	 * Returns an array with the two cache-files (0=>localconf, 1=>tables) from typo3conf/ if they (both) exist. Otherwise FALSE.
-	 * Evaluation relies on $TYPO3_LOADED_EXT['_CACHEFILE']
+	 * Evaluation relies on $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
 	 * Usage: 2
 	 *
 	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
@@ -1568,7 +1564,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 		$cFiles = array();
 		$cFiles['ext_localconf'] .= '<?php
 
-$TYPO3_LOADED_EXT = unserialize(stripslashes(\'' . addslashes(serialize($extensions)) . '\'));
+$GLOBALS['TYPO3_LOADED_EXT'] = unserialize(stripslashes(\'' . addslashes(serialize($extensions)) . '\'));
 
 ?>';
 
@@ -1620,7 +1616,7 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\'' . addslashes(serialize($extensi
 
 	/**
 	 * Gets the behaviour for caching ext_tables.php and ext_localconf.php files
-	 * (see $TYPO3_CONF_VARS['EXT']['extCache'] setting in the install tool).
+	 * (see $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] setting in the install tool).
 	 *
 	 * @param boolean $usePlainValue Whether to use the value as it is without modifications
 	 * @return integer

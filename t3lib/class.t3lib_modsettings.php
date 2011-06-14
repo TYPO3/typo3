@@ -95,7 +95,7 @@
  *
  * Format of saved settings
  *
- *	$SOBE->MOD_SETTINGS[$this->prefix.'_storedSettings'] = serialize(
+ *	$GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix.'_storedSettings'] = serialize(
  *		array (
  *			'any id' => array (
  *					'title' => 'title for saved settings',
@@ -240,11 +240,9 @@ class t3lib_modSettings {
 	 * @return	void
 	 */
 	function addToStoreListFromPrefix($prefix = '') {
-		global $SOBE;
-
 		$prefix = $prefix ? $prefix : $this->prefix;
 
-		foreach ($SOBE->MOD_SETTINGS as $key => $value) {
+		foreach ($GLOBALS['SOBE']->MOD_SETTINGS as $key => $value) {
 			if (preg_match('/^' . $prefix . '/', $key)) {
 				$this->storeList[$key] = $key;
 			}
@@ -271,9 +269,7 @@ class t3lib_modSettings {
 	 * @return	void
 	 */
 	function initStorage() {
-		global $SOBE;
-
-		$storedSettings = unserialize($SOBE->MOD_SETTINGS[$this->prefix . '_storedSettings']);
+		$storedSettings = unserialize($GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix . '_storedSettings']);
 		$this->storedSettings = $this->cleanupStorageArray($storedSettings);
 	}
 
@@ -313,11 +309,9 @@ class t3lib_modSettings {
 	 * @return	array		$storageArr: entry for the stored settings array
 	 */
 	function compileEntry($data) {
-		global $SOBE;
-
 		$storageData = array();
 		foreach ($this->storeList as $MS_key) {
-			$storageData[$MS_key] = $SOBE->MOD_SETTINGS[$MS_key];
+			$storageData[$MS_key] = $GLOBALS['SOBE']->MOD_SETTINGS[$MS_key];
 		}
 		$storageArr = array(
 			'title' => $data['title'],
@@ -437,16 +431,14 @@ class t3lib_modSettings {
 	 * @return	void
 	 */
 	function writeStoredSetting($writeArray = array(), $mconfName = '') {
-		global $SOBE;
-
 			// for debugging: just removes all module data from user settings
-			// $GLOBALS['BE_USER']->pushModuleData($SOBE->MCONF['name'],array());
+			// $GLOBALS['BE_USER']->pushModuleData($GLOBALS['SOBE']->MCONF['name'],array());
 
 		unset($this->storedSettings[0]); // making sure, index 0 is not set!
 		$this->storedSettings = $this->cleanupStorageArray($this->storedSettings);
 		$writeArray[$this->prefix . '_storedSettings'] = serialize($this->storedSettings);
 
-		$SOBE->MOD_SETTINGS = t3lib_BEfunc::getModuleData($SOBE->MOD_MENU, $writeArray, ($mconfName ? $mconfName : $SOBE->MCONF['name']), $this->type);
+		$GLOBALS['SOBE']->MOD_SETTINGS = t3lib_BEfunc::getModuleData($GLOBALS['SOBE']->MOD_MENU, $writeArray, ($mconfName ? $mconfName : $GLOBALS['SOBE']->MCONF['name']), $this->type);
 
 		if ($this->writeDevLog) {
 			t3lib_div::devLog('Settings stored:' . $this->msg, 't3lib_modSettings', 0);
@@ -469,8 +461,6 @@ class t3lib_modSettings {
 	 * @return	string		HTML code
 	 */
 	function getStoreControl($showElements = 'load,remove,save', $useOwnForm = TRUE) {
-		global $TYPO3_CONF_VARS;
-
 		$showElements = t3lib_div::trimExplode(',', $showElements, 1);
 
 		$this->initStorage();
@@ -546,7 +536,7 @@ class t3lib_modSettings {
 		#TODO need to add parameters
 		if ($useOwnForm AND trim($code)) {
 			$code = '
-		<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '">' . $code . '</form>';
+		<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">' . $code . '</form>';
 		}
 
 		return $code;

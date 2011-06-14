@@ -149,9 +149,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @access private
 	 */
 	function checkLockToIP() {
-		global $TYPO3_CONF_VARS;
 		$out = 1;
-		if ($TYPO3_CONF_VARS['BE']['enabledBeUserIPLock']) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['enabledBeUserIPLock']) {
 			$IPList = $this->getTSConfigVal('options.lockToIP');
 			if (trim($IPList)) {
 				$baseIP = t3lib_div::getIndpEnv('REMOTE_ADDR');
@@ -226,8 +225,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @internal
 	 */
 	function backendSetUC() {
-		global $TYPO3_CONF_VARS;
-
 			// UC - user configuration is a serialized array inside the userobject
 		$temp_theSavedUC = unserialize($this->user['uc']); // if there is a saved uc we implement that instead of the default one.
 		if (is_array($temp_theSavedUC)) {
@@ -237,7 +234,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		if (!is_array($this->uc)) {
 			$this->uc = array_merge(
 				$this->uc_default,
-				(array) $TYPO3_CONF_VARS['BE']['defaultUC'],
+				(array) $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC'],
 				t3lib_div::removeDotsFromTS((array) $this->getTSConfigProp('setup.default'))
 			);
 			$this->overrideUC();

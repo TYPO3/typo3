@@ -404,8 +404,6 @@ class t3lib_clipboard {
 	 * @access private
 	 */
 	function printContentFromTab($pad) {
-		global $TBE_TEMPLATE;
-
 		$lines = array();
 		if (is_array($this->clipData[$pad]['el'])) {
 			foreach ($this->clipData[$pad]['el'] as $k => $v) {
