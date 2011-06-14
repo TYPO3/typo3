@@ -224,7 +224,7 @@ class t3lib_TCEforms {
 	var $enableTabMenu = FALSE; // Enable Tab Menus.
 	var $renderReadonly = FALSE; // When enabled all fields are rendered non-editable.
 
-	var $form_rowsToStylewidth = 9.58; // Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $CLIENT[FORMSTYLE] value set)
+	var $form_rowsToStylewidth = 9.58; // Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $GLOBALS['CLIENT']['FORMSTYLE'] value set)
 	var $form_largeComp = 1.33; // Form field width compensation: Compensation for large documents, doc-tab (editing)
 	var $charsPerRow = 40; // The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
 	var $maxTextareaWidth = 48; // The maximum abstract value for textareas
@@ -304,8 +304,6 @@ class t3lib_TCEforms {
 	 * @return	void
 	 */
 	function __construct() {
-		global $CLIENT, $TYPO3_CONF_VARS;
-
 		$this->clientInfo = t3lib_div::clientInfo();
 
 		$this->RTEenabled = $GLOBALS['BE_USER']->isRTE();
@@ -352,14 +350,14 @@ class t3lib_TCEforms {
 
 			// Prepare user defined objects (if any) for hooks which extend this function:
 		$this->hookObjectsMainFields = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef) {
 				$this->hookObjectsMainFields[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 		$this->hookObjectsSingleField = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'] as $classRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'] as $classRef) {
 				$this->hookObjectsSingleField[] = t3lib_div::getUserObj($classRef);
 			}
 		}

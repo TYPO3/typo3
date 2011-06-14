@@ -95,20 +95,18 @@ class SC_alt_menu {
 	 * @return	void
 	 */
 	function init()	{
-		global $TBE_MODULES, $TBE_TEMPLATE;
-
 			// Setting GPvars:
 		$this->_clearCacheFiles = t3lib_div::_GP('_clearCacheFiles');
 
 			// Loads the backend modules available for the logged in user.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$this->loadModules->observeWorkspaces = TRUE;
-		$this->loadModules->load($TBE_MODULES);
+		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 
 			// Instantiates the menu object which will generate some JavaScript for the goToModule() JS function in this frame.
 		$this->alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
-		$TBE_TEMPLATE->JScodeArray[] = $this->alt_menuObj->generateMenuJScode($this->loadModules->modules);
+		$GLOBALS['TBE_TEMPLATE']->JScodeArray[] = $this->alt_menuObj->generateMenuJScode($this->loadModules->modules);
 	}
 
 	/**

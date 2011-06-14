@@ -1438,8 +1438,6 @@ class clickMenu {
 	 * @return	array		$menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
 	 */
 	function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	{
-		global $BACK_PATH;
-
 		$this->elCount++;
 		if($this->ajax)	{
 			$onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);

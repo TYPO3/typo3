@@ -219,8 +219,6 @@ class t3lib_loadModules {
 	 * @return	string		If found, the relative path from PATH_site
 	 */
 	function checkExtensionModule($name) {
-		global $TYPO3_LOADED_EXT;
-
 		if (isset($this->absPathArray[$name])) {
 			return rtrim(substr($this->absPathArray[$name], strlen(PATH_site)), '/');
 		}

@@ -61,7 +61,7 @@
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
-$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 
 
@@ -341,8 +341,6 @@ class SC_wizard_table {
 	 * @access private
 	 */
 	function getTableHTML($cfgArr,$row)	{
-		global $LANG;
-
 			// Traverse the rows:
 		$tRows=array();
 		$k=0;
@@ -372,19 +370,19 @@ class SC_wizard_table {
 
 				$brTag=$this->inputStyle?'':'<br />';
 				if ($k!=0)	{
-					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$LANG->getLL('table_up',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up',1).'" />'.$brTag;
 				} else {
-					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$LANG->getLL('table_bottom',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom',1).'" />'.$brTag;
 				}
-				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
+				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow',1).'" />'.$brTag;
 
 // FIXME what is $tLines? See wizard_forms.php for the same.
 				if (($k+1)!=count($tLines))	{
-					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down',1).'" />'.$brTag;
 				} else {
-					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$LANG->getLL('table_top',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top',1).'" />'.$brTag;
 				}
-				$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').$onClick.' title="'.$LANG->getLL('table_addRow',1).'" />'.$brTag;
+				$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_addRow',1).'" />'.$brTag;
 
 				$tRows[]='
 					<tr class="bgColor4">
@@ -414,17 +412,17 @@ class SC_wizard_table {
 			foreach($firstRow as $temp)	{
 				$ctrl='';
 				if ($a!=0)	{
-					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2left.gif','').' title="'.$LANG->getLL('table_left',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_left',1).'" />';
 				} else {
-					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_left.gif','').' title="'.$LANG->getLL('table_end',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_end',1).'" />';
 				}
-				$ctrl.='<input type="image" name="TABLE[col_remove]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('table_removeColumn',1).'" />';
+				$ctrl.='<input type="image" name="TABLE[col_remove]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$GLOBALS['LANG']->getLL('table_removeColumn',1).'" />';
 				if (($a+1)!=$cols)	{
-					$ctrl.='<input type="image" name="TABLE[col_right]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2right.gif','').' title="'.$LANG->getLL('table_right',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_right]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_right',1).'" />';
 				} else {
-					$ctrl.='<input type="image" name="TABLE[col_start]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_right.gif','').' title="'.$LANG->getLL('table_start',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_start]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_start',1).'" />';
 				}
-				$ctrl.='<input type="image" name="TABLE[col_add]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').' title="'.$LANG->getLL('table_addColumn',1).'" />';
+				$ctrl.='<input type="image" name="TABLE[col_add]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').' title="'.$GLOBALS['LANG']->getLL('table_addColumn',1).'" />';
 				$cells[]='<span class="c-wizButtonsH">'.$ctrl.'</span>';
 
 					// Incr. counter:
@@ -460,7 +458,7 @@ class SC_wizard_table {
 				'.
 				'<input type="hidden" name="TABLE[textFields]" value="0" />'.
 				'<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"'.($this->inputStyle?' checked="checked"':'').' /> <label for="textFields">'.
-				$LANG->getLL('table_smallFields').'</label>
+				$GLOBALS['LANG']->getLL('table_smallFields').'</label>
 			</div>
 
 			<br /><br />

@@ -78,12 +78,10 @@ class SC_login_frameset {
 	 * @return	void
 	 */
 	function main()	{
-		global $TYPO3_CONF_VARS;
-
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
 
-		$title = 'TYPO3 Re-Login ('.$TYPO3_CONF_VARS['SYS']['sitename'].')';
+		$title = 'TYPO3 Re-Login ('.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].')';
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($title);
 
 			// Create the frameset for the window:
