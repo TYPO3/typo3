@@ -952,7 +952,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 			if (is_object($GLOBALS['TSFE'])) {
 				if ($languageUid === NULL) {
-					$languageUid = $GLOBALS['TSFE']->sys_language_uid;
+						// get the language UID of the content that should be output
+					$languageUid = $GLOBALS['TSFE']->sys_language_content;
 					$languageMode = $GLOBALS['TSFE']->sys_language_mode;
 				}
 				if ($workspaceUid !== NULL) {
