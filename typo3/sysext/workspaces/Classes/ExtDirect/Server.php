@@ -121,19 +121,23 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 						$liveThumb = t3lib_BEfunc::thumbCode($liveRecord, $parameter->table, $fieldName, '');
 
 						$diffReturnArray[] = array(
+							'field' => $fieldName,
 							'label' => $fieldTitle,
 							'content' => $versionThumb
 						);
 						$liveReturnArray[] = array(
+							'field' => $fieldName,
 							'label' => $fieldTitle,
 							'content' => $liveThumb
 						);
 					} else {
 						$diffReturnArray[] = array(
+							'field' => $fieldName,
 							'label' => $fieldTitle,
 							'content' => $t3lib_diff->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]) // call diff class to get diff
 						);
 						$liveReturnArray[] = array(
+							'field' => $fieldName,
 							'label' => $fieldTitle,
 							'content' => $liveRecord[$fieldName]
 						);
