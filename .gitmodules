@@ -7,3 +7,9 @@
 [submodule "typo3/sysext/dbal"]
 	path = typo3/sysext/dbal
 	url = git://git.typo3.org/TYPO3v4/Extensions/dbal.git
+[submodule "typo3/sysext/fluid"]
+	path = typo3/sysext/fluid
+	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/fluid.git
+[submodule "typo3/sysext/extbase"]
+	path = typo3/sysext/extbase
+	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/extbase.git
