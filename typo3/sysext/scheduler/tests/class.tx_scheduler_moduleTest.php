@@ -37,12 +37,22 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	 *
 	 * @var tx_scheduler_Module
 	 */
-	protected $testObject = NULL;
+	protected $testObject;
 
+	/**
+	 * Sets up each test case.
+	 *
+	 * @return void
+	 */
 	public function setUp() {
 		$this->testObject = new tx_scheduler_Module();
 	}
 
+	/**
+	 * Cleans up each test case.
+	 *
+	 * @return void
+	 */
 	public function tearDown() {
 		$this->testObject = NULL;
 	}
@@ -96,8 +106,8 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	 * @dataProvider checkDateWithStrtotimeValuesDataProvider
 	 * @test
 	 * @see http://de.php.net/manual/de/function.strtotime.php
-	 * @param	$strToTimeValue		Testvalue which will be passed to $this->testObject->checkDate
-	 * @param	$expectedTimestamp	Expected value to compare with result from operation
+	 * @param string $strToTimeValue		Testvalue which will be passed to $this->testObject->checkDate
+	 * @param integer $expectedTimestamp	Expected value to compare with result from operation
 	 * @return	void
 	 */
 	public function checkDateWithStrtotimeValues($strToTimeValue, $expectedTimestamp) {
@@ -107,8 +117,16 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 			// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
 			// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
 		$delta = 4;
-		$this->assertLessThan($delta, ($checkDateResult - $expectedTimestamp), 'AssertLessThan fails with value \'' . $strToTimeValue . '\'');
-		$this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_INT, $checkDateResult, 'assertType fails with value \'' . $strToTimeValue . '\'');
+		$this->assertLessThan(
+			$delta,
+			($checkDateResult - $expectedTimestamp),
+			'assertLessThan fails with value "' . $strToTimeValue . '"'
+		);
+		$this->assertType(
+			PHPUnit_Framework_Constraint_IsType::TYPE_INT,
+			$checkDateResult,
+			'assertType fails with value "' . $strToTimeValue . '"'
+		);
 	}
 
 	/**
@@ -167,12 +185,16 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	/**
 	 * @dataProvider checkDateWithTypo3DateSyntaxDataProvider
 	 * @test
-	 * @param	$typo3DateValue		Testvalue which will be passed to $this->testObject->checkDate
-	 * @param	$expectedTimestamp	Expected value to compare with result from operation
+	 * @param string $typo3DateValue		Testvalue which will be passed to $this->testObject->checkDate
+	 * @param integer $expectedTimestamp	Expected value to compare with result from operation
 	 * @return	void
 	 */
 	public function checkDateWithTypo3DateSyntax($typo3DateValue, $expectedTimestamp) {
-		$this->assertSame($expectedTimestamp, $this->testObject->checkDate($typo3DateValue), 'Fails with value \'' . $typo3DateValue . '\'');
+		$this->assertSame(
+			$expectedTimestamp,
+			$this->testObject->checkDate($typo3DateValue),
+			'Fails with value "' . $typo3DateValue . '"'
+		);
 	}
 
 	/**
@@ -200,20 +222,13 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	 * This test must be raised an InvalidArgumentException
 	 *
 	 * @dataProvider checkDateWithInvalidDateValuesDataProvider
+	 * @expectedException InvalidArgumentException
 	 * @test
 	 * @param	$dateValue		Testvalue which will be passed to $this->testObject->checkDate.
 	 * @return	void
 	 */
 	public function checkDateWithInvalidDateValues($dateValue) {
-		$result = '';
-
-		try {
-			$result = $this->testObject->checkDate($dateValue);
-		}catch (InvalidArgumentException $expected) {
-			return;
-		}
-
-		$this->fail('Fails with value \'' . $dateValue . '\'. Returned \'' . $result . '\'.');
+		$this->testObject->checkDate($dateValue);
 	}
 }
 ?>
