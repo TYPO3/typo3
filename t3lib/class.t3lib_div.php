@@ -986,8 +986,7 @@ final class t3lib_div {
 	 * @todo	Still needs a function to convert versions to branches
 	 */
 	public static function compat_version($verNumberStr) {
-		global $TYPO3_CONF_VARS;
-		$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version'] ? $TYPO3_CONF_VARS['SYS']['compat_version'] : TYPO3_branch;
+		$currVersionStr = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] : TYPO3_branch;
 
 		if (self::int_from_ver($currVersionStr) < self::int_from_ver($verNumberStr)) {
 			return FALSE;
@@ -2525,8 +2524,6 @@ final class t3lib_div {
 	 * @see array2xml()
 	 */
 	protected function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = FALSE) {
-		global $TYPO3_CONF_VARS;
-
 			// Create parser:
 		$parser = xml_parser_create();
 		$vals = array();
@@ -2538,7 +2535,7 @@ final class t3lib_div {
 			// default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
-		$theCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+		$theCharset = $match[1] ? $match[1] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1');
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset); // us-ascii / utf-8 / iso-8859-1
 
 			// Parse content:
@@ -2718,7 +2715,7 @@ final class t3lib_div {
 
 	/**
 	 * Reads the file or url $url and returns the content
-	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $TYPO3_CONF_VARS['SYS']['curlUse'] etc.
+	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
 	 * Usage: 83
 	 *
 	 * @param	string		File/URL to read
@@ -3348,7 +3345,7 @@ final class t3lib_div {
 	 * the maxFileSize, usually for the TCA values.
 	 *
 	 * @param	integer		$localLimit: the number of Kilobytes (!) that should be used as
-	 *						the initial Limit, otherwise $TYPO3_CONF_VARS['BE']['maxFileSize'] will be used
+	 *						the initial Limit, otherwise $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] will be used
 	 * @return	integer		the maximum size of uploads that are allowed (measuered in kilobytes)
 	 */
 	public static function getMaxUploadFileSize($localLimit = 0) {
@@ -4855,7 +4852,6 @@ final class t3lib_div {
 	 * @see getUserObj()
 	 */
 	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0) {
-		global $TYPO3_CONF_VARS;
 		$content = FALSE;
 
 			// Check persistent object and if found, call directly and exit.
@@ -4971,7 +4967,6 @@ final class t3lib_div {
 	 * @see callUserFunction()
 	 */
 	public static function getUserObj($classRef, $checkPrefix = 'user_', $silent = FALSE) {
-		global $TYPO3_CONF_VARS;
 			// Check persistent object and if found, call directly and exit.
 		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef])) {
 			return $GLOBALS['T3_VAR']['getUserObj'][$classRef];
@@ -5223,8 +5218,6 @@ final class t3lib_div {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
-		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-
 		$error = FALSE;
 
 		if (!is_array($excludeServiceKeys)) {
@@ -5235,7 +5228,7 @@ final class t3lib_div {
 				// Check persistent object and if found, call directly and exit.
 			if (is_object($GLOBALS['T3_VAR']['makeInstanceService'][$info['className']])) {
 					// reset service and return object
-				$T3_VAR['makeInstanceService'][$info['className']]->reset();
+				$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->reset();
 				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
 
 				// include file and create object
@@ -5253,7 +5246,7 @@ final class t3lib_div {
 						if ($obj->init()) { // service available?
 
 								// create persistent object
-							$T3_VAR['makeInstanceService'][$info['className']] = $obj;
+							$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
 
 								// needed to delete temp files
 							register_shutdown_function(array(&$obj, '__destruct'));
@@ -5276,6 +5269,7 @@ final class t3lib_div {
 	 * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
 	 */
 	public static function requireOnce($requireFile) {
+			// Needed for require_once
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 
 		require_once ($requireFile);
@@ -5290,6 +5284,7 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function requireFile($requireFile) {
+			// Needed for require
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		require $requireFile;
 	}
@@ -5562,29 +5557,27 @@ final class t3lib_div {
 	 * @see sysLog()
 	 */
 	public static function initSysLog() {
-		global $TYPO3_CONF_VARS;
-
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
 			// Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname($requestHost = FALSE) . ':' . PATH_site;
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname($requestHost = FALSE) . ':' . PATH_site;
 		}
 			// for Web logging name is <protocol>://<request-hostame>/<site-path>
 		else {
-			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');
 		}
 
 			// init custom logging
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
 			$params = array('initLog' => TRUE);
 			$fakeThis = FALSE;
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
 				self::callUserFunction($hookMethod, $params, $fakeThis);
 			}
 		}
 
 			// init TYPO3 logging
-		foreach (explode(';', $TYPO3_CONF_VARS['SYS']['systemLog'], 2) as $log) {
+		foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
 			list($type, $destination) = explode(',', $log, 3);
 
 			if ($type == 'syslog') {
@@ -5593,12 +5586,12 @@ final class t3lib_div {
 				} else {
 					$facility = constant('LOG_' . strtoupper($destination));
 				}
-				openlog($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'], LOG_ODELAY, $facility);
+				openlog($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'], LOG_ODELAY, $facility);
 			}
 		}
 
-		$TYPO3_CONF_VARS['SYS']['systemLogLevel'] = self::intInRange($TYPO3_CONF_VARS['SYS']['systemLogLevel'], 0, 4);
-		$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = self::intInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
 	}
 
 	/**
@@ -5613,32 +5606,30 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function sysLog($msg, $extKey, $severity = 0) {
-		global $TYPO3_CONF_VARS;
-
 		$severity = self::intInRange($severity, 0, 4);
 
 			// is message worth logging?
-		if (intval($TYPO3_CONF_VARS['SYS']['systemLogLevel']) > $severity) {
+		if (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel']) > $severity) {
 			return;
 		}
 
 			// initialize logging
-		if (!$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit']) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit']) {
 			self::initSysLog();
 		}
 
 			// do custom logging
-		if (isset($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']) &&
-				is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']) &&
+				is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
 			$params = array('msg' => $msg, 'extKey' => $extKey, 'backTrace' => debug_backtrace(), 'severity' => $severity);
 			$fakeThis = FALSE;
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
 				self::callUserFunction($hookMethod, $params, $fakeThis);
 			}
 		}
 
 			// TYPO3 logging enabled?
-		if (!$TYPO3_CONF_VARS['SYS']['systemLog']) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']) {
 			return;
 		}
 
@@ -5646,7 +5637,7 @@ final class t3lib_div {
 		$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 
 			// use all configured logging options
-		foreach (explode(';', $TYPO3_CONF_VARS['SYS']['systemLog'], 2) as $log) {
+		foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
 			list($type, $destination, $level) = explode(',', $log, 4);
 
 				// is message worth logging for this log type?
@@ -5678,7 +5669,7 @@ final class t3lib_div {
 				$mail->setTo($to)
 						->setFrom($from)
 						->setSubject('Warning - error in TYPO3 installation')
-						->setBody('Host: ' . $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF .
+						->setBody('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF .
 								'Extension: ' . $extKey . LF .
 								'Severity: ' . $severity . LF .
 								LF . $msg
@@ -5687,7 +5678,7 @@ final class t3lib_div {
 			}
 				// use the PHP error log
 			elseif ($type == 'error_log') {
-				error_log($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
+				error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
 			}
 				// use the system log
 			elseif ($type == 'syslog') {
@@ -5712,12 +5703,10 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function devLog($msg, $extKey, $severity = 0, $dataVar = FALSE) {
-		global $TYPO3_CONF_VARS;
-
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
 			$params = array('msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar);
 			$fakeThis = FALSE;
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] as $hookMethod) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] as $hookMethod) {
 				self::callUserFunction($hookMethod, $params, $fakeThis);
 			}
 		}

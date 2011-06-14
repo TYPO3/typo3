@@ -72,16 +72,14 @@ class SC_listframe_loader {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE;
-
-		$TBE_TEMPLATE->divClass='';
-		$this->content.=$TBE_TEMPLATE->startPage('List Frame Loader');
-		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
+		$GLOBALS['TBE_TEMPLATE']->divClass='';
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 			var theUrl = top.getModuleUrl("");
 			if (theUrl)	window.location.href=theUrl;
 		');
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
 
 			// Output:
 		echo $this->content;

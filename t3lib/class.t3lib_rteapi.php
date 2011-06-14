@@ -82,10 +82,8 @@ class t3lib_rteapi {
 	 * @return	boolean		TRUE if this RTE object offers an RTE in the current browser environment
 	 */
 	function isAvailable() {
-		global $CLIENT;
-
 		$this->errorLog = array();
-		if (!$CLIENT['FORMSTYLE']) {
+		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
 			$this->errorLog[] = 'RTE API: Browser didn\'t support styles';
 		}
 

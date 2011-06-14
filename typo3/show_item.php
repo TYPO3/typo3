@@ -55,9 +55,9 @@
  */
 
 
-$BACK_PATH = '';
-require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
+$GLOBALS['BACK_PATH'] = '';
+require($GLOBALS['BACK_PATH'].'init.php');
+require($GLOBALS['BACK_PATH'].'template.php');
 
 
 
@@ -159,8 +159,6 @@ class SC_show_item {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 			// Setting input variables.
 		$this->table = t3lib_div::_GET('table');
 		$this->uid = t3lib_div::_GET('uid');
@@ -209,7 +207,7 @@ class SC_show_item {
 
 			// Initialize document template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			// Starting the page by creating page header stuff:
 		$this->content.=$this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
