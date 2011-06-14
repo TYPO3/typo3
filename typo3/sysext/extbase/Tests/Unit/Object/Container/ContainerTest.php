@@ -23,6 +23,7 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/NamespaceTestclasses.php');
 
 /**
  * Testcase for class t3lib_object_Container.
@@ -34,6 +35,9 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fix
  */
 class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
+	/**
+	 * @var Tx_Extbase_Object_Container_Container
+	 */
 	private $container;
 
 	public function setUp() {
@@ -51,6 +55,14 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	public function getInstanceReturnsInstanceOfSimpleClass() {
 		$object = $this->container->getInstance('t3lib_object_tests_c');
 		$this->assertInstanceOf('t3lib_object_tests_c', $object);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getInstanceReturnsInstanceOfSimpleNamespacedClass() {
+		$object = $this->container->getInstance('Tx\Extbase\Object\Container\Fixtures\NamespacedClass');
+		$this->assertInstanceOf('Tx\Extbase\Object\Container\Fixtures\NamespacedClass', $object);
 	}
 
 	/**
@@ -160,6 +172,23 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceThrowsExceptionIfClassWasNotFound() {
 		$this->container->getInstance('nonextistingclass_bla');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getInstanceUsesClassNameSha1AsCacheKey() {
+		$className = 'Tx\Extbase\Object\Container\Fixtures\NamespacedClass';
+		$classNameHash = sha1($className);
+
+		$mockedCache = $this->getMock('Tx_Extbase_Object_Container_ClassInfoCache',array('has', 'set'));
+		$this->container = $this->getMock('Tx_Extbase_Object_Container_Container', array('log','getClassInfoCache'));
+		$this->container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
+
+		$mockedCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
+		$mockedCache->expects($this->once())->method('set')->with($classNameHash, $this->anything());
+
+		$this->container->getInstance($className);
 	}
 
 	/**
