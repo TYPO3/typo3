@@ -675,10 +675,9 @@ class t3lib_TStemplate {
 	 * @see includeStaticTypoScriptSources()
 	 */
 	function addExtensionStatics($idList, $templateID, $pid, $row) {
-		global $TYPO3_LOADED_EXT;
 
 		if ($row['static_file_mode'] == 1 || ($row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_' && $row['root'])) {
-			foreach ($TYPO3_LOADED_EXT as $extKey => $files) {
+			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
 				if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_editorcfg.txt'])) {
 					$mExtKey = str_replace('_', '', $extKey);
 					$subrow = array(
@@ -1359,7 +1358,6 @@ class t3lib_TStemplate {
 	 * @see tslib_frameset::frameParams(), tslib_cObj::typoLink(), tslib_cObj::SEARCHRESULT(), TSpagegen::pagegenInit(), tslib_menu::link()
 	 */
 	function linkData($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '', $targetDomain = '') {
-		global $TYPO3_CONF_VARS;
 
 		$LD = array();
 
@@ -1434,13 +1432,13 @@ class t3lib_TStemplate {
 		$LD['totalURL'] = $this->removeQueryString($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $GLOBALS['TSFE']->getMethodUrlIdToken) . $LD['sectionIndex'];
 
 			// Call post processing function for link rendering:
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
 			$_params = array(
 				'LD' => &$LD,
 				'args' => array('page' => $page, 'oTarget' => $oTarget, 'no_cache' => $no_cache, 'script' => $script, 'overrideArray' => $overrideArray, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain),
 				'typeNum' => $typeNum
 			);
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef) {
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}

@@ -306,7 +306,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	string		Part of where clause. Prefix " AND " to this.
 	 */
 	function getPagePermsClause($perms) {
-		global $TYPO3_CONF_VARS;
 		if (is_array($this->user)) {
 			if ($this->isAdmin()) {
 				return ' 1=1';
@@ -324,9 +323,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				// ****************
 				// getPagePermsClause-HOOK
 				// ****************
-			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
 
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
 					$_params = array('currentClause' => $str, 'perms' => $perms);
 					$str = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
@@ -347,7 +346,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		Bitwise representation of the users permissions in relation to input page row, $row
 	 */
 	function calcPerms($row) {
-		global $TYPO3_CONF_VARS;
 		if ($this->isAdmin()) {
 			return 31;
 		} // Return 31 for admin users.
@@ -366,8 +364,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// ****************
 			// CALCPERMS hook
 			// ****************
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] as $_funcRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] as $_funcRef) {
 				$_params = array(
 					'row' => $row,
 					'outputPermissions' => $out
@@ -387,8 +385,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean
 	 */
 	function isRTE() {
-		global $CLIENT;
-
 			// Start:
 		$this->RTE_errors = array();
 		if (!$this->uc['edit_RTE']) {
@@ -1346,8 +1342,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @access private
 	 */
 	function fetchGroups($grList, $idList = '') {
-		global $TYPO3_CONF_VARS;
-
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . t3lib_div::getIndpEnv('HTTP_HOST') . '\')';
 		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList . ')' . $lockToDomain_SQL;
@@ -1434,8 +1428,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// ****************
 			// HOOK: fetchGroups_postProcessing
 			// ****************
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] as $_funcRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] as $_funcRef) {
 				$_params = array();
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}

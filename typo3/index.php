@@ -177,18 +177,16 @@ class SC_index {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE;
-
 			// Initialize template object:
-		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
-		$TBE_TEMPLATE->moduleTemplate = $TBE_TEMPLATE->getHtmlTemplate('templates/login.html');
+		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
+		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('templates/login.html');
 
-		$TBE_TEMPLATE->getPageRenderer()->loadExtJS();
-		$TBE_TEMPLATE->getPageRenderer()->loadPrototype();
-		$TBE_TEMPLATE->getPageRenderer()->loadScriptaculous();
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadScriptaculous();
 
 			// Set JavaScript for creating a MD5 hash of the password:
-		$TBE_TEMPLATE->JScode.= $this->getJScode();
+		$GLOBALS['TBE_TEMPLATE']->JScode.= $this->getJScode();
 
 			// Checking, if we should make a redirect.
 			// Might set JavaScript in the header to close window.
@@ -199,10 +197,10 @@ class SC_index {
 
 			// Creating form based on whether there is a login or not:
 		if (!$GLOBALS['BE_USER']->user['uid']) {
-			$TBE_TEMPLATE->form = $this->startForm();
+			$GLOBALS['TBE_TEMPLATE']->form = $this->startForm();
 			$loginForm = $this->makeLoginForm();
 		} else {
-			$TBE_TEMPLATE->form = '
+			$GLOBALS['TBE_TEMPLATE']->form = '
 				<form action="index.php" method="post" name="loginform">
 				<input type="hidden" name="login_status" value="logout" />
 				';
@@ -210,12 +208,12 @@ class SC_index {
 		}
 
 			// Starting page:
-		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']), FALSE);
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('TYPO3 Login: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']), FALSE);
 
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
 
-		$this->content.= $TBE_TEMPLATE->endPage();
+		$this->content.= $GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**
@@ -354,8 +352,6 @@ class SC_index {
 	 * @return	void
 	 */
 	function checkRedirect()	{
-		global $TBE_TEMPLATE;
-
 			// Do redirect:
 			// If a user is logged in AND a) if either the login is just done (commandLI) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
 		if ($GLOBALS['BE_USER']->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector)) {
@@ -400,7 +396,7 @@ class SC_index {
 			} else {
 				$formProtection->setSessionTokenFromRegistry();
 				$formProtection->persistSessionToken();
-				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
+				$GLOBALS['TBE_TEMPLATE']->JScode.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {
 						if (parent.opener.TYPO3.loginRefresh) {
 							parent.opener.TYPO3.loginRefresh.startTimer();
@@ -422,16 +418,14 @@ class SC_index {
 	 * @return	void
 	 */
 	function makeInterfaceSelectorBox()	{
-		global $TYPO3_CONF_VARS;
-
 			// Reset variables:
 		$this->interfaceSelector = '';
 		$this->interfaceSelector_hidden='';
 		$this->interfaceSelector_jump = '';
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($TYPO3_CONF_VARS['BE']['interfaces'] && ($this->commandLI || !$this->redirect_url))	{
-			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->commandLI || !$this->redirect_url))	{
+			$parts = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
 					// Initialize:
@@ -462,7 +456,7 @@ class SC_index {
 
 			} elseif (!$this->redirect_url) {
 					// If there is only ONE interface value set and no redirect_url is present:
-				$this->interfaceSelector_hidden='<input type="hidden" name="interface" value="'.trim($TYPO3_CONF_VARS['BE']['interfaces']).'" />';
+				$this->interfaceSelector_hidden='<input type="hidden" name="interface" value="'.trim($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']).'" />';
 			}
 		}
 	}
@@ -554,7 +548,7 @@ class SC_index {
 
 	/**
 	 * Make login news - renders the HTML content for a list of news shown under
-	 * the login form. News data is added through $TYPO3_CONF_VARS
+	 * the login form. News data is added through $GLOBALS['TYPO3_CONF_VARS']
 	 *
 	 * @return	string		HTML content
 	 * @credits			Idea by Jan-Hendrik Heuing

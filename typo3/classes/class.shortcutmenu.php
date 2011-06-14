@@ -506,8 +506,6 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	void
 	 */
 	public function createAjaxShortcut($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
-		global $LANG;
-
 		$shortcutCreated     = 'failed';
 		$shortcutName        = 'Shortcut'; // default name
 		$shortcutNamePrepend = '';

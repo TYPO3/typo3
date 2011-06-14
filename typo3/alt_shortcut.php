@@ -132,8 +132,6 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function preinit()	{
-		global $TBE_MODULES;
-
 			// Setting GPvars:
 		$this->isAjaxCall             = (boolean) t3lib_div::_GP('ajax');
 		$this->modName                = t3lib_div::_GP('modName');
@@ -151,7 +149,7 @@ class SC_alt_shortcut {
 
 			// Creating modules object
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-		$this->loadModules->load($TBE_MODULES);
+		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 	}
 
 	/**
@@ -243,10 +241,8 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH;
-
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
 		$this->doc->divClass='typo3-shortcut';
 		$this->doc->JScode.=$this->doc->wrapScriptTags('

@@ -73,17 +73,15 @@ class SC_alt_toplogo {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_TEMPLATE,$TBE_STYLES;
-
 			// Start page
-		$this->content.=$TBE_TEMPLATE->startPage('Logo frame');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('Logo frame');
 
 			// Set logo:
 		$logo = t3lib_div::makeInstance('TYPO3logo');
 		$this->content .= $logo->render();
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**

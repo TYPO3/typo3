@@ -256,20 +256,19 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see	typo3/init.php, t3lib_beuserauth::backendCheckLogin()
 	 */
 	public function checkBackendAccessSettingsFromInitPhp() {
-		global $TYPO3_CONF_VARS;
 
 			// **********************
 			// Check Hardcoded lock on BE:
 			// **********************
-		if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
 			return FALSE;
 		}
 
 			// **********************
 			// Check IP
 			// **********************
-		if (trim($TYPO3_CONF_VARS['BE']['IPmaskList'])) {
-			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['BE']['IPmaskList'])) {
+		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 				return FALSE;
 			}
 		}
@@ -278,7 +277,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			// **********************
 			// Check SSL (https)
 			// **********************
-		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && $TYPO3_CONF_VARS['BE']['lockSSL'] != 3) {
+		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] != 3) {
 			if (!t3lib_div::getIndpEnv('TYPO3_SSL')) {
 				return FALSE;
 			}
@@ -370,16 +369,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Returns the label for key, $key. If a translation for the language set in $this->uc['lang'] is found that is returned, otherwise the default value.
 	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.php" so that the values therein can be used for labels in the Admin Panel
 	 *
-	 * @param	string		Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php"
+	 * @param	string		Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/locallang_tsfe.php"
 	 * @return	string		The value for the $key
 	 */
 	public function extGetLL($key) {
-		global $LOCAL_LANG;
-		if (!is_array($LOCAL_LANG)) {
+		if (!is_array($GLOBALS['LOCAL_LANG'])) {
 			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
 			#include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
-			if (!is_array($LOCAL_LANG)) {
-				$LOCAL_LANG = array();
+			if (!is_array($GLOBALS['LOCAL_LANG'])) {
+				$GLOBALS['LOCAL_LANG'] = array();
 			}
 		}
 

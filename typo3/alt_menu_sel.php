@@ -78,27 +78,25 @@ class SC_alt_menu_sel {
 	 * @return	void
 	 */
 	function main()	{
-		global $TBE_MODULES,$TBE_TEMPLATE;
-
 			// Initialize modules
 		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$loadModules->observeWorkspaces = TRUE;
-		$loadModules->load($TBE_MODULES);
+		$loadModules->load($GLOBALS['TBE_MODULES']);
 
 			// Start page
-		$TBE_TEMPLATE->form = '<form action="">';
+		$GLOBALS['TBE_TEMPLATE']->form = '<form action="">';
 
 			// add menu JS
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-		$TBE_TEMPLATE->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
+		$GLOBALS['TBE_TEMPLATE']->JScodeArray[] = $alt_menuObj->generateMenuJScode($loadModules->modules);
 
-		$this->content.=$TBE_TEMPLATE->startPage('Selector box menu');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('Selector box menu');
 
 			// Make menu and add it:
 		$this->content.=$alt_menuObj->topMenu($loadModules->modules,0,'',2);
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**

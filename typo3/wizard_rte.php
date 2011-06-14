@@ -53,7 +53,7 @@
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
-$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 t3lib_BEfunc::lockRecords();
 
@@ -121,8 +121,6 @@ class SC_wizard_rte {
 	 * @return	void
 	 */
 	function main()	{
-		global $LANG;
-
 			// translate id to the workspace version:
 		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
 			$this->P['uid'] = $versionRec['uid'];
@@ -207,7 +205,7 @@ class SC_wizard_rte {
 				$tceforms->printNeededJSFunctions();
 		} else {
 				// ERROR:
-			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('forms_title'),'<span class="typo3-red">'.$GLOBALS['LANG']->getLL('table_noData',1).'</span>',0,1);
 		}
 
 		// Setting up the buttons and markers for docheader
