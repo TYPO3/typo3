@@ -376,6 +376,15 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			if (($sesDataRow = $statement->fetch()) !== FALSE) {
 				$this->sesData = unserialize($sesDataRow['content']);
 				$this->sessionDataTimestamp = $sesDataRow['tstamp'];
+			} else {
+					// Write new session-data
+				$insertFields = array(
+					'hash' => $this->id,
+					'content' => serialize($this->sesData),
+					'tstamp' => $GLOBALS['EXEC_TIME']
+				);
+				$this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);
 			}
 			$statement->free();
 		}
@@ -384,7 +393,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Will write UC and session data.
 	 * If the flag $this->userData_change has been set, the function ->writeUC is called (which will save persistent user session data)
-	 * If the flag $this->sesData_change has been set, the fe_session_data table is updated with the content of $this->sesData (deleting any old record, inserting new)
+	 * If the flag $this->sesData_change has been set, the fe_session_data table is updated with the content of $this->sesData
 	 *
 	 * @return	void
 	 * @see fetchSessionData(), getKey(), setKey()
@@ -396,13 +405,13 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		}
 		if ($this->sesData_change)	{
 			if ($this->id)	{
-				$insertFields = array (
-					'hash' => $this->id,
+					// Update session data
+				$updateFields = array(
 					'content' => serialize($this->sesData),
 					'tstamp' => $GLOBALS['EXEC_TIME'],
 				);
-				$this->removeSessionData();
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);
+				$this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_session_data', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'), $insertFields);
 			}
 		}
 	}
