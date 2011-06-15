@@ -69,25 +69,17 @@ class tx_rtehtmlarea_pi1 {
 		$time_start = microtime(TRUE);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
 		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
+			// Setting command mode if requested and available
 		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
-		$safe_mode_is_enabled = t3lib_utility_PhpOptions::isSafeModeEnabled();
-		if($safe_mode_is_enabled && !$this->pspell_is_available ) echo('Configuration problem: Spell checking cannot be performed');
-		if($safe_mode_is_enabled && $this->forceCommandMode) echo('Configuration problem: Spell checking cannot be performed in command mode');
-		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
+		if (!$this->pspell_is_available || $this->forceCommandMode) {
 			$AspellVersionString = explode('Aspell', shell_exec( $this->AspellDirectory.' -v'));
 			$AspellVersion = substr( $AspellVersionString[1], 0, 4);
-			if( doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) echo('Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode');
+			if( doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) echo('Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode.');
 			$this->defaultAspellEncoding = trim(shell_exec($this->AspellDirectory.' config encoding'));
 		}
-
 			// Setting the list of dictionaries
-		if (!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
-			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
-			$dictionaryList = implode(',', t3lib_div::trimExplode(LF, $dictionaryList, 1));
-		}
-		if (empty($dictionaryList)) {
-			$dictionaryList = t3lib_div::_POST('showDictionaries');
-		}
+		$dictionaryList = shell_exec( $this->AspellDirectory . ' dump dicts');
+		$dictionaryList = implode(',', t3lib_div::trimExplode(LF, $dictionaryList, 1));
 		$dictionaryArray = t3lib_div::trimExplode(',', $dictionaryList, 1);
 		$restrictToDictionaries = t3lib_div::_POST('restrictToDictionaries');
 		if ($restrictToDictionaries) {
@@ -158,7 +150,7 @@ class tx_rtehtmlarea_pi1 {
 		}
 
 		$cmd = t3lib_div::_POST('cmd');
-		if ($cmd == 'learn' && !$safe_mode_is_enabled) {
+		if ($cmd == 'learn') {
 				// Only availble for BE_USERS, die silently if someone has gotten here by accident
 			if (TYPO3_MODE !='BE' || !is_object($GLOBALS['BE_USER'])) die('');
 				// Updating the personal word list
@@ -251,7 +243,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 			$this->result .= '<body onload="window.parent.RTEarea[\'' . t3lib_div::_POST('editorId') . '\'].editor.getPlugin(\'SpellChecker\').spellCheckComplete();">';
 			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(LF.CR.chr(32)).']*/'.(($this->parserCharset == 'utf-8')?'u':''), '', $this->text);
 			$this->result .= '<div style="display: none;">'.$dictionaries.'</div>';
-
 				// Closing
 			$this->result .= '
 </body></html>';

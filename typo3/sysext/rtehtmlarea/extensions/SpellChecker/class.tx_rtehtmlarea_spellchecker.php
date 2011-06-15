@@ -73,7 +73,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlarea_api {
 		}
 			// Set the use of personal dictionary
 		$enablePersonalDicts = $this->thisConfig['buttons.'][$button.'.']['enablePersonalDictionaries'] ? ((isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) ? TRUE : FALSE) : FALSE;
-		if (t3lib_utility_PhpOptions::isSafeModeEnabled() || $this->htmlAreaRTE->is_FE()) {
+		if ($this->htmlAreaRTE->is_FE()) {
 			$enablePersonalDicts = FALSE;
 		}
 

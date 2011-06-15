@@ -42,13 +42,12 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 		this.enablePersonalDicts = this.pageTSconfiguration.enablePersonalDicts;
 		this.userUid = this.editorConfiguration.userUid;
 		this.defaultDictionary = (this.pageTSconfiguration.dictionaries && this.pageTSconfiguration.dictionaries[this.contentISOLanguage] && this.pageTSconfiguration.dictionaries[this.contentISOLanguage].defaultValue) ? this.pageTSconfiguration.dictionaries[this.contentISOLanguage].defaultValue : '';
-		this.showDictionaries = (this.pageTSconfiguration.dictionaries && this.pageTSconfiguration.dictionaries.items) ? this.pageTSconfiguration.dictionaries.items : '';
 		this.restrictToDictionaries = (this.pageTSconfiguration.dictionaries && this.pageTSconfiguration.dictionaries.restrictToItems) ? this.pageTSconfiguration.dictionaries.restrictToItems : '';
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.1',
+			version		: '3.2',
 			developer	: 'Mihai Bazon & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Mihai Bazon & Stanislas Rolland',
@@ -184,10 +183,6 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 							xtype: 'hidden',
 							name:'enablePersonalDicts',
 							value: this.enablePersonalDicts
-						},{
-							xtype: 'hidden',
-							name:'showDictionaries',
-							value: this.showDictionaries
 						},{
 							xtype: 'hidden',
 							name:'restrictToDictionaries',
