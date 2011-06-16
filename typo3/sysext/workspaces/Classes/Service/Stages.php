@@ -447,7 +447,7 @@ class Tx_Workspaces_Service_Stages {
 
 			foreach ($begroupUidArray as $groupkey => $groupData) {
 				foreach ($allBeUserArray as $useruid => $userdata) {
-					if (t3lib_div::inList($userdata['usergroup'], $groupData['uid'])) {
+					if (t3lib_div::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
 						$beuserUidArray[] = $useruid;
 					}
 				}
