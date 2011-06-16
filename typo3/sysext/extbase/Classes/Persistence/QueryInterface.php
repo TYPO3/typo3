@@ -30,7 +30,6 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id$
  * @api
  */
 interface Tx_Extbase_Persistence_QueryInterface {
@@ -109,6 +108,11 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * A right-outer join.
 	 */
 	const JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
+
+	/**
+	 * Charset of strings in QOM
+	 */
+	const CHARSET = 'utf-8';
 
 	/**
 	 * Executes the query against the backend and returns the result

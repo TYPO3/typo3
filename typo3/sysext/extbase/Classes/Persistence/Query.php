@@ -466,7 +466,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 					$this->qomFactory->propertyValue($propertyName, $this->getSelectorName())
 				),
 				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
-				strtolower($operand)
+				t3lib_div::makeInstance('t3lib_cs')->conv_case(
+					Tx_Extbase_Persistence_QueryInterface::CHARSET,
+					$operand,
+					'toLower'
+				)
 			);
 		}
 

@@ -127,5 +127,36 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 		$this->query->setOffset(-1);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function equalsForCaseSensitiveFalseLowercasesOperandProvider() {
+		return array(
+			'Polish alphabet' => array('name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv' ),
+			'German alphabet' => array('name', 'ßÜÖÄüöä', 'ßüöäüöä'),
+			'Greek alphabet' => array('name', 'Τάχιστη αλώπηξ βαφής ψημένη γη', 'τάχιστη αλώπηξ βαφής ψημένη γη'),
+			'Russian alphabet' => array('name', 'АВСТРАЛИЯавстралия', 'австралияавстралия'),
+		);
+	}
+
+	/**
+	 * Checks if equals condition makes utf-8 argument lowercase correctly
+	 * @test
+	 * @dataProvider equalsForCaseSensitiveFalseLowercasesOperandProvider
+	 *
+	 * @param string $propertyName The name of the property to compare against
+	 * @param mixed $operand The value to compare with
+	 * @param string $expectedOperand
+	 */
+	public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand) {
+		/** @var $qomFactory Tx_Extbase_Persistence_QOM_QueryObjectModelFactory */
+		$qomFactory = $this->getMock( 'Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', array('comparison'));
+		$qomFactory->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
+
+		$qomFactory->expects($this->once())->method('comparison')->with($this->anything(), $this->anything(), $expectedOperand);
+		$this->query->injectQomFactory($qomFactory);
+
+		$this->query->equals($propertyName, $operand, FALSE);
+	}
 }
 ?>
