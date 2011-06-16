@@ -63,7 +63,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/Ext.ux.plugins.TabStripContainer.js');
-		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
 
 			// todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
@@ -117,6 +116,9 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			modeVbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', true) . "',
 			modeHbox: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', true) . "'
 		};\n");
+
+		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
+		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
 	}
 
 	/**
