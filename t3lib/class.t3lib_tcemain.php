@@ -6807,17 +6807,13 @@ class t3lib_TCEmain {
 			case 'all':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
 
-						// Clear all caching framework caches if it is initialized:
-						// (it could be disabled by initialized by an extension)
+						// Clear all caching framework caches if it is initialized
 					if (t3lib_cache::isCachingFrameworkInitialized()) {
 						$GLOBALS['typo3CacheManager']->flushCaches();
 					}
 
-					if (TYPO3_UseCachingFramework) {
-						if (t3lib_extMgm::isLoaded('cms')) {
-							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
-						}
-					} else {
+						// Clear core cache tables if caching framework is not enabled for core
+					if (!TYPO3_UseCachingFramework) {
 						if (t3lib_extMgm::isLoaded('cms')) {
 							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
 							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pagesection');
