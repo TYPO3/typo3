@@ -248,7 +248,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	protected function createCache($identifier) {
 		$frontend = $this->cacheConfigurations[$identifier]['frontend'];
 		$backend = $this->cacheConfigurations[$identifier]['backend'];
-		$backendOptions = $this->cacheConfigurations[$identifier]['backendOptions'];
+		$backendOptions = $this->cacheConfigurations[$identifier]['options'];
 		$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
 	}
 }
