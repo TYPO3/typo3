@@ -45,6 +45,7 @@ class t3lib_cache {
 	public static function initializeCachingFramework() {
 		if (!self::isCachingFrameworkInitialized()) {
 			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
+			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory', 'production', $GLOBALS['typo3CacheManager']);
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
@@ -58,12 +59,7 @@ class t3lib_cache {
 	 */
 	public static function initPageCache() {
 		try {
-			$GLOBALS['typo3CacheFactory']->create(
-				'cache_pages',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pages']['frontend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pages']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pages']['options']
-			);
+			$GLOBALS['typo3CacheManager']->getCache('cache_pages');
 		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
 			// do nothing, a cache_pages cache already exists
 		}
@@ -77,12 +73,7 @@ class t3lib_cache {
 	 */
 	public static function initPageSectionCache() {
 		try {
-			$GLOBALS['typo3CacheFactory']->create(
-				'cache_pagesection',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pagesection']['frontend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pagesection']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_pagesection']['options']
-			);
+			$GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
 			// do nothing, a cache_pagesection cache already exists
 		}
@@ -96,12 +87,7 @@ class t3lib_cache {
 	 */
 	public static function initContentHashCache() {
 		try {
-			$GLOBALS['typo3CacheFactory']->create(
-				'cache_hash',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_hash']['frontend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_hash']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_hash']['options']
-			);
+			$GLOBALS['typo3CacheManager']->getCache('cache_hash');
 		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
 			// do nothing, a cache_hash cache already exists
 		}
