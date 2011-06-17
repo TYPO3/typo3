@@ -9,7 +9,7 @@
 			<label index="tasks_updateExtensionlistTask.name">Update Extension List</label>
 			<label index="tasks_updateExtensionlistTask.description">Update the extension list on a regular basis. Once a day is a good interval.</label>
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
-			<label index="mlang_labels_tabdescr">Manages TYPO3 extensions from a central repository. TYPO3 extensions include plugins, modules, class extensions, configuration code, etc.</label>
+			<label index="mlang_labels_tabdescr">Manages TYPO3 extensions from a central repository. TYPO3 extensions include plugins, modules, class extensions, configuration code, etc.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
 			<label index="mlang_tabs_tab">Extension Manager</label>
 			<label index="category_BE">Backend</label>
 			<label index="category_BE_modules">Backend Modules</label>

@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
-			<label index="mlang_labels_tabdescr">Manages TYPO3 extensions from a central repository, which includes plugins, modules, class extensions, configuration code etc.</label>
+			<label index="mlang_labels_tabdescr">Manages TYPO3 extensions from a central repository, which includes plugins, modules, class extensions, configuration code etc.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
 			<label index="mlang_tabs_tab">Ext Manager</label>
 			<label index="category_BE">Backend</label>
 			<label index="category_BE_modules">Backend Modules</label>
