@@ -51,7 +51,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.hidden">Hidden</label>
 			<label index="labels.starttime">Start</label>
 			<label index="labels.endtime">End</label>
-			<label index="labels.minutesHoursDaysYears">min| hrs| days| yrs</label>
+			<label index="labels.minutesHoursDaysYears"> min| hrs| days| yrs| min| hour| day| year</label>
 			<label index="labels.menu">Menu:</label>
 			<label index="labels.showPage">View webpage</label>
 			<label index="labels.showList">Show record list</label>

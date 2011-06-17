@@ -96,7 +96,7 @@
  * 1449:	 function date($tstamp)
  * 1460:	 function datetime($value)
  * 1472:	 function time($value)
- * 1488:	 function calcAge($seconds,$labels = 'min|hrs|days|yrs')
+ * 1488:	 function calcAge($seconds,$labels = ' min| hrs| days| yrs| min| hour| day| year')
  * 1514:	 function dateTimeAge($tstamp,$prefix=1,$date='')
  * 1532:	 function titleAttrib($content='',$hsc=0)
  * 1545:	 function titleAltAttrib($content)
@@ -1639,26 +1639,27 @@ final class t3lib_BEfunc {
 	 * Usage: 15
 	 *
 	 * @param	integer		$seconds could be the difference of a certain timestamp and time()
-	 * @param	string		$labels should be something like ' min| hrs| days| yrs'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears")
+	 * @param	string		$labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears")
 	 * @return	string		Formatted time
 	 */
-	public static function calcAge($seconds, $labels = 'min|hrs|days|yrs') {
+	public static function calcAge($seconds, $labels = ' min| hrs| days| yrs| min| hour| day| year') {
 		$labelArr = explode('|', $labels);
-		$prefix = '';
-		if ($seconds < 0) {
-			$prefix = '-';
-			$seconds = abs($seconds);
-		}
+		$absSeconds = abs($seconds);
+		$sign = ($seconds > 0 ? 1 : -1);
 		if ($seconds < 3600) {
-			$seconds = round($seconds / 60) . ' ' . trim($labelArr[0]);
+			$val = round($absSeconds / 60);
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[4] : $labelArr[0]);
 		} elseif ($seconds < 24 * 3600) {
-			$seconds = round($seconds / 3600) . ' ' . trim($labelArr[1]);
+			$val = round($absSeconds / 3600);
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[5] : $labelArr[1]);
 		} elseif ($seconds < 365 * 24 * 3600) {
-			$seconds = round($seconds / (24 * 3600)) . ' ' . trim($labelArr[2]);
+			$val = round($absSeconds / (24 * 3600));
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[6] : $labelArr[2]);
 		} else {
-			$seconds = round($seconds / (365 * 24 * 3600)) . ' ' . trim($labelArr[3]);
+			$val = round($absSeconds / (365 * 24 * 3600));
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[7] : $labelArr[3]);
 		}
-		return $prefix . $seconds;
+		return $seconds;
 	}
 
 	/**

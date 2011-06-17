@@ -125,7 +125,7 @@ class tx_cms_layout extends recordList {
 	var $option_newWizard = 1; // If TRUE, new-wizards are linked to rather than the regular new-element list.
 	var $ext_function = 0; // If set to "1", will link a big button to content element wizard.
 	var $doEdit = 1; // If TRUE, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
-	var $agePrefixes = ' min| hrs| days| yrs'; // Age prefixes for displaying times. May be set externally to localized values.
+	var $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year'; // Age prefixes for displaying times. May be set externally to localized values.
 	var $externalTables = array(); // Array of tables to be listed by the Web > Page module in addition to the default tables.
 	var $descrTable; // "Pseudo" Description -table name
 	var $defLangBinding = FALSE; // If set TRUE, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
