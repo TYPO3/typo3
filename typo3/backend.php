@@ -641,8 +641,7 @@ class TYPO3backend {
 				$records = t3lib_BEfunc::getRecordsByField('pages', 'alias', $editId, $where);
 
 				if(is_array($records))	{
-					reset($records);
-					$editRecord = current($records);
+					$editRecord = reset($records);
 					t3lib_BEfunc::workspaceOL('pages', $editRecord);
 				}
 			}

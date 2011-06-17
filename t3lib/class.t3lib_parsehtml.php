@@ -1228,7 +1228,6 @@ class t3lib_parsehtml {
 		$cacheKey .= $flag ? 1 : 0;
 		if (is_array($str)) {
 			if (!$cacheKey || !isset($this->caseShift_cache[$cacheKey])) {
-				reset($str);
 				foreach ($str as $k => $v) {
 					if (!$flag) {
 						$str[$k] = strtoupper($v);

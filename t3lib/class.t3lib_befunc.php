@@ -3526,8 +3526,7 @@ final class t3lib_BEfunc {
 			foreach ($rootLine as $row) {
 				$dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
 				if (is_array($dRec)) {
-					reset($dRec);
-					$dRecord = current($dRec);
+					$dRecord = reset($dRec);
 					return rtrim($dRecord['domainName'], '/');
 				}
 			}

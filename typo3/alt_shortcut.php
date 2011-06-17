@@ -598,8 +598,7 @@ class SC_alt_shortcut {
 				} else {
 					$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
 					if (is_array($records))	{
-						reset($records);
-						$this->theEditRec = current($records);
+						$this->theEditRec = reset($records);
 						t3lib_BEfunc::workspaceOL('pages',$this->theEditRec);
 					}
 				}

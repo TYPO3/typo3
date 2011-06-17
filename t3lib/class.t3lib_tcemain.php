@@ -412,7 +412,6 @@ class t3lib_TCEmain {
 		if (is_array($mirror)) {
 			foreach ($mirror as $table => $uid_array) {
 				if (isset($this->datamap[$table])) {
-					reset($uid_array);
 					foreach ($uid_array as $id => $uidList) {
 						if (isset($this->datamap[$table][$id])) {
 							$theIdsInArray = t3lib_div::trimExplode(',', $uidList, 1);
@@ -464,8 +463,7 @@ class t3lib_TCEmain {
 				return FALSE;
 			}
 
-			reset($postFiles);
-			$subA = current($postFiles);
+			$subA = reset($postFiles);
 			if (is_array($subA)) {
 				if (is_array($subA['name']) && is_array($subA['type']) && is_array($subA['tmp_name']) && is_array($subA['size'])) {
 						// Initialize the uploadedFilesArray:

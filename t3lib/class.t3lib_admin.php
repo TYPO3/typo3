@@ -473,7 +473,6 @@ class t3lib_admin {
 	 */
 	function getDBFields($theSearchTable) {
 		$result = array();
-		reset($GLOBALS['TCA']);
 		foreach ($GLOBALS['TCA'] as $table => $tableConf) {
 			t3lib_div::loadTCA($table);
 			$cols = $GLOBALS['TCA'][$table]['columns'];

@@ -402,8 +402,7 @@ class SC_wizard_table {
 		$cells=array();
 		$cells[]='';
 			// Finding first row:
-		reset($cfgArr);
-		$firstRow=current($cfgArr);
+		$firstRow = reset($cfgArr);
 		if (is_array($firstRow))	{
 
 				// Init:
