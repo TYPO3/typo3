@@ -1254,8 +1254,10 @@ class browse_links {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
 		}
 
-		reset($allowedItems);
-		if (!in_array($this->act,$allowedItems))	$this->act = current($allowedItems);
+			// if $this->act is not allowed, default to first allowed
+		if (!in_array($this->act, $allowedItems)) {
+			$this->act = reset($allowedItems);
+		}
 
 			// Making menu in top:
 		$menuDef = array();

@@ -241,8 +241,7 @@ final class t3lib_utility_Debug {
 	 */
 	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
 		if (is_array($rows)) {
-			reset($rows);
-			$firstEl = current($rows);
+			$firstEl = reset($rows);
 			if (is_array($firstEl)) {
 				$headerColumns = array_keys($firstEl);
 				$tRows = array();

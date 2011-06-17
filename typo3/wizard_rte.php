@@ -167,8 +167,7 @@ class SC_wizard_rte {
 			$trData->fetchRecord($this->P['table'],$this->P['uid'],'');
 
 				// Getting the processed record content out:
-			reset($trData->regTableItems_data);
-			$rec = current($trData->regTableItems_data);
+			$rec = reset($trData->regTableItems_data);
 			$rec['uid'] = $this->P['uid'];
 			$rec['pid'] = $rawRec['pid'];
 

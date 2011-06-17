@@ -702,8 +702,7 @@ class t3lib_clipboard {
 			if ($table == '_FILE') {
 				$thisRecTitle = basename($rec);
 				if ($this->current == 'normal') {
-					reset($clElements);
-					$selItem = current($clElements);
+					$selItem = reset($clElements);
 					$selRecTitle = basename($selItem);
 				} else {
 					$selRecTitle = count($clElements);
