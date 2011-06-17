@@ -194,6 +194,7 @@ return array(
 	'tx_extbase_reflection_service' => $extensionClassesPath . 'Reflection/Service.php',
 	'tx_extbase_reflection_exception_invalidpropertytype' => $extensionClassesPath . 'Reflection/Exception/InvalidPropertyType.php',
 	'tx_extbase_reflection_exception_propertynotaccessibleexception' => $extensionClassesPath . 'Reflection/Exception/PropertyNotAccessibleException.php',
+	'tx_extbase_reflection_exception_unknownclass' => $extensionClassesPath . 'Reflection/Exception/UnknownClass.php',
 	'tx_extbase_security_exception' => $extensionClassesPath . 'Security/Exception.php',
 	'tx_extbase_security_channel_requesthashservice' => $extensionClassesPath . 'Security/Channel/RequestHashService.php',
 	'tx_extbase_security_cryptography_hashservice' => $extensionClassesPath . 'Security/Cryptography/HashService.php',
