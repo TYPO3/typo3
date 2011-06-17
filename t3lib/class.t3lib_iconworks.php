@@ -867,9 +867,10 @@ final class t3lib_iconWorks {
 					);
 				}
 			} else {
-				foreach ($recordType AS $key => $type) {
-					$recordType[$key] = 'tcarecords-' . $table . '-' . $type;
+				foreach ($recordType as &$type) {
+					$type = 'tcarecords-' . $table . '-' . $type;
 				}
+				unset($type);
 				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		} else {
