@@ -1499,6 +1499,7 @@ class t3lib_TCEforms_inline {
 			$parts = explode('|', $value, 2);
 			$value = $parts[0];
 		}
+		unset($value);
 		return $itemArray;
 	}
 

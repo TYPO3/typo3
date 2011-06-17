@@ -948,18 +948,22 @@ class t3lib_TStemplate {
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
+		unset($value);
 
 		foreach ($this->config as &$value) {
 			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, TRUE);
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
+		unset($value);
 
 		foreach ($this->editorcfg as &$value) {
 			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, TRUE);
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
+		unset($value);
+
 		if (count($files)) {
 			$files = array_unique($files);
 			foreach ($files as $file) {

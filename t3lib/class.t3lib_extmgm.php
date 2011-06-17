@@ -354,6 +354,7 @@ final class t3lib_extMgm {
 					}
 				}
 			}
+			unset($typeDetails);
 		}
 	}
 
