@@ -7437,6 +7437,7 @@ class tslib_cObj {
 				foreach ($queryParts as $queryPartKey => &$queryPartValue) {
 					$queryPartValue = str_replace('###' . $marker . '###', $markerValue, $queryPartValue);
 				}
+				unset($queryPartValue);
 			}
 
 			$query = $GLOBALS['TYPO3_DB']->SELECTquery(

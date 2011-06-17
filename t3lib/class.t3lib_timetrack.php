@@ -281,6 +281,7 @@ class t3lib_timeTrack {
 				$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
 			}
 		}
+		unset($data);
 
 			// Create hierarchical array of keys pointing to the stack
 		$arr = array();

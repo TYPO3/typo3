@@ -1068,11 +1068,12 @@ class t3lib_parsehtml {
 		$prefix = isset($alternatives['style']) ? $alternatives['style'] : $main_prefix;
 		if (strlen($prefix)) {
 			$parts = $this->splitIntoBlock('style', $content);
-			foreach ($parts as $k => $v) {
+			foreach ($parts as $k => &$part) {
 				if ($k % 2) {
-					$parts[$k] = preg_replace('/(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))/i', '\1' . $prefix . '\2' . $suffix . '\3', $parts[$k]);
+					$part = preg_replace('/(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))/i', '\1' . $prefix . '\2' . $suffix . '\3', $part);
 				}
 			}
+			unset($part);
 			$content = implode('', $parts);
 		}
 
@@ -1229,11 +1230,12 @@ class t3lib_parsehtml {
 		if (is_array($str)) {
 			if (!$cacheKey || !isset($this->caseShift_cache[$cacheKey])) {
 				reset($str);
-				foreach ($str as $k => $v) {
+				foreach ($str as &$v) {
 					if (!$flag) {
-						$str[$k] = strtoupper($v);
+						$v = strtoupper($v);
 					}
 				}
+				unset($v);
 				if ($cacheKey) {
 					$this->caseShift_cache[$cacheKey] = $str;
 				}
@@ -1299,9 +1301,10 @@ class t3lib_parsehtml {
 	function indentLines($content, $number = 1, $indentChar = TAB) {
 		$preTab = str_pad('', $number * strlen($indentChar), $indentChar);
 		$lines = explode(LF, str_replace(CR, '', $content));
-		foreach ($lines as $k => $v) {
-			$lines[$k] = $preTab . $v;
+		foreach ($lines as &$line) {
+			$line = $preTab . $line;
 		}
+		unset($line);
 		return implode(LF, $lines);
 	}
 
