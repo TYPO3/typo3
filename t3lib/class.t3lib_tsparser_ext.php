@@ -837,7 +837,6 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 	 */
 	function ext_compareFlatSetups($default) {
 		$editableComments = array();
-		reset($this->flatSetup);
 		foreach ($this->flatSetup as $const => $value) {
 			if (substr($const, -2) != '..' && isset($this->flatSetup[$const . '..'])) {
 				$comment = trim($this->flatSetup[$const . '..']);
@@ -1291,7 +1290,6 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 							if ($extList == 'IMAGE_EXT') {
 								$extList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 							}
-							reset($this->rArr);
 							$onlineResourceFlag = $this->ext_defaultOnlineResourceFlag;
 
 							foreach ($this->rArr as $c => $val) {

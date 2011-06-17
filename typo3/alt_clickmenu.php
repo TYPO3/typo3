@@ -897,8 +897,7 @@ class clickMenu {
 			$elFromAllTables = count($this->clipObj->elFromTable('_FILE'));
 			if (!in_array('paste',$this->disabledItems) && $elFromAllTables && is_dir($path))	{
 				$elArr = $this->clipObj->elFromTable('_FILE');
-				reset($elArr);
-				$selItem = current($elArr);
+				$selItem = reset($elArr);
 				$elInfo=array(
 					basename($selItem),
 					basename($path),

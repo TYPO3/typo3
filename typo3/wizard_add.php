@@ -163,8 +163,7 @@ class SC_wizard_add {
 					// Preparing the data of the parent record...:
 				$trData = t3lib_div::makeInstance('t3lib_transferData');
 				$trData->fetchRecord($this->P['table'],$this->P['uid'],'');	// 'new'
-				reset($trData->regTableItems_data);
-				$current = current($trData->regTableItems_data);
+				$current = reset($trData->regTableItems_data);
 
 					// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
 				if (is_array($current))	{

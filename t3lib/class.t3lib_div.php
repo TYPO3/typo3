@@ -2049,7 +2049,6 @@ final class t3lib_div {
 	 * @return	string		A single line of CSV
 	 */
 	public static function csvValues(array $row, $delim = ',', $quote = '"') {
-		reset($row);
 		$out = array();
 		foreach ($row as $value) {
 			$out[] = str_replace($quote, $quote . $quote, $value);

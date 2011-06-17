@@ -965,8 +965,7 @@ class t3lib_fullsearch {
 					$labelField = $GLOBALS['TCA'][$from_table]['ctrl']['label'];
 					$altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
 					if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {
-						reset($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']);
-						while (list(, $labelArray) = each($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'])) {
+						foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
 							if (substr($labelArray[0], 0, 4) == 'LLL:') {
 								$labelFieldSelect[$labelArray[1]] = $GLOBALS['LANG']->sL($labelArray[0]);
 							} else {
@@ -976,7 +975,6 @@ class t3lib_fullsearch {
 						$useSelectLabels = 1;
 					}
 					if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
-						reset($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']);
 						foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
 							if (substr($altLabelArray[0], 0, 4) == 'LLL:') {
 								$altLabelFieldSelect[$altLabelArray[1]] = $GLOBALS['LANG']->sL($altLabelArray[0]);
@@ -1017,7 +1015,6 @@ class t3lib_fullsearch {
 						}
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
-					reset($this->tableArray[$from_table]);
 					foreach ($this->tableArray[$from_table] as $key => $val) {
 						$GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] = $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 1 ? 'on' :
 								$GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'];

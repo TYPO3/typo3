@@ -154,8 +154,7 @@ class alt_menu_functions {
 				if ($moduleInfo['defaultMod'])	{
 					$link = $moduleInfo['sub'][$moduleInfo['defaultMod']]['script'];
 				} else {
-					reset($moduleInfo['sub']);
-					$subTemp = current($moduleInfo['sub']);
+					$subTemp = reset($moduleInfo['sub']);
 					$link = $subTemp['script'];
 				}
 				$link_sub = 1;	// Tells that the main modules links to a submodule

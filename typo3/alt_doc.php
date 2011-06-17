@@ -727,8 +727,7 @@ class SC_alt_doc {
 								$trData->disableRTE = !$GLOBALS['BE_USER']->isRTE();
 								$trData->prevPageID = $prevPageID;
 								$trData->fetchRecord($table,$theUid,$cmd=='new'?'new':'');	// 'new'
-								reset($trData->regTableItems_data);
-								$rec = current($trData->regTableItems_data);
+								$rec = reset($trData->regTableItems_data);
 								$rec['uid'] = $cmd=='new' ? uniqid('NEW') : $theUid;
 								if ($cmd=='new')	{
 									$rec['pid'] = $theUid=='prev'?$thePrevUid:$theUid;
@@ -1457,8 +1456,7 @@ class SC_alt_doc {
 			if (isset($this->docHandler[$currentDocFromHandlerMD5]))	{
 				$setupArr=$this->docHandler[$currentDocFromHandlerMD5];
 			} else {
-				reset($this->docHandler);
-				$setupArr=current($this->docHandler);
+				$setupArr = reset($this->docHandler);
 			}
 			if ($setupArr[2])	{
 				$sParts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
