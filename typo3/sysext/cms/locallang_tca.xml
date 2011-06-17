@@ -105,9 +105,9 @@
 			<label index="pages.shortcut_mode">Shortcut Mode:</label>
 			<label index="pages.shortcut_mode_formlabel">Shortcut Mode</label>
 			<label index="pages.shortcut_mode.I.0">Selected page</label>
-			<label index="pages.shortcut_mode.I.1">First subpage of current page</label>
-			<label index="pages.shortcut_mode.I.2">Random subpage of current page</label>
-			<label index="pages.shortcut_mode.I.3">Parent page of current page</label>
+			<label index="pages.shortcut_mode.I.1">First subpage of selected/current page</label>
+			<label index="pages.shortcut_mode.I.2">Random subpage of selected/current page</label>
+			<label index="pages.shortcut_mode.I.3">Parent page of selected/current page</label>
 			<label index="pages.shortcut_formlabel">Shortcut Target</label>
 			<label index="pages.content_from_pid">Show content from this page instead:</label>
 			<label index="pages.content_from_pid_formlabel">Show Content from Page</label>
