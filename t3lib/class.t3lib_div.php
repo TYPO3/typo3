@@ -4577,8 +4577,8 @@ final class t3lib_div {
 
 						// Checking if charset should be converted.
 					if (is_array($LOCAL_LANG[$langKey]) && $targetCharset != 'utf-8') {
-						foreach ($LOCAL_LANG[$langKey] as $labelKey => $labelValue) {
-							$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue, $targetCharset);
+						foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
+							$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 						}
 					}
 				}
@@ -4628,8 +4628,8 @@ final class t3lib_div {
 
 							// Checking if charset should be converted.
 						if (is_array($LOCAL_LANG[$langKey]) && $targetCharset != 'utf-8') {
-							foreach ($LOCAL_LANG[$langKey] as $labelKey => $labelValue) {
-								$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue, $targetCharset);
+							foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
+								$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 							}
 						}
 
@@ -4653,9 +4653,9 @@ final class t3lib_div {
 			}
 
 				// Convert the $LOCAL_LANG array to XLIFF structure
-			foreach ($LOCAL_LANG as $languageKey => $keysLabels) {
-				foreach ($keysLabels as $key => $label) {
-					$LOCAL_LANG[$languageKey][$key] = array(0 => array(
+			foreach ($LOCAL_LANG as &$keysLabels) {
+				foreach ($keysLabels as &$label) {
+					$label = array(0 => array(
 						'target' => $label,
 					));
 				}
