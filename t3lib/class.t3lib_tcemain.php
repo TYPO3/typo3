@@ -1839,6 +1839,7 @@ class t3lib_TCEmain {
 							$theFile = substr($theFile, strlen(PATH_site));
 						}
 					}
+					unset($theFile);
 				}
 			}
 		}
@@ -2296,6 +2297,7 @@ class t3lib_TCEmain {
 				str_replace('|', '', rawurldecode($temp[0]))
 			);
 		}
+		unset($newVal);
 		return $valueArray;
 	}
 

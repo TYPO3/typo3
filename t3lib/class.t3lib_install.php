@@ -1093,6 +1093,7 @@ class t3lib_install {
 		foreach ($whichTables as $key => &$value) {
 			$value = $key;
 		}
+		unset($value);
 		return $whichTables;
 	}
 

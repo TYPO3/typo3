@@ -768,6 +768,7 @@ class t3lib_stdGraphic {
 				foreach ($theBBoxInfo as &$value) {
 					$value = ceil($value / $sF);
 				}
+				unset($value);
 			}
 		}
 		return array($x, $y, $theBBoxInfo);

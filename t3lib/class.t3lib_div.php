@@ -1905,8 +1905,8 @@ final class t3lib_div {
 			} else {
 				$value = addslashes($value);
 			}
-			unset($value);
 		}
+		unset($value);
 		reset($theArray);
 	}
 
@@ -1927,8 +1927,8 @@ final class t3lib_div {
 			} else {
 				$value = stripslashes($value);
 			}
-			unset($value);
 		}
+		unset($value);
 		reset($theArray);
 	}
 
@@ -3279,6 +3279,7 @@ final class t3lib_div {
 				return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
 			}
 		}
+		unset($absFileRef);
 		return $fileArr;
 	}
 
@@ -4469,12 +4470,14 @@ final class t3lib_div {
 					foreach ($LOCAL_LANG['default'] as &$labelValue) {
 						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
 					}
+					unset($labelValue);
 				}
 
 				if ($langKey != 'default' && is_array($LOCAL_LANG[$langKey]) && $sourceCharset != $targetCharset) {
 					foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
 						$labelValue = $csConvObj->conv($labelValue, $sourceCharset, $targetCharset);
 					}
+					unset($labelValue);
 				}
 
 					// Cache the content now:
@@ -4577,9 +4580,10 @@ final class t3lib_div {
 
 						// Checking if charset should be converted.
 					if (is_array($LOCAL_LANG[$langKey]) && $targetCharset != 'utf-8') {
-						foreach ($LOCAL_LANG[$langKey] as $labelKey => $labelValue) {
-							$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue, $targetCharset);
+						foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
+							$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 						}
+						unset($labelValue);
 					}
 				}
 
@@ -4628,9 +4632,10 @@ final class t3lib_div {
 
 							// Checking if charset should be converted.
 						if (is_array($LOCAL_LANG[$langKey]) && $targetCharset != 'utf-8') {
-							foreach ($LOCAL_LANG[$langKey] as $labelKey => $labelValue) {
-								$LOCAL_LANG[$langKey][$labelKey] = $csConvObj->utf8_decode($labelValue, $targetCharset);
+							foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
+								$labelValue = $csConvObj->utf8_decode($labelValue, $targetCharset);
 							}
+							unset($labelValue);
 						}
 
 							// Cache the content now:
@@ -4653,13 +4658,15 @@ final class t3lib_div {
 			}
 
 				// Convert the $LOCAL_LANG array to XLIFF structure
-			foreach ($LOCAL_LANG as $languageKey => $keysLabels) {
-				foreach ($keysLabels as $key => $label) {
-					$LOCAL_LANG[$languageKey][$key] = array(0 => array(
+			foreach ($LOCAL_LANG as &$keysLabels) {
+				foreach ($keysLabels as &$label) {
+					$label = array(0 => array(
 						'target' => $label,
 					));
 				}
+				unset($label);
 			}
+			unset($keysLabels);
 
 			return $LOCAL_LANG;
 		}
@@ -5464,6 +5471,7 @@ final class t3lib_div {
 					$v = $newURL . substr($v, strlen($newParts[0]));
 				}
 			}
+			unset($v);
 			$message = implode('', $urlSplit);
 		}
 
@@ -5848,6 +5856,7 @@ final class t3lib_div {
 				$val = preg_replace('/(^\'|\'$)/', '', $val);
 
 			}
+			unset($val);
 		}
 			// return reindexed array
 		return array_values($paramsArr);

@@ -642,6 +642,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						foreach ($pageTypes as &$vv) {
 							$vv = $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('pages','doktype',$vv));
 						}
+						unset($vv);
 						$out[$k] = implode('<br />',$pageTypes);
 					break;
 					case 'tables_select':
@@ -652,6 +653,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 								$vv = '<span class="nobr">'.t3lib_iconWorks::getSpriteIconForRecord($vv,array()).$GLOBALS['LANG']->sL($GLOBALS['TCA'][$vv]['ctrl']['title']).'</span>';
 							}
 						}
+						unset($vv);
 						$out[$k] = implode('<br />',$tables);
 					break;
 					case 'non_exclude_fields':
@@ -1033,6 +1035,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 				$this->ext_ksortArrayRecursive($v);
 			}
 		}
+		unset($v);
 	}
 
 	/**

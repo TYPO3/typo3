@@ -2883,6 +2883,7 @@ class browse_links {
 				foreach ($fieldChangeFunctions as &$value) {
 					$value = str_replace($originalName, $cleanedName, $value);
 				}
+				unset($value);
 			}
 
 			$result = ($this->P['fieldChangeFuncHash'] === t3lib_div::hmac(serialize($fieldChangeFunctions)));

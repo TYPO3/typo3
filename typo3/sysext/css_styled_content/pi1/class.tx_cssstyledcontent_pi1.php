@@ -1,4 +1,4 @@
-<?php
+f<?php
 /***************************************************************
 *  Copyright notice
 *
@@ -103,6 +103,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			foreach($lines as &$val)	{
 				$val = '<li>'.$this->cObj->stdWrap($val,$conf['innerStdWrap.']).'</li>';
 			}
+			unset($val);
 
 				// Set header type:
 			$type = intval($this->cObj->data['layout']);

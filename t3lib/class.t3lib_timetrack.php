@@ -281,12 +281,14 @@ class t3lib_timeTrack {
 				$data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
 			}
 		}
+		unset($data);
 
 			// Create hierarchical array of keys pointing to the stack
 		$arr = array();
 		foreach ($this->tsStackLog as $uniqueId => $data) {
 			$this->createHierarchyArray($arr, $data['level'], $uniqueId);
 		}
+		unset($data);
 			// Parsing the registeret content and create icon-html for the tree
 		$this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.']['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
 
