@@ -388,7 +388,6 @@ class UriBuilder {
 
 	/**
 	 * @return integer
-	 * @api
 	 */
 	public function getTargetPageType() {
 		return $this->targetPageType;
@@ -623,6 +622,9 @@ class UriBuilder {
 		$typolinkConfiguration['parameter'] = $this->targetPageUid !== NULL ? $this->targetPageUid : $GLOBALS['TSFE']->id;
 		if ($this->targetPageType !== 0) {
 			$typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
+		} elseif ($this->format !== '') {
+			$targetPageType = $this->extensionService->getTargetPageTypeByFormat($this->request->getControllerExtensionKey(), $this->format);
+			$typolinkConfiguration['parameter'] .= ',' . $targetPageType;
 		}
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
@@ -707,6 +709,7 @@ class UriBuilder {
 		}
 		return $result;
 	}
+
 }
 
 ?>

@@ -209,6 +209,24 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		$actions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['actions'];
 		return current($actions);
 	}
+
+	/**
+	 * Resolve the page type number to use for building a link for a specific format
+	 *
+	 * @param string $extensionName name of the extension that has defined the target page type
+	 * @param string $format The format for which to look up the page type
+	 * @return integer Page type number for target page
+	 */
+	public function getTargetPageTypeByFormat($extensionName, $format) {
+		$targetPageType = 0;
+		$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, $extensionName);
+		$formatToPageTypeMapping = isset($settings['view']['formatToPageTypeMapping']) ? $settings['view']['formatToPageTypeMapping'] : array();
+		if (is_array($formatToPageTypeMapping) && array_key_exists($format, $formatToPageTypeMapping)) {
+			$targetPageType = (integer) $formatToPageTypeMapping[$format];
+		}
+		return $targetPageType;
+	}
+
 }
 
 ?>
