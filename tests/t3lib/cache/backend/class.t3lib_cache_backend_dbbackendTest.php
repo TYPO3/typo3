@@ -25,21 +25,48 @@
 /**
  * Testcase for the DB cache backend
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
 class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
-	 * If set, the tearDown() method will clean up the cache table used by this unit test.
+	 * Enable backup of global and system variables
 	 *
-	 * @var t3lib_cache_backend_DbBackend
+	 * @var boolean
 	 */
-	protected $backend;
+	protected $backupGlobals = TRUE;
 
-	protected $testingCacheTable;
-	protected $testingTagsTable;
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
+	 *  @var t3lib_DB Backup of original TYPO3_DB instance
+	 */
+	protected $typo3DbBackup;
+
+	/**
+	 * @var string Name of the testing data table
+	 */
+	protected $testingCacheTable = 'cachingframework_Testing';
+
+	/**
+	 * @var string Name of the testing tags table
+	 */
+	protected $testingTagsTable = 'cachingframework_Testing_tags';
+
+	/**
+	 * Set up testcases
+	 */
+	public function setUp() {
+		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
+	}
 
 	/**
 	 * Sets up the backend used for testing
@@ -48,24 +75,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
-	public function setUpBackend(array $backendOptions = array()) {
-		$defaultTestingCacheTable = 'test_cache_dbbackend';
-		$defaultTestingTagsTable = 'test_cache_dbbackend_tags';
-
-		$backendOptions = array_merge(
-			array(
-				'cacheTable' => $defaultTestingCacheTable,
-				'tagsTable' => $defaultTestingTagsTable,
-			),
-			$backendOptions
-		);
-
-		$this->testingCacheTable = $backendOptions['cacheTable'];
-		$this->testingTagsTable = $backendOptions['tagsTable'];
-
+	protected function setUpBackend(array $backendOptions = array()) {
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
-			identifier varchar(128) DEFAULT \'\' NOT NULL,
+			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			crdate int(11) unsigned DEFAULT \'0\' NOT NULL,
 			content mediumblob,
 			lifetime int(11) unsigned DEFAULT \'0\' NOT NULL,
@@ -76,19 +89,33 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingTagsTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
-			identifier varchar(128) DEFAULT \'\' NOT NULL,
-			tag varchar(128) DEFAULT \'\' NOT NULL,
+			identifier varchar(250) DEFAULT \'\' NOT NULL,
+			tag varchar(250) DEFAULT \'\' NOT NULL,
 			PRIMARY KEY (id),
 			KEY cache_id (identifier),
 			KEY cache_tag (tag)
 		) ENGINE=InnoDB;
 		');
 
-		$this->backend = t3lib_div::makeInstance(
+		$backend = t3lib_div::makeInstance(
 			't3lib_cache_backend_DbBackend',
 			'Testing',
 			$backendOptions
 		);
+
+		return $backend;
+	}
+
+	/**
+	 * Helper method to inject a mock frontend to backend instance
+	 *
+	 * @param t3lib_cache_backend_DbBackend $backend Current backend instance
+	 * @return void
+	 */
+	protected function setUpMockFrontendOfBackend(t3lib_cache_backend_DbBackend $backend) {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('Testing'));
+		$backend->setCache($mockCache);
 	}
 
 	/**
@@ -96,22 +123,43 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB']->sql_query(
-			'DROP TABLE ' . $this->testingCacheTable . ';'
+			'DROP TABLE IF EXISTS ' . $this->testingCacheTable . ';'
 		);
 
 		$GLOBALS['TYPO3_DB']->sql_query(
-			'DROP TABLE ' . $this->testingTagsTable . ';'
+			'DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';'
 		);
+
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**
 	 * @test
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function getCacheTableReturnsThePreviouslySetTable() {
-		$this->setUpBackend();
-		$this->backend->setCacheTable($this->testingCacheTable);
-		$this->assertEquals($this->testingCacheTable, $this->backend->getCacheTable(), 'getCacheTable() did not return the expected value.');
+	public function setCacheCalculatesCacheTableName() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+		$this->assertEquals($this->testingCacheTable, $backend->getCacheTable());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setCacheCalculatesTagsTableName() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$this->assertEquals($this->testingTagsTable, $backend->getTagsTable());
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function setThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->set('identifier', 'data');
 	}
 
 	/**
@@ -120,40 +168,27 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = array('Some data');
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 	}
 
 	/**
 	 * @test
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function setReallySavesToTheSpecifiedTable() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+	public function setInsertsEntryInTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
-		$data            = 'some data' . microtime();
+		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
 		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
@@ -161,11 +196,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertEquals(
-			$data,
-			$entryFound['content'],
-			'The original and the retrieved data don\'t match.'
-		);
+		$this->assertEquals($data, $entryFound['content']);
 	}
 
 	/**
@@ -173,23 +204,15 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setRemovesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data1 = 'some data' . microtime();
-		$data2 = 'some data' . microtime();
+		$data2 = $data1 . '_different';
 		$entryIdentifier = 'BackendDbRemoveBeforeSetTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data1, array(), 500);
-			// setting a second entry with the same identifier, but different
-			// data, this should _replace_ the existing one we set before
-		$this->backend->set($entryIdentifier, $data2, array(), 200);
+		$backend->set($entryIdentifier, $data1, array(), 500);
+		$backend->set($entryIdentifier, $data2, array(), 200);
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -197,7 +220,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertEquals(1, count($entriesFound), 'There was not exactly one cache entry.');
+		$this->assertEquals(1, count($entriesFound));
 	}
 
 	/**
@@ -205,19 +228,13 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setReallySavesSpecifiedTags() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -231,9 +248,9 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			$tags[] = $entry['tag'];
 		}
 
-		$this->assertTrue(count($tags) > 0, 'The tags do not exist.');
-		$this->assertTrue(in_array('UnitTestTag%tag1', $tags), 'Tag UnitTestTag%tag1 does not exist.');
-		$this->assertTrue(in_array('UnitTestTag%tag2', $tags), 'Tag UnitTestTag%tag2 does not exist.');
+		$this->assertTrue(count($tags) > 0);
+		$this->assertTrue(in_array('UnitTestTag%tag1', $tags));
+		$this->assertTrue(in_array('UnitTestTag%tag2', $tags));
 	}
 
 	/**
@@ -241,20 +258,17 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesCompressedDataWithEnabledCompression() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
-		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
-		$this->setUpBackend(
+		$backend = $this->setUpBackend(
 			array(
 				'compression' => TRUE,
 			)
 		);
-		$this->backend->setCache($mockCache);
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data ' . microtime();
-
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
 		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
@@ -262,7 +276,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertEquals($data, @gzuncompress($entry['content']), 'Original and compressed data don\'t match');
+		$this->assertEquals($data, @gzuncompress($entry['content']));
 	}
 
 	/**
@@ -270,21 +284,18 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesPlaintextDataWithEnabledCompressionAndCompressionLevel0() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
-		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
-		$this->setUpBackend(
+		$backend = $this->setUpBackend(
 			array(
 				'compression' => TRUE,
 				'compressionLevel' => 0,
 			)
 		);
-		$this->backend->setCache($mockCache);
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data ' . microtime();
-
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
 		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
@@ -292,7 +303,16 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertGreaterThan(0, substr_count($entry['content'], $data), 'Plaintext data not found');
+		$this->assertGreaterThan(0, substr_count($entry['content'], $data));
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function getThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->get('identifier');
 	}
 
 	/**
@@ -300,26 +320,29 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getReturnsContentOfTheCorrectCacheEntry() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data, array(), 500);
+		$backend->set($entryIdentifier, $data, array(), 500);
 
 		$data = 'some other data' . microtime();
-		$this->backend->set($entryIdentifier, $data, array(), 100);
+		$backend->set($entryIdentifier, $data, array(), 100);
 
-		$loadedData = $this->backend->get($entryIdentifier);
+		$loadedData = $backend->get($entryIdentifier);
 
-		$this->assertEquals($data, $loadedData, 'The original and the retrieved data don\'t match.');
+		$this->assertEquals($data, $loadedData);
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function hasThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->has('identifier');
 	}
 
 	/**
@@ -327,22 +350,25 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsTheCorrectResult() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
-		$this->assertTrue($this->backend->has($entryIdentifier), 'has() did not return TRUE.');
-		$this->assertFalse($this->backend->has($entryIdentifier . 'Not'), 'has() did not return FALSE.');
+		$this->assertTrue($backend->has($entryIdentifier));
+		$this->assertFalse($backend->has($entryIdentifier . 'Not'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function removeThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->remove('identifier');
 	}
 
 	/**
@@ -350,19 +376,15 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeReallyRemovesACacheEntry() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbRemovalTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
+
+		$backend->remove($entryIdentifier);
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -370,17 +392,16 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertTrue(is_array($entriesFound) && count($entriesFound) > 0, 'The cache entry does not exist.');
+		$this->assertTrue(count($entriesFound) == 0);
+	}
 
-		$this->backend->remove($entryIdentifier);
-
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$this->testingCacheTable,
-			'identifier = \'' . $entryIdentifier . '\''
-		);
-
-		$this->assertTrue(count($entriesFound) == 0, 'The cache entry still exists.');
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function collectGarbageThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->collectGarbage();
 	}
 
 	/**
@@ -388,31 +409,16 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAnExpiredCacheEntry() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbRemovalTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data, array(), 1);
+		$backend->set($entryIdentifier, $data, array(), 1);
 
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$this->testingCacheTable,
-			'identifier = \'' . $entryIdentifier . '\''
-		);
-
-		$this->assertTrue(is_array($entriesFound) && count($entriesFound) > 0, 'The cache entry does not exist.');
-
-		sleep(2);
 		$GLOBALS['EXEC_TIME'] += 2;
-		$this->backend->collectGarbage();
+		$backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -420,7 +426,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$this->assertTrue(count($entriesFound) == 0, 'The cache entry still exists.');
+		$this->assertTrue(count($entriesFound) == 0);
 	}
 
 	/**
@@ -428,34 +434,18 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAllExpiredCacheEntries() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbRemovalTest';
 
-		$this->backend->setCache($cache);
+		$backend->set($entryIdentifier . 'A', $data, array(), 1);
+		$backend->set($entryIdentifier . 'B', $data, array(), 1);
+		$backend->set($entryIdentifier . 'C', $data, array(), 1);
 
-		$this->backend->set($entryIdentifier . 'A', $data, array(), 1);
-		$this->backend->set($entryIdentifier . 'B', $data, array(), 1);
-		$this->backend->set($entryIdentifier . 'C', $data, array(), 1);
-
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$this->testingCacheTable,
-			''
-		);
-
-		$this->assertTrue(is_array($entriesFound) && count($entriesFound) > 0, 'The cache entries do not exist.');
-
-		sleep(2);
 		$GLOBALS['EXEC_TIME'] += 2;
-		$this->backend->collectGarbage();
+		$backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -463,7 +453,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			''
 		);
 
-		$this->assertTrue(count($entriesFound) == 0, 'The cache entries still exist.');
+		$this->assertTrue(count($entriesFound) == 0);
 	}
 
 	/**
@@ -471,27 +461,28 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-
-		$this->backend->setCache($cache);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
-		$this->backend->set('BackendDbTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$this->backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$this->backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendDbTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
 
 		$expectedEntry = 'BackendDbTest2';
 
-		$actualEntries = $this->backend->findIdentifiersByTag('UnitTestTag%special');
-		$this->assertTrue(is_array($actualEntries), 'actualEntries is not an array.');
-
+		$actualEntries = $backend->findIdentifiersByTag('UnitTestTag%special');
+		$this->assertTrue(is_array($actualEntries));
 		$this->assertEquals($expectedEntry, array_pop($actualEntries));
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function flushThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->flush();
 	}
 
 	/**
@@ -499,22 +490,15 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-
-		$this->backend->setCache($cache);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
-		$this->backend->set('BackendDbTest1', $data, array('UnitTestTag%test'));
-		$this->backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$this->backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendDbTest1', $data, array('UnitTestTag%test'));
+		$backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
 
-		$this->backend->flush();
+		$backend->flush();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -522,7 +506,98 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			''
 		);
 
-		$this->assertTrue(count($entriesFound) == 0, 'Still entries in the cache table');
+		$this->assertTrue(count($entriesFound) == 0);
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushDropsDataTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))
+			->method('admin_query')
+			->with('DROP TABLE IF EXISTS cachingframework_Testing');
+
+		$backend->flush();
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushDropsTagsTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))
+			->method('admin_query')
+			->with('DROP TABLE IF EXISTS cachingframework_Testing_tags');
+
+		$backend->flush();
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushCreatesDataTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(2))
+			->method('admin_query')
+			->will($this->returnCallback(array($this, flushCreatesDataTableCallback)));
+
+		$backend->flush();
+	}
+
+	/**
+	 * Callback of flushCreatesDataTable to check if data table is created
+	 *
+	 * @param string $sql SQL of admin_query
+	 * @return void
+	 */
+	public function flushCreatesDataTableCallback($sql) {
+		$startOfStatement = 'CREATE TABLE cachingframework_Testing (';
+		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushCreatesTagsTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(3))
+			->method('admin_query')
+			->will($this->returnCallback(array($this, flushCreatesTagsTableCallback)));
+
+		$backend->flush();
+	}
+
+	/**
+	 * Callback of flushCreatesTagsTable to check if tags table is created
+	 *
+	 * @param string $sql SQL of admin_query
+	 * @return void
+	 */
+	public function flushCreatesTagsTableCallback($sql) {
+		$startOfStatement = 'CREATE TABLE cachingframework_Testing_tags (';
+		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function flushByTagThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->flushByTag(array());
 	}
 
 	/**
@@ -530,33 +605,26 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-
-		$this->backend->setCache($cache);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
-		$this->backend->set('BackendDbTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$this->backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$this->backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendDbTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendDbTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendDbTest3', $data, array('UnitTestTag%test'));
 
-		$this->backend->flushByTag('UnitTestTag%special');
+		$backend->flushByTag('UnitTestTag%special');
 
-		$this->assertTrue($this->backend->has('BackendDbTest1'), 'BackendDbTest1 does not exist anymore.');
-		$this->assertFalse($this->backend->has('BackendDbTest2'), 'BackendDbTest2 still exists.');
-		$this->assertTrue($this->backend->has('BackendDbTest3'), 'BackendDbTest3 does not exist anymore.');
+		$this->assertTrue($backend->has('BackendDbTest1'), 'BackendDbTest1 does not exist anymore.');
+		$this->assertFalse($backend->has('BackendDbTest2'), 'BackendDbTest2 still exists.');
+		$this->assertTrue($backend->has('BackendDbTest3'), 'BackendDbTest3 does not exist anymore.');
 
 		$tagEntriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			$this->testingTagsTable,
 			'tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('UnitTestTag%special', $this->testingTagsTable)
 		);
-		$this->assertEquals(0, count($tagEntriesFound), 'UnitTestTag%special still exists in tags table');
+		$this->assertEquals(0, count($tagEntriesFound));
 	}
 
 
@@ -565,28 +633,21 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsTheCorrectResultForEntryWithExceededLifetime() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
 		$expiredEntryIdentifier = 'ExpiredBackendDbTest';
 		$expiredData = 'some old data' . microtime();
-		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
+		$backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
-		sleep(2);
 		$GLOBALS['EXEC_TIME'] += 2;
 
-		$this->assertFalse($this->backend->has($expiredEntryIdentifier), 'has() did not return FALSE.');
+		$this->assertFalse($backend->has($expiredEntryIdentifier));
 	}
 
 	/**
@@ -594,17 +655,15 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function hasReturnsTrueForEntryWithUnlimitedLifetime() {
-		$this->setUpBackend();
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
-		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($mockCache);
-		$this->backend->set($entryIdentifier, 'data', array(), 0);
+		$backend->set($entryIdentifier, 'data', array(), 0);
 
 		$GLOBALS['EXEC_TIME'] += 1;
-		$this->assertTrue($this->backend->has($entryIdentifier));
+		$this->assertTrue($backend->has($entryIdentifier));
 	}
 
 	/**
@@ -612,29 +671,31 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getReturnsFalseForEntryWithExceededLifetime() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$backend->set($entryIdentifier, $data);
 
 		$expiredEntryIdentifier = 'ExpiredBackendDbTest';
 		$expiredData = 'some old data' . microtime();
-		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
+		$backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
-		sleep(2);
 		$GLOBALS['EXEC_TIME'] += 2;
 
-		$this->assertEquals($data, $this->backend->get($entryIdentifier), 'The original and the retrieved data don\'t match.');
-		$this->assertFalse($this->backend->get($expiredEntryIdentifier), 'The expired entry could be loaded.');
+		$this->assertEquals($data, $backend->get($entryIdentifier));
+		$this->assertFalse($backend->get($expiredEntryIdentifier));
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_cache_Exception
+	 */
+	public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet() {
+		$backend = $this->setUpBackend();
+		$backend->findIdentifiersByTag('identifier');
 	}
 
 	/**
@@ -642,23 +703,18 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagReturnsEmptyArrayForEntryWithExceededLifetime() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('Testing'));
+		$backend->setCache($mockCache);
 
-		$this->backend->setCache($cache);
-		$this->backend->set('BackendDbTest', 'some data', array('UnitTestTag%special'), 1);
+		$backend->set('BackendDbTest', 'some data', array('UnitTestTag%special'), 1);
 
-		sleep(2);
 		$GLOBALS['EXEC_TIME'] += 2;
 			// Not required, but used to update the pre-calculated queries:
-		$this->backend->setTagsTable($this->testingTagsTable);
+		$backend->setCache($mockCache);
 
-		$this->assertEquals(array(), $this->backend->findIdentifiersByTag('UnitTestTag%special'));
+		$this->assertEquals(array(), $backend->findIdentifiersByTag('UnitTestTag%special'));
 	}
 
 	/**
@@ -666,19 +722,13 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setWithUnlimitedLifetimeWritesCorrectEntry() {
-		$this->setUpBackend();
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data, array(), 0);
+		$backend->set($entryIdentifier, $data, array(), 0);
 
 		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
@@ -686,10 +736,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 			''
 		);
 
-		$this->assertTrue(is_array($entryFound), 'entriesFound is not an array.');
+		$this->assertTrue(is_array($entryFound));
 
 		$retrievedData = $entryFound['content'];
-		$this->assertEquals($data, $retrievedData, 'The original and the retrieved data don\'t match.');
+		$this->assertEquals($data, $retrievedData);
 	}
 }
 

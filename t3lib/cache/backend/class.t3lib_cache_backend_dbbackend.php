@@ -32,7 +32,14 @@
  */
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
+	/**
+	 * @var string Name of the cache data table
+	 */
 	protected $cacheTable;
+
+	/**
+	 * @var string Name of the cache tags table
+	 */
 	protected $tagsTable;
 
 	/**
@@ -53,28 +60,18 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	protected $tableJoin;
 
 	/**
-	 * Constructs this backend
+	 * Set cache frontend instance and calculate data and tags table name
 	 *
-	 * @param string $context FLOW3's application context
-	 * @param array $options Configuration options - depends on the actual backend
+	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
+	 * @return void
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 * @api
 	 */
-	public function __construct($context, array $options = array()) {
-		parent::__construct($context, $options);
+	public function setCache(t3lib_cache_frontend_Frontend $cache) {
+		parent::setCache($cache);
 
-		if (!$this->cacheTable) {
-			throw new t3lib_cache_Exception(
-				'No table to write data to has been set using the setting "cacheTable".',
-				1253534136
-			);
-		}
-
-		if (!$this->tagsTable) {
-			throw new t3lib_cache_Exception(
-				'No table to write tags to has been set using the setting "tagsTable".',
-				1253534137
-			);
-		}
-
+		$this->cacheTable = 'cachingframework_' . $this->cacheIdentifier;
+		$this->tagsTable = 'cachingframework_' . $this->cacheIdentifier . '_tags';
 		$this->initializeCommonReferences();
 	}
 
@@ -169,6 +166,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function get($entryIdentifier) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435810
+			);
+		}
+
 		$cacheEntry = FALSE;
 
 		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -197,6 +201,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function has($entryIdentifier) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435811
+			);
+		}
+
 		$hasEntry = FALSE;
 
 		$cacheEntries = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
@@ -221,6 +232,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435812
+			);
+		}
+
 		$entryRemoved = FALSE;
 
 		$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
@@ -248,6 +266,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTag($tag) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435813
+			);
+		}
+
 		$cacheEntryIdentifiers = array();
 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -273,8 +298,19 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flush() {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435814
+			);
+		}
+
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->cacheTable);
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tagsTable);
+		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->cacheTable);
+		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->tagsTable);
+		$this->createCacheTable();
+		$this->createTagsTable();
 	}
 
 	/**
@@ -284,6 +320,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTag($tag) {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435815
+			);
+		}
+
 		$tagsTableWhereClause = $this->getQueryForTag($tag);
 
 		$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
@@ -301,6 +344,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435816
+			);
+		}
+
 			// Get identifiers of expired cache entries
 		$tagsEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'identifier',
@@ -333,17 +383,16 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
-	 * Sets the table where the cache entries are stored. The specified table
-	 * must exist already.
+	 * Sets the table where the cache entries are stored.
 	 *
-	 * @param	string	The table.
-	 * @return	void
-	 * @throws t3lib_cache_Exception if the table does not exist.
+	 * @deprecated since TYPO3 4.6: The backend calculates the
+	 * 		table name internally, this method does nothing anymore
+	 * @param string $cacheTable Table name
+	 * @return void
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setCacheTable($cacheTable) {
-		$this->cacheTable = $cacheTable;
-		$this->initializeCommonReferences();
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -353,18 +402,26 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getCacheTable() {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435817
+			);
+		}
+
 		return $this->cacheTable;
 	}
 
 	/**
 	 * Sets the table where cache tags are stored.
 	 *
-	 * @param	string		$tagsTabls: Name of the table
-	 * @return	void
+	 * @deprecated since TYPO3 4.6: The backend calculates the
+	 * 		table name internally, this method does nothing anymore
+	 * @param string $tagsTable: Tags table name
+	 * @return void
 	 */
 	public function setTagsTable($tagsTable) {
-		$this->tagsTable = $tagsTable;
-		$this->initializeCommonReferences();
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -373,6 +430,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return	string		Name of the table storing tags
 	 */
 	public function getTagsTable() {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1308435818
+			);
+		}
+
 		return $this->tagsTable;
 	}
 
@@ -396,6 +460,28 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		if ($compressionLevel >= -1 && $compressionLevel <= 9) {
 			$this->compressionLevel = $compressionLevel;
 		}
+	}
+
+	/**
+	 * Create data table of cache
+	 *
+	 * @return void
+	 */
+	protected function createCacheTable() {
+		$sql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
+		$sql = str_replace('###CACHE_TABLE###', $this->cacheTable, $sql);
+		$GLOBALS['TYPO3_DB']->admin_query($sql);
+	}
+
+	/**
+	 * Create tags table of cache
+	 *
+	 * @return void
+	 */
+	protected function createTagsTable() {
+		$sql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
+		$sql = str_replace('###TAGS_TABLE###', $this->tagsTable, $sql);
+		$GLOBALS['TYPO3_DB']->admin_query($sql);
 	}
 
 	/**

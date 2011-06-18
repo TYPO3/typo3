@@ -76,6 +76,14 @@ class t3lib_install {
 		// External, Static
 	var $updateIdentity = ''; // Set to string which identifies the script using this class.
 	var $deletedPrefixKey = 'zzz_deleted_'; // Prefix used for tables/fields when deleted/renamed.
+
+	/**
+	 * @var array Tables starting with this name are ignored during compare
+	 */
+	var $ignoreTablePrefixes = array(
+		'cachingframework_',
+	);
+
 	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]'; // Prefix for checkbox fields when updating database.
 	var $localconf_addLinesOnly = 0; // If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
 	var $localconf_editPointToken = 'INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!'; // If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
@@ -898,8 +906,19 @@ class t3lib_install {
 					if ($info['whole_table']) {
 						if ($remove) {
 							if (substr($table, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
-								$statements['change_table'][md5($statement)] = $statement;
+									// Ignore table operation if the table name starts with a
+									// prefix that should be ignored
+								$ignoreTable = FALSE;
+								foreach ($this->ignoreTablePrefixes as $ignorePrefix) {
+									if (substr($table, 0, strlen($ignorePrefix)) === $ignorePrefix) {
+										$ignoreTable = TRUE;
+										break;
+									}
+								}
+								if (!$ignoreTable) {
+									$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
+									$statements['change_table'][md5($statement)] = $statement;
+								}
 							} else {
 								$statement = 'DROP TABLE ' . $table . ';';
 								$statements['drop_table'][md5($statement)] = $statement;
