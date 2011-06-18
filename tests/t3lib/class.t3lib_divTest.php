@@ -1111,6 +1111,66 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	//////////////////////////////////////
+	// Tests concerning addSlashesOnArray
+	//////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function addSlashesOnArrayAddsSlashesRecursive() {
+		$inputArray = array(
+			'key1' => array(
+				'key11' => "val'ue1",
+				'key12' => 'val"ue2',
+			),
+			'key2' => 'val\ue3',
+		);
+		$expectedResult = array(
+			'key1' => array(
+				'key11' => "val\'ue1",
+				'key12' => 'val\"ue2',
+			),
+			'key2' => 'val\\\\ue3',
+		);
+		t3lib_div::addSlashesOnArray($inputArray);
+		$this->assertEquals(
+			$expectedResult,
+			$inputArray
+		);
+	}
+
+
+	//////////////////////////////////////
+	// Tests concerning addSlashesOnArray
+	//////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function stripSlashesOnArrayStripsSlashesRecursive() {
+		$inputArray = array(
+			'key1' => array(
+				'key11' => "val\'ue1",
+				'key12' => 'val\"ue2',
+			),
+			'key2' => 'val\\\\ue3',
+		);
+		$expectedResult = array(
+			'key1' => array(
+				'key11' => "val'ue1",
+				'key12' => 'val"ue2',
+			),
+			'key2' => 'val\ue3',
+		);
+		t3lib_div::stripSlashesOnArray($inputArray);
+		$this->assertEquals(
+			$expectedResult,
+			$inputArray
+		);
+	}
+
+
+	//////////////////////////////////////
 	// Tests concerning arrayDiffAssocRecursive
 	//////////////////////////////////////
 
