@@ -53,12 +53,14 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	protected $tagName = 'div';
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * Inject a TagBuilder
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder Tag builder
 	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-		$this->tag = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TagBuilder');
+	public function injectTagBuilder(Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder) {
+		$this->tag = $tagBuilder;
 	}
 
 	/**
