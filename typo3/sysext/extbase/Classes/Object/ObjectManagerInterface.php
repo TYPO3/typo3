@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,20 +32,30 @@
  * @subpackage Object
  */
 interface Tx_Extbase_Object_ObjectManagerInterface extends t3lib_Singleton {
-    /**
-     * Returns a fresh or existing instance of the object specified by $objectName.
-     *
-     * Important:
-     *
-     * If possible, instances of Prototype objects should always be created with the
-     * Object Manager's create() method and Singleton objects should rather be
-     * injected by some type of Dependency Injection.
-     *
-     * @param string $objectName The name of the object to return an instance of
-     * @return object The object instance
-     * @api
-     */
-    public function get($objectName);
+
+	/**
+	 * Returns TRUE if an object with the given name is registered
+	 *
+	 * @param  string $objectName Name of the object
+	 * @return boolean TRUE if the object has been registered, otherwise FALSE
+	 * @api
+	 */
+	public function isRegistered($objectName);
+
+	/**
+	 * Returns a fresh or existing instance of the object specified by $objectName.
+	 *
+	 * Important:
+	 *
+	 * If possible, instances of Prototype objects should always be created with the
+	 * Object Manager's create() method and Singleton objects should rather be
+	 * injected by some type of Dependency Injection.
+	 *
+	 * @param string $objectName The name of the object to return an instance of
+	 * @return object The object instance
+	 * @api
+	 */
+	public function get($objectName);
 
 	/**
 	 * Creates a fresh instance of the object specified by $objectName.
