@@ -58,6 +58,20 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getName() {
+		$name = $this->getNameWithoutPrefix();
+		return $this->prefixFieldName($name);
+	}
+
+	/**
+	 * Get the name of this form element, without prefix.
+	 *
+	 * @return string name
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getNameWithoutPrefix() {
 		if ($this->isObjectAccessorMode()) {
 			$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 			if (!empty($formObjectName)) {
@@ -79,7 +93,8 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 				$name .= '[__identity]';
 			}
 		}
-		return $this->prefixFieldName($name);
+
+		return $name;
 	}
 
 	/**
