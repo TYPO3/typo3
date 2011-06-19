@@ -198,7 +198,8 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 
 		$sections = $parsedTemplate->getVariableContainer()->get('sections');
 		if(!array_key_exists($sectionName, $sections)) {
-			throw new Tx_Fluid_View_Exception_InvalidSectionException('The given section does not exist!', 1227108982);
+			$controllerObjectName = $this->controllerContext->getRequest()->getControllerObjectName();
+			throw new Tx_Fluid_View_Exception_InvalidSectionException(sprintf('Could not render unknown section "%s" in %s used by %s.', $sectionName, get_class($this), $controllerObjectName), 1227108982);
 		}
 		$section = $sections[$sectionName];
 
