@@ -79,11 +79,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			identifier varchar(250) DEFAULT \'\' NOT NULL,
-			crdate int(11) unsigned DEFAULT \'0\' NOT NULL,
+			expires int(11) unsigned DEFAULT \'0\' NOT NULL,
 			content mediumblob,
-			lifetime int(11) unsigned DEFAULT \'0\' NOT NULL,
 			PRIMARY KEY (id),
-			KEY cache_id (identifier)
+			KEY cache_id (identifier, expires)
 		) ENGINE=InnoDB;
 		');
 
@@ -110,12 +109,14 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * Helper method to inject a mock frontend to backend instance
 	 *
 	 * @param t3lib_cache_backend_DbBackend $backend Current backend instance
-	 * @return void
+	 * @return t3lib_cache_frontend_Frontend Mock frontend
 	 */
 	protected function setUpMockFrontendOfBackend(t3lib_cache_backend_DbBackend $backend) {
 		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('Testing'));
 		$backend->setCache($mockCache);
+
+		return $mockCache;
 	}
 
 	/**
@@ -410,7 +411,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function collectGarbageReallyRemovesAnExpiredCacheEntry() {
 		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbRemovalTest';
@@ -418,6 +419,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend->set($entryIdentifier, $data, array(), 1);
 
 		$GLOBALS['EXEC_TIME'] += 2;
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
+		$backend->setCache($mockCache);
+
 		$backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -435,7 +440,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function collectGarbageReallyRemovesAllExpiredCacheEntries() {
 		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbRemovalTest';
@@ -445,6 +450,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend->set($entryIdentifier . 'C', $data, array(), 1);
 
 		$GLOBALS['EXEC_TIME'] += 2;
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
+		$backend->setCache($mockCache);
+
 		$backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -634,7 +643,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function hasReturnsTheCorrectResultForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
@@ -646,6 +655,9 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
 		$GLOBALS['EXEC_TIME'] += 2;
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
+		$backend->setCache($mockCache);
 
 		$this->assertFalse($backend->has($expiredEntryIdentifier));
 	}
@@ -656,13 +668,17 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function hasReturnsTrueForEntryWithUnlimitedLifetime() {
 		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$entryIdentifier = 'BackendDbTest';
 
 		$backend->set($entryIdentifier, 'data', array(), 0);
 
 		$GLOBALS['EXEC_TIME'] += 1;
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
+		$backend->setCache($mockCache);
+
 		$this->assertTrue($backend->has($entryIdentifier));
 	}
 
@@ -672,7 +688,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function getReturnsFalseForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
@@ -684,6 +700,9 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
 		$GLOBALS['EXEC_TIME'] += 2;
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
+		$backend->setCache($mockCache);
 
 		$this->assertEquals($data, $backend->get($entryIdentifier));
 		$this->assertFalse($backend->get($expiredEntryIdentifier));
@@ -704,14 +723,13 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function findIdentifiersByTagReturnsEmptyArrayForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
-		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('Testing'));
-		$backend->setCache($mockCache);
+		$mockCache = $this->setUpMockFrontendOfBackend($backend);
 
 		$backend->set('BackendDbTest', 'some data', array('UnitTestTag%special'), 1);
 
 		$GLOBALS['EXEC_TIME'] += 2;
-			// Not required, but used to update the pre-calculated queries:
+			// setCache calls initializeCommonReferences which recalculate expire statement
+			// needed after manual $GLOBALS['EXEC_TIME'] manipulation
 		$backend->setCache($mockCache);
 
 		$this->assertEquals(array(), $backend->findIdentifiersByTag('UnitTestTag%special'));

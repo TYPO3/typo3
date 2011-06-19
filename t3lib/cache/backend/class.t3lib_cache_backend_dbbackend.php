@@ -33,6 +33,11 @@
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
 	/**
+	 * @var integer Timestamp of 2038-01-01)
+	 */
+	const FAKED_UNLIMITED_EXPIRE = 2145909600;
+
+	/**
 	 * @var string Name of the cache data table
 	 */
 	protected $cacheTable;
@@ -52,11 +57,39 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 */
 	protected $compressionLevel = -1;
 
+	/**
+	 * @var string Name of the identifier field, 'table_name.identifier'
+	 */
 	protected $identifierField;
-	protected $creationField;
-	protected $lifetimeField;
+
+	/**
+	 * @var string Name of the expire field, 'table_name.expires'
+	 */
+	protected $expiresField;
+
+	/**
+	 * @var integer Maximum lifetime to stay with expire field below FAKED_UNLIMITED_LIFETIME
+	 */
+	protected $maximumLifetime;
+
+	/**
+	 * @var string SQL where for a not expired entry
+	 */
 	protected $notExpiredStatement;
+
+	/**
+	 * @var string Opposite of notExpiredStatement
+	 */
+	protected $expiredStatement;
+
+	/**
+	 * @var string Data and tags table name comma separated
+	 */
 	protected $tableList;
+
+	/**
+	 * @var string Join condition for data and tags table
+	 */
 	protected $tableJoin;
 
 	/**
@@ -82,12 +115,12 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 */
 	protected function initializeCommonReferences() {
 		$this->identifierField = $this->cacheTable . '.identifier';
-		$this->creationField = $this->cacheTable . '.crdate';
-		$this->lifetimeField = $this->cacheTable . '.lifetime';
+		$this->expiresField = $this->cacheTable . '.expires';
+		$this->maximumLifetime = self::FAKED_UNLIMITED_EXPIRE - $GLOBALS['EXEC_TIME'];
 		$this->tableList = $this->cacheTable . ', ' . $this->tagsTable;
 		$this->tableJoin = $this->identifierField . ' = ' . $this->tagsTable . '.identifier';
-		$this->notExpiredStatement = '(' . $this->creationField . ' + ' . $this->lifetimeField .
-									 ' >= ' . $GLOBALS['EXEC_TIME'] . ' OR ' . $this->lifetimeField . ' = 0)';
+		$this->expiredStatement = $this->expiresField . ' < ' . $GLOBALS['EXEC_TIME'];
+		$this->notExpiredStatement = $this->expiresField . ' >= ' . $GLOBALS['EXEC_TIME'];
 	}
 
 	/**
@@ -120,6 +153,10 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		if (is_null($lifetime)) {
 			$lifetime = $this->defaultLifetime;
 		}
+		if ($lifetime === 0 || $lifetime > $this->maximumLifetime) {
+			$lifetime = $this->maximumLifetime;
+		}
+		$expires = $GLOBALS['EXEC_TIME'] + $lifetime;
 
 		$this->remove($entryIdentifier);
 
@@ -130,10 +167,9 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$this->cacheTable,
 			array(
-				 'identifier' => $entryIdentifier,
-				 'crdate' => $GLOBALS['EXEC_TIME'],
-				 'content' => $data,
-				 'lifetime' => $lifetime
+				'identifier' => $entryIdentifier,
+				'expires' => $expires,
+				'content' => $data,
 			)
 		);
 
@@ -178,8 +214,8 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'content',
 			$this->cacheTable,
-			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' '
-			. 'AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
+			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) .
+				' AND ' . $this->notExpiredStatement
 		);
 
 		if (is_array($cacheEntry)) {
@@ -214,7 +250,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'*',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) .
-			' AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
+				' AND ' . $this->notExpiredStatement
 		);
 		if ($cacheEntries >= 1) {
 			$hasEntry = TRUE;
@@ -355,7 +391,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$tagsEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'identifier',
 			$this->cacheTable,
-			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
+			$this->expiredStatement
 		);
 
 		$tagsEntryIdentifiers = array();
@@ -378,7 +414,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			// Delete expired cache rows
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
-			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
+			$this->expiredStatement
 		);
 	}
 
