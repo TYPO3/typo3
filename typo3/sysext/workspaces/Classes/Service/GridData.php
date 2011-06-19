@@ -189,16 +189,6 @@ class tx_Workspaces_Service_GridData {
 	 */
 	protected function initializeWorkspacesCachingFramework() {
 		if (TYPO3_UseCachingFramework === TRUE) {
-			try {
-				$GLOBALS['typo3CacheFactory']->create(
-					'workspaces_cache',
-					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['frontend'],
-					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['backend'],
-					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['options']);
-			} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-				// do nothing, a workspace cache already exists
-			}
-
 			$this->workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
 		}
 	}
@@ -213,9 +203,7 @@ class tx_Workspaces_Service_GridData {
 	protected function setDataArrayIntoCache (array $versions, $filterTxt) {
 		if (TYPO3_UseCachingFramework === TRUE) {
 			$hash = $this->calculateHash($versions, $filterTxt);
-			$content = serialize($this->dataArray);
-
-			$this->workspacesCache->set($hash, $content, array($this->currentWorkspace));
+			$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
 		}
 	}
 
@@ -225,6 +213,7 @@ class tx_Workspaces_Service_GridData {
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param string $filterTxt The given filter text from the grid.
+	 * @return boolean TRUE if cache entry was successfully fetched from cache and content put to $this->dataArray
 	 */
 	protected function getDataArrayFromCache (array $versions, $filterTxt) {
 		$cacheEntry = FALSE;
@@ -234,8 +223,8 @@ class tx_Workspaces_Service_GridData {
 
 			$content = $this->workspacesCache->get($hash);
 
-			if ($content != FALSE) {
-				$this->dataArray = unserialize($content);
+			if ($content !== FALSE) {
+				$this->dataArray = $content;
 				$cacheEntry = TRUE;
 			}
 		}
