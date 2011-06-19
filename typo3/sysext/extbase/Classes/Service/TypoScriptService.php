@@ -3,6 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2009 Christian Müller <christian@kitsunet.de>
+*  (c) 2011 Bastian Waidelich <bastian@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,30 +24,12 @@
 ***************************************************************/
 
 /**
- * Utilities to manage and convert Typoscript Code
+ * Utilities to manage and convert TypoScript
  *
  * @package Extbase
- * @subpackage Utility
- * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Service_TypoScriptService instead
+ * @subpackage Service
  */
-class Tx_Extbase_Utility_TypoScript {
-
-	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
-	 */
-	protected static $typoScriptService = NULL;
-
-	/**
-	 * @return void
-	 */
-	static protected function getTypoScriptService() {
-		if (self::$typoScriptService === NULL) {
-			require_once t3lib_extMgm::extPath('extbase', 'Classes/Service/TypoScriptService.php');
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			self::$typoScriptService = $objectManager->get('Tx_Extbase_Service_TypoScriptService');
-		}
-		return self::$typoScriptService;
-	}
+class Tx_Extbase_Service_TypoScriptService implements t3lib_Singleton {
 
 	/**
 	 * Removes all trailing dots recursively from TS settings array
@@ -54,14 +37,28 @@ class Tx_Extbase_Utility_TypoScript {
 	 * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
-	 * @param array $settings The settings array
+	 * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
 	 * @return void
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @api
 	 */
-	static public function convertTypoScriptArrayToPlainArray(array $settings) {
-		t3lib_div::logDeprecatedFunction();
-		$typoScriptService = self::getTypoScriptService();
-		return $typoScriptService->convertTypoScriptArrayToPlainArray($settings);
+	public function convertTypoScriptArrayToPlainArray(array $typoScriptArray) {
+		foreach ($typoScriptArray as $key => &$value) {
+			if(substr($key, -1) === '.') {
+				$keyWithoutDot = substr($key, 0, -1);
+				$hasNodeWithoutDot = array_key_exists($keyWithoutDot, $typoScriptArray);
+				$typoScriptNodeValue = $hasNodeWithoutDot ? $typoScriptArray[$keyWithoutDot] : NULL;
+				if(is_array($value)) {
+					$typoScriptArray[$keyWithoutDot] = $this->convertTypoScriptArrayToPlainArray($value);
+					if(!is_null($typoScriptNodeValue)) {
+						$typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue']  = $typoScriptNodeValue;
+					}
+					unset($typoScriptArray[$key]);
+				} else {
+					$typoScriptArray[$keyWithoutDot] = NULL;
+				}
+			}
+		}
+		return $typoScriptArray;
 	}
 
 	/**
@@ -72,17 +69,24 @@ class Tx_Extbase_Utility_TypoScript {
 	 * However, if you want to call legacy TypoScript objects, you somehow need the "old" syntax (because this is what TYPO3 is used to).
 	 * With this method, you can convert the extbase TypoScript to classical TYPO3 TypoScript which is understood by the rest of TYPO3.
 	 *
-	 * @param array $plainArray An Typoscript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
-	 * @return array array with Typoscript as usual (with dot)
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @param array $plainArray An TypoScript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
+	 * @return array array with TypoScript as usual (with dot)
+	 * @api
 	 */
-	static public function convertPlainArrayToTypoScriptArray($plainArray) {
-		t3lib_div::logDeprecatedFunction();
-		if (!is_array($plainArray)) {
-			return array();
+	public function convertPlainArrayToTypoScriptArray(array $plainArray) {
+		$typoScriptArray = array();
+		foreach ($plainArray as $key => $value) {
+			if (is_array($value)) {
+				if (isset($value['_typoScriptNodeValue'])) {
+					$typoScriptArray[$key] = $value['_typoScriptNodeValue'];
+					unset($value['_typoScriptNodeValue']);
+				}
+				$typoScriptArray[$key . '.'] = $this->convertPlainArrayToTypoScriptArray($value);
+			} else {
+				$typoScriptArray[$key] = $value;
+			}
 		}
-		$typoScriptService = self::getTypoScriptService();
-		return $typoScriptService->convertPlainArrayToTypoScriptArray($plainArray);
+		return $typoScriptArray;
 	}
 }
 ?>

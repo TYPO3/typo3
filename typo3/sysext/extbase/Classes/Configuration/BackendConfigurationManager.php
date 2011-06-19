@@ -71,11 +71,11 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 		$setup = $this->getTypoScriptSetup();
 		$pluginConfiguration = array();
 		if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'])) {
-			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
+			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
 		}
 		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
-			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']));
+			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']));
 		}
 		return $pluginConfiguration;
 	}

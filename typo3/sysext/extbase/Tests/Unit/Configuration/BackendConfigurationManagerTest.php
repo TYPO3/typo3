@@ -53,6 +53,11 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	protected $backendConfigurationManager;
 
 	/**
+	 * @var Tx_Extbase_Service_TypoScriptService
+	 */
+	protected $mockTypoScriptService;
+
+	/**
 	 * Sets up this testcase
 	 */
 	public function setUp() {
@@ -65,6 +70,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
 
 		$this->backendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_BackendConfigurationManager', array('getTypoScriptSetup'));
+		$this->mockTypoScriptService = $this->getAccessibleMock('Tx_Extbase_Service_TypoScriptService');
+		$this->backendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 	}
 
 	/**
@@ -189,15 +196,22 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getPluginConfigurationReturnsExtensionConfiguration() {
+		$testSettings = array(
+			'settings.' => array(
+				'foo' => 'bar'
+			)
+		);
+		$testSettingsConverted = array(
+			'settings' => array(
+				'foo' => 'bar'
+			)
+		);
 		$testSetup = array(
 			'module.' => array(
-				'tx_someextensionname.' => array(
-					'settings.' => array(
-						'foo' => 'bar'
-					)
-				),
+				'tx_someextensionname.' => $testSettings,
 			),
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
 		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
 		$expectedResult = array(
 			'settings' => array(
@@ -212,15 +226,22 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getPluginConfigurationReturnsPluginConfiguration() {
+		$testSettings = array(
+			'settings.' => array(
+				'foo' => 'bar'
+			)
+		);
+		$testSettingsConverted = array(
+			'settings' => array(
+				'foo' => 'bar'
+			)
+		);
 		$testSetup = array(
 			'module.' => array(
-				'tx_someextensionname_somepluginname.' => array(
-					'settings.' => array(
-						'foo' => 'bar'
-					)
-				),
+				'tx_someextensionname_somepluginname.' => $testSettings
 			),
 		);
+		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
 		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
 		$expectedResult = array(
 			'settings' => array(
@@ -235,26 +256,46 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getPluginConfigurationRecursivelyMergesExtensionAndPluginConfiguration() {
+		$testExtensionSettings = array(
+			'settings.' => array(
+				'foo' => 'bar',
+				'some.' => array(
+					'nested' => 'value'
+				),
+			)
+		);
+		$testExtensionSettingsConverted = array(
+			'settings' => array(
+				'foo' => 'bar',
+				'some' => array(
+					'nested' => 'value'
+				),
+			)
+		);
+		$testPluginSettings = array(
+			'settings.' => array(
+				'some.' => array(
+					'nested' => 'valueOverridde',
+					'new' => 'value',
+				),
+			)
+		);
+		$testPluginSettingsConverted = array(
+			'settings' => array(
+				'some' => array(
+					'nested' => 'valueOverridde',
+					'new' => 'value',
+				),
+			)
+		);
 		$testSetup = array(
 			'module.' => array(
-				'tx_someextensionname.' => array(
-					'settings.' => array(
-						'foo' => 'bar',
-						'some.' => array(
-							'nested' => 'value'
-						),
-					),
-				),
-				'tx_someextensionname_somepluginname.' => array(
-					'settings.' => array(
-						'some.' => array(
-							'nested' => 'valueOverridde',
-							'new' => 'value',
-						),
-					),
-				),
+				'tx_someextensionname.' => $testExtensionSettings,
+				'tx_someextensionname_somepluginname.' => $testPluginSettings
 			),
 		);
+		$this->mockTypoScriptService->expects($this->at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will($this->returnValue($testExtensionSettingsConverted));
+		$this->mockTypoScriptService->expects($this->at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will($this->returnValue($testPluginSettingsConverted));
 		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
 		$expectedResult = array(
 			'settings' => array(

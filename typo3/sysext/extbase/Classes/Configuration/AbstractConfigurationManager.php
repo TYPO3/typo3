@@ -53,6 +53,11 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected $objectManager;
 
 	/**
+	 * @var Tx_Extbase_Service_TypoScriptService
+	 */
+	protected $typoScriptService;
+
+	/**
 	 * name of the extension this Configuration Manager instance belongs to
 	 * @var string
 	 */
@@ -72,11 +77,19 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected $configurationCache = array();
 
 	/**
-	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_TypoScriptService $typoScriptService
+	 * @return void
+	 */
+	public function injectTypoScriptService(Tx_Extbase_Service_TypoScriptService $typoScriptService) {
+		$this->typoScriptService = $typoScriptService;
 	}
 
 	/**
@@ -107,7 +120,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
-		$this->configuration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($configuration);
+		$this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
 	}
 
 	/**
@@ -166,7 +179,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 				 * and apply the stdWrap to the storagePid
 				 */
 			Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
-			$conf = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
+			$conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
 			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
 			Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
 		}
@@ -185,7 +198,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 		$setup = $this->getTypoScriptSetup();
 		$extbaseConfiguration = array();
 		if (isset($setup['config.']['tx_extbase.'])) {
-			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
+			$extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
 		}
 		return $extbaseConfiguration;
 	}
