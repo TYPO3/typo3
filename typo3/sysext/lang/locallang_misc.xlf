@@ -371,6 +371,10 @@
         <source>Localize all records</source>
         <target approved="yes">Localize all records</target>
       </trans-unit>
+      <trans-unit id="localizeMergeIfNotBlank">
+        <source>The value of the default language will be used if this field is left empty in the translation.</source>
+        <target>The value of the default language will be used if this field is left empty in the translation.</target>
+      </trans-unit>
       <trans-unit id="synchronizeWithOriginalLanguage">
         <source>Synchronize with original language</source>
         <target approved="yes">Synchronize with original language</target>
