@@ -47,16 +47,24 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 			if ($output === NULL) {
 				$output = $subNode->evaluate($renderingContext);
 			} else {
-				if (is_object($output) && !method_exists($output, '__toString')) {
-					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
+				if (is_object($output)) {
+					if (!method_exists($output, '__toString')) {
+						throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
+					}
+					$output = $output->__toString();
+				} else {
+					$output = (string)$output;
 				}
-				$output = (string)$output;
 				$subNodeOutput = $subNode->evaluate($renderingContext);
 
-				if (is_object($subNodeOutput) && !method_exists($subNodeOutput, '__toString')) {
-					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);
+				if (is_object($subNodeOutput)) {
+					if (!method_exists($subNodeOutput, '__toString')) {
+						throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);
+					}
+					$output .= $subNodeOutput->__toString();
+				} else {
+					$output .= (string)$subNodeOutput;
 				}
-				$output .= (string)$subNodeOutput;
 			}
 		}
 		return $output;
