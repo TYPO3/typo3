@@ -314,9 +314,9 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			$this->identifierField,
 			$this->tableList,
-			$this->getQueryForTag($tag) .
-			' AND ' . $this->tableJoin .
-			' AND ' . $this->notExpiredStatement,
+			$this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable) .
+				' AND ' . $this->tableJoin .
+				' AND ' . $this->notExpiredStatement,
 			$this->identifierField
 		);
 
@@ -363,7 +363,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			);
 		}
 
-		$tagsTableWhereClause = $this->getQueryForTag($tag);
+		$tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
 
 		$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
 
@@ -518,28 +518,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$sql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
 		$sql = str_replace('###TAGS_TABLE###', $this->tagsTable, $sql);
 		$GLOBALS['TYPO3_DB']->admin_query($sql);
-	}
-
-	/**
-	 * Gets the query to be used for selecting entries by a tag. The asterisk ("*")
-	 * is allowed as a wildcard at the beginning and the end of a tag.
-	 *
-	 * @param string The tag to search for, the "*" wildcard is supported
-	 * @return string the query to be used for selecting entries
-	 * @author Oliver Hader <oliver@typo3.org>
-	 */
-	protected function getQueryForTag($tag) {
-		if (strpos($tag, '*') === FALSE) {
-			$query = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
-		} else {
-			$patternForLike = $GLOBALS['TYPO3_DB']->escapeStrForLike(
-				$GLOBALS['TYPO3_DB']->quoteStr($tag, $this->tagsTable),
-				$this->tagsTable
-			);
-			$query = $this->tagsTable . '.tag LIKE \'' . $patternForLike . '\'';
-		}
-
-		return $query;
 	}
 
 	/**
