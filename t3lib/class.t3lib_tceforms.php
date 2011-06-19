@@ -3380,23 +3380,25 @@ class t3lib_TCEforms {
 	 */
 	function renderDefaultLanguageContent($table, $field, $row, $item) {
 		if (is_array($this->defaultLanguageData[$table . ':' . $row['uid']])) {
-			$dLVal = t3lib_BEfunc::getProcessedValue($table, $field, $this->defaultLanguageData[$table . ':' . $row['uid']][$field], 0, 1);
-			$fCfg = $GLOBALS['TCA'][$table]['columns'][$field];
+			$defaultLanguageValue = t3lib_BEfunc::getProcessedValue($table, $field, $this->defaultLanguageData[$table . ':' . $row['uid']][$field], 0, 1);
+			$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
 
 				// Don't show content if it's for IRRE child records:
-			if ($fCfg['config']['type'] != 'inline') {
-				if (strcmp($dLVal, '')) {
+			if ($fieldConfig['config']['type'] != 'inline') {
+				if ($defaultLanguageValue != '') {
 					$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 0) .
-							 $this->previewFieldValue($dLVal, $fCfg, $field) . '&nbsp;</div>';
+					         $this->getMergeBehaviorIcon($fieldConfig['l10n_mode']) .
+					         $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '&nbsp;</div>';
 				}
 
-				$prLang = $this->getAdditionalPreviewLanguages();
-				foreach ($prLang as $prL) {
-					$dlVal = t3lib_BEfunc::getProcessedValue($table, $field, $this->additionalPreviewLanguageData[$table . ':' . $row['uid']][$prL['uid']][$field], 0, 1);
+				$previewLanguages = $this->getAdditionalPreviewLanguages();
+				foreach ($previewLanguages as $previewLanguage) {
+					$defaultLanguageValue = t3lib_BEfunc::getProcessedValue($table, $field, $this->additionalPreviewLanguageData[$table . ':' . $row['uid']][$previewLanguage['uid']][$field], 0, 1);
 
-					if (strcmp($dlVal, '')) {
-						$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 'v' . $prL['ISOcode']) .
-								 $this->previewFieldValue($dlVal, $fCfg, $field) . '&nbsp;</div>';
+					if ($defaultLanguageValue != '') {
+						$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 'v' . $previewLanguage['ISOcode']) .
+						         $this->getMergeBehaviorIcon($fieldConfig['l10n_mode']) .
+						         $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '&nbsp;</div>';
 					}
 				}
 			}
@@ -6214,6 +6216,26 @@ class t3lib_TCEforms {
 			$out .= '&nbsp;';
 		}
 		return $out;
+	}
+
+	/**
+	 * Renders an icon to indicate the way the translation and the original is merged (if this is relevant).
+	 *
+	 * If a field is defined as 'mergeIfNotBlank' this is useful information for an editor. He/she can leave the field blank and
+	 * the original value will be used. Without this hint editors are likely to copy the contents even if it is not necessary.
+	 *
+	 * @param string $l10nMode Localization mode from TCA
+	 * @return string
+	 */
+	function getMergeBehaviorIcon($l10nMode) {
+		$icon = '';
+		if ($l10nMode === 'mergeIfNotBlank') {
+			$icon = t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-merge-localization',
+				array('title' => $this->sL('LLL:EXT:lang/locallang_misc.xml:localizeMergeIfNotBlank'))
+			);
+		}
+		return $icon;
 	}
 
 	/**
