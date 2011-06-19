@@ -172,18 +172,7 @@ class Tx_Extbase_Core_Bootstrap {
 	 * @see initialize()
 	 */
 	protected function initializeCache() {
-		t3lib_cache::initializeCachingFramework();
 		$this->cacheManager = $GLOBALS['typo3CacheManager'];
-		try {
-			$this->cacheManager->getCache('cache_extbase_reflection');
-		} catch (t3lib_cache_exception_NoSuchCache $exception) {
-			$GLOBALS['typo3CacheFactory']->create(
-				'cache_extbase_reflection',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['frontend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
-			);
-		}
 	}
 
 	/**
@@ -194,7 +183,7 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	protected function initializeReflection() {
 		$this->reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
-		$this->reflectionService->setDataCache($this->cacheManager->getCache('cache_extbase_reflection'));
+		$this->reflectionService->setDataCache($this->cacheManager->getCache('extbase_reflection'));
 		if (!$this->reflectionService->isInitialized()) {
 			$this->reflectionService->initialize();
 		}
