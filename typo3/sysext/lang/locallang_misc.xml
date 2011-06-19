@@ -98,6 +98,7 @@
 			<label index="localize.isLocalizable">Record can be localized</label>
 			<label index="localize.wasRemovedInOriginal">Record was removed in original language</label>
 			<label index="localizeAllRecords">Localize all records</label>
+			<label index="localizeMergeIfNotBlank">The value of the default language will be used if this field is left empty in the translation.</label>
 			<label index="synchronizeWithOriginalLanguage">Synchronize with original language</label>
 			<label index="pageTree_filter">Filter</label>
 			<label index="switchtouser">Switch to User</label>

@@ -1,177 +1,185 @@
 
 .t3-icon-actions {
-	background-image: url('../../images/sprites/t3skin.png?1299879804') !important;
+	background-image: url('../../images/sprites/t3skin.png?1308439136') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-apps {
-	background-image: url('../../images/sprites/t3skin.png?1299879804') !important;
+	background-image: url('../../images/sprites/t3skin.png?1308439136') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-mimetypes {
-	background-image: url('../../images/sprites/t3skin.png?1299879804') !important;
+	background-image: url('../../images/sprites/t3skin.png?1308439136') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-status {
-	background-image: url('../../images/sprites/t3skin.png?1299879804') !important;
+	background-image: url('../../images/sprites/t3skin.png?1308439136') !important;
 	height: 16px;
 	width: 16px;
 }
-.t3-icon-system-refresh {
-	background-position: -270px -54px !important;
-
-}
-.t3-icon-view-go-forward {
-	background-position: -198px -72px !important;
-
-}
-.t3-icon-system-backend-user-switch {
-	background-position: -306px -36px !important;
-
-}
-.t3-icon-move-right {
-	background-position: -144px -36px !important;
-
-}
-.t3-icon-window-open {
-	background-position: -126px -90px !important;
-
-}
-.t3-icon-system-extension-import {
-	background-position: -126px -54px !important;
-
-}
-.t3-icon-edit-pick-date {
-	background-position: -252px -18px !important;
-
-}
-.t3-icon-edit-insert-default {
-	background-position: -198px -18px !important;
-
-}
-.t3-icon-system-cache-clear-impact-medium {
-	background-position: -54px -54px !important;
-
-}
-.t3-icon-system-tree-search-open {
-	background-position: -306px -54px !important;
-
-}
-.t3-icon-page-new {
-	background-position: -234px -36px !important;
-
-}
-.t3-icon-move-to-bottom {
-	background-position: -162px -36px !important;
-
-}
-.t3-icon-system-extension-install {
-	background-position: -144px -54px !important;
-
-}
-.t3-icon-system-pagemodule-open {
-	background-position: -252px -54px !important;
-
-}
-.t3-icon-document-history-open {
-	background-position: -90px -0px !important;
-
-}
-.t3-icon-document-save-new {
-	background-position: -306px -0px !important;
-
-}
-.t3-icon-document-paste-into {
-	background-position: -252px -0px !important;
+.t3-icon-document-close {
+	background-position: -0px -0px !important;
 
 }
 .t3-icon-document-duplicates-select {
 	background-position: -18px -0px !important;
 
 }
-.t3-icon-document-localize {
-	background-position: -144px -0px !important;
-
-}
-.t3-icon-edit-undo {
-	background-position: -0px -36px !important;
-
-}
-.t3-icon-view-list-collapse {
-	background-position: -234px -72px !important;
-
-}
-.t3-icon-system-extension-download {
-	background-position: -108px -54px !important;
-
-}
 .t3-icon-document-edit-access {
 	background-position: -36px -0px !important;
 
 }
-.t3-icon-system-extension-update {
-	background-position: -180px -54px !important;
-
-}
-.t3-icon-system-cache-clear-impact-high {
-	background-position: -18px -54px !important;
-
-}
-.t3-icon-document-close {
-	background-position: -0px -0px !important;
-
-}
-.t3-icon-view-paging-last {
-	background-position: -306px -72px !important;
-
-}
-.t3-icon-version-swap-version {
-	background-position: -90px -72px !important;
-
-}
-.t3-icon-move-to-top {
-	background-position: -180px -36px !important;
-
-}
-.t3-icon-view-list-expand {
-	background-position: -252px -72px !important;
-
-}
-.t3-icon-view-paging-first-disabled {
-	background-position: -288px -72px !important;
-
-}
-.t3-icon-edit-copy-release {
-	background-position: -108px -18px !important;
+.t3-icon-document-export-csv {
+	background-position: -54px -0px !important;
 
 }
 .t3-icon-document-export-t3d {
 	background-position: -72px -0px !important;
 
 }
-.t3-icon-edit-unhide {
-	background-position: -18px -36px !important;
+.t3-icon-document-history-open {
+	background-position: -90px -0px !important;
 
 }
-.t3-icon-page-move {
-	background-position: -216px -36px !important;
+.t3-icon-document-import-t3d {
+	background-position: -108px -0px !important;
+
+}
+.t3-icon-document-info {
+	background-position: -126px -0px !important;
+
+}
+.t3-icon-document-localize {
+	background-position: -144px -0px !important;
+
+}
+.t3-icon-document-move {
+	background-position: -162px -0px !important;
+
+}
+.t3-icon-document-new {
+	background-position: -180px -0px !important;
+
+}
+.t3-icon-document-open-read-only {
+	background-position: -216px -0px !important;
+
+}
+.t3-icon-document-open {
+	background-position: -198px -0px !important;
+
+}
+.t3-icon-document-paste-after {
+	background-position: -234px -0px !important;
+
+}
+.t3-icon-document-paste-into {
+	background-position: -252px -0px !important;
+
+}
+.t3-icon-document-save-close {
+	background-position: -288px -0px !important;
+
+}
+.t3-icon-document-save-new {
+	background-position: -306px -0px !important;
+
+}
+.t3-icon-document-save-view {
+	background-position: -0px -18px !important;
+
+}
+.t3-icon-document-save {
+	background-position: -270px -0px !important;
+
+}
+.t3-icon-document-select {
+	background-position: -18px -18px !important;
+
+}
+.t3-icon-document-synchronize {
+	background-position: -36px -18px !important;
+
+}
+.t3-icon-document-view {
+	background-position: -54px -18px !important;
+
+}
+.t3-icon-edit-add {
+	background-position: -72px -18px !important;
+
+}
+.t3-icon-edit-copy-release {
+	background-position: -108px -18px !important;
+
+}
+.t3-icon-edit-copy {
+	background-position: -90px -18px !important;
+
+}
+.t3-icon-edit-cut-release {
+	background-position: -144px -18px !important;
 
 }
 .t3-icon-edit-cut {
 	background-position: -126px -18px !important;
 
 }
-.t3-icon-insert-record {
-	background-position: -54px -36px !important;
+.t3-icon-edit-delete {
+	background-position: -162px -18px !important;
 
 }
-.t3-icon-system-cache-clear-rte {
-	background-position: -72px -54px !important;
+.t3-icon-edit-hide {
+	background-position: -180px -18px !important;
+
+}
+.t3-icon-edit-insert-default {
+	background-position: -198px -18px !important;
+
+}
+.t3-icon-edit-localize-status-high {
+	background-position: -216px -18px !important;
+
+}
+.t3-icon-edit-localize-status-low {
+	background-position: -234px -18px !important;
+
+}
+.t3-icon-edit-merge-localization {
+	background-position: -252px -18px !important;
+
+}
+.t3-icon-edit-pick-date {
+	background-position: -270px -18px !important;
+
+}
+.t3-icon-edit-rename {
+	background-position: -288px -18px !important;
+
+}
+.t3-icon-edit-restore {
+	background-position: -306px -18px !important;
+
+}
+.t3-icon-edit-undelete-edit {
+	background-position: -0px -36px !important;
+
+}
+.t3-icon-edit-undo {
+	background-position: -18px -36px !important;
+
+}
+.t3-icon-edit-unhide {
+	background-position: -36px -36px !important;
+
+}
+.t3-icon-edit-upload {
+	background-position: -54px -36px !important;
 
 }
 .t3-icon-input-clear {
@@ -180,332 +188,364 @@
 	width: 13px;
 
 }
-.t3-icon-view-table-collapse {
-	background-position: -90px -90px !important;
-
-}
-.t3-icon-document-paste-after {
-	background-position: -234px -0px !important;
-
-}
-.t3-icon-move-down {
-	background-position: -90px -36px !important;
-
-}
-.t3-icon-system-options-view {
-	background-position: -234px -54px !important;
-
-}
-.t3-icon-move-left {
-	background-position: -108px -36px !important;
-
-}
-.t3-icon-document-move {
-	background-position: -162px -0px !important;
-
-}
-.t3-icon-edit-delete {
-	background-position: -162px -18px !important;
-
-}
-.t3-icon-system-typoscript-documentation {
-	background-position: -0px -72px !important;
-
-}
-.t3-icon-document-export-csv {
-	background-position: -54px -0px !important;
-
-}
-.t3-icon-view-paging-first {
-	background-position: -270px -72px !important;
-
-}
-.t3-icon-view-go-up {
-	background-position: -216px -72px !important;
-
-}
-.t3-icon-view-paging-last-disabled {
-	background-position: -0px -90px !important;
-
-}
-.t3-icon-document-open-read-only {
-	background-position: -216px -0px !important;
-
-}
-.t3-icon-system-typoscript-documentation-open {
-	background-position: -18px -72px !important;
-
-}
-.t3-icon-edit-copy {
-	background-position: -90px -18px !important;
-
-}
-.t3-icon-edit-undelete-edit {
-	background-position: -306px -18px !important;
-
-}
-.t3-icon-document-open {
-	background-position: -198px -0px !important;
-
-}
-.t3-icon-document-info {
-	background-position: -126px -0px !important;
-
-}
-.t3-icon-edit-add {
-	background-position: -72px -18px !important;
-
-}
-.t3-icon-view-go-back {
-	background-position: -162px -72px !important;
-
-}
-.t3-icon-view-paging-previous-disabled {
-	background-position: -72px -90px !important;
-
-}
-.t3-icon-document-select {
-	background-position: -18px -18px !important;
-
-}
-.t3-icon-document-import-t3d {
-	background-position: -108px -0px !important;
-
-}
-.t3-icon-template-new {
-	background-position: -36px -72px !important;
-
-}
-.t3-icon-view-go-down {
-	background-position: -180px -72px !important;
-
-}
-.t3-icon-document-save {
-	background-position: -270px -0px !important;
-
-}
-.t3-icon-document-save-close {
-	background-position: -288px -0px !important;
-
-}
-.t3-icon-document-save-view {
-	background-position: -0px -18px !important;
-
-}
-.t3-icon-version-page-open {
-	background-position: -72px -72px !important;
-
-}
-.t3-icon-view-paging-next-disabled {
-	background-position: -36px -90px !important;
-
-}
-.t3-icon-move-up {
-	background-position: -198px -36px !important;
-
-}
-.t3-icon-edit-localize-status-low {
-	background-position: -234px -18px !important;
-
-}
-.t3-icon-document-view {
-	background-position: -54px -18px !important;
-
-}
-.t3-icon-version-workspace-sendtostage {
-	background-position: -144px -72px !important;
-
-}
-.t3-icon-document-new {
-	background-position: -180px -0px !important;
-
-}
-.t3-icon-system-backend-user-emulate {
-	background-position: -288px -36px !important;
-
-}
-.t3-icon-system-extension-uninstall {
-	background-position: -162px -54px !important;
-
-}
-.t3-icon-system-extension-documentation {
-	background-position: -90px -54px !important;
-
-}
-.t3-icon-version-swap-workspace {
-	background-position: -108px -72px !important;
-
-}
-.t3-icon-view-table-expand {
-	background-position: -108px -90px !important;
-
-}
-.t3-icon-edit-localize-status-high {
-	background-position: -216px -18px !important;
-
-}
-.t3-icon-page-open {
-	background-position: -252px -36px !important;
-
-}
-.t3-icon-edit-hide {
-	background-position: -180px -18px !important;
-
-}
-.t3-icon-system-cache-clear-impact-low {
-	background-position: -36px -54px !important;
-
-}
-.t3-icon-edit-cut-release {
-	background-position: -144px -18px !important;
-
-}
-.t3-icon-edit-restore {
-	background-position: -288px -18px !important;
-
-}
-.t3-icon-selection-delete {
-	background-position: -270px -36px !important;
-
-}
-.t3-icon-system-help-open {
-	background-position: -198px -54px !important;
-
-}
-.t3-icon-insert-reference {
+.t3-icon-insert-record {
 	background-position: -72px -36px !important;
 
 }
-.t3-icon-version-document-remove {
-	background-position: -54px -72px !important;
+.t3-icon-insert-reference {
+	background-position: -90px -36px !important;
 
 }
-.t3-icon-view-paging-previous {
-	background-position: -54px -90px !important;
+.t3-icon-move-down {
+	background-position: -108px -36px !important;
 
 }
-.t3-icon-document-synchronize {
-	background-position: -36px -18px !important;
-
-}
-.t3-icon-system-list-open {
-	background-position: -216px -54px !important;
-
-}
-.t3-icon-edit-upload {
-	background-position: -36px -36px !important;
-
-}
-.t3-icon-version-workspace-preview {
-	background-position: -126px -72px !important;
-
-}
-.t3-icon-system-cache-clear {
-	background-position: -0px -54px !important;
-
-}
-.t3-icon-move-move {
+.t3-icon-move-left {
 	background-position: -126px -36px !important;
 
 }
-.t3-icon-edit-rename {
-	background-position: -270px -18px !important;
+.t3-icon-move-move {
+	background-position: -144px -36px !important;
 
 }
-.t3-icon-view-paging-next {
-	background-position: -18px -90px !important;
+.t3-icon-move-right {
+	background-position: -162px -36px !important;
 
 }
-.t3-icon-system-shortcut-new {
+.t3-icon-move-to-bottom {
+	background-position: -180px -36px !important;
+
+}
+.t3-icon-move-to-top {
+	background-position: -198px -36px !important;
+
+}
+.t3-icon-move-up {
+	background-position: -216px -36px !important;
+
+}
+.t3-icon-page-move {
+	background-position: -234px -36px !important;
+
+}
+.t3-icon-page-new {
+	background-position: -252px -36px !important;
+
+}
+.t3-icon-page-open {
+	background-position: -270px -36px !important;
+
+}
+.t3-icon-selection-delete {
+	background-position: -288px -36px !important;
+
+}
+.t3-icon-system-backend-user-emulate {
+	background-position: -306px -36px !important;
+
+}
+.t3-icon-system-backend-user-switch {
+	background-position: -0px -54px !important;
+
+}
+.t3-icon-system-cache-clear-impact-high {
+	background-position: -36px -54px !important;
+
+}
+.t3-icon-system-cache-clear-impact-low {
+	background-position: -54px -54px !important;
+
+}
+.t3-icon-system-cache-clear-impact-medium {
+	background-position: -72px -54px !important;
+
+}
+.t3-icon-system-cache-clear-rte {
+	background-position: -90px -54px !important;
+
+}
+.t3-icon-system-cache-clear {
+	background-position: -18px -54px !important;
+
+}
+.t3-icon-system-extension-documentation {
+	background-position: -108px -54px !important;
+
+}
+.t3-icon-system-extension-download {
+	background-position: -126px -54px !important;
+
+}
+.t3-icon-system-extension-import {
+	background-position: -144px -54px !important;
+
+}
+.t3-icon-system-extension-install {
+	background-position: -162px -54px !important;
+
+}
+.t3-icon-system-extension-uninstall {
+	background-position: -180px -54px !important;
+
+}
+.t3-icon-system-extension-update {
+	background-position: -198px -54px !important;
+
+}
+.t3-icon-system-help-open {
+	background-position: -216px -54px !important;
+
+}
+.t3-icon-system-list-open {
+	background-position: -234px -54px !important;
+
+}
+.t3-icon-system-options-view {
+	background-position: -252px -54px !important;
+
+}
+.t3-icon-system-pagemodule-open {
+	background-position: -270px -54px !important;
+
+}
+.t3-icon-system-refresh {
 	background-position: -288px -54px !important;
 
 }
-.t3-icon-toolbar-menu-search {
-	background-position: -18px -162px !important;
+.t3-icon-system-shortcut-new {
+	background-position: -306px -54px !important;
 
 }
-.t3-icon-filetree-folder-default {
-	background-position: -198px -90px !important;
+.t3-icon-system-tree-search-open {
+	background-position: -0px -72px !important;
 
 }
-.t3-icon-pagetree-folder-default {
-	background-position: -54px -126px !important;
+.t3-icon-system-typoscript-documentation-open {
+	background-position: -36px -72px !important;
 
 }
-.t3-icon-clipboard-list {
-	background-position: -162px -90px !important;
+.t3-icon-system-typoscript-documentation {
+	background-position: -18px -72px !important;
 
 }
-.t3-icon-toolbar-menu-opendocs {
-	background-position: -0px -162px !important;
+.t3-icon-template-new {
+	background-position: -54px -72px !important;
 
 }
-.t3-icon-filetree-mount {
-	background-position: -36px -108px !important;
+.t3-icon-version-document-remove {
+	background-position: -72px -72px !important;
 
 }
-.t3-icon-pagetree-page-backend-users {
-	background-position: -126px -126px !important;
+.t3-icon-version-page-open {
+	background-position: -90px -72px !important;
 
 }
-.t3-icon-pagetree-backend-user-hideinmenu {
-	background-position: -90px -108px !important;
+.t3-icon-version-swap-version {
+	background-position: -108px -72px !important;
 
 }
-.t3-icon-toolbar-menu-workspace {
-	background-position: -54px -162px !important;
+.t3-icon-version-swap-workspace {
+	background-position: -126px -72px !important;
 
 }
-.t3-icon-filetree-root {
-	background-position: -54px -108px !important;
+.t3-icon-version-workspace-preview {
+	background-position: -144px -72px !important;
 
 }
-.t3-icon-clipboard-images {
+.t3-icon-version-workspace-sendtostage {
+	background-position: -162px -72px !important;
+
+}
+.t3-icon-view-go-back {
+	background-position: -180px -72px !important;
+
+}
+.t3-icon-view-go-down {
+	background-position: -198px -72px !important;
+
+}
+.t3-icon-view-go-forward {
+	background-position: -216px -72px !important;
+
+}
+.t3-icon-view-go-up {
+	background-position: -234px -72px !important;
+
+}
+.t3-icon-view-list-collapse {
+	background-position: -252px -72px !important;
+
+}
+.t3-icon-view-list-expand {
+	background-position: -270px -72px !important;
+
+}
+.t3-icon-view-paging-first-disabled {
+	background-position: -306px -72px !important;
+
+}
+.t3-icon-view-paging-first {
+	background-position: -288px -72px !important;
+
+}
+.t3-icon-view-paging-last-disabled {
+	background-position: -18px -90px !important;
+
+}
+.t3-icon-view-paging-last {
+	background-position: -0px -90px !important;
+
+}
+.t3-icon-view-paging-next-disabled {
+	background-position: -54px -90px !important;
+
+}
+.t3-icon-view-paging-next {
+	background-position: -36px -90px !important;
+
+}
+.t3-icon-view-paging-previous-disabled {
+	background-position: -90px -90px !important;
+
+}
+.t3-icon-view-paging-previous {
+	background-position: -72px -90px !important;
+
+}
+.t3-icon-view-table-collapse {
+	background-position: -108px -90px !important;
+
+}
+.t3-icon-view-table-expand {
+	background-position: -126px -90px !important;
+
+}
+.t3-icon-window-open {
 	background-position: -144px -90px !important;
 
 }
-.t3-icon-pagetree-page-shortcut-external-root {
-	background-position: -198px -144px !important;
+.t3-icon-clipboard-images {
+	background-position: -162px -90px !important;
 
 }
-.t3-icon-pagetree-expand {
-	background-position: -288px -108px !important;
-
-}
-.t3-icon-pagetree-folder-contains-news {
-	background-position: -36px -126px !important;
-
-}
-.t3-icon-filetree-folder-add {
+.t3-icon-clipboard-list {
 	background-position: -180px -90px !important;
 
 }
-.t3-icon-pagetree-page-shortcut-external-hideinmenu {
-	background-position: -180px -144px !important;
+.t3-icon-filetree-folder-add {
+	background-position: -198px -90px !important;
 
 }
-.t3-icon-pagetree-drag-move-below {
-	background-position: -180px -108px !important;
+.t3-icon-filetree-folder-default {
+	background-position: -216px -90px !important;
 
 }
-.t3-icon-pagetree-page-frontend-user-hideinmenu {
-	background-position: -234px -126px !important;
+.t3-icon-filetree-folder-list {
+	background-position: -234px -90px !important;
 
 }
-.t3-icon-pagetree-drag-move-above {
-	background-position: -162px -108px !important;
+.t3-icon-filetree-folder-locked {
+	background-position: -252px -90px !important;
 
 }
-.t3-icon-filetree-folder-news {
+.t3-icon-filetree-folder-media {
 	background-position: -270px -90px !important;
 
 }
-.t3-icon-pagetree-page-mountpoint-root {
-	background-position: -36px -144px !important;
+.t3-icon-filetree-folder-news {
+	background-position: -288px -90px !important;
 
 }
-.t3-icon-pagetree-page-advanced {
-	background-position: -72px -126px !important;
+.t3-icon-filetree-folder-opened {
+	background-position: -306px -90px !important;
+
+}
+.t3-icon-filetree-folder-recycler {
+	background-position: -0px -108px !important;
+
+}
+.t3-icon-filetree-folder-temp {
+	background-position: -18px -108px !important;
+
+}
+.t3-icon-filetree-folder-user {
+	background-position: -36px -108px !important;
+
+}
+.t3-icon-filetree-mount {
+	background-position: -54px -108px !important;
+
+}
+.t3-icon-filetree-root {
+	background-position: -72px -108px !important;
+
+}
+.t3-icon-pagetree-backend-user-hideinmenu {
+	background-position: -108px -108px !important;
+
+}
+.t3-icon-pagetree-backend-user {
+	background-position: -90px -108px !important;
+
+}
+.t3-icon-pagetree-collapse {
+	background-position: -126px -108px !important;
+
+}
+.t3-icon-pagetree-drag-copy-above {
+	background-position: -144px -108px !important;
+
+}
+.t3-icon-pagetree-drag-copy-below {
+	background-position: -162px -108px !important;
+
+}
+.t3-icon-pagetree-drag-move-above {
+	background-position: -180px -108px !important;
+
+}
+.t3-icon-pagetree-drag-move-below {
+	background-position: -198px -108px !important;
+
+}
+.t3-icon-pagetree-drag-move-between {
+	background-position: -216px -108px !important;
+
+}
+.t3-icon-pagetree-drag-move-into {
+	background-position: -234px -108px !important;
+
+}
+.t3-icon-pagetree-drag-new-between {
+	background-position: -252px -108px !important;
+
+}
+.t3-icon-pagetree-drag-new-inside {
+	background-position: -270px -108px !important;
+
+}
+.t3-icon-pagetree-drag-place-denied {
+	background-position: -288px -108px !important;
+
+}
+.t3-icon-pagetree-expand {
+	background-position: -306px -108px !important;
+
+}
+.t3-icon-pagetree-folder-contains-approve {
+	background-position: -0px -126px !important;
+
+}
+.t3-icon-pagetree-folder-contains-board {
+	background-position: -18px -126px !important;
+
+}
+.t3-icon-pagetree-folder-contains-fe_users {
+	background-position: -36px -126px !important;
+
+}
+.t3-icon-pagetree-folder-contains-news {
+	background-position: -54px -126px !important;
 
 }
 .t3-icon-pagetree-folder-contains-shop {
@@ -513,208 +553,308 @@
 	width: 18px;
 
 }
-.t3-icon-pagetree-page-shortcut-hideinmenu {
-	background-position: -216px -144px !important;
-
-}
-.t3-icon-pagetree-page-frontend-users-root {
-	background-position: -306px -126px !important;
-
-}
-.t3-icon-pagetree-drag-copy-below {
-	background-position: -144px -108px !important;
-
-}
-.t3-icon-pagetree-page-frontend-user {
-	background-position: -216px -126px !important;
-
-}
-.t3-icon-filetree-folder-locked {
-	background-position: -234px -90px !important;
-
-}
-.t3-icon-filetree-folder-recycler {
-	background-position: -306px -90px !important;
-
-}
-.t3-icon-pagetree-folder-contains-board {
-	background-position: -0px -126px !important;
-
-}
-.t3-icon-filetree-folder-list {
-	background-position: -216px -90px !important;
-
-}
-.t3-icon-pagetree-page-recycler {
-	background-position: -126px -144px !important;
+.t3-icon-pagetree-folder-default {
+	background-position: -72px -126px !important;
 
 }
 .t3-icon-pagetree-page-advanced-hideinmenu {
-	background-position: -90px -126px !important;
-
-}
-.t3-icon-pagetree-page-shortcut-root {
-	background-position: -234px -144px !important;
-
-}
-.t3-icon-toolbar-menu-actions {
-	background-position: -288px -144px !important;
-
-}
-.t3-icon-pagetree-drag-place-denied {
-	background-position: -270px -108px !important;
-
-}
-.t3-icon-pagetree-drag-new-inside {
-	background-position: -252px -108px !important;
-
-}
-.t3-icon-pagetree-page-no-icon-found {
-	background-position: -54px -144px !important;
-
-}
-.t3-icon-pagetree-drag-new-between {
-	background-position: -234px -108px !important;
-
-}
-.t3-icon-toolbar-menu-cache {
-	background-position: -306px -144px !important;
-
-}
-.t3-icon-pagetree-page-shortcut {
-	background-position: -144px -144px !important;
-
-}
-.t3-icon-pagetree-page-frontend-users-hideinmenu {
-	background-position: -288px -126px !important;
-
-}
-.t3-icon-pagetree-page-mountpoint {
-	background-position: -0px -144px !important;
-
-}
-.t3-icon-pagetree-folder-contains-fe_users {
-	background-position: -18px -126px !important;
-
-}
-.t3-icon-pagetree-page-no-icon-found-root {
-	background-position: -90px -144px !important;
-
-}
-.t3-icon-pagetree-page-no-icon-found-hideinmenu {
-	background-position: -72px -144px !important;
-
-}
-.t3-icon-pagetree-spacer {
-	background-position: -270px -144px !important;
-
-}
-.t3-icon-pagetree-page-frontend-users {
-	background-position: -270px -126px !important;
-
-}
-.t3-icon-pagetree-backend-user {
-	background-position: -72px -108px !important;
-
-}
-.t3-icon-pagetree-page-not-in-menu {
-	background-position: -108px -144px !important;
-
-}
-.t3-icon-pagetree-root {
-	background-position: -252px -144px !important;
-
-}
-.t3-icon-pagetree-page-domain {
-	background-position: -198px -126px !important;
-
-}
-.t3-icon-pagetree-page-backend-users-hideinmenu {
-	background-position: -144px -126px !important;
-
-}
-.t3-icon-pagetree-page-mountpoint-hideinmenu {
-	background-position: -18px -144px !important;
-
-}
-.t3-icon-pagetree-page-backend-users-root {
-	background-position: -162px -126px !important;
-
-}
-.t3-icon-toolbar-menu-shortcut {
-	background-position: -36px -162px !important;
-
-}
-.t3-icon-pagetree-page-shortcut-external {
-	background-position: -162px -144px !important;
-
-}
-.t3-icon-pagetree-collapse {
-	background-position: -108px -108px !important;
-
-}
-.t3-icon-pagetree-drag-copy-above {
-	background-position: -126px -108px !important;
-
-}
-.t3-icon-pagetree-page-default {
-	background-position: -180px -126px !important;
-
-}
-.t3-icon-pagetree-page-advanced-root {
 	background-position: -108px -126px !important;
 
 }
-.t3-icon-pagetree-page-frontend-user-root {
+.t3-icon-pagetree-page-advanced-root {
+	background-position: -126px -126px !important;
+
+}
+.t3-icon-pagetree-page-advanced {
+	background-position: -90px -126px !important;
+
+}
+.t3-icon-pagetree-page-backend-users-hideinmenu {
+	background-position: -162px -126px !important;
+
+}
+.t3-icon-pagetree-page-backend-users-root {
+	background-position: -180px -126px !important;
+
+}
+.t3-icon-pagetree-page-backend-users {
+	background-position: -144px -126px !important;
+
+}
+.t3-icon-pagetree-page-default {
+	background-position: -198px -126px !important;
+
+}
+.t3-icon-pagetree-page-domain {
+	background-position: -216px -126px !important;
+
+}
+.t3-icon-pagetree-page-frontend-user-hideinmenu {
 	background-position: -252px -126px !important;
 
 }
-.t3-icon-filetree-folder-temp {
-	background-position: -0px -108px !important;
+.t3-icon-pagetree-page-frontend-user-root {
+	background-position: -270px -126px !important;
 
 }
-.t3-icon-filetree-folder-user {
-	background-position: -18px -108px !important;
+.t3-icon-pagetree-page-frontend-user {
+	background-position: -234px -126px !important;
 
 }
-.t3-icon-pagetree-drag-move-into {
-	background-position: -216px -108px !important;
+.t3-icon-pagetree-page-frontend-users-hideinmenu {
+	background-position: -306px -126px !important;
 
 }
-.t3-icon-pagetree-folder-contains-approve {
-	background-position: -306px -108px !important;
+.t3-icon-pagetree-page-frontend-users-root {
+	background-position: -0px -144px !important;
 
 }
-.t3-icon-pagetree-drag-move-between {
-	background-position: -198px -108px !important;
+.t3-icon-pagetree-page-frontend-users {
+	background-position: -288px -126px !important;
 
 }
-.t3-icon-filetree-folder-media {
-	background-position: -252px -90px !important;
+.t3-icon-pagetree-page-mountpoint-hideinmenu {
+	background-position: -36px -144px !important;
 
 }
-.t3-icon-filetree-folder-opened {
-	background-position: -288px -90px !important;
+.t3-icon-pagetree-page-mountpoint-root {
+	background-position: -54px -144px !important;
 
 }
-.t3-icon-x-content-template-extension {
-	background-position: -36px -198px !important;
+.t3-icon-pagetree-page-mountpoint {
+	background-position: -18px -144px !important;
 
 }
-.t3-icon-x-content-domain {
+.t3-icon-pagetree-page-no-icon-found-hideinmenu {
+	background-position: -90px -144px !important;
+
+}
+.t3-icon-pagetree-page-no-icon-found-root {
+	background-position: -108px -144px !important;
+
+}
+.t3-icon-pagetree-page-no-icon-found {
+	background-position: -72px -144px !important;
+
+}
+.t3-icon-pagetree-page-not-in-menu {
+	background-position: -126px -144px !important;
+
+}
+.t3-icon-pagetree-page-recycler {
+	background-position: -144px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut-external-hideinmenu {
+	background-position: -198px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut-external-root {
+	background-position: -216px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut-external {
+	background-position: -180px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut-hideinmenu {
+	background-position: -234px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut-root {
+	background-position: -252px -144px !important;
+
+}
+.t3-icon-pagetree-page-shortcut {
+	background-position: -162px -144px !important;
+
+}
+.t3-icon-pagetree-root {
+	background-position: -270px -144px !important;
+
+}
+.t3-icon-pagetree-spacer {
+	background-position: -288px -144px !important;
+
+}
+.t3-icon-toolbar-menu-actions {
+	background-position: -306px -144px !important;
+
+}
+.t3-icon-toolbar-menu-cache {
+	background-position: -0px -162px !important;
+
+}
+.t3-icon-toolbar-menu-opendocs {
+	background-position: -18px -162px !important;
+
+}
+.t3-icon-toolbar-menu-search {
+	background-position: -36px -162px !important;
+
+}
+.t3-icon-toolbar-menu-shortcut {
+	background-position: -54px -162px !important;
+
+}
+.t3-icon-toolbar-menu-workspace {
+	background-position: -72px -162px !important;
+
+}
+.t3-icon-compressed {
+	background-position: -90px -162px !important;
+
+}
+.t3-icon-excel {
+	background-position: -108px -162px !important;
+
+}
+.t3-icon-media-audio {
+	background-position: -126px -162px !important;
+
+}
+.t3-icon-media-flash {
+	background-position: -144px -162px !important;
+
+}
+.t3-icon-media-image {
+	background-position: -162px -162px !important;
+
+}
+.t3-icon-media-video {
+	background-position: -180px -162px !important;
+
+}
+.t3-icon-other-other {
+	background-position: -198px -162px !important;
+
+}
+.t3-icon-pdf {
+	background-position: -216px -162px !important;
+
+}
+.t3-icon-powerpoint {
+	background-position: -234px -162px !important;
+
+}
+.t3-icon-text-css {
+	background-position: -252px -162px !important;
+
+}
+.t3-icon-text-csv {
+	background-position: -270px -162px !important;
+
+}
+.t3-icon-text-html {
+	background-position: -288px -162px !important;
+
+}
+.t3-icon-text-js {
+	background-position: -306px -162px !important;
+
+}
+.t3-icon-text-php {
+	background-position: -0px -180px !important;
+
+}
+.t3-icon-text-text {
+	background-position: -18px -180px !important;
+
+}
+.t3-icon-word {
+	background-position: -36px -180px !important;
+
+}
+.t3-icon-x-content-divider {
 	background-position: -54px -180px !important;
 
 }
-.t3-icon-x-content-list-bullets {
+.t3-icon-x-content-domain {
+	background-position: -72px -180px !important;
+
+}
+.t3-icon-x-content-form-search {
+	background-position: -108px -180px !important;
+
+}
+.t3-icon-x-content-form {
+	background-position: -90px -180px !important;
+
+}
+.t3-icon-x-content-header {
+	background-position: -126px -180px !important;
+
+}
+.t3-icon-x-content-html {
+	background-position: -144px -180px !important;
+
+}
+.t3-icon-x-content-image {
+	background-position: -162px -180px !important;
+
+}
+.t3-icon-x-content-link {
 	background-position: -180px -180px !important;
 
 }
-.t3-icon-x-content-page-language-overlay {
-	background-position: -270px -180px !important;
+.t3-icon-x-content-list-bullets {
+	background-position: -198px -180px !important;
+
+}
+.t3-icon-x-content-list-files {
+	background-position: -216px -180px !important;
 
 }
 .t3-icon-x-content-login {
-	background-position: -216px -180px !important;
+	background-position: -234px -180px !important;
+
+}
+.t3-icon-x-content-menu {
+	background-position: -252px -180px !important;
+
+}
+.t3-icon-x-content-multimedia {
+	background-position: -270px -180px !important;
+
+}
+.t3-icon-x-content-page-language-overlay {
+	background-position: -288px -180px !important;
+
+}
+.t3-icon-x-content-plugin {
+	background-position: -306px -180px !important;
+
+}
+.t3-icon-x-content-script {
+	background-position: -0px -198px !important;
+
+}
+.t3-icon-x-content-table {
+	background-position: -18px -198px !important;
+
+}
+.t3-icon-x-content-template-extension {
+	background-position: -54px -198px !important;
+
+}
+.t3-icon-x-content-template-static {
+	background-position: -72px -198px !important;
+
+}
+.t3-icon-x-content-template {
+	background-position: -36px -198px !important;
+
+}
+.t3-icon-x-content-text-picture {
+	background-position: -108px -198px !important;
+
+}
+.t3-icon-x-content-text {
+	background-position: -90px -198px !important;
+
+}
+.t3-icon-x-sys_action {
+	background-position: -126px -198px !important;
 
 }
 .t3-icon-x-sys_language {
@@ -722,483 +862,347 @@
 	width: 18px;
 
 }
-.t3-icon-text-text {
-	background-position: -0px -180px !important;
-
-}
-.t3-icon-x-content-form-search {
-	background-position: -90px -180px !important;
-
-}
-.t3-icon-x-content-header {
-	background-position: -108px -180px !important;
-
-}
 .t3-icon-x-sys_news {
-	background-position: -126px -198px !important;
-
-}
-.t3-icon-x-content-divider {
-	background-position: -36px -180px !important;
-
-}
-.t3-icon-text-csv {
-	background-position: -252px -162px !important;
-
-}
-.t3-icon-text-html {
-	background-position: -270px -162px !important;
-
-}
-.t3-icon-excel {
-	background-position: -90px -162px !important;
-
-}
-.t3-icon-x-content-form {
-	background-position: -72px -180px !important;
-
-}
-.t3-icon-x_belayout {
-	background-position: -162px -198px !important;
-
-}
-.t3-icon-x-content-menu {
-	background-position: -234px -180px !important;
-
-}
-.t3-icon-x-content-html {
-	background-position: -126px -180px !important;
-
-}
-.t3-icon-x-content-template {
-	background-position: -18px -198px !important;
-
-}
-.t3-icon-media-flash {
-	background-position: -126px -162px !important;
-
-}
-.t3-icon-text-js {
-	background-position: -288px -162px !important;
-
-}
-.t3-icon-x-sys_workspace {
 	background-position: -144px -198px !important;
 
 }
-.t3-icon-media-image {
-	background-position: -144px -162px !important;
+.t3-icon-x-sys_workspace {
+	background-position: -162px -198px !important;
 
 }
-.t3-icon-x-content-link {
-	background-position: -162px -180px !important;
-
-}
-.t3-icon-x-content-list-files {
-	background-position: -198px -180px !important;
-
-}
-.t3-icon-word {
-	background-position: -18px -180px !important;
-
-}
-.t3-icon-x-content-text-picture {
-	background-position: -90px -198px !important;
-
-}
-.t3-icon-x-content-script {
-	background-position: -306px -180px !important;
-
-}
-.t3-icon-media-video {
-	background-position: -162px -162px !important;
-
-}
-.t3-icon-pdf {
-	background-position: -198px -162px !important;
-
-}
-.t3-icon-x-content-template-static {
-	background-position: -54px -198px !important;
-
-}
-.t3-icon-text-css {
-	background-position: -234px -162px !important;
-
-}
-.t3-icon-x-content-plugin {
-	background-position: -288px -180px !important;
-
-}
-.t3-icon-media-audio {
-	background-position: -108px -162px !important;
-
-}
-.t3-icon-compressed {
-	background-position: -72px -162px !important;
-
-}
-.t3-icon-x-content-multimedia {
-	background-position: -252px -180px !important;
-
-}
-.t3-icon-powerpoint {
-	background-position: -216px -162px !important;
-
-}
-.t3-icon-x-content-table {
-	background-position: -0px -198px !important;
-
-}
-.t3-icon-x-content-text {
-	background-position: -72px -198px !important;
-
-}
-.t3-icon-x-sys_action {
-	background-position: -108px -198px !important;
-
-}
-.t3-icon-text-php {
-	background-position: -306px -162px !important;
-
-}
-.t3-icon-x-content-image {
-	background-position: -144px -180px !important;
-
-}
-.t3-icon-other-other {
-	background-position: -180px -162px !important;
-
-}
-.t3-icon-overlay-scheduled-future-end {
-	background-position: -72px -216px !important;
-
-}
-.t3-icon-user-frontend {
-	background-position: -18px -234px !important;
-
-}
-.t3-icon-version-50 {
-	background-position: -306px -270px !important;
-
-}
-.t3-icon-system-extension-required {
-	background-position: -288px -216px !important;
-
-}
-.t3-icon-status-reference-hard {
-	background-position: -234px -216px !important;
-
-}
-.t3-icon-version-29 {
-	background-position: -252px -252px !important;
-
-}
-.t3-icon-overlay-translated {
-	background-position: -90px -216px !important;
-
-}
-.t3-icon-version-9 {
-	background-position: -216px -234px !important;
-
-}
-.t3-icon-version-31 {
-	background-position: -288px -252px !important;
-
-}
-.t3-icon-version-30 {
-	background-position: -270px -252px !important;
-
-}
-.t3-icon-version-25 {
-	background-position: -180px -252px !important;
-
-}
-.t3-icon-overlay-locked {
-	background-position: -36px -216px !important;
-
-}
-.t3-icon-version-46 {
-	background-position: -234px -270px !important;
-
-}
-.t3-icon-overlay-icon-missing {
-	background-position: -0px -216px !important;
-
-}
-.t3-icon-dialog-error {
+.t3-icon-x_belayout {
 	background-position: -180px -198px !important;
 
 }
-.t3-icon-version-26 {
-	background-position: -198px -252px !important;
-
-}
-.t3-icon-overlay-scheduled {
-	background-position: -54px -216px !important;
-
-}
-.t3-icon-version-20 {
-	background-position: -90px -252px !important;
-
-}
-.t3-icon-version-44 {
-	background-position: -198px -270px !important;
-
-}
-.t3-icon-version-37 {
-	background-position: -72px -270px !important;
-
-}
-.t3-icon-version-28 {
-	background-position: -234px -252px !important;
-
-}
-.t3-icon-overlay-deleted {
-	background-position: -288px -198px !important;
-
-}
-.t3-icon-version-6 {
-	background-position: -162px -234px !important;
-
-}
-.t3-icon-version-14 {
-	background-position: -306px -234px !important;
-
-}
-.t3-icon-version-no-version {
-	background-position: -0px -288px !important;
-
-}
-.t3-icon-version-38 {
-	background-position: -90px -270px !important;
-
-}
-.t3-icon-version-22 {
-	background-position: -126px -252px !important;
-
-}
-.t3-icon-dialog-notification {
-	background-position: -216px -198px !important;
-
-}
-.t3-icon-version-18 {
-	background-position: -54px -252px !important;
-
-}
-.t3-icon-version-34 {
-	background-position: -18px -270px !important;
-
-}
-.t3-icon-version-19 {
-	background-position: -72px -252px !important;
-
-}
-.t3-icon-version-39 {
-	background-position: -108px -270px !important;
-
-}
-.t3-icon-version-12 {
-	background-position: -270px -234px !important;
-
-}
-.t3-icon-version-23 {
-	background-position: -144px -252px !important;
-
-}
-.t3-icon-status-permission-denied {
-	background-position: -198px -216px !important;
-
-}
-.t3-icon-user-backend {
-	background-position: -0px -234px !important;
-
-}
-.t3-icon-version-24 {
-	background-position: -162px -252px !important;
-
-}
-.t3-icon-status-workspace-draft {
-	background-position: -270px -216px !important;
-
-}
-.t3-icon-dialog-ok {
-	background-position: -234px -198px !important;
-
-}
-.t3-icon-version-36 {
-	background-position: -54px -270px !important;
-
-}
-.t3-icon-version-45 {
-	background-position: -216px -270px !important;
-
-}
-.t3-icon-status-permission-granted {
-	background-position: -216px -216px !important;
-
-}
-.t3-icon-version-21 {
-	background-position: -108px -252px !important;
-
-}
-.t3-icon-warning-lock {
-	background-position: -36px -288px !important;
-
-}
-.t3-icon-version-27 {
-	background-position: -216px -252px !important;
-
-}
-.t3-icon-version-11 {
-	background-position: -252px -234px !important;
-
-}
-.t3-icon-status-edit-read-only {
-	background-position: -144px -216px !important;
-
-}
-.t3-icon-warning-in-use {
-	background-position: -18px -288px !important;
-
-}
-.t3-icon-version-32 {
-	background-position: -306px -252px !important;
-
-}
-.t3-icon-version-7 {
-	background-position: -180px -234px !important;
-
-}
-.t3-icon-version-42 {
-	background-position: -162px -270px !important;
-
-}
-.t3-icon-status-locked {
-	background-position: -180px -216px !important;
-
-}
-.t3-icon-version-17 {
-	background-position: -36px -252px !important;
-
-}
-.t3-icon-version-8 {
-	background-position: -198px -234px !important;
-
-}
-.t3-icon-version-2 {
-	background-position: -90px -234px !important;
-
-}
-.t3-icon-version-16 {
-	background-position: -18px -252px !important;
-
-}
-.t3-icon-version-40 {
-	background-position: -126px -270px !important;
-
-}
-.t3-icon-status-reference-soft {
-	background-position: -252px -216px !important;
-
-}
-.t3-icon-status-checked {
-	background-position: -108px -216px !important;
-
-}
-.t3-icon-overlay-includes-subpages {
-	background-position: -18px -216px !important;
-
-}
-.t3-icon-version-13 {
-	background-position: -288px -234px !important;
-
-}
-.t3-icon-version-41 {
-	background-position: -144px -270px !important;
-
-}
-.t3-icon-user-group-backend {
-	background-position: -36px -234px !important;
-
-}
-.t3-icon-version-1 {
-	background-position: -72px -234px !important;
-
-}
-.t3-icon-user-group-frontend {
-	background-position: -54px -234px !important;
-
-}
-.t3-icon-version-43 {
-	background-position: -180px -270px !important;
-
-}
-.t3-icon-status-icon-missing {
-	background-position: -162px -216px !important;
-
-}
-.t3-icon-overlay-access-restricted {
-	background-position: -270px -198px !important;
-
-}
-.t3-icon-overlay-hidden {
-	background-position: -306px -198px !important;
-
-}
-.t3-icon-version-3 {
-	background-position: -108px -234px !important;
-
-}
-.t3-icon-dialog-information {
+.t3-icon-dialog-error {
 	background-position: -198px -198px !important;
 
 }
-.t3-icon-version-48 {
-	background-position: -270px -270px !important;
+.t3-icon-dialog-information {
+	background-position: -216px -198px !important;
 
 }
-.t3-icon-version-49 {
-	background-position: -288px -270px !important;
+.t3-icon-dialog-notification {
+	background-position: -234px -198px !important;
 
 }
-.t3-icon-version-4 {
-	background-position: -126px -234px !important;
-
-}
-.t3-icon-version-10 {
-	background-position: -234px -234px !important;
-
-}
-.t3-icon-version-5 {
-	background-position: -144px -234px !important;
-
-}
-.t3-icon-dialog-warning {
+.t3-icon-dialog-ok {
 	background-position: -252px -198px !important;
 
 }
-.t3-icon-user-admin {
-	background-position: -306px -216px !important;
+.t3-icon-dialog-warning {
+	background-position: -270px -198px !important;
 
 }
-.t3-icon-version-35 {
-	background-position: -36px -270px !important;
+.t3-icon-overlay-access-restricted {
+	background-position: -288px -198px !important;
 
 }
-.t3-icon-version-33 {
-	background-position: -0px -270px !important;
+.t3-icon-overlay-deleted {
+	background-position: -306px -198px !important;
 
 }
-.t3-icon-version-15 {
-	background-position: -0px -252px !important;
+.t3-icon-overlay-hidden {
+	background-position: -0px -216px !important;
 
 }
-.t3-icon-version-47 {
-	background-position: -252px -270px !important;
+.t3-icon-overlay-icon-missing {
+	background-position: -18px -216px !important;
+
+}
+.t3-icon-overlay-includes-subpages {
+	background-position: -36px -216px !important;
+
+}
+.t3-icon-overlay-locked {
+	background-position: -54px -216px !important;
+
+}
+.t3-icon-overlay-scheduled-future-end {
+	background-position: -90px -216px !important;
+
+}
+.t3-icon-overlay-scheduled {
+	background-position: -72px -216px !important;
+
+}
+.t3-icon-overlay-translated {
+	background-position: -108px -216px !important;
+
+}
+.t3-icon-status-checked {
+	background-position: -126px -216px !important;
 
 }
 .t3-icon-status-current {
-	background-position: -126px -216px !important;
+	background-position: -144px -216px !important;
+
+}
+.t3-icon-status-edit-read-only {
+	background-position: -162px -216px !important;
+
+}
+.t3-icon-status-icon-missing {
+	background-position: -180px -216px !important;
+
+}
+.t3-icon-status-locked {
+	background-position: -198px -216px !important;
+
+}
+.t3-icon-status-permission-denied {
+	background-position: -216px -216px !important;
+
+}
+.t3-icon-status-permission-granted {
+	background-position: -234px -216px !important;
+
+}
+.t3-icon-status-reference-hard {
+	background-position: -252px -216px !important;
+
+}
+.t3-icon-status-reference-soft {
+	background-position: -270px -216px !important;
+
+}
+.t3-icon-status-workspace-draft {
+	background-position: -288px -216px !important;
+
+}
+.t3-icon-system-extension-required {
+	background-position: -306px -216px !important;
+
+}
+.t3-icon-user-admin {
+	background-position: -0px -234px !important;
+
+}
+.t3-icon-user-backend {
+	background-position: -18px -234px !important;
+
+}
+.t3-icon-user-frontend {
+	background-position: -36px -234px !important;
+
+}
+.t3-icon-user-group-backend {
+	background-position: -54px -234px !important;
+
+}
+.t3-icon-user-group-frontend {
+	background-position: -72px -234px !important;
+
+}
+.t3-icon-version-1 {
+	background-position: -90px -234px !important;
+
+}
+.t3-icon-version-10 {
+	background-position: -252px -234px !important;
+
+}
+.t3-icon-version-11 {
+	background-position: -270px -234px !important;
+
+}
+.t3-icon-version-12 {
+	background-position: -288px -234px !important;
+
+}
+.t3-icon-version-13 {
+	background-position: -306px -234px !important;
+
+}
+.t3-icon-version-14 {
+	background-position: -0px -252px !important;
+
+}
+.t3-icon-version-15 {
+	background-position: -18px -252px !important;
+
+}
+.t3-icon-version-16 {
+	background-position: -36px -252px !important;
+
+}
+.t3-icon-version-17 {
+	background-position: -54px -252px !important;
+
+}
+.t3-icon-version-18 {
+	background-position: -72px -252px !important;
+
+}
+.t3-icon-version-19 {
+	background-position: -90px -252px !important;
+
+}
+.t3-icon-version-2 {
+	background-position: -108px -234px !important;
+
+}
+.t3-icon-version-20 {
+	background-position: -108px -252px !important;
+
+}
+.t3-icon-version-21 {
+	background-position: -126px -252px !important;
+
+}
+.t3-icon-version-22 {
+	background-position: -144px -252px !important;
+
+}
+.t3-icon-version-23 {
+	background-position: -162px -252px !important;
+
+}
+.t3-icon-version-24 {
+	background-position: -180px -252px !important;
+
+}
+.t3-icon-version-25 {
+	background-position: -198px -252px !important;
+
+}
+.t3-icon-version-26 {
+	background-position: -216px -252px !important;
+
+}
+.t3-icon-version-27 {
+	background-position: -234px -252px !important;
+
+}
+.t3-icon-version-28 {
+	background-position: -252px -252px !important;
+
+}
+.t3-icon-version-29 {
+	background-position: -270px -252px !important;
+
+}
+.t3-icon-version-3 {
+	background-position: -126px -234px !important;
+
+}
+.t3-icon-version-30 {
+	background-position: -288px -252px !important;
+
+}
+.t3-icon-version-31 {
+	background-position: -306px -252px !important;
+
+}
+.t3-icon-version-32 {
+	background-position: -0px -270px !important;
+
+}
+.t3-icon-version-33 {
+	background-position: -18px -270px !important;
+
+}
+.t3-icon-version-34 {
+	background-position: -36px -270px !important;
+
+}
+.t3-icon-version-35 {
+	background-position: -54px -270px !important;
+
+}
+.t3-icon-version-36 {
+	background-position: -72px -270px !important;
+
+}
+.t3-icon-version-37 {
+	background-position: -90px -270px !important;
+
+}
+.t3-icon-version-38 {
+	background-position: -108px -270px !important;
+
+}
+.t3-icon-version-39 {
+	background-position: -126px -270px !important;
+
+}
+.t3-icon-version-4 {
+	background-position: -144px -234px !important;
+
+}
+.t3-icon-version-40 {
+	background-position: -144px -270px !important;
+
+}
+.t3-icon-version-41 {
+	background-position: -162px -270px !important;
+
+}
+.t3-icon-version-42 {
+	background-position: -180px -270px !important;
+
+}
+.t3-icon-version-43 {
+	background-position: -198px -270px !important;
+
+}
+.t3-icon-version-44 {
+	background-position: -216px -270px !important;
+
+}
+.t3-icon-version-45 {
+	background-position: -234px -270px !important;
+
+}
+.t3-icon-version-46 {
+	background-position: -252px -270px !important;
+
+}
+.t3-icon-version-47 {
+	background-position: -270px -270px !important;
+
+}
+.t3-icon-version-48 {
+	background-position: -288px -270px !important;
+
+}
+.t3-icon-version-49 {
+	background-position: -306px -270px !important;
+
+}
+.t3-icon-version-5 {
+	background-position: -162px -234px !important;
+
+}
+.t3-icon-version-50 {
+	background-position: -0px -288px !important;
+
+}
+.t3-icon-version-6 {
+	background-position: -180px -234px !important;
+
+}
+.t3-icon-version-7 {
+	background-position: -198px -234px !important;
+
+}
+.t3-icon-version-8 {
+	background-position: -216px -234px !important;
+
+}
+.t3-icon-version-9 {
+	background-position: -234px -234px !important;
+
+}
+.t3-icon-version-no-version {
+	background-position: -18px -288px !important;
+
+}
+.t3-icon-warning-in-use {
+	background-position: -36px -288px !important;
+
+}
+.t3-icon-warning-lock {
+	background-position: -54px -288px !important;
 
 }
