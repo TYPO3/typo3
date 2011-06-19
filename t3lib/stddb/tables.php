@@ -500,6 +500,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-edit-insert-default',
 	'actions-edit-localize-status-high',
 	'actions-edit-localize-status-low',
+	'actions-edit-merge-localization',
 	'actions-edit-pick-date',
 	'actions-edit-rename',
 	'actions-edit-restore',
@@ -651,6 +652,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-text-js',
 	'mimetypes-text-php',
 	'mimetypes-text-text',
+	'mimetypes-word',
 	'mimetypes-x-content-divider',
 	'mimetypes-x-content-domain',
 	'mimetypes-x-content-form',
@@ -762,6 +764,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
 
 
 

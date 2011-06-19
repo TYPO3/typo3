@@ -3524,6 +3524,7 @@ class t3lib_TCEforms {
 			if ($fCfg['config']['type'] != 'inline') {
 				if (strcmp($dLVal, '')) {
 					$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 0) .
+							 $this->getMergeBehaviorIcon($fCfg['l10n_mode']) .
 							 $this->previewFieldValue($dLVal, $fCfg, $field) . '&nbsp;</div>';
 				}
 
@@ -3533,6 +3534,7 @@ class t3lib_TCEforms {
 
 					if (strcmp($dlVal, '')) {
 						$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 'v' . $prL['ISOcode']) .
+								 $this->getMergeBehaviorIcon($fCfg['l10n_mode']) .
 								 $this->previewFieldValue($dlVal, $fCfg, $field) . '&nbsp;</div>';
 					}
 				}
@@ -6351,6 +6353,26 @@ class t3lib_TCEforms {
 			$out .= '&nbsp;';
 		}
 		return $out;
+	}
+
+	/**
+	 * Renders an icon to indicate the way the translation and the original is merged (if this is relevant).
+	 *
+	 * If a field is defined as 'mergeIfNotBlank' this is useful information for an editor. He/she can leave the field blank and
+	 * the original value will be used. Without this hint editors are likely to copy the contents even if it is not necessary.
+	 *
+	 * @param string $l10nMode Localization mode from TCA
+	 * @return string
+	 */
+	function getMergeBehaviorIcon($l10nMode) {
+		$icon = '';
+		if ($l10nMode === 'mergeIfNotBlank') {
+			$icon = t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-merge-localization',
+				array('title' => $this->sL('LLL:EXT:lang/locallang_misc.xml:localizeMergeIfNotBlank'))
+			);
+		}
+		return $icon;
 	}
 
 	/**
