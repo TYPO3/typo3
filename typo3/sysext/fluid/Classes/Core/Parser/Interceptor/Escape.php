@@ -63,11 +63,12 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
 	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
+	 * @param Tx_Fluid_Core_Parser_ParsingState $parsingState the current parsing state. Not needed in this interceptor.
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition) {
+	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition, Tx_Fluid_Core_Parser_ParsingState $parsingState) {
 		if ($interceptorPosition === Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER) {
 			if (!$node->getUninitializedViewHelper()->isEscapingInterceptorEnabled()) {
 				$this->interceptorEnabled = FALSE;
