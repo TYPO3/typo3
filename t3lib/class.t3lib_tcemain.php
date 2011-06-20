@@ -7125,7 +7125,7 @@ class t3lib_TCEmain {
 	 */
 	protected function getOuterMostInstance() {
 		if (!isset($this->outerMostInstance)) {
-			$stack = array_reverse(debug_backtrace(TRUE));
+			$stack = array_reverse(debug_backtrace());
 
 			foreach ($stack as $stackItem) {
 				if (isset($stackItem['object']) && $stackItem['object'] instanceof t3lib_TCEmain) {
