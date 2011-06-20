@@ -176,13 +176,14 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			$templatePathAndFilename = $this->templatePathAndFilename;
 		} else {
 			$actionName = ($actionName !== NULL ? $actionName : $this->controllerContext->getRequest()->getControllerActionName());
+			$actionName = ucfirst($actionName);
 
 			$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 			$found = FALSE;
 			foreach ($paths as &$templatePathAndFilename) {
 				// These tokens are replaced by the Backporter for the graceful fallback in version 4.
-				$fallbackPath = str_replace('@action', $actionName, $templatePathAndFilename);
-				$templatePathAndFilename = str_replace('@action', ucfirst($actionName), $templatePathAndFilename);
+				$fallbackPath = str_replace('@action', t3lib_div::lcfirst($actionName), $templatePathAndFilename);
+				$templatePathAndFilename = str_replace('@action', $actionName, $templatePathAndFilename);
 				if (file_exists($templatePathAndFilename)) {
 					$found = TRUE;
 					// additional check for deprecated template filename for case insensitive file systems (Windows)
@@ -224,19 +225,21 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getLayoutSource($layoutName = 'Default') {
+		$layoutName = ucfirst($layoutName);
 		if ($this->layoutPathAndFilename !== NULL) {
 			 $layoutPathAndFilename = $this->layoutPathAndFilename;
 		} else {
 			$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
 			$found = FALSE;
 			foreach ($paths as &$layoutPathAndFilename) {
-				$fallbackPath = str_replace('@layout', $layoutName, $layoutPathAndFilename);
-				$layoutPathAndFilename = str_replace('@layout', ucfirst($layoutName), $layoutPathAndFilename);
+				// These tokens are replaced by the Backporter for the graceful fallback in version 4.
+				$fallbackPath = str_replace('@layout', t3lib_div::lcfirst($layoutName), $layoutPathAndFilename);
+				$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
 				if (file_exists($layoutPathAndFilename)) {
 					$found = TRUE;
 					break;
 				} elseif (file_exists($fallbackPath)) {
-					t3lib_div::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6 Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
+					t3lib_div::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
 					$found = TRUE;
 					$layoutPathAndFilename = $fallbackPath;
 					break;
