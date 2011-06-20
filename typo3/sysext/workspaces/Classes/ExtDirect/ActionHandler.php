@@ -111,7 +111,6 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		return tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $uid);
 	}
 
-
 	/**
 	 * Saves the selected columns to be shown to the preferences of the current backend user.
 	 *
@@ -126,13 +125,13 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 				'hidden'   => $column->hidden
 			);
 		}
-		$GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'] = $data;
+		$GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] = $data;
 		$GLOBALS['BE_USER']->writeUC();
 	}
 
 	public function loadColumnModel() {
-		if(is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'])) {
-			return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'];
+		if(is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
+			return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
 		} else {
 			return array();
 		}

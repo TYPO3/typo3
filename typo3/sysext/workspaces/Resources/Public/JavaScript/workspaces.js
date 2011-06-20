@@ -32,6 +32,7 @@ TYPO3.Workspaces.App = {
 		TYPO3.Workspaces.MainStore.load();
 		TYPO3.Workspaces.Toolbar.selectActionStore.load();
 		TYPO3.Workspaces.Toolbar.selectMassActionStore.load();
+		TYPO3.Workspaces.WorkspaceGrid.initColModel();
 		TYPO3.Workspaces.WorkspaceGrid.render('workspacegrid');
 	}
 };

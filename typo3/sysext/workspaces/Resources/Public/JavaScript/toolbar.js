@@ -233,9 +233,9 @@ TYPO3.Workspaces.Toolbar.FullTopToolbar = [
 ];
 
 TYPO3.Workspaces.Toolbar.FullBottomBar = [
-	TYPO3.Workspaces.Toolbar.selectStateActionCombo,
-	'-',
-	TYPO3.Workspaces.Toolbar.selectStateMassActionCombo,
+	(TYPO3.settings.Workspaces.isLiveWorkspace == true) ? {hidden: true} : TYPO3.Workspaces.Toolbar.selectStateActionCombo,
+	(TYPO3.settings.Workspaces.isLiveWorkspace == true) ? {hidden: true} : '-',
+	(TYPO3.settings.Workspaces.isLiveWorkspace == true) ? {hidden: true} : TYPO3.Workspaces.Toolbar.selectStateMassActionCombo,
 	{xtype: 'tbfill'},
 	TYPO3.Workspaces.Toolbar.Pager
 ];
