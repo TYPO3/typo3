@@ -56,7 +56,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+	public function injectVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}
 

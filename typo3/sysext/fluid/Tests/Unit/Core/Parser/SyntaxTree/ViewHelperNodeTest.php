@@ -70,13 +70,13 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 		$this->renderingContext->injectObjectManager($this->mockObjectManager);
 
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->renderingContext->setTemplateVariableContainer($this->templateVariableContainer);
+		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->renderingContext->setViewHelperVariableContainer($this->viewHelperVariableContainer);
+		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
 	}
 
 	/**

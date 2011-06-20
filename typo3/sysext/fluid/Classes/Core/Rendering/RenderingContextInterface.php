@@ -40,7 +40,7 @@ interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
 	 */
-	public function setTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer);
+	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer);
 
 	/**
 	 * Get the template variable container
@@ -69,7 +69,7 @@ interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
 	 * @return void
 	 */
-	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer);
+	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer);
 
 	/**
 	 * Get the ViewHelperVariableContainer

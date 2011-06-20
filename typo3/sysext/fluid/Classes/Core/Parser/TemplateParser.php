@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
+class Tx_Fluid_Core_Parser_TemplateParser {
 
 	public static $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\s*([a-zA-Z]+[a-zA-Z0-9]*)\s*=\s*((?:F3|Tx|t3lib|tslib)(?:FLUID_NAMESPACE_SEPARATOR\w+)+)\s*}/m';
 
@@ -404,8 +404,6 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
 
-		$state->setVariableContainer($this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'));
-
 		foreach ($splitTemplate as $templateElement) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_CDATA, $templateElement, $matchedVariables) > 0) {
@@ -442,7 +440,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 
 		if ($selfclosing) {
 			$node = $state->popNodeFromStack();
-			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 		}
 	}
 
@@ -479,7 +477,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 			call_user_func(array($viewHelper, 'postParseEvent'), $currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
 
-		$this->callInterceptor($currentDynamicNode, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER);
+		$this->callInterceptor($currentDynamicNode, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER, $state);
 
 		$state->pushNodeToStack($currentDynamicNode);
 	}
@@ -567,7 +565,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 		if ($lastStackElement->getViewHelperClassName() != $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier)) {
 			throw new Tx_Fluid_Core_Parser_Exception('Templating tags not properly nested. Expected: ' . $lastStackElement->getViewHelperClassName() . '; Actual: ' . $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier), 1224485398);
 		}
-		$this->callInterceptor($lastStackElement, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
+		$this->callInterceptor($lastStackElement, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 	}
 
 	/**
@@ -616,7 +614,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 		if (strlen($objectAccessorString) > 0) {
 
 			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
-			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR);
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR, $state);
 
 			$state->getNodeFromStack()->addChildNode($node);
 		}
@@ -624,7 +622,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 			// Close ViewHelper Tags if needed.
 		for ($i=0; $i<$numberOfViewHelpers; $i++) {
 			$node = $state->popNodeFromStack();
-			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 		}
 	}
 
@@ -633,10 +631,11 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node The syntax tree node which can be modified by the interceptors.
 	 * @param integer $interceptionPoint the interception point. One of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants.
+	 * @param Tx_Fluid_Core_Parser_ParsingState the parsing state
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function callInterceptor(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface &$node, $interceptionPoint) {
+	protected function callInterceptor(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface &$node, $interceptionPoint, Tx_Fluid_Core_Parser_ParsingState $state) {
 		if ($this->configuration !== NULL) {
 			// $this->configuration is UNSET inside the arguments of a ViewHelper.
 			// That's why the interceptors are only called if the object accesor is not inside a ViewHelper Argument
@@ -645,7 +644,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 			$interceptors = $this->configuration->getInterceptors($interceptionPoint);
 			if (count($interceptors) > 0) {
 				foreach($interceptors as $interceptor) {
-					$node = $interceptor->process($node, $interceptionPoint);
+					$node = $interceptor->process($node, $interceptionPoint, $state);
 				}
 			}
 		}
@@ -841,7 +840,7 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 	 */
 	protected function textHandler(Tx_Fluid_Core_Parser_ParsingState $state, $text) {
 		$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
-		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT);
+		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT, $state);
 
 		$state->getNodeFromStack()->addChildNode($node);
 	}

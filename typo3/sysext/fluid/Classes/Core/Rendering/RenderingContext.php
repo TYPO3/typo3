@@ -64,8 +64,6 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->templateVariableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->viewHelperVariableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 	}
 
 	/**
@@ -85,7 +83,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
+	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
 		$this->templateVariableContainer = $templateVariableContainer;
 	}
 
@@ -126,7 +124,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
+	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
 		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
 	}
 

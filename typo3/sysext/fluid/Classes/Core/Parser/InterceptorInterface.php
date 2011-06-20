@@ -39,9 +39,10 @@ interface Tx_Fluid_Core_Parser_InterceptorInterface {
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
 	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
+	 * @param Tx_Fluid_Core_Parser_ParsingState $parsingState the parsing state
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 */
-	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition);
+	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition, Tx_Fluid_Core_Parser_ParsingState $parsingState);
 
 	/**
 	 * The interceptor should define at which interception positions it wants to be called.
