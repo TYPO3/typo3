@@ -150,18 +150,7 @@ class tx_Workspaces_Service_Tcemain {
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
 		if (TYPO3_UseCachingFramework === TRUE) {
-			try {
-				$GLOBALS['typo3CacheFactory']->create(
-					'workspaces_cache',
-					't3lib_cache_frontend_StringFrontend',
-					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['backend'],
-					$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['sys_workspace_cache']['options']);
-			} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-				// do nothing, a workspace cache already exists
-			}
-	
 			$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
-	
 			$workspacesCache->flushByTag($workspaceId);
 			$workspacesCache->flushByTag(tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 		}

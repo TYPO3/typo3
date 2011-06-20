@@ -47,30 +47,3 @@ CREATE TABLE sys_workspace_stage (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
-
-
-#
-# Table structure for table 'sys_workspace_cache'
-#
-CREATE TABLE sys_workspace_cache (
-    id int(11) unsigned NOT NULL auto_increment,
-    identifier varchar(32) DEFAULT '' NOT NULL,
-    content mediumblob NOT NULL,
-    crdate int(11) DEFAULT '0' NOT NULL,
-    lifetime int(11) DEFAULT '0' NOT NULL,    
-      PRIMARY KEY (id),
-      KEY cache_id (identifier)
-) ENGINE=InnoDB;
-
-
-#
-# Table structure for table 'sys_workspace_cache_tags'
-#
-CREATE TABLE sys_workspace_cache_tags (
-  id int(11) unsigned NOT NULL auto_increment,
-  identifier varchar(128) DEFAULT '' NOT NULL,
-  tag varchar(128) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id),
-  KEY cache_id (identifier),
-  KEY cache_tag (tag)
-) ENGINE=InnoDB;
