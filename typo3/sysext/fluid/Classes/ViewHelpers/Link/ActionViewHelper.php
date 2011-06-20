@@ -89,6 +89,7 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
+		$this->tag->forceClosingTag(TRUE);
 
 		return $this->tag->render();
 	}
