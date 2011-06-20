@@ -77,6 +77,7 @@ class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper
 		}
 		$this->tag->setContent($linkText);
 		$this->tag->addAttribute('href', $linkHref);
+		$this->tag->forceClosingTag(TRUE);
 
 		return $this->tag->render();
 	}
