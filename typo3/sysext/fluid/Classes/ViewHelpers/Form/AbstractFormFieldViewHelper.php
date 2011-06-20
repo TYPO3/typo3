@@ -143,6 +143,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getPropertyValue() {
+
 		$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 		$propertyName = $this->arguments['property'];
 

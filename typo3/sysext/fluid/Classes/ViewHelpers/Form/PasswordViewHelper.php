@@ -23,7 +23,7 @@
 /**
  * View Helper which creates a simple Password Text Box (<input type="password">).
  *
-  * = Examples =
+ * = Examples =
  *
  * <code title="Example">
  * <f:form.password name="myPassword" />

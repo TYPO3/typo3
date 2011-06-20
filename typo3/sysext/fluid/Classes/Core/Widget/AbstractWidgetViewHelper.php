@@ -151,7 +151,7 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * Initiate a sub request to $this->controller. Make sure to fill $this->controller
 	 * via Dependency Injection.
 	 *
-	 * @return Tx_Extbase_MVC_Response the response of this request.
+	 * @return Tx_Extbase_MVC_ResponseInterface the response of this request.
 	 * @api
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

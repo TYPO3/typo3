@@ -25,7 +25,7 @@
  *
  * View Helper which creates a simple Text Box (<input type="text">).
  *
-  * = Examples =
+ * = Examples =
  *
  * <code title="Example">
  * <f:form.textbox name="myTextBox" value="default value" />

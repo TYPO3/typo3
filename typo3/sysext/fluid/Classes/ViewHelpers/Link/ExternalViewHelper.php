@@ -32,6 +32,13 @@
  * <a href="http://www.typo3.org" target="_blank">external link</a>
  * </output>
  *
+ * <code title="custom default scheme">
+ * <f:link.external uri="typo3.org" defaultScheme="ftp">external ftp link</f:link.external>
+ * </code>
+ * <output>
+ * <a href="ftp://typo3.org">external ftp link</a>
+ * </output>
+ *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */

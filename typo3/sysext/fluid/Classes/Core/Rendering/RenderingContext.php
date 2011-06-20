@@ -57,6 +57,8 @@ class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Renderin
 	protected $viewHelperVariableContainer;
 
 	/**
+	 * Inject the object manager
+	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

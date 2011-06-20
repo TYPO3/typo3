@@ -288,6 +288,8 @@ class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 	}
 
 	/**
+	 * Inject object factory
+	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

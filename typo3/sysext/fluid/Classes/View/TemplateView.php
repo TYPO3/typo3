@@ -133,6 +133,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	/**
 	 * Checks whether a template can be resolved for the current request context.
 	 *
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return boolean
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -363,7 +364,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * This continues until both @subpackage and @controller are empty.
 	 *
 	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_Fluid_MySubPackage_Controller_MyController as Controller Object Name and the current format is "html"
-	 * If pattern is @templateRoot/@controller/@action.@format, then the resulting array is:
+	 * If pattern is @templateRoot/@subpackage/@controller/@action.@format, then the resulting array is:
 	 *  - Resources/Private/Templates/MySubPackage/My/@action.html
 	 *  - Resources/Private/Templates/MySubPackage/@action.html
 	 *  - Resources/Private/Templates/@action.html
@@ -406,6 +407,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			}
 
 		} while($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
+
 		return $results;
 	}
 
