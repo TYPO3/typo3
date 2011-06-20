@@ -38,7 +38,6 @@ interface Tx_Extbase_Object_ObjectManagerInterface extends t3lib_Singleton {
 	 *
 	 * @param  string $objectName Name of the object
 	 * @return boolean TRUE if the object has been registered, otherwise FALSE
-	 * @api
 	 */
 	public function isRegistered($objectName);
 

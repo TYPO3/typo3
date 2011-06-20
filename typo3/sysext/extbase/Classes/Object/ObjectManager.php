@@ -39,11 +39,6 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	protected $objectContainer;
 
 	/**
-	 * @var array
-	 */
-	protected $objects = array();
-
-	/**
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
@@ -55,15 +50,9 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 *
 	 * @param  string $objectName Name of the object
 	 * @return boolean TRUE if the object has been registered, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @api
 	 */
 	public function isRegistered($objectName) {
-		if (isset($this->objects[$objectName])) {
-			return TRUE;
-		}
-
-		return FALSE;
+		return class_exists($objectName, TRUE);
 	}
 
 	/**
@@ -82,9 +71,7 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	public function get($objectName) {
 		$arguments = func_get_args();
 		array_shift($arguments);
-		$this->objects[$objectName]['i'] = $this->objectContainer->getInstance($objectName, $arguments);
-
-		return $this->objects[$objectName]['i'];
+		return $this->objectContainer->getInstance($objectName, $arguments);
 	}
 
 	/**
