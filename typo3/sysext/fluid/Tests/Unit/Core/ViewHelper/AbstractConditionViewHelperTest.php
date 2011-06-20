@@ -112,6 +112,20 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
+	public function renderThenChildReturnsEmptyStringIfChildNodesOnlyContainElseViewHelper() {
+		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate'), array(), '', FALSE);
+		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
+		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
+		$this->viewHelper->expects($this->never())->method('renderChildren')->will($this->returnValue('Child nodes'));
+
+		$actualResult = $this->viewHelper->_call('renderThenChild');
+		$this->assertEquals('', $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
 	public function thenArgumentHasPriorityOverChildNodesIfConditionIsTrue() {
 		$mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 
@@ -148,6 +162,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 		$mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 
 		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
+		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
 		$mockElseViewHelperNode->expects($this->never())->method('evaluate');
 
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));

@@ -33,25 +33,17 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_AbstractFormViewHelperTest extends Tx
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() { $this->markTestIncomplete("Works differently in v4. Thus, this test does not work"); return;
+	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() {
 		$className = 'Object' . uniqid();
-		$fullClassName = 'F3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace F3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' implements \\F3\\FLOW3\\Persistence\\Aspect\\PersistenceMagicInterface {
-			public function FLOW3_Persistence_isClone() { return FALSE; }
-			public function FLOW3_AOP_Proxy_getProperty($name) {}
-			public function FLOW3_AOP_Proxy_getProxyTargetClassName() {}
-			public function __clone() {}
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractEntity {
 		}');
-		$object = $this->getMock($fullClassName);
-
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue('123'));
+		$object = $this->getAccessibleMock($className, array('dummy'));
+		$object->_set('uid', 123);
 
 		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
 		$viewHelper->expects($this->any())->method('prefixFieldName')->with('theName')->will($this->returnValue('prefix[theName]'));
-		$viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
 		$this->assertSame($expectedResult, $actualResult);
@@ -61,52 +53,19 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_AbstractFormViewHelperTest extends Tx
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone() { $this->markTestIncomplete("Works differently in v4. Thus, this test does not work"); return;
+	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone() {
 		$className = 'Object' . uniqid();
-		$fullClassName = 'F3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace F3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' implements \\F3\\FLOW3\\Persistence\\Aspect\\PersistenceMagicInterface {
-			public function FLOW3_Persistence_isClone() { return TRUE; }
-			public function FLOW3_AOP_Proxy_getProperty($name) {}
-			public function FLOW3_AOP_Proxy_getProxyTargetClassName() {}
-			public function __clone() {}
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractEntity {
 		}');
-		$object = $this->getMock($fullClassName);
+		$object = $this->getAccessibleMock($className, array('dummy'));
+		$object->_set('uid', 123);
 
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue('123'));
+		$object = clone $object;
 
 		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
 		$viewHelper->expects($this->any())->method('prefixFieldName')->with('theName')->will($this->returnValue('prefix[theName]'));
-		$viewHelper->_set('persistenceManager', $mockPersistenceManager);
-
-		$actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
-		$this->assertSame($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function renderHiddenIdentityFieldReturnsACommentIfTheObjectIsWithoutIdentity() { $this->markTestIncomplete("Works differently in v4. Thus, this test does not work"); return;
-		$className = 'Object' . uniqid();
-		$fullClassName = 'F3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace F3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' implements \\F3\\FLOW3\\Persistence\\Aspect\\PersistenceMagicInterface {
-			public function FLOW3_Persistence_isClone() { return FALSE; }
-			public function FLOW3_AOP_Proxy_getProperty($name) {}
-			public function FLOW3_AOP_Proxy_getProxyTargetClassName() {}
-			public function __clone() {}
-		}');
-		$object = $this->getMock($fullClassName);
-
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue(NULL));
-
-		$expectedResult = chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
-
-		$viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
-		$viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
 		$this->assertSame($expectedResult, $actualResult);

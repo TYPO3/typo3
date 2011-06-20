@@ -217,7 +217,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 	public function convertArgumentValueCallsConvertToBooleanForArgumentsOfTypeBoolean() {
 		$viewHelperNode = $this->getAccessibleMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('convertToBoolean'), array(), '', FALSE);
 		$argumentViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode', array('evaluate'), array(), '', FALSE);
-		$argumentViewHelperNode->expects($this->once())->method('evaluate')->will($this->returnValue('foo'));
+		$argumentViewHelperNode->expects($this->any())->method('evaluate')->will($this->returnValue('foo'));
 
 		$viewHelperNode->expects($this->once())->method('convertToBoolean')->with('foo')->will($this->returnValue('bar'));
 

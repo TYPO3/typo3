@@ -122,7 +122,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled() { $this->markTestIncomplete("Works differently in v4.");
+	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled() {
 
 		Tx_Fluid_Fluid::$debugMode = TRUE;
 
@@ -130,9 +130,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 			'Tx_Fluid_Core_Fixtures_TestViewHelper',
 		);
 		$reflectionService = new Tx_Extbase_Reflection_Service();
-		$reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
-		$reflectionService->setDataCache($this->getMock('Tx_Fluid_Cache_Frontend_VariableFrontend', array(), array(), '', FALSE));
-		// $reflectionService->initialize($availableClassNames);
+		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
+		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
+		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
+		$reflectionService->setDataCache($dataCacheMock);
+		// $reflectionService->buildReflectionData($availableClassNames);
 
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);
@@ -152,7 +155,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithoutDescriptionIfDebugModeIsDisabled() { $this->markTestIncomplete("Works differently in v4.");
+	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithoutDescriptionIfDebugModeIsDisabled() {
 
 		Tx_Fluid_Fluid::$debugMode = FALSE;
 
@@ -160,9 +163,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 			'Tx_Fluid_Core_Fixtures_TestViewHelper',
 		);
 		$reflectionService = new Tx_Extbase_Reflection_Service();
-		$reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
-		$reflectionService->setDataCache($this->getMock('Tx_Fluid_Cache_Frontend_VariableFrontend', array(), array(), '', FALSE));
-		// $reflectionService->initialize($availableClassNames);
+		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
+		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
+		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
+		$reflectionService->setDataCache($dataCacheMock);
+		// $reflectionService->buildReflectionData($availableClassNames);
 
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);

@@ -105,7 +105,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->setArguments($this->arguments);
 		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper) {
-			$viewHelper->_set('tag', $this->tagBuilder);
+			$viewHelper->injectTagBuilder($this->tagBuilder);
 		}
 	}
 }
