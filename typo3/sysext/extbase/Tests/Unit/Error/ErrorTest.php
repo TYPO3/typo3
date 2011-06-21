@@ -1,7 +1,7 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the Extbase framework                           *
+ * This script belongs to the Extbase framework.                            *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License as published by the *
@@ -21,20 +21,33 @@
  *                                                                        */
 
 /**
- */
-
-/**
- * An object representation of a generic error. Subclass this to create
- * more specific errors if necessary.
+ * Testcase for the Error object
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
  */
-class Tx_Extbase_Error_Error extends Tx_Extbase_Error_Message {
+class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var string
+	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	protected $message = 'Unknown error';
+	public function theConstructorSetsTheErrorMessageCorrectly() {
+		$errorMessage = 'The message';
+		$error = new Tx_Extbase_Error_Error($errorMessage, 0);
+
+		$this->assertEquals($errorMessage, $error->getMessage());
+	}
+
+	/**
+	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 */
+	public function theConstructorSetsTheErrorCodeCorrectly() {
+		$errorCode = 123456789;
+		$error = new Tx_Extbase_Error_Error('', $errorCode);
+
+		$this->assertEquals($errorCode, $error->getCode());
+	}
 }
+
 ?>

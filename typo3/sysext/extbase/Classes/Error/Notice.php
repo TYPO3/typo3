@@ -24,17 +24,18 @@
  */
 
 /**
- * An object representation of a generic error. Subclass this to create
- * more specific errors if necessary.
+ * An object representation of a generic notice. Subclass this to create
+ * more specific notices if necessary.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Error_Error extends Tx_Extbase_Error_Message {
+class Tx_Extbase_Error_Notice extends Tx_Extbase_Error_Message {
 
 	/**
 	 * @var string
 	 */
-	protected $message = 'Unknown error';
+	protected $message = 'Unknown notice';
 }
+
 ?>
