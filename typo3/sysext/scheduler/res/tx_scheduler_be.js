@@ -93,8 +93,17 @@ function actOnChangeSchedulerTableGarbageCollectionAllTables(theCheckbox) {
 		Ext.fly('task_tableGarbageCollection_table').set({disabled: 'disabled'});
 		Ext.fly('task_tableGarbageCollection_numberOfDays').set({disabled: 'disabled'});
 	} else {
+			// Get number of days for selected table
+		var numberOfDays = Ext.fly('task_tableGarbageCollection_numberOfDays').getValue();
+		if (numberOfDays < 1) {
+			var selectedTable = Ext.fly('task_tableGarbageCollection_table').getValue();
+			if (typeof(defaultNumberOfDays[selectedTable]) != 'undefined') {
+				numberOfDays = defaultNumberOfDays[selectedTable];
+			}
+		}
+
 		Ext.fly('task_tableGarbageCollection_table').dom.removeAttribute('disabled');
-		if (Ext.fly('task_tableGarbageCollection_numberOfDays').getValue() > 0) {
+		if (numberOfDays > 0) {
 			Ext.fly('task_tableGarbageCollection_numberOfDays').dom.removeAttribute('disabled');
 		}
 	}
