@@ -32,6 +32,7 @@
  * @subpackage Property
  * @version $Id$
  * @scope prototype
+ * @deprecated since Extbase 1.4.0
  */
 class Tx_Extbase_Property_MappingResults {
 

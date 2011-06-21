@@ -332,6 +332,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @return integer one of the ORIGIN_* constants
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 */
 	public function getOrigin() {
 		return $this->origin;

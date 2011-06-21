@@ -59,6 +59,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 
 	/**
 	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	protected $hmacVerified = FALSE;
 
@@ -152,6 +153,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	public function setHmacVerified($hmacVerified) {
 		$this->hmacVerified = (boolean)$hmacVerified;
@@ -162,6 +164,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 *
 	 * @return boolean TRUE if request could be verified, FALSE otherwise
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	public function isHmacVerified() {
 		return $this->hmacVerified;

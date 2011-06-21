@@ -49,6 +49,7 @@
  * @subpackage Property
  * @version $Id$
  * @api
+ * @deprecated since Extbase 1.4.0
  */
 class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 
