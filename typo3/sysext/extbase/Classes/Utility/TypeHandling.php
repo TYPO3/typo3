@@ -38,6 +38,11 @@ class Tx_Extbase_Utility_TypeHandling {
 	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|array|ArrayObject|SplObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9_]+)>)?/';
 
 	/**
+	 * A type pattern to detect literal types.
+	 */
+	const LITERAL_TYPE_PATTERN = '/^(?:integer|int|float|double|boolean|bool|string)$/';
+
+	/**
 	 * Adds (defines) a specific property and its type.
 	 *
 	 * @param string $type Type of the property (see PARSE_TYPE_PATTERN)
@@ -85,6 +90,25 @@ class Tx_Extbase_Utility_TypeHandling {
 		}
 		return $type;
 	}
-	
+
+	/**
+	 * Returns TRUE if the $type is a literal.
+	 *
+	 * @param string $type
+	 * @return boolean
+	 */
+	static public function isLiteral($type) {
+		return preg_match(self::LITERAL_TYPE_PATTERN, $type) === 1;
+	}
+
+	/**
+	 * Returns TRUE if the $type is a simple type.
+	 *
+	 * @param string $type
+	 * @return boolean
+	 */
+	static public function isSimpleType($type) {
+		return in_array(self::normalizeType($type), array('array', 'string', 'float', 'integer', 'boolean'), TRUE);
+	}
 }
 ?>
