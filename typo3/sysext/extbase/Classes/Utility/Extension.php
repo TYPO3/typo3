@@ -266,6 +266,20 @@ tt_content.' . $pluginSignature . ' {
 	}
 
 	/**
+	 * Register a type converter by class name.
+	 *
+	 * @param string $typeConverterClassName
+	 * @return void
+	 * @api
+	 */
+	static public function registerTypeConverter($typeConverterClassName) {
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = array();
+		}
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
+	}
+
+	/**
 	 * Returns a given CamelCasedString as an lowercase string with underscores.
 	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
 	 *
