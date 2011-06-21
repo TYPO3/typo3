@@ -32,6 +32,11 @@
 class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 
 	/**
+	 * @var array Default number of days by table
+	 */
+	protected $defaultNumberOfDays = array();
+
+	/**
 	 * Add addional fields
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
@@ -40,11 +45,26 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
+		$this->initDefaultNumberOfDays();
 		$additionalFields['task_tableGarbageCollection_allTables'] = $this->getAllTablesAdditionalField($taskInfo, $task, $parentObject);
 		$additionalFields['task_tableGarbageCollection_table'] = $this->getTableAdditionalField($taskInfo, $task, $parentObject);
 		$additionalFields['task_tableGarbageCollection_numberOfDays'] = $this->getNumberOfDaysAdditionalField($taskInfo, $task, $parentObject);
 
 		return $additionalFields;
+	}
+
+	/**
+	 * Initialize the default number of days for all configured tables
+	 * 
+	 * @return void
+	 */
+	protected function initDefaultNumberOfDays() {
+		$tableConfiguration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'];
+		foreach ($tableConfiguration as $tableName => $configuration) {
+			if (isset($configuration['expirePeriod'])) {
+				$this->defaultNumberOfDays[$tableName] = $configuration['expirePeriod'];
+			}
+		}
 	}
 
 	/**
@@ -99,25 +119,15 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 			$options[] = '<option value="" selected="selected"></option>';
 		}
 
-		$defaultNumberOfDays = array();
 		foreach ($tableConfiguration as $tableName => $configuration) {
 			if ($parentObject->CMD === 'add' && count($options) === 0) {
 					// Select first table by default if adding a new task
 				$options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
-				if (isset($configuration['expirePeriod'])) {
-					$defaultNumberOfDays[$tableName] = $configuration['expirePeriod'];
-				}
 			} elseif ($task->table === $tableName) {
 					// Select currently selected table
 				$options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
-				if (isset($configuration['expirePeriod'])) {
-					$defaultNumberOfDays[$tableName] = $task->numberOfDays;
-				}
 			} else {
 				$options[] = '<option value="' . $tableName . '">' . $tableName . '</option>';
-				if (isset($configuration['expirePeriod'])) {
-					$defaultNumberOfDays[$tableName] = $configuration['expirePeriod'];
-				}
 			}
 		}
 
@@ -137,7 +147,7 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 			'</select>';
 			// Add js array for default 'number of days' values
 		$fieldHtml[] = '<script type="text/javascript">/*<![CDATA[*/<!--';
-		$fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($defaultNumberOfDays) . ';';
+		$fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
 		$fieldHtml[] = '// -->/*]]>*/</script>';
 
 		$fieldConfiguration = array(
@@ -168,7 +178,7 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 			} elseif ($parentObject->CMD === 'edit') {
 					// In case of editing the task, set to currently selected value
 				$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] = $task->numberOfDays;
-				if ($task->numberOfDays === 0) {
+				if ($task->numberOfDays === 0 && !isset($this->defaultNumberOfDays[$task->table])) {
 					$disabled = ' disabled="disabled"';
 				}
 			}
