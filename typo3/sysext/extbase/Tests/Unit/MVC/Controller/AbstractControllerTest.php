@@ -219,7 +219,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 	}
 
 	/**
+	 * This test checks @deprecated behavior.
 	 * @test
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 */
 	public function mapRequestArgumentsToControllerArgumentsPreparesInformationAndValidatorsAndMapsAndValidates() {
 		$mockValidator = $this->getMock('Tx_Extbase_MVC_Controller_ArgumentsValidator');
@@ -242,20 +244,24 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 
 		$mockMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults');
 
-		$mockPropertyMapper = $this->getMock('Tx_Extbase_Property_Mapper', array(), array(), '', FALSE);
-		$mockPropertyMapper->expects($this->once())->method('mapAndValidate')
+		$mockDeprecatedPropertyMapper = $this->getMock('Tx_Extbase_Property_Mapper', array(), array(), '', FALSE);
+		$mockDeprecatedPropertyMapper->expects($this->once())->method('mapAndValidate')
 			->with(array('foo', 'bar'), array('requestFoo', 'requestBar'), $mockArguments, array(), $mockValidator)
 			->will($this->returnValue(TRUE));
-		$mockPropertyMapper->expects($this->once())->method('getMappingResults')->will($this->returnValue($mockMappingResults));
+		$mockDeprecatedPropertyMapper->expects($this->once())->method('getMappingResults')->will($this->returnValue($mockMappingResults));
 
 		$controller = $this->getAccessibleMock(
 			'Tx_Extbase_MVC_Controller_AbstractController',
 			array('dummy'), array(), '', FALSE
 		);
 
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
+		$controller->_set('configurationManager', $mockConfigurationManager);
+
 		$controller->_set('arguments', $mockArguments);
 		$controller->_set('request', $mockRequest);
-		$controller->_set('propertyMapper', $mockPropertyMapper);
+		$controller->_set('deprecatedPropertyMapper', $mockDeprecatedPropertyMapper);
 		$controller->_set('objectManager', $mockObjectManager);
 
 		$controller->_call('mapRequestArgumentsToControllerArguments');

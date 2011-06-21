@@ -42,5 +42,29 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 		$request->setIsCached(TRUE);
 		$this->assertTrue($request->isCached());
 	}
+
+	/**
+	 * @test
+	 */
+	public function getReferringRequestShouldReturnNullByDefault() {
+		$request = new Tx_Extbase_MVC_Web_Request();
+		$this->assertNull($request->getReferringRequest());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getReferringRequestShouldReturnCorrectlyBuiltReferringRequest() {
+		$request = new Tx_Extbase_MVC_Web_Request();
+		$request->setArgument('__referrer', array(
+			'@controller' => 'Foo',
+			'@action' => 'bar'
+		));
+		$referringRequest = $request->getReferringRequest();
+		$this->assertNotNull($referringRequest);
+
+		$this->assertAttributeEquals('Foo', 'controllerName', $referringRequest);
+		$this->assertAttributeEquals('bar', 'controllerActionName', $referringRequest);
+	}
 }
 ?>

@@ -32,6 +32,7 @@
  * @subpackage MVC\Controller
  * @version $ID:$
  * @scope prototype
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. Is only needed for old property mapper.
  */
 class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation_Validator_AbstractObjectValidator {
 

@@ -185,7 +185,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
-			if ($dataType === NULL) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('The argument type for parameter "' . $parameterName . '" could not be detected.', 1253175643);
+			if ($dataType === NULL) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->actionMethodName . '() could not be detected.' , 1253175643);
 
 			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
 
@@ -206,12 +206,17 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function initializeActionMethodValidators() {
+		// TODO: still needs to be modified
 		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
 
 		$dontValidateAnnotations = array();
-		$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-		if (isset($methodTagsValues['dontvalidate'])) {
-			$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
+
+		if (!$this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+				// If the rewritten property mapper is *enabled*, we do not support @dontvalidate annotation, thus $dontValidateAnnotations stays empty.
+			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+			if (isset($methodTagsValues['dontvalidate'])) {
+				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
+			}
 		}
 
 		foreach ($this->arguments as $argument) {
@@ -251,21 +256,62 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function callActionMethod() {
-		$argumentsAreValid = TRUE;
-		$preparedArguments = array();
-		foreach ($this->arguments as $argument) {
-			$preparedArguments[] = $argument->getValue();
+		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+				// enabled since Extbase 1.4.0.
+			$preparedArguments = array();
+			foreach ($this->arguments as $argument) {
+				$preparedArguments[] = $argument->getValue();
+			}
+
+			$validationResult = $this->arguments->getValidationResults();
+
+			if (!$validationResult->hasErrors()) {
+				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+			} else {
+				$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+				$ignoreValidationAnnotations = array();
+				if (isset($methodTagsValues['ignorevalidation'])) {
+					$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
+				}
+
+					// if there exists more errors than in ignoreValidationAnnotations_=> call error method
+					// else => call action method
+				$shouldCallActionMethod = TRUE;
+				foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
+					if (!$subValidationResult->hasErrors()) continue;
+
+					if (array_search($argumentName, $ignoreValidationAnnotations) !== FALSE) continue;
+
+					$shouldCallActionMethod = FALSE;
+				}
+
+				if ($shouldCallActionMethod) {
+					$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+				} else {
+					$actionResult = call_user_func(array($this, $this->errorMethodName));
+				}
+			}
+		} else {
+				// @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
+			$argumentsAreValid = TRUE;
+			$preparedArguments = array();
+			foreach ($this->arguments as $argument) {
+				$preparedArguments[] = $argument->getValue();
+			}
+
+			if ($this->argumentsMappingResults->hasErrors()) {
+				$actionResult = call_user_func(array($this, $this->errorMethodName));
+			} else {
+				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+			}
 		}
 
-		if ($this->argumentsMappingResults->hasErrors()) {
-			$actionResult = call_user_func(array($this, $this->errorMethodName));
-		} else {
-			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-		}
 		if ($actionResult === NULL && $this->view instanceof Tx_Extbase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
+		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
+			$this->response->appendContent((string)$actionResult);
 		}
 	}
 
@@ -394,27 +440,54 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function errorAction() {
-		$this->request->setErrors($this->argumentsMappingResults->getErrors());
 		$this->clearCacheOnError();
 
-		$errorFlashMessage = $this->getErrorFlashMessage();
-		if ($errorFlashMessage !== FALSE) {
-			$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
-		}
+		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+			$errorFlashMessage = $this->getErrorFlashMessage();
+			if ($errorFlashMessage !== FALSE) {
+				$this->flashMessageContainer->add($errorFlashMessage);
+			}
 
-		if ($this->request->hasArgument('__referrer')) {
-			$referrer = $this->request->getArgument('__referrer');
-			$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
-		}
+			$referringRequest = $this->request->getReferringRequest();
+			if ($referringRequest !== NULL) {
+				$originalRequest = clone $this->request;
+				$this->request->setOriginalRequest($originalRequest);
+				$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
 
-		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-		foreach ($this->argumentsMappingResults->getErrors() as $error) {
-			$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
+				$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+			}
+
+			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+			foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
+				foreach ($errors as $error) {
+					$message .= 'Error for ' . $propertyPath . ':  ' . $error->getMessage() . PHP_EOL;
+				}
+			}
+
+			return $message;
+		} else {
+				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+			$this->request->setErrors($this->argumentsMappingResults->getErrors());
+
+			$errorFlashMessage = $this->getErrorFlashMessage();
+			if ($errorFlashMessage !== FALSE) {
+				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
+			}
+
+			$referrer = $this->request->getInternalArgument('__referrer');
+			if ($referrer !== NULL) {
+				$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
+			}
+
+			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+			foreach ($this->argumentsMappingResults->getErrors() as $error) {
+				$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
+			}
+			foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
+				$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
+			}
+			return $message;
 		}
-		foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
-			$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
-		}
-		return $message;
 	}
 
 	/**
@@ -437,8 +510,13 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash In case request hash checking failed
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 */
 	protected function checkRequestHash() {
+		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+				// If the new property mapper is enabled, the request hash is not needed anymore.
+			return;
+		}
 		if (!($this->request instanceof Tx_Extbase_MVC_Web_Request)) return; // We only want to check it for now for web requests.
 		if ($this->request->isHmacVerified()) return; // all good
 

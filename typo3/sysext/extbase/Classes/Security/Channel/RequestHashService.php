@@ -129,11 +129,11 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function verifyRequest(Tx_Extbase_MVC_Web_Request $request) {
-		if (!$request->hasArgument('__hmac')) {
+		if (!$request->getInternalArgument('__hmac')) {
 			$request->setHmacVerified(FALSE);
 			return;
 		}
-		$hmac = $request->getArgument('__hmac');
+		$hmac = $request->getInternalArgument('__hmac');
 		if (strlen($hmac) < 40) {
 			throw new Tx_Extbase_Security_Exception_SyntacticallyWrongRequestHash('Request hash too short. This is a probably manipulation attempt!', 1255089361);
 		}

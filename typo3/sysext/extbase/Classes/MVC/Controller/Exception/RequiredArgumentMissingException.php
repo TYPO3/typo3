@@ -25,28 +25,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * This object holds validation errors for one argument.
+ * An "Invalid Argument Name" exception
  *
  * @package Extbase
- * @subpackage MVC\Controller
+ * @subpackage MVC\Exception
  * @version $Id$
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
  */
-class Tx_Extbase_MVC_Controller_ArgumentError extends Tx_Extbase_Validation_PropertyError {
+class Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException extends Tx_Extbase_MVC_Exception {
 
-	/**
-	 * @var string The default (english) error message.
-	 */
-	protected $message = 'Validation errors for argument "%s"';
-
-	/**
-	 * @var string The error code
-	 */
-	protected $code = 1245107351;
 }
-
 ?>

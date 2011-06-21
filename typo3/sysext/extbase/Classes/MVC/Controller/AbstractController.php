@@ -75,8 +75,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 	/**
 	 * @var Tx_Extbase_Property_Mapper
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
-	protected $propertyMapper;
+	protected $deprecatedPropertyMapper;
 
 	/**
 	 * @var Tx_Extbase_Validation_ValidatorResolver
@@ -92,6 +93,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * The results of the mapping of request arguments to controller arguments
 	 * @var Tx_Extbase_Property_MappingResults
 	 * @api
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	protected $argumentsMappingResults;
 
@@ -124,7 +126,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $flashMessageContainer;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -136,10 +138,10 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManager $configurationManager
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManager $configurationManager) {
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
@@ -147,11 +149,12 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Injects the property mapper
 	 *
-	 * @param Tx_Extbase_Property_Mapper $propertyMapper The property mapper
+	 * @param Tx_Extbase_Property_Mapper $deprecatedPropertyMapper The property mapper
 	 * @return void
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
-	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
-		$this->propertyMapper = $propertyMapper;
+	public function injectDeprecatedPropertyMapper(Tx_Extbase_Property_Mapper $deprecatedPropertyMapper) {
+		$this->deprecatedPropertyMapper = $deprecatedPropertyMapper;
 	}
 
 	/**
@@ -386,16 +389,29 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return void
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
-		$optionalPropertyNames = array();
-		$allPropertyNames = $this->arguments->getArgumentNames();
-		foreach ($allPropertyNames as $propertyName) {
-			if ($this->arguments[$propertyName]->isRequired() === FALSE) $optionalPropertyNames[] = $propertyName;
+		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+			foreach ($this->arguments as $argument) {
+				$argumentName = $argument->getName();
+
+				if ($this->request->hasArgument($argumentName)) {
+					$argument->setValue($this->request->getArgument($argumentName));
+				} elseif ($argument->isRequired()) {
+					throw new Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException('Required argument "' . $argumentName  . '" is not set.', 1298012500);
+				}
+			}
+		} else {
+			// @deprecated since Extbase 1.4, will be removed in Extbase 1.6
+			$optionalPropertyNames = array();
+			$allPropertyNames = $this->arguments->getArgumentNames();
+			foreach ($allPropertyNames as $propertyName) {
+				if ($this->arguments[$propertyName]->isRequired() === FALSE) $optionalPropertyNames[] = $propertyName;
+			}
+
+			$validator = $this->objectManager->create('Tx_Extbase_MVC_Controller_ArgumentsValidator');
+			$this->deprecatedPropertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
+
+			$this->argumentsMappingResults = $this->deprecatedPropertyMapper->getMappingResults();
 		}
-
-		$validator = $this->objectManager->create('Tx_Extbase_MVC_Controller_ArgumentsValidator');
-		$this->propertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
-
-		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();
 	}
 }
 ?>

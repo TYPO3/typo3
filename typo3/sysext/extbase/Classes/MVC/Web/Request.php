@@ -200,5 +200,28 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	public function isCached() {
 		return $this->isCached;
 	}
+
+	/**
+	 * Get a freshly built request object pointing to the Referrer.
+	 *
+	 * @return Request the referring request, or NULL if no referrer found
+	 */
+	public function getReferringRequest() {
+		if (isset($this->internalArguments['__referrer']) && is_array($this->internalArguments['__referrer'])) {
+			$referrerArray = $this->internalArguments['__referrer'];
+
+			$referringRequest = new Tx_Extbase_MVC_Web_Request;
+
+			$arguments = array();
+			if (isset($referrerArray['arguments'])) {
+				$arguments = unserialize($referrerArray['arguments']);
+				unset($referrerArray['arguments']);
+			}
+
+			$referringRequest->setArguments(Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($arguments, $referrerArray));
+			return $referringRequest;
+		}
+		return NULL;
+	}
 }
 ?>

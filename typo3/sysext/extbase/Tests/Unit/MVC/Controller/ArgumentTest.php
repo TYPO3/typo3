@@ -1,43 +1,82 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
+/*                                                                        *
+ * This script belongs to the Extbase framework.                            *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
+
+/**
+ * Testcase for the MVC Controller Argument
+ *
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @covers Tx_Extbase_MVC_Controller_Argument
+ */
 class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_Argument
+	 */
+	protected $simpleValueArgument;
+
+	/**
+	 * @var Tx_Extbase_MVC_Controller_Argument
+	 */
+	protected $objectArgument;
+
+	protected $mockPropertyMapper;
+	protected $mockConfigurationBuilder;
+	protected $mockConfiguration;
+
+	/**
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setUp() {
+		$this->simpleValueArgument = new Tx_Extbase_MVC_Controller_Argument('someName', 'string');
+		$this->objectArgument = new Tx_Extbase_MVC_Controller_Argument('someName', 'DateTime');
+
+		$this->mockPropertyMapper = $this->getMock('Tx_Extbase_Property_PropertyMapper');
+		$this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
+		$this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
+
+		$this->mockConfigurationBuilder = $this->getMock('Tx_Extbase_Property_PropertyMappingConfigurationBuilder');
+		$this->mockConfiguration = $this->getMock('Tx_Extbase_Property_PropertyMappingConfigurationInterface');
+		$this->mockConfigurationBuilder->expects($this->any())->method('build')->with('Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration')->will($this->returnValue($this->mockConfiguration));
+
+		$this->simpleValueArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
+		$this->objectArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
+
+		$this->simpleValueArgument->initializeObject();
+		$this->objectArgument->initializeObject();
+	}
+
+	/**
 	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 * @expectedException InvalidArgumentException
 	 */
 	public function constructingArgumentWithoutNameThrowsException() {
-		new Tx_Extbase_MVC_Controller_Argument(NULL, 'Text');
+		new Tx_Extbase_MVC_Controller_Argument('', 'Text');
 	}
 
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function constructingArgumentWithInvalidNameThrowsException() {
 		new Tx_Extbase_MVC_Controller_Argument(new ArrayObject(), 'Text');
@@ -45,163 +84,173 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 
 	/**
 	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function passingDataTypeToConstructorReallySetsTheDataType() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Number');
-		$this->assertEquals('Number', $argument->getDataType(), 'The specified data type has not been set correctly.');
+		$this->assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
+		$this->assertEquals('someName', $this->simpleValueArgument->getName(), 'The specified name has not been set correctly.');
 	}
 
 	/**
 	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortNameProvidesFluentInterface() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$returnedArgument = $argument->setShortName('x');
-		$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
+		$returnedArgument = $this->simpleValueArgument->setShortName('x');
+		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+	}
+
+	public function invalidShortNames() {
+		return array(
+			array(''),
+			array('as'),
+			array(5)
+		);
+	}
+	/**
+	 * @test
+	 * @dataProvider invalidShortNames
+	 * @expectedException InvalidArgumentException
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function shortNameShouldThrowExceptionIfInvalid($invalidShortName) {
+		$this->simpleValueArgument->setShortName($invalidShortName);
 	}
 
 	/**
 	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function shortNameCanBeRetrievedAgain() {
+		$this->simpleValueArgument->setShortName('x');
+		$this->assertEquals('x', $this->simpleValueArgument->getShortName());
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setRequiredShouldProvideFluentInterfaceAndReallySetRequiredState() {
+		$returnedArgument = $this->simpleValueArgument->setRequired(TRUE);
+		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+		$this->assertTrue($this->simpleValueArgument->isRequired());
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setDefaultValueShouldProvideFluentInterfaceAndReallySetDefaultValue() {
+		$returnedArgument = $this->simpleValueArgument->setDefaultValue('default');
+		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+		$this->assertSame('default', $this->simpleValueArgument->getDefaultValue());
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator() {
+		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface');
+		$returnedArgument = $this->simpleValueArgument->setValidator($mockValidator);
+		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+		$this->assertSame($mockValidator, $this->simpleValueArgument->getValidator());
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValueProvidesFluentInterface() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$returnedArgument = $argument->setValue('x');
-		$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
+		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
+		$returnedArgument = $this->simpleValueArgument->setValue(NULL);
+		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
+
 
 	/**
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesNullAsIs() {
-		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('transformValue'), array('dummy', 'ArrayObject'));
-		$argument->expects($this->never())->method('transformValue');
-		$argument->setValue(NULL);
+		$this->simpleValueArgument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'string');
+		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
+		$this->simpleValueArgument->setValue(NULL);
+		$this->assertNull($this->simpleValueArgument->getValue());
 	}
 
 	/**
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	*/
+	 */
 	public function setValueUsesMatchingInstanceAsIs() {
-		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('transformValue'), array('dummy', 'ArrayObject'));
-		$argument->expects($this->never())->method('transformValue');
-		$argument->setValue(new ArrayObject());
+		$this->enableRewrittenPropertyMapperInArgument($this->objectArgument);
+		$this->mockPropertyMapper->expects($this->never())->method('convert');
+		$this->objectArgument->setValue(new DateTime());
+	}
+
+	protected function setupPropertyMapperAndSetValue() {
+		$this->mockPropertyMapper->expects($this->once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->will($this->returnValue('convertedValue'));
+		$this->mockPropertyMapper->expects($this->once())->method('getMessages')->will($this->returnValue(new Tx_Extbase_Error_Result()));
+		return $this->simpleValueArgument->setValue('someRawValue');
 	}
 
 	/**
 	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setValueTriesToConvertAnUidIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
-		$object = new StdClass();
-
-		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
-		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
-		$argument->_set('dataTypeClassSchema', 'stdClass');
-		$argument->_set('dataType', 'stdClass');
-		// $argument->_set('queryFactory', $mockQueryFactory);
-		$argument->setValue('42');
-
-		$this->assertSame($object, $argument->_get('value'));
-		$this->assertSame(Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, $argument->getOrigin());
-	}
-
-
-	/**
-	 * @test
-	 */
-	public function toStringReturnsTheStringVersionOfTheArgumentsValue() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$argument->setValue(123);
-
-		$this->assertSame((string)$argument, '123', 'The returned argument is not a string.');
-		$this->assertNotSame((string)$argument, 123, 'The returned argument is identical to the set value.');
+	public function setValueShouldCallPropertyMapperCorrectlyAndStoreResultInValue() {
+		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
+		$this->setupPropertyMapperAndSetValue();
+		$this->assertSame('convertedValue', $this->simpleValueArgument->getValue());
+		$this->assertTrue($this->simpleValueArgument->isValid());
 	}
 
 	/**
 	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function dataTypeValidatorCanBeAFullClassName() {
-		$this->markTestIncomplete();
-
-		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
-		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
-
-		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Tx_Extbase_Validation_Validator_TextValidator');
-		$argument->injectObjectManager($this->mockObjectManager);
-
-		$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
+	public function setValueShouldBeFluentInterface() {
+		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
+		$this->assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
 	}
 
 	/**
 	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function dataTypeValidatorCanBeAShortName() {
-		$this->markTestIncomplete();
+	public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed() {
+		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
+		$error = new Tx_Extbase_Error_Error('Some Error', 1234);
 
-		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
-		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
+		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
+		$validationMessages = new Tx_Extbase_Error_Result();
+		$validationMessages->addError($error);
+		$mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));
 
-		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Text');
-		$argument->injectObjectManager($this->mockObjectManager);
-
-		$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
+		$this->simpleValueArgument->setValidator($mockValidator);
+		$this->setupPropertyMapperAndSetValue();
+		$this->assertFalse($this->simpleValueArgument->isValid());
+		$this->assertEquals(array($error), $this->simpleValueArgument->getValidationResults()->getErrors());
 	}
 
 	/**
 	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setNewValidatorConjunctionCreatesANewValidatorConjunctionObject() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$mockConjunctionValidator = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator');
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Validation_Validator_ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
-		$argument->injectObjectManager($mockObjectManager);
-		$argument->setNewValidatorConjunction(array());
-		$this->assertSame($mockConjunctionValidator, $argument->getValidator());
+	public function defaultPropertyMappingConfigurationShouldBeFetchable() {
+		$this->assertSame($this->mockConfiguration, $this->simpleValueArgument->getPropertyMappingConfiguration());
 	}
 
 	/**
-	 * @test
+	 * Helper which enables the new property mapper in the Argument class.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_Argument $argument
 	 */
-	public function setNewValidatorConjunctionAddsThePassedValidatorsToTheCreatedValidatorChain() {
-		eval('class Validator1 implements Tx_Extbase_Validation_Validator_ValidatorInterface {
-			public function isValid($value) {}
-			public function setOptions(array $validationOptions) {}
-			public function getErrors() {}
-		}');
-		eval('class Validator2 implements Tx_Extbase_Validation_Validator_ValidatorInterface {
-			public function isValid($value) {}
-			public function setOptions(array $validationOptions) {}
-			public function getErrors() {}
-		}');
-
-		$validator1 = new Validator1;
-		$validator2 = new Validator2;
-
-		$mockValidatorConjunction = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator');
-		$mockValidatorConjunction->expects($this->at(0))->method('addValidator')->with($validator1);
-		$mockValidatorConjunction->expects($this->at(1))->method('addValidator')->with($validator2);
-
-		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->never())->method('create');
-		$mockObjectManager->expects($this->at(0))->method('get')->with('Validator1')->will($this->returnValue($validator1));
-		$mockObjectManager->expects($this->at(1))->method('get')->with('Validator2')->will($this->returnValue($validator2));
-		$argument->injectObjectManager($mockObjectManager);
-		$argument->_set('validator', $mockValidatorConjunction);
-		$argument->setNewValidatorConjunction(array('Validator1', 'Validator2'));
+	protected function enableRewrittenPropertyMapperInArgument(Tx_Extbase_MVC_Controller_Argument $argument) {
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
+		$argument->injectConfigurationManager($mockConfigurationManager);
 	}
-
-	/**
-	 * @test
-	 */
-	public function settingDefaultValueReallySetsDefaultValue() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
-		$argument->setDefaultValue(42);
-
-		$this->assertEquals(42, $argument->getValue(), 'The default value was not stored in the Argument.');
-	}
-
 }
 ?>

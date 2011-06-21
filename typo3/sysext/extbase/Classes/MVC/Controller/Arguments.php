@@ -261,5 +261,27 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 		}
 		$this->argumentNames = array();
 	}
+
+	/**
+	 * Get all property mapping / validation errors
+	 *
+	 * @return Tx_Extbase_Error_Result
+	 */
+	public function getValidationResults() {
+		$results = new Tx_Extbase_Error_Result();
+
+		foreach ($this as $argument) {
+			$argumentValidationResults = $argument->getValidationResults();
+			if ($argumentValidationResults === NULL) {
+				continue;
+			}
+
+			$results
+				->forProperty($argument->getName())
+				->merge($argumentValidationResults);
+		}
+
+		return $results;
+	}
 }
 ?>

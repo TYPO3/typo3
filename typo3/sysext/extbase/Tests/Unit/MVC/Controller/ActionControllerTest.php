@@ -75,6 +75,8 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 			'resolveView', 'initializeView', 'callActionMethod'),
 			array(), '', FALSE);
 
+		$this->enableDeprecatedPropertyMapperInController($mockController);
+
 		$mockController->_set('objectManager', $mockObjectManager);
 		$mockController->expects($this->at(0))->method('resolveActionMethodName')->will($this->returnValue('fooAction'));
 		$mockController->expects($this->at(1))->method('initializeActionMethodArguments');
@@ -107,6 +109,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('response', $mockResponse);
@@ -135,6 +138,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction');
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('response', $mockResponse);
@@ -161,6 +165,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(TRUE));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('barAction', 'initializeAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('barAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('response', $mockResponse);
@@ -189,6 +194,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->with('Default value');
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('response', $mockResponse);
@@ -413,6 +419,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 */
 	public function initializeActionMethodValidatorsCorrectlyRegistersValidatorsBasedOnDataType() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
@@ -448,6 +455,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 */
 	public function initializeActionMethodValidatorsRegistersModelBasedValidators() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getDataType'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
@@ -488,6 +496,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 */
 	public function initializeActionMethodValidatorsDoesNotRegisterModelBasedValidatorsIfDontValidateAnnotationIsSet() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getDataType'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
@@ -526,7 +535,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function defaultErrorActionSetsArgumentMappingResultsErrorsInRequest() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
 		$mockFlashMessages = $this->getMock('Tx_Extbase_MVC_Controller_FlashMessages', array(), array(), '', FALSE);
 
 		$mockError = $this->getMock('Tx_Extbase_Error_Error', array('getMessage'), array(), '', FALSE);
@@ -535,6 +544,8 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockArgumentsMappingResults->expects($this->any())->method('getWarnings')->will($this->returnValue(array()));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
+
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('flashMessageContainer', $mockFlashMessages);
 		$mockController->_set('argumentsMappingResults', $mockArgumentsMappingResults);
@@ -581,6 +592,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
 		if ($reflectionServiceNeedsInitialization) {
@@ -601,7 +613,6 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function checkRequestHashThrowsExceptionIfNeeded() {
-		// $this->markTestIncomplete('To be implemented');
 		$hmacVerified = FALSE;
 		$argument1Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED;
 		$argument2Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE;
@@ -616,6 +627,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
 		$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
@@ -628,5 +640,15 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockController->_call('checkRequestHash');
 	}
 
+	/**
+	 * Helper which enables the deprecated property mapper in the ActionController class.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_ActionController $actionController
+	 */
+	protected function enableDeprecatedPropertyMapperInController(Tx_Extbase_MVC_Controller_ActionController $actionController) {
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
+		$actionController->injectConfigurationManager($mockConfigurationManager);
+	}
 }
 ?>
