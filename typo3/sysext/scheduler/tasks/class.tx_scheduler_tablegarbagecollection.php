@@ -60,22 +60,17 @@ class tx_scheduler_TableGarbageCollection extends tx_scheduler_Task {
 	 */
 	public function execute() {
 		$tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'];
-		$tableHandled = FALSE;
-		foreach ($tableConfigurations as $tableName => $configuration) {
-			if ($this->allTables || $tableName === $this->table) {
-				$this->handleTable($tableName, $configuration);
-				$tableHandled = TRUE;
+
+		if ($this->allTables || ($this->table && !empty($tableConfigurations[$this->table]))) {
+			if ($this->handleTable($this->table, $tableConfigurations[$this->table])) {
+				return TRUE;
 			}
 		}
 
-		if (!$tableHandled) {
-			throw new RuntimeException(
-				'tx_scheduler_TableGarbageCollection misconfiguration: ' . $this->table . ' does not exist in configuration',
-				1308354399
-			);
-		}
-
-		return TRUE;
+		throw new RuntimeException(
+			'tx_scheduler_TableGarbageCollection misconfiguration: ' . $this->table . ' does not exist in configuration',
+			1308354399
+		);
 	}
 
 	/**
@@ -84,16 +79,16 @@ class tx_scheduler_TableGarbageCollection extends tx_scheduler_Task {
 	 * @throws RuntimeException If table configuration is broken
 	 * @param string $table The table to handle
 	 * @param array $configuration Clean up configuration
-	 * @return void
+	 * @return boolean TRUE if cleanup is successful
 	 */
 	protected function handleTable($table, array $configuration) {
-		if (isset($configuration['expireField'])) {
+		if (!empty($configuration['expireField'])) {
 			$field = $configuration['expireField'];
 			$dateLimit = $GLOBALS['EXEC_TIME'];
 				// If expire field value is 0, do not delete
 				// Expire field = 0 means no expiration
 			$where = $field . " <= '" . $dateLimit . "' AND " . $field . " > '0'";
-		} elseif (isset($configuration['dateField'])) {
+		} elseif (!empty($configuration['dateField'])) {
 			$field = $configuration['dateField'];
 			if (!$this->allTables) {
 				$deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
