@@ -49,16 +49,38 @@ TYPO3.Viewport.configuration = {
 			layout: 'fit',
 			region: 'west',
 			id: 'typo3-module-menu',
-			collapsible: false,
-			collapseMode: null,
+			collapsible: true,
+			collapseMode: 'mini',
+			//hideCollapseTool: true,
+			forceLayout: true,
+			resizeable: false,
 			floatable: true,
-			hideCollapseTool: true,
 			split: true,
 			useSplitTips: true,
 			splitTip: top.TYPO3.LLL.viewPort.tooltipModuleMenuSplit,
 			enableChildSplit: true,
-			border: false,
-			autoScroll: true
+			border: true,
+			autoScroll: true,
+			listeners : {
+				beforeCollapse: function(panel) {
+					panel.setWidth(55);
+					panel.findParentByType('viewport').doLayout();
+					panel.findParentByType('viewport').layout.west.isCollapsed = true;
+					panel.collapsed = true;
+					panel.afterEffect();					
+					panel.fireEvent('collapse', panel);
+					return false;
+				},
+				beforeExpand: function(panel) {
+					panel.collapsed = false;
+					panel.findParentByType('viewport').layout.west.isCollapsed = false;
+					panel.el.removeClass(this.collapsedCls);
+					panel.setWidth(155);
+					panel.afterEffect();
+					panel.fireEvent('expand', panel);
+					return false;
+				}
+			}
 		},
 		{
 			region: 'center',
