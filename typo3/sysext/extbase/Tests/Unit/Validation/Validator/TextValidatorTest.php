@@ -1,89 +1,77 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+
+/*                                                                        *
+ * This script belongs to the Extbase framework.                            *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
+
+require_once('AbstractValidatorTestcase.php');
 
 /**
  * Testcase for the text validator
  *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: TextValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+
+	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_TextValidator';
 
 	/**
 	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function textValidatorReturnsTrueForASimpleString() {
-		$textValidator = new Tx_Extbase_Validation_Validator_TextValidator();
-		$this->assertTrue($textValidator->isValid('this is a very simple string'));
+	public function textValidatorReturnsNoErrorForASimpleString() {
+		$this->assertFalse($this->validator->validate('this is a very simple string')->hasErrors());
 	}
 
 	/**
 	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function textValidatorAllowsTheNewLineCharacter() {
-		$sampleText = "Ierd Frot uechter mÃ¤ get, Kirmesdag Milliounen all en, sinn main StrÃ©i mÃ¤ och. \nVu dan durch jÃ©ngt grÃ©ng, ze rou Monn voll stolz. \nKe kille Minutt d'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«nter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dÃ©nen d'Gaassen eng, eng am virun geplot d'LÃ«tzebuerger, get botze rÃ«scht Blieder si. Dat Dauschen schÃ©inste Milliounen fu. Ze riede mÃ©ngem Keppchen dÃ©i, si gÃ©t fergiess erwaacht, rÃ¤ich jÃ©ngt duerch en nun. GÃ«tt Gaas d'Vullen hie hu, laacht GrÃ©nge der dÃ©. Gemaacht gehÃ©iert da aus, gutt gudden d'wÃ¤iss mat wa.";
-		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertTrue($textValidator->isValid($sampleText));
+		$sampleText = "Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d'Gaassen eng, eng am virun geplot d'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d'wäiss mat wa.";
+		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
 	}
 
 	/**
 	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function textValidatorAllowsCommonSpecialCharacters() {
 		$sampleText = "3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called 'quote'.";
-		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertTrue($textValidator->isValid($sampleText));
+		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
 	}
 
 	/**
 	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
-	public function textValidatorReturnsFalseForAStringWithHtml() {
-		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>'));
+	public function textValidatorReturnsErrorForAStringWithHtml() {
+		$this->assertTrue($this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->hasErrors());
 	}
 
 	/**
 	 * @test
-	 */
-	public function textValidatorReturnsFalseForAStringWithPercentEncodedHtml() {
-		$this->markTestIncomplete('The text validator currently allows percent encoded HTML!');
-		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($textValidator->isValid('%3cspan style="color: #BBBBBB;"%3ea nice text%3c/span%3e'));
-	}
-
-	/**
-	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
-		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
-		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
+		$expected = array(new Tx_Extbase_Validation_Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
+		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
 }
 

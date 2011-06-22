@@ -26,14 +26,32 @@
 ***************************************************************/
 
 /**
- * An abstract Object Validator
+ * Testcase for the DateTime validator
+ *
+ * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
+ * we do not break backwards compatibility.
  *
  * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+ * @subpackage extbase
+ * @version $Id: DateTimeValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-abstract class Tx_Extbase_Validation_Validator_AbstractObjectValidator extends Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_Extbase_Validation_Validator_ObjectValidatorInterface {
+class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_DateTimeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
+	/**
+	 * @test
+	 */
+	public function dateTimeValidatorReturnsTrueForAValidDateTimeObject() {
+		$dateTimeValidator = new Tx_Extbase_Validation_Validator_DateTimeValidator();
+		$this->assertTrue($dateTimeValidator->isValid(new DateTime));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
+		$dateTimeValidator = $this->getMock('Tx_Extbase_Validation_Validator_DateTimeValidator', array('addError'), array(), '', FALSE);
+		$this->assertFalse($dateTimeValidator->isValid('blah'));
+	}
 
 }
 

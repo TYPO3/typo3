@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,7 +46,13 @@ class Tx_Extbase_Validation_Validator_StringValidator extends Tx_Extbase_Validat
 	 * @api
 	 */
 	public function isValid($value) {
-		return is_string($value);
+		if(!is_string($value)) {
+			$this->addError('A valid string is expected.', 1238108067);
+			return FALSE;
+		}
+
+		return TRUE;
+
 	}
 }
 

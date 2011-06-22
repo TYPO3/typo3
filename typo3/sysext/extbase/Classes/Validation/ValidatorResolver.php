@@ -113,12 +113,14 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
 		if ($validatorClassName === FALSE) return NULL;
-		$validator = $this->objectManager->get($validatorClassName);
+		$validator = $this->objectManager->get($validatorClassName, $validatorOptions);
 		if (!($validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface)) {
 			return NULL;
 		}
-
-		$validator->setOptions($validatorOptions);
+		if (method_exists($validator, 'setOptions')) {
+				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+			$validator->setOptions($validatorOptions);
+		}
 		return $validator;
 	}
 
@@ -280,7 +282,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	/**
 	 * Removes escapings from a given argument string and trims the outermost
 	 * quotes.
-	 * 
+	 *
 	 * This method is meant as a helper for regular expression results.
 	 *
 	 * @param string &$quotedValue Value to unquote

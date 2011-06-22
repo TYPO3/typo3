@@ -21,69 +21,47 @@
  *                                                                        */
 
 require_once('AbstractValidatorTestcase.php');
-
 /**
- * Testcase for the integer validator
+ * Testcase for the string length validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_StringValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_IntegerValidator';
-
-	/**
-	 * Data provider with valid integers
-	 *
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function validIntegers() {
-		return array(
-			array(1029437),
-			array('12345'),
-			array('+12345'),
-			array('-12345')
-		);
-	}
+	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_StringValidator';
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
-	 * @dataProvider validIntegers
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function integerValidatorReturnsNoErrorsForAValidInteger($integer) {
-		$this->assertFalse($this->validator->validate($integer)->hasErrors());
-	}
-
-	/**
-	 * Data provider with invalid integers
-	 *
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function invalidIntegers() {
-		return array(
-			array('not a number'),
-			array(3.1415),
-			array('12345.987')
-		);
-	}
-
-	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @test
-	 * @dataProvider invalidIntegers
-	 */
-	public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger) {
-		$this->assertTrue($this->validator->validate($invalidInteger)->hasErrors());
+	public function stringValidatorShouldValidateString() {
+		$this->assertFalse($this->validator->validate('Hello World')->hasErrors());
 	}
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$this->assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
+	public function stringValidatorShouldReturnErrorIfNumberIsGiven() {
+		$this->assertTrue($this->validator->validate(42)->hasErrors());
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven() {
+		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
+
+		eval('
+			class ' . $className . ' {
+				public function __toString() {
+					return "ASDF";
+				}
+			}
+		');
+		$object = new $className();
+		$this->assertTrue($this->validator->validate($object)->hasErrors());
 	}
 
 }

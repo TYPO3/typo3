@@ -26,30 +26,29 @@
 ***************************************************************/
 
 /**
- * Testcase for the DateTime validator
+ * Testcase for the raw validator
+ *
+ * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
+ * we do not break backwards compatibility.
  *
  * @package Extbase
  * @subpackage extbase
- * @version $Id: DateTimeValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
+ * @version $Id: RawValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_DateTimeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_RawValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test
 	 */
-	public function dateTimeValidatorReturnsTrueForAValidDateTimeObject() {
-		$dateTimeValidator = new Tx_Extbase_Validation_Validator_DateTimeValidator();
-		$this->assertTrue($dateTimeValidator->isValid(new DateTime));
-	}
+	public function theRawValidatorAlwaysReturnsTRUE() {
+		$rawValidator = new Tx_Extbase_Validation_Validator_RawValidator();
 
-	/**
-	 * @test
-	 */
-	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
-		$dateTimeValidator = $this->getMock('Tx_Extbase_Validation_Validator_DateTimeValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($dateTimeValidator->isValid('blah'));
+		$this->assertTrue($rawValidator->isValid('simple1expression'));
+		$this->assertTrue($rawValidator->isValid(''));
+		$this->assertTrue($rawValidator->isValid(NULL));
+		$this->assertTrue($rawValidator->isValid(FALSE));
+		$this->assertTrue($rawValidator->isValid(new ArrayObject()));
 	}
-
 }
 
 ?>

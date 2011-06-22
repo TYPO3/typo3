@@ -33,6 +33,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
  */
 class Tx_Extbase_Validation_PropertyError extends Tx_Extbase_Validation_Error {
 

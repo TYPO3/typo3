@@ -64,6 +64,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	 *
 	 * @param array $options Not used
 	 * @return void
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	public function setOptions(array $options) {
 	}
@@ -72,6 +73,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of Tx_Extbase_Validation_Error objects or an empty array if no errors occurred.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	public function getErrors() {
 		return $this->errors;

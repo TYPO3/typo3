@@ -1,58 +1,55 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+
+/*                                                                        *
+ * This script belongs to the Extbase framework.                            *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
+
+require_once('AbstractValidatorTestcase.php');
 
 /**
  * Testcase for the regular expression validator
  *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: RegularExpressionValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+
+	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_RegularExpressionValidator';
 
 	/**
 	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
-		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);
-		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
+		$this->validatorOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 
-		$this->assertTrue($regularExpressionValidator->isValid('simple1expression'));
-		$this->assertFalse($regularExpressionValidator->isValid('simple1expressions'));
+		$this->assertFalse($this->validator->validate('simple1expression')->hasErrors());
+		$this->assertTrue($this->validator->validate('simple1expressions')->hasErrors());
 	}
 
 	/**
 	 * @test
+	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
-		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);
-		$regularExpressionValidator->expects($this->once())->method('addError')->with('The given subject did not match the pattern.', 1221565130);
-		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
-		$regularExpressionValidator->isValid('some subject that will not match');
+		$this->validatorOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
+		$errors = $this->validator->validate('some subject that will not match')->getErrors();
+		$this->assertEquals(array(new Tx_Extbase_Validation_Error('The given subject did not match the pattern.', 1221565130)), $errors);
 	}
 }
 

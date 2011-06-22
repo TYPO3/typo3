@@ -20,72 +20,34 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once('AbstractValidatorTestcase.php');
-
 /**
- * Testcase for the integer validator
+ * Testcase for the Abstract Validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+abstract class Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_IntegerValidator';
+	protected $validatorClassName;
 
 	/**
-	 * Data provider with valid integers
 	 *
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @var Tx_Extbase_Validation_Validator_ValidatorInterface
 	 */
-	public function validIntegers() {
-		return array(
-			array(1029437),
-			array('12345'),
-			array('+12345'),
-			array('-12345')
-		);
+	protected $validator;
+
+	public function setUp() {
+		$this->validator = $this->getValidator();
 	}
 
-	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @test
-	 * @dataProvider validIntegers
-	 */
-	public function integerValidatorReturnsNoErrorsForAValidInteger($integer) {
-		$this->assertFalse($this->validator->validate($integer)->hasErrors());
+	protected function getValidator($options = array()) {
+		$validator = new $this->validatorClassName($options);
+
+		return $validator;
 	}
 
-	/**
-	 * Data provider with invalid integers
-	 *
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function invalidIntegers() {
-		return array(
-			array('not a number'),
-			array(3.1415),
-			array('12345.987')
-		);
+	protected function validatorOptions($options) {
+		$this->validator = $this->getValidator($options);
 	}
-
-	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @test
-	 * @dataProvider invalidIntegers
-	 */
-	public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger) {
-		$this->assertTrue($this->validator->validate($invalidInteger)->hasErrors());
-	}
-
-	/**
-	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 */
-	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$this->assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
-	}
-
 }
 
 ?>

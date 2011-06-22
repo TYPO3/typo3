@@ -36,12 +36,29 @@
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_ConjunctionValidator extends Tx_Extbase_Validation_Validator_AbstractCompositeValidator {
+
+	/**
+	 * Checks if the given value is valid according to the validators of the conjunction.
+	 *
+	 * @param mixed $value The value that should be validated
+	 * @return \F3\FLOW3\Error\Result
+	 * @api
+	 */
+	public function validate($value) {
+		$result = new Tx_Extbase_Error_Result();
+		foreach ($this->validators as $validator) {
+			$result->merge($validator->validate($value));
+		}
+		return $result;
+	}
+
 	/**
 	 * Checks if the given value is valid according to the validators of the conjunction.
 	 *
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 */
 	public function isValid($value) {
 		$result = TRUE;

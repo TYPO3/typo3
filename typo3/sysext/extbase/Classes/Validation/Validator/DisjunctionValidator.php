@@ -38,6 +38,37 @@
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_DisjunctionValidator extends Tx_Extbase_Validation_Validator_AbstractCompositeValidator {
+
+	/**
+	 * Checks if the given value is valid according to the validators of the
+	 * disjunction.
+	 *
+	 * If all validators fail, the result is FALSE.
+	 *
+	 * @param mixed $value The value that should be validated
+	 * @param boolean $resetInstancesCurrentlyUnderValidation Reserved for internal use!
+	 * @return Tx_Extbase_Error_Result
+	 * @api
+	 */
+	public function validate($value, $resetInstancesCurrentlyUnderValidation = TRUE) {
+		$result = new Tx_Extbase_Error_Result();
+
+		$oneWithoutErrors = FALSE;
+		foreach ($this->validators as $validator) {
+			$validatorResult = $validator->validate($value);
+			if ($validatorResult->hasErrors()) {
+				$result->merge($validatorResult);
+			} else {
+				$oneWithoutErrors = TRUE;
+			}
+		}
+
+		if ($oneWithoutErrors === TRUE) {
+			$result = new Tx_Extbase_Error_Result();
+		}
+		return $result;
+	}
+
 	/**
 	 * Checks if the given value is valid according to the validators of the conjunction.
 	 *
@@ -45,6 +76,7 @@ class Tx_Extbase_Validation_Validator_DisjunctionValidator extends Tx_Extbase_Va
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
 	 */
 	public function isValid($value) {
 		$result = FALSE;

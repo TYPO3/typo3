@@ -70,7 +70,7 @@ class Tx_Extbase_Tests_Unit_Validation_ValidatorResolverTest extends Tx_Extbase_
 	 */
 	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {
 		$className = uniqid('Test');
-		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ObjectValidatorInterface', array(), array(), $className);
+		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ObjectValidatorInterface', array('setOptions', 'canValidate', 'isPropertyValid'), array(), $className);
 		$mockValidator->expects($this->once())->method('setOptions')->with(array('foo' => 'bar'));
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
