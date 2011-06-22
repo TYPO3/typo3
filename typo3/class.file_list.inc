@@ -216,7 +216,7 @@ class fileList extends t3lib_recordList {
 	 *
 	 * @param	array		Array of files from path
 	 * @param	array		Array of directories from path
-	 * @param	string		List of rows to display horizontallyh
+	 * @param	string		List of rows to display horizontally
 	 * @return	string		HTML-table
 	 */
 	function getTable($files,$dirs,$rowlist)	{
@@ -551,21 +551,24 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * Wraps the directory-titles ($code) in a link to file_list.php (id=$path) and sorting commands...
+	 * Wraps the table headers ($code) in a link to file_list.php (id=$path) and sorting commands...
 	 *
 	 * @param	string		String to be wrapped
 	 * @param	string		ID (path)
 	 * @param	string		Sorting column
 	 * @return	string		HTML
 	 */
-	function linkWrapSort($code,$path,$col)	{
-		if ($this->sort==$col && !$this->sortRev)	{		// reverse sorting
-			$params='&SET[sort]='.$col.'&SET[reverse]=1';
+	function linkWrapSort($code, $path, $col) {
+		if ($this->sort === $col) {
+				//check reverse sorting
+			$params = '&SET[sort]=' . $col . '&SET[reverse]=' . ($this->sortRev ? '0' : '1');
+			$sortArrow = t3lib_iconWorks::getSpriteIcon('status-status-sort-' . ($this->sortRev ? 'desc' : 'asc'));
 		} else {
-			$params='&SET[sort]='.$col.'&SET[reverse]=0';
+			$params = '&SET[sort]=' . $col . '&SET[reverse]=0';
+			$sortArrow = '';
 		}
 		$href = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('filelist') . 'mod1/' . $this->script . '?id=' . rawurlencode($path) . $params;
-		return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
+		return '<a href="'. htmlspecialchars($href) . '">' . $code . $sortArrow . '</a>';
 	}
 
 	/**
