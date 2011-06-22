@@ -417,7 +417,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 				array(
 					'xtype' => 'panel',
 					'bodyStyle' => 'margin-bottom: 7px; border: none;',
-					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.itemsWillBeSentTo') . $stageTitle,
+					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $stageTitle,
 				),
 				array(
 					'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:window.sendToNextStageWindow.sendMailTo'),

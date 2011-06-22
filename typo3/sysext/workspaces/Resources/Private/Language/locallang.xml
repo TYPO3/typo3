@@ -23,7 +23,7 @@
 			<label index="reviewandpublish">review and publish</label>
 			<label index="workspacelist">Workspace List</label>
 			<label index="editorInLive">You are in LIVE workspace. You have to select a draft workspace before you can review and publish changes.</label>
-			<label index="actionSendToStage">Send to stage </label>
+			<label index="actionSendToStage">Send to stage</label>
 			<label index="publish_execute_action_option">Publish  to LIVE</label>
 			<label index="close">Close</label>
 			<label index="runMassAction.done">Done processing %d elements</label>
@@ -63,7 +63,7 @@
 			<label index="error.stageId.invalid">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</label>
 			<label index="error.sendToNextStage.noRecordFound">The record element could not be found.</label>
 			<label index="error.sendToPrevStage.noPreviousStage">The record element is already in editing stage, there is no previous stage.</label>
-			<label index="window.sendToNextStageWindow.itemsWillBeSentTo">The selected element(s) will be sent to </label>
+			<label index="window.sendToNextStageWindow.itemsWillBeSentTo">The selected element(s) will be sent to</label>
 			<label index="window.sendToNextStageWindow.sendMailTo">Send mail to</label>
 			<label index="window.sendToNextStageWindow.additionalRecipients">Additional recipients</label>
 			<label index="window.sendToNextStageWindow.comments">Comments</label>
