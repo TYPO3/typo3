@@ -56,6 +56,31 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 
 	/**
 	 * @test
+	 */
+	public function getPropertyReturnsExpectedValueForUnexposedPropertyIfForceDirectAccessIsTrue() {
+		$property = Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'unexposedProperty', TRUE);
+		$this->assertEquals($property, 'unexposed', 'A property of a given object was not returned correctly.');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPropertyReturnsExpectedValueForUnknownPropertyIfForceDirectAccessIsTrue() {
+		$this->dummyObject->unknownProperty = 'unknown';
+		$property = Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'unknownProperty', TRUE);
+		$this->assertEquals($property, 'unknown', 'A property of a given object was not returned correctly.');
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException
+	 */
+	public function getPropertyReturnsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue() {
+		$property = Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', TRUE);
+	}
+
+	/**
+	 * @test
 	 * @expectedException Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException
 	 */
 	public function getPropertyReturnsThrowsExceptionIfPropertyDoesNotExist() {
@@ -99,6 +124,22 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	 */
 	public function setPropertyReturnsFalseIfPropertyIsNotAccessible() {
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'protectedProperty', 42));
+	}
+
+	/**
+	 * @test
+	 */
+	public function setPropertySetsValueIfPropertyIsNotAccessibleWhenForceDirectAccessIsTrue() {
+		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'unexposedProperty', 'was set anyway', TRUE));
+		$this->assertAttributeEquals('was set anyway', 'unexposedProperty', $this->dummyObject);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setPropertySetsValueIfPropertyDoesNotExistWhenForceDirectAccessIsTrue() {
+		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'unknownProperty', 'was set anyway', TRUE));
+		$this->assertAttributeEquals('was set anyway', 'unknownProperty', $this->dummyObject);
 	}
 
 	/**
