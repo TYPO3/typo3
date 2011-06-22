@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * Error messages view helper, which is deprecated in Extbase 1.4.0, with the old property mapper.
+ * Error messages view helper
  *
  * = Examples =
  *
@@ -53,9 +53,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
+ * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Form_ValidationResultsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Iterates through selected errors of the request.
@@ -67,40 +67,17 @@ class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function render($for = '', $as = 'error') {
-		$errors = $this->controllerContext->getRequest()->getErrors();
-		if ($for !== '') {
-			$propertyPath = explode('.', $for);
-			foreach ($propertyPath as $currentPropertyName) {
-				$errors = $this->getErrorsForProperty($currentPropertyName, $errors);
-			}
-		}
-		$output = '';
-		foreach ($errors as $errorKey => $error) {
-			$this->templateVariableContainer->add($as, $error);
-			$output .= $this->renderChildren();
-			$this->templateVariableContainer->remove($as);
-		}
-		return $output;
-	}
+	public function render($for = '', $as = 'validationResults') {
+		$validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
 
-	/**
-	 * Find errors for a specific property in the given errors array
-	 *
-	 * @param string $propertyName The property name to look up
-	 * @param array $errors An array of Tx_Fluid_Error_Error objects
-	 * @return array An array of errors for $propertyName
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 */
-	protected function getErrorsForProperty($propertyName, $errors) {
-		foreach ($errors as $error) {
-			if ($error instanceof Tx_Extbase_Validation_PropertyError) {
-				if ($error->getPropertyName() === $propertyName) {
-					return $error->getErrors();
-				}
-			}
+		if ($for !== '') {
+			$validationResults = $validationResults->forProperty($for);
 		}
-		return array();
+		$this->templateVariableContainer->add($as, $validationResults);
+		$output = $this->renderChildren();
+		$this->templateVariableContainer->remove($as);
+
+		return $output;
 	}
 }
 
