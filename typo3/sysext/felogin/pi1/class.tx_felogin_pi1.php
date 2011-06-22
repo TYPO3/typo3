@@ -349,25 +349,25 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$isBaseURL  = !empty($GLOBALS['TSFE']->baseUrl);
 		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
 
-		if ($isFeloginBaseURL) {
-				// first priority
-			$this->conf['linkPrefix'] = $this->conf['feloginBaseURL'];
-		} else {
-			if ($isBaseURL) {
-					// 3rd priority
-				$this->conf['linkPrefix'] = $GLOBALS['TSFE']->baseUrl;
-			}
-		}
-
-		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {
-				// no preix is set, return the error
-			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
-		}
-
-		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+		$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
 			$this->prefixId . '[user]' => $user['uid'],
 			$this->prefixId . '[forgothash]' => $randHash
 		));
+
+		// prefix link
+		if ($isFeloginBaseURL) {
+				// first priority
+			$link = $this->conf['feloginBaseURL'] . str_replace($GLOBALS['TSFE']->absRefPrefix, '', $link);
+		} elseif ($isAbsRelPrefix) {
+				// 2nd priority
+			// $link = $link; keep link unchanged, because link is already prefixed with absRefPrefix
+		} elseif ($isBaseURL) {
+				// 3rd priority
+			$link = $GLOBALS['TSFE']->baseUrl . $link;
+		} else {
+				// no prefix is set, return the error
+			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
+		}
 
 		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
 
