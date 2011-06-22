@@ -751,8 +751,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 						return 'Versioning disabled for table';
 					} elseif ((int) $recData['t3ver_wsid'] !== $this->workspace) { // So does workspace match?
 						return 'Workspace ID of record didn\'t match current workspace';
-					} else { // So what about the stage of the version, does that allow editing for this user?
-						return $this->workspaceCheckStageForCurrent($recData['t3ver_stage']) ? FALSE : 'Record stage "' . $recData['t3ver_stage'] . '" and users access level did not allow for editing';
+					} else {
+							// So is the user allowed to "use" the edit stage within the workspace?
+						return $this->workspaceCheckStageForCurrent(0) ? FALSE : 'User\'s access level did not allow for editing';
 					}
 				} else { // We are testing a "live" record:
 					if ($res = $this->workspaceAllowLiveRecordsInPID($recData['pid'], $table)) { // For "Live" records, check that PID for table allows editing
