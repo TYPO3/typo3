@@ -332,6 +332,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return	string		Empty string with success, error message with no success
 	 */
 	protected function generateAndSendHash($user) {
+
 		$hours = intval($this->conf['forgotLinkHashValidTime']) > 0 ? intval($this->conf['forgotLinkHashValidTime']) : 24;
 		$validEnd = time() + 3600 * $hours;
 		$validEndString = date($this->conf['dateFormat'], $validEnd);
@@ -352,19 +353,20 @@ class tx_felogin_pi1 extends tslib_pibase {
 		if ($isFeloginBaseURL) {
 				// first priority
 			$this->conf['linkPrefix'] = $this->conf['feloginBaseURL'];
-		} else {
-			if ($isBaseURL) {
-					// 3rd priority
-				$this->conf['linkPrefix'] = $GLOBALS['TSFE']->baseUrl;
-			}
+		} elseif ($isAbsRelPrefix) {
+				// 2nd priority
+			$this->conf['linkPrefix'] = $GLOBALS['TSFE']->absRefPrefix;
+		} elseif ($isBaseURL) {
+				// 3rd priority
+			$this->conf['linkPrefix'] = $GLOBALS['TSFE']->baseUrl;
 		}
 
-		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {
-				// no preix is set, return the error
+		if ($this->conf['linkPrefix'] == -1) {
+				// no prefix is set, return the error
 			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
 		}
 
-		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+		$link = $this->conf['linkPrefix'] . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
 			$this->prefixId . '[user]' => $user['uid'],
 			$this->prefixId . '[forgothash]' => $randHash
 		));
