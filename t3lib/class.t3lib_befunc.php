@@ -2196,9 +2196,13 @@ final class t3lib_BEfunc {
 										'uid IN (' . implode(',', $selectUids) . ')'
 								);
 								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
-									$mmlA[] = ($noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
+										// Keep sorting of $selectUids
+									$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
+										$MMrow['uid'] :
+										self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
 								}
 								$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
+								ksort($mmlA);
 
 								if (is_array($mmlA)) {
 									$l = implode('; ', $mmlA);
