@@ -693,6 +693,7 @@ class t3lib_TCEmain {
 									$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 								}
 							}
+								// Set stage to "Editing" to make sure we restart the workflow
 							if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 								$fieldArray['t3ver_stage'] = 0;
 							}
