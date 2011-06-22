@@ -29,6 +29,7 @@
  * Class to render the module menu and handle the BE navigation
  *
  * @author	Steffen Kamper
+ * @author	Kay Strobach
  */
 
 
@@ -54,6 +55,9 @@ TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
 
 });
 
+/**
+ * XTemplate with text and image
+ */
 TYPO3.ModuleMenu.Template = new Ext.XTemplate(
 		'<div id="typo3-docheader">',
 		'	<div id="typo3-docheader-row1">',
@@ -90,6 +94,117 @@ TYPO3.ModuleMenu.Template = new Ext.XTemplate(
 		}
 );
 
+/**
+ * XTemplate with image only
+ */
+TYPO3.ModuleMenu.TemplateSmall = new Ext.XTemplate(
+	'<div id="typo3-docheader">',
+	'	<div id="typo3-docheader-row1">',
+	'		<div class="buttonsleft"></div>',
+	'		<div class="buttonsright"></div>',
+	'	</div>',
+	'</div>',
+	'<ul id="typo3-menu">',
+	'<tpl for=".">',
+	'	<li class="menuSection" id="{key}">',
+	'	<ul {[this.getStateStyle(values)]}>',
+	'	<tpl for="sub">',
+	'	<li id="{name}" class="submodule mod-{name}">',
+	'		<a href="#" class="modlink">',
+	'				<img width="16" height="16" alt="{label}" qtip="{label} - {description}" src="{icon}" />',
+	'		</a>',
+	'	</li>',
+	'	</tpl>',
+	'	</ul>',
+	'	</li>',
+	'</tpl>',
+	'</ul>',
+	{
+		getStateClass: function(value) {
+			return value.menuState ? 'collapsed' : 'expanded';
+		},
+		getStateStyle: function(value) {
+			return value.menuState ? 'style="display:none"' : '';
+		}
+	}
+);
+
+/**
+ * Settings extracted from init function to make it configurable
+ */
+TYPO3.ModuleMenu.ModuleSettings = {
+	xtype: 'dataview',
+	animCollapse: true,
+	store: TYPO3.ModuleMenu.Store,
+	tpl: TYPO3.ModuleMenu.Template,
+	singleSelect: true,
+	itemSelector: 'li.submodule',
+	overClass: 'x-view-over',
+	selectedClass: 'highlighted',
+	autoHeight: true,
+	itemId: 'modDataView',
+	tbar: [{text: 'test'}],
+	listeners: {
+		click: function(view, index, node, event) {
+			var el = Ext.fly(node);
+			if (el.hasClass('submodule')) {
+				TYPO3.ModuleMenu.App.showModule(el.getAttribute('id'));
+			}
+		},
+		containerclick: function(view, event) {
+			var item = event.getTarget('li.menuSection', view.getEl());
+			if (item) {
+				var el = Ext.fly(item);
+				var id = el.getAttribute('id');
+				var section = el.first('div'), state;
+				if (section.hasClass('expanded')) {
+					state = true;
+					section.removeClass('expanded').addClass('collapsed');
+					el.first('ul').slideOut('t', {
+						easing: 'easeOut',
+						duration: .2,
+						remove: false,
+						useDisplay: true
+					});
+				} else {
+					state = false;
+					section.removeClass('collapsed').addClass('expanded');
+					el.first('ul').slideIn('t', {
+						easing: 'easeIn',
+						duration: .2,
+						remove: false,
+						useDisplay: true
+					});
+				}
+					// save menu state
+				Ext.Ajax.request({
+					url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
+					params: {
+						'menuid': 'modmenu_' + id,
+						'state': state
+					}
+				});
+			}
+			return false;
+		},
+		resize : function(el, adjWidth, adjHeight, rawWidth, rawHeight) {
+			if (adjWidth <= 100) {
+					//use small template
+				el.tpl = TYPO3.ModuleMenu.TemplateSmall;
+				el.refresh();
+			} else if(adjWidth > 100) {
+					//use big template
+				el.tpl = TYPO3.ModuleMenu.Template;
+				el.refresh();
+			}
+		},
+		scope: this
+	}
+};
+
+/**
+ * App
+ */
 TYPO3.ModuleMenu.App = {
 	loadedModule: null,
 	loadedNavigationComponentId: '',
@@ -111,65 +226,7 @@ TYPO3.ModuleMenu.App = {
 
 	renderMenu: function(records) {
 		TYPO3.Backend.ModuleMenuContainer.removeAll();
-		TYPO3.Backend.ModuleMenuContainer.add({
-			xtype: 'dataview',
-			animCollapse: true,
-			store: TYPO3.ModuleMenu.Store,
-			tpl: TYPO3.ModuleMenu.Template,
-			singleSelect: true,
-			itemSelector: 'li.submodule',
-			overClass: 'x-view-over',
-			selectedClass: 'highlighted',
-			autoHeight: true,
-			itemId: 'modDataView',
-			tbar: [{text: 'test'}],
-			listeners: {
-				click: function(view, index, node, event) {
-					var el = Ext.fly(node);
-					if (el.hasClass('submodule')) {
-						TYPO3.ModuleMenu.App.showModule(el.getAttribute('id'));
-					}
-				},
-				containerclick: function(view, event) {
-					var item = event.getTarget('li.menuSection', view.getEl());
-					if (item) {
-						var el = Ext.fly(item);
-						var id = el.getAttribute('id');
-						var section = el.first('div'), state;
-						if (section.hasClass('expanded')) {
-							state = true;
-							section.removeClass('expanded').addClass('collapsed');
-							el.first('ul').slideOut('t', {
-								easing: 'easeOut',
-								duration: .2,
-								remove: false,
-								useDisplay: true
-							});
-
-						} else {
-							state = false;
-							section.removeClass('collapsed').addClass('expanded');
-							el.first('ul').slideIn('t', {
-								easing: 'easeIn',
-								duration: .2,
-								remove: false,
-								useDisplay: true
-							});
-						}
-						// save menu state
-						Ext.Ajax.request({
-							url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
-							params: {
-								'menuid': 'modmenu_' + id,
-								'state': state
-							}
-						});
-					}
-					return false;
-				},
-				scope: this
-			}
-		});
+		TYPO3.Backend.ModuleMenuContainer.add(TYPO3.ModuleMenu.ModuleSettings);
 		TYPO3.Backend.ModuleMenuContainer.doLayout();
 	},
 
