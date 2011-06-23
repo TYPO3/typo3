@@ -239,28 +239,13 @@ class t3lib_TStemplate {
 	 * is regenerated - at least the this->start function must be called,
 	 * because this will make a new portion of data in currentPageData string.
 	 *
-	 * @return	array		Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache-table
+	 * @return	array		Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
 	 * @see start(), tslib_fe::getFromCache()
 	 */
-	function getCurrentPageData() {
-		$currentPageData = FALSE;
-		if (TYPO3_UseCachingFramework) {
-			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-			/* @var $pageSectionCache t3lib_cache_AbstractCache */
-
-			$currentPageData = $pageSectionCache->get(
-				intval($GLOBALS['TSFE']->id) . '_' . t3lib_div::md5int($GLOBALS['TSFE']->MP)
-			);
-		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'content', 'cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . t3lib_div::md5int($GLOBALS['TSFE']->MP));
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$currentPageData = unserialize($row['content']);
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		}
-
-		return $currentPageData;
+	public function getCurrentPageData() {
+		return $GLOBALS['typo3CacheManager']
+			->getCache('cache_pagesection')
+			->get(intval($GLOBALS['TSFE']->id) . '_' . t3lib_div::md5int($GLOBALS['TSFE']->MP));
 	}
 
 	/**
@@ -391,29 +376,16 @@ class t3lib_TStemplate {
 
 			if (!$isCached && !$this->simulationHiddenOrTime && !$GLOBALS['TSFE']->no_cache) { // Only save the data if we're not simulating by hidden/starttime/endtime
 				$mpvarHash = t3lib_div::md5int($GLOBALS['TSFE']->MP);
-				if (TYPO3_UseCachingFramework) {
-					$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-					/* @var $pageSectionCache t3lib_cache_AbstractCache */
-					$pageSectionCache->set(
-						intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash,
-						$cc,
-						array(
-							 'pageId_' . intval($GLOBALS['TSFE']->id),
-							 'mpvarHash_' . $mpvarHash
-						)
-					);
-				} else {
-					$dbFields = array(
-						'content' => serialize($cc),
-						'tstamp' => $GLOBALS['EXEC_TIME']
-					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvarHash, $dbFields);
-					if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 0) {
-						$dbFields['page_id'] = intval($GLOBALS['TSFE']->id);
-						$dbFields['mpvar_hash'] = $mpvarHash;
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $dbFields);
-					}
-				}
+					/** @var $pageSectionCache t3lib_cache_AbstractCache */
+				$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+				$pageSectionCache->set(
+					intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash,
+					$cc,
+					array(
+						'pageId_' . intval($GLOBALS['TSFE']->id),
+						'mpvarHash_' . $mpvarHash
+					)
+				);
 			}
 				// If everything OK.
 			if ($this->rootId && $this->rootLine && $this->setup) {

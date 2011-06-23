@@ -91,19 +91,6 @@ CREATE TABLE be_users (
 );
 
 #
-# Table structure for table 'cache_hash'
-#
-CREATE TABLE cache_hash (
-  id int(11) unsigned NOT NULL auto_increment,
-  hash varchar(32) DEFAULT '' NOT NULL,
-  content mediumblob,
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  ident varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id),
-  KEY hash (hash)
-) ENGINE=InnoDB;
-
-#
 # Table structure for table 'cache_imagesizes'
 #
 CREATE TABLE cache_imagesizes (
