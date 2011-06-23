@@ -136,12 +136,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1236518288
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		if (!is_string($data)) {
 			throw new t3lib_cache_exception_InvalidData(
@@ -202,12 +197,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function get($entryIdentifier) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435810
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$cacheEntry = FALSE;
 
@@ -237,12 +227,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function has($entryIdentifier) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435811
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$hasEntry = FALSE;
 
@@ -268,12 +253,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435812
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$entryRemoved = FALSE;
 
@@ -302,12 +282,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTag($tag) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435813
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$cacheEntryIdentifiers = array();
 
@@ -334,12 +309,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flush() {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435814
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->cacheTable);
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tagsTable);
@@ -356,12 +326,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTag($tag) {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435815
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		$tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
 
@@ -380,12 +345,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435816
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 			// Get identifiers of expired cache entries
 		$tagsEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -438,12 +398,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getCacheTable() {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435817
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		return $this->cacheTable;
 	}
@@ -466,12 +421,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return	string		Name of the table storing tags
 	 */
 	public function getTagsTable() {
-		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
-				'No cache frontend has been set via setCache() yet.',
-				1308435818
-			);
-		}
+		$this->throwExceptionIfFrontendDoesNotExist();
 
 		return $this->tagsTable;
 	}
@@ -495,6 +445,21 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function setCompressionLevel($compressionLevel) {
 		if ($compressionLevel >= -1 && $compressionLevel <= 9) {
 			$this->compressionLevel = $compressionLevel;
+		}
+	}
+
+	/**
+	 * Check if required frontend instance exists
+	 *
+	 * @throws t3lib_cache_Exception If there is no frontend instance in $this->cache
+	 * @return void
+	 */
+	protected function throwExceptionIfFrontendDoesNotExist() {
+		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1236518288
+			);
 		}
 	}
 
