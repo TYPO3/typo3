@@ -39,7 +39,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 	protected $signalSlotDispatcher;
 
 	public function setUp() {
-		$this->signalSlotDispatcher = $this->objectManager->get('Tx_Extbase_SignalSlot_Dispatcher');
+		$this->signalSlotDispatcher = new Tx_Extbase_SignalSlot_Dispatcher();
 	}
 
 	/**
