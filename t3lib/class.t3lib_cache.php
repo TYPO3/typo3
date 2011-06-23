@@ -115,18 +115,11 @@ class t3lib_cache {
 	 * This method can be called by extensions in their ext_localconf.php. Calling it later would not work,
 	 * since rendering is already started using the defined caches.
 	 *
+	 * @deprecated since 4.6, will be removed in 4.8: The caching framework is enabled by default
 	 * @return	void
 	 */
 	public function enableCachingFramework() {
-		if (!defined('TYPO3_UseCachingFramework')) {
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = 1;
-		} elseif (!TYPO3_UseCachingFramework) {
-			throw new RuntimeException(
-				'The caching framework was already defined to be disabled and cannot be changed. ' .
-						'Please put your call to t3lib_cache::enableCachingFramework() into ext_localconf.php.',
-				1253273131
-			);
-		}
+		t3lib_div::logDeprecatedFunction();
 	}
 }
 

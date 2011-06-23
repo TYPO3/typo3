@@ -66,8 +66,7 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function initialize() {
-		$cacheClass = TYPO3_UseCachingFramework ? 'tx_lang_cache_CachingFramework' : 'tx_lang_cache_File';
-		$this->cache = t3lib_div::makeInstance($cacheClass);
+		$this->cache = t3lib_div::makeInstance('tx_lang_cache_CachingFramework');
 	}
 
 	/**

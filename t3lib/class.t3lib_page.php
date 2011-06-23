@@ -976,27 +976,15 @@ class t3lib_pageSelect {
 	public static function getHash($hash, $expTime = 0) {
 		$hashContent = NULL;
 
-		if (TYPO3_UseCachingFramework) {
-			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-				$cacheEntry = $contentHashCache->get($hash);
+		if (is_object($GLOBALS['typo3CacheManager'])) {
+			$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+			$cacheEntry = $contentHashCache->get($hash);
 
-				if ($cacheEntry) {
-					$hashContent = $cacheEntry;
-				}
-			}
-		} else {
-			$expTime = intval($expTime);
-			if ($expTime) {
-				$whereAdd = ' AND tstamp > ' . ($GLOBALS['ACCESS_TIME'] - $expTime);
-			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash') . $whereAdd);
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if ($row) {
-				$hashContent = $row['content'];
+			if ($cacheEntry) {
+				$hashContent = $cacheEntry;
 			}
 		}
+
 		return $hashContent;
 	}
 
@@ -1013,24 +1001,13 @@ class t3lib_pageSelect {
 	 * @see tslib_TStemplate::start(), getHash()
 	 */
 	public static function storeHash($hash, $data, $ident, $lifetime = 0) {
-		if (TYPO3_UseCachingFramework) {
-			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
-					$hash,
-					$data,
-					array('ident_' . $ident),
-					intval($lifetime)
-				);
-			}
-		} else {
-			$insertFields = array(
-				'hash' => $hash,
-				'content' => $data,
-				'ident' => $ident,
-				'tstamp' => $GLOBALS['EXEC_TIME']
+		if (is_object($GLOBALS['typo3CacheManager'])) {
+			$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
+				$hash,
+				$data,
+				array('ident_' . $ident),
+				intval($lifetime)
 			);
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
 		}
 	}
 
