@@ -326,7 +326,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', TRUE);
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array('test'), '', TRUE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
