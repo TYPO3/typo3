@@ -525,8 +525,8 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$this->setUpMockFrontendOfBackend($backend);
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(2))
 			->method('admin_query')
 			->with('DROP TABLE IF EXISTS cachingframework_Testing');
 
@@ -540,8 +540,8 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$this->setUpMockFrontendOfBackend($backend);
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(3))
 			->method('admin_query')
 			->with('DROP TABLE IF EXISTS cachingframework_Testing_tags');
 
@@ -555,8 +555,8 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$this->setUpMockFrontendOfBackend($backend);
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(2))
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(4))
 			->method('admin_query')
 			->will($this->returnCallback(array($this, flushCreatesDataTableCallback)));
 
@@ -581,8 +581,8 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$this->setUpMockFrontendOfBackend($backend);
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(3))
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(5))
 			->method('admin_query')
 			->will($this->returnCallback(array($this, flushCreatesTagsTableCallback)));
 
