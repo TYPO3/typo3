@@ -7097,18 +7097,7 @@ class t3lib_TCEmain {
 	 * @return t3lib_cache_frontend_VariableFrontend
 	 */
 	protected function getMemoryCache() {
-		t3lib_cache::initializeCachingFramework();
-		$cacheIdentifier = 't3lib_TCEmain';
-
-		if ($GLOBALS['typo3CacheManager']->hasCache($cacheIdentifier) === FALSE) {
-			$GLOBALS['typo3CacheFactory']->create(
-				$cacheIdentifier,
-				't3lib_cache_frontend_VariableFrontend',
-				't3lib_cache_backend_TransientMemoryBackend'
-			);
-		}
-
-		return $GLOBALS['typo3CacheManager']->getCache($cacheIdentifier);
+		return $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
 	}
 
 	/**
@@ -7123,7 +7112,7 @@ class t3lib_TCEmain {
 	 * @see versionizeRecord
 	 */
 	protected function isElementToBeDeleted($table, $id) {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('elementsToBeDeleted');
+		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
 		return (isset($elementsToBeDeleted[$table][$id]));
 	}
 
@@ -7134,9 +7123,9 @@ class t3lib_TCEmain {
 	 * @see process_datamap
 	 */
 	protected function registerElementsToBeDeleted() {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('elementsToBeDeleted');
+		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
 		$this->getMemoryCache()->set(
-			'elementsToBeDeleted',
+			'core-t3lib_TCEmain-elementsToBeDeleted',
 			array_merge($elementsToBeDeleted, $this->getCommandMapElements('delete'))
 		);
 	}
@@ -7148,7 +7137,7 @@ class t3lib_TCEmain {
 	 * @see process_datamap
 	 */
 	protected function resetElementsToBeDeleted() {
-		$this->getMemoryCache()->remove('elementsToBeDeleted');
+		$this->getMemoryCache()->remove('core-t3lib_TCEmain-elementsToBeDeleted');
 	}
 
 	/**
