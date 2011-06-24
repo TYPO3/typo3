@@ -37,7 +37,7 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 	protected $defaultNumberOfDays = array();
 
 	/**
-	 * Add addional fields
+	 * Add additional fields
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
 	 * @param object $task When editing, reference to the current task object. Null when adding.
@@ -55,7 +55,7 @@ class tx_scheduler_TableGarbageCollection_AdditionalFieldProvider implements tx_
 
 	/**
 	 * Initialize the default number of days for all configured tables
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function initDefaultNumberOfDays() {

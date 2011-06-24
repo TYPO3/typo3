@@ -59,7 +59,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * Accept special cron command keywords and convert to standard cron syntax.
 	 * Allowed keywords: @yearly, @annually, @monthly, @weekly, @daily, @midnight, @hourly
 	 *
-	 * @params string $cronCommand cron command
+	 * @param string $cronCommand Cron command
 	 * @return string Normalized cron command if keyword was found, else unchanged cron command
 	 */
 	public static function convertKeywordsToCronCommand($cronCommand) {
@@ -248,8 +248,8 @@ final class tx_scheduler_CronCmd_Normalize {
 	/**
 	 * Convert a range of integers to a list: 4-6 results in a string '4,5,6'
 	 *
-	 * @throws InvalidArgumentException If range can not be coverted to list
-	 * @params string $range integer-integer
+	 * @throws InvalidArgumentException If range can not be converted to list
+	 * @param string $range Integer-integer
 	 * @return array
 	 */
 	public static function convertRangeToListOfValues($range) {
@@ -310,7 +310,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * 	2-10/3 -> 2,5,8
 	 *
 	 * @throws Exception if step value is invalid or if resulting list is empty
-	 * @param string #stepExpression stepvalue expression
+	 * @param string $stepExpression Step value expression
 	 * @return string Comma separated list of valid values
 	 */
 	public static function reduceListOfValuesByStepValue($stepExpression) {

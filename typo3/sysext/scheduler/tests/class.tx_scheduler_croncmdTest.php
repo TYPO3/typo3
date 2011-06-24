@@ -211,6 +211,9 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider expectedTimestampDataProvider
+	 * @param string $cronCommand Cron command
+	 * @param integer $startTimestamp Timestamp for start of calculation
+	 * @param integer $expectedTimestamp Expected result (next time of execution)
 	 */
 	public function calculateNextValueDeterminesCorrectNextTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
 		$instance = new tx_scheduler_CronCmd($cronCommand, $startTimestamp);
@@ -221,6 +224,10 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider expectedTimestampDataProvider
+	 * @param string $cronCommand Cron command
+	 * @param integer $startTimestamp Timestamp for start of calculation
+	 * @param integer $firstTimestamp Timestamp of the next execution
+	 * @param integer $secondTimestamp Timestamp of the further execution
 	 */
 	public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp) {
 		$instance = new tx_scheduler_CronCmd($cronCommand, $firstTimestamp);

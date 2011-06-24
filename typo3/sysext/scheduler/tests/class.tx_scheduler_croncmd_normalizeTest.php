@@ -63,6 +63,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider normalizeValidDataProvider
+	 * @param string $expression Cron command to test
+	 * @param string $expected Expected result (normalized cron command syntax)
 	 */
 	public function normalizeConvertsCronCommand($expression, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::normalize($expression);
@@ -87,10 +89,12 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validSpecialKeywordsDataProvider
+	 * @param string $keyword Cron command keyword
+	 * @param string $expectedCronCommand Expected result (normalized cron command syntax)
 	 */
-	public function convertKeywordsToCronCommandConvertsValidKeywords($keyword, $exptedCronCommand) {
+	public function convertKeywordsToCronCommandConvertsValidKeywords($keyword, $expectedCronCommand) {
 		$result = tx_scheduler_CronCmd_Normalize::convertKeywordsToCronCommand($keyword);
-		$this->assertEquals($exptedCronCommand, $result);
+		$this->assertEquals($expectedCronCommand, $result);
 	}
 
 	/**
@@ -118,6 +122,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider normalizeFieldsValidDataProvider
+	 * @param string $expression Cron command to normalize
+	 * @param string $expected Expected result (normalized cron command syntax)
 	 */
 	public function normalizeFieldsConvertsField($expression, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeFields($expression);
@@ -154,6 +160,9 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider normalizeMonthAndWeekdayFieldValidDataProvider
+	 * @param string $expression Cron command partial expression for month and weekday fields
+	 * @param boolean $isMonthField Flag to designate month field or not
+	 * @param string $expected Expected result (normalized months or weekdays)
 	 */
 	public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression($expression, $isMonthField, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeMonthAndWeekdayField($expression, $isMonthField);
@@ -178,6 +187,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider normalizeMonthAndWeekdayFieldInvalidDataProvider
 	 * @expectedException InvalidArgumentException
+	 * @param string $expression Cron command partial expression for month and weekday fields (invalid)
+	 * @param boolean $isMonthField Flag to designate month field or not
 	 */
 	public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression($expression, $isMonthField) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeMonthAndWeekdayField($expression, $isMonthField);
@@ -207,6 +218,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider normalizeIntegerFieldValidDataProvider
+	 * @param string $expression Cron command partial integer expression
+	 * @param string $expected Expected result (normalized integer or integer list)
 	 */
 	public function normalizeIntegerFieldReturnsNormalizedListForValidExpression($expression, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeIntegerField($expression);
@@ -236,6 +249,10 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider normalizeIntegerFieldInvalidDataProvider
 	 * @expectedException InvalidArgumentException
+	 * @param string $expression Cron command partial integer expression (invalid)
+	 * @param integer $lowerBound Lower limit
+	 * @param integer $upperBound Upper limit
+	 *
 	 */
 	public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions($expression, $lowerBound, $upperBound) {
 		tx_scheduler_CronCmd_Normalize::normalizeIntegerField($expression, $lowerBound, $upperBound);
@@ -273,6 +290,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @expectedException InvalidArgumentException
 	 * @dataProvider invalidCronCommandFieldsDataProvider
+	 * @param string $cronCommand Invalid cron command
 	 */
 	public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields($cronCommand) {
 		tx_scheduler_CronCmd_Normalize::splitFields($cronCommand);
@@ -295,6 +313,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validRangeDataProvider
+	 * @param string $range Cron command range expression
+	 * @param string $expected Expected result (normalized range)
 	 */
 	public function convertRangeToListOfValuesReturnsCorrectListForValidRanges($range, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::convertRangeToListOfValues($range);
@@ -323,6 +343,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider invalidRangeDataProvider
 	 * @expectedException InvalidArgumentException
+	 * @param string $range Cron command range expression (invalid)
 	 */
 	public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range) {
 		tx_scheduler_CronCmd_Normalize::convertRangeToListOfValues($range);
@@ -343,6 +364,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validStepsDataProvider
+	 * @param string $stepExpression Cron command step expression
+	 * @param string $expected Expected result (normalized range)
 	 */
 	public function reduceListOfValuesByStepValueReturnsCorrectListOfValues($stepExpression, $expected) {
 		$result = tx_scheduler_CronCmd_Normalize::reduceListOfValuesByStepValue($stepExpression);
@@ -370,9 +393,10 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider invalidStepsDataProvider
 	 * @expectedException InvalidArgumentException
+	 * @param string $stepExpression Cron command step expression (invalid)
 	 */
 	public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions($stepExpression) {
-		$result = tx_scheduler_CronCmd_Normalize::reduceListOfValuesByStepValue($stepExpression);
+		tx_scheduler_CronCmd_Normalize::reduceListOfValuesByStepValue($stepExpression);
 	}
 
 	/**
@@ -427,6 +451,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validMonthNamesDataProvider
+	 * @param string $monthName Month name
+	 * @param integer $expectedInteger Number of the month
 	 */
 	public function normalizeMonthConvertsName($monthName, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeMonth($monthName);
@@ -436,6 +462,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validMonthNamesDataProvider
+	 * @param string $monthName Month name
+	 * @param integer $expectedInteger Number of the month (not used)
 	 */
 	public function normalizeMonthReturnsInteger($monthName, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeMonth($monthName);
@@ -473,6 +501,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @expectedException InvalidArgumentException
 	 * @dataProvider invalidMonthNamesDataProvider
+	 * @param string $invalidMonthName Month name (invalid)
 	 */
 	public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation($invalidMonthName) {
 		tx_scheduler_CronCmd_Normalize::normalizeMonth($invalidMonthName);
@@ -515,6 +544,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validWeekdayDataProvider
+	 * @param string $weekday Weekday expression
+	 * @param integer $expectedInteger Number of weekday
 	 */
 	public function normalizeWeekdayConvertsName($weekday, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeWeekday($weekday);
@@ -524,6 +555,8 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @dataProvider validWeekdayDataProvider
+	 * @param string $weekday Weekday expression
+	 * @param integer $expectedInteger Number of weekday (not used)
 	 */
 	public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger) {
 		$result = tx_scheduler_CronCmd_Normalize::normalizeWeekday($weekday);
@@ -560,6 +593,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider invalidWeekdayDataProvider
 	 * @expectedException InvalidArgumentException
+	 * @param string $weekday Weekday expression (invalid)
 	 */
 	public function normalizeWeekdayThrowsExceptionForInvalidWeekdayRepresentation($weekday) {
 		tx_scheduler_CronCmd_Normalize::normalizeWeekday($weekday);
