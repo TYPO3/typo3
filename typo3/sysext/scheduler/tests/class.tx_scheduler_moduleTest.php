@@ -106,9 +106,8 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	 * @dataProvider checkDateWithStrtotimeValuesDataProvider
 	 * @test
 	 * @see http://de.php.net/manual/de/function.strtotime.php
-	 * @param string $strToTimeValue		Testvalue which will be passed to $this->testObject->checkDate
-	 * @param integer $expectedTimestamp	Expected value to compare with result from operation
-	 * @return	void
+	 * @param string $strToTimeValue Test value which will be passed to $this->testObject->checkDate
+	 * @param integer $expectedTimestamp Expected value to compare with result from operation
 	 */
 	public function checkDateWithStrtotimeValues($strToTimeValue, $expectedTimestamp) {
 		$checkDateResult = $this->testObject->checkDate($strToTimeValue);
@@ -185,9 +184,8 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	/**
 	 * @dataProvider checkDateWithTypo3DateSyntaxDataProvider
 	 * @test
-	 * @param string $typo3DateValue		Testvalue which will be passed to $this->testObject->checkDate
-	 * @param integer $expectedTimestamp	Expected value to compare with result from operation
-	 * @return	void
+	 * @param string $typo3DateValue Test value which will be passed to $this->testObject->checkDate
+	 * @param integer $expectedTimestamp Expected value to compare with result from operation
 	 */
 	public function checkDateWithTypo3DateSyntax($typo3DateValue, $expectedTimestamp) {
 		$this->assertSame(
@@ -200,7 +198,7 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	/**
 	 * Provides some invalid dates
 	 * @see checkDateWithInvalidDateValues
-	 * @return	array	Testdata for "checkDateWithInvalidDateValues".
+	 * @return	array	Test data for "checkDateWithInvalidDateValues".
 	 * 					Structure: array(
 	 * 						'Value description' => array(
 	 * 							'value to pass to $this->testObject->checkDate'
@@ -224,8 +222,7 @@ class tx_scheduler_ModuleTest extends tx_phpunit_testcase {
 	 * @dataProvider checkDateWithInvalidDateValuesDataProvider
 	 * @expectedException InvalidArgumentException
 	 * @test
-	 * @param	$dateValue		Testvalue which will be passed to $this->testObject->checkDate.
-	 * @return	void
+	 * @param string $dateValue Test value which will be passed to $this->testObject->checkDate.
 	 */
 	public function checkDateWithInvalidDateValues($dateValue) {
 		$this->testObject->checkDate($dateValue);

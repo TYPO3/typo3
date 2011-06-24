@@ -35,28 +35,28 @@ interface tx_scheduler_AdditionalFieldProvider {
 	/**
 	 * Gets additional fields to render in the form to add/edit a task
 	 *
-	 * @param	array					Values of the fields from the add/edit task form
-	 * @param	tx_scheduler_Task		The task object being eddited. Null when adding a task!
-	 * @param	tx_scheduler_Module		Reference to the scheduler backend module
-	 * @return	array					A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
+	 * @param array $taskInfo Values of the fields from the add/edit task form
+	 * @param tx_scheduler_Task $task The task object being eddited. Null when adding a task!
+	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule);
 
 	/**
 	 * Validates the additional fields' values
 	 *
-	 * @param	array					An array containing the data submitted by the add/edit task form
-	 * @param	tx_scheduler_Module		Reference to the scheduler backend module
-	 * @return	boolean					TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule);
 
 	/**
 	 * Takes care of saving the additional fields' values in the task's object
 	 *
-	 * @param	array					An array containing the data submitted by the add/edit task form
-	 * @param	tx_scheduler_Task		Reference to the scheduler backend module
-	 * @return	void
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Task $task Reference to the scheduler backend module
+	 * @return void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task);
 }

@@ -46,9 +46,9 @@ class tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider implements 
 	 * Add an integer input field for difference between scheduler run time
 	 * and file modification time in days to select from
 	 *
-	 * @param array Reference to the array containing the info used in the add/edit form
-	 * @param object When editing, reference to the current task object. Null when adding.
-	 * @param tx_scheduler_Module Reference to the calling object (Scheduler's BE module)
+	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
+	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param tx_scheduler_Module $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
@@ -79,8 +79,8 @@ class tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider implements 
 	/**
 	 * Checks if the given value is an integer
 	 *
-	 * @param array Reference to the array containing the data submitted by the user
-	 * @param tx_scheduler_Module Reference to the calling object (Scheduler's BE module)
+	 * @param array $submittedData Reference to the array containing the data submitted by the user
+	 * @param tx_scheduler_Module $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
@@ -99,8 +99,8 @@ class tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider implements 
 	/**
 	 * Saves given integer value in task object
 	 *
-	 * @param array Contains data submitted by the user
-	 * @param tx_scheduler_Task Reference to the current task object
+	 * @param array $submittedData Contains data submitted by the user
+	 * @param tx_scheduler_Task $task Reference to the current task object
 	 * @return void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {

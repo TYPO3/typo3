@@ -70,7 +70,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Constructor
 	 *
-	 * @return	void
+	 * @return tx_scheduler_Module
 	 */
 	public function __construct() {
 		$this->backPath = $GLOBALS['BACK_PATH'];
@@ -81,7 +81,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Initializes the backend module
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function init() {
 		parent::init();
@@ -101,7 +101,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array(
@@ -118,7 +118,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function main() {
 			// Access check!
@@ -152,7 +152,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		}
 
 			// Place content inside template
-
 		$content = $this->doc->moduleBody(
 			array(),
 			$this->getDocHeaderButtons(),
@@ -169,7 +168,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Generate the module's content
 	 *
-	 * @return	string	HTML of the module's main content
+	 * @return string HTML of the module's main content
 	 */
 	protected function getModuleContent() {
 		$content = '';
@@ -215,7 +214,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 								// An exception may happen when the task to
 								// edit could not be found. In this case revert
 								// to displaying the list of tasks
-								// It can also happend when attempting to edit a running task
+								// It can also happen when attempting to edit a running task
 							$content .= $this->listTasks();
 						}
 						break;
@@ -251,7 +250,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * This method actually prints out the module's HTML content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function render() {
 		echo $this->content;
@@ -262,9 +261,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * It will differentiate between a non-existing user and an existing,
 	 * but disabled user (as per enable fields)
 	 *
-	 * @return	integer		-1	if user doesn't exist
-	 *						 0	if user exists, but is disabled
-	 *						 1	if user exists and is not disabled
+	 * @return integer	-1	if user doesn't exist
+	 *					 0	if user exists, but is disabled
+	 *					 1	if user exists and is not disabled
 	 */
 	protected function checkSchedulerUser() {
 		$schedulerUserStatus = -1;
@@ -296,7 +295,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * This method creates the "cli_scheduler" BE user if it doesn't exist
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function createSchedulerUser() {
 			// Check _cli_scheduler user status
@@ -309,11 +308,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Prepare necessary data for _cli_scheduler user creation
 			$password = md5(uniqid('scheduler', TRUE));
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
-				/**
-				 * Create an instance of TCEmain and execute user creation
-				 *
-				 * @var	t3lib_TCEmain
-				 */
+				/** @var t3lib_TCEmain $tcemain */
 			$tcemain = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tcemain->stripslashes_values = 0;
 			$tcemain->start($data, array());
@@ -336,13 +331,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * This method displays the result of a number of checks
 	 * on whether the Scheduler is ready to run or running properly
 	 *
-	 * @return	string	further information
+	 * @return string Further information
 	 */
 	protected function displayCheckScreen() {
 		$message = '';
 		$severity = t3lib_FlashMessage::OK;
 
-			// First, check if cli_sceduler user creation was requested
+			// First, check if _cli_scheduler user creation was requested
 		if ($this->CMD == 'user') {
 			$this->createSchedulerUser();
 		}
@@ -351,9 +346,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$content = $GLOBALS['LANG']->getLL('msg.schedulerSetupCheck');
 
 			// Display information about last automated run, as stored in the system registry
-			/**
-			 * @var	t3lib_Registry
-			 */
+			/** @var t3lib_Registry $registry */
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
 		$lastRun = $registry->get('tx_scheduler', 'lastRun');
 		if (!is_array($lastRun)) {
@@ -377,6 +370,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$severity = t3lib_FlashMessage::INFO;
 			}
 		}
+			/** @var $flashMessage t3lib_FlashMessage */
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$message,
@@ -448,7 +442,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * This method gathers information about all available task classes and displays it
 	 *
-	 * @return	string	HTML content to display
+	 * @return string HTML content to display
 	 */
 	protected function displayInfoScreen() {
 		$content = '';
@@ -511,7 +505,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * Display the current server's time along with a help text about server time
 	 * usage in the Scheduler
 	 *
-	 * @return	string	HTML to display
+	 * @return string HTML to display
 	 */
 	protected function displayServerTime() {
 			// Get the current time, formatted
@@ -527,14 +521,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Delete a task from the execution queue
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function deleteTask() {
 		try {
 				// Try to fetch the task and delete it
-				/**
-				 * @var	tx_scheduler_Task
-				 */
 			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
 				// If the task is currently running, it may not be deleted
 			if ($task->isExecutionRunning()) {
@@ -566,14 +557,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * all executions.
 	 * TODO: find a way to really kill the running task
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function stopTask() {
 		try {
 				// Try to fetch the task and stop it
-				/**
-				 * @var	tx_scheduler_Task
-				 */
 			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
 			if ($task->isExecutionRunning()) {
 				// If the task is indeed currently running, clear marked executions
@@ -617,6 +605,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					throw new LogicException('Runnings tasks cannot not be edited', 1251232849);
 				}
 					// Get the task object
+					/** @var $task tx_scheduler_Task */
 				$task = unserialize($taskRecord['serialized_task_object']);
 
 					// Set some task information
@@ -640,7 +629,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 							// Guess task type from the existing information
 							// If an interval or a cron command is defined, it's a recurring task
 
-							// FIXME remove magic numbers for the type, use class constants instead
+							// FIXME: remove magic numbers for the type, use class constants instead
 						$taskInfo['type']      = 2;
 						$taskInfo['frequency'] = (empty($taskInfo['interval'])) ? $taskInfo['croncmd'] : $taskInfo['interval'];
 					} else {
@@ -689,6 +678,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		if ($process == 'add') {
 			foreach ($registeredClasses as $class => $registrationInfo) {
 				if (!empty($registrationInfo['provider'])) {
+						/** @var $providerObject tx_scheduler_AdditionalFieldProvider */
 					$providerObject = t3lib_div::getUserObj($registrationInfo['provider']);
 					if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
 						$additionalFields = $providerObject->getAdditionalFields($taskInfo, NULL, $this);
@@ -900,7 +890,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Execute all selected tasks
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function executeTasks() {
 			// Continue if some elements have been chosen for execution
@@ -950,7 +940,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Assemble display of list of scheduled tasks
 	 *
-	 * @return	string			table of waiting schedulings
+	 * @return string Table of pending tasks
 	 */
 	protected function listTasks() {
 			// Define display format for dates
@@ -1053,6 +1043,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$startExecutionElement = '&nbsp;';
 
 					// Restore the serialized task and pass it a reference to the scheduler object
+					/** @var $task tx_scheduler_Task */
 				$task = unserialize($schedulerRecord['serialized_task_object']);
 
 					// Assemble information about last execution
@@ -1139,6 +1130,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					$failureOutput = '';
 					if (!empty($schedulerRecord['lastexecution_failure'])) {
 							// Try to get the stored exception object
+							/** @var $exception Exception */
 						$exception = unserialize($schedulerRecord['lastexecution_failure']);
 							// If the exception could not be unserialized, issue a default error message
 						if ($exception === FALSE) {
@@ -1233,7 +1225,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Saves a task specified in the backend form to the database
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function saveTask() {
 
@@ -1241,9 +1233,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		if (!empty($this->submittedData['uid'])) {
 			try {
 				$taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
-				/**
-				 * @var	tx_scheduler_Task
-				 */
+				/** @var tx_scheduler_Task $task */
 				$task = unserialize($taskRecord['serialized_task_object']);
 			} catch (OutOfBoundsException $e) {
 					// If the task could not be fetched, issue an error message
@@ -1279,6 +1269,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 				// Save additional input values
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
+					/** @var $providerObject tx_scheduler_AdditionalFieldProvider */
 				$providerObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
 				if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
 					$providerObject->saveAdditionalFields($this->submittedData, $task);
@@ -1308,6 +1299,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 				// Save additional input values
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
+					/** @var $providerObject tx_scheduler_AdditionalFieldProvider */
 				$providerObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
 				if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
 					$providerObject->saveAdditionalFields($this->submittedData, $task);
@@ -1335,9 +1327,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 *************************/
 
 	/**
-	 * Checks the submitted data and performs some preprocessing on it
+	 * Checks the submitted data and performs some pre-processing on it
 	 *
-	 * @return	boolean		TRUE if everything was ok, FALSE otherwise
+	 * @return boolean TRUE if everything was ok, FALSE otherwise
 	 */
 	protected function preprocessData() {
 		$result = TRUE;
@@ -1442,8 +1434,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * If the string is a valid date, the corresponding timestamp is returned.
 	 * Otherwise an exception is thrown
 	 *
-	 * @param	string		$string: string to check
-	 * @return	integer		Unix timestamp
+	 * @param string $string String to check
+	 * @return integer Unix timestamp
 	 */
 	public function checkDate($string) {
 			// Try with strtotime
@@ -1479,9 +1471,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * This method is used to add a message to the internal queue
 	 *
-	 * @param	string	the message itself
-	 * @param	integer	message level (-1 = success (default), 0 = info, 1 = notice, 2 = warning, 3 = error)
-	 * @return	void
+	 * @param string $message The message itself
+	 * @param integer $severity Message level (according to t3lib_FlashMessage class constants)
+	 * @return void
 	 */
 	public function addMessage($message, $severity = t3lib_FlashMessage::OK) {
 		$message = t3lib_div::makeInstance(
@@ -1505,7 +1497,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 *
 	 * The name of the class itself is used as the key of the list array
 	 *
-	 * @return	array	List of registered classes
+	 * @return array List of registered classes
 	 */
 	protected static function getRegisteredClasses() {
 		$list = array();
@@ -1537,7 +1529,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Gets the filled markers that are used in the HTML template.
 	 *
-	 * @return	array		The filled marker array
+	 * @return array The filled marker array
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
@@ -1553,7 +1545,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Gets the function menu selector for this backend module.
 	 *
-	 * @return	string		The HTML representation of the function menu selector
+	 * @return string The HTML representation of the function menu selector
 	 */
 	protected function getFunctionMenu() {
 		$functionMenu = t3lib_BEfunc::getFuncMenu(
@@ -1569,7 +1561,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return	array		Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -1589,7 +1581,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return	string		HTML representiation of the shortcut button
+	 * @return string HTML representation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';

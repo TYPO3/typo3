@@ -35,7 +35,7 @@ class tx_scheduler_SleepTask extends tx_scheduler_Task {
 	/**
 	 * Number of seconds the task should be sleeping for
 	 *
-	 * @var	integer		$sleepTime
+	 * @var integer $sleepTime
 	 */
 	 public $sleepTime = 10;
 
@@ -43,7 +43,7 @@ class tx_scheduler_SleepTask extends tx_scheduler_Task {
 	 * Function executed from the Scheduler.
 	 * Goes to sleep ;-)
 	 *
-	 * @return	void
+	 * @return boolean
 	 */
 	public function execute() {
 		$time = 10;
@@ -60,7 +60,7 @@ class tx_scheduler_SleepTask extends tx_scheduler_Task {
 	/**
 	 * This method returns the sleep duration as additional information
 	 *
-	 * @return	string	Information to display
+	 * @return string Information to display
 	 */
 	public function getAdditionalInformation() {
 		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:label.sleepTime') . ': ' . $this->sleepTime;

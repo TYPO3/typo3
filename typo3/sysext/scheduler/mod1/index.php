@@ -28,12 +28,12 @@ require_once (t3lib_extMgm::extPath('scheduler') . 'interfaces/interface.tx_sche
 $LANG->includeLLFile('EXT:scheduler/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 
-// Make instance:
+ // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_scheduler_Module');
 $SOBE->init();
 
-// Include files?
-foreach($SOBE->include_once as $INC_FILE) {
+ // Include files?
+foreach ($SOBE->include_once as $INC_FILE) {
 	include_once($INC_FILE);
 }
 
