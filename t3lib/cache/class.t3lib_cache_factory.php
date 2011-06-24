@@ -115,6 +115,7 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 
 
 		$cacheReference = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheFrontends'][$cacheObjectName];
+		$cacheReference = $cacheReference ? $cacheReference : 't3lib_cache_frontend_VariableFrontend';
 
 		if (strpos($cacheReference, ':') === FALSE) {
 			$cacheClassReference = $cacheReference;
