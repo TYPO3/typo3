@@ -197,6 +197,8 @@ TYPO3.ModuleMenu.ModuleSettings = {
 				el.tpl = TYPO3.ModuleMenu.Template;
 				el.refresh();
 			}
+			module = TYPO3.ModuleMenu.App.selectedModule;
+			TYPO3.ModuleMenu.App.highlightModuleMenuItem(module);
 		},
 		scope: this
 	}
