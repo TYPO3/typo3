@@ -150,6 +150,7 @@ $TYPO3_CONF_VARS = array(
 				)
 			)
 		),
+		'useCachingFramework' => -1,
 		'displayErrors' => -1,					// <p>Integer (-1, 0, 1, 2). Configures whether PHP errors should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error messages. Overrides the value of "exceptionalErrors" and sets it to 0 (= no errors are turned into exceptions), the configured "productionExceptionHandler" is used as exception handler</dd><dt>1</dt><dd>Display error messages with the registered errorhandler. The configured "debugExceptionHandler" is used as exception handler</dd><dt>2</dt><dd>Display errors only if client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>. If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used</dd><dt>-1</dt><dd>Default setting. With this option, you can override the PHP setting "display_errors". If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used.</dd></dl>
 		'productionExceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "t3lib_error_ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if displayErrors is set to "0" or to "-1" and devIPmask doesn't match the users IP.
 		'debugExceptionHandler' => 't3lib_error_DebugExceptionHandler',				// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "t3lib_error_DebugExceptionHandler". This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace  is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if displayErrors is set to "1" and if displayErrors is "-1"  or "2" and the devIPmask matches the users IP.
@@ -728,6 +729,17 @@ if ($TYPO3_CONF_VARS['SYS']['setDBinit'] == '-1' && $typo_db) {
 }
 
 
+	// If this value is not -1, then the setting has been modified in localconf.php
+if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {
+		// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
+	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed.');
+}
+	// Force enabled caching framework
+	// @deprecated, constant can be removed in 4.8
+define('TYPO3_UseCachingFramework', TRUE);
+	// @deprecated, can be removed in 4.8
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = TRUE;
+
 
 $timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
 if (empty($timeZone)) {
@@ -899,6 +911,7 @@ require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
 t3lib_autoloader::registerAutoloader();
 
 
+
 // Load extensions:
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -917,12 +930,6 @@ if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
 
 require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 
-	// @deprecated, constant can be removed in 4.8
-define('TYPO3_UseCachingFramework', TRUE);
-	// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
-if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'])) {
-	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed.');
-}
 	// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete pageCacheToExternalFiles is set
 if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['pageCacheToExternalFiles'])) {
 	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageCacheToExternalFiles\'] is deprecated since TYPO3 4.6 and should be removed.');
