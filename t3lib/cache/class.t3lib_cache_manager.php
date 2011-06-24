@@ -50,6 +50,15 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	protected $cacheConfigurations = array();
 
 	/**
+	 * @var array Default cache configuration as fallback
+	 */
+	protected $defaultCacheConfiguration = array(
+		'frontend' => 't3lib_cache_frontend_VariableFrontend',
+		'backend' => 't3lib_cache_backend_DbBackend',
+		'options' => array(),
+	);
+
+	/**
 	 * @param t3lib_cache_Factory $cacheFactory
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
@@ -246,9 +255,24 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function createCache($identifier) {
-		$frontend = $this->cacheConfigurations[$identifier]['frontend'];
-		$backend = $this->cacheConfigurations[$identifier]['backend'];
-		$backendOptions = $this->cacheConfigurations[$identifier]['options'];
+		if (isset($this->cacheConfigurations[$identifier]['frontend'])) {
+			$frontend = $this->cacheConfigurations[$identifier]['frontend'];
+		} else {
+			$frontend = $this->defaultCacheConfiguration['frontend'];
+		}
+
+		if (isset($this->cacheConfigurations[$identifier]['backend'])) {
+			$backend = $this->cacheConfigurations[$identifier]['backend'];
+		} else {
+			$backend = $this->defaultCacheConfiguration['backend'];
+		}
+
+		if (isset($this->cacheConfigurations[$identifier]['options'])) {
+			$backendOptions = $this->cacheConfigurations[$identifier]['options'];
+		} else {
+			$backendOptions = $this->defaultCacheConfiguration['options'];
+		}
+
 		$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
 	}
 }

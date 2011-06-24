@@ -81,72 +81,29 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * @api
 	 */
 	public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array()) {
-
-		$backendReference = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'][$backendObjectName];
-
-		if (strpos($backendReference, ':') === FALSE) {
-			$backendClassReference = $backendReference;
-		} else {
-			t3lib_div::deprecationLog("Configuring cacheBackend with filename is deprecated since TYPO3 4.5. Use the autoloader instead.");
-				// Loading the cache backend file and class
-			list($backendFile, $backendClassReference) = explode(
-				':',
-				$backendReference
-			);
-
-			$backendRequireFile = t3lib_div::getFileAbsFileName($backendFile);
-			if ($backendRequireFile) {
-				t3lib_div::requireOnce($backendRequireFile);
-			}
-		}
-
-		$backend = t3lib_div::makeInstance($backendClassReference, $this->context, $backendOptions);
-
+		$backend = t3lib_div::makeInstance($backendObjectName, $this->context, $backendOptions);
 		if (!$backend instanceof t3lib_cache_backend_Backend) {
 			throw new t3lib_cache_exception_InvalidBackend(
-				'"' . $backendObjectName . '" is not a valid cache backend.',
+				'"' . $backendObjectName . '" is not a valid cache backend object.',
 				1216304301
 			);
 		}
-
 		if (is_callable(array($backend, 'initializeObject'))) {
 			$backend->initializeObject();
 		}
 
-
-		$cacheReference = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheFrontends'][$cacheObjectName];
-		$cacheReference = $cacheReference ? $cacheReference : 't3lib_cache_frontend_VariableFrontend';
-
-		if (strpos($cacheReference, ':') === FALSE) {
-			$cacheClassReference = $cacheReference;
-		} else {
-			t3lib_div::deprecationLog("Configuring cacheFrontends with filename is deprecated since TYPO3 4.5. Use the autoloader instead.");
-				// loading the cache frontend file and class
-			list($cacheFile, $cacheClassReference) = explode(
-				':',
-				$cacheReference
-			);
-
-			$cacheRequireFile = t3lib_div::getFileAbsFileName($cacheFile);
-			if ($cacheRequireFile) {
-				t3lib_div::requireOnce($cacheRequireFile);
-			}
-		}
-		$cache = t3lib_div::makeInstance($cacheClassReference, $cacheIdentifier, $backend);
-
+		$cache = t3lib_div::makeInstance($cacheObjectName, $cacheIdentifier, $backend);
 		if (!$cache instanceof t3lib_cache_frontend_Frontend) {
 			throw new t3lib_cache_exception_InvalidCache(
-				'"' . $cacheObjectName . '" is not a valid cache.',
+				'"' . $cacheObjectName . '" is not a valid cache frontend object.',
 				1216304300
 			);
 		}
-
 		if (is_callable(array($cache, 'initializeObject'))) {
 			$cache->initializeObject();
 		}
 
 		$this->cacheManager->registerCache($cache);
-
 		return $cache;
 	}
 

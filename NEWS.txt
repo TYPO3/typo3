@@ -152,4 +152,16 @@ Security
 Performance
 -------------------------------------------------------------------------------
 
-...
+* Switch to caching framework
+
+The caching framework is enabled by default and the old database-only driven
+caching is removed. This opens a lot of options for administrators to optimize
+cache deployment and performance. Details about configuration options and usage
+in own extensions can be found at http://wiki.typo3.org/Caching_framework.
+
+
+* Caching framework: db backend uses own table namespace
+
+The database backend must not define own tables and table definitions anymore.
+Cache tables and table layout of the database backend will created by the
+caching framework when needed.
