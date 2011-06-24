@@ -36,16 +36,6 @@ require_once 'backend/class.t3lib_cache_backend_mockbackend.php';
 class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 
 	/**
-	 * Sets up this testcase
-	 *
-	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function setUp() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends']['t3lib_cache_backend_MockBackend'] = 't3lib_cache_backend_MockBackend';
-	}
-
-	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>

@@ -117,21 +117,6 @@ $TYPO3_CONF_VARS = array(
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
 		'caching' => array(
-			'cacheFrontends' => array(
-				't3lib_cache_frontend_VariableFrontend' => 't3lib_cache_frontend_VariableFrontend',
-				't3lib_cache_frontend_StringFrontend'   => 't3lib_cache_frontend_StringFrontend',
-				't3lib_cache_frontend_PhpFrontend'      => 't3lib_cache_frontend_PhpFrontend',
-			),
-			'cacheBackends' => array(
-				't3lib_cache_backend_DbBackend'              => 't3lib_cache_backend_DbBackend',
-				't3lib_cache_backend_FileBackend'            => 't3lib_cache_backend_FileBackend',
-				't3lib_cache_backend_MemcachedBackend'       => 't3lib_cache_backend_MemcachedBackend',
-				't3lib_cache_backend_PdoBackend'             => 't3lib_cache_backend_PdoBackend',
-				't3lib_cache_backend_RedisBackend'           => 't3lib_cache_backend_RedisBackend',
-				't3lib_cache_backend_ApcBackend'             => 't3lib_cache_backend_ApcBackend',
-				't3lib_cache_backend_NullBackend'            => 't3lib_cache_backend_NullBackend',
-				't3lib_cache_backend_TransientMemoryBackend' => 't3lib_cache_backend_TransientMemoryBackend',
-			),
 			'cacheConfigurations' => array(
 				'cache_hash' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',

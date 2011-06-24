@@ -144,6 +144,107 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 		$manager->flushCaches();
 	}
 
+	/**
+	 * @test
+	 */
+	public function getCacheCreatesCacheInstanceWithGivenConfiguration() {
+		$manager = new t3lib_cache_Manager();
+
+		$cacheIdentifier = 'Test' . md5(uniqid(mt_rand(), TRUE));
+		$cacheObjectName = 'testCache';
+		$backendObjectName = 'testBackend';
+		$backendOptions = array('foo');
+
+		$configuration = array(
+			$cacheIdentifier => array(
+				'frontend' => $cacheObjectName,
+				'backend' => $backendObjectName,
+				'options' => $backendOptions,
+			),
+		);
+
+		$factory = $this->getMock('t3lib_cache_Factory', array('create'), array(), '', FALSE);
+		$factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, $backendObjectName, $backendOptions);
+
+		$manager->injectCacheFactory($factory);
+		$manager->setCacheConfigurations($configuration);
+		$manager->getCache($cacheIdentifier);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend() {
+		$manager = new t3lib_cache_Manager();
+
+		$cacheIdentifier = 'Test' . md5(uniqid(mt_rand(), TRUE));
+		$backendObjectName = 'testBackend';
+		$backendOptions = array('foo');
+
+		$configuration = array(
+			$cacheIdentifier => array(
+				'backend' => $backendObjectName,
+				'options' => $backendOptions,
+			),
+		);
+
+		$factory = $this->getMock('t3lib_cache_Factory', array('create'), array(), '', FALSE);
+		$factory->expects($this->once())->method('create')->with($cacheIdentifier, 't3lib_cache_frontend_VariableFrontend', $backendObjectName, $backendOptions);
+
+		$manager->injectCacheFactory($factory);
+		$manager->setCacheConfigurations($configuration);
+		$manager->getCache($cacheIdentifier);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend() {
+		$manager = new t3lib_cache_Manager();
+
+		$cacheIdentifier = 'Test' . md5(uniqid(mt_rand(), TRUE));
+		$cacheObjectName = 'testCache';
+		$backendOptions = array('foo');
+
+		$configuration = array(
+			$cacheIdentifier => array(
+				'frontend' => $cacheObjectName,
+				'options' => $backendOptions,
+			),
+		);
+
+		$factory = $this->getMock('t3lib_cache_Factory', array('create'), array(), '', FALSE);
+		$factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, 't3lib_cache_backend_DbBackend', $backendOptions);
+
+		$manager->injectCacheFactory($factory);
+		$manager->setCacheConfigurations($configuration);
+		$manager->getCache($cacheIdentifier);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackenOptions() {
+		$manager = new t3lib_cache_Manager();
+
+		$cacheIdentifier = 'Test' . md5(uniqid(mt_rand(), TRUE));
+		$cacheObjectName = 'testCache';
+		$backendObjectName = 'testBackend';
+
+		$configuration = array(
+			$cacheIdentifier => array(
+				'frontend' => $cacheObjectName,
+				'backend' => $backendObjectName,
+			),
+		);
+
+		$factory = $this->getMock('t3lib_cache_Factory', array('create'), array(), '', FALSE);
+		$factory->expects($this->once())->method('create')->with($cacheIdentifier, $cacheObjectName, $backendObjectName, array());
+
+		$manager->injectCacheFactory($factory);
+		$manager->setCacheConfigurations($configuration);
+		$manager->getCache($cacheIdentifier);
+	}
 }
 
 ?>
