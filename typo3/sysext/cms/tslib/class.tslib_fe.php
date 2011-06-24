@@ -568,14 +568,8 @@
 	 */
 	protected function initCaches() {
 		$GLOBALS['TT']->push('Initializing the Caching System','');
-
 		t3lib_cache::initializeCachingFramework();
-
 		$this->pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-
-		t3lib_cache::initPageSectionCache();
-		t3lib_cache::initContentHashCache();
-
 		$GLOBALS['TT']->pull();
 	}
 
