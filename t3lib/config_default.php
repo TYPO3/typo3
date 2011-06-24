@@ -147,8 +147,13 @@ $TYPO3_CONF_VARS = array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(),
-				)
-			)
+				),
+				'cache_runtime' => array(
+					'frontend' => 't3lib_cache_frontend_VariableFrontend',
+					'backend' => 't3lib_cache_backend_TransientMemoryBackend',
+					'options' => array(),
+				),
+			),
 		),
 		'useCachingFramework' => -1,	// <i>Obsolete setting</i>. Please remove manually from <tt>localconf.php</tt>, if it is defined there. Caching Framework is now always enabled.
 		'displayErrors' => -1,					// <p>Integer (-1, 0, 1, 2). Configures whether PHP errors should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error messages. Overrides the value of "exceptionalErrors" and sets it to 0 (= no errors are turned into exceptions), the configured "productionExceptionHandler" is used as exception handler</dd><dt>1</dt><dd>Display error messages with the registered errorhandler. The configured "debugExceptionHandler" is used as exception handler</dd><dt>2</dt><dd>Display errors only if client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>. If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used</dd><dt>-1</dt><dd>Default setting. With this option, you can override the PHP setting "display_errors". If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used.</dd></dl>
