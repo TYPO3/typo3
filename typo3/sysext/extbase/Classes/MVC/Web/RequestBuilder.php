@@ -70,6 +70,13 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected $defaultActionName;
 
 	/**
+	 * The default format of the response object
+	 *
+	 * @var string
+	 */
+	protected $defaultFormat = 'html';
+
+	/**
 	 * The allowed actions of the controller. This actions can be called via $_GET and $_POST.
 	 *
 	 * @var array
@@ -132,6 +139,9 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 			$allowedControllerActions[$controllerName] = $controllerActions['actions'];
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
+		if (!empty($configuration['format'])) {
+			$this->defaultFormat = $configuration['format'];
+		}
 	}
 
 	/**
@@ -180,6 +190,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 
 		if (is_string($parameters['format']) && (strlen($parameters['format']))) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
+		} else {
+			$request->setFormat($this->defaultFormat);
 		}
 
 		foreach ($parameters as $argumentName => $argumentValue) {
