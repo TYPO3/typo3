@@ -231,7 +231,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
-		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
@@ -249,7 +249,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
-		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
