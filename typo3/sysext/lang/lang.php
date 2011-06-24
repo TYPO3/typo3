@@ -353,11 +353,13 @@ class language {
 	 * @access	public
 	 */
 	public function getLLL($index, $localLanguage, $hsc = FALSE) {
-			// Get Local Language
-		if ($localLanguage[$this->lang][$index][0]['target'] !== '') {
-			$output = $this->hscAndCharConv($localLanguage[$this->lang][$index][0]['target'], $hsc);
+			// Get Local Language. Special handling for all extensions that
+			// read PHP LL files and pass arrays here directly.
+		$value = is_string($localLanguage[$this->lang][$index]) ? $localLanguage[$this->lang][$index] : $localLanguage[$this->lang][$index][0]['target'];
+		if ($value !== '') {
+			$output = $this->hscAndCharConv($value, $hsc);
 		} else {
-			$output = $this->hscAndCharConv($localLanguage['default'][$index][0]['target'], $hsc);
+			$output = $this->hscAndCharConv($value, $hsc);
 		}
 		return $output . $this->debugLL($index);
 	}
