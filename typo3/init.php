@@ -228,9 +228,6 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 // Initializing the Caching System
 // ***********************************
 t3lib_cache::initializeCachingFramework();
-t3lib_cache::initPageCache();
-t3lib_cache::initPageSectionCache();
-t3lib_cache::initContentHashCache();
 
 // *************************
 // CLI dispatch processing

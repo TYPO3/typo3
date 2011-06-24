@@ -56,13 +56,10 @@ class t3lib_cache {
 	 *
 	 * @return	void
 	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @deprecated since TYPO3 4.6, will be removed in 4.8
 	 */
 	public static function initPageCache() {
-		try {
-			$GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-			// do nothing, a cache_pages cache already exists
-		}
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -70,13 +67,10 @@ class t3lib_cache {
 	 *
 	 * @return	void
 	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @deprecated since TYPO3 4.6, will be removed in 4.8
 	 */
 	public static function initPageSectionCache() {
-		try {
-			$GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-			// do nothing, a cache_pagesection cache already exists
-		}
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -84,13 +78,10 @@ class t3lib_cache {
 	 *
 	 * @return	void
 	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @deprecated since TYPO3 4.6, will be removed in 4.8
 	 */
 	public static function initContentHashCache() {
-		try {
-			$GLOBALS['typo3CacheManager']->getCache('cache_hash');
-		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-			// do nothing, a cache_hash cache already exists
-		}
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
