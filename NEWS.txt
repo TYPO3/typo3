@@ -41,7 +41,15 @@ technical details see ChangeLog included in the typo3_src package.
 General
 -------------------------------------------------------------------------------
 
-...
+* Optional usage of internal compressor for CSS and JavaScript files
+
+The new option "compress" allows the compression of CSS and JavaScript
+files in includeCSS, includeJSlibs, includeJSFooterlibs and includeJS using
+the interal compression class. The files can additionally be concatenated into
+single files by type and section (header / footer). Please check the TSref on
+how to activate the compression and concatenation. Please notice that there is
+only an experimental support of @import instructions in concatenated CSS files.
+
 
 Workspaces
 -------------------------------------------------------------------------------
@@ -82,7 +90,11 @@ RTEhtmlarea
 Other improvements to the Backend
 -------------------------------------------------------------------------------
 
-...
+* Backend speedup with merged JavaScript files
+
+All jsLibs, jsFiles and jsFooterFiles are now concatenated by default into
+single files depending on type and section (header / footer). This reduces
+the webserver requests approximately by one third.
 
 -------------------------------------------------------------------------------
 Skin / Backend UI
