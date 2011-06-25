@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Steffen Kamper (info@sk-typo3.de)
+ *  (c) 2009-2011 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2011 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +30,8 @@
  * TYPO3 pageRender class (new in TYPO3 4.3.0)
  * This class render the HTML of a webpage, usable for BE and FE
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -1835,7 +1837,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/*****************************************************/
 
 	/**
-	 * concatenate files into one file
+	 * Concatenate files into one file
 	 * registered handler
 	 *
 	 * @return void
@@ -1854,24 +1856,37 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'footerData' => &$this->footerData,
 			);
 
-			if ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler']) {
+				// contatenate CSS files
+			if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'])) {
 					// use extern concatenate routine
-				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler'], $params, $this);
-			} elseif (TYPO3_MODE === 'BE') {
-				$cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
+				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'], $params, $this);
+			} else {
+				$cssOptions = array();
+				if (TYPO3_MODE == 'BE') {
+					$cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
+				}
 				$this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);
+			}
+
+				// concatenate JS files
+			if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'])) {
+					// use extern concatenate routine
+				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsConcatenateHandler'], $params, $this);
+			} else {
+				$this->jsLibs = $this->getCompressor()->concatenateJsFiles($this->jsLibs);
+				$this->jsFiles = $this->getCompressor()->concatenateJsFiles($this->jsFiles);
+				$this->jsFooterFiles = $this->getCompressor()->concatenateJsFiles($this->jsFooterFiles);
 			}
 		}
 	}
 
 	/**
-	 * compress inline code
+	 * Compress inline code
 	 *
 	 * @return void
 	 */
 	protected function doCompress() {
-
-		if ($this->compressJavascript && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler']) {
+		if ($this->compressJavascript && !empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'])) {
 				// use extern compress routine
 			$params = array(
 				'jsInline' => &$this->jsInline,
@@ -1885,7 +1900,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 		} else {
 				// traverse the arrays, compress files
-
 			if ($this->compressJavascript) {
 				if (count($this->jsInline)) {
 					foreach ($this->jsInline as $name => $properties) {
@@ -1898,10 +1912,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 						}
 					}
 				}
-				if (TYPO3_MODE === 'BE') {
-					$this->jsFiles = $this->getCompressor()->compressJsFiles($this->jsFiles);
-					$this->jsFooterFiles = $this->getCompressor()->compressJsFiles($this->jsFooterFiles);
-				}
+				$this->jsLibs = $this->getCompressor()->compressJsFiles($this->jsLibs);
+				$this->jsFiles = $this->getCompressor()->compressJsFiles($this->jsFiles);
+				$this->jsFooterFiles = $this->getCompressor()->compressJsFiles($this->jsFooterFiles);
 			}
 		}
 		if ($this->compressCss) {
@@ -1913,10 +1926,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'footerData' => &$this->footerData,
 			);
 
-			if ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'])) {
 					// use extern concatenate routine
 				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
-			} elseif (TYPO3_MODE === 'BE') {
+			} else {
 				$this->cssFiles = $this->getCompressor()->compressCssFiles($this->cssFiles);
 			}
 		}
@@ -1925,7 +1938,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Returns instance of t3lib_Compressor
 	 *
-	 * @return	t3lib_Compressor		Instance of t3lib_Compressor
+	 * @return t3lib_Compressor Instance of t3lib_Compressor
 	 */
 	protected function getCompressor() {
 		if ($this->compressor === NULL) {
@@ -1939,13 +1952,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * Adds the version number for Frontend, compresses the file for Backend
 	 *
-	 * @param	string	$filename		Filename
-	 * @return	string		new filename
+	 * @param string $filename Filename
+	 * @return string New filename
 	 */
 	protected function processJsFile($filename) {
 		switch (TYPO3_MODE) {
 			case 'FE':
-				$filename = t3lib_div::createVersionNumberedFilename($filename);
+				if ($this->compressJavascript) {
+					$filename = $this->getCompressor()->compressJsFile($filename);
+				} else {
+					$filename = t3lib_div::createVersionNumberedFilename($filename);
+				}
 			break;
 			case 'BE':
 				if ($this->compressJavascript) {
@@ -1961,4 +1978,5 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']);
 }
+
 ?>
