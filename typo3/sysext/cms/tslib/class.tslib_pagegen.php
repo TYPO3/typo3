@@ -538,7 +538,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$pageRenderer->addCssInlineBlock(
 								'import_' . $key,
 								'@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media']) . ';',
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE,
+								empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']),
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 								''
 							);
@@ -548,10 +548,11 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet',
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'all',
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '',
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE,
+								empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']),
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap']);
-
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'],
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE
+							);
 						}
 					}
 				}
@@ -693,9 +694,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$key,
 							$ss,
 							$type,
-							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
+							empty($GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['disableCompression']),
 							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap']
+							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap'],
+							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE
 						);
 					}
 				}
@@ -715,9 +717,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$key,
 							$ss,
 							$type,
-							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
+							empty($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['disableCompression']),
 							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap']
+							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap'],
+							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE
 						);
 					}
 				}
@@ -737,9 +740,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$pageRenderer->addJsFile(
 							$ss,
 							$type,
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compress'] ? TRUE : FALSE,
+							empty($GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['disableCompression']),
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap'],
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE
 						);
 					}
 				}
@@ -758,9 +762,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$pageRenderer->addJsFooterFile(
 							$ss,
 							$type,
-							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['compress'] ? TRUE : FALSE,
+							empty($GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['disableCompression']),
 							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap']
+							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap'],
+							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE
 						);
 					}
 				}
@@ -993,6 +998,13 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
 			$pageRenderer->enableCompressJavascript();
 		}
+		if ($GLOBALS['TSFE']->config['config']['concatenateCss']) {
+			$pageRenderer->enableConcatenateCss();
+		}
+		if ($GLOBALS['TSFE']->config['config']['concatenateJs']) {
+			$pageRenderer->enableConcatenateJavascript();
+		}
+			// backward compatibility for old configuration
 		if ($GLOBALS['TSFE']->config['config']['concatenateJsAndCss']) {
 			$pageRenderer->enableConcatenateFiles();
 		}
