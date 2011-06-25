@@ -18,11 +18,14 @@ Module menu
 
 #typo3-menu li {
 	clear: both;
-	margin-bottom: 1px;
+	padding-bottom: 1px;
+	margin-bottom: 0px;
 }
 
 #typo3-menu li a {
 	display: block;
+	padding-bottom: 1px;
+	margin-bottom: 0px;
 }
 
 #typo3-menu li img {
