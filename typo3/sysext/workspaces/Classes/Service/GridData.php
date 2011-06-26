@@ -188,9 +188,7 @@ class tx_Workspaces_Service_GridData {
 	 * @return void
 	 */
 	protected function initializeWorkspacesCachingFramework() {
-		if (TYPO3_UseCachingFramework === TRUE) {
-			$this->workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
-		}
+		$this->workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
 	}
 
 

@@ -20,10 +20,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']['workspaces'] = 'EXT:workspaces/Classes/Service/Befunc.php:tx_Workspaces_Service_Befunc';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['workspaces'] = 'EXT:workspaces/Classes/Service/Fehooks.php:tx_Workspaces_Service_Fehooks->hook_eofe';
 
-if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework']) {
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache']['frontend'] = 't3lib_cache_frontend_VariableFrontend';
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache']['backend'] = 't3lib_cache_backend_DbBackend';
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache']['options'] = array();
+	// Register workspaces cache if not already done in localconf.php or a previously loaded extension.
+	// We do not set frontend and backend: The cache manager uses t3lib_cache_frontend_VariableFrontend
+	// as frontend and t3lib_cache_backend_DbBackend as backend by default if not set otherwise. This
+	// is perfectly fine for the workspaces_cache.
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'] = array();
 }
 
 t3lib_extMgm::addUserTSConfig('options.workspaces.considerReferences = 1');
