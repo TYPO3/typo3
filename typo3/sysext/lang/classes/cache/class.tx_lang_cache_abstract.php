@@ -35,53 +35,6 @@
 abstract class tx_lang_cache_Abstract implements t3lib_Singleton {
 
 	/**
-	 * Local serialize function
-	 *
-	 * @var string
-	 */
-	protected $serialize;
-
-	/**
-	 * Local unserialize function
-	 *
-	 * @var string
-	 */
-	protected $unserialize;
-
-	/**
-	 * Cache constructor.
-	 *
-	 * Detects is the current setup supports igbinary.
-	 */
-	public function __construct() {
-		if (extension_loaded('igbinary')) {
-			$this->serialize = 'igbinary_serialize';
-			$this->unserialize = 'igbinary_unserialize';
-		} else {
-			$this->serialize = 'serialize';
-			$this->unserialize = 'unserialize';
-		}
-	}
-
-	/**
-	 * Gets the local serializer function.
-	 *
-	 * @return string
-	 */
-	protected function getSerialize() {
-		return $this->serialize;
-	}
-
-	/**
-	 * Gets the local unserializer function.
-	 *
-	 * @return string
-	 */
-	protected function getUnserialize() {
-		return $this->unserialize;
-	}
-
-	/**
 	 * Gets a cached value.
 	 *
 	 * @param string $hash Cache hash
