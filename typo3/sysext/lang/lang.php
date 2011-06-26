@@ -333,10 +333,12 @@ class language {
 	 * @access	public
 	 */
 	public function getLL($index, $hsc = FALSE) {
+		$output = '';
+		
 			// Get Local Language
-		if ($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] !== '') {
+		if (isset($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'])) {
 			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'], $hsc);
-		} else {
+		} elseif (isset($GLOBALS['LOCAL_LANG']['default'][$index][0]['target'])) {
 			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index][0]['target'], $hsc);
 		}
 		return $output . $this->debugLL($index);
@@ -353,10 +355,12 @@ class language {
 	 * @access	public
 	 */
 	public function getLLL($index, $localLanguage, $hsc = FALSE) {
+		$output = '';
+		
 			// Get Local Language
-		if ($localLanguage[$this->lang][$index][0]['target'] !== '') {
+		if (isset($localLanguage[$this->lang][$index][0]['target'])) {
 			$output = $this->hscAndCharConv($localLanguage[$this->lang][$index][0]['target'], $hsc);
-		} else {
+		} elseif (isset($localLanguage['default'][$index][0]['target'])) {
 			$output = $this->hscAndCharConv($localLanguage['default'][$index][0]['target'], $hsc);
 		}
 		return $output . $this->debugLL($index);
