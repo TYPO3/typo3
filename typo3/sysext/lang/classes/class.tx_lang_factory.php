@@ -79,7 +79,8 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * @return array|bool
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode) {
-		$hash = md5($fileReference . $languageKey . $charset);
+		$fileModificationTime = filemtime(t3lib_div::getFileAbsFileName($fileReference));
+		$hash = md5($fileReference . $languageKey . $charset . $fileModificationTime);
 		$this->errorMode = $errorMode;
 
 			// English is the default language
