@@ -35,19 +35,49 @@
 class tx_lang_cache_CachingFramework extends tx_lang_cache_Abstract {
 
 	/**
+	 * @var t3lib_cache_frontend_StringFrontend
+	 */
+	protected $cacheInstance;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->initializeCache();
+	}
+
+	/**
+	 * Initialize cache instance to be ready to use
+	 *
+	 * @return void
+	 */
+	protected function initializeCache() {
+			t3lib_cache::initializeCachingFramework();
+			try {
+					$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('lang_l10n_cache');
+			}
+			catch (t3lib_cache_exception_NoSuchCache $e) {
+					$this->cacheInstance = $GLOBALS['typo3CacheFactory']->create(
+							'lang_l10n_cache',
+							$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['lang_l10n_cache']['frontend'],
+							$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['lang_l10n_cache']['backend'],
+							$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['lang_l10n_cache']['options']
+					);
+			}
+	}
+
+	/**
 	 * Gets a cached value.
 	 *
 	 * @param  string $hash Cache hash
 	 * @return bool|mixed
 	 */
 	public function get($hash) {
-		$cacheIdentifier = 'language-' . $hash;
-		$cacheHash = md5($cacheIdentifier);
-		$cache = t3lib_pageSelect::getHash($cacheHash);
-		$unserialize = $this->getUnserialize();
+		$cacheData = $this->cacheInstance->get($hash);
 
-		if ($cache) {
-			$data = $unserialize($cache);
+		if ($cacheData) {
+			$data = call_user_func($this->getUnserialize(), $cacheData);
 		} else {
 			return FALSE;
 		}
@@ -63,15 +93,9 @@ class tx_lang_cache_CachingFramework extends tx_lang_cache_Abstract {
 	 * @return tx_lang_cache_CachingFramework This instance to allow method chaining
 	 */
 	public function set($hash, $data) {
-		$cacheIdentifier = 'language-' . $hash;
-		$cacheHash = md5($cacheIdentifier);
-		$serialize = $this->getSerialize();
+		$data = call_user_func($this->getSerialize(), $data);
 
-		t3lib_pageSelect::storeHash(
-			$cacheHash,
-			$serialize($data),
-			'language'
-		);
+		$this->cacheInstance->set($hash, $data);
 
 		return $this;
 	}
