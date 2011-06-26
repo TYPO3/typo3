@@ -79,7 +79,9 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * @return array|bool
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode) {
-		$hash = md5($fileReference . $languageKey . $charset);
+		$fileModificationTime = $this->getFileReferenceModificationTime($fileReference);
+		
+		$hash = md5($fileReference . $languageKey . $charset . $fileModificationTime);
 		$this->errorMode = $errorMode;
 
 			// English is the default language
@@ -131,6 +133,23 @@ class tx_lang_Factory implements t3lib_Singleton {
 		}
 
 		return $this->store->getData($fileReference);
+	}
+
+	/**
+	 * Get real fileReference modification time
+	 *
+	 * @param  $fileReference
+	 * @return int
+	 */
+	protected function getFileReferenceModificationTime($fileReference) {
+		$fileReference = preg_replace('/\.[a-z]{3}$/', '', t3lib_div::getFileAbsFileName($fileReference));
+		
+		foreach ($this->store->getSupportedExtensions() as $extension) {
+			$realFileReference = $fileReference . '.' . $extension;
+			if (@is_file($realFileReference)) {
+				return filemtime($realFileReference);
+			}
+		}
 	}
 
 }
