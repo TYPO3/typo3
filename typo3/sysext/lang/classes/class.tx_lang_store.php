@@ -220,6 +220,14 @@ class tx_lang_Store implements t3lib_Singleton {
 			);
 		}
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getSupportedExtensions()
+	{
+		return $this->supportedExtensions;
+	}
 }
 
 ?>
