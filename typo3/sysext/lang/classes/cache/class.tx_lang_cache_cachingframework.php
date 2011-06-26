@@ -35,23 +35,36 @@
 class tx_lang_cache_CachingFramework extends tx_lang_cache_Abstract {
 
 	/**
+	 * @var t3lib_cache_frontend_StringFrontend
+	 */
+	protected $cacheInstance;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->initializeCache();
+	}
+
+	/**
+	 * Initialize cache instance to be ready to use
+	 *
+	 * @return void
+	 */
+	protected function initializeCache() {
+		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('lang_l10n');
+	}
+
+	/**
 	 * Gets a cached value.
 	 *
 	 * @param  string $hash Cache hash
 	 * @return bool|mixed
 	 */
 	public function get($hash) {
-		$cacheIdentifier = 'language-' . $hash;
-		$cacheHash = md5($cacheIdentifier);
-		$cache = t3lib_pageSelect::getHash($cacheHash);
-		$unserialize = $this->getUnserialize();
+		$cacheData = $this->cacheInstance->get($hash);
 
-		if ($cache) {
-			$data = $unserialize($cache);
-		} else {
-			return FALSE;
-		}
-		return $data;
+		return $cacheData;
 	}
 
 	/**
@@ -63,15 +76,7 @@ class tx_lang_cache_CachingFramework extends tx_lang_cache_Abstract {
 	 * @return tx_lang_cache_CachingFramework This instance to allow method chaining
 	 */
 	public function set($hash, $data) {
-		$cacheIdentifier = 'language-' . $hash;
-		$cacheHash = md5($cacheIdentifier);
-		$serialize = $this->getSerialize();
-
-		t3lib_pageSelect::storeHash(
-			$cacheHash,
-			$serialize($data),
-			'language'
-		);
+		$this->cacheInstance->set($hash, $data, array(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['lifetime']);
 
 		return $this;
 	}
