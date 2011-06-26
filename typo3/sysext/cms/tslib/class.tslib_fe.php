@@ -4687,9 +4687,9 @@ if (version == "n3") {
 	 * @return	string		Label value of $index key.
 	 */
 	function getLLL($index, $LOCAL_LANG) {
-		if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
+		if (isset($LOCAL_LANG[$this->lang][$index][0]['target']) && $LOCAL_LANG[$this->lang][$index][0]['target'] !== '') {
 			return $LOCAL_LANG[$this->lang][$index][0]['target'];
-		} elseif (isset($LOCAL_LANG['default'][$index][0]['target'])) {
+		} elseif (isset($LOCAL_LANG['default'][$index][0]['target']) && $LOCAL_LANG['default'][$index][0]['target'] !== '') {
 			return $LOCAL_LANG['default'][$index][0]['target'];
 		}
 
