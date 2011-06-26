@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<generator>ClearLangCache</generator>
+		<type>module</type>
+		<authorName>Dominique Feyer</authorName>
+		<authorEmail>dominique.feyer@reelpeek.net</authorEmail>
+		<description>Clears the temp dir of htmlArea Lang</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Clear Language Cache</label>
+		</languageKey>
+	</data>
+</T3locallang>
