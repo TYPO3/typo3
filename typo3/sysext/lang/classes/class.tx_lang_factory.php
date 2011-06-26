@@ -35,9 +35,9 @@
 class tx_lang_Factory implements t3lib_Singleton {
 
 	/**
-	 * @var tx_lang_cache_Abstract
+	 * @var t3lib_cache_frontend_StringFrontend
 	 */
-	protected $cache;
+	protected $cacheInstance;
 
 	/**
 	 * @var integer
@@ -53,20 +53,22 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * Class constructor
 	 */
 	public function __construct() {
-		$this->supportedExtension = array();
-		$this->ressourceConfiguration = array();
-		$this->store = t3lib_div::makeInstance('tx_lang_Store');
-
 		$this->initialize();
 	}
 
+	protected function initialize() {
+		$this->store = t3lib_div::makeInstance('tx_lang_Store');
+
+		$this->initializeCache();
+	}
+
 	/**
-	 * Sets factory configuration.
+	 * Initialize cache instance to be ready to use
 	 *
 	 * @return void
 	 */
-	public function initialize() {
-		$this->cache = t3lib_div::makeInstance('tx_lang_cache_CachingFramework');
+	protected function initializeCache() {
+		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('lang_l10n');
 	}
 
 	/**
@@ -79,58 +81,84 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * @return array|bool
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode) {
-		$hash = md5($fileReference . $languageKey . $charset);
-		$this->errorMode = $errorMode;
-
-			// English is the default language
-		$languageKey = ($languageKey === 'en') ? 'default' : $languageKey;
-
-			// Check if the default language is processed before processing other language
-		if (!$this->store->hasData($fileReference, 'default') && $languageKey !== 'default') {
-			$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
-		}
-
-			// If the content is parsed (local cache), use it
-		if ($this->store->hasData($fileReference, $languageKey)) {
-			return $this->store->getData($fileReference);
-		}
-
-			// If the content is in cache (system cache), use it
-		if ($parsedData = $this->cache->get($hash)) {
-			return $this->store->setData($fileReference, $languageKey, $parsedData)
-					->getData($fileReference, $languageKey);
-		}
-
 		try {
+			$fileModificationTime = $this->getFileReferenceModificationTime($fileReference);
+
+			$hash = md5($fileReference . $languageKey . $charset . $fileModificationTime);
+			$this->errorMode = $errorMode;
+
+				// English is the default language
+			$languageKey = ($languageKey === 'en') ? 'default' : $languageKey;
+
+				// Check if the default language is processed before processing other language
+			if (!$this->store->hasData($fileReference, 'default') && $languageKey !== 'default') {
+				$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
+			}
+
+				// If the content is parsed (local cache), use it
+			if ($this->store->hasData($fileReference, $languageKey)) {
+				return $this->store->getData($fileReference);
+			}
+
+				// If the content is in cache (system cache), use it
+			if ($parsedData = $this->cacheInstance->get($hash)) {
+				return $this->store->setData($fileReference, $languageKey, $parsedData)
+						->getData($fileReference, $languageKey);
+			}
+
 			$this->store->setConfiguration($fileReference, $languageKey, $charset);
 
 			/** @var $parser tx_lang_parser */
 			$parser = $this->store->getParserInstance($fileReference);
 
-			try {
-				$LOCAL_LANG = $parser->getParsedData(
-					$this->store->getAbsoluteFileReference($fileReference),
-					$languageKey,
-					$charset
-				);
-				$this->store->setData(
-					$fileReference,
-					$languageKey,
-					$LOCAL_LANG[$languageKey]
-				);
+			$LOCAL_LANG = $parser->getParsedData(
+				$this->store->getAbsoluteFileReference($fileReference),
+				$languageKey,
+				$charset
+			);
+			$this->store->setData(
+				$fileReference,
+				$languageKey,
+				$LOCAL_LANG[$languageKey]
+			);
 
-					// Cache processed data
-				$this->cache->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
-			} catch (tx_lang_exception_FileNotFound $exception) {
-					// Target localization file not found
-				$this->store->setData($fileReference, $languageKey, array());
-			}
+				// Cache processed data
+			$this->cacheInstance->set(
+				$hash,
+				$this->store->getDataByLanguage($fileReference, $languageKey), 
+				array(),
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['lifetime']
+			);
+
 		} catch (tx_lang_exception_FileNotFound $exception) {
 				// Source localization file not found
 			$this->store->setData($fileReference, $languageKey, array());
 		}
 
 		return $this->store->getData($fileReference);
+	}
+
+	/**
+	 * Get real fileReference modification time
+	 *
+	 * @throws tx_lang_exception_FileNotFound
+	 * @param  $fileReference Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a supported locallang file format
+	 * @return int
+	 */
+	protected function getFileReferenceModificationTime($fileReference) {
+		$fileReference = preg_replace('/\.[a-z]{3}$/', '', t3lib_div::getFileAbsFileName($fileReference));
+
+		foreach ($this->store->getSupportedExtensions() as $extension) {
+			$realFileReference = $fileReference . '.' . $extension;
+			if (@is_file($realFileReference)) {
+				return filemtime($realFileReference);
+			}
+		}
+
+		throw new tx_lang_exception_FileNotFound(
+			sprintf('Source localization file (%s) not found', $fileReference),
+			1309176561
+		);
 	}
 
 }
