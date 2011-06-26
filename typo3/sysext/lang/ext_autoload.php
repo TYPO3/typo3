@@ -7,9 +7,6 @@ $extensionClassesPath = t3lib_extMgm::extPath('lang') . 'classes/';
 return array(
 	'tx_lang_factory' => $extensionClassesPath . 'class.tx_lang_factory.php',
 	'tx_lang_store' => $extensionClassesPath . 'class.tx_lang_store.php',
-	'tx_lang_cache_abstract' => $extensionClassesPath . 'cache/class.tx_lang_cache_abstract.php',
-	'tx_lang_cache_cachingframework' => $extensionClassesPath . 'cache/class.tx_lang_cache_cachingframework.php',
-	'tx_lang_cache_file' => $extensionClassesPath . 'cache/class.tx_lang_cache_file.php',
 	'tx_lang_exception_filenotfound' => $extensionClassesPath . 'exception/class.tx_lang_exception_filenotfound.php',
 	'tx_lang_exception_invalidparser' => $extensionClassesPath . 'exception/class.tx_lang_exception_invalidparser.php',
 	'tx_lang_exception_invalidxmlfile' => $extensionClassesPath . 'exception/class.tx_lang_exception_invalidxmlfile.php',
