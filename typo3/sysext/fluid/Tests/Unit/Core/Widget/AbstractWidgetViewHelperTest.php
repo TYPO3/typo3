@@ -58,10 +58,17 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	protected $request;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $mockExtensionService;
+
+	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetViewHelper', array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
+		$this->mockExtensionService = $this->getMock('Tx_Extbase_Service_ExtensionService');
+		$this->viewHelper->injectExtensionService($this->mockExtensionService);
 
 		$this->ajaxWidgetContextHolder = $this->getMock('Tx_Fluid_Core_Widget_AjaxWidgetContextHolder');
 		$this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
@@ -77,7 +84,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->_set('controllerContext', $this->controllerContext);
-
 	}
 
 	/**

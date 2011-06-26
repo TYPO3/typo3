@@ -65,6 +65,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $requestHashService;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $extensionService;
+
+	/**
 	 * We need the arguments of the formActionUri on requesthash calculation
 	 * therefore we will store them in here right after calling uriBuilder
 	 *
@@ -81,6 +86,14 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	public function injectRequestHashService(Tx_Extbase_Security_Channel_RequestHashService $requestHashService) {
 		$this->requestHashService = $requestHashService;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -387,8 +400,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		} else {
 			$pluginName = $request->getPluginName();
 		}
-
-		return Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
+		if ($extensionName !== NULL && $pluginName != NULL) {
+			return $this->extensionService->getPluginNamespace($extensionName, $pluginName);
+		} else {
+			return '';
+		}
 	}
 
 	/**

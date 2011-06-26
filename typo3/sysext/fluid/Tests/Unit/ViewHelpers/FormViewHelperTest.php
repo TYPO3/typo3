@@ -28,6 +28,17 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_FormViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+
+	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $mockExtensionService;
+
+	public function setUp() {
+		parent::setUp();
+		$this->mockExtensionService = $this->getMock('Tx_Extbase_Service_ExtensionService');
+	}
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -206,6 +217,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_FormViewHelperTest extends Tx_Fluid_ViewHe
 		$expectedPrefix = 'tx_someextension_someplugin';
 
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_FormViewHelper', array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderRequestHashField', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer'), array(), '', FALSE);
+		$this->mockExtensionService->expects($this->once())->method('getPluginNamespace')->with('SomeExtension', 'SomePlugin')->will($this->returnValue('tx_someextension_someplugin'));
+		$viewHelper->injectExtensionService($this->mockExtensionService);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
 		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('extensionName' => 'SomeExtension', 'pluginName' => 'SomePlugin')));

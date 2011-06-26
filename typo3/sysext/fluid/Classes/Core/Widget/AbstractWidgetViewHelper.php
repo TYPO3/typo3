@@ -56,6 +56,11 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	private $objectManager;
 
 	/**
+	 * @var Tx_Extbase_Service_ExtensionService
+	 */
+	protected $extensionService;
+
+	/**
 	 * @var Tx_Fluid_Core_Widget_WidgetContext
 	 */
 	private $widgetContext;
@@ -77,6 +82,14 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->widgetContext = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetContext');
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -111,7 +124,7 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 		$pluginName = $this->controllerContext->getRequest()->getPluginName();
 		$this->widgetContext->setParentExtensionName($extensionName);
 		$this->widgetContext->setParentPluginName($pluginName);
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
+		$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 		$this->widgetContext->setParentPluginNamespace($pluginNamespace);
 
 		$this->widgetContext->setWidgetViewHelperClassName(get_class($this));
