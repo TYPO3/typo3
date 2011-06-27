@@ -115,6 +115,17 @@ class tx_lang_parser_Llphp implements tx_lang_parser {
 				$LOCAL_LANG = $serContent['LOCAL_LANG'];
 			}
 
+				// Convert the $LOCAL_LANG array to XLIFF structure
+			foreach ($LOCAL_LANG as &$keysLabels) {
+				foreach ($keysLabels as &$label) {
+					$label = array(0 => array(
+						'target' => $label,
+					));
+				}
+				unset($label);
+			}
+			unset($keysLabels);
+
 			return $LOCAL_LANG;
 		}
 	}
