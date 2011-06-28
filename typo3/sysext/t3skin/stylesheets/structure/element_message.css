@@ -21,3 +21,8 @@ Flash Messages (template.php)
 .typo3-message .message-header {
 	display: block;
 }
+
+.typo3-message .t3-icon-actions-message-close {
+	cursor: pointer;
+	float: right;
+}
