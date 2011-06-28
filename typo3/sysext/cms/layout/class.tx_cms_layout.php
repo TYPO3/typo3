@@ -95,7 +95,6 @@
  *			  SECTION: External renderings
  * 2341:	 function getPageInfoBox($rec,$edit=0)
  * 2510:	 function getTableMenu($id)
- * 2575:	 function strip_tags($content, $fillEmptyContent=FALSE)
  *
  * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -2263,7 +2262,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Output string
 	 */
 	function renderText($input) {
-		$input = $this->strip_tags($input, TRUE);
+		$input = strip_tags($input);
 		$input = t3lib_div::fixed_lgd_cs($input, 1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
@@ -2706,23 +2705,6 @@ class tx_cms_layout extends recordList {
 
 		// Return the content:
 		return $out;
-	}
-
-	/**
-	 * Enhancement for the strip_tags function that provides the feature to fill in empty tags.
-	 * Example <link email@hostname.com></link> is accepted by TYPO3 but would not displayed in the Backend otherwise.
-	 *
-	 * @param	string		Input string
-	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
-	 * @return	string		Input string with all HTML and PHP tags stripped
-	 */
-	function strip_tags($content, $fillEmptyContent = FALSE) {
-		if ($fillEmptyContent && strstr($content, '><')) {
-			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\/[^>]*>)/', '$1$2$3$2$4', $content);
-		}
-		$content = preg_replace('/<br.?\/?>/', LF, $content);
-
-		return strip_tags($content);
 	}
 }
 
