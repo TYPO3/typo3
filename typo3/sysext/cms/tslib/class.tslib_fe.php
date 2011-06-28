@@ -462,8 +462,14 @@
 		if (t3lib_div::_GP('FE_SESSION_KEY'))	{
 			$fe_sParts = explode('-',t3lib_div::_GP('FE_SESSION_KEY'));
 			if (!strcmp(md5($fe_sParts[0].'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']), $fe_sParts[1]))	{	// If the session key hash check is OK:
-				$_COOKIE[tslib_feUserAuth::getCookieName()] = $fe_sParts[0];
+				$cookieName = tslib_feUserAuth::getCookieName();
+				$_COOKIE[$cookieName] = $fe_sParts[0];
+				if (isset($_SERVER['HTTP_COOKIE'])) {
+						// See http://forge.typo3.org/issues/27740
+					$_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $fe_sParts[0];
+				}
 				$this->fe_user->forceSetCookie = 1;
+				unset($cookieName);
 			}
 		}
 
