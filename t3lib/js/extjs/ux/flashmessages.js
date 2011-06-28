@@ -40,7 +40,7 @@ TYPO3.Severity = {
 	ok: 2,
 	warning: 3,
 	error: 4
-}
+};
 
 /**
  * @class TYPO3.Flashmessage
@@ -50,11 +50,11 @@ TYPO3.Severity = {
  * Example (Information message):
  * TYPO3.Flashmessage.display(1, 'TYPO3 Backend - Version 4.4', 'Ready for take off', 3);
  */
-TYPO3.Flashmessage = function() {
-	var messageContainer;
-	var severities = ['notice', 'information', 'ok', 'warning', 'error'];
+TYPO3.Flashmessage = function () {
+	var messageContainer, severities;
+	severities  = ['notice', 'information', 'ok', 'warning', 'error'];
 
-	function createBox(severity, title, message){
+	function createBox(severity, title, message) {
 		return ['<div class="typo3-message message-', severity, '" style="width: 400px">',
 				'<div class="header-container">',
 				'<div class="message-header">', title, '</div>',
@@ -72,9 +72,9 @@ TYPO3.Flashmessage = function() {
 		 * @param string message
 		 * @param float duration in sec (default 5)
 		 */
-		display : function(severity, title, message, duration){
+		display : function (severity, title, message, duration) {
 			duration = duration || 5;
-			if(!messageContainer){
+			if (!messageContainer) {
 				messageContainer = Ext.DomHelper.insertFirst(document.body, {
 					id   : 'msg-div',
 					style: 'position:absolute;z-index:10000'
@@ -85,7 +85,14 @@ TYPO3.Flashmessage = function() {
 				html: createBox(severities[severity], title, message)
 			}, true);
 			messageContainer.alignTo(document, 't-t');
-			box.slideIn('t').pause(duration).ghost('t', {remove:true});
+			box.on('click',	function (e, t, o) {
+				var node;
+				node = Ext.get(t).findParent('div.typo3-message');
+				node.hide();
+				Ext.removeNode(node.dom);
+			}, box);
+			box.slideIn('t').pause(duration).ghost('t', {remove: true});
 		}
-	}
-}();
+	};
+};
+TYPO3.Flashmessage();
