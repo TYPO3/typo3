@@ -514,6 +514,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-input-clear',
 	'actions-insert-record',
 	'actions-insert-reference',
+	'actions-message-error-close',
+	'actions-message-notice-close',
+	'actions-message-ok-close',
+	'actions-message-warning-close',
 	'actions-move-down',
 	'actions-move-left',
 	'actions-move-move',
@@ -655,6 +659,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-text-js',
 	'mimetypes-text-php',
 	'mimetypes-text-text',
+	'mimetypes-word',
 	'mimetypes-x-content-divider',
 	'mimetypes-x-content-domain',
 	'mimetypes-x-content-form',
@@ -766,6 +771,9 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
+
+
 
 
 
