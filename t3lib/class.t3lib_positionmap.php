@@ -576,8 +576,8 @@ class t3lib_positionMap {
 		} else {
 			$location = 'tce_db.php?cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction');
 		}
-			//		$location.='&redirect='.rawurlencode($this->R_URI);		// returns to prev. page
-		$location .= '&uPT=1&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')); // This redraws screen
+
+		$location .= '&redirect=' . rawurlencode($this->R_URI);		// returns to prev. page
 
 		return 'window.location.href=\'' . $location . '\';return false;';
 	}
