@@ -2190,7 +2190,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Output string
 	 */
 	function renderText($input) {
-		$input = $this->strip_tags($input, TRUE);
+		$input = strip_tags($input);
 		$input = t3lib_div::fixed_lgd_cs($input, 1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
@@ -2639,6 +2639,7 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Input string
 	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
+	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - using php-function strip_tags now
 	 */
 	function strip_tags($content, $fillEmptyContent = FALSE) {
 		if ($fillEmptyContent && strstr($content, '><')) {
