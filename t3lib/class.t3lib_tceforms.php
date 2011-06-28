@@ -3693,7 +3693,8 @@ class t3lib_TCEforms {
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC + 1, t3lib_div::intInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ' multiple="multiple" name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
+			$isMultiple = ($params['size'] != 1 && $params['multiple']);
+			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 
 
@@ -5681,18 +5682,17 @@ class t3lib_TCEforms {
 				browserWin.focus();
 			}
 			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues) {
-				var formObj = setFormValue_getFObj(fName);
+				var formObj = setFormValue_getFObj(fName), fObj, isMultiple = false, isList = false, len;
 				if (formObj && value !== "--div--") {
 						// Check if the form object has a "_list" element or not
 						// The "_list" element exists for multiple selection select types
-					var isMultiple = true;
 					if (formObj[fName + "_list"]) {
 						fObj = formObj[fName + "_list"];
+						isMultiple = fObj.getAttribute("multiple") == null && fObj.getAttribute("size") != "1";
+						isList = true;
 					} else {
 						fObj = formObj[fName];
-						var isMultiple = false;
 					}
-					var len = fObj.length;
 
 						// clear field before adding value, if configured so (maxitems==1)
 					if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName] != "undefined") {
@@ -5709,14 +5709,21 @@ class t3lib_TCEforms {
 						len = fObj.length;
 					}
 
-					if (isMultiple) {
+					if (isMultiple || isList) {
+						if (!isMultiple) {
+								// If multiple values are not allowed, clear anything that is in the control already
+							fObj.options.length = 0;
+							fObj.length = 0; // Note: this is dangerous! "length" on the object is a reserved JS attribute!
+						}
+						len = fObj.length;
+
 							// Clear elements if exclusive values are found
 						if (exclusiveValues) {
 							var m = new RegExp("(^|,)" + value + "($|,)");
 							if (exclusiveValues.match(m))	{
 									// the new value is exclusive
 								for (a = len - 1; a >= 0; a--) {
-									fObj[a] = null;
+									fObj[a] = null; // This is dangerous because it works on the object\'s numeric properties directly instead of using a custom attribute!
 								}
 								len = 0;
 							} else if (len == 1)	{
@@ -5729,11 +5736,11 @@ class t3lib_TCEforms {
 							}
 						}
 							// Inserting element
-						var setOK = 1;
+						var setOK = true;
 						if (!formObj[fName + "_mul"] || formObj[fName + "_mul"].value == 0) {
 							for (a = 0; a < len; a++) {
 								if (fObj.options[a].value == value) {
-									setOK = 0;
+									setOK = false;
 								}
 							}
 						}
@@ -5920,7 +5927,12 @@ class t3lib_TCEforms {
 				var formObj = ' . $formObj . ';
 				if (formObj) {
 						// Take the form object if it is either of type select-one or of type-multiple and it has a "_list" element
-					if (formObj[fName] && ((formObj[fName].type == "select-one") || (formObj[fName + "_list"] && formObj[fName + "_list"].type == "select-multiple"))) {
+					if (formObj[fName] &&
+						(
+							(formObj[fName].type == "select-one") ||
+							(formObj[fName + "_list"] && formObj[fName + "_list"].type.match(/select-(one|multiple)/))
+						)
+					) {
 						return formObj;
 					} else {
 						alert("Formfields missing:\n fName: " + formObj[fName] + "\n fName_list:" + formObj[fName + "_list"] + "\n type:" + formObj[fName + "_list"].type + "\n fName:" + fName);
