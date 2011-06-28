@@ -85,6 +85,12 @@ TYPO3.Flashmessage = function() {
 				html: createBox(severities[severity], title, message)
 			}, true);
 			messageContainer.alignTo(document, 't-t');
+			box.on('click',
+				function(e,t,o) {
+					node = Ext.get(t).findParent('div.typo3-message');
+					node.hide();
+					Ext.removeNode(node.dom);
+				},box);
 			box.slideIn('t').pause(duration).ghost('t', {remove:true});
 		}
 	}
