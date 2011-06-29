@@ -746,9 +746,10 @@ class template {
 				$headerStart = '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-				// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
+				break;
 			case 'html5':
 			default:
+					// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
 				$headerStart = '<!DOCTYPE html>' . LF;
 				$htmlTag = '<html>';
 				// disable rendering of XHTML tags
@@ -779,7 +780,7 @@ class template {
 		$xmlStylesheet = '<?xml-stylesheet href="#internalStyle" type="text/css"?>';
 
 			// Add the XML prologue for XHTML doctypes
-		if (strpos($this->doctype, 'xhtml') !== FALSE) {
+		if (strpos($this->docType, 'xhtml') !== FALSE) {
 				// Put the XML prologue before or after the doctype declaration according to browser
 			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
 				$headerStart = $headerStart . LF . $xmlPrologue;
