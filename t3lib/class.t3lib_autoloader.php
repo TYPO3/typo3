@@ -132,12 +132,15 @@ class t3lib_autoloader {
 	 * @return	string	full name of the file where $className is declared, or NULL if no entry found in registry.
 	 */
 	static protected function getClassPathByRegistryLookup($className) {
-		$className = strtolower($className);
-		if (!array_key_exists($className, self::$classNameToFileMapping)) {
-			self::attemptToLoadRegistryForGivenClassName($className);
+		$classNameLower = strtolower($className);
+		if (!array_key_exists($classNameLower, self::$classNameToFileMapping)) {
+			self::attemptToLoadRegistryForGivenClassName($classNameLower);
 		}
-		if (array_key_exists($className, self::$classNameToFileMapping)) {
-			return self::$classNameToFileMapping[$className];
+		if (!array_key_exists($classNameLower, self::$classNameToFileMapping)) {
+			self::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
+		}
+		if (array_key_exists($classNameLower, self::$classNameToFileMapping)) {
+			return self::$classNameToFileMapping[$classNameLower];
 		} else {
 			return NULL;
 		}
@@ -167,6 +170,25 @@ class t3lib_autoloader {
 			self::$classNameToFileMapping = array_merge($extensionClassNameToFileMapping, self::$classNameToFileMapping);
 		} else {
 			self::$extensionHasAutoloadConfiguration[$extensionKey] = FALSE;
+		}
+	}
+
+	/**
+	 * Try to load a given class name based on naming convention into the registry.
+	 *
+	 * @param string $className	Class name
+	 * @return void
+	 */
+	static protected function attemptToLoadRegistryWithNamingConventionForGivenClassName($className) {
+		$classNameParts = explode('_', $className);
+		$extensionPrefix = array_shift($classNameParts) . '_' . array_shift($classNameParts);
+		$extensionKey = t3lib_extMgm::getExtensionKeyByPrefix(strtolower($extensionPrefix));
+
+		if ($extensionKey) {
+			$classPath = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . implode('/', $classNameParts) . '.php';
+			if (file_exists($classPath)) {
+				self::$classNameToFileMapping[strtolower($className)] = $classPath;
+			}
 		}
 	}
 }
