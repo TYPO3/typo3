@@ -67,7 +67,7 @@ class tx_em_Connection_Ter {
 		$MD5 = md5($t3x);
 
 		if ($t3x === FALSE) {
-			return 'The T3X file could not be fetched. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.';
+			return sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.', $mirrorURL);
 		}
 
 		if ($MD5 == $expectedMD5) {
