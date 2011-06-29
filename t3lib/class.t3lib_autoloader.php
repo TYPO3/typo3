@@ -136,6 +136,9 @@ class t3lib_autoloader {
 		if (!array_key_exists($className, self::$classNameToFileMapping)) {
 			self::attemptToLoadRegistryForGivenClassName($className);
 		}
+		if (!array_key_exists($className, self::$classNameToFileMapping)) {
+			self::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
+		}
 		if (array_key_exists($className, self::$classNameToFileMapping)) {
 			return self::$classNameToFileMapping[$className];
 		} else {
@@ -167,6 +170,25 @@ class t3lib_autoloader {
 			self::$classNameToFileMapping = array_merge($extensionClassNameToFileMapping, self::$classNameToFileMapping);
 		} else {
 			self::$extensionHasAutoloadConfiguration[$extensionKey] = FALSE;
+		}
+	}
+
+	/**
+	 * Try to load a given class name based on naming convention into the registry.
+	 *
+	 * @param string $className	Class name
+	 * @return void
+	 */
+	static protected function attemptToLoadRegistryWithNamingConventionForGivenClassName($className) {
+		$classNameParts = explode('_', $className);
+		$extensionPrefix = array_shift($classNameParts) . '_' . array_shift($classNameParts);
+		$extensionKey = t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix);
+
+		if ($extensionKey) {
+			$classPath = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . implode('/', $classNameParts) . '.php';
+			if (file_exists($classPath)) {
+				self::$classNameToFileMapping[$className] = $classPath;
+			}
 		}
 	}
 }
