@@ -46,14 +46,40 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
+	 * @var array Backup of typo3CacheManager
+	 */
+	protected $typo3CacheManager = NULL;
+
+	/**
 	 * @var array Register of temporary extensions in typo3temp
 	 */
 	protected $fakedExtensions = array();
 
 	/**
+	 * Fix a race condition that t3lib_div is not available
+	 * during tearDown if fiddling with the autoloader where
+	 * backupGlobals is not set up again yet
+	 */
+	public function setUp() {
+		$this->typo3CacheManager = $GLOBALS['typo3CacheManager'];
+	}
+
+	/**
 	 * Clean up
+	 * Warning: Since phpunit itself is php and we are fiddling with php
+	 * autoloader code here, the tests are a bit fragile. This tearDown
+	 * method ensures that all main classes are available again during
+	 * tear down of a testcase.
+	 * This construct will fail if the class under test is changed and
+	 * not compatible anymore. Make sure to always run the whole test
+	 * suite if fiddling with the autoloader unit tests to ensure that
+	 * there is no fatal error thrown in other unit test classes triggered
+	 * by errors in this one.
 	 */
 	public function tearDown() {
+		$GLOBALS['typo3CacheManager'] = $this->typo3CacheManager;
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
 		foreach ($this->fakedExtensions as $extension) {
 			t3lib_div::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
 		}
@@ -66,7 +92,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	 * @return string The extension key
 	 */
 	protected function createFakeExtension() {
-		$extKey = uniqid('testing');
+		$extKey = strtolower(uniqid('testing'));
 		$absExtPath = PATH_site . "typo3temp/$extKey/";
 		$relPath = "typo3temp/$extKey/";
 		t3lib_div::mkdir($absExtPath);
@@ -85,16 +111,31 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
-	public function autoloaderCanBeUnregisteredAndRegisteredAgain() {
+	public function UnregisterAndRegisterAgainDoesNotFatal() {
 		t3lib_autoloader::unregisterAutoloader();
 		t3lib_autoloader::registerAutoloader();
+			// If this fatals the autoload re registering went wrong
 		t3lib_div::makeInstance('t3lib_timetracknull');
 	}
 
 	/**
 	 * @test
 	 */
-	public function extensionAutoloadFileIsIncludedIfAvailable() {
+	public function registerSetsCacheEntryWithT3libAutoloaderTag() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+			// Expect the mock cache set method to be called
+			// once with t3lib_autoloader as third parameter
+		$mockCache->expects($this->once())->method('set')->with(TRUE, TRUE, array('t3lib_autoloader'));
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadFindsClassFileDefinedInExtAutoloadFile() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . "typo3temp/$extKey/";
 		$autoloaderFile = $extPath . "ext_autoload.php";
@@ -117,6 +158,142 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 
 			// Expect the exception of the file to be thrown
 		$this->setExpectedException('RuntimeException', '', 1310203812);
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithoutExtAutoloadFile() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+			// Create a class named Tx_Extension_Foo123_Bar456
+			// to find file extension/Classes/Foo123/Bar456.php
+		$pathSegment = 'Foo' . uniqid();
+		$fileName = 'Bar' . uniqid();
+		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+
+		t3lib_div::mkdir_deep($extPath . 'Classes/' . $pathSegment);
+		file_put_contents($file, "<?php\n\nthrow new RuntimeException('', 1310203813);\n\n?>");
+
+			// Inject a dummy for the core_phpcode cache to cache
+			// the calculated cache entry to a dummy cache
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect the exception of the file to be thrown
+		$this->setExpectedException('RuntimeException', '', 1310203813);
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadWritesClassFileThatRespectsExtbaseNamingSchemeToCacheFile() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+		$pathSegment = 'Foo' . uniqid();
+		$fileName = 'Bar' . uniqid();
+		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+
+		t3lib_div::mkdir_deep($extPath . 'Classes/' . $pathSegment);
+		file_put_contents($file, "<?php\n\n\$foo = 'bar';\n\n?>");
+
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect that an entry to the cache is written containing the newly found class
+		$mockCache->expects($this->once())->method('set')->with(TRUE, $this->stringContains(strtolower($class), TRUE));
+
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadWritesClassFileLocationOfClassRespectingExtbaseNamingSchemeToCacheFile() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+		$pathSegment = 'Foo' . uniqid();
+		$fileName = 'Bar' . uniqid();
+		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+
+		t3lib_div::mkdir_deep($extPath . 'Classes/' . $pathSegment);
+		file_put_contents($file, "<?php\n\n\$foo = 'bar';\n\n?>");
+
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect that an entry to the cache is written containing the newly found class
+		$mockCache->expects($this->once())->method('set')->with(TRUE, $this->stringContains(strtolower($file), TRUE));
+
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadDoesNotSetCacheEntryForClassThatRespectsExtbaseNamingSchemeOnConsecutiveCallsForSameClass() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+		$pathSegment = 'Foo' . uniqid();
+		$fileName = 'Bar' . uniqid();
+		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+
+		t3lib_div::mkdir_deep($extPath . 'Classes/' . $pathSegment);
+		file_put_contents($file, "<?php\n\n\$foo = 'bar';\n\n?>");
+
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect the set method is called exactly once, even if the class is called multiple times.
+			// This means that the internal array of the autoloader class is successfully used
+		$mockCache->expects($this->once())->method('set');
+
+		t3lib_autoloader::autoload($class);
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloadReadsClassFileLocationFromCacheFileForClassThatRespectsExtbaseNamingScheme() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+		$pathSegment = 'Foo' . uniqid();
+		$fileName = 'Bar' . uniqid();
+		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+
+		t3lib_div::mkdir_deep($extPath . 'Classes/' . $pathSegment);
+		file_put_contents($file, "<?php\n\n\$foo = 'bar';\n\n?>");
+
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect the set method is called exactly once, even if the class is called multiple times.
+			// This means that the internal array of the autoloader class is successfully used
+		$mockCache->expects($this->once())
+			->method('requireOnce')
+			->will($this->returnValue(array(strtolower($class) => $file)));
+
+		t3lib_autoloader::autoload($class);
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
 		t3lib_autoloader::autoload($class);
 	}
 }
