@@ -118,7 +118,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$this->viewHelper->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('Some Widget Configuration'));
 		$this->widgetContext->expects($this->once())->method('setWidgetConfiguration')->with('Some Widget Configuration');
 
-		$this->widgetContext->expects($this->once())->method('setWidgetIdentifier')->with('__widget_0');
+		$this->widgetContext->expects($this->once())->method('setWidgetIdentifier')->with('@widget_0');
 
 		$this->viewHelper->_set('controller', new stdClass());
 		$this->widgetContext->expects($this->once())->method('setControllerObjectName')->with('stdClass');
