@@ -71,5 +71,17 @@ interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_S
 	 */
 	public function setConfiguration(array $configuration = array());
 
+	/**
+	 * Returns TRUE if a certain feature, identified by $featureName
+	 * should be activated, FALSE for backwards-compatible behavior.
+	 *
+	 * This is an INTERNAL API used throughout Extbase and Fluid for providing backwards-compatibility.
+	 * Do not use it in your custom code!
+	 *
+	 * @param string $featureName
+	 * @return boolean
+	 */
+	public function isFeatureEnabled($featureName);
+
 }
 ?>

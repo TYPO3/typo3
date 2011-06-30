@@ -115,5 +115,20 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 		}
 	}
 
+	/**
+	 * Returns TRUE if a certain feature, identified by $featureName
+	 * should be activated, FALSE for backwards-compatible behavior.
+	 *
+	 * This is an INTERNAL API used throughout Extbase and Fluid for providing backwards-compatibility.
+	 * Do not use it in your custom code!
+	 *
+	 * @param string $featureName
+	 * @return boolean
+	 */
+	public function isFeatureEnabled($featureName) {
+		$configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
+		return (boolean)(isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
+	}
+
 }
 ?>
