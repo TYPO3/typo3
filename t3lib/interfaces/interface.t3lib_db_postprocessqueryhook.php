@@ -45,7 +45,7 @@ interface t3lib_DB_postProcessQueryHook {
 	 * @param t3lib_DB $parentObject
 	 * @return void
 	 */
-	public function exec_INSERTquery_postProcessAction($table, array $fieldsValues, $noQuoteFields, t3lib_DB $parentObject);
+	public function exec_INSERTquery_postProcessAction(&$table, array &$fieldsValues, &$noQuoteFields, t3lib_DB $parentObject);
 
 	/**
 	 * Post-processor for the exec_INSERTmultipleRows method.
@@ -57,7 +57,7 @@ interface t3lib_DB_postProcessQueryHook {
 	 * @param t3lib_DB $parentObject
 	 * @return void
 	 */
-	public function exec_INSERTmultipleRows_postProcessAction($table, array $fields, array $rows, $noQuoteFields, t3lib_DB $parentObject);
+	public function exec_INSERTmultipleRows_postProcessAction(&$table, array &$fields, array &$rows, &$noQuoteFields, t3lib_DB $parentObject);
 
 	/**
 	 * Post-processor for the exec_UPDATEquery method.
@@ -69,7 +69,7 @@ interface t3lib_DB_postProcessQueryHook {
 	 * @param t3lib_DB $parentObject
 	 * @return void
 	 */
-	public function exec_UPDATEquery_postProcessAction($table, $where, array $fieldsValues, $noQuoteFields, t3lib_DB $parentObject);
+	public function exec_UPDATEquery_postProcessAction(&$table, &$where, array &$fieldsValues, &$noQuoteFields, t3lib_DB $parentObject);
 
 	/**
 	 * Post-processor for the exec_DELETEquery method.
@@ -79,7 +79,7 @@ interface t3lib_DB_postProcessQueryHook {
 	 * @param t3lib_DB $parentObject
 	 * @return void
 	 */
-	public function exec_DELETEquery_postProcessAction($table, $where, t3lib_DB $parentObject);
+	public function exec_DELETEquery_postProcessAction(&$table, &$where, t3lib_DB $parentObject);
 
 	/**
 	 * Post-processor for the exec_TRUNCATEquery method.
@@ -88,7 +88,7 @@ interface t3lib_DB_postProcessQueryHook {
 	 * @param t3lib_DB $parentObject
 	 * @return void
 	 */
-	public function exec_TRUNCATEquery_postProcessAction($table, t3lib_DB $parentObject);
+	public function exec_TRUNCATEquery_postProcessAction(&$table, t3lib_DB $parentObject);
 
 }
 
