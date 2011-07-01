@@ -243,7 +243,8 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 */
 	public function toArray() {
 		$array = array();
-		foreach ($this->storage as $item) {
+		$storage = array_values($this->storage);
+		foreach ($storage as $item) {
 			$array[] = $item['obj'];
 		}
 		return $array;
