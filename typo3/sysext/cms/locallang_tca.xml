@@ -197,6 +197,7 @@
 			<label index="sys_template.static_file_mode.0">Default (include before if root flag is set)</label>
 			<label index="sys_template.static_file_mode.1">Always include before this template record</label>
 			<label index="sys_template.static_file_mode.2">Never include before this template record</label>
+			<label index="sys_template.static_file_mode.3">Include before static and static from extensions if Root-flag is set</label>
 			<label index="sys_template.basedOn_add">Add New Basis Template</label>
 			<label index="sys_template.tabs.files">Resources</label>
 			<label index="sys_template.tabs.include">Includes</label>
