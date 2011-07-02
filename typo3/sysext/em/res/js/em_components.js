@@ -581,7 +581,7 @@ TYPO3.EM.UploadLocationCombo = new Ext.form.ComboBox({
 	valueField:     'value',
 	store: TYPO3.EM.LocationStore,
 	width: 250,
-	fieldLabel: '...to location'
+	fieldLabel: 'Location'
 });
 
 TYPO3.EM.RepositoryCombo = new Ext.form.ComboBox({
@@ -814,7 +814,7 @@ Ext.reg('terupload', TYPO3.EM.TerUpload);
 
 TYPO3.EM.ExtensionUploadWindowInstance = null;
 TYPO3.EM.ExtensionUploadWindow = Ext.extend(Ext.Window, {
-	title: 'Upload extension file directly (.t3x)',
+	title: TYPO3.l10n.localize('upload_ext_title'),
 	modal: true,
 	closable: true,
 	closeAction: 'hide',
@@ -839,9 +839,9 @@ TYPO3.EM.ExtensionUploadWindow = Ext.extend(Ext.Window, {
 							xtype: 'fileuploadfield',
 							id: 'form-file',
 							emptyText: TYPO3.l10n.localize('upload_selectExtension'),
-							fieldLabel: 'Extension',
+							fieldLabel: 'File',
 							name: 'extupload-path',
-							buttonText: '...',
+							buttonText: '…',
 							width: 250,
 							validator: function(value) {
 								if (value) {
