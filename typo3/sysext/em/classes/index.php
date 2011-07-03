@@ -1183,7 +1183,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	}
 
 	/**
-	 * Returns the base URL for the slected or a random mirror.
+	 * Returns the base URL for the selected or a random mirror.
 	 *
 	 * @return	string		The URL for the selected or a random mirror
 	 */
@@ -1205,7 +1205,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$url = 'http://' . $mirrors[$rand]['host'] . $mirrors[$rand]['path'];
 		}
 		else {
-			$url = 'http://' . $mirrors[$this->MOD_SETTINGS['selectedMirror']]['host'] . $mirrors[$this->MOD_SETTINGS['selectedMirror']]['path'];
+			$selectedMirror = NULL;
+			foreach ($mirrors as $mirror) {
+				if ($mirror['host'] === $this->MOD_SETTINGS['selectedMirror']) {
+					$selectedMirror = $mirror;
+					break;
+				}
+			}
+			$url = 'http://' . $selectedMirror['host'] . $selectedMirror['path'];
 		}
 
 		return $url;
