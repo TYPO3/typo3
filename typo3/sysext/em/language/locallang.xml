@@ -115,12 +115,13 @@
 			<label index="local_folder">Local (../typo3conf/ext/)</label>
 			<label index="global_folder">Global (typo3/ext/)</label>
 			<label index="system_folder">System (typo3/sysext/)</label>
-			<label index="overwrite_ext">Overwrite  existing</label>
+			<label index="overwrite_ext">Overwrite existing</label>
 			<label index="upload_ext">Extension Upload</label>
-			<label index="upload_ext_file">Upload extension file</label>
+			<label index="upload_ext_title">Upload extension</label>
+			<label index="upload_ext_file">Upload extension</label>
 			<label index="upload_ext_from">Upload extension from your computer</label>
 			<label index="upload_ext_directly">Upload extension</label>
-			<label index="upload_selectExtension">Extension file</label>
+			<label index="upload_selectExtension">Extension file (*.t3x)</label>
 			<label index="previous_page">Prev page</label>
 			<label index="next_page">Next page</label>
 			<label index="showing_extensions_from_to">Showing extensions %s to %s</label>
