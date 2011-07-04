@@ -94,15 +94,15 @@ class tx_lang_parser_Llphp implements tx_lang_parser {
 				unset($labelValue);
 			}
 
-			if ($langKey !== 'default' && is_array($LOCAL_LANG[$langKey]) && $sourceCharset != $targetCharset) {
-				foreach ($LOCAL_LANG[$langKey] as &$labelValue) {
+			if ($languageKey !== 'default' && is_array($LOCAL_LANG[$languageKey]) && $sourceCharset != $targetCharset) {
+				foreach ($LOCAL_LANG[$languageKey] as &$labelValue) {
 					$labelValue = $csConvObj->conv($labelValue, $sourceCharset, $targetCharset);
 				}
 				unset($labelValue);
 			}
 
 				// Cache the content now:
-			$serContent = array('origFile' => $hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $langKey => $LOCAL_LANG[$langKey]));
+			$serContent = array('origFile' => $hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
 			$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
 			if ($res) {
 				throw new RuntimeException(
