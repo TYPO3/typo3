@@ -142,7 +142,7 @@ class tx_em_Translations {
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		foreach ($theLanguages as $val) {
 			if ($val != 'default') {
-				$localLabel = '  -  [' . htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_' . $val]) . ']';
+				$localLabel = '  -  [' . htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_' . $val][0]['target']) . ']';
 				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
 				$opt[$GLOBALS['LANG']->getLL('lang_' . $val, 1) . '--' . $val] = '
 			 <option value="' . $val . '"' . $selected . '>' . $LANG->getLL('lang_' . $val, 1) . $localLabel . '</option>';
