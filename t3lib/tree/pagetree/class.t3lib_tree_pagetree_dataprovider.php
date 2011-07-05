@@ -55,6 +55,13 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	protected $hiddenRecords = array();
 
 	/**
+	 * Process collection hook objects
+	 *
+	 * @var array<t3lib_tree_pagetree_interfaces_collectionprocessor>
+	 */
+	protected $processCollectionHookObjects = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @param int $nodeLimit (optional)
@@ -69,6 +76,17 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			',',
 			$GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')
 		);
+
+		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'];
+		if (is_array($hookElements)) {
+			foreach ($hookElements as $classRef) {
+				/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if ($hookObject instanceof t3lib_tree_pagetree_interfaces_collectionprocessor) {
+					$this->processCollectionHookObjects[] = $hookObject;
+				}
+			}
+		}
 	}
 
 	/**
@@ -126,6 +144,11 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			}
 
 			$nodeCollection->append($subNode);
+		}
+
+		foreach ($this->processCollectionHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			$hookObject->postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
 		}
 
 		return $nodeCollection;
@@ -224,6 +247,11 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			}
 		}
 
+		foreach ($this->processCollectionHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			$hookObject->postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
+		}
+
 		return $nodeCollection;
 	}
 
@@ -303,6 +331,11 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 			$subNode->setChildNodes($childNodes);
 			$nodeCollection->append($subNode);
+		}
+
+		foreach ($this->processCollectionHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			$hookObject->postProcessGetTreeMounts($searchFilter, $nodeCollection);
 		}
 
 		return $nodeCollection;

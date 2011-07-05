@@ -214,6 +214,7 @@ $t3libClasses = array(
 	't3lib_contextmenu_pagetree_dataprovider' => PATH_t3lib . 'contextmenu/pagetree/class.t3lib_contextmenu_pagetree_dataprovider.php',
 	't3lib_tree_pagetree_indicator' => PATH_t3lib . 'tree/pagetree/class.t3lib_tree_pagetree_indicator.php',
 	't3lib_tree_pagetree_indicatorprovider' => PATH_t3lib . 'tree/pagetree/interfaces/interface.t3lib_tree_pagetree_interfaces_indicatorprovider.php',
+	't3lib_tree_pagetree_interfaces_collectionprocessor' => PATH_t3lib . 'tree/pagetree/interfaces/interface.t3lib_tree_pagetree_interfaces_collectionprocessor.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
