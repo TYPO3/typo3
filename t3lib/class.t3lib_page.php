@@ -977,11 +977,13 @@ class t3lib_pageSelect {
 
 		if (TYPO3_UseCachingFramework) {
 			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-				$cacheEntry = $contentHashCache->get($hash);
+				if ($GLOBALS['typo3CacheManager']->hasCache('cache_hash')) {
+					$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+					$cacheEntry = $contentHashCache->get($hash);
 
-				if ($cacheEntry) {
-					$hashContent = $cacheEntry;
+					if ($cacheEntry) {
+						$hashContent = $cacheEntry;
+					}
 				}
 			}
 		} else {
@@ -1014,12 +1016,14 @@ class t3lib_pageSelect {
 	public static function storeHash($hash, $data, $ident, $lifetime = 0) {
 		if (TYPO3_UseCachingFramework) {
 			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
-					$hash,
-					$data,
-					array('ident_' . $ident),
-					intval($lifetime)
-				);
+				if ($GLOBALS['typo3CacheManager']->hasCache('cache_hash')) {
+					$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
+						$hash,
+						$data,
+						array('ident_' . $ident),
+						intval($lifetime)
+					);
+				}
 			}
 		} else {
 			$insertFields = array(
