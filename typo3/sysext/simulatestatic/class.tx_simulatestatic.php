@@ -345,7 +345,7 @@ class tx_simulatestatic {
 	 * Returns the simulated static file name (*.html) for the current page (using the page record in $this->page)
 	 *
 	 * @return	string		The filename (without path)
-	 * @see makeSimulatedFileName(), publish.php
+	 * @see makeSimulatedFileName()
 	 */
 	public function getSimulatedFileName() {
 		return $this->makeSimulatedFileName(

@@ -516,7 +516,7 @@ $TYPO3_CONF_VARS = array(
 		'tidy_option' => 'cached',				// options [all, cached, output]. "all" = the content is always passed through "tidy" before it may be stored in cache. "cached" = only if the page is put into the cache, "output" = only the output code just before it's echoed out.
 		'tidy_path' => 'tidy -i --quiet true --tidy-mark true -wrap 0 -raw',		// Path with options for tidy. For XHTML output, add " --output-xhtml true"
 		'logfile_dir' => '', 					// Path where TYPO3 should write webserver-style logfiles to. This path must be write-enabled for the webserver. If this path is outside of PATH_site, you have to allow it using <a href="#BE-lockRootPath">[BE][lockRootPath]</a>
-		'publish_dir' => '',					// Path where TYPO3 should write staticly published documents. This path must be write-enabled for the webserver. Remember slash AFTER! Eg: 'publish/' or '/www/htdocs/publish/'. See admPanel option 'publish'
+		'publish_dir' => -1,					// <i>Obsolete setting</i>. Please remove manually from <tt>localconf.php</tt>, if it is defined there. This setting is not used in core anymore.
 		'addAllowedPaths' => '',				// Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in t3lib/class.t3lib_tsparser.php)
 		'allowedTempPaths' => '',				// Additional paths allowed for temporary images. Used with imgResource. Eg. 'alttypo3temp/,another_temp_dir/';
 		'debug' => FALSE,						// Boolean: If set, some debug HTML-comments may be output somewhere. Can also be set by TypoScript.
@@ -720,6 +720,11 @@ if ($TYPO3_CONF_VARS['SYS']['setDBinit'] == '-1' && $typo_db) {
 		'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.');
 }
 
+	// If this value is not -1, then the setting has been modified in localconf.php
+if ($GLOBALS['TYPO3_CONF_VARS']['FE']['publish_dir'] !== -1) {
+		// Deprecation log since 4.6, can be removed in 4.8.
+	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'publish_dir\'] is obsolete since TYPO3 4.6 and should be removed from localconf.php.');
+}
 
 	// If this value is not -1, then the setting has been modified in localconf.php
 if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {

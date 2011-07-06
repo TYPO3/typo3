@@ -552,16 +552,6 @@ $TSFE->previewInfo();
 
 
 // ******************
-// Publishing static
-// ******************
-if (is_object($BE_USER) && ($BE_USER->adminPanel instanceof tslib_AdminPanel)) {
-	if ($BE_USER->adminPanel->isAdminModuleEnabled('publish') && $BE_USER->adminPanel->getExtPublishList()) {
-		include_once(PATH_tslib.'publish.php');
-	}
-}
-
-
-// ******************
 // Hook for end-of-frontend
 // ******************
 $TSFE->hook_eofe();
