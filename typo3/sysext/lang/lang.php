@@ -54,15 +54,6 @@ class language {
 	public $lang = 'default';
 
 	/**
-	 * Values like the labels in the tables.php-document are split by '|'.
-	 * This values defines which language is represented by which position
-	 * in the resulting array after splitting a value. (NOTICE: Obsolete concept!)
-	 *
-	 * @var string
-	 */
-	public $langSplit = 'default';
-
-	/**
 	 * Default charset in backend
 	 *
 	 * @var string
@@ -97,12 +88,6 @@ class language {
 	 * @var array
 	 */
 	public $moduleLabels = array();
-
-	/**
-	 * Internal, Points to the position of the current language key as found in constant TYPO3_languages
-	 * @var int
-	 */
-	public $langSplitIndex = 0;
 
 	/**
 	 * Internal cache for read LL-files
@@ -152,24 +137,17 @@ class language {
 			// Initialize the parser factory object
 		$this->parserFactory = t3lib_div::makeInstance('tx_lang_Factory');
 
-			// Internally setting the list of TYPO3 backend languages.
-		$this->langSplit = TYPO3_languages;
-
 			// Finding the requested language in this list based
 			// on the $lang key being inputted to this function.
-		$ls = explode('|', $this->langSplit);
+		$ls = explode('|', TYPO3_languages);
 
-		foreach ($ls as $i => $v) {
-				// Language is found. Configure it:
-			if ($v == $lang) {
-					// The index of the language as found in the TYPO3_languages list
-				$this->langSplitIndex = $i;
-					// The current language key
-				$this->lang = $lang;
-				if ($this->charSetArray[$this->lang]) {
-						// The charset if different from the default.
-					$this->charSet = $this->charSetArray[$this->lang];
-				}
+			// Language is found. Configure it:
+		if (in_array($lang, $ls)) {
+				// The current language key
+			$this->lang = $lang;
+			if ($this->charSetArray[$this->lang]) {
+					// The charset if different from the default.
+				$this->charSet = $this->charSetArray[$this->lang];
 			}
 		}
 
@@ -366,60 +344,49 @@ class language {
 	 * @access	public
 	 */
 	public function sL($input, $hsc = FALSE) {
-		// Using obsolete 'language-splitted' labels:
-		if (strcmp(substr($input, 0, 4), 'LLL:')) {
-			$t = explode('|', $input);
-			$out = $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
-			if ($hsc) {
-				$out = htmlspecialchars($out);
-			}
-			return $out;
-			// LOCAL_LANG:
-		} else {
-				// If cached label
-			if (!isset($this->LL_labels_cache[$this->lang][$input])) {
-				$restStr = trim(substr($input, 4));
-				$extPrfx = '';
+			// If cached label
+		if (!isset($this->LL_labels_cache[$this->lang][$input])) {
+			$restStr = trim(substr($input, 4));
+			$extPrfx = '';
 
-					// ll-file refered to is found in an extension.
-				if (!strcmp(substr($restStr, 0, 4), 'EXT:')) {
-					$restStr = trim(substr($restStr, 4));
-					$extPrfx = 'EXT:';
+				// ll-file refered to is found in an extension.
+			if (!strcmp(substr($restStr, 0, 4), 'EXT:')) {
+				$restStr = trim(substr($restStr, 4));
+				$extPrfx = 'EXT:';
+			}
+			$parts = explode(':', $restStr);
+			$parts[0] = $extPrfx . $parts[0];
+
+				// Getting data if not cached
+			if (!isset($this->LL_files_cache[$parts[0]])) {
+				$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
+
+					// If the current language is found in another file, load that as well:
+				$lFileRef = $this->localizedFileRef($parts[0]);
+				if ($lFileRef && is_string($this->LL_files_cache[$parts[0]][$this->lang])
+						&& $this->LL_files_cache[$parts[0]][$this->lang] == 'EXT') {
+					$tempLL = $this->readLLfile($lFileRef);
+					$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
 				}
-				$parts = explode(':', $restStr);
-				$parts[0] = $extPrfx . $parts[0];
 
-					// Getting data if not cached
-				if (!isset($this->LL_files_cache[$parts[0]])) {
-					$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
-
-						// If the current language is found in another file, load that as well:
-					$lFileRef = $this->localizedFileRef($parts[0]);
-					if ($lFileRef && is_string($this->LL_files_cache[$parts[0]][$this->lang])
-							&& $this->LL_files_cache[$parts[0]][$this->lang] == 'EXT') {
-						$tempLL = $this->readLLfile($lFileRef);
-						$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
-					}
-
-						// Overriding file?
-						// @deprecated since TYPO3 4.3, remove in TYPO3 4.5, please use the generic method in
-						// t3lib_div::readLLfile and the global array $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']
-					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]])) {
-						t3lib_div::deprecationLog('Usage of $TYPO3_CONF_VARS[\'BE\'][\'XLLfile\'] is deprecated since TYPO3 4.3. Use $TYPO3_CONF_VARS[\'SYS\'][\'locallangXMLOverride\'][] to include the file ' . $fileRef . ' instead.');
-						$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]]);
-						$this->LL_files_cache[$parts[0]] = t3lib_div::array_merge_recursive_overrule($this->LL_files_cache[$parts[0]], $ORarray);
-					}
+					// Overriding file?
+					// @deprecated since TYPO3 4.3, remove in TYPO3 4.5, please use the generic method in
+					// t3lib_div::readLLfile and the global array $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]])) {
+					t3lib_div::deprecationLog('Usage of $TYPO3_CONF_VARS[\'BE\'][\'XLLfile\'] is deprecated since TYPO3 4.3. Use $TYPO3_CONF_VARS[\'SYS\'][\'locallangXMLOverride\'][] to include the file ' . $fileRef . ' instead.');
+					$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]]);
+					$this->LL_files_cache[$parts[0]] = t3lib_div::array_merge_recursive_overrule($this->LL_files_cache[$parts[0]], $ORarray);
 				}
-				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
 			}
-				// For the cached output charset conversion has already happened!
-				// So perform HSC right here.
-			$output = $this->LL_labels_cache[$this->lang][$input];
-			if ($hsc) {
-				$output = t3lib_div::deHSCentities(htmlspecialchars($output));
-			}
-			return $output . $this->debugLL($input);
+			$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
 		}
+			// For the cached output charset conversion has already happened!
+			// So perform HSC right here.
+		$output = $this->LL_labels_cache[$this->lang][$input];
+		if ($hsc) {
+			$output = t3lib_div::deHSCentities(htmlspecialchars($output));
+		}
+		return $output . $this->debugLL($input);
 	}
 
 	/**
