@@ -129,12 +129,14 @@ Ext.onReady(function() {
 									id: 'visual-mode-selector-slider',
 									checked: false,
 									group: 'mode',
+									hidden: TYPO3.settings.Workspaces.SplitPreviewModes.indexOf('slider') == -1,
 									checkHandler: modeChange
 								},{
 									text: TYPO3.LLL.Workspaces.modeVbox,
 									id: 'visual-mode-selector-vbox',
 									checked: false,
 									group: 'mode',
+									hidden: TYPO3.settings.Workspaces.SplitPreviewModes.indexOf('vbox') == -1,
 									checkHandler: modeChange
 
 								},{
@@ -142,6 +144,7 @@ Ext.onReady(function() {
 									id: 'visual-mode-selector-hbox',
 									checked: false,
 									group: 'mode',
+									hidden: TYPO3.settings.Workspaces.SplitPreviewModes.indexOf('hbox') == -1,
 									checkHandler: modeChange
 								}],
 								getState:function() {
@@ -307,6 +310,21 @@ Ext.onReady(function() {
 			}
 
 			Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "));
+
+			var splitPreviewModes = TYPO3.settings.Workspaces.SplitPreviewModes;
+			if (splitPreviewModes.length == 1) {
+				Ext.getCmp('visual-mode-options').hide();
+			}
+
+			if (splitPreviewModes.indexOf('vbox') == -1 && mode === 2) {
+				mode = 0
+			}
+			if (splitPreviewModes.indexOf('slider') == -1 && mode === 0) {
+				mode = 1
+			}
+			if (splitPreviewModes.indexOf('hbox') == -1 && mode === 1) {
+				mode = 2
+			}
 
 			if (mode === 0) {
 				panelHbox.hide();

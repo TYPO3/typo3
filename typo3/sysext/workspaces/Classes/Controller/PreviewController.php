@@ -121,6 +121,15 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
 		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
+
+		$splitPreviewTsConfig = t3lib_BEfunc::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
+		$splitPreviewModes = t3lib_div::trimExplode(',', $splitPreviewTsConfig['value']);
+		$allPreviewModes = array('slider', 'vbox', 'hbox');
+		if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
+			$splitPreviewModes = $allPreviewModes;
+		}
+		$this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
+
 		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll" , "TYPO3.LLL.Workspaces = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . "',
