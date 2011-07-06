@@ -3,7 +3,7 @@
 #$BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'log.gif';
-$MLANG['default']['ll_ref']='LLL:EXT:belog/mod/locallang_mod.php';
+$MLANG['default']['ll_ref']='LLL:EXT:belog/mod/locallang_mod.xml';
 
 $MCONF['script']='_DISPATCH';
 $MCONF['access']='admin';
