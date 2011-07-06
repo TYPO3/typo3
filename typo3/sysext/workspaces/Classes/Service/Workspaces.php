@@ -34,7 +34,6 @@ class tx_Workspaces_Service_Workspaces {
 	const TABLE_WORKSPACE = 'sys_workspace';
 	const SELECT_ALL_WORKSPACES = -98;
 	const LIVE_WORKSPACE_ID = 0;
-	const DRAFT_WORKSPACE_ID = -1;
 
 	/**
 	 * retrieves the available workspaces from the database and checks whether
@@ -48,9 +47,6 @@ class tx_Workspaces_Service_Workspaces {
 			// add default workspaces
 		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::LIVE_WORKSPACE_ID))) {
 			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
-		}
-		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::DRAFT_WORKSPACE_ID))) {
-			$availableWorkspaces[self::DRAFT_WORKSPACE_ID] = self::getWorkspaceTitle(self::DRAFT_WORKSPACE_ID);
 		}
 
 			// add custom workspaces (selecting all, filtering by BE_USER check):
@@ -78,9 +74,6 @@ class tx_Workspaces_Service_Workspaces {
 		switch ($wsId) {
 			case self::LIVE_WORKSPACE_ID:
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
-				break;
-			case self::DRAFT_WORKSPACE_ID:
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_offlineWS');
 				break;
 			default:
 				$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
