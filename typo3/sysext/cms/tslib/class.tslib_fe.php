@@ -378,7 +378,6 @@
 
 		// LANG:
 	var $lang='';						// Set to the system language key (used on the site)
-	var $langSplitIndex=0;				// Set to the index number of the language key
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
 
@@ -4647,26 +4646,23 @@ if (version == "n3") {
 	 * @return	string		Label value, if any.
 	 */
 	function sL($input)	{
-		if (strcmp(substr($input,0,4),'LLL:'))	{
-			$t = explode('|',$input);
-			return $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
-		} else {
-			if (!isset($this->LL_labels_cache[$this->lang][$input])) {	// If cached label
-				$restStr = trim(substr($input,4));
-				$extPrfx='';
-				if (!strcmp(substr($restStr,0,4),'EXT:'))	{
-					$restStr = trim(substr($restStr,4));
-					$extPrfx='EXT:';
-				}
-				$parts = explode(':',$restStr);
-				$parts[0] = $extPrfx.$parts[0];
-				if (!isset($this->LL_files_cache[$parts[0]]))	{	// Getting data if not cached
-					$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
-				}
-				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
+			// If cached label
+		if (!isset($this->LL_labels_cache[$this->lang][$input])) {
+			$restStr = trim(substr($input,4));
+			$extPrfx='';
+			if (!strcmp(substr($restStr,0,4),'EXT:'))	{
+				$restStr = trim(substr($restStr,4));
+				$extPrfx='EXT:';
 			}
-			return $this->LL_labels_cache[$this->lang][$input];
+			$parts = explode(':',$restStr);
+			$parts[0] = $extPrfx.$parts[0];
+				// Getting data if not cached
+			if (!isset($this->LL_files_cache[$parts[0]])) {
+				$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
+			}
+			$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
 		}
+		return $this->LL_labels_cache[$this->lang][$input];
 	}
 
 	/**
@@ -4698,7 +4694,6 @@ if (version == "n3") {
 
 	/**
 	 * Initializing the getLL variables needed.
-	 * Sets $this->langSplitIndex based on $this->config['config']['language']
 	 *
 	 * @return	void
 	 */
@@ -4707,14 +4702,6 @@ if (version == "n3") {
 			// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
 		$this->getPageRenderer()->setLanguage($this->lang);
-
-		$ls = explode('|',TYPO3_languages);
-		foreach ($ls as $i => $v) {
-			if ($v == $this->lang) {
-				$this->langSplitIndex = $i;
-				break;
-			}
-		}
 
 			// Setting charsets:
 		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// Rendering charset of HTML page.
