@@ -149,11 +149,9 @@ class tx_Workspaces_Service_Tcemain {
 	 * @return void
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
-		if (TYPO3_UseCachingFramework === TRUE) {
-			$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
-			$workspacesCache->flushByTag($workspaceId);
-			$workspacesCache->flushByTag(tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
-		}
+		$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
+		$workspacesCache->flushByTag($workspaceId);
+		$workspacesCache->flushByTag(tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 	}
 }
 
