@@ -977,11 +977,16 @@ class t3lib_pageSelect {
 
 		if (TYPO3_UseCachingFramework) {
 			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-				$cacheEntry = $contentHashCache->get($hash);
+				try {
+					$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+					$cacheEntry = $contentHashCache->get($hash);
 
-				if ($cacheEntry) {
-					$hashContent = $cacheEntry;
+					if ($cacheEntry) {
+						$hashContent = $cacheEntry;
+					}
+				} catch (t3lib_cache_exception_NoSuchCache $exception) {
+					// Ignore if there is no such cache. This may only happen in eID context
+					// when no cache was initialized.
 				}
 			}
 		} else {
@@ -1014,12 +1019,17 @@ class t3lib_pageSelect {
 	public static function storeHash($hash, $data, $ident, $lifetime = 0) {
 		if (TYPO3_UseCachingFramework) {
 			if (is_object($GLOBALS['typo3CacheManager'])) {
-				$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
-					$hash,
-					$data,
-					array('ident_' . $ident),
-					intval($lifetime)
-				);
+				try {
+					$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
+						$hash,
+						$data,
+						array('ident_' . $ident),
+						intval($lifetime)
+					);
+				} catch (t3lib_cache_exception_NoSuchCache $exception) {
+					// Ignore if there is no such cache. This may only happen in eID context
+					// when no cache was initialized.
+				}
 			}
 		} else {
 			$insertFields = array(
