@@ -4021,7 +4021,7 @@ if (version == "n3") {
 	 * Returns the simulated static file name (*.html) for the current page (using the page record in $this->page)
 	 *
 	 * @return	string		The filename (without path)
-	 * @see makeSimulFileName(), publish.php
+	 * @see makeSimulFileName()
 	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 * @todo	Deprecated but still used in the Core!
 	 */
