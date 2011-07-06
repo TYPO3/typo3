@@ -141,7 +141,6 @@ class SC_mod_tools_log_index {
 			'workspaces' => array(
 				'-99' => $GLOBALS['LANG']->getLL('any'),
 				0 => $GLOBALS['LANG']->getLL('live'),
-				'-1' => $GLOBALS['LANG']->getLL('draft'),
 			),
 			'time' => array(
 				0 => $GLOBALS['LANG']->getLL('thisWeek'),

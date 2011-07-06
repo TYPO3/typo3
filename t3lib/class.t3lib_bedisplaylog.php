@@ -79,7 +79,6 @@ class t3lib_BEDisplayLog {
 	);
 	var $wsArray = array(
 		0 => 'LIVE',
-		-1 => 'Draft',
 	);
 
 	var $be_user_Array = array(); // Username array (set externally)
