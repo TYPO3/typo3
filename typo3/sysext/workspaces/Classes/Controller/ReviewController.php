@@ -44,11 +44,15 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		$performWorkspaceSwitch = FALSE;
 
+			/**
+			 * Only admins see multiple tabs, we decided to use it this
+			 * way for usability reasons. Regular users might be confused
+			 * by switching workspaces with the tabs in a module.
+			 */
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$wsCur = array($activeWorkspace => TRUE);
 			$wsList = array_intersect_key($wsList, $wsCur);
 		} else {
-			$wsList = $wsService->getAvailableWorkspaces();
 			if (strlen(t3lib_div::_GP('workspace'))) {
 				$switchWs = (int) t3lib_div::_GP('workspace');
 				if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
