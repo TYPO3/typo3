@@ -208,6 +208,10 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 				' AND ' . $this->notExpiredStatement
 		);
 
+		if (strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
+			$this->flush();
+		}
+
 		if (is_array($cacheEntry)) {
 			$cacheEntry = $cacheEntry['content'];
 		}
