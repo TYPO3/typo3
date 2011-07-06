@@ -50,13 +50,6 @@ class tslib_AdminPanel {
 	 */
 	protected $ext_forcePreview = FALSE;
 
-	/**
-	 * Comma separated list of page UIDs to be published.
-	 *
-	 * @var	string
-	 */
-	protected $extPublishList = '';
-
 	public function __construct() {
 		$this->initialize();
 	}
@@ -171,10 +164,6 @@ class tslib_AdminPanel {
 				$theStartId = intval($input['cache_clearCacheId']);
 				$GLOBALS['TSFE']->clearPageCacheContent_pidList($GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('cache', 'clearCacheLevels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId);
 			}
-			if ($input['action']['publish'] && $this->isAdminModuleEnabled('publish')) {
-				$theStartId = intval($input['publish_id']);
-				$this->extPublishList = $GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('publish', 'levels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId;
-			}
 
 				// Saving
 			$GLOBALS['BE_USER']->writeUC();
@@ -257,10 +246,11 @@ class tslib_AdminPanel {
 	/**
 	 * Returns the comma-separated list of page UIDs to be published.
 	 *
-	 * @return	string
+	 * @return string
+	 * @deprecated since 4.6, will be removed in 4.8
 	 */
 	public function getExtPublishList() {
-		return $this->extPublishList;
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -295,9 +285,6 @@ class tslib_AdminPanel {
 			}
 			if ($this->isAdminModuleEnabled('cache')) {
 				$moduleContent .= $this->getCacheModule();
-			}
-			if ($this->isAdminModuleEnabled('publish')) {
-				$moduleContent .= $this->getPublishModule();
 			}
 			if ($this->isAdminModuleEnabled('edit')) {
 				$moduleContent .= $this->getEditModule();
@@ -492,46 +479,6 @@ $query . '<table class="typo3-adminPanel">' .
 			$outTable .= '<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
 
 			$out .= $this->extGetItem('cache_cacheEntries', $outTable);
-		}
-
-		return $out;
-	}
-
-	/**
-	 * Creates the content for the "publish" section ("module") of the Admin Panel
-	 *
-	 * @param	string		Optional start-value; The generated content is added to this variable.
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
-	 * @see display()
-	 */
-	protected function getPublishModule() {
-		$out = $this->extGetHead('publish');
-		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_publish']) {
-			$this->extNeedUpdate = TRUE;
-			$levels = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['publish_levels'];
-			$options = '';
-			$options .= '<option value="0"' . ($levels == 0 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_0') . '</option>';
-			$options .= '<option value="1"' . ($levels ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_1') . '</option>';
-			$options .= '<option value="2"' . ($levels == 2 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_2') . '</option>';
-			$out .= $this->extGetItem('publish_levels', '<select name="TSFE_ADMIN_PANEL[publish_levels]">' . $options . '</select>' .
-					'<input type="hidden" name="TSFE_ADMIN_PANEL[publish_id]" value="' . $GLOBALS['TSFE']->id . '" />&nbsp;<input type="submit" value="' . $this->extGetLL('update') . '" />');
-
-				// Generating tree:
-			$depth = $this->extGetFeAdminValue('publish', 'levels');
-			$outTable = '';
-			$GLOBALS['BE_USER']->extPageInTreeInfo = array();
-			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth+1);
-			$GLOBALS['BE_USER']->extGetTreeList($GLOBALS['TSFE']->id, $depth, 0, $GLOBALS['BE_USER']->getPagePermsClause(1));
-			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $row) {
-				$outTable.= '<tr>' .
-						'<td style="white-space:nowrap;"><img src="typo3/gfx/clear.gif" width="' . (($depth + 1 - $row[2]) * 18) . '" height="1" alt="" /><img ' .
-						t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/i/pages.gif', 'width="18" height="16"') . ' align="top" border="0" alt="" />' . $row[1] .
-						'</td><td><img src="typo3/gfx/clear.gif" width="10" height="1" alt="" /></td><td>...</td></tr>';
-			}
-			$outTable = '<br /><table>' . $outTable . '</table>';
-			$outTable .= '<input type="submit" name="TSFE_ADMIN_PANEL[action][publish]" value="' . $this->extGetLL('publish_doit') . '" />';
-
-			$out .= $this->extGetItem('publish_tree', $outTable);
 		}
 
 		return $out;

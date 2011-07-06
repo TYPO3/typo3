@@ -43,6 +43,16 @@ General
 
 ...
 
+Removed functionality
+-------------------------------------------------------------------------------
+
+* Static Published Pages
+
+The feature to statically publish a page from the Admin Panel has been dropped.
+There are better ways to achieve such a functionality, like e.g.
+EXT:nc_staticfilecache.
+
+
 Workspaces
 -------------------------------------------------------------------------------
 
