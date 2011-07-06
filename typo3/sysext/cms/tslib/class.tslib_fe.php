@@ -464,40 +464,48 @@
 	}
 
 	/**
-	 * Connect to SQL database
-	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
+	 * Connect to SQL database. May exit after outputting an error message
+	 * or some JavaScript redirecting to the install tool.
 	 *
-	 * @return	void
+	 * @return void
 	 */
-	function connectToDB()	{
-		if (!TYPO3_db) {
-				// jump into Install Tool 1-2-3 mode, if no DB name is defined (fresh installation)
-			t3lib_utility_Http::redirect(TYPO3_mainDir.'install/index.php?mode=123&step=1&password=joh316');
-		}
-
-			// sql_pconnect() can throw an Exception in case of some failures, or it returns FALSE
-		$link = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
-		if ($link !== FALSE) {
-				// Connection to DB server ok, now select the database
-			if (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
-				$message = 'Cannot connect to the configured database "'.TYPO3_db.'"';
-				if ($this->checkPageUnavailableHandler()) {
-					$this->pageUnavailableAndExit($message);
-				} else {
-					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					throw new t3lib_error_http_ServiceUnavailableException($message, 1301648782);
-				}
+	public function connectToDB() {
+		try {
+			$GLOBALS['TYPO3_DB']->connectDB();
+		} catch (RuntimeException $exception) {
+			switch ($exception->getCode()) {
+				case 1270853882:
+						// No database selected: Redirect to Install Tool 1-2-3 mode (fresh installation)
+					t3lib_utility_Http::redirect(TYPO3_mainDir . 'install/index.php?mode=123&step=1&password=joh316');
+					break;
+				case 1270853883:
+						// Cannot connect to current database
+					$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
+					if ($this->checkPageUnavailableHandler()) {
+						$this->pageUnavailableAndExit($message);
+					} else {
+						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+						throw new t3lib_error_http_ServiceUnavailableException($message, 1301648782);
+					}
+					break;
+				case 1270853884:
+							// Username / password not accepted
+						$message = 'The current username, password or host was not accepted when' .
+							' the connection to the database was attempted to be established!';
+						if ($this->checkPageUnavailableHandler()) {
+							$this->pageUnavailableAndExit($message);
+						} else {
+							t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+							throw new t3lib_error_http_ServiceUnavailableException(
+								'Database Error: ' . $message,
+								1301648945
+							);
+						}
+					break;
+				default:
+					throw $exception;
 			}
-		} else {
-			$message = 'The current username, password or host was not accepted when the connection to the database was attempted to be established!';
-			if ($this->checkPageUnavailableHandler()) {
-				$this->pageUnavailableAndExit($message);
-			} else {
-				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				throw new t3lib_error_http_ServiceUnavailableException('Database Error: ' . $message, 1301648945);
-			}
 		}
-
 
 			// Call post processing function for DB connection:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']))	{
