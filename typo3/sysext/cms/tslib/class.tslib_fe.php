@@ -509,17 +509,25 @@
 	}
 
 	/**
-	 * Looks up the value of $this->RDCT in the database and if it is found to be associated with a redirect URL then the redirection is carried out with a 'Location:' header
+	 * Looks up the value of $this->RDCT in the database and if it is 
+	 * found to be associated with a redirect URL then the redirection 
+	 * is carried out with a 'Location:' header
 	 * May exit after sending a location-header.
 	 *
 	 * @return	void
 	 */
-	function sendRedirect()	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->RDCT, 'cache_md5params'));
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$this->updateMD5paramsRecord($this->RDCT);
-			header('Location: '.$row['params']);
-			exit;
+	public function sendRedirect() {
+		if ($this->RDCT) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'params',
+				'cache_md5params',
+				'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->RDCT, 'cache_md5params')
+			);
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$this->updateMD5paramsRecord($this->RDCT);
+				header('Location: ' . $row['params']);
+				exit;
+			}
 		}
 	}
 
@@ -696,6 +704,96 @@
 		$GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
 		$GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
 		$this->fePreview = 0;
+	}
+	
+	/** 
+	 * checks if a backend user is logged in
+	 * 
+	 * @return boolean whether if a BE User is logged in or not
+	 */
+	public function isBackendUserLoggedIn() {
+		return ($this->beUserLogin ? TRUE : FALSE);
+	}
+	
+	
+	/**
+	 * creates the $BE_USER object and returns it
+	 * 
+	 * @return t3lib_tsfeBeUserAuth the $BE_USER object
+	 */
+	public function initializeBackendUser() {
+		// ****************
+		// PRE BE_USER HOOK
+		// ****************
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
+				$_params = array();
+				t3lib_div::callUserFunction($_funcRef, $_params, $_params);
+			}
+		}
+
+		/** @var $BE_USER t3lib_tsfeBeUserAuth */
+		$BE_USER = NULL;
+
+			// If the backend cookie is set,
+			// we proceed and check if a backend user is logged in.
+		if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
+			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(TRUE);
+			$GLOBALS['TT']->push('Back End user initialized', '');
+
+				// TODO: validate the comment below: is this necessary? if so,
+				// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
+				// which is a subclass of t3lib_beUserAuth
+				// ----
+				// the value this->formfield_status is set to empty in order to
+				// disable login-attempts to the backend account through this script
+
+				// New backend user object
+			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER->OS = TYPO3_OS;
+			$BE_USER->lockIP = $this->TYPO3_CONF_VARS['BE']['lockIP'];
+
+				// Object is initialized
+			$BE_USER->start();
+			$BE_USER->unpack_uc('');
+			if ($BE_USER->user['uid']) {
+				$BE_USER->fetchGroupData();
+				$this->beUserLogin = 1;
+			}
+				// Unset the user initialization.
+			if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || !$BE_USER->user['uid']) {
+				$BE_USER = NULL;
+				$this->beUserLogin = 0;
+				$_SESSION['TYPO3-TT-start'] = FALSE;
+			}
+			$GLOBALS['TT']->pull();
+			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(TRUE);
+
+		} elseif ($this->ADMCMD_preview_BEUSER_uid) {
+				// TODO: validate the comment below: is this necessary? if so,
+				// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
+				// which is a subclass of t3lib_beUserAuth
+				// ----
+				// the value this->formfield_status is set to empty in order to
+				// disable login-attempts to the backend account through this script
+
+				// New backend user object
+			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER->userTS_dontGetCached = 1;
+			$BE_USER->OS = TYPO3_OS;
+			$BE_USER->setBeUserByUid($this->ADMCMD_preview_BEUSER_uid);
+			$BE_USER->unpack_uc('');
+			if ($BE_USER->user['uid']) {
+				$BE_USER->fetchGroupData();
+				$this->beUserLogin = 1;
+			} else {
+				$BE_USER = NULL;
+				$this->beUserLogin = 0;
+				$_SESSION['TYPO3-TT-start'] = FALSE;
+			}
+		}
+		
+		return $BE_USER;
 	}
 
 	/**
@@ -1737,7 +1835,6 @@
 		unset($_COOKIE[t3lib_beUserAuth::getCookieName()]);
 		$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
 	}
-
 
 
 
