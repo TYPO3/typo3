@@ -219,8 +219,7 @@ class SC_tslib_showpic {
 		}
 
 		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
-		$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+		$GLOBALS['TYPO3_DB']->connectDB();
 
 		if (strstr($this->width . $this->height, 'm')) {
 			$max = 'm';
