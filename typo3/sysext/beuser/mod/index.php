@@ -979,9 +979,6 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		if ($this->checkWorkspace(array('uid' => 0)))	{
 			$options[0] = '0: ' . $GLOBALS['LANG']->getLL('live', TRUE);
 		}
-		if ($this->checkWorkspace(array('uid' => -1)))	{
-			$options[-1] = '-1: ' . $GLOBALS['LANG']->getLL('defaultDraft', TRUE);
-		}
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {

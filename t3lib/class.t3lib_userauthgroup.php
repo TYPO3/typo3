@@ -854,10 +854,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Returns TRUE if the user has access to publish content from the workspace ID given.
 	 * Admin-users are always granted access to do this
 	 * If the workspace ID is 0 (live) all users have access also
-	 * If -1 (draft workspace) TRUE is returned if the user has access to the Live workspace
 	 * For custom workspaces it depends on whether the user is owner OR like with draft workspace if the user has access to Live workspace.
 	 *
-	 * @param	integer		Workspace UID; -1,0,1+
+	 * @param	integer		Workspace UID; 0,1+
 	 * @return	boolean		Returns TRUE if the user has access to publish content from the workspace ID given.
 	 */
 	function workspacePublishAccess($wsid) {
@@ -873,9 +872,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			switch ($wsAccess['uid']) {
 				case 0: // Live workspace
 					$retVal = TRUE; // If access to Live workspace, no problem.
-				break;
-				case -1: // Default draft workspace
-					$retVal = $this->checkWorkspace(0) ? TRUE : FALSE; // If access to Live workspace, no problem.
 				break;
 				default: // Custom workspace
 					$retVal = $wsAccess['_ACCESS'] === 'owner' || ($this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2)); // Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
@@ -1549,27 +1545,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification') {
 		$retVal = FALSE;
 
-			// Show draft workspace only if it's enabled in version extension
-		if (t3lib_extMgm::isLoaded('version')) {
-			$versionExtConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
-			if (!$versionExtConf['showDraftWorkspace']) {
-				if (!is_array($wsRec)) {
-					if ((string) $wsRec === '-1') {
-						return FALSE;
-					}
-				} else {
-					if ((string) $wsRec['uid'] === '-1') {
-						return FALSE;
-					}
-				}
-			}
-		}
-
 			// If not array, look up workspace record:
 		if (!is_array($wsRec)) {
 			switch ((string) $wsRec) {
 				case '0':
-				case '-1':
 					$wsRec = array('uid' => $wsRec);
 				break;
 				default:
@@ -1596,9 +1575,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				switch ((string) $wsRec['uid']) {
 					case '0':
 						$retVal = ($this->groupData['workspace_perms'] & 1) ? array_merge($wsRec, array('_ACCESS' => 'online')) : FALSE;
-					break;
-					case '-1':
-						$retVal = ($this->groupData['workspace_perms'] & 2) ? array_merge($wsRec, array('_ACCESS' => 'offline')) : FALSE;
 					break;
 					default:
 							// Checking if the guy is admin:
