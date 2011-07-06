@@ -752,11 +752,13 @@ class SC_index {
 	 * using the llxml extension
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 4.6, remove in TYPO3 4.8
 	 */
 	protected function mergeOldLoginLabels() {
 			// Getting login labels
 		$oldLoginLabels = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels']);
 		if ($oldLoginLabels != '') {
+			t3lib_div::deprecationLog('The use of $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'loginLabels\'] has been deprecated as of TYPO3 4.3, please use the according locallang.xml file.');
 				// md5 hash of the default loginLabels string
 			$defaultOldLoginLabelsHash = 'bcf0d32e58c6454ea50c6c956f1f18f0';
 				// compare loginLabels from TYPO3_CONF_VARS to default value
