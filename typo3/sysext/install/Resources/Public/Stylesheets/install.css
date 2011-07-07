@@ -361,11 +361,11 @@ h1,
 /* 9: Edit files in typo3conf/ */
 #t3-install-confeditfilelist dt {
 	float: left;
-	width: 45em;
+	width: 44em;
 }
 
 #t3-install-confeditfilelist dd {
-	padding-left: 45em;
+	margin-left: 44em;
 }
 
 #t3-install-confeditfilelist dt a {
