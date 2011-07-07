@@ -81,13 +81,32 @@ class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
 	 * @return array
 	 */
 	protected function _doParsingFromRoot(SimpleXMLElement $root, $element) {
-		$parsedData = array();
 		$bodyOfFileTag = $root->data->languageKey;
+
+		$parsedData = $this->_getParsedData($bodyOfFileTag, $element);
+
+			// Check if the source llxml file contains localized records
+		$localizedBodyOfFileTag = $root->data->xpath("languageKey[@index='" . $this->languageKey . "']");
+		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof SimpleXMLElement) {
+			$parsedData = array_merge($parsedData, $this->_getParsedData($localizedBodyOfFileTag[0], $element));
+		}
+
+		return $parsedData;
+	}
+
+	/**
+	 * Parse the given language key tag
+	 *
+	 * @param SimpleXMLElement $bodyOfFileTag
+	 * @param string $element
+	 * @return array
+	 */
+	protected function _getParsedData(SimpleXMLElement $bodyOfFileTag, $element) {
+		$parsedData = array();
 
 		foreach ($bodyOfFileTag->children() as $translationElement) {
 			if ($translationElement->getName() === 'label') {
 					// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
-
 				$parsedData[(string)$translationElement['index']][0] = array(
 					$element => (string)$translationElement,
 				);
