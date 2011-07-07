@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:09 UTC 2011" product-name="workspaces">
+    <header/>
+    <body>
+      <trans-unit id="sys_filemounts.tabs.staging">
+        <source>Staging</source>
+        <target approved="yes">Staging</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages">
+        <source>Custom stages:</source>
+        <target approved="yes">Custom stages:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons">
+        <source>Responsible persons:</source>
+        <target approved="yes">Responsible persons:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment">
+        <source>Default mail comment:</source>
+        <target approved="yes">Default mail comment:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid">
+        <source>UID of parent record:</source>
+        <target approved="yes">UID of parent record:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parenttable">
+        <source>Parent table:</source>
+        <target approved="yes">Parent table:</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage">
+        <source>Workspace Stage</source>
+        <target approved="yes">Workspace Stage</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
