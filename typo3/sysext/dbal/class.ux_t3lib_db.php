@@ -555,6 +555,11 @@ class ux_t3lib_DB extends t3lib_DB {
 				)
 			);
 		}
+
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_INSERTquery_postProcessAction($table, $fields_values, $no_quote_fields, $this);
+		}
+
 		// Return output:
 		return $sqlResult;
 	}
@@ -580,6 +585,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$fields_values[$value] = $row[$key];
 			}
 			$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
+		}
+
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_INSERTmultipleRows_postProcessAction($table, $fields, $rows, $no_quote_fields, $this);
 		}
 
 		return $res;
@@ -676,6 +685,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			);
 		}
 
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_UPDATEquery_postProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
+		}
+
 		// Return result:
 		return $sqlResult;
 	}
@@ -738,6 +751,10 @@ class ux_t3lib_DB extends t3lib_DB {
 					'ORIG_from_table' => $ORIG_tableName
 				)
 			);
+		}
+
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_DELETEquery_postProcessAction($table, $where, $this);
 		}
 
 		// Return result:
@@ -899,6 +916,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			);
 		}
 
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_TRUNCATEquery_postProcessAction($table, $this);
+		}
+
 		// Return result:
 		return $sqlResult;
 	}
@@ -977,6 +998,9 @@ class ux_t3lib_DB extends t3lib_DB {
 	public function INSERTquery($table, $fields_values, $no_quote_fields = '') {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values)) {
+			foreach ($this->preProcessHookObjects as $hookObject) {
+				$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
+			}
 
 			if (is_string($no_quote_fields)) {
 				$no_quote_fields = explode(',', $no_quote_fields);
@@ -1086,6 +1110,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where)) {
+			foreach ($this->preProcessHookObjects as $hookObject) {
+				$hookObject->UPDATEquery_preProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
+			}
+
 			$fields = array();
 			$blobfields = array();
 			$clobfields = array();
@@ -1172,10 +1200,15 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function DELETEquery($table, $where) {
 		if (is_string($where)) {
+			foreach ($this->preProcessHookObjects as $hookObject) {
+				$hookObject->DELETEquery_preProcessAction($table, $where, $this);
+			}
+
 			$table = $this->quoteFromTables($table);
 			$where = $this->quoteWhereClause($where);
 
-			$query = parent::DELETEquery($table, $where);
+			$query = 'DELETE FROM ' . $table .
+					(strlen($where) > 0 ? ' WHERE ' . $where : '');
 
 			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 			return $query;
@@ -1286,10 +1319,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Full SQL query for TRUNCATE TABLE
 	 */
 	public function TRUNCATEquery($table) {
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			$hookObject->TRUNCATEquery_preProcessAction($table, $this);
+		}
+
 		$table = $this->quoteFromTables($table);
 
-		// Call parent method to build actual query
-		$query = parent::TRUNCATEquery($table);
+		// Build actual query
+		$query = 'TRUNCATE TABLE ' . $table;
 
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
