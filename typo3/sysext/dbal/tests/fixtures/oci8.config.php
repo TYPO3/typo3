@@ -2,9 +2,7 @@
 /**
  * Oracle configuration
  *
- * $Id$
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
+ * @author Xavier Perseguers <xavier@typo3.org>
  *
  * @package TYPO3
  * @subpackage dbal
