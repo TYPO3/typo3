@@ -615,7 +615,19 @@ $TYPO3_CONF_VARS = array(
 		),
 	),
 	'EXTCONF' => array(		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
-//		'--key--' => array()
+		'cms' => array(
+			'db_layout' => array(
+				'addTables' => array(
+					'fe_users' => array(
+						0 => array(
+							'MENU' => '',
+							'fList' => 'username,usergroup,name,email,telephone,address,zip,city',
+							'icon' => TRUE,
+						)
+					)
+				)
+			)
+		),
 	),
 	'SVCONF' => array(		// Here you may add manually set configuration options for services.
 //		Eg.  ...['service_type']['setup']['my_option'] = 'my_value'; Setup options how to handle the service (call it or not and how when)

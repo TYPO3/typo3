@@ -179,40 +179,12 @@ class tx_cms_layout extends recordList {
 			return $this->getExternalTables($id, $table);
 		} else {
 			// Branch out based on table name:
-			// Notice: Most of these tables belongs to other extensions than 'cms'. Each of these tables can be rendered only if the extensions they belong to is loaded.
 			switch ($table) {
 				case 'pages':
 					return $this->getTable_pages($id);
 					break;
 				case 'tt_content':
 					return $this->getTable_tt_content($id);
-					break;
-				case 'fe_users':
-					return $this->getTable_fe_users($id);
-					break;
-				case 'sys_note':
-					return $this->getTable_sys_note($id);
-					break;
-				case 'tt_board':
-					return $this->getTable_tt_board($id);
-					break;
-				case 'tt_address':
-					return $this->getTable_tt_address($id);
-					break;
-				case 'tt_links':
-					return $this->getTable_tt_links($id);
-					break;
-				case 'tt_guest':
-					return $this->getTable_tt_guest($id);
-					break;
-				case 'tt_news':
-					return $this->getTable_tt_news($id);
-					break;
-				case 'tt_calender':
-					return $this->getTable_tt_calender($id);
-					break;
-				case 'tt_products':
-					return $this->getTable_tt_products($id);
 					break;
 			}
 		}
@@ -910,8 +882,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_fe_users($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		$this->addElement_tdParams = array(
 			'username' => ' nowrap="nowrap"',
@@ -935,8 +909,11 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_sys_note($id) {
+		t3lib_div::logDeprecatedFunction();
+
 		if (!t3lib_extMgm::isLoaded('sys_note')) {
 			return '';
 		}
@@ -1031,8 +1008,11 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+
 	 */
 	function getTable_tt_board($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Initialize:
 		$delClause = t3lib_BEfunc::deleteClause('tt_board') . t3lib_BEfunc::versioningPlaceholderClause('tt_board');
@@ -1114,8 +1094,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_address($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Define fieldlist to show:
 		switch ($GLOBALS['SOBE']->MOD_SETTINGS['tt_address']) {
@@ -1144,8 +1126,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_links($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Define fieldlist to show:
 		switch ($GLOBALS['SOBE']->MOD_SETTINGS['tt_links']) {
@@ -1170,8 +1154,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_guest($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Define fieldlist to show:
 		$fList = 'title;cr_name;cr_email,note';
@@ -1185,8 +1171,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_news($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		$this->addElement_tdParams = array(
 			'title' => ' nowrap="nowrap"',
@@ -1206,8 +1194,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_calender($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		$type = $GLOBALS['SOBE']->MOD_SETTINGS['tt_calender'];
 		switch ($type) {
@@ -1256,8 +1246,10 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function getTable_tt_products($id) {
+		t3lib_div::logDeprecatedFunction();
 
 		$type = $GLOBALS['SOBE']->MOD_SETTINGS['tt_products'];
 		switch ($type) {
@@ -2171,8 +2163,10 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Additional query part.
 	 * @param	string		HTML content to prefix items with (to draw the proper tree-graphics)
 	 * @return	array		$theRows, but with added content
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function tt_board_getTree($theRows, $parent, $pid, $qWhere, $treeIcons) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Select tt_board elements:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_board', 'pid=' . intval($pid) . ' AND parent=' . intval($parent) . $qWhere, '', 'crdate');
@@ -2206,8 +2200,10 @@ class tx_cms_layout extends recordList {
 	 * @param	array		The record row
 	 * @param	string		Reply count, if applicable.
 	 * @return	string		Return content of element (table row)
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function tt_board_drawItem($table, $row, $re) {
+		t3lib_div::logDeprecatedFunction();
 
 		// Building data-arary with content:
 		$theData = Array();
@@ -2643,22 +2639,22 @@ class tx_cms_layout extends recordList {
 	 */
 	function getTableMenu($id) {
 
-		// Initialize:
+			// Initialize:
 		$this->activeTables = array();
-		$theTables = explode(',', 'tt_content,fe_users,tt_address,tt_links,tt_board,tt_guest,tt_calender,tt_products,tt_news'); // NOTICE: This serves double function: Both being tables names (all) and for most others also being extension keys for the extensions they are related to!
+		$theTables = array('tt_content');
 
-		// External tables:
+			// External tables:
 		if (is_array($this->externalTables)) {
 			$theTables = array_unique(array_merge($theTables, array_keys($this->externalTables)));
 		}
 
-		// Traverse tables to check:
+			// Traverse tables to check:
 		foreach ($theTables as $tName) {
 
-			// Check access and whether the proper extensions are loaded:
+				// Check access and whether the proper extensions are loaded:
 			if ($GLOBALS['BE_USER']->check('tables_select', $tName) && (t3lib_extMgm::isLoaded($tName) || t3lib_div::inList('fe_users,tt_content', $tName) || isset($this->externalTables[$tName]))) {
 
-				// Make query to count records from page:
+					// Make query to count records from page:
 				$c = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 					'uid',
 					$tName,
@@ -2667,10 +2663,10 @@ class tx_cms_layout extends recordList {
 								t3lib_BEfunc::versioningPlaceholderClause($tName)
 				);
 
-				// If records were found (or if "tt_content" is the table...):
+					// If records were found (or if "tt_content" is the table...):
 				if ($c || t3lib_div::inList('tt_content', $tName)) {
 
-					// Add row to menu:
+						// Add row to menu:
 					$out .= '
 					<td><a href="#' . $tName . '"></a>' .
 							t3lib_iconWorks::getSpriteIconForRecord(
@@ -2679,7 +2675,7 @@ class tx_cms_layout extends recordList {
 								array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1))
 							) . '</td>';
 
-					// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
+						// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
 					$this->activeTables[$tName] =
 							t3lib_iconWorks::getSpriteIconForRecord(
 								$tName,
@@ -2691,11 +2687,8 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Wrap cells in table tags:
+			// Wrap cells in table tags:
 		$out = '
-
-
-
 			<!--
 				Menu of tables on the page (table menu)
 			-->
@@ -2704,7 +2697,7 @@ class tx_cms_layout extends recordList {
 				</tr>
 			</table>';
 
-		// Return the content:
+			// Return the content:
 		return $out;
 	}
 
