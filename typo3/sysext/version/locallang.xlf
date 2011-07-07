@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:28:57 UTC 2011" product-name="version">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Versioning</source>
+        <target approved="yes">Versioning</target>
+      </trans-unit>
+      <trans-unit id="title_review">
+        <source>Send to review/pub</source>
+        <target approved="yes">Send to review/pub</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel">
+        <source>Page and content versioning and workspace management for pages.</source>
+        <target approved="yes">Page and content versioning and workspace management for pages.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr">
+        <source>The Web&gt;Versioning module provides access to versioning features for the page tree.</source>
+        <target approved="yes">The Web&gt;Versioning module provides access to versioning features for the page tree.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab">
+        <source>Versioning</source>
+        <target approved="yes">Versioning</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header">
+        <source>Web&gt;Versioning module</source>
+        <target approved="yes">Web&gt;Versioning module</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content">
+        <source>Please click a page in the pagetree frame to see the versioning module.</source>
+        <target approved="yes">Please click a page in the pagetree frame to see the versioning module.</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts">
+        <source>Drafts</source>
+        <target approved="yes">Drafts</target>
+      </trans-unit>
+      <trans-unit id="filter_archive">
+        <source>Archive</source>
+        <target approved="yes">Archive</target>
+      </trans-unit>
+      <trans-unit id="filter_all">
+        <source>All</source>
+        <target approved="yes">All</target>
+      </trans-unit>
+      <trans-unit id="diffing">
+        <source>DIFFING</source>
+        <target approved="yes">DIFFING</target>
+      </trans-unit>
+      <trans-unit id="fieldname">
+        <source>Fieldname</source>
+        <target approved="yes">Fieldname</target>
+      </trans-unit>
+      <trans-unit id="coloredDiffView">
+        <source>Colored diff-view</source>
+        <target approved="yes">Colored diff-view</target>
+      </trans-unit>
+      <trans-unit id="recordsMatchesCompletely">
+        <source>Records matches completely on all editable fields!</source>
+        <target approved="yes">Records matches completely on all editable fields!</target>
+      </trans-unit>
+      <trans-unit id="errorRecordsNotFound">
+        <source>ERROR: Records could strangely not be found!</source>
+        <target approved="yes">ERROR: Records could strangely not be found!</target>
+      </trans-unit>
+      <trans-unit id="errorDiffSources">
+        <source>ERROR: You didn't select two sources for diffing!</source>
+        <target approved="yes">ERROR: You didn't select two sources for diffing!</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_title">
+        <source>Title</source>
+        <target approved="yes">Title</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_uid">
+        <source>UID</source>
+        <target approved="yes">UID</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_oid">
+        <source>oid</source>
+        <target approved="yes">oid</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_id">
+        <source>id</source>
+        <target approved="yes">id</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_wsid">
+        <source>wsid</source>
+        <target approved="yes">wsid</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_state">
+        <source>state</source>
+        <target approved="yes">state</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_stage">
+        <source>stage</source>
+        <target approved="yes">stage</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_count">
+        <source>count</source>
+        <target approved="yes">count</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_pid">
+        <source>pid</source>
+        <target approved="yes">pid</target>
+      </trans-unit>
+      <trans-unit id="tblHeader_t3ver_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_title">
+        <source>Header of element</source>
+        <target approved="yes">Header of element</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_uid">
+        <source>Unique ID of element</source>
+        <target approved="yes">Unique ID of element</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_oid">
+        <source>t3ver_oid - Reference to live version UID</source>
+        <target approved="yes">t3ver_oid - Reference to live version UID</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_id">
+        <source>t3ver_id - Version number, incremental integer</source>
+        <target approved="yes">t3ver_id - Version number, incremental integer</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_wsid">
+        <source>t3ver_wsid - Workspace ID. There can be only one version of an element per ID (except ID zero).</source>
+        <target approved="yes">t3ver_wsid - Workspace ID. There can be only one version of an element per ID (except ID zero).</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_state">
+        <source>t3ver_state - Special states of a version: 1=Placeholder for "New". 2=Marked deleted.</source>
+        <target approved="yes">t3ver_state - Special states of a version: 1=Placeholder for "New". 2=Marked deleted.</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_stage">
+        <source>t3ver_stage - Publishing stage: Editing (0), review (1), publish (10), rejected (-1).</source>
+        <target approved="yes">t3ver_stage - Publishing stage: Editing (0), review (1), publish (10), rejected (-1).</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_count">
+        <source>t3ver_count - Life cycle counter. Incremented each time element is unpublished.</source>
+        <target approved="yes">t3ver_count - Life cycle counter. Incremented each time element is unpublished.</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_pid">
+        <source>Page ID</source>
+        <target approved="yes">Page ID</target>
+      </trans-unit>
+      <trans-unit id="tblHeaderDesc_t3ver_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="diff">
+        <source>Diff</source>
+        <target approved="yes">Diff</target>
+      </trans-unit>
+      <trans-unit id="swapWithCurrent">
+        <source>SWAP with current</source>
+        <target approved="yes">SWAP with current</target>
+      </trans-unit>
+      <trans-unit id="currentOnlineVersion">
+        <source>CURRENT ONLINE VERSION!</source>
+        <target approved="yes">CURRENT ONLINE VERSION!</target>
+      </trans-unit>
+      <trans-unit id="cmdPid0">
+        <source>Page: Page + content</source>
+        <target approved="yes">Page: Page + content</target>
+      </trans-unit>
+      <trans-unit id="cmdPid100">
+        <source>Branch: All subpages</source>
+        <target approved="yes">Branch: All subpages</target>
+      </trans-unit>
+      <trans-unit id="cmdPid1">
+        <source>Element: Just record</source>
+        <target approved="yes">Element: Just record</target>
+      </trans-unit>
+      <trans-unit id="createNewVersion">
+        <source>Create new version</source>
+        <target approved="yes">Create new version</target>
+      </trans-unit>
+      <trans-unit id="previewLink">
+        <source>Preview Link</source>
+        <target approved="yes">Preview Link</target>
+      </trans-unit>
+      <trans-unit id="publishPage">
+        <source>Publish Page</source>
+        <target approved="yes">Publish Page</target>
+      </trans-unit>
+      <trans-unit id="swapPage">
+        <source>Swap page</source>
+        <target approved="yes">Swap page</target>
+      </trans-unit>
+      <trans-unit id="publishPageQuestion">
+        <source>Are you sure you want to publish all content %sfrom this page?</source>
+        <target approved="yes">Are you sure you want to publish all content %sfrom this page?</target>
+      </trans-unit>
+      <trans-unit id="swapPageQuestion">
+        <source>Are you sure you want to publish (swap) all content %sfrom this page?</source>
+        <target approved="yes">Are you sure you want to publish (swap) all content %sfrom this page?</target>
+      </trans-unit>
+      <trans-unit id="publishPageQuestionStage">
+        <source>in "Publish" stage </source>
+        <target approved="yes">in "Publish" stage </target>
+      </trans-unit>
+      <trans-unit id="previewUrl">
+        <source>Preview Url:</source>
+        <target approved="yes">Preview Url:</target>
+      </trans-unit>
+      <trans-unit id="previewInstruction">
+        <source>You can preview this page from the workspace using this link for the next %s hours (does not require backend login):</source>
+        <target approved="yes">You can preview this page from the workspace using this link for the next %s hours (does not require backend login):</target>
+      </trans-unit>
+      <trans-unit id="versionDetails">
+        <source>Details for version</source>
+        <target approved="yes">Details for version</target>
+      </trans-unit>
+      <trans-unit id="wsManagement">
+        <source>Workspace management</source>
+        <target approved="yes">Workspace management</target>
+      </trans-unit>
+      <trans-unit id="showDiffView">
+        <source>Show difference view</source>
+        <target approved="yes">Show difference view</target>
+      </trans-unit>
+      <trans-unit id="liveVersion">
+        <source>Live Version:</source>
+        <target approved="yes">Live Version:</target>
+      </trans-unit>
+      <trans-unit id="wsVersions">
+        <source>Workspace Versions:</source>
+        <target approved="yes">Workspace Versions:</target>
+      </trans-unit>
+      <trans-unit id="controls">
+        <source>Controls:</source>
+        <target approved="yes">Controls:</target>
+      </trans-unit>
+      <trans-unit id="goBack">
+        <source>Click here to go back</source>
+        <target approved="yes">Click here to go back</target>
+      </trans-unit>
+      <trans-unit id="showAllInformation">
+        <source>Show all information</source>
+        <target approved="yes">Show all information</target>
+      </trans-unit>
+      <trans-unit id="newElement">
+        <source>New element</source>
+        <target approved="yes">New element</target>
+      </trans-unit>
+      <trans-unit id="deletedElement">
+        <source>Deleted element</source>
+        <target approved="yes">Deleted element</target>
+      </trans-unit>
+      <trans-unit id="moveToPlaceholder">
+        <source>Move-to placeholder (destination)</source>
+        <target approved="yes">Move-to placeholder (destination)</target>
+      </trans-unit>
+      <trans-unit id="moveToPointer">
+        <source>Move-to pointer (source)</source>
+        <target approved="yes">Move-to pointer (source)</target>
+      </trans-unit>
+      <trans-unit id="notAvailable">
+        <source>N/A</source>
+        <target approved="yes">N/A</target>
+      </trans-unit>
+      <trans-unit id="change">
+        <source>change:</source>
+        <target approved="yes">change:</target>
+      </trans-unit>
+      <trans-unit id="element">
+        <source> [Element]</source>
+        <target approved="yes"> [Element]</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source> [Page]</source>
+        <target approved="yes"> [Page]</target>
+      </trans-unit>
+      <trans-unit id="branch">
+        <source> [Branch]</source>
+        <target approved="yes"> [Branch]</target>
+      </trans-unit>
+      <trans-unit id="otherVersions">
+        <source>Other version(s) in workspace </source>
+        <target approved="yes">Other version(s) in workspace </target>
+      </trans-unit>
+      <trans-unit id="multipleVersions">
+        <source>Multiple versions in same workspace!</source>
+        <target approved="yes">Multiple versions in same workspace!</target>
+      </trans-unit>
+      <trans-unit id="versionInVersion">
+        <source>Version inside version!</source>
+        <target approved="yes">Version inside version!</target>
+      </trans-unit>
+      <trans-unit id="lifecycle">
+        <source>Lifecycle</source>
+        <target approved="yes">Lifecycle</target>
+      </trans-unit>
+      <trans-unit id="workspace">
+        <source>Workspace</source>
+        <target approved="yes">Workspace</target>
+      </trans-unit>
+      <trans-unit id="diffToLiveElement">
+        <source>Difference to live element:</source>
+        <target approved="yes">Difference to live element:</target>
+      </trans-unit>
+      <trans-unit id="commentForReviewer">
+        <source>Comment for Reviewer:</source>
+        <target approved="yes">Comment for Reviewer:</target>
+      </trans-unit>
+      <trans-unit id="commentForPublisher">
+        <source>Comment for Publisher:</source>
+        <target approved="yes">Comment for Publisher:</target>
+      </trans-unit>
+      <trans-unit id="sendItemsToReview">
+        <source>Sending %s item(s) to review. </source>
+        <target approved="yes">Sending %s item(s) to review. </target>
+      </trans-unit>
+      <trans-unit id="sendAllToReview">
+        <source>Send all to Review</source>
+        <target approved="yes">Send all to Review</target>
+      </trans-unit>
+      <trans-unit id="approveToPublish">
+        <source>Approving %s item(s) to publishing. </source>
+        <target approved="yes">Approving %s item(s) to publishing. </target>
+      </trans-unit>
+      <trans-unit id="approveAllToPublish">
+        <source>Approve all for Publishing</source>
+        <target approved="yes">Approve all for Publishing</target>
+      </trans-unit>
+      <trans-unit id="offline">
+        <source>[Offline]</source>
+        <target approved="yes">[Offline]</target>
+      </trans-unit>
+      <trans-unit id="draft">
+        <source>Draft</source>
+        <target approved="yes">Draft</target>
+      </trans-unit>
+      <trans-unit id="archive">
+        <source>Archive</source>
+        <target approved="yes">Archive</target>
+      </trans-unit>
+      <trans-unit id="publishedXTimes">
+        <source>Published %s times</source>
+        <target approved="yes">Published %s times</target>
+      </trans-unit>
+      <trans-unit id="stage.sentToReview">
+        <source>sent element to "Review"</source>
+        <target approved="yes">sent element to "Review"</target>
+      </trans-unit>
+      <trans-unit id="stage.approvedForPublish">
+        <source>approved for "Publish"</source>
+        <target approved="yes">approved for "Publish"</target>
+      </trans-unit>
+      <trans-unit id="stage.rejectedElement">
+        <source>rejected element!</source>
+        <target approved="yes">rejected element!</target>
+      </trans-unit>
+      <trans-unit id="stage.resetToEdit">
+        <source>reset to "Editing"</source>
+        <target approved="yes">reset to "Editing"</target>
+      </trans-unit>
+      <trans-unit id="stage.undefined">
+        <source>[undefined]</source>
+        <target approved="yes">[undefined]</target>
+      </trans-unit>
+      <trans-unit id="userComment">
+        <source>User Comment</source>
+        <target approved="yes">User Comment</target>
+      </trans-unit>
+      <trans-unit id="subElementsClick">
+        <source>[Sub elements, click for details]</source>
+        <target approved="yes">[Sub elements, click for details]</target>
+      </trans-unit>
+      <trans-unit id="subElements">
+        <source>[Sub elements]</source>
+        <target approved="yes">[Sub elements]</target>
+      </trans-unit>
+      <trans-unit id="completeMatch">
+        <source>Complete match on editable fields.</source>
+        <target approved="yes">Complete match on editable fields.</target>
+      </trans-unit>
+      <trans-unit id="editing">
+        <source>Editing</source>
+        <target approved="yes">Editing</target>
+      </trans-unit>
+      <trans-unit id="sendToReview">
+        <source>Send to Review</source>
+        <target approved="yes">Send to Review</target>
+      </trans-unit>
+      <trans-unit id="review">
+        <source>Review</source>
+        <target approved="yes">Review</target>
+      </trans-unit>
+      <trans-unit id="swap">
+        <source>Swap</source>
+        <target approved="yes">Swap</target>
+      </trans-unit>
+      <trans-unit id="approveForPublishing">
+        <source>Approve for Publishing</source>
+        <target approved="yes">Approve for Publishing</target>
+      </trans-unit>
+      <trans-unit id="publish">
+        <source>Publish</source>
+        <target approved="yes">Publish</target>
+      </trans-unit>
+      <trans-unit id="rejected">
+        <source>Rejected</source>
+        <target approved="yes">Rejected</target>
+      </trans-unit>
+      <trans-unit id="comment">
+        <source>Comment:</source>
+        <target approved="yes">Comment:</target>
+      </trans-unit>
+      <trans-unit id="resetStage">
+        <source>Reset stage</source>
+        <target approved="yes">Reset stage</target>
+      </trans-unit>
+      <trans-unit id="undefined">
+        <source>Undefined</source>
+        <target approved="yes">Undefined</target>
+      </trans-unit>
+      <trans-unit id="rejectExplain">
+        <source>Please explain why you reject:</source>
+        <target approved="yes">Please explain why you reject:</target>
+      </trans-unit>
+      <trans-unit id="removeFromWorkspace">
+        <source>Remove from workspace</source>
+        <target approved="yes">Remove from workspace</target>
+      </trans-unit>
+      <trans-unit id="showLog">
+        <source>Show Log</source>
+        <target approved="yes">Show Log</target>
+      </trans-unit>
+      <trans-unit id="liveWorkspace">
+        <source>[Live workspace]</source>
+        <target approved="yes">[Live workspace]</target>
+      </trans-unit>
+      <trans-unit id="draftWorkspaces">
+        <source>Draft Workspaces</source>
+        <target approved="yes">Draft Workspaces</target>
+      </trans-unit>
+      <trans-unit id="defaultDraft">
+        <source>[Default Draft]</source>
+        <target approved="yes">[Default Draft]</target>
+      </trans-unit>
+      <trans-unit id="errors">
+        <source>Errors:</source>
+        <target approved="yes">Errors:</target>
+      </trans-unit>
+      <trans-unit id="refresh">
+        <source>Refresh</source>
+        <target approved="yes">Refresh</target>
+      </trans-unit>
+      <trans-unit id="allowPreviewOfWholeWorkspace">
+        <source>Allow preview of whole workspace</source>
+        <target approved="yes">Allow preview of whole workspace</target>
+      </trans-unit>
+      <trans-unit id="versionId">
+        <source>ID:</source>
+        <target approved="yes">ID:</target>
+      </trans-unit>
+      <trans-unit id="workspaceId">
+        <source>Workspace-Id:</source>
+        <target approved="yes">Workspace-Id:</target>
+      </trans-unit>
+      <trans-unit id="live">
+        <source>LIVE</source>
+        <target approved="yes">LIVE</target>
+      </trans-unit>
+      <trans-unit id="versionSelect.label">
+        <source>Versions of this page:</source>
+        <target approved="yes">Versions of this page:</target>
+      </trans-unit>
+      <trans-unit id="versionSelect.live">
+        <source>LIVE version</source>
+        <target approved="yes">LIVE version</target>
+      </trans-unit>
+      <trans-unit id="versionSelect.publish">
+        <source>Publish page</source>
+        <target approved="yes">Publish page</target>
+      </trans-unit>
+      <trans-unit id="versionSelect.inBranch">
+        <source>Inside branch, no further versioning possible</source>
+        <target approved="yes">Inside branch, no further versioning possible</target>
+      </trans-unit>
+      <trans-unit id="versionSelect.versionsFound">
+        <source>Versions found on page, no "Page" versioning possible</source>
+        <target approved="yes">Versions found on page, no "Page" versioning possible</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.name">
+        <source>Workspaces auto-publication</source>
+        <target approved="yes">Workspaces auto-publication</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.description">
+        <source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+        <target approved="yes">This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
