@@ -49,6 +49,8 @@ interface t3lib_DB_preProcessQueryHook {
 
 	/**
 	 * Pre-processor for the INSERTmultipleRows method.
+	 * BEWARE: When using DBAL, this hook will not be called at all. Instead,
+	 * INSERTquery_preProcessAction() will be invoked for each row.
 	 *
 	 * @param string $table Database table name
 	 * @param array $fields Field names
