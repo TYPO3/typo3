@@ -29,10 +29,10 @@
  * Abstract class for XML based parser.
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dfeyer@reelpeek.net>
  */
-abstract class tx_lang_parser_AbstractXml implements tx_lang_parser {
+abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 
 	/**
 	 * @var string
@@ -52,7 +52,7 @@ abstract class tx_lang_parser_AbstractXml implements tx_lang_parser {
 	/**
 	 * Returns parsed representation of XML file.
 	 *
-	 * @throws tx_lang_exception_FileNotFound
+	 * @throws t3lib_l10n_exception_FileNotFound
 	 * @param string $sourcePath Source file path
 	 * @param string $languageKey Language key
 	 * @param string $charset File charset
@@ -69,7 +69,7 @@ abstract class tx_lang_parser_AbstractXml implements tx_lang_parser {
 			);
 
 			if (!@is_file($this->sourcePath)) {
-				throw new tx_lang_exception_FileNotFound(
+				throw new t3lib_l10n_exception_FileNotFound(
 					'Localization file does not exist',
 					1306332397
 				);
@@ -114,14 +114,14 @@ abstract class tx_lang_parser_AbstractXml implements tx_lang_parser {
 	/**
 	 * Loads the current XML file before processing.
 	 *
-	 * @throws tx_lang_exception_InvalidXmlFile
+	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 * @return array An array representing parsed XML file (structure depends on concrete parser)
 	 */
 	protected function parseXmlFile() {
 		$rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXmlElement', \LIBXML_NOWARNING);
 
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
-			throw new tx_lang_exception_InvalidXmlFile(
+			throw new t3lib_l10n_exception_InvalidXmlFile(
 				'The path provided does not point to existing and accessible well-formed XML file.',
 				1278155987
 			);

@@ -1740,12 +1740,12 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			// Set override file
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xml'][$unique] = $file;
 
-		/** @var $store tx_lang_Store */
-		$store = t3lib_div::makeInstance('tx_lang_Store');
+		/** @var $store t3lib_l10n_Store */
+		$store = t3lib_div::makeInstance('t3lib_l10n_Store');
 		$store->flushData('EXT:lang/locallang_core.xml');
 
-			// Manually flush cache (because lang_l10n cannot be recreated automatically at this point)
-		$cacheDirectory = PATH_site . 'typo3temp/Cache/Data/lang_l10n/';
+			// Manually flush cache (because t3lib_l10n cannot be recreated automatically at this point)
+		$cacheDirectory = PATH_site . 'typo3temp/Cache/Data/t3lib_l10n/';
 		$cacheFiles = t3lib_div::getFilesInDir($cacheDirectory);
 		foreach ($cacheFiles as $cacheFile) {
 			@unlink($cacheDirectory . $cacheFile);

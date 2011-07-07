@@ -29,10 +29,10 @@
  * Language store.
  *
  * @package	Core
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dominique.feyer@reelpeek.net>
  */
-class tx_lang_Store implements t3lib_Singleton {
+class t3lib_l10n_Store implements t3lib_Singleton {
 
 	/**
 	 * File extension supported by the localization parser
@@ -122,7 +122,7 @@ class tx_lang_Store implements t3lib_Singleton {
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
 	 * @param $data
-	 * @return tx_lang_Store This instance to allow method chaining
+	 * @return t3lib_l10n_Store This instance to allow method chaining
 	 */
 	public function setData($fileReference, $languageKey, $data) {
 		$this->data[$fileReference][$languageKey] = $data;
@@ -133,7 +133,7 @@ class tx_lang_Store implements t3lib_Singleton {
 	 * Flushes data.
 	 *
 	 * @param string $fileReference
-	 * @return tx_lang_Store This instance to allow method chaining
+	 * @return t3lib_l10n_Store This instance to allow method chaining
 	 */
 	public function flushData($fileReference) {
 		unset($this->data[$fileReference]);
@@ -143,11 +143,11 @@ class tx_lang_Store implements t3lib_Singleton {
 	/**
 	 * Checks file reference configuration (charset, extension, ...).
 	 *
-	 * @throws tx_lang_exception_InvalidParser|tx_lang_exception_FileNotFound
+	 * @throws t3lib_l10n_exception_InvalidParser|t3lib_l10n_exception_FileNotFound
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
 	 * @param string $charset Rendering charset
-	 * @return tx_lang_Store This instance to allow method chaining
+	 * @return t3lib_l10n_Store This instance to allow method chaining
 	 */
 	public function setConfiguration($fileReference, $languageKey, $charset) {
 		$this->configuration[$fileReference] = array(
@@ -169,7 +169,7 @@ class tx_lang_Store implements t3lib_Singleton {
 		}
 
 		if ($this->configuration[$fileReference]['fileExtension'] === FALSE) {
-			throw new tx_lang_exception_FileNotFound(
+			throw new t3lib_l10n_exception_FileNotFound(
 				sprintf('Source localization file (%s) not found', $fileReference),
 				1306410755
 			);
@@ -180,14 +180,14 @@ class tx_lang_Store implements t3lib_Singleton {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) !== '') {
 			$this->configuration[$fileReference]['parserClass'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension];
 		} else {
-			throw new tx_lang_exception_InvalidParser(
+			throw new t3lib_l10n_exception_InvalidParser(
 				'TYPO3 Fatal Error: l10n parser for file extension "' . $extension . '" is not configured! Please check you configuration.',
 				1301579637
 			);
 		}
 
 		if (!class_exists($this->configuration[$fileReference]['parserClass']) || trim($this->configuration[$fileReference]['parserClass']) === '') {
-			throw new tx_lang_exception_InvalidParser(
+			throw new t3lib_l10n_exception_InvalidParser(
 				'TYPO3 Fatal Error: l10n parser "' . $this->configuration[$fileReference]['parserClass'] . '" cannot be found or is an empty parser!',
 				1270853900
 			);
@@ -212,15 +212,15 @@ class tx_lang_Store implements t3lib_Singleton {
 	/**
 	 * Returns the correct parser for a specific file reference.
 	 *
-	 * @throws tx_lang_exception_InvalidParser
+	 * @throws t3lib_l10n_exception_InvalidParser
 	 * @param string $fileReference	File reference
-	 * @return tx_lang_ParserInterface
+	 * @return t3lib_l10n_parser
 	 */
 	public function getParserInstance($fileReference) {
 		if (isset($this->configuration[$fileReference]['parserClass']) && trim($this->configuration[$fileReference]['parserClass']) !== '') {
 			return t3lib_div::makeInstance((string) $this->configuration[$fileReference]['parserClass']);
 		} else {
-			throw new tx_lang_exception_InvalidParser(
+			throw new t3lib_l10n_exception_InvalidParser(
 				sprintf('Invalid parser configuration for the current file (%s)', $fileReference),
 				1307293692
 			);

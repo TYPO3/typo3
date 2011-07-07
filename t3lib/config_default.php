@@ -64,9 +64,9 @@ $TYPO3_CONF_VARS = array(
 				'priority' => 'xlf,xml,php'
 			),
 			'parser' => array(
-				'php' => 'tx_lang_parser_Llphp',
-				'xml' => 'tx_lang_parser_Llxml',
-				'xlf' => 'tx_lang_parser_Xliff',
+				'php' => 't3lib_l10n_parser_Llphp',
+				'xml' => 't3lib_l10n_parser_Llxml',
+				'xlf' => 't3lib_l10n_parser_Xliff',
 			),
 		),
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.

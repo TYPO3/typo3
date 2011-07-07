@@ -26,13 +26,13 @@
  ***************************************************************/
 
 /**
- * Invalid Parser exception
+ * Invalid XML file exception
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dfeyer@reelpeek.net>
  */
-class tx_lang_exception_InvalidParser extends RuntimeException {
+class t3lib_l10n_exception_InvalidXmlFile extends RuntimeException {
 
 }
 
