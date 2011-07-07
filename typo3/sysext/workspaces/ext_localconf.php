@@ -31,4 +31,8 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
 
 t3lib_extMgm::addUserTSConfig('options.workspaces.considerReferences = 1');
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'][] = 'EXT:workspaces/Classes/BackendUserInterface/class.tx_workspaces_pagetree_collectionsprocessor.php:tx_workspaces_pagetree_collectionsprocessor';
+t3lib_extMgm::addUserTSConfig('options.workspaces.considerReferences = 1');
+
+
 ?>
