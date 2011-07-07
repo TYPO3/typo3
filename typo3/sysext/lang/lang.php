@@ -254,8 +254,10 @@ class language {
 	 * @return string		The processed string
 	 * @see    init()
 	 * @access public
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - This function does no charset conversion anymore and only does htmlspecialchars()
 	 */
 	public function hscAndCharConv($lStr, $hsc) {
+		t3lib_div::logDeprecatedFunction();
 			// labels returned from a locallang file used to be in the language of the charset.
 			// Since TYPO3 4.1 they are always in the charset of the BE.
 		if ($hsc) {
@@ -335,9 +337,12 @@ class language {
 	public function getLL($index, $hsc = FALSE) {
 			// Get Local Language
 		if ($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] !== '') {
-			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'], $hsc);
+			$output = $GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'];
 		} else {
-			$output = $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index][0]['target'], $hsc);
+			$output = $GLOBALS['LOCAL_LANG']['default'][$index][0]['target'];
+		}
+		if ($hsc) {
+			$output = htmlspecialchars($output);
 		}
 		return $output . $this->debugLL($index);
 	}
@@ -356,12 +361,10 @@ class language {
 			// Get Local Language. Special handling for all extensions that
 			// read PHP LL files and pass arrays here directly.
 		$value = is_string($localLanguage[$this->lang][$index]) ? $localLanguage[$this->lang][$index] : $localLanguage[$this->lang][$index][0]['target'];
-		if ($value !== '') {
-			$output = $this->hscAndCharConv($value, $hsc);
-		} else {
-			$output = $this->hscAndCharConv($value, $hsc);
+		if ($hsc) {
+			$value = htmlspecialchars($value);
 		}
-		return $output . $this->debugLL($index);
+		return $value . $this->debugLL($index);
 	}
 
 	/**
@@ -384,7 +387,10 @@ class language {
 		if (strcmp(substr($input, 0, 4), 'LLL:')) {
 			$t = explode('|', $input);
 			$out = $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
-			return $this->hscAndCharConv($out, $hsc);
+			if ($hsc) {
+				$out = htmlspecialchars($out);
+			}
+			return $out;
 			// LOCAL_LANG:
 		} else {
 				// If cached label

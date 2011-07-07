@@ -5228,7 +5228,7 @@ class t3lib_TCEforms {
 					   $fDat['details'] || $fDat['syntax'] || $fDat['image_descr'] || $fDat['image'] || $fDat['seeAlso']
 				   ) .
 				   '</td><td valign="top"><span class="typo3-TCEforms-helpText">' .
-				   $GLOBALS['LANG']->hscAndCharConv(strip_tags($fDat['description']), 1) .
+				   htmlspecialchars(strip_tags($fDat['description'])) .
 				   '</span></td></tr></table>';
 		}
 	}
@@ -5261,7 +5261,7 @@ class t3lib_TCEforms {
 					if ($alttitle) {
 						$hoverText = '<span class="header">' . $alttitle . '</span><br />' . $hoverText;
 					}
-					$hoverText = '<span class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($hoverText, FALSE) . '</span>';
+					$hoverText = '<span class="typo3-csh-inline">' . $hoverText . '</span>';
 				}
 
 					// CSH exists
@@ -5299,7 +5299,7 @@ class t3lib_TCEforms {
 						   $cshFile
 					   ) .
 					   '</td><td valign="top"><span class="typo3-TCEforms-helpText-flexform">' .
-					   $GLOBALS['LANG']->hscAndCharConv(strip_tags($value), 1) .
+					   htmlspecialchars(strip_tags($value)) .
 					   '</span></td></tr></table>';
 			}
 		}

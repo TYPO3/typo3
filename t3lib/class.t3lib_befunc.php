@@ -2642,7 +2642,7 @@ final class t3lib_BEfunc {
 					</tr>
 					</table>';
 
-					$output = $GLOBALS['LANG']->hscAndCharConv($fullText, FALSE);
+					$output = $fullText;
 				} else {
 					$output = $icon;
 
