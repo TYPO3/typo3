@@ -147,7 +147,7 @@ class tx_lang_Store implements t3lib_Singleton {
 			'charset' => $charset
 		);
 
-		$fileWithoutExtension = t3lib_div::getFileAbsFileName(preg_replace('/\.[a-z0-9]+$/i' , '' , $fileReference));
+		$fileWithoutExtension = t3lib_div::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
 
 		foreach ($this->supportedExtensions as $extension) {
 			if (@is_file($fileWithoutExtension . '.' . $extension)) {
@@ -183,6 +183,18 @@ class tx_lang_Store implements t3lib_Singleton {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Get the filereference without the extension
+	 * @param $fileReference File reference
+	 * @return string
+	 */
+	public function getFileReferenceWithoutExtension($fileReference) {
+		if (!isset($this->configuration[$fileReference]['fileReferenceWithoutExtension'])) {
+			$this->configuration[$fileReference]['fileReferenceWithoutExtension'] = preg_replace('/\.[a-z0-9]+$/i' , '' , $fileReference);
+		}
+		return $this->configuration[$fileReference]['fileReferenceWithoutExtension'];
 	}
 
 	/**

@@ -108,11 +108,38 @@ class tx_lang_Factory implements t3lib_Singleton {
 			$parser = $this->store->getParserInstance($fileReference);
 
 			try {
+					// Get parsed data
 				$LOCAL_LANG = $parser->getParsedData(
 					$this->store->getAbsoluteFileReference($fileReference),
 					$languageKey,
 					$charset
 				);
+
+					// Hooks to override localization
+				$overrides = array();
+				$fileReferenceWithoutExtension = $this->store->getFileReferenceWithoutExtension($fileReference);
+
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.php'])) {
+					$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.php']);
+				}
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.xml'])) {
+					$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.xml']);
+				}
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.xlf'])) {
+					$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileReferenceWithoutExtension . '.xlf']);
+				}
+
+				if (count($overrides) > 0) {
+					foreach ($overrides as $overrideFile) {
+						$languageOverrideFileName = t3lib_div::getFileAbsFileName($overrideFile);
+						$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule(
+							$LOCAL_LANG,
+							$this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode)
+						);
+					}
+				}
+
+					// Save parsed data in cache
 				$this->store->setData(
 					$fileReference,
 					$languageKey,
