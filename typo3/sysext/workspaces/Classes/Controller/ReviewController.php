@@ -61,7 +61,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 				}
 			}
 		}
-		$this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', ($GLOBALS['BE_USER']->workspace == 0) ? true : false);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', ($GLOBALS['BE_USER']->workspace == 0) ? TRUE : FALSE);
 		$this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
