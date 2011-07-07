@@ -2269,7 +2269,12 @@ final class t3lib_BEfunc {
 					}
 				break;
 				case 'input':
-					if (isset($value)) {
+						// currently, this feature does not show "0" or the date
+						// "1970-01-01", but this is a DB limitation, as we cannot
+						// differentiate between "0" and "NULL" in the DB
+						// however, this solution is the most "user-friendly" for
+						// 99.9% percent of all use-cases.
+					if (!empty($value)) {
 						if (t3lib_div::inList($theColConf['eval'], 'date')) {
 							$l = t3lib_BEfunc::date($value) .
 								' (' .
