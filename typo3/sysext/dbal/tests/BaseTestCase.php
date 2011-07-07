@@ -28,8 +28,6 @@
  * Subclass this base class if you want to take advantage of the framework
  * capabilities.
  *
- * $Id$
- *
  * @author Robert Lemke <robert@typo3.org>
  *
  * This method is backported from FLOW3's BaseTestCase class.

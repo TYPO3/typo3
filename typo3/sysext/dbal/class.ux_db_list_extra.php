@@ -28,8 +28,6 @@
 /**
  * Include file extending localRecordList for DBAL compatibility
  *
- * $Id$
- *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
  */

@@ -4,7 +4,7 @@
  *
  *  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
  *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
- *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2009-2011 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,11 +29,9 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id$
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
- * @author	Xavier Perseguers <typo3@perseguers.ch>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Karsten Dambekalns <karsten@typo3.org>
+ * @author	Xavier Perseguers <xavier@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

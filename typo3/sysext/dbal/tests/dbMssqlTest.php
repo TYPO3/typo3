@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2009-2011 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,9 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing MS SQL database handling.
  *
- * $Id$
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
+ * @author Xavier Perseguers <xavier@typo3.org>
  *
  * @package TYPO3
  * @subpackage dbal

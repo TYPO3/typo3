@@ -4,7 +4,7 @@
  *
  *  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
  *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
- *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2009-2011 Xavier Perseguers <typo3@perseguers.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,22 +27,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * PHP SQL engine
- *
- * $Id$
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
- * @author	Xavier Perseguers <typo3@perseguers.ch>
- */
-
-
-/**
  * PHP SQL engine / server
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Karsten Dambekalns <karsten@typo3.org>
+ * @author	Xavier Perseguers <xavier@typo3.org>
+ *
  * @package TYPO3
- * @subpackage t3lib
+ * @subpackage dbal
  */
 class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
