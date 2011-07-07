@@ -3163,8 +3163,10 @@ final class t3lib_BEfunc {
 	 * @param	integer		Time-To-Live for keyword
 	 * @param	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
 	 * @return	string		Returns keyword to use in URL for ADMCMD_prev=
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8, functionality is now in Tx_Version_Preview
 	 */
 	public static function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl = 172800, $fullWorkspace = NULL) {
+		t3lib_div::logDeprecatedFunction();
 		$field_array = array(
 			'keyword' => md5(uniqid(microtime())),
 			'tstamp' => $GLOBALS['EXEC_TIME'],

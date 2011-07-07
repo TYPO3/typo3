@@ -226,21 +226,6 @@ if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
 
 $TSFE->connectToDB();
 
-	// In case of a keyword-authenticated preview, re-initialize the TSFE object:
-if ($temp_previewConfig = $TSFE->ADMCMD_preview())	{
-	$TSFE = t3lib_div::makeInstance('tslib_fe',
-		$TYPO3_CONF_VARS,
-		t3lib_div::_GP('id'),
-		t3lib_div::_GP('type'),
-		t3lib_div::_GP('no_cache'),
-		t3lib_div::_GP('cHash'),
-		t3lib_div::_GP('jumpurl'),
-		t3lib_div::_GP('MP'),
-		t3lib_div::_GP('RDCT')
-	);
-	$TSFE->ADMCMD_preview_postInit($temp_previewConfig);
-}
-
 if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
 
 
