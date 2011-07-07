@@ -71,6 +71,35 @@ class tx_Workspaces_Service_Befunc {
 	protected function getWorkspaceService() {
 		return t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
 	}
+
+	/**
+	 * Use that hook to show a info message in case someone starts editing
+	 * a staged element
+	 *
+	 * @param  $params
+	 * @param  $form
+	 * @return boolean
+	 */
+	public function makeEditForm_accessCheck($params, &$form) {
+		if ($GLOBALS['BE_USER']->workspace !== 0 && $GLOBALS['TCA'][$params['table']]['ctrl']['versioningWS']) {
+			$record = t3lib_BEfunc::getRecordWSOL($params['table'], $params['uid']);
+			if (abs($record['t3ver_stage']) > Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
+				$stages = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+				$stageName = $stages->getStageTitle($record['t3ver_stage']);
+				$editingName = $stages->getStageTitle(Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
+				$message = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					sprintf($message, $stageName, $editingName),
+					'',
+					t3lib_FlashMessage::INFO,
+					TRUE
+				);
+				t3lib_FlashMessageQueue::addMessage($flashMessage);
+			}
+		}
+		return $params['hasAccess'];
+	}
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Befunc.php'])) {

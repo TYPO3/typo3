@@ -1,316 +1,345 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:09 UTC 2011" product-name="workspaces">
-    <header/>
-    <body>
-      <trans-unit id="legend.label">
-        <source>Legend:</source>
-        <target approved="yes">Legend:</target>
-      </trans-unit>
-      <trans-unit id="legend.edited">
-        <source>edited</source>
-        <target approved="yes">edited</target>
-      </trans-unit>
-      <trans-unit id="legend.moved">
-        <source>moved</source>
-        <target approved="yes">moved</target>
-      </trans-unit>
-      <trans-unit id="legend.deleted">
-        <source>deleted</source>
-        <target approved="yes">deleted</target>
-      </trans-unit>
-      <trans-unit id="legend.new">
-        <source>created</source>
-        <target approved="yes">created</target>
-      </trans-unit>
-      <trans-unit id="legend.hidden">
-        <source>hidden</source>
-        <target approved="yes">hidden</target>
-      </trans-unit>
-      <trans-unit id="title">
-        <source>Workspaces</source>
-        <target approved="yes">Workspaces</target>
-      </trans-unit>
-      <trans-unit id="ok">
-        <source>ok</source>
-        <target approved="yes">ok</target>
-      </trans-unit>
-      <trans-unit id="cancel">
-        <source>cancel</source>
-        <target approved="yes">cancel</target>
-      </trans-unit>
-      <trans-unit id="chooseMassAction">
-        <source>choose Mass Action</source>
-        <target approved="yes">choose Mass Action</target>
-      </trans-unit>
-      <trans-unit id="chooseAction">
-        <source>choose Action</source>
-        <target approved="yes">choose Action</target>
-      </trans-unit>
-      <trans-unit id="item">
-        <source>item</source>
-        <target approved="yes">item</target>
-      </trans-unit>
-      <trans-unit id="items">
-        <source>items</source>
-        <target approved="yes">items</target>
-      </trans-unit>
-      <trans-unit id="recordsToDisplay">
-        <source>Records to display</source>
-        <target approved="yes">Records to display</target>
-      </trans-unit>
-      <trans-unit id="reviewandpublish">
-        <source>review and publish</source>
-        <target approved="yes">review and publish</target>
-      </trans-unit>
-      <trans-unit id="workspacelist">
-        <source>Workspace List</source>
-        <target approved="yes">Workspace List</target>
-      </trans-unit>
-      <trans-unit id="editorInLive">
-        <source>You are in LIVE workspace. You have to select a draft workspace before you can review and publish changes.</source>
-        <target approved="yes">You are in LIVE workspace. You have to select a draft workspace before you can review and publish changes.</target>
-      </trans-unit>
-      <trans-unit id="actionSendToStage">
-        <source>Send to stage</source>
-        <target approved="yes">Send to stage </target>
-      </trans-unit>
-      <trans-unit id="publish_execute_action_option">
-        <source>Publish  to LIVE</source>
-        <target approved="yes">Publish  to LIVE</target>
-      </trans-unit>
-      <trans-unit id="close">
-        <source>Close</source>
-        <target approved="yes">Close</target>
-      </trans-unit>
-      <trans-unit id="runMassAction.done">
-        <source>Done processing %d elements</source>
-        <target approved="yes">Done processing %d elements</target>
-      </trans-unit>
-      <trans-unit id="runMassAction.init">
-        <source>init</source>
-        <target approved="yes">init</target>
-      </trans-unit>
-      <trans-unit id="tooltip.publishAll">
-        <source>Really publish entire workspace?</source>
-        <target approved="yes">Really publish entire workspace?</target>
-      </trans-unit>
-      <trans-unit id="tooltip.swapAll">
-        <source>Really swap entire workspace?</source>
-        <target approved="yes">Really swap entire workspace?</target>
-      </trans-unit>
-      <trans-unit id="tooltip.discardAll">
-        <source>Do you really want to discard changes from the whole workspace?</source>
-        <target approved="yes">Do you really want to discard changes from the whole workspace?</target>
-      </trans-unit>
-      <trans-unit id="tooltip.affectWholeWorkspace">
-        <source>Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</source>
-        <target approved="yes">Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</target>
-      </trans-unit>
-      <trans-unit id="previewLink">
-        <source>Preview Link</source>
-        <target approved="yes">Preview Link</target>
-      </trans-unit>
-      <trans-unit id="error.noResponse">
-        <source>The server did not send any response whether the action was successful.</source>
-        <target approved="yes">The server did not send any response whether the action was successful.</target>
-      </trans-unit>
-      <trans-unit id="rowDetails">
-        <source>Row details...</source>
-        <target approved="yes">Row details...</target>
-      </trans-unit>
-      <trans-unit id="column.difference">
-        <source>Difference</source>
-        <target approved="yes">Difference</target>
-      </trans-unit>
-      <trans-unit id="column.changeDate">
-        <source>Modification</source>
-        <target approved="yes">Modification</target>
-      </trans-unit>
-      <trans-unit id="column.stage">
-        <source>Current Stage</source>
-        <target approved="yes">Current Stage</target>
-      </trans-unit>
-      <trans-unit id="column.actions">
-        <source>Actions</source>
-        <target approved="yes">Actions</target>
-      </trans-unit>
-      <trans-unit id="column.wsPath">
-        <source>Path</source>
-        <target approved="yes">Path</target>
-      </trans-unit>
-      <trans-unit id="column.wsTitle">
-        <source>Changed</source>
-        <target approved="yes">Changed</target>
-      </trans-unit>
-      <trans-unit id="column.uid">
-        <source>WS-Id</source>
-        <target approved="yes">WS-Id</target>
-      </trans-unit>
-      <trans-unit id="column.oid">
-        <source>Live-Id</source>
-        <target approved="yes">Live-Id</target>
-      </trans-unit>
-      <trans-unit id="column.workspaceName">
-        <source>Workspace</source>
-        <target approved="yes">Workspace</target>
-      </trans-unit>
-      <trans-unit id="column.livePath">
-        <source>Live-Path</source>
-        <target approved="yes">Live-Path</target>
-      </trans-unit>
-      <trans-unit id="column.liveTitle">
-        <source>Live-Title</source>
-        <target approved="yes">Live-Title</target>
-      </trans-unit>
-      <trans-unit id="column.wsSwapColumn">
-        <source>Swap workspace</source>
-        <target approved="yes">Swap workspace</target>
-      </trans-unit>
-      <trans-unit id="tooltip.viewElementAction">
-        <source>Preview element</source>
-        <target approved="yes">Preview element</target>
-      </trans-unit>
-      <trans-unit id="tooltip.editElementAction">
-        <source>Edit element</source>
-        <target approved="yes">Edit element</target>
-      </trans-unit>
-      <trans-unit id="tooltip.openPage">
-        <source>Open version of page</source>
-        <target approved="yes">Open version of page</target>
-      </trans-unit>
-      <trans-unit id="tooltip.sendToPrevStage">
-        <source>Send record to previous Stage</source>
-        <target approved="yes">Send record to previous Stage</target>
-      </trans-unit>
-      <trans-unit id="tooltip.sendToNextStage">
-        <source>Send record to next Stage</source>
-        <target approved="yes">Send record to next Stage</target>
-      </trans-unit>
-      <trans-unit id="tooltip.discardVersion">
-        <source>Discard workspace version of record.</source>
-        <target approved="yes">Discard workspace version of record.</target>
-      </trans-unit>
-      <trans-unit id="tooltip.swap">
-        <source>Swap live and workspace versions of record</source>
-        <target approved="yes">Swap live and workspace versions of record</target>
-      </trans-unit>
-      <trans-unit id="window.discard.title">
-        <source>Discard workspace version of record.</source>
-        <target approved="yes">Discard workspace version of record.</target>
-      </trans-unit>
-      <trans-unit id="window.discard.message">
-        <source>Do you really want to discard this version from workspace?</source>
-        <target approved="yes">Do you really want to discard this version from workspace?</target>
-      </trans-unit>
-      <trans-unit id="window.swap.title">
-        <source>Swap version</source>
-        <target approved="yes">Swap version</target>
-      </trans-unit>
-      <trans-unit id="window.swap.message">
-        <source>Do you really want to swap this version?</source>
-        <target approved="yes">Do you really want to swap this version?</target>
-      </trans-unit>
-      <trans-unit id="window.massAction.title">
-        <source>Prepare to start mass action</source>
-        <target approved="yes">Prepare to start mass action</target>
-      </trans-unit>
-      <trans-unit id="error.stageId.integer">
-        <source>StageId is supposed to be an integer</source>
-        <target approved="yes">StageId is supposed to be an integer</target>
-      </trans-unit>
-      <trans-unit id="error.stageId.invalid">
-        <source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</source>
-        <target approved="yes">The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</target>
-      </trans-unit>
-      <trans-unit id="error.sendToNextStage.noRecordFound">
-        <source>The record element could not be found.</source>
-        <target approved="yes">The record element could not be found.</target>
-      </trans-unit>
-      <trans-unit id="error.sendToPrevStage.noPreviousStage">
-        <source>The record element is already in editing stage, there is no previous stage.</source>
-        <target approved="yes">The record element is already in editing stage, there is no previous stage.</target>
-      </trans-unit>
-      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo">
-        <source>The selected element(s) will be sent to</source>
-        <target approved="yes">The selected element(s) will be sent to</target>
-      </trans-unit>
-      <trans-unit id="window.sendToNextStageWindow.sendMailTo">
-        <source>Send mail to</source>
-        <target approved="yes">Send mail to</target>
-      </trans-unit>
-      <trans-unit id="window.sendToNextStageWindow.additionalRecipients">
-        <source>Additional recipients</source>
-        <target approved="yes">Additional recipients</target>
-      </trans-unit>
-      <trans-unit id="window.sendToNextStageWindow.comments">
-        <source>Comments</source>
-        <target approved="yes">Comments</target>
-      </trans-unit>
-      <trans-unit id="error.getStageTitle.stageNotFound">
-        <source>Stage not found</source>
-        <target approved="yes">Stage not found</target>
-      </trans-unit>
-      <trans-unit id="warning.oldStyleWorkspaceInUser">
-        <source>It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3 Install Tool to run the necessary updates. If you continue using this module without migrating your workspace you might loose data.</source>
-        <target approved="yes">It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3 Install Tool to run the necessary updates. If you continue using this module without migrating your workspace you might loose data.</target>
-      </trans-unit>
-      <trans-unit id="info.newpage">
-        <source>New Page!</source>
-        <target approved="yes">New Page!</target>
-      </trans-unit>
-      <trans-unit id="info.newpage.detail">
-        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
-        <target approved="yes">The previewed page has been created in a workspace and has no live counterpart.</target>
-      </trans-unit>
-      <trans-unit id="preview.visualPreview">
-        <source>Visual preview</source>
-        <target approved="yes">Visual preview</target>
-      </trans-unit>
-      <trans-unit id="preview.listView">
-        <source>List view</source>
-        <target approved="yes">List view</target>
-      </trans-unit>
-      <trans-unit id="preview.livePreview">
-        <source>Live</source>
-        <target approved="yes">Live</target>
-      </trans-unit>
-      <trans-unit id="preview.livePreviewDetail">
-        <source>Click this element to hide the workspace version and see the live version of the page.</source>
-        <target approved="yes">Click this element to hide the workspace version and see the live version of the page.</target>
-      </trans-unit>
-      <trans-unit id="preview.workspacePreview">
-        <source>Workspace</source>
-        <target approved="yes">Workspace</target>
-      </trans-unit>
-      <trans-unit id="preview.workspacePreviewDetail">
-        <source>Click this element to hide the live version and see the workspace version of the page.</source>
-        <target approved="yes">Click this element to hide the live version and see the workspace version of the page.</target>
-      </trans-unit>
-      <trans-unit id="preview.modeSlider">
-        <source>Slider</source>
-        <target approved="yes">Slider</target>
-      </trans-unit>
-      <trans-unit id="preview.modeVbox">
-        <source>Vertical</source>
-        <target approved="yes">Vertical</target>
-      </trans-unit>
-      <trans-unit id="preview.modeHbox">
-        <source>Horizontal</source>
-        <target approved="yes">Horizontal</target>
-      </trans-unit>
-      <trans-unit id="label_doaction_publish">
-        <source>Publish</source>
-        <target approved="yes">Publish</target>
-      </trans-unit>
-      <trans-unit id="label_doaction_swap">
-        <source>Swap</source>
-        <target approved="yes">Swap</target>
-      </trans-unit>
-      <trans-unit id="label_doaction_discard">
-        <source>Discard</source>
-        <target approved="yes">Discard</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="vn" datatype="plaintext" original="messages"
+		  date="Tue Jun  7 20:29:09 UTC 2011" product-name="workspaces">
+		<header/>
+		<body>
+			<trans-unit id="legend.label">
+				<source>Legend:</source>
+				<target approved="yes">Legend:</target>
+			</trans-unit>
+			<trans-unit id="legend.edited">
+				<source>edited</source>
+				<target approved="yes">edited</target>
+			</trans-unit>
+			<trans-unit id="legend.moved">
+				<source>moved</source>
+				<target approved="yes">moved</target>
+			</trans-unit>
+			<trans-unit id="legend.deleted">
+				<source>deleted</source>
+				<target approved="yes">deleted</target>
+			</trans-unit>
+			<trans-unit id="legend.new">
+				<source>created</source>
+				<target approved="yes">created</target>
+			</trans-unit>
+			<trans-unit id="legend.hidden">
+				<source>hidden</source>
+				<target approved="yes">hidden</target>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Workspaces</source>
+				<target approved="yes">Workspaces</target>
+			</trans-unit>
+			<trans-unit id="ok">
+				<source>ok</source>
+				<target approved="yes">ok</target>
+			</trans-unit>
+			<trans-unit id="cancel">
+				<source>cancel</source>
+				<target approved="yes">cancel</target>
+			</trans-unit>
+			<trans-unit id="chooseMassAction">
+				<source>choose Mass Action</source>
+				<target approved="yes">choose Mass Action</target>
+			</trans-unit>
+			<trans-unit id="chooseAction">
+				<source>choose Action</source>
+				<target approved="yes">choose Action</target>
+			</trans-unit>
+			<trans-unit id="item">
+				<source>item</source>
+				<target approved="yes">item</target>
+			</trans-unit>
+			<trans-unit id="items">
+				<source>items</source>
+				<target approved="yes">items</target>
+			</trans-unit>
+			<trans-unit id="recordsToDisplay">
+				<source>Records to display</source>
+				<target approved="yes">Records to display</target>
+			</trans-unit>
+			<trans-unit id="reviewandpublish">
+				<source>review and publish</source>
+				<target approved="yes">review and publish</target>
+			</trans-unit>
+			<trans-unit id="workspacelist">
+				<source>Workspace List</source>
+				<target approved="yes">Workspace List</target>
+			</trans-unit>
+			<trans-unit id="editorInLive">
+				<source>You are in LIVE workspace. You have to select a draft workspace before you can review and
+					publish changes.
+				</source>
+				<target approved="yes">You are in LIVE workspace. You have to select a draft workspace before you can
+					review and publish changes.
+				</target>
+			</trans-unit>
+			<trans-unit id="actionSendToStage">
+				<source>Send to stage</source>
+				<target approved="yes">Send to stage</target>
+			</trans-unit>
+			<trans-unit id="publish_execute_action_option">
+				<source>Publish to LIVE</source>
+				<target approved="yes">Publish to LIVE</target>
+			</trans-unit>
+			<trans-unit id="close">
+				<source>Close</source>
+				<target approved="yes">Close</target>
+			</trans-unit>
+			<trans-unit id="runMassAction.done">
+				<source>Done processing %d elements</source>
+				<target approved="yes">Done processing %d elements</target>
+			</trans-unit>
+			<trans-unit id="runMassAction.init">
+				<source>init</source>
+				<target approved="yes">init</target>
+			</trans-unit>
+			<trans-unit id="tooltip.publishAll">
+				<source>Really publish entire workspace?</source>
+				<target approved="yes">Really publish entire workspace?</target>
+			</trans-unit>
+			<trans-unit id="tooltip.swapAll">
+				<source>Really swap entire workspace?</source>
+				<target approved="yes">Really swap entire workspace?</target>
+			</trans-unit>
+			<trans-unit id="tooltip.discardAll">
+				<source>Do you really want to discard changes from the whole workspace?</source>
+				<target approved="yes">Do you really want to discard changes from the whole workspace?</target>
+			</trans-unit>
+			<trans-unit id="tooltip.affectWholeWorkspace">
+				<source>Please note that this will affect all changes in the current workspace, which may be more than
+					you are currently seeing on your screen.
+				</source>
+				<target approved="yes">Please note that this will affect all changes in the current workspace, which may
+					be more than you are currently seeing on your screen.
+				</target>
+			</trans-unit>
+			<trans-unit id="previewLink">
+				<source>Preview Link</source>
+				<target approved="yes">Preview Link</target>
+			</trans-unit>
+			<trans-unit id="error.noResponse">
+				<source>The server did not send any response whether the action was successful.</source>
+				<target approved="yes">The server did not send any response whether the action was successful.</target>
+			</trans-unit>
+			<trans-unit id="rowDetails">
+				<source>Row details...</source>
+				<target approved="yes">Row details...</target>
+			</trans-unit>
+			<trans-unit id="column.difference">
+				<source>Difference</source>
+				<target approved="yes">Difference</target>
+			</trans-unit>
+			<trans-unit id="column.changeDate">
+				<source>Modification</source>
+				<target approved="yes">Modification</target>
+			</trans-unit>
+			<trans-unit id="column.stage">
+				<source>Current Stage</source>
+				<target approved="yes">Current Stage</target>
+			</trans-unit>
+			<trans-unit id="column.actions">
+				<source>Actions</source>
+				<target approved="yes">Actions</target>
+			</trans-unit>
+			<trans-unit id="column.wsPath">
+				<source>Path</source>
+				<target approved="yes">Path</target>
+			</trans-unit>
+			<trans-unit id="column.wsTitle">
+				<source>Changed</source>
+				<target approved="yes">Changed</target>
+			</trans-unit>
+			<trans-unit id="column.uid">
+				<source>WS-Id</source>
+				<target approved="yes">WS-Id</target>
+			</trans-unit>
+			<trans-unit id="column.oid">
+				<source>Live-Id</source>
+				<target approved="yes">Live-Id</target>
+			</trans-unit>
+			<trans-unit id="column.workspaceName">
+				<source>Workspace</source>
+				<target approved="yes">Workspace</target>
+			</trans-unit>
+			<trans-unit id="column.livePath">
+				<source>Live-Path</source>
+				<target approved="yes">Live-Path</target>
+			</trans-unit>
+			<trans-unit id="column.liveTitle">
+				<source>Live-Title</source>
+				<target approved="yes">Live-Title</target>
+			</trans-unit>
+			<trans-unit id="column.wsSwapColumn">
+				<source>Swap workspace</source>
+				<target approved="yes">Swap workspace</target>
+			</trans-unit>
+			<trans-unit id="tooltip.viewElementAction">
+				<source>Preview element</source>
+				<target approved="yes">Preview element</target>
+			</trans-unit>
+			<trans-unit id="tooltip.editElementAction">
+				<source>Edit element</source>
+				<target approved="yes">Edit element</target>
+			</trans-unit>
+			<trans-unit id="tooltip.openPage">
+				<source>Open version of page</source>
+				<target approved="yes">Open version of page</target>
+			</trans-unit>
+			<trans-unit id="tooltip.sendToPrevStage">
+				<source>Send record to previous Stage</source>
+				<target approved="yes">Send record to previous Stage</target>
+			</trans-unit>
+			<trans-unit id="tooltip.sendToNextStage">
+				<source>Send record to next Stage</source>
+				<target approved="yes">Send record to next Stage</target>
+			</trans-unit>
+			<trans-unit id="tooltip.discardVersion">
+				<source>Discard workspace version of record.</source>
+				<target approved="yes">Discard workspace version of record.</target>
+			</trans-unit>
+			<trans-unit id="tooltip.swap">
+				<source>Swap live and workspace versions of record</source>
+				<target approved="yes">Swap live and workspace versions of record</target>
+			</trans-unit>
+			<trans-unit id="window.discard.title">
+				<source>Discard workspace version of record.</source>
+				<target approved="yes">Discard workspace version of record.</target>
+			</trans-unit>
+			<trans-unit id="window.discard.message">
+				<source>Do you really want to discard this version from workspace?</source>
+				<target approved="yes">Do you really want to discard this version from workspace?</target>
+			</trans-unit>
+			<trans-unit id="window.swap.title">
+				<source>Swap version</source>
+				<target approved="yes">Swap version</target>
+			</trans-unit>
+			<trans-unit id="window.swap.message">
+				<source>Do you really want to swap this version?</source>
+				<target approved="yes">Do you really want to swap this version?</target>
+			</trans-unit>
+			<trans-unit id="window.massAction.title">
+				<source>Prepare to start mass action</source>
+				<target approved="yes">Prepare to start mass action</target>
+			</trans-unit>
+			<trans-unit id="error.stageId.integer">
+				<source>StageId is supposed to be an integer</source>
+				<target approved="yes">StageId is supposed to be an integer</target>
+			</trans-unit>
+			<trans-unit id="error.stageId.invalid">
+				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
+					wizard in the install tool to fix this.
+				</source>
+				<target approved="yes">The stage to be used seems to be invalid and cannot be used. Please consider to
+					use the update wizard in the install tool to fix this.
+				</target>
+			</trans-unit>
+			<trans-unit id="error.sendToNextStage.noRecordFound">
+				<source>The record element could not be found.</source>
+				<target approved="yes">The record element could not be found.</target>
+			</trans-unit>
+			<trans-unit id="error.sendToPrevStage.noPreviousStage">
+				<source>The record element is already in editing stage, there is no previous stage.</source>
+				<target approved="yes">The record element is already in editing stage, there is no previous stage.
+				</target>
+			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo">
+				<source>The selected element(s) will be sent to</source>
+				<target approved="yes">The selected element(s) will be sent to</target>
+			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.sendMailTo">
+				<source>Send mail to</source>
+				<target approved="yes">Send mail to</target>
+			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.additionalRecipients">
+				<source>Additional recipients</source>
+				<target approved="yes">Additional recipients</target>
+			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.comments">
+				<source>Comments</source>
+				<target approved="yes">Comments</target>
+			</trans-unit>
+			<trans-unit id="error.getStageTitle.stageNotFound">
+				<source>Stage not found</source>
+				<target approved="yes">Stage not found</target>
+			</trans-unit>
+			<trans-unit id="warning.oldStyleWorkspaceInUser">
+				<source>It seems that you're still using old-style workspace. Please use the update scripts in the TYPO3
+					Install Tool to run the necessary updates. If you continue using this module without migrating your
+					workspace you might loose data.
+				</source>
+				<target approved="yes">It seems that you're still using old-style workspace. Please use the update
+					scripts in the TYPO3 Install Tool to run the necessary updates. If you continue using this module
+					without migrating your workspace you might loose data.
+				</target>
+			</trans-unit>
+			<trans-unit id="info.newpage">
+				<source>New Page!</source>
+				<target approved="yes">New Page!</target>
+			</trans-unit>
+			<trans-unit id="info.newpage.detail">
+				<source>The previewed page has been created in a workspace and has no live counterpart.</source>
+				<target approved="yes">The previewed page has been created in a workspace and has no live counterpart.
+				</target>
+			</trans-unit>
+			<trans-unit id="preview.visualPreview">
+				<source>Visual preview</source>
+				<target approved="yes">Visual preview</target>
+			</trans-unit>
+			<trans-unit id="preview.listView">
+				<source>List view</source>
+				<target approved="yes">List view</target>
+			</trans-unit>
+			<trans-unit id="preview.livePreview">
+				<source>Live</source>
+				<target approved="yes">Live</target>
+			</trans-unit>
+			<trans-unit id="preview.livePreviewDetail">
+				<source>Click this element to hide the workspace version and see the live version of the page.</source>
+				<target approved="yes">Click this element to hide the workspace version and see the live version of the
+					page.
+				</target>
+			</trans-unit>
+			<trans-unit id="preview.workspacePreview">
+				<source>Workspace</source>
+				<target approved="yes">Workspace</target>
+			</trans-unit>
+			<trans-unit id="preview.workspacePreviewDetail">
+				<source>Click this element to hide the live version and see the workspace version of the page.</source>
+				<target approved="yes">Click this element to hide the live version and see the workspace version of the
+					page.
+				</target>
+			</trans-unit>
+			<trans-unit id="preview.modeSlider">
+				<source>Slider</source>
+				<target approved="yes">Slider</target>
+			</trans-unit>
+			<trans-unit id="preview.modeVbox">
+				<source>Vertical</source>
+				<target approved="yes">Vertical</target>
+			</trans-unit>
+			<trans-unit id="preview.modeHbox">
+				<source>Horizontal</source>
+				<target approved="yes">Horizontal</target>
+			</trans-unit>
+			<trans-unit id="label_doaction_publish">
+				<source>Publish</source>
+				<target approved="yes">Publish</target>
+			</trans-unit>
+			<trans-unit id="label_doaction_swap">
+				<source>Swap</source>
+				<target approved="yes">Swap</target>
+			</trans-unit>
+			<trans-unit id="label_doaction_discard">
+				<source>Discard</source>
+				<target approved="yes">Discard</target>
+			</trans-unit>
+			<trans-unit id="info.elementAlreadyModified">
+				<source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+				<target approved="yes">Element is in workspace stage "%s", modifications will send it back to "%s".</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
