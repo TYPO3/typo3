@@ -1740,15 +1740,26 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			// Set override file
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xml'][$unique] = $file;
 
+		/** @var $store tx_lang_Store */
+		$store = t3lib_div::makeInstance('tx_lang_Store');
+		$store->flushData('EXT:lang/locallang_core.xml');
+
+			// Manually flush cache (because lang_l10n cannot be recreated automatically at this point)
+		$cacheDirectory = PATH_site . 'typo3temp/Cache/Data/lang_l10n/';
+		$cacheFiles = t3lib_div::getFilesInDir($cacheDirectory);
+		foreach ($cacheFiles as $cacheFile) {
+			@unlink($cacheDirectory . $cacheFile);
+		}
+
 			// Get override value
 		$overrideLL = t3lib_div::readLLfile('EXT:lang/locallang_core.xml', 'default');
 
 			// Clean up again
 		unlink($file);
 
-		$this->assertNotEquals($overrideLL['default']['buttons.logout'], '');
-		$this->assertNotEquals($defaultLL['default']['buttons.logout'], $overrideLL['default']['buttons.logout']);
-		$this->assertEquals($overrideLL['default']['buttons.logout'], 'EXIT');
+		$this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
+		$this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
+		$this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
 	}
 
 
