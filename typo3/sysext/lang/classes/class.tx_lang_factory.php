@@ -111,11 +111,19 @@ class tx_lang_Factory implements t3lib_Singleton {
 			/** @var $parser tx_lang_parser */
 			$parser = $this->store->getParserInstance($fileReference);
 
+				// Get parsed data
 			$LOCAL_LANG = $parser->getParsedData(
 				$this->store->getAbsoluteFileReference($fileReference),
 				$languageKey,
 				$charset
 			);
+
+				// Override localization
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
+				$this->localizationOverride($fileReference, $languageKey, $charset, $errorMode, $LOCAL_LANG);
+			}
+
+				// Save parsed data in cache
 			$this->store->setData(
 				$fileReference,
 				$languageKey,
@@ -123,19 +131,49 @@ class tx_lang_Factory implements t3lib_Singleton {
 			);
 
 				// Cache processed data
-			$this->cacheInstance->set(
-				$hash,
-				$this->store->getDataByLanguage($fileReference, $languageKey),
-				array(),
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['lifetime']
-			);
-
+			$this->cacheInstance->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
 		} catch (tx_lang_exception_FileNotFound $exception) {
 				// Source localization file not found
 			$this->store->setData($fileReference, $languageKey, array());
 		}
 
 		return $this->store->getData($fileReference);
+	}
+
+	/**
+	 * Override localization file
+	 *
+	 * This method merges the content of the override file with the default file
+	 *
+	 * @param string $fileReference
+	 * @param string $languageKey
+	 * @param string $charset
+	 * @param integer $errorMode
+	 * @param array $LOCAL_LANG
+	 * @return void
+	 */
+	protected function localizationOverride($fileReference, $languageKey, $charset, $errorMode, array &$LOCAL_LANG) {
+		$overrides = array();
+		$fileReferenceWithoutExtension = $this->store->getFileReferenceWithoutExtension($fileReference);
+
+		$locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
+		foreach ($this->store->getSupportedExtensions() as $extension) {
+			if (isset($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension])) {
+				$overrides = array_merge($overrides, $locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]);
+			} elseif (isset($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension])) {
+				$overrides = array_merge($overrides, $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]);
+			}
+		}
+
+		if (count($overrides) > 0) {
+			foreach ($overrides as $overrideFile) {
+				$languageOverrideFileName = t3lib_div::getFileAbsFileName($overrideFile);
+				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule(
+					$LOCAL_LANG,
+					$this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode)
+				);
+			}
+		}
 	}
 
 }
