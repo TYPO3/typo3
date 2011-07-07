@@ -2230,22 +2230,33 @@ final class t3lib_BEfunc {
 					}
 					break;
 				case 'input':
-					if (isset($value)) {
-						if (t3lib_div::inList($theColConf['eval'], 'date')) {
+						// currently, this feature does not show "0" or the date
+						// "1970-01-01", but this is a DB limitation, as we cannot
+						// differentiate between "0" and "NULL" in the DB
+						// however, this solution is the most "user-friendly" for
+						// 99.9% percent of all use-cases.
+					if (t3lib_div::inList($theColConf['eval'], 'date')) {
+						if (!empty($value)) {
 							$l = self::date($value) .
-									' (' .
-									($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') .
-									self::calcAge(abs($GLOBALS['EXEC_TIME'] - $value), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) .
-									')';
-						} elseif (t3lib_div::inList($theColConf['eval'], 'time')) {
-							$l = self::time($value, FALSE);
-						} elseif (t3lib_div::inList($theColConf['eval'], 'timesec')) {
-							$l = self::time($value);
-						} elseif (t3lib_div::inList($theColConf['eval'], 'datetime')) {
-							$l = self::datetime($value);
-						} else {
-							$l = $value;
+								' (' .
+								($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') .
+								self::calcAge(abs($GLOBALS['EXEC_TIME'] - $value), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) .
+								')';
 						}
+					} elseif (t3lib_div::inList($theColConf['eval'], 'time')) {
+						if (!empty($value)) {
+							$l = self::time($value, FALSE);
+						}
+					} elseif (t3lib_div::inList($theColConf['eval'], 'timesec')) {
+						if (!empty($value)) {
+							$l = self::time($value);
+						}
+					} elseif (t3lib_div::inList($theColConf['eval'], 'datetime')) {
+						if (!empty($value)) {
+							$l = self::datetime($value);
+						}
+					} else {
+						$l = $value;
 					}
 					break;
 				case 'flex':
