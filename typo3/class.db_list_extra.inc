@@ -1216,7 +1216,7 @@ class localRecordList extends recordList {
 					'</a>';
 
 					// Versioning:
-				if (t3lib_extMgm::isLoaded('version'))	{
+				if (t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')) {
 					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace, FALSE, $row);
 					if (is_array($vers))	{	// If table can be versionized.
 						$versionIcon = 'no-version';
