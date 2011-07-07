@@ -36,7 +36,7 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '2.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -228,7 +228,7 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 			}
 			if (params['images']) {
 					// remove any IMG tag
-				html = html.replace(/<\/?img[^>]*>/gi, "");
+				html = html.replace(/<\/?(img|imagedata)(>|[^>a-zA-Z][^>]*>)/gi, "");
 			}
 			if (params['msWordFormatting']) {
 					// Make one line
@@ -237,19 +237,20 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 				html = html.replace(/<(b|strong|i|em|p|li|ul) [^>]*>/gi, "<$1>");
 					// Keep tags, strip attributes
 				html = html.replace(/ (style|class|align)=\"[^>\"]*\"/gi, "");
-					// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:, meta, link
-				html = html.replace(/<\/?span[^>]*>/gi, "").
-					replace(/<\/?div[^>]*>/gi, "").
-					replace(/<\?xml:[^>]*>/gi, "").
-					replace(/<\/?st1:[^>]*>/gi, "").
-					replace(/<\/?[a-z]:[^>]*>/g, "").
-					replace(/<\/?meta[^>]*>/g, "").
-					replace(/<\/?link[^>]*>/g, "");
-					// remove unwanted tags and their contents: style, title
+					// Remove unwanted tags: div, link, meta, span, ?xml:, [a-z]+:
+				html = html.replace(/<\/?(div|link|meta|span)(>|[^>a-zA-Z][^>]*>)/gi, "");
+				html = html.replace(/<\?xml:[^>]*>/gi, "").replace(/<\/?[a-z]+:[^>]*>/g, "");
+					// Remove images
+				html = html.replace(/<\/?(img|imagedata)(>|[^>a-zA-Z][^>]*>)/gi, "");
+					// Remove MS-specific tags
+				html = html.replace(/<\/?(f|formulas|lock|path|shape|shapetype|stroke)(>|[^>a-zA-Z][^>]*>)/gi, "");
+					// Remove unwanted tags and their contents: style, title
 				html = html.replace(/<style[^>]*>.*<\/style[^>]*>/gi, "").
 					replace(/<title[^>]*>.*<\/title[^>]*>/gi, "");
-					// remove comments
+					// Remove comments
 				html = html.replace(/<!--[^>]*>/gi, "");
+					// Remove xml tags
+				html = html.replace(/<xml.[^>]*>/gi, "");
 					// Remove inline elements resets
 				html = html.replace(/<\/(b[^a-zA-Z]|big|i[^a-zA-Z]|s[^a-zA-Z]|small|strike|tt|u[^a-zA-Z])><\1>/gi, "");
 					// Remove double tags
