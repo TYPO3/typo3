@@ -636,7 +636,7 @@ final class tx_em_Tools {
 	 * @deprecated  since TYPO3 4.5.1, will be removed in TYPO3 4.7 - use pageRenderer->addInlineLanguageLabelFile() instead
 	 */
 	public static function getArrayFromLocallang($file, $key = 'default') {
-		$content = t3lib_div::getURL($file);
+		$content = t3lib_div::getUrl($file);
 		$array = t3lib_div::xml2array($content);
 
 		return $array['data'][$key];

@@ -59,7 +59,7 @@
  * 1019:	 function TS_strip_db($value)
  *
  *			  SECTION: Generic RTE transformation, analysis and helper functions
- * 1050:	 function getURL($url)
+ * 1050:	 function getUrl($url)
  * 1064:	 function HTMLcleaner_db($content,$tagList='')
  * 1091:	 function getKeepTags($direction='rte',$tagList='')
  * 1200:	 function divideIntoLines($value,$count=5,$returnArray=FALSE)
@@ -1042,10 +1042,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 *
 	 * @param	string		Filepath/URL to read
 	 * @return	string		The content from the resource given as input.
-	 * @see t3lib_div::getURL()
+	 * @see t3lib_div::getUrl()
 	 */
-	function getURL($url) {
-		return t3lib_div::getURL($url);
+	function getUrl($url) {
+		return t3lib_div::getUrl($url);
 	}
 
 	/**

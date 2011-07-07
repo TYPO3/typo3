@@ -63,7 +63,7 @@ class tx_em_Connection_Ter {
 	function fetchExtension($extKey, $version, $expectedMD5, $mirrorURL) {
 		$extPath = t3lib_div::strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $version . '.t3x';
-		$t3x = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
+		$t3x = t3lib_div::getUrl($mirrorURL, 0, array(TYPO3_user_agent));
 		$MD5 = md5($t3x);
 
 		if ($t3x === FALSE) {
@@ -89,7 +89,7 @@ class tx_em_Connection_Ter {
 	function fetchTranslation($extKey, $lang, $mirrorURL) {
 		$extPath = t3lib_div::strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n-' . $lang . '.zip';
-		$l10n = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
+		$l10n = t3lib_div::getUrl($mirrorURL, 0, array(TYPO3_user_agent));
 
 		if ($l10n !== FALSE) {
 			return array($l10n);
@@ -132,7 +132,7 @@ class tx_em_Connection_Ter {
 	function fetchTranslationStatus($extKey, $mirrorURL) {
 		$extPath = t3lib_div::strtolower($extKey);
 		$mirrorURL .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
-		$remote = t3lib_div::getURL($mirrorURL, 0, array(TYPO3_user_agent));
+		$remote = t3lib_div::getUrl($mirrorURL, 0, array(TYPO3_user_agent));
 
 		if ($remote !== FALSE) {
 			$parsed = $this->emObj->xmlHandler->parseL10nXML($remote);

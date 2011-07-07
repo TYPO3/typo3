@@ -270,7 +270,7 @@ class SC_mod_tools_config_index {
 				$var = substr($line, 0, $length);
 				$changedLine = '$GLOBALS[\'' . substr($line, 1, $length - 1) . '\']' . substr($line, $length);
 					// load current extTables.php
-				$extTables = t3lib_div::getURL(PATH_typo3conf . TYPO3_extTableDef_script);
+				$extTables = t3lib_div::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
 				if ($var === '$TCA') {
 						// check if we are editing the TCA
 					preg_match_all('/\[\'([^\']+)\'\]/', $line, $parts);

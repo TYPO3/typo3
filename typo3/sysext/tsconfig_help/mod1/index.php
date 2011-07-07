@@ -275,7 +275,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			t3lib_div::mkdir($tempPath);
 
 			$this->unzip($ZIPfile, $tempPath);
-			$output = t3lib_div::getURL($tempPath.$filename);
+			$output = t3lib_div::getUrl($tempPath.$filename);
 
 			$cmd = 'rm -r "'.$tempPath.'"';
 			t3lib_utility_Command::exec($cmd);

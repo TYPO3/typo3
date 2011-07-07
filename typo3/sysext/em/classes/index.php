@@ -1102,7 +1102,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		switch ($metaType) {
 			case 'mirrors':
 				$mfile = t3lib_div::tempnam('mirrors');
-				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL'], 0, array(TYPO3_user_agent));
+				$mirrorsFile = t3lib_div::getUrl($this->MOD_SETTINGS['mirrorListURL'], 0, array(TYPO3_user_agent));
 				if ($mirrorsFile===FALSE) {
 					t3lib_div::unlink_tempfile($mfile);
 					$content = '<p>' .
@@ -1134,7 +1134,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror . 'extensions.xml.gz';
-				$extmd5 = t3lib_div::getURL($mirror . 'extensions.md5', 0, array(TYPO3_user_agent));
+				$extmd5 = t3lib_div::getUrl($mirror . 'extensions.md5', 0, array(TYPO3_user_agent));
 				if (is_file(PATH_site . 'typo3temp/extensions.xml.gz')) {
 					$localmd5 = md5_file(PATH_site . 'typo3temp/extensions.xml.gz');
 				}
@@ -1157,7 +1157,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					);
 					$content .= $flashMessage->render();
 				} else {
-					$extXML = t3lib_div::getURL($extfile, 0, array(TYPO3_user_agent));
+					$extXML = t3lib_div::getUrl($extfile, 0, array(TYPO3_user_agent));
 					if ($extXML === FALSE) {
 						$content .= '<p>' .
 								sprintf($GLOBALS['LANG']->getLL('ext_import_list_unchanged'),

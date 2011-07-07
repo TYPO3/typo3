@@ -942,7 +942,7 @@ class tx_indexedsearch_indexer {
 	 * @return	mixed		If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
 	 */
 	function getUrlHeaders($url)	{
-		$content = t3lib_div::getURL($url,2);	// Try to get the headers only
+		$content = t3lib_div::getUrl($url,2);	// Try to get the headers only
 
 		if (strlen($content))	{
 				// Compile headers:

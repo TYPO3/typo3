@@ -425,7 +425,7 @@ class tx_em_Connection_ExtDirectServer {
 	public function readExtFile($path) {
 		$path = PATH_site . $path;
 		if (@file_exists($path)) {
-			return t3lib_div::getURL($path);
+			return t3lib_div::getUrl($path);
 		}
 		return '';
 	}

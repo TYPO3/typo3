@@ -307,7 +307,7 @@ class TYPO3backend {
 			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/', 'css');
 			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
 					//don't allow inclusion outside directory
-				$loadOrder = str_replace('../', '', t3lib_div::getURL($absoluteComponentPath . 'css/loadorder.txt'));
+				$loadOrder = str_replace('../', '', t3lib_div::getUrl($absoluteComponentPath . 'css/loadorder.txt'));
 				$cssFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
 				$cssFiles = array_merge($cssFilesOrdered, $cssFiles);
 			}
@@ -318,7 +318,7 @@ class TYPO3backend {
 			$jsFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
 			if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
 					//don't allow inclusion outside directory
-				$loadOrder = str_replace('../', '', t3lib_div::getURL($absoluteComponentPath . 'javascript/loadorder.txt'));
+				$loadOrder = str_replace('../', '', t3lib_div::getUrl($absoluteComponentPath . 'javascript/loadorder.txt'));
 				$jsFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
 				$jsFiles = array_merge($jsFilesOrdered, $jsFiles);
 			}

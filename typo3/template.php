@@ -1913,7 +1913,7 @@ $str.=$this->docBodyTagBegin().
 		}
 		$htmlTemplate = '';
 		if ($filename !== '') {
-			$htmlTemplate = t3lib_div::getURL($filename);
+			$htmlTemplate = t3lib_div::getUrl($filename);
 		}
 		return $htmlTemplate;
 	}

@@ -4900,7 +4900,7 @@ class t3lib_TCEforms {
 	 * @return	void
 	 */
 	function setNewBEDesign() {
-		$template = t3lib_div::getURL(PATH_typo3 . $this->templateFile);
+		$template = t3lib_div::getUrl(PATH_typo3 . $this->templateFile);
 
 			// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap = t3lib_parsehtml::getSubpart($template, '###TOTALWRAP###');

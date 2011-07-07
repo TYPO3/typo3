@@ -218,7 +218,7 @@ class tx_t3editor implements t3lib_Singleton {
 	 * @return	string	the template code, prepared to use in javascript
 	 */
 	protected function getPreparedTemplate() {
-		$T3Editor_template = t3lib_div::getURL(
+		$T3Editor_template = t3lib_div::getUrl(
 			t3lib_div::getFileAbsFileName(
 				'EXT:t3editor/res/templates/t3editor.html'
 			)
