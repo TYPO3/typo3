@@ -637,7 +637,7 @@ class SC_view_help {
 						$imgFile = '../'.$imgFile;
 						$code.= '<br /><img src="'.$imgFile.'" '.$imgInfo[3].' class="c-inlineimg" alt="" /><br />
 						';
-						$code.= '<p><em>'.$GLOBALS['LANG']->hscAndCharConv($descr,1).'</em></p>
+						$code.= '<p><em>' . htmlspecialchars($descr) . '</em></p>
 						';
 					} else $code.= '<div style="background-color: red; border: 1px solid black; color: white;">NOT AN IMAGE: '.$imgFile.'</div>';
 				} else $code.= '<div style="background-color: red; border: 1px solid black; color: white;">IMAGE FILE NOT FOUND: '.$image.'</div>';
@@ -676,7 +676,6 @@ class SC_view_help {
 	 * @return	string		Formatted content.
 	 */
 	function prepareContent($str)	{
-		$str = $GLOBALS['LANG']->hscAndCharConv($str,0);
 		return '<p>'.nl2br(trim(strip_tags($str,$this->allowedHTML))).'</p>
 		';
 	}
