@@ -147,7 +147,7 @@ class tx_lang_Store implements t3lib_Singleton {
 			'charset' => $charset
 		);
 
-		$fileWithoutExtension = t3lib_div::getFileAbsFileName(preg_replace('/\.[a-z0-9]+$/i' , '' , $fileReference));
+		$fileWithoutExtension = t3lib_div::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
 
 		foreach ($this->supportedExtensions as $extension) {
 			if (@is_file($fileWithoutExtension . '.' . $extension)) {
@@ -186,6 +186,18 @@ class tx_lang_Store implements t3lib_Singleton {
 	}
 
 	/**
+	 * Get the filereference without the extension
+	 * @param string $fileReference File reference
+	 * @return string
+	 */
+	public function getFileReferenceWithoutExtension($fileReference) {
+		if (!isset($this->configuration[$fileReference]['fileReferenceWithoutExtension'])) {
+			$this->configuration[$fileReference]['fileReferenceWithoutExtension'] = preg_replace('/\.[a-z0-9]+$/i' , '' , $fileReference);
+		}
+		return $this->configuration[$fileReference]['fileReferenceWithoutExtension'];
+	}
+
+	/**
 	 * Returns the correct parser for a specific file reference.
 	 *
 	 * @throws tx_lang_exception_InvalidParser
@@ -219,6 +231,16 @@ class tx_lang_Store implements t3lib_Singleton {
 				1307293692
 			);
 		}
+	}
+
+	/**
+	 * Get supported extensions
+	 *
+	 * @return array
+	 */
+	public function getSupportedExtensions()
+	{
+		return $this->supportedExtensions;
 	}
 }
 
