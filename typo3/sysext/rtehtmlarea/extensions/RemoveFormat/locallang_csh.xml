@@ -43,9 +43,11 @@ In the dialogue window that opens when the button is clicked:
 			<label index="msWordFormat.details">This option removes:
 - all attributes on the following elements: b, em, i, li, p, strong, ul;
 - the following attributes on all HTML elements: align, class, style;
-- the following elements, but keeps their textual contents: div, link, meta, span, any element containing ":" in its name;
+- the following elements, but keeps their textual contents: div, f, formulas, link, lock, meta, path, shape, shapetype, span, stroke, ?xml, any element containing ":" in its name;
 - the following elements and their contents: style, title;
 - HTML comments;
+- img, imagedata tags;
+- xml tags;
 - the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
 - double opening and double closing tags;
 - multiples spaces, replacing them by single spaces.</label>
