@@ -29,10 +29,10 @@
  * Provides a language parser factory.
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dfeyer@reelpeek.net>
  */
-class tx_lang_Factory implements t3lib_Singleton {
+class t3lib_l10n_Factory implements t3lib_Singleton {
 
 	/**
 	 * @var t3lib_cache_frontend_StringFrontend
@@ -45,7 +45,7 @@ class tx_lang_Factory implements t3lib_Singleton {
 	protected $errorMode;
 
 	/**
-	 * @var tx_lang_Store
+	 * @var t3lib_l10n_Store
 	 */
 	public $store;
 
@@ -57,7 +57,7 @@ class tx_lang_Factory implements t3lib_Singleton {
 	}
 
 	protected function initialize() {
-		$this->store = t3lib_div::makeInstance('tx_lang_Store');
+		$this->store = t3lib_div::makeInstance('t3lib_l10n_Store');
 
 		$this->initializeCache();
 	}
@@ -68,7 +68,7 @@ class tx_lang_Factory implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function initializeCache() {
-		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('lang_l10n');
+		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('t3lib_l10n');
 	}
 
 	/**
@@ -108,7 +108,7 @@ class tx_lang_Factory implements t3lib_Singleton {
 
 			$this->store->setConfiguration($fileReference, $languageKey, $charset);
 
-			/** @var $parser tx_lang_parser */
+			/** @var $parser t3lib_l10n_parser */
 			$parser = $this->store->getParserInstance($fileReference);
 
 				// Get parsed data

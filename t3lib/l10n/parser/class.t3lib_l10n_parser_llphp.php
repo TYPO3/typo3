@@ -29,11 +29,11 @@
  * Parser for PHP locallang array.
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  */
-class tx_lang_parser_Llphp implements tx_lang_parser {
+class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 
 	/** @var string */
 	protected $cacheFileName;
