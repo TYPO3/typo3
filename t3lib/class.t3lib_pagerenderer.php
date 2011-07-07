@@ -1553,7 +1553,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			// get template
 		$templateFile = t3lib_div::getFileAbsFileName($this->templateFile, TRUE);
-		$template = t3lib_div::getURL($templateFile);
+		$template = t3lib_div::getUrl($templateFile);
 
 		if ($this->removeLineBreaksFromTemplate) {
 			$template = strtr($template, array(LF => '', CR => ''));

@@ -80,7 +80,7 @@
  * 1189:	 function makeBase64($inputstr)
  * 1200:	 function getExtendedURL($url)
  * 1222:	 function addUserPass($url)
- * 1238:	 function getURL($url)
+ * 1238:	 function getUrl($url)
  * 1250:	 function getStrippedURL($url)
  * 1271:	 function getMimeType($url)
  * 1300:	 function absRef($ref)
@@ -868,7 +868,7 @@ class t3lib_htmlmail {
 	 */
 	public function fetchHTML($file) {
 			// Fetches the content of the page
-		$this->theParts['html']['content'] = $this->getURL($file);
+		$this->theParts['html']['content'] = $this->getUrl($file);
 		if ($this->theParts['html']['content']) {
 			$addr = $this->extParseUrl($file);
 			$path = ($addr['scheme']) ? $addr['scheme'] . '://' . $addr['host'] . (($addr['port']) ? ':' . $addr['port'] : '') . (($addr['filepath']) ? $addr['filepath'] : '/') : $addr['filepath'];
@@ -1231,7 +1231,7 @@ class t3lib_htmlmail {
 	 */
 	public function getExtendedURL($url) {
 		$res = array();
-		$res['content'] = $this->getURL($url);
+		$res['content'] = $this->getUrl($url);
 		if (!$res['content']) {
 			return FALSE;
 		}
@@ -1286,9 +1286,9 @@ class t3lib_htmlmail {
 	 * @param	string		$url: the URL to fetch
 	 * @return	string		the content of the URL
 	 */
-	public function getURL($url) {
+	public function getUrl($url) {
 		$url = $this->addUserPass($url);
-		return t3lib_div::getURL($url);
+		return t3lib_div::getUrl($url);
 	}
 
 
@@ -1322,7 +1322,7 @@ class t3lib_htmlmail {
 	 */
 	public function getMimeType($url) {
 		$mimeType = '';
-		$headers = trim(t3lib_div::getURL($url, 2));
+		$headers = trim(t3lib_div::getUrl($url, 2));
 		if ($headers) {
 			$matches = array();
 			if (preg_match('/(Content-Type:[\s]*)([a-zA-Z_0-9\/\-\.\+]*)([\s]|$)/', $headers, $matches)) {

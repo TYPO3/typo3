@@ -1616,7 +1616,7 @@
 				'User-agent: ' . t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
 				'Referer: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
 			);
-			$res = t3lib_div::getURL($code, 1, $headerArr);
+			$res = t3lib_div::getUrl($code, 1, $headerArr);
 
 				// Header and content are separated by an empty line
 			list($header, $content) = explode(CRLF . CRLF, $res, 2);
