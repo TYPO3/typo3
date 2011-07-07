@@ -17,4 +17,20 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['handlerCfg'] = array(
 		),
 	),
 );
+
+$TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
+	'tx_templavoila_tmplobj' => array(
+		'mapFieldNames' => array(
+			'datastructure' => 'ds',
+		),
+	),
+	'Members' => array(
+		'mapFieldNames' => array(
+			'pid' => '0',
+			'cruser_id' => '1',
+			'uid' => 'MemberID',
+		),
+	),
+);
+
 ?>
