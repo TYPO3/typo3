@@ -81,8 +81,21 @@ class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
 	 * @return array
 	 */
 	protected function _doParsingFromRoot(SimpleXMLElement $root, $element) {
-		$parsedData = array();
 		$bodyOfFileTag = $root->data->languageKey;
+
+		$parsedData = $this->_getParsedData($bodyOfFileTag, $element);
+
+			// Check if the source llxml file contain localized records
+		$localizedBodyOfFileTag = $root->data->xpath("languageKey[@index='" . $this->languageKey . "']");
+		if ($element == 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof SimpleXMLElement) {
+			$parsedData = array_merge($parsedData, $this->_getParsedData($localizedBodyOfFileTag[0], $element));
+		}
+
+		return $parsedData;
+	}
+
+	protected function _getParsedData($bodyOfFileTag, $element) {
+		$parsedData = array();
 
 		foreach ($bodyOfFileTag->children() as $translationElement) {
 			if ($translationElement->getName() === 'label') {
