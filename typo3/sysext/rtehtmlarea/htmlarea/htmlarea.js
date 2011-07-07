@@ -56,10 +56,11 @@ Ext.apply(HTMLArea, {
 	 ***************************************************/
 	localize: function (label, plural) {
 		var i = plural || 0;
-		var label = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
-		if (label[i] != undefined) {
-			return label[i]['target'];
+		var localized = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
+		if (typeof localized === 'object' && typeof localized[i] !== 'undefined') {
+			localized = localized[i]['target'];
 		}
+		return localized;
 	},
 	/***************************************************
 	 * INITIALIZATION                                  *
@@ -4366,8 +4367,15 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	string		the localization of the label
 	 */
-	localize: function (label) {
-		return HTMLArea.localize(label);
+	localize: function (label, plural) {
+		var i = plural || 0;
+		var localized = this.I18N[label];
+		if (typeof localized === 'object' && typeof localized[i] !== 'undefined') {
+			localized = localized[i]['target'];
+		} else {
+			localized = HTMLArea.localize(label, plural);
+		}
+		return localized;
 	},
 	/**
 	 * Get localized label wrapped with contextual help markup when available
