@@ -29,10 +29,10 @@
  * Parser for XML locallang file.
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dfeyer@reelpeek.net>
  */
-class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
+class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 
 	/**
 	 * Associative array of "filename => parsed data" pairs.
@@ -63,7 +63,7 @@ class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
 
 		try {
 			$parsedTarget = $this->getParsedTargetData($targetPath);
-		} catch (tx_lang_exception_InvalidXmlFile $e) {
+		} catch (t3lib_l10n_exception_InvalidXmlFile $e) {
 			$parsedTarget = $this->getParsedTargetData($this->sourcePath);
 		}
 
@@ -156,7 +156,7 @@ class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
 	/**
 	 * Reads and parses XML file and returns internal representation of data.
 	 *
-	 * @throws tx_lang_exception_InvalidXmlFile
+	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 * @param string $targetPath Path of the target file
 	 * @return array
 	 */
@@ -168,7 +168,7 @@ class tx_lang_parser_Llxml extends tx_lang_parser_AbstractXml {
 		}
 
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
-			throw new tx_lang_exception_InvalidXmlFile('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
+			throw new t3lib_l10n_exception_InvalidXmlFile('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
 		}
 
 		return $this->doParsingTargetFromRoot($rootXmlNode);

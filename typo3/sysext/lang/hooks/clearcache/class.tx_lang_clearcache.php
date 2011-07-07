@@ -51,7 +51,7 @@ class tx_lang_clearcache {
 	 * @return void
 	 */
 	protected function initializeCache() {
-		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('lang_l10n');
+		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('t3lib_l10n');
 	}
 
 	/**

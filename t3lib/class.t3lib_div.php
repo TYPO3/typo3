@@ -4131,8 +4131,8 @@ final class t3lib_div {
 	 *						 Otherwise an empty array and it is FALSE in error case.
 	 */
 	public static function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0) {
-		/** @var $languageFactory tx_lang_Factory */
-		$languageFactory = t3lib_div::makeInstance('tx_lang_Factory');
+		/** @var $languageFactory t3lib_l10n_Factory */
+		$languageFactory = t3lib_div::makeInstance('t3lib_l10n_Factory');
 		return $languageFactory->getParsedData($fileRef, $langKey, $charset, $errorMode);
 	}
 
