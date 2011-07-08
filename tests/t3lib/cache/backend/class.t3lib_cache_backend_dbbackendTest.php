@@ -76,7 +76,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
-		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE IF NOT EXISTS ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			expires int(11) unsigned DEFAULT \'0\' NOT NULL,
@@ -86,7 +86,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		) ENGINE=InnoDB;
 		');
 
-		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingTagsTable . ' (
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE IF NOT EXISTS ' . $this->testingTagsTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			tag varchar(250) DEFAULT \'\' NOT NULL,
