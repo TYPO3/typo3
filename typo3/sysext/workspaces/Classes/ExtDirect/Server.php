@@ -144,6 +144,14 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 				}
 			}
 		}
+			// Hook for modifying the difference and live arrays
+			// (this may be used by custom or dynamically-defined fields)
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
+				$hookObject = &t3lib_div::getUserObj($className);
+				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $t3lib_diff);
+			}
+		}
 
 		$commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);
 
