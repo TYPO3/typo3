@@ -4348,7 +4348,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean
 	 */
 	onMode: function(mode) {
-		if (mode === "textmode" && this.dialog && HTMLArea.Dialog[this.name] == this.dialog && !(this.dialog.buttonId && this.editorConfiguration.buttons[this.dialog.buttonId] && this.editorConfiguration.buttons[this.dialog.buttonId].textMode)) {
+		if (mode === "textmode" && this.dialog && !(this.dialog.buttonId && this.editorConfiguration.buttons[this.dialog.buttonId] && this.editorConfiguration.buttons[this.dialog.buttonId].textMode)) {
 			this.dialog.close();
 		}
 	},
