@@ -206,6 +206,31 @@ class tx_version_tcemain_CommandMap {
 	}
 
 	/**
+	 * Invokes all items for swapping/publishing with a callback method.
+	 *
+	 * @param string $callbackMethod
+	 * @param array $arguments Optional leading arguments for the callback method
+	 * @return void
+	 */
+	protected function invokeWorkspacesSwapItems($callbackMethod, array $arguments = array()) {
+			// Traverses the cmd[] array and fetches the accordant actions:
+		foreach ($this->commandMap as $table => $liveIdCollection) {
+			foreach ($liveIdCollection as $liveId => $commandCollection) {
+				foreach ($commandCollection as $command => $properties) {
+					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'swap') {
+						if (isset($properties['swapWith']) && t3lib_div::testInt($properties['swapWith'])) {
+							call_user_func_array(
+								array($this, $callbackMethod),
+								array_merge($arguments, array($table, $liveId, $properties))
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Resolves workspaces related dependencies for swapping/publishing of the command map.
 	 * Workspaces records that have children or (relative) parents which are versionized
 	 * but not published with this request, are removed from the command map. Otherwise
@@ -217,24 +242,45 @@ class tx_version_tcemain_CommandMap {
 		$scope = self::SCOPE_WorkspacesSwap;
 		$dependency = $this->getDependencyUtility($scope);
 
-			// Traverses the cmd[] array and fetches the accordant actions:
-		foreach ($this->commandMap as $table => $liveIdCollection) {
-			foreach ($liveIdCollection as $liveId => $commandCollection) {
-				foreach ($commandCollection as $command => $properties) {
-					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'swap') {
-						if (isset($properties['swapWith']) && t3lib_div::testInt($properties['swapWith'])) {
-							$this->addWorkspacesSwapElements($dependency, $table, $liveId, $properties);
-						}
-					}
-				}
-			}
+		if (t3lib_div::inList('any,pages', $this->workspacesSwapMode)) {
+			$this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
 		}
+		$this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', array($dependency));
 
 		$this->applyWorkspacesDependencies($dependency, $scope);
 	}
 
 	/**
-	 * Adds workspaces elements for swapping/publishing and takes care of the swapMode.
+	 * Applies workspaces behaviour for swapping/publishing and takes care of the swapMode.
+	 *
+	 * @param string $table
+	 * @param integer $liveId
+	 * @param array $properties
+	 * @return void
+	 */
+	protected function applyWorkspacesSwapBehaviour($table, $liveId, array $properties) {
+		$extendedCommandMap = array();
+		$elementList = array();
+
+		// Fetch accordant elements if the swapMode is 'any' or 'pages':
+		if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
+			$elementList = $this->getParent()->findPageElementsForVersionSwap($table, $liveId, $properties['swapWith']);
+		}
+
+		foreach ($elementList as $elementTable => $elementIdArray) {
+			foreach ($elementIdArray as $elementIds) {
+				$extendedCommandMap[$elementTable][$elementIds[0]]['version'] = array_merge($properties, array('swapWith' => $elementIds[1]));
+			}
+		}
+
+		if (count($elementList) > 0) {
+			$this->remove($table, $liveId, 'version');
+			$this->mergeToBottom($extendedCommandMap);
+		}
+	}
+
+	/**
+	 * Adds workspaces elements for swapping/publishing.
 	 *
 	 * @param t3lib_utility_Dependency $dependency
 	 * @param string $table
@@ -267,6 +313,31 @@ class tx_version_tcemain_CommandMap {
 	}
 
 	/**
+	 * Invokes all items for staging with a callback method.
+	 *
+	 * @param string $callbackMethod
+	 * @param array $arguments Optional leading arguments for the callback method
+	 * @return void
+	 */
+	protected function invokeWorkspacesSetStageItems($callbackMethod, array $arguments = array()) {
+			// Traverses the cmd[] array and fetches the accordant actions:
+		foreach ($this->commandMap as $table => $liveIdCollection) {
+			foreach ($liveIdCollection as $liveIdList => $commandCollection) {
+				foreach ($commandCollection as $command => $properties) {
+					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
+						if (isset($properties['stageId']) && t3lib_div::testInt($properties['stageId'])) {
+							call_user_func_array(
+								array($this, $callbackMethod),
+								array_merge($arguments, array($table, $liveIdList, $properties))
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Resolves workspaces related dependencies for staging of the command map.
 	 * Workspaces records that have children or (relative) parents which are versionized
 	 * but not staged with this request, are removed from the command map.
@@ -277,33 +348,25 @@ class tx_version_tcemain_CommandMap {
 		$scope = self::SCOPE_WorkspacesSetStage;
 		$dependency = $this->getDependencyUtility($scope);
 
-			// Traverses the cmd[] array and fetches the accordant actions:
-		foreach ($this->commandMap as $table => $liveIdCollection) {
-			foreach ($liveIdCollection as $liveIdList => $commandCollection) {
-				foreach ($commandCollection as $command => $properties) {
-					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
-						if (isset($properties['stageId']) && t3lib_div::testInt($properties['stageId'])) {
-							$this->addWorkspacesSetStageElements($dependency, $table, $liveIdList, $properties);
-							$this->explodeSetStage($table, $liveIdList, $properties);
-						}
-					}
-				}
-			}
+		if (t3lib_div::inList('any,pages', $this->workspacesChangeStageMode)) {
+			$this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
 		}
+		$this->invokeWorkspacesSetStageItems('explodeSetStage');
+		$this->invokeWorkspacesSetStageItems('addWorkspacesSetStageElements', array($dependency));
 
 		$this->applyWorkspacesDependencies($dependency, $scope);
 	}
 
 	/**
-	 * Adds workspaces elements for staging and takes care of the changeStageMode.
+	 * Applies workspaces behaviour for staging and takes care of the changeStageMode.
 	 *
-	 * @param t3lib_utility_Dependency $dependency
 	 * @param string $table
 	 * @param string $liveIdList
 	 * @param array $properties
 	 * @return void
 	 */
-	protected function addWorkspacesSetStageElements(t3lib_utility_Dependency $dependency, $table, $liveIdList, array $properties) {
+	protected function applyWorkspacesSetStageBehaviour($table, $liveIdList, array $properties) {
+		$extendedCommandMap = array();
 		$liveIds = t3lib_div::trimExplode(',', $liveIdList, TRUE);
 		$elementList = array($table => $liveIds);
 
@@ -330,12 +393,28 @@ class tx_version_tcemain_CommandMap {
 
 		foreach ($elementList as $elementTable => $elementIds) {
 			foreach($elementIds as $elementId) {
-				$dependency->addElement(
-					$elementTable, $elementId,
-					array('properties' => $properties)
-				);
+				$extendedCommandMap[$elementTable][$elementId]['version'] = $properties;
 			}
 		}
+
+		$this->remove($table, $liveIdList, 'version');
+		$this->mergeToBottom($extendedCommandMap);
+	}
+
+	/**
+	 * Adds workspaces elements for staging.
+	 *
+	 * @param t3lib_utility_Dependency $dependency
+	 * @param string $table
+	 * @param string $liveIdList
+	 * @param array $properties
+	 * @return void
+	 */
+	protected function addWorkspacesSetStageElements(t3lib_utility_Dependency $dependency, $table, $liveIdList, array $properties) {
+		$dependency->addElement(
+			$table, $liveIdList,
+			array('properties' => $properties)
+		);
 	}
 
 	/**
