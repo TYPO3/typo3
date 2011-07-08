@@ -26,21 +26,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   62: class wsol_preview
- *   71:     function main()
- *  133:     function generateUrls()
- *  164:     function printFrameset()
- *  206:     function isBeLogin()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 define('TYPO3_PROCEED_IF_NO_USER', '1');
 

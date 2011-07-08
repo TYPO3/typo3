@@ -31,25 +31,6 @@
  *
  * @author	Dmitry Dulepov <typo3@accio.lv>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   70: class SC_mod_user_ws_publish extends t3lib_SCbase
- *   83:     function init()
- *   95:     function closeAndReload()
- *  106:     function nextPortion(val)
- *  127:     function main()
- *  142:     function printContent()
- *  151:     function getContent()
- *  227:     function getRecords()
- *  243:     function formatProgressBlock($messageLabel)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 // Initialize module:

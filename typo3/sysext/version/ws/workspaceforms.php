@@ -31,40 +31,6 @@
  *
  * @author	Dmitry Dulepov <typo3@accio.lv>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   93: class SC_mod_user_ws_workspaceForms extends t3lib_SCbase
- *
- *              SECTION: PUBLIC MODULE METHODS
- *  123:     function init()
- *  158:     function main()
- *  233:     function printContent()
- *
- *              SECTION: PRIVATE FUNCTIONS
- *  257:     function initTCEForms()
- *  284:     function getModuleParameters()
- *  302:     function getTitle()
- *  321:     function buildForm()
- *  330:     function buildEditForm()
- *  395:     function buildNewForm()
- *  458:     function createButtons()
- *  484:     function getOwnerUser($uid)
- *  510:     function processData()
- *  554:     function fixVariousTCAFields()
- *  566:     function fixTCAUserField($fieldName)
- *  593:     function checkWorkspaceAccess()
- *
- *
- *  606: class user_SC_mod_user_ws_workspaceForms
- *  615:     function processUserAndGroups($conf, $tceforms)
- *
- * TOTAL FUNCTIONS: 16
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 // Initialize module:

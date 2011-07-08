@@ -34,40 +34,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   84: class wslib_gui
- *
- *              SECTION: Public functions
- *  128:     function getWorkspaceOverview(&$doc, $wsid = NULL, $filter = 0, $pageId = -1)
- *  192:     function hlSubelements(origId, verId, over, diffLayer)
- *
- *              SECTION: Private functions (do not use outside of this class!)
- *  224:     function initVars()
- *  253:     function displayWorkspaceOverview_setInPageArray(&$pArray, $rlArr, $table, $row)
- *  284:     function markupNewOriginals()
- *  309:     function displayWorkspaceOverview_list($pArray, $tableRows=array(), $c=0, $warnAboutVersions=FALSE)
- *  504:     function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)
- *  518:     function formatVerId($verId)
- *  529:     function formatWorkspace($wsid)
- *  559:     function createDiffView($table, $diff_1_record, $diff_2_record)
- *  676:     function versionsInOtherWS($table, $uid)
- *  705:     function showStageChangeLog($table,$id,$stageCommands)
- *  757:     function displayWorkspaceOverview_commandLinks($table,&$rec_on,&$rec_off,$vType)
- *  830:     function formatCount($count)
- *  860:     function subElements($uid,$treeLevel,$origId=0)
- *  963:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- *  993:     function subElements_renderItem(&$tCell,$tN,$uid,$rec,$origId,$iconMode,$HTMLdata)
- * 1066:     function displayWorkspaceOverview_commandLinksSub($table,$rec,$origId)
- * 1113:     function displayWorkspaceOverview_stageCmd($table,&$rec_off)
- *
- * TOTAL FUNCTIONS: 19
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once('class.wslib.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');

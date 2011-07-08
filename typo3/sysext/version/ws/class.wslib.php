@@ -29,23 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   68: class wslib
- *   81:     function getCmdArrayForPublishWS($wsid, $doSwap,$pageId=0)
- *  127:     function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)
- *
- *              SECTION: CLI functions
- *  183:     function CLI_main()
- *  193:     function autoPublishWorkspaces()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

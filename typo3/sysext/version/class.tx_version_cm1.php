@@ -26,19 +26,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   54: class tx_version_cm1
- *   65:     function main(&$backRef,$menuItems,$table,$uid)
- *  111:     function includeLL()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 
