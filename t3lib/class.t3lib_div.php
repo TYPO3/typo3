@@ -2554,9 +2554,10 @@ final class t3lib_div {
 	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
 	 * @param	array			HTTP headers to be used in the request
 	 * @param	array			Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @param array $curlOptions Additional optional curl options
 	 * @return	string	The content from the resource given as input. FALSE if an error has occured.
 	 */
-	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
+	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL, array $curlOptions = array()) {
 		$content = FALSE;
 
 		if (isset($report)) {
@@ -2594,7 +2595,6 @@ final class t3lib_div {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
 
-				// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
 				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
 
@@ -2605,6 +2605,12 @@ final class t3lib_div {
 					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
 				}
 			}
+
+				// Override or add curl options
+			if (count($curlOptions) > 0) {
+				curl_setopt_array($ch, $curlOptions);
+			}
+
 			$content = curl_exec($ch);
 			if (isset($report)) {
 				if ($content === FALSE) {
