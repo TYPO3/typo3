@@ -212,6 +212,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	var $Installer;
 
 	/**
+	 * @var t3lib_install_Sql
+	 */
+	protected $installerSql = NULL;
+
+	/**
 	 * Cache for queries
 	 *
 	 * @var t3lib_cache_frontend_VariableFrontend
@@ -227,6 +232,8 @@ class ux_t3lib_DB extends t3lib_DB {
 		// Set SQL parser object for internal use:
 		$this->SQLparser = t3lib_div::makeInstance('t3lib_sqlparser');
 		$this->Installer = t3lib_div::makeInstance('t3lib_install');
+		$this->installerSql = t3lib_div::makeInstance('t3lib_install_Sql');
+
 
 		if (TYPO3_UseCachingFramework) {
 			tx_dbal_querycache::initializeCachingFramework();
@@ -302,7 +309,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		} else {
 			// handle stddb.sql, parse and analyze
 			$extSQL = t3lib_div::getUrl(PATH_site . 't3lib/stddb/tables.sql');
-			$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
+			$parsedExtSQL = $this->installerSql->getFieldDefinitions_fileContent($extSQL);
 			$this->analyzeFields($parsedExtSQL);
 
 			// loop over all installed extensions
@@ -313,7 +320,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 				// fetch db dump (if any) and parse it, then analyze
 				$extSQL = t3lib_div::getUrl($v['ext_tables.sql']);
-				$parsedExtSQL = $this->Installer->getFieldDefinitions_fileContent($extSQL);
+				$parsedExtSQL = $this->installerSql->getFieldDefinitions_fileContent($extSQL);
 				$this->analyzeFields($parsedExtSQL);
 			}
 
@@ -335,9 +342,9 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
 	 *
-	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_fileContent()
+	 * @param array $parsedExtSQL The output produced by t3lib_install_Sql->getFieldDefinitions_fileContent()
 	 * @return void
-	 * @see t3lib_install::getFieldDefinitions_fileContent()
+	 * @see t3lib_install_Sql->getFieldDefinitions_fileContent()
 	 */
 	protected function analyzeFields($parsedExtSQL) {
 		foreach ($parsedExtSQL as $table => $tdef) {
