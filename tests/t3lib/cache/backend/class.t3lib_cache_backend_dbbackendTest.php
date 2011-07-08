@@ -123,6 +123,8 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function tearDown() {
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
+
 		$GLOBALS['TYPO3_DB']->sql_query(
 			'DROP TABLE IF EXISTS ' . $this->testingCacheTable . ';'
 		);
@@ -130,8 +132,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_DB']->sql_query(
 			'DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';'
 		);
-
-		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**
