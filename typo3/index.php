@@ -284,6 +284,14 @@ class SC_index {
 			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
 		}
 
+		$browserWarning = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$GLOBALS['LANG']->getLL('warning.incompatibleBrowser'),
+			$GLOBALS['LANG']->getLL('warning.incompatibleBrowserHeadline'),
+			t3lib_FlashMessage::ERROR
+		);
+		$browserWarning = $browserWarning->render();
+
 		$markers = array(
 			'LOGO'             => $logo,
 			'LOGINBOX_IMAGE'   => $this->makeLoginBoxImage(),
@@ -299,6 +307,7 @@ class SC_index {
 			'INFO_ABOUT'       => $GLOBALS['LANG']->getLL('info.about', TRUE),
 			'INFO_RELOAD'      => $GLOBALS['LANG']->getLL('info.reset', TRUE),
 			'INFO'             => $GLOBALS['LANG']->getLL('info.cookies_and_js', TRUE),
+			'WARNING_BROWSER_INCOMPATIBLE'  => $browserWarning,
 			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', TRUE),
 			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', TRUE),
 			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', TRUE),
