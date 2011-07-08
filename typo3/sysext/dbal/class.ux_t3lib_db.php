@@ -324,7 +324,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			t3lib_div::writeFile(PATH_typo3conf . 'temp_fieldInfo.php', $cachedFieldInfo);
 
 			if (strcmp(t3lib_div::getUrl(PATH_typo3conf . 'temp_fieldInfo.php'), $cachedFieldInfo)) {
-				die('typo3conf/temp_fieldInfo.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+				throw new RuntimeException(
+					'typo3conf/temp_fieldInfo.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?',
+					1310027297
+				);
 			}
 		}
 	}
@@ -528,7 +531,10 @@ class ux_t3lib_DB extends t3lib_DB {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $where);
 							} else {
 								$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(FALSE);
-								die('Could not update CLOB >>>> no WHERE clause found!'); // should never ever happen
+								throw new RuntimeException(
+									'Could not update CLOB >>>> no WHERE clause found!', // should never ever happen
+									1310027337
+								);
 							}
 						}
 					}
@@ -1213,7 +1219,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
 			return $query;
 		} else {
-			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !',
+				1310027383
+			);
 		}
 	}
 
@@ -1487,14 +1496,20 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		$queryComponents['SELECT'] = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
-			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+			throw new InvalidArgumentException(
+				$this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__,
+				1310027408
+			);
 		}
 
 		$queryComponents['FROM'] = $this->SQLparser->parseFromTables($from_table);
 
 		$queryComponents['WHERE'] = $this->SQLparser->parseWhereClause($where_clause, '', $queryComponents['parameters']);
 		if (!is_array($queryComponents['WHERE'])) {
-			die('Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__);
+			throw new InvalidArgumentException(
+				'Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__,
+				1310027427
+			);
 		}
 
 		$queryComponents['GROUPBY'] = $this->SQLparser->parseFieldList($groupBy);
@@ -1687,7 +1702,10 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
-			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+			throw new InvalidArgumentException(
+				$this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__,
+				1310027490
+			);
 		}
 		$select_fields = $this->_quoteFieldNames($select_fields);
 
@@ -1797,7 +1815,10 @@ class ux_t3lib_DB extends t3lib_DB {
 			$where_clause = $this->_quoteWhereClause($where_clause);
 			$where_clause = $this->SQLparser->compileWhereClause($where_clause);
 		} else {
-			die('Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__);
+			throw new InvalidArgumentException(
+				'Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__,
+				1310027511
+			);
 		}
 
 		return $where_clause;
@@ -2004,7 +2025,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$str = $this->handlerInstance[$this->lastHandlerKey]->quoteStr($str);
 				break;
 			default:
-				die('No handler found!!!');
+				throw new RuntimeException(
+					'No handler found!!!',
+					1310027655
+				);
 				break;
 		}
 
@@ -2058,7 +2082,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$str = $this->handlerInstance[$this->lastHandlerKey]->MetaType($str, $table, $max_length);
 				break;
 			default:
-				die('No handler found!!!');
+				throw new RuntimeException(
+					'No handler found!!!',
+					1310027685
+				);
 				break;
 		}
 
@@ -2934,10 +2961,16 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'CREATEDATABASE':
-					die('Creating a database with DBAL is not supported. Did you really read the manual?');
+					throw new InvalidArgumentException(
+						'Creating a database with DBAL is not supported. Did you really read the manual?',
+						1310027716
+					);
 					break;
 				default:
-					die('ERROR: Invalid Query type (' . $parsedQuery['type'] . ') for ->admin_query() function!: "' . htmlspecialchars($query) . '"');
+					throw new InvalidArgumentException(
+						'ERROR: Invalid Query type (' . $parsedQuery['type'] . ') for ->admin_query() function!: "' . htmlspecialchars($query) . '"',
+						1310027740
+					);
 					break;
 			}
 
@@ -2974,7 +3007,12 @@ class ux_t3lib_DB extends t3lib_DB {
 					return $this->handlerInstance[$this->lastHandlerKey]->admin_query($compiledQuery);
 					break;
 			}
-		} else die('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery) . '". Query: "' . htmlspecialchars($query) . '"');
+		} else {
+			throw new InvalidArgumentException(
+				'ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery) . '". Query: "' . htmlspecialchars($query) . '"',
+				1310027793
+			);
+		}
 	}
 
 
@@ -3011,7 +3049,10 @@ class ux_t3lib_DB extends t3lib_DB {
 
 					// In case of separate handler keys for joined tables:
 					if ($outputHandlerKey && $handlerKey != $outputHandlerKey) {
-						die('DBAL fatal error: Tables in this list "' . $tableList . '" didn\'t use the same DB handler!');
+						throw new RuntimeException(
+							'DBAL fatal error: Tables in this list "' . $tableList . '" didn\'t use the same DB handler!',
+							1310027833
+						);
 					}
 
 					$outputHandlerKey = $handlerKey;
@@ -3025,7 +3066,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				// Return handler key:
 				$this->cache_handlerKeyFromTableList[$key] = $outputHandlerKey;
 			} else {
-				die('DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList . '" (' . $tableArray . ')');
+				throw new RuntimeException(
+					'DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList . '" (' . $tableArray . ')',
+					1310027933
+				);
 			}
 		}
 
@@ -3132,7 +3176,12 @@ class ux_t3lib_DB extends t3lib_DB {
 					$fileName = t3lib_div::getFileAbsFileName($cfgArray['config']['classFile']);
 					if (@is_file($fileName)) {
 						require_once($fileName);
-					} else die('DBAL error: "' . $fileName . '" was not a file to include.');
+					} else {
+						throw new RuntimeException(
+							'DBAL error: "' . $fileName . '" was not a file to include.',
+							1310027975
+						);
+					}
 
 					// Initialize:
 					$this->handlerInstance[$handlerKey] = t3lib_div::makeInstance($cfgArray['config']['class']);
@@ -3143,12 +3192,20 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 					break;
 				default:
-					die('ERROR: Invalid handler type: "' . $cfgArray['type'] . '"');
+					throw new RuntimeException(
+						'ERROR: Invalid handler type: "' . $cfgArray['type'] . '"',
+						1310027995
+					);
 					break;
 			}
 
 			return $output;
-		} else die('ERROR: No handler for key "' . $handlerKey . '"');
+		} else {
+			throw new RuntimeException(
+				'ERROR: No handler for key "' . $handlerKey . '"',
+				1310028018
+			);
+		}
 	}
 
 
@@ -3686,7 +3743,12 @@ class ux_t3lib_DB extends t3lib_DB {
 
 				}
 			}
-		} else die('ERROR, mapping: No table found in parsed Query array...');
+		} else {
+			throw new InvalidArgumentException(
+				'ERROR, mapping: No table found in parsed Query array...',
+				1310028048
+			);
+		}
 	}
 
 	/**
