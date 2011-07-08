@@ -331,8 +331,8 @@ final class tx_em_Database {
 	 * @return	array		Array of tables and fields splitted.
 	 */
 	function getTableAndFieldStructure($parts) {
-		// Instance of install tool
-		$instObj = new t3lib_install();
+			/** @var $instObj t3lib_install_Sql */
+		$instObj = t3lib_div::makeInstance('t3lib_install_Sql');
 		$dbFields = $instObj->getFieldDefinitions_database(TYPO3_db);
 
 		$outTables = array();
@@ -448,7 +448,8 @@ final class tx_em_Database {
 	 * @see dumpTableAndFieldStructure()
 	 */
 	function dumpStaticTables($tableList) {
-		$instObj = t3lib_div::makeInstance('t3lib_install');
+			/** @var $instObj t3lib_install_Sql */
+		$instObj = t3lib_div::makeInstance('t3lib_install_Sql');
 		$dbFields = $instObj->getFieldDefinitions_database(TYPO3_db);
 
 		$out = '';

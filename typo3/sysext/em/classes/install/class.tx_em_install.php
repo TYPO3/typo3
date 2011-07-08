@@ -53,6 +53,10 @@ class tx_em_Install {
 	 */
 	public $install;
 
+	/**
+	 * @var t3lib_install_Sql
+	 */
+	protected $installerSql = NULL;
 
 	/**
 	 * @var integer
@@ -74,6 +78,7 @@ class tx_em_Install {
 		$this->parentObject = $parentObject;
 		$this->api = t3lib_div::makeInstance('tx_em_API');
 		$this->install = t3lib_div::makeInstance('t3lib_install');
+		$this->installerSql = t3lib_div::makeInstance('t3lib_install_Sql');
 		$this->install->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
 		$this->systemInstall = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall']) && $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'];
 	}
@@ -821,20 +826,20 @@ class tx_em_Install {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
 
-			$FDfile = $this->install->getFieldDefinitions_fileContent($fileContent);
+			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {
-				$FDdb = $this->install->getFieldDefinitions_database(TYPO3_db);
-				$diff = $this->install->getDatabaseExtra($FDfile, $FDdb);
-				$update_statements = $this->install->getUpdateSuggestions($diff);
+				$FDdb = $this->installerSql->getFieldDefinitions_database(TYPO3_db);
+				$diff = $this->installerSql->getDatabaseExtra($FDfile, $FDdb);
+				$update_statements = $this->installerSql->getUpdateSuggestions($diff);
 
 				$dbStatus['structure']['tables_fields'] = $FDfile;
 				$dbStatus['structure']['diff'] = $diff;
 
 				// Updating database...
 				if (!$infoOnly && is_array($this->install->INSTALL['database_update'])) {
-					$this->install->performUpdateQueries($update_statements['add'], $this->install->INSTALL['database_update']);
-					$this->install->performUpdateQueries($update_statements['change'], $this->install->INSTALL['database_update']);
-					$this->install->performUpdateQueries($update_statements['create_table'], $this->install->INSTALL['database_update']);
+					$this->installerSql->performUpdateQueries($update_statements['add'], $this->install->INSTALL['database_update']);
+					$this->installerSql->performUpdateQueries($update_statements['change'], $this->install->INSTALL['database_update']);
+					$this->installerSql->performUpdateQueries($update_statements['create_table'], $this->install->INSTALL['database_update']);
 				} else {
 					$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
 						$update_statements['add'], $GLOBALS['LANG']->getLL('checkDBupdates_add_fields'));
@@ -850,8 +855,8 @@ class tx_em_Install {
 		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables_static+adt.sql');
 
-			$statements = $this->install->getStatementarray($fileContent, 1);
-			list($statements_table, $insertCount) = $this->install->getCreateTables($statements, 1);
+			$statements = $this->installerSql->getStatementarray($fileContent, 1);
+			list($statements_table, $insertCount) = $this->installerSql->getCreateTables($statements, 1);
 
 			// Execute import of static table content:
 			if (!$infoOnly && is_array($this->install->INSTALL['database_import'])) {
@@ -863,7 +868,7 @@ class tx_em_Install {
 						$GLOBALS['TYPO3_DB']->admin_query($statements_table[$table]);
 
 						if ($insertCount[$table]) {
-							$statements_insert = $this->install->getTableInsertStatements($statements, $table);
+							$statements_insert = $this->installerSql->getTableInsertStatements($statements, $table);
 
 							foreach ($statements_insert as $v) {
 								$GLOBALS['TYPO3_DB']->admin_query($v);
@@ -872,7 +877,7 @@ class tx_em_Install {
 					}
 				}
 			} else {
-				$whichTables = $this->install->getListOfTables();
+				$whichTables = $this->installerSql->getListOfTables();
 				if (count($statements_table)) {
 					$out = '';
 					foreach ($statements_table as $table => $definition) {
@@ -1526,17 +1531,15 @@ class tx_em_Install {
 	 * @return	void
 	 */
 	function forceDBupdates($extKey, $extInfo) {
-		$instObj = new t3lib_install;
-
 		// Updating tables and fields?
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables.sql');
 
-			$FDfile = $instObj->getFieldDefinitions_fileContent($fileContent);
+			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {
-				$FDdb = $instObj->getFieldDefinitions_database(TYPO3_db);
-				$diff = $instObj->getDatabaseExtra($FDfile, $FDdb);
-				$update_statements = $instObj->getUpdateSuggestions($diff);
+				$FDdb = $this->installerSql->getFieldDefinitions_database(TYPO3_db);
+				$diff = $this->installerSql->getDatabaseExtra($FDfile, $FDdb);
+				$update_statements = $this->installerSql->getUpdateSuggestions($diff);
 
 				foreach ((array) $update_statements['add'] as $string) {
 					$GLOBALS['TYPO3_DB']->admin_query($string);
@@ -1554,8 +1557,8 @@ class tx_em_Install {
 		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables_static+adt.sql');
 
-			$statements = $instObj->getStatementarray($fileContent, 1);
-			list($statements_table, $insertCount) = $instObj->getCreateTables($statements, 1);
+			$statements = $this->installerSql->getStatementarray($fileContent, 1);
+			list($statements_table, $insertCount) = $this->installerSql->getCreateTables($statements, 1);
 
 			// Traverse the tables
 			foreach ($statements_table as $table => $query) {
@@ -1563,7 +1566,7 @@ class tx_em_Install {
 				$GLOBALS['TYPO3_DB']->admin_query($query);
 
 				if ($insertCount[$table]) {
-					$statements_insert = $instObj->getTableInsertStatements($statements, $table);
+					$statements_insert = $this->installerSql->getTableInsertStatements($statements, $table);
 
 					foreach ($statements_insert as $v) {
 						$GLOBALS['TYPO3_DB']->admin_query($v);
