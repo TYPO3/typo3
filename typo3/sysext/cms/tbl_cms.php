@@ -1106,6 +1106,7 @@ $TCA['sys_template'] = array(
 					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.0', '0'),
 					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.1', '1'),
 					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.2', '2'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.3', '3'),
 				),
 				'default' => '0'
 			)
