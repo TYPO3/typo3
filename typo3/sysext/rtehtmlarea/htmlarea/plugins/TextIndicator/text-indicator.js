@@ -66,31 +66,35 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		var editor = this.editor;
 		if (mode === 'wysiwyg' && editor.isEditable()) {
-			var doc = editor._doc;
+			var doc = editor.document;
+			var style = {
+				fontWeight: 'normal',
+				fontStyle: 'normal'
+			};
 			try {
-				var style = {
-					backgroundColor: HTMLArea._makeColor(doc.queryCommandValue((Ext.isIE || Ext.isWebKit) ? 'BackColor' : 'HiliteColor')),
-					color: HTMLArea._makeColor(doc.queryCommandValue('ForeColor')),
-					fontFamily: doc.queryCommandValue('FontName'),
-					fontWeight: 'normal',
-					fontStyle: 'normal'
-				};
-					// Mozilla
-				if (/transparent/i.test(style.backgroundColor)) {
-					style.backgroundColor = HTMLArea._makeColor(doc.queryCommandValue('BackColor'));
-				}
-				try {
-					style.fontWeight = doc.queryCommandState('Bold') ? 'bold' : 'normal';
-				} catch(e) {
-					style.fontWeight = 'normal';
-				}
-				try {
-					style.fontStyle = doc.queryCommandState('Italic') ? 'italic' : 'normal';
-				} catch(e) {
-					style.fontStyle = 'normal';
-				}
-				button.getEl().setStyle(style);
+					//  Note: IE always reports FFFFFF as background color
+				style.backgroundColor = HTMLArea.util.Color.colorToRgb(doc.queryCommandValue((Ext.isIE || Ext.isWebKit) ? 'BackColor' : 'HiliteColor'));
+				style.color = HTMLArea.util.Color.colorToRgb(doc.queryCommandValue('ForeColor'));
+				style.fontFamily = doc.queryCommandValue('FontName');
 			} catch (e) { }
+				// queryCommandValue does not work in Gecko
+			if (Ext.isGecko) {
+				var computedStyle = editor._iframe.contentWindow.getComputedStyle(editor.getParentElement(), null);
+				style.color = computedStyle.getPropertyValue('color');
+				style.backgroundColor = computedStyle.getPropertyValue('background-color');
+				style.fontFamily = computedStyle.getPropertyValue('font-family');
+			}
+			try {
+				style.fontWeight = doc.queryCommandState('Bold') ? 'bold' : 'normal';
+			} catch(e) {
+				style.fontWeight = 'normal';
+			}
+			try {
+				style.fontStyle = doc.queryCommandState('Italic') ? 'italic' : 'normal';
+			} catch(e) {
+				style.fontStyle = 'normal';
+			}
+			button.getEl().setStyle(style);
 		}
 	}
 });
