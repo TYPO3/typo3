@@ -571,6 +571,10 @@ class t3lib_TStemplate {
 			}
 		}
 
+		if ($row['static_file_mode'] == 3 && substr($templateID, 0, 4) == 'sys_' && $row['root']) {
+			$this->addExtensionStatics($idList, $templateID, $pid, $row);
+		}
+
 			// Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
 		if (trim($row['include_static_file'])) {
 			$include_static_fileArr = t3lib_div::trimExplode(',', $row['include_static_file'], TRUE);
@@ -600,7 +604,10 @@ class t3lib_TStemplate {
 			}
 		}
 
-		$this->addExtensionStatics($idList, $templateID, $pid, $row);
+		if ($row['static_file_mode'] == 1 || ($row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_' && $row['root'])) {
+			$this->addExtensionStatics($idList, $templateID, $pid, $row);
+		}
+
 
 			// Include Static Template Records after all other TypoScript has been included.
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'])) {
@@ -629,22 +636,19 @@ class t3lib_TStemplate {
 	 */
 	function addExtensionStatics($idList, $templateID, $pid, $row) {
 
-		if ($row['static_file_mode'] == 1 || ($row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_' && $row['root'])) {
-			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
-				if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_editorcfg.txt'])) {
-					$mExtKey = str_replace('_', '', $extKey);
-					$subrow = array(
-						'constants' => $files['ext_typoscript_constants.txt'] ? t3lib_div::getUrl($files['ext_typoscript_constants.txt']) : '',
-						'config' => $files['ext_typoscript_setup.txt'] ? t3lib_div::getUrl($files['ext_typoscript_setup.txt']) : '',
-						'editorcfg' => $files['ext_typoscript_editorcfg.txt'] ? t3lib_div::getUrl($files['ext_typoscript_editorcfg.txt']) : '',
-						'title' => $extKey,
-						'uid' => $mExtKey
-					);
-					$subrow = $this->prependStaticExtra($subrow);
-
-					$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
-				}
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
+			if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_editorcfg.txt'])) {
+				$mExtKey = str_replace('_', '', $extKey);
+				$subrow = array(
+					'constants' => $files['ext_typoscript_constants.txt'] ? t3lib_div::getUrl($files['ext_typoscript_constants.txt']) : '',
+					'config' => $files['ext_typoscript_setup.txt'] ? t3lib_div::getUrl($files['ext_typoscript_setup.txt']) : '',
+					'editorcfg' => $files['ext_typoscript_editorcfg.txt'] ? t3lib_div::getUrl($files['ext_typoscript_editorcfg.txt']) : '',
+					'title' => $extKey,
+					'uid' => $mExtKey
+				);
+				$subrow = $this->prependStaticExtra($subrow);
 			}
+			$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
 		}
 	}
 
