@@ -26,6 +26,8 @@
 			<label index="info.cookies_and_js">(Note: Cookies and JavaScript must be enabled!)</label>
 			<label index="clear">Clear this field!</label>
 			<label index="login_process">Verifying Login Data ...</label>
+			<label index="warning.incompatibleBrowserHeadline">Unsupported Browser</label>
+			<label index="warning.incompatibleBrowser">You are using an unsupported browser version. Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" /&gt;a more modern browser version&lt;/a&gt;.</label>
 			<label index="newsheadline">Important Messages:</label>
 			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
 			<label index="error.login.title">Your login attempt did not succeed</label>
