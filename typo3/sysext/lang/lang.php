@@ -361,6 +361,12 @@ class language {
 			// Get Local Language. Special handling for all extensions that
 			// read PHP LL files and pass arrays here directly.
 		$value = is_string($localLanguage[$this->lang][$index]) ? $localLanguage[$this->lang][$index] : $localLanguage[$this->lang][$index][0]['target'];
+
+			// Fallback to default language
+		if (trim($value) === '') {
+			$value = is_string($localLanguage['default'][$index]) ? $localLanguage['default'][$index] : $localLanguage['default'][$index][0]['target'];
+		}
+
 		if ($hsc) {
 			$value = htmlspecialchars($value);
 		}
