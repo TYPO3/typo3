@@ -871,7 +871,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 			// only get the number of tables if it is not the first two steps in the 123-installer
 			// (= no DB connection yet)
-		$whichTables = ($this->step != 1 && $this->step != 2 ? $this->getListOfTables() : array());
+		$whichTables = ($this->step != 1 && $this->step != 2 ? $this->sqlHandler->getListOfTables() : array());
 
 		$error_emptyDB = '
 			<p class="typo3-message message-error">
@@ -1569,7 +1569,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			</p>
 		');
 
-		$tables = $this->getListOfTables();
+		$tables = $this->sqlHandler->getListOfTables();
 		$action = $this->INSTALL['cleanup_type'];
 
 		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
@@ -5317,7 +5317,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		}
 
 			// Getting current tables
-		$whichTables=$this->getListOfTables();
+		$whichTables=$this->sqlHandler->getListOfTables();
 
 
 			// Getting number of static_template records
@@ -5514,30 +5514,30 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							LF,
 							$this->getStatementArray($tblFileContent,1,'^CREATE TABLE ')
 						);
-						$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
+						$FDfile = $this->sqlHandler->getFieldDefinitions_fileContent($fileContent);
 						if (!count($FDfile)) {
 							die ("Error: There were no 'CREATE TABLE' definitions in the provided file");
 						}
 
 							// Updating database...
 						if (is_array($this->INSTALL['database_update'])) {
-							$FDdb = $this->getFieldDefinitions_database();
-							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
-							$update_statements = $this->getUpdateSuggestions($diff);
-							$diff = $this->getDatabaseExtra($FDdb, $FDfile);
-							$remove_statements = $this->getUpdateSuggestions($diff,'remove');
+							$FDdb = $this->sqlHandler->getFieldDefinitions_database();
+							$diff = $this->sqlHandler->getDatabaseExtra($FDfile, $FDdb);
+							$update_statements = $this->sqlHandler->getUpdateSuggestions($diff);
+							$diff = $this->sqlHandler->getDatabaseExtra($FDdb, $FDfile);
+							$remove_statements = $this->sqlHandler->getUpdateSuggestions($diff,'remove');
 
 							$results = array();
-							$results[] = $this->performUpdateQueries($update_statements['clear_table'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($update_statements['clear_table'], $this->INSTALL['database_update']);
 
-							$results[] = $this->performUpdateQueries($update_statements['add'], $this->INSTALL['database_update']);
-							$results[] = $this->performUpdateQueries($update_statements['change'], $this->INSTALL['database_update']);
-							$results[] = $this->performUpdateQueries($remove_statements['change'], $this->INSTALL['database_update']);
-							$results[] = $this->performUpdateQueries($remove_statements['drop'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($update_statements['add'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($update_statements['change'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($remove_statements['change'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($remove_statements['drop'], $this->INSTALL['database_update']);
 
-							$results[] = $this->performUpdateQueries($update_statements['create_table'], $this->INSTALL['database_update']);
-							$results[] = $this->performUpdateQueries($remove_statements['change_table'], $this->INSTALL['database_update']);
-							$results[] = $this->performUpdateQueries($remove_statements['drop_table'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($update_statements['create_table'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($remove_statements['change_table'], $this->INSTALL['database_update']);
+							$results[] = $this->sqlHandler->performUpdateQueries($remove_statements['drop_table'], $this->INSTALL['database_update']);
 
 							$this->databaseUpdateErrorMessages = array();
 							foreach ($results as $resultSet) {
@@ -5550,13 +5550,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						}
 
 							// Init again / first time depending...
-						$FDdb = $this->getFieldDefinitions_database();
+						$FDdb = $this->sqlHandler->getFieldDefinitions_database();
 
-						$diff = $this->getDatabaseExtra($FDfile, $FDdb);
-						$update_statements = $this->getUpdateSuggestions($diff);
+						$diff = $this->sqlHandler->getDatabaseExtra($FDfile, $FDdb);
+						$update_statements = $this->sqlHandler->getUpdateSuggestions($diff);
 
-						$diff = $this->getDatabaseExtra($FDdb, $FDfile);
-						$remove_statements = $this->getUpdateSuggestions($diff,'remove');
+						$diff = $this->sqlHandler->getDatabaseExtra($FDdb, $FDfile);
+						$remove_statements = $this->sqlHandler->getUpdateSuggestions($diff,'remove');
 
 						$tLabel = 'Update database tables and fields';
 
@@ -5586,7 +5586,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 				case 'cmpTCA':
 					$this->includeTCA();
-					$FDdb = $this->getFieldDefinitions_database();
+					$FDdb = $this->sqlHandler->getFieldDefinitions_database();
 
 						// Displaying configured fields which are not in the database
 					$tLabel='Tables and fields in $TCA, but not in database';
@@ -5746,8 +5746,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					if ($tblFileContent) {
 						$tLabel='Import SQL dump';
 							// Getting statement array from
-						$statements = $this->getStatementArray($tblFileContent,1);
-						list($statements_table, $insertCount) = $this->getCreateTables($statements,1);
+						$statements = $this->sqlHandler->getStatementArray($tblFileContent,1);
+						list($statements_table, $insertCount) = $this->sqlHandler->getCreateTables($statements,1);
 
 							// Updating database...
 						if ($this->INSTALL['database_import_all']) {
@@ -5762,12 +5762,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								// fields defined in sysext/cms/ext_tables.sql for example.
 							$fileContent = implode(
 								LF,
-								$this->getStatementArray($tblFileContent,1,'^CREATE TABLE ')
+								$this->sqlHandler->getStatementArray($tblFileContent,1,'^CREATE TABLE ')
 							);
-							$FDfile = $this->getFieldDefinitions_fileContent($fileContent);
-							$FDdb = $this->getFieldDefinitions_database();
-							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
-							$update_statements = $this->getUpdateSuggestions($diff);
+							$FDfile = $this->sqlHandler->getFieldDefinitions_fileContent($fileContent);
+							$FDdb = $this->sqlHandler->getFieldDefinitions_database();
+							$diff = $this->sqlHandler->getDatabaseExtra($FDfile, $FDdb);
+							$update_statements = $this->sqlHandler->getUpdateSuggestions($diff);
 							if (is_array($update_statements['add'])) {
 								foreach ($update_statements['add'] as $statement) {
 									$res = $GLOBALS['TYPO3_DB']->admin_query($statement);
@@ -5816,7 +5816,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									$res = $GLOBALS['TYPO3_DB']->admin_query($statements_table[$table]);
 
 									if ($insertCount[$table]) {
-										$statements_insert = $this->getTableInsertStatements($statements, $table);
+										$statements_insert = $this->sqlHandler->getTableInsertStatements($statements, $table);
 										foreach ($statements_insert as $k => $v) {
 											$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 										}
@@ -5835,7 +5835,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 						if (!$mode123Imported) {
 								// Re-Getting current tables - may have been changed during import
-							$whichTables=$this->getListOfTables();
+							$whichTables=$this->sqlHandler->getListOfTables();
 
 							if (count($statements_table)) {
 								reset($statements_table);
@@ -5959,7 +5959,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$tLabel = 'Import SQL dump';
 							// Getting statement array from
 						$fileContent = t3lib_div::getUrl($actionParts[1]);
-						$statements = $this->getStatementArray($fileContent, 1);
+						$statements = $this->sqlHandler->getStatementArray($fileContent, 1);
 						$maxL = 1000;
 						$strLen = strlen($fileContent);
 						$maxlen = 200+($maxL-t3lib_div::intInRange(($strLen-20000)/100,0,$maxL));
@@ -6709,7 +6709,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 */
 	function isBasicComplete($tLabel) {
 		if ($this->mode=='123') {
-			$tables = $this->getListOfTables();
+			$tables = $this->sqlHandler->getListOfTables();
 
 			if (count($tables)) {
 				$beuser = $this->isBackendAdminUser();
@@ -6953,7 +6953,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				// Get the subpart for rows
 			$rowsSubpart = t3lib_parsehtml::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
-				if (!t3lib_div::inList($excludeList,$fieldname) && substr($fieldname,0,strlen($this->deletedPrefixKey))!=$this->deletedPrefixKey && substr($fieldname,-1)!='.') {
+				if (!t3lib_div::inList($excludeList,$fieldname) && substr($fieldname,0,strlen($this->sqlHandler->getDeletedPrefixKey()))!=$this->sqlHandler->getDeletedPrefixKey() && substr($fieldname,-1)!='.') {
 					if ($arr[$fieldname.'.']) {
 							// Get the subpart for pre
 						$preSubpart = t3lib_parsehtml::getSubpart($rowsSubpart, '###PRE###');

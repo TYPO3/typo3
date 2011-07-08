@@ -37,6 +37,7 @@ $t3libClasses = array(
 	't3lib_htmlmail' => PATH_t3lib . 'class.t3lib_htmlmail.php',
 	't3lib_iconworks' => PATH_t3lib . 'class.t3lib_iconworks.php',
 	't3lib_install' => PATH_t3lib . 'class.t3lib_install.php',
+	't3lib_install_sql' => PATH_t3lib . 'class.t3lib_install_sql.php',
 	't3lib_loaddbgroup' => PATH_t3lib . 'class.t3lib_loaddbgroup.php',
 	't3lib_loadmodules' => PATH_t3lib . 'class.t3lib_loadmodules.php',
 	't3lib_lock' => PATH_t3lib . 'class.t3lib_lock.php',
