@@ -32,40 +32,6 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  125: class t3lib_modSettings
- *
- *			  SECTION: Init / setup
- *  181:	 function init($prefix='', $storeList='')
- *  197:	 function setSessionType($type='ses')
- *
- *			  SECTION: Store list - which values should be stored
- *  218:	 function setStoreList($storeList)
- *  231:	 function addToStoreList($storeList)
- *  245:	 function addToStoreListFromPrefix($prefix='')
- *
- *			  SECTION: Process storage array
- *  279:	 function initStorage()
- *  294:	 function cleanupStorageArray($storedSettings)
- *  316:	 function compileEntry($data)
- *  343:	 function getStoredData($storeIndex, $writeArray=array())
- *  360:	 function processStoreControl($mconfName='')
- *  442:	 function writeStoredSetting($writeArray=array(), $mconfName='')
- *
- *			  SECTION: GUI
- *  474:	 function getStoreControl($showElements='load,remove,save', $useOwnForm=TRUE)
- *
- *			  SECTION: Misc
- *  576:	 function processEntry($storageArr)
- *
- * TOTAL FUNCTIONS: 13
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

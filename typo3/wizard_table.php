@@ -33,28 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   84: class SC_wizard_table
- *  116:     function init()
- *  158:     function main()
- *  173:     function printContent()
- *  184:     function tableWizard()
- *
- *              SECTION: Helper functions
- *  223:     function getConfigCode($row)
- *  293:     function getTableHTML($cfgArr,$row)
- *  450:     function changeFunc()
- *  572:     function cfgArray2CfgString($cfgArr)
- *  603:     function cfgString2CfgArray($cfgStr,$cols)
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

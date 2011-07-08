@@ -33,26 +33,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   79: class tslib_feUserAuth extends t3lib_userAuth
- *  143:     function fetchGroupData()
- *  233:     function getUserTSconf()
- *
- *              SECTION: Session data management functions
- *  278:     function fetchSessionData()
- *  300:     function storeSessionData()
- *  326:     function getKey($type,$key)
- *  351:     function setKey($type,$key,$data)
- *  377:     function record_registration($recs,$maxSizeOfSessionData=0)
- *
- * TOTAL FUNCTIONS: 7
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

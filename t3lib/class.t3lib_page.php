@@ -32,51 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  109: class t3lib_pageSelect
- *  134:	 function init($show_hidden)
- *
- *			  SECTION: Selecting page records
- *  184:	 function getPage($uid, $disableGroupAccessCheck=FALSE)
- *  200:	 function getPage_noCheck($uid)
- *  216:	 function getFirstWebPage($uid)
- *  234:	 function getPageIdFromAlias($alias)
- *  250:	 function getPageOverlay($pageInput,$lUid=-1)
- *  314:	 function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
- *
- *			  SECTION: Page related: Menu, Domain record, Root line
- *  413:	 function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='',$checkShortcuts=1)
- *  471:	 function getDomainStartPage($domain, $path='',$request_uri='')
- *  519:	 function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
- *  640:	 function getPathFromRootline($rl,$len=20)
- *  661:	 function getExtURL($pagerow,$disable=0)
- *  685:	 function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
- *
- *			  SECTION: Selecting records in general
- *  762:	 function checkRecord($table,$uid,$checkPage=0)
- *  797:	 function getRawRecord($table,$uid,$fields='*',$noWSOL=FALSE)
- *  823:	 function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *
- *			  SECTION: Caching and standard clauses
- *  875:	 function getHash($hash)
- *  898:	 function storeHash($hash,$data,$ident)
- *  916:	 function deleteClause($table)
- *  936:	 function enableFields($table,$show_hidden=-1,$ignore_array=array(),$noVersionPreview=FALSE)
- * 1008:	 function getMultipleGroupsWhereClause($field, $table)
- *
- *			  SECTION: Versioning Preview
- * 1055:	 function fixVersioningPid($table,&$rr)
- * 1096:	 function versionOL($table,&$row)
- * 1151:	 function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields='*')
- *
- * TOTAL FUNCTIONS: 24
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

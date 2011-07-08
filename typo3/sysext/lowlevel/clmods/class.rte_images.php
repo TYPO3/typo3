@@ -31,20 +31,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   56: class tx_lowlevel_rte_images extends tx_lowlevel_cleaner_core
- *   65:     function tx_lowlevel_rte_images()
- *   99:     function main()
- *  181:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Looking for RTE images integrity
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

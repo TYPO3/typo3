@@ -32,30 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  175: class SC_wizard_forms
- *  203:     function init()
- *  242:     function main()
- *  257:     function printContent()
- *  268:     function formsWizard()
- *
- *              SECTION: Helper functions
- *  311:     function getConfigCode(&$row)
- *  382:     function getFormHTML($formCfgArray,$row)
- *  662:     function changeFunc()
- *  721:     function cfgArray2CfgString($cfgArr)
- *  803:     function cfgString2CfgArray($cfgStr)
- *  902:     function cleanT($tArr)
- *  920:     function formatCells($fArr)
- *
- * TOTAL FUNCTIONS: 11
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

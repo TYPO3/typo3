@@ -33,27 +33,6 @@
  * @author	Peter Kühn <peter@kuehn.com>
  * @author	Kasper Skårhøj <typo3@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   75: class SC_wizard_colorpicker
- *  103:     function init()
- *  182:     function main()
- *  233:     function printContent()
- *  246:     function frameSet()
- *
- *              SECTION: Rendering of various color selectors
- *  305:     function colorMatrix()
- *  354:     function colorList()
- *  384:     function colorImage()
- *  417:     function getIndex($im,$x,$y)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 $GLOBALS['BACK_PATH'] = '';

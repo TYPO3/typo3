@@ -33,42 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   91: class localRecordList extends recordList
- *  123:     function writeTop($row)
- *  304:     function getTable($table,$id,$rowlist)
- *  559:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
- *  648:     function renderListHeader($table,$currentIdList)
- *
- *              SECTION: Rendering of various elements
- *  796:     function makeControl($table,$row)
- *  986:     function makeClip($table,$row)
- * 1057:     function makeRef($table,$uid)
- * 1086:     function makeLocalizationPanel($table,$row)
- * 1148:     function fieldSelectBox($table,$formFields=1)
- *
- *              SECTION: Helper functions
- * 1231:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- * 1242:     function clipNumPane()
- * 1256:     function addSortLink($code,$field,$table)
- * 1281:     function recPath($pid)
- * 1294:     function showNewRecLink($table)
- * 1304:     function makeReturnUrl()
- *
- *              SECTION: CSV related functions
- * 1329:     function initCSV()
- * 1352:     function addToCSV($row,$table)
- * 1376:     function setCsvRow($csvRow)
- * 1387:     function outputCSV($prefix)
- *
- * TOTAL FUNCTIONS: 19
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

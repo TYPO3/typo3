@@ -32,20 +32,6 @@
  *
  * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  112: class SC_tslib_showpic
- *  133:     function init()
- *  190:     function main()
- *  237:     function printContent()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

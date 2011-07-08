@@ -32,56 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  111: class t3lib_userAuth
- *  195:	 function start()
- *  329:	 function checkAuthentication()
- *
- *			  SECTION: User Sessions
- *  569:	 function createUserSession ($tempuser)
- *  606:	 function fetchUserSession()
- *  657:	 function logoff()
- *
- *			  SECTION: SQL Functions
- *  713:	 function user_where_clause()
- *  727:	 function ipLockClause()
- *  745:	 function ipLockClause_remoteIPNumber($parts)
- *  766:	 function hashLockClause()
- *  777:	 function hashLockClause_getHashInt()
- *
- *			  SECTION: Session and Configuration Handling
- *  809:	 function writeUC($variable='')
- *  824:	 function unpack_uc($theUC='')
- *  840:	 function pushModuleData($module,$data,$noSave=0)
- *  853:	 function getModuleData($module,$type='')
- *  866:	 function getSessionData($key)
- *  879:	 function setAndSaveSessionData($key,$data)
- *
- *			  SECTION: Misc
- *  912:	 function getLoginFormData()
- *  939:	 function processLoginData($loginData, $security_level='')
- *  981:	 function getAuthInfoArray()
- * 1011:	 function compareUident($user, $loginData, $security_level='')
- * 1050:	 function gc()
- * 1064:	 function redirect()
- * 1086:	 function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
- * 1095:	 function checkLogFailures()
- * 1108:	 function setBeUserByUid($uid)
- * 1120:	 function setBeUserByName($name)
- * 1131:	 function getRawUserByUid($uid)
- * 1149:	 function getRawUserByName($name)
- *
- *			  SECTION: Create/update user - EXPERIMENTAL
- * 1188:	 function fetchUserRecord($dbUser, $username, $extraWhere='' )
- *
- * TOTAL FUNCTIONS: 29
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 require_once(t3lib_extMgm::extPath('sv') . 'class.tx_sv_authbase.php');

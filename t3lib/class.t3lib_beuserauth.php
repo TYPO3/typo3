@@ -32,26 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   76: class t3lib_beUserAuth extends t3lib_userAuthGroup
- *  150:	 function trackBeUser($flag)
- *  168:	 function checkLockToIP()
- *  188:	 function backendCheckLogin()
- *  216:	 function checkCLIuser()
- *  240:	 function backendSetUC()
- *  278:	 function overrideUC()
- *  288:	 function resetUC()
- *  301:	 function emailAtLogin()
- *  353:	 function veriCode()
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

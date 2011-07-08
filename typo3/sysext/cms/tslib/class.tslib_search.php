@@ -34,29 +34,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	René Fritz	<r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class tslib_search
- *  127:     function register_tables_and_columns($requestedCols,$allowedCols)
- *  168:     function explodeCols($in)
- *  193:     function register_and_explode_search_string($sword)
- *  226:     function split($origSword, $specchars='+-', $delchars='+.,-')
- *  269:     function quotemeta($str)
- *  285:     function build_search_query($endClause)
- *  371:     function build_search_query_for_searchwords()
- *  413:     function get_operator($operator)
- *  436:     function count_query()
- *  449:     function execute_query()
- *  462:     function get_searchwords()
- *  477:     function get_searchwordsArray()
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

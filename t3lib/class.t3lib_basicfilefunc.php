@@ -31,40 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   81: class t3lib_basicFileFunctions
- *
- *			  SECTION: Checking functions
- *  133:	 function init($mounts, $f_ext)
- *  152:	 function getTotalFileInfo($wholePath)
- *  172:	 function is_allowed($iconkey,$type)
- *  197:	 function checkIfFullAccess($theDest)
- *  211:	 function is_webpath($path)
- *  231:	 function checkIfAllowed($ext, $theDest, $filename='')
- *  241:	 function checkFileNameLen($fileName)
- *  251:	 function is_directory($theDir)
- *  268:	 function isPathValid($theFile)
- *  283:	 function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)
- *  326:	 function checkPathAgainstMounts($thePath)
- *  342:	 function findFirstWebFolder()
- *  362:	 function blindPath($thePath)
- *  378:	 function findTempFolder()
- *
- *			  SECTION: Cleaning functions
- *  412:	 function cleanDirectoryName($theDir)
- *  422:	 function rmDoubleSlash($string)
- *  432:	 function slashPath($path)
- *  446:	 function cleanFileName($fileName,$charset='')
- *  480:	 function formatSize($sizeInBytes)
- *
- * TOTAL FUNCTIONS: 19
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

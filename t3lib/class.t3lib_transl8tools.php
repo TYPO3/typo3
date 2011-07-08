@@ -29,22 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   67: class t3lib_transl8tools
- *   74:	 function getSystemLanguages($page_id=0,$backPath='')
- *  132:	 function translationInfo($table,$uid,$sys_language_uid=0)
- *  187:	 function getTranslationTable($table)
- *  197:	 function isTranslationInOwnTable($table)
- *  209:	 function foreignTranslationTable($table)
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

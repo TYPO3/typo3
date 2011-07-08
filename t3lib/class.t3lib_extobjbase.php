@@ -31,23 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  145: class t3lib_extobjbase
- *  197:	 function init(&$pObj,$conf)
- *  221:	 function handleExternalFunctionValue()
- *  237:	 function incLocalLang()
- *  253:	 function checkExtObj()
- *  268:	 function extObjContent()
- *  279:	 function modMenu()
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

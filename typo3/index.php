@@ -32,30 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   87: class SC_index
- *  120:     function init()
- *  159:     function main()
- *  268:     function printContent()
- *
- *              SECTION: Various functions
- *  292:     function makeLoginForm()
- *  337:     function makeLogoutForm()
- *  379:     function wrapLoginForm($content)
- *  438:     function checkRedirect()
- *  495:     function makeInterfaceSelectorBox()
- *  549:     function makeCopyrightNotice()
- *  582:     function makeLoginBoxImage()
- *  622:     function makeLoginNews()
- *
- * TOTAL FUNCTIONS: 11
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 define('TYPO3_PROCEED_IF_NO_USER', 1);

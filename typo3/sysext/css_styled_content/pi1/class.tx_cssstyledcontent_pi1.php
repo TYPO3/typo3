@@ -30,27 +30,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   68: class tx_cssstyledcontent_pi1 extends tslib_pibase
- *
- *              SECTION: Rendering of Content Elements:
- *   96:     function render_bullets($content,$conf)
- *  141:     function render_table($content,$conf)
- *  283:     function render_uploads($content,$conf)
- *  395:     function render_textpic($content, $conf)
- *
- *              SECTION: Helper functions
- *  832:     function getTableAttributes($conf,$type)
- *  861:     function &hookRequest($functionName)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Plugin class - instantiated from TypoScript.
  * Rendering some content elements from tt_content table.
  *
@@ -406,9 +385,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 	/**
 	 * returns an array containing width relations for $colCount columns.
-	 * 
+	 *
 	 * tries to use "colRelations" setting given by TS.
-	 * uses "1:1" column relations by default. 
+	 * uses "1:1" column relations by default.
 	 *
 	 * @param array $conf TS configuration for img
 	 * @param int $colCount number of columns
@@ -444,7 +423,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 		return $relations ? $relations : $equalRelations;
 	}
-	
+
 	/**
 	 * returns an array containing the image widths for an image row with $colCount columns.
 	 *
@@ -456,17 +435,17 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	protected function getImgColumnWidths($conf, $colCount, $netW) {
 		$columnWidths = array();
 		$colRelations = $this->getImgColumnRelations($conf, $colCount);
-		
+
 		$accumWidth = 0;
 		$accumDesiredWidth = 0;
 		$relUnitCount = array_sum($colRelations);
-		
+
 		for ($a = 0; $a < $colCount; $a++)	{
 			$availableWidth = $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
 			$desiredWidth = $netW / $relUnitCount * $colRelations[$a]; // theoretical width of resized image. (float)
-			$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position 
+			$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position
 				// calculate width by comparing actual and desired horizontal position.
-				// this evenly distributes rounding errors across all images in this row. 
+				// this evenly distributes rounding errors across all images in this row.
 			$suggestedWidth = round($accumDesiredWidth - $accumWidth);
 			$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
 			$accumWidth += $finalImgWidth;
@@ -474,7 +453,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 		return $columnWidths;
 	}
-	
+
 	/**
 	 * Rendering the IMGTEXT content element, called from TypoScript (tt_content.textpic.20)
 	 *
@@ -602,7 +581,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Specify the maximum width for each column
 		$columnWidths = $this->getImgColumnWidths($conf, $colCount, $netW);
-		
+
 		$image_compression = intval($this->cObj->stdWrap($conf['image_compression'],$conf['image_compression.']));
 		$image_effects = intval($this->cObj->stdWrap($conf['image_effects'],$conf['image_effects.']));
 		$image_frames = intval($this->cObj->stdWrap($conf['image_frames.']['key'],$conf['image_frames.']['key.']));
@@ -648,7 +627,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$imgConf = $conf[$imgObjNum.'.'];
 
 			if ($equalHeight)	{
-				
+
 				if ($a % $colCount == 0) {
 						// a new row startsS
 					$accumWidth = 0; // reset accumulated net width
@@ -662,12 +641,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$desiredHeight = $equalHeight / $scale;
 					$rowIdx++;
 				}
-				
+
 				$availableWidth= $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
 				$desiredWidth= $imgWidths[$a] / $scale; // theoretical width of resized image. (float)
-				$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position 
+				$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position
 					// calculate width by comparing actual and desired horizontal position.
-					// this evenly distributes rounding errors across all images in this row. 
+					// this evenly distributes rounding errors across all images in this row.
 				$suggestedWidth = round($accumDesiredWidth - $accumWidth);
 				$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
 				$accumWidth += $finalImgWidth;

@@ -29,37 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   83: class SC_mod_tools_isearch_index
- *   97:     function init()
- *  110:     function jumpToUrl(URL)
- *  133:     function menuConfig()
- *  156:     function main()
- *  193:     function printContent()
- *
- *              SECTION: OTHER FUNCTIONS:
- *  216:     function getRecordsNumbers()
- *  234:     function tableHead($str)
- *  243:     function getPhashStat()
- *  278:     function getPhashT3pages()
- *  347:     function getPhashExternalDocs()
- *  416:     function formatFeGroup($fegroup_recs)
- *  432:     function formatCHash($arr)
- *  447:     function getNumberOfSections($phash)
- *  459:     function getNumberOfWords($phash)
- *  471:     function getGrlistRecord($phash)
- *  487:     function getNumberOfFulltext($phash)
- *  498:     function getPhashTypes()
- *  528:     function countUniqueTypes($item_type)
- *
- * TOTAL FUNCTIONS: 18
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 unset($MCONF);

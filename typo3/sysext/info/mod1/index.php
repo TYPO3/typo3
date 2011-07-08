@@ -33,19 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   70: class SC_mod_web_info_index extends t3lib_SCbase
- *   82:     function main()
- *  178:     function printContent()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require('conf.php');

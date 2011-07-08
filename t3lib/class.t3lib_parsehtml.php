@@ -31,49 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  106: class t3lib_parsehtml
- *  123:	 function getSubpart($content, $marker)
- *  156:	 function substituteSubpart($content,$marker,$subpartContent,$recursive=1,$keepMarker=0)
- *
- *			  SECTION: Parsing HTML code
- *  247:	 function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)
- *  308:	 function splitIntoBlockRecursiveProc($tag,$content,&$procObj,$callBackContent,$callBackTags,$level=0)
- *  344:	 function splitTags($tag,$content)
- *  378:	 function getAllParts($parts,$tag_parts=1,$include_tag=1)
- *  396:	 function removeFirstAndLastTag($str)
- *  412:	 function getFirstTag($str)
- *  426:	 function getFirstTagName($str,$preserveCase=FALSE)
- *  445:	 function get_tag_attributes($tag,$deHSC=0)
- *  486:	 function split_tag_attributes($tag)
- *  524:	 function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')
- *
- *			  SECTION: Clean HTML code
- *  617:	 function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())
- *  814:	 function bidir_htmlspecialchars($value,$dir)
- *  837:	 function prefixResourcePath($main_prefix,$content,$alternatives=array(),$suffix='')
- *  919:	 function prefixRelPath($prefix,$srcVal,$suffix='')
- *  937:	 function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
- *  967:	 function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
- *  982:	 function unprotectTags($content,$tagList='')
- * 1015:	 function stripTagsExcept($value,$tagList)
- * 1038:	 function caseShift($str,$flag,$cacheKey='')
- * 1065:	 function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
- * 1093:	 function get_tag_attributes_classic($tag,$deHSC=0)
- * 1106:	 function indentLines($content, $number=1, $indentChar=TAB)
- * 1123:	 function HTMLparserConfig($TSconfig,$keepTags=array())
- * 1247:	 function XHTML_clean($content)
- * 1269:	 function processTag($value,$conf,$endTag,$protected=0)
- * 1315:	 function processContent($value,$dir,$conf)
- *
- * TOTAL FUNCTIONS: 28
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

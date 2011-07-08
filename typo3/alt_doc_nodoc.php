@@ -33,20 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   72: class SC_alt_doc_nodoc
- *   84:     function init()
- *  108:     function main()
- *  168:     function printContent()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require('init.php');
 require('template.php');

@@ -32,23 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *  192: class SC_alt_db_navframe
- *  210:     function init()
- *  313:     function main()
- *  387:     function printContent()
- *
- *              SECTION: Temporary DB mounts
- *  415:     function initializeTemporaryDBmount()
- *  449:     function settingTemporaryMountPoint($pageId)
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 $BACK_PATH = '';

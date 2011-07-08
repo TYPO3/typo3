@@ -33,35 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   96: class localPageTree extends t3lib_pageTree
- *  105:     function wrapIcon($icon,$row)
- *
- *
- *  127: class ext_posMap_pages extends t3lib_positionMap
- *  137:     function onClickEvent($pid,$newPagePID)
- *  148:     function linkPageTitle($str,$rec)
- *  161:     function boldTitle($t_code,$dat,$id)
- *
- *
- *  184: class ext_posMap_tt_content extends t3lib_positionMap
- *  194:     function linkPageTitle($str,$rec)
- *  206:     function wrapRecordTitle($str,$row)
- *
- *
- *  227: class SC_move_el
- *  250:     function init()
- *  284:     function main()
- *  416:     function printContent()
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 $BACK_PATH='';

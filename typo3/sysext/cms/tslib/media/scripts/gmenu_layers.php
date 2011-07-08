@@ -32,25 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   84: class tslib_gmenu_layers extends tslib_gmenu
- *  116:     function extProc_init()
- *  134:     function extProc_RO($key)
- *  150:     function extProc_beforeLinking($key)
- *  205:     function extProc_afterLinking($key)
- *  240:     function extProc_beforeAllWrap($item,$key)
- *  253:     function isSetIntval($in)
- *  262:     function extProc_finish ()
- *  444:     function extCalcBorderWithin($kind,$integer)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

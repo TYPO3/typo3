@@ -32,21 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   78: class t3lib_pageTree extends t3lib_treeView
- *   90:	 function init($clause='')
- *  106:	 function expandNext($id)
- *  123:	 function PMicon($row,$a,$c,$nextCount,$exp)
- *  138:	 function initializePositionSaving()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -32,19 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   96: class user_xmlversion
- *  107:     function main_xmlversion($content,$conf)
- *  137:     function getContentResult($table)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Class that creates the current page and content element records as an XML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.xml" is used to trigger this XML creation as well. That template contains this set of TypoScript lines which triggers the XML creation and disables all regular HTML headers

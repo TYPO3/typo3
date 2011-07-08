@@ -243,7 +243,7 @@ class t3lib_contextmenu_Action {
 
 	/**
 	 * Returns the custom attributes
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getCustomAttributes() {

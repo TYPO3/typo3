@@ -31,22 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   72: class SC_mod_tools_config_index
- *   89:     function init()
- *  103:     function jumpToUrl(URL)
- *  117:     function menuConfig()
- *  144:     function main()
- *  268:     function printContent()
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require ('conf.php');

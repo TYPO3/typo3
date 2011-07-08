@@ -32,19 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   67: class tx_impexp_clickmenu
- *   79:     function main(&$backRef,$menuItems,$table,$uid)
- *  121:     function includeLL()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

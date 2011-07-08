@@ -157,7 +157,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	protected function updatePasswords($mode, $users) {
 			// Get a default saltedpasswords instance
 		$saltedpasswordsInstance = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, $mode);
-		
+
 		foreach ($users as $user) {
 			$newPassword = $saltedpasswordsInstance->getHashedPassword($user['password']);
 

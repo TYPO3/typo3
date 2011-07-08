@@ -30,10 +30,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- */
-/**
  * Core functions for administration
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

@@ -35,19 +35,6 @@
  * @author	Steffen Kamper <steffen@typo3.org>
  * @package TYPO3
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   73: class SC_mod_help_about_index
- *   91:	 function main()
- *  125:	 function printContent()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require ('conf.php');

@@ -29,42 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   87: class tx_indexedsearch_crawler
- *  106:     function crawler_init(&$pObj)
- *  219:     function crawler_execute($params,&$pObj)
- *  285:     function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)
- *  345:     function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)
- *  414:     function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)
- *  458:     function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)
- *  513:     function cleanUpOldRunningConfigurations()
- *
- *              SECTION: Helper functions
- *  579:     function checkUrl($url,$urlLog,$baseUrl)
- *  602:     function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)
- *  645:     function indexSingleRecord($r,$cfgRec,$rl=NULL)
- *  694:     function loadIndexerClass()
- *  706:     function getUidRootLineForClosestTemplate($id)
- *  739:     function generateNextIndexingTime($cfgRec)
- *  778:     function checkDeniedSuburls($url, $url_deny)
- *  798:     function addQueueEntryForHook($cfgRec, $title)
- *
- *              SECTION: Hook functions for TCEmain (indexing of records)
- *  830:     function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$pObj)
- *
- *
- *  879: class tx_indexedsearch_files
- *  888:     function crawler_execute($params,&$pObj)
- *  913:     function loadIndexerClass()
- *
- * TOTAL FUNCTIONS: 18
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

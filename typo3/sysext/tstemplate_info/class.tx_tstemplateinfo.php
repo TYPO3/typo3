@@ -24,22 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   49: class tx_tstemplateinfo extends t3lib_extobjbase
- *   63:     function tableRow($label, $data, $field)
- *   77:     function procesResources($resources, $func=FALSE)
- *  117:     function resourceListForCopy($id, $template_uid)
- *  143:     function initialize_editor($pageId, $template_uid=0)
- *  160:     function main()
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 

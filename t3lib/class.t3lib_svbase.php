@@ -31,61 +31,6 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  125: class t3lib_svbase
- *
- *			  SECTION: Get service meta information
- *  191:	 function getServiceInfo()
- *  201:	 function getServiceKey()
- *  211:	 function getServiceTitle()
- *  224:	 function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE)
- *
- *			  SECTION: Error handling
- *  259:	 function devLog($msg, $severity=0, $dataVar=FALSE)
- *  273:	 function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
- *  288:	 function errorPull()
- *  300:	 function getLastError()
- *  315:	 function getLastErrorMsg()
- *  330:	 function getErrorMsgArray()
- *  348:	 function getLastErrorArray()
- *  357:	 function resetErrors()
- *
- *			  SECTION: General service functions
- *  377:	 function checkExec($progList)
- *  401:	 function deactivateService()
- *
- *			  SECTION: IO tools
- *  427:	 function checkInputFile ($absFile)
- *  448:	 function readFile ($absFile, $length=0)
- *  473:	 function writeFile ($content, $absFile='')
- *  499:	 function tempFile ($filePrefix)
- *  517:	 function registerTempFile ($absFile)
- *  527:	 function unlinkTempFiles ()
- *
- *			  SECTION: IO input
- *  549:	 function setInput ($content, $type='')
- *  563:	 function setInputFile ($absFile, $type='')
- *  576:	 function getInput ()
- *  591:	 function getInputFile ($createFile='')
- *
- *			  SECTION: IO output
- *  616:	 function setOutputFile ($absFile)
- *  626:	 function getOutput ()
- *  640:	 function getOutputFile ($absFile='')
- *
- *			  SECTION: Service implementation
- *  664:	 function init()
- *  688:	 function reset()
- *  703:	 function __destruct()
- *
- * TOTAL FUNCTIONS: 30
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 define ('T3_ERR_SV_GENERAL', -1); // General error - something went wrong

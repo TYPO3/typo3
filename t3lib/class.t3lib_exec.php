@@ -26,26 +26,6 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   85: class t3lib_exec
- *   95:	 function checkCommand($cmd, $handler='')
- *  166:	 function getCommand($cmd, $handler='', $handlerOpt='')
- *  199:	 function addPaths($paths)
- *  211:	 function getPaths($addInvalid=FALSE)
- *  237:	 function _init()
- *  259:	 function _initPaths($paths='')
- *  312:	 function _getConfiguredApps()
- *  339:	 function _getPaths()
- *  400:	 function _fixPath($path)
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

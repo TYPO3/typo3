@@ -32,38 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   85: class t3lib_positionMap
- *
- *			  SECTION: Page position map:
- *  132:	 function positionTree($id,$pageinfo,$perms_clause,$R_URI)
- *  246:	 function JSimgFunc($prefix='')
- *  276:	 function boldTitle($t_code,$dat,$id)
- *  293:	 function onClickEvent($pid,$newPagePID)
- *  312:	 function insertlabel()
- *  324:	 function linkPageTitle($str,$rec)
- *  335:	 function checkNewPageInPid($pid)
- *  351:	 function getModConfig($pid)
- *  366:	 function insertQuadLines($codes,$allBlank=0)
- *
- *			  SECTION: Content element positioning:
- *  404:	 function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)
- *  442:	 function printRecordMap($lines,$colPosArray)
- *  480:	 function wrapColumnHeader($str,$vv)
- *  494:	 function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)
- *  511:	 function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
- *  531:	 function wrapRecordHeader($str,$row)
- *  541:	 function getRecordHeader($row)
- *  554:	 function wrapRecordTitle($str,$row)
- *
- * TOTAL FUNCTIONS: 17
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

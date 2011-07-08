@@ -31,31 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   83: class t3lib_readmail
- *
- *			  SECTION: General
- *  113:	 function getMessage($mailParts)
- *  138:	 function getTextContent($content)
- *  153:	 function getMailBoundaryParts($boundary,$content)
- *  173:	 function getCType($str)
- *  196:	 function analyseReturnError($c)
- *  251:	 function decodeHeaderString($str)
- *  279:	 function extractNameEmail($str)
- *  308:	 function getContentTypeData($contentTypeStr)
- *  331:	 function makeUnixDate($dateStr)
- *  354:	 function getGMToffset($GMT)
- *  368:	 function extractMailHeader($content,$limit=0)
- *  399:	 function fullParse($content)
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

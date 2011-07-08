@@ -32,39 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   98: class ext_TSparser extends t3lib_tsparser_ext
- *  106:     function makeHtmlspecialchars($P)
- *
- *
- *  127: class SC_wizard_tsconfig
- *  149:     function init()
- *  202:     function setValue(field,value)
- *  232:     function mixerField(cmd,objString)
- *  258:     function str_replace(match,replace,string)
- *  280:     function jump(show,objString)
- *  295:     function main()
- *  320:     function printContent()
- *  333:     function browseTSprop($mode,$show)
- *
- *              SECTION: Module functions
- *  419:     function getObjTree()
- *  449:     function setObj(&$objTree,$strArr,$params)
- *  469:     function revertFromSpecialChars($str)
- *  482:     function doLink($params)
- *  495:     function removePointerObjects($objArray)
- *  514:     function linkToObj($str,$uid,$objString='')
- *  527:     function printTable($table,$objString,$objTree)
- *  608:     function linkProperty($str,$propertyName,$prefix,$datatype)
- *
- * TOTAL FUNCTIONS: 17
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

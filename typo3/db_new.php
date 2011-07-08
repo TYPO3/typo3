@@ -35,30 +35,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   90: class localPageTree extends t3lib_pageTree
- *   99:     function wrapIcon($icon,$row)
- *  110:     function expandNext($id)
- *
- *
- *  128: class SC_db_new
- *  157:     function init()
- *  224:     function main()
- *  276:     function pagesOnly()
- *  294:     function regularNew()
- *  458:     function printContent()
- *  473:     function linkWrap($code,$table,$pid,$addContentTable=0)
- *  493:     function isTableAllowedForThisPage($pid_row, $checkTable)
- *  523:     function showNewRecLink($table,$allowedNewTables='')
- *
- * TOTAL FUNCTIONS: 10
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

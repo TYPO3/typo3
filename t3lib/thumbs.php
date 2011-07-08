@@ -31,24 +31,6 @@
  *
  * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  113: class SC_t3lib_thumbs
- *  134:     function init()
- *  164:     function main()
- *
- *              SECTION: OTHER FUNCTIONS:
- *  267:     function errorGif($l1,$l2,$l3)
- *  319:     function fontGif($font)
- *  366:     function wrapFileName($inputName)
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 // *******************************

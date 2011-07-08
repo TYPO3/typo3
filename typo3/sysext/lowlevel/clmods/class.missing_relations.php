@@ -30,20 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   56: class tx_lowlevel_missing_relations extends tx_lowlevel_cleaner_core
- *   65:     function tx_lowlevel_missing_relations()
- *  101:     function main()
- *  173:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

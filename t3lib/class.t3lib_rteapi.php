@@ -29,25 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   64: class t3lib_rteapi
- *
- *			  SECTION: Main API functions;
- *   93:	 function isAvailable()
- *  118:	 function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)
- *  151:	 function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)
- *
- *			  SECTION: Helper functions
- *  197:	 function triggerField($fieldName)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

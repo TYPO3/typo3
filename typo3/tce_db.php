@@ -33,21 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   78: class SC_tce_db
- *  106:     function init()
- *  162:     function initClipboard()
- *  182:     function main()
- *  218:     function finish()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 require ('init.php');

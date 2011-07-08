@@ -30,21 +30,6 @@
  * XHTML compliant
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   65: class tx_lowlevel_cleaner extends t3lib_extobjbase
- *   74:     function modMenu()
- *  109:     function main()
- *  130:     function createMenu()
- *  145:     function moduleContent()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(t3lib_extMgm::extPath('lowlevel').'class.tx_lowlevel_cleaner_core.php');
 

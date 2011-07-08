@@ -29,29 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class language
- *  138:     function init($lang,$altPath='')
- *  183:     function addModuleLabels($arr,$prefix)
- *  209:     function hscAndCharConv($lStr,$hsc)
- *  224:     function makeEntities($str)
- *  241:     function JScharCode($str)
- *  260:     function getLL($index,$hsc=0)
- *  278:     function getLLL($index,$LOCAL_LANG,$hsc=0)
- *  299:     function sL($input,$hsc=0)
- *  344:     function loadSingleTableDescription($table)
- *  396:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
- *  441:     function readLLfile($fileRef)
- *  451:     function localizedFileRef($fileRef)
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Contains the TYPO3 Backend Language class

@@ -29,23 +29,6 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   62: class tx_sv_authbase extends t3lib_svbase
- *   87:     function initAuth($mode, $loginData, $authInfo, &$pObj)
- *  110:     function compareUident($user, $loginData, $security_level='')
- *  129:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='')
- *
- *              SECTION: create/update user - EXPERIMENTAL
- *  158:     function fetchUserRecord($username, $extraWhere='', $dbUserSetup='')
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(PATH_t3lib . 'class.t3lib_svbase.php');
 

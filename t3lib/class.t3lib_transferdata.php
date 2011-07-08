@@ -31,45 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   99: class t3lib_transferData
- *
- *			  SECTION: Getting record content, ready for display in TCEforms
- *  138:	 function fetchRecord($table,$idList,$operation)
- *  225:	 function renderRecord($table, $id, $pid, $row)
- *  269:	 function renderRecordRaw($table, $id, $pid, $row, $TSconfig='', $tscPID=0)
- *  327:	 function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  359:	 function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  410:	 function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  473:	 function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  504:	 function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
- *  545:	 function renderRecord_inlineProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *
- *			  SECTION: FlexForm processing functions
- *  632:	 function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
- *  661:	 function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
- *
- *			  SECTION: Selector box processing functions
- *  738:	 function selectAddSpecial($dataAcc, $elements, $specialKey)
- *  863:	 function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table)
- *  917:	 function getDataIdList($elements, $fieldConfig, $row, $table)
- *  946:	 function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
- *  961:	 function addItems($items,$iArray)
- *  983:	 function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
- *
- *			  SECTION: Helper functions
- * 1018:	 function lockRecord($table, $id, $pid=0)
- * 1035:	 function regItem($table, $id, $field, $content)
- * 1045:	 function sL($in)
- *
- * TOTAL FUNCTIONS: 20
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

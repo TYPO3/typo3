@@ -34,36 +34,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  106: class ext_posMap extends t3lib_positionMap
- *  117:     function wrapRecordTitle($str,$row)
- *  130:     function wrapColumnHeader($str,$vv)
- *  144:     function onClickInsertRecord($row,$vv,$moveUid,$pid)
- *  160:     function wrapRecordHeader($str,$row)
- *
- *
- *  181: class SC_db_layout
- *  230:     function init()
- *  283:     function menuConfig()
- *  372:     function clearCache()
- *  387:     function main()
- *  489:     function renderQuickEdit()
- *  886:     function renderListContent()
- * 1165:     function printContent()
- *
- *              SECTION: Other functions
- * 1192:     function getNumberOfHiddenElements()
- * 1205:     function local_linkThisScript($params)
- * 1217:     function exec_languageQuery($id)
- *
- * TOTAL FUNCTIONS: 14
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 unset($MCONF);

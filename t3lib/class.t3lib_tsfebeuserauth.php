@@ -32,54 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  103: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth
- *  129:	 function extInitFeAdmin()
- *  154:	 function extPrintFeAdminDialog()
- *
- *			  SECTION: Creating sections of the Admin Panel
- *  250:	 function extGetCategory_preview($out='')
- *  283:	 function extGetCategory_cache($out='')
- *  321:	 function extGetCategory_publish($out='')
- *  356:	 function extGetCategory_edit($out='')
- *  400:	 function extGetCategory_tsdebug($out='')
- *  433:	 function extGetCategory_info($out='')
- *
- *			  SECTION: Admin Panel Layout Helper functions
- *  506:	 function extGetHead($pre)
- *  526:	 function extItemLink($pre,$str)
- *  542:	 function extGetItem($pre,$element)
- *  559:	 function extFw($str)
- *  568:	 function ext_makeToolBar()
- *
- *			  SECTION: TSFE BE user Access Functions
- *  637:	 function checkBackendAccessSettingsFromInitPhp()
- *  682:	 function extPageReadAccess($pageRec)
- *  693:	 function extAdmModuleEnabled($key)
- *  709:	 function extSaveFeAdminConfig()
- *  741:	 function extGetFeAdminValue($pre,$val='')
- *  783:	 function extIsAdmMenuOpen($pre)
- *
- *			  SECTION: TSFE BE user Access Functions
- *  818:	 function extGetTreeList($id,$depth,$begin=0,$perms_clause)
- *  849:	 function extGetNumberOfCachedPages($page_id)
- *
- *			  SECTION: Localization handling
- *  888:	 function extGetLL($key)
- *
- *			  SECTION: Frontend Editing
- *  932:	 function extIsEditAction()
- *  954:	 function extIsFormShown()
- *  970:	 function extEditAction()
- *
- * TOTAL FUNCTIONS: 25
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

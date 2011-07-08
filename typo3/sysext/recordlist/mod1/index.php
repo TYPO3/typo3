@@ -38,22 +38,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   89: class SC_db_list
- *  125:     function init()
- *  160:     function menuConfig()
- *  181:     function clearCache()
- *  195:     function main()
- *  451:     function printContent()
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');

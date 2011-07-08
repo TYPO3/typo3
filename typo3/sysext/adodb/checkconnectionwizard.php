@@ -28,19 +28,6 @@
  * @author	Robert Lemke <robert@typo3.org>
  */
 
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   63: class tx_adodb_checkconnectionwizard
- *   65:     function main()
- *
- * TOTAL FUNCTIONS: 1
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
  	// Build TYPO3 enviroment:
 $BACK_PATH='../../../typo3/';
 define('TYPO3_MOD_PATH', 'sysext/adodb/');

@@ -32,21 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   81: class SC_wizard_rte
- *   99:     function init()
- *  123:     function main()
- *  285:     function printContent()
- *  298:     function checkEditAccess($table,$uid)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

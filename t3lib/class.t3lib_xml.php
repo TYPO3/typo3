@@ -31,34 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class t3lib_xml
- *  102:	 function t3lib_xml($topLevelName)
- *  113:	 function setRecFields($table,$list)
- *  122:	 function getResult()
- *  132:	 function WAPHeader()
- *  144:	 function renderHeader()
- *  155:	 function renderFooter()
- *  167:	 function newLevel($name,$beginEndFlag=0,$params=array())
- *  192:	 function output($content)
- *  208:	 function indent($b)
- *  224:	 function renderRecords($table,$res)
- *  237:	 function addRecord($table,$row)
- *  255:	 function getRowInXML($table,$row)
- *  271:	 function utf8($content)
- *  281:	 function substNewline($string)
- *  292:	 function fieldWrap($field,$value)
- *  301:	 function WAPback()
- *  315:	 function addLine($str)
- *
- * TOTAL FUNCTIONS: 17
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

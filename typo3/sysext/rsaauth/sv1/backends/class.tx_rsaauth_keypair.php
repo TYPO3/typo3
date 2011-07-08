@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- */
-
 
 /**
  * This class contain an RSA keypair class. Its purpose is to keep to keys

@@ -21,27 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   57: class tx_openid_sv1 extends t3lib_svbase
- *   92:     public function init()
- *  119:     public function initAuth($subType, array $loginData, array $authenticationInformation, t3lib_userAuth &$parentObject)
- *  139:     public function getUser()
- *  176:     public function authUser(array $userRecord)
- *  221:     protected function includePHPOpenIDLibrary()
- *  250:     protected function getUserRecord($openIDIdentifier)
- *  273:     protected function getOpenIDConsumer()
- *  300:     protected function sendOpenIDRequest()
- *  368:     protected function getReturnURL()
- *  414:     protected function writeLog($message)
- *
- * TOTAL FUNCTIONS: 10
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(PATH_t3lib . 'class.t3lib_svbase.php');
 require_once(t3lib_extMgm::extPath('openid', 'sv1/class.tx_openid_store.php'));

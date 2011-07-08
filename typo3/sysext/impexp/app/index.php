@@ -30,52 +30,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  137: class localPageTree extends t3lib_browseTree
- *  144:     function localPageTree()
- *  155:     function wrapTitle($title,$v)
- *  168:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  179:     function wrapIcon($icon,$row)
- *  188:     function permsC()
- *  199:     function ext_tree($pid, $clause='')
- *
- *
- *  280: class SC_mod_tools_log_index extends t3lib_SCbase
- *  289:     function main()
- *  359:     function printContent()
- *
- *              SECTION: EXPORT FUNCTIONS
- *  387:     function exportData($inData)
- *  661:     function addRecordsForPid($k, $tables, $maxNumber)
- *  687:     function exec_listQueryPid($table,$pid,$limit)
- *  717:     function makeConfigurationForm($inData, &$row)
- *  885:     function makeAdvancedOptionsForm($inData, &$row)
- *  933:     function makeSaveForm($inData, &$row)
- *
- *              SECTION: IMPORT FUNCTIONS
- * 1064:     function importData($inData)
- *
- *              SECTION: Preset functions
- * 1363:     function processPresets(&$inData)
- * 1458:     function getPreset($uid)
- *
- *              SECTION: Helper functions
- * 1484:     function userTempFolder()
- * 1500:     function userSaveFolder()
- * 1523:     function checkUpload()
- * 1553:     function renderSelectBox($prefix,$value,$optValues)
- * 1576:     function tableSelector($prefix,$value,$excludeList='')
- * 1612:     function extensionSelector($prefix,$value)
- * 1637:     function filterPageIds($exclude)
- *
- * TOTAL FUNCTIONS: 24
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * 	IMPORTING DATA:
  *
  * 	Incoming array has syntax:

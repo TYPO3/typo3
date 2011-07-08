@@ -33,20 +33,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   67: class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase
- *   75:     function modMenu()
- *   88:     function main()
- *  175:     function wiz_linkOrder($title,$order)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Creates the "Sort pages" wizard
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

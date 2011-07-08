@@ -32,33 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  116: class t3lib_softrefproc
- *  137:	 function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
- *  213:	 function findRef_images($content, $spParams)
- *  280:	 function findRef_typolink($content, $spParams)
- *  317:	 function findRef_typolink_tag($content, $spParams)
- *  352:	 function findRef_TStemplate($content, $spParams)
- *  434:	 function findRef_TSconfig($content, $spParams)
- *  457:	 function findRef_email($content, $spParams)
- *  497:	 function findRef_url($content, $spParams)
- *  539:	 function findRef_extension_fileref($content, $spParams)
- *
- *			  SECTION: Helper functions
- *  591:	 function fileadminReferences($content, &$elements)
- *  634:	 function getTypoLinkParts($typolinkValue)
- *  718:	 function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
- *  833:	 function getPageIdFromAlias($link_param)
- *  845:	 function makeTokenID($index='')
- *
- * TOTAL FUNCTIONS: 14
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -32,20 +32,9 @@
  * XHTML compliant content
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   66: class SC_alt_toplogo
- *   74:     function main()
- *  105:     function printContent()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.
+ * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7.
+ * 		The TYPO3 backend is using typo3/backend.php with less frames,
+ * 		which makes this file obsolete.
  */
 
 require ('init.php');

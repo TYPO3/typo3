@@ -24,9 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');
 

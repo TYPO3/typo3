@@ -33,45 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   91: class local_t3lib_parsehtml extends t3lib_parsehtml
- *  102:     function processContent($value,$dir,$conf)
- *
- *
- *  122: class SC_view_help
- *  146:     function init()
- *  167:     function main()
- *  198:     function printContent()
- *
- *              SECTION: Rendering main modes
- *  221:     function render_TOC()
- *  338:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
- *  370:     function render_TOC_makeTocList($tocArray)
- *  409:     function render_Table($table)
- *  469:     function render_Single($table,$field)
- *
- *              SECTION: Rendering CSH items
- *  515:     function make_seeAlso($value,$anchorTable='')
- *  564:     function printImage($images,$descr)
- *  599:     function headerLine($str,$type=0)
- *  620:     function prepareContent($str)
- *  635:     function printItem($table,$field,$anchors=0)
- *  668:     function getTableFieldNames($table,$field)
- *  691:     function getTableFieldLabel($table,$field='',$mergeToken=': ')
- *
- *              SECTION: Glossary related
- *  726:     function createGlossaryIndex()
- *  785:     function substituteGlossaryWords($code)
- *  801:     function substituteGlossaryWords_htmlcleaner_callback($code)
- *
- * TOTAL FUNCTIONS: 19
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require('init.php');
 require('template.php');

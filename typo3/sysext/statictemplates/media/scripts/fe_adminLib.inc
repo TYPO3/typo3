@@ -32,62 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  132: class user_feAdmin
- *  179:     function init($content,$conf)
- *
- *              SECTION: Data processing
- *  423:     function parseValues()
- *  518:     function processFiles($cmdParts,$theField)
- *  624:     function overrideValues()
- *  640:     function defaultValues()
- *  659:     function evalValues()
- *  781:     function userProcess($mConfKey,$passVar)
- *  799:     function userProcess_alt($confVal,$confArr,$passVar)
- *
- *              SECTION: Database manipulation functions
- *  841:     function save()
- *  899:     function deleteRecord()
- *  929:     function deleteFilesFromRecord($uid)
- *
- *              SECTION: Command "display" functions
- *  986:     function displayDeleteScreen()
- * 1014:     function displayCreateScreen()
- * 1037:     function displayEditScreen()
- * 1088:     function displayEditForm($origArr)
- * 1116:     function procesSetFixed()
- *
- *              SECTION: Template processing functions
- * 1205:     function removeRequired($templateCode,$failure)
- * 1223:     function getPlainTemplate($key,$r='')
- * 1240:     function modifyDataArrForFormUpdate($inputArr)
- * 1309:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
- *
- *              SECTION: Emailing
- * 1371:     function sendInfoMail()
- * 1419:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
- * 1465:     function sendMail($recipient, $admin, $content='', $adminContent='')
- * 1510:     function isHTMLContent($c)
- * 1531:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
- *
- *              SECTION: Various helper functions
- * 1615:     function aCAuth($r)
- * 1629:     function authCode($r,$extra='')
- * 1655:     function setfixed($markerArray, $setfixed, $r)
- * 1693:     function setfixedHash($recCopy,$fields='')
- * 1714:     function isPreview()
- * 1723:     function createFileFuncObj()
- * 1734:     function clearCacheIfSet()
- * 1749:     function getFailure($theField, $theCmd, $label)
- *
- * TOTAL FUNCTIONS: 33
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * This library provides a HTML-template file based framework for Front End creating/editing/deleting records authenticated by email or fe_user login.
  * It is used in the extensions "direct_mail_subscription" and "feuser_admin" (and the deprecated(!) static template "plugin.feadmin.dmailsubscription" and "plugin.feadmin.fe_users" which are the old versions of these two extensions)
  * Further the extensions "t3consultancies" and "t3references" also uses this library but contrary to the "direct_mail_subscription" and "feuser_admin" extensions which relies on external HTML templates which must be adapted these two extensions delivers the HTML template code from inside.

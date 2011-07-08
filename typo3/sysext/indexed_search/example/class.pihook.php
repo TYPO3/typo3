@@ -29,19 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   59: class tx_indexedsearch_pihook
- *   72:     function initialize_postProc()
- *   95:     function prepareResultRowTemplateData_postProc($tmplContent, $row, $headerOnly)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

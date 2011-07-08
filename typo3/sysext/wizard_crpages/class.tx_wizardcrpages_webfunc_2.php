@@ -32,20 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   70: class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase
- *   78:     function modMenu()
- *   95:     function main()
- *  179:     function helpBubble()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Creates the "Create pages" wizard

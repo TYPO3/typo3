@@ -29,31 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   79: class t3lib_tsStyleConfig extends t3lib_tsparser_ext
- *   98:	 function ext_initTSstyleConfig($configTemplate,$pathRel,$pathAbs,$backPath)
- *  118:	 function ext_setValueArray($theConstants,$valueArray)
- *  145:	 function ext_getCategoriesForModMenu()
- *  155:	 function ext_makeHelpInformationForCategory($cat)
- *  168:	 function ext_getForm($cat,$theConstants,$script="",$addFields="")
- *  175:	 function uFormUrl(aname)
- *  197:	 function ext_displayExample()
- *  213:	 function ext_mergeIncomingWithExisting($arr)
- *  221:	 function ext_getKeyImage($key)
- *  231:	 function ext_getTSCE_config_image($imgConf)
- *  244:	 function ext_fNandV($params)
- *  262:	 function ext_loadResources($absPath)
- *  278:	 function ext_putValueInConf($key, $var)
- *  288:	 function ext_removeValueInConf($key)
- *
- * TOTAL FUNCTIONS: 14
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

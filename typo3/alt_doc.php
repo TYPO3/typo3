@@ -34,47 +34,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  105: class SC_alt_doc
- *  179:     function preInit()
- *  241:     function doProcessData()
- *  251:     function processData()
- *  379:     function init()
- *  473:     function main()
- *  551:     function printContent()
- *
- *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  587:     function makeEditForm()
- *  771:     function makeButtonPanel()
- *  850:     function makeDocSel()
- *  892:     function makeCmenu()
- *  914:     function compileForm($panel,$docSel,$cMenu,$editForm, $langSelector='')
- *  982:     function functionMenus()
- * 1013:     function shortCutLink()
- * 1044:     function tceformMessages()
- *
- *              SECTION: Localization stuff
- * 1083:     function languageSwitch($table, $uid, $pid=NULL)
- * 1179:     function localizationRedirect($justLocalized)
- * 1213:     function getLanguages($id)
- *
- *              SECTION: Other functions
- * 1275:     function fixWSversioningInEditConf($mapArray=FALSE)
- * 1324:     function getRecordForEdit($table,$theUid)
- * 1358:     function editRegularContentFromId()
- * 1386:     function compileStoreDat()
- * 1399:     function getNewIconMode($table,$key='saveDocNew')
- * 1412:     function closeDocument($code=0)
- * 1444:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
- *
- * TOTAL FUNCTIONS: 24
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 require_once('init.php');

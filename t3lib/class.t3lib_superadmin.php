@@ -33,59 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *  120: function debug($p1,$p2='')
- *
- *
- *  134: class t3lib_superadmin
- *
- *			  SECTION: Initialize stuff
- *  180:	 function t3lib_superadmin()
- *  192:	 function init($parentDirs)
- *
- *			  SECTION: Main functions
- *  215:	 function defaultSet()
- *  271:	 function make()
- *
- *			  SECTION: Output preparation
- *  376:	 function setMenuItem($code,$label)
- *  390:	 function error($str)
- *  401:	 function headerParentDir($str)
- *  412:	 function headerSiteDir($str)
- *
- *			  SECTION: Collection information
- *  444:	 function initProcess()
- *  482:	 function processSiteDir($path,$dir)
- *  524:	 function includeLocalconf($localconf)
- *  554:	 function connectToDatabase($siteInfo)
- *  576:	 function getDBInfo($key)
- *
- *			  SECTION: Content: Installation Overview
- *  626:	 function makeTable()
- *
- *			  SECTION: Content: Local extensions
- *  729:	 function localExtensions()
- *  902:	 function getExtensionInfo($path,$extKey,$k)
- *  956:	 function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
- *  978:	 function findMostRecent($fileArr,$extPath)
- *  996:	 function removePrefixPathFromList($fileArr,$extPath)
- *
- *			  SECTION: Content: Other
- * 1033:	 function singleSite($exp)
- * 1064:	 function loginLog($DB)
- * 1102:	 function log_getDetails($text,$data)
- * 1116:	 function rmCachedFiles($exp)
- * 1149:	 function menuContent($exp)
- * 1221:	 function makeAdminLogin()
- * 1295:	 function changeAdminPasswordsForm()
- * 1330:	 function setNewPasswords()
- *
- * TOTAL FUNCTIONS: 28
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 	// *******************************
