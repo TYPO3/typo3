@@ -767,6 +767,10 @@
         <source>Never include before this template record</source>
         <target approved="yes">Never include before this template record</target>
       </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3">
+        <source>Include before all static templates if root flag is set</source>
+        <target approved="yes">Include before all static templates if root flag is set</target>
+      </trans-unit>
       <trans-unit id="sys_template.basedOn_add">
         <source>Add New Basis Template</source>
         <target approved="yes">Add New Basis Template</target>
