@@ -88,10 +88,14 @@ $TYPO3_CONF_VARS = array(
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => FALSE,	// Boolean: If set, the current TYPO3 version is shown.
 		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs
-		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/.
-		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.).
-		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass.
-		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely.
+		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
+		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
+		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.). Deprecated since 4.6 - will be removed in 4.8. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
+		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
+		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
 		'textfile_ext' => 'txt,html,htm,css,tmpl,js,sql,xml,csv,' . PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
@@ -585,6 +589,27 @@ $TYPO3_CONF_VARS = array(
 		'defaultMailFromAddress' => '',			// String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
 		'defaultMailFromName' => '',			// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
 	),
+	'HTTP' => array(						// HTTP configuration to tune how TYPO3 behaves on HTTP request. Have a look at <a href="http://pear.php.net/manual/en/package.http.http-request2.config.php>HTTP_Request2 Manual</a> for some background information on those settings.
+		'adapter' => 'socket',					// String: Default adapter - either "socket" or "curl".
+		'connect_timeout' => 10, 				// Integer: Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.
+		'timeout' => 0, 						// Integer: Default timeout for whole request. Exception will be thrown if sending the request takes more than this number of seconds. Should be greater than connection timeout (see above) or "0" to not set a limit. Defaults to "0".
+		'protocol_version' => '1.1',			// String: Default HTTP protocol version. Use either "1.0" or "1.1".
+		'follow_redirects' => FALSE, 			// Boolean: If set, redirects are followed by default. If number of tries are exceeded, an exception is thrown.
+		'max_redirects' => 5, 					// Integer: Maximum number of tries before an exception is thrown.
+		'strict_redirects' => FALSE,			// Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers). There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.curl">issues with cURL adapter</a>. Defaults to FALSE.
+		'proxy_host' => '', 						// String: Default proxy server as "http://proxy.example.org" (You must not set the port here. Set the port below.)
+		'proxy_port' => '', 						// Integer: Default proxy server port.
+		'proxy_user' => '', 						// String: Default user name.
+		'proxy_password' => '', 					// String: Default password.
+		'proxy_auth_scheme' => 'basic', 				// String: Default authentication method. Can either be "basic" or "digest". Defaults to "basic".
+		'ssl_verify_peer' => TRUE,				// Boolean: Whether to verify peer's SSL certificate. Note that this is on by default, to follow the behaviour of modern browsers and current cURL version. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket Adapter</a>.
+		'ssl_verify_host' => TRUE,				// Boolean: Whether to check that Common Name in SSL certificate matches host name. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket Adapter</a>.
+		'ssl_cafile' => '',						// String: Certificate Authority file to verify the peer with (use when ssl_verify_peer is TRUE).
+		'ssl_capath' => '',						// String: Directory holding multiple Certificate Authority files.
+		'ssl_local_cert' => '',					// String: Name of a file containing local certificate.
+		'ssl_passphrase' => '',					// String: Passphrase with which local certificate was encoded.
+		'userAgent' => '',						// String: Default user agent. If empty, this will be "TYPO3/4.x", while x is the current branch version. This overrides the constant <em>TYPO3_user_agent</em>.
+	),
 	'MODS' => array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
 	'USER' => array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
@@ -650,7 +675,13 @@ $TYPO_VERSION = '4.6-dev';	// @deprecated: Will be removed in TYPO3 4.8. Use the
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.6');
 define('TYPO3_copyright_year', '1998-2011');
-define('TYPO3_user_agent', 'User-Agent: TYPO3/'.TYPO3_version);
+
+	// Handle $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']. We can not set the default above
+	// because TYPO3_version is not yet defined.
+if (empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent'] = 'TYPO3/' . TYPO3_version;
+}
+define('TYPO3_user_agent', 'User-Agent: '. $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
@@ -778,6 +809,34 @@ define('TYPO3_UseCachingFramework', TRUE);
 	// @deprecated, can be removed in 4.8
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = TRUE;
 
+
+/**
+ * Parse old curl options and set new http ones instead
+ *
+ * @deprecated Deprecated since 4.6 - will be removed in 4.8.
+ */
+if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+	$proxyParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'], 2);
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['httpProxyHost'] = $proxyParts[0];
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['httpProxyPort'] = $proxyParts[1];
+    /* TODO: uncomment after refactoring getUrl()
+	t3lib_div::deprecationLog(
+		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyServer\'] property with the following value: ' .
+		$TYPO3_CONF_VARS['SYS']['curlProxyServer'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'SYS\'][\'httpProxyHost\']' .
+		' and $TYPO3_CONF_VARS[\'SYS\'][\'httpProxyPort\'] instead.' . LF . 'Remove this line from your localconf.php.'
+	);*/
+}
+if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])) {
+	$userPassParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'], 2);
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['httpProxyUser'] = $userPassParts[0];
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['httpProxyPass'] = $userPassParts[1];
+	/* TODO: uncomment after refactoring getUrl()
+	t3lib_div::deprecationLog(
+		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyUserPass\'] property with the following value: ' .
+		$TYPO3_CONF_VARS['SYS']['curlProxyUserPass'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'SYS\'][\'httpProxyUser\']' .
+		' and $TYPO3_CONF_VARS[\'SYS\'][\'httpProxyPass\'] instead.' . LF . 'Remove this line from your localconf.php.'
+	);*/
+}
 
 $timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
 if (empty($timeZone)) {
