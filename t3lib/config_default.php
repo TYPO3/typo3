@@ -52,7 +52,7 @@ $TYPO3_CONF_VARS = array(
 		'im_useStripProfileByDefault' => TRUE,	// Boolean: If set, the im_stripProfileCommand is used with all IM Image operations by default. See tsRef for setting this parameter explocit for IMAGE generation.
 		'jpg_quality' => 70,					// Integer: Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => FALSE,	// Boolean: If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
-		'TTFdpi' => 72,							// Integer: Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
+		'TTFdpi' => 96,							// Integer: Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
 		'png_truecolor' => FALSE,				// Boolean: If set PNGs will get created as truecolor PNGs. If you use GDlib2 you can create truecolor images if they look not well currently. Note that this results in an increased image size. JPEGs get always created in truecolor now (GDlib2 required)
 	),
 	'SYS' => array(			// System related concerning both frontend and backend.
