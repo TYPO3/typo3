@@ -184,6 +184,9 @@ die();
 	}
 }
 
+	// fix include path for pear packages
+set_include_path(get_include_path() . PATH_SEPARATOR . PATH_typo3 . 'contrib/pear/');
+
 // *********************
 // Unset variable(s) in global scope (fixes #13959)
 // *********************
