@@ -32,27 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   81: class t3lib_BEDisplayLog
- *  106:	 function initArray()
- *  123:	 function getTimeLabel($code)
- *  139:	 function getUserLabel($code,$workspace=0)
- *  154:	 function getTypeLabel($code)
- *  168:	 function getActionLabel($code)
- *  186:	 function getDetails($code,$text,$data,$sys_log_uid=0)
- *  220:	 function reset()
- *  234:	 function getErrorFormatting($sign, $error=0)
- *  244:	 function formatDetailsForList($row)
- *  261:	 function stripPath($inArr)
- *
- * TOTAL FUNCTIONS: 10
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

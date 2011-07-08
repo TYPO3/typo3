@@ -31,21 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   77: class SC_file_list
- *  103:     function init()
- *  130:     function menuConfig()
- *  151:     function main()
- *  325:     function printContent()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 unset($MCONF);

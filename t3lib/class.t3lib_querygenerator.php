@@ -31,49 +31,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	Jo Hasenau <info@cybercraft.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   98: class t3lib_queryGenerator
- *  245:	 function makeFieldList()
- *  273:	 function init($name,$table,$fieldList='')
- *  410:	 function setAndCleanUpExternalLists($name,$list,$force='')
- *  426:	 function procesData($qC='')
- *  529:	 function cleanUpQueryConfig($queryConfig)
- *  586:	 function getFormElements($subLevel=0,$queryConfig='',$parent='')
- *  744:	 function makeOptionList($fN, $conf, $table)
- *  953:	 function printCodeArray($codeArr,$l=0)
- *  976:	 function formatQ($str)
- *  989:	 function mkOperatorSelect($name,$op,$draw,$submit)
- * 1011:	 function mkTypeSelect($name,$fieldName,$prepend='FIELD_')
- * 1032:	 function verifyType($fieldName)
- * 1049:	 function verifyComparison($comparison,$neg)
- * 1068:	 function mkFieldToInputSelect($name,$fieldName)
- * 1091:	 function mkTableSelect($name,$cur)
- * 1113:	 function mkCompSelect($name,$comparison,$neg)
- * 1131:	 function getSubscript($arr)
- * 1146:	 function initUserDef()
- * 1155:	 function userDef()
- * 1164:	 function userDefCleanUp($queryConfig)
- * 1175:	 function getQuery ($queryConfig,$pad='')
- * 1205:	 function getQuerySingle($conf,$first)
- * 1245:	 function cleanInputVal($conf,$suffix='')
- * 1270:	 function getUserDefQuery ($qcArr)
- * 1278:	 function updateIcon()
- * 1287:	 function getLabelCol()
- * 1299:	 function makeSelectorTable($modSettings,$enableList='table,fields,query,group,order,limit')
- * 1431:	 function getTreeList($id, $depth, $begin=0, $perms_clause)
- * 1465:	 function getSelectQuery($qString = '', $fN = '')
- * 1504:	 function JSbottom($formname='forms[0]')
- * 1510:	 function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
- * 1528:	 function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
- *
- * TOTAL FUNCTIONS: 32
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

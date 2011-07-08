@@ -33,28 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class TSpagegen
- *   95:     function pagegenInit()
- *  271:     function getIncFiles()
- *  304:     function JSeventFunctions()
- *  338:     function renderContent()
- *  365:     function renderContentWithHeader($pageContent)
- *
- *              SECTION: Helper functions
- *  827:     function inline2TempFile($str,$ext)
- *
- *
- *  881: class FE_loadDBGroup extends t3lib_loadDBGroup
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

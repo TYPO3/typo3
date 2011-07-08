@@ -35,20 +35,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *   71: public static function initFeUser()
- *   98: public static function connectDB()
- *  117: public static function initLanguage($language = 'default')
- *  131: public static function initTCA()
- *  150: public static function initExtensionTCA($extensionKey)
- *  167: private static function getTSFE()
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Tools for scripts using the eID feature of index.php

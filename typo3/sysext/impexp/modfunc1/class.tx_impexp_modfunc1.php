@@ -29,23 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   63: class tx_impexp_modfunc1 extends mod_user_task
- *   72:     function overview_main()
- *  109:     function main()
- *
- *              SECTION: Helper functions
- *  192:     function getPresets()
- *  209:     function userTempFolder()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

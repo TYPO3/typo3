@@ -33,30 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  101: class ext_posMap extends t3lib_positionMap
- *  111:     function wrapRecordTitle($str,$row)
- *  125:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
- *
- *
- *  153: class SC_db_new_content_el
- *  176:     function init()
- *  212:     function main()
- *  359:     function printContent()
- *
- *              SECTION: OTHER FUNCTIONS:
- *  388:     function getWizardItems()
- *  398:     function wizardArray()
- *  549:     function removeInvalidElements(&$wizardItems)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 unset($MCONF);

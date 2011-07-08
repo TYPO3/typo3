@@ -31,19 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   67: class tx_extrapagecmoptions
- *   79:     function main(&$backRef,$menuItems,$table,$uid)
- *  158:     function includeLL()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

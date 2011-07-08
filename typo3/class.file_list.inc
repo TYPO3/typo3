@@ -31,33 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   75: class fileList extends t3lib_recordList
- *  112:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)
- *  133:     function generateList()
- *  146:     function writeTop($path)
- *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- *  218:     function getTable($files,$dirs,$rowlist)
- *  306:     function formatDirList($items)
- *  372:     function linkWrapDir($code,$path)
- *  391:     function linkWrapFile($code,$path)
- *  406:     function listURL()
- *  416:     function dirData($theFile)
- *  441:     function formatFileList($items)
- *  518:     function isImage($ext)
- *  530:     function linkWrapSort($code,$path,$col)
- *  548:     function readDirectory($path,$type,$extList='')
- *  602:     function makeClip($theData)
- *  647:     function makeRef($theData)
- *
- * TOTAL FUNCTIONS: 16
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

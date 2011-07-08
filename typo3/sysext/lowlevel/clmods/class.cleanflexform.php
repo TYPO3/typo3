@@ -30,21 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   57: class tx_lowlevel_cleanflexform extends tx_lowlevel_cleaner_core
- *   64:     function tx_lowlevel_cleanflexform()
- *   89:     function main()
- *  122:     function main_parseTreeCallBack($tableName,$uid,$echoLevel,$versionSwapmode,$rootIsVersion)
- *  154:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

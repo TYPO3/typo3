@@ -32,26 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   80: class t3lib_recordList
- *  123:	 function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')
- *  198:	 function writeTop()
- *  206:	 function writeBottom()
- *  225:	 function fwd_rwd_nav($table='')
- *  258:	 function fwd_rwd_HTML($type,$pointer,$table='')
- *  284:	 function listURL($altId='')
- *  294:	 function CBfunctions()
- *  344:	 function initializeLanguages()
- *  411:	 function languageFlag($sys_language_uid)
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

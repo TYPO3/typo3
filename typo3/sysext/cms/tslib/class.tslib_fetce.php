@@ -32,24 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   83: class tslib_feTCE
- *  100:     function start($data,$FEData)
- *  187:     function checkDoublePostExist($table,$doublePostField,$key)
- *  200:     function calcDoublePostKey($array)
- *  212:     function includeScripts()
- *  232:     function execNEWinsert($table, $dataArr)
- *  258:     function clear_cacheCmd($cacheCmd)
- *  274:     function getConf($table)
- *
- * TOTAL FUNCTIONS: 7
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

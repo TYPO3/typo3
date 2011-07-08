@@ -31,36 +31,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	Jo Hasenau <info@cybercraft.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class t3lib_fullsearch
- *  103:	 function form()
- *  117:	 function makeStoreControl()
- *  156:	 function initStoreArray()
- *  176:	 function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)
- *  193:	 function addToStoreQueryConfigs($storeQueryConfigs,$index)
- *  209:	 function saveQueryInAction($uid)
- *  256:	 function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)
- *  272:	 function procesStoreControl()
- *  344:	 function queryMaker()
- *  414:	 function getQueryResultCode($mQ,$res,$table)
- *  534:	 function csvValues($row, $delim=',', $quote='"', $conf=array(), $table='')
- *  550:	 function tableWrap($str)
- *  559:	 function search()
- *  614:	 function resultRowDisplay($row,$conf,$table)
- *  662:	 function getProcessedValueExtra($table, $fN, $fV, $conf, $splitString)
- *  781:	 function getTreeList($id, $depth, $begin = 0, $perms_clause)
- *  818:	 function makeValueList($fN, $fV, $conf, $table, $splitString)
- * 1028:	 function resultRowTitles($row,$conf,$table)
- * 1058:	 function csvRowTitles($row, $conf, $table)
- *
- * TOTAL FUNCTIONS: 19
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -33,30 +33,6 @@
  * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
  * XHTML compatible.
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class SC_mod_user_setup_index
- *
- *              SECTION: Saving data
- *  114:     function storeIncomingData()
- *
- *              SECTION: Rendering module
- *  216:     function init()
- *  248:     function main()
- *  403:     function printContent()
- *
- *              SECTION: Helper functions
- *  432:     function getRealScriptUserObj()
- *  442:     function simulateUser()
- *  488:     function setLabel($str,$key='')
- *
- * TOTAL FUNCTIONS: 7
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require('conf.php');

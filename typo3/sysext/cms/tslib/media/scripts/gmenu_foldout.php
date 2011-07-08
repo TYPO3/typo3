@@ -32,21 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   80: class tslib_gmenu_foldout extends tslib_gmenu
- *   96:     function extProc_init()
- *  117:     function extProc_beforeLinking($key)
- *  134:     function extProc_afterLinking($key)
- *  160:     function extProc_finish()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

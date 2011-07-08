@@ -32,31 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  129: class user_wapversion
- *  141:     function main_wapversion($content,$conf)
- *  200:     function contentAbstract()
- *  217:     function contentAll($chunkLgd=850)
- *  277:     function cHeader($str)
- *  291:     function cBodytext($str,$start=0,$max=0)
- *  303:     function nl2br($str)
- *  314:     function getContentResult($table)
- *  329:     function bold($str)
- *  339:     function paragraph($str)
- *  349:     function line($str)
- *  360:     function navLink($str,$pointer)
- *  370:     function menuCurrentLevel($indent)
- *  405:     function link($str,$id,$deck='')
- *  421:     function cleanMenuArray($menu)
- *
- * TOTAL FUNCTIONS: 14
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Class that creates the current page and content element records as an WML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.wap" is used to trigger this WML creation as well. That template contains this set of TypoScript lines which triggers the WML creation and disables all regular HTML headers

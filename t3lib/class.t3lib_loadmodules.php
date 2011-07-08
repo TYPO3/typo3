@@ -33,25 +33,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   79: class t3lib_loadModules
- *   99:	 function load($modulesArray,$BE_USER='')
- *  370:	 function checkExtensionModule($name)
- *  389:	 function checkMod($name, $fullpath)
- *  471:	 function checkModAccess($name,$MCONF)
- *  495:	 function checkModWorkspace($name,$MCONF)
- *  519:	 function parseModulesArray($arr)
- *  548:	 function cleanName ($str)
- *  559:	 function getRelativePath($baseDir,$destDir)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

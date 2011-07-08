@@ -32,22 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   66: class t3lib_diff
- *   86:	 function makeDiffDisplay($str1,$str2,$wrapTag='span')
- *  163:	 function getDiff($str1,$str2)
- *  189:	 function addClearBuffer($clearBuffer,$last=0)
- *  205:	 function explodeStringIntoWords($str)
- *  226:	 function tagSpace($str,$rev=0)
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

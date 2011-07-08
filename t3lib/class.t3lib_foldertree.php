@@ -32,27 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   82: class t3lib_folderTree extends t3lib_treeView
- *   89:	 function t3lib_folderTree()
- *  107:	 function wrapIcon($icon,$row)
- *  130:	 function wrapTitle($title,$row,$bank=0)
- *  145:	 function getId($v)
- *  155:	 function getJumpToParam($v)
- *  167:	 function getTitleStr($row,$titleLen=30)
- *  177:	 function getBrowsableTree()
- *  240:	 function getFolderTree($files_path, $depth=999, $depthData='')
- *  320:	 function getCount($files_path)
- *  336:	 function initializePositionSaving()
- *
- * TOTAL FUNCTIONS: 10
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

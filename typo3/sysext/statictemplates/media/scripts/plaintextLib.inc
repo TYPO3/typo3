@@ -31,41 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  123: class user_plaintext
- *  137:     function main_plaintext($content,$conf)
- *  209:     function getMenuSitemap()
- *  220:     function getShortcut()
- *  231:     function getHTML($str=array())
- *  241:     function getHeader()
- *  251:     function getImages()
- *  262:     function parseBody($str)
- *  284:     function renderUploads($str,$upload_path='uploads/media/')
- *  302:     function renderHeader($str,$type=0)
- *  353:     function pad($lines,$preLineChar,$len)
- *  369:     function breakContent($str)
- *  385:     function breakBulletlist($str)
- *  416:     function breakTable($str)
- *  472:     function addDiv($messure,$content,$divChar,$joinChar,$cols)
- *  488:     function traverseTable($tableLines)
- *  515:     function renderImages($str,$links,$caption,$upload_path='uploads/pics/')
- *  554:     function getLink($ll)
- *  571:     function breakLines($str,$implChar="\n",$charWidth=0)
- *  583:     function getString($str)
- *  595:     function userProcess($mConfKey,$passVar)
- *  613:     function atag_to_http($content,$conf)
- *  632:     function typolist($content,$conf)
- *  647:     function typohead($content,$conf)
- *  666:     function typocode($content,$conf)
- *
- * TOTAL FUNCTIONS: 24
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

@@ -33,36 +33,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class recordList extends t3lib_recordList
- *  148:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
- *  211:     function generateList()
- *  275:     function getSearchBox($formFields=1)
- *  319:     function showSysNotesForPage()
- *
- *              SECTION: Various helper functions
- *  396:     function setDispFields()
- *  421:     function thumbCode($row,$table,$field)
- *  434:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
- *  481:     function setTotalItems($queryParts)
- *  497:     function makeSearchString($table)
- *  536:     function linkWrapTable($table,$code)
- *  553:     function linkWrapItems($table,$uid,$code,$row)
- *  617:     function linkUrlMail($code,$testString)
- *  644:     function listURL($altId='',$table=-1,$exclList='')
- *  663:     function requestUri()
- *  674:     function makeFieldList($table,$dontCheckUser=0)
- *  721:     function getTreeObject($id,$depth,$perms_clause)
- *  739:     function localizationRedirect($justLocalized)
- *
- * TOTAL FUNCTIONS: 17
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

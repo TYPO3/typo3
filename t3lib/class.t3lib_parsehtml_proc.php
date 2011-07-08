@@ -32,51 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  103: class t3lib_parsehtml_proc extends t3lib_parsehtml
- *  138:	 function init($elRef='',$recPid=0)
- *  150:	 function setRelPath($path)
- *  174:	 function evalWriteFile($pArr,$currentRecord)
- *
- *			  SECTION: Main function
- *  232:	 function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())
- *
- *			  SECTION: Specific RTE TRANSFORMATION functions
- *  398:	 function TS_images_db($value)
- *  550:	 function TS_images_rte($value)
- *  589:	 function TS_reglinks($value,$direction)
- *  626:	 function TS_links_db($value)
- *  675:	 function TS_links_rte($value)
- *  760:	 function TS_preserve_db($value)
- *  784:	 function TS_preserve_rte($value)
- *  805:	 function TS_transform_db($value,$css=FALSE)
- *  922:	 function transformStyledATags($value)
- *  948:	 function TS_transform_rte($value,$css=0)
- * 1019:	 function TS_strip_db($value)
- *
- *			  SECTION: Generic RTE transformation, analysis and helper functions
- * 1050:	 function getUrl($url)
- * 1064:	 function HTMLcleaner_db($content,$tagList='')
- * 1091:	 function getKeepTags($direction='rte',$tagList='')
- * 1200:	 function divideIntoLines($value,$count=5,$returnArray=FALSE)
- * 1304:	 function setDivTags($value,$dT='p')
- * 1349:	 function internalizeFontTags($value)
- * 1385:	 function siteUrl()
- * 1395:	 function rteImageStorageDir()
- * 1407:	 function removeTables($value,$breakChar='<br />')
- * 1439:	 function defaultTStagMapping($code,$direction='rte')
- * 1462:	 function getWHFromAttribs($attribArray)
- * 1489:	 function urlInfoForLinkTags($url)
- * 1548:	 function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
- *
- * TOTAL FUNCTIONS: 28
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -21,31 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   66: class SC_mod_web_perm_ajax
- *
- *              SECTION: Init method for this class
- *   97:     public function __construct()
- *
- *              SECTION: Main dispatcher method
- *  143:     public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = NULL)
- *
- *              SECTION: Helpers for this script
- *  259:     private function renderUserSelector($page, $ownerUid, $username = '')
- *  302:     private function renderGroupSelector($page, $groupUid, $groupname = '')
- *  350:     private function renderOwnername($page, $ownerUid, $username)
- *  363:     private function renderGroupname($page, $groupUid, $groupname)
- *  375:     private function renderToggleEditLock($page, $editlockstate)
- *  389:     private function renderPermissions($int, $pageId = 0, $who = 'user')
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
 

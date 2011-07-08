@@ -29,62 +29,6 @@
  *
  * @author	Oliver Hader <oliver@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class t3lib_TCEforms_inline
- *  109:	 function init(&$tceForms)
- *  127:	 function getSingleField_typeInline($table,$field,$row,&$PA)
- *
- *			  SECTION: Regular rendering of forms, fields, etc.
- *  263:	 function renderForeignRecord($parentUid, $rec, $config = array())
- *  319:	 function renderForeignRecordHeader($parentUid, $foreign_table,$rec,$config = array())
- *  375:	 function renderForeignRecordHeaderControl($table,$row,$config = array())
- *  506:	 function renderCombinationTable(&$rec, $appendFormFieldNames, $config = array())
- *  560:	 function renderPossibleRecordsSelector($selItems, $conf, $uniqueIds=array())
- *  627:	 function addJavaScript()
- *  643:	 function addJavaScriptSortable($objectId)
- *
- *			  SECTION: Handling of AJAX calls
- *  665:	 function createNewRecord($domObjectId, $foreignUid = 0)
- *  755:	 function getJSON($jsonArray)
- *  770:	 function getNewRecordLink($objectPrefix, $conf = array())
- *
- *			  SECTION: Get data from database and handle relations
- *  807:	 function getRelatedRecords($table,$field,$row,&$PA,$config)
- *  839:	 function getPossibleRecords($table,$field,$row,$conf,$checkForConfField='foreign_selector')
- *  885:	 function getUniqueIds($records, $conf=array())
- *  905:	 function getRecord($pid, $table, $uid, $cmd='')
- *  929:	 function getNewRecord($pid, $table)
- *
- *			  SECTION: Structure stack for handling inline objects/levels
- *  951:	 function pushStructure($table, $uid, $field = '', $config = array())
- *  967:	 function popStructure()
- *  984:	 function updateStructureNames()
- * 1000:	 function getStructureItemName($levelData)
- * 1015:	 function getStructureLevel($level)
- * 1032:	 function getStructurePath($structureDepth = -1)
- * 1057:	 function parseStructureString($string, $loadConfig = FALSE)
- *
- *			  SECTION: Helper functions
- * 1098:	 function checkConfiguration(&$config)
- * 1123:	 function checkAccess($cmd, $table, $theUid)
- * 1185:	 function compareStructureConfiguration($compare)
- * 1199:	 function normalizeUid($string)
- * 1213:	 function wrapFormsSection($section, $styleAttrs = array(), $tableAttrs = array())
- * 1242:	 function isInlineChildAndLabelField($table, $field)
- * 1258:	 function getStructureDepth()
- * 1295:	 function arrayCompareComplex($subjectArray, $searchArray, $type = '')
- * 1349:	 function isAssociativeArray($object)
- * 1364:	 function getPossibleRecordsFlat($possibleRecords)
- * 1383:	 function skipField($table, $field, $row, $config)
- *
- * TOTAL FUNCTIONS: 35
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 class t3lib_TCEforms_inline {

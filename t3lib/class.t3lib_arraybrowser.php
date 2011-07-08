@@ -32,23 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   77: class t3lib_arrayBrowser
- *   96:	 function tree($arr, $depth_in, $depthData)
- *  160:	 function wrapValue($theValue,$depth)
- *  172:	 function wrapArrayKey($label,$depth,$theValue)
- *  196:	 function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)
- *  228:	 function fixed_lgd($string,$chars)
- *  245:	 function depthKeys($arr,$settings)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

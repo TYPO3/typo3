@@ -27,23 +27,6 @@
  * @author	Dimitri Ebert <dimitri.ebert@dkd.de>
  */
 
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   60: class tx_indexedsearch_modfunc2 extends t3lib_extobjbase
- *   67:     function main()
- *   88:     function showStats()
- *  121:     function listSeveralStats($title,$addwhere,$conf)
- *  199:     function extGetTreeList($id,$depth,$begin = 0,$perms_clause)
- *  210:     function &hookRequest($functionName)
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
 
 /**
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.

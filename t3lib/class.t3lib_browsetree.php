@@ -32,21 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   74: class t3lib_browseTree extends t3lib_treeView
- *   83:	 function init($clause='')
- *  116:	 function getTitleAttrib($row)
- *  128:	 function wrapIcon($icon,$row)
- *  150:	 function getTitleStr($row,$titleLen=30)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

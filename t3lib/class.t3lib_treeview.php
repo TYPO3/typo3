@@ -32,60 +32,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  115: class t3lib_treeView
- *  270:	 function init($clause='', $orderByFields='')
- *  301:	 function setTreeName($treeName='')
- *  315:	 function addField($field,$noCheck=0)
- *  329:	 function reset()
- *
- *			  SECTION: output
- *  349:	 function getBrowsableTree()
- *  412:	 function printTree($treeArr='')
- *
- *			  SECTION: rendering parts
- *  467:	 function PMicon($row,$a,$c,$nextCount,$exp)
- *  489:	 function PM_ATagWrap($icon,$cmd,$bMark='')
- *  511:	 function wrapTitle($title,$row,$bank=0)
- *  524:	 function wrapIcon($icon,$row)
- *  535:	 function addTagAttributes($icon,$attr)
- *  547:	 function wrapStop($str,$row)
- *
- *			  SECTION: tree handling
- *  575:	 function expandNext($id)
- *  585:	 function initializePositionSaving()
- *  612:	 function savePosition()
- *
- *			  SECTION: Functions that might be overwritten by extended classes
- *  641:	 function getRootIcon($rec)
- *  654:	 function getIcon($row)
- *  673:	 function getTitleStr($row,$titleLen=30)
- *  685:	 function getTitleAttrib($row)
- *  695:	 function getId($row)
- *  705:	 function getJumpToParam($row)
- *
- *			  SECTION: tree data buidling
- *  739:	 function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')
- *
- *			  SECTION: Data handling
- *  839:	 function getCount($uid)
- *  865:	 function getRootRecord($uid)
- *  878:	 function getRecord($uid)
- *  898:	 function getDataInit($parentId,$subCSSclass='')
- *  929:	 function getDataCount(&$res)
- *  947:	 function getDataNext(&$res,$subCSSclass='')
- *  986:	 function getDataFree(&$res)
- * 1006:	 function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
- * 1035:	 function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
- *
- * TOTAL FUNCTIONS: 31
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

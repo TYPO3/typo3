@@ -31,26 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  133: class t3lib_SCbase
- *  249:	 function init()
- *  269:	 function menuConfig()
- *  292:	 function mergeExternalItems($modName,$menuKey,$menuArr)
- *  317:	 function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)
- *  335:	 function getExternalItemConfig($modName,$menuKey,$value='')
- *  349:	 function checkExtObj()
- *  363:	 function checkSubExtObj()
- *  375:	 function extObjHeader()
- *  384:	 function extObjContent()
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

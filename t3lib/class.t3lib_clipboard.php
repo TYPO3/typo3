@@ -32,58 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   97: class t3lib_clipboard
- *
- *			  SECTION: Initialize
- *  150:	 function initializeClipboard()
- *  179:	 function lockToNormal()
- *  196:	 function setCmd($cmd)
- *  243:	 function setCurrentPad($padIdent)
- *  258:	 function endClipboard()
- *  271:	 function cleanUpCBC($CBarr,$table,$removeDeselected=0)
- *
- *			  SECTION: Clipboard HTML renderings
- *  306:	 function printClipboard()
- *  413:	 function printContentFromTab($pad)
- *  487:	 function padTitleWrap($str,$pad)
- *  504:	 function linkItemText($str,$rec,$table='')
- *  531:	 function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())
- *  547:	 function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())
- *  564:	 function pasteUrl($table,$uid,$setRedirect=1)
- *  581:	 function deleteUrl($setRedirect=1,$file=0)
- *  598:	 function editUrl()
- *  619:	 function removeUrl($table,$uid)
- *  632:	 function confirmMsg($table,$rec,$type,$clElements)
- *  680:	 function clLabel($key,$Akey='labels')
- *  689:	 function exportClipElementParameters()
- *
- *			  SECTION: Helper functions
- *  739:	 function removeElement($el)
- *  751:	 function saveClipboard()
- *  761:	 function currentMode()
- *  771:	 function cleanCurrent()
- *  798:	 function elFromTable($matchTable='',$pad='')
- *  829:	 function isSelected($table,$uid)
- *  843:	 function getSelectedRecord($table='',$uid='')
- *  861:	 function isElements()
- *
- *			  SECTION: FOR USE IN tce_db.php:
- *  902:	 function makePasteCmdArray($ref,$CMD)
- *  931:	 function makeDeleteCmdArray($CMD)
- *
- *			  SECTION: FOR USE IN tce_file.php:
- *  974:	 function makePasteCmdArray_file($ref,$FILE)
- *  996:	 function makeDeleteCmdArray_file($FILE)
- *
- * TOTAL FUNCTIONS: 31
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -29,29 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   71: class t3lib_flexformtools
- *  105:	 function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)
- *  203:	 function traverseFlexFormXMLData_recurse($dataStruct,$editData,&$PA,$path='')
- *  274:	 function getAvailableLanguages()
- *
- *			  SECTION: Processing functions
- *  323:	 function cleanFlexFormXML($table,$field,$row)
- *  347:	 function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)
- *
- *			  SECTION: Multi purpose functions
- *  374:	 function &getArrayValueByPath($pathArray,&$array)
- *  403:	 function setArrayValueByPath($pathArray,&$array,$value)
- *  433:	 function flexArray2Xml($array, $addPrologue=FALSE)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

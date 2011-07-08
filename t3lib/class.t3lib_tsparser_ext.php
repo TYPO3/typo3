@@ -31,60 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  105: class t3lib_tsparser_ext extends t3lib_TStemplate
- *  191:	 function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  218:	 function substituteConstants($all)
- *  231:	 function substituteConstantsCallBack($matches)
- *  261:	 function substituteCMarkers($all)
- *  284:	 function generateConfig_constants()
- *  330:	 function ext_getSetup($theSetup,$theKey)
- *  358:	 function ext_getObjTree($arr, $depth_in, $depthData, $parentType='',$parentValue='', $alphaSort='0')
- *  463:	 function lineNumberToScript($lnArr)
- *  494:	 function makeHtmlspecialchars($theValue)
- *  507:	 function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
- *  562:	 function ext_getRootlineNumber($pid)
- *  580:	 function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)
- *  639:	 function ext_process_hierarchyInfo($depthDataArr,&$pointer)
- *  670:	 function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)
- *  697:	 function ext_fixed_lgd($string,$chars)
- *  713:	 function ext_lnBreakPointWrap($ln,$str)
- *  726:	 function ext_formatTS($input, $ln, $comments=1, $crop=0)
- *  765:	 function ext_getFirstTemplate($id,$template_uid=0)
- *  785:	 function ext_getAllTemplates($id)
- *  806:	 function ext_compareFlatSetups($default)
- *  872:	 function ext_categorizeEditableConstants($editConstArray)
- *  895:	 function ext_getCategoryLabelArray()
- *  912:	 function ext_getTypeData($type)
- *  953:	 function ext_getTSCE_config($category)
- *  992:	 function ext_getKeyImage($key)
- * 1002:	 function ext_getTSCE_config_image($imgConf)
- * 1026:	 function ext_resourceDims()
- * 1056:	 function ext_readDirResources($path)
- * 1071:	 function readDirectory($path,$type='file')
- * 1096:	 function ext_fNandV($params)
- * 1114:	 function ext_printFields($theConstants,$category)
- *
- *			  SECTION: Processing input values
- * 1408:	 function ext_regObjectPositions($constants)
- * 1423:	 function ext_regObjects($pre)
- * 1468:	 function ext_putValueInConf($key, $var)
- * 1491:	 function ext_removeValueInConf($key)
- * 1507:	 function ext_depthKeys($arr,$settings)
- * 1542:	 function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)
- * 1666:	 function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)
- * 1715:	 function ext_prevPageWithTemplate($id,$perms_clause)
- * 1731:	 function ext_setStar($val)
- * 1743:	 function ext_detectAndFixExtensionPrefix($value)
- *
- * TOTAL FUNCTIONS: 41
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

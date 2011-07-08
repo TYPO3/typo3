@@ -30,20 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   56: class tx_lowlevel_orphan_records extends tx_lowlevel_cleaner_core
- *   63:     function tx_lowlevel_orphan_records()
- *   96:     function main()
- *  151:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

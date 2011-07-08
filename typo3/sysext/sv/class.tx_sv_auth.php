@@ -29,20 +29,6 @@
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   56: class tx_sv_auth extends tx_sv_authbase
- *   64:     function getUser()
- *   89:     function authUser($user)
- *  129:     function getGroups($user, $knownGroups)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

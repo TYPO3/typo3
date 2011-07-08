@@ -31,31 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   80: class t3lib_TSparser
- *  133:	 function parse($string,$matchObj='')
- *  169:	 function nextDivider()
- *  185:	 function parseSub(&$setup)
- *  389:	 function rollParseSub($string,&$setup)
- *  413:	 function getVal($string,$setup)
- *  439:	 function setVal($string,&$setup,$value,$wipeOut=0)
- *  485:	 function error($err,$num=2)
- *  497:	 function checkIncludeLines($string, $cycle_counter=1, $returnFiles=FALSE)
- *  541:	 function checkIncludeLines_array($array)
- *
- *			  SECTION: Syntax highlighting
- *  584:	 function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
- *  605:	 function regHighLight($code,$pointer,$strlen=-1)
- *  623:	 function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

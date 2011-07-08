@@ -34,25 +34,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   73: class alt_menu_functions
- *   94:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)
- *  473:     function getNavFramePrefix($moduleInfo, $subModuleInfo=array())
- *  504:     function mIconFile($Ifilename,$backPath)
- *  519:     function mIconFilename($Ifilename,$backPath)
- *  531:     function topButtons()
- *  544:     function adminButtons()
- *  563:     function adminFunctions($backPath)
- *  596:     function wrapLinkWithAB($link)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

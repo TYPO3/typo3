@@ -32,32 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   90: class SC_mod_web_perm_index
- *  194:     public function init()
- *  246:     public function menuConfig()
- *  277:     public function main()
- *  344:     public function printContent()
- *  354:     private function getButtons()
- *
- *              SECTION: Listing and Form rendering
- *  398:     public function doEdit()
- *  545:     public function notEdit()
- *
- *              SECTION: Helper functions
- *  739:     public function printCheckBox($checkName, $num)
- *  752:     public function printPerms($int, $pageId = 0, $who = 'user')
- *  772:     public function groupPerms($row, $firstGroup)
- *  789:     public function getRecursiveSelect($id,$perms_clause)
- *
- * TOTAL FUNCTIONS: 11
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require('conf.php');

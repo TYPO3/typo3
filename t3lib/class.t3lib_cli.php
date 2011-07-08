@@ -29,25 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   60: class t3lib_cli
- *   83:	 function t3lib_cli()
- *   96:	 function cli_getArg($option,$argv)
- *  112:	 function cli_getArgIndex()
- *  131:	 function cli_keyboardInput()
- *  142:	 function cli_keyboardInput_yes()
- *  154:	 function cli_echo($string='',$force=FALSE)
- *  169:	 function cli_help()
- *  207:	 function cli_indent($str,$indent)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

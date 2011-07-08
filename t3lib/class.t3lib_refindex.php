@@ -24,41 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   89: class t3lib_refindex
- *  107:	 function updateRefIndexTable($table,$uid,$testOnly=FALSE)
- *  178:	 function generateRefIndexData($table,$uid)
- *  255:	 function createEntryData($table,$uid,$field,$flexpointer,$deleted,$ref_table,$ref_uid,$ref_string='',$sort=-1,$softref_key='',$softref_id='')
- *  282:	 function createEntryData_dbRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
- *  299:	 function createEntryData_fileRels($table,$uid,$fieldname,$flexpointer,$deleted,$items)
- *  320:	 function createEntryData_softreferences($table,$uid,$fieldname,$flexpointer,$deleted,$keys)
- *
- *			  SECTION: Get relations from table row
- *  376:	 function getRelations($table,$row,$onlyField='')
- *  473:	 function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
- *  523:	 function getRelations_procFiles($value, $conf, $uid)
- *  573:	 function getRelations_procDB($value, $conf, $uid)
- *
- *			  SECTION: Setting values
- *  616:	 function setReferenceValue($hash,$newValue,$returnDataArray=FALSE)
- *  699:	 function setReferenceValue_dbRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')
- *  737:	 function setReferenceValue_fileRels($refRec,$itemArray,$newValue,&$dataArray,$flexpointer='')
- *  775:	 function setReferenceValue_softreferences($refRec,$softref,$newValue,&$dataArray,$flexpointer='')
- *
- *			  SECTION: Helper functions
- *  822:	 function isReferenceField($conf)
- *  832:	 function destPathFromUploadFolder($folder)
- *  842:	 function error($msg)
- *  853:	 function updateIndex($testOnly,$cli_echo=FALSE)
- *
- * TOTAL FUNCTIONS: 18
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

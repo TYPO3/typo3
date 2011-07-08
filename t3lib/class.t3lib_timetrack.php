@@ -32,36 +32,6 @@
  *
  * @author  Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class t3lib_timeTrack
- *
- *			  SECTION: Logging parsing times in the scripts
- *  144:	 function start()
- *  164:	 function push($tslabel, $value='')
- *  189:	 function pull($content='')
- *  207:	 function setTSlogMessage($content,$num=0)
- *  221:	 function setTSselectQuery($query,$msg)
- *  234:	 function incStackPointer()
- *  245:	 function decStackPointer()
- *  255:	 function mtime()
- *  265:	 function convertMicrotime($microtime)
- *
- *			  SECTION: Printing the parsing time information (for Admin Panel)
- *  298:	 function printTSlog()
- *  447:	 function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')
- *  511:	 function fixCLen($c,$v)
- *  527:	 function fw($str)
- *  541:	 function createHierarchyArray(&$arr,$pointer,$uniqueId)
- *  561:	 function debug_typo3PrintError($header,$text,$js,$baseUrl='')
- *
- * TOTAL FUNCTIONS: 15
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

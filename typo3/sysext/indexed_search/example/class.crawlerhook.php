@@ -29,19 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   57: class tx_indexedsearch_crawlerhook
- *   64:     function initMessage()
- *   80:     function indexOperation($cfgRec,&$session_data,$params,&$pObj)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

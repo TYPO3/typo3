@@ -31,29 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   76: class t3lib_loadDBGroup
- *  111:	 function start($itemlist, $tablelist, $MMtable='', $MMuid=0, $currentTable='', $conf=array())
- *  179:	 function readList($itemlist)
- *  225:	 function readMM($tableName,$uid)
- *  276:	 function writeMM($tableName,$uid,$prependTableName=0)
- *  352:	 function readForeignField($uid, $conf)
- *  435:	 function writeForeignField($conf, $parentUid, $updateToUid=0)
- *  510:	 function getValueArray($prependTableName='')
- *  538:	 function convertPosNeg($valueArray,$fTable,$nfTable)
- *  560:	 function getFromDB()
- *  595:	 function readyForInterface()
- *  621:	 function countItems($returnAsArray = TRUE)
- *  636:	 function updateRefIndex($table,$id)
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

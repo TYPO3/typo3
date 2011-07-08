@@ -31,59 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  114: class t3lib_extMgm
- *
- *			  SECTION: PATHS and other evaluation
- *  131:	 function isLoaded($key,$exitOnError = 0)
- *  147:	 function extPath($key,$script='')
- *  165:	 function extRelPath($key)
- *  182:	 function siteRelPath($key)
- *  194:	 function getCN($key)
- *
- *			  SECTION: Adding BACKEND features
- *  227:	 function addTCAcolumns($table,$columnArray,$addTofeInterface=0)
- *  251:	 function addToAllTCAtypes($table,$str,$specificTypesList='',$position='')
- *  309:	 function allowTableOnStandardPages($table)
- *  326:	 function addModule($main,$sub='',$position='',$path='')
- *  389:	 function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function',$WS='')
- *  408:	 function addPageTSConfig($content)
- *  422:	 function addUserTSConfig($content)
- *  437:	 function addLLrefForTCAdescr($tca_descr_key,$file_ref)
- *
- *			  SECTION: Adding SERVICES features
- *  479:	 function addService($extKey, $serviceType, $serviceKey, $info)
- *  547:	 function findService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
- *  618:	 function deactivateService($serviceType, $serviceKey)
- *
- *			  SECTION: Adding FRONTEND features
- *  657:	 function addPlugin($itemArray,$type='list_type')
- *  682:	 function addPiFlexFormValue($piKeyToMatch,$value)
- *  702:	 function addToInsertRecords($table,$content_table='tt_content',$content_field='records')
- *  733:	 function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)
- *  808:	 function addStaticFile($extKey,$path,$title)
- *  827:	 function addTypoScriptSetup($content)
- *  841:	 function addTypoScriptConstants($content)
- *  858:	 function addTypoScript($key,$type,$content,$afterStaticUid=0)
- *
- *			  SECTION: INTERNAL EXTENSION MANAGEMENT:
- *  921:	 function typo3_loadExtensions()
- *  998:	 function _makeIncludeHeader($key,$file)
- * 1019:	 function isCacheFilesAvailable($cacheFilePrefix)
- * 1032:	 function isLocalconfWritable()
- * 1045:	 function cannotCacheFilesWritable($cacheFilePrefix)
- * 1069:	 function currentCacheFiles()
- * 1092:	 function writeCacheFiles($extensions,$cacheFilePrefix)
- * 1130:	 function removeCacheFiles()
- *
- * TOTAL FUNCTIONS: 32
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

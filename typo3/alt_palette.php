@@ -31,29 +31,9 @@
  * XHTML compliant
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   81: class formRender extends t3lib_TCEforms
- *   91:     function printPalette($palArr)
- *
- *
- *  154: class formRender_vert extends t3lib_TCEforms
- *  163:     function printPalette($palArr)
- *
- *
- *  223: class SC_alt_palette
- *  247:     function init()
- *  301:     function main()
- *  341:     function printContent()
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.
+ * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7.
+ * 		The TYPO3 backend is using typo3/backend.php with less frames,
+ * 		which makes this file obsolete.
  */
 
 

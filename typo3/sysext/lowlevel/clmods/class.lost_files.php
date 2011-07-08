@@ -30,20 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   56: class tx_lowlevel_lost_files extends tx_lowlevel_cleaner_core
- *   65:     function tx_lowlevel_lost_files()
- *  103:     function main()
- *  181:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

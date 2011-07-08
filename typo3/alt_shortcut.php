@@ -35,33 +35,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class SC_alt_shortcut
- *  125:     function preinit()
- *  152:     function preprocess()
- *  234:     function init()
- *  275:     function main()
- *  452:     function editLoadedFunc()
- *  532:     function editPageIdFunc()
- *  586:     function printContent()
- *
- *              SECTION: WORKSPACE FUNCTIONS:
- *  611:     function workspaceSelector()
- *
- *              SECTION: OTHER FUNCTIONS:
- *  686:     function mIconFilename($Ifilename,$backPath)
- *  702:     function getIcon($modName)
- *  726:     function itemLabel($inlabel,$modName,$M_modName='')
- *  748:     function getLinkedPageId($url)
- *
- * TOTAL FUNCTIONS: 12
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 require('init.php');

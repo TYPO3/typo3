@@ -31,28 +31,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   84: class transferData extends t3lib_transferData
- *  101:     function regItem($table, $id, $field, $content)
- *
- *
- *  135: class SC_show_item
- *  160:     function init()
- *  225:     function main()
- *  273:     function renderDBInfo()
- *  327:     function renderFileInfo($returnLinkTag)
- *  449:     function printContent()
- *  462:     function makeRef($table,$ref)
- *  524:     function makeRefFrom($table,$ref)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 $GLOBALS['BACK_PATH'] = '';

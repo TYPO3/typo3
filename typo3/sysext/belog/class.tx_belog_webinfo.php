@@ -29,24 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   65: class logFunctions_ext extends t3lib_BEDisplayLog
- *   72:     function initArray()
- *
- *
- *   97: class tx_belog_webinfo extends t3lib_extobjbase
- *  105:     function modMenu()
- *  136:     function localLang()
- *  147:     function main()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 

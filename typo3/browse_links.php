@@ -34,20 +34,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   78: class SC_browse_links
- *   99:     function init ()
- *  120:     function main()
- *  174:     function printContent()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');

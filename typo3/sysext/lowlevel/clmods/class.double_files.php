@@ -31,20 +31,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   58: class tx_lowlevel_double_files extends tx_lowlevel_cleaner_core
- *   67:     function tx_lowlevel_double_files()
- *   99:     function main()
- *  182:     function main_autoFix($resultArray)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-/**
  * Looking for double files
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>

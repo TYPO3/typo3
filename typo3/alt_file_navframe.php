@@ -32,26 +32,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   72: class localFolderTree extends t3lib_folderTree
- *   81:     function localFolderTree()
- *   92:     function wrapIcon($icon,&$row)
- *  121:     function wrapTitle($title,$row,$bank=0)
- *
- *
- *  146: class SC_alt_file_navframe
- *  163:     function init()
- *  253:     function main()
- *  284:     function printContent()
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 $BACK_PATH = '';
 require_once('init.php');

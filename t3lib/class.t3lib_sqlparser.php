@@ -29,64 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  107: class t3lib_sqlparser
- *
- *			  SECTION: SQL Parsing, full queries
- *  129:	 function parseSQL($parseString)
- *  192:	 function parseSELECT($parseString)
- *  261:	 function parseUPDATE($parseString)
- *  315:	 function parseINSERT($parseString)
- *  375:	 function parseDELETE($parseString)
- *  413:	 function parseEXPLAIN($parseString)
- *  435:	 function parseCREATETABLE($parseString)
- *  514:	 function parseALTERTABLE($parseString)
- *  583:	 function parseDROPTABLE($parseString)
- *  616:	 function parseCREATEDATABASE($parseString)
- *
- *			  SECTION: SQL Parsing, helper functions for parts of queries
- *  670:	 function parseFieldList(&$parseString, $stopRegex='')
- *  791:	 function parseFromTables(&$parseString, $stopRegex='')
- *  882:	 function parseWhereClause(&$parseString, $stopRegex='')
- *  990:	 function parseFieldDef(&$parseString, $stopRegex='')
- *
- *			  SECTION: Parsing: Helper functions
- * 1053:	 function nextPart(&$parseString,$regex,$trimAll=FALSE)
- * 1068:	 function getValue(&$parseString,$comparator='')
- * 1127:	 function getValueInQuotes(&$parseString,$quote)
- * 1153:	 function parseStripslashes($str)
- * 1167:	 function compileAddslashes($str)
- * 1182:	 function parseError($msg,$restQuery)
- * 1196:	 function trimSQL($str)
- *
- *			  SECTION: Compiling queries
- * 1225:	 function compileSQL($components)
- * 1263:	 function compileSELECT($components)
- * 1294:	 function compileUPDATE($components)
- * 1322:	 function compileINSERT($components)
- * 1362:	 function compileDELETE($components)
- * 1382:	 function compileCREATETABLE($components)
- * 1415:	 function compileALTERTABLE($components)
- *
- *			  SECTION: Compiling queries, helper functions for parts of queries
- * 1468:	 function compileFieldList($selectFields)
- * 1510:	 function compileFromTables($tablesArray)
- * 1551:	 function compileWhereClause($clauseArray)
- * 1605:	 function compileFieldCfg($fieldCfg)
- *
- *			  SECTION: Debugging
- * 1654:	 function debug_parseSQLpart($part,$str)
- * 1679:	 function debug_parseSQLpartCompare($str,$newStr,$caseInsensitive=FALSE)
- * 1712:	 function debug_testSQL($SQLquery)
- *
- * TOTAL FUNCTIONS: 35
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

@@ -32,21 +32,9 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @co-author Sebastian Kurfürst <sebastian@garbage-group.de>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   80: class SC_alt_menu
- *   91:     function init()
- *  108:     function main()
- *  190:     function printContent()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.
+ * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7.
+ * 		The TYPO3 backend is using typo3/backend.php with less frames,
+ * 		which makes this file obsolete.
  */
 
 

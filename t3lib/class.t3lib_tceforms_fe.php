@@ -24,22 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   60: class t3lib_TCEforms_FE extends t3lib_TCEforms
- *   68:	 public function wrapLabels($str)
- *   78:	 public function printPalette(array $paletteArray)
- *  102:	 public function setFancyDesign()
- *  131:	 public function loadJavascriptLib($lib)
- *  146:	 public function addStyleSheet($key, $href, $title='', $relation='stylesheet')
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Contains a frontend version of the TYPO3 Core Form generator - AKA "TCEforms"

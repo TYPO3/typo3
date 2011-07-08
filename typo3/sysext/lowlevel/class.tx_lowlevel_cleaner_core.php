@@ -29,31 +29,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   71: class tx_lowlevel_cleaner_core extends t3lib_cli
- *   88:     function tx_lowlevel_cleaner_core()
- *
- *              SECTION: CLI functionality
- *  134:     function cli_main($argv)
- *  193:     function cli_referenceIndexCheck()
- *  228:     function cli_noExecutionCheck($matchString)
- *  251:     function cli_printInfo($header,$res)
- *
- *              SECTION: Page tree traversal
- *  331:     function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')
- *  369:     function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')
- *
- *              SECTION: Helper functions
- *  554:     function infoStr($rec)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 /**

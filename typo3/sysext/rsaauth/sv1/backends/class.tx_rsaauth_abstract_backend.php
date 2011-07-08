@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- */
-
 require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_keypair.php'));
 
 /**

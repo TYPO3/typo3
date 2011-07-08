@@ -35,19 +35,6 @@
  * @package TYPO3
  * @subpackage core
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   71: class SC_login_frameset
- *   82:     function main()
- *  108:     function printContent()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require ('init.php');
 require ('template.php');
