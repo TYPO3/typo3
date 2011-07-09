@@ -1706,8 +1706,9 @@ final class t3lib_BEfunc {
 			if ($perms_clause) {
 				$label = self::getRecordPath(intval($row['shortcut']), $perms_clause, 20);
 			} else {
-				$lRec = self::getRecordWSOL('pages', intval($row['shortcut']), 'title');
-				$label = $lRec['title'];
+				$row['shortcut'] = intval($row['shortcut']);
+				$lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
+				$label = $lRec['title'] . ' (id=' . $row['shortcut'] . ')';
 			}
 			if ($row['shortcut_mode'] != t3lib_pageSelect::SHORTCUT_MODE_NONE) {
 				$label .= ', ' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' ' .
