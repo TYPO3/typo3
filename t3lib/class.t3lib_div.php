@@ -767,20 +767,11 @@ final class t3lib_div {
 	 * @param	integer		Higher limit
 	 * @param	integer		Default value if input is FALSE.
 	 * @return	integer		The input value forced into the boundaries of $min and $max
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
 	 */
 	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
-			// Returns $theInt as an integer in the integerspace from $min to $max
-		$theInt = intval($theInt);
-		if ($zeroValue && !$theInt) {
-			$theInt = $zeroValue;
-		} // If the input value is zero after being converted to integer, zeroValue may set another default value for it.
-		if ($theInt < $min) {
-			$theInt = $min;
-		}
-		if ($theInt > $max) {
-			$theInt = $max;
-		}
-		return $theInt;
+		self::logDeprecatedFunction();
+		return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
 	}
 
 	/**
@@ -789,13 +780,11 @@ final class t3lib_div {
 	 *
 	 * @param	integer		Integer string to process
 	 * @return	integer
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::convertToPositiveInteger() instead
 	 */
 	public static function intval_positive($theInt) {
-		$theInt = intval($theInt);
-		if ($theInt < 0) {
-			$theInt = 0;
-		}
-		return $theInt;
+		self::logDeprecatedFunction();
+		return t3lib_utility_Math::convertToPositiveInteger($theInt);
 	}
 
 	/**
@@ -804,10 +793,11 @@ final class t3lib_div {
 	 *
 	 * @param	string		Version number on format x.x.x
 	 * @return	integer		Integer version of version number (where each part can count to 999)
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::convertVersionNumberToInteger() instead
 	 */
 	public static function int_from_ver($verNumberStr) {
-		$verParts = explode('.', $verNumberStr);
-		return intval((int) $verParts[0] . str_pad((int) $verParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $verParts[2], 3, '0', STR_PAD_LEFT));
+		self::logDeprecatedFunction();
+		return t3lib_utility_VersionNumber::convertVersionNumberToInteger($verNumberStr);
 	}
 
 	/**

@@ -526,6 +526,81 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedArray, $actualArray);
 	}
 
+	//////////////////////////////////
+	// Tests concerning intInRange
+	//////////////////////////////////
+	/**
+	 * Data provider for intInRangeForcesIntegerIntoBoundaries
+	 *
+	 * @return array expected values, arithmetic expression
+	 */
+	public function intInRangeForcesIntegerIntoDefaultBoundariesDataProvider() {
+		return array(
+			'negativeValue' => array(0, -10),
+			'normalValue' => array(30, 30),
+			'veryHighValue' => array(2000000000, 3000000001),
+			'zeroValue' => array(0, 0),
+			'anotherNormalValue' => array(12309, 12309)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider intInRangeForcesIntegerIntoDefaultBoundariesDataProvider
+	 */
+	public function intInRangeForcesIntegerIntoDefaultBoundaries($expected, $value) {
+		 $this->assertEquals($expected, t3lib_div::intInRange($value, 0));
+	}
+
+	/**
+	 * @test
+	 */
+	public function intInRangeSetsDefaultValueIfZeroValueIsGiven() {
+		 $this->assertEquals(42, t3lib_div::intInRange('', 0, 2000000000, 42));
+	}
+
+	//////////////////////////////////
+	// Tests concerning intval_positive
+	//////////////////////////////////
+	/**
+	 * @test
+	 */
+	public function intvalPositiveReturnsZeroForNegativeValues() {
+		$this->assertEquals(0, t3lib_div::intval_positive(-123));
+	}
+
+	/**
+	 * @test
+	 */
+	public function intvalPositiveReturnsTheInputValueForPositiveValues() {
+		$this->assertEquals(123, t3lib_div::intval_positive(123));
+	}
+
+	//////////////////////////////////
+	// Tests concerning int_from_ver
+	//////////////////////////////////
+	/**
+	 * Data Provider for intFromVerConvertsVersionNumbersToIntegersDataProvider
+	 *
+	 * return array
+	 */
+	public function intFromVerConvertsVersionNumbersToIntegersDataProvider() {
+		return array(
+			array('4003003', '4.3.3'),
+			array('4012003', '4.12.3'),
+			array('5000000', '5.0.0'),
+			array('3008001', '3.8.1'),
+			array('1012', '0.1.12')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider intFromVerConvertsVersionNumbersToIntegersDataProvider
+	 */
+	public function intFromVerConvertsVersionNumbersToIntegers($expected, $version) {
+		$this->assertEquals($expected, t3lib_div::int_from_ver($version));
+	}
 
 	//////////////////////////////////
 	// Tests concerning revExplode
