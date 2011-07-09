@@ -160,7 +160,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 		$tree = t3lib_div::makeInstance('t3lib_pageTree');
 		$tree->init('AND '.$this->pObj->perms_clause);
 		$tree->makeHTML=0;
-		$tree->fieldArray = Array('uid');
+		$tree->fieldArray = array('uid');
 		if ($this->pObj->MOD_SETTINGS['depth'])	{
 			$tree->getTree($this->pObj->id, $this->pObj->MOD_SETTINGS['depth'], '');
 		}
@@ -240,6 +240,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 
 		$codeArr = $displayLogInstance->initArray();
 		$oldHeader = '';
+		$i = 0;
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log))	{
 			$header = $this->pObj->doc->formatTime($row['tstamp'],10);
 			if (!$oldHeader)	$oldHeader = $header;

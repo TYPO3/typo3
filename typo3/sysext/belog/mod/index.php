@@ -48,14 +48,14 @@ $BE_USER->modAccess($MCONF,1);
  * @subpackage tx_belog
  */
 class SC_mod_tools_log_index {
-	var $MCONF=array();
-	var $MOD_MENU=array();
-	var $MOD_SETTINGS=array();
+	var $MCONF = array();
+	var $MOD_MENU = array();
+	var $MOD_SETTINGS = array();
 
 	/**
 	 * Document template object
 	 *
-	 * @var noDoc
+	 * @var template
 	 */
 	var $doc;
 
@@ -76,7 +76,7 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->displayLogInstance = t3lib_div::makeInstance('t3lib_BEDisplayLog');
@@ -103,7 +103,7 @@ class SC_mod_tools_log_index {
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		</script>
@@ -131,7 +131,7 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
@@ -180,43 +180,43 @@ class SC_mod_tools_log_index {
 			'groupByPage' => '',
 		);
 
-		// Add custom workspaces (selecting all, filtering by BE_USER check):
+			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid,title',
 				'sys_workspace',
-				'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'),
+				'pid = 0' . t3lib_BEfunc::deleteClause('sys_workspace'),
 				'',
 				'title'
 			);
-			if (count($workspaces))	{
-				foreach ($workspaces as $rec)	{
-					$this->MOD_MENU['workspaces'][$rec['uid']] = $rec['uid'].': '.$rec['title'];
+			if (count($workspaces)) {
+				foreach ($workspaces as $rec) {
+					$this->MOD_MENU['workspaces'][$rec['uid']] = $rec['uid'] . ': ' . $rec['title'];
 				}
 			}
 		}
 
-		// Adding groups to the users_array
+			// Adding groups to the users_array
 		$groups = t3lib_BEfunc::getGroupNames();
-		if (is_array($groups))	{
+		if (is_array($groups)) {
 			foreach ($groups as $grVals) {
 				$this->MOD_MENU['users']['gr-' . $grVals['uid']] = $GLOBALS['LANG']->getLL('group') . ' ' . $grVals['title'];
 			}
 		}
 
 		$users = t3lib_BEfunc::getUserNames();
-		if (is_array($users))	{
+		if (is_array($users)) {
 			foreach ($users as $grVals) {
 				$this->MOD_MENU['users']['us-' . $grVals['uid']] = $GLOBALS['LANG']->getLL('user') . ' ' . $grVals['username'];
 			}
 		}
 
-			// CLEANSE SETTINGS
+			// Cleanse settings
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
 			// manual dates
 		if ($this->MOD_SETTINGS['time'] == 30) {
-			if (!trim($this->MOD_SETTINGS['manualdate']))	{
+			if (!trim($this->MOD_SETTINGS['manualdate'])) {
 				$this->theTime = $this->MOD_SETTINGS['manualdate'] = 0;
 			} else {
 				$this->theTime = $this->parseDate($this->MOD_SETTINGS['manualdate']);
@@ -227,7 +227,7 @@ class SC_mod_tools_log_index {
 				}
 			}
 
-			if (!trim($this->MOD_SETTINGS['manualdate_end']))	{
+			if (!trim($this->MOD_SETTINGS['manualdate_end'])) {
 				$this->theTime_end = $this->MOD_SETTINGS['manualdate_end'] = 0;
 			} else {
 				$this->theTime_end = $this->parseDate($this->MOD_SETTINGS['manualdate_end']);
@@ -245,30 +245,29 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
-		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('adminLog'));
-		$this->content.=$this->doc->spacer(5);
-
+	function main() {
+		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('adminLog'));
+		$this->content .= $this->doc->spacer(5);
 
 			// Menu compiled:
-		$menuU= t3lib_BEfunc::getFuncMenu(0,'SET[users]',$this->MOD_SETTINGS['users'],$this->MOD_MENU['users']);
-		$menuM= t3lib_BEfunc::getFuncMenu(0,'SET[max]',$this->MOD_SETTINGS['max'],$this->MOD_MENU['max']);
-		$menuT= t3lib_BEfunc::getFuncMenu(0,'SET[time]',$this->MOD_SETTINGS['time'],$this->MOD_MENU['time']);
-		$menuA= t3lib_BEfunc::getFuncMenu(0,'SET[action]',$this->MOD_SETTINGS['action'],$this->MOD_MENU['action']);
-		$menuW= t3lib_BEfunc::getFuncMenu(0,'SET[workspaces]',$this->MOD_SETTINGS['workspaces'],$this->MOD_MENU['workspaces']);
+		$menuU = t3lib_BEfunc::getFuncMenu(0, 'SET[users]', $this->MOD_SETTINGS['users'], $this->MOD_MENU['users']);
+		$menuM = t3lib_BEfunc::getFuncMenu(0, 'SET[max]', $this->MOD_SETTINGS['max'], $this->MOD_MENU['max']);
+		$menuT = t3lib_BEfunc::getFuncMenu(0, 'SET[time]', $this->MOD_SETTINGS['time'], $this->MOD_MENU['time']);
+		$menuA = t3lib_BEfunc::getFuncMenu(0, 'SET[action]', $this->MOD_SETTINGS['action'], $this->MOD_MENU['action']);
+		$menuW = t3lib_BEfunc::getFuncMenu(0, 'SET[workspaces]', $this->MOD_SETTINGS['workspaces'], $this->MOD_MENU['workspaces']);
 
-		$groupByPage= t3lib_BEfunc::getFuncCheck(0, 'SET[groupByPage]',$this->MOD_SETTINGS['groupByPage']);
+		$groupByPage = t3lib_BEfunc::getFuncCheck(0, 'SET[groupByPage]', $this->MOD_SETTINGS['groupByPage']);
 		$style = ' style="margin:4px 2px;padding:1px;vertical-align:middle;width: 115px;"';
 
-		$inputDate = '<input type="text" value="' . ($this->MOD_SETTINGS['manualdate'] ? $this->MOD_SETTINGS['manualdate'] : '') .'" name="SET[manualdate]" id="tceforms-datetimefield-manualdate"' . $style . ' />';
-		$pickerInputDate = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-manualdate" />';
+		$inputDate = '<input type="text" value="' . ($this->MOD_SETTINGS['manualdate'] ?: '') . '" name="SET[manualdate]" id="tceforms-datetimefield-manualdate"' . $style . ' />';
+		$pickerInputDate = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt="" id="picker-tceforms-datetimefield-manualdate" />';
 
-		$inputDate_end = '<input type="text" value="' . ($this->MOD_SETTINGS['manualdate_end'] ? $this->MOD_SETTINGS['manualdate_end'] : '') .'" name="SET[manualdate]" id="tceforms-datetimefield-manualdate_end"' . $style . ' />';
-		$pickerInputDate_end = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-manualdate_end" />';
+		$inputDate_end = '<input type="text" value="' . ($this->MOD_SETTINGS['manualdate_end'] ?: '') .'" name="SET[manualdate]" id="tceforms-datetimefield-manualdate_end"' . $style . ' />';
+		$pickerInputDate_end = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt="" id="picker-tceforms-datetimefield-manualdate_end" />';
 
 		$setButton = '<input type="button" value="' . $GLOBALS['LANG']->getLL('set') . '" onclick="jumpToUrl(\'mod.php?&amp;id=0&amp;M=tools_log&amp;SET[manualdate]=\'+escape($(\'tceforms-datetimefield-manualdate\').value)+\'&amp;SET[manualdate_end]=\'+escape($(\'tceforms-datetimefield-manualdate_end\').value),this);" />';
 
-		$this->content.=$this->doc->section('',$this->doc->menuTable(
+		$this->content .= $this->doc->section('', $this->doc->menuTable(
 			array(
 				array($GLOBALS['LANG']->getLL('users'), $menuU),
 				array($GLOBALS['LANG']->getLL('time'), $menuT . ($this->MOD_SETTINGS['time'] == 30 ?
@@ -280,113 +279,115 @@ class SC_mod_tools_log_index {
 				array($GLOBALS['LANG']->getLL('action'), $menuA)
 			),
 			array(
-				$GLOBALS['BE_USER']->workspace !== 0 ? array($GLOBALS['LANG']->getLL('workspace'), '<strong>'.$GLOBALS['BE_USER']->workspace . '</strong>') : array($GLOBALS['LANG']->getLL('workspace'), $menuW),
+				$GLOBALS['BE_USER']->workspace !== 0 ? array($GLOBALS['LANG']->getLL('workspace'), '<strong>' . $GLOBALS['BE_USER']->workspace . '</strong>') : array($GLOBALS['LANG']->getLL('workspace'), $menuW),
 				array($GLOBALS['LANG']->getLL('groupByPage'), $groupByPage)
 			)
 		));
 
 
 		$codeArr = $this->displayLogInstance->initArray();
-		$oldHeader='';
-		$c=0;
+		$oldHeader = '';
+		$c = 0;
 
-		// Action (type):
-		$where_part='';
-		if ($this->MOD_SETTINGS['action'] > 0)	{
-			$where_part.=' AND type='.intval($this->MOD_SETTINGS['action']);
-		} elseif ($this->MOD_SETTINGS['action'] == -1)	{
+			// Action (type):
+		$where_part = '';
+		if ($this->MOD_SETTINGS['action'] > 0) {
+			$where_part .= ' AND type = ' . intval($this->MOD_SETTINGS['action']);
+		} elseif ($this->MOD_SETTINGS['action'] == -1) {
 			$where_part .= ' AND error != 0';
 		}
 
 
-		$starttime=0;
+		$starttime = 0;
 		$endtime = $GLOBALS['EXEC_TIME'];
 
 			// Time:
 		switch($this->MOD_SETTINGS['time']) {
 			case 0:
-				// This week
-				$week = (date('w') ? date('w') : 7)-1;
-				$starttime = mktime (0,0,0)-$week*3600*24;
+					// This week
+				$week = (date('w') ?: 7) - 1;
+				$starttime = mktime(0, 0, 0) - $week * 3600 * 24;
 			break;
 			case 1:
-				// Last week
-				$week = (date('w') ? date('w') : 7)-1;
-				$starttime = mktime (0,0,0)-($week+7)*3600*24;
-				$endtime = mktime (0,0,0)-$week*3600*24;
+					// Last week
+				$week = (date('w') ?: 7) - 1;
+				$starttime = mktime(0, 0, 0) - ($week + 7) * 3600 * 24;
+				$endtime = mktime(0, 0, 0) - $week * 3600 * 24;
 			break;
 			case 2:
-				// Last 7 days
-				$starttime = mktime (0,0,0)-7*3600*24;
+					// Last 7 days
+				$starttime = mktime(0, 0, 0) - 7 * 3600 * 24;
 			break;
 			case 10:
-				// This month
-				$starttime = mktime (0,0,0, date('m'),1);
+					// This month
+				$starttime = mktime(0, 0, 0, date('m'), 1);
 			break;
 			case 11:
-				// Last month
-				$starttime = mktime (0,0,0, date('m')-1,1);
-				$endtime = mktime (0,0,0, date('m'),1);
+					// Last month
+				$starttime = mktime(0, 0, 0, date('m') - 1, 1);
+				$endtime = mktime(0, 0, 0, date('m'), 1);
 			break;
 			case 12:
-				// Last 31 days
-				$starttime = mktime (0,0,0)-31*3600*24;
+					// Last 31 days
+				$starttime = mktime(0, 0, 0) - 31 * 3600 * 24;
 			break;
 			case 30:
 				$starttime = $this->theTime;
-				if ($this->theTime_end)	{
+				if ($this->theTime_end) {
 					$endtime = $this->theTime_end;
 				} else {
 					$endtime = $GLOBALS['EXEC_TIME'];
 				}
 		}
 
-		if ($starttime)	{
-			$where_part.=' AND tstamp>='.$starttime.' AND tstamp<'.$endtime;
+		if ($starttime) {
+			$where_part .= ' AND tstamp >= ' . $starttime . ' AND tstamp < ' . $endtime;
 		}
 
 
 			// Users
 		$selectUsers = array();
-		if (substr($this->MOD_SETTINGS['users'],0,3) == "gr-")	{	// All users
-			$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array,array(substr($this->MOD_SETTINGS['users'],3)),1);
-			if (is_array($this->be_user_Array))	{
+		if (substr($this->MOD_SETTINGS['users'], 0, 3) == 'gr-') {
+				// All users
+			$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array, array(substr($this->MOD_SETTINGS['users'], 3)), 1);
+			if (is_array($this->be_user_Array)) {
 				foreach ($this->be_user_Array as $val) {
 					if ($val['uid'] != $GLOBALS['BE_USER']->user['uid']) {
-						$selectUsers[]=$val['uid'];
+						$selectUsers[] = $val['uid'];
 					}
 				}
 			}
 			$selectUsers[] = 0;
-			$where_part.=' AND userid in ('.implode($selectUsers,',').')';
-		} elseif (substr($this->MOD_SETTINGS['users'],0,3) == "us-")	{	// All users
-			$selectUsers[] = intval(substr($this->MOD_SETTINGS['users'],3));
-			$where_part.=' AND userid in ('.implode($selectUsers,',').')';
-		} elseif ($this->MOD_SETTINGS['users']==-1) {
+			$where_part .= ' AND userid in (' . implode($selectUsers, ',') . ')';
+		} elseif (substr($this->MOD_SETTINGS['users'], 0, 3) == 'us-') {
+				// All users
+			$selectUsers[] = intval(substr($this->MOD_SETTINGS['users'], 3));
+			$where_part .= ' AND userid in (' . implode($selectUsers, ',') . ')';
+		} elseif ($this->MOD_SETTINGS['users'] == -1) {
 				// Self user
-			$where_part .= ' AND userid=' . $GLOBALS['BE_USER']->user['uid'];
+			$where_part .= ' AND userid = ' . intval($GLOBALS['BE_USER']->user['uid']);
 		}
 
 			// Workspace
-		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			$where_part.=' AND workspace='.intval($GLOBALS['BE_USER']->workspace);
-		} elseif ($this->MOD_SETTINGS['workspaces']!=-99)	{
-			$where_part.=' AND workspace='.intval($this->MOD_SETTINGS['workspaces']);
+		if ($GLOBALS['BE_USER']->workspace !== 0) {
+			$where_part .= ' AND workspace=' . intval($GLOBALS['BE_USER']->workspace);
+		} elseif ($this->MOD_SETTINGS['workspaces'] != -99) {
+			$where_part .= ' AND workspace = ' . intval($this->MOD_SETTINGS['workspaces']);
 		}
 
 			// Finding out which page ids are in the log:
 		$logPids = array();
-		if ($this->MOD_SETTINGS['groupByPage'])	{
-			$log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('event_pid', 'sys_log', '1=1'.$where_part, 'event_pid');
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log))	{
+		if ($this->MOD_SETTINGS['groupByPage']) {
+			$log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('event_pid', 'sys_log', '1 = 1' . $where_part, 'event_pid');
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log)) {
 				$logPids[] = $row['event_pid'];
 			}
 
 				// Overview:
 			$overviewList = array();
-			foreach($logPids as $pid)	{
-				if ((int)$pid>0)	{
-					$overviewList[]= htmlspecialchars(
+			foreach($logPids as $pid) {
+				if ((int)$pid > 0) {
+					$overviewList[] = htmlspecialchars(
 						sprintf(
 							$GLOBALS['LANG']->getLL('pagenameWithUID'),
 							t3lib_BEfunc::getRecordPath($pid, '', 20),
@@ -396,8 +397,8 @@ class SC_mod_tools_log_index {
 				}
 			}
 			sort($overviewList);
-			$this->content.=$this->doc->divider(5);
-			$this->content.= $this->doc->section(
+			$this->content .= $this->doc->divider(5);
+			$this->content .= $this->doc->section(
 				$GLOBALS['LANG']->getLL('overview'),
 				sprintf($GLOBALS['LANG']->getLL('timeInfo'),
 					date($this->dateFormat, $starttime),
@@ -406,17 +407,17 @@ class SC_mod_tools_log_index {
 				1, 1, 0
 			);
 
-			$this->content.=$this->doc->spacer(30);
+			$this->content .= $this->doc->spacer(30);
 		} else $logPids[] = '_SINGLE';
 
 
-		foreach($logPids as $pid)	{
+		foreach($logPids as $pid) {
 			$codeArr = $this->displayLogInstance->initArray();
 			$this->displayLogInstance->reset();
-			$oldHeader='';
+			$oldHeader = '';
 
-			$this->content.=$this->doc->divider(5);
-			switch($pid)	{
+			$this->content .= $this->doc->divider(5);
+			switch($pid) {
 				case '_SINGLE':
 					$insertMsg = '';
 				break;
@@ -441,28 +442,29 @@ class SC_mod_tools_log_index {
 
 			$log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', '1=1'.$where_part.($pid!='_SINGLE'?' AND event_pid='.intval($pid):''), '', 'uid DESC', intval($this->MOD_SETTINGS['max']));
 
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log))	{
-				$header=$this->doc->formatTime($row['tstamp'],10);
-				if (!$oldHeader)	$oldHeader=$header;
+			$i = 0;
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log)) {
+				$header = $this->doc->formatTime($row['tstamp'],10);
+				if (!$oldHeader) $oldHeader = $header;
 
-				if ($header!=$oldHeader)	{
-					$this->content.=$this->doc->spacer(10);
-					$this->content.=$this->doc->section($oldHeader,$this->doc->table($codeArr));
-					$codeArr=$this->displayLogInstance->initArray();
-					$oldHeader=$header;
+				if ($header != $oldHeader) {
+					$this->content .= $this->doc->spacer(10);
+					$this->content .= $this->doc->section($oldHeader, $this->doc->table($codeArr));
+					$codeArr = $this->displayLogInstance->initArray();
+					$oldHeader = $header;
 					$this->displayLogInstance->reset();
 				}
 
 				$i++;
-				$codeArr[$i][]=$this->displayLogInstance->getTimeLabel($row['tstamp']);
-				$codeArr[$i][]=$this->displayLogInstance->getUserLabel($row['userid'],$row['workspace']);
-				$codeArr[$i][]=$this->displayLogInstance->getTypeLabel($row['type']);
-				$codeArr[$i][]=$row['error'] ? $this->displayLogInstance->getErrorIcon($row['error']) : '';
-				$codeArr[$i][]=$this->displayLogInstance->getActionLabel($row['type'].'_'.$row['action']);
-				$codeArr[$i][]=$this->displayLogInstance->formatDetailsForList($row);
+				$codeArr[$i][] = $this->displayLogInstance->getTimeLabel($row['tstamp']);
+				$codeArr[$i][] = $this->displayLogInstance->getUserLabel($row['userid'], $row['workspace']);
+				$codeArr[$i][] = $this->displayLogInstance->getTypeLabel($row['type']);
+				$codeArr[$i][] = $row['error'] ? $this->displayLogInstance->getErrorIcon($row['error']) : '';
+				$codeArr[$i][] = $this->displayLogInstance->getActionLabel($row['type'] . '_' . $row['action']);
+				$codeArr[$i][] = $this->displayLogInstance->formatDetailsForList($row);
 			}
-			$this->content.=$this->doc->spacer(10);
-			$this->content.=$this->doc->section($header,$this->doc->table($codeArr));
+			$this->content .= $this->doc->spacer(10);
+			$this->content .= $this->doc->section($header, $this->doc->table($codeArr));
 
 			$GLOBALS['TYPO3_DB']->sql_free_result($log);
 		}
@@ -507,7 +509,7 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	string		HTML
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -516,7 +518,7 @@ class SC_mod_tools_log_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 
 		$buttons = array(
 			'csh' => '',
@@ -526,7 +528,7 @@ class SC_mod_tools_log_index {
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','users,time,max,action',$this->MCONF['name']);
 		}
 
