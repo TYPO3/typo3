@@ -6237,13 +6237,16 @@ class tslib_cObj {
 		switch ($case) {
 			case 'upper' :
 				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toUpper');
-			break;
+				break;
 			case 'lower' :
 				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
-			break;
+				break;
 			case 'capitalize':
 				$theValue = ucwords($theValue);
-			break;
+				break;
+			case 'ucfirst':
+				$theValue = ucfirst($theValue);
+				break;
 		}
 		return $theValue;
 	}
