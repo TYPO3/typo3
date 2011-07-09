@@ -76,7 +76,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 	/**
 	 * @test
 	 */
-	public function getTypoScriptSetupReturnsSetupFromTSFE() {
+	public function getTypoScriptSetupReturnsSetupFromTsfe() {
 		$GLOBALS['TSFE']->tmpl->setup = array('foo' => 'bar');
 		$this->assertEquals(array('foo' => 'bar'), $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
 	}

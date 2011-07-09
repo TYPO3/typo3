@@ -31,7 +31,7 @@
  * exception and - depending on the "dispatched" status of the request - either
  * continues dispatching the request or returns control to the request handler.
  *
- * See the Action Controller's forward() and redirectToURI() methods for more information.
+ * See the Action Controller's forward() and redirectToUri() methods for more information.
  *
  * @package Extbase
  * @subpackage MVC\Exception

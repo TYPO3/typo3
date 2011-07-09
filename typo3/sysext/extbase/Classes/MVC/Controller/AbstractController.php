@@ -309,7 +309,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			->reset()
 			->setTargetPageUid($pageUid)
 			->uriFor($actionName, $arguments, $controllerName, $extensionName);
-		$this->redirectToURI($uri, $delay, $statusCode);
+		$this->redirectToUri($uri, $delay, $statusCode);
 	}
 
 	/**
@@ -324,7 +324,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
 	 * @api
 	 */
-	protected function redirectToURI($uri, $delay = 0, $statusCode = 303) {
+	protected function redirectToUri($uri, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
 		$uri = $this->addBaseUriIfNecessary($uri);
@@ -342,7 +342,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return void
 	 */
 	protected function addBaseUriIfNecessary($uri) {
-		$baseUri = $this->request->getBaseURI();
+		$baseUri = $this->request->getBaseUri();
 		if(stripos($uri, 'http://') !== 0 && stripos($uri, 'https://') !== 0) {
 			$uri = $baseUri . (string)$uri;
 		}

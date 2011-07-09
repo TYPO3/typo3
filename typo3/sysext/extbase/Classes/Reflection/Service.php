@@ -414,7 +414,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 				$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'), $cascadeTagValues[0]);
 			}
 			if ($this->isPropertyTaggedWith($className, $propertyName, 'uuid')) {
-				$classSchema->setUUIDPropertyName($propertyName);
+				$classSchema->setUuidPropertyName($propertyName);
 			}
 			if ($this->isPropertyTaggedWith($className, $propertyName, 'identity')) {
 				$classSchema->markAsIdentityProperty($propertyName);

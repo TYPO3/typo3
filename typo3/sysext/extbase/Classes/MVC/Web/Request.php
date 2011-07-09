@@ -50,12 +50,12 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * @var string
 	 */
-	protected $requestURI;
+	protected $requestUri;
 
 	/**
 	 * @var string The base URI for this request - ie. the host and path leading to the index.php
 	 */
-	protected $baseURI;
+	protected $baseUri;
 
 	/**
 	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise
@@ -106,11 +106,11 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * Sets the request URI
 	 *
-	 * @param string $requestURI URI of this web request
+	 * @param string $requestUri URI of this web request
 	 * @return void
 	 */
-	public function setRequestURI($requestURI) {
-		$this->requestURI = $requestURI;
+	public function setRequestUri($requestUri) {
+		$this->requestUri = $requestUri;
 	}
 
 	/**
@@ -119,18 +119,18 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @return string URI of this web request
 	 * @api
 	 */
-	public function getRequestURI() {
-		return $this->requestURI;
+	public function getRequestUri() {
+		return $this->requestUri;
 	}
 
 	/**
 	 * Sets the base URI for this request.
 	 *
-	 * @param string $baseURI New base URI
+	 * @param string $baseUri New base URI
 	 * @return void
 	 */
-	public function setBaseURI($baseURI) {
-		$this->baseURI = $baseURI;
+	public function setBaseUri($baseUri) {
+		$this->baseUri = $baseUri;
 	}
 
 	/**
@@ -139,11 +139,11 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @return string Base URI of this web request
 	 * @api
 	 */
-	public function getBaseURI() {
+	public function getBaseUri() {
 		if (TYPO3_MODE === 'BE') {
-			return $this->baseURI . TYPO3_mainDir;
+			return $this->baseUri . TYPO3_mainDir;
 		} else {
-			return $this->baseURI;
+			return $this->baseUri;
 		}
 	}
 

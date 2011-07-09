@@ -528,7 +528,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			$uri .= '#' . $this->section;
 		}
 		if ($this->createAbsoluteUri === TRUE) {
-			$uri = $this->request->getBaseURI() . $uri;
+			$uri = $this->request->getBaseUri() . $uri;
 		}
 		return $uri;
 	}
