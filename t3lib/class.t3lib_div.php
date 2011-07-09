@@ -396,42 +396,16 @@ final class t3lib_div {
 
 	/**
 	 * Breaks up a single line of text for emails
-	 * Usage: 5
 	 *
-	 * @param	string		The string to break up
-	 * @param	string		The string to implode the broken lines with (default/typically \n)
-	 * @param	integer		The line length
-	 * @return	string
+	 * @param string $str The string to break up
+	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
+	 * @param integer $lineWidth The line width
+	 * @return string reformated text
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Mail::breakLinesForPlainEmail()
 	 */
-	public static function breakLinesForEmail($str, $implChar = LF, $charWidth = 76) {
-		$lines = array();
-		$l = $charWidth;
-		$p = 0;
-		while (strlen($str) > $p) {
-			$substr = substr($str, $p, $l);
-			if (strlen($substr) == $l) {
-				$count = count(explode(' ', trim(strrev($substr))));
-				if ($count > 1) { // OK...
-					$parts = explode(' ', strrev($substr), 2);
-					$theLine = strrev($parts[1]);
-				} else {
-					$afterParts = explode(' ', substr($str, $l + $p), 2);
-					$theLine = $substr . $afterParts[0];
-				}
-				if (!strlen($theLine)) {
-					break;
-				} // Error, because this would keep us in an endless loop.
-			} else {
-				$theLine = $substr;
-			}
-
-			$lines[] = trim($theLine);
-			$p += strlen($theLine);
-			if (!trim(substr($str, $p, $l))) {
-				break;
-			} // added...
-		}
-		return implode($implChar, $lines);
+	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
+		self::logDeprecatedFunction();
+		return t3lib_utility_Mail::breakLinesForPlainEmail($str, $newlineChar, $lineWidth);
 	}
 
 	/**
