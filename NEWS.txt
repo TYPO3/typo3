@@ -154,7 +154,9 @@ Extension Development
 TypoScript / Frontend
 -------------------------------------------------------------------------------
 
-...
+Since TYPO3 Version 4.5 the TypoScript-Content-Object "HTML" and "TEXT" works 
+identical. We will remove "HTML" in TYPO3 4.8, please update your TypoScript and
+use "TEXT" instead of "HTML".
 
 Database API / DBAL
 -------------------------------------------------------------------------------
