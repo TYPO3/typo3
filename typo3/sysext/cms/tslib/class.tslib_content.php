@@ -6244,6 +6244,9 @@ class tslib_cObj {
 			case 'capitalize':
 				$theValue = ucwords($theValue);
 			break;
+			case 'ucfirst':
+				$theValue = ucfirst($theValue);
+			break;
 		}
 		return $theValue;
 	}
