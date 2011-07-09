@@ -169,7 +169,8 @@ table.typo3-TCEforms optgroup option {
 }
 
 table.typo3-TCEforms div.typo3-TCEforms-originalLanguageValue {
-	background-color: #bbccbb;
+	background-color: #dadada;
+	border: 1px solid #c0c0c0;
 }
 
 table.typo3-TCEforms div.typo3-TCEforms-diffBox {
