@@ -94,5 +94,42 @@ class t3lib_utility_mailTest extends tx_phpunit_testcase {
 			$additionalParameters
 		);
 	}
+
+    /**
+     * @test
+     */
+    public function breakLinesForPlainEmailReturnsEmptyStringIfEmptryStringIsGiven() {
+        $this->assertEmpty(
+            t3lib_utility_Mail::breakLinesForPlainEmail('')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function breakLinesForPlainEmailReturnsOneLineIfCharWithIsNotExceeded() {
+        $implChar = LF;
+        $charWidth = 76;
+        $str = 'This text is not longer than 76 chars and therefore will not be broken.';
+        $returnString = t3lib_utility_Mail::breakLinesForPlainEmail($str, $implChar, $charWidth);
+        $this->assertEquals(
+            1,
+            count(explode($implChar, $returnString))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function breakLinesForPlainEmailBreaksTextIfCharWithIsExceeded() {
+        $implChar = LF;
+        $charWidth = 50;
+        $str = 'This text is longer than 50 chars and therefore will be broken.';
+        $returnString = t3lib_utility_Mail::breakLinesForPlainEmail($str, $implChar, $charWidth);
+        $this->assertEquals(
+            2,
+            count(explode($implChar, $returnString))
+        );
+    }
 }
 ?>

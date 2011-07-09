@@ -199,6 +199,45 @@ final class t3lib_utility_Mail {
 
 		return $address;
 	}
+
+	/**
+	 * Breaks up a single line of text for emails
+	 * Usage: 2
+	 *
+	 * @param	string		The string to break up
+	 * @param	string		The string to implode the broken lines with (default/typically \n)
+	 * @param	integer		The line length
+	 * @return	string
+	 */
+	public static function breakLinesForPlainEmail($str, $implChar = LF, $charWidth = 76) {
+		$lines = array();
+		$p = 0;
+		while (strlen($str) > $p) {
+			$substr = substr($str, $p, $charWidth);
+			if (strlen($substr) == $charWidth) {
+				$count = count(explode(' ', trim(strrev($substr))));
+				if ($count > 1) { // OK...
+					$parts = explode(' ', strrev($substr), 2);
+					$theLine = strrev($parts[1]);
+				} else {
+					$afterParts = explode(' ', substr($str, $charWidth + $p), 2);
+					$theLine = $substr . $afterParts[0];
+				}
+				if (!strlen($theLine)) {
+					break;
+				} // Error, because this would keep us in an endless loop.
+			} else {
+				$theLine = $substr;
+			}
+
+			$lines[] = trim($theLine);
+			$p += strlen($theLine);
+			if (!trim(substr($str, $p, $charWidth))) {
+				break;
+			} // added...
+		}
+		return implode($implChar, $lines);
+	}
 }
 
 ?>

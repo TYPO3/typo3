@@ -404,34 +404,8 @@ final class t3lib_div {
 	 * @return	string
 	 */
 	public static function breakLinesForEmail($str, $implChar = LF, $charWidth = 76) {
-		$lines = array();
-		$l = $charWidth;
-		$p = 0;
-		while (strlen($str) > $p) {
-			$substr = substr($str, $p, $l);
-			if (strlen($substr) == $l) {
-				$count = count(explode(' ', trim(strrev($substr))));
-				if ($count > 1) { // OK...
-					$parts = explode(' ', strrev($substr), 2);
-					$theLine = strrev($parts[1]);
-				} else {
-					$afterParts = explode(' ', substr($str, $l + $p), 2);
-					$theLine = $substr . $afterParts[0];
-				}
-				if (!strlen($theLine)) {
-					break;
-				} // Error, because this would keep us in an endless loop.
-			} else {
-				$theLine = $substr;
-			}
-
-			$lines[] = trim($theLine);
-			$p += strlen($theLine);
-			if (!trim(substr($str, $p, $l))) {
-				break;
-			} // added...
-		}
-		return implode($implChar, $lines);
+		self::logDeprecatedFunction();
+		return t3lib_utility_Mail::breakLinesForPlainEmail($str, $implChar, $charWidth);
 	}
 
 	/**
