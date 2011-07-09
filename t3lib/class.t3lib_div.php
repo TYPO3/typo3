@@ -1003,12 +1003,12 @@ final class t3lib_div {
 	 *
 	 * @param mixed Any input variable to test
 	 * @return boolean Returns TRUE if string is an integer
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::canBeInterpretedAsInteger() instead
 	 */
 	public static function testInt($var) {
-		if ($var === '') {
-			return FALSE;
-		}
-		return (string) intval($var) === (string) $var;
+		self::logDeprecatedFunction();
+
+		return t3lib_utility_Math::canBeInterpretedAsInteger($var);
 	}
 
 	/**
@@ -1101,55 +1101,12 @@ final class t3lib_div {
 	 * @param	string		Input string, eg "123 + 456 / 789 - 4"
 	 * @return	integer		Calculated value. Or error string.
 	 * @see calcParenthesis()
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction() instead
 	 */
 	public static function calcPriority($string) {
-		$string = preg_replace('/[[:space:]]*/', '', $string); // removing all whitespace
-		$string = '+' . $string; // Ensuring an operator for the first entrance
-		$qm = '\*\/\+-^%';
-		$regex = '([' . $qm . '])([' . $qm . ']?[0-9\.]*)';
-			// split the expression here:
-		$reg = array();
-		preg_match_all('/' . $regex . '/', $string, $reg);
+		self::logDeprecatedFunction();
 
-		reset($reg[2]);
-		$number = 0;
-		$Msign = '+';
-		$err = '';
-		$buffer = doubleval(current($reg[2]));
-		next($reg[2]); // Advance pointer
-
-		while (list($k, $v) = each($reg[2])) {
-			$v = doubleval($v);
-			$sign = $reg[1][$k];
-			if ($sign == '+' || $sign == '-') {
-				$number = $Msign == '-' ? $number -= $buffer : $number += $buffer;
-				$Msign = $sign;
-				$buffer = $v;
-			} else {
-				if ($sign == '/') {
-					if ($v) {
-						$buffer /= $v;
-					} else {
-						$err = 'dividing by zero';
-					}
-				}
-				if ($sign == '%') {
-					if ($v) {
-						$buffer %= $v;
-					} else {
-						$err = 'dividing by zero';
-					}
-				}
-				if ($sign == '*') {
-					$buffer *= $v;
-				}
-				if ($sign == '^') {
-					$buffer = pow($buffer, $v);
-				}
-			}
-		}
-		$number = $Msign == '-' ? $number -= $buffer : $number += $buffer;
-		return $err ? 'ERROR: ' . $err : $number;
+		return t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction($string);
 	}
 
 	/**
@@ -1159,26 +1116,12 @@ final class t3lib_div {
 	 * @param	string		Input string, eg "(123 + 456) / 789 - 4"
 	 * @return	integer		Calculated value. Or error string.
 	 * @see calcPriority(), tslib_cObj::stdWrap()
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithParentheses() instead
 	 */
 	public static function calcParenthesis($string) {
-		$securC = 100;
-		do {
-			$valueLenO = strcspn($string, '(');
-			$valueLenC = strcspn($string, ')');
-			if ($valueLenC == strlen($string) || $valueLenC < $valueLenO) {
-				$value = self::calcPriority(substr($string, 0, $valueLenC));
-				$string = $value . substr($string, $valueLenC + 1);
-				return $string;
-			} else {
-				$string = substr($string, 0, $valueLenO) . self::calcParenthesis(substr($string, $valueLenO + 1));
-			}
-				// Security:
-			$securC--;
-			if ($securC <= 0) {
-				break;
-			}
-		} while ($valueLenO < strlen($string));
-		return $string;
+		self::logDeprecatedFunction();
+
+		return t3lib_utility_Math::calculateWithParentheses($string);
 	}
 
 	/**
