@@ -289,7 +289,7 @@ class SC_file_list {
 			}
 
 				// Start up filelisting object, include settings.
-			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
+			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
 			$this->filelist->start($this->id, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 				// Generate the list

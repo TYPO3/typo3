@@ -376,9 +376,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// BUILDING EXPORT DATA:
 
 			// Processing of InData array values:
-		$inData['pagetree']['maxNumber'] = t3lib_div::intInRange($inData['pagetree']['maxNumber'],1,10000,100);
-		$inData['listCfg']['maxNumber'] = t3lib_div::intInRange($inData['listCfg']['maxNumber'],1,10000,100);
-		$inData['maxFileSize'] = t3lib_div::intInRange($inData['maxFileSize'],1,10000,1000);
+		$inData['pagetree']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['pagetree']['maxNumber'],1,10000,100);
+		$inData['listCfg']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'],1,10000,100);
+		$inData['maxFileSize'] = t3lib_utility_Math::forceIntegerInRange($inData['maxFileSize'],1,10000,1000);
 		$inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/','',preg_replace('/\.(t3d|xml)$/','',$inData['filename'])));
 		if (strlen($inData['filename']))	{
 			$inData['filename'].= $inData['filetype']=='xml' ? '.xml' : '.t3d';
@@ -451,7 +451,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			foreach($inData['list'] as $ref)	{
 				$rParts = explode(':',$ref);
 				if ($GLOBALS['BE_USER']->check('tables_select',$rParts[0]))	{
-					$res = $this->exec_listQueryPid($rParts[0],$rParts[1],t3lib_div::intInRange($inData['listCfg']['maxNumber'],1));
+					$res = $this->exec_listQueryPid($rParts[0],$rParts[1],t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'],1));
 					while($subTrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						$this->export->export_addRecord($rParts[0],$subTrow);
 					}
@@ -658,7 +658,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			foreach ($GLOBALS['TCA'] as $table => $value) {
 				if ($table!='pages' && (in_array($table,$tables) || in_array('_ALL',$tables)))	{
 					if ($GLOBALS['BE_USER']->check('tables_select',$table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-						$res = $this->exec_listQueryPid($table,$k,t3lib_div::intInRange($maxNumber,1));
+						$res = $this->exec_listQueryPid($table,$k,t3lib_utility_Math::forceIntegerInRange($maxNumber,1));
 						while($subTrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$this->export->export_addRecord($table,$subTrow);
 						}
@@ -1623,7 +1623,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
-		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_div::intInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
+		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
 	}
 
 	/**
@@ -1649,7 +1649,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 			}
 		}
-		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_div::intInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
+		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
 	}
 
 	/**

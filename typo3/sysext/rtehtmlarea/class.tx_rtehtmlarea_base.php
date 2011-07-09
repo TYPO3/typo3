@@ -205,7 +205,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if (!$rteIsAvailable) {
 				$this->errorLog[] = 'RTE: Browser not supported.';
 			}
-			if (t3lib_div::int_from_ver(TYPO3_version) < 4000000) {
+			if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 4000000) {
 				$rteIsAvailable = FALSE;
 				$this->errorLog[] = 'rte: This version of htmlArea RTE cannot run under this version of TYPO3.';
 			}
@@ -236,7 +236,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$inline = $this->TCEform->inline;
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
-		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
+		$this->typoVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
 		$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
 
 			// Draw form element:

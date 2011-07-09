@@ -909,7 +909,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	function workspaceVersioningTypeAccess($type) {
 		$retVal = FALSE;
 
-		$type = t3lib_div::intInRange($type, -1);
+		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
 
 			// Check if only element versioning is allowed:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] && $type != -1) {
@@ -949,7 +949,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	integer		Returning versioning type
 	 */
 	function workspaceVersioningTypeGetClosest($type) {
-		$type = t3lib_div::intInRange($type, -1);
+		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
 
 		if ($this->workspace > 0) {
 			switch ((int) $type) {

@@ -440,7 +440,7 @@ class t3lib_search_livesearch {
 	 * @return void
 	 */
 	public function setLimitCount($limitCount) {
-		$limit = t3lib_div::intval_positive($limitCount);
+		$limit = t3lib_utility_Math::convertToPositiveInteger($limitCount);
 		if ($limit > 0) {
 			$this->limitCount = $limit;
 		}
@@ -453,7 +453,7 @@ class t3lib_search_livesearch {
 	 * @return void
 	 */
 	public function setStartCount($startCount) {
-		$this->startCount = t3lib_div::intval_positive($startCount);
+		$this->startCount = t3lib_utility_Math::convertToPositiveInteger($startCount);
 	}
 
 	/**

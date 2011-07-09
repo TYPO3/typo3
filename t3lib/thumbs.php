@@ -197,7 +197,7 @@ class SC_t3lib_thumbs {
 
 				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
 			$sizeParts = explode('x', $this->size . 'x' . $this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
-			$sizeParts = array(t3lib_div::intInRange($sizeParts[0], 1, 1000), t3lib_div::intInRange($sizeParts[1], 1, 1000));	// Cleaning it up, only two parameters now.
+			$sizeParts = array(t3lib_utility_Math::forceIntegerInRange($sizeParts[0], 1, 1000), t3lib_utility_Math::forceIntegerInRange($sizeParts[1], 1, 1000));	// Cleaning it up, only two parameters now.
 			$this->size = implode('x', $sizeParts);		// Imploding the cleaned size-value back to the internal variable
 			$sizeMax = max($sizeParts);	// Getting max value
 
@@ -206,7 +206,7 @@ class SC_t3lib_thumbs {
 
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
 				// René: png work for me
-			$thmMode = t3lib_div::intInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
+			$thmMode = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
 			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
 			$outfile = 'tmb_' . substr(md5($this->input . $this->mtime . $this->size), 0, 10) . '.' . $outext;

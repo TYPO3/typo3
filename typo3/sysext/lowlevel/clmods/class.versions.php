@@ -96,8 +96,8 @@ Automatic Repair:
 			'versions' => array(),
 		);
 
-		$startingPoint = $this->cli_isArg('--pid') ? t3lib_div::intInRange($this->cli_argValue('--pid'),0) : 0;
-		$depth = $this->cli_isArg('--depth') ? t3lib_div::intInRange($this->cli_argValue('--depth'),0) : 1000;
+		$startingPoint = $this->cli_isArg('--pid') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--pid'),0) : 0;
+		$depth = $this->cli_isArg('--depth') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--depth'),0) : 1000;
 		$this->genTree($startingPoint,$depth,(int)$this->cli_argValue('--echotree'));
 
 		$resultArray['versions'] = $this->recStats['versions'];

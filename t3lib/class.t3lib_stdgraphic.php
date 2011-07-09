@@ -154,7 +154,7 @@ class t3lib_stdGraphic {
 		}
 
 			// Setting default JPG parameters:
-		$this->jpegQuality = t3lib_div::intInRange($gfxConf['jpg_quality'], 10, 100, 75);
+		$this->jpegQuality = t3lib_utility_Math::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
 		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -sharpen 50 -quality ' . $this->jpegQuality;
 
 		if ($gfxConf['im_combine_filename']) {
@@ -335,8 +335,8 @@ class t3lib_stdGraphic {
 		$cpW = imagesx($cpImg);
 		$cpH = imagesy($cpImg);
 		$tile = t3lib_div::intExplode(',', $conf['tile']);
-		$tile[0] = t3lib_div::intInRange($tile[0], 1, 20);
-		$tile[1] = t3lib_div::intInRange($tile[1], 1, 20);
+		$tile[0] = t3lib_utility_Math::forceIntegerInRange($tile[0], 1, 20);
+		$tile[1] = t3lib_utility_Math::forceIntegerInRange($tile[1], 1, 20);
 		$cpOff = $this->objPosition($conf, $workArea, array($cpW * $tile[0], $cpH * $tile[1]));
 
 		for ($xt = 0; $xt < $tile[0]; $xt++) {
@@ -473,7 +473,7 @@ class t3lib_stdGraphic {
 				$fileColor = $tmpStr . '_colorNT.' . $this->gifExtension;
 				$fileMask = $tmpStr . '_maskNT.' . $this->gifExtension;
 					// Scalefactor
-				$sF = t3lib_div::intInRange($conf['niceText.']['scaleFactor'], 2, 5);
+				$sF = t3lib_utility_Math::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
 				$newW = ceil($sF * imagesx($im));
 				$newH = ceil($sF * imagesy($im));
 
@@ -507,7 +507,7 @@ class t3lib_stdGraphic {
 						if ($this->V5_EFFECTS) {
 							$command .= $this->v5_sharpen($conf['niceText.']['sharpen']);
 						} else {
-							$command .= ' -sharpen ' . t3lib_div::intInRange($conf['niceText.']['sharpen'], 1, 99);
+							$command .= ' -sharpen ' . t3lib_utility_Math::forceIntegerInRange($conf['niceText.']['sharpen'], 1, 99);
 						}
 					}
 				}
@@ -1102,7 +1102,7 @@ class t3lib_stdGraphic {
 		if (!$conf['niceText']) {
 			$sF = 1;
 		} else { // NICETEXT::
-			$sF = t3lib_div::intInRange($conf['niceText.']['scaleFactor'], 2, 5);
+			$sF = t3lib_utility_Math::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
 		}
 		return $sF;
 	}
@@ -1237,7 +1237,7 @@ class t3lib_stdGraphic {
 		$thickness = intval($conf['thickness']);
 		if ($thickness) {
 			$txtConf['fontColor'] = $conf['color'];
-			$outLineDist = t3lib_div::intInRange($thickness, 1, 2);
+			$outLineDist = t3lib_utility_Math::forceIntegerInRange($thickness, 1, 2);
 			for ($b = 1; $b <= $outLineDist; $b++) {
 				if ($b == 1) {
 					$it = 8;
@@ -1314,7 +1314,7 @@ class t3lib_stdGraphic {
 	 */
 	function makeShadow(&$im, $conf, $workArea, $txtConf) {
 		$workArea = $this->applyOffset($workArea, t3lib_div::intExplode(',', $conf['offset']));
-		$blurRate = t3lib_div::intInRange(intval($conf['blur']), 0, 99);
+		$blurRate = t3lib_utility_Math::forceIntegerInRange(intval($conf['blur']), 0, 99);
 
 		if (!$blurRate || $this->NO_IM_EFFECTS) { // No effects if ImageMagick ver. 5+
 			$txtConf['fontColor'] = $conf['color'];
@@ -1356,7 +1356,7 @@ class t3lib_stdGraphic {
 					// Blurring of the mask
 				$times = ceil($blurRate / 10); // How many blur-commands that is executed. Min = 1;
 				$newBlurRate = $blurRate * 4; // Here I boost the blur-rate so that it is 100 already at 25. The rest is done by up to 99 iterations of the blur-command.
-				$newBlurRate = t3lib_div::intInRange($newBlurRate, 1, 99);
+				$newBlurRate = t3lib_utility_Math::forceIntegerInRange($newBlurRate, 1, 99);
 				for ($a = 0; $a < $times; $a++) { // Building blur-command
 					$command .= ' -blur ' . $blurRate;
 				}
@@ -1375,12 +1375,12 @@ class t3lib_stdGraphic {
 					// adjust the mask
 				$intensity = 40;
 				if ($conf['intensity']) {
-					$intensity = t3lib_div::intInRange($conf['intensity'], 0, 100);
+					$intensity = t3lib_utility_Math::forceIntegerInRange($conf['intensity'], 0, 100);
 				}
 				$intensity = ceil(255 - ($intensity / 100 * 255));
 				$this->inputLevels($blurTextImg, 0, $intensity, $this->maskNegate);
 
-				$opacity = t3lib_div::intInRange(intval($conf['opacity']), 0, 100);
+				$opacity = t3lib_utility_Math::forceIntegerInRange(intval($conf['opacity']), 0, 100);
 				if ($opacity && $opacity < 100) {
 					$high = ceil(255 * $opacity / 100);
 					$this->outputLevels($blurTextImg, 0, $high, $this->maskNegate); // reducing levels as the opacity demands
@@ -1436,7 +1436,7 @@ class t3lib_stdGraphic {
 				// conversion:
 				// PHP 0 = opaque, 127 = transparent
 				// TYPO3 100 = opaque, 0 = transparent
-			$opacity = t3lib_div::intInRange(intval($conf['opacity']), 1, 100, 1);
+			$opacity = t3lib_utility_Math::forceIntegerInRange(intval($conf['opacity']), 1, 100, 1);
 			$opacity = abs($opacity - 100);
 			$opacity = round((127 * $opacity) / 100);
 		}
@@ -1521,7 +1521,7 @@ class t3lib_stdGraphic {
 						if ($this->V5_EFFECTS) {
 							$commands .= $this->v5_blur($value);
 						} else {
-							$commands .= ' -blur ' . t3lib_div::intInRange($value, 1, 99);
+							$commands .= ' -blur ' . t3lib_utility_Math::forceIntegerInRange($value, 1, 99);
 						}
 					}
 				break;
@@ -1530,31 +1530,31 @@ class t3lib_stdGraphic {
 						if ($this->V5_EFFECTS) {
 							$commands .= $this->v5_sharpen($value);
 						} else {
-							$commands .= ' -sharpen ' . t3lib_div::intInRange($value, 1, 99);
+							$commands .= ' -sharpen ' . t3lib_utility_Math::forceIntegerInRange($value, 1, 99);
 						}
 					}
 				break;
 				case 'rotate':
-					$commands .= ' -rotate ' . t3lib_div::intInRange($value, 0, 360);
+					$commands .= ' -rotate ' . t3lib_utility_Math::forceIntegerInRange($value, 0, 360);
 				break;
 				case 'solarize':
-					$commands .= ' -solarize ' . t3lib_div::intInRange($value, 0, 99);
+					$commands .= ' -solarize ' . t3lib_utility_Math::forceIntegerInRange($value, 0, 99);
 				break;
 				case 'swirl':
-					$commands .= ' -swirl ' . t3lib_div::intInRange($value, 0, 1000);
+					$commands .= ' -swirl ' . t3lib_utility_Math::forceIntegerInRange($value, 0, 1000);
 				break;
 				case 'wave':
 					$params = t3lib_div::intExplode(',', $value);
-					$commands .= ' -wave ' . t3lib_div::intInRange($params[0], 0, 99) . 'x' . t3lib_div::intInRange($params[1], 0, 99);
+					$commands .= ' -wave ' . t3lib_utility_Math::forceIntegerInRange($params[0], 0, 99) . 'x' . t3lib_utility_Math::forceIntegerInRange($params[1], 0, 99);
 				break;
 				case 'charcoal':
-					$commands .= ' -charcoal ' . t3lib_div::intInRange($value, 0, 100);
+					$commands .= ' -charcoal ' . t3lib_utility_Math::forceIntegerInRange($value, 0, 100);
 				break;
 				case 'gray':
 					$commands .= ' -colorspace GRAY';
 				break;
 				case 'edge':
-					$commands .= ' -edge ' . t3lib_div::intInRange($value, 0, 99);
+					$commands .= ' -edge ' . t3lib_utility_Math::forceIntegerInRange($value, 0, 99);
 				break;
 				case 'emboss':
 					$commands .= ' -emboss';
@@ -1566,10 +1566,10 @@ class t3lib_stdGraphic {
 					$commands .= ' -flop';
 				break;
 				case 'colors':
-					$commands .= ' -colors ' . t3lib_div::intInRange($value, 2, 255);
+					$commands .= ' -colors ' . t3lib_utility_Math::forceIntegerInRange($value, 2, 255);
 				break;
 				case 'shear':
-					$commands .= ' -shear ' . t3lib_div::intInRange($value, -90, 90);
+					$commands .= ' -shear ' . t3lib_utility_Math::forceIntegerInRange($value, -90, 90);
 				break;
 				case 'invert':
 					$commands .= ' -negate';
@@ -1749,8 +1749,8 @@ class t3lib_stdGraphic {
 	 */
 	function outputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
-			$low = t3lib_div::intInRange($low, 0, 255);
-			$high = t3lib_div::intInRange($high, 0, 255);
+			$low = t3lib_utility_Math::forceIntegerInRange($low, 0, 255);
+			$high = t3lib_utility_Math::forceIntegerInRange($high, 0, 255);
 
 			if ($swap) {
 				$temp = $low;
@@ -1781,8 +1781,8 @@ class t3lib_stdGraphic {
 	 */
 	function inputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
-			$low = t3lib_div::intInRange($low, 0, 255);
-			$high = t3lib_div::intInRange($high, 0, 255);
+			$low = t3lib_utility_Math::forceIntegerInRange($low, 0, 255);
+			$high = t3lib_utility_Math::forceIntegerInRange($high, 0, 255);
 
 			if ($swap) {
 				$temp = $low;
@@ -1794,9 +1794,9 @@ class t3lib_stdGraphic {
 			$totalCols = ImageColorsTotal($im);
 			for ($c = 0; $c < $totalCols; $c++) {
 				$cols = ImageColorsForIndex($im, $c);
-				$cols['red'] = t3lib_div::intInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
-				$cols['green'] = t3lib_div::intInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
-				$cols['blue'] = t3lib_div::intInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
+				$cols['red'] = t3lib_utility_Math::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
+				$cols['green'] = t3lib_utility_Math::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
+				$cols['blue'] = t3lib_utility_Math::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
 		}
@@ -1813,7 +1813,7 @@ class t3lib_stdGraphic {
 		$fI = t3lib_div::split_fileref($file);
 		$ext = strtolower($fI['fileext']);
 		$result = $this->randomName() . '.' . $ext;
-		if (($reduce = t3lib_div::intInRange($cols, 0, ($ext == 'gif' ? 256 : $this->truecolorColors), 0)) > 0) {
+		if (($reduce = t3lib_utility_Math::forceIntegerInRange($cols, 0, ($ext == 'gif' ? 256 : $this->truecolorColors), 0)) > 0) {
 			$params = ' -colors ' . $reduce;
 			if ($reduce <= 256) {
 				$params .= ' -type Palette';
@@ -1859,7 +1859,7 @@ class t3lib_stdGraphic {
 	 * @see makeText(), IMparams(), v5_blur()
 	 */
 	function v5_sharpen($factor) {
-		$factor = t3lib_div::intInRange(ceil($factor / 10), 0, 10);
+		$factor = t3lib_utility_Math::forceIntegerInRange(ceil($factor / 10), 0, 10);
 
 		$sharpenArr = explode(',', ',' . $this->im5fx_sharpenSteps);
 		$sharpenF = trim($sharpenArr[$factor]);
@@ -1878,7 +1878,7 @@ class t3lib_stdGraphic {
 	 * @see makeText(), IMparams(), v5_sharpen()
 	 */
 	function v5_blur($factor) {
-		$factor = t3lib_div::intInRange(ceil($factor / 10), 0, 10);
+		$factor = t3lib_utility_Math::forceIntegerInRange(ceil($factor / 10), 0, 10);
 
 		$blurArr = explode(',', ',' . $this->im5fx_blurSteps);
 		$blurF = trim($blurArr[$factor]);
@@ -1950,14 +1950,14 @@ class t3lib_stdGraphic {
 			$cParts[1] = trim($cParts[1]);
 			if (substr($cParts[1], 0, 1) == '*') {
 				$val = doubleval(substr($cParts[1], 1));
-				$col[0] = t3lib_div::intInRange($col[0] * $val, 0, 255);
-				$col[1] = t3lib_div::intInRange($col[1] * $val, 0, 255);
-				$col[2] = t3lib_div::intInRange($col[2] * $val, 0, 255);
+				$col[0] = t3lib_utility_Math::forceIntegerInRange($col[0] * $val, 0, 255);
+				$col[1] = t3lib_utility_Math::forceIntegerInRange($col[1] * $val, 0, 255);
+				$col[2] = t3lib_utility_Math::forceIntegerInRange($col[2] * $val, 0, 255);
 			} else {
 				$val = intval($cParts[1]);
-				$col[0] = t3lib_div::intInRange($col[0] + $val, 0, 255);
-				$col[1] = t3lib_div::intInRange($col[1] + $val, 0, 255);
-				$col[2] = t3lib_div::intInRange($col[2] + $val, 0, 255);
+				$col[0] = t3lib_utility_Math::forceIntegerInRange($col[0] + $val, 0, 255);
+				$col[1] = t3lib_utility_Math::forceIntegerInRange($col[1] + $val, 0, 255);
+				$col[2] = t3lib_utility_Math::forceIntegerInRange($col[2] + $val, 0, 255);
 			}
 		}
 		return $col;
@@ -2679,7 +2679,7 @@ class t3lib_stdGraphic {
 					if ($this->ImageWrite($this->im, $file)) {
 							// ImageMagick operations
 						if ($this->setup['reduceColors'] || !$this->png_truecolor) {
-							$reduced = $this->IMreduceColors($file, t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
+							$reduced = $this->IMreduceColors($file, t3lib_utility_Math::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
 							if ($reduced) {
 								@copy($reduced, $file);
 								@unlink($reduced);
@@ -2692,7 +2692,7 @@ class t3lib_stdGraphic {
 				case 'jpeg':
 					$quality = 0; // Use the default
 					if ($this->setup['quality']) {
-						$quality = t3lib_div::intInRange($this->setup['quality'], 10, 100);
+						$quality = t3lib_utility_Math::forceIntegerInRange($this->setup['quality'], 10, 100);
 					}
 					if ($this->ImageWrite($this->im, $file, $quality)) {
 						;

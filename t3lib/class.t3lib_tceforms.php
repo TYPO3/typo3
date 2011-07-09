@@ -907,7 +907,7 @@ class t3lib_TCEforms {
 		$config = $PA['fieldConf']['config'];
 
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
-		$size = t3lib_div::intInRange($config['size'] ? $config['size'] : 30, 5, $this->maxInputWidth);
+		$size = t3lib_utility_Math::forceIntegerInRange($config['size'] ? $config['size'] : 30, 5, $this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',', $config['eval'], 1);
 		$classAndStyleAttributes = $this->formWidthAsArray($size);
 
@@ -1090,13 +1090,13 @@ class t3lib_TCEforms {
 		}
 
 			// Setting columns number:
-		$cols = t3lib_div::intInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
+		$cols = t3lib_utility_Math::forceIntegerInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
 
 			// Setting number of rows:
-		$origRows = $rows = t3lib_div::intInRange($config['rows'] ? $config['rows'] : 5, 1, 20);
+		$origRows = $rows = t3lib_utility_Math::forceIntegerInRange($config['rows'] ? $config['rows'] : 5, 1, 20);
 		if (strlen($PA['itemFormElValue']) > $this->charsPerRow * 2) {
 			$cols = $this->maxTextareaWidth;
-			$rows = t3lib_div::intInRange(round(strlen($PA['itemFormElValue']) / $this->charsPerRow), count(explode(LF, $PA['itemFormElValue'])), 20);
+			$rows = t3lib_utility_Math::forceIntegerInRange(round(strlen($PA['itemFormElValue']) / $this->charsPerRow), count(explode(LF, $PA['itemFormElValue'])), 20);
 			if ($rows < $origRows) {
 				$rows = $origRows;
 			}
@@ -1851,7 +1851,7 @@ class t3lib_TCEforms {
 		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"';
 		$size = intval($config['size']);
 		$cssPrefix = ($size === 1) ? 'tceforms-select' : 'tceforms-multiselect';
-		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($selItems) + 1, t3lib_div::intInRange($size, 1), $config['autoSizeMax']) : $size;
+		$size = $config['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange(count($selItems) + 1, t3lib_utility_Math::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 		$selectBox = '<select id="' . uniqid($cssPrefix) . '" name="' . $PA['itemFormElName'] . '[]"' .
 					 $this->insertDefStyle('select', $cssPrefix) .
 					 ($size ? ' size="' . $size . '"' : '') .
@@ -1920,11 +1920,11 @@ class t3lib_TCEforms {
 		}
 
 			// Set max and min items:
-		$maxitems = t3lib_div::intInRange($config['maxitems'], 0);
+		$maxitems = t3lib_utility_Math::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
 		}
-		$minitems = t3lib_div::intInRange($config['minitems'], 0);
+		$minitems = t3lib_utility_Math::forceIntegerInRange($config['minitems'], 0);
 
 			// Register the required number of elements:
 		$this->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
@@ -1978,7 +1978,7 @@ class t3lib_TCEforms {
 				// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"';
 			$size = intval($config['size']);
-			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray) + 1, t3lib_div::intInRange($size, 1), $config['autoSizeMax']) : $size;
+			$size = $config['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange(count($itemArray) + 1, t3lib_utility_Math::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 			if ($config['exclusiveKeys']) {
 				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName'] . '\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,\'' . $config['exclusiveKeys'] . '\'); ';
 			} else {
@@ -2000,7 +2000,7 @@ class t3lib_TCEforms {
 			// Pass to "dbFileIcons" function:
 		$params = array(
 			'size' => $size,
-			'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'], 0),
+			'autoSizeMax' => t3lib_utility_Math::forceIntegerInRange($config['autoSizeMax'], 0),
 			'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
 			'dontShowMoveIcons' => ($maxitems <= 1),
 			'maxitems' => $maxitems,
@@ -2034,11 +2034,11 @@ class t3lib_TCEforms {
 		$internal_type = $config['internal_type'];
 		$show_thumbs = $config['show_thumbs'];
 		$size = intval($config['size']);
-		$maxitems = t3lib_div::intInRange($config['maxitems'], 0);
+		$maxitems = t3lib_utility_Math::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
 		}
-		$minitems = t3lib_div::intInRange($config['minitems'], 0);
+		$minitems = t3lib_utility_Math::forceIntegerInRange($config['minitems'], 0);
 		$allowed = trim($config['allowed']);
 		$disallowed = trim($config['disallowed']);
 
@@ -2124,7 +2124,7 @@ class t3lib_TCEforms {
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
-					'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'], 0),
+					'autoSizeMax' => t3lib_utility_Math::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
 					'info' => $info,
@@ -2151,7 +2151,7 @@ class t3lib_TCEforms {
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
-					'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'], 0),
+					'autoSizeMax' => t3lib_utility_Math::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle']) ?
 							' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
@@ -2234,7 +2234,7 @@ class t3lib_TCEforms {
 				$params = array(
 					'size' => $size,
 					'dontShowMoveIcons' => ($maxitems <= 1),
-					'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'], 0),
+					'autoSizeMax' => t3lib_utility_Math::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
 					'info' => $info,
@@ -2298,12 +2298,12 @@ class t3lib_TCEforms {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
 			}
 				// like textarea
-			$cols = t3lib_div::intInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
+			$cols = t3lib_utility_Math::forceIntegerInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
 			if (!$config['fixedRows']) {
-				$origRows = $rows = t3lib_div::intInRange($rows, 1, 20);
+				$origRows = $rows = t3lib_utility_Math::forceIntegerInRange($rows, 1, 20);
 				if (strlen($itemValue) > $this->charsPerRow * 2) {
 					$cols = $this->maxTextareaWidth;
-					$rows = t3lib_div::intInRange(round(strlen($itemValue) / $this->charsPerRow), count(explode(LF, $itemValue)), 20);
+					$rows = t3lib_utility_Math::forceIntegerInRange(round(strlen($itemValue) / $this->charsPerRow), count(explode(LF, $itemValue)), 20);
 					if ($rows < $origRows) {
 						$rows = $origRows;
 					}
@@ -2967,7 +2967,7 @@ class t3lib_TCEforms {
 				$itemValue = sprintf('%' . $format, $itemValue);
 			break;
 			case 'float':
-				$precision = t3lib_div::intInRange($config['format.']['precision'], 1, 10, 2);
+				$precision = t3lib_utility_Math::forceIntegerInRange($config['format.']['precision'], 1, 10, 2);
 				$itemValue = sprintf('%.' . $precision . 'f', $itemValue);
 			break;
 			case 'number':
@@ -3087,12 +3087,12 @@ class t3lib_TCEforms {
 			// If a bitmask-value field has been configured, then find possible fields to exclude based on that:
 		if ($GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_value_field']) {
 			$sTfield = $GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_value_field'];
-			$sTValue = t3lib_div::intInRange($row[$sTfield], 0);
+			$sTValue = t3lib_utility_Math::forceIntegerInRange($row[$sTfield], 0);
 			if (is_array($GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_excludelist_bits'])) {
 				foreach ($GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_excludelist_bits'] as $bitKey => $eList) {
 					$bit = substr($bitKey, 1);
 					if (t3lib_div::testInt($bit)) {
-						$bit = t3lib_div::intInRange($bit, 0, 30);
+						$bit = t3lib_utility_Math::forceIntegerInRange($bit, 0, 30);
 						if (
 							(substr($bitKey, 0, 1) == '-' && !($sTValue & pow(2, $bit))) ||
 							(substr($bitKey, 0, 1) == '+' && ($sTValue & pow(2, $bit)))
@@ -3554,7 +3554,7 @@ class t3lib_TCEforms {
 		}
 
 			// Create selector box of the options
-		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC + 1, t3lib_div::intInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
+		$sSize = $params['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange($itemArrayC + 1, t3lib_utility_Math::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ' multiple="multiple" name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
@@ -3950,8 +3950,8 @@ class t3lib_TCEforms {
 						// Color wizard colorbox:
 					if ((string) $wConf['type'] == 'colorbox') {
 						$dim = t3lib_div::intExplode('x', $wConf['dim']);
-						$dX = t3lib_div::intInRange($dim[0], 1, 200, 20);
-						$dY = t3lib_div::intInRange($dim[1], 1, 200, 20);
+						$dX = t3lib_utility_Math::forceIntegerInRange($dim[0], 1, 200, 20);
+						$dY = t3lib_utility_Math::forceIntegerInRange($dim[1], 1, 200, 20);
 						$color = $PA['itemFormElValue'] ? ' bgcolor="' . htmlspecialchars($PA['itemFormElValue']) . '"' : '';
 						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="' . $md5ID . '"' . $color . ' style="' . htmlspecialchars($wConf['tableStyle']) . '">
 									<tr>
@@ -4066,8 +4066,8 @@ class t3lib_TCEforms {
 				$padLeft = 22; // In order to get the same padding for all option tags even if icon sizes differ a little, set it to 22 if it was between 18 and 24 pixels
 			}
 
-			$padTop = t3lib_div::intInRange(($selIconInfo[1] - 12) / 2, 0);
-			$styleAttr = 'background: #fff url(' . $selIconFile . ') 0% 50% no-repeat; height: ' . t3lib_div::intInRange(($selIconInfo[1] + 2) - $padTop, 0) . 'px; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
+			$padTop = t3lib_utility_Math::forceIntegerInRange(($selIconInfo[1] - 12) / 2, 0);
+			$styleAttr = 'background: #fff url(' . $selIconFile . ') 0% 50% no-repeat; height: ' . t3lib_utility_Math::forceIntegerInRange(($selIconInfo[1] + 2) - $padTop, 0) . 'px; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
 			return $styleAttr;
 		}
 	}
@@ -4089,7 +4089,7 @@ class t3lib_TCEforms {
 					// set it to 22, if it was between 18 and 24 pixels.
 				$padLeft = 22;
 			}
-			$padTop = t3lib_div::intInRange(($selIconInfo[1] - 12) / 2, 0);
+			$padTop = t3lib_utility_Math::forceIntegerInRange(($selIconInfo[1] - 12) / 2, 0);
 
 			return 'background: #ffffff url(' . $selIconFile . ') 0 0 no-repeat; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
 		}
@@ -4468,7 +4468,7 @@ class t3lib_TCEforms {
 
 					// Configurations:
 				$extList = $fieldValue['config']['fileFolder_extList'];
-				$recursivityLevels = isset($fieldValue['config']['fileFolder_recursions']) ? t3lib_div::intInRange($fieldValue['config']['fileFolder_recursions'], 0, 99) : 99;
+				$recursivityLevels = isset($fieldValue['config']['fileFolder_recursions']) ? t3lib_utility_Math::forceIntegerInRange($fieldValue['config']['fileFolder_recursions'], 0, 99) : 99;
 
 					// Get files:
 				$fileFolder = rtrim($fileFolder, '/') . '/';

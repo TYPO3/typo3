@@ -92,7 +92,7 @@ class t3lib_clipboard {
 			// NumberTabs
 		$clNP = $GLOBALS['BE_USER']->getTSConfigVal('options.clipboardNumberPads');
 		if (t3lib_div::testInt($clNP) && $clNP >= 0) {
-			$this->numberTabs = t3lib_div::intInRange($clNP, 0, 20);
+			$this->numberTabs = t3lib_utility_Math::forceIntegerInRange($clNP, 0, 20);
 		}
 
 			// Resets/reinstates the clipboard pads

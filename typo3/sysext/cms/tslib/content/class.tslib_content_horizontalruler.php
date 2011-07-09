@@ -45,7 +45,7 @@ class tslib_content_HorizontalRuler extends tslib_content_Abstract {
 		$lineThickness = isset($conf['lineThickness.'])
 			? $this->cObj->stdWrap($conf['lineThickness'], $conf['lineThickness.'])
 			: $conf['lineThickness'];
-		$lineThickness = t3lib_div::intInRange($lineThickness, 1, 50);
+		$lineThickness = t3lib_utility_Math::forceIntegerInRange($lineThickness, 1, 50);
 
 		$lineColor = isset($conf['lineColor.'])
 			? $this->cObj->stdWrap($conf['lineColor'], $conf['lineColor.'])

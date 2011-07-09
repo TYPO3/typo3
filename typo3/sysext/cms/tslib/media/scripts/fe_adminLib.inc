@@ -392,7 +392,7 @@ class user_feAdmin	{
 							if (is_array($this->dataArr[$theField]))	{
 								$val = 0;
 								foreach ($this->dataArr[$theField] as $kk => $vv) {
-									$kk = t3lib_div::intInRange($kk,0);
+									$kk = t3lib_utility_Math::forceIntegerInRange($kk,0);
 									if ($kk<=30)	{
 										if ($vv)	{
 											$val|=pow(2,$kk);
@@ -587,7 +587,7 @@ class user_feAdmin	{
 					$recExist=1;
 				break;
 				default:
-					$recordTestPid = $this->thePid ? $this->thePid : t3lib_div::intval_positive($this->dataArr['pid']);
+					$recordTestPid = $this->thePid ? $this->thePid : t3lib_utility_Math::convertToPositiveInteger($this->dataArr['pid']);
 				break;
 			}
 

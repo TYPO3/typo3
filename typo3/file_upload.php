@@ -104,7 +104,7 @@ class SC_file_upload {
 		if (empty($this->number)) {
 			$this->number = $GLOBALS['BE_USER']->getTSConfigVal('options.defaultFileUploads');
 		}
-		$this->number = t3lib_div::intInRange($this->number, 1, $this->uploadNumber);
+		$this->number = t3lib_utility_Math::forceIntegerInRange($this->number, 1, $this->uploadNumber);
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

@@ -279,22 +279,22 @@ class user_plaintext {
 	function renderHeader($str,$type=0)	{
 		if ($str)	{
 			$hConf = $this->conf['header.'];
-			$defaultType = t3lib_div::intInRange($hConf['defaultType'],1,5);
-			$type=t3lib_div::intInRange($type,0,6);
+			$defaultType = t3lib_utility_Math::forceIntegerInRange($hConf['defaultType'],1,5);
+			$type=t3lib_utility_Math::forceIntegerInRange($type,0,6);
 			if (!$type)	$type=$defaultType;
 			if ($type!=6)	{	// not hidden
 				$tConf = $hConf[$type.'.'];
 
 				$lines=array();
 
-				$blanks = t3lib_div::intInRange($tConf['preBlanks'],0,1000);
+				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['preBlanks'],0,1000);
 				if ($blanks)	{
 					$lines[]=str_pad('', $blanks-1, chr(10));
 				}
 
 				$lines=$this->pad($lines,$tConf['preLineChar'],$tConf['preLineLen']);
 
-				$blanks = t3lib_div::intInRange($tConf['preLineBlanks'],0,1000);
+				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['preLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 
 				if ($this->cObj->data['date'])	{
@@ -308,12 +308,12 @@ class user_plaintext {
 				$lines[]=$this->cObj->stdWrap($prefix.$str,$tConf['stdWrap.']);
 				if ($this->cObj->data['header_link'])		{$lines[] = $this->getString($hConf['linkPrefix']).$this->getLink($this->cObj->data['header_link']);}
 
-				$blanks = t3lib_div::intInRange($tConf['postLineBlanks'],0,1000);
+				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['postLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 
 				$lines=$this->pad($lines,$tConf['postLineChar'],$tConf['postLineLen']);
 
-				$blanks = t3lib_div::intInRange($tConf['postBlanks'],0,1000);
+				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['postBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 				return implode(chr(10),$lines);
 			}
@@ -330,7 +330,7 @@ class user_plaintext {
 	 * @see renderHeader()
 	 */
 	function pad($lines,$preLineChar,$len)	{
-		$strPad = t3lib_div::intInRange($len,0,1000);
+		$strPad = t3lib_utility_Math::forceIntegerInRange($len,0,1000);
 		$strPadChar = $preLineChar?$preLineChar:'-';
 		if ($strPad)	{
 			$lines[]=str_pad('', $strPad, $strPadChar);
@@ -362,7 +362,7 @@ class user_plaintext {
 	 */
 	function breakBulletlist($str)	{
 		$type = $this->cObj->data['layout'];
-		$type=t3lib_div::intInRange($type,0,3);
+		$type=t3lib_utility_Math::forceIntegerInRange($type,0,3);
 
 		$tConf = $this->conf['bulletlist.'][$type.'.'];
 
@@ -378,7 +378,7 @@ class user_plaintext {
 
 			$lines[]=$bullet.$this->breakLines($substrs,chr(10).$secondRow,$this->charWidth-$bLen);
 
-			$blanks = t3lib_div::intInRange($tConf['blanks'],0,1000);
+			$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['blanks'],0,1000);
 			if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 		}
 		return implode(chr(10),$lines);

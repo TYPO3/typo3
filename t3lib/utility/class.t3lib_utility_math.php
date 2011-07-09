@@ -48,7 +48,7 @@ final class t3lib_utility_Math {
 		$theInt = intval($theInt);
 		if ($defaultValue && !$theInt) {
 			$theInt = $defaultValue;
-		} // If the input value is zero after being converted to integer, zeroValue may set another default value for it.
+		} // If the input value is zero after being converted to integer, defaultValue may set another default value for it.
 		if ($theInt < $min) {
 			$theInt = $min;
 		}

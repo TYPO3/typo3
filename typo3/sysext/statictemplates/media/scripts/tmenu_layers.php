@@ -160,7 +160,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 				if ($this->mconf['ieSelectFix']) $this->I['linkHREF']['onMouseover']=$this->I['linkHREF']['onMouseover'].'GL_iframer(\''.$this->WMid.'\',\'Menu'.$this->WMid.$key.'\',true);';
 					// Added 120802; This means that everytime leaving a menuitem the layer should be shut down (and if the layer is hit in the meantime it is not though).
 					// This should happen only for items that are auto-hidden when not over and possibly only when a hide-timer is set. Problem is if the hide-timer is not set and we leave the main element, then the layer will be hidden unless we reach the layer before the timeout will happen and the menu hidden.
-				if (t3lib_div::intInRange($this->mconf['hideMenuWhenNotOver'],0,600) && $this->mconf['hideMenuTimer'])	{
+				if (t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuWhenNotOver'],0,600) && $this->mconf['hideMenuTimer'])	{
 					$event.='GL_resetAll("'.$this->WMid.'");';
 				}
 				$this->I['linkHREF']['onMouseout'].=$event;
@@ -341,7 +341,7 @@ GLV_curLayerHeight["'.$this->WMid.'"]=0;
 GLV_curLayerX["'.$this->WMid.'"]=0;
 GLV_curLayerY["'.$this->WMid.'"]=0;
 GLV_menuOn["'.$this->WMid.'"] = null;
-GLV_gap["'.$this->WMid.'"]='.t3lib_div::intInRange($this->mconf['hideMenuWhenNotOver'],0,600).';
+GLV_gap["'.$this->WMid.'"]='.t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuWhenNotOver'],0,600).';
 GLV_currentLayer["'.$this->WMid.'"] = null;
 GLV_currentROitem["'.$this->WMid.'"] = null;
 GLV_hasBeenOver["'.$this->WMid.'"]=0;
@@ -352,7 +352,7 @@ GLV_dontHideOnMouseUp["'.$this->WMid.'"] = '.($this->mconf['dontHideOnMouseUp']?
 GLV_dontFollowMouse["'.$this->WMid.'"] = '.($this->mconf['dontFollowMouse']?1:0).';
 GLV_date = new Date();
 GLV_timeout["'.$this->WMid.'"] = GLV_date.getTime();
-GLV_timeoutRef["'.$this->WMid.'"] = '.t3lib_div::intInRange($this->mconf['hideMenuTimer'],0,20000).';
+GLV_timeoutRef["'.$this->WMid.'"] = '.t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuTimer'],0,20000).';
 GLV_menuXY["'.$this->WMid.'"] = new Array();
 '.implode(LF,$this->WMxyArray).'
 '.$this->WMrestoreVars;

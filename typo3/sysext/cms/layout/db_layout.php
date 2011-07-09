@@ -984,7 +984,7 @@ class SC_db_layout {
 		$dblist->no_noWrap = 1;
 		$dblist->descrTable = $this->descrTable;
 
-		$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
+		$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
 		$dblist->script = 'db_layout.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin=0;
@@ -993,7 +993,7 @@ class SC_db_layout {
 
 		$dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
 		$dblist->id = $this->id;
-		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
+		$dblist->nextThree = t3lib_utility_Math::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
 		$dblist->option_showBigButtons = ($this->modTSconfig['properties']['disableBigButtons'] === '0');
 		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
 		$dblist->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;

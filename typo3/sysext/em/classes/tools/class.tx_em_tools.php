@@ -436,9 +436,9 @@ final class tx_em_Tools {
 	 */
 	public static function renderVersion($v, $raise = '') {
 		$parts = t3lib_div::intExplode('.', $v . '..');
-		$parts[0] = t3lib_div::intInRange($parts[0], 0, 999);
-		$parts[1] = t3lib_div::intInRange($parts[1], 0, 999);
-		$parts[2] = t3lib_div::intInRange($parts[2], 0, 999);
+		$parts[0] = t3lib_utility_Math::forceIntegerInRange($parts[0], 0, 999);
+		$parts[1] = t3lib_utility_Math::forceIntegerInRange($parts[1], 0, 999);
+		$parts[2] = t3lib_utility_Math::forceIntegerInRange($parts[2], 0, 999);
 
 		switch ((string) $raise) {
 			case 'main':

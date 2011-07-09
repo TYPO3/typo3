@@ -4,7 +4,7 @@ $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin']
 
 t3lib_div::loadTCA('tt_content');
 
-if(t3lib_div::int_from_ver(TYPO3_version) >= 4002000)
+if(t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4002000)
 	t3lib_extMgm::addPiFlexFormValue('*','FILE:EXT:'.$_EXTKEY.'/flexform.xml','login');
 else
 	t3lib_extMgm::addPiFlexFormValue('default','FILE:EXT:'.$_EXTKEY.'/flexform.xml');

@@ -311,8 +311,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				? intval($this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.']))
 				: intval($this->setup['maxHeight']);
 
-			$XY[0] = t3lib_div::intInRange($XY[0],1, $maxWidth?$maxWidth:2000);
-			$XY[1] = t3lib_div::intInRange($XY[1],1, $maxHeight?$maxHeight:2000);
+			$XY[0] = t3lib_utility_Math::forceIntegerInRange($XY[0],1, $maxWidth?$maxWidth:2000);
+			$XY[1] = t3lib_utility_Math::forceIntegerInRange($XY[1],1, $maxHeight?$maxHeight:2000);
 			$this->XY = $XY;
 			$this->w = $XY[0];
 			$this->h = $XY[1];

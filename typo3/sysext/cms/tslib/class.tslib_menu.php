@@ -466,11 +466,11 @@ class tslib_menu {
 						}
 						$items=t3lib_div::intExplode(',',$value);
 						if (t3lib_div::testInt($this->conf['special.']['depth']))	{
-							$depth = t3lib_div::intInRange($this->conf['special.']['depth'],1,20);		// Tree depth
+							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],1,20);		// Tree depth
 						} else {
 							$depth=20;
 						}
-						$limit = t3lib_div::intInRange($this->conf['special.']['limit'],0,100);	// max number of items
+						$limit = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['limit'],0,100);	// max number of items
 						$maxAge = intval(tslib_cObj::calc($this->conf['special.']['maxAge']));
 						if (!$limit)	$limit=10;
 						$mode = $this->conf['special.']['mode'];	// *'auto', 'manual', 'tstamp'
@@ -478,7 +478,7 @@ class tslib_menu {
 						$id_list_arr = Array();
 
 						foreach($items as $id)	{
-							$bA = t3lib_div::intInRange($this->conf['special.']['beginAtLevel'],0,100);
+							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'],0,100);
 							$id_list_arr[] = tslib_cObj::getTreeList(-1*$id,$depth-1+$bA,$bA-1);
 						}
 						$id_list = implode(',',$id_list_arr);
@@ -557,11 +557,11 @@ class tslib_menu {
 
 							// depth, limit, extra where
 						if (t3lib_div::testInt($this->conf['special.']['depth']))	{
-							$depth = t3lib_div::intInRange($this->conf['special.']['depth'],0,20);		// Tree depth
+							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],0,20);		// Tree depth
 						} else {
 							$depth=20;
 						}
-						$limit = t3lib_div::intInRange($this->conf['special.']['limit'],0,100);	// max number of items
+						$limit = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['limit'],0,100);	// max number of items
 						$extraWhere = ' AND pages.uid!='.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
@@ -583,7 +583,7 @@ class tslib_menu {
 
 							// If there are keywords and the startuid is present.
 						if ($kw && $startUid)	{
-							$bA = t3lib_div::intInRange($this->conf['special.']['beginAtLevel'],0,100);
+							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'],0,100);
 							$id_list=tslib_cObj::getTreeList(-1*$startUid,$depth-1+$bA,$bA-1);
 
 							$kwArr = explode(',',$kw);
@@ -2856,7 +2856,7 @@ class tslib_jsmenu extends tslib_menu {
 	function writeMenu()	{
 		if ($this->id)	{
 				// Making levels:
-			$levels = t3lib_div::intInRange($this->mconf['levels'],1,5);
+			$levels = t3lib_utility_Math::forceIntegerInRange($this->mconf['levels'],1,5);
 			$this->levels = $levels;
 			$uniqueParam = t3lib_div::shortMD5(microtime(), 5);
 			$this->JSVarName = 'eid' . $uniqueParam;
