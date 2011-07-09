@@ -41,7 +41,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	 * Clean up
 	 */
 	public function tearDown() {
-		foreach ($fakedExtensions as $extension) {
+		foreach ($this->fakedExtensions as $extension) {
 			t3lib_div::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
 		}
 	}
