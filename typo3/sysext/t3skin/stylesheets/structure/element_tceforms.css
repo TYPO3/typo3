@@ -190,9 +190,9 @@ table.typo3-TCEforms .class-main53 {
 
 table.typo3-TCEforms td.formField-header,
 table.typo3-TCEforms td.formField-field {
-	display: block;
 	position: relative;
 	padding-left: 10px;
+	padding-right: 10px;
 }
 
 table.typo3-TCEforms .formField,
