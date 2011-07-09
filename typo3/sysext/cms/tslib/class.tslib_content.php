@@ -119,6 +119,7 @@ class tslib_cObj {
 		'char.' => 'array',
 		'intval' => 'boolean',
 		'intval.' => 'array',
+		'round.' => 'array',
 		'numberFormat.' => 'array',
 		'date' => 'dateconf',
 		'date.' => 'array',
@@ -2324,6 +2325,18 @@ class tslib_cObj {
 	}
 
 	/**
+	 * round
+	 * Will return a rounded number, ceil() or floor() or round()
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for round.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_round($content = 0, $conf = array()){
+		$content = $this->round($content, $conf['round.']);
+		return $content;
+	}
+	/**
 	 * numberFormat
 	 * Will return a formatted number based on configuration given as stdWrap properties
 	 *
@@ -4120,6 +4133,37 @@ class tslib_cObj {
 		return $content;
 	}
 
+	/**
+	 * Implements the stdWrap property "round"
+	 * This is a Wrapper function for php's rounding functions (round,ceil,floor), defaults to round()
+	 *
+	 * @param	string	Value to process
+	 * @param	array	TypoScript Configuration for round
+	 * @return	string	The formated number
+	 */
+	private function round($content, $conf) {
+		$decimals = isset($conf['decimals.'])
+				? $this->stdWrap($conf['decimals'], $conf['decimals.'])
+				: $conf['decimals'];
+		$type = isset($conf['roundType.'])
+				? $this->stdWrap($conf['roundType'], $conf['roundType.'])
+				: $conf['roundType'];
+
+		$floatVal = floatval($content);
+		switch ($type) {
+			case 'ceil':
+				$content = ceil($floatVal);
+				break;
+			case 'floor':
+				$content = floor($floatVal);
+				break;
+			case 'round':
+			default:
+				$content = round($floatVal, intval($decimals));
+				break;
+		}
+		return $content;
+	}
 	/**
 	 * Implements the stdWrap property "numberFormat"
 	 * This is a Wrapper function for php's number_format()
