@@ -1590,7 +1590,7 @@ class SC_alt_clickmenu {
 		}
 
 			// Setting clickmenu timeout
-		$secs = t3lib_div::intInRange($GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'), 1, 100, 5);	// default is 5
+		$secs = t3lib_utility_Math::forceIntegerInRange($GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'), 1, 100, 5);	// default is 5
 
 			// Setting the JavaScript controlling the timer on the page
 		$listFrameDoc = $this->reloadListFrame!=2 ? 'top.content.list_frame' : 'top.content';

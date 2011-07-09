@@ -122,7 +122,7 @@ foreach ($lines as $key => $content) {
 	if ($content)	{
 		$parts = explode('|',$content);
 		$text = trim($parts[0]);
-		$type = t3lib_div::intInRange($parts[1],1,3);
+		$type = t3lib_utility_Math::forceIntegerInRange($parts[1],1,3);
 		$link = trim($parts[2]);
 		if ($text)	{
 			$imgConf = $conf['images.'][$type.'.'];

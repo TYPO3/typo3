@@ -712,7 +712,7 @@ class t3lib_TCEmain {
 									if ($createNewVersion) { // This creates a new version of the record with online placeholder and offline version
 										$versioningType = ($table === 'pages'
 											? $this->BE_USER->workspaceVersioningTypeGetClosest(
-												t3lib_div::intInRange($GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'], -1, 1))
+												t3lib_utility_Math::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'], -1, 1))
 											: -1);
 										if ($this->BE_USER->workspaceVersioningTypeAccess($versioningType)) {
 											$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
@@ -5653,7 +5653,7 @@ class t3lib_TCEmain {
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 
 			$tE = $this->getTableEntries($table, $TSConfig);
-			$maxAgeSeconds = 60 * 60 * 24 * (strcmp($tE['history.']['maxAgeDays'], '') ? t3lib_div::intInRange($tE['history.']['maxAgeDays'], 0, 365) : 30); // one month
+			$maxAgeSeconds = 60 * 60 * 24 * (strcmp($tE['history.']['maxAgeDays'], '') ? t3lib_utility_Math::forceIntegerInRange($tE['history.']['maxAgeDays'], 0, 365) : 30); // one month
 
 				// Garbage collect old entries:
 			$this->clearHistory($maxAgeSeconds, $table);

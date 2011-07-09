@@ -224,7 +224,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 */
 	function cli_printInfo($header,$res)	{
 
-		$detailLevel = t3lib_div::intInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
+		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
 		$silent = !$this->cli_echo();
 
 		$severity = array(
@@ -558,7 +558,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 				if (is_array($versions))	{
 					foreach($versions as $verRec)	{
 						if (!$verRec['_CURRENT_VERSION'])	{
-							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_div::intInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
+							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_utility_Math::forceIntegerInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
 						}
 					}
 				}

@@ -145,8 +145,8 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 				$GLOBALS['TSFE']->register['SWORD_PARAMS'] = $search->get_searchwords();
 
 				$total = $search->res_count;
-				$rangeLow = t3lib_div::intInRange($spointer + 1, 1, $total);
-				$rangeHigh = t3lib_div::intInRange($spointer + $theRange, 1, $total);
+				$rangeLow = t3lib_utility_Math::forceIntegerInRange($spointer + 1, 1, $total);
+				$rangeHigh = t3lib_utility_Math::forceIntegerInRange($spointer + $theRange, 1, $total);
 					// prev/next url:
 
 				$target = isset($conf['target.'])

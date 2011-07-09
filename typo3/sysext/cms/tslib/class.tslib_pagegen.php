@@ -116,7 +116,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {
-			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_div::intInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-10,10,0);
+			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-10,10,0);
 		}
 
 		$GLOBALS['TSFE']->absRefPrefix = ($GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '');

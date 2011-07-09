@@ -122,7 +122,7 @@ abstract class t3lib_message_AbstractMessage {
 	 * @return	void
 	 */
 	public function setSeverity($severity = self::OK) {
-		$this->severity = t3lib_div::intInRange(
+		$this->severity = t3lib_utility_Math::forceIntegerInRange(
 			$severity,
 			self::NOTICE, // minimum
 			self::ERROR, // maximum

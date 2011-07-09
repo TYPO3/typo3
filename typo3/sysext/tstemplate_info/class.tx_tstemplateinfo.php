@@ -371,7 +371,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$theOutput.= $this->pObj->doc->divider(5);
 			}
 
-			#$numberOfRows= t3lib_div::intInRange($this->pObj->MOD_SETTINGS["ts_template_editor_TArows"],0,150);
+			#$numberOfRows= t3lib_utility_Math::forceIntegerInRange($this->pObj->MOD_SETTINGS["ts_template_editor_TArows"],0,150);
 			#if (!$numberOfRows)
 			$numberOfRows = 35;
 

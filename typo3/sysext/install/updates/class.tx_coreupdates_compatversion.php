@@ -195,8 +195,8 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 				return 1;
 			} else {
 				$performUpdate = 1;
-				$oldVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
-				$currentVersion = t3lib_div::int_from_ver(TYPO3_branch);
+				$oldVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
+				$currentVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_branch);
 
 				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
 					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
@@ -264,8 +264,8 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 */
 	function showChangesNeeded($inputPrefix = '')	{
 		global $TYPO3_CONF_VARS;
-		$oldVersion = t3lib_div::int_from_ver($TYPO3_CONF_VARS['SYS']['compat_version']);
-		$currentVersion = t3lib_div::int_from_ver(TYPO3_branch);
+		$oldVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
+		$currentVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_branch);
 
 		$tableContents = '';
 

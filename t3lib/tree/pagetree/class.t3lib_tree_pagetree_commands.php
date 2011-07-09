@@ -170,7 +170,7 @@ final class t3lib_tree_pagetree_Commands {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
-		$tce->copyTree = t3lib_div::intInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+		$tce->copyTree = t3lib_utility_Math::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
 
 		if (count($cmd)) {
 			$tce->process_cmdmap();

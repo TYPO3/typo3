@@ -1874,7 +1874,7 @@ class browse_links {
 
 				// Initialize the record listing:
 			$id = $this->expandPage;
-			$pointer = t3lib_div::intInRange($this->pointer,0,100000);
+			$pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			$pageinfo = t3lib_BEfunc::readPageAccess($id,$perms_clause);
 			$table='';

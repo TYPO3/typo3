@@ -213,8 +213,8 @@ class SC_tslib_showpic {
 			$max = '';
 		}
 
-		$this->height = t3lib_div::intInRange($this->height,0);
-		$this->width = t3lib_div::intInRange($this->width,0);
+		$this->height = t3lib_utility_Math::forceIntegerInRange($this->height,0);
+		$this->width = t3lib_utility_Math::forceIntegerInRange($this->width,0);
 		if ($this->frame) {
 			$this->frame = intval($this->frame);
 		}

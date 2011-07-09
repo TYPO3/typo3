@@ -969,7 +969,7 @@ abstract class t3lib_userAuth {
 		if ($parts >= 4) {
 			return $IP;
 		} else {
-			$parts = t3lib_div::intInRange($parts, 1, 3);
+			$parts = t3lib_utility_Math::forceIntegerInRange($parts, 1, 3);
 			$IPparts = explode('.', $IP);
 			for ($a = 4; $a > $parts; $a--) {
 				unset($IPparts[$a - 1]);

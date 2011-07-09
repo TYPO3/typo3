@@ -257,7 +257,7 @@ class tx_indexedsearch_crawler {
 
 				// Init:
 			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $cfgRec['pid'];
-			$numberOfRecords = $cfgRec['recordsbatch'] ? t3lib_div::intInRange($cfgRec['recordsbatch'],1) : 100;
+			$numberOfRecords = $cfgRec['recordsbatch'] ? t3lib_utility_Math::forceIntegerInRange($cfgRec['recordsbatch'],1) : 100;
 
 				// Get root line:
 			$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
@@ -745,8 +745,8 @@ class tx_indexedsearch_crawler {
 		}
 
 			// Find last offset time plus frequency in seconds:
-		$lastSureOffset = $aMidNight+t3lib_div::intInRange($cfgRec['timer_offset'],0,86400);
-		$frequencySeconds = t3lib_div::intInRange($cfgRec['timer_frequency'],1);
+		$lastSureOffset = $aMidNight+t3lib_utility_Math::forceIntegerInRange($cfgRec['timer_offset'],0,86400);
+		$frequencySeconds = t3lib_utility_Math::forceIntegerInRange($cfgRec['timer_frequency'],1);
 
 			// Now, find out how many blocks of the length of frequency there is until the next time:
 		$frequencyBlocksUntilNextTime = ceil(($currentTime-$lastSureOffset)/$frequencySeconds);

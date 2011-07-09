@@ -811,7 +811,7 @@ final class t3lib_div {
 	public static function compat_version($verNumberStr) {
 		$currVersionStr = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] : TYPO3_branch;
 
-		if (self::int_from_ver($currVersionStr) < self::int_from_ver($verNumberStr)) {
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger($currVersionStr) < t3lib_utility_VersionNumber::convertVersionNumberToInteger($verNumberStr)) {
 			return FALSE;
 		} else {
 			return TRUE;
@@ -962,9 +962,9 @@ final class t3lib_div {
 	 */
 	public static function modifyHTMLColor($color, $R, $G, $B) {
 			// This takes a hex-color (# included!) and adds $R, $G and $B to the HTML-color (format: #xxxxxx) and returns the new color
-		$nR = self::intInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
-		$nG = self::intInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
-		$nB = self::intInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
+		$nR = t3lib_utility_Math::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
+		$nG = t3lib_utility_Math::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
+		$nB = t3lib_utility_Math::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
 		return '#' .
 				substr('0' . dechex($nR), -2) .
 				substr('0' . dechex($nG), -2) .
@@ -5384,7 +5384,7 @@ final class t3lib_div {
 			}
 		}
 
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = self::intInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
 	}
 
@@ -5400,7 +5400,7 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function sysLog($msg, $extKey, $severity = 0) {
-		$severity = self::intInRange($severity, 0, 4);
+		$severity = t3lib_utility_Math::forceIntegerInRange($severity, 0, 4);
 
 			// is message worth logging?
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel']) > $severity) {

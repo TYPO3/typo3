@@ -929,7 +929,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$GLOBALS['BE_USER']->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
 				// Initialize the listing object, dblist, for rendering the list:
-			$this->pointer = t3lib_div::intInRange($this->taskObject->pointer,0,100000);
+			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->taskObject->pointer,0,100000);
 			$dblist->start($this->id,$this->table,$this->pointer,$this->taskObject->search_field,$this->taskObject->search_levels,$this->taskObject->showLimit);
 			$dblist->setDispFields();
 

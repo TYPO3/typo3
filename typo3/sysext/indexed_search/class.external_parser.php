@@ -102,7 +102,7 @@ class tx_indexed_search_extparse {
 						$this->app['pdfinfo'] = $pdfPath.'pdfinfo'.$exe;
 						$this->app['pdftotext'] = $pdfPath.'pdftotext'.$exe;
 							// PDF mode:
-						$this->pdf_mode = t3lib_div::intInRange($indexerConfig['pdf_mode'],-100,100);
+						$this->pdf_mode = t3lib_utility_Math::forceIntegerInRange($indexerConfig['pdf_mode'],-100,100);
 						$extOK = TRUE;
 					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsNotFound'), $pdfPath), 3);
 				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsDisabled'), 1);
@@ -570,7 +570,7 @@ class tx_indexed_search_extparse {
 					if ($this->pdf_mode>0)	{
 						$iter = ceil($pdfInfo['pages']/$this->pdf_mode);
 					} else {
-						$iter = t3lib_div::intInRange(abs($this->pdf_mode),1,$pdfInfo['pages']);
+						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode),1,$pdfInfo['pages']);
 					}
 
 						// Traverse and create intervals.

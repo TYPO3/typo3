@@ -279,7 +279,7 @@ class SC_db_list {
 			}
 
 				// Initialize the listing object, dblist, for rendering the list:
-			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
+			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
 			$dblist->start($this->id,$this->table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->setDispFields();
 

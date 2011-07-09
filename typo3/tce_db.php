@@ -119,7 +119,7 @@ class SC_tce_db {
 		}
 		if ($GLOBALS['BE_USER']->uc['copyLevels']) {
 				// Set to number of page-levels to copy.
-			$this->tce->copyTree = t3lib_div::intInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+			$this->tce->copyTree = t3lib_utility_Math::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
 		}
 		if ($GLOBALS['BE_USER']->uc['neverHideAtCopy']) {
 			$this->tce->neverHideAtCopy = 1;

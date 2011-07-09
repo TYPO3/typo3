@@ -127,7 +127,7 @@ class recordList extends t3lib_recordList {
 		$this->firstElementNumber=$pointer;
 		$this->searchString=trim($search);
 		$this->searchLevels=trim($levels);
-		$this->showLimit=t3lib_div::intInRange($showLimit,0,10000);
+		$this->showLimit=t3lib_utility_Math::forceIntegerInRange($showLimit,0,10000);
 
 			// Setting GPvars:
 		$this->csvOutput = t3lib_div::_GP('csv') ? TRUE : FALSE;
@@ -152,10 +152,10 @@ class recordList extends t3lib_recordList {
 
 			// limits
 		if(isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
-			$this->itemsLimitPerTable = t3lib_div::intInRange(intval($this->modTSconfig['properties']['itemsLimitPerTable']), 1, 10000);
+			$this->itemsLimitPerTable = t3lib_utility_Math::forceIntegerInRange(intval($this->modTSconfig['properties']['itemsLimitPerTable']), 1, 10000);
 		}
 		if(isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
-			$this->itemsLimitSingleTable = t3lib_div::intInRange(intval($this->modTSconfig['properties']['itemsLimitSingleTable']), 1, 10000);
+			$this->itemsLimitSingleTable = t3lib_utility_Math::forceIntegerInRange(intval($this->modTSconfig['properties']['itemsLimitSingleTable']), 1, 10000);
 		}
 
 			// Set select levels:

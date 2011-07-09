@@ -330,7 +330,7 @@ class SC_alt_db_navframe {
 
 			// Set/Cancel Temporary DB Mount:
 		if (strlen($this->setTempDBmount))	{
-			$set = t3lib_div::intInRange($this->setTempDBmount,0);
+			$set = t3lib_utility_Math::forceIntegerInRange($this->setTempDBmount,0);
 			if ($set > 0 && $GLOBALS['BE_USER']->isInWebMount($set)){
 					// Setting...:
 				$this->settingTemporaryMountPoint($set);

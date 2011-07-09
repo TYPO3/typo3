@@ -452,7 +452,7 @@ class SC_alt_doc {
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
-		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,'.t3lib_div::intInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');"';
+		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,'.t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');"';
 	}
 
 	/**

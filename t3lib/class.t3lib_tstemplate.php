@@ -770,7 +770,7 @@ class t3lib_TStemplate {
 			$findConst = explode('{$', $all);
 			array_shift($findConst);
 			foreach ($findConst as $constVal) {
-				$constLen = t3lib_div::intInRange(strcspn($constVal, '}'), 0, 50);
+				$constLen = t3lib_utility_Math::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
 				$theConstList[] = '{$' . substr($constVal, 0, $constLen + 1);
 			}
 			if ($this->tt_track) {

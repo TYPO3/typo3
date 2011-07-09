@@ -5116,7 +5116,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					// Define the markers content
 				$imCommandsMarkers = array(
 					'message' => 'ImageMagick commands executed:',
-					'rows' => t3lib_div::intInRange(count($commands), 2, 10),
+					'rows' => t3lib_utility_Math::forceIntegerInRange(count($commands), 2, 10),
 					'commands' => htmlspecialchars(implode(LF, $commands))
 				);
 					// Fill the markers in the subpart
@@ -5153,7 +5153,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$commandsSubpart = t3lib_parsehtml::getSubpart($noImageSubpart, '###COMMANDSAVAILABLE###');
 					// Define the markers content
 				$commandsMarkers = array(
-					'rows' => t3lib_div::intInRange(count($commands), 2, 10),
+					'rows' => t3lib_utility_Math::forceIntegerInRange(count($commands), 2, 10),
 					'commands' => htmlspecialchars(implode(LF, $commands))
 				);
 					// Fill the markers in the subpart
@@ -5962,7 +5962,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$statements = $this->sqlHandler->getStatementArray($fileContent, 1);
 						$maxL = 1000;
 						$strLen = strlen($fileContent);
-						$maxlen = 200+($maxL-t3lib_div::intInRange(($strLen-20000)/100,0,$maxL));
+						$maxlen = 200+($maxL-t3lib_utility_Math::forceIntegerInRange(($strLen-20000)/100,0,$maxL));
 						if (count($statements)) {
 							$out = '';
 							foreach ($statements as $statement) {
@@ -6659,7 +6659,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	function getUpgradeObjInstance($className, $identifier) {
 		$tmpObj = t3lib_div::getUserObj($className);
 		$tmpObj->setIdentifier($identifier);
-		$tmpObj->versionNumber = t3lib_div::int_from_ver(TYPO3_version);
+		$tmpObj->versionNumber = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
 		$tmpObj->pObj = $this;
 		$tmpObj->userInput = $this->INSTALL['update'][$identifier];
 		return $tmpObj;
@@ -7145,7 +7145,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			break;
 			case 'group':
 				if ($fieldInfo['config']['internal_type']=='db') {
-					$max = t3lib_div::intInRange($fieldInfo['config']['maxitems'],1,10000);
+					$max = t3lib_utility_Math::forceIntegerInRange($fieldInfo['config']['maxitems'],1,10000);
 					if (count(explode(',',$fieldInfo['config']['allowed']))>1) {
 							// Tablenames are 10, "_" 1, uid's 5, comma 1
 						$len = $max*(10+1+5+1);
@@ -7159,14 +7159,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					}
 				}
 				if ($fieldInfo['config']['internal_type']=='file') {
-					$max = t3lib_div::intInRange($fieldInfo['config']['maxitems'],1,10000);
+					$max = t3lib_utility_Math::forceIntegerInRange($fieldInfo['config']['maxitems'],1,10000);
 						// Filenames is 30+ chars....
 					$len = $max*(30+1);
 					$out=$this->getItemBlobSize($len);
 				}
 			break;
 			case 'select':
-				$max = t3lib_div::intInRange($fieldInfo['config']['maxitems'],1,10000);
+				$max = t3lib_utility_Math::forceIntegerInRange($fieldInfo['config']['maxitems'],1,10000);
 				if ($max<=1) {
 					if ($fieldInfo['config']['foreign_table']) {
 						$out = "int(11) NOT NULL default '0'";

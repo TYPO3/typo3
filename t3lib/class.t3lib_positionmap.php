@@ -399,7 +399,7 @@ class t3lib_positionMap {
 
 		$row1 = '';
 		$row2 = '';
-		$count = t3lib_div::intInRange(count($colPosArray), 1);
+		$count = t3lib_utility_Math::forceIntegerInRange(count($colPosArray), 1);
 
 		$backendLayout = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $pid, $this);
 

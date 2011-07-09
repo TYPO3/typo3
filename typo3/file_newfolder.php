@@ -185,7 +185,7 @@ class SC_file_newfolder {
 
 		$code = '<form action="tce_file.php" method="post" name="editform">';
 			// Making the selector box for the number of concurrent folder-creations
-		$this->number = t3lib_div::intInRange($this->number,1,10);
+		$this->number = t3lib_utility_Math::forceIntegerInRange($this->number,1,10);
 		$code .= '
 			<div id="c-select">
 				<label for="number-of-new-folders">' .

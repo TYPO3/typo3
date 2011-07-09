@@ -337,8 +337,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					$destName = $fileFunc->getUniqueName($basename,$destPath);
 					@copy($imgInfo[3],$destName);
 					t3lib_div::fixPermissions($destName);
-					$cWidth = t3lib_div::intInRange(t3lib_div::_GP('cWidth'), 0, $this->magicMaxWidth);
-					$cHeight = t3lib_div::intInRange(t3lib_div::_GP('cHeight'), 0, $this->magicMaxHeight);
+					$cWidth = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('cWidth'), 0, $this->magicMaxWidth);
+					$cHeight = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('cHeight'), 0, $this->magicMaxHeight);
 					if (!$cWidth)	$cWidth = $this->magicMaxWidth;
 					if (!$cHeight)	$cHeight = $this->magicMaxHeight;
 

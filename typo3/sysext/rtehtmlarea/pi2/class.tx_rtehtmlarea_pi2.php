@@ -73,7 +73,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 		$this->TCEform = $parentObject;
 		$this->client = $this->clientInfo();
-		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
+		$this->typoVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
 
 		/* =======================================
 		 * INIT THE EDITOR-SETTINGS
