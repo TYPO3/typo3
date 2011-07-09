@@ -121,7 +121,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 
 		$this->localLang();
 
-		$lF = t3lib_div::makeInstance('logFunctions_ext');
+		$displayLogInstance = t3lib_div::makeInstance('logFunctions_ext');
 
 		$theOutput='';
 		$menu='';
@@ -228,7 +228,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 		} else {
 			$where_part.=' AND userid='.$GLOBALS['BE_USER']->user['uid'];	// Self user
 		}
-		$lF->be_user_Array = &$this->pObj->be_user_Array;
+		$displayLogInstance->be_user_Array = &$this->pObj->be_user_Array;
 
 		if ($GLOBALS['BE_USER']->workspace!==0)	{
 			$where_part.=' AND workspace='.intval($GLOBALS['BE_USER']->workspace);
@@ -238,7 +238,7 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 			// Select 100 recent log entries:
 		$log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', '1=1'.$where_part, '', 'uid DESC', 100);
 
-		$codeArr = $lF->initArray();
+		$codeArr = $displayLogInstance->initArray();
 		$oldHeader = '';
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($log))	{
 			$header = $this->pObj->doc->formatTime($row['tstamp'],10);
@@ -247,18 +247,18 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 			if ($header!=$oldHeader)	{
 				$theOutput.=$this->pObj->doc->spacer(10);
 				$theOutput.=$this->pObj->doc->section($oldHeader,$this->pObj->doc->table($codeArr));
-				$codeArr=$lF->initArray();
+				$codeArr = $displayLogInstance->initArray();
 				$oldHeader=$header;
-				$lF->reset();
+				$displayLogInstance->reset();
 			}
 
 			$i++;
-			$codeArr[$i][]=$lF->getTimeLabel($row['tstamp']);
-			$codeArr[$i][]=$lF->getUserLabel($row['userid'],$row['workspace']);
-			$codeArr[$i][]=$row['error'] ? $lF->getErrorFormatting($lF->errorSign[$row['error']],$row['error']) : '';
-			$codeArr[$i][]=$lF->getActionLabel($row['type'].'_'.$row['action']);
-			$codeArr[$i][]=$row['tablename'];
-			$codeArr[$i][]=$lF->formatDetailsForList($row);
+			$codeArr[$i][] = $displayLogInstance->getTimeLabel($row['tstamp']);
+			$codeArr[$i][] = $displayLogInstance->getUserLabel($row['userid'], $row['workspace']);
+			$codeArr[$i][] = $row['error'] ? $displayLogInstance->getErrorIcon($row['error']) : '';
+			$codeArr[$i][] = $displayLogInstance->getActionLabel($row['type'] . '_' . $row['action']);
+			$codeArr[$i][] = $row['tablename'];
+			$codeArr[$i][] = $displayLogInstance->formatDetailsForList($row);
 		}
 		$theOutput.=$this->pObj->doc->spacer(10);
 		$theOutput.=$this->pObj->doc->section($header,$this->pObj->doc->table($codeArr));
