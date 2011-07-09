@@ -49,10 +49,10 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 		);
 
 	public function main($parentObject) {
-		if (!t3lib_extMgm::isLoaded('static_info_tables')) {
-			$this->pluginButtons = t3lib_div::rmFromList('language', $this->pluginButtons);
+		if (t3lib_extMgm::isLoaded('static_info_tables') && file_exists(t3lib_extMgm::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php')) {
+			require_once(t3lib_extMgm::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php');
 		} else {
-			require_once(t3lib_extMgm::extPath('static_info_tables').'class.tx_staticinfotables_div.php');
+			$this->pluginButtons = t3lib_div::rmFromList('language', $this->pluginButtons);
 		}
 		return parent::main($parentObject);
 	}
