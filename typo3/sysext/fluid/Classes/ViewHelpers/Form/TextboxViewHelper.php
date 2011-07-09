@@ -36,53 +36,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @deprecated since 1.0.0 alpha 7
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use the <f:form.textfield> ViewHelper instead.
  */
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
-
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
-
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerTagAttribute('maxlength', 'int', 'The maxlength attribute of the input field (will not be validated)');
-		$this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
-		$this->registerTagAttribute('size', 'int', 'The size of the input field');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
-		$this->registerUniversalTagAttributes();
-	}
-
-	/**
-	 * Renders the textbox.
-	 *
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
-	 */
+class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper {
 	public function render() {
-		$name = $this->getName();
-		$this->registerFieldNameForFormTokenGeneration($name);
-
-		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $name);
-		$this->tag->addAttribute('value', $this->getValue());
-
-		$this->setErrorClassAttribute();
-
-		return $this->tag->render();
+		t3lib_div::logDeprecatedFunction('<f:form.textbox> is deprecated. Please use <f:form.textfield> instead.');
+		parent::render();
 	}
-
 }
 
 ?>
