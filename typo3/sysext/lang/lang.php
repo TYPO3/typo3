@@ -400,15 +400,6 @@ class language {
 						$tempLL = $this->readLLfile($lFileRef);
 						$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
 					}
-
-						// Overriding file?
-						// @deprecated since TYPO3 4.3, remove in TYPO3 4.5, please use the generic method in
-						// t3lib_div::readLLfile and the global array $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']
-					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]])) {
-						t3lib_div::deprecationLog('Usage of $TYPO3_CONF_VARS[\'BE\'][\'XLLfile\'] is deprecated since TYPO3 4.3. Use $TYPO3_CONF_VARS[\'SYS\'][\'locallangXMLOverride\'][] to include the file ' . $fileRef . ' instead.');
-						$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]]);
-						$this->LL_files_cache[$parts[0]] = t3lib_div::array_merge_recursive_overrule($this->LL_files_cache[$parts[0]], $ORarray);
-					}
 				}
 				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
 			}
