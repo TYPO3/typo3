@@ -77,18 +77,46 @@ final class t3lib_extMgm {
 	 * Useful for internal fileoperations
 	 * Usage: 136
 	 *
-	 * @param	string		Extension key
-	 * @param	string		$script is appended to the output if set.
-	 * @return	string
+	 * @param $key string Extension key
+	 * @param $script string $script is appended to the output if set.
+	 * @throws BadFunctionCallException
+	 * @return string
 	 */
 	public static function extPath($key, $script = '') {
-		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
-			throw new BadFunctionCallException(
-				'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
-				1270853878
-			);
+		if (isset($GLOBALS['TYPO3_LOADED_EXT'])) {
+			if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
+				throw new BadFunctionCallException(
+					'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
+					1270853878
+				);
+			}
+			$extensionPath = PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'];
+		} else {
+			$extensionList = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
+			$loadedExtensions = array_flip(array_unique(t3lib_div::trimExplode(',', $extensionList, 1)));
+
+			if (!isset($loadedExtensions[$key])) {
+				throw new BadFunctionCallException(
+					'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
+					1294430950
+				);
+			}
+
+			if (@is_dir(PATH_typo3conf . 'ext/' . $key . '/')) {
+				$extensionPath = PATH_typo3conf . 'ext/' . $key . '/';
+			} elseif (@is_dir(PATH_typo3 . 'ext/' . $key . '/')) {
+				$extensionPath = PATH_typo3 . 'ext/' . $key . '/';
+			} elseif (@is_dir(PATH_typo3 . 'sysext/' . $key . '/')) {
+				$extensionPath = PATH_typo3 . 'sysext/' . $key . '/';
+			} else {
+				throw new BadFunctionCallException(
+					'TYPO3 Fatal Error: Extension "' . $key . '" was NOT found!',
+					1294430951
+				);
+			}
 		}
-		return PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $script;
+
+		return $extensionPath . $script;
 	}
 
 	/**
