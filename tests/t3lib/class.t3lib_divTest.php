@@ -1815,25 +1815,32 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function fixPermissionsSetsGroup() {
 		if (TYPO3_OS == 'WIN') {
-			$this->markTestSkipped('fixPermissionsCorrectlySetsGroupOwnerOfFile() tests not available on Windows');
+			$this->markTestSkipped('fixPermissionsSetsGroup() tests not available on Windows');
 		}
 		if (!function_exists('posix_getegid')) {
-			$this->markTestSkipped('Function posix_getegid() not available, fixPermissionsCorrectlySetsGroupOwnerOfFile() tests skipped');
+			$this->markTestSkipped('Function posix_getegid() not available, fixPermissionsSetsGroup() tests skipped');
+		}
+		if (posix_getegid() === -1) {
+			$this->markTestSkipped(
+				'The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.'
+			);
 		}
 
 			// Create and prepare test file
 		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
 		t3lib_div::writeFileToTypo3tempDir($filename, '42');
 
+		$currentGroupId = posix_getegid();
+
 			// Set target group and run method
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $currentGroupId;
 		$fixPermissionsResult = t3lib_div::fixPermissions($filename);
 
 		clearstatcache();
 		$resultFileGroup = filegroup($filename);
 		unlink($filename);
 
-		$this->assertEquals($resultFileGroup, posix_getegid());
+		$this->assertEquals($resultFileGroup, $currentGroupId);
 	}
 
 	/**
@@ -2513,7 +2520,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @see resolveBackPathWithDataProvider
-	 * 
+	 *
 	 * @return array<array>
 	 */
 	public function resolveBackPathDataProvider() {
