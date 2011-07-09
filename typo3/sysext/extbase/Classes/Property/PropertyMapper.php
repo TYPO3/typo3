@@ -40,6 +40,11 @@ class Tx_Extbase_Property_PropertyMapper implements t3lib_Singleton {
 	protected $configurationBuilder;
 
 	/**
+	 * @var Tx_Extbase_Service_TypeHandlingService
+	 */
+	protected $typeHandlingService;
+
+	/**
 	 * A multi-dimensional array which stores the Type Converters available in the system.
 	 * It has the following structure:
 	 * 1. Dimension: Source Type
@@ -71,6 +76,14 @@ class Tx_Extbase_Property_PropertyMapper implements t3lib_Singleton {
 	 */
 	public function injectPropertyMappingConfigurationBuilder(Tx_Extbase_Property_PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder) {
 		$this->configurationBuilder = $propertyMappingConfigurationBuilder;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @return void
+	 */
+	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
 	}
 
 	/**
@@ -196,7 +209,7 @@ class Tx_Extbase_Property_PropertyMapper implements t3lib_Singleton {
 		}
 		$converter = NULL;
 
-		if (Tx_Extbase_Utility_TypeHandling::isSimpleType($targetType)) {
+		if ($this->typeHandlingService->isSimpleType($targetType)) {
 			if (isset($this->typeConverters[$sourceType][$targetType])) {
 				$converter = $this->findEligibleConverterWithHighestPriority($this->typeConverters[$sourceType][$targetType], $source, $targetType);
 			}

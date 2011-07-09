@@ -236,6 +236,7 @@ return array(
 	'tx_extbase_service_extensionservice' => $extensionClassesPath . 'Service/ExtensionService.php',
 	'tx_extbase_service_flexformservice' => $extensionClassesPath . 'Service/FlexFormService.php',
 	'tx_extbase_service_typoscriptservice' => $extensionClassesPath . 'Service/TypoScriptService.php',
+	'tx_extbase_service_typehandlingservice' => $extensionClassesPath . 'Service/TypeHandlingService.php',
 	'tx_extbase_signalslot_dispatcher' => $extensionClassesPath . 'SignalSlot/Dispatcher.php',
 	'tx_extbase_signalslot_exception_invalidslotexception' => $extensionClassesPath . 'SignalSlot/Exception/InvalidSlotException.php',
 	'tx_extbase_utility_arrays' => $extensionClassesPath . 'Utility/Arrays.php',

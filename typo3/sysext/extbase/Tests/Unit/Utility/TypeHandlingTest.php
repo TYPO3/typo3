@@ -24,6 +24,7 @@
  * Testcase for the Utility\TypeHandling class
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest instead
  */
 class Tx_Extbase_Tests_Unit_Utility_TypeHandlingTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -95,54 +96,6 @@ class Tx_Extbase_Tests_Unit_Utility_TypeHandlingTest extends Tx_Extbase_Tests_Un
 	 */
 	public function normalizeTypesReturnsNormalizedType($type, $normalized) {
 		$this->assertEquals(Tx_Extbase_Utility_TypeHandling::normalizeType($type), $normalized);
-	}
-
-	/**
-	 * data provider for isLiteralReturnsFalseForNonLiteralTypes
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function nonLiteralTypes() {
-		return array(
-			array('DateTime'),
-			array('\Foo\Bar'),
-			array('array'),
-			array('ArrayObject'),
-			array('stdClass')
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider nonliteralTypes
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function isLiteralReturnsFalseForNonLiteralTypes($type) {
-		$this->assertFalse(Tx_Extbase_Utility_TypeHandling::isLiteral($type));
-	}
-
-	/**
-	 * data provider for isLiteralReturnsTrueForLiteralType
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function literalTypes() {
-		return array(
-			array('integer'),
-			array('int'),
-			array('float'),
-			array('double'),
-			array('boolean'),
-			array('bool'),
-			array('string')
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider literalTypes
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function isLiteralReturnsTrueForLiteralType($type) {
-		$this->assertTrue(Tx_Extbase_Utility_TypeHandling::isLiteral($type));
 	}
 }
 ?>

@@ -81,6 +81,11 @@ class Tx_Extbase_Reflection_ClassSchema {
 	protected $identityProperties = array();
 
 	/**
+	 * @var Tx_Extbase_Service_TypeHandlingService
+	 */
+	protected $typeHandlingService;
+
+	/**
 	 * Constructs this class schema
 	 *
 	 * @param string $className Name of the class this schema is referring to
@@ -88,6 +93,14 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function __construct($className) {
 		$this->className = $className;
+	}
+
+	/**
+	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
+	 * @return void
+	 */
+	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+		$this->typeHandlingService = $typeHandlingService;
 	}
 
 	/**
@@ -110,7 +123,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @return void
 	 */
 	public function addProperty($name, $type, $lazy = FALSE, $cascade = '') {
-		$type = Tx_Extbase_Utility_TypeHandling::parseType($type);
+		$type = $this->typeHandlingService->parseType($type);
 		$this->properties[$name] = array(
 			'type' => $type['type'],
 			'elementType' => $type['elementType'],
