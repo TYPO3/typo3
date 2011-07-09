@@ -5924,7 +5924,7 @@ final class t3lib_div {
 	 * @param	string		Message (in english).
 	 * @param	string		Extension key (from which extension you are calling the log)
 	 * @param	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-	 * @param	array		Additional data you want to pass to the logger.
+	 * @param	mixed		Additional data you want to pass to the logger.
 	 * @return	void
 	 */
 	public static function devLog($msg, $extKey, $severity = 0, $dataVar = FALSE) {
