@@ -109,7 +109,7 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
-	public function dispatch($signalClassName, $signalName, array $signalArguments) {
+	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
 		if (!isset($this->slots[$signalClassName][$signalName])) return;
 		foreach ($this->slots[$signalClassName][$signalName] as $slotInformation) {
 			if (isset($slotInformation['object'])) {
