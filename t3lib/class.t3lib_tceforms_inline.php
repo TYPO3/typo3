@@ -131,8 +131,8 @@ class t3lib_TCEforms_inline {
 		if (t3lib_BEfunc::isTableLocalizable($table)) {
 			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 		}
-		$minitems = t3lib_div::intInRange($config['minitems'], 0);
-		$maxitems = t3lib_div::intInRange($config['maxitems'], 0);
+		$minitems = t3lib_utility_Math::forceIntegerInRange($config['minitems'], 0);
+		$maxitems = t3lib_utility_Math::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
 		}
@@ -797,7 +797,7 @@ class t3lib_TCEforms_inline {
 				// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->fObj->defaultMultipleSelectorStyle . '"';
 			$size = intval($conf['size']);
-			$size = $conf['autoSizeMax'] ? t3lib_div::intInRange(count($selItems) + 1, t3lib_div::intInRange($size, 1), $conf['autoSizeMax']) : $size;
+			$size = $conf['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange(count($selItems) + 1, t3lib_utility_Math::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = "return inline.importNewRecord('" . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . "')";
 			$item = '
 				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector"' .

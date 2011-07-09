@@ -299,7 +299,7 @@ class tx_feedit_editpanel {
 	 */
 	protected function editPanelPreviewBorder($table, array $row, $content, $thick, array $conf = array()) {
 		if ($this->isDisabled($table, $row)) {
-			$thick = t3lib_div::intInRange($thick, 1, 100);
+			$thick = t3lib_utility_Math::forceIntegerInRange($thick, 1, 100);
 			$color = $conf['color'] ? $conf['color'] : '#cccccc';
 			if ($conf['innerWrap']) {
 				$content = $this->wrap($content,$conf['innerWrap']);

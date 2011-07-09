@@ -761,9 +761,9 @@ class t3lib_parsehtml {
 											}
 											if ($params['range']) {
 												if (isset($params['range'][1])) {
-													$tagAttrib[0][$attr] = t3lib_div::intInRange($tagAttrib[0][$attr], intval($params['range'][0]), intval($params['range'][1]));
+													$tagAttrib[0][$attr] = t3lib_utility_Math::forceIntegerInRange($tagAttrib[0][$attr], intval($params['range'][0]), intval($params['range'][1]));
 												} else {
-													$tagAttrib[0][$attr] = t3lib_div::intInRange($tagAttrib[0][$attr], intval($params['range'][0]));
+													$tagAttrib[0][$attr] = t3lib_utility_Math::forceIntegerInRange($tagAttrib[0][$attr], intval($params['range'][0]));
 												}
 											}
 											if (is_array($params['list'])) {

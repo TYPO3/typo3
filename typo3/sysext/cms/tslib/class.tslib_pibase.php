@@ -397,9 +397,9 @@ class tslib_pibase {
 			// Initializing variables:
 		$pointer = intval($this->piVars[$pointerName]);
 		$count = intval($this->internal['res_count']);
-		$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
+		$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'],1,1000);
 		$totalPages = ceil($count/$results_at_a_time);
-		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
+		$maxPages = t3lib_utility_Math::forceIntegerInRange($this->internal['maxPages'],1,100);
 		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
 
 		if (!$forceOutput && $count <= $results_at_a_time) {
@@ -423,7 +423,7 @@ class tslib_pibase {
 				$pagefloat = ceil(($maxPages - 1)/2);
 			} else {
 				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right
-				$pagefloat = t3lib_div::intInRange($this->internal['pagefloat'],-1,$maxPages-1);
+				$pagefloat = t3lib_utility_Math::forceIntegerInRange($this->internal['pagefloat'],-1,$maxPages-1);
 			}
 		} else {
 			$pagefloat = -1; // pagefloat disabled
@@ -452,7 +452,7 @@ class tslib_pibase {
 				$firstPage = max(0,$lastPage-$maxPages);
 			} else {
 				$firstPage = 0;
-				$lastPage = t3lib_div::intInRange($totalPages,1,$maxPages);
+				$lastPage = t3lib_utility_Math::forceIntegerInRange($totalPages,1,$maxPages);
 			}
 			$links=array();
 
@@ -1055,7 +1055,7 @@ class tslib_pibase {
 				// Limit data:
 			$pointer = $this->piVars['pointer'];
 			$pointer = intval($pointer);
-			$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
+			$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'],1,1000);
 			$LIMIT = ($pointer*$results_at_a_time).','.$results_at_a_time;
 
 				// Add 'SELECT'
@@ -1148,7 +1148,7 @@ class tslib_pibase {
 				// Limit data:
 			$pointer = $this->piVars['pointer'];
 			$pointer = intval($pointer);
-			$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'], 1, 1000);
+			$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
 			$LIMIT = ($pointer * $results_at_a_time) . ',' . $results_at_a_time;
 
 				// Add 'SELECT'
@@ -1189,13 +1189,13 @@ class tslib_pibase {
 			$pid_list = $GLOBALS['TSFE']->id;
 		}
 
-		$recursive = t3lib_div::intInRange($recursive, 0);
+		$recursive = t3lib_utility_Math::forceIntegerInRange($recursive, 0);
 
 		$pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
 		$pid_list     = array();
 
 		foreach($pid_list_arr as $val) {
-			$val = t3lib_div::intInRange($val, 0);
+			$val = t3lib_utility_Math::forceIntegerInRange($val, 0);
 			if ($val) {
 				$_list = $this->cObj->getTreeList(-1 * $val, $recursive);
 				if ($_list) {

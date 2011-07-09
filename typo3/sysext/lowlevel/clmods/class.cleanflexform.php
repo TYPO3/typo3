@@ -83,8 +83,8 @@ Cleaning XML for FlexForm fields.
 			'dirty' => array()
 		);
 
-		$startingPoint = $this->cli_isArg('--pid') ? t3lib_div::intInRange($this->cli_argValue('--pid'),0) : 0;
-		$depth = $this->cli_isArg('--depth') ? t3lib_div::intInRange($this->cli_argValue('--depth'),0) : 1000;
+		$startingPoint = $this->cli_isArg('--pid') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--pid'),0) : 0;
+		$depth = $this->cli_isArg('--depth') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--depth'),0) : 1000;
 
 		$this->cleanFlexForm_dirtyFields = &$resultArray['dirty'];
 		$this->genTree_traverseDeleted = FALSE;	// Do not repair flexform data in deleted records.

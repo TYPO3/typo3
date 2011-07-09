@@ -1578,7 +1578,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						switch ($typeDat['type']) {
 							case 'int':
 								if ($typeDat['paramstr']) {
-									$var = t3lib_div::intInRange($var, $typeDat['params'][0], $typeDat['params'][1]);
+									$var = t3lib_utility_Math::forceIntegerInRange($var, $typeDat['params'][0], $typeDat['params'][1]);
 								} else {
 									$var = intval($var);
 								}

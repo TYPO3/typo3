@@ -52,7 +52,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * current TYPO3 version number, set from outside
-	 * version number coming from t3lib_div::int_from_ver()
+	 * version number coming from t3lib_utility_VersionNumber::convertVersionNumberToInteger()
 	 */
 	public $versionNumber;
 

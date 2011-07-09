@@ -102,7 +102,7 @@ class SC_wizard_table {
 
 			// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
-		$this->numNewRows = t3lib_div::intInRange($this->P['params']['numNewRows'],1,50,5);
+		$this->numNewRows = t3lib_utility_Math::forceIntegerInRange($this->P['params']['numNewRows'],1,50,5);
 
 			// Textareas or input fields:
 		$this->inputStyle=isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;

@@ -123,7 +123,7 @@ class tx_em_Connection_ExtDirectServer {
 		foreach ($list['data'] as $entry) {
 			$flatList[$entry['extkey']] = array(
 				'version' => $entry['version'],
-				'intversion' => t3lib_div::int_from_ver($entry['version']),
+				'intversion' => t3lib_utility_VersionNumber::convertVersionNumberToInteger($entry['version']),
 				'installed' => $entry['installed'],
 				'typeShort' => $entry['typeShort'],
 			);

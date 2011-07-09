@@ -170,7 +170,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$this->piVars['sword'] = trim($this->piVars['sword_prev']).' '.$this->piVars['sword'];
 		}
 
-		$this->piVars['results'] = t3lib_div::intInRange($this->piVars['results'],1,100000,$this->defaultResultNumber);
+		$this->piVars['results'] = t3lib_utility_Math::forceIntegerInRange($this->piVars['results'],1,100000,$this->defaultResultNumber);
 
 			// Selector-box values defined here:
 		$this->optValues = Array(
@@ -504,7 +504,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($res)	{
 
 			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);	// Total search-result count
-			$pointer = t3lib_div::intInRange($this->piVars['pointer'], 0, floor($count/$this->piVars['results']));	// The pointer is set to the result page that is currently being viewed
+			$pointer = t3lib_utility_Math::forceIntegerInRange($this->piVars['pointer'], 0, floor($count/$this->piVars['results']));	// The pointer is set to the result page that is currently being viewed
 
 				// Initialize result accumulation variables:
 			$c = 0;	// Result pointer: Counts up the position in the current search-result
@@ -609,7 +609,7 @@ class tx_indexedsearch extends tslib_pibase {
 			if ($resData['count'])	{
 				$this->internal['res_count'] = $resData['count'];
 				$this->internal['results_at_a_time'] = $this->piVars['results'];
-				$this->internal['maxPages'] = t3lib_div::intInRange($this->conf['search.']['page_links'],1,100,10);
+				$this->internal['maxPages'] = t3lib_utility_Math::forceIntegerInRange($this->conf['search.']['page_links'],1,100,10);
 				$addString = ($resData['count']&&$this->piVars['group']=='sections'&&$freeIndexUid<=0 ? ' '.sprintf($this->pi_getLL(count($this->resultSections)>1?'inNsections':'inNsection'),count($this->resultSections)):'');
 				$browseBox1 = $this->pi_list_browseresults(1,$addString,$this->printResultSectionLinks(),$freeIndexUid);
 				$browseBox2 = $this->pi_list_browseresults(0,'','',$freeIndexUid);
@@ -1569,8 +1569,8 @@ class tx_indexedsearch extends tslib_pibase {
 			// Initializing variables:
 		$pointer=$this->piVars['pointer'];
 		$count=$this->internal['res_count'];
-		$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
-		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
+		$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'],1,1000);
+		$maxPages = t3lib_utility_Math::forceIntegerInRange($this->internal['maxPages'],1,100);
 		$pageCount = ceil($count/$results_at_a_time);
 		$sTables = '';
 
@@ -1853,20 +1853,20 @@ class tx_indexedsearch extends tslib_pibase {
 				return $row['order_val'].' '.$this->pi_getLL('maketitle_matches');
 			break;
 			case 'rank_first':	// Close to top of page
-				return ceil(t3lib_div::intInRange(255-$row['order_val'],1,255)/255*100).'%';
+				return ceil(t3lib_utility_Math::forceIntegerInRange(255-$row['order_val'],1,255)/255*100).'%';
 			break;
 			case 'rank_flag':	// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
 				if ($this->firstRow['order_val2'])	{
 					$base = $row['order_val1']*256; // (3 MSB bit, 224 is highest value of order_val1 currently)
 					$freqNumber = $row['order_val2']/$this->firstRow['order_val2']*pow(2,12);	// 15-3 MSB = 12
-					$total = t3lib_div::intInRange($base+$freqNumber,0,32767);
+					$total = t3lib_utility_Math::forceIntegerInRange($base+$freqNumber,0,32767);
 					#debug($total);
 					return ceil(log($total)/log(32767)*100).'%';
 				}
 			break;
 			case 'rank_freq':	// Based on frequency
 				$max = 10000;
-				$total = t3lib_div::intInRange($row['order_val'],0,$max);
+				$total = t3lib_utility_Math::forceIntegerInRange($row['order_val'],0,$max);
 #				debug($total);
 				return ceil(log($total)/log($max)*100).'%';
 			break;
@@ -1945,7 +1945,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 		$occurencies = (count($parts)-1)/2;
 		if ($occurencies)	{
-			$postPreLgd = t3lib_div::intInRange($summaryMax/$occurencies,$postPreLgd,$summaryMax/2);
+			$postPreLgd = t3lib_utility_Math::forceIntegerInRange($summaryMax/$occurencies,$postPreLgd,$summaryMax/2);
 		}
 
 			// Variable:

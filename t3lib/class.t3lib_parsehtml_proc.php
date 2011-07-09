@@ -943,7 +943,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'typohead': // Transform typohead into Hx tags.
 						if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
 							$tC = $this->removeFirstAndLastTag($blockSplit[$k]);
-							$typ = t3lib_div::intInRange($attribArray['type'], 0, 6);
+							$typ = t3lib_utility_Math::forceIntegerInRange($attribArray['type'], 0, 6);
 							if (!$typ) {
 								$typ = 6;
 							}

@@ -155,7 +155,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			reset($rows);
 
 				// Find number of columns to render:
-			$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode($delimiter,current($rows))),0,100);
+			$cols = t3lib_utility_Math::forceIntegerInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode($delimiter,current($rows))),0,100);
 
 				// Traverse rows (rendering the table here)
 			$rCount = count($rows);
@@ -501,7 +501,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imgCount = count($imgs) - $imgStart;
 		$imgMax = intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']));
 		if ($imgMax)	{
-			$imgCount = t3lib_div::intInRange($imgCount, 0, $imgMax);	// reduce the number of images.
+			$imgCount = t3lib_utility_Math::forceIntegerInRange($imgCount, 0, $imgMax);	// reduce the number of images.
 		}
 
 		$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);

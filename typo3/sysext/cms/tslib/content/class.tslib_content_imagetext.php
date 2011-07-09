@@ -62,7 +62,7 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 				? intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']))
 				: intval($conf['imgMax']);
 			if ($imgMax) {
-				$imgCount = t3lib_div::intInRange($imgCount, 0, $imgMax); // reduces the number of images.
+				$imgCount = t3lib_utility_Math::forceIntegerInRange($imgCount, 0, $imgMax); // reduces the number of images.
 			}
 
 			$imgPath = isset($conf['imgPath.'])

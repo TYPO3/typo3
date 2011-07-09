@@ -108,7 +108,7 @@ class user_wapversion {
 			));
 
 			$cParts = $this->contentAll();
-			$pointer = t3lib_div::intInRange($GLOBALS['TSFE']->idParts[1],1,10000);
+			$pointer = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->idParts[1],1,10000);
 
 			$msg='';
 			if ($pointer-1)	{$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['prev']),$pointer-1).' ';}

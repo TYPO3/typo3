@@ -346,10 +346,10 @@ class tx_indexedsearch_indexer {
 
 			// Indexer configuration from Extension Manager interface:
 		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
-		$this->tstamp_minAge = t3lib_div::intInRange($this->indexerConfig['minAge']*3600,0);
-		$this->tstamp_maxAge = t3lib_div::intInRange($this->indexerConfig['maxAge']*3600,0);
-		$this->maxExternalFiles = t3lib_div::intInRange($this->indexerConfig['maxExternalFiles'],0,1000,5);
-		$this->flagBitMask = t3lib_div::intInRange($this->indexerConfig['flagBitMask'],0,255);
+		$this->tstamp_minAge = t3lib_utility_Math::forceIntegerInRange($this->indexerConfig['minAge']*3600,0);
+		$this->tstamp_maxAge = t3lib_utility_Math::forceIntegerInRange($this->indexerConfig['maxAge']*3600,0);
+		$this->maxExternalFiles = t3lib_utility_Math::forceIntegerInRange($this->indexerConfig['maxExternalFiles'],0,1000,5);
+		$this->flagBitMask = t3lib_utility_Math::forceIntegerInRange($this->indexerConfig['flagBitMask'],0,255);
 
 			// Initialize external document parsers:
 			// Example configuration, see ext_localconf.php of this file!
@@ -1252,7 +1252,7 @@ class tx_indexedsearch_indexer {
 	function bodyDescription($contentArr)	{
 
 			// Setting description
-		$maxL = t3lib_div::intInRange($this->conf['index_descrLgd'],0,255,200);
+		$maxL = t3lib_utility_Math::forceIntegerInRange($this->conf['index_descrLgd'],0,255,200);
 		if ($maxL)	{
 				// Takes the quadruple lenght first, because whitespace and entities may be removed and thus shorten the string more yet.
 	#		$bodyDescription = implode(' ',split('[[:space:],]+',substr(trim($contentArr['body']),0,$maxL*4)));

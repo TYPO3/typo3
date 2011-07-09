@@ -3566,7 +3566,7 @@ if (version == "n3") {
 			$shortTitle = $this->page['title'];
 		}
 
-		$len = t3lib_div::intInRange($this->config['config']['stat_apache_pageLen'],1,100,30);
+		$len = t3lib_utility_Math::forceIntegerInRange($this->config['config']['stat_apache_pageLen'],1,100,30);
 		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
 			$shortTitle = rawurlencode($this->csConvObj->substr('utf-8',$shortTitle,0,$len));
 		} else {
@@ -3587,7 +3587,7 @@ if (version == "n3") {
 				array_shift($temp);
 			}
 
-			$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
+			$len = t3lib_utility_Math::forceIntegerInRange($this->config['config']['stat_titleLen'],1,100,20);
 			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
 				$path = '';
 				$c = count($temp);

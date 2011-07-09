@@ -4881,7 +4881,7 @@ class tslib_cObj {
 								}
 									// Finish off
 								if (($fileArray['reduceColors'] || ($imgExt == 'png' && !$gifCreator->png_truecolor)) && is_file($dest)) {
-									$reduced = $gifCreator->IMreduceColors($dest, t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
+									$reduced = $gifCreator->IMreduceColors($dest, t3lib_utility_Math::forceIntegerInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
 									if (is_file($reduced)) {
 										unlink($dest);
 										rename($reduced, $dest);
@@ -4892,7 +4892,7 @@ class tslib_cObj {
 								$fileArray['params'] = $this->modifyImageMagickStripProfileParameters($fileArray['params'], $fileArray);
 								$GLOBALS['TSFE']->tmpl->fileCache[$hash] = $gifCreator->imageMagickConvert($theImage, $fileArray['ext'], $fileArray['width'], $fileArray['height'], $fileArray['params'], $fileArray['frame'], $options);
 								if (($fileArray['reduceColors'] || ($imgExt == 'png' && !$gifCreator->png_truecolor)) && is_file($GLOBALS['TSFE']->tmpl->fileCache[$hash][3])) {
-									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_div::intInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
+									$reduced = $gifCreator->IMreduceColors($GLOBALS['TSFE']->tmpl->fileCache[$hash][3], t3lib_utility_Math::forceIntegerInRange($fileArray['reduceColors'], 256, $gifCreator->truecolorColors, 256));
 									if (is_file($reduced)) {
 										unlink($GLOBALS['TSFE']->tmpl->fileCache[$hash][3]);
 										rename($reduced, $GLOBALS['TSFE']->tmpl->fileCache[$hash][3]);
@@ -7231,8 +7231,8 @@ class tslib_cObj {
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			if (!$error) {
-				$conf['begin'] = t3lib_div::intInRange(ceil($this->calc($conf['begin'])), 0);
-				$conf['max'] = t3lib_div::intInRange(ceil($this->calc($conf['max'])), 0);
+				$conf['begin'] = t3lib_utility_Math::forceIntegerInRange(ceil($this->calc($conf['begin'])), 0);
+				$conf['max'] = t3lib_utility_Math::forceIntegerInRange(ceil($this->calc($conf['max'])), 0);
 				if ($conf['begin'] && !$conf['max']) {
 					$conf['max'] = 100000;
 				}

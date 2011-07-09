@@ -130,7 +130,7 @@ class t3lib_formmail {
 
 			$this->replyToAddress = ($valueList['replyto_email']) ? $valueList['replyto_email'] : $this->fromAddress;
 
-			$this->priority = ($valueList['priority']) ? t3lib_div::intInRange($valueList['priority'], 1, 5) : 3;
+			$this->priority = ($valueList['priority']) ? t3lib_utility_Math::forceIntegerInRange($valueList['priority'], 1, 5) : 3;
 
 				// auto responder
 			$this->autoRespondMessage = (trim($valueList['auto_respond_msg']) && $this->fromAddress)
