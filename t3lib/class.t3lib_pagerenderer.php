@@ -1735,11 +1735,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 		unset($this->inlineLanguageLabelFiles);
 
-			// Include TYPO3.l18n object
-		if (TYPO3_MODE === 'BE') {
-			$out .= '<script src="' . $this->processJsFile($this->backPath . 'sysext/lang/res/js/be/typo3lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
-		}
-
 			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
 		if ($this->getCharSet() !== 'utf-8') {
 			if ($this->inlineLanguageLabels) {
@@ -1770,6 +1765,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . LF : '') . $code .
 					' });' . $this->inlineJavascriptWrap[1];
 			unset ($this->extOnReadyCode);
+
+				// Include TYPO3.l10n object
+			if (TYPO3_MODE === 'BE') {
+				$out .= '<script src="' . $this->processJsFile($this->backPath . 'sysext/lang/res/js/be/typo3lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
+			}
 
 			if ($this->extJStheme) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
