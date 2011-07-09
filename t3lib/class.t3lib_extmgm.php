@@ -1314,7 +1314,7 @@ tt_content.' . $key . $prefix . ' {
 	/**
 	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
 	 *
-	 * CACHING ON: ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1 or 2)
+	 * CACHING ON: ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1)
 	 *		 If caching is enabled (and possible), the output will be $extensions['_CACHEFILE'] set to the cacheFilePrefix. Subsequently the cache files must be included then since those will eventually set up the extensions.
 	 *		 If cachefiles are not found they will be generated
 	 * CACHING OFF:	($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 0)
@@ -1590,10 +1590,8 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 		$cacheFileSuffix = (TYPO3_MODE == 'FE' ? '_FE' : '');
 		$cacheFilePrefix = 'temp_CACHED' . $cacheFileSuffix;
 
-		if ($extensionCacheBehaviour == 1) {
+		if ($extensionCacheBehaviour) {
 			$cacheFilePrefix .= '_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . $GLOBALS['TYPO_VERSION']), 0, 4);
-		} elseif ($extensionCacheBehaviour == 2) {
-			$cacheFilePrefix .= '_' . t3lib_div::shortMD5(self::getEnabledExtensionList());
 		}
 
 		return $cacheFilePrefix;

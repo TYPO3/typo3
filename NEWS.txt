@@ -52,6 +52,15 @@ The feature to statically publish a page from the Admin Panel has been dropped.
 There are better ways to achieve such a functionality, like e.g.
 EXT:nc_staticfilecache.
 
+* Removed extCache=2 option
+
+The cache files in typo3conf/temp_CACHED_* were by default set to a hash that
+was based on the extensionlist, but this is quite unnecessary, so the extCache
+option was removed to be only used once in the typo3conf/ directory in order
+to prevent hundreds of temp_CACHED_* files that don't get cleaned up
+automatically. From now on the option $TYPO3_CONF_VARS['EXT']['extCache'] can
+only be set to 0 or 1.
+
 
 Workspaces
 -------------------------------------------------------------------------------
