@@ -30,6 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
+ * @version $ID:$
  */
 class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, ArrayAccess, Tx_Extbase_Persistence_ObjectMonitoringInterface {
 
@@ -61,12 +62,12 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 
 	/**
 	 * A flag indication if the object storage was modified after reconstitution (eg. by adding a new object)
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isModified = FALSE;
 
 	/**
-	 * Rewinds the iterator to the first storage element.
+	 * Rewind the iterator to the first storage element.
 	 *
 	 * @return void
 	 */
@@ -75,18 +76,18 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Checks if the array pointer of the storage points to a valid position.
+	 * Checks if the array pointer of the storage points to a valid position
 	 *
-	 * @return boolean
+	 * @return void
 	 */
 	public function valid() {
-		return (current($this->storage) !== FALSE);
+		return current($this->storage);
 	}
 
 	/**
-	 * Returns the index at which the iterator currently is.
+	 * Returns the index at which the iterator currently is. This is different from the SplObjectStorage
+	 * as the key in this implementation is the object hash.
 	 *
-	 * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
 	 * @return string The index corresponding to the position of the iterator.
 	 */
 	public function key() {
@@ -104,7 +105,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Moves to the next entry.
+	 * Moves the iterator to the next object in the storage.
 	 *
 	 * @return void
 	 */
@@ -113,16 +114,16 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Returns the number of objects in the storage.
+	 * Counts the number of objects in the storage.
 	 *
-	 * @return integer The number of objects in the storage.
+	 * @return int The number of objects in the storage.
 	 */
 	public function count() {
 		return count($this->storage);
 	}
 
 	/**
-	 * Associates data to an object in the storage. offsetSet() is an alias of attach().
+	 * Associate data to an object in the storage. offsetSet() is an alias of attach().
 	 *
 	 * @param object $object The object to add.
 	 * @param mixed $information The data to associate with the object.
@@ -136,8 +137,8 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Checks whether an object exists in the storage.
 	 *
-	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @param string $object The object to look for.
+	 * @return boolean Returns TRUE if the object exists in the storage, and FALSE otherwise.
 	 */
 	public function offsetExists($object) {
 		return isset($this->storage[spl_object_hash($object)]);
@@ -146,7 +147,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Removes an object from the storage. offsetUnset() is an alias of detach().
 	 *
-	 * @param object $object The object to remove.
+	 * @param Object $object The object to remove.
 	 * @return void
 	 */
 	public function offsetUnset($object) {
@@ -155,27 +156,27 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Returns the data associated with an object.
+	 * Returns the data associated with an object in the storage.
 	 *
-	 * @param object $object The object to look for.
-	 * @return mixed The data associated with an object in the storage.
+	 * @param string $object The object to look for.
+	 * @return mixed The data previously associated with the object in the storage.
 	 */
 	public function offsetGet($object) {
 		return $this->storage[spl_object_hash($object)]['inf'];
 	}
 
 	/**
-	 * Checks if the storage contains a specific object.
+	 * Checks if the storage contains the object provided.
 	 *
-	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @param Object $object The object to look for.
+	 * @return boolean Returns TRUE if the object is in the storage, FALSE otherwise.
 	 */
 	public function contains($object) {
 		return $this->offsetExists($object);
 	}
 
 	/**
-	 * Adds an object in the storage, and optionaly associate it to some data.
+	 * Adds an object inside the storage, and optionaly associate it to some data.
 	 *
 	 * @param object $object The object to add.
 	 * @param mixed $information The data to associate with the object.
@@ -186,9 +187,9 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Removes an object from the storage.
+	 * Removes the object from the storage.
 	 *
-	 * @param object $object The object to remove.
+	 * @param Object $object The object to remove.
 	 * @return void
 	 */
 	public function detach($object) {
@@ -205,11 +206,6 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 		return $item['inf'];
 	}
 
-	/**
-	 * Associates data, or info, with the object currently pointed to by the iterator.
-	 *
-	 * @param mixed $information The data associated with the current iterator entry.
-	 */
 	public function setInfo($data) {
 		$this->isModified = TRUE;
 		$key = key($this->storage);
@@ -219,11 +215,11 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Adds all objects-data pairs from a different storage in the current storage.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage
+	 * @param Tx_Extbase_Persistence_ObjectStorage $storage The storage you want to import.
 	 * @return void
 	 */
-	public function addAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
-		foreach ($objectStorage as $object) {
+	public function addAll(Tx_Extbase_Persistence_ObjectStorage $storage) {
+		foreach ($storage as $object) {
 			$this->attach($object, $storage->getInfo());
 		}
 	}
@@ -231,11 +227,11 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Removes objects contained in another storage from the current storage.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage The storage containing the elements to remove.
+	 * @param Tx_Extbase_Persistence_ObjectStorage $storage The storage containing the elements to remove.
 	 * @return void
 	 */
-	public function removeAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
-		foreach ($objectStorage as $object) {
+	public function removeAll(Tx_Extbase_Persistence_ObjectStorage $storage) {
+		foreach ($storage as $object) {
 			$this->detach($object);
 		}
 	}
@@ -254,28 +250,17 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 		return $array;
 	}
 
-	/**
-	 * Dummy method to avoid serialization.
-	 *
-	 * @return void
-	 * @throws RuntimeException
-	 */
 	public function serialize() {
 		throw new RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
 	}
 
-	/**
-	 * Dummy method to avoid unserialization.
-	 *
-	 * @return void
-	 * @throws RuntimeException
-	 */
 	public function unserialize($serialized) {
 		throw new RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
 	}
 
 	/**
-	 * Register the storage's clean state, e.g. after it has been reconstituted from the database.
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
 	 *
 	 * @return void
 	 */
@@ -284,12 +269,14 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 	/**
-	 * Returns TRUE if the storage was modified after reconstitution.
+	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 */
 	public function _isDirty() {
 		return $this->isModified;
 	}
+
 }
+
 ?>
