@@ -662,12 +662,25 @@ final class t3lib_div {
 	 * @param	string		The current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
 	 * @return	boolean		TRUE if a domain name mask from $list matches $baseIP
+	 * @deprecated
+	 * @see compareFQDNByIP()
 	 */
 	public static function cmpFQDN($baseIP, $list) {
-		if (count(explode('.', $baseIP)) == 4) {
-			$resolvedHostName = explode('.', gethostbyaddr($baseIP));
-			$values = self::trimExplode(',', $list, 1);
+		t3lib_div::deprecationLog('cmpFQDN is deprecated, use compareFQDNByIP instead');
+		return self::compareFQDNByIP($baseIP,$list);
+	}
 
+	/**
+	 * Match a fully qualified domain name with list of strings with wildcard
+	 *
+	 * @param	string		The current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
+	 * @return	boolean		TRUE if a domain name mask from $list matches $baseIP
+	 */
+	public static function compareFQDN($fqdn, $list){
+		if (count(explode('.', $fqdn)) >= 2) {
+			$resolvedHostName = explode('.', $fqdn);
+			$values = self::trimExplode(',', $list, 1);
 			foreach ($values as $test) {
 				$hostNameParts = explode('.', $test);
 				$yes = 1;
@@ -682,6 +695,21 @@ final class t3lib_div {
 					return TRUE;
 				}
 			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Match the fully qualified domain name of an IP Adress with list of strings with wildcard
+	 *
+	 * @param	string		The current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
+	 * @return	boolean		TRUE if a domain name mask from $list matches $baseIP
+	 */
+	public static function compareFQDNByIP($baseIP, $list){
+		if (count(explode('.', $baseIP)) == 4) {
+			$fqdn = gethostbyaddr($baseIP);
+			return self::compareFQDN($fqdn,$list);
 		}
 		return FALSE;
 	}
