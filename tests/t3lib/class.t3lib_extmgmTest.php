@@ -32,29 +32,46 @@
  * @subpackage t3lib
  */
 class t3lib_extmgmTest extends tx_phpunit_testcase {
+
 	/**
-	 * backup of defined GLOBALS
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
 	 *
 	 * @var array
 	 */
-	protected $globals = array();
-
-	public function setUp() {
-		$this->globals = array(
-			'TYPO3_CONF_VARS' => serialize($GLOBALS['TYPO3_CONF_VARS']),
-			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
-			'TCA' => serialize($GLOBALS['TCA']),
-		);
-	}
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	public function tearDown() {
 		t3lib_extMgm::clearExtensionKeyMap();
-
-		foreach ($this->globals as $key => $value) {
-			$GLOBALS[$key] = unserialize($value);
-		}
 	}
 
+	///////////////////////////////
+	// Tests concerning extPath
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException BadFunctionCallException
+	 */
+	public function extPathThrowsExceptionIfExtensionIsNotLoaded() {
+		$GLOBALS['TYPO3_LOADED_EXT']['foo'] = array();
+		t3lib_extMgm::extPath('bar');
+	}
+
+	/**
+	 * @test
+	 */
+	public function extPathAppendsScriptNameToPath() {
+		$GLOBALS['TYPO3_LOADED_EXT']['foo']['siteRelPath'] = 'foo/';
+		$this->assertSame(PATH_site . 'foo/bar.txt', t3lib_extMgm::extPath('foo', 'bar.txt'));
+	}
 
 	//////////////////////
 	// Utility functions
