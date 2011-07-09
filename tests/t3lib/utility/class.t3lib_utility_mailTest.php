@@ -30,7 +30,7 @@
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_utility_mailTest extends tx_phpunit_testcase {
+class t3lib_utility_MailTest extends tx_phpunit_testcase {
 	/**
 	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
 	 *
@@ -94,5 +94,42 @@ class t3lib_utility_mailTest extends tx_phpunit_testcase {
 			$additionalParameters
 		);
 	}
+
+    /**
+     * @test
+     */
+    public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven() {
+        $this->assertEmpty(
+            t3lib_utility_Mail::breakLinesForEmail('')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded() {
+        $newlineChar = LF;
+        $lineWidth = 76;
+        $str = 'This text is not longer than 76 chars and therefore will not be broken.';
+        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $this->assertEquals(
+            1,
+            count(explode($newlineChar, $returnString))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function breakLinesForEmailBreaksTextIfCharWithIsExceeded() {
+        $newlineChar = LF;
+        $lineWidth = 50;
+        $str = 'This text is longer than 50 chars and therefore will be broken.';
+        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $this->assertEquals(
+            2,
+            count(explode($newlineChar, $returnString))
+        );
+    }
 }
 ?>
