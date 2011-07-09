@@ -220,3 +220,11 @@ A:	If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the
 	is the web site domain), navigate to "All configuration". find "setDBinit",
 	and add this line to the top of the input field:
 		SET SESSION sql_mode='MYSQL40'
+
+Q:	What do I have to do to maintain my installation?
+A:	You have to make sure that you keep your TYPO3-core and the extensions 
+	up-to-date. Therefore use the scheduler task "Update Extension List (em)" to 
+	update the list of available extensions regularly. You should check regularly 
+	if new versions of these extensions are available and install them respectively.
+	You should further check http://typo3.org/download/packages/ to see if there 
+	are new source packages available and update your sources soon.
