@@ -31,6 +31,7 @@
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
+ * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use TEXT from now on
  */
 class tslib_content_Html extends tslib_content_Abstract {
 
@@ -41,19 +42,16 @@ class tslib_content_Html extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-
-		$theValue = $conf['value'];
-
-		if (isset($conf['value.'])) {
-			$theValue = $this->cObj->stdWrap($theValue, $conf['value.']);
+                t3lib_div::logDeprecatedFunction(); 
+		$content = '';
+		if (is_array($conf) && isset($conf['value'])) {
+			$content = $conf['value'];
+			unset($conf['value']);
 		}
-
-		if (isset($conf['stdWrap.'])) {
-			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		if(count($conf)) {
+			$content = $this->cObj->stdWrap($content, $conf);
 		}
-
-		return $theValue;
-
+		return $content;
 	}
 
 }
