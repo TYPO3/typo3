@@ -203,7 +203,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function setUUIDPropertyName($propertyName) {
+	public function setUuidPropertyName($propertyName) {
 		if (!array_key_exists($propertyName, $this->properties)) {
 			throw new InvalidArgumentException('Property "' . $propertyName . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
 		}
@@ -217,7 +217,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @return string
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function getUUIDPropertyName() {
+	public function getUuidPropertyName() {
 		return $this->uuidPropertyName;
 	}
 

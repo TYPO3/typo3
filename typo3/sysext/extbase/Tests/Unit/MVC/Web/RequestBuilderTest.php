@@ -171,20 +171,20 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	/**
 	 * @test
 	 */
-	public function buildSetsRequestRequestURI() {
+	public function buildSetsRequestRequestUri() {
 		$this->injectDependencies();
 		$expectedRequestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-		$this->mockRequest->expects($this->once())->method('setRequestURI')->with($expectedRequestUri);
+		$this->mockRequest->expects($this->once())->method('setRequestUri')->with($expectedRequestUri);
 		$this->requestBuilder->build();
 	}
 
 	/**
 	 * @test
 	 */
-	public function buildSetsRequestBaseURI() {
+	public function buildSetsRequestBaseUri() {
 		$this->injectDependencies();
 		$expectedBaseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		$this->mockRequest->expects($this->once())->method('setBaseURI')->with($expectedBaseUri);
+		$this->mockRequest->expects($this->once())->method('setBaseUri')->with($expectedBaseUri);
 		$this->requestBuilder->build();
 	}
 
