@@ -136,6 +136,11 @@ $TYPO3_CONF_VARS = array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(),
 				),
+				'cache_phpcode' => array(
+					'frontend' => 't3lib_cache_frontend_PhpFrontend',
+					'backend' => 't3lib_cache_backend_FileBackend',
+					'options' => array(),
+				),
 				'cache_runtime' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_TransientMemoryBackend',
