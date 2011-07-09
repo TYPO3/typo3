@@ -297,7 +297,7 @@ $TYPO3_CONF_VARS = array(
 							500 {
 								name = edit
 								label = LLL:EXT:lang/locallang_core.xml:cm.edit
-								spriteIcon = actions-document-open
+								spriteIcon = actions-page-open
 								displayCondition = canBeEdited != 0
 								callbackAction = editPageProperties
 							}
