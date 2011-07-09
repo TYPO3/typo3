@@ -48,8 +48,27 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 */
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
+	/**
+	 * phpunit still needs some globals that are
+	 * reconstructed before $backupGlobals is handled. Those
+	 * important globals are handled in tearDown() directly.
+	 *
+	 * @var array
+	 */
+	protected $globals = array();
+
+	public function setUp() {
+		$this->globals = array(
+			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
+		);
+	}
+
 	public function tearDown() {
 		t3lib_extMgm::clearExtensionKeyMap();
+
+		foreach ($this->globals as $key => $value) {
+			$GLOBALS[$key] = unserialize($value);
+		}
 	}
 
 	///////////////////////////////
@@ -71,6 +90,43 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	public function extPathAppendsScriptNameToPath() {
 		$GLOBALS['TYPO3_LOADED_EXT']['foo']['siteRelPath'] = 'foo/';
 		$this->assertSame(PATH_site . 'foo/bar.txt', t3lib_extMgm::extPath('foo', 'bar.txt'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException BadFunctionCallException
+	 */
+	public function extPathThrowsExceptionIfExtensionIsNotLoadedAndTypo3LoadedExtensionsIsEmpty() {
+		unset($GLOBALS['TYPO3_LOADED_EXT']);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
+		t3lib_extMgm::extPath('bar');
+	}
+
+	/**
+	 * @test
+	 */
+	public function extPathSearchesForPathOfExtensionInRequiredExtensionList() {
+		$this->setExpectedException('Exception', '', 1294430951);
+
+		unset($GLOBALS['TYPO3_LOADED_EXT']);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo';
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
+
+		t3lib_extMgm::extPath('foo');
+	}
+
+	/**
+	 * @test
+	 */
+	public function extPathSearchesForPathOfExtensionInExtList() {
+		$this->setExpectedException('Exception', '', 1294430951);
+
+		unset($GLOBALS['TYPO3_LOADED_EXT']);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = 'foo';
+
+		t3lib_extMgm::extPath('foo');
 	}
 
 	//////////////////////
