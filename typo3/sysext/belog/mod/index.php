@@ -60,7 +60,11 @@ class SC_mod_tools_log_index {
 	var $doc;
 
 	var $content;
-	var $lF;
+
+	/**
+	 * @var t3lib_BEDisplayLog
+	 */
+	var $displayLogInstance;
 	var $be_user_Array;
 
 	var $theTime = 0;
@@ -75,7 +79,7 @@ class SC_mod_tools_log_index {
 	function init()	{
 		$this->MCONF = $GLOBALS['MCONF'];
 
-		$this->lF = t3lib_div::makeInstance('t3lib_BEDisplayLog');
+		$this->displayLogInstance = t3lib_div::makeInstance('t3lib_BEDisplayLog');
 
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -119,7 +123,7 @@ class SC_mod_tools_log_index {
 
 		$this->menuConfig();
 		$this->be_user_Array = t3lib_BEfunc::getUserNames();
-		$this->lF->be_user_Array = &$this->be_user_Array;
+		$this->displayLogInstance->be_user_Array = &$this->be_user_Array;
 	}
 
 	/**
@@ -282,7 +286,7 @@ class SC_mod_tools_log_index {
 		));
 
 
-		$codeArr = $this->lF->initArray();
+		$codeArr = $this->displayLogInstance->initArray();
 		$oldHeader='';
 		$c=0;
 
@@ -407,8 +411,8 @@ class SC_mod_tools_log_index {
 
 
 		foreach($logPids as $pid)	{
-			$codeArr = $this->lF->initArray();
-			$this->lF->reset();
+			$codeArr = $this->displayLogInstance->initArray();
+			$this->displayLogInstance->reset();
 			$oldHeader='';
 
 			$this->content.=$this->doc->divider(5);
@@ -444,18 +448,18 @@ class SC_mod_tools_log_index {
 				if ($header!=$oldHeader)	{
 					$this->content.=$this->doc->spacer(10);
 					$this->content.=$this->doc->section($oldHeader,$this->doc->table($codeArr));
-					$codeArr=$this->lF->initArray();
+					$codeArr = $this->displayLogInstance->initArray();
 					$oldHeader=$header;
-					$this->lF->reset();
+					$this->displayLogInstance->reset();
 				}
 
 				$i++;
-				$codeArr[$i][]=$this->lF->getTimeLabel($row['tstamp']);
-				$codeArr[$i][]=$this->lF->getUserLabel($row['userid'],$row['workspace']);
-				$codeArr[$i][]=$this->lF->getTypeLabel($row['type']);
-				$codeArr[$i][]=$row['error'] ? $this->lF->getErrorFormatting($this->lF->errorSign[$row['error']],$row['error']) : '';
-				$codeArr[$i][]=$this->lF->getActionLabel($row['type'].'_'.$row['action']);
-				$codeArr[$i][]=$this->lF->formatDetailsForList($row);
+				$codeArr[$i][] = $this->displayLogInstance->getTimeLabel($row['tstamp']);
+				$codeArr[$i][] = $this->displayLogInstance->getUserLabel($row['userid'], $row['workspace']);
+				$codeArr[$i][] = $this->displayLogInstance->getTypeLabel($row['type']);
+				$codeArr[$i][] = $row['error'] ? $this->displayLogInstance->getErrorIcon($row['error']) : '';
+				$codeArr[$i][] = $this->displayLogInstance->getActionLabel($row['type'] . '_' . $row['action']);
+				$codeArr[$i][] = $this->displayLogInstance->formatDetailsForList($row);
 			}
 			$this->content.=$this->doc->spacer(10);
 			$this->content.=$this->doc->section($header,$this->doc->table($codeArr));

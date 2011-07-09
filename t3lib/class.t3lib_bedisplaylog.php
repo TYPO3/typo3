@@ -207,6 +207,16 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
+	 * Return the error icon
+	 *
+	 * @param int $error
+	 * @return string
+	 */
+	function getErrorIcon($error = 0) {
+		return $GLOBALS['SOBE']->doc->icons($error >= 2 ? 3 : 2);
+	}
+
+	/**
 	 * Formats input string in red-colored font tags
 	 *
 	 * @param	string		Input value
