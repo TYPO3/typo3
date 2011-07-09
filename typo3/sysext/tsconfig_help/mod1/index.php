@@ -22,17 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-// DEFAULT initialization of a module [BEGIN]
-unset($MCONF);
-require_once('conf.php');
-require_once($BACK_PATH.'init.php');
-require_once($BACK_PATH.'template.php');
-
 $LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
-// DEFAULT initialization of a module [END]
-
 
 /**
  * Module 'TypoScript Help' for the 'tsconfig_help' extension.

@@ -46,7 +46,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 */
 	function tableRow($label, $data, $field)	{
 		$ret = '<tr><td>';
-		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
+		$ret.= '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
@@ -72,7 +72,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
-					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
+					$functions.= '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
 				}
 				$functions.= '</td>';
 			}
@@ -216,7 +216,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
 		if($newId) {
 			// switch to new template
-			t3lib_utility_Http::redirect('index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
+			t3lib_utility_Http::redirect('mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
 		}
 
 		if ($existTemplate)	{
@@ -444,8 +444,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$this->pObj->id,
 					'SET[includeTypoScriptFileContent]',
 					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'],
-					'index.php',
-					'&e[constants]=1',
+					'mod.php',
+					'&M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&e[constants]=1',
 					'id="checkIncludeTypoScriptFileContent"'
 				);
 				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
@@ -490,8 +490,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$this->pObj->id,
 					'SET[includeTypoScriptFileContent]',
 					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'],
-					'index.php',
-					'&e[config]=1',
+					'mod.php',
+					'&M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&e[config]=1',
 					'id="checkIncludeTypoScriptFileContent"'
 				);
 				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';

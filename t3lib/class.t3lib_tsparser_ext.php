@@ -338,7 +338,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				if ($PM == 'join') {
 					$HTML .= $theIcon;
 				} else {
-					$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
+					$aHref = 'mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $GLOBALS['SOBE']->id .
 							 '&tsbr[' . $depth . ']=' . ($deeper ? 0 : 1) .
 							 (t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '') .
 							 '#' . $goto;
@@ -350,7 +350,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					$label = '<font color="#666666">' . $label . '</font>';
 				} else {
 					if ($this->linkObjects) {
-						$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
+						$aHref = 'mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $GLOBALS['SOBE']->id .
 								 '&sObj=' . $depth .
 								 (t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '');
 						if ($this->bType != 'const') {
@@ -564,7 +564,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					: t3lib_iconWorks::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext))
 			);
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
-				$A_B = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&template=' . $row['templateID']) . '">';
+				$A_B = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&template=' . $row['templateID']) . '">';
 				$A_E = '</a>';
 				if (t3lib_div::_GP('template') == $row['templateID']) {
 					$A_B = '<strong>' . $A_B;
