@@ -199,6 +199,53 @@ final class t3lib_utility_Mail {
 
 		return $address;
 	}
+
+	/**
+	 * Breaks up a single line of text for emails
+	 *
+	 * @param string $str The string to break up
+	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
+	 * @param integer $lineWidth The line width
+	 * @return string reformated text
+	 */
+	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
+		$lines = array();
+		$substrStart = 0;
+		while (strlen($str) > $substrStart) {
+			$substr = substr($str, $substrStart, $lineWidth);
+
+				// has line exceeded (reached) the maximum width?
+			if (strlen($substr) == $lineWidth) {
+					// find last space-char
+				$count = count(explode(' ', trim(strrev($substr))));
+					// space-char found?
+				if ($count > 1) {
+						// take everything up to last space-char
+					$parts = explode(' ', strrev($substr), 2);
+					$theLine = strrev($parts[1]);
+				} else {
+						// search for space-char in remaining text
+						// makes this line longer than $lineWidth!
+					$afterParts = explode(' ', substr($str, $lineWidth + $substrStart), 2);
+					$theLine = $substr . $afterParts[0];
+				}
+				if (!strlen($theLine)) {
+						// prevent endless loop because of empty line
+					break;
+				}
+			} else {
+				$theLine = $substr;
+			}
+
+			$lines[] = trim($theLine);
+			$substrStart += strlen($theLine);
+			if (trim(substr($str, $substrStart, $lineWidth)) === '') {
+					// no more text
+				break;
+			}
+		}
+		return implode($newlineChar, $lines);
+	}
 }
 
 ?>
