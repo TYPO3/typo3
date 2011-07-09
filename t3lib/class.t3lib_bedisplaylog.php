@@ -65,10 +65,10 @@ class t3lib_BEDisplayLog {
 	 */
 	function initArray() {
 		$codeArr = array();
+		$codeArr[0][] = 'Error';
 		$codeArr[0][] = 'Time'; // Time
 		$codeArr[0][] = 'User';
 		$codeArr[0][] = 'Type';
-		$codeArr[0][] = 'Error';
 		$codeArr[0][] = 'Action';
 		$codeArr[0][] = 'Details';
 		return $codeArr;
