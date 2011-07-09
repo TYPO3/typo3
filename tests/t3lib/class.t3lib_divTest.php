@@ -420,6 +420,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'three operands with power' => array(14, '5 + 3 ^ 2'),
 			'three operads with modulus' => array(4, '5 % 2 + 3'),
 			'four operands' => array(3, '2 + 6 / 2 - 2'),
+			'division by zero when dividing' => array('ERROR: dividing by zero', '2 / 0'),
+			'division by zero with modulus' => array('ERROR: dividing by zero', '2 % 0')
 		);
 	}
 
@@ -431,6 +433,32 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($expected, t3lib_div::calcPriority($expression));
 	}
 
+	//////////////////////////////////
+	// Tests concerning calcParenthesis
+	//////////////////////////////////
+
+	/**
+	 * Data provider for calcParenthesis
+	 *
+	 * @return array expected values, arithmetic expression
+	 */
+	public function calcParenthesisDataProvider() {
+		return array(
+			'starts with parenthesis' => array(18, '(6 + 3) * 2'),
+			'ends with parenthesis' => array(6, '2 * (6 - 3)'),
+			'multiple parentheses' => array(-6, '(3 - 6) * (4 - 2)'),
+			'nested parentheses' => array(22, '2 * (3 + 2 + (3 * 2))'),
+			'parenthesis with division' => array(15, '5 / 2 * (3 * 2)'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider calcParenthesisDataProvider
+	 */
+	public function calcParenthesisCorrectlyCalculatesExpression($expected, $expression) {
+		$this->assertEquals($expected, t3lib_div::calcParenthesis($expression));
+	}
 
 	//////////////////////////////////
 	// Tests concerning calcPriority

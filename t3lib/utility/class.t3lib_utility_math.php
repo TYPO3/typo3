@@ -71,6 +71,104 @@ final class t3lib_utility_Math {
 		}
 		return $theInt;
 	}
+
+	/**
+	 * Tests if the input can be interpreted as integer.
+	 *
+	 * @param $var mixed Any input variable to test
+	 * @return boolean Returns TRUE if string is an integer
+	 */
+	public static function canBeInterpretedAsInteger($var) {
+		if ($var === '') {
+			return FALSE;
+		}
+		return (string) intval($var) === (string) $var;
+	}
+
+	/**
+	 * Calculates the input by +,-,*,/,%,^ with priority to + and -
+	 *
+	 * @param $string string Input string, eg "123 + 456 / 789 - 4"
+	 * @return integer Calculated value. Or error string.
+	 * @see calcParenthesis()
+	 */
+	public static function calculateWithPriorityToAdditionAndSubtraction($string) {
+		$string = preg_replace('/[[:space:]]*/', '', $string); // removing all whitespace
+		$string = '+' . $string; // Ensuring an operator for the first entrance
+		$qm = '\*\/\+-^%';
+		$regex = '([' . $qm . '])([' . $qm . ']?[0-9\.]*)';
+			// split the expression here:
+		$reg = array();
+		preg_match_all('/' . $regex . '/', $string, $reg);
+
+		reset($reg[2]);
+		$number = 0;
+		$Msign = '+';
+		$err = '';
+		$buffer = doubleval(current($reg[2]));
+		next($reg[2]); // Advance pointer
+
+		while (list($k, $v) = each($reg[2])) {
+			$v = doubleval($v);
+			$sign = $reg[1][$k];
+			if ($sign == '+' || $sign == '-') {
+				$Msign == '-' ? $number -= $buffer : $number += $buffer;
+				$Msign = $sign;
+				$buffer = $v;
+			} else {
+				if ($sign == '/') {
+					if ($v) {
+						$buffer /= $v;
+					} else {
+						$err = 'dividing by zero';
+					}
+				}
+				if ($sign == '%') {
+					if ($v) {
+						$buffer %= $v;
+					} else {
+						$err = 'dividing by zero';
+					}
+				}
+				if ($sign == '*') {
+					$buffer *= $v;
+				}
+				if ($sign == '^') {
+					$buffer = pow($buffer, $v);
+				}
+			}
+		}
+		$number = $Msign == '-' ? $number -= $buffer : $number += $buffer;
+		return $err ? 'ERROR: ' . $err : $number;
+	}
+
+	/**
+	 * Calculates the input with parenthesis levels
+	 *
+	 * @param $string string Input string, eg "(123 + 456) / 789 - 4"
+	 * @return integer Calculated value. Or error string.
+	 * @see calcPriority(), tslib_cObj::stdWrap()
+	 */
+	public static function calculateWithParentheses($string) {
+		$securC = 100;
+		do {
+			$valueLenO = strcspn($string, '(');
+			$valueLenC = strcspn($string, ')');
+			if ($valueLenC == strlen($string) || $valueLenC < $valueLenO) {
+				$value = self::calculateWithPriorityToAdditionAndSubtraction(substr($string, 0, $valueLenC));
+				$string = $value . substr($string, $valueLenC + 1);
+				return $string;
+			} else {
+				$string = substr($string, 0, $valueLenO) . self::calculateWithParentheses(substr($string, $valueLenO + 1));
+			}
+				// Security:
+			$securC--;
+			if ($securC <= 0) {
+				break;
+			}
+		} while ($valueLenO < strlen($string));
+		return $string;
+	}
 }
 
 ?>
