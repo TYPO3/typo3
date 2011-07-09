@@ -1649,6 +1649,22 @@ class t3lib_cs {
 	}
 
 	/**
+	 * Equivalent of lcfirst/ucfirst but using character set.
+	 *
+	 * @param string $charset
+	 * @param string $string
+	 * @param string $case
+	 * @return string
+	 * @see t3lib_cs::conv_case()
+	 */
+	public function convCaseFirst($charset, $string, $case) {
+		$firstChar = $this->substr($charset, $string, 0, 1);
+		$firstChar = $this->conv_case($charset, $firstChar, $case);
+		$remainder = $this->substr($charset, $string, 1);
+		return $firstChar . $remainder;
+	}
+
+	/**
 	 * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
 	 *
 	 * @param	string		Character set of string
