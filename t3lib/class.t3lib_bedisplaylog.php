@@ -51,11 +51,6 @@ class t3lib_BEDisplayLog {
 
 	var $detailsOn = 1; // If detailsOn, %s is substituted with values from the data-array (see getDetails())
 	var $stripPath = 1; // This strips the path from any value in the data-array when the data-array is parsed through stripPath()
-	var $errorSign = Array(
-		1 => '!',
-		2 => 'Sys!',
-		3 => 'Security!'
-	);
 	var $wsArray = array(
 		0 => 'LIVE',
 		-1 => 'Draft',
@@ -213,8 +208,8 @@ class t3lib_BEDisplayLog {
 	 * @param	integer		Error value
 	 * @return	string		Input wrapped in red font-tag and bold
 	 */
-	function getErrorFormatting($sign, $error = 0) {
-		return $GLOBALS['SOBE']->doc->icons($error >= 2 ? 3 : 2) . ' ' . $sign;
+	function getErrorFormatting($error = 0) {
+		return $GLOBALS['SOBE']->doc->icons($error >= 2 ? 3 : 2);
 	}
 
 	/**
