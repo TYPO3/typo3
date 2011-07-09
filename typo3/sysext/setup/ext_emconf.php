@@ -11,7 +11,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'User>Setup',
+	'title' => 'User>User Settings',
 	'description' => 'Allows users to edit a limited set of options for their user profile, eg. preferred language and their name and email address.',
 	'category' => 'module',
 	'shy' => 1,

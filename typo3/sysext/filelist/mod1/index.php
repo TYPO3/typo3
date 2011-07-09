@@ -33,10 +33,6 @@
  */
 
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH . 'init.php');
-require ($BACK_PATH . 'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once ($BACK_PATH . 'class.file_list.inc');

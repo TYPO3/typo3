@@ -34,12 +34,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
-
 $BE_USER->modAccess($MCONF,1);
 
 
@@ -111,7 +106,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="index.php" method="post" name="webinfoForm">';
+			$this->doc->form = '<form action="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '" method="post" name="webinfoForm">';
 
 			$vContent = $this->doc->getVersionSelector($this->id,1);
 			if ($vContent)	{

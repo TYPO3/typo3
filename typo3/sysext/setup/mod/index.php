@@ -34,23 +34,6 @@
  * XHTML compatible.
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Script class for the Setup module
  *
@@ -1009,7 +992,6 @@ $SOBE->simulateUser();
 $SOBE->storeIncomingData();
 
 // These includes MUST be afterwards the settings are saved...!
-require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 
 $SOBE->init();

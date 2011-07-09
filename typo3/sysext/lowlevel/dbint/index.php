@@ -33,18 +33,8 @@
  * @coauthor	Jo Hasenau <info@cybercraft.de>
  */
 
-
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
 $BE_USER->modAccess($MCONF,1);
-
-
-
-
 
 
 /**

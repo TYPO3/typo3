@@ -33,13 +33,8 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 require('class.sc_mod_web_perm_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
-
 $BE_USER->modAccess($MCONF,1);
 
 
@@ -188,7 +183,7 @@ class SC_mod_web_perm_index {
 		$this->doc->form = '<form action="'.$GLOBALS['BACK_PATH'].'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');
 		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib(TYPO3_MOD_PATH . 'perm.js');
+		$this->doc->loadJavascriptLib(t3lib_extMgm::extRelPath('perm') . 'mod1/perm.js');
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
@@ -481,7 +476,7 @@ class SC_mod_web_perm_index {
 			'.$this->getRecursiveSelect($this->id,$this->perms_clause).'
 			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />'.
 			'<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars('jumpToUrl(\'index.php?id=' . $this->id . '\'); return false;') . '" />
-			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars('mod.php?M=' . t3lib_div::_GP('M') . '&mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
 		' . t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 			// Adding section with the permission setting matrix:
