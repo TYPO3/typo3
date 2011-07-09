@@ -224,7 +224,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 */
 	public function addAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
-			$this->attach($object, $storage->getInfo());
+			$this->attach($object, $objectStorage->getInfo());
 		}
 	}
 
