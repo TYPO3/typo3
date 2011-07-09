@@ -405,11 +405,11 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$out = '';
 			if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_'.$bType][$this->pObj->sObj])	{
 				if (count($theSetup))	{
-					$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj) . '">';
+					$out = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->pObj->id . '&&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj) . '">';
 					$out .= sprintf($GLOBALS['LANG']->getLL('addKey'), htmlspecialchars($this->pObj->sObj));
 				}
 			} else {
-				$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0">';
+				$out = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->pObj->id . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0">';
 				$out .= sprintf($GLOBALS['LANG']->getLL('removeKey'), htmlspecialchars($this->pObj->sObj));
 			}
 			if ($out)	{
@@ -419,7 +419,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 				// back
 			$out = $GLOBALS['LANG']->getLL('back');
-			$out = '<a href="index.php?id='.$this->pObj->id.'"><strong>'.$out.'</strong></a>';
+			$out = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id='.$this->pObj->id.'"><strong>'.$out.'</strong></a>';
 			$theOutput.=$this->pObj->doc->divider(5);
 			$theOutput.=$this->pObj->doc->section("",$out);
 
@@ -473,7 +473,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 
 			if (isset($this->pObj->MOD_SETTINGS["ts_browser_TLKeys_".$bType][$theKey]))	{
-				$remove = '<td width="1%" nowrap><a href="index.php?id=' . $this->pObj->id . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0"><strong>' . $GLOBALS['LANG']->getLL('removeKey') . '</strong></a></td>';
+				$remove = '<td width="1%" nowrap><a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->pObj->id . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0"><strong>' . $GLOBALS['LANG']->getLL('removeKey') . '</strong></a></td>';
 			} else {
 				$remove = '';
 			}

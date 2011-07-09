@@ -1,12 +1,13 @@
 <?php
-define('TYPO3_MOD_PATH', 'sysext/filelist/mod1/');
-$BACK_PATH='../../../';
+
+	// DO NOT REMOVE OR CHANGE THESE 2 LINES:
+$MCONF['name'] = 'file_list';
+$MCONF['script'] = '_DISPATCH';
+$MCONF['workspaces']='online,custom';
+
+$MCONF['access'] = 'user,group';
 
 $MLANG['default']['tabs_images']['tab'] = 'list.gif';
-$MLANG['default']['ll_ref']='LLL:EXT:lang/locallang_mod_file_list.xml';
+$MLANG['default']['ll_ref'] = 'LLL:EXT:lang/locallang_mod_file_list.xml';
 
-$MCONF['script']='file_list.php';
-$MCONF['access']='user,group';
-$MCONF['name']='file_list';
-$MCONF['workspaces']='online,custom';
 ?>

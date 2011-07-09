@@ -32,18 +32,8 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xml');
-
 $BE_USER->modAccess($MCONF,1);
-
-
-
-
-
 
 
 /**

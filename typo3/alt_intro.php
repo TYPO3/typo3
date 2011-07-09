@@ -41,8 +41,8 @@ require ('template.php');
 require_once ('class.alt_menu_functions.inc');
 $LANG->includeLLFile('EXT:lang/locallang_alt_intro.xml');
 
-
-
+// moved into EXT:aboutmodules in TYPO3 4.6
+t3lib_div::deprecationLog('This script is not in use anymore and will be removed in TYPO3 4.8, it is moved into "aboutmodules" extension.');
 
 
 

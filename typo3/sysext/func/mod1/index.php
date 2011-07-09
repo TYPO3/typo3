@@ -35,12 +35,7 @@
  */
 
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xml');
-
 $BE_USER->modAccess($MCONF,1);
 
 
@@ -112,7 +107,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 
-			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
+			$this->doc->form='<form action="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 
 			$vContent = $this->doc->getVersionSelector($this->id,1);
 			if ($vContent)	{
