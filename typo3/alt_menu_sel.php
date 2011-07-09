@@ -33,6 +33,9 @@
  * XHTML compliant
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7.
+ * 		The TYPO3 backend is using typo3/backend.php with less frames,
+ * 		which makes this file obsolete.
  */
 
 
