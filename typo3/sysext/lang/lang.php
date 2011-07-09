@@ -127,7 +127,7 @@ class language {
 
 	/**
 	 * instance of the parser factory
-	 * @var tx_lang_Factory
+	 * @var t3lib_l10n_Factory
 	 */
 	public $parserFactory;
 
@@ -150,7 +150,7 @@ class language {
 		$this->charSetArray = $this->csConvObj->charSetArray;
 
 			// Initialize the parser factory object
-		$this->parserFactory = t3lib_div::makeInstance('tx_lang_Factory');
+		$this->parserFactory = t3lib_div::makeInstance('t3lib_l10n_Factory');
 
 			// Internally setting the list of TYPO3 backend languages.
 		$this->langSplit = TYPO3_languages;
@@ -191,7 +191,7 @@ class language {
 	/**
 	 * Gets the parser factory.
 	 *
-	 * @return tx_lang_Factory
+	 * @return t3lib_l10n_Factory
 	 */
 	public function getParserFactory() {
 		return $this->parserFactory;

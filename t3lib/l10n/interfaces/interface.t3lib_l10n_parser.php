@@ -26,13 +26,23 @@
  ***************************************************************/
 
 /**
- * File not found exception
+ * Parser interface.
  *
  * @package	TYPO3
- * @subpackage	tx_lang
+ * @subpackage	t3lib
  * @author	Dominique Feyer <dfeyer@reelpeek.net>
  */
-class tx_lang_exception_FileNotFound extends RuntimeException {
+interface t3lib_l10n_parser {
+
+	/**
+	 * Returns parsed representation of XML file.
+	 *
+	 * @param string $sourcePath Source file path
+	 * @param string $languageKey Language key
+	 * @param string $charset Charset
+	 * @return array
+	 */
+	public function getParsedData($sourcePath, $languageKey, $charset);
 
 }
 
