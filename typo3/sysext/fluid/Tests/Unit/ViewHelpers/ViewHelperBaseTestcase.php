@@ -65,6 +65,11 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 	protected $renderingContext;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -91,6 +96,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
+		$this->configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 	}
 
 	/**
@@ -106,6 +112,10 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 		$viewHelper->setArguments($this->arguments);
 		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper) {
 			$viewHelper->injectTagBuilder($this->tagBuilder);
+		}
+		if ($viewHelper instanceof Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper
+			|| $viewHelper instanceof Tx_Fluid_ViewHelpers_FormViewHelper) {
+			$viewHelper->injectConfigurationManager($this->configurationManager);
 		}
 	}
 }

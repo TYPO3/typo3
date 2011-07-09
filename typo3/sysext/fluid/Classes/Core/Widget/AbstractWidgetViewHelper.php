@@ -219,7 +219,7 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 		} else {
 			$widgetCounter = $this->viewHelperVariableContainer->get('Tx_Fluid_Core_Widget_AbstractWidgetViewHelper', 'nextWidgetNumber');
 		}
-		$widgetIdentifier = '__widget_' . $widgetCounter;
+		$widgetIdentifier = '@widget_' . $widgetCounter;
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_Core_Widget_AbstractWidgetViewHelper', 'nextWidgetNumber', $widgetCounter + 1);
 
 		$this->widgetContext->setWidgetIdentifier($widgetIdentifier);
