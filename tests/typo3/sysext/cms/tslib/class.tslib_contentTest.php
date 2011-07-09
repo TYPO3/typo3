@@ -654,6 +654,73 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			$result
 		);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_roundDataProvider() {
+		return array(
+			'rounding off without any configuration' => array(
+				1.123456789,
+				array(
+				),
+				1
+			),
+			'rounding up without any configuration' => array(
+				1.523456789,
+				array(
+				),
+				2
+			),
+			'regular rounding (off) to two decimals' => array(
+				0.123456789,
+				array(
+					'decimals' => 2
+				),
+				0.12
+			),
+			'regular rounding (up) to two decimals' => array(
+				0.1256789,
+				array(
+					'decimals' => 2
+				),
+				0.13
+			),
+			'rounding up to integer with type ceil' => array(
+				0.123456789,
+				array(
+					'roundType' => 'ceil'
+				),
+				1
+			),
+			'rounding down to integer with type floor' => array(
+				2.3481,
+				array(
+					'roundType' => 'floor'
+				),
+				2
+			)
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "round"
+	 *
+	 * @param float $float
+	 * @param array $conf
+	 * @param float $expected
+	 * @return void
+	 *
+	 * @dataProvider stdWrap_roundDataProvider
+	 * @test
+	 */
+	public function stdWrap_round($float, $conf, $expected) {
+		$conf = array(
+			'round.' => $conf
+		);
+		$result = $this->cObj->stdWrap_round($float, $conf);
+		$this->assertEquals($expected, $result);
+	}
 	
 	/**
 	 * Data provider for the numberFormat test
