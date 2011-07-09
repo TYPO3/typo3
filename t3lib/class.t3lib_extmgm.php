@@ -44,8 +44,13 @@
  * @subpackage t3lib
  */
 final class t3lib_extMgm {
+
 	protected static $extensionKeyMap;
 
+	/**
+	 * @var string Backup of PATH_site constant to enable override in unit tests
+	 */
+	public static $PATH_site = PATH_site;
 
 	/**************************************
 	 *
@@ -88,7 +93,7 @@ final class t3lib_extMgm {
 				1270853878
 			);
 		}
-		return PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $script;
+		return self::$PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $script;
 	}
 
 	/**
