@@ -2,6 +2,7 @@
  *  Copyright notice
  *
  *  (c) 2010 Dominique Feyer <dominique.feyer@reelpeek.net>
+ *  		 Laurent Cherpit <laurent.cherpit@gmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,31 +27,59 @@
 
 Ext.ns('TYPO3.l10n');
 
-TYPO3.l10n = {
+TYPO3.l10n = function() {
 
-	localize: function(label, replace, plural) {
-		if (typeof TYPO3.lang === 'undefined' || typeof TYPO3.lang[label] === 'undefined') return false;
+	/**
+	 * Protected copy of translationUnits
+	 * @private
+	 */
+	var lang = [],
 
-		var i = plural || 0,
-				translationUnit = TYPO3.lang[label],
-				label = null, regexp = null;
-
-		// Get localized label
-		if (Ext.isString(translationUnit)) {
-			label = translationUnit;
-		} else {
-			label = translationUnit[i]['target'];
-		}
-
-		// Replace
-		if (typeof replace !== 'undefined') {
-			for (key in replace) {
-				regexp = new RegExp('%' + key + '|%s');
-				label = label.replace(regexp, replace[key]);
+	sanitize = function() {
+		if (typeof TYPO3.lang !== 'undefined') {
+			for (key in TYPO3.lang) {
+				lang[key] = TYPO3.lang[key];
+				
+				if (!Ext.isString(TYPO3.lang[key])) {
+					TYPO3.lang[key] = TYPO3.lang[key][0].target;
+				}
 			}
 		}
+	};
 
-		return label;
-	}
+	return {
 
-}
+		initialize: function() {
+			sanitize();
+		},
+
+		localize: function(label, replace, plural) {
+			if (typeof lang === 'undefined' || typeof lang[label] === 'undefined') return false;
+
+			var i = plural || 0,
+					translationUnit = lang[label],
+					label = null, regexp = null;
+
+			// Get localized label
+			if (Ext.isString(translationUnit)) {
+				label = translationUnit;
+			} else {
+				label = translationUnit[i]['target'];
+			}
+
+			// Replace
+			if (typeof replace !== 'undefined') {
+				for (key in replace) {
+					regexp = new RegExp('%' + key + '|%s');
+					label = label.replace(regexp, replace[key]);
+				}
+			}
+
+			return label;
+		}
+	};
+}();
+
+Ext.onReady(function() {
+	TYPO3.l10n.initialize();
+});
