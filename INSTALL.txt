@@ -220,3 +220,17 @@ A:	If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the
 	is the web site domain), navigate to "All configuration". find "setDBinit",
 	and add this line to the top of the input field:
 		SET SESSION sql_mode='MYSQL40'
+
+Q:	What do I have to do regarding security?
+A:	You have to make sure that you keep your TYPO3-core and the extensions
+	up to date.
+	* Subscribe to the announcement mailing list. This will inform you about new
+	  releases of the TYPO3 core and security bulletins of core and community
+	  extensions.
+	  http://lists.typo3.org/cgi-bin/mailman/listinfo/typo3-announce
+	* Use the scheduler task "Update Extension List (em)" to update the list of
+	  available extensions regularly. You should check regularly, if new versions
+	  of these extensions are available and install them respectively.
+	* For further reading regarding securing TYPO3, please read the TYPO3 security
+	  cookbook and other resources. Please visit
+	  http://typo3.org/teams/security/resources/
