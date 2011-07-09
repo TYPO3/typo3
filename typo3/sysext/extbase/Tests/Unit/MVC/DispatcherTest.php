@@ -42,8 +42,10 @@ class Tx_Extbase_Tests_Unit_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_Bas
 
 		$mockController = $this->getMock('Tx_Extbase_MVC_Controller_ControllerInterface', array('processRequest', 'canProcessRequest'));
 		$mockController->expects($this->exactly(2))->method('processRequest')->with($mockRequest, $mockResponse);
+		$mockSignalSlotDispatcher = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher', array('dispatch'));
 
 		$dispatcher = $this->getMock('Tx_Extbase_MVC_Dispatcher', array('resolveController'), array(), '', FALSE);
+		$dispatcher->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
 		$dispatcher->expects($this->any())->method('resolveController')->will($this->returnValue($mockController));
 		$dispatcher->dispatch($mockRequest, $mockResponse);
 	}
@@ -64,11 +66,30 @@ class Tx_Extbase_Tests_Unit_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_Bas
 
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
 		$mockController = $this->getMock('Tx_Extbase_MVC_Controller_ControllerInterface', array('processRequest', 'canProcessRequest'));
+		$mockSignalSlotDispatcher = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher', array('dispatch'));
 
 		$dispatcher = $this->getMock('Tx_Extbase_MVC_Dispatcher', array('resolveController'), array(), '', FALSE);
+		$dispatcher->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
 		$dispatcher->expects($this->any())->method('resolveController')->will($this->returnValue($mockController));
 		$dispatcher->dispatch($mockRequest, $mockResponse);
 	}
 
+	/**
+	 * @test
+	 */
+	public function dispatchDispatchesSignalAfterDispatchOfRequest() {
+
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface');
+		$mockRequest->expects($this->at(0))->method('isDispatched')->will($this->returnValue(TRUE));
+
+		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
+
+		$mockSignalSlotDispatcher = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher', array('dispatch'));
+		$mockSignalSlotDispatcher->expects($this->exactly(1))->method('dispatch')->with('Tx_Extbase_MVC_Dispatcher', 'afterRequestDispatch', array($mockRequest, $mockResponse));
+
+		$dispatcher = $this->getMock('Tx_Extbase_MVC_Dispatcher', array('resolveController'), array(), '', FALSE);
+		$dispatcher->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
+		$dispatcher->dispatch($mockRequest, $mockResponse);
+	}
 }
 ?>

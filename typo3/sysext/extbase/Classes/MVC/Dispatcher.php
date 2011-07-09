@@ -43,6 +43,11 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 	protected $reflectionService;
 
 	/**
+	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * @var array
 	 */
 	protected $settings = array();
@@ -67,6 +72,15 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 	}
 
 	/**
+	 * Injects the SignalSlotDispatcher Service
+	 *
+	 * @param Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
 	 * Dispatches a request to a controller and initializes the security framework.
 	 *
 	 * @param Tx_Extbase_MVC_RequestInterface $request The request to dispatch
@@ -83,6 +97,7 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
 			}
 		}
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array($request, $response));
 	}
 
 	/**
