@@ -33,6 +33,19 @@
 class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 
 	/**
+	 * @var boolean Enable backup of global and system variables
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
 	 * @var array Register of temporary extensions in typo3temp
 	 */
 	protected $fakedExtensions = array();
@@ -61,11 +74,21 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 		$GLOBALS['TYPO3_LOADED_EXT'][$extKey] = array(
 			'siteRelPath' => $relPath
 		);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] .= ',' . $extKey;
 
 		$this->fakedExtensions[] = $extKey;
 		t3lib_extMgm::clearExtensionKeyMap();
 
 		return $extKey;
+	}
+
+	/**
+	 * @test
+	 */
+	public function autoloaderCanBeUnregisteredAndRegisteredAgain() {
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+		t3lib_div::makeInstance('t3lib_timetracknull');
 	}
 
 	/**
@@ -82,11 +105,19 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 		file_put_contents($file, "<?php\n\nthrow new RuntimeException('', 1310203812);\n\n?>");
 		file_put_contents($autoloaderFile, "<?php\n\nreturn array('$class' => '$file');\n\n?>");
 
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Re-initialize autoloader registry to force it to recognize the new extension
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+
 			// Expect the exception of the file to be thrown
 		$this->setExpectedException('RuntimeException', '', 1310203812);
 		t3lib_autoloader::autoload($class);
 	}
 }
-
-
 ?>

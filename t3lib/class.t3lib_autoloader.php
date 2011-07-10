@@ -24,20 +24,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains TYPO3 autoloader
- *
- * @author	Dmitry Dulepov	<dmitry@typo3.org>
- * @author	Martin Kutschker <masi@typo3.org>
- * @author	Oliver Hader <oliver@typo3.org>
- * @author	Sebastian Kurfürst <sebastian@typo3.org>
- */
 
 /**
  * This class contains TYPO3 autoloader for classes.
  * It handles:
  * - the core of TYPO3
  * - all extensions with an ext_autoload.php file
+ *
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @author Martin Kutschker <masi@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
+ * @author Sebastian Kurfürst <sebastian@typo3.org>
  */
 class t3lib_autoloader {
 
@@ -49,17 +46,6 @@ class t3lib_autoloader {
 	protected static $classNameToFileMapping = array();
 
 	/**
-	 * Associative array which sets for each extension which was attempted to load if it has an autoload configuration
-	 *
-	 * Key: extension key
-	 * Value: TRUE, if extension has an ext_autoload.php and this is already part of $classNameToFileMapping
-	 *		  FALSE, if extension has no ext_autoload.php
-	 *
-	 * @var array
-	 */
-	protected static $extensionHasAutoloadConfiguration = array();
-
-	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
 	 */
 	private function __construct() {
@@ -68,21 +54,20 @@ class t3lib_autoloader {
 	/**
 	 * Installs TYPO3 autoloader, and loads the autoload registry for the core.
 	 *
-	 * @return	boolean	TRUE in case of success
+	 * @return boolean TRUE in case of success
 	 */
-	static public function registerAutoloader() {
-		self::loadCoreRegistry();
-		self::$extensionHasAutoloadConfiguration = array();
-		return spl_autoload_register('t3lib_autoloader::autoload');
+	public static function registerAutoloader() {
+		self::loadCoreAndExtensionRegistry();
+		return spl_autoload_register('t3lib_autoloader::autoload', TRUE, TRUE);
 	}
 
 	/**
 	 * Uninstalls TYPO3 autoloader. This function is for the sake of completeness.
 	 * It is never called by the TYPO3 core.
 	 *
-	 * @return	boolean	TRUE in case of success
+	 * @return boolean TRUE in case of success
 	 */
-	static public function unregisterAutoloader() {
+	public static function unregisterAutoloader() {
 		return spl_autoload_unregister('t3lib_autoloader::autoload');
 	}
 
@@ -92,16 +77,14 @@ class t3lib_autoloader {
 	 * This method looks up class names in the registry
 	 * (which contains extensions and core files)
 	 *
-	 * @param	string	$className	Class name
-	 * @return	void
+	 * @param string $className Class name
+	 * @return void
 	 */
-	static public function autoload($className) {
-		$classPath = FALSE;
-
-			// use core and extension registry
+	public static function autoload($className) {
+			// Use core and extension registry
 		$classPath = self::getClassPathByRegistryLookup($className);
 
-		if ($classPath && file_exists($classPath)) {
+		if ($classPath) {
 			t3lib_div::requireFile($classPath);
 		} else {
 			try {
@@ -116,26 +99,50 @@ class t3lib_autoloader {
 	}
 
 	/**
-	 * Load the core registry into $classNameToFileMapping, effectively overriding
-	 * the whole contents of $classNameToFileMapping.
+	 * Load registry from cache file if available or search
+	 * for all loaded extensions and create a cache file
 	 *
 	 * @return void
 	 */
-	static protected function loadCoreRegistry() {
-		self::$classNameToFileMapping = require(PATH_t3lib . 'core_autoload.php');
+	public static function loadCoreAndExtensionRegistry() {
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+		$autoloadCacheIdentifier = TYPO3_MODE === 'FE' ? 't3lib_autoload_FE' : 't3lib_autoload_BE';
+
+			// Create autoloader cache file if it does not exist yet
+		if (!$phpCodeCache->has($autoloadCacheIdentifier)) {
+			$classRegistry = self::createCoreAndExtensionRegistry();
+			$cachedFileContent = 'return array(';
+			foreach ($classRegistry as $className => $classLocation) {
+				$cachedFileContent .= chr(10) . '\'' . $className . '\' => \'' . $classLocation . '\',';
+			}
+			$cachedFileContent .= chr(10) . ');';
+			$phpCodeCache->set($autoloadCacheIdentifier, $cachedFileContent);
+		}
+
+			// Require calculated cache file
+		$mappingArray = $phpCodeCache->requireOnce($autoloadCacheIdentifier);
+
+			// This can only happen if the autoloader was already registered
+			// in the same call once, the requireOnce of the cache file then
+			// does not give the cached array back. In this case we just read
+			// all cache entries manually again.
+			// This should only happen in unit tests
+		if (!is_array($mappingArray)) {
+			$mappingArray = self::createCoreAndExtensionRegistry();
+		}
+
+		self::$classNameToFileMapping = $mappingArray;
 	}
 
 	/**
-	 * Get the full path to a class by looking it up in the registry. If not found, returns NULL.
+	 * Get the full path to a class by looking it up in the registry.
+	 * If not found, returns NULL.
 	 *
-	 * @param	string	$className	Class name
-	 * @return	string	full name of the file where $className is declared, or NULL if no entry found in registry.
+	 * @param string $className Class name
+	 * @return string Full name of the file where $className is declared, or NULL if no entry found in registry.
 	 */
-	static protected function getClassPathByRegistryLookup($className) {
+	protected static function getClassPathByRegistryLookup($className) {
 		$className = strtolower($className);
-		if (!array_key_exists($className, self::$classNameToFileMapping)) {
-			self::attemptToLoadRegistryForGivenClassName($className);
-		}
 		if (array_key_exists($className, self::$classNameToFileMapping)) {
 			return self::$classNameToFileMapping[$className];
 		} else {
@@ -144,30 +151,22 @@ class t3lib_autoloader {
 	}
 
 	/**
-	 * Try to load the entries for a given class name into the registry.
+	 * Find all ext_autoload files and merge with core_autoload.
 	 *
-	 * First, figures out the extension the class belongs to.
-	 * Then, tries to load the ext_autoload.php file inside the extension directory, and adds its contents to the $classNameToFileMapping.
-	 *
-	 * @param	string	$className	Class Name
+	 * @return void
 	 */
-	static protected function attemptToLoadRegistryForGivenClassName($className) {
-		$classNameParts = explode('_', $className);
-		$extensionPrefix = array_shift($classNameParts) . '_' . array_shift($classNameParts);
-		$extensionKey = t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix);
-
-		if (!$extensionKey || array_key_exists($extensionKey, self::$extensionHasAutoloadConfiguration)) {
-				// extension key could not be determined or we already tried to load the extension's autoload configuration
-			return;
+	protected static function createCoreAndExtensionRegistry() {
+		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
+			// At this point localconf.php was already initialized
+			// we have a current extList and extMgm is also known
+s		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', t3lib_extMgm::getEnabledExtensionList(), TRUE));
+		foreach ($loadedExtensions as $extensionKey) {
+			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
+			if (file_exists($extensionAutoloadFile)) {
+				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+			}
 		}
-		$possibleAutoloadConfigurationFileName = t3lib_extMgm::extPath($extensionKey) . 'ext_autoload.php';
-		if (file_exists($possibleAutoloadConfigurationFileName)) {
-			self::$extensionHasAutoloadConfiguration[$extensionKey] = TRUE;
-			$extensionClassNameToFileMapping = require($possibleAutoloadConfigurationFileName);
-			self::$classNameToFileMapping = array_merge($extensionClassNameToFileMapping, self::$classNameToFileMapping);
-		} else {
-			self::$extensionHasAutoloadConfiguration[$extensionKey] = FALSE;
-		}
+		return $classRegistry;
 	}
 }
 ?>
