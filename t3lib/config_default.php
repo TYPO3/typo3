@@ -683,6 +683,27 @@ if (!@is_file(PATH_typo3conf . 'localconf.php')) {
 require(PATH_typo3conf.'localconf.php');
 
 
+function initializeCachingFramework() {
+	require (PATH_t3lib . 'class.t3lib_cache.php');
+	require (PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+	require (PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+	require (PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
+	require (PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
+	require (PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
+	require (PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
+	require (PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
+	require (PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_stringfrontend.php');
+	require (PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_phpfrontend.php');
+	require (PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
+	require (PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
+	require (PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php');
+	require (PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php');
+	t3lib_cache::initializeCachingFramework();
+}
+
+initializeCachingFramework();
+
+
 // *********************
 // Autoloader
 // *********************
@@ -921,7 +942,6 @@ define('TYPO3_REQUESTTYPE',
 );
 
 
-
 // Load extensions:
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -937,6 +957,10 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	}
 }
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
+
+	// Extensions may register new caches, so we set the
+	// global cache array to the manager again at this point
+$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 
 require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 
