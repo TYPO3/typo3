@@ -93,7 +93,7 @@ final class t3lib_extMgm {
 
 			$extensionPath = PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'];
 		} else {
-			$extensionList = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
+			$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
 			$loadedExtensions = array_flip(array_unique(t3lib_div::trimExplode(',', $extensionList, 1)));
 
 			if (!isset($loadedExtensions[$key])) {
