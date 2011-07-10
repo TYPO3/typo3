@@ -2710,7 +2710,7 @@ class t3lib_stdGraphic {
 			$currentLocale = setlocale(LC_CTYPE, 0);
 			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
 		}
-		$escapedInputName = escapeshellarg($inputName);
+		$escapedInputName = t3lib_utility_Command::escapeShellArguments($inputName);
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 			setlocale(LC_CTYPE, $currentLocale);
 		}

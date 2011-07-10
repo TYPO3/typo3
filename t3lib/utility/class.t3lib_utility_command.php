@@ -81,12 +81,12 @@ final class t3lib_utility_Command {
 			// Compile the path & command
 		if ($im_version === 'gm') {
 			$switchCompositeParameters = TRUE;
-			$path = escapeshellarg($path . 'gm' . $isExt) . ' ' . $command;
+			$path = self::escapeShellArguments($path . 'gm' . $isExt) . ' ' . $command;
 		} else {
 			if ($im_version === 'im6') {
 				$switchCompositeParameters = TRUE;
 			}
-			$path = escapeshellarg($path . (($command == 'composite') ? $combineScript : $command) . $isExt);
+			$path = self::escapeShellArguments($path . (($command == 'composite') ? $combineScript : $command) . $isExt);
 		}
 
 			// strip profile information for thumbnails and reduce their size
@@ -118,6 +118,28 @@ final class t3lib_utility_Command {
 		return $cmdLine;
 	}
 
+	/**
+	 * Escape certain characters and wrap in (double) quotes to prevent security problems in command line arguments
+	 *
+	 * Depending on the OS the string will be wrapped in double or single quotes and certain characters will be escaped to
+	 * prevent injection of malicious commands in command line arguments.
+	 * The function is mostly used to fix problems with whitespace characters in paths. When safe_mode is enabled these quotes may
+	 * cause problems because PHP will add them too. This function will only use escapeshellarg if it is necessary and will thus
+	 * prevent problems in safe_mode in many cases.
+	 *
+	 * @static
+	 * @param $commandArguments string	The string to escape if necessary
+	 * @return string	Escaped string
+	 */
+	public static function escapeShellArguments($commandArguments) {
+		$escapedArguments = escapeshellarg($commandArguments);
+			// if escapeshellarg() only wrapped the string in (double) quotes and if there is no whitespace in the original
+			// string keep the original for (partial) safe_mode compatibility
+		if (trim($escapedArguments, '"\'') === $commandArguments && !preg_match('/[[:space:]]/', $commandArguments)) {
+			$escapedArguments = $commandArguments;
+		}
+		return $escapedArguments;
+	}
 }
 
 ?>
