@@ -224,10 +224,6 @@ $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 $CLIENT = t3lib_div::clientInfo();					// $CLIENT includes information about the browser/user-agent
 $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in milliseconds. This could be used to output script parsetime in the end of the script
 
-// ***********************************
-// Initializing the Caching System
-// ***********************************
-t3lib_cache::initializeCachingFramework();
 
 // *************************
 // CLI dispatch processing
