@@ -3383,7 +3383,7 @@ final class t3lib_div {
 	 */
 	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
 		self::logDeprecatedFunction();
-		t3lib_utility_Debug::debugRows($rows, $header, $returnHTML);
+		return t3lib_utility_Debug::debugRows($rows, $header, $returnHTML);
 	}
 
 
