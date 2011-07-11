@@ -810,7 +810,6 @@ $str.=$this->docBodyTagBegin().
 			// if something is in buffer like debug, put it to end of page
 		if (ob_get_contents()) {
 			$str .= ob_get_clean();
-			header('Content-Encoding: None');
 		}
 
 		if ($this->docType !== 'xhtml_frames') {
