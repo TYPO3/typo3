@@ -683,6 +683,13 @@ if (!@is_file(PATH_typo3conf . 'localconf.php')) {
 require(PATH_typo3conf.'localconf.php');
 
 
+// *********************
+// Autoloader
+// *********************
+require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
+t3lib_autoloader::registerAutoloader();
+
+
 /**
  * Checking for UTF-8 in the settings since TYPO3 4.5
  *
@@ -912,13 +919,6 @@ define('TYPO3_REQUESTTYPE',
 	((defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) ? TYPO3_REQUESTTYPE_INSTALL : 0) |
 	($TYPO3_AJAX ? TYPO3_REQUESTTYPE_AJAX : 0)
 );
-
-
-// *********************
-// Autoloader
-// *********************
-require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
-t3lib_autoloader::registerAutoloader();
 
 
 
