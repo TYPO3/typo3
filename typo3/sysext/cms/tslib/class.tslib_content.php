@@ -4836,6 +4836,9 @@ class tslib_cObj {
 						$fileArray['noScale'] = isset($fileArray['noScale.'])
 							? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.'])
 							: $fileArray['noScale'];
+						$fileArray['params'] = isset($fileArray['params.'])
+							? $this->stdWrap($fileArray['params'], $fileArray['params.'])
+							: $fileArray['params'];
 						$maskArray = $fileArray['m.'];
 						$maskImages = array();
 						if (is_array($fileArray['m.'])) { // Must render mask images and include in hash-calculating - else we cannot be sure the filename is unique for the setup!
