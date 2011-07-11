@@ -75,7 +75,7 @@ class t3lib_Compressor {
 		if (extension_loaded('zlib') && $compressionLevel) {
 			$this->createGzipped = TRUE;
 				// $compressionLevel can also be TRUE
-			if (t3lib_div::testInt($compressionLevel)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($compressionLevel)) {
 				$this->gzipCompressionLevel = intval($compressionLevel);
 			}
 		}

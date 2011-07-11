@@ -90,7 +90,7 @@ final class t3lib_utility_Math {
 	 *
 	 * @param $string string Input string, eg "123 + 456 / 789 - 4"
 	 * @return integer Calculated value. Or error string.
-	 * @see calcParenthesis()
+	 * @see t3lib_utility_Math::calculateWithParentheses()
 	 */
 	public static function calculateWithPriorityToAdditionAndSubtraction($string) {
 		$string = preg_replace('/[[:space:]]*/', '', $string); // removing all whitespace
@@ -147,7 +147,7 @@ final class t3lib_utility_Math {
 	 *
 	 * @param $string string Input string, eg "(123 + 456) / 789 - 4"
 	 * @return integer Calculated value. Or error string.
-	 * @see calcPriority(), tslib_cObj::stdWrap()
+	 * @see calculateWithPriorityToAdditionAndSubtraction(), tslib_cObj::stdWrap()
 	 */
 	public static function calculateWithParentheses($string) {
 		$securC = 100;

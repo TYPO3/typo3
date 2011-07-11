@@ -110,7 +110,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 
 				// Update template ?
-			if (t3lib_div::_POST('submit') || (t3lib_div::testInt(t3lib_div::_POST('submit_x')) && t3lib_div::testInt(t3lib_div::_POST('submit_y')))) {
+			if (t3lib_div::_POST('submit') || (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_x')) && t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_y')))) {
 				$tmpl->changed=0;
 				$tmpl->ext_procesInput(t3lib_div::_POST(),$_FILES,$theConstants,$tplRow);
 		//		debug($tmpl->changed);

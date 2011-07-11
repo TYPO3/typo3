@@ -1259,7 +1259,7 @@ class t3lib_TStemplate {
 		$keyArr = array();
 		$setupArrKeys = array_keys($setupArr);
 		foreach ($setupArrKeys as $key) {
-			if ($acceptOnlyProperties || t3lib_div::testInt($key)) {
+			if ($acceptOnlyProperties || t3lib_utility_Math::canBeInterpretedAsInteger($key)) {
 				$keyArr[] = intval($key);
 			}
 		}
@@ -1348,7 +1348,7 @@ class t3lib_TStemplate {
 
 			// typeNum
 		$typeNum = $this->setup[$LD['target'] . '.']['typeNum'];
-		if (!t3lib_div::testInt($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
 			$typeOverride = intval($GLOBALS['TSFE']->config['config']['forceTypeValue']);
 		}
 		if (strcmp($typeOverride, '')) {

@@ -658,7 +658,7 @@ class t3lib_softrefproc {
 
 					// Checking if the id-parameter is an alias.
 				if (strlen($link_param)) {
-					if (!t3lib_div::testInt($link_param)) {
+					if (!t3lib_utility_Math::canBeInterpretedAsInteger($link_param)) {
 						$finalTagParts['alias'] = $link_param;
 						$link_param = $this->getPageIdFromAlias($link_param);
 					}
@@ -751,7 +751,7 @@ class t3lib_softrefproc {
 
 					// Add anchor if applicable
 				if (strlen($tLP['anchor'])) {
-					if (t3lib_div::testInt($tLP['anchor'])) { // Anchor is assumed to point to a content elements:
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($tLP['anchor'])) { // Anchor is assumed to point to a content elements:
 							// Initialize a new entry because we have a new relation:
 						$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
 						$elements[$newTokenID . ':' . $idx] = array();

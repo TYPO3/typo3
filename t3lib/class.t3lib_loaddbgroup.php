@@ -191,7 +191,7 @@ class t3lib_loadDBGroup {
 				$theID = strrev($parts[0]);
 
 					// Check that the id IS an integer:
-				if (t3lib_div::testInt($theID)) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($theID)) {
 						// Get the table name: If a part of the exploded string, use that. Otherwise if the id number is LESS than zero, use the second table, otherwise the first table
 					$theTable = trim($parts[1]) ? strrev(trim($parts[1])) : ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
 						// If the ID is not blank and the table name is among the names in the inputted tableList, then proceed:
@@ -591,9 +591,9 @@ class t3lib_loadDBGroup {
 		$foreign_table_field = $conf['foreign_table_field'];
 
 			// if there are table items and we have a proper $parentUid
-		if (t3lib_div::testInt($parentUid) && count($this->tableArray)) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($parentUid) && count($this->tableArray)) {
 				// if updateToUid is not a positive integer, set it to '0', so it will be ignored
-			if (!(t3lib_div::testInt($updateToUid) && $updateToUid > 0)) {
+			if (!(t3lib_utility_Math::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
 			}
 
@@ -728,7 +728,7 @@ class t3lib_loadDBGroup {
 				$theID = strrev($parts[0]);
 				$theTable = strrev($parts[1]);
 
-				if (t3lib_div::testInt($theID) && (!$theTable || !strcmp($theTable, $fTable) || !strcmp($theTable, $nfTable))) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($theID) && (!$theTable || !strcmp($theTable, $fTable) || !strcmp($theTable, $nfTable))) {
 					$valueArray[$key] = $theTable && strcmp($theTable, $fTable) ? $theID * -1 : $theID;
 				}
 			}
@@ -837,7 +837,7 @@ class t3lib_loadDBGroup {
 	 * @return	boolean		Returns TRUE if looking from the symmetric ("other") side to the relation.
 	 */
 	function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
-		return t3lib_div::testInt($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']]
+		return t3lib_utility_Math::canBeInterpretedAsInteger($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']]
 				? TRUE
 				: FALSE;
 	}

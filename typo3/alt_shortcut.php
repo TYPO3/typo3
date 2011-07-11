@@ -137,7 +137,7 @@ class SC_alt_shortcut {
 
 			// Lookup the title of this page and use it as default description
 		$page_id = $this->getLinkedPageId($url);
-		if (t3lib_div::testInt($page_id))	{
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($page_id))	{
 			if (preg_match('/\&edit\[(.*)\]\[(.*)\]=edit/',$url,$matches))	{
 					// Edit record
 				$description = '';	// TODO: Set something useful
@@ -175,7 +175,7 @@ class SC_alt_shortcut {
 
 			// Deleting shortcuts:
 		if (strcmp($this->deleteCategory,''))	{
-			if (t3lib_div::testInt($this->deleteCategory))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->deleteCategory))	{
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'sc_group='.intval($this->deleteCategory).$addUSERWhere);
 			}
 		}
@@ -317,7 +317,7 @@ class SC_alt_shortcut {
 				}
 
 				$page_id = $this->getLinkedPageId($row['url']);
-				if (t3lib_div::testInt($page_id))	{
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($page_id))	{
 						// Check for webmount access
 					if (!$GLOBALS['BE_USER']->isInWebMount($page_id)) continue;
 
@@ -438,7 +438,7 @@ class SC_alt_shortcut {
 		}
 
 			// Load alternative table/uid into editing form.
-		if (count($this->alternativeTableUid)==2 && isset($GLOBALS['TCA'][$this->alternativeTableUid[0]]) && t3lib_div::testInt($this->alternativeTableUid[1]))	{
+		if (count($this->alternativeTableUid)==2 && isset($GLOBALS['TCA'][$this->alternativeTableUid[0]]) && t3lib_utility_Math::canBeInterpretedAsInteger($this->alternativeTableUid[1]))	{
 			$JSaction = t3lib_BEfunc::editOnClick('&edit['.$this->alternativeTableUid[0].']['.$this->alternativeTableUid[1].']=edit','','dummy.php');
 			$this->content.=$this->doc->wrapScriptTags('function editArbitraryElement() { top.content.'.$JSaction.'; } editArbitraryElement();');
 		}
@@ -562,7 +562,7 @@ class SC_alt_shortcut {
 			if (!(count($this->alternativeTableUid)==2 && $GLOBALS['BE_USER']->isAdmin()))	{	// We restrict it to admins only just because I'm not really sure if alt_doc.php properly checks permissions of passed records for editing. If alt_doc.php does that, then we can remove this.
 
 				$where = ' AND ('.$GLOBALS['BE_USER']->getPagePermsClause(2).' OR '.$GLOBALS['BE_USER']->getPagePermsClause(16).')';
-				if (t3lib_div::testInt($this->editPage))	{
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($this->editPage))	{
 					$this->theEditRec = t3lib_BEfunc::getRecordWSOL('pages',$this->editPage,'*',$where);
 				} else {
 					$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
@@ -631,7 +631,7 @@ class SC_alt_shortcut {
 				// edit alternative table/uid
 			if(count($this->alternativeTableUid) == 2
 			&& isset($GLOBALS['TCA'][$this->alternativeTableUid[0]])
-			&& t3lib_div::testInt($this->alternativeTableUid[1])) {
+			&& t3lib_utility_Math::canBeInterpretedAsInteger($this->alternativeTableUid[1])) {
 				$data['type']             = 'alternative';
 				$data['alternativeTable'] = $this->alternativeTableUid[0];
 				$data['alternativeUid']   = $this->alternativeTableUid[1];

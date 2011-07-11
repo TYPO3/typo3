@@ -120,7 +120,7 @@ class t3lib_cli {
 		$cli_options = array();
 		$index = '_DEFAULT';
 		foreach ($_SERVER['argv'] as $token) {
-			if ($token{0} === '-' && !t3lib_div::testInt($token{1})) { // Options starting with a number is invalid - they could be negative values... !
+			if ($token{0} === '-' && !t3lib_utility_Math::canBeInterpretedAsInteger($token{1})) { // Options starting with a number is invalid - they could be negative values... !
 				list($index, $opt) = explode('=', $token, 2);
 				if (isset($cli_options[$index])) {
 					echo 'ERROR: Option ' . $index . ' was used twice!' . LF;

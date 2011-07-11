@@ -251,7 +251,7 @@ $TSFE->sendRedirect();
 // Remove any output produced until now
 ob_clean();
 if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib'))	{
-	if (t3lib_div::testInt($TYPO3_CONF_VARS['FE']['compressionLevel'])) {
+	if (t3lib_utility_Math::canBeInterpretedAsInteger($TYPO3_CONF_VARS['FE']['compressionLevel'])) {
 		// Prevent errors if ini_set() is unavailable (safe mode)
 		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['FE']['compressionLevel']);
 	}

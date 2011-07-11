@@ -658,7 +658,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$idPart = $this->recPid;
 						} // If no id or alias is given, set it to class record pid
 							// Checking if the id-parameter is an alias.
-						if (!t3lib_div::testInt($idPart)) {
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($idPart)) {
 							list($idPartR) = t3lib_BEfunc::getRecordsByField('pages', 'alias', $idPart);
 							$idPart = intval($idPartR['uid']);
 						}

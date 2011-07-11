@@ -156,7 +156,7 @@ class t3lib_arrayBrowser {
 			// If varname is set:
 		if ($this->varName && !$this->dontLinkVar) {
 			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' .
-				(!t3lib_div::testInt($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
+				(!t3lib_utility_Math::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
 			$label = '<a href="index.php?varname=' . urlencode($variableName) . '#varname">' . $label . '</a>';
 		}
 

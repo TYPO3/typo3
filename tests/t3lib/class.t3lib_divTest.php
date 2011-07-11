@@ -260,7 +260,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @dataProvider functionTestIntValidDataProvider
 	 */
 	public function testIntReturnsTrue($int) {
-		$this->assertTrue(t3lib_div::testInt($int));
+		$this->assertTrue(t3lib_utility_Math::canBeInterpretedAsInteger($int));
 	}
 
 	/**
@@ -297,7 +297,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @dataProvider functionTestIntInvalidDataProvider
 	 */
 	public function testIntReturnsFalse($int) {
-		$this->assertFalse(t3lib_div::testInt($int));
+		$this->assertFalse(t3lib_utility_Math::canBeInterpretedAsInteger($int));
 	}
 
 

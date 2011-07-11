@@ -56,7 +56,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 		$result = NULL;
 
 		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
-		if (t3lib_div::testInt($keyId)) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($keyId)) {
 
 			// Remove expired keys (more than 30 minutes old)
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
@@ -84,7 +84,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 			// Remove existing key
 			list($keyId) = $_SESSION['tx_rsaauth_key'];
 
-			if (t3lib_div::testInt($keyId)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($keyId)) {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
 					'uid=' . $keyId);
 				unset($_SESSION['tx_rsaauth_key']);

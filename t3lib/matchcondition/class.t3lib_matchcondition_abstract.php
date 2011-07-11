@@ -340,7 +340,7 @@ abstract class t3lib_matchCondition_abstract {
 					// comp
 				$values = t3lib_div::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
-					if (t3lib_div::testInt($test)) {
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($test)) {
 						$test = '=' . $test;
 					}
 					if ($this->compareNumber($test, $theTestValue)) {

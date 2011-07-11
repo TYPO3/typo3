@@ -776,7 +776,7 @@ class t3lib_TCEforms {
 
 						// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
 					$label = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
-					if (t3lib_div::testInt($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'] && !t3lib_div::_GP('columnsOnly')) {
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'] && !t3lib_div::_GP('columnsOnly')) {
 						$lTTS_url = $this->backPath . 'alt_doc.php?edit[' . $table . '][' . $row['uid'] . ']=edit&columnsOnly=' . $field . '&returnUrl=' . rawurlencode($this->thisReturnUrl());
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
@@ -3091,7 +3091,7 @@ class t3lib_TCEforms {
 			if (is_array($GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_excludelist_bits'])) {
 				foreach ($GLOBALS['TCA'][$table]['types'][$typeNum]['bitmask_excludelist_bits'] as $bitKey => $eList) {
 					$bit = substr($bitKey, 1);
-					if (t3lib_div::testInt($bit)) {
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($bit)) {
 						$bit = t3lib_utility_Math::forceIntegerInRange($bit, 0, 30);
 						if (
 							(substr($bitKey, 0, 1) == '-' && !($sTValue & pow(2, $bit))) ||
@@ -3829,7 +3829,7 @@ class t3lib_TCEforms {
 						case 'script':
 						case 'popup':
 						case 'colorbox':
-							if (!$wConf['notNewRecords'] || t3lib_div::testInt($row['uid'])) {
+							if (!$wConf['notNewRecords'] || t3lib_utility_Math::canBeInterpretedAsInteger($row['uid'])) {
 
 									// Setting &P array contents:
 								$params = array();
@@ -6197,7 +6197,7 @@ class t3lib_TCEforms {
 		}
 
 			// Convert sys_language_uid to sys_language_uid if input was in fact a string (ISO code expected then)
-		if (!t3lib_div::testInt($sys_language_uid)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($sys_language_uid)) {
 			foreach ($this->cachedLanguageFlag[$mainKey] as $rUid => $cD) {
 				if ('v' . $cD['ISOcode'] === $sys_language_uid) {
 					$sys_language_uid = $rUid;

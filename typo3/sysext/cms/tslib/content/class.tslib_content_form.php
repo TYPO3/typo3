@@ -720,7 +720,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 				'',
 				$this->cObj->getClosestMPvalueForPage($page['uid'])
 			);
-		} elseif (t3lib_div::testInt($theRedirect)) { // Internal: Submit to page with ID $theRedirect
+		} elseif (t3lib_utility_Math::canBeInterpretedAsInteger($theRedirect)) { // Internal: Submit to page with ID $theRedirect
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($theRedirect);
 			$LD = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
@@ -751,7 +751,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 				? $this->cObj->stdWrap($conf['type'], $conf['type.'])
 				: $conf['type'];
 		}
-		if (t3lib_div::testInt($formtype)) { // Submit to a specific page
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($formtype)) { // Submit to a specific page
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($formtype);
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
@@ -765,7 +765,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 		} elseif ($formtype) { // Submit to external script
 			$LD_A = $LD;
 			$action = $formtype;
-		} elseif (t3lib_div::testInt($theRedirect)) {
+		} elseif (t3lib_utility_Math::canBeInterpretedAsInteger($theRedirect)) {
 			$LD_A = $LD;
 			$action = $LD_A['totalURL'];
 		} else { // Submit to "nothing" - which is current page

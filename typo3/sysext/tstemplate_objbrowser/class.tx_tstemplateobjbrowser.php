@@ -145,7 +145,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$result=array();
 			if (is_array($propertyArray))		{
 				foreach ($propertyArray as $key => $val) {
-					if (t3lib_div::testInt($key))	{	// If num-arrays
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($key))	{	// If num-arrays
 						$result[$key]=$TSobjTable[$ObjectKind]["prop"]["1,2,3"];
 					} else {	// standard
 						$result[$key]=$TSobjTable[$ObjectKind]["prop"][$key];

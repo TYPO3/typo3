@@ -964,7 +964,7 @@ final class t3lib_BEfunc {
 
 				// If there is a srcPointer value:
 			if ($srcPointer) {
-				if (t3lib_div::testInt($srcPointer)) { // If integer, then its a record we will look up:
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($srcPointer)) { // If integer, then its a record we will look up:
 					list($tName, $fName) = explode(':', $ds_tableField, 2);
 					if ($tName && $fName && is_array($GLOBALS['TCA'][$tName])) {
 						$dataStructRec = self::getRecord($tName, $srcPointer);
@@ -1939,7 +1939,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function getRecordTitlePrep($title, $titleLength = 0) {
 			// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
-		if (!$titleLength || !t3lib_div::testInt($titleLength) || $titleLength < 0) {
+		if (!$titleLength || !t3lib_utility_Math::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
 			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		$titleOrig = htmlspecialchars($title);
@@ -3294,7 +3294,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function getTSconfig_pidValue($table, $uid, $pid) {
 
-		if (t3lib_div::testInt($pid)) { // If pid is an integer this takes precedence in our lookup.
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($pid)) { // If pid is an integer this takes precedence in our lookup.
 			$thePidValue = intval($pid);
 			if ($thePidValue < 0) { // If ref to another record, look that record up.
 				$pidRec = self::getRecord($table, abs($thePidValue), 'pid');
@@ -3336,7 +3336,7 @@ final class t3lib_BEfunc {
 	 * @see t3lib_TCEforms::getTSCpid()
 	 */
 	public static function getPidForModTSconfig($table, $uid, $pid) {
-		$retVal = ($table == 'pages' && t3lib_div::testInt($uid)) ? $uid : $pid;
+		$retVal = ($table == 'pages' && t3lib_utility_Math::canBeInterpretedAsInteger($uid)) ? $uid : $pid;
 		return $retVal;
 	}
 

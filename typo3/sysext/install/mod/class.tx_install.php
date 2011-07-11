@@ -1695,7 +1695,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$ok = 0;
 					$fileCounter++;
 					if ($tt) {
-						if (t3lib_div::testInt($tt)) {
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($tt)) {
 							if (filesize($theFile) > $tt*1024)	$ok=1;
 						} else {
 							if (fileatime($theFile) < $GLOBALS['EXEC_TIME'] - (intval($tmap[$tt]) * 60 * 60 * 24)) {
@@ -2285,7 +2285,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			else {
 				$smtp_addr = $smtp;
 			}
-			if (!$smtp || $bad_smtp || !t3lib_div::testInt(ini_get('smtp_port'))) {
+			if (!$smtp || $bad_smtp || !t3lib_utility_Math::canBeInterpretedAsInteger(ini_get('smtp_port'))) {
 				$this->message($ext, 'Mail configuration is not set correctly', '
 					<p>
 						Mail configuration is not set
@@ -5405,7 +5405,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			if ($this->mode=="123" && !count($whichTables) && strstr($file,'_testsite')) {
 				$directJump = $this->action.'&TYPO3_INSTALL[database_type]=import|'.rawurlencode($file);
 			}
-			$lf=t3lib_div::testInt($k);
+			$lf=t3lib_utility_Math::canBeInterpretedAsInteger($k);
 			$fShortName = substr($file,strlen(PATH_site));
 
 			$spec1 = $spec2 = '';
@@ -7196,7 +7196,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if (is_array($arr)) {
 			$type[] = $intSize[] = 0;
 			foreach ($arr as $item) {
-				if (!t3lib_div::testInt($item[1]) && $item[1]!='--div--') {
+				if (!t3lib_utility_Math::canBeInterpretedAsInteger($item[1]) && $item[1]!='--div--') {
 					$type[]=strlen($item[1]);
 				} else {
 					$intSize[]=$item[1];

@@ -751,7 +751,7 @@ class SC_db_layout {
 
 
 			// Delete-button flag?
-		$this->deleteButton = (t3lib_div::testInt($this->eRParts[1]) && $edit_record && (($this->eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($this->eRParts[0]=='pages'&&($this->CALC_PERMS&4))));
+		$this->deleteButton = (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && (($this->eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($this->eRParts[0]=='pages'&&($this->CALC_PERMS&4))));
 
 			// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton=0;
@@ -917,7 +917,7 @@ class SC_db_layout {
 
 
 			// Select element matrix:
-		if ($this->eRParts[0]=='tt_content' && t3lib_div::testInt($this->eRParts[1]))	{
+		if ($this->eRParts[0]=='tt_content' && t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1]))	{
 			$posMap = t3lib_div::makeInstance('ext_posMap');
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			$posMap->cur_sys_language=$this->current_sys_language;
@@ -1212,7 +1212,7 @@ class SC_db_layout {
 						t3lib_iconWorks::getSpriteIcon('actions-page-move') .
 					'</a>';
 				// Move record
-			if (t3lib_div::testInt($this->eRParts[1])) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1])) {
 				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move',array('class'=>'c-inputButton','title' => $GLOBALS['LANG']->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page'), 1))) .
 						'</a>';

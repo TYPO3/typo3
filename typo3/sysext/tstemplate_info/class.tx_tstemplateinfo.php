@@ -222,8 +222,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		if ($existTemplate)	{
 				// Update template ?
 			$POST = t3lib_div::_POST();
-			if ($POST['submit'] || (t3lib_div::testInt($POST['submit_x']) && t3lib_div::testInt($POST['submit_y']))
-				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
+			if ($POST['submit'] || (t3lib_utility_Math::canBeInterpretedAsInteger($POST['submit_x']) && t3lib_utility_Math::canBeInterpretedAsInteger($POST['submit_y']))
+				|| $POST['saveclose'] || (t3lib_utility_Math::canBeInterpretedAsInteger($POST['saveclose_x']) && t3lib_utility_Math::canBeInterpretedAsInteger($POST['saveclose_y']))) {
 					// Set the data to be saved
 				$recData = array();
 				$alternativeFileName = array();
@@ -376,8 +376,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$numberOfRows = 35;
 
 				// If abort pressed, nothing should be edited:
-			if ($POST['abort'] || (t3lib_div::testInt($POST['abort_x']) && t3lib_div::testInt($POST['abort_y']))
-				|| $POST['saveclose'] || (t3lib_div::testInt($POST['saveclose_x']) && t3lib_div::testInt($POST['saveclose_y']))) {
+			if ($POST['abort'] || (t3lib_utility_Math::canBeInterpretedAsInteger($POST['abort_x']) && t3lib_utility_Math::canBeInterpretedAsInteger($POST['abort_y']))
+				|| $POST['saveclose'] || (t3lib_utility_Math::canBeInterpretedAsInteger($POST['saveclose_x']) && t3lib_utility_Math::canBeInterpretedAsInteger($POST['saveclose_y']))) {
 				unset($e);
 			}
 
