@@ -254,7 +254,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return integer The next stage Id
 	 */
 	public function getNextStage($stageId) {
-		if (!t3lib_div::testInt($stageId)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
 			throw new InvalidArgumentException(
 				$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'),
 				1291109987
@@ -329,7 +329,7 @@ class Tx_Workspaces_Service_Stages {
 	 */
 	public function getPrevStage($stageid) {
 
-		if (!t3lib_div::testInt($stageid)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageid)) {
 			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 
@@ -564,7 +564,7 @@ class Tx_Workspaces_Service_Stages {
 	public function getPropertyOfCurrentWorkspaceStage($stageId, $property) {
 		$result = NULL;
 
-		if (!t3lib_div::testInt($stageId)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
 			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 
