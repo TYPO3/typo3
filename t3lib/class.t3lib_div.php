@@ -2546,17 +2546,96 @@ final class t3lib_div {
 	 *************************/
 
 	/**
+	 * Fetches the content of an URL with cURL. Is called only internally from getUrl()
+	 *
+	 * @param $url File/URL to read
+	 * @param $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param $requestHeaders HTTP headers to be used in the request
+	 * @param $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @param array $additionalCurlOptions additional optional cURL options
+	 * @return string
+	 */
+	protected function getUrlWithCurl($url, $includeHeader, $requestHeaders, &$report, array $additionalCurlOptions){
+
+			// External URL without error checking.
+		$ch = curl_init();
+		if (!$ch) {
+			if (isset($report)) {
+				$report['error'] = -1;
+				$report['message'] = 'Couldn\'t initialize cURL.';
+			}
+			return FALSE;
+		}
+
+		$curlOptions = array(
+			'CURLOPT_URL' => $url,
+			'CURLOPT_HEADER' => $includeHeader ? 1 : 0,
+			'CURLOPT_NOBODY' => $includeHeader == 2 ? 1 : 0,
+			'CURLOPT_HTTPGET' => $includeHeader == 2 ? 'HEAD' : 'GET',
+			'CURLOPT_RETURNTRANSFER' => 1,
+			'CURLOPT_FAILONERROR' => 1,
+			'CURLOPT_CONNECTTIMEOUT' => max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout']))
+		);
+
+		$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+		if (is_array($requestHeaders)) {
+			$curlOptions['CURLOPT_HTTPHEADER'] = $requestHeaders;
+		}
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+			$curlOptions['CURLOPT_PROXY'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'];
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+				$curlOptions['CURLOPT_HTTPPROXYTUNNEL'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'];
+			}
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+				$curlOptions['CURLOPT_PROXYUSERPWD'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'];
+			}
+		}
+
+			// Override or add cURL options
+		if (count($additionalCurlOptions) > 0) {
+			$curlOptions = array_merge($curlOptions, $additionalCurlOptions);
+		}
+			//pass all configuration options at once
+		curl_setopt_array($ch, $curlOptions);
+
+		$content = curl_exec($ch);
+		if (isset($report)) {
+			if ($content === FALSE) {
+				$report['error'] = curl_errno($ch);
+				$report['message'] = curl_error($ch);
+			} else {
+				$curlInfo = curl_getinfo($ch);
+					// We hit a redirection but we couldn't follow it
+				if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
+					$report['error'] = -1;
+					$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
+				} elseif ($includeHeader) {
+						// Set only for $includeHeader to work exactly like PHP variant
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
+				}
+			}
+		}
+		curl_close($ch);
+		return $content;
+	}
+
+	/**
 	 * Reads the file or url $url and returns the content
 	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
 	 * Usage: 83
 	 *
-	 * @param	string		File/URL to read
-	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param	array			HTTP headers to be used in the request
-	 * @param	array			Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @return	string	The content from the resource given as input. FALSE if an error has occured.
+	 * @param string $url File/URL to read
+	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param array $requestHeaders HTTP headers to be used in the request
+	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @param array $additionalCurlOptions Additional optional cURL options
+	 * @return string The content from the resource given as input. FALSE if an error has occured.
 	 */
-	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
+	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL, array $additionalCurlOptions = array()) {
 		$content = FALSE;
 
 		if (isset($report)) {
@@ -2569,61 +2648,8 @@ final class t3lib_div {
 			if (isset($report)) {
 				$report['lib'] = 'cURL';
 			}
-
-				// External URL without error checking.
-			$ch = curl_init();
-			if (!$ch) {
-				if (isset($report)) {
-					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t initialize cURL.';
-				}
-				return FALSE;
-			}
-
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
-			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
-			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
-			if (is_array($requestHeaders)) {
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
-			}
-
-				// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-				}
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-				}
-			}
-			$content = curl_exec($ch);
-			if (isset($report)) {
-				if ($content === FALSE) {
-					$report['error'] = curl_errno($ch);
-					$report['message'] = curl_error($ch);
-				} else {
-					$curlInfo = curl_getinfo($ch);
-						// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
-							// Set only for $includeHeader to work exactly like PHP variant
-						$report['http_code'] = $curlInfo['http_code'];
-						$report['content_type'] = $curlInfo['content_type'];
-					}
-				}
-			}
-			curl_close($ch);
+				//call protected method to get contents via cURL
+			$content = self::getUrlWithCurl($url, $includeHeader, $requestHeaders, &$report, $additionalCurlOptions);
 
 		} elseif ($includeHeader) {
 			if (isset($report)) {
@@ -2730,37 +2756,6 @@ final class t3lib_div {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Writes $content to the file $file
-	 * Usage: 30
-	 *
-	 * @param	string		Filepath to write to
-	 * @param	string		Content to write
-	 * @return	boolean		TRUE if the file was successfully opened and written to.
-	 */
-	public static function writeFile($file, $content) {
-		if (!@is_file($file)) {
-			$changePermissions = TRUE;
-		}
-
-		if ($fd = fopen($file, 'wb')) {
-			$res = fwrite($fd, $content);
-			fclose($fd);
-
-			if ($res === FALSE) {
-				return FALSE;
-			}
-
-			if ($changePermissions) { // Change the permissions only if the file has just been created
-				self::fixPermissions($file);
-			}
-
-			return TRUE;
-		}
-
-		return FALSE;
 	}
 
 	/**
