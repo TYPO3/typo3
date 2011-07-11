@@ -721,7 +721,72 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$result = $this->cObj->stdWrap_round($float, $conf);
 		$this->assertEquals($expected, $result);
 	}
-	
+
+	/**
+	 * Data provider for the hash test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 *               0 => the plain text
+	 *               1 => the conf array for the hash stdWrap function
+	 *               2 => the expected result
+	 *
+	 * @see hash
+	 */
+	public function hashDataProvider() {
+		$data = array(
+			'testing md5' => array(
+				'joh316',
+				array(
+					'hash' => 'md5'
+				),
+				'bacb98acf97e0b6112b1d1b650b84971'
+			),
+			'testing sha1' => array(
+				'joh316',
+				array(
+					'hash' => 'sha1'
+				),
+				'063b3d108bed9f88fa618c6046de0dccadcf3158'
+			),
+			'testing non-existing hashing algorithm' => array(
+				'joh316',
+				array(
+					'hash' => 'non-existing'
+				),
+				'joh316'
+			),
+			'testing stdWrap capability' => array(
+				'joh316',
+				array(
+					'hash.' => array(
+						'cObject' => 'TEXT',
+						'cObject.' => array(
+							'value' => 'md5'
+						)
+					)
+				),
+				'bacb98acf97e0b6112b1d1b650b84971'
+			)
+		);
+		return $data;
+	}
+
+	/**
+	 * Test for the stdWrap function "hash"
+	 *
+	 * @param string $text
+	 * @param array $conf
+	 * @param string $expected
+	 * @return void
+	 *
+	 * @dataProvider hashDataProvider
+	 * @test
+	 */
+	public function stdWrap_hash($text, array $conf, $expected) {
+		$result = $this->cObj->stdWrap_hash($text, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
 	/**
 	 * Data provider for the numberFormat test
 	 *
@@ -775,7 +840,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		);
 		return $data;
 	}
-	
+
 	/**
 	 * Check if stdWrap.numberFormat and all of its properties work properly
 	 *
