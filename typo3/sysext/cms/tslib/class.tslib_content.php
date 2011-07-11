@@ -119,6 +119,7 @@ class tslib_cObj {
 		'char.' => 'array',
 		'intval' => 'boolean',
 		'intval.' => 'array',
+		'hash' => 'string',
 		'round' => 'boolean',
 		'round.' => 'array',
 		'numberFormat.' => 'array',
@@ -2322,6 +2323,23 @@ class tslib_cObj {
 	 */
 	public function stdWrap_intval($content = '', $conf = array()) {
 		$content = intval($content);
+		return $content;
+	}
+
+	/**
+	 * hash
+	 * Will return an hashed value of the current content
+	 * See http://php.net/manual/de/function.hash-algos.php for a list of supported hash algorithms
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for hash.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_hash($content = '', $conf = array()) {
+		$algo = $conf['hash'];
+		if (function_exists('hash') && in_array($algo, hash_algos())) {
+			$content = hash($algo, $content);
+		}
 		return $content;
 	}
 
