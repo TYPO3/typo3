@@ -12,8 +12,10 @@ if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['t3lib_l10n']['backend'] = 't3lib_cache_backend_FileBackend';
 }
 
-	// Register Clear Cache Menu hook
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearLangCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearcachemenu.php:&tx_lang_clearcachemenu';
+if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['clear_menu']) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['clear_menu']) {
+		// Register Clear Cache Menu hook
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearLangCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearcachemenu.php:&tx_lang_clearcachemenu';
+}
 
 	// Register Ajax call
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['lang::clearCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearcache.php:tx_lang_clearcache->clearCache';
