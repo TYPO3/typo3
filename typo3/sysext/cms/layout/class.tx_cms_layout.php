@@ -2283,7 +2283,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Output string
 	 */
 	function renderText($input) {
-		$input = $this->strip_tags($input, true);
+		$input = strip_tags($input);
 		$input = t3lib_div::fixed_lgd_cs($input, 1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
