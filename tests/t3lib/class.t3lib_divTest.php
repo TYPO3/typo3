@@ -1734,8 +1734,14 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$file = PATH_site . 'typo3temp/' . $unique . '.xml';
 		t3lib_div::writeFileToTypo3tempDir($file, $xml);
 
+			// Make sure there is no cached version of the label
+		$GLOBALS['typo3CacheManager']->getCache('lang_l10n')->flush();
+
 			// Get default value
 		$defaultLL = t3lib_div::readLLfile('EXT:lang/locallang_core.xml', 'default');
+
+			// Clear language cache again
+		$GLOBALS['typo3CacheManager']->getCache('lang_l10n')->flush();
 
 			// Set override file
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xml'][$unique] = $file;
@@ -1743,13 +1749,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		/** @var $store tx_lang_Store */
 		$store = t3lib_div::makeInstance('tx_lang_Store');
 		$store->flushData('EXT:lang/locallang_core.xml');
-
-			// Manually flush cache (because lang_l10n cannot be recreated automatically at this point)
-		$cacheDirectory = PATH_site . 'typo3temp/Cache/Data/lang_l10n/';
-		$cacheFiles = t3lib_div::getFilesInDir($cacheDirectory);
-		foreach ($cacheFiles as $cacheFile) {
-			@unlink($cacheDirectory . $cacheFile);
-		}
 
 			// Get override value
 		$overrideLL = t3lib_div::readLLfile('EXT:lang/locallang_core.xml', 'default');
