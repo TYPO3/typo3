@@ -60,6 +60,7 @@ class tx_lang_clearcache {
 	 * @return void
 	 */
 	public function clearCache() {
+		$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, '[lang]: User %s has cleared the language cache', array($GLOBALS['BE_USER']->user['username']));
 		$this->cacheInstance->flush();
 	}
 
