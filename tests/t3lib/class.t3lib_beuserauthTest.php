@@ -36,7 +36,24 @@ class t3lib_beUserAuthTest extends tx_phpunit_testcase {
 	 */
 	private $fixture = NULL;
 
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
 	public function setUp() {
+			// reset hooks
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = array();
 		$this->fixture = new t3lib_beUserAuth();
 	}
 
