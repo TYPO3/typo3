@@ -4136,14 +4136,14 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Implements the stdWrap property "round"
-	 * This is a Wrapper function for php's rounding functions (round,ceil,floor), defaults to round()
+	 * Implements the "round" property of stdWrap
+	 * This is a Wrapper function for PHP's rounding functions (round,ceil,floor), defaults to round()
 	 *
 	 * @param	string	Value to process
-	 * @param	array	TypoScript Configuration for round
-	 * @return	string	The formated number
+	 * @param	array	TypoScript configuration for round
+	 * @return	string	The formatted number
 	 */
-	private function round($content, $conf = array()) {
+	protected function round($content, array $conf = array()) {
 		$decimals = isset($conf['decimals.'])
 				? $this->stdWrap($conf['decimals'], $conf['decimals.'])
 				: $conf['decimals'];
