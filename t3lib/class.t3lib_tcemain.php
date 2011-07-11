@@ -476,7 +476,7 @@ class t3lib_TCEmain {
 						$old_pid_value = '';
 						$this->autoVersioningUpdate = FALSE;
 
-						if (!t3lib_div::testInt($id)) { // Is it a new record? (Then Id is a string)
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($id)) { // Is it a new record? (Then Id is a string)
 							$fieldArray = $this->newFieldArray($table); // Get a fieldArray with default values
 							if (isset($incomingFieldArray['pid'])) { // A pid must be set for new records.
 									// $value = the pid
@@ -1820,7 +1820,7 @@ class t3lib_TCEmain {
 			// Example for received data:
 			// $value = 45,NEW4555fdf59d154,12,123
 			// We need to decide whether we use the stack or can save the relation directly.
-		if (strpos($value, 'NEW') !== FALSE || !t3lib_div::testInt($id)) {
+		if (strpos($value, 'NEW') !== FALSE || !t3lib_utility_Math::canBeInterpretedAsInteger($id)) {
 			$this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
 			$this->addNewValuesToRemapStackChildIds($valueArray);
 			$this->remapStack[] = array(
@@ -1830,7 +1830,7 @@ class t3lib_TCEmain {
 				'field' => $field
 			);
 			unset($res['value']);
-		} elseif ($value || t3lib_div::testInt($id)) {
+		} elseif ($value || t3lib_utility_Math::canBeInterpretedAsInteger($id)) {
 			$res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field);
 		}
 
@@ -3013,7 +3013,7 @@ class t3lib_TCEmain {
 						}
 							// If no language it set, this is a regular copy action:
 					} else {
-						if (!t3lib_div::testInt($realDestPid)) {
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
 						} elseif ($realDestPid == -1 && t3lib_BEfunc::isTableWorkspaceEnabled($v['table'])) {
 							$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord(
@@ -3746,7 +3746,7 @@ class t3lib_TCEmain {
 		$field = $parts[0];
 		$type = $parts[1];
 
-		if ($field && (t3lib_div::inList('localize,synchronize', $type) || t3lib_div::testInt($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+		if ($field && (t3lib_div::inList('localize,synchronize', $type) || t3lib_utility_Math::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$foreignTable = $config['foreign_table'];
 			$localizationMode = t3lib_BEfunc::getInlineLocalizationMode($table, $config);
@@ -3792,7 +3792,7 @@ class t3lib_TCEmain {
 							}
 						}
 							// Perform synchronization/localization: Possibly add unlocalized records for original language:
-						if (t3lib_div::testInt($type) && isset($elementsOriginal[$type])) {
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($type) && isset($elementsOriginal[$type])) {
 							$item = $elementsOriginal[$type];
 							$item['id'] = $this->localize($item['table'], $item['id'], $language);
 							$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
@@ -5155,7 +5155,7 @@ class t3lib_TCEmain {
 		$id = intval($id);
 
 			// Processing the incoming $perms (from possible string to integer that can be AND'ed)
-		if (!t3lib_div::testInt($perms)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($perms)) {
 			if ($table != 'pages') {
 				switch ($perms) {
 					case 'edit':
@@ -5828,13 +5828,13 @@ class t3lib_TCEmain {
 			$fieldArray['perms_groupid'] = intval($TSConfig_p['groupid']);
 		}
 		if (strcmp($TSConfig_p['user'], '')) {
-			$fieldArray['perms_user'] = t3lib_div::testInt($TSConfig_p['user']) ? $TSConfig_p['user'] : $this->assemblePermissions($TSConfig_p['user']);
+			$fieldArray['perms_user'] = t3lib_utility_Math::canBeInterpretedAsInteger($TSConfig_p['user']) ? $TSConfig_p['user'] : $this->assemblePermissions($TSConfig_p['user']);
 		}
 		if (strcmp($TSConfig_p['group'], '')) {
-			$fieldArray['perms_group'] = t3lib_div::testInt($TSConfig_p['group']) ? $TSConfig_p['group'] : $this->assemblePermissions($TSConfig_p['group']);
+			$fieldArray['perms_group'] = t3lib_utility_Math::canBeInterpretedAsInteger($TSConfig_p['group']) ? $TSConfig_p['group'] : $this->assemblePermissions($TSConfig_p['group']);
 		}
 		if (strcmp($TSConfig_p['everybody'], '')) {
-			$fieldArray['perms_everybody'] = t3lib_div::testInt($TSConfig_p['everybody']) ? $TSConfig_p['everybody'] : $this->assemblePermissions($TSConfig_p['everybody']);
+			$fieldArray['perms_everybody'] = t3lib_utility_Math::canBeInterpretedAsInteger($TSConfig_p['everybody']) ? $TSConfig_p['everybody'] : $this->assemblePermissions($TSConfig_p['everybody']);
 		}
 
 		return $fieldArray;
@@ -6107,7 +6107,7 @@ class t3lib_TCEmain {
 		foreach ($this->dbAnalysisStore as $action) {
 			$id = t3lib_BEfunc::wsMapId(
 				$action[4],
-				(t3lib_div::testInt($action[2]) ? $action[2] : $this->substNEWwithIDs[$action[2]])
+				(t3lib_utility_Math::canBeInterpretedAsInteger($action[2]) ? $action[2] : $this->substNEWwithIDs[$action[2]])
 			);
 			if ($id) {
 				$action[0]->writeMM($action[1], $id, $action[3]);
@@ -6685,7 +6685,7 @@ class t3lib_TCEmain {
 		}
 
 			// Clear cache for a page ID!
-		if (t3lib_div::testInt($cacheCmd)) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($cacheCmd)) {
 			if (t3lib_extMgm::isLoaded('cms')) {
 
 				$list_cache = array($cacheCmd);
@@ -6854,7 +6854,7 @@ class t3lib_TCEmain {
 			switch ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type']) {
 				case 'inline':
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field']) {
-						if (!t3lib_div::testInt($value)) {
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($value)) {
 							$result[$field] = count(t3lib_div::trimExplode(',', $value, TRUE));
 						}
 					}

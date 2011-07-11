@@ -1766,7 +1766,7 @@ class browse_links {
 		}
 
 			// Draw the record list IF there is a page id to expand:
-		if ($expPageId && t3lib_div::testInt($expPageId) && $GLOBALS['BE_USER']->isInWebMount($expPageId)) {
+		if ($expPageId && t3lib_utility_Math::canBeInterpretedAsInteger($expPageId) && $GLOBALS['BE_USER']->isInWebMount($expPageId)) {
 
 				// Set header:
 			$out.=$this->barheader($GLOBALS['LANG']->getLL('contentElements').':');
@@ -1837,7 +1837,7 @@ class browse_links {
 	 */
 	function TBE_expandPage($tables)	{
 		$out='';
-		if ($this->expandPage >= 0 && t3lib_div::testInt($this->expandPage) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
+		if ($this->expandPage >= 0 && t3lib_utility_Math::canBeInterpretedAsInteger($this->expandPage) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
 
 				// Set array with table names to list:
 			if (!strcmp(trim($tables),'*'))	{
@@ -2565,7 +2565,7 @@ class browse_links {
 						$id = array_shift($parameters);
 						if ($id)	{
 								// Checking if the id-parameter is an alias.
-							if (!t3lib_div::testInt($id))	{
+							if (!t3lib_utility_Math::canBeInterpretedAsInteger($id))	{
 								list($idPartR) = t3lib_BEfunc::getRecordsByField('pages','alias',$id);
 								$id=intval($idPartR['uid']);
 							}

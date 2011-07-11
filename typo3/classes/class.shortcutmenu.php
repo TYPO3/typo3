@@ -302,7 +302,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				}
 
 				$pageId = $this->getLinkedPageId($row['url']);
-				if(t3lib_div::testInt($pageId)) {
+				if(t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
 						// check for webmount access
 					if(!$GLOBALS['BE_USER']->isInWebMount($pageId)) {
 						continue;
@@ -538,7 +538,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				// Lookup the title of this page and use it as default description
 			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
 
-			if(t3lib_div::testInt($pageId)) {
+			if(t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
 				$page = t3lib_BEfunc::getRecord('pages', $pageId);
 				if(count($page)) {
 						// set the name to the title of the page

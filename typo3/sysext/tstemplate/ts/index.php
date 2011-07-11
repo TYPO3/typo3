@@ -500,7 +500,7 @@ page.10.value = HELLO WORLD!
 			reset($pArray);
 			static $i;
 			foreach ($pArray as $k => $v) {
-				if (t3lib_div::testInt($k)) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($k)) {
 					if (isset($pArray[$k . "_"])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .

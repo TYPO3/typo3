@@ -1284,7 +1284,7 @@ class tslib_pibase {
 		$fList = t3lib_div::trimExplode(',',$fList,1);
 		$tempPiVars = $this->piVars;
 		foreach ($fList as $k) {
-			if (!t3lib_div::testInt($tempPiVars[$k]) || $tempPiVars[$k]<$lowerThan)		unset($tempPiVars[$k]);
+			if (!t3lib_utility_Math::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k]<$lowerThan)		unset($tempPiVars[$k]);
 		}
 		if (!count($tempPiVars))	return 1;
 	}
@@ -1389,7 +1389,7 @@ class tslib_pibase {
 
 		$tempArr=$sheetArray;
 		foreach($fieldNameArr as $k => $v)	{
-			if (t3lib_div::testInt($v))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($v))	{
 				if (is_array($tempArr))	{
 					$c=0;
 					foreach($tempArr as $values)	{

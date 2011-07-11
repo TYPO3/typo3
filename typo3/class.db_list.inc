@@ -544,7 +544,7 @@ class recordList extends t3lib_recordList {
 					// Loading full table description - we need to traverse fields:
 				t3lib_div::loadTCA($table);
 
-				if (t3lib_div::testInt($this->searchString)) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($this->searchString)) {
 					$whereParts = array(
 						'uid=' . $this->searchString
 					);

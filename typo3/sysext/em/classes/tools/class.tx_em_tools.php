@@ -679,7 +679,7 @@ final class tx_em_Tools {
 			if (strlen($k) && is_array($v)) {
 				$lines .= str_repeat(TAB, $level) . "'" . $k . "' => " . self::arrayToCode($v, $level);
 			} elseif (strlen($k)) {
-				$lines .= str_repeat(TAB, $level) . "'" . $k . "' => " . (t3lib_div::testInt($v) ? intval($v) : "'" . t3lib_div::slashJS(trim($v), 1) . "'") . ',' . LF;
+				$lines .= str_repeat(TAB, $level) . "'" . $k . "' => " . (t3lib_utility_Math::canBeInterpretedAsInteger($v) ? intval($v) : "'" . t3lib_div::slashJS(trim($v), 1) . "'") . ',' . LF;
 			}
 		}
 

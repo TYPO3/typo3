@@ -1765,7 +1765,7 @@ class tslib_cObj {
 		} else {
 			if (is_array($row)) {
 				foreach ($row as $field => $value) {
-					if (!t3lib_div::testInt($field)) {
+					if (!t3lib_utility_Math::canBeInterpretedAsInteger($field)) {
 						if ($HSC) {
 							$value = htmlspecialchars($value);
 						}
@@ -2293,7 +2293,7 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_prioriCalc($content = '', $conf = array()) {
-		$content = t3lib_div::calcParenthesis($content);
+		$content = t3lib_utility_Math::calculateWithParentheses($content);
 		if ($conf['prioriCalc'] == 'intval')
 			$content = intval($content);
 		return $content;
@@ -3124,7 +3124,7 @@ class tslib_cObj {
 	 */
 	function listNum($content, $listNum, $char) {
 		$char = $char ? $char : ',';
-		if (t3lib_div::testInt($char)) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($char)) {
 			$char = chr($char);
 		}
 		$temp = explode($char, $content);
@@ -4000,11 +4000,11 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see t3lib_div::calcPriority())
+	 * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction())
 	 *
 	 * @param	string		The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
 	 * @return	integer		The result (might be a float if you did a division of the numbers).
-	 * @see t3lib_div::calcPriority()
+	 * @see t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction()
 	 */
 	function calc($val) {
 		$parts = t3lib_div::splitCalc($val, '+-*/');
@@ -4078,7 +4078,7 @@ class tslib_cObj {
 
 		$valArr = explode($conf['token'], $value);
 
-		if (count($valArr) && (t3lib_div::testInt($conf['returnKey']) || $conf['returnKey.'])) {
+		if (count($valArr) && (t3lib_utility_Math::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
 			$key = isset($conf['returnKey.'])
 				? intval($this->stdWrap($conf['returnKey'], $conf['returnKey.']))
 				: intval($conf['returnKey']);
@@ -5319,7 +5319,7 @@ class tslib_cObj {
 		$sectionMark = isset($conf['section.'])
 			? trim($this->stdWrap($conf['section'], $conf['section.']))
 			: trim($conf['section']);
-		$sectionMark = $sectionMark ? (t3lib_div::testInt($sectionMark) ? '#c' : '#') . $sectionMark : '';
+		$sectionMark = $sectionMark ? (t3lib_utility_Math::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
 		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
@@ -5401,7 +5401,7 @@ class tslib_cObj {
 				$urlChar = intval(strpos($link_param, '.'));
 
 					// Firsts, test if $link_param is numeric and page with such id exists. If yes, do not attempt to link to file
-				if (!t3lib_div::testInt($link_param) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($link_param)) == 0) {
+				if (!t3lib_utility_Math::canBeInterpretedAsInteger($link_param) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($link_param)) == 0) {
 						// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
 					list ($rootFileDat) = explode('?', rawurldecode($link_param));
 					$containsSlash = strstr($rootFileDat, '/');
@@ -5492,7 +5492,7 @@ class tslib_cObj {
 					} // If no id or alias is given
 					if ($link_params_parts[1] && !$sectionMark) {
 						$sectionMark = trim($link_params_parts[1]);
-						$sectionMark = (t3lib_div::testInt($sectionMark) ? '#c' : '#') . $sectionMark;
+						$sectionMark = (t3lib_utility_Math::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark;
 					}
 
 					if (count($pairParts) > 1) {
@@ -5500,7 +5500,7 @@ class tslib_cObj {
 						$conf['additionalParams'] .= isset($pairParts[2]) ? $pairParts[2] : '';
 					}
 						// Checking if the id-parameter is an alias.
-					if (!t3lib_div::testInt($link_param)) {
+					if (!t3lib_utility_Math::canBeInterpretedAsInteger($link_param)) {
 						$link_param = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($link_param);
 					}
 
@@ -6331,7 +6331,7 @@ class tslib_cObj {
 	 * @return	string		The formatted string
 	 */
 	function calcAge($seconds, $labels) {
-		if (t3lib_div::testInt($labels)) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($labels)) {
 			$labels = ' min| hrs| days| yrs| min| hour| day| year';
 		} else {
 			$labels = str_replace('"', '', $labels);

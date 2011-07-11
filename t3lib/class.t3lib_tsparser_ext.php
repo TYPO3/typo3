@@ -307,7 +307,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 			if (substr($key, -2) != '..') { // Don't do anything with comments / linenumber registrations...
 				$key = preg_replace('/\.$/', '', $key);
 				if (substr($key, -1) != '.') {
-					if (t3lib_div::testInt($key)) {
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($key)) {
 						$keyArr_num[$key] = $arr[$key];
 					} else {
 						$keyArr_alpha[$key] = $arr[$key];
@@ -941,7 +941,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						$out[$key] = $val;
 					break;
 					default:
-						if (t3lib_div::testInt($key)) {
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($key)) {
 							$constRefs = explode(',', $val);
 							foreach ($constRefs as $const) {
 								$const = trim($const);

@@ -1224,7 +1224,7 @@ class t3lib_parsehtml {
 			} else {
 				$attr = $meta[$k]['origTag'] ? $meta[$k]['origTag'] : $k;
 				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (t3lib_div::testInt($v) ? '' : '"');
+					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (t3lib_utility_Math::canBeInterpretedAsInteger($v) ? '' : '"');
 					$attr .= '=' . $dash . $v . $dash;
 				}
 			}

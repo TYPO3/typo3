@@ -91,7 +91,7 @@ class t3lib_clipboard {
 
 			// NumberTabs
 		$clNP = $GLOBALS['BE_USER']->getTSConfigVal('options.clipboardNumberPads');
-		if (t3lib_div::testInt($clNP) && $clNP >= 0) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($clNP) && $clNP >= 0) {
 			$this->numberTabs = t3lib_utility_Math::forceIntegerInRange($clNP, 0, 20);
 		}
 

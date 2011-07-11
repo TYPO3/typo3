@@ -635,7 +635,7 @@ class TYPO3backend {
 			$where = ' AND ('.$GLOBALS['BE_USER']->getPagePermsClause(2)
 					.' OR '.$GLOBALS['BE_USER']->getPagePermsClause(16).')';
 
-			if(t3lib_div::testInt($editId))	{
+			if(t3lib_utility_Math::canBeInterpretedAsInteger($editId))	{
 				$editRecord = t3lib_BEfunc::getRecordWSOL('pages', $editId, '*', $where);
 			} else {
 				$records = t3lib_BEfunc::getRecordsByField('pages', 'alias', $editId, $where);

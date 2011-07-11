@@ -200,7 +200,7 @@ class t3lib_refindex {
 					// Word indexing:
 				t3lib_div::loadTCA($table);
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-					if (t3lib_div::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !t3lib_div::testInt($record[$field])) {
+					if (t3lib_div::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !t3lib_utility_Math::canBeInterpretedAsInteger($record[$field])) {
 						$this->words_strings[$field] = $record[$field];
 					}
 				}

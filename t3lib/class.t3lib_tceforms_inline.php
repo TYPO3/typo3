@@ -145,7 +145,7 @@ class t3lib_TCEforms_inline {
 		if (!isset($this->inlineFirstPid)) {
 				// if this record is not new, try to fetch the inlineView states
 				// @TODO: Add checking/cleaning for unused tables, records, etc. to save space in uc-field
-			if (t3lib_div::testInt($row['uid'])) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($row['uid'])) {
 				$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 				$this->inlineView = $inlineView[$table][$row['uid']];
 			}
@@ -319,7 +319,7 @@ class t3lib_TCEforms_inline {
 		$this->inlineData['map'][$this->inlineNames['form']] = $this->inlineNames['object'];
 
 			// Set this variable if we handle a brand new unsaved record:
-		$isNewRecord = t3lib_div::testInt($rec['uid']) ? FALSE : TRUE;
+		$isNewRecord = t3lib_utility_Math::canBeInterpretedAsInteger($rec['uid']) ? FALSE : TRUE;
 			// Set this variable if the record is virtual and only show with header and not editable fields:
 		$isVirtualRecord = (isset($rec['__virtual']) && $rec['__virtual']);
 			// If there is a selector field, normalize it:
@@ -693,7 +693,7 @@ class t3lib_TCEforms_inline {
 			$comboRecord = array();
 
 				// If record does already exist, load it:
-			if ($rec[$foreign_selector] && t3lib_div::testInt($rec[$foreign_selector])) {
+			if ($rec[$foreign_selector] && t3lib_utility_Math::canBeInterpretedAsInteger($rec[$foreign_selector])) {
 				$comboRecord = $this->getRecord(
 					$this->inlineFirstPid,
 					$comboConfig['foreign_table'],
@@ -1080,7 +1080,7 @@ class t3lib_TCEforms_inline {
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 
 			// dynamically create a new record using t3lib_transferData
-		if (!$foreignUid || !t3lib_div::testInt($foreignUid) || $config['foreign_selector']) {
+		if (!$foreignUid || !t3lib_utility_Math::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
 				// Set language of new child record to the language of the parent record:
 			if ($config['localizationMode'] == 'select') {
@@ -1163,7 +1163,7 @@ class t3lib_TCEforms_inline {
 	 */
 	protected function synchronizeLocalizeRecords($domObjectId, $type) {
 		$jsonArray = FALSE;
-		if (t3lib_div::inList('localize,synchronize', $type) || t3lib_div::testInt($type)) {
+		if (t3lib_div::inList('localize,synchronize', $type) || t3lib_utility_Math::canBeInterpretedAsInteger($type)) {
 				// The current level:
 			$current = $this->inlineStructure['unstable'];
 				// The parent level:
@@ -1318,7 +1318,7 @@ class t3lib_TCEforms_inline {
 		$top = $this->getStructureLevel(0);
 
 			// only do some action if the top record and the current record were saved before
-		if (t3lib_div::testInt($top['uid'])) {
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($top['uid'])) {
 			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent =& $inlineView[$top['table']][$top['uid']];
 
@@ -1598,9 +1598,9 @@ class t3lib_TCEforms_inline {
 	protected function getNewRecordPid($table, $parentPid = NULL) {
 		$newRecordPid = $this->inlineFirstPid;
 		$pageTS = t3lib_beFunc::getPagesTSconfig($parentPid, TRUE);
-		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && t3lib_div::testInt($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
+		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && t3lib_utility_Math::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table . '.']['pid'];
-		} elseif (isset($parentPid) && t3lib_div::testInt($parentPid)) {
+		} elseif (isset($parentPid) && t3lib_utility_Math::canBeInterpretedAsInteger($parentPid)) {
 			$newRecordPid = $parentPid;
 		}
 		return $newRecordPid;
@@ -1928,7 +1928,7 @@ class t3lib_TCEforms_inline {
 			// If the command is to create a NEW record...:
 		if ($cmd == 'new') {
 				// If the pid is numerical, check if it's possible to write to this page:
-			if (t3lib_div::testInt($this->inlineFirstPid)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->inlineFirstPid)) {
 				$calcPRec = t3lib_BEfunc::getRecord('pages', $this->inlineFirstPid);
 				if (!is_array($calcPRec)) {
 					return FALSE;

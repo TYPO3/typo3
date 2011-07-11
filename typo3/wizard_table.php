@@ -490,7 +490,7 @@ class SC_wizard_table {
 			$cmd='row_down';
 		}
 
-		if ($cmd && t3lib_div::testInt($kk)) {
+		if ($cmd && t3lib_utility_Math::canBeInterpretedAsInteger($kk)) {
 			if (substr($cmd,0,4)=='row_')	{
 				switch($cmd)	{
 					case 'row_remove':

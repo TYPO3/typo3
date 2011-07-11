@@ -1138,7 +1138,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer
 
-			if (t3lib_div::testInt($haystack))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack))	{
 				$OK = TRUE;
 			}
 
@@ -1150,7 +1150,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		} elseif (strstr($needle,'-'))	{	// Range
 
-			if (t3lib_div::testInt($haystack))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack))	{
 				$range = explode('-',$needle);
 				if ($range[0] <= $haystack && $range[1] >= $haystack)	{
 					$OK = TRUE;

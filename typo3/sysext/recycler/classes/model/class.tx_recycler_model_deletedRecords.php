@@ -155,7 +155,7 @@ class tx_recycler_model_deletedRecords {
 				// create the filter WHERE-clause
 			if (trim($filter) != '') {
 				$filterWhere = ' AND (' .
-					(t3lib_div::testInt($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') .
+					(t3lib_utility_Math::canBeInterpretedAsInteger($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') .
 					$tcaCtrl['label'] . ' LIKE "%' . $this->escapeValueForLike($filter, $table) . '%"' .
 				')';
 			}

@@ -395,14 +395,14 @@ class t3lib_timeTrack {
 		$c = 0;
 			// First, find number of entries
 		foreach ($arr as $k => $v) {
-			if (t3lib_div::testInt($k)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($k)) {
 				$ac++;
 			}
 		}
 			// Traverse through entries
 		$subtime = 0;
 		foreach ($arr as $k => $v) {
-			if (t3lib_div::testInt($k)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($k)) {
 				$c++;
 
 				$deeper = is_array($arr[$k . '.']) ? 1 : 0;
@@ -434,7 +434,7 @@ class t3lib_timeTrack {
 
 			// Traverse array again, this time substitute the unique hash with the red key
 		foreach ($arr as $k => $v) {
-			if (t3lib_div::testInt($k)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($k)) {
 				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($v, '<strong style="color:red;">[' . $this->tsStackLog[$v]['key'] . ']</strong>', $content);
 				}

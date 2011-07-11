@@ -1500,7 +1500,7 @@ class SC_mod_tools_be_user_index {
 		$where_clause = '';
 		$orderBy = 'u.username';
 
-		if (t3lib_div::testInt($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
 			$where_clause .= 'ses_tstamp+' . $GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] . ' > ' . $GLOBALS['EXEC_TIME'];
 		} else {
 			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);

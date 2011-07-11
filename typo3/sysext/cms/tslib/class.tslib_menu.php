@@ -465,7 +465,7 @@ class tslib_menu {
 							$value=$GLOBALS['TSFE']->page['uid'];
 						}
 						$items=t3lib_div::intExplode(',',$value);
-						if (t3lib_div::testInt($this->conf['special.']['depth']))	{
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth']))	{
 							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],1,20);		// Tree depth
 						} else {
 							$depth=20;
@@ -556,7 +556,7 @@ class tslib_menu {
 						}
 
 							// depth, limit, extra where
-						if (t3lib_div::testInt($this->conf['special.']['depth']))	{
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth']))	{
 							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],0,20);		// Tree depth
 						} else {
 							$depth=20;
@@ -608,7 +608,7 @@ class tslib_menu {
 							: $this->conf['special.']['range'];
 						$begin_end = explode('|', $range);
 						$begin_end[0] = intval($begin_end[0]);
-						if (!t3lib_div::testInt($begin_end[1])) {
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($begin_end[1])) {
 							$begin_end[1] = -1;
 						}
 
@@ -1580,7 +1580,7 @@ class tslib_menu {
 		$conf = array(
 			'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid'],
 		);
-		if ($typeOverride && t3lib_div::testInt($typeOverride)) {
+		if ($typeOverride && t3lib_utility_Math::canBeInterpretedAsInteger($typeOverride)) {
 			$conf['parameter'] .= ',' . $typeOverride;
 		}
 		if ($addParams) {

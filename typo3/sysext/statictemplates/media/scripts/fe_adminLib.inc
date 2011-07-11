@@ -1290,7 +1290,7 @@ class user_feAdmin	{
 				}
 
 					// Getting records
-				if (t3lib_div::testInt($fetch))	{
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($fetch))	{
 					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,'uid',$fetch,$pidLock,'','','1');
 				} elseif ($fetch) {	// $this->conf['email.']['field'] must be a valid field in the table!
 					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$this->conf['email.']['field'],$fetch,$pidLock,'','','100');
@@ -1344,7 +1344,7 @@ class user_feAdmin	{
 		if ($userContent['all'])	$userContent['final'] .=$this->cObj->substituteSubpart($userContent['all'], '###SUB_RECORD###', $userContent['accum']);
 		if ($adminContent['all'])	$adminContent['final'].=$this->cObj->substituteSubpart($adminContent['all'], '###SUB_RECORD###', $adminContent['accum']);
 
-		if (t3lib_div::testInt($recipient))	{
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($recipient))	{
 			$fe_userRec = $GLOBALS['TSFE']->sys_page->getRawRecord('fe_users',$recipient);
 			$recipient=$fe_userRec['email'];
 		}

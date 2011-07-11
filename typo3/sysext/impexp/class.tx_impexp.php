@@ -1239,7 +1239,7 @@ class tx_impexp {
 			foreach($this->dat['header']['pid_lookup'] as $pid => $recList)	{
 				$newPid = isset($this->import_mapId['pages'][$pid]) ? $this->import_mapId['pages'][$pid] : $mainPid;
 
-				if (t3lib_div::testInt($newPid))	{
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($newPid))	{
 					foreach($recList as $tableName => $uidList)	{
 						if (($tableName!='pages' || !$pagesFromTree[$pid]) && is_array($uidList))	{		// If $mainPid===$newPid then we are on root level and we can consider to move pages as well! (they will not be in the page tree!)
 							$uidList = array_reverse(array_keys($uidList));
@@ -1313,7 +1313,7 @@ class tx_impexp {
 
 					// PID and UID:
 				unset($this->import_data[$table][$ID]['uid']);
-				if (t3lib_div::testInt($ID))	{	// Updates:
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($ID))	{	// Updates:
 					unset($this->import_data[$table][$ID]['pid']);
 				} else {	// Inserts:
 					$this->import_data[$table][$ID]['pid'] = $pid;
@@ -1823,7 +1823,7 @@ class tx_impexp {
 									$insertValue = t3lib_BEfunc::wsMapId($tempTable,$this->import_mapId[$tempTable][$tempUid]);
 
 										// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
-									if ($tempTable==='pages' && !t3lib_div::testInt($cfg['subst']['tokenValue']))	{
+									if ($tempTable==='pages' && !t3lib_utility_Math::canBeInterpretedAsInteger($cfg['subst']['tokenValue']))	{
 										$recWithUniqueValue = t3lib_BEfunc::getRecord($tempTable,$insertValue, 'alias');
 										if ($recWithUniqueValue['alias'])	{
 											$insertValue = $recWithUniqueValue['alias'];

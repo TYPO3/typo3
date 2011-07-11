@@ -49,7 +49,7 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 			$depth = 100;
 				// the startId is found
 			$theStartId = 0;
-			if (t3lib_div::testInt(t3lib_div::_GP('stype'))) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_GP('stype'))) {
 				$temp_theStartId = t3lib_div::_GP('stype');
 				$rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($temp_theStartId);
 					// The page MUST have a rootline with the Level0-page of the current site inside!!
@@ -112,7 +112,7 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 			$search->build_search_query($endClause);
 
 				// count...
-			if (t3lib_div::testInt(t3lib_div::_GP('scount'))) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_GP('scount'))) {
 				$search->res_count = t3lib_div::_GP('scount');
 			} else {
 				$search->count_query();
