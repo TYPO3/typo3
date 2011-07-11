@@ -58,7 +58,8 @@ $TYPO3_CONF_VARS = array(
 	'SYS' => array(			// System related concerning both frontend and backend.
 		'lang' => array(
 			'cache' => array(
-				'lifetime' => 86400
+				'lifetime' => 86400,
+				'clear_menu' => 0,
 			),
 			'format' => array(
 				'priority' => 'xlf,xml,php'
