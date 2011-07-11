@@ -470,6 +470,22 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function flushCreatesCacheDirectoryAgain() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend->setCacheDirectory('vfs://Foo/');
+		$backend->setCache($mockCache);
+
+		$backend->flush();
+		$this->assertFileExists('vfs://Foo/Cache/Data/UnitTestCache/');
+	}
+
+	/**
+	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */

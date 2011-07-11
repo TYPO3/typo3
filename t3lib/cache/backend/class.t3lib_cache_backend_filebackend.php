@@ -422,6 +422,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 */
 	public function flush() {
 		t3lib_div::rmdir($this->cacheDirectory, TRUE);
+		$this->createFinalCacheDirectory($this->cacheDirectory);
 	}
 
 	/**
