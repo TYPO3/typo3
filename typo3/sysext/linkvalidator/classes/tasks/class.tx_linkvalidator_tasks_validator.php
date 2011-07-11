@@ -285,9 +285,9 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
 		$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
 		$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
-		if(!$rootLineHidden || $modTS['checkhidden']==1) {
+		if (!$rootLineHidden || $modTS['checkhidden']==1) {
 			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
-			if($pageRow['hidden'] == 0 || $modTS['checkhidden']==1){
+			if ($pageRow['hidden'] == 0 || $modTS['checkhidden']==1) {
 				$pageIds .= $page;
 			}
 
@@ -295,14 +295,6 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			if (!empty($this->email)) {
 				$oldLinkCounts = $processor->getLinkCounts($page);
 				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
-			}
-
-			$processor->getLinkStatistics($array, $modTS['checkhidden']);
-
-			if (!empty($this->email)) {
-				$linkCounts = $processor->getLinkCounts($page);
-				$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
-				$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
 			}
 		}
 

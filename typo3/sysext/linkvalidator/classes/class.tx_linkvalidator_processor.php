@@ -418,11 +418,10 @@ class tx_linkvalidator_Processor {
 
 	public function getRootLineIsHidden($pageInfo){
 		$hidden = FALSE;
-		if($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1){
+		if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1){
 			$hidden = TRUE;
-		}
-		else{
-			if($pageInfo['pid'] > 0) {
+		} else {
+			if ($pageInfo['pid'] > 0) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,title,hidden,extendToSubpages',
 					'pages',

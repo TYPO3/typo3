@@ -249,7 +249,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			items : [
 			{
 				autoHeight: true,
-			title: TYPO3.lang.Report,
+				title: TYPO3.lang.Report,
 				html: ' . json_encode($this->flush(TRUE)) . '
 			},
 			' . $panelCheck . '
@@ -331,7 +331,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			}
 		}
 		$rootLineHidden = $this->processor->getRootLineIsHidden($this->pObj->pageinfo);
-		if(!$rootLineHidden || $this->modTS['checkhidden']==1) {
+		if (!$rootLineHidden || $this->modTS['checkhidden']==1) {
 				// get children pages
 			$pageList = $this->processor->extGetTreeList(
 				$this->pObj->id,
@@ -342,7 +342,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			);
 
 
-			if($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
+			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
 				$pageList .= $this->pObj->id;
 			}
 
@@ -434,7 +434,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$keyOpt = array_keys($this->checkOpt);
 		}
 		$rootLineHidden = $this->processor->getRootLineIsHidden($this->pObj->pageinfo);
-		if(!$rootLineHidden || $this->modTS['checkhidden']==1) {
+		if (!$rootLineHidden || $this->modTS['checkhidden']==1) {
 			$pageList = $this->processor->extGetTreeList(
 				$this->pObj->id,
 				$this->searchLevel,
@@ -442,7 +442,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				$GLOBALS['BE_USER']->getPagePermsClause(1),
 				$this->modTS['checkhidden']
 			);
-			if($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
+			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
 				$pageList .= $this->pObj->id;
 			}
 
@@ -473,8 +473,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 					$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 				}
 			}
-		}
-		else{
+		} else {
 
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 		}

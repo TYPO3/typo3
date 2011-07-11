@@ -104,13 +104,16 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 								$parsedUrl['user'] . (isset($parsedUrl['pass']) ? ':' . $parsedUrl['pass'] : '')
 								: '') . $parsedUrl['host'] . (
 							isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '') . $location[1];
-						}
-						else {
+						} else {
 							$newUrl = $location[1];
 						}
 
-						if ($lastUrl === $newUrl) break 2;
-					} else break 2;
+						if ($lastUrl === $newUrl) {
+							break 2;
+						}
+					} else {
+						break 2;
+					}
 				}
 			}
 
