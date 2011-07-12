@@ -237,6 +237,7 @@ class SC_db_list {
 		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
 		$dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];
 		$dblist->hideTables = $this->modTSconfig['properties']['hideTables'];
+		$dblist->hideTranslations = $this->modTSconfig['properties']['hideTranslations'];
 		$dblist->tableTSconfigOverTCA = $this->modTSconfig['properties']['table.'];
 		$dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
 		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
