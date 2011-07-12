@@ -642,28 +642,69 @@ final class t3lib_div {
 	/**
 	 * Match fully qualified domain name with list of strings with wildcard
 	 *
-	 * @param string $baseIP The current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param string $baseIP A hostname or an IPv4/IPv6-address (will by reverse-resolved; typically REMOTE_ADDR)
 	 * @param string $list A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
 	 * @return boolean TRUE if a domain name mask from $list matches $baseIP
 	 */
-	public static function cmpFQDN($baseIP, $list) {
-		if (count(explode('.', $baseIP)) == 4) {
-			$resolvedHostName = explode('.', gethostbyaddr($baseIP));
-			$values = self::trimExplode(',', $list, 1);
+	public static function cmpFQDN($baseHost, $list) {
+		$baseHost = trim($baseHost);
+		if (empty($baseHost)) {
+			return FALSE;
+		}
+		if (self::validIPv4($baseHost) || self::validIPv6($baseHost)) {
+				// resolve hostname
+				// note: this is reverse-lookup and can be randomly set as soon as somebody is able to set
+				// the reverse-DNS for his IP (security when for example used with REMOTE_ADDR)
+			$baseHostName = gethostbyaddr($baseHost);
+			if ($baseHostName === $baseHost) {
+					// unable to resolve hostname
+				return FALSE;
+			}
+		} else {
+			$baseHostName = $baseHost;
+		}
+		$baseHostNameParts = explode('.', $baseHostName);
 
-			foreach ($values as $test) {
-				$hostNameParts = explode('.', $test);
-				$yes = 1;
+		$values = self::trimExplode(',', $list, 1);
 
-				foreach ($hostNameParts as $index => $val) {
-					$val = trim($val);
-					if (strcmp($val, '*') && strcmp($resolvedHostName[$index], $val)) {
-						$yes = 0;
+		foreach ($values as $test) {
+			$hostNameParts = explode('.', $test);
+
+				// to match hostNameParts can only be shorter (in case of wildcards) or equal
+			if (count($hostNameParts) > count($baseHostNameParts)) {
+				continue;
+			}
+
+			$yes = TRUE;
+			foreach ($hostNameParts as $index => $val) {
+				$val = trim($val);
+				if ($val === '*') {
+						// wildcard valid for one or more hostname-parts
+
+					$wildcardStart = $index + 1;
+						// wildcard as last/only part always matches, otherwise perform recursive checks
+					if ($wildcardStart < count($hostNameParts)) {
+						$wildcardMatched = FALSE;
+						$tempHostName = implode('.', array_slice($hostNameParts, $index + 1));
+						while (($wildcardStart < count($baseHostNameParts)) && (!$wildcardMatched)) {
+							$tempBaseHostName = implode('.', array_slice($baseHostNameParts, $wildcardStart));
+							$wildcardMatched = self::cmpFQDN($tempBaseHostName, $tempHostName);
+							$wildcardStart++;
+						}
+						if ($wildcardMatched) {
+								// match found by recursive compare
+							return TRUE;
+						} else {
+							$yes = FALSE;
+						}
 					}
+				} elseif ($baseHostNameParts[$index] !== $val) {
+						// in case of no match
+					$yes = FALSE;
 				}
-				if ($yes) {
-					return TRUE;
-				}
+			}
+			if ($yes) {
+				return TRUE;
 			}
 		}
 		return FALSE;
