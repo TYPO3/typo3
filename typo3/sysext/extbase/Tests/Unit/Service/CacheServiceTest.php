@@ -57,6 +57,11 @@ class Tx_Extbase_Tests_Unit_Service_CacheServiceTest extends Tx_Extbase_Tests_Un
 		$this->cacheService = $this->getAccessibleMock('Tx_Extbase_Service_CacheService', array('dummy'));
 	}
 
+	public function tearDown() {
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
+		$GLOBALS['typo3CacheManager'] = $this->cacheManagerBackup;
+	}
+
 	/**
 	 * @test
 	 */

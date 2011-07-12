@@ -236,33 +236,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	}
 
 	/**
-	 * @test
-	 */
-	public function findByUidQueriesObjectAndRegistersItIfItWasNotFoundInIdentityMap() {
-		$fakeUid = '123';
-		$object = new stdClass();
-		$this->repository->_set('objectType', 'someObjectType');
-
-		$mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
-		$this->mockQuery->expects($this->atLeastOnce())->method('getQuerySettings')->will($this->returnValue($mockQuerySettings));
-
-		$mockQueryResult = $this->getMock('Tx_Extbase_Persistence_QueryResultInterface');
-
-		$this->mockQuery->expects($this->once())->method('equals')->with('uid', $fakeUid)->will($this->returnValue('matchingConstraint'));
-		$this->mockQuery->expects($this->once())->method('matching')->with('matchingConstraint')->will($this->returnValue($this->mockQuery));
-		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
-		$mockQueryResult->expects($this->once())->method('getFirst')->will($this->returnValue($object));
-
-		$this->mockIdentityMap->expects($this->once())->method('hasIdentifier')->with($fakeUid, 'someObjectType')->will($this->returnValue(FALSE));
-		$this->mockIdentityMap->expects($this->once())->method('registerObject')->with($object, $fakeUid);
-		$this->mockQueryFactory->expects($this->once())->method('create')->with('someObjectType')->will($this->returnValue($this->mockQuery));
-
-		$expectedResult = $object;
-		$actualResult = $this->repository->findByUid($fakeUid);
-		$this->assertSame($expectedResult, $actualResult);
-	}
-
-	/**
 	 * Replacing a reconstituted object (which has a uuid) by a new object
 	 * will ask the persistence backend to replace them accordingly in the
 	 * identity map.
