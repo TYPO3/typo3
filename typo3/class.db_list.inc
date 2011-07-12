@@ -87,6 +87,7 @@ class recordList extends t3lib_recordList {
 	var $modSharedTSconfig = array();		// Shared module configuration, used by localization features
 	var $pageRecord = array();		// Loaded with page record with version overlay if any.
 	var $hideTables = '';			// Tables which should not get listed
+	var $hideTranslations = '';		// Tables which should not list their translations
 	var $tableTSconfigOverTCA = array(); //TSconfig which overwrites TCA-Settings
 	var $tablesCollapsed = array(); // Array of collapsed / uncollapsed tables in multi table view
 
@@ -488,6 +489,11 @@ class recordList extends t3lib_recordList {
 			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
 			'LIMIT' => $limit
 		);
+
+		if ( (in_array($table, t3lib_div::trimExplode(',', $this->hideTranslations)) || strcmp($this->hideTranslations, '*')==0 ) 
+				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+			$queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ' ;
+		}
 
 			// Apply hook as requested in http://bugs.typo3.org/view.php?id=4361
 		foreach ($hookObjectsArr as $hookObj) {
