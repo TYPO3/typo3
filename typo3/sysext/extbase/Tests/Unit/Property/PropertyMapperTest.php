@@ -135,7 +135,6 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter) {
-		$this->markTestSkipped('Fixme');
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');
 		$mockTypeHandlingService->expects($this->any())->method('isSimpleType')->will($this->returnValue(TRUE));
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));

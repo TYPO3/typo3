@@ -95,7 +95,7 @@ class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
 	 * @param string $type
 	 * @return boolean
 	 */
-	static public function isLiteral($type) {
+	public function isLiteral($type) {
 		return preg_match(self::LITERAL_TYPE_PATTERN, $type) === 1;
 	}
 
@@ -105,7 +105,7 @@ class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
 	 * @param string $type
 	 * @return boolean
 	 */
-	static public function isSimpleType($type) {
+	public function isSimpleType($type) {
 		return in_array(self::normalizeType($type), array('array', 'string', 'float', 'integer', 'boolean'), TRUE);
 	}
 

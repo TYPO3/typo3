@@ -279,8 +279,8 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 				)
 			)
 		);
-		$this->mockRequest->expects($this->at(7))->method('setArgument')->with('parameter1', 'value1');
-		$this->mockRequest->expects($this->at(8))->method('setArgument')->with('parameter2', array('parameter3' => 'value3', 'parameter4' => 'value4'));
+		$this->mockRequest->expects($this->at(8))->method('setArgument')->with('parameter1', 'value1');
+		$this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter2', array('parameter3' => 'value3', 'parameter4' => 'value4'));
 
 		$this->requestBuilder->build();
 	}
