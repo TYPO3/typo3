@@ -240,7 +240,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		if (intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL || intval($notification_mode) === Tx_Workspaces_Service_Stages::MODE_NOTIFY_ALL_STRICT) {
 				// get the default recipients from the stage configuration
 				// the default recipients needs to be added in some cases of the notification_mode
-			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, true);
+			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, TRUE);
 			foreach ($default_recipients as $default_recipient_uid => $default_recipient_record) {
 				if (!in_array($default_recipient_record['email'],$recipients)) {
 					$recipients[] = $default_recipient_record['email'];
@@ -458,7 +458,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 						'itemCls' => 'x-check-group-alt',
 						'columns' => 1,
 						'style' => 'max-height: 200px',
-						'autoScroll' => true,
+						'autoScroll' => TRUE,
 						'items' => array(
 							$this->getReceipientsOfStage($nextStageId)
 						)
@@ -493,7 +493,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 		$result = array();
 
 		$recipients = $this->getStageService()->getResponsibleBeUser($stage);
-		$default_recipients = $this->getStageService()->getResponsibleBeUser($stage, true);
+		$default_recipients = $this->getStageService()->getResponsibleBeUser($stage, TRUE);
 
 		foreach ($recipients as $id => $user) {
 			if (t3lib_div::validEmail($user['email'])) {

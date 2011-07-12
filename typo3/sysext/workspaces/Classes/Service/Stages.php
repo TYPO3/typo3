@@ -386,14 +386,14 @@ class Tx_Workspaces_Service_Stages {
 	 * @param	boolean if field notification_defaults should be selected instead of responsible users
 	 * @return	array be_users with e-mail and name
 	 */
-	public function getResponsibleBeUser($stageId, $selectDefaultUserField = false) {
+	public function getResponsibleBeUser($stageId, $selectDefaultUserField = FALSE) {
 		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
 		$recipientArray = array();
 
 		switch ($stageId) {
 			case self::STAGE_PUBLISH_EXECUTE_ID:
 			case self::STAGE_PUBLISH_ID:
-				if ($selectDefaultUserField == false) {
+				if ($selectDefaultUserField == FALSE) {
 					$userList = $this->getResponsibleUser($workspaceRec['adminusers']);
 				} else {
 					$notification_default_user = $workspaceRec['publish_notification_defaults'];
@@ -401,7 +401,7 @@ class Tx_Workspaces_Service_Stages {
 				}
 				break;
 			case self::STAGE_EDIT_ID:
-				if ($selectDefaultUserField == false) {
+				if ($selectDefaultUserField == FALSE) {
 					$userList = $this->getResponsibleUser($workspaceRec['members']);
 				} else {
 					$notification_default_user = $workspaceRec['edit_notification_defaults'];
@@ -409,7 +409,7 @@ class Tx_Workspaces_Service_Stages {
 				}
 				break;
 			default:
-				if ($selectDefaultUserField == false) {
+				if ($selectDefaultUserField == FALSE) {
 					$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
 					$userList = $this->getResponsibleUser($responsible_persons);
 				} else {

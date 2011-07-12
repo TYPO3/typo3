@@ -79,7 +79,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 *
 	 * @return void
 	 */
-	public function indexAction($previewWS = null) {
+	public function indexAction($previewWS = NULL) {
 		// @todo language doesn't always come throught the L parameter
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$language = intval(t3lib_div::_GP('L'));
