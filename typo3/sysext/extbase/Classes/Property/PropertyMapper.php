@@ -79,11 +79,11 @@ class Tx_Extbase_Property_PropertyMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
 	 * @return void
 	 */
-	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
-		$this->extensionService = $extensionService;
+	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+		$this->typeHandlingService = $typeHandlingService;
 	}
 
 	/**

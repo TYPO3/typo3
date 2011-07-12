@@ -34,6 +34,11 @@
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
 	 * Whether this service has been initialized.
 	 *
 	 * @var boolean
@@ -138,6 +143,14 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @var string
 	 */
 	protected $cacheIdentifier;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
@@ -394,7 +407,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if (!class_exists($className)) {
 			throw new Tx_Extbase_Reflection_Exception_UnknownClass('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
 		}
-		$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
+		$classSchema = $this->objectManager->get('Tx_Extbase_Reflection_ClassSchema', $className);
 		if (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractEntity')) {
 			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
 
