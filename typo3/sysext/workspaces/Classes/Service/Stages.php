@@ -701,7 +701,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return integer
 	 */
 	public function getNotificationMode($stageId) {
-		if (!t3lib_div::testInt($stageId)) {
+		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
 			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 
