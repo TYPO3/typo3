@@ -7461,13 +7461,19 @@ class tslib_cObj {
 		);
 
 		if (trim($conf['uidInList'])) {
-			$listArr = t3lib_div::intExplode(',', str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['uidInList']));
-			if (count($listArr) == 1) {
-				$query .= ' AND ' . $table . '.uid=' . intval($listArr[0]);
+			$uidList = str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['uidInList']);
+			if ($conf['uidInList.']) {
+				$uidList = $this->stdWrap($uidList, $conf['uidList.']);
+			}
+			$uidArray = t3lib_div::intExplode(',', $uidList);
+			if (count($uidArray) == 1) {
+				$query .= ' AND ' . $table . '.uid=' . intval($uidArray[0]);
 			} else {
-				$query .= ' AND ' . $table . '.uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr)) . ')';
+				$query .= ' AND ' . $table . '.uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($uidArray)) . ')';
 			}
 			$pid_uid_flag++;
+			unset($uidList);
+			unset($uidArray);
 		}
 			// static_* tables are allowed to be fetched from root page
 		if (substr($table, 0, 7) == 'static_') {
