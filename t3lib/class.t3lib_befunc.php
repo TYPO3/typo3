@@ -4310,10 +4310,13 @@ final class t3lib_BEfunc {
 			}
 
 			if (count($warnings)) {
-				$style = ' style="margin-bottom:10px;"';
-				$securityWarnings = '<ul><li' . $style . '>'
-						. implode('</li><li' . $style . '>', $warnings)
-						. '</li></ul>';
+				if (count($warnings) > 1) {
+					$securityWarnings = '<ul><li>' .
+							implode('</li><li>', $warnings) .
+							'</li></ul>';
+				} else {
+					$securityWarnings = '<p>' . implode('', $warnings) . '</p>';
+				}
 
 				$securityMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
