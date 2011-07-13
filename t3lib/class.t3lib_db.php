@@ -1339,13 +1339,17 @@ class t3lib_DB {
 	 * @return	void
 	 */
 	function connectDB($host = TYPO3_db_host, $user = TYPO3_db_username, $password = TYPO3_db_password, $db = TYPO3_db) {
+			// If no db is given we throw immediately. This is a sign for a fresh (not configured)
+			// TYPO3 installation and is used in FE to redirect to 1-2-3 install tool
+		if (!$db) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: No database selected!',
+				1270853882
+			);
+		}
+
 		if ($this->sql_pconnect($host, $user, $password)) {
-			if (!$db) {
-				throw new RuntimeException(
-					'TYPO3 Fatal Error: No database selected!',
-					1270853882
-				);
-			} elseif (!$this->sql_select_db($db)) {
+			if (!$this->sql_select_db($db)) {
 				throw new RuntimeException(
 					'TYPO3 Fatal Error: Cannot connect to the current database, "' . $db . '"!',
 					1270853883
