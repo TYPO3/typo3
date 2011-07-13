@@ -94,6 +94,7 @@ class tx_dbal_autoloader {
 			$extList[] = 'dbal';
 		}
 		$this->updateExtensionList(implode(',', $extList));
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
 
 	/**
