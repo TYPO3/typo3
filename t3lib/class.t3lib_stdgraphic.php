@@ -837,7 +837,10 @@ class t3lib_stdGraphic {
 			if (is_readable($fontFile)) {
 
 					// Calculate Bounding Box for part:
-				$calc = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+				$try = 0;
+				do {
+					$calc = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+				} while($calc[2] < 0 && $try++ < 10);
 
 					// Calculate offsets:
 				if (!count($offsetInfo)) {
