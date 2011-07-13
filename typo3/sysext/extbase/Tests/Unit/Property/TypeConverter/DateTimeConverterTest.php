@@ -230,7 +230,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_DateTimeConverterTest extends
 			'timezone' => 'Atlantic/Reykjavik',
 		);
 		$date = $this->converter->convertFrom($source, 'DateTime');
-		$this->assertSame('2011-06-16', $date->format('Y-m-d'));
 		$this->assertSame('Atlantic/Reykjavik', $date->getTimezone()->getName());
 	}
 
