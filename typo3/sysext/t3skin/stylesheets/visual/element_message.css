@@ -13,6 +13,11 @@ Flash Messages (template.php)
 	text-decoration: underline;
 }
 
+.typo3-message li {
+	margin-bottom: 10px;
+    list-style: disc;
+}
+
 .typo3-message .message-header {
 	font-size: 11px;
 	font-weight: bold;
