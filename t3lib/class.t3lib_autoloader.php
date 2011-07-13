@@ -116,7 +116,7 @@ class t3lib_autoloader {
 				$cachedFileContent .= chr(10) . '\'' . $className . '\' => \'' . $classLocation . '\',';
 			}
 			$cachedFileContent .= chr(10) . ');';
-			$phpCodeCache->set($autoloadCacheIdentifier, $cachedFileContent);
+			$phpCodeCache->set($autoloadCacheIdentifier, $cachedFileContent, array('t3lib_autoloader'));
 		}
 
 			// Require calculated cache file
