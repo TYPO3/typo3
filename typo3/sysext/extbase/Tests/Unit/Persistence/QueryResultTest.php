@@ -66,7 +66,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function getQueryReturnsQueryObject() {
-		$this->assertType('Tx_Extbase_Persistence_QueryInterface', $this->queryResult->getQuery());
+		$this->assertInstanceOf('Tx_Extbase_Persistence_QueryInterface', $this->queryResult->getQuery());
 	}
 
 	/**

@@ -183,7 +183,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 		$arguments->injectObjectManager($mockObjectManager);
 
 		$addedArgument = $arguments->addNewArgument('dummyName');
-		$this->assertType('Tx_Extbase_MVC_Controller_Argument', $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
+		$this->assertInstanceOf('Tx_Extbase_MVC_Controller_Argument', $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
 
 		$retrievedArgument = $arguments['dummyName'];
 		$this->assertSame($addedArgument, $retrievedArgument, 'The added and the retrieved argument are not the same.');
