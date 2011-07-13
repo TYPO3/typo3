@@ -7364,28 +7364,40 @@ class tslib_cObj {
 		);
 
 		if (trim($conf['uidInList'])) {
-			$listArr = t3lib_div::intExplode(',', str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['uidInList']));
-			if (count($listArr) == 1) {
-				$query .= ' AND ' . $table . '.uid=' . intval($listArr[0]);
+			$uidList = str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['uidInList']);
+			if ($conf['uidInList.']) {
+				$uidList = $this->stdWrap($uidList, $conf['uidList.']);
+			}
+			$uidArray = t3lib_div::intExplode(',', $uidList);
+			if (count($uidArray) == 1) {
+				$query .= ' AND ' . $table . '.uid=' . intval($uidArray[0]);
 			} else {
-				$query .= ' AND ' . $table . '.uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr)) . ')';
+				$query .= ' AND ' . $table . '.uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($uidArray)) . ')';
 			}
 			$pid_uid_flag++;
+			unset($uidList);
+			unset($uidArray);
 		}
 			// static_* tables are allowed to be fetched from root page
 		if (substr($table, 0, 7) == 'static_') {
 			$pid_uid_flag++;
 		}
 		if (trim($conf['pidInList'])) {
-			$listArr = t3lib_div::intExplode(',', str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['pidInList']));
+			$pidInList = str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['pidInList']);
+			if ($conf['pidInList.']) {
+				$pidInList = $this->stdWrap($pidInList, $conf['pidList.']);
+			}
+			$pidArray = t3lib_div::intExplode(',', $pidInList);
 				// removes all pages which are not visible for the user!
-			$listArr = $this->checkPidArray($listArr);
-			if (count($listArr)) {
-				$query .= ' AND ' . $table . '.pid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr)) . ')';
+			$pidArray = $this->checkPidArray($pidArray);
+			if (count($pidArray)) {
+				$query .= ' AND ' . $table . '.pid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pidArray)) . ')';
 				$pid_uid_flag++;
 			} else {
 				$pid_uid_flag = 0; // If not uid and not pid then uid is set to 0 - which results in nothing!!
 			}
+			unset($pidInList);
+			unset($pidArray);
 		}
 		if (!$pid_uid_flag) { // If not uid and not pid then uid is set to 0 - which results in nothing!!
 			$query .= ' AND ' . $table . '.uid=0';
