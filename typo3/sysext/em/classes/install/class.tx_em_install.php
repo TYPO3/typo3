@@ -1501,6 +1501,7 @@ class tx_em_Install {
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList_FE'] = $strippedExtensionList;
 		t3lib_extMgm::removeCacheFiles();
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
 
 	/**
