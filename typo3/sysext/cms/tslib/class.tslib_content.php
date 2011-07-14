@@ -7278,7 +7278,19 @@ class tslib_cObj {
 		$queryParts = $this->getWhere($table, $conf, TRUE);
 
 			// Fields:
-		$queryParts['SELECT'] = $conf['selectFields'] ? $conf['selectFields'] : '*';
+		if ($conf['selectFields']) {
+			$queryParts['SELECT'] = $conf['selectFields'];
+				// add uid, pid and t3ver_state in order to allow 
+				// versioning for TCA-based table
+			if (isset($GLOBALS['TCA'][$table])) {
+				$queryParts['SELECT'] .= ',uid,pid';
+				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+					$queryParts['SELECT'] .= ',t3ver_state';
+				}
+			}
+		} else {
+			$queryParts['SELECT'] = '*';
+		}
 
 			// Setting LIMIT:
 		if ($conf['max'] || $conf['begin']) {
