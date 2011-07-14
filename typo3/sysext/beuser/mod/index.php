@@ -1500,14 +1500,11 @@ class SC_mod_tools_be_user_index {
 		$where_clause = '';
 		$orderBy = 'u.username';
 
-		if (t3lib_utility_Math::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
-			$where_clause .= 'ses_tstamp+' . $GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] . ' > ' . $GLOBALS['EXEC_TIME'];
-		} else {
-			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
-			if ($timeout > 0)	{
-				$where_clause .= 'ses_tstamp+' . $timeout . ' > ' . $GLOBALS['EXEC_TIME'];
-			}
+		$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
+		if ($timeout > 0) {
+			$where_clause .= ' AND ses_tstamp > ' . ($GLOBALS['EXEC_TIME'] - $timeout);
 		}
+
 			// Fetch active sessions of other users from storage:
 		$sessions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select_fields,$from_table,$where_clause,'',$orderBy);
 			// Process and visualized each active session as a table row:
