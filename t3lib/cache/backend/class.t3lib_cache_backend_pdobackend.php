@@ -371,8 +371,4 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 		}
 	}
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_pdobackend.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_pdobackend.php']);
-}
 ?>

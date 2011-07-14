@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * An "Invalid Backend" exception
  *
@@ -33,12 +32,5 @@
  * @api
  */
 class t3lib_cache_exception_InvalidBackend extends t3lib_cache_Exception {
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_invalidbackend.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/exception/class.t3lib_cache_exception_invalidbackend.php']);
-}
-
 ?>

@@ -122,6 +122,5 @@ interface t3lib_cache_backend_Backend {
 	 * @api
 	 */
 	public function collectGarbage();
-
 }
 ?>

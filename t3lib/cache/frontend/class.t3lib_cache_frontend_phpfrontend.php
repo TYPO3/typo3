@@ -33,6 +33,7 @@
  * @scope prototype
  */
 class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFrontend {
+
 	/**
 	 * Constructs the cache
 	 *
@@ -94,9 +95,4 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 		return $this->backend->requireOnce($entryIdentifier);
 	}
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_frontend_phpfrontend.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_frontend_phpfrontend.php']);
-}
-
 ?>
