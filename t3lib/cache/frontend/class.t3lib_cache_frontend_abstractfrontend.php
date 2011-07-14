@@ -221,12 +221,5 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	public function isValidTag($tag) {
 		return preg_match(self::PATTERN_TAG, $tag) === 1;
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']);
-}
-
 ?>

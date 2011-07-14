@@ -118,12 +118,5 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 		}
 		return $entries;
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_stringcache.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_stringcache.php']);
-}
-
 ?>

@@ -144,9 +144,4 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 		return $expiryTime;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_abstractbackend.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/backend/class.t3lib_cache_backend_abstractbackend.php']);
-}
-
 ?>
