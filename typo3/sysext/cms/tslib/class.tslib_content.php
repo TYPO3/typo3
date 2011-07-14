@@ -7399,7 +7399,13 @@ class tslib_cObj {
 		if (!$pid_uid_flag) { // If not uid and not pid then uid is set to 0 - which results in nothing!!
 			$query .= ' AND ' . $table . '.uid=0';
 		}
-		if ($where = trim($conf['where'])) {
+
+			// Be careful not to use GPvar with this feature without saving it (e.g. with stdWrap.intval)
+		$where = isset($conf['where.'])
+			? trim($this->stdWrap($conf['where'], $conf['where.']))
+			: trim($conf['where']);
+
+		if ($where) {
 			$query .= ' AND ' . $where;
 		}
 
@@ -7415,9 +7421,11 @@ class tslib_cObj {
 			$query .= ' AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . ')';
 		}
 
+			// Be careful not to use GPvar with this feature without saving it (e.g. with stdWrap.intval)
 		$andWhere = isset($conf['andWhere.'])
 			? trim($this->stdWrap($conf['andWhere'], $conf['andWhere.']))
 			: trim($conf['andWhere']);
+
 		if ($andWhere) {
 			$query .= ' AND ' . $andWhere;
 		}
