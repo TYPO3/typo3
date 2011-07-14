@@ -46,7 +46,9 @@ class tx_Workspaces_Service_Befunc {
 	 * @return void
 	 */
 	public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
-		$viewScript = $this->getWorkspaceService()->generateWorkspaceSplittedPreviewLink($pageUid);
+		if ($GLOBALS['BE_USER']->workspace !== 0) {
+			$viewScript = $this->getWorkspaceService()->generateWorkspaceSplittedPreviewLink($pageUid);
+		}
 	}
 
 	/**
