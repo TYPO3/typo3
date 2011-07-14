@@ -162,6 +162,16 @@ class tslib_pibase {
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.7. Use __construct() instead.
+	 */
+	public function tslib_pibase() {
+		t3lib_div::logDeprecatedFunction();
+		tslib_pibase::__construct();
+	}
+
+	/**
 	 * If internal TypoScript property "_DEFAULT_PI_VARS." is set then it will merge the current $this->piVars array onto these default values.
 	 *
 	 * @return	void
