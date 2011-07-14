@@ -2328,6 +2328,9 @@ class tslib_cObj {
 				: $conf['hash'];
 		if (function_exists('hash') && in_array($algorithm, hash_algos())) {
 			$content = hash($algorithm, $content);
+		} else {
+				// non-existing hashing algorithm
+			$content = '';
 		}
 		return $content;
 	}

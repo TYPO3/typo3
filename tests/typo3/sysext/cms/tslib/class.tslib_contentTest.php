@@ -753,7 +753,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 				array(
 					'hash' => 'non-existing'
 				),
-				'joh316'
+				''
 			),
 			'testing stdWrap capability' => array(
 				'joh316',
