@@ -116,7 +116,11 @@ lib.parseFunc_RTE {
 		table.stdWrap.HTMLparser.keepNonMatchedTags = 1
 		table.HTMLtableCells=1
 		table.HTMLtableCells {
-			default.callRecursive=1
+			# Recursive call to self but without wrapping non-wrapped cell content
+			default.stdWrap {
+				parseFunc =< lib.parseFunc_RTE
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+			}
 			addChr10BetweenParagraphs=1
 		}
 		div.stripNL = 1
