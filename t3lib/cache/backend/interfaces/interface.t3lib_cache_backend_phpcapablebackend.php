@@ -42,6 +42,5 @@ interface t3lib_cache_backend_PhpCapableBackend extends t3lib_cache_backend_Back
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier);
-
 }
 ?>

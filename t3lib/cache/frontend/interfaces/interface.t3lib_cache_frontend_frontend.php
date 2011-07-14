@@ -122,7 +122,7 @@ interface t3lib_cache_frontend_Frontend {
 	 *
 	 * @return void
 	 */
-	function flush();
+	public function flush();
 
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tag.
@@ -158,8 +158,5 @@ interface t3lib_cache_frontend_Frontend {
 	 * @api
 	 */
 	public function isValidTag($tag);
-
 }
-
-
 ?>

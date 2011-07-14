@@ -106,12 +106,5 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 		$this->cacheManager->registerCache($cache);
 		return $cache;
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_factory.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/cache/class.t3lib_cache_factory.php']);
-}
-
 ?>
