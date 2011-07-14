@@ -281,8 +281,7 @@
 			</trans-unit>
 			<trans-unit id="info.newpage.detail">
 				<source>The previewed page has been created in a workspace and has no live counterpart.</source>
-				<target approved="yes">The previewed page has been created in a workspace and has no live counterpart.
-				</target>
+				<target approved="yes">The previewed page has been created in a workspace and has no live counterpart.</target>
 			</trans-unit>
 			<trans-unit id="preview.visualPreview">
 				<source>Visual preview</source>
@@ -298,9 +297,7 @@
 			</trans-unit>
 			<trans-unit id="preview.livePreviewDetail">
 				<source>Click this element to hide the workspace version and see the live version of the page.</source>
-				<target approved="yes">Click this element to hide the workspace version and see the live version of the
-					page.
-				</target>
+				<target approved="yes">Click this element to hide the workspace version and see the live version of the page.</target>
 			</trans-unit>
 			<trans-unit id="preview.workspacePreview">
 				<source>Workspace</source>
@@ -308,9 +305,7 @@
 			</trans-unit>
 			<trans-unit id="preview.workspacePreviewDetail">
 				<source>Click this element to hide the live version and see the workspace version of the page.</source>
-				<target approved="yes">Click this element to hide the live version and see the workspace version of the
-					page.
-				</target>
+				<target approved="yes">Click this element to hide the live version and see the workspace version of the page.</target>
 			</trans-unit>
 			<trans-unit id="preview.modeSlider">
 				<source>Slider</source>
