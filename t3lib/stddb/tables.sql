@@ -46,7 +46,8 @@ CREATE TABLE be_sessions (
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data longtext,
   ses_backuserid int(11) NOT NULL default '0',
-  PRIMARY KEY (ses_id,ses_name)
+  PRIMARY KEY (ses_id,ses_name),
+  KEY ses_tstamp (ses_tstamp)
 );
 
 #
