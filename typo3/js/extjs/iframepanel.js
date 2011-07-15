@@ -81,8 +81,21 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	setUrl: function(source) {
 		this.setMask();
 		this.body.dom.src = source;
+		if(this.ownerCt) {
+			if(this.ownerCt.hasLayout) {
+				if(this.ownerCt.layout.setActiveItem) {
+					this.ownerCt.layout.setActiveItem(this.id);
+				}
+			}
+		}
 	},
-
+	setUriIfChanged: function(source) {
+		currentSource = this.getUrl();
+		currentSource = currentSource.substr(currentSource.length-source.length);
+		if(source != currentSource) {
+			this.setUrl(source);
+		}
+	},
 	resetUrl: function() {
 		this.setMask();
 		this.body.dom.src = this.src;
