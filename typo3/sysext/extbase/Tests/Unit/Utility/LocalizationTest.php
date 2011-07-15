@@ -28,7 +28,7 @@
  * @package Extbase
  * @subpackage Utility
  */
-class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_BaseTestCase {
+class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Extbase_Utility_Localization
